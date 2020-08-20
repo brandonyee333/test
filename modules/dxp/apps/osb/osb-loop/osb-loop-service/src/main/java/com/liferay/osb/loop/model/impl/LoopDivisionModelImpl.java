@@ -839,25 +839,20 @@ public class LoopDivisionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopDivisionModelImpl loopDivisionModelImpl = this;
+		_originalCompanyId = _companyId;
 
-		loopDivisionModelImpl._originalCompanyId =
-			loopDivisionModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		loopDivisionModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalOrganizationId = _organizationId;
 
-		loopDivisionModelImpl._setModifiedDate = false;
+		_setOriginalOrganizationId = false;
 
-		loopDivisionModelImpl._originalOrganizationId =
-			loopDivisionModelImpl._organizationId;
+		_originalType = _type;
 
-		loopDivisionModelImpl._setOriginalOrganizationId = false;
+		_setOriginalType = false;
 
-		loopDivisionModelImpl._originalType = loopDivisionModelImpl._type;
-
-		loopDivisionModelImpl._setOriginalType = false;
-
-		loopDivisionModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

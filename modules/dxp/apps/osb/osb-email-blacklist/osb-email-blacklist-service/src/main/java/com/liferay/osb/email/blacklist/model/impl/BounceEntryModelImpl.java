@@ -407,7 +407,7 @@ public class BounceEntryModelImpl
 
 	@Override
 	public void setBounceDate(Date bounceDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= BOUNCEDATE_COLUMN_BITMASK;
 
 		if (_originalBounceDate == null) {
 			_originalBounceDate = _bounceDate;
@@ -552,15 +552,11 @@ public class BounceEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BounceEntryModelImpl bounceEntryModelImpl = this;
+		_originalEmailAddress = _emailAddress;
 
-		bounceEntryModelImpl._originalEmailAddress =
-			bounceEntryModelImpl._emailAddress;
+		_originalBounceDate = _bounceDate;
 
-		bounceEntryModelImpl._originalBounceDate =
-			bounceEntryModelImpl._bounceDate;
-
-		bounceEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

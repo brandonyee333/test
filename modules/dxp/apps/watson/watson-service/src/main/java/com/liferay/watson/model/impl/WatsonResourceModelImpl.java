@@ -1145,9 +1145,7 @@ public class WatsonResourceModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonResourceModelImpl watsonResourceModelImpl = this;
-
-		watsonResourceModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

@@ -914,9 +914,7 @@ public class WatsonRelationshipModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonRelationshipModelImpl watsonRelationshipModelImpl = this;
-
-		watsonRelationshipModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

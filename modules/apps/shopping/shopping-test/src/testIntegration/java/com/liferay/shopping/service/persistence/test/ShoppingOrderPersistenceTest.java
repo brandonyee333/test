@@ -46,7 +46,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -680,19 +679,15 @@ public class ShoppingOrderPersistenceTest {
 		ShoppingOrder existingShoppingOrder = _persistence.findByPrimaryKey(
 			newShoppingOrder.getPrimaryKey());
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingShoppingOrder.getNumber(),
-				ReflectionTestUtil.invoke(
-					existingShoppingOrder, "getOriginalNumber",
-					new Class<?>[0])));
+		Assert.assertEquals(
+			existingShoppingOrder.getNumber(),
+			ReflectionTestUtil.invoke(
+				existingShoppingOrder, "getOriginalNumber", new Class<?>[0]));
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingShoppingOrder.getPpTxnId(),
-				ReflectionTestUtil.invoke(
-					existingShoppingOrder, "getOriginalPpTxnId",
-					new Class<?>[0])));
+		Assert.assertEquals(
+			existingShoppingOrder.getPpTxnId(),
+			ReflectionTestUtil.invoke(
+				existingShoppingOrder, "getOriginalPpTxnId", new Class<?>[0]));
 	}
 
 	protected ShoppingOrder addShoppingOrder() throws Exception {

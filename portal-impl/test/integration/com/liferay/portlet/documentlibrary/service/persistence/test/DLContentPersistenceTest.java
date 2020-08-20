@@ -48,7 +48,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -462,16 +461,14 @@ public class DLContentPersistenceTest {
 			Long.valueOf(existingDLContent.getRepositoryId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingDLContent, "getOriginalRepositoryId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingDLContent.getPath(),
-				ReflectionTestUtil.invoke(
-					existingDLContent, "getOriginalPath", new Class<?>[0])));
-		Assert.assertTrue(
-			Objects.equals(
-				existingDLContent.getVersion(),
-				ReflectionTestUtil.invoke(
-					existingDLContent, "getOriginalVersion", new Class<?>[0])));
+		Assert.assertEquals(
+			existingDLContent.getPath(),
+			ReflectionTestUtil.invoke(
+				existingDLContent, "getOriginalPath", new Class<?>[0]));
+		Assert.assertEquals(
+			existingDLContent.getVersion(),
+			ReflectionTestUtil.invoke(
+				existingDLContent, "getOriginalVersion", new Class<?>[0]));
 	}
 
 	protected DLContent addDLContent() throws Exception {

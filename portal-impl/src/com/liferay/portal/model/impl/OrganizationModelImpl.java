@@ -993,7 +993,7 @@ public class OrganizationModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -1217,33 +1217,26 @@ public class OrganizationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		OrganizationModelImpl organizationModelImpl = this;
+		_originalUuid = _uuid;
 
-		organizationModelImpl._originalUuid = organizationModelImpl._uuid;
+		_originalOrganizationId = _organizationId;
 
-		organizationModelImpl._originalOrganizationId =
-			organizationModelImpl._organizationId;
+		_setOriginalOrganizationId = false;
 
-		organizationModelImpl._setOriginalOrganizationId = false;
+		_originalCompanyId = _companyId;
 
-		organizationModelImpl._originalCompanyId =
-			organizationModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		organizationModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalParentOrganizationId = _parentOrganizationId;
 
-		organizationModelImpl._setModifiedDate = false;
+		_setOriginalParentOrganizationId = false;
 
-		organizationModelImpl._originalParentOrganizationId =
-			organizationModelImpl._parentOrganizationId;
+		_originalTreePath = _treePath;
 
-		organizationModelImpl._setOriginalParentOrganizationId = false;
+		_originalName = _name;
 
-		organizationModelImpl._originalTreePath =
-			organizationModelImpl._treePath;
-
-		organizationModelImpl._originalName = organizationModelImpl._name;
-
-		organizationModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

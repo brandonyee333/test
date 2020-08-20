@@ -1083,9 +1083,7 @@ public class WatsonActivityAuditModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonActivityAuditModelImpl watsonActivityAuditModelImpl = this;
-
-		watsonActivityAuditModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

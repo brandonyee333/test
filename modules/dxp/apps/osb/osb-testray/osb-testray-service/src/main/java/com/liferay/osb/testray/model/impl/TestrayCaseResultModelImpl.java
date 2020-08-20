@@ -1152,34 +1152,27 @@ public class TestrayCaseResultModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayCaseResultModelImpl testrayCaseResultModelImpl = this;
+		_originalCreateDate = _createDate;
 
-		testrayCaseResultModelImpl._originalCreateDate =
-			testrayCaseResultModelImpl._createDate;
+		_setModifiedDate = false;
 
-		testrayCaseResultModelImpl._setModifiedDate = false;
+		_originalTestrayBuildId = _testrayBuildId;
 
-		testrayCaseResultModelImpl._originalTestrayBuildId =
-			testrayCaseResultModelImpl._testrayBuildId;
+		_setOriginalTestrayBuildId = false;
 
-		testrayCaseResultModelImpl._setOriginalTestrayBuildId = false;
+		_originalTestrayCaseId = _testrayCaseId;
 
-		testrayCaseResultModelImpl._originalTestrayCaseId =
-			testrayCaseResultModelImpl._testrayCaseId;
+		_setOriginalTestrayCaseId = false;
 
-		testrayCaseResultModelImpl._setOriginalTestrayCaseId = false;
+		_originalTestrayComponentId = _testrayComponentId;
 
-		testrayCaseResultModelImpl._originalTestrayComponentId =
-			testrayCaseResultModelImpl._testrayComponentId;
+		_setOriginalTestrayComponentId = false;
 
-		testrayCaseResultModelImpl._setOriginalTestrayComponentId = false;
+		_originalTestrayRunId = _testrayRunId;
 
-		testrayCaseResultModelImpl._originalTestrayRunId =
-			testrayCaseResultModelImpl._testrayRunId;
+		_setOriginalTestrayRunId = false;
 
-		testrayCaseResultModelImpl._setOriginalTestrayRunId = false;
-
-		testrayCaseResultModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -45,7 +45,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -504,11 +503,10 @@ public class AccountPersistenceTest {
 			Long.valueOf(existingAccount.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingAccount, "getOriginalUserId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingAccount.getAddress(),
-				ReflectionTestUtil.invoke(
-					existingAccount, "getOriginalAddress", new Class<?>[0])));
+		Assert.assertEquals(
+			existingAccount.getAddress(),
+			ReflectionTestUtil.invoke(
+				existingAccount, "getOriginalAddress", new Class<?>[0]));
 	}
 
 	protected Account addAccount() throws Exception {

@@ -991,10 +991,7 @@ public class WatsonRelationshipAuditModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonRelationshipAuditModelImpl watsonRelationshipAuditModelImpl =
-			this;
-
-		watsonRelationshipAuditModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

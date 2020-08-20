@@ -868,17 +868,12 @@ public class GitHubRepositoryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		GitHubRepositoryModelImpl gitHubRepositoryModelImpl = this;
+		_setModifiedDate = false;
+		_originalOwner = _owner;
 
-		gitHubRepositoryModelImpl._setModifiedDate = false;
+		_originalName = _name;
 
-		gitHubRepositoryModelImpl._originalOwner =
-			gitHubRepositoryModelImpl._owner;
-
-		gitHubRepositoryModelImpl._originalName =
-			gitHubRepositoryModelImpl._name;
-
-		gitHubRepositoryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

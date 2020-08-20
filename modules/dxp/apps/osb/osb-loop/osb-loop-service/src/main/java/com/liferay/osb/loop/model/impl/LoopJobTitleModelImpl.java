@@ -557,7 +557,7 @@ public class LoopJobTitleModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -698,13 +698,10 @@ public class LoopJobTitleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopJobTitleModelImpl loopJobTitleModelImpl = this;
+		_setModifiedDate = false;
+		_originalName = _name;
 
-		loopJobTitleModelImpl._setModifiedDate = false;
-
-		loopJobTitleModelImpl._originalName = loopJobTitleModelImpl._name;
-
-		loopJobTitleModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

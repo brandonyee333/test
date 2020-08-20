@@ -985,8 +985,6 @@ public class CalendarModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
 		_name = name;
 	}
 
@@ -1449,36 +1447,30 @@ public class CalendarModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CalendarModelImpl calendarModelImpl = this;
+		_originalUuid = _uuid;
 
-		calendarModelImpl._originalUuid = calendarModelImpl._uuid;
+		_originalGroupId = _groupId;
 
-		calendarModelImpl._originalGroupId = calendarModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		calendarModelImpl._setOriginalGroupId = false;
+		_originalCompanyId = _companyId;
 
-		calendarModelImpl._originalCompanyId = calendarModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		calendarModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalResourceBlockId = _resourceBlockId;
 
-		calendarModelImpl._setModifiedDate = false;
+		_setOriginalResourceBlockId = false;
 
-		calendarModelImpl._originalResourceBlockId =
-			calendarModelImpl._resourceBlockId;
+		_originalCalendarResourceId = _calendarResourceId;
 
-		calendarModelImpl._setOriginalResourceBlockId = false;
+		_setOriginalCalendarResourceId = false;
 
-		calendarModelImpl._originalCalendarResourceId =
-			calendarModelImpl._calendarResourceId;
+		_originalDefaultCalendar = _defaultCalendar;
 
-		calendarModelImpl._setOriginalCalendarResourceId = false;
+		_setOriginalDefaultCalendar = false;
 
-		calendarModelImpl._originalDefaultCalendar =
-			calendarModelImpl._defaultCalendar;
-
-		calendarModelImpl._setOriginalDefaultCalendar = false;
-
-		calendarModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -473,8 +473,6 @@ public class ReleaseNotesModelImpl
 
 	@Override
 	public void setReleaseNotesId(long releaseNotesId) {
-		_columnBitmask = -1L;
-
 		_releaseNotesId = releaseNotesId;
 	}
 
@@ -707,18 +705,14 @@ public class ReleaseNotesModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ReleaseNotesModelImpl releaseNotesModelImpl = this;
+		_originalUuid = _uuid;
 
-		releaseNotesModelImpl._originalUuid = releaseNotesModelImpl._uuid;
+		_setModifiedDate = false;
+		_originalName = _name;
 
-		releaseNotesModelImpl._setModifiedDate = false;
+		_originalJiraIssueKeys = _jiraIssueKeys;
 
-		releaseNotesModelImpl._originalName = releaseNotesModelImpl._name;
-
-		releaseNotesModelImpl._originalJiraIssueKeys =
-			releaseNotesModelImpl._jiraIssueKeys;
-
-		releaseNotesModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

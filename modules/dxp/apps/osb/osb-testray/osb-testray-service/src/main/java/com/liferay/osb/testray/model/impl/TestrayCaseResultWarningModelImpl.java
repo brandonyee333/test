@@ -747,18 +747,12 @@ public class TestrayCaseResultWarningModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayCaseResultWarningModelImpl testrayCaseResultWarningModelImpl =
-			this;
+		_setModifiedDate = false;
+		_originalTestrayCaseResultId = _testrayCaseResultId;
 
-		testrayCaseResultWarningModelImpl._setModifiedDate = false;
+		_setOriginalTestrayCaseResultId = false;
 
-		testrayCaseResultWarningModelImpl._originalTestrayCaseResultId =
-			testrayCaseResultWarningModelImpl._testrayCaseResultId;
-
-		testrayCaseResultWarningModelImpl._setOriginalTestrayCaseResultId =
-			false;
-
-		testrayCaseResultWarningModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

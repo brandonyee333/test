@@ -579,8 +579,6 @@ public class MeetupsRegistrationModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
-		_columnBitmask = -1L;
-
 		_modifiedDate = modifiedDate;
 	}
 
@@ -752,26 +750,20 @@ public class MeetupsRegistrationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MeetupsRegistrationModelImpl meetupsRegistrationModelImpl = this;
+		_originalUserId = _userId;
 
-		meetupsRegistrationModelImpl._originalUserId =
-			meetupsRegistrationModelImpl._userId;
+		_setOriginalUserId = false;
 
-		meetupsRegistrationModelImpl._setOriginalUserId = false;
+		_setModifiedDate = false;
+		_originalMeetupsEntryId = _meetupsEntryId;
 
-		meetupsRegistrationModelImpl._setModifiedDate = false;
+		_setOriginalMeetupsEntryId = false;
 
-		meetupsRegistrationModelImpl._originalMeetupsEntryId =
-			meetupsRegistrationModelImpl._meetupsEntryId;
+		_originalStatus = _status;
 
-		meetupsRegistrationModelImpl._setOriginalMeetupsEntryId = false;
+		_setOriginalStatus = false;
 
-		meetupsRegistrationModelImpl._originalStatus =
-			meetupsRegistrationModelImpl._status;
-
-		meetupsRegistrationModelImpl._setOriginalStatus = false;
-
-		meetupsRegistrationModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

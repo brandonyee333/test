@@ -45,7 +45,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -431,11 +430,10 @@ public class FolderPersistenceTest {
 			Long.valueOf(existingFolder.getAccountId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingFolder, "getOriginalAccountId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingFolder.getFullName(),
-				ReflectionTestUtil.invoke(
-					existingFolder, "getOriginalFullName", new Class<?>[0])));
+		Assert.assertEquals(
+			existingFolder.getFullName(),
+			ReflectionTestUtil.invoke(
+				existingFolder, "getOriginalFullName", new Class<?>[0]));
 	}
 
 	protected Folder addFolder() throws Exception {

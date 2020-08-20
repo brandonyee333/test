@@ -798,9 +798,7 @@ public class WatsonHistoryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonHistoryModelImpl watsonHistoryModelImpl = this;
-
-		watsonHistoryModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

@@ -45,7 +45,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -497,11 +496,10 @@ public class DocProjectPersistenceTest {
 		DocProject existingDocProject = _persistence.findByPrimaryKey(
 			newDocProject.getPrimaryKey());
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingDocProject.getUuid(),
-				ReflectionTestUtil.invoke(
-					existingDocProject, "getOriginalUuid", new Class<?>[0])));
+		Assert.assertEquals(
+			existingDocProject.getUuid(),
+			ReflectionTestUtil.invoke(
+				existingDocProject, "getOriginalUuid", new Class<?>[0]));
 		Assert.assertEquals(
 			Long.valueOf(existingDocProject.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
@@ -512,11 +510,10 @@ public class DocProjectPersistenceTest {
 			ReflectionTestUtil.<Long>invoke(
 				existingDocProject, "getOriginalGroupId", new Class<?>[0]));
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingDocProject.getName(),
-				ReflectionTestUtil.invoke(
-					existingDocProject, "getOriginalName", new Class<?>[0])));
+		Assert.assertEquals(
+			existingDocProject.getName(),
+			ReflectionTestUtil.invoke(
+				existingDocProject, "getOriginalName", new Class<?>[0]));
 	}
 
 	protected DocProject addDocProject() throws Exception {

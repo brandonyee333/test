@@ -544,29 +544,23 @@ public class AssetSharingEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetSharingEntryModelImpl assetSharingEntryModelImpl = this;
+		_originalClassNameId = _classNameId;
 
-		assetSharingEntryModelImpl._originalClassNameId =
-			assetSharingEntryModelImpl._classNameId;
+		_setOriginalClassNameId = false;
 
-		assetSharingEntryModelImpl._setOriginalClassNameId = false;
+		_originalClassPK = _classPK;
 
-		assetSharingEntryModelImpl._originalClassPK =
-			assetSharingEntryModelImpl._classPK;
+		_setOriginalClassPK = false;
 
-		assetSharingEntryModelImpl._setOriginalClassPK = false;
+		_originalSharedToClassNameId = _sharedToClassNameId;
 
-		assetSharingEntryModelImpl._originalSharedToClassNameId =
-			assetSharingEntryModelImpl._sharedToClassNameId;
+		_setOriginalSharedToClassNameId = false;
 
-		assetSharingEntryModelImpl._setOriginalSharedToClassNameId = false;
+		_originalSharedToClassPK = _sharedToClassPK;
 
-		assetSharingEntryModelImpl._originalSharedToClassPK =
-			assetSharingEntryModelImpl._sharedToClassPK;
+		_setOriginalSharedToClassPK = false;
 
-		assetSharingEntryModelImpl._setOriginalSharedToClassPK = false;
-
-		assetSharingEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -1141,9 +1141,7 @@ public class WatsonListTypeRelAuditModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonListTypeRelAuditModelImpl watsonListTypeRelAuditModelImpl = this;
-
-		watsonListTypeRelAuditModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

@@ -763,9 +763,7 @@ public class TestrayTaskModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayTaskModelImpl testrayTaskModelImpl = this;
-
-		testrayTaskModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

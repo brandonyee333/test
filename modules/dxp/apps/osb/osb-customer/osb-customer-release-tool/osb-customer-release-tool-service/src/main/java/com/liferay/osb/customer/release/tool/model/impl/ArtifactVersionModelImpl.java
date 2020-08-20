@@ -506,7 +506,7 @@ public class ArtifactVersionModelImpl
 
 	@Override
 	public void setGroup(String group) {
-		_columnBitmask = -1L;
+		_columnBitmask |= GROUP_COLUMN_BITMASK;
 
 		if (_originalGroup == null) {
 			_originalGroup = _group;
@@ -531,7 +531,7 @@ public class ArtifactVersionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -683,19 +683,15 @@ public class ArtifactVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ArtifactVersionModelImpl artifactVersionModelImpl = this;
+		_originalReleaseAssetCategoryId = _releaseAssetCategoryId;
 
-		artifactVersionModelImpl._originalReleaseAssetCategoryId =
-			artifactVersionModelImpl._releaseAssetCategoryId;
+		_setOriginalReleaseAssetCategoryId = false;
 
-		artifactVersionModelImpl._setOriginalReleaseAssetCategoryId = false;
+		_originalGroup = _group;
 
-		artifactVersionModelImpl._originalGroup =
-			artifactVersionModelImpl._group;
+		_originalName = _name;
 
-		artifactVersionModelImpl._originalName = artifactVersionModelImpl._name;
-
-		artifactVersionModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

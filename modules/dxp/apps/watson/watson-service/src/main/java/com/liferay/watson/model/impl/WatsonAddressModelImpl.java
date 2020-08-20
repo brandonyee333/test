@@ -1826,9 +1826,7 @@ public class WatsonAddressModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonAddressModelImpl watsonAddressModelImpl = this;
-
-		watsonAddressModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

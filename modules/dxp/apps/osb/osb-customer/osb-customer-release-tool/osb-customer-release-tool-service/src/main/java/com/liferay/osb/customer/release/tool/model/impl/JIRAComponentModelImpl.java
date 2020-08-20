@@ -387,8 +387,6 @@ public class JIRAComponentModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
 		_name = name;
 	}
 
@@ -517,19 +515,15 @@ public class JIRAComponentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		JIRAComponentModelImpl jiraComponentModelImpl = this;
+		_originalRemoteId = _remoteId;
 
-		jiraComponentModelImpl._originalRemoteId =
-			jiraComponentModelImpl._remoteId;
+		_setOriginalRemoteId = false;
 
-		jiraComponentModelImpl._setOriginalRemoteId = false;
+		_originalVisible = _visible;
 
-		jiraComponentModelImpl._originalVisible =
-			jiraComponentModelImpl._visible;
+		_setOriginalVisible = false;
 
-		jiraComponentModelImpl._setOriginalVisible = false;
-
-		jiraComponentModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

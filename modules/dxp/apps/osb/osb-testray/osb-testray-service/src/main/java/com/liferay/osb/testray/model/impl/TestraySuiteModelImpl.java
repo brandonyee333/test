@@ -777,9 +777,7 @@ public class TestraySuiteModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestraySuiteModelImpl testraySuiteModelImpl = this;
-
-		testraySuiteModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

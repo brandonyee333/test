@@ -733,8 +733,6 @@ public class TestrayRunModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
 		_name = name;
 	}
 
@@ -944,24 +942,18 @@ public class TestrayRunModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayRunModelImpl testrayRunModelImpl = this;
+		_setModifiedDate = false;
+		_originalTestrayBuildId = _testrayBuildId;
 
-		testrayRunModelImpl._setModifiedDate = false;
+		_setOriginalTestrayBuildId = false;
 
-		testrayRunModelImpl._originalTestrayBuildId =
-			testrayRunModelImpl._testrayBuildId;
+		_originalExternalReferencePK = _externalReferencePK;
 
-		testrayRunModelImpl._setOriginalTestrayBuildId = false;
+		_originalExternalReferenceType = _externalReferenceType;
 
-		testrayRunModelImpl._originalExternalReferencePK =
-			testrayRunModelImpl._externalReferencePK;
+		_setOriginalExternalReferenceType = false;
 
-		testrayRunModelImpl._originalExternalReferenceType =
-			testrayRunModelImpl._externalReferenceType;
-
-		testrayRunModelImpl._setOriginalExternalReferenceType = false;
-
-		testrayRunModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

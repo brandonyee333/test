@@ -45,7 +45,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -487,12 +486,11 @@ public class WSRPConsumerPortletPersistenceTest {
 			ReflectionTestUtil.<Long>invoke(
 				existingWSRPConsumerPortlet, "getOriginalWsrpConsumerId",
 				new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingWSRPConsumerPortlet.getPortletHandle(),
-				ReflectionTestUtil.invoke(
-					existingWSRPConsumerPortlet, "getOriginalPortletHandle",
-					new Class<?>[0])));
+		Assert.assertEquals(
+			existingWSRPConsumerPortlet.getPortletHandle(),
+			ReflectionTestUtil.invoke(
+				existingWSRPConsumerPortlet, "getOriginalPortletHandle",
+				new Class<?>[0]));
 	}
 
 	protected WSRPConsumerPortlet addWSRPConsumerPortlet() throws Exception {

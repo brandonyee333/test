@@ -647,33 +647,23 @@ public class LoopUserNotificationSubscriptionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopUserNotificationSubscriptionModelImpl
-			loopUserNotificationSubscriptionModelImpl = this;
+		_originalLoopPersonId = _loopPersonId;
 
-		loopUserNotificationSubscriptionModelImpl._originalLoopPersonId =
-			loopUserNotificationSubscriptionModelImpl._loopPersonId;
+		_setOriginalLoopPersonId = false;
 
-		loopUserNotificationSubscriptionModelImpl._setOriginalLoopPersonId =
-			false;
+		_originalClassNameId = _classNameId;
 
-		loopUserNotificationSubscriptionModelImpl._originalClassNameId =
-			loopUserNotificationSubscriptionModelImpl._classNameId;
+		_setOriginalClassNameId = false;
 
-		loopUserNotificationSubscriptionModelImpl._setOriginalClassNameId =
-			false;
+		_originalClassPK = _classPK;
 
-		loopUserNotificationSubscriptionModelImpl._originalClassPK =
-			loopUserNotificationSubscriptionModelImpl._classPK;
+		_setOriginalClassPK = false;
 
-		loopUserNotificationSubscriptionModelImpl._setOriginalClassPK = false;
+		_originalDeliveryType = _deliveryType;
 
-		loopUserNotificationSubscriptionModelImpl._originalDeliveryType =
-			loopUserNotificationSubscriptionModelImpl._deliveryType;
+		_setOriginalDeliveryType = false;
 
-		loopUserNotificationSubscriptionModelImpl._setOriginalDeliveryType =
-			false;
-
-		loopUserNotificationSubscriptionModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

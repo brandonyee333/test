@@ -628,18 +628,13 @@ public class ZendeskArticleAttachmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ZendeskArticleAttachmentModelImpl zendeskArticleAttachmentModelImpl =
-			this;
+		_originalZendeskArticleId = _zendeskArticleId;
 
-		zendeskArticleAttachmentModelImpl._originalZendeskArticleId =
-			zendeskArticleAttachmentModelImpl._zendeskArticleId;
+		_setOriginalZendeskArticleId = false;
 
-		zendeskArticleAttachmentModelImpl._setOriginalZendeskArticleId = false;
+		_originalFilePath = _filePath;
 
-		zendeskArticleAttachmentModelImpl._originalFilePath =
-			zendeskArticleAttachmentModelImpl._filePath;
-
-		zendeskArticleAttachmentModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -758,9 +758,7 @@ public class TestrayAssignmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayAssignmentModelImpl testrayAssignmentModelImpl = this;
-
-		testrayAssignmentModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

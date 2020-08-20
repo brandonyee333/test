@@ -342,6 +342,7 @@ public class TestrayArchivePersistenceImpl
 			}
 			else {
 				session.evict(testrayArchive);
+
 				session.saveOrUpdate(testrayArchive);
 			}
 

@@ -790,8 +790,6 @@ public class KaleoTaskInstanceTokenModelImpl
 
 	@Override
 	public void setKaleoTaskInstanceTokenId(long kaleoTaskInstanceTokenId) {
-		_columnBitmask = -1L;
-
 		_kaleoTaskInstanceTokenId = kaleoTaskInstanceTokenId;
 	}
 
@@ -1238,39 +1236,30 @@ public class KaleoTaskInstanceTokenModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoTaskInstanceTokenModelImpl kaleoTaskInstanceTokenModelImpl = this;
+		_originalCompanyId = _companyId;
 
-		kaleoTaskInstanceTokenModelImpl._originalCompanyId =
-			kaleoTaskInstanceTokenModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		kaleoTaskInstanceTokenModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalKaleoDefinitionId = _kaleoDefinitionId;
 
-		kaleoTaskInstanceTokenModelImpl._setModifiedDate = false;
+		_setOriginalKaleoDefinitionId = false;
 
-		kaleoTaskInstanceTokenModelImpl._originalKaleoDefinitionId =
-			kaleoTaskInstanceTokenModelImpl._kaleoDefinitionId;
+		_originalKaleoInstanceId = _kaleoInstanceId;
 
-		kaleoTaskInstanceTokenModelImpl._setOriginalKaleoDefinitionId = false;
+		_setOriginalKaleoInstanceId = false;
 
-		kaleoTaskInstanceTokenModelImpl._originalKaleoInstanceId =
-			kaleoTaskInstanceTokenModelImpl._kaleoInstanceId;
+		_originalKaleoTaskId = _kaleoTaskId;
 
-		kaleoTaskInstanceTokenModelImpl._setOriginalKaleoInstanceId = false;
+		_setOriginalKaleoTaskId = false;
 
-		kaleoTaskInstanceTokenModelImpl._originalKaleoTaskId =
-			kaleoTaskInstanceTokenModelImpl._kaleoTaskId;
+		_originalClassName = _className;
 
-		kaleoTaskInstanceTokenModelImpl._setOriginalKaleoTaskId = false;
+		_originalClassPK = _classPK;
 
-		kaleoTaskInstanceTokenModelImpl._originalClassName =
-			kaleoTaskInstanceTokenModelImpl._className;
+		_setOriginalClassPK = false;
 
-		kaleoTaskInstanceTokenModelImpl._originalClassPK =
-			kaleoTaskInstanceTokenModelImpl._classPK;
-
-		kaleoTaskInstanceTokenModelImpl._setOriginalClassPK = false;
-
-		kaleoTaskInstanceTokenModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

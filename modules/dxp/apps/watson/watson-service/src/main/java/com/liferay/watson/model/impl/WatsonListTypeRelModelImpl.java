@@ -1056,9 +1056,7 @@ public class WatsonListTypeRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonListTypeRelModelImpl watsonListTypeRelModelImpl = this;
-
-		watsonListTypeRelModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

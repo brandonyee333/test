@@ -830,16 +830,13 @@ public class LoopPersonModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopPersonModelImpl loopPersonModelImpl = this;
+		_setModifiedDate = false;
 
-		loopPersonModelImpl._setModifiedDate = false;
+		_originalPersonUserId = _personUserId;
 
-		loopPersonModelImpl._originalPersonUserId =
-			loopPersonModelImpl._personUserId;
+		_setOriginalPersonUserId = false;
 
-		loopPersonModelImpl._setOriginalPersonUserId = false;
-
-		loopPersonModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

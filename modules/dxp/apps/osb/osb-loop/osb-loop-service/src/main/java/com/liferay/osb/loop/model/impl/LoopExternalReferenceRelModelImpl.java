@@ -602,16 +602,11 @@ public class LoopExternalReferenceRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopExternalReferenceRelModelImpl loopExternalReferenceRelModelImpl =
-			this;
+		_originalExternalReferenceName = _externalReferenceName;
 
-		loopExternalReferenceRelModelImpl._originalExternalReferenceName =
-			loopExternalReferenceRelModelImpl._externalReferenceName;
+		_originalExternalReferencePK = _externalReferencePK;
 
-		loopExternalReferenceRelModelImpl._originalExternalReferencePK =
-			loopExternalReferenceRelModelImpl._externalReferencePK;
-
-		loopExternalReferenceRelModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

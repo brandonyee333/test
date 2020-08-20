@@ -1151,8 +1151,6 @@ public class ShoppingItemModelImpl
 
 	@Override
 	public void setItemId(long itemId) {
-		_columnBitmask = -1L;
-
 		_itemId = itemId;
 	}
 
@@ -1858,42 +1856,34 @@ public class ShoppingItemModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ShoppingItemModelImpl shoppingItemModelImpl = this;
+		_originalGroupId = _groupId;
 
-		shoppingItemModelImpl._originalGroupId = shoppingItemModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		shoppingItemModelImpl._setOriginalGroupId = false;
+		_originalCompanyId = _companyId;
 
-		shoppingItemModelImpl._originalCompanyId =
-			shoppingItemModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		shoppingItemModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalCategoryId = _categoryId;
 
-		shoppingItemModelImpl._setModifiedDate = false;
+		_setOriginalCategoryId = false;
 
-		shoppingItemModelImpl._originalCategoryId =
-			shoppingItemModelImpl._categoryId;
+		_originalSku = _sku;
 
-		shoppingItemModelImpl._setOriginalCategoryId = false;
+		_originalSmallImageId = _smallImageId;
 
-		shoppingItemModelImpl._originalSku = shoppingItemModelImpl._sku;
+		_setOriginalSmallImageId = false;
 
-		shoppingItemModelImpl._originalSmallImageId =
-			shoppingItemModelImpl._smallImageId;
+		_originalMediumImageId = _mediumImageId;
 
-		shoppingItemModelImpl._setOriginalSmallImageId = false;
+		_setOriginalMediumImageId = false;
 
-		shoppingItemModelImpl._originalMediumImageId =
-			shoppingItemModelImpl._mediumImageId;
+		_originalLargeImageId = _largeImageId;
 
-		shoppingItemModelImpl._setOriginalMediumImageId = false;
+		_setOriginalLargeImageId = false;
 
-		shoppingItemModelImpl._originalLargeImageId =
-			shoppingItemModelImpl._largeImageId;
-
-		shoppingItemModelImpl._setOriginalLargeImageId = false;
-
-		shoppingItemModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

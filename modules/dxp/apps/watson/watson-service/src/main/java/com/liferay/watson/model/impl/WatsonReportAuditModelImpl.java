@@ -1612,9 +1612,7 @@ public class WatsonReportAuditModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonReportAuditModelImpl watsonReportAuditModelImpl = this;
-
-		watsonReportAuditModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

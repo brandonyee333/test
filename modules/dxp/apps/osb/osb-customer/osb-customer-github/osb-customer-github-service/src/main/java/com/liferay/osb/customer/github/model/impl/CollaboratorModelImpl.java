@@ -541,8 +541,6 @@ public class CollaboratorModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
-
 		_createDate = createDate;
 	}
 
@@ -753,21 +751,17 @@ public class CollaboratorModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		CollaboratorModelImpl collaboratorModelImpl = this;
+		_originalAccountEntryId = _accountEntryId;
 
-		collaboratorModelImpl._originalAccountEntryId =
-			collaboratorModelImpl._accountEntryId;
+		_setOriginalAccountEntryId = false;
 
-		collaboratorModelImpl._setOriginalAccountEntryId = false;
+		_originalGitHubUserName = _gitHubUserName;
 
-		collaboratorModelImpl._originalGitHubUserName =
-			collaboratorModelImpl._gitHubUserName;
+		_originalStatus = _status;
 
-		collaboratorModelImpl._originalStatus = collaboratorModelImpl._status;
+		_setOriginalStatus = false;
 
-		collaboratorModelImpl._setOriginalStatus = false;
-
-		collaboratorModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -962,9 +962,7 @@ public class WatsonDocumentAuditModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonDocumentAuditModelImpl watsonDocumentAuditModelImpl = this;
-
-		watsonDocumentAuditModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

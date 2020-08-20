@@ -1027,9 +1027,7 @@ public class WatsonActivityModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonActivityModelImpl watsonActivityModelImpl = this;
-
-		watsonActivityModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

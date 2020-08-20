@@ -685,34 +685,27 @@ public class LoopStreamEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopStreamEntryModelImpl loopStreamEntryModelImpl = this;
+		_originalLoopPersonId = _loopPersonId;
 
-		loopStreamEntryModelImpl._originalLoopPersonId =
-			loopStreamEntryModelImpl._loopPersonId;
+		_setOriginalLoopPersonId = false;
 
-		loopStreamEntryModelImpl._setOriginalLoopPersonId = false;
+		_originalLoopStreamId = _loopStreamId;
 
-		loopStreamEntryModelImpl._originalLoopStreamId =
-			loopStreamEntryModelImpl._loopStreamId;
+		_setOriginalLoopStreamId = false;
 
-		loopStreamEntryModelImpl._setOriginalLoopStreamId = false;
+		_originalClassNameId = _classNameId;
 
-		loopStreamEntryModelImpl._originalClassNameId =
-			loopStreamEntryModelImpl._classNameId;
+		_setOriginalClassNameId = false;
 
-		loopStreamEntryModelImpl._setOriginalClassNameId = false;
+		_originalClassPK = _classPK;
 
-		loopStreamEntryModelImpl._originalClassPK =
-			loopStreamEntryModelImpl._classPK;
+		_setOriginalClassPK = false;
 
-		loopStreamEntryModelImpl._setOriginalClassPK = false;
+		_originalFollowing = _following;
 
-		loopStreamEntryModelImpl._originalFollowing =
-			loopStreamEntryModelImpl._following;
+		_setOriginalFollowing = false;
 
-		loopStreamEntryModelImpl._setOriginalFollowing = false;
-
-		loopStreamEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

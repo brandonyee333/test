@@ -902,9 +902,7 @@ public class WatsonDocumentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonDocumentModelImpl watsonDocumentModelImpl = this;
-
-		watsonDocumentModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

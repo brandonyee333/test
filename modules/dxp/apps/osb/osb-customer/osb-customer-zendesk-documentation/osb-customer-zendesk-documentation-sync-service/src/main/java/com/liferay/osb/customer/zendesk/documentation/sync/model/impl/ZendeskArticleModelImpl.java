@@ -999,25 +999,19 @@ public class ZendeskArticleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ZendeskArticleModelImpl zendeskArticleModelImpl = this;
+		_originalZendeskCategoryId = _zendeskCategoryId;
 
-		zendeskArticleModelImpl._originalZendeskCategoryId =
-			zendeskArticleModelImpl._zendeskCategoryId;
+		_setOriginalZendeskCategoryId = false;
 
-		zendeskArticleModelImpl._setOriginalZendeskCategoryId = false;
+		_originalZendeskSectionId = _zendeskSectionId;
 
-		zendeskArticleModelImpl._originalZendeskSectionId =
-			zendeskArticleModelImpl._zendeskSectionId;
+		_setOriginalZendeskSectionId = false;
 
-		zendeskArticleModelImpl._setOriginalZendeskSectionId = false;
+		_originalDocumentationKey = _documentationKey;
 
-		zendeskArticleModelImpl._originalDocumentationKey =
-			zendeskArticleModelImpl._documentationKey;
+		_originalDocumentationOriginalURL = _documentationOriginalURL;
 
-		zendeskArticleModelImpl._originalDocumentationOriginalURL =
-			zendeskArticleModelImpl._documentationOriginalURL;
-
-		zendeskArticleModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

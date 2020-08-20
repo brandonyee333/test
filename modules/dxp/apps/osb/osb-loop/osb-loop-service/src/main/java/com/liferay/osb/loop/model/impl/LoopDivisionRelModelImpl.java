@@ -528,24 +528,19 @@ public class LoopDivisionRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopDivisionRelModelImpl loopDivisionRelModelImpl = this;
+		_originalChildLoopDivisionId = _childLoopDivisionId;
 
-		loopDivisionRelModelImpl._originalChildLoopDivisionId =
-			loopDivisionRelModelImpl._childLoopDivisionId;
+		_setOriginalChildLoopDivisionId = false;
 
-		loopDivisionRelModelImpl._setOriginalChildLoopDivisionId = false;
+		_originalLoopPersonId = _loopPersonId;
 
-		loopDivisionRelModelImpl._originalLoopPersonId =
-			loopDivisionRelModelImpl._loopPersonId;
+		_setOriginalLoopPersonId = false;
 
-		loopDivisionRelModelImpl._setOriginalLoopPersonId = false;
+		_originalParentLoopDivisionId = _parentLoopDivisionId;
 
-		loopDivisionRelModelImpl._originalParentLoopDivisionId =
-			loopDivisionRelModelImpl._parentLoopDivisionId;
+		_setOriginalParentLoopDivisionId = false;
 
-		loopDivisionRelModelImpl._setOriginalParentLoopDivisionId = false;
-
-		loopDivisionRelModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

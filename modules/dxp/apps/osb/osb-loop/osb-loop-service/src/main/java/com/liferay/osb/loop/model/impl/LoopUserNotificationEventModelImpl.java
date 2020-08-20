@@ -882,30 +882,23 @@ public class LoopUserNotificationEventModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopUserNotificationEventModelImpl loopUserNotificationEventModelImpl =
-			this;
+		_originalGroupClassNameId = _groupClassNameId;
 
-		loopUserNotificationEventModelImpl._originalGroupClassNameId =
-			loopUserNotificationEventModelImpl._groupClassNameId;
+		_setOriginalGroupClassNameId = false;
 
-		loopUserNotificationEventModelImpl._setOriginalGroupClassNameId = false;
+		_originalGroupClassPK = _groupClassPK;
 
-		loopUserNotificationEventModelImpl._originalGroupClassPK =
-			loopUserNotificationEventModelImpl._groupClassPK;
+		_setOriginalGroupClassPK = false;
 
-		loopUserNotificationEventModelImpl._setOriginalGroupClassPK = false;
+		_originalGroupKey = _groupKey;
 
-		loopUserNotificationEventModelImpl._originalGroupKey =
-			loopUserNotificationEventModelImpl._groupKey;
+		_setOriginalGroupKey = false;
 
-		loopUserNotificationEventModelImpl._setOriginalGroupKey = false;
+		_originalType = _type;
 
-		loopUserNotificationEventModelImpl._originalType =
-			loopUserNotificationEventModelImpl._type;
+		_setOriginalType = false;
 
-		loopUserNotificationEventModelImpl._setOriginalType = false;
-
-		loopUserNotificationEventModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

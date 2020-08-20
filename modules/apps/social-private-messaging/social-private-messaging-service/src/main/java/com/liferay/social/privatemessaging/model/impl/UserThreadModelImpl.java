@@ -640,8 +640,6 @@ public class UserThreadModelImpl
 	public void setModifiedDate(Date modifiedDate) {
 		_setModifiedDate = true;
 
-		_columnBitmask = -1L;
-
 		_modifiedDate = modifiedDate;
 	}
 
@@ -844,28 +842,24 @@ public class UserThreadModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		UserThreadModelImpl userThreadModelImpl = this;
+		_originalUserId = _userId;
 
-		userThreadModelImpl._originalUserId = userThreadModelImpl._userId;
+		_setOriginalUserId = false;
 
-		userThreadModelImpl._setOriginalUserId = false;
+		_setModifiedDate = false;
+		_originalMbThreadId = _mbThreadId;
 
-		userThreadModelImpl._setModifiedDate = false;
+		_setOriginalMbThreadId = false;
 
-		userThreadModelImpl._originalMbThreadId =
-			userThreadModelImpl._mbThreadId;
+		_originalRead = _read;
 
-		userThreadModelImpl._setOriginalMbThreadId = false;
+		_setOriginalRead = false;
 
-		userThreadModelImpl._originalRead = userThreadModelImpl._read;
+		_originalDeleted = _deleted;
 
-		userThreadModelImpl._setOriginalRead = false;
+		_setOriginalDeleted = false;
 
-		userThreadModelImpl._originalDeleted = userThreadModelImpl._deleted;
-
-		userThreadModelImpl._setOriginalDeleted = false;
-
-		userThreadModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

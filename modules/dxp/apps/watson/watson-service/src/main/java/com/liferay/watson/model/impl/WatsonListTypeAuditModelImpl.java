@@ -972,9 +972,7 @@ public class WatsonListTypeAuditModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonListTypeAuditModelImpl watsonListTypeAuditModelImpl = this;
-
-		watsonListTypeAuditModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

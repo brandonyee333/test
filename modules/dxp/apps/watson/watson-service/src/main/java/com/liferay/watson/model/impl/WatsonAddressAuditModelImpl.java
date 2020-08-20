@@ -1895,9 +1895,7 @@ public class WatsonAddressAuditModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonAddressAuditModelImpl watsonAddressAuditModelImpl = this;
-
-		watsonAddressAuditModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

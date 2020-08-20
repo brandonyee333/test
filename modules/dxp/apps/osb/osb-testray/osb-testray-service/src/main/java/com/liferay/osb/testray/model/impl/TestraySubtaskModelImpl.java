@@ -937,9 +937,7 @@ public class TestraySubtaskModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestraySubtaskModelImpl testraySubtaskModelImpl = this;
-
-		testraySubtaskModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

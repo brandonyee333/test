@@ -781,16 +781,13 @@ public class TokenAuthEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TokenAuthEntryModelImpl tokenAuthEntryModelImpl = this;
+		_originalUserId = _userId;
 
-		tokenAuthEntryModelImpl._originalUserId =
-			tokenAuthEntryModelImpl._userId;
+		_setOriginalUserId = false;
 
-		tokenAuthEntryModelImpl._setOriginalUserId = false;
+		_originalToken = _token;
 
-		tokenAuthEntryModelImpl._originalToken = tokenAuthEntryModelImpl._token;
-
-		tokenAuthEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

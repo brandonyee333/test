@@ -920,7 +920,7 @@ public class KaleoDraftDefinitionModelImpl
 
 	@Override
 	public void setDraftVersion(int draftVersion) {
-		_columnBitmask = -1L;
+		_columnBitmask |= DRAFTVERSION_COLUMN_BITMASK;
 
 		if (!_setOriginalDraftVersion) {
 			_setOriginalDraftVersion = true;
@@ -1121,29 +1121,22 @@ public class KaleoDraftDefinitionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoDraftDefinitionModelImpl kaleoDraftDefinitionModelImpl = this;
+		_originalCompanyId = _companyId;
 
-		kaleoDraftDefinitionModelImpl._originalCompanyId =
-			kaleoDraftDefinitionModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		kaleoDraftDefinitionModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalName = _name;
 
-		kaleoDraftDefinitionModelImpl._setModifiedDate = false;
+		_originalVersion = _version;
 
-		kaleoDraftDefinitionModelImpl._originalName =
-			kaleoDraftDefinitionModelImpl._name;
+		_setOriginalVersion = false;
 
-		kaleoDraftDefinitionModelImpl._originalVersion =
-			kaleoDraftDefinitionModelImpl._version;
+		_originalDraftVersion = _draftVersion;
 
-		kaleoDraftDefinitionModelImpl._setOriginalVersion = false;
+		_setOriginalDraftVersion = false;
 
-		kaleoDraftDefinitionModelImpl._originalDraftVersion =
-			kaleoDraftDefinitionModelImpl._draftVersion;
-
-		kaleoDraftDefinitionModelImpl._setOriginalDraftVersion = false;
-
-		kaleoDraftDefinitionModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

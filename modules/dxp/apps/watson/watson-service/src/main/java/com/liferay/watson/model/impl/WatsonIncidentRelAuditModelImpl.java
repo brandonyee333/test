@@ -835,9 +835,7 @@ public class WatsonIncidentRelAuditModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonIncidentRelAuditModelImpl watsonIncidentRelAuditModelImpl = this;
-
-		watsonIncidentRelAuditModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

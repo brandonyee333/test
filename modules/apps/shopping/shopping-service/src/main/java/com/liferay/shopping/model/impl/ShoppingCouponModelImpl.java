@@ -836,8 +836,6 @@ public class ShoppingCouponModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
-
 		_createDate = createDate;
 	}
 
@@ -1138,18 +1136,14 @@ public class ShoppingCouponModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ShoppingCouponModelImpl shoppingCouponModelImpl = this;
+		_originalGroupId = _groupId;
 
-		shoppingCouponModelImpl._originalGroupId =
-			shoppingCouponModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		shoppingCouponModelImpl._setOriginalGroupId = false;
+		_setModifiedDate = false;
+		_originalCode = _code;
 
-		shoppingCouponModelImpl._setModifiedDate = false;
-
-		shoppingCouponModelImpl._originalCode = shoppingCouponModelImpl._code;
-
-		shoppingCouponModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

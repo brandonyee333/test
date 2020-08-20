@@ -911,7 +911,7 @@ public class TestrayBuildModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -1149,18 +1149,15 @@ public class TestrayBuildModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayBuildModelImpl testrayBuildModelImpl = this;
+		_setModifiedDate = false;
 
-		testrayBuildModelImpl._setModifiedDate = false;
+		_originalTestrayRoutineId = _testrayRoutineId;
 
-		testrayBuildModelImpl._originalTestrayRoutineId =
-			testrayBuildModelImpl._testrayRoutineId;
+		_setOriginalTestrayRoutineId = false;
 
-		testrayBuildModelImpl._setOriginalTestrayRoutineId = false;
+		_originalName = _name;
 
-		testrayBuildModelImpl._originalName = testrayBuildModelImpl._name;
-
-		testrayBuildModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -783,36 +783,27 @@ public class JournalArticleImageModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		JournalArticleImageModelImpl journalArticleImageModelImpl = this;
+		_originalGroupId = _groupId;
 
-		journalArticleImageModelImpl._originalGroupId =
-			journalArticleImageModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		journalArticleImageModelImpl._setOriginalGroupId = false;
+		_originalArticleId = _articleId;
 
-		journalArticleImageModelImpl._originalArticleId =
-			journalArticleImageModelImpl._articleId;
+		_originalVersion = _version;
 
-		journalArticleImageModelImpl._originalVersion =
-			journalArticleImageModelImpl._version;
+		_setOriginalVersion = false;
 
-		journalArticleImageModelImpl._setOriginalVersion = false;
+		_originalElInstanceId = _elInstanceId;
 
-		journalArticleImageModelImpl._originalElInstanceId =
-			journalArticleImageModelImpl._elInstanceId;
+		_originalElName = _elName;
 
-		journalArticleImageModelImpl._originalElName =
-			journalArticleImageModelImpl._elName;
+		_originalLanguageId = _languageId;
 
-		journalArticleImageModelImpl._originalLanguageId =
-			journalArticleImageModelImpl._languageId;
+		_originalTempImage = _tempImage;
 
-		journalArticleImageModelImpl._originalTempImage =
-			journalArticleImageModelImpl._tempImage;
+		_setOriginalTempImage = false;
 
-		journalArticleImageModelImpl._setOriginalTempImage = false;
-
-		journalArticleImageModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

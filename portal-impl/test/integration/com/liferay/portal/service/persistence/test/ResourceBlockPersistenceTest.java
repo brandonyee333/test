@@ -43,7 +43,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -447,18 +446,15 @@ public class ResourceBlockPersistenceTest {
 			Long.valueOf(existingResourceBlock.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingResourceBlock, "getOriginalGroupId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingResourceBlock.getName(),
-				ReflectionTestUtil.invoke(
-					existingResourceBlock, "getOriginalName",
-					new Class<?>[0])));
-		Assert.assertTrue(
-			Objects.equals(
-				existingResourceBlock.getPermissionsHash(),
-				ReflectionTestUtil.invoke(
-					existingResourceBlock, "getOriginalPermissionsHash",
-					new Class<?>[0])));
+		Assert.assertEquals(
+			existingResourceBlock.getName(),
+			ReflectionTestUtil.invoke(
+				existingResourceBlock, "getOriginalName", new Class<?>[0]));
+		Assert.assertEquals(
+			existingResourceBlock.getPermissionsHash(),
+			ReflectionTestUtil.invoke(
+				existingResourceBlock, "getOriginalPermissionsHash",
+				new Class<?>[0]));
 	}
 
 	protected ResourceBlock addResourceBlock() throws Exception {

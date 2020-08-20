@@ -629,7 +629,7 @@ public class TestrayProductVersionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -749,19 +749,14 @@ public class TestrayProductVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayProductVersionModelImpl testrayProductVersionModelImpl = this;
+		_setModifiedDate = false;
+		_originalTestrayProjectId = _testrayProjectId;
 
-		testrayProductVersionModelImpl._setModifiedDate = false;
+		_setOriginalTestrayProjectId = false;
 
-		testrayProductVersionModelImpl._originalTestrayProjectId =
-			testrayProductVersionModelImpl._testrayProjectId;
+		_originalName = _name;
 
-		testrayProductVersionModelImpl._setOriginalTestrayProjectId = false;
-
-		testrayProductVersionModelImpl._originalName =
-			testrayProductVersionModelImpl._name;
-
-		testrayProductVersionModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

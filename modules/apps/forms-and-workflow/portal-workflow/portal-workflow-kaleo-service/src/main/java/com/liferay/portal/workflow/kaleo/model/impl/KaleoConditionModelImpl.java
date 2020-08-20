@@ -551,8 +551,6 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setKaleoConditionId(long kaleoConditionId) {
-		_columnBitmask = -1L;
-
 		_kaleoConditionId = kaleoConditionId;
 	}
 
@@ -859,26 +857,20 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoConditionModelImpl kaleoConditionModelImpl = this;
+		_originalCompanyId = _companyId;
 
-		kaleoConditionModelImpl._originalCompanyId =
-			kaleoConditionModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		kaleoConditionModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalKaleoDefinitionId = _kaleoDefinitionId;
 
-		kaleoConditionModelImpl._setModifiedDate = false;
+		_setOriginalKaleoDefinitionId = false;
 
-		kaleoConditionModelImpl._originalKaleoDefinitionId =
-			kaleoConditionModelImpl._kaleoDefinitionId;
+		_originalKaleoNodeId = _kaleoNodeId;
 
-		kaleoConditionModelImpl._setOriginalKaleoDefinitionId = false;
+		_setOriginalKaleoNodeId = false;
 
-		kaleoConditionModelImpl._originalKaleoNodeId =
-			kaleoConditionModelImpl._kaleoNodeId;
-
-		kaleoConditionModelImpl._setOriginalKaleoNodeId = false;
-
-		kaleoConditionModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

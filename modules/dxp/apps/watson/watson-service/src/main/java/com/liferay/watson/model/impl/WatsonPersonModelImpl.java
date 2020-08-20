@@ -1748,9 +1748,7 @@ public class WatsonPersonModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonPersonModelImpl watsonPersonModelImpl = this;
-
-		watsonPersonModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

@@ -579,20 +579,15 @@ public class LoopParticipantAssignmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopParticipantAssignmentModelImpl loopParticipantAssignmentModelImpl =
-			this;
+		_originalLoopDivisionId = _loopDivisionId;
 
-		loopParticipantAssignmentModelImpl._originalLoopDivisionId =
-			loopParticipantAssignmentModelImpl._loopDivisionId;
+		_setOriginalLoopDivisionId = false;
 
-		loopParticipantAssignmentModelImpl._setOriginalLoopDivisionId = false;
+		_originalLoopPersonId = _loopPersonId;
 
-		loopParticipantAssignmentModelImpl._originalLoopPersonId =
-			loopParticipantAssignmentModelImpl._loopPersonId;
+		_setOriginalLoopPersonId = false;
 
-		loopParticipantAssignmentModelImpl._setOriginalLoopPersonId = false;
-
-		loopParticipantAssignmentModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

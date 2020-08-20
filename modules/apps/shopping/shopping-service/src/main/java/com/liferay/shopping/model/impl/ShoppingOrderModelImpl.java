@@ -1687,8 +1687,6 @@ public class ShoppingOrderModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
-
 		_createDate = createDate;
 	}
 
@@ -2561,28 +2559,22 @@ public class ShoppingOrderModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ShoppingOrderModelImpl shoppingOrderModelImpl = this;
+		_originalGroupId = _groupId;
 
-		shoppingOrderModelImpl._originalGroupId =
-			shoppingOrderModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		shoppingOrderModelImpl._setOriginalGroupId = false;
+		_originalUserId = _userId;
 
-		shoppingOrderModelImpl._originalUserId = shoppingOrderModelImpl._userId;
+		_setOriginalUserId = false;
 
-		shoppingOrderModelImpl._setOriginalUserId = false;
+		_setModifiedDate = false;
+		_originalNumber = _number;
 
-		shoppingOrderModelImpl._setModifiedDate = false;
+		_originalPpTxnId = _ppTxnId;
 
-		shoppingOrderModelImpl._originalNumber = shoppingOrderModelImpl._number;
+		_originalPpPaymentStatus = _ppPaymentStatus;
 
-		shoppingOrderModelImpl._originalPpTxnId =
-			shoppingOrderModelImpl._ppTxnId;
-
-		shoppingOrderModelImpl._originalPpPaymentStatus =
-			shoppingOrderModelImpl._ppPaymentStatus;
-
-		shoppingOrderModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

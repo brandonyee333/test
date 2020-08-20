@@ -685,8 +685,6 @@ public class WSRPConsumerModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
 		_name = name;
 	}
 
@@ -923,18 +921,15 @@ public class WSRPConsumerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WSRPConsumerModelImpl wsrpConsumerModelImpl = this;
+		_originalUuid = _uuid;
 
-		wsrpConsumerModelImpl._originalUuid = wsrpConsumerModelImpl._uuid;
+		_originalCompanyId = _companyId;
 
-		wsrpConsumerModelImpl._originalCompanyId =
-			wsrpConsumerModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		wsrpConsumerModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
 
-		wsrpConsumerModelImpl._setModifiedDate = false;
-
-		wsrpConsumerModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

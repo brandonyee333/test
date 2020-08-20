@@ -933,7 +933,7 @@ public class TestrayCaseModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -1159,18 +1159,15 @@ public class TestrayCaseModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayCaseModelImpl testrayCaseModelImpl = this;
+		_setModifiedDate = false;
 
-		testrayCaseModelImpl._setModifiedDate = false;
+		_originalTestrayProjectId = _testrayProjectId;
 
-		testrayCaseModelImpl._originalTestrayProjectId =
-			testrayCaseModelImpl._testrayProjectId;
+		_setOriginalTestrayProjectId = false;
 
-		testrayCaseModelImpl._setOriginalTestrayProjectId = false;
+		_originalName = _name;
 
-		testrayCaseModelImpl._originalName = testrayCaseModelImpl._name;
-
-		testrayCaseModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

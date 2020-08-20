@@ -463,11 +463,9 @@ public class JIRAProjectModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		JIRAProjectModelImpl jiraProjectModelImpl = this;
+		_originalKey = _key;
 
-		jiraProjectModelImpl._originalKey = jiraProjectModelImpl._key;
-
-		jiraProjectModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

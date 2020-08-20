@@ -718,9 +718,7 @@ public class TestrayRoutineModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayRoutineModelImpl testrayRoutineModelImpl = this;
-
-		testrayRoutineModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

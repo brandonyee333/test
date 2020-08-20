@@ -469,14 +469,11 @@ public class AssetEntrySetLikeModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetEntrySetLikeModelImpl assetEntrySetLikeModelImpl = this;
+		_originalAssetEntrySetId = _assetEntrySetId;
 
-		assetEntrySetLikeModelImpl._originalAssetEntrySetId =
-			assetEntrySetLikeModelImpl._assetEntrySetId;
+		_setOriginalAssetEntrySetId = false;
 
-		assetEntrySetLikeModelImpl._setOriginalAssetEntrySetId = false;
-
-		assetEntrySetLikeModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

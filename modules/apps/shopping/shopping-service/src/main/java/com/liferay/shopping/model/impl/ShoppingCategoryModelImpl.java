@@ -673,7 +673,7 @@ public class ShoppingCategoryModelImpl
 
 	@Override
 	public void setParentCategoryId(long parentCategoryId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= PARENTCATEGORYID_COLUMN_BITMASK;
 
 		if (!_setOriginalParentCategoryId) {
 			_setOriginalParentCategoryId = true;
@@ -701,7 +701,7 @@ public class ShoppingCategoryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -850,24 +850,18 @@ public class ShoppingCategoryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ShoppingCategoryModelImpl shoppingCategoryModelImpl = this;
+		_originalGroupId = _groupId;
 
-		shoppingCategoryModelImpl._originalGroupId =
-			shoppingCategoryModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		shoppingCategoryModelImpl._setOriginalGroupId = false;
+		_setModifiedDate = false;
+		_originalParentCategoryId = _parentCategoryId;
 
-		shoppingCategoryModelImpl._setModifiedDate = false;
+		_setOriginalParentCategoryId = false;
 
-		shoppingCategoryModelImpl._originalParentCategoryId =
-			shoppingCategoryModelImpl._parentCategoryId;
+		_originalName = _name;
 
-		shoppingCategoryModelImpl._setOriginalParentCategoryId = false;
-
-		shoppingCategoryModelImpl._originalName =
-			shoppingCategoryModelImpl._name;
-
-		shoppingCategoryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -419,7 +419,7 @@ public class ShoppingItemFieldModelImpl
 
 	@Override
 	public void setItemId(long itemId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= ITEMID_COLUMN_BITMASK;
 
 		if (!_setOriginalItemId) {
 			_setOriginalItemId = true;
@@ -446,8 +446,6 @@ public class ShoppingItemFieldModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
 		_name = name;
 	}
 
@@ -596,14 +594,11 @@ public class ShoppingItemFieldModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ShoppingItemFieldModelImpl shoppingItemFieldModelImpl = this;
+		_originalItemId = _itemId;
 
-		shoppingItemFieldModelImpl._originalItemId =
-			shoppingItemFieldModelImpl._itemId;
+		_setOriginalItemId = false;
 
-		shoppingItemFieldModelImpl._setOriginalItemId = false;
-
-		shoppingItemFieldModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

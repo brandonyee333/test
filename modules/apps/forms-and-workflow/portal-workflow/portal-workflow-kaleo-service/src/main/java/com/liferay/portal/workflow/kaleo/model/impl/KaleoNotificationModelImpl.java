@@ -688,8 +688,6 @@ public class KaleoNotificationModelImpl
 
 	@Override
 	public void setKaleoNotificationId(long kaleoNotificationId) {
-		_columnBitmask = -1L;
-
 		_kaleoNotificationId = kaleoNotificationId;
 	}
 
@@ -1100,32 +1098,24 @@ public class KaleoNotificationModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoNotificationModelImpl kaleoNotificationModelImpl = this;
+		_originalCompanyId = _companyId;
 
-		kaleoNotificationModelImpl._originalCompanyId =
-			kaleoNotificationModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		kaleoNotificationModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalKaleoClassName = _kaleoClassName;
 
-		kaleoNotificationModelImpl._setModifiedDate = false;
+		_originalKaleoClassPK = _kaleoClassPK;
 
-		kaleoNotificationModelImpl._originalKaleoClassName =
-			kaleoNotificationModelImpl._kaleoClassName;
+		_setOriginalKaleoClassPK = false;
 
-		kaleoNotificationModelImpl._originalKaleoClassPK =
-			kaleoNotificationModelImpl._kaleoClassPK;
+		_originalKaleoDefinitionId = _kaleoDefinitionId;
 
-		kaleoNotificationModelImpl._setOriginalKaleoClassPK = false;
+		_setOriginalKaleoDefinitionId = false;
 
-		kaleoNotificationModelImpl._originalKaleoDefinitionId =
-			kaleoNotificationModelImpl._kaleoDefinitionId;
+		_originalExecutionType = _executionType;
 
-		kaleoNotificationModelImpl._setOriginalKaleoDefinitionId = false;
-
-		kaleoNotificationModelImpl._originalExecutionType =
-			kaleoNotificationModelImpl._executionType;
-
-		kaleoNotificationModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

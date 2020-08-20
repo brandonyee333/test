@@ -701,9 +701,7 @@ public class LoopAuditEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopAuditEntryModelImpl loopAuditEntryModelImpl = this;
-
-		loopAuditEntryModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

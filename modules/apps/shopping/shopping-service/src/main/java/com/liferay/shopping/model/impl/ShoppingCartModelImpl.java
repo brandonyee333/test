@@ -793,19 +793,17 @@ public class ShoppingCartModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ShoppingCartModelImpl shoppingCartModelImpl = this;
+		_originalGroupId = _groupId;
 
-		shoppingCartModelImpl._originalGroupId = shoppingCartModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		shoppingCartModelImpl._setOriginalGroupId = false;
+		_originalUserId = _userId;
 
-		shoppingCartModelImpl._originalUserId = shoppingCartModelImpl._userId;
+		_setOriginalUserId = false;
 
-		shoppingCartModelImpl._setOriginalUserId = false;
+		_setModifiedDate = false;
 
-		shoppingCartModelImpl._setModifiedDate = false;
-
-		shoppingCartModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

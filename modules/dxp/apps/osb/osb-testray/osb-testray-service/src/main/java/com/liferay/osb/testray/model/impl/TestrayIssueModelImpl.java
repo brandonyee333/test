@@ -705,13 +705,10 @@ public class TestrayIssueModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayIssueModelImpl testrayIssueModelImpl = this;
+		_setModifiedDate = false;
+		_originalName = _name;
 
-		testrayIssueModelImpl._setModifiedDate = false;
-
-		testrayIssueModelImpl._originalName = testrayIssueModelImpl._name;
-
-		testrayIssueModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

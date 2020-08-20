@@ -533,8 +533,6 @@ public class WallEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
-
 		_createDate = createDate;
 	}
 
@@ -673,19 +671,17 @@ public class WallEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WallEntryModelImpl wallEntryModelImpl = this;
+		_originalGroupId = _groupId;
 
-		wallEntryModelImpl._originalGroupId = wallEntryModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		wallEntryModelImpl._setOriginalGroupId = false;
+		_originalUserId = _userId;
 
-		wallEntryModelImpl._originalUserId = wallEntryModelImpl._userId;
+		_setOriginalUserId = false;
 
-		wallEntryModelImpl._setOriginalUserId = false;
+		_setModifiedDate = false;
 
-		wallEntryModelImpl._setModifiedDate = false;
-
-		wallEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

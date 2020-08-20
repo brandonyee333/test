@@ -730,8 +730,6 @@ public class MeetupsEntryModelImpl
 
 	@Override
 	public void setStartDate(Date startDate) {
-		_columnBitmask = -1L;
-
 		_startDate = startDate;
 	}
 
@@ -895,20 +893,17 @@ public class MeetupsEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MeetupsEntryModelImpl meetupsEntryModelImpl = this;
+		_originalCompanyId = _companyId;
 
-		meetupsEntryModelImpl._originalCompanyId =
-			meetupsEntryModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		meetupsEntryModelImpl._setOriginalCompanyId = false;
+		_originalUserId = _userId;
 
-		meetupsEntryModelImpl._originalUserId = meetupsEntryModelImpl._userId;
+		_setOriginalUserId = false;
 
-		meetupsEntryModelImpl._setOriginalUserId = false;
+		_setModifiedDate = false;
 
-		meetupsEntryModelImpl._setModifiedDate = false;
-
-		meetupsEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

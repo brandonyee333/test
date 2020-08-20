@@ -802,17 +802,13 @@ public class ZendeskSectionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ZendeskSectionModelImpl zendeskSectionModelImpl = this;
+		_originalZendeskCategoryId = _zendeskCategoryId;
 
-		zendeskSectionModelImpl._originalZendeskCategoryId =
-			zendeskSectionModelImpl._zendeskCategoryId;
+		_setOriginalZendeskCategoryId = false;
 
-		zendeskSectionModelImpl._setOriginalZendeskCategoryId = false;
+		_originalDocumentationKey = _documentationKey;
 
-		zendeskSectionModelImpl._originalDocumentationKey =
-			zendeskSectionModelImpl._documentationKey;
-
-		zendeskSectionModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

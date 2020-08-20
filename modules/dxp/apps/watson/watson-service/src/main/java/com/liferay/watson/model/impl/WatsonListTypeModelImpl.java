@@ -917,9 +917,7 @@ public class WatsonListTypeModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonListTypeModelImpl watsonListTypeModelImpl = this;
-
-		watsonListTypeModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

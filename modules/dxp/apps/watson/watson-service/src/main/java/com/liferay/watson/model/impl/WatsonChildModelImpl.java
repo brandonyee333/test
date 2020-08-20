@@ -1156,9 +1156,7 @@ public class WatsonChildModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonChildModelImpl watsonChildModelImpl = this;
-
-		watsonChildModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

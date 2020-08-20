@@ -43,7 +43,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -483,12 +482,11 @@ public class ResourceTypePermissionPersistenceTest {
 			ReflectionTestUtil.<Long>invoke(
 				existingResourceTypePermission, "getOriginalGroupId",
 				new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingResourceTypePermission.getName(),
-				ReflectionTestUtil.invoke(
-					existingResourceTypePermission, "getOriginalName",
-					new Class<?>[0])));
+		Assert.assertEquals(
+			existingResourceTypePermission.getName(),
+			ReflectionTestUtil.invoke(
+				existingResourceTypePermission, "getOriginalName",
+				new Class<?>[0]));
 		Assert.assertEquals(
 			Long.valueOf(existingResourceTypePermission.getRoleId()),
 			ReflectionTestUtil.<Long>invoke(

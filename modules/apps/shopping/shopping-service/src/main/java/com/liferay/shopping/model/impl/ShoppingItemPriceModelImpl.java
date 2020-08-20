@@ -524,8 +524,6 @@ public class ShoppingItemPriceModelImpl
 
 	@Override
 	public void setItemPriceId(long itemPriceId) {
-		_columnBitmask = -1L;
-
 		_itemPriceId = itemPriceId;
 	}
 
@@ -546,7 +544,7 @@ public class ShoppingItemPriceModelImpl
 
 	@Override
 	public void setItemId(long itemId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= ITEMID_COLUMN_BITMASK;
 
 		if (!_setOriginalItemId) {
 			_setOriginalItemId = true;
@@ -779,14 +777,11 @@ public class ShoppingItemPriceModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ShoppingItemPriceModelImpl shoppingItemPriceModelImpl = this;
+		_originalItemId = _itemId;
 
-		shoppingItemPriceModelImpl._originalItemId =
-			shoppingItemPriceModelImpl._itemId;
+		_setOriginalItemId = false;
 
-		shoppingItemPriceModelImpl._setOriginalItemId = false;
-
-		shoppingItemPriceModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -605,8 +605,6 @@ public class WSRPProducerModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
 		_name = name;
 	}
 
@@ -760,22 +758,19 @@ public class WSRPProducerModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WSRPProducerModelImpl wsrpProducerModelImpl = this;
+		_originalUuid = _uuid;
 
-		wsrpProducerModelImpl._originalUuid = wsrpProducerModelImpl._uuid;
+		_originalGroupId = _groupId;
 
-		wsrpProducerModelImpl._originalGroupId = wsrpProducerModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		wsrpProducerModelImpl._setOriginalGroupId = false;
+		_originalCompanyId = _companyId;
 
-		wsrpProducerModelImpl._originalCompanyId =
-			wsrpProducerModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		wsrpProducerModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
 
-		wsrpProducerModelImpl._setModifiedDate = false;
-
-		wsrpProducerModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

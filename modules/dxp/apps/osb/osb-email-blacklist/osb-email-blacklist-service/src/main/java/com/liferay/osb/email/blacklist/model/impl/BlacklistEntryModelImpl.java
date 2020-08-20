@@ -463,12 +463,9 @@ public class BlacklistEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BlacklistEntryModelImpl blacklistEntryModelImpl = this;
+		_originalEmailAddress = _emailAddress;
 
-		blacklistEntryModelImpl._originalEmailAddress =
-			blacklistEntryModelImpl._emailAddress;
-
-		blacklistEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

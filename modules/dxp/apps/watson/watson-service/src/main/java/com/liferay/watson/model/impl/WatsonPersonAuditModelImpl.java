@@ -1811,9 +1811,7 @@ public class WatsonPersonAuditModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonPersonAuditModelImpl watsonPersonAuditModelImpl = this;
-
-		watsonPersonAuditModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

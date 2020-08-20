@@ -911,7 +911,7 @@ public class TestrayRequirementModelImpl
 
 	@Override
 	public void setKey(String key) {
-		_columnBitmask = -1L;
+		_columnBitmask |= KEY_COLUMN_BITMASK;
 
 		if (_originalKey == null) {
 			_originalKey = _key;
@@ -1191,19 +1191,15 @@ public class TestrayRequirementModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayRequirementModelImpl testrayRequirementModelImpl = this;
+		_setModifiedDate = false;
 
-		testrayRequirementModelImpl._setModifiedDate = false;
+		_originalTestrayProjectId = _testrayProjectId;
 
-		testrayRequirementModelImpl._originalTestrayProjectId =
-			testrayRequirementModelImpl._testrayProjectId;
+		_setOriginalTestrayProjectId = false;
 
-		testrayRequirementModelImpl._setOriginalTestrayProjectId = false;
+		_originalKey = _key;
 
-		testrayRequirementModelImpl._originalKey =
-			testrayRequirementModelImpl._key;
-
-		testrayRequirementModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

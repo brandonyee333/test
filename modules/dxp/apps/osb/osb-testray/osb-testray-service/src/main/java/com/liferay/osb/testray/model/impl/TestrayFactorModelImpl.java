@@ -906,26 +906,20 @@ public class TestrayFactorModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayFactorModelImpl testrayFactorModelImpl = this;
+		_setModifiedDate = false;
+		_originalClassNameId = _classNameId;
 
-		testrayFactorModelImpl._setModifiedDate = false;
+		_setOriginalClassNameId = false;
 
-		testrayFactorModelImpl._originalClassNameId =
-			testrayFactorModelImpl._classNameId;
+		_originalClassPK = _classPK;
 
-		testrayFactorModelImpl._setOriginalClassNameId = false;
+		_setOriginalClassPK = false;
 
-		testrayFactorModelImpl._originalClassPK =
-			testrayFactorModelImpl._classPK;
+		_originalTestrayFactorOptionId = _testrayFactorOptionId;
 
-		testrayFactorModelImpl._setOriginalClassPK = false;
+		_setOriginalTestrayFactorOptionId = false;
 
-		testrayFactorModelImpl._originalTestrayFactorOptionId =
-			testrayFactorModelImpl._testrayFactorOptionId;
-
-		testrayFactorModelImpl._setOriginalTestrayFactorOptionId = false;
-
-		testrayFactorModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

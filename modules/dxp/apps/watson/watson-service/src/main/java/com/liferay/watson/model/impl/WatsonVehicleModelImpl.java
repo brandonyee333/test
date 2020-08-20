@@ -1219,9 +1219,7 @@ public class WatsonVehicleModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonVehicleModelImpl watsonVehicleModelImpl = this;
-
-		watsonVehicleModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

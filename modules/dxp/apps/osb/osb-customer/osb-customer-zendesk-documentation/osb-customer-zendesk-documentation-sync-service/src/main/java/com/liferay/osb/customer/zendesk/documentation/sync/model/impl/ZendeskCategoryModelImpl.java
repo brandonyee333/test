@@ -592,12 +592,9 @@ public class ZendeskCategoryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ZendeskCategoryModelImpl zendeskCategoryModelImpl = this;
+		_originalDocumentationKey = _documentationKey;
 
-		zendeskCategoryModelImpl._originalDocumentationKey =
-			zendeskCategoryModelImpl._documentationKey;
-
-		zendeskCategoryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

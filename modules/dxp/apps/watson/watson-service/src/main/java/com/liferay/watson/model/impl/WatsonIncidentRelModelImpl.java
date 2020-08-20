@@ -760,9 +760,7 @@ public class WatsonIncidentRelModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonIncidentRelModelImpl watsonIncidentRelModelImpl = this;
-
-		watsonIncidentRelModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

@@ -963,7 +963,7 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setParentFolderId(long parentFolderId) {
-		_columnBitmask = -1L;
+		_columnBitmask |= PARENTFOLDERID_COLUMN_BITMASK;
 
 		if (!_setOriginalParentFolderId) {
 			_setOriginalParentFolderId = true;
@@ -1007,8 +1007,6 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
 		_name = name;
 	}
 
@@ -1498,43 +1496,34 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		BookmarksFolderModelImpl bookmarksFolderModelImpl = this;
+		_originalUuid = _uuid;
 
-		bookmarksFolderModelImpl._originalUuid = bookmarksFolderModelImpl._uuid;
+		_originalFolderId = _folderId;
 
-		bookmarksFolderModelImpl._originalFolderId =
-			bookmarksFolderModelImpl._folderId;
+		_setOriginalFolderId = false;
 
-		bookmarksFolderModelImpl._setOriginalFolderId = false;
+		_originalGroupId = _groupId;
 
-		bookmarksFolderModelImpl._originalGroupId =
-			bookmarksFolderModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		bookmarksFolderModelImpl._setOriginalGroupId = false;
+		_originalCompanyId = _companyId;
 
-		bookmarksFolderModelImpl._originalCompanyId =
-			bookmarksFolderModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		bookmarksFolderModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalResourceBlockId = _resourceBlockId;
 
-		bookmarksFolderModelImpl._setModifiedDate = false;
+		_setOriginalResourceBlockId = false;
 
-		bookmarksFolderModelImpl._originalResourceBlockId =
-			bookmarksFolderModelImpl._resourceBlockId;
+		_originalParentFolderId = _parentFolderId;
 
-		bookmarksFolderModelImpl._setOriginalResourceBlockId = false;
+		_setOriginalParentFolderId = false;
 
-		bookmarksFolderModelImpl._originalParentFolderId =
-			bookmarksFolderModelImpl._parentFolderId;
+		_originalStatus = _status;
 
-		bookmarksFolderModelImpl._setOriginalParentFolderId = false;
+		_setOriginalStatus = false;
 
-		bookmarksFolderModelImpl._originalStatus =
-			bookmarksFolderModelImpl._status;
-
-		bookmarksFolderModelImpl._setOriginalStatus = false;
-
-		bookmarksFolderModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

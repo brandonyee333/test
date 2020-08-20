@@ -824,19 +824,15 @@ public class TicketAttachmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TicketAttachmentModelImpl ticketAttachmentModelImpl = this;
+		_originalZendeskTicketId = _zendeskTicketId;
 
-		ticketAttachmentModelImpl._originalZendeskTicketId =
-			ticketAttachmentModelImpl._zendeskTicketId;
+		_setOriginalZendeskTicketId = false;
 
-		ticketAttachmentModelImpl._setOriginalZendeskTicketId = false;
+		_originalType = _type;
 
-		ticketAttachmentModelImpl._originalType =
-			ticketAttachmentModelImpl._type;
+		_setOriginalType = false;
 
-		ticketAttachmentModelImpl._setOriginalType = false;
-
-		ticketAttachmentModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

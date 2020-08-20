@@ -590,7 +590,7 @@ public class TestrayTeamModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -706,18 +706,14 @@ public class TestrayTeamModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayTeamModelImpl testrayTeamModelImpl = this;
+		_setModifiedDate = false;
+		_originalTestrayProjectId = _testrayProjectId;
 
-		testrayTeamModelImpl._setModifiedDate = false;
+		_setOriginalTestrayProjectId = false;
 
-		testrayTeamModelImpl._originalTestrayProjectId =
-			testrayTeamModelImpl._testrayProjectId;
+		_originalName = _name;
 
-		testrayTeamModelImpl._setOriginalTestrayProjectId = false;
-
-		testrayTeamModelImpl._originalName = testrayTeamModelImpl._name;
-
-		testrayTeamModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -825,7 +825,7 @@ public class DocProjectModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -1069,31 +1069,28 @@ public class DocProjectModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		DocProjectModelImpl docProjectModelImpl = this;
+		_originalUuid = _uuid;
 
-		docProjectModelImpl._originalUuid = docProjectModelImpl._uuid;
+		_originalGroupId = _groupId;
 
-		docProjectModelImpl._originalGroupId = docProjectModelImpl._groupId;
+		_setOriginalGroupId = false;
 
-		docProjectModelImpl._setOriginalGroupId = false;
+		_originalCompanyId = _companyId;
 
-		docProjectModelImpl._originalCompanyId = docProjectModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		docProjectModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalName = _name;
 
-		docProjectModelImpl._setModifiedDate = false;
+		_originalUnlisted = _unlisted;
 
-		docProjectModelImpl._originalName = docProjectModelImpl._name;
+		_setOriginalUnlisted = false;
 
-		docProjectModelImpl._originalUnlisted = docProjectModelImpl._unlisted;
+		_originalStatus = _status;
 
-		docProjectModelImpl._setOriginalUnlisted = false;
+		_setOriginalStatus = false;
 
-		docProjectModelImpl._originalStatus = docProjectModelImpl._status;
-
-		docProjectModelImpl._setOriginalStatus = false;
-
-		docProjectModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

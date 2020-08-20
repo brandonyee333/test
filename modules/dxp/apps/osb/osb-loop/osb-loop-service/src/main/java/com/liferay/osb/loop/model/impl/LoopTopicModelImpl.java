@@ -785,17 +785,15 @@ public class LoopTopicModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LoopTopicModelImpl loopTopicModelImpl = this;
+		_originalCompanyId = _companyId;
 
-		loopTopicModelImpl._originalCompanyId = loopTopicModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		loopTopicModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
 
-		loopTopicModelImpl._setModifiedDate = false;
+		_originalName = _name;
 
-		loopTopicModelImpl._originalName = loopTopicModelImpl._name;
-
-		loopTopicModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

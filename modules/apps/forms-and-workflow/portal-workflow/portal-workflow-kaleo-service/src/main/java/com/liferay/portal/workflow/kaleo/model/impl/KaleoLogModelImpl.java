@@ -968,8 +968,6 @@ public class KaleoLogModelImpl
 
 	@Override
 	public void setKaleoLogId(long kaleoLogId) {
-		_columnBitmask = -1L;
-
 		_kaleoLogId = kaleoLogId;
 	}
 
@@ -1570,45 +1568,36 @@ public class KaleoLogModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		KaleoLogModelImpl kaleoLogModelImpl = this;
+		_originalCompanyId = _companyId;
 
-		kaleoLogModelImpl._originalCompanyId = kaleoLogModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		kaleoLogModelImpl._setOriginalCompanyId = false;
+		_setModifiedDate = false;
+		_originalKaleoClassName = _kaleoClassName;
 
-		kaleoLogModelImpl._setModifiedDate = false;
+		_originalKaleoClassPK = _kaleoClassPK;
 
-		kaleoLogModelImpl._originalKaleoClassName =
-			kaleoLogModelImpl._kaleoClassName;
+		_setOriginalKaleoClassPK = false;
 
-		kaleoLogModelImpl._originalKaleoClassPK =
-			kaleoLogModelImpl._kaleoClassPK;
+		_originalKaleoDefinitionId = _kaleoDefinitionId;
 
-		kaleoLogModelImpl._setOriginalKaleoClassPK = false;
+		_setOriginalKaleoDefinitionId = false;
 
-		kaleoLogModelImpl._originalKaleoDefinitionId =
-			kaleoLogModelImpl._kaleoDefinitionId;
+		_originalKaleoInstanceId = _kaleoInstanceId;
 
-		kaleoLogModelImpl._setOriginalKaleoDefinitionId = false;
+		_setOriginalKaleoInstanceId = false;
 
-		kaleoLogModelImpl._originalKaleoInstanceId =
-			kaleoLogModelImpl._kaleoInstanceId;
+		_originalKaleoInstanceTokenId = _kaleoInstanceTokenId;
 
-		kaleoLogModelImpl._setOriginalKaleoInstanceId = false;
+		_setOriginalKaleoInstanceTokenId = false;
 
-		kaleoLogModelImpl._originalKaleoInstanceTokenId =
-			kaleoLogModelImpl._kaleoInstanceTokenId;
+		_originalKaleoTaskInstanceTokenId = _kaleoTaskInstanceTokenId;
 
-		kaleoLogModelImpl._setOriginalKaleoInstanceTokenId = false;
+		_setOriginalKaleoTaskInstanceTokenId = false;
 
-		kaleoLogModelImpl._originalKaleoTaskInstanceTokenId =
-			kaleoLogModelImpl._kaleoTaskInstanceTokenId;
+		_originalType = _type;
 
-		kaleoLogModelImpl._setOriginalKaleoTaskInstanceTokenId = false;
-
-		kaleoLogModelImpl._originalType = kaleoLogModelImpl._type;
-
-		kaleoLogModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

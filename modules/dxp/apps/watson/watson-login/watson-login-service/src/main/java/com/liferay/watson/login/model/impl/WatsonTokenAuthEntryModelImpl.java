@@ -880,19 +880,15 @@ public class WatsonTokenAuthEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonTokenAuthEntryModelImpl watsonTokenAuthEntryModelImpl = this;
+		_originalCompanyId = _companyId;
 
-		watsonTokenAuthEntryModelImpl._originalCompanyId =
-			watsonTokenAuthEntryModelImpl._companyId;
+		_setOriginalCompanyId = false;
 
-		watsonTokenAuthEntryModelImpl._setOriginalCompanyId = false;
+		_originalUserId = _userId;
 
-		watsonTokenAuthEntryModelImpl._originalUserId =
-			watsonTokenAuthEntryModelImpl._userId;
+		_setOriginalUserId = false;
 
-		watsonTokenAuthEntryModelImpl._setOriginalUserId = false;
-
-		watsonTokenAuthEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

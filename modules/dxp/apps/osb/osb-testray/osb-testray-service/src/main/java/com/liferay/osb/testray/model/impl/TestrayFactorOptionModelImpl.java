@@ -609,7 +609,7 @@ public class TestrayFactorOptionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -729,20 +729,14 @@ public class TestrayFactorOptionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayFactorOptionModelImpl testrayFactorOptionModelImpl = this;
+		_setModifiedDate = false;
+		_originalTestrayFactorCategoryId = _testrayFactorCategoryId;
 
-		testrayFactorOptionModelImpl._setModifiedDate = false;
+		_setOriginalTestrayFactorCategoryId = false;
 
-		testrayFactorOptionModelImpl._originalTestrayFactorCategoryId =
-			testrayFactorOptionModelImpl._testrayFactorCategoryId;
+		_originalName = _name;
 
-		testrayFactorOptionModelImpl._setOriginalTestrayFactorCategoryId =
-			false;
-
-		testrayFactorOptionModelImpl._originalName =
-			testrayFactorOptionModelImpl._name;
-
-		testrayFactorOptionModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -1207,9 +1207,7 @@ public class WatsonChildAuditModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonChildAuditModelImpl watsonChildAuditModelImpl = this;
-
-		watsonChildAuditModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

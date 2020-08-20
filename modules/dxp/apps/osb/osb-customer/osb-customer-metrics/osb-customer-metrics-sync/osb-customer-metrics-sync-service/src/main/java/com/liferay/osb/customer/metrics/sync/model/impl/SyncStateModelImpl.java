@@ -460,11 +460,9 @@ public class SyncStateModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SyncStateModelImpl syncStateModelImpl = this;
+		_originalModelName = _modelName;
 
-		syncStateModelImpl._originalModelName = syncStateModelImpl._modelName;
-
-		syncStateModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

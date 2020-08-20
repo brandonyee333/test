@@ -1554,9 +1554,7 @@ public class WatsonReportModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonReportModelImpl watsonReportModelImpl = this;
-
-		watsonReportModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

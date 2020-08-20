@@ -45,7 +45,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -416,12 +415,10 @@ public class FeedPersistenceTest {
 			Long.valueOf(existingFeed.getUserId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingFeed, "getOriginalUserId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingFeed.getTwitterScreenName(),
-				ReflectionTestUtil.invoke(
-					existingFeed, "getOriginalTwitterScreenName",
-					new Class<?>[0])));
+		Assert.assertEquals(
+			existingFeed.getTwitterScreenName(),
+			ReflectionTestUtil.invoke(
+				existingFeed, "getOriginalTwitterScreenName", new Class<?>[0]));
 	}
 
 	protected Feed addFeed() throws Exception {

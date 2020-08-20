@@ -45,7 +45,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -481,35 +480,31 @@ public class JournalArticleImagePersistenceTest {
 			ReflectionTestUtil.<Long>invoke(
 				existingJournalArticleImage, "getOriginalGroupId",
 				new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingJournalArticleImage.getArticleId(),
-				ReflectionTestUtil.invoke(
-					existingJournalArticleImage, "getOriginalArticleId",
-					new Class<?>[0])));
+		Assert.assertEquals(
+			existingJournalArticleImage.getArticleId(),
+			ReflectionTestUtil.invoke(
+				existingJournalArticleImage, "getOriginalArticleId",
+				new Class<?>[0]));
 		AssertUtils.assertEquals(
 			existingJournalArticleImage.getVersion(),
 			ReflectionTestUtil.<Double>invoke(
 				existingJournalArticleImage, "getOriginalVersion",
 				new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingJournalArticleImage.getElInstanceId(),
-				ReflectionTestUtil.invoke(
-					existingJournalArticleImage, "getOriginalElInstanceId",
-					new Class<?>[0])));
-		Assert.assertTrue(
-			Objects.equals(
-				existingJournalArticleImage.getElName(),
-				ReflectionTestUtil.invoke(
-					existingJournalArticleImage, "getOriginalElName",
-					new Class<?>[0])));
-		Assert.assertTrue(
-			Objects.equals(
-				existingJournalArticleImage.getLanguageId(),
-				ReflectionTestUtil.invoke(
-					existingJournalArticleImage, "getOriginalLanguageId",
-					new Class<?>[0])));
+		Assert.assertEquals(
+			existingJournalArticleImage.getElInstanceId(),
+			ReflectionTestUtil.invoke(
+				existingJournalArticleImage, "getOriginalElInstanceId",
+				new Class<?>[0]));
+		Assert.assertEquals(
+			existingJournalArticleImage.getElName(),
+			ReflectionTestUtil.invoke(
+				existingJournalArticleImage, "getOriginalElName",
+				new Class<?>[0]));
+		Assert.assertEquals(
+			existingJournalArticleImage.getLanguageId(),
+			ReflectionTestUtil.invoke(
+				existingJournalArticleImage, "getOriginalLanguageId",
+				new Class<?>[0]));
 	}
 
 	protected JournalArticleImage addJournalArticleImage() throws Exception {

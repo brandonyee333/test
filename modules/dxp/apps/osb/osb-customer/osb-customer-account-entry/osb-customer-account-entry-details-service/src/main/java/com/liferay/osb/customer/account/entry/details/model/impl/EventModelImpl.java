@@ -627,8 +627,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public void setOccurDate(Date occurDate) {
-		_columnBitmask = -1L;
-
 		_occurDate = occurDate;
 	}
 
@@ -937,34 +935,31 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public void resetOriginalValues() {
-		EventModelImpl eventModelImpl = this;
+		_originalAccountEntryId = _accountEntryId;
 
-		eventModelImpl._originalAccountEntryId = eventModelImpl._accountEntryId;
+		_setOriginalAccountEntryId = false;
 
-		eventModelImpl._setOriginalAccountEntryId = false;
+		_originalClassNameId = _classNameId;
 
-		eventModelImpl._originalClassNameId = eventModelImpl._classNameId;
+		_setOriginalClassNameId = false;
 
-		eventModelImpl._setOriginalClassNameId = false;
+		_originalClassPK = _classPK;
 
-		eventModelImpl._originalClassPK = eventModelImpl._classPK;
+		_setOriginalClassPK = false;
 
-		eventModelImpl._setOriginalClassPK = false;
+		_originalType = _type;
 
-		eventModelImpl._originalType = eventModelImpl._type;
+		_setOriginalType = false;
 
-		eventModelImpl._setOriginalType = false;
+		_originalTypeClassNameId = _typeClassNameId;
 
-		eventModelImpl._originalTypeClassNameId =
-			eventModelImpl._typeClassNameId;
+		_setOriginalTypeClassNameId = false;
 
-		eventModelImpl._setOriginalTypeClassNameId = false;
+		_originalTypeClassPK = _typeClassPK;
 
-		eventModelImpl._originalTypeClassPK = eventModelImpl._typeClassPK;
+		_setOriginalTypeClassPK = false;
 
-		eventModelImpl._setOriginalTypeClassPK = false;
-
-		eventModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

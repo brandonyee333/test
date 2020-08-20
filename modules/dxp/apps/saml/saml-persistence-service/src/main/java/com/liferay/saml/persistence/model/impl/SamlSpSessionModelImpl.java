@@ -989,23 +989,16 @@ public class SamlSpSessionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		SamlSpSessionModelImpl samlSpSessionModelImpl = this;
+		_setModifiedDate = false;
+		_originalSamlSpSessionKey = _samlSpSessionKey;
 
-		samlSpSessionModelImpl._setModifiedDate = false;
+		_originalJSessionId = _jSessionId;
 
-		samlSpSessionModelImpl._originalSamlSpSessionKey =
-			samlSpSessionModelImpl._samlSpSessionKey;
+		_originalNameIdValue = _nameIdValue;
 
-		samlSpSessionModelImpl._originalJSessionId =
-			samlSpSessionModelImpl._jSessionId;
+		_originalSessionIndex = _sessionIndex;
 
-		samlSpSessionModelImpl._originalNameIdValue =
-			samlSpSessionModelImpl._nameIdValue;
-
-		samlSpSessionModelImpl._originalSessionIndex =
-			samlSpSessionModelImpl._sessionIndex;
-
-		samlSpSessionModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

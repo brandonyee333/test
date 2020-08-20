@@ -702,18 +702,15 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 
 	@Override
 	public void resetOriginalValues() {
-		FeedModelImpl feedModelImpl = this;
+		_originalUserId = _userId;
 
-		feedModelImpl._originalUserId = feedModelImpl._userId;
+		_setOriginalUserId = false;
 
-		feedModelImpl._setOriginalUserId = false;
+		_setModifiedDate = false;
 
-		feedModelImpl._setModifiedDate = false;
+		_originalTwitterScreenName = _twitterScreenName;
 
-		feedModelImpl._originalTwitterScreenName =
-			feedModelImpl._twitterScreenName;
-
-		feedModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

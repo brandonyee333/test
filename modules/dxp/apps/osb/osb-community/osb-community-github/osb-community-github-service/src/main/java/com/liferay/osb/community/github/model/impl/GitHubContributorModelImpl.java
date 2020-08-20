@@ -670,8 +670,6 @@ public class GitHubContributorModelImpl
 
 	@Override
 	public void setContributions(int contributions) {
-		_columnBitmask = -1L;
-
 		_contributions = contributions;
 	}
 
@@ -806,16 +804,12 @@ public class GitHubContributorModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		GitHubContributorModelImpl gitHubContributorModelImpl = this;
+		_setModifiedDate = false;
+		_originalGitHubRepositoryId = _gitHubRepositoryId;
 
-		gitHubContributorModelImpl._setModifiedDate = false;
+		_setOriginalGitHubRepositoryId = false;
 
-		gitHubContributorModelImpl._originalGitHubRepositoryId =
-			gitHubContributorModelImpl._gitHubRepositoryId;
-
-		gitHubContributorModelImpl._setOriginalGitHubRepositoryId = false;
-
-		gitHubContributorModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

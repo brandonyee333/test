@@ -694,9 +694,7 @@ public class MeetupGroupModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		MeetupGroupModelImpl meetupGroupModelImpl = this;
-
-		meetupGroupModelImpl._setModifiedDate = false;
+		_setModifiedDate = false;
 	}
 
 	@Override

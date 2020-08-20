@@ -45,7 +45,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -462,11 +461,10 @@ public class WSRPProducerPersistenceTest {
 		WSRPProducer existingWSRPProducer = _persistence.findByPrimaryKey(
 			newWSRPProducer.getPrimaryKey());
 
-		Assert.assertTrue(
-			Objects.equals(
-				existingWSRPProducer.getUuid(),
-				ReflectionTestUtil.invoke(
-					existingWSRPProducer, "getOriginalUuid", new Class<?>[0])));
+		Assert.assertEquals(
+			existingWSRPProducer.getUuid(),
+			ReflectionTestUtil.invoke(
+				existingWSRPProducer, "getOriginalUuid", new Class<?>[0]));
 		Assert.assertEquals(
 			Long.valueOf(existingWSRPProducer.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(

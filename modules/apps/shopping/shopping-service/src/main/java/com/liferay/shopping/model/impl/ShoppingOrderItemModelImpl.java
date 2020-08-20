@@ -600,8 +600,6 @@ public class ShoppingOrderItemModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
 		_name = name;
 	}
 
@@ -617,8 +615,6 @@ public class ShoppingOrderItemModelImpl
 
 	@Override
 	public void setDescription(String description) {
-		_columnBitmask = -1L;
-
 		_description = description;
 	}
 
@@ -779,14 +775,11 @@ public class ShoppingOrderItemModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ShoppingOrderItemModelImpl shoppingOrderItemModelImpl = this;
+		_originalOrderId = _orderId;
 
-		shoppingOrderItemModelImpl._originalOrderId =
-			shoppingOrderItemModelImpl._orderId;
+		_setOriginalOrderId = false;
 
-		shoppingOrderItemModelImpl._setOriginalOrderId = false;
-
-		shoppingOrderItemModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

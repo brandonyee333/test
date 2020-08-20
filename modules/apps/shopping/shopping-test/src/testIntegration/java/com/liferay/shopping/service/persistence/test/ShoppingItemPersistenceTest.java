@@ -46,7 +46,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.junit.After;
@@ -602,11 +601,10 @@ public class ShoppingItemPersistenceTest {
 			Long.valueOf(existingShoppingItem.getCompanyId()),
 			ReflectionTestUtil.<Long>invoke(
 				existingShoppingItem, "getOriginalCompanyId", new Class<?>[0]));
-		Assert.assertTrue(
-			Objects.equals(
-				existingShoppingItem.getSku(),
-				ReflectionTestUtil.invoke(
-					existingShoppingItem, "getOriginalSku", new Class<?>[0])));
+		Assert.assertEquals(
+			existingShoppingItem.getSku(),
+			ReflectionTestUtil.invoke(
+				existingShoppingItem, "getOriginalSku", new Class<?>[0]));
 	}
 
 	protected ShoppingItem addShoppingItem() throws Exception {

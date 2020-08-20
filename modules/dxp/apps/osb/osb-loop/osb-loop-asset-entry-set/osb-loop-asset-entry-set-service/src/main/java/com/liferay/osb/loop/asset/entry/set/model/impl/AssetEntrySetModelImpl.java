@@ -890,7 +890,7 @@ public class AssetEntrySetModelImpl
 
 	@Override
 	public void setCreateTime(long createTime) {
-		_columnBitmask = -1L;
+		_columnBitmask |= CREATETIME_COLUMN_BITMASK;
 
 		if (!_setOriginalCreateTime) {
 			_setOriginalCreateTime = true;
@@ -1342,45 +1342,37 @@ public class AssetEntrySetModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AssetEntrySetModelImpl assetEntrySetModelImpl = this;
+		_originalCreateTime = _createTime;
 
-		assetEntrySetModelImpl._originalCreateTime =
-			assetEntrySetModelImpl._createTime;
+		_setOriginalCreateTime = false;
 
-		assetEntrySetModelImpl._setOriginalCreateTime = false;
+		_originalParentAssetEntrySetId = _parentAssetEntrySetId;
 
-		assetEntrySetModelImpl._originalParentAssetEntrySetId =
-			assetEntrySetModelImpl._parentAssetEntrySetId;
+		_setOriginalParentAssetEntrySetId = false;
 
-		assetEntrySetModelImpl._setOriginalParentAssetEntrySetId = false;
+		_originalClassNameId = _classNameId;
 
-		assetEntrySetModelImpl._originalClassNameId =
-			assetEntrySetModelImpl._classNameId;
+		_setOriginalClassNameId = false;
 
-		assetEntrySetModelImpl._setOriginalClassNameId = false;
+		_originalClassPK = _classPK;
 
-		assetEntrySetModelImpl._originalClassPK =
-			assetEntrySetModelImpl._classPK;
+		_setOriginalClassPK = false;
 
-		assetEntrySetModelImpl._setOriginalClassPK = false;
+		_originalCreatorClassNameId = _creatorClassNameId;
 
-		assetEntrySetModelImpl._originalCreatorClassNameId =
-			assetEntrySetModelImpl._creatorClassNameId;
+		_setOriginalCreatorClassNameId = false;
 
-		assetEntrySetModelImpl._setOriginalCreatorClassNameId = false;
+		_originalCreatorClassPK = _creatorClassPK;
 
-		assetEntrySetModelImpl._originalCreatorClassPK =
-			assetEntrySetModelImpl._creatorClassPK;
+		_setOriginalCreatorClassPK = false;
 
-		assetEntrySetModelImpl._setOriginalCreatorClassPK = false;
+		_originalTitle = _title;
 
-		assetEntrySetModelImpl._originalTitle = assetEntrySetModelImpl._title;
+		_originalType = _type;
 
-		assetEntrySetModelImpl._originalType = assetEntrySetModelImpl._type;
+		_setOriginalType = false;
 
-		assetEntrySetModelImpl._setOriginalType = false;
-
-		assetEntrySetModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

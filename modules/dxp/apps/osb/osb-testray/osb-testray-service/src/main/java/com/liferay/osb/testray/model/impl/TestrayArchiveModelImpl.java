@@ -763,11 +763,9 @@ public class TestrayArchiveModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		TestrayArchiveModelImpl testrayArchiveModelImpl = this;
+		_setModifiedDate = false;
 
-		testrayArchiveModelImpl._setModifiedDate = false;
-
-		testrayArchiveModelImpl._compressedDataBlobModel = null;
+		_compressedDataBlobModel = null;
 	}
 
 	@Override
