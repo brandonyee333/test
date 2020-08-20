@@ -115,11 +115,11 @@ public class OSBAsahBatchCuratorBot {
 
 		if (className.equals("UpdateDynamicMembershipsNanite")) {
 			_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.execute(
-				new OSBAsahTaskRunnable(false, osbAsahTaskJSONObject));
+				new NanitesRunnable(false, osbAsahTaskJSONObject));
 		}
 		else {
 			_threadPoolTaskExecutor.execute(
-				new OSBAsahTaskRunnable(force, osbAsahTaskJSONObject));
+				new NanitesRunnable(force, osbAsahTaskJSONObject));
 		}
 	}
 
@@ -386,8 +386,22 @@ public class OSBAsahBatchCuratorBot {
 
 	private class NanitesRunnable implements Runnable {
 
+		public NanitesRunnable(
+			boolean force, JSONObject osbAsahTaskJSONObject) {
+
+			_force = force;
+
+			_naniteClassNames = new String[] {
+				osbAsahTaskJSONObject.getString("className")
+			};
+
+			_osbAsahTaskJSONObject = osbAsahTaskJSONObject;
+		}
+
 		public NanitesRunnable(String... naniteClassNames) {
+			_force = false;
 			_naniteClassNames = naniteClassNames;
+			_osbAsahTaskJSONObject = null;
 		}
 
 		@Override
@@ -403,7 +417,15 @@ public class OSBAsahBatchCuratorBot {
 					continue;
 				}
 
-				if (nanite.isLogRunEnabled() && _checkNanite(naniteClassName)) {
+				if (((!_force && (nanite instanceof BaseActivitiesNanite)) ||
+					 nanite.isLogRunEnabled()) &&
+					_checkNanite(naniteClassName)) {
+
+					if (_osbAsahTaskJSONObject != null) {
+						_elasticsearchInvoker.delete(
+							"OSBAsahTasks", _osbAsahTaskJSONObject);
+					}
+
 					continue;
 				}
 
@@ -413,11 +435,23 @@ public class OSBAsahBatchCuratorBot {
 				}
 
 				try {
-					nanite.run(null);
+					JSONObject contextJSONObject = null;
+
+					if (_osbAsahTaskJSONObject != null) {
+						contextJSONObject =
+							_osbAsahTaskJSONObject.optJSONObject("context");
+					}
+
+					nanite.run(contextJSONObject);
 
 					if (nanite.isLogRunEnabled()) {
 						_runLogger.log(
 							null, nanite, "COMPLETED", _elasticsearchInvoker);
+					}
+
+					if (_osbAsahTaskJSONObject != null) {
+						_elasticsearchInvoker.delete(
+							"OSBAsahTasks", _osbAsahTaskJSONObject);
 					}
 				}
 				catch (Exception e) {
@@ -431,7 +465,9 @@ public class OSBAsahBatchCuratorBot {
 			}
 		}
 
+		private final boolean _force;
 		private final String[] _naniteClassNames;
+		private final JSONObject _osbAsahTaskJSONObject;
 
 	}
 
@@ -472,60 +508,6 @@ public class OSBAsahBatchCuratorBot {
 		}
 
 		private final Nanite _nanite;
-		private final JSONObject _osbAsahTaskJSONObject;
-
-	}
-
-	private class OSBAsahTaskRunnable implements Runnable {
-
-		public OSBAsahTaskRunnable(
-			boolean force, JSONObject osbAsahTaskJSONObject) {
-
-			_force = force;
-			_osbAsahTaskJSONObject = osbAsahTaskJSONObject;
-		}
-
-		@Override
-		public void run() {
-			Nanite nanite = _nanitesMap.get(
-				_osbAsahTaskJSONObject.getString("className"));
-
-			if (nanite == null) {
-				_log.error(
-					"Unable to get nanite with class name " +
-						_osbAsahTaskJSONObject.getString("className"));
-
-				return;
-			}
-
-			if (nanite instanceof BaseActivitiesNanite) {
-				if (!_force &&
-					_checkNanite(
-						_osbAsahTaskJSONObject.getString("className"))) {
-
-					return;
-				}
-
-				_runLogger.log(null, nanite, "STARTED", _elasticsearchInvoker);
-			}
-
-			try {
-				nanite.run(_osbAsahTaskJSONObject.optJSONObject("context"));
-
-				_runLogger.log(
-					null, nanite, "COMPLETED", _elasticsearchInvoker);
-
-				_elasticsearchInvoker.delete(
-					"OSBAsahTasks", _osbAsahTaskJSONObject);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-
-				_runLogger.log(null, nanite, "FAILED", _elasticsearchInvoker);
-			}
-		}
-
-		private final boolean _force;
 		private final JSONObject _osbAsahTaskJSONObject;
 
 	}
