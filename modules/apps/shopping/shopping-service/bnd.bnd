@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Shopping Service
 Bundle-SymbolicName: com.liferay.shopping.service
-Bundle-Version: 2.2.7
+Bundle-Version: 2.2.8
 Export-Package:\
 	com.liferay.shopping.model.impl,\
 	com.liferay.shopping.service.impl,\
