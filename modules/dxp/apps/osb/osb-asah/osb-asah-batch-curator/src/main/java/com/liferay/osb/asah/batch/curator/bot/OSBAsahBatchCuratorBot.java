@@ -439,17 +439,20 @@ public class OSBAsahBatchCuratorBot {
 				long start = System.currentTimeMillis();
 
 				try {
-					StringBuilder sb = new StringBuilder();
+					if (_log.isInfoEnabled() &&
+						!naniteClassName.equals(
+							"UpdateDynamicMembershipsNanite")) {
 
-					sb.append("Running ");
-					sb.append(naniteClassName);
+						StringBuilder sb = new StringBuilder();
 
-					if (_contextJSONObject != null) {
-						sb.append(" with context ");
-						sb.append(_contextJSONObject);
-					}
+						sb.append("Running ");
+						sb.append(naniteClassName);
 
-					if (_log.isInfoEnabled()) {
+						if (_contextJSONObject != null) {
+							sb.append(" with context ");
+							sb.append(_contextJSONObject);
+						}
+
 						_log.info(sb.toString());
 					}
 
@@ -474,21 +477,24 @@ public class OSBAsahBatchCuratorBot {
 					}
 				}
 				finally {
-					StringBuilder sb = new StringBuilder();
+					if (_log.isInfoEnabled() &&
+						!naniteClassName.equals(
+							"UpdateDynamicMembershipsNanite")) {
 
-					sb.append("Completed ");
-					sb.append(naniteClassName);
+						StringBuilder sb = new StringBuilder();
 
-					if (_contextJSONObject != null) {
-						sb.append(" with context ");
-						sb.append(_contextJSONObject);
-					}
+						sb.append("Completed ");
+						sb.append(naniteClassName);
 
-					sb.append("in ");
-					sb.append(System.currentTimeMillis() - start);
-					sb.append("ms");
+						if (_contextJSONObject != null) {
+							sb.append(" with context ");
+							sb.append(_contextJSONObject);
+						}
 
-					if (_log.isInfoEnabled()) {
+						sb.append(" in ");
+						sb.append(System.currentTimeMillis() - start);
+						sb.append("ms");
+
 						_log.info(sb.toString());
 					}
 				}
