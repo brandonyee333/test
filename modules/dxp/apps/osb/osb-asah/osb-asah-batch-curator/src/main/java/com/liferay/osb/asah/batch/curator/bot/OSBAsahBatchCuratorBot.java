@@ -389,19 +389,21 @@ public class OSBAsahBatchCuratorBot {
 		public NanitesRunnable(
 			boolean force, JSONObject osbAsahTaskJSONObject) {
 
+			_contextJSONObject = osbAsahTaskJSONObject.optJSONObject("context");
 			_force = force;
 
 			_naniteClassNames = new String[] {
 				osbAsahTaskJSONObject.getString("className")
 			};
 
-			_osbAsahTaskJSONObject = osbAsahTaskJSONObject;
+			_osbAsahTaskId = osbAsahTaskJSONObject.optString("id");
 		}
 
 		public NanitesRunnable(String... naniteClassNames) {
+			_contextJSONObject = null;
 			_force = false;
 			_naniteClassNames = naniteClassNames;
-			_osbAsahTaskJSONObject = null;
+			_osbAsahTaskId = null;
 		}
 
 		@Override
@@ -421,9 +423,9 @@ public class OSBAsahBatchCuratorBot {
 					 nanite.isLogRunEnabled()) &&
 					_checkNanite(naniteClassName)) {
 
-					if (_osbAsahTaskJSONObject != null) {
+					if (_osbAsahTaskId != null) {
 						_elasticsearchInvoker.delete(
-							"OSBAsahTasks", _osbAsahTaskJSONObject);
+							"OSBAsahTasks", _osbAsahTaskId);
 					}
 
 					continue;
@@ -434,24 +436,33 @@ public class OSBAsahBatchCuratorBot {
 						null, nanite, "STARTED", _elasticsearchInvoker);
 				}
 
-				try {
-					JSONObject contextJSONObject = null;
+				long start = System.currentTimeMillis();
 
-					if (_osbAsahTaskJSONObject != null) {
-						contextJSONObject =
-							_osbAsahTaskJSONObject.optJSONObject("context");
+				try {
+					StringBuilder sb = new StringBuilder();
+
+					sb.append("Running ");
+					sb.append(naniteClassName);
+
+					if (_contextJSONObject != null) {
+						sb.append(" with context ");
+						sb.append(_contextJSONObject);
 					}
 
-					nanite.run(contextJSONObject);
+					if (_log.isInfoEnabled()) {
+						_log.info(sb.toString());
+					}
+
+					nanite.run(_contextJSONObject);
 
 					if (nanite.isLogRunEnabled()) {
 						_runLogger.log(
 							null, nanite, "COMPLETED", _elasticsearchInvoker);
 					}
 
-					if (_osbAsahTaskJSONObject != null) {
+					if (_osbAsahTaskId != null) {
 						_elasticsearchInvoker.delete(
-							"OSBAsahTasks", _osbAsahTaskJSONObject);
+							"OSBAsahTasks", _osbAsahTaskId);
 					}
 				}
 				catch (Exception e) {
@@ -462,12 +473,32 @@ public class OSBAsahBatchCuratorBot {
 							null, nanite, "FAILED", _elasticsearchInvoker);
 					}
 				}
+				finally {
+					StringBuilder sb = new StringBuilder();
+
+					sb.append("Completed ");
+					sb.append(naniteClassName);
+
+					if (_contextJSONObject != null) {
+						sb.append(" with context ");
+						sb.append(_contextJSONObject);
+					}
+
+					sb.append("in ");
+					sb.append(System.currentTimeMillis() - start);
+					sb.append("ms");
+
+					if (_log.isInfoEnabled()) {
+						_log.info(sb.toString());
+					}
+				}
 			}
 		}
 
+		private final JSONObject _contextJSONObject;
 		private final boolean _force;
 		private final String[] _naniteClassNames;
-		private final JSONObject _osbAsahTaskJSONObject;
+		private final String _osbAsahTaskId;
 
 	}
 
