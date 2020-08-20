@@ -1,5 +1,5 @@
 Bundle-Name: Liferay XSL Content Web
 Bundle-SymbolicName: com.liferay.xsl.content.web
-Bundle-Version: 2.0.26
+Bundle-Version: 2.0.27
 Liferay-Releng-Module-Group-Title: Publication Tools
 Web-ContextPath: /xsl-content-web
