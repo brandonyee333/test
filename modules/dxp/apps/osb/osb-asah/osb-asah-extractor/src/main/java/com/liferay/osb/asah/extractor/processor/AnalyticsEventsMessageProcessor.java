@@ -305,6 +305,10 @@ public class AnalyticsEventsMessageProcessor {
 		List<String> individualSegmentIds = JSONUtil.toStringList(
 			individualJSONObject.getJSONArray("individualSegmentIds"));
 
+		if (individualSegmentIds.isEmpty()) {
+			return Collections.emptySet();
+		}
+
 		JSONArray individualSegmentsJSONArray =
 			_faroInfoElasticsearchInvoker.get(
 				"individual-segments",
