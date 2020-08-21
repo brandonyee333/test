@@ -24,6 +24,7 @@ import io.prometheus.client.Gauge;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 
 import org.json.JSONObject;
@@ -47,16 +48,62 @@ public abstract class BaseNanite implements Nanite {
 	}
 
 	@Override
-	public void log(String message) {
+	public void logCompleted(JSONObject contextJSONObject, long duration) {
 		if (isLogRunEnabled()) {
-			_runLogger.log(null, this, message, faroInfoElasticsearchInvoker);
+			_runLogger.log(
+				null, this, "COMPLETED", faroInfoElasticsearchInvoker);
 		}
 		else {
-			Log log = getLog();
+			StringBuilder sb = new StringBuilder();
 
-			if (log.isInfoEnabled()) {
-				log.info(message);
+			sb.append("Completed ");
+
+			Class<?> clazz = getClass();
+
+			sb.append(clazz.getSimpleName());
+
+			if (contextJSONObject != null) {
+				sb.append(" with context ");
+				sb.append(contextJSONObject);
 			}
+
+			sb.append(" in ");
+			sb.append(duration);
+			sb.append("ms");
+
+			_log(sb.toString());
+		}
+	}
+
+	@Override
+	public void logFailed(
+		JSONObject contextJSONObject, long duration, Throwable throwable) {
+
+		if (isLogRunEnabled()) {
+			_runLogger.log(null, this, "FAILED", faroInfoElasticsearchInvoker);
+		}
+	}
+
+	@Override
+	public void logStart(JSONObject contextJSONObject) {
+		if (isLogRunEnabled()) {
+			_runLogger.log(null, this, "STARTED", faroInfoElasticsearchInvoker);
+		}
+		else {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("Running ");
+
+			Class<?> clazz = getClass();
+
+			sb.append(clazz.getSimpleName());
+
+			if (contextJSONObject != null) {
+				sb.append(" with context ");
+				sb.append(contextJSONObject);
+			}
+
+			_log(sb.toString());
 		}
 	}
 
@@ -101,6 +148,14 @@ public abstract class BaseNanite implements Nanite {
 	protected ElasticsearchInvokerFactory elasticsearchInvokerFactory;
 
 	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
+
+	private void _log(String message) {
+		Log log = getLog();
+
+		if (log.isInfoEnabled()) {
+			log.info(message);
+		}
+	}
 
 	private static final Counter _processedCounter = PrometheusUtil.counter(
 		"faro_curator_processed_count", "The number of objects curated",

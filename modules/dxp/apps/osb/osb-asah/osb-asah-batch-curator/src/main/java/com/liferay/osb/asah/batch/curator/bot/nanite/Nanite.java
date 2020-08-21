@@ -23,7 +23,12 @@ public interface Nanite {
 
 	public boolean isLogRunEnabled();
 
-	public void log(String message);
+	public void logCompleted(JSONObject contextJSONObject, long duration);
+
+	public void logFailed(
+		JSONObject contextJSONObject, long duration, Throwable throwable);
+
+	public void logStart(JSONObject contextJSONObject);
 
 	public void run(JSONObject contextJSONObject) throws Exception;
 
