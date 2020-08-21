@@ -40,7 +40,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -439,14 +438,15 @@ public class OSBAsahBatchCuratorBot {
 					nanite.run(_contextJSONObject);
 
 					nanite.logCompleted(
-						_contextJSONObject, System.currentTimeMillis() - start);
+						_contextJSONObject, System.currentTimeMillis() - start,
+						null);
 				}
 				catch (Exception e) {
 					_log.error(e, e);
 
 					nanite.logFailed(
 						_contextJSONObject, System.currentTimeMillis() - start,
-						e);
+						null, e);
 				}
 				finally {
 					if (_osbAsahTaskId != null) {
@@ -475,29 +475,27 @@ public class OSBAsahBatchCuratorBot {
 
 		@Override
 		public void run() {
-			try {
-				_nanite.run(_osbAsahTaskJSONObject.optJSONObject("context"));
+			long start = System.currentTimeMillis();
 
-				_logCompleted();
+			String osbAsahTaskId = _osbAsahTaskJSONObject.getString("id");
+
+			try {
+				JSONObject contextJSONObject =
+					_osbAsahTaskJSONObject.optJSONObject("context");
+
+				_nanite.run(contextJSONObject);
+
+				_nanite.logCompleted(
+					contextJSONObject, System.currentTimeMillis() - start,
+					osbAsahTaskId);
 			}
 			catch (Exception e) {
 				_log.error(e, e);
 
-				_logFailed(e);
+				_nanite.logFailed(
+					_osbAsahTaskJSONObject.optJSONObject("context"),
+					System.currentTimeMillis() - start, osbAsahTaskId, e);
 			}
-		}
-
-		private void _logCompleted() {
-			_runLogger.log(
-				null, _nanite, false, "COMPLETED", _elasticsearchInvoker,
-				"OSBAsahTaskId", _osbAsahTaskJSONObject.getString("id"));
-		}
-
-		private void _logFailed(Throwable throwable) {
-			_runLogger.log(
-				null, _nanite, false, "FAILED", _elasticsearchInvoker,
-				"OSBAsahTaskId", _osbAsahTaskJSONObject.getString("id"),
-				"failureReason", ExceptionUtils.getStackTrace(throwable));
 		}
 
 		private final Nanite _nanite;
