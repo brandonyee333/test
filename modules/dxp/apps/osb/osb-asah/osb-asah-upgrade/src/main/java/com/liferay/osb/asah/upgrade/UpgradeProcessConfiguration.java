@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v2_7_3.ActivitiesUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_8_0.PageReferrersUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_0.RunLogCleanupUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +34,18 @@ public class UpgradeProcessConfiguration {
 
 		upgradeProcess.addUpgradeSteps(
 			"2.7.1", "2.7.3", _activitiesUpgradeStep);
-
 		upgradeProcess.addUpgradeSteps(
-			"2.7.3", "2.8.0", _runLogCleanupUpgradeStep);
+			"2.7.3", "2.8.0", _pageReferrersUpgradeStep,
+			_runLogCleanupUpgradeStep);
 
 		return upgradeProcess;
 	}
 
 	@Autowired
 	private ActivitiesUpgradeStep _activitiesUpgradeStep;
+
+	@Autowired
+	private PageReferrersUpgradeStep _pageReferrersUpgradeStep;
 
 	@Autowired
 	private RunLogCleanupUpgradeStep _runLogCleanupUpgradeStep;
