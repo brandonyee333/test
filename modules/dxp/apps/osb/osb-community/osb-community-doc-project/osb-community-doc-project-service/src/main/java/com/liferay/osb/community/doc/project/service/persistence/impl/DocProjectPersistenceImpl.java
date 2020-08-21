@@ -2848,7 +2848,7 @@ public class DocProjectPersistenceImpl
 		try {
 			session = openSession();
 
-			if (docProject.isNew()) {
+			if (isNew) {
 				session.save(docProject);
 
 				docProject.setNew(false);
@@ -3509,6 +3509,7 @@ public class DocProjectPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(DocProjectImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

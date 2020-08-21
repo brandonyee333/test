@@ -308,7 +308,7 @@ public class LoopUserNotificationRecordPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopUserNotificationRecord.isNew()) {
+			if (isNew) {
 				session.save(loopUserNotificationRecord);
 
 				loopUserNotificationRecord.setNew(false);
@@ -785,6 +785,7 @@ public class LoopUserNotificationRecordPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopUserNotificationRecordImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

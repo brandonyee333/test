@@ -879,7 +879,7 @@ public class TestrayCaseResultWarningPersistenceImpl
 		try {
 			session = openSession();
 
-			if (testrayCaseResultWarning.isNew()) {
+			if (isNew) {
 				session.save(testrayCaseResultWarning);
 
 				testrayCaseResultWarning.setNew(false);
@@ -1413,6 +1413,7 @@ public class TestrayCaseResultWarningPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(TestrayCaseResultWarningImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -2504,7 +2504,7 @@ public class ShoppingCategoryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (shoppingCategory.isNew()) {
+			if (isNew) {
 				session.save(shoppingCategory);
 
 				shoppingCategory.setNew(false);
@@ -3092,6 +3092,7 @@ public class ShoppingCategoryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(ShoppingCategoryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

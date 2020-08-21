@@ -1682,7 +1682,7 @@ public class TicketAttachmentPersistenceImpl
 		try {
 			session = openSession();
 
-			if (ticketAttachment.isNew()) {
+			if (isNew) {
 				session.save(ticketAttachment);
 
 				ticketAttachment.setNew(false);
@@ -2265,6 +2265,7 @@ public class TicketAttachmentPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(TicketAttachmentImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

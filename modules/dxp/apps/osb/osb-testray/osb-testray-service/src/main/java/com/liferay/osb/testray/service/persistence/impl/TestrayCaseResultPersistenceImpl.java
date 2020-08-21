@@ -3814,7 +3814,7 @@ public class TestrayCaseResultPersistenceImpl
 		try {
 			session = openSession();
 
-			if (testrayCaseResult.isNew()) {
+			if (isNew) {
 				session.save(testrayCaseResult);
 
 				testrayCaseResult.setNew(false);
@@ -5296,6 +5296,7 @@ public class TestrayCaseResultPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(TestrayCaseResultImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -5326,7 +5327,7 @@ public class TestrayCaseResultPersistenceImpl
 		<TestrayCaseResult, com.liferay.osb.testray.model.TestraySubtask>
 			testrayCaseResultToTestraySubtaskTableMapper;
 
-	private Long _getTime(Date date) {
+	private static Long _getTime(Date date) {
 		if (date == null) {
 			return null;
 		}

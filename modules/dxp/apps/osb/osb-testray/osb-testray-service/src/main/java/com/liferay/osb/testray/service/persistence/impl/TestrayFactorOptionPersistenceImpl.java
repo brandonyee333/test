@@ -661,7 +661,7 @@ public class TestrayFactorOptionPersistenceImpl
 		try {
 			session = openSession();
 
-			if (testrayFactorOption.isNew()) {
+			if (isNew) {
 				session.save(testrayFactorOption);
 
 				testrayFactorOption.setNew(false);
@@ -1144,6 +1144,7 @@ public class TestrayFactorOptionPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(TestrayFactorOptionImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

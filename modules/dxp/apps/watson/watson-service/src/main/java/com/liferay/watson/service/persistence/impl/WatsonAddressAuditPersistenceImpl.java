@@ -362,7 +362,7 @@ public class WatsonAddressAuditPersistenceImpl
 		try {
 			session = openSession();
 
-			if (watsonAddressAudit.isNew()) {
+			if (isNew) {
 				session.save(watsonAddressAudit);
 
 				watsonAddressAudit.setNew(false);
@@ -827,6 +827,7 @@ public class WatsonAddressAuditPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(WatsonAddressAuditImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

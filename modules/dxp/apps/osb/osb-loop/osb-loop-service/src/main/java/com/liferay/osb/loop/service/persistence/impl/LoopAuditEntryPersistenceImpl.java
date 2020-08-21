@@ -335,7 +335,7 @@ public class LoopAuditEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopAuditEntry.isNew()) {
+			if (isNew) {
 				session.save(loopAuditEntry);
 
 				loopAuditEntry.setNew(false);
@@ -787,6 +787,7 @@ public class LoopAuditEntryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopAuditEntryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -613,7 +613,7 @@ public class ZendeskCategoryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (zendeskCategory.isNew()) {
+			if (isNew) {
 				session.save(zendeskCategory);
 
 				zendeskCategory.setNew(false);
@@ -1087,6 +1087,7 @@ public class ZendeskCategoryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(ZendeskCategoryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

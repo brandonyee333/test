@@ -339,7 +339,7 @@ public class TestrayAssignmentPersistenceImpl
 		try {
 			session = openSession();
 
-			if (testrayAssignment.isNew()) {
+			if (isNew) {
 				session.save(testrayAssignment);
 
 				testrayAssignment.setNew(false);
@@ -796,6 +796,7 @@ public class TestrayAssignmentPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(TestrayAssignmentImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

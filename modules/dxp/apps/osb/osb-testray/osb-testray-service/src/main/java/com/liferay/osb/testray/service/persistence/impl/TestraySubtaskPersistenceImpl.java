@@ -349,7 +349,7 @@ public class TestraySubtaskPersistenceImpl
 		try {
 			session = openSession();
 
-			if (testraySubtask.isNew()) {
+			if (isNew) {
 				session.save(testraySubtask);
 
 				testraySubtask.setNew(false);
@@ -1487,6 +1487,7 @@ public class TestraySubtaskPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(TestraySubtaskImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

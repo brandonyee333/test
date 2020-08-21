@@ -342,7 +342,7 @@ public class WatsonRelationshipPersistenceImpl
 		try {
 			session = openSession();
 
-			if (watsonRelationship.isNew()) {
+			if (isNew) {
 				session.save(watsonRelationship);
 
 				watsonRelationship.setNew(false);
@@ -802,6 +802,7 @@ public class WatsonRelationshipPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(WatsonRelationshipImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

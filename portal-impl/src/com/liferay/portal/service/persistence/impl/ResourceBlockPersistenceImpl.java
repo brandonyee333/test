@@ -1916,7 +1916,7 @@ public class ResourceBlockPersistenceImpl
 		try {
 			session = openSession();
 
-			if (resourceBlock.isNew()) {
+			if (isNew) {
 				session.save(resourceBlock);
 
 				resourceBlock.setNew(false);
@@ -2525,6 +2525,7 @@ public class ResourceBlockPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(ResourceBlockImpl.class.getName());
+
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

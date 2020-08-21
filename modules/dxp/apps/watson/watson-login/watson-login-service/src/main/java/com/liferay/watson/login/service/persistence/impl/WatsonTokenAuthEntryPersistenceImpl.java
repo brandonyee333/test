@@ -1160,7 +1160,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (watsonTokenAuthEntry.isNew()) {
+			if (isNew) {
 				session.save(watsonTokenAuthEntry);
 
 				watsonTokenAuthEntry.setNew(false);
@@ -1705,6 +1705,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(WatsonTokenAuthEntryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

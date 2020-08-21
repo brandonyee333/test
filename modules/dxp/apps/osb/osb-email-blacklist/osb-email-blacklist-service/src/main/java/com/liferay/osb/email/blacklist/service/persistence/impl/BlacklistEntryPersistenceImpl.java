@@ -605,7 +605,7 @@ public class BlacklistEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (blacklistEntry.isNew()) {
+			if (isNew) {
 				session.save(blacklistEntry);
 
 				blacklistEntry.setNew(false);
@@ -1076,6 +1076,7 @@ public class BlacklistEntryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(BlacklistEntryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

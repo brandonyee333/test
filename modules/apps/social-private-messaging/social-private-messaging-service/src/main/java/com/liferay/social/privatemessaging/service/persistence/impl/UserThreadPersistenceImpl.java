@@ -2756,7 +2756,7 @@ public class UserThreadPersistenceImpl
 		try {
 			session = openSession();
 
-			if (userThread.isNew()) {
+			if (isNew) {
 				session.save(userThread);
 
 				userThread.setNew(false);
@@ -3447,6 +3447,7 @@ public class UserThreadPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(UserThreadImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

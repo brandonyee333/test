@@ -342,7 +342,7 @@ public class WatsonVehicleAuditPersistenceImpl
 		try {
 			session = openSession();
 
-			if (watsonVehicleAudit.isNew()) {
+			if (isNew) {
 				session.save(watsonVehicleAudit);
 
 				watsonVehicleAudit.setNew(false);
@@ -802,6 +802,7 @@ public class WatsonVehicleAuditPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(WatsonVehicleAuditImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

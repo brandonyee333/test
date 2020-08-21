@@ -1081,7 +1081,7 @@ public class TokenAuthEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (tokenAuthEntry.isNew()) {
+			if (isNew) {
 				session.save(tokenAuthEntry);
 
 				tokenAuthEntry.setNew(false);
@@ -1601,6 +1601,7 @@ public class TokenAuthEntryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(TokenAuthEntryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

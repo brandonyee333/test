@@ -577,7 +577,7 @@ public class LoopPersonPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopPerson.isNew()) {
+			if (isNew) {
 				session.save(loopPerson);
 
 				loopPerson.setNew(false);
@@ -1043,6 +1043,7 @@ public class LoopPersonPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopPersonImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

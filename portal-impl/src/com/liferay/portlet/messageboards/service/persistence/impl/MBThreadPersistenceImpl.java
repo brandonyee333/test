@@ -13449,7 +13449,7 @@ public class MBThreadPersistenceImpl
 		try {
 			session = openSession();
 
-			if (mbThread.isNew()) {
+			if (isNew) {
 				session.save(mbThread);
 
 				mbThread.setNew(false);
@@ -14539,12 +14539,13 @@ public class MBThreadPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(MBThreadImpl.class.getName());
+
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	private Long _getTime(Date date) {
+	private static Long _getTime(Date date) {
 		if (date == null) {
 			return null;
 		}

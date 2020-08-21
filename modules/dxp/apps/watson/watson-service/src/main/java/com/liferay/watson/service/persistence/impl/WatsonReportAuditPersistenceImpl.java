@@ -359,7 +359,7 @@ public class WatsonReportAuditPersistenceImpl
 		try {
 			session = openSession();
 
-			if (watsonReportAudit.isNew()) {
+			if (isNew) {
 				session.save(watsonReportAudit);
 
 				watsonReportAudit.setNew(false);
@@ -821,6 +821,7 @@ public class WatsonReportAuditPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(WatsonReportAuditImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

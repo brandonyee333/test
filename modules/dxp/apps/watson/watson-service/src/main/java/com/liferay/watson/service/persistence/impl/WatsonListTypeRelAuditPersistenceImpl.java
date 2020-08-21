@@ -375,7 +375,7 @@ public class WatsonListTypeRelAuditPersistenceImpl
 		try {
 			session = openSession();
 
-			if (watsonListTypeRelAudit.isNew()) {
+			if (isNew) {
 				session.save(watsonListTypeRelAudit);
 
 				watsonListTypeRelAudit.setNew(false);
@@ -847,6 +847,7 @@ public class WatsonListTypeRelAuditPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(WatsonListTypeRelAuditImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

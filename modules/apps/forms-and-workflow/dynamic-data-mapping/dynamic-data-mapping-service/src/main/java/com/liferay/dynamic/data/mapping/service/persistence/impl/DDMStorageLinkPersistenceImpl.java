@@ -2218,7 +2218,7 @@ public class DDMStorageLinkPersistenceImpl
 		try {
 			session = openSession();
 
-			if (ddmStorageLink.isNew()) {
+			if (isNew) {
 				session.save(ddmStorageLink);
 
 				ddmStorageLink.setNew(false);
@@ -2849,6 +2849,7 @@ public class DDMStorageLinkPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(DDMStorageLinkImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

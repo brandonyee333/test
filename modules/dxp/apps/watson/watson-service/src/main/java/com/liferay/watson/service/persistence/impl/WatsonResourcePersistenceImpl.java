@@ -335,7 +335,7 @@ public class WatsonResourcePersistenceImpl
 		try {
 			session = openSession();
 
-			if (watsonResource.isNew()) {
+			if (isNew) {
 				session.save(watsonResource);
 
 				watsonResource.setNew(false);
@@ -787,6 +787,7 @@ public class WatsonResourcePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(WatsonResourceImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

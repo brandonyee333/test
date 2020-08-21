@@ -2292,7 +2292,7 @@ public class WSRPProducerPersistenceImpl
 		try {
 			session = openSession();
 
-			if (wsrpProducer.isNew()) {
+			if (isNew) {
 				session.save(wsrpProducer);
 
 				wsrpProducer.setNew(false);
@@ -2918,6 +2918,7 @@ public class WSRPProducerPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(WSRPProducerImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -812,7 +812,7 @@ public class ShoppingItemPricePersistenceImpl
 		try {
 			session = openSession();
 
-			if (shoppingItemPrice.isNew()) {
+			if (isNew) {
 				session.save(shoppingItemPrice);
 
 				shoppingItemPrice.setNew(false);
@@ -1324,6 +1324,7 @@ public class ShoppingItemPricePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(ShoppingItemPriceImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -2795,7 +2795,7 @@ public class MBDiscussionPersistenceImpl
 		try {
 			session = openSession();
 
-			if (mbDiscussion.isNew()) {
+			if (isNew) {
 				session.save(mbDiscussion);
 
 				mbDiscussion.setNew(false);
@@ -3449,6 +3449,7 @@ public class MBDiscussionPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(MBDiscussionImpl.class.getName());
+
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -1711,7 +1711,7 @@ public class MeetupsRegistrationPersistenceImpl
 		try {
 			session = openSession();
 
-			if (meetupsRegistration.isNew()) {
+			if (isNew) {
 				session.save(meetupsRegistration);
 
 				meetupsRegistration.setNew(false);
@@ -2309,6 +2309,7 @@ public class MeetupsRegistrationPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(MeetupsRegistrationImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

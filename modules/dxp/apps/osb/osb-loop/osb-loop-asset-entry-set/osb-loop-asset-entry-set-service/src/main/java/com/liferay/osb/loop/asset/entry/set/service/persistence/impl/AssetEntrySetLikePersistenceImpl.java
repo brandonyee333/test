@@ -825,7 +825,7 @@ public class AssetEntrySetLikePersistenceImpl
 		try {
 			session = openSession();
 
-			if (assetEntrySetLike.isNew()) {
+			if (isNew) {
 				session.save(assetEntrySetLike);
 
 				assetEntrySetLike.setNew(false);
@@ -1269,6 +1269,7 @@ public class AssetEntrySetLikePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(AssetEntrySetLikeImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

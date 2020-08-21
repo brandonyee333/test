@@ -302,7 +302,7 @@ public class LoopPersonRelPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopPersonRel.isNew()) {
+			if (isNew) {
 				session.save(loopPersonRel);
 
 				loopPersonRel.setNew(false);
@@ -759,6 +759,7 @@ public class LoopPersonRelPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopPersonRelImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

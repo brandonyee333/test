@@ -589,7 +589,7 @@ public class SyncStatePersistenceImpl
 		try {
 			session = openSession();
 
-			if (syncState.isNew()) {
+			if (isNew) {
 				session.save(syncState);
 
 				syncState.setNew(false);
@@ -1055,6 +1055,7 @@ public class SyncStatePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(SyncStateImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

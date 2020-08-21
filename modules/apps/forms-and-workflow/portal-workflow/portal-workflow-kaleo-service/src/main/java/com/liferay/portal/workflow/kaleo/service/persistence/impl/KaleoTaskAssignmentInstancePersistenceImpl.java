@@ -4211,7 +4211,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 		try {
 			session = openSession();
 
-			if (kaleoTaskAssignmentInstance.isNew()) {
+			if (isNew) {
 				session.save(kaleoTaskAssignmentInstance);
 
 				kaleoTaskAssignmentInstance.setNew(false);
@@ -5109,6 +5109,7 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 	public void destroy() {
 		entityCache.removeCache(
 			KaleoTaskAssignmentInstanceImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

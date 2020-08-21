@@ -815,7 +815,7 @@ public class ShoppingOrderItemPersistenceImpl
 		try {
 			session = openSession();
 
-			if (shoppingOrderItem.isNew()) {
+			if (isNew) {
 				session.save(shoppingOrderItem);
 
 				shoppingOrderItem.setNew(false);
@@ -1329,6 +1329,7 @@ public class ShoppingOrderItemPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(ShoppingOrderItemImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

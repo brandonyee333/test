@@ -610,7 +610,7 @@ public class JIRAProjectPersistenceImpl
 		try {
 			session = openSession();
 
-			if (jiraProject.isNew()) {
+			if (isNew) {
 				session.save(jiraProject);
 
 				jiraProject.setNew(false);
@@ -1081,6 +1081,7 @@ public class JIRAProjectPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(JIRAProjectImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

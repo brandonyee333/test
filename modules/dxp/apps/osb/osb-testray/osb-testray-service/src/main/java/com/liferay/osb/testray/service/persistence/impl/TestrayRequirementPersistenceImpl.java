@@ -686,7 +686,7 @@ public class TestrayRequirementPersistenceImpl
 		try {
 			session = openSession();
 
-			if (testrayRequirement.isNew()) {
+			if (isNew) {
 				session.save(testrayRequirement);
 
 				testrayRequirement.setNew(false);
@@ -1506,6 +1506,7 @@ public class TestrayRequirementPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(TestrayRequirementImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

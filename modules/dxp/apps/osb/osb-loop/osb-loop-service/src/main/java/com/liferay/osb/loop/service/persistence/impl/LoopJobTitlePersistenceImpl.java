@@ -607,7 +607,7 @@ public class LoopJobTitlePersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopJobTitle.isNew()) {
+			if (isNew) {
 				session.save(loopJobTitle);
 
 				loopJobTitle.setNew(false);
@@ -1073,6 +1073,7 @@ public class LoopJobTitlePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopJobTitleImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -300,7 +300,7 @@ public class JIRAIssuePersistenceImpl
 		try {
 			session = openSession();
 
-			if (jiraIssue.isNew()) {
+			if (isNew) {
 				session.save(jiraIssue);
 
 				jiraIssue.setNew(false);
@@ -752,6 +752,7 @@ public class JIRAIssuePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(JIRAIssueImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -21562,7 +21562,7 @@ public class BlogsEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (blogsEntry.isNew()) {
+			if (isNew) {
 				session.save(blogsEntry);
 
 				blogsEntry.setNew(false);
@@ -22911,12 +22911,13 @@ public class BlogsEntryPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(BlogsEntryImpl.class.getName());
+
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	private Long _getTime(Date date) {
+	private static Long _getTime(Date date) {
 		if (date == null) {
 			return null;
 		}

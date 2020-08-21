@@ -288,7 +288,7 @@ public class LoopTopicAssignmentPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopTopicAssignment.isNew()) {
+			if (isNew) {
 				session.save(loopTopicAssignment);
 
 				loopTopicAssignment.setNew(false);
@@ -749,6 +749,7 @@ public class LoopTopicAssignmentPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopTopicAssignmentImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

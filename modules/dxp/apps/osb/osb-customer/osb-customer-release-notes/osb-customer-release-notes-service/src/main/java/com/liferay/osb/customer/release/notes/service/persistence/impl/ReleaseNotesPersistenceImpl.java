@@ -2000,7 +2000,7 @@ public class ReleaseNotesPersistenceImpl
 		try {
 			session = openSession();
 
-			if (releaseNotes.isNew()) {
+			if (isNew) {
 				session.save(releaseNotes);
 
 				releaseNotes.setNew(false);
@@ -2547,6 +2547,7 @@ public class ReleaseNotesPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(ReleaseNotesImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

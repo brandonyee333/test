@@ -2624,7 +2624,7 @@ public class AssetSharingEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (assetSharingEntry.isNew()) {
+			if (isNew) {
 				session.save(assetSharingEntry);
 
 				assetSharingEntry.setNew(false);
@@ -3261,6 +3261,7 @@ public class AssetSharingEntryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(AssetSharingEntryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

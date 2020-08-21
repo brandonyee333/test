@@ -343,7 +343,7 @@ public class TestraySuitePersistenceImpl
 		try {
 			session = openSession();
 
-			if (testraySuite.isNew()) {
+			if (isNew) {
 				session.save(testraySuite);
 
 				testraySuite.setNew(false);
@@ -1122,6 +1122,7 @@ public class TestraySuitePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(TestraySuiteImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

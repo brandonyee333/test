@@ -2567,7 +2567,7 @@ public class MBMailingListPersistenceImpl
 		try {
 			session = openSession();
 
-			if (mbMailingList.isNew()) {
+			if (isNew) {
 				session.save(mbMailingList);
 
 				mbMailingList.setNew(false);
@@ -3215,6 +3215,7 @@ public class MBMailingListPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(MBMailingListImpl.class.getName());
+
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

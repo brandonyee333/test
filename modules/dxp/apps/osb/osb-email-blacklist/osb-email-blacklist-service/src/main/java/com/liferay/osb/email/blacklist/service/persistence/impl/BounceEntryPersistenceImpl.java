@@ -1429,7 +1429,7 @@ public class BounceEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (bounceEntry.isNew()) {
+			if (isNew) {
 				session.save(bounceEntry);
 
 				bounceEntry.setNew(false);
@@ -1910,6 +1910,7 @@ public class BounceEntryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(BounceEntryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -1921,7 +1922,7 @@ public class BounceEntryPersistenceImpl
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
 
-	private Long _getTime(Date date) {
+	private static Long _getTime(Date date) {
 		if (date == null) {
 			return null;
 		}

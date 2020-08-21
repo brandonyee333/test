@@ -278,7 +278,7 @@ public class LoopStreamPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopStream.isNew()) {
+			if (isNew) {
 				session.save(loopStream);
 
 				loopStream.setNew(false);
@@ -725,6 +725,7 @@ public class LoopStreamPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopStreamImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

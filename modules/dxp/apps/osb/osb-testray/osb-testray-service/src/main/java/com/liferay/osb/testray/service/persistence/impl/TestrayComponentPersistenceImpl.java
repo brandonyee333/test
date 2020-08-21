@@ -658,7 +658,7 @@ public class TestrayComponentPersistenceImpl
 		try {
 			session = openSession();
 
-			if (testrayComponent.isNew()) {
+			if (isNew) {
 				session.save(testrayComponent);
 
 				testrayComponent.setNew(false);
@@ -1468,6 +1468,7 @@ public class TestrayComponentPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(TestrayComponentImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -282,7 +282,7 @@ public class LoopStatsEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopStatsEntry.isNew()) {
+			if (isNew) {
 				session.save(loopStatsEntry);
 
 				loopStatsEntry.setNew(false);
@@ -734,6 +734,7 @@ public class LoopStatsEntryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopStatsEntryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

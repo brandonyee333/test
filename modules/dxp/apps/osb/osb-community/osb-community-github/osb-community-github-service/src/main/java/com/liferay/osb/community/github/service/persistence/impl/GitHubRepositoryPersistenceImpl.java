@@ -688,7 +688,7 @@ public class GitHubRepositoryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (gitHubRepository.isNew()) {
+			if (isNew) {
 				session.save(gitHubRepository);
 
 				gitHubRepository.setNew(false);
@@ -1163,6 +1163,7 @@ public class GitHubRepositoryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(GitHubRepositoryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

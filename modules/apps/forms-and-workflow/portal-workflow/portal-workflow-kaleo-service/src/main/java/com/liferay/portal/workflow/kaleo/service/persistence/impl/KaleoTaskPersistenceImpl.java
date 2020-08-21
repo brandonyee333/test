@@ -1599,7 +1599,7 @@ public class KaleoTaskPersistenceImpl
 		try {
 			session = openSession();
 
-			if (kaleoTask.isNew()) {
+			if (isNew) {
 				session.save(kaleoTask);
 
 				kaleoTask.setNew(false);
@@ -2162,6 +2162,7 @@ public class KaleoTaskPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(KaleoTaskImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

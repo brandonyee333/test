@@ -1128,7 +1128,7 @@ public class ShoppingCouponPersistenceImpl
 		try {
 			session = openSession();
 
-			if (shoppingCoupon.isNew()) {
+			if (isNew) {
 				session.save(shoppingCoupon);
 
 				shoppingCoupon.setNew(false);
@@ -1654,6 +1654,7 @@ public class ShoppingCouponPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(ShoppingCouponImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

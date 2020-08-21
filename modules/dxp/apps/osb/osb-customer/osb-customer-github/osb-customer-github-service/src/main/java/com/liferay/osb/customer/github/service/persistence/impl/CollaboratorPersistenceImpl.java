@@ -3100,7 +3100,7 @@ public class CollaboratorPersistenceImpl
 		try {
 			session = openSession();
 
-			if (collaborator.isNew()) {
+			if (isNew) {
 				session.save(collaborator);
 
 				collaborator.setNew(false);
@@ -3781,6 +3781,7 @@ public class CollaboratorPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(CollaboratorImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

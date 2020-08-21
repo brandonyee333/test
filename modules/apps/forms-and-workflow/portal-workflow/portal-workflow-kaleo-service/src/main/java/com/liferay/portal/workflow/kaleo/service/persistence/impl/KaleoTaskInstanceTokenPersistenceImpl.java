@@ -2808,7 +2808,7 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 		try {
 			session = openSession();
 
-			if (kaleoTaskInstanceToken.isNew()) {
+			if (isNew) {
 				session.save(kaleoTaskInstanceToken);
 
 				kaleoTaskInstanceToken.setNew(false);
@@ -3519,6 +3519,7 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(KaleoTaskInstanceTokenImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -642,7 +642,7 @@ public class LoopParticipantAssignmentPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopParticipantAssignment.isNew()) {
+			if (isNew) {
 				session.save(loopParticipantAssignment);
 
 				loopParticipantAssignment.setNew(false);
@@ -1141,6 +1141,7 @@ public class LoopParticipantAssignmentPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopParticipantAssignmentImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

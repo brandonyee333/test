@@ -276,7 +276,7 @@ public class AuditFormPersistenceImpl
 		try {
 			session = openSession();
 
-			if (auditForm.isNew()) {
+			if (isNew) {
 				session.save(auditForm);
 
 				auditForm.setNew(false);
@@ -723,6 +723,7 @@ public class AuditFormPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(AuditFormImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

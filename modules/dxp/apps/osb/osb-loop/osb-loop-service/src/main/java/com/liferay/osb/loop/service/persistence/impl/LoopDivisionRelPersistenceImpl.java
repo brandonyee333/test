@@ -1214,7 +1214,7 @@ public class LoopDivisionRelPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopDivisionRel.isNew()) {
+			if (isNew) {
 				session.save(loopDivisionRel);
 
 				loopDivisionRel.setNew(false);
@@ -1725,6 +1725,7 @@ public class LoopDivisionRelPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopDivisionRelImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -641,7 +641,7 @@ public class FeedPersistenceImpl
 		try {
 			session = openSession();
 
-			if (feed.isNew()) {
+			if (isNew) {
 				session.save(feed);
 
 				feed.setNew(false);
@@ -1102,6 +1102,7 @@ public class FeedPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(FeedImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -355,7 +355,7 @@ public class WatsonListTypePersistenceImpl
 		try {
 			session = openSession();
 
-			if (watsonListType.isNew()) {
+			if (isNew) {
 				session.save(watsonListType);
 
 				watsonListType.setNew(false);
@@ -812,6 +812,7 @@ public class WatsonListTypePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(WatsonListTypeImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

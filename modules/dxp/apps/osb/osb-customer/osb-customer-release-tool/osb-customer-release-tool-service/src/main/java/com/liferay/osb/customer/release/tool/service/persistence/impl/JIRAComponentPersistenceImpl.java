@@ -1068,7 +1068,7 @@ public class JIRAComponentPersistenceImpl
 		try {
 			session = openSession();
 
-			if (jiraComponent.isNew()) {
+			if (isNew) {
 				session.save(jiraComponent);
 
 				jiraComponent.setNew(false);
@@ -1589,6 +1589,7 @@ public class JIRAComponentPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(JIRAComponentImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

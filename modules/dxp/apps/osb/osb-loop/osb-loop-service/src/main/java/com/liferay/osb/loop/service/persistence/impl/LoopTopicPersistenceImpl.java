@@ -628,7 +628,7 @@ public class LoopTopicPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopTopic.isNew()) {
+			if (isNew) {
 				session.save(loopTopic);
 
 				loopTopic.setNew(false);
@@ -1095,6 +1095,7 @@ public class LoopTopicPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopTopicImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

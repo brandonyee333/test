@@ -1666,7 +1666,7 @@ public class DDLRecordVersionPersistenceImpl
 		try {
 			session = openSession();
 
-			if (ddlRecordVersion.isNew()) {
+			if (isNew) {
 				session.save(ddlRecordVersion);
 
 				ddlRecordVersion.setNew(false);
@@ -2251,6 +2251,7 @@ public class DDLRecordVersionPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(DDLRecordVersionImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

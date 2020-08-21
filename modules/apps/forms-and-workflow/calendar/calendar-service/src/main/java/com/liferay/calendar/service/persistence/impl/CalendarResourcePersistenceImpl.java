@@ -6891,7 +6891,7 @@ public class CalendarResourcePersistenceImpl
 		try {
 			session = openSession();
 
-			if (calendarResource.isNew()) {
+			if (isNew) {
 				session.save(calendarResource);
 
 				calendarResource.setNew(false);
@@ -7795,6 +7795,7 @@ public class CalendarResourcePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(CalendarResourceImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

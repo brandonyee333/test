@@ -5825,7 +5825,7 @@ public class CalendarBookingPersistenceImpl
 		try {
 			session = openSession();
 
-			if (calendarBooking.isNew()) {
+			if (isNew) {
 				session.save(calendarBooking);
 
 				calendarBooking.setNew(false);
@@ -6805,6 +6805,7 @@ public class CalendarBookingPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(CalendarBookingImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

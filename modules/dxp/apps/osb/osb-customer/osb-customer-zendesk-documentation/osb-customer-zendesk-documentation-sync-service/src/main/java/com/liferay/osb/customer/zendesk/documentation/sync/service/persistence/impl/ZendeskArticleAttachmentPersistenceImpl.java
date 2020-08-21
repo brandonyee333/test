@@ -1185,7 +1185,7 @@ public class ZendeskArticleAttachmentPersistenceImpl
 		try {
 			session = openSession();
 
-			if (zendeskArticleAttachment.isNew()) {
+			if (isNew) {
 				session.save(zendeskArticleAttachment);
 
 				zendeskArticleAttachment.setNew(false);
@@ -1733,6 +1733,7 @@ public class ZendeskArticleAttachmentPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(ZendeskArticleAttachmentImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

@@ -685,7 +685,7 @@ public class LoopExternalReferenceRelPersistenceImpl
 		try {
 			session = openSession();
 
-			if (loopExternalReferenceRel.isNew()) {
+			if (isNew) {
 				session.save(loopExternalReferenceRel);
 
 				loopExternalReferenceRel.setNew(false);
@@ -1178,6 +1178,7 @@ public class LoopExternalReferenceRelPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LoopExternalReferenceRelImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

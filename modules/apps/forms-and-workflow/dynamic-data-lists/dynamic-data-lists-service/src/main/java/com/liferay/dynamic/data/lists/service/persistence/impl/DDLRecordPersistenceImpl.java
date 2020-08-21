@@ -3327,7 +3327,7 @@ public class DDLRecordPersistenceImpl
 		try {
 			session = openSession();
 
-			if (ddlRecord.isNew()) {
+			if (isNew) {
 				session.save(ddlRecord);
 
 				ddlRecord.setNew(false);
@@ -4052,6 +4052,7 @@ public class DDLRecordPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(DDLRecordImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

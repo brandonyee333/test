@@ -2472,7 +2472,7 @@ public class JournalArticleImagePersistenceImpl
 		try {
 			session = openSession();
 
-			if (journalArticleImage.isNew()) {
+			if (isNew) {
 				session.save(journalArticleImage);
 
 				journalArticleImage.setNew(false);
@@ -3137,6 +3137,7 @@ public class JournalArticleImagePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(JournalArticleImageImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

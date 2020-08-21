@@ -10259,7 +10259,7 @@ public class MBCategoryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (mbCategory.isNew()) {
+			if (isNew) {
 				session.save(mbCategory);
 
 				mbCategory.setNew(false);
@@ -11232,6 +11232,7 @@ public class MBCategoryPersistenceImpl
 
 	public void destroy() {
 		EntityCacheUtil.removeCache(MBCategoryImpl.class.getName());
+
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
