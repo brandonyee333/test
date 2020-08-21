@@ -113,6 +113,15 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	@Override
+	public void logCompleted(
+		JSONObject contextJSONObject, long duration, String osbAsahTaskId) {
+	}
+
+	@Override
+	public void logStart(JSONObject contextJSONObject) {
+	}
+
+	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
 			"job-runs",
@@ -145,6 +154,11 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				throw e;
 			}
 		}
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(ContentRecommendationDataSolutionNanite.class);
 	}
 
 	private AmazonPersonalize _buildAmazonPersonalize() {

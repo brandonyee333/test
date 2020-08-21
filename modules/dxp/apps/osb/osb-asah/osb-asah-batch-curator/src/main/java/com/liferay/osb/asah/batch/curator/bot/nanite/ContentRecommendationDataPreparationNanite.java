@@ -109,6 +109,12 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 			Collections.emptyMap());
 	}
 
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(
+			ContentRecommendationDataPreparationNanite.class);
+	}
+
 	private long _getCurrentMonthJobRunsCount(String jobId) {
 		return _faroInfoElasticsearchInvoker.count(
 			"job-runs",

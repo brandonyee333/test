@@ -16,6 +16,9 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,11 @@ public class DeleteDataSourcesNanite extends BaseNanite {
 		_faroInfoDataSourceDog.deleteDataSource(
 			dataSourceJSONObject, this::monitorProcessedCount,
 			this::monitorQueueSize);
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(DeleteDataSourcesNanite.class);
 	}
 
 	@Autowired

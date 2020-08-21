@@ -127,6 +127,11 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 	}
 
 	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(ActivitiesNanite.class);
+	}
+
+	@Override
 	protected boolean isActive() {
 		return _active;
 	}

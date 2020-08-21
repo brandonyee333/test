@@ -109,6 +109,11 @@ public class DataControlNanite extends BaseNanite {
 		).iterate();
 	}
 
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(DataControlNanite.class);
+	}
+
 	private void _addSuppression(
 		JSONObject dataControlTaskJSONObject, String emailAddress) {
 

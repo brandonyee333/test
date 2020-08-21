@@ -22,6 +22,9 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -91,6 +94,11 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 	@Override
 	protected String getDataSourceType() {
 		return "SALESFORCE";
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(SalesforceIndividualsNanite.class);
 	}
 
 	@Override

@@ -29,6 +29,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -137,6 +140,11 @@ public class IndividualActivityFieldsNanite extends BaseActivitiesNanite {
 		finally {
 			_active = false;
 		}
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(IndividualActivityFieldsNanite.class);
 	}
 
 	@Override

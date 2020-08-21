@@ -20,6 +20,9 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +80,11 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 
 		faroInfoElasticsearchInvoker.update(
 			"OSBAsahMarkers", osbAsahMarkerJSONObject);
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(StaleDynamicIndividualSegmentsNanite.class);
 	}
 
 	private static final String[] _FILTER_STRINGS = {

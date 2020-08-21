@@ -40,6 +40,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -76,6 +79,11 @@ public class InterestTopicsNanite extends BaseNanite {
 		parallelTopicModel.estimate();
 
 		_saveModel(parallelTopicModel);
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(InterestTopicsNanite.class);
 	}
 
 	private List<Pipe> _createPreprocessPipes() {

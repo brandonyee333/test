@@ -54,6 +54,11 @@ public class SalesforceAccountsNanite extends BaseNanite {
 			contextJSONObject.getString("dataSourceId"));
 	}
 
+	@Override
+	protected Log getLog() {
+		return _log;
+	}
+
 	protected void processAuditEventJSONObject(JSONObject auditEventJSONObject)
 		throws Exception {
 

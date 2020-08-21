@@ -81,6 +81,11 @@ public class IndividualSegmentActivityFieldsNanite
 	}
 
 	@Override
+	protected Log getLog() {
+		return _log;
+	}
+
+	@Override
 	protected boolean isActive() {
 		return _active;
 	}

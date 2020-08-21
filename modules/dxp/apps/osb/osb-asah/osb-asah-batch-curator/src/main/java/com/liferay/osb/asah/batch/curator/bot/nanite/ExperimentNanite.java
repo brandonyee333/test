@@ -74,6 +74,11 @@ public class ExperimentNanite extends BaseNanite {
 		).iterate();
 	}
 
+	@Override
+	protected Log getLog() {
+		return _log;
+	}
+
 	private VariantMetrics _findControlVariantMetrics(
 		List<VariantMetrics> variantMetricsList) {
 

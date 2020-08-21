@@ -23,6 +23,8 @@ public interface Nanite {
 
 	public boolean isLogRunEnabled();
 
+	public void log(String message);
+
 	public void run(JSONObject contextJSONObject) throws Exception;
 
 }

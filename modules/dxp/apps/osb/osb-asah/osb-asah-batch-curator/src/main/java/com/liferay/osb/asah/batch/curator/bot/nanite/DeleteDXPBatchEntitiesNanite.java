@@ -52,6 +52,11 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		_cleanUp(ServiceConstants.LCP_PROJECT_ID + "/");
 	}
 
+	@Override
+	protected Log getLog() {
+		return _log;
+	}
+
 	private void _cleanUp(String directoryPrefix) {
 		if (_isDirectorySkipped(directoryPrefix)) {
 			return;

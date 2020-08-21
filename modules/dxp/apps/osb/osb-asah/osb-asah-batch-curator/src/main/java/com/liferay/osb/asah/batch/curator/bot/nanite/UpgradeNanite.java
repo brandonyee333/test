@@ -55,6 +55,11 @@ public class UpgradeNanite extends BaseNanite {
 			_assignSessionContextArm::execute);
 	}
 
+	@Override
+	protected Log getLog() {
+		return _log;
+	}
+
 	private void _execute(
 			Class<?> clazz, UnsafeRunnable<Exception> clazzUnsafeRunnable)
 		throws Exception {

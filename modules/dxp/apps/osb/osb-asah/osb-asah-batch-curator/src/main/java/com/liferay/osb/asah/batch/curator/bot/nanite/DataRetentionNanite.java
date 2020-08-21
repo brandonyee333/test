@@ -26,6 +26,9 @@ import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
@@ -98,6 +101,11 @@ public class DataRetentionNanite extends BaseNanite {
 				QueryBuilders.existsQuery("demographics.email")
 			)
 		).iterate();
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(DataRetentionNanite.class);
 	}
 
 	private static final String[] _COLLECTION_NAMES = {

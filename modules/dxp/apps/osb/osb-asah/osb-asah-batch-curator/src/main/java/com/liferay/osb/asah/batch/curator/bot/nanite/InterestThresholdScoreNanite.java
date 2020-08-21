@@ -111,6 +111,11 @@ public class InterestThresholdScoreNanite extends BaseNanite {
 		_faroInfoInterestDog.clearCache();
 	}
 
+	@Override
+	protected Log getLog() {
+		return _log;
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		InterestThresholdScoreNanite.class);
 

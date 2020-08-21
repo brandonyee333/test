@@ -29,6 +29,9 @@ import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -94,6 +97,11 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 						"org.apache.spark.serializer.KryoSerializer");
 				}
 			});
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(CommerceProductRecommendationNanite.class);
 	}
 
 	private List<String> _collectJobSparkJars(

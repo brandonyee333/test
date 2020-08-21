@@ -61,6 +61,11 @@ public class DataExportNanite extends BaseNanite {
 		).iterate();
 	}
 
+	@Override
+	protected Log getLog() {
+		return _log;
+	}
+
 	private DataExporter _createDataExporter(
 			DataExportTaskType dataExportTaskType, OutputStream outputStream)
 		throws Exception {

@@ -22,6 +22,9 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONObject;
 
 import org.springframework.stereotype.Component;
@@ -81,6 +84,11 @@ public class DXPIndividualsNanite extends BaseIndividualsNanite {
 	@Override
 	protected JSONObject getEmptyDataJSONObject() {
 		return JSONUtil.put("contact", new JSONObject());
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(DXPIndividualsNanite.class);
 	}
 
 	@Override

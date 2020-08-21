@@ -18,6 +18,9 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
@@ -71,6 +74,11 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 		).setQueryBuilder(
 			QueryBuilders.termQuery("individualSegmentIds", individualSegmentId)
 		).iterate();
+	}
+
+	@Autowired
+	protected Log getLog() {
+		return LogFactory.getLog(DeleteIndividualSegmentTasksNanite.class);
 	}
 
 	@Autowired

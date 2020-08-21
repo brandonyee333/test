@@ -17,6 +17,9 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,11 @@ public class ClearChannelsNanite extends BaseNanite {
 			this::monitorProcessedCount, this::monitorQueueSize);
 
 		_clearCache();
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(ClearChannelsNanite.class);
 	}
 
 	private void _clearCache() {

@@ -93,6 +93,11 @@ public class DeleteTempFilesNanite extends BaseNanite {
 		}
 	}
 
+	@Override
+	protected Log getLog() {
+		return _log;
+	}
+
 	private Path _getPath(JSONObject contextJSONObject) {
 		if (contextJSONObject == null) {
 			return Paths.get(_tempPathName);
