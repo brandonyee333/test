@@ -50,6 +50,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -174,7 +176,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
 	}
 
-	@CacheEvict(allEntries = true, value = "getReferencedAssetIds")
 	public JSONObject replaceIndividualSegment(
 			JSONObject individualSegmentJSONObject)
 		throws Exception {
@@ -200,12 +201,17 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				"individual-segments", _setState(individualSegmentJSONObject));
 
 			_addOSBAsahTask(individualSegmentJSONObject);
+
+			if (_cacheManager != null) {
+				Cache cache = _cacheManager.getCache("getReferencedAssetIds");
+
+				cache.clear();
+			}
 		}
 
 		return individualSegmentJSONObject;
 	}
 
-	@CacheEvict(allEntries = true, value = "getReferencedAssetIds")
 	public JSONObject updateIndividualSegment(
 			String individualSegmentId,
 			JSONObject partialIndividualSegmentJSONObject)
@@ -236,6 +242,12 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				_setState(partialIndividualSegmentJSONObject));
 
 			_addOSBAsahTask(individualSegmentJSONObject);
+
+			if (_cacheManager != null) {
+				Cache cache = _cacheManager.getCache("getReferencedAssetIds");
+
+				cache.clear();
+			}
 		}
 
 		return individualSegmentJSONObject;
@@ -902,6 +914,9 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		"activeIndividualCount", "activitiesCount", "engagementScore",
 		"individualCount", "lastActivityDate"
 	};
+
+	@Autowired(required = false)
+	private CacheManager _cacheManager;
 
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
