@@ -475,9 +475,16 @@ public class OSBAsahBatchCuratorBot {
 
 		@Override
 		public void run() {
-			long start = System.currentTimeMillis();
+			Class<?> clazz = _nanite.getClass();
+
+			if (_nanite.isLogRunEnabled() &&
+				_checkNanite(clazz.getSimpleName())) {
+
+				return;
+			}
 
 			String osbAsahTaskId = _osbAsahTaskJSONObject.getString("id");
+			long start = System.currentTimeMillis();
 
 			try {
 				JSONObject contextJSONObject =
