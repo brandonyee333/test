@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.page.referrer;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.model.PageAcquisition;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.page.PageReferrer;
@@ -127,6 +128,8 @@ public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 
 		String referrer = MapUtil.getString(context, "referrer", "");
 
+		pageReferrer.setAcquisition(
+			new PageAcquisition(referrer, pageReferrer.getURL()));
 		pageReferrer.setReferrer(referrer);
 
 		String title = MapUtil.getString(context, "title");

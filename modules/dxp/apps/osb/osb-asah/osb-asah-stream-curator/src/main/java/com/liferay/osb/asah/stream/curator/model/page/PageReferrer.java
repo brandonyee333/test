@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.model.Acquisition;
 
 import java.util.Date;
 import java.util.NavigableSet;
@@ -55,6 +56,10 @@ public class PageReferrer extends BasePageModel {
 		return _accessDates;
 	}
 
+	public Acquisition getAcquisition() {
+		return _acquisition;
+	}
+
 	public String getReferrer() {
 		return _referrer;
 	}
@@ -67,12 +72,17 @@ public class PageReferrer extends BasePageModel {
 		_accessDates = accessDates;
 	}
 
+	public void setAcquisition(Acquisition acquisition) {
+		_acquisition = acquisition;
+	}
+
 	public void setReferrer(String referrer) {
 		_referrer = referrer;
 	}
 
 	private long _access;
 	private NavigableSet<Date> _accessDates = new TreeSet<>();
+	private Acquisition _acquisition;
 	private String _referrer;
 
 }

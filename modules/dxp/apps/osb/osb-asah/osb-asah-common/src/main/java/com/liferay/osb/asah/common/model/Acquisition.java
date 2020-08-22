@@ -43,24 +43,23 @@ public class Acquisition implements Serializable {
 
 		UriComponents urlUriComponents = urlUriComponentsBuilder.build();
 
-		MultiValueMap<String, String> queryParams =
-			urlUriComponents.getQueryParams();
+		queryParams = urlUriComponents.getQueryParams();
 
-		_campaign = _decode(queryParams.getFirst("utm_campaign"));
-		_content = _decode(queryParams.getFirst("utm_content"));
-		_medium = _decode(queryParams.getFirst("utm_medium"));
+		_campaign = decode(queryParams.getFirst("utm_campaign"));
+		_content = decode(queryParams.getFirst("utm_content"));
+		_medium = decode(queryParams.getFirst("utm_medium"));
 
 		try {
 			URI uri = new URI(referrer);
 
-			_referrer = uri.getHost();
+			this.referrer = uri.getHost();
 		}
 		catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
 
-		_source = _decode(queryParams.getFirst("utm_source"));
-		_term = _decode(queryParams.getFirst("utm_term"));
+		_source = decode(queryParams.getFirst("utm_source"));
+		_term = decode(queryParams.getFirst("utm_term"));
 	}
 
 	@Override
@@ -152,7 +151,7 @@ public class Acquisition implements Serializable {
 			return _medium;
 		}
 
-		if (!StringUtils.isEmpty(_referrer)) {
+		if (!StringUtils.isEmpty(referrer)) {
 			return "referral";
 		}
 
@@ -164,8 +163,8 @@ public class Acquisition implements Serializable {
 			return _source;
 		}
 
-		if (!StringUtils.isEmpty(_referrer)) {
-			return _referrer;
+		if (!StringUtils.isEmpty(referrer)) {
+			return referrer;
 		}
 
 		return null;
@@ -200,7 +199,7 @@ public class Acquisition implements Serializable {
 		_term = term;
 	}
 
-	private String _decode(String value) {
+	protected String decode(String value) {
 		if (Objects.isNull(value)) {
 			return null;
 		}
@@ -213,10 +212,12 @@ public class Acquisition implements Serializable {
 		}
 	}
 
+	protected MultiValueMap<String, String> queryParams;
+	protected String referrer;
+
 	private String _campaign;
 	private String _content;
 	private String _medium;
-	private String _referrer;
 	private String _source;
 	private String _term;
 
