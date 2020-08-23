@@ -128,8 +128,8 @@ public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 
 		String referrer = MapUtil.getString(context, "referrer", "");
 
-		pageReferrer.setAcquisition(
-			new PageAcquisition(referrer, pageReferrer.getURL()));
+		pageReferrer.setAcquisitionChannel(
+			_getAcquisitionChannel(referrer, pageReferrer.getURL()));
 		pageReferrer.setReferrer(referrer);
 
 		String title = MapUtil.getString(context, "title");
@@ -137,6 +137,12 @@ public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 		if (StringUtils.isNotEmpty(title)) {
 			pageReferrer.setTitle(title);
 		}
+	}
+
+	private String _getAcquisitionChannel(String referrer, String url) {
+		PageAcquisition pageAcquisition = new PageAcquisition(referrer, url);
+
+		return pageAcquisition.getChannel();
 	}
 
 	private static final Log _log = LogFactory.getLog(PageReferrerNanite.class);

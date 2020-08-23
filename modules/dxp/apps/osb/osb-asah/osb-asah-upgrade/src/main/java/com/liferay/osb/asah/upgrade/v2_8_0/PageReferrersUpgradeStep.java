@@ -14,13 +14,6 @@
 
 package com.liferay.osb.asah.upgrade.v2_8_0;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -32,8 +25,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import javax.annotation.PostConstruct;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,20 +42,7 @@ public class PageReferrersUpgradeStep implements UpgradeStep {
 			JSONUtil.put(
 				"properties",
 				JSONUtil.put(
-					"acquisition",
-					JSONUtil.put(
-						"properties",
-						JSONUtil.put(
-							"campaign", JSONUtil.put("type", "keyword")
-						).put(
-							"channel", JSONUtil.put("type", "keyword")
-						).put(
-							"content", JSONUtil.put("type", "keyword")
-						).put(
-							"medium", JSONUtil.put("type", "keyword")
-						).put(
-							"term", JSONUtil.put("type", "keyword")
-						)))
+					"acquisitionChannel", JSONUtil.put("type", "keyword"))
 			).toString(),
 			"activities", WeDeployDataService.OSB_ASAH_FARO_INFO);
 
@@ -76,15 +54,19 @@ public class PageReferrersUpgradeStep implements UpgradeStep {
 			pageReferrerJSONObject -> elasticsearchBulkRequestBuilder.update(
 				"page-referrers",
 				pageReferrerJSONObject.put(
-					"acquisition",
-					_objectMapper.convertValue(
-						new PageAcquisition(
-							pageReferrerJSONObject.getString("referrer"),
-							pageReferrerJSONObject.getString("url")),
-						JSONObject.class)))
+					"acquisitionChannel",
+					_getAcquisitionChannel(
+						pageReferrerJSONObject.getString("referrer"),
+						pageReferrerJSONObject.getString("url"))))
 		).setStopOnExceptions(
 			false
 		).iterate();
+	}
+
+	private String _getAcquisitionChannel(String referrer, String url) {
+		PageAcquisition pageAcquisition = new PageAcquisition(referrer, url);
+
+		return pageAcquisition.getChannel();
 	}
 
 	@PostConstruct
@@ -99,16 +81,5 @@ public class PageReferrersUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
-	private final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-			registerModule(new JavaTimeModule());
-			registerModule(new Jdk8Module());
-			registerModule(new JsonOrgModule());
-		}
-	};
 
 }
