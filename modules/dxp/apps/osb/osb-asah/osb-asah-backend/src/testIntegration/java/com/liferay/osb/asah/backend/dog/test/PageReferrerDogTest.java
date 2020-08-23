@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.page.PageReferrerDog;
+import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.PageReferrerMetric;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -23,6 +24,7 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,6 +39,42 @@ import org.springframework.boot.test.context.SpringBootTest;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class PageReferrerDogTest {
+
+	@ElasticsearchIndex(
+		name = "page-referrers",
+		resourcePath = "page_referrers_acquisitions_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testAcquisitionChannels() {
+		Map<String, Double> acquisitionChannels =
+			_pageReferrerDog.getAcquisitionChannels(
+				new SearchQueryContext() {
+					{
+						setCanonicalUrl("http://liferay.com/home");
+						setInterval(Interval.DAY.getKey());
+						setRangeKey(7);
+					}
+				});
+
+		Assert.assertEquals(4, acquisitionChannels.get("direct"), 0);
+		Assert.assertEquals(2, acquisitionChannels.get("paid"), 0);
+		Assert.assertEquals(3, acquisitionChannels.get("referral"), 0);
+
+		acquisitionChannels = _pageReferrerDog.getAcquisitionChannels(
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl("http://liferay.com/home");
+					setInterval(Interval.DAY.getKey());
+					setRangeKey(30);
+				}
+			});
+
+		Assert.assertEquals(4, acquisitionChannels.get("direct"), 0);
+		Assert.assertEquals(2, acquisitionChannels.get("paid"), 0);
+		Assert.assertEquals(4, acquisitionChannels.get("referral"), 0);
+		Assert.assertEquals(5, acquisitionChannels.get("social"), 0);
+	}
 
 	@ElasticsearchIndex(
 		name = "page-referrers", resourcePath = "page_referrers_info.json",
