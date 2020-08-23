@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.model;
 
 import java.util.Objects;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -36,20 +35,20 @@ public class PageAcquisition extends Acquisition {
 		String channel = super.getChannel();
 
 		if (Objects.equals(channel, "organic") ||
-			ArrayUtils.contains(_SEARCH_HOST_NAMES, referrer)) {
+			_contains(_SEARCH_HOST_NAMES, referrer)) {
 
 			return "organic";
 		}
 
 		if (Objects.equals(channel, "paid search") ||
 			!StringUtils.isBlank(decode(queryParams.getFirst("gclid"))) ||
-			ArrayUtils.contains(_PAID_HOST_NAMES, referrer)) {
+			_contains(_PAID_HOST_NAMES, referrer)) {
 
 			return "paid";
 		}
 
 		if (Objects.equals(channel, "social") ||
-			ArrayUtils.contains(_SOCIAL_HOST_NAMES, referrer)) {
+			_contains(_SOCIAL_HOST_NAMES, referrer)) {
 
 			return "social";
 		}
@@ -63,19 +62,32 @@ public class PageAcquisition extends Acquisition {
 		return "direct";
 	}
 
-	private static final String[] _PAID_HOST_NAMES = {
-		"www.googleadservices.com"
-	};
+	private boolean _contains(String[] array, String referrer) {
+		if (StringUtils.isBlank(referrer)) {
+			return false;
+		}
+
+		referrer = StringUtils.removeEnd(referrer, "/");
+
+		for (String value : array) {
+			if (referrer.endsWith(value)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static final String[] _PAID_HOST_NAMES = {"googleadservices.com"};
 
 	private static final String[] _SEARCH_HOST_NAMES = {
-		"duckduckgo.com", "www.ask.com", "www.baidu.com", "www.bing.com",
-		"www.google.com", "www.yahoo.com", "www.yandex.com"
+		"ask.com", "baidu.com", "bing.com", "duckduckgo.com", "google.com",
+		"yahoo.com", "yandex.com"
 	};
 
 	private static final String[] _SOCIAL_HOST_NAMES = {
-		"twitter.com", "www.facebook.com", "www.instagram.com",
-		"www.linkedin.com", "www.pinterest.com", "www.snapchat.com",
-		"www.tiktok.com", "www.youtube.com"
+		"facebook.com", "instagram.com", "linkedin.com", "pinterest.com",
+		"snapchat.com", "tiktok.com", "twitter.com", "youtube.com"
 	};
 
 }
