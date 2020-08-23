@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.page.PageDog;
+import com.liferay.osb.asah.backend.dog.page.PageReferrerDog;
 import com.liferay.osb.asah.backend.model.PageMetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
@@ -25,6 +26,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.time.LocalDate;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.json.JSONArray;
@@ -43,6 +45,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(produces = "application/json", value = "/api/1.0/pages")
 @RestController
 public class PagesRestController extends BaseRestController {
+
+	@GetMapping("/acquisition-channels")
+	public Map<String, Double> getAcquisitionChannels(
+		@RequestParam String canonicalURL,
+		@RequestParam(defaultValue = "D") String interval,
+		@RequestParam(defaultValue = "7") int rangeKey) {
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext();
+
+		searchQueryContext.setCanonicalUrl(canonicalURL);
+		searchQueryContext.setInterval(interval);
+		searchQueryContext.setRangeKey(rangeKey);
+
+		return _pageReferrerDog.getAcquisitionChannels(searchQueryContext);
+	}
 
 	@GetMapping("/geolocations")
 	public String getGeolocations(@RequestParam String canonicalURL) {
@@ -138,5 +155,8 @@ public class PagesRestController extends BaseRestController {
 
 	@Autowired
 	private PageDog _pageDog;
+
+	@Autowired
+	private PageReferrerDog _pageReferrerDog;
 
 }
