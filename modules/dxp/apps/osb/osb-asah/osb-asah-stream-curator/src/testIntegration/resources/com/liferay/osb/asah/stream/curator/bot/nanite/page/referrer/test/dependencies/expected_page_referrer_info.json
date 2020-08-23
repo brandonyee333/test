@@ -4,6 +4,7 @@
 		"accessDates": [
 			"2018-01-04T10:01:00.000Z"
 		],
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"channelId": "1",
 		"city": null,
@@ -23,6 +24,7 @@
 		"accessDates": [
 			"2018-01-04T10:10:04.000Z"
 		],
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"channelId": "1",
 		"city": null,
@@ -42,6 +44,7 @@
 		"accessDates": [
 			"2018-01-04T10:22:05.000Z"
 		],
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"canonicalUrl": "http://liferay.com/home",
 		"channelId": "1",
@@ -62,6 +65,7 @@
 		"accessDates": [
 			"2018-01-04T10:30:09.000Z"
 		],
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"channelId": "1",
 		"city": null,
@@ -81,6 +85,7 @@
 		"accessDates": [
 			"2018-01-04T10:36:11.000Z"
 		],
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"channelId": "1",
 		"city": null,
@@ -100,6 +105,7 @@
 		"accessDates": [
 			"2018-01-04T10:38:07.000Z"
 		],
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"channelId": "1",
 		"city": null,
@@ -119,6 +125,7 @@
 		"accessDates": [
 			"2018-01-04T10:40:01.000Z"
 		],
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"channelId": "1",
 		"city": null,
@@ -138,6 +145,7 @@
 		"accessDates": [
 			"2018-01-04T10:42:03.000Z"
 		],
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"channelId": "1",
 		"city": null,
@@ -157,6 +165,7 @@
 		"accessDates": [
 			"2018-01-04T10:47:10.000Z"
 		],
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"channelId": "1",
 		"city": null,
@@ -176,6 +185,7 @@
 		"accessDates": [
 			"2018-01-04T11:05:08.000Z"
 		],
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"channelId": "1",
 		"city": null,
@@ -197,6 +207,7 @@
 			"2018-01-04T10:41:01.000Z",
 			"2018-01-04T10:50:02.000Z"
 		],
+		"acquisitionChannel": "direct",
 		"browserName": "IE",
 		"channelId": "1",
 		"city": null,
@@ -216,6 +227,7 @@
 		"accessDates": [
 			"2018-01-04T11:31:04.000Z"
 		],
+		"acquisitionChannel": "organic",
 		"browserName": "Firefox",
 		"channelId": "1",
 		"city": null,
@@ -230,5 +242,89 @@
 		"title": "About Us",
 		"url": "http://liferay.com/our-story",
 		"userId": "4"
+	},
+	{
+		"access": 1,
+		"accessDates": [
+			"2018-01-04T11:31:04.000Z"
+		],
+		"acquisitionChannel": "paid",
+		"browserName": "Firefox",
+		"channelId": "1",
+		"city": null,
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "2018-01-04T11:00:00.000Z",
+		"platformName": "Linux",
+		"primaryKey": "4b4cd07c7b9bcb3a94bbcebbfaab54595175d809f7595e3378a2f63c5897679e",
+		"referrer": "https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwiH26qR9IHrAhUTG-cKHcssA84YABAEGgJwdg",
+		"region": "Pernambuco",
+		"title": "About Us",
+		"url": "http://liferay.com/our-story",
+		"userId": "9"
+	},
+	{
+		"access": 1,
+		"accessDates": [
+			"2018-01-04T11:31:04.000Z"
+		],
+		"acquisitionChannel": "organic",
+		"browserName": "Firefox",
+		"channelId": "1",
+		"city": null,
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "2018-01-04T11:00:00.000Z",
+		"platformName": "Linux",
+		"primaryKey": "ed907425558817d5f9c93ef7c96721214d3f1dfc0092843b65435ad52ab25665",
+		"referrer": "",
+		"region": "Pernambuco",
+		"title": "About Us",
+		"url": "http://liferay.com/our-story?utm_medium=organic",
+		"userId": "9"
+	},
+	{
+		"access": 1,
+		"accessDates": [
+			"2018-01-04T11:31:04.000Z"
+		],
+		"acquisitionChannel": "social",
+		"browserName": "Firefox",
+		"channelId": "1",
+		"city": null,
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "2018-01-04T11:00:00.000Z",
+		"platformName": "Linux",
+		"primaryKey": "831bb18077d60edc14515c0d3a004e54cf0feeb0b3a0cabe90ba850d891368c4",
+		"referrer": "https://www.facebook.com",
+		"region": "Pernambuco",
+		"title": "About Us",
+		"url": "http://liferay.com/our-story",
+		"userId": "9"
+	},
+	{
+		"access": 1,
+		"accessDates": [
+			"2018-01-04T11:31:04.000Z"
+		],
+		"acquisitionChannel": "paid",
+		"browserName": "Firefox",
+		"channelId": "1",
+		"city": null,
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "2018-01-04T11:00:00.000Z",
+		"platformName": "Linux",
+		"primaryKey": "455605c2a2d9b80ef66f2cf7f98421c35c38dbf91e969ee76eb21c77a9811a70",
+		"referrer": "https://www.facebook.com",
+		"region": "Pernambuco",
+		"title": "About Us",
+		"url": "http://liferay.com/our-story?gclid=CjwKCAjwydP5BRBREiwA-qrCGrt7eyGrZTJ6Tfmk34K_8g75KP9RLV4deH26M1U8rCiKTvWPl5JKHhoCH8cQAvD",
+		"userId": "9"
 	}
 ]

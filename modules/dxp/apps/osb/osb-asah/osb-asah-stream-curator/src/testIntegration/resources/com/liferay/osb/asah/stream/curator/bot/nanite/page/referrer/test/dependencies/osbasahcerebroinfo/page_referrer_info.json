@@ -1,6 +1,7 @@
 [
 	{
 		"access": 5,
+		"acquisitionChannel": "referral",
 		"browserName": "IE",
 		"canonicalUrl": "http://liferay.com/home",
 		"channelId": "1",
