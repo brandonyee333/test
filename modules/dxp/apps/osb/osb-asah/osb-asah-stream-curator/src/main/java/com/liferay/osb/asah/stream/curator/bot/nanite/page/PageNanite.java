@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.messaging.MessageListener;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.Preference;
@@ -63,7 +64,7 @@ import org.springframework.stereotype.Component;
  * @author Inácio Nery
  */
 @Component
-public class PageNanite extends BaseNanite<Page> {
+public class PageNanite extends BaseNanite<Page> implements MessageListener {
 
 	@Override
 	public String getCollectionName() {
@@ -76,9 +77,12 @@ public class PageNanite extends BaseNanite<Page> {
 
 		_cacheSearchQueryStrings();
 
-		_messageBus.registerMessageListener(
-			Channel.SEARCH_QUERY_STRINGS,
-			message -> _cacheSearchQueryStrings());
+		_messageBus.registerMessageListener(Channel.SEARCH_QUERY_STRINGS, this);
+	}
+
+	@Override
+	public void onMessage(String message) {
+		_cacheSearchQueryStrings();
 	}
 
 	@Override
