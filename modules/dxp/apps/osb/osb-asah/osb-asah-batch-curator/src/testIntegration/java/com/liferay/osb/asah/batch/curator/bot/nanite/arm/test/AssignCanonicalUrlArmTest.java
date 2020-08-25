@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.arm.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignCanonicalUrlArm;
+import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignTempUrlsArm;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
@@ -111,6 +112,8 @@ public class AssignCanonicalUrlArmTest {
 		_faroInfoElasticsearchInvoker.add(
 			"visited-pages", visitedPagesJSONArray);
 
+		_assignTempUrlsArm.execute();
+
 		_assignCanonicalUrlArm.execute();
 
 		Assert.assertEquals(
@@ -158,6 +161,8 @@ public class AssignCanonicalUrlArmTest {
 		_cerebroInfoElasticsearchInvoker.add(
 			"blogs", JSONUtil.put("urls", JSONUtil.putAll(url)));
 		_cerebroInfoElasticsearchInvoker.add("pages", JSONUtil.put("url", url));
+
+		_assignTempUrlsArm.execute();
 
 		_assignCanonicalUrlArm.execute();
 
@@ -226,6 +231,9 @@ public class AssignCanonicalUrlArmTest {
 
 	@Autowired
 	private AssignCanonicalUrlArm _assignCanonicalUrlArm;
+
+	@Autowired
+	private AssignTempUrlsArm _assignTempUrlsArm;
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
