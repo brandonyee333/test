@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Michael Bowerman
  */
+@Profile("!test")
 @RequestMapping("/nanites")
 @RestController
 public class NanitesRestController {
