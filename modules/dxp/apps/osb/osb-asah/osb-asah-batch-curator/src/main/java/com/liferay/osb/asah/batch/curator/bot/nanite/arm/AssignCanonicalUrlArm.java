@@ -220,7 +220,12 @@ public class AssignCanonicalUrlArm {
 
 	private void _updateAssets(String canonicalUrl, String url) {
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.termsQuery("urls", url), true,
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termsQuery("urls", url)
+			).filter(
+				QueryBuilders.scriptQuery(_ASSET_QUERY_SCRIPT)
+			),
+			true,
 			new Script(
 				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 				_updateAssetCanonicalUrlsScriptSource,
