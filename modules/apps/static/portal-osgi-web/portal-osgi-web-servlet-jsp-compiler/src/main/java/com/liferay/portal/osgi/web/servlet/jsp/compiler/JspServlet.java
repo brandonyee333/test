@@ -649,7 +649,7 @@ public class JspServlet extends HttpServlet {
 			}
 
 			Enumeration<URL> enumeration = bundle.findEntries(
-				_DIR_NAME_RESOURCES, "*.jsp", true);
+				_DIR_NAME_RESOURCES, "*.jsp*", true);
 
 			if (enumeration == null) {
 				return null;
