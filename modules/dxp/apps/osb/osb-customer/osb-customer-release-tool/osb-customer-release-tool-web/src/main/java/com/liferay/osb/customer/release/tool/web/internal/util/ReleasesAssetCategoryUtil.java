@@ -21,6 +21,7 @@ import com.liferay.asset.kernel.model.AssetCategoryProperty;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService;
+import com.liferay.asset.kernel.service.AssetCategoryService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAssetCategoryProperty;
@@ -86,6 +87,15 @@ public class ReleasesAssetCategoryUtil {
 		}
 
 		return null;
+	}
+
+	public List<AssetCategory> getDisplayProductAssetCategories()
+		throws PortalException {
+
+		return _assetCategoryService.getVocabularyCategories(
+			AssetCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
+			_releasesAssetVocabulary.getVocabularyId(), QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	public AssetCategory getFixPackAssetCategory(
@@ -311,6 +321,9 @@ public class ReleasesAssetCategoryUtil {
 	@Reference
 	private AssetCategoryPropertyLocalService
 		_assetCategoryPropertyLocalService;
+
+	@Reference
+	private AssetCategoryService _assetCategoryService;
 
 	@Reference
 	private AssetVocabularyLocalService _assetVocabularyLocalService;

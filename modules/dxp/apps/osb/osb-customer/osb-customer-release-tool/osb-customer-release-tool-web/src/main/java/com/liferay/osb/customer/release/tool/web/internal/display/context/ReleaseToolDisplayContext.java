@@ -171,7 +171,7 @@ public class ReleaseToolDisplayContext {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		List<AssetCategory> assetCategories =
-			_releasesAssetCategoryUtil.getProductAssetCategories();
+			_releasesAssetCategoryUtil.getDisplayProductAssetCategories();
 
 		assetCategories = ListUtil.sort(
 			assetCategories,
