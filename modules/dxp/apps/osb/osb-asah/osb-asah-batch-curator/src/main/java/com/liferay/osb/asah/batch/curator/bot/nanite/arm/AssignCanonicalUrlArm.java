@@ -55,7 +55,7 @@ public class AssignCanonicalUrlArm {
 		_resolveURLs(
 			(canonicalUrl, url) -> {
 				_updateActivities(canonicalUrl, url);
-				_updateAssets(canonicalUrl, url);
+				_updateAssets(canonicalUrl, url, _ASSET_COLLECTION_NAMES);
 				_updatePages(canonicalUrl, url, "pages", "page-referrers");
 				_updateVisitedPages(canonicalUrl, url);
 			},
@@ -76,8 +76,9 @@ public class AssignCanonicalUrlArm {
 
 		for (String assetCollectionName : _ASSET_COLLECTION_NAMES) {
 			_resolveURLs(
-				this::_updateAssets, assetCollectionName,
-				this::_getAssetsSearchResponse);
+				(canonicalUrl, url) -> _updateAssets(
+					canonicalUrl, url, assetCollectionName),
+				assetCollectionName, this::_getAssetsSearchResponse);
 		}
 	}
 
@@ -218,7 +219,9 @@ public class AssignCanonicalUrlArm {
 			"activities");
 	}
 
-	private void _updateAssets(String canonicalUrl, String url) {
+	private void _updateAssets(
+		String canonicalUrl, String url, String... collectionNames) {
+
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termsQuery("urls", url)
@@ -235,7 +238,7 @@ public class AssignCanonicalUrlArm {
 						put("url", url);
 					}
 				}),
-			_ASSET_COLLECTION_NAMES);
+			collectionNames);
 	}
 
 	private void _updatePages(
