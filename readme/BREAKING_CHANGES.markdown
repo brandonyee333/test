@@ -1380,19 +1380,19 @@ modules provide more flexibility and can be included in any app.
 #### What changed?
 
 The `copy-request-parameters` init parameter's default value is now set to
-`true` in all portlets that extend `MVCPortlet`.
+`true` in `MVCPortlet`.
 
 #### Who is affected?
 
-This affects developers that have created portlets that extend `MVCPortlet`.
+This affects developers whose portlets extend `MVCPortlet`.
 
 #### How should I update my code?
 
-To continue using the property the same way you did before this change was
-implemented, you'll need to change the default property. To change the property,
-set the init parameter to `false` in your class extending `MVCPortlet`:
+If your portlet doesn't set `copy-request-parameters` or sets it `false`,
+remove that code and add the following `@Component` property to disable the
+`copy-request-parameters` init parameter:
 
-    javax.portlet.init-param.copy-request-parameters=false
+    "javax.portlet.init-param.copy-request-parameters=false"
 
 #### Why was this change made?
 
