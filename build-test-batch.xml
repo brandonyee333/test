@@ -289,7 +289,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 			<database-test-action database.type="@{database.type}">
 				<action>
 					<if>
-						<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
+						<isset property="database.docker.image" />
 						<then>
 							<echo>Using Docker for ${database.type}.</echo>
 						</then>
@@ -335,12 +335,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 			<database-test-action database.type="@{database.type}">
 				<action>
 					<if>
-						<and>
-							<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
-							<not>
-								<equals arg1="${database.type}" arg2="hypersonic" />
-							</not>
-						</and>
+						<isset property="database.docker.image" />
 						<then>
 							<stop-docker-database />
 						</then>
@@ -360,12 +355,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					<set-portal-impl-system-ext-properties />
 
 					<if>
-						<and>
-							<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
-							<not>
-								<equals arg1="${database.type}" arg2="hypersonic" />
-							</not>
-						</and>
+						<isset property="database.docker.image" />
 						<then>
 							<start-docker-database />
 						</then>
@@ -440,12 +430,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					</if>
 
 					<if>
-						<and>
-							<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
-							<not>
-								<equals arg1="${database.type}" arg2="hypersonic" />
-							</not>
-						</and>
+						<isset property="database.docker.image" />
 						<then>
 							<stop-docker-database />
 						</then>
@@ -3148,7 +3133,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 				<database-test-action database.type="mysql">
 					<action>
 						<if>
-							<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
+							<isset property="database.docker.image" />
 							<then>
 								<start-docker-database />
 							</then>
