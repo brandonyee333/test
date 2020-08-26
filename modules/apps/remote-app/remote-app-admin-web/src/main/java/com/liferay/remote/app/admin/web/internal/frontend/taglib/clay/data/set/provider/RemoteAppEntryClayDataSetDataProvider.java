@@ -17,7 +17,6 @@ package com.liferay.remote.app.admin.web.internal.frontend.taglib.clay.data.set.
 import com.liferay.frontend.taglib.clay.data.Filter;
 import com.liferay.frontend.taglib.clay.data.Pagination;
 import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvider;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -59,7 +58,7 @@ public class RemoteAppEntryClayDataSetDataProvider
 
 		List<RemoteAppEntry> remoteAppEntries =
 			_remoteAppEntryLocalService.getRemoteAppEntries(
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+				pagination.getStartPosition(), pagination.getEndPosition());
 
 		Stream<RemoteAppEntry> stream = remoteAppEntries.stream();
 
