@@ -2929,11 +2929,11 @@ definition {
 
 		FormFields.editText(
 			fieldName = "label",
-			fieldValue = ",.?/;:{}[]\|-+!@#$%^*()=_");
+			fieldValue = ",-+!@#$%^*()=.?/;:{}[]\|");
 
 		FormFields.viewFieldName(fieldName = "text");
 
-		FormFields.editFieldName(fieldValue = ",.?/;:{}[]\|-+!@#$%^*()=_");
+		FormFields.editFieldName(fieldValue = ",-+!@#$%^*()=.?/;:{}[]\|");
 
 		FormFields.viewFieldName(fieldName = "text");
 
@@ -2972,7 +2972,7 @@ definition {
 		Navigator.gotoPage(pageName = "Form Page");
 
 		FormFields.viewTextField(
-			fieldLabel = ",.?/;:{}[]\|-+!@#$%^*()=_",
+			fieldLabel = ",-+!@#$%^*()=.?/;:{}[]\|",
 			fieldName = "text");
 
 		FormFields.viewTextField(
@@ -2985,7 +2985,7 @@ definition {
 
 		FormFields.editText(
 			fieldName = "JumpSheExclaimed",
-			fieldValue = ",.?/;:{}[]\|-+!@#$%^*()=_");
+			fieldValue = ",-+!@#$%^*()=.?/;:{}[]\|");
 
 		FormPortlet.submitSuccessfully();
 	}
