@@ -1255,11 +1255,10 @@ public class JournalPortlet extends MVCPortlet {
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, themeDisplay.getPpid(),
-				PortletRequest.RENDER_PHASE);
-
-			redirect = portletURL.toString();
+			redirect = String.valueOf(
+				PortletURLFactoryUtil.create(
+					actionRequest, themeDisplay.getPpid(),
+					PortletRequest.RENDER_PHASE));
 		}
 
 		if ((article != null) &&

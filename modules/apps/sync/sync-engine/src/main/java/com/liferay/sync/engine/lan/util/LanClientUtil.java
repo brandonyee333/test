@@ -64,9 +64,7 @@ public class LanClientUtil {
 			SyncProp.KEY_SYNC_LAN_CLIENT_UUID);
 
 		if (syncLanClientUuid == null) {
-			UUID uuid = UUID.randomUUID();
-
-			syncLanClientUuid = uuid.toString();
+			syncLanClientUuid = String.valueOf(UUID.randomUUID());
 
 			SyncPropService.updateSyncProp(
 				SyncProp.KEY_SYNC_LAN_CLIENT_UUID, syncLanClientUuid);
