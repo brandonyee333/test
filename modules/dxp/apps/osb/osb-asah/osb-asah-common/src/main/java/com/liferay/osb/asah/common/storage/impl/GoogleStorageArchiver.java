@@ -91,7 +91,9 @@ public class GoogleStorageArchiver {
 		}
 
 		Page<Blob> blobs = _storage.list(
-			bucket, Storage.BlobListOption.prefix(sparkJobResultPathPrefix));
+			bucket,
+			Storage.BlobListOption.prefix(
+				_getBlobName(bucketFolder, sparkJobResultPathPrefix)));
 
 		String tempFileName = _createTempFileName(".zip", "export");
 
