@@ -115,7 +115,7 @@ public class IndividualNanite implements Nanite {
 						null,
 						messageJSONObject.getString("emailAddressHashed"))) {
 
-					JSONObject knownIndividualJSONObject = _updateIndividual(
+					JSONObject individualJSONObject = _updateIndividual(
 						messageJSONObject.getJSONObject("analyticsData"),
 						messageJSONObject.getString("channelId"),
 						messageJSONObject.getString("dataSourceId"),
@@ -125,12 +125,12 @@ public class IndividualNanite implements Nanite {
 					_updatePagesAndAssets(
 						messageJSONObject.getString("channelId"),
 						messageJSONObject.getString("dataSourceId"),
-						knownIndividualJSONObject,
+						individualJSONObject,
 						messageJSONObject.getString("userId"));
 
 					_updateUserSessions(
 						messageJSONObject.getString("dataSourceId"),
-						knownIndividualJSONObject.getString("id"),
+						individualJSONObject.getString("id"),
 						messageJSONObject.getString("userId"));
 				}
 
