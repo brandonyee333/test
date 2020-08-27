@@ -18,7 +18,7 @@
 
 <aui:script>
 	var nestedPortlet = document.getElementById(
-		'_<%= portletDisplay.getId() %>__main-content'
+		'_<%= portletDisplay.getId() %>_main-content'
 	);
 
 	if (nestedPortlet != null) {
