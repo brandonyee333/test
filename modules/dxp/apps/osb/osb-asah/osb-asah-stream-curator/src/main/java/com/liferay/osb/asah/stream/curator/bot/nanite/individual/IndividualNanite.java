@@ -34,6 +34,7 @@ import io.prometheus.client.Counter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.PostConstruct;
@@ -124,7 +125,7 @@ public class IndividualNanite implements Nanite {
 					_updatePagesAndAssets(
 						messageJSONObject.getString("channelId"),
 						messageJSONObject.getString("dataSourceId"),
-						knownIndividualJSONObject.getString("id"),
+						knownIndividualJSONObject,
 						messageJSONObject.getString("userId"));
 
 					_updateUserSessions(
@@ -376,33 +377,35 @@ public class IndividualNanite implements Nanite {
 	}
 
 	private void _updatePagesAndAssets(
-		String channelId, String dataSourceId, String individualId,
+		String channelId, String dataSourceId, JSONObject individualJSONObject,
 		String userId) {
 
-		Script script;
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("ctx._source.individualId = params.individualId;");
+
+		Map<String, Object> params = new HashMap<>();
+
+		String individualId = individualJSONObject.getString("id");
+
+		params.put("individualId", individualId);
+
+		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
+			"demographics");
+
+		if ((demographicsJSONObject != null) &&
+			demographicsJSONObject.has("email")) {
+
+			sb.append("ctx._source.knownIndividual = true;");
+		}
 
 		List<String> segmentNames = _fetchIndividualSegmentNames(
 			channelId, individualId);
 
-		if (segmentNames.isEmpty()) {
-			script = new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				"ctx._source.individualId = params.individualId;" +
-					"ctx._source.knownIndividual = true",
-				Collections.singletonMap("individualId", individualId));
-		}
-		else {
-			script = new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				"ctx._source.individualId = params.individualId;" +
-					"ctx._source.knownIndividual = true;" +
-						"ctx._source.segmentNames = params.segmentNames",
-				new HashMap<String, Object>() {
-					{
-						put("individualId", individualId);
-						put("segmentNames", segmentNames);
-					}
-				});
+		if (!segmentNames.isEmpty()) {
+			sb.append("ctx._source.segmentNames = params.segmentNames;");
+
+			params.put("segmentNames", segmentNames);
 		}
 
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
@@ -417,7 +420,11 @@ public class IndividualNanite implements Nanite {
 					QueryBuilders.termQuery("knownIndividual", false)
 				)
 			),
-			true, script, _collections);
+			true,
+			new Script(
+				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+				sb.toString(), params),
+			_collections);
 	}
 
 	private void _updateUserSessions(
