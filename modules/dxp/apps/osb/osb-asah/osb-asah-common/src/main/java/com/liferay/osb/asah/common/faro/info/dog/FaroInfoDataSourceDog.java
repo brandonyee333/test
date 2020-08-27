@@ -93,7 +93,8 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			"data-sources", dataSourceJSONObject.getString("id"),
 			dataSourceJSONObject);
 
-		_messageBus.sendMessage(Channel.DATA_SOURCES_UPDATED, "");
+		_messageBus.sendMessage(
+			Channel.DATA_SOURCES_UPDATED, "DATA_SOURCES_UPDATED");
 
 		return dataSourceJSONObject;
 	}
@@ -125,7 +126,8 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			_nanitesHttp.refreshAnalytics();
 		}
 
-		_messageBus.sendMessage(Channel.DATA_SOURCES_UPDATED, "");
+		_messageBus.sendMessage(
+			Channel.DATA_SOURCES_UPDATED, "DATA_SOURCES_UPDATED");
 	}
 
 	public void deleteFieldMappings(
