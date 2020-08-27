@@ -12,6 +12,9 @@
 		"naniteClassName": "DeleteDXPBatchEntitiesNanite"
 	},
 	{
+		"naniteClassName": "DeleteTempFilesNanite"
+	},
+	{
 		"naniteClassName": "ExperimentNanite"
 	},
 	{

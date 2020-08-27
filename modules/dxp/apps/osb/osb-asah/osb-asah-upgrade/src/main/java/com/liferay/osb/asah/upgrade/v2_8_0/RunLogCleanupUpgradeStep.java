@@ -52,8 +52,8 @@ public class RunLogCleanupUpgradeStep implements UpgradeStep {
 	private static final String[] _RUN_LOG_ENABLED_NANITES = {
 		"AccountEngagementScoresNanite", "AssetEngagementScoresNanite",
 		"DataRetentionNanite", "DeleteDXPBatchEntitiesNanite",
-		"ExperimentNanite", "IndividualEngagementScoresNanite",
-		"IndividualInterestScoresNanite",
+		"DeleteTempFilesNanite", "ExperimentNanite",
+		"IndividualEngagementScoresNanite", "IndividualInterestScoresNanite",
 		"IndividualSegmentEngagementScoresNanite",
 		"InterestThresholdScoreNanite", "InterestTopicsNanite",
 		"StaleDynamicIndividualSegmentsNanite"
