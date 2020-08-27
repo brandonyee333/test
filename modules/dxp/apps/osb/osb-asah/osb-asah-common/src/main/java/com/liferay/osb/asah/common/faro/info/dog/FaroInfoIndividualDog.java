@@ -16,12 +16,14 @@ package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -29,9 +31,11 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
@@ -412,6 +416,16 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	public void init() {
 		super.init();
 
+		String[] collections = JSONUtil.toStringArray(
+			_elasticsearchIndexManager.getCollectionsJSONArray(
+				WeDeployDataService.OSB_ASAH_CEREBRO_INFO));
+
+		_collections = ArrayUtils.remove(
+			collections, ArrayUtils.indexOf(collections, "user-sessions"));
+
+		_cerebroInfoElasticsearchInvoker =
+			elasticsearchInvokerFactory.forCerebroInfo();
+
 		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
 	}
 
@@ -559,6 +573,28 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 			partialIndividualJSONObject.put(
 				"lastEnrichmentDate", DateUtil.newDateString());
+		}
+
+		if (!previousDemographicsJSONObject.has("email") &&
+			demographicsJSONObject.has("email")) {
+
+			_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"individualId", individualJSONObject.getString("id"))
+				).filter(
+					BoolQueryBuilderUtil.shouldNot(
+						QueryBuilders.existsQuery("knownIndividual")
+					).should(
+						QueryBuilders.termQuery("knownIndividual", false)
+					)
+				),
+				true,
+				new Script(
+					Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+					"ctx._source.knownIndividual = true;",
+					Collections.emptyMap()),
+				_collections);
 		}
 
 		_updateIndividualAssociations(
@@ -712,7 +748,13 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		}
 	}
 
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+	private String[] _collections;
+
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
