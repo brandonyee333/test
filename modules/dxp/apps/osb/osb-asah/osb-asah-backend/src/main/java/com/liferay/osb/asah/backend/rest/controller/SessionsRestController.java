@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.response.NestedTermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
@@ -24,6 +23,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,35 +50,31 @@ public class SessionsRestController extends BaseRestController {
 			@RequestParam(required = false) String value)
 		throws Exception {
 
-		TransformationJSONArrayFunction transformationJSONArrayFunction = null;
+		fieldName = fieldName.replace("context/", "");
 
-		String adjustedFieldName = fieldName.replace("context/", "");
+		if (_contextFieldNames.contains(fieldName)) {
+			fieldName = fieldName + "s";
+		}
 
-		if (_contextFieldNames.contains(adjustedFieldName)) {
-			transformationJSONArrayFunction =
-				new NestedTermsAggregationTransformationJSONArrayFunction(
-					value, "interactions/" + fieldName, "interactions",
-					MultiBucketsAggregation.Bucket::getKeyAsString);
-		}
-		else {
-			transformationJSONArrayFunction =
-				new TermsAggregationTransformationJSONArrayFunction(
-					value, adjustedFieldName,
-					MultiBucketsAggregation.Bucket::getKeyAsString);
-		}
+		TransformationJSONArrayFunction transformationJSONArrayFunction =
+			new TermsAggregationTransformationJSONArrayFunction(
+				value, fieldName,
+				MultiBucketsAggregation.Bucket::getKeyAsString);
+
+		QueryBuilder queryBuilder = null;
 
 		if (StringUtils.isNotBlank(filterString)) {
-			filterString = filterString.replaceAll("context/", "");
+			queryBuilder = FilterStringToQueryBuilderConverter.convert(
+				filterString.replaceAll("context/", ""));
 		}
 
 		return toTransformationGetResponse(
 			null, "user-sessions", cerebroInfoElasticsearchInvoker, page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			null, new String[] {"_key", "asc"}, null,
+			queryBuilder, size, null, new String[] {"_key", "asc"}, null,
 			transformationJSONArrayFunction, "session-values");
 	}
 
 	private final List<String> _contextFieldNames = Arrays.asList(
-		"deviceType", "referrer", "url");
+		"canonicalUrl", "referrer", "url");
 
 }
