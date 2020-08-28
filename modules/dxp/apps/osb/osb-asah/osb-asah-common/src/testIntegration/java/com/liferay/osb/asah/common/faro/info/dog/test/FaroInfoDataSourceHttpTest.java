@@ -90,7 +90,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		String dataSourceId1 = dataSourceJSONObject1.getString("id");
 		String dataSourceId2 = dataSourceJSONObject2.getString("id");
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				JSONUtil.put(
@@ -100,7 +100,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				),
 				"email", "http://schema.org/email"));
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				dataSourceId2, "givenName", "givenName", "Text"));
@@ -109,7 +109,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject1),
 			false);
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"fields",
 			FaroInfoTestUtil.buildIndividualFieldJSONObject(
 				dataSourceJSONObject1, "email", "http://schema.org/email",
@@ -153,21 +153,21 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			4L,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"data-sources", QueryBuilders.matchAllQuery()));
 		Assert.assertTrue(
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"data-sources", QueryBuilders.termQuery("name", "Liferay")));
 		Assert.assertTrue(
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"data-sources",
 				QueryBuilders.termQuery("name", "Liferay (1)")));
 		Assert.assertTrue(
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"data-sources",
 				QueryBuilders.termQuery("name", "Liferay (2)")));
 		Assert.assertTrue(
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"data-sources",
 				QueryBuilders.termQuery("name", "Liferay (3)")));
 	}
@@ -182,7 +182,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		String dataSourceId1 = dataSourceJSONObject1.getString("id");
 		String dataSourceId2 = dataSourceJSONObject2.getString("id");
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"csv-individuals",
 			JSONUtil.putAll(
 				FaroInfoTestUtil.buildCSVIndividualJSONObject(
@@ -200,13 +200,13 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertFalse(
 			"Found entry in csv-individuals collection with data source ID " +
 				dataSourceId1,
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"csv-individuals",
 				QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
 		Assert.assertTrue(
 			"Unable to find entry in csv-individuals collection with data " +
 				"source ID " + dataSourceId2,
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"csv-individuals",
 				QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
 	}
@@ -218,7 +218,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		JSONObject dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
-		JSONObject fieldMappingJSONObject = elasticsearchInvoker.add(
+		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				dataSourceJSONObject.getString("id"), "givenName", "givenName",
@@ -231,7 +231,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertFalse(
 			"Field mapping should have been deleted on data source deletion",
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"field-mappings", fieldMappingJSONObject.getString("id")));
 	}
 
@@ -252,7 +252,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertFalse(
 			"Individual was not deleted on data source deletion despite only " +
 				"containing fields from the deleted data source",
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"individuals", individualJSONObject.getString("id")));
 	}
 
@@ -268,7 +268,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		String dataSourceId1 = dataSourceJSONObject1.getString("id");
 		String dataSourceId2 = dataSourceJSONObject2.getString("id");
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				JSONUtil.put(
@@ -285,7 +285,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertFalse(
 			"Field mapping reference to deleted data source was not removed",
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"field-mappings",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("fieldName", "givenName")
@@ -296,7 +296,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertTrue(
 			"Field mapping reference to existing data source was removed on " +
 				"deletion of another data source",
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"field-mappings",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("fieldName", "givenName")
@@ -313,7 +313,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		JSONObject dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				dataSourceJSONObject.getString("id"), "givenName", "givenName",
@@ -329,7 +329,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		_faroInfoDataSourceDog.deleteDataSource(
 			dataSourceJSONObject, null, null);
 
-		individualSegmentJSONObject = elasticsearchInvoker.get(
+		individualSegmentJSONObject = faroInfoElasticsearchInvoker.get(
 			"individual-segments", individualSegmentJSONObject.getString("id"));
 
 		Assert.assertEquals(
@@ -345,7 +345,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		JSONObject dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
-		JSONObject assetJSONObject = elasticsearchInvoker.add(
+		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
 			"assets",
 			FaroInfoTestUtil.buildPageAssetJSONObject(
 				dataSourceJSONObject.getString("id")));
@@ -361,7 +361,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		_faroInfoDataSourceDog.deleteDataSource(
 			dataSourceJSONObject, null, null);
 
-		individualSegmentJSONObject = elasticsearchInvoker.get(
+		individualSegmentJSONObject = faroInfoElasticsearchInvoker.get(
 			"individual-segments", individualSegmentJSONObject.getString("id"));
 
 		Assert.assertEquals(
@@ -377,7 +377,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		JSONObject dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
-		JSONObject fieldMappingJSONObject = elasticsearchInvoker.add(
+		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				JSONUtil.put(
@@ -396,7 +396,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertTrue(
 			"Field mappings created by the default user should not be " +
 				"deleted on data source deletion",
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"field-mappings", fieldMappingJSONObject.getString("id")));
 	}
 
@@ -410,7 +410,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		String dataSourceId1 = dataSourceJSONObject1.getString("id");
 		String dataSourceId2 = dataSourceJSONObject2.getString("id");
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				JSONUtil.put(
@@ -420,7 +420,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				),
 				"email", "http://schema.org/email"));
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				dataSourceId2, "givenName", "givenName", "Text"));
@@ -429,7 +429,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject1),
 			false);
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"fields",
 			FaroInfoTestUtil.buildIndividualFieldJSONObject(
 				dataSourceJSONObject1, "email", "http://schema.org/email",
@@ -460,15 +460,15 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertTrue(
 			"Individual was deleted even though another data source with " +
 				"data on the individual exists",
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"individuals", individualJSONObject.getString("id")));
 
-		individualJSONObject = elasticsearchInvoker.get(
+		individualJSONObject = faroInfoElasticsearchInvoker.get(
 			"individuals", individualJSONObject.getString("id"));
 
 		Assert.assertFalse(
 			"Data source individual PK was not deleted on data source deletion",
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.nestedQuery(
 					"dataSourceIndividualPKs",
@@ -524,20 +524,20 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			Assert.assertTrue(
 				"Unable to find entry in " + index + " collection with data " +
 					"source ID " + dataSourceId1,
-				elasticsearchInvoker.exists(
+				faroInfoElasticsearchInvoker.exists(
 					index,
 					QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
 			Assert.assertTrue(
 				"Unable to find entry in " + index + " collection with data " +
 					"source ID " + dataSourceId2,
-				elasticsearchInvoker.exists(
+				faroInfoElasticsearchInvoker.exists(
 					index,
 					QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
 		}
 
 		Assert.assertFalse(
 			"Individuals from deleted data source still exist",
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.nestedQuery(
 					"dataSourceIndividualPKs",
@@ -547,7 +547,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertTrue(
 			"Individuals from data source " + dataSourceId2 + " were deleted " +
 				"when deleting data source " + dataSourceId1,
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"individuals",
 				QueryBuilders.nestedQuery(
 					"dataSourceIndividualPKs",
@@ -582,25 +582,25 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		Assert.assertFalse(
 			"Found entry in accounts collection with data source ID " +
 				dataSourceId1,
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"accounts",
 				QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
 		Assert.assertTrue(
 			"Unable to find entry in accounts collection with data source ID " +
 				dataSourceId2,
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"accounts",
 				QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
 		Assert.assertFalse(
 			"Found entry in fields collection with data source ID " +
 				dataSourceId1,
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"fields",
 				QueryBuilders.termQuery("dataSourceId", dataSourceId1)));
 		Assert.assertTrue(
 			"Unable to find entry in fields collection with data source ID " +
 				dataSourceId2,
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"fields",
 				QueryBuilders.termQuery("dataSourceId", dataSourceId2)));
 		Assert.assertFalse(
@@ -686,7 +686,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
-				elasticsearchInvoker.add(
+				faroInfoElasticsearchInvoker.add(
 					"activity-groups",
 					FaroInfoTestUtil.buildActivityGroupJSONObject(
 						dataSourceId,
@@ -694,7 +694,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 							FaroInfoTestUtil.buildIndividualJSONObject(
 								dataSourceJSONObject),
 							false))),
-				elasticsearchInvoker.add(
+				faroInfoElasticsearchInvoker.add(
 					"assets",
 					FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId)),
 				"pageViewed", new String[0]));
@@ -728,7 +728,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	private void _addDataToSalesforceDataSource(
 		String dataSourceId, String dataSourceName) {
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"accounts",
 			JSONUtil.put(
 				"accountPK", RandomTestUtil.randomId()
@@ -736,7 +736,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				"dataSourceId", dataSourceId
 			));
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"fields",
 			FaroInfoTestUtil.buildFieldJSONObject(
 				dataSourceId, dataSourceName));

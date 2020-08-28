@@ -69,7 +69,7 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 			JSONArray assetIdsJSONArray = new JSONArray();
 
 			for (int j = 0; j < 3; j++) {
-				JSONObject assetJSONObject = elasticsearchInvoker.add(
+				JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
 					"assets",
 					FaroInfoTestUtil.buildPageAssetJSONObject(
 						liferayDataSourceId));
@@ -82,17 +82,18 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 
 			_liferayDataSourceOrganizationIdsJSONObject.put(
 				liferayDataSourceId,
-				elasticsearchInvoker.add(
+				faroInfoElasticsearchInvoker.add(
 					"organizations",
 					FaroInfoTestUtil.buildOrganizationJSONObject(
 						liferayDataSourceId)));
 		}
 
 		for (String fieldName : _FIELD_NAMES) {
-			JSONObject fieldMappingJSONObject = elasticsearchInvoker.add(
-				"field-mappings",
-				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
-					"", null, fieldName, "Text"));
+			JSONObject fieldMappingJSONObject =
+				faroInfoElasticsearchInvoker.add(
+					"field-mappings",
+					FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+						"", null, fieldName, "Text"));
 
 			_fieldMappingNameIds.put(
 				fieldName, fieldMappingJSONObject.getString("id"));
@@ -447,7 +448,7 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
-		JSONObject fieldMappingJSONObject = elasticsearchInvoker.add(
+		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildFieldMappingJSONObject(
 				null, "custom", JSONUtil.put(dataSourceId, "department"),
@@ -467,7 +468,7 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
-		JSONObject fieldMappingJSONObject = elasticsearchInvoker.add(
+		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildFieldMappingJSONObject(
 				null, "custom", JSONUtil.put(dataSourceId, "department"),

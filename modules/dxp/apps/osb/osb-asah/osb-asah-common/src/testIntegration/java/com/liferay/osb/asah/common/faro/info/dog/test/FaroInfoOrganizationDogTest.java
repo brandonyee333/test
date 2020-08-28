@@ -51,14 +51,14 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		_liferayDataSourceJSONObject.put("id", RandomTestUtil.randomId());
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildFieldMappingJSONObject(
 				null, "custom",
 				JSONUtil.put(
 					_liferayDataSourceJSONObject.getString("id"), "address"),
 				"address", "Text", "organization"));
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildFieldMappingJSONObject(
 				null, "custom",
@@ -119,11 +119,11 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			0,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"organizations", QueryBuilders.matchAllQuery()));
 		Assert.assertEquals(
 			1,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"OSBAsahTasks",
 				QueryBuilders.termQuery(
 					"className", "UpdateDynamicMembershipsNanite")));
@@ -162,7 +162,7 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			1,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"OSBAsahTasks",
 				QueryBuilders.termQuery(
 					"className", "UpdateDynamicMembershipsNanite")));

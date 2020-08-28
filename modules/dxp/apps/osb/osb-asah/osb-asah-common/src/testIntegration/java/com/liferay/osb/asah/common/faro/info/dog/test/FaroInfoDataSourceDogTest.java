@@ -68,14 +68,14 @@ public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			0,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"channels",
 				QueryBuilders.termQuery(
 					"dataSources.id", "405201047787757795")));
 
 		Assert.assertEquals(
 			2,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"channels",
 				BoolQueryBuilderUtil.mustNot(
 					QueryBuilders.termQuery(

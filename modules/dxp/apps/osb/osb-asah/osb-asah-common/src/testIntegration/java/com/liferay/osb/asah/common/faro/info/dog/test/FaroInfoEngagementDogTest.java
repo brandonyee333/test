@@ -43,7 +43,7 @@ public class FaroInfoEngagementDogTest extends BaseFaroInfoDogTestCase {
 		String dayDateString = DateUtil.newDayDateString();
 
 		for (int i = 0; i < 5; i++) {
-			elasticsearchInvoker.add(
+			faroInfoElasticsearchInvoker.add(
 				"engagements",
 				JSONUtil.put(
 					"dateRecorded", dayDateString
@@ -57,7 +57,7 @@ public class FaroInfoEngagementDogTest extends BaseFaroInfoDogTestCase {
 		_faroInfoEngagementDog.deleteScore(dayDateString, "123", "individual");
 
 		Assert.assertFalse(
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"engagements",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("dateRecorded", dayDateString)
@@ -81,7 +81,7 @@ public class FaroInfoEngagementDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			1,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"engagements",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("dateRecorded", dayDateString)
@@ -102,7 +102,7 @@ public class FaroInfoEngagementDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			0,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"engagements",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("dateRecorded", dayDateString)
@@ -116,7 +116,7 @@ public class FaroInfoEngagementDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			1,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"engagements",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("dateRecorded", dayDateString)

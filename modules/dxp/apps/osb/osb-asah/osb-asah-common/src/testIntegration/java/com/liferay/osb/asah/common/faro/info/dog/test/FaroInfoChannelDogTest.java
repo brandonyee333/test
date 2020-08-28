@@ -101,7 +101,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 		_faroInfoChannelTest.deleteChannels(
 			Arrays.asList("1", "3"), null, null);
 
-		JSONArray assetsJSONArray = elasticsearchInvoker.get("assets");
+		JSONArray assetsJSONArray = faroInfoElasticsearchInvoker.get("assets");
 
 		Assert.assertEquals(2, assetsJSONArray.length());
 
@@ -132,8 +132,8 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals("2", blogsJSONObject.getString("channelId"));
 
-		JSONArray individualSegmentsJSONArray = elasticsearchInvoker.get(
-			"individual-segments");
+		JSONArray individualSegmentsJSONArray =
+			faroInfoElasticsearchInvoker.get("individual-segments");
 
 		Assert.assertEquals(1, individualSegmentsJSONArray.length());
 
@@ -143,7 +143,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 		Assert.assertEquals(
 			"2", individualSegmentJSONObject.getString("channelId"));
 
-		JSONObject individualJSONObject = elasticsearchInvoker.get(
+		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.get(
 			"individuals", "338486037253283140");
 
 		JSONArray individualActivitiesCountsJSONArray =
@@ -161,7 +161,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(0, individualLastActivityDatesJSONArray.length());
 
-		JSONObject accountJSONObject = elasticsearchInvoker.get(
+		JSONObject accountJSONObject = faroInfoElasticsearchInvoker.get(
 			"accounts", "342313458385210529");
 
 		JSONArray accountActivitiesCountsJSONArray =
@@ -180,7 +180,8 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 		Assert.assertEquals(
 			"2", accountIndividualCountsJSONObject.getString("channelId"));
 
-		JSONArray channelsJSONArray = elasticsearchInvoker.get("channels");
+		JSONArray channelsJSONArray = faroInfoElasticsearchInvoker.get(
+			"channels");
 
 		Assert.assertEquals(1, channelsJSONArray.length());
 
@@ -223,7 +224,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 					JSONUtil.put("id", "456"), JSONUtil.put("id", "789"))
 			));
 
-		JSONObject channelJSONObject = elasticsearchInvoker.get(
+		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
 			"channels", "1");
 
 		JSONArray dataSourcesJSONArray = channelJSONObject.getJSONArray(
@@ -259,7 +260,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		_faroInfoChannelTest.patchChannel("1", JSONUtil.put("name", name));
 
-		JSONObject channelJSONObject = elasticsearchInvoker.get(
+		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
 			"channels", "1");
 
 		Assert.assertEquals(name, channelJSONObject.getString("name"));
@@ -281,7 +282,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 					JSONUtil.put("id", "456"), JSONUtil.put("id", "789"))
 			));
 
-		JSONObject channelJSONObject = elasticsearchInvoker.get(
+		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
 			"channels", "1");
 
 		JSONAssert.assertEquals(

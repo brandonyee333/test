@@ -44,10 +44,10 @@ public class FaroInfoFieldDogTest extends BaseFaroInfoDogTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		_dataSourceJSONObject = elasticsearchInvoker.add(
+		_dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources", FaroInfoTestUtil.buildCSVDataSourceJSONObject());
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				_dataSourceJSONObject.getString("id"), "date", "date", "Date"));

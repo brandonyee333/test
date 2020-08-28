@@ -21,9 +21,9 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,11 +31,10 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.lang3.ArrayUtils;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
@@ -750,7 +749,6 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 	private String[] _collections;
-
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired

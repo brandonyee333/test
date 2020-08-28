@@ -28,10 +28,14 @@ public abstract class BaseFaroInfoDogTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
+		cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+		faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
-	protected ElasticsearchInvoker elasticsearchInvoker;
+	protected ElasticsearchInvoker cerebroInfoElasticsearchInvoker;
+	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
