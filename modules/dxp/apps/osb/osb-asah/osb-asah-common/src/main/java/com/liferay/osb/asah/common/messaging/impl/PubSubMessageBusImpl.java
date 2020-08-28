@@ -118,7 +118,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 	@Override
 	public void sendMessage(Channel channel, String message) {
 		if (StringUtils.isBlank(message)) {
-			throw new IllegalArgumentException("Message is null or empty");
+			throw new IllegalArgumentException("Message is blank");
 		}
 
 		try {
