@@ -415,15 +415,15 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	public void init() {
 		super.init();
 
+		_cerebroInfoElasticsearchInvoker =
+			elasticsearchInvokerFactory.forCerebroInfo();
+
 		String[] collections = JSONUtil.toStringArray(
 			_elasticsearchIndexManager.getCollectionsJSONArray(
 				WeDeployDataService.OSB_ASAH_CEREBRO_INFO));
 
 		_collections = ArrayUtils.remove(
 			collections, ArrayUtils.indexOf(collections, "user-sessions"));
-
-		_cerebroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroInfo();
 
 		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
 	}
