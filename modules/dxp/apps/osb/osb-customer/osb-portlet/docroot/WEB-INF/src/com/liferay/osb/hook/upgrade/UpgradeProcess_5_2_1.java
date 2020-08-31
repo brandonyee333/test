@@ -14,6 +14,7 @@
 
 package com.liferay.osb.hook.upgrade;
 
+import com.liferay.osb.hook.upgrade.v5_2_1.UpgradeLicenseEntry;
 import com.liferay.osb.hook.upgrade.v5_2_1.UpgradeListType;
 
 /**
@@ -28,6 +29,7 @@ public class UpgradeProcess_5_2_1 extends BaseUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		upgrade(UpgradeLicenseEntry.class);
 		upgrade(UpgradeListType.class);
 	}
 
