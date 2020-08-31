@@ -26,8 +26,11 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.time.LocalDate;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.json.JSONArray;
 
@@ -51,6 +54,10 @@ public class PagesRestController extends BaseRestController {
 		@RequestParam String canonicalURL,
 		@RequestParam(defaultValue = "D") String interval,
 		@RequestParam(defaultValue = "7") int rangeKey) {
+
+		if (StringUtils.isBlank(canonicalURL)) {
+			return Collections.emptyMap();
+		}
 
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
