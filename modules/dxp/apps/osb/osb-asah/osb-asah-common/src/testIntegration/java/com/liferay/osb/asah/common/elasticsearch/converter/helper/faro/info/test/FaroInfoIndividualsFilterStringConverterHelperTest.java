@@ -1265,15 +1265,6 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	}
 
 	@Test
-	public void testSessionsFilterScreenSize() throws Exception {
-		testFilterString(
-			"individuals",
-			"sessions.filter(filter='(context/screenHeightSize ge 974) and " +
-				"(context/screenWidthSize ge 1920)')",
-			"346468608880878498");
-	}
-
-	@Test
 	public void testSessionsFilterSinceCustomDate() throws Exception {
 		testFilterString(
 			"individuals",
