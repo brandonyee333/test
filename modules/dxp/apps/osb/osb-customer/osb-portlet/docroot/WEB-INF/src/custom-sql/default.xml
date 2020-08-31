@@ -300,15 +300,20 @@
 					(OSB_OfferingEntry.status = ?) AND
 					(
 						(
-							(OSB_OfferingEntry.licenses = [$TRUE$]) AND
 							(
-								(lower(OSB_ProductEntry.name) LIKE ?) OR
+								(
+									(OSB_OfferingEntry.licenses = [$TRUE$]) AND
+									(
+										(lower(OSB_ProductEntry.name) LIKE ?) OR
+										(lower(OSB_ProductEntry.name) LIKE ?)
+									)
+								) OR
 								(lower(OSB_ProductEntry.name) LIKE ?)
-							)
+							) AND
+							(OSB_ProductEntry.type_ = ?)
 						) OR
 						(lower(OSB_ProductEntry.name) LIKE ?)
 					) AND
-					(OSB_ProductEntry.type_ = ?) AND
 					(OSB_ProductEntry.environment != ?)
 				)
 		]]>

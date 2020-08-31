@@ -977,7 +977,16 @@ public class AccountEntryFinderImpl
 				qPos.add(valueString3);
 
 				qPos.add((Integer)valueArray[4]);
-				qPos.add((Integer)valueArray[5]);
+
+				String valueString5 = StringUtil.toLowerCase(
+					(String)valueArray[5]);
+
+				valueString5 = StringUtil.quote(
+					valueString5, StringPool.PERCENT);
+
+				qPos.add(valueString5);
+
+				qPos.add((Integer)valueArray[6]);
 			}
 			else if (key.equals("ticketSupport")) {
 				qPos.add(OfferingEntryConstants.STATUS_ACTIVE);

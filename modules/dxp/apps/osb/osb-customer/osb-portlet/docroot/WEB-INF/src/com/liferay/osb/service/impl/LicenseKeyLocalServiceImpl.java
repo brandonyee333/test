@@ -106,35 +106,35 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 
-		OfferingEntry primaryOfferingEntry = getPrimaryOfferingEntry(
+		OfferingEntry offeringEntry = getOfferingEntry(
 			accountEntryId, productEntryRootName);
 
-		if (primaryOfferingEntry == null) {
+		if (offeringEntry == null) {
 			throw new PrincipalException();
 		}
 
-		OfferingEntry offeringEntry = getDeveloperOfferingEntry(
-			accountEntryId, primaryOfferingEntry.getProductEntryId(),
-			primaryOfferingEntry.getVersion(),
-			primaryOfferingEntry.getSizing());
+		OfferingEntry developerOfferingEntry = getDeveloperOfferingEntry(
+			accountEntryId, offeringEntry.getProductEntryId(),
+			offeringEntry.getVersion(), offeringEntry.getSizing());
 
 		long licenseKeySetId = 0;
 
 		LicenseKey licenseKey = licenseKeyPersistence.fetchByOEI_C_A_First(
-			offeringEntry.getOfferingEntryId(), false, true, null);
+			developerOfferingEntry.getOfferingEntryId(), false, true, null);
 
 		if (licenseKey != null) {
 			licenseKeySetId = licenseKey.getLicenseKeySetId();
 		}
 
 		LicenseEntry licenseEntry = licenseEntryPersistence.findByPEI_T(
-			offeringEntry.getProductEntryId(),
+			developerOfferingEntry.getProductEntryId(),
 			LicenseEntryConstants.TYPE_DEVELOPER);
 
 		return addLicenseKey(
 			userId, licenseKeySetId, "Developer Activation Keys",
-			offeringEntry.getOfferingEntryId(),
-			licenseEntry.getLicenseEntryId(), offeringEntry.getProductEntryId(),
+			developerOfferingEntry.getOfferingEntryId(),
+			licenseEntry.getLicenseEntryId(),
+			developerOfferingEntry.getProductEntryId(),
 			getProductVersion(productMinorVersion), 0, user.getFullName(), 2, 5,
 			accountEntry.getName() + " Developer Activation Keys",
 			new String[0], new String[0], new String[0],
@@ -1439,7 +1439,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				ProductEntryConstants.ENVIRONMENT_DEVELOPMENT);
 
 		for (ProductEntry curProductEntry : productEntries) {
-			if ((curProductEntry.isDigitalEnterprise() &&
+			if ((curProductEntry.isCommerceSubscription() &&
+				 productEntry.isCommerceSubscription()) ||
+				(curProductEntry.isDigitalEnterprise() &&
 				 productEntry.isDigitalEnterprise()) ||
 				(curProductEntry.isDigitalEnterprise() &&
 				 productEntry.isDXPCloud()) ||
@@ -1452,14 +1454,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return null;
 	}
 
-	protected OfferingEntry getPrimaryOfferingEntry(
+	protected OfferingEntry getOfferingEntry(
 			long accountEntryId, String productEntryRootName)
 		throws PortalException {
 
 		LinkedHashMap params = new LinkedHashMap();
 
 		params.put("license", StringPool.BLANK);
-		params.put("productEntry", ProductEntryConstants.TYPE_PRIMARY);
 
 		List<OfferingEntry> offeringEntries = offeringEntryLocalService.search(
 			0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR},
@@ -1483,7 +1484,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				 productEntry.isDXPCloud()) ||
 				(productEntryRootName.equals(
 					ProductEntryConstants.ROOT_NAME_PORTAL) &&
-				 productEntry.isPortal())) {
+				 productEntry.isPortal() &&
+				 (productEntry.getType() ==
+					 ProductEntryConstants.TYPE_PRIMARY)) ||
+				(productEntryRootName.equals(
+					ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION) &&
+				 productEntry.isCommerceSubscription())) {
 
 				return offeringEntry;
 			}
@@ -1494,7 +1500,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	protected int getProductVersion(int productMinorVersion) {
 		if (productMinorVersion ==
-				ProductEntryConstants.DIGITAL_ENTERPRISE_MINOR_VERSION_7_3) {
+				ProductEntryConstants.COMMERCE_LICENSE_VERSION_1) {
+
+			return productMinorVersion;
+		}
+		else if (productMinorVersion ==
+					ProductEntryConstants.
+						DIGITAL_ENTERPRISE_MINOR_VERSION_7_3) {
 
 			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_3;
 		}

@@ -38,7 +38,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
 
 		params.put("accountCustomer", Long.valueOf(user.getUserId()));
-		params.put("primaryProductEntry", new Object[] {OfferingEntryConstants.STATUS_ACTIVE, ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE, ProductEntryConstants.ROOT_NAME_PORTAL, ProductEntryConstants.ROOT_DXP_CLOUD, ProductEntryConstants.TYPE_PRIMARY, ProductEntryConstants.ENVIRONMENT_DEVELOPMENT});
+		params.put("primaryProductEntry", new Object[] {OfferingEntryConstants.STATUS_ACTIVE, ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE, ProductEntryConstants.ROOT_NAME_PORTAL, ProductEntryConstants.ROOT_DXP_CLOUD, ProductEntryConstants.TYPE_PRIMARY, ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION, ProductEntryConstants.ENVIRONMENT_DEVELOPMENT});
 
 		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AccountEntryNameComparator(true));
 		%>
@@ -186,6 +186,13 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 
 					var productMinorVersionSelect = A.one('#<portlet:namespace />productMinorVersion');
 
+					if (productEntryRootName == '<%= ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION %>') {
+						productMinorVersionSelect.attr('disabled', true);
+					}
+					else {
+						productMinorVersionSelect.attr('disabled', false);
+					}
+
 					if (productMinorVersionSelect) {
 						productMinorVersionSelect.empty();
 
@@ -193,7 +200,20 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 
 						productMinorVersionOptions.push('<option disabled><liferay-ui:message key="version" /></option>');
 
-						if (productEntryRootName == '<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>') {
+						if (productEntryRootName == '<%= ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION %>') {
+
+							<%
+							for (ListType productMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_COMMERCE_LICENSE_PRODUCT_VERSIONS)) {
+							%>
+
+								productMinorVersionOptions.push('<option value="<%= productMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, productMinorVersionType.getName()) %></option>');
+
+							<%
+							}
+							%>
+
+						}
+						else if (productEntryRootName == '<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>') {
 
 							<%
 							for (long productMinorVersion : digitalEnterpriseProductMinorVersions) {

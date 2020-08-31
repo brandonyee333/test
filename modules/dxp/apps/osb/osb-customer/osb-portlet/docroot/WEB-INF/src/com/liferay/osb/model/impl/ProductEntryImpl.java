@@ -173,6 +173,16 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return false;
 	}
 
+	public boolean isCommerceSubscription() {
+		String name = getName();
+
+		if (name.contains(ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isDeveloperTools() {
 		String name = getName();
 

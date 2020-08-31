@@ -176,7 +176,6 @@ public class SupportUtil {
 		LinkedHashMap params = new LinkedHashMap();
 
 		params.put("license", StringPool.BLANK);
-		params.put("productEntry", ProductEntryConstants.TYPE_PRIMARY);
 
 		List<OfferingEntry> offeringEntries =
 			OfferingEntryLocalServiceUtil.search(
@@ -194,14 +193,24 @@ public class SupportUtil {
 				continue;
 			}
 
-			if (productEntry.isDigitalEnterprise() ||
-				productEntry.isDXPCloud()) {
+			if (productEntry.isCommerceSubscription()) {
+				selfProvisioningProducts.add(
+					ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION);
+			}
+
+			if ((productEntry.isDigitalEnterprise() ||
+				 productEntry.isDXPCloud()) &&
+				(productEntry.getType() ==
+					ProductEntryConstants.TYPE_PRIMARY)) {
 
 				selfProvisioningProducts.add(
 					ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE);
 			}
 
-			if (productEntry.isPortal()) {
+			if (productEntry.isPortal() &&
+				(productEntry.getType() ==
+					ProductEntryConstants.TYPE_PRIMARY)) {
+
 				selfProvisioningProducts.add(
 					ProductEntryConstants.ROOT_NAME_PORTAL);
 			}
