@@ -26,7 +26,7 @@
 	{
 		"id": "5",
 		"individualId": "2",
-		"knownIndividual": true,
+		"knownIndividual": false,
 		"url": "https://liferay.com"
 	},
 	{

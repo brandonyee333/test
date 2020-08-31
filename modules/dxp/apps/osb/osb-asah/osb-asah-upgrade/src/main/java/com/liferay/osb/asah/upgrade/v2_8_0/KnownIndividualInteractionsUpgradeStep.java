@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.Collections;
+import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
@@ -40,22 +41,28 @@ public class KnownIndividualInteractionsUpgradeStep implements UpgradeStep {
 	public void upgrade(String version) throws Exception {
 		JSONArrayIterator.of(
 			"individuals", _faroInfoElasticsearchInvoker,
-			individualJSONObject ->
+			individualJSONObject -> {
+				boolean knownIndividual = !Objects.isNull(
+					individualJSONObject.optQuery("/demographics/email"));
+
 				_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 					BoolQueryBuilderUtil.filter(
 						QueryBuilders.termQuery(
 							"individualId", individualJSONObject.get("id"))
 					).filter(
-						QueryBuilders.termQuery("knownIndividual", false)
+						QueryBuilders.termQuery(
+							"knownIndividual", !knownIndividual)
 					),
 					false,
 					new Script(
 						Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-						"ctx._source.knownIndividual = true",
-						Collections.emptyMap()),
-					_COLLECTION_NAMES)
-		).setQueryBuilder(
-			QueryBuilders.existsQuery("demographics.email")
+						"ctx._source.knownIndividual = params.knownIndividual",
+						Collections.singletonMap(
+							"knownIndividual", knownIndividual)),
+					_COLLECTION_NAMES);
+
+				return null;
+			}
 		).setStopOnExceptions(
 			false
 		).iterate();
