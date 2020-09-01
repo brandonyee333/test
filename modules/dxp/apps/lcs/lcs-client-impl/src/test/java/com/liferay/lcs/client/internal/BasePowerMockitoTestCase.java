@@ -25,6 +25,7 @@ import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.platform.gateway.MockLCSGatewayClientImpl;
+import com.liferay.lcs.client.internal.platform.http.RESTClientTransportException;
 import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
@@ -32,7 +33,6 @@ import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 
 import java.net.UnknownHostException;
@@ -205,7 +205,7 @@ public abstract class BasePowerMockitoTestCase extends PowerMockito {
 		doThrow(
 			new LCSGatewayException(
 				"Unable to send message",
-				new JSONWebServiceTransportException.CommunicationFailure(
+				new RESTClientTransportException.CommunicationFailure(
 					"Test gateway communication failure",
 					new ExecutionException(new UnknownHostException("Test"))))
 		).when(

@@ -18,12 +18,12 @@ import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.BasePowerMockitoTestCase;
 import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisorImpl;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
+import com.liferay.lcs.client.internal.platform.http.RESTClientTransportException;
 import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.exception.LCSClientAuthenticationException;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
 import com.liferay.petra.encryptor.EncryptorException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.File;
@@ -75,7 +75,7 @@ public class LCSClusterEntryTokenCheckTaskTest
 			mockLCSPortalClientIsAuthorizedThrowsException(
 				new LCSClientAuthenticationException(
 					"Test LCS authentication failure",
-					new JSONWebServiceTransportException.CommunicationFailure(
+					new RESTClientTransportException.CommunicationFailure(
 						"Test LCS portal communication failure",
 						new ExecutionException(
 							new UnknownHostException("Test")))));
