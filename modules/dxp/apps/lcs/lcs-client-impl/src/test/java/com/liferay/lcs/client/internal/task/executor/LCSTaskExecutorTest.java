@@ -347,7 +347,7 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 		verifyPrivate(
 			lcsTaskExecutor, Mockito.never()
 		).invoke(
-			"_cancelNonRequiredTasks"
+			"_cancelNonrequiredTasks"
 		);
 
 		lcsTaskExecutor.onLCSEvent(lcsEvent);
@@ -355,7 +355,7 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 		verifyPrivate(
 			lcsTaskExecutor, Mockito.times(1)
 		).invoke(
-			"_cancelNonRequiredTasks"
+			"_cancelNonrequiredTasks"
 		);
 
 		verifyPrivate(
