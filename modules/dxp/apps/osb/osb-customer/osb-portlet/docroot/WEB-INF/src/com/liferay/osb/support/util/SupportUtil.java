@@ -198,21 +198,18 @@ public class SupportUtil {
 					ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION);
 			}
 
-			if ((productEntry.isDigitalEnterprise() ||
-				 productEntry.isDXPCloud()) &&
-				(productEntry.getType() ==
-					ProductEntryConstants.TYPE_PRIMARY)) {
+			if (productEntry.getType() == ProductEntryConstants.TYPE_PRIMARY) {
+				if (productEntry.isDigitalEnterprise() ||
+					productEntry.isDXPCloud()) {
 
-				selfProvisioningProducts.add(
-					ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE);
-			}
+					selfProvisioningProducts.add(
+						ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE);
+				}
 
-			if (productEntry.isPortal() &&
-				(productEntry.getType() ==
-					ProductEntryConstants.TYPE_PRIMARY)) {
-
-				selfProvisioningProducts.add(
-					ProductEntryConstants.ROOT_NAME_PORTAL);
+				if (productEntry.isPortal()) {
+					selfProvisioningProducts.add(
+						ProductEntryConstants.ROOT_NAME_PORTAL);
+				}
 			}
 		}
 

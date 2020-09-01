@@ -1428,11 +1428,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			new ArrayList<OfferingEntry>());
 	}
 
-	protected ProductEntry getDeveloperProductEntry(long primaryProductEntryId)
+	protected ProductEntry getDeveloperProductEntry(long productEntryId)
 		throws PortalException {
 
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
-			primaryProductEntryId);
+			productEntryId);
 
 		List<ProductEntry> productEntries =
 			productEntryPersistence.findByEnvironment(
@@ -1476,6 +1476,17 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				continue;
 			}
 
+			if (productEntryRootName.equals(
+					ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION) &&
+				productEntry.isCommerceSubscription()) {
+
+				return offeringEntry;
+			}
+
+			if (productEntry.getType() != ProductEntryConstants.TYPE_PRIMARY) {
+				continue;
+			}
+
 			if ((productEntryRootName.equals(
 					ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE) &&
 				 productEntry.isDigitalEnterprise()) ||
@@ -1484,12 +1495,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				 productEntry.isDXPCloud()) ||
 				(productEntryRootName.equals(
 					ProductEntryConstants.ROOT_NAME_PORTAL) &&
-				 productEntry.isPortal() &&
-				 (productEntry.getType() ==
-					 ProductEntryConstants.TYPE_PRIMARY)) ||
-				(productEntryRootName.equals(
-					ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION) &&
-				 productEntry.isCommerceSubscription())) {
+				 productEntry.isPortal())) {
 
 				return offeringEntry;
 			}
