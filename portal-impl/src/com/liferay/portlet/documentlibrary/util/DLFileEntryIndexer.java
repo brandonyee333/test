@@ -225,7 +225,7 @@ public class DLFileEntryIndexer
 		if (Validator.isNotNull(ddmStructureFieldName) &&
 			Validator.isNotNull(ddmStructureFieldValue)) {
 
-			QueryFilter queryFilter = ddmIndexer.createFieldValueQueryFilter(
+			QueryFilter queryFilter = _createFieldValueQueryFilter(
 				ddmStructureFieldName, ddmStructureFieldValue,
 				searchContext.getLocale());
 
@@ -693,6 +693,31 @@ public class DLFileEntryIndexer
 			});
 
 		actionableDynamicQuery.performActions();
+	}
+
+	private QueryFilter _createFieldValueQueryFilter(
+			String ddmStructureFieldName, Serializable ddmStructureFieldValue,
+			Locale locale)
+		throws Exception {
+
+		try {
+			Registry registry = RegistryUtil.getRegistry();
+
+			Object ddmIndexer = registry.getService(
+				"com.liferay.dynamic.data.mapping.util.DDMIndexer");
+
+			Method createFieldValueQueryFilterMethod =
+				ReflectionUtil.getDeclaredMethod(
+					ddmIndexer.getClass(), "createFieldValueQueryFilter",
+					String.class, Serializable.class, Locale.class);
+
+			return (QueryFilter)createFieldValueQueryFilterMethod.invoke(
+				ddmIndexer, ddmStructureFieldName, ddmStructureFieldValue,
+				locale);
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 	private InputStream _getContentInputStream(DLFileVersion dlFileVersion)
