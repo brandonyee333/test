@@ -154,6 +154,11 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
+	public boolean isCommerceSubscription() {
+		return _productEntry.isCommerceSubscription();
+	}
+
+	@Override
 	public boolean isDXPCloud() {
 		return _productEntry.isDXPCloud();
 	}

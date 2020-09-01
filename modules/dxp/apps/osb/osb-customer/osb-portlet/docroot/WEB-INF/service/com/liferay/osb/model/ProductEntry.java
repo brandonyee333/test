@@ -79,6 +79,8 @@ public interface ProductEntry extends ProductEntryModel, PersistedModel {
 
 	public boolean isCommerce();
 
+	public boolean isCommerceSubscription();
+
 	public boolean isDeveloperTools();
 
 	public boolean isDeviceDetection();
