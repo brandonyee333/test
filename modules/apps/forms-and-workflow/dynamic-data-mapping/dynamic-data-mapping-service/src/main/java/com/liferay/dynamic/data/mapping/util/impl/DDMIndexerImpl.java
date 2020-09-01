@@ -35,6 +35,8 @@ import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.FieldArray;
+import com.liferay.portal.kernel.search.SearchEngine;
+import com.liferay.portal.kernel.search.SearchEngineHelper;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.generic.NestedQuery;
@@ -49,7 +51,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.search.engine.SearchEngineInformation;
 
 import java.io.Serializable;
 
@@ -352,7 +353,10 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 	@Override
 	public boolean isLegacyDDMIndexFieldsEnabled() {
-		if (Objects.equals(searchEngineInformation.getVendorString(), "Solr")) {
+		SearchEngine searchEngine = searchEngineHelper.getSearchEngine(
+			searchEngineHelper.getDefaultSearchEngineId());
+
+		if (Objects.equals(searchEngine.getVendor(), "Solr")) {
 			return true;
 		}
 
@@ -591,7 +595,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	@Reference
-	protected SearchEngineInformation searchEngineInformation;
+	protected SearchEngineHelper searchEngineHelper;
 
 	private static final Log _log = LogFactoryUtil.getLog(DDMIndexerImpl.class);
 
