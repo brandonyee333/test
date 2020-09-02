@@ -78,9 +78,13 @@ public class IndividualsUpgradeStep implements UpgradeStep {
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (aggregations == null) {
+			return;
+		}
+
 		List<Aggregation> aggregationList = aggregations.asList();
 
-		if ((aggregations == null) || aggregationList.isEmpty()) {
+		if (aggregationList.isEmpty()) {
 			return;
 		}
 
