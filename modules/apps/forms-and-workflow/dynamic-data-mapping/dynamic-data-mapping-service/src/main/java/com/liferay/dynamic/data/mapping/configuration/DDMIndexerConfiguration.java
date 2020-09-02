@@ -21,7 +21,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 /**
  * @author Jorge Díaz
  */
-@ExtendedObjectClassDefinition(category = "dynamic-data-mapping")
+@ExtendedObjectClassDefinition(category = "forms-and-workflow")
 @Meta.OCD(
 	id = "com.liferay.dynamic.data.mapping.configuration.DDMIndexerConfiguration",
 	localization = "content/Language", name = "ddm-indexer-configuration-name"
