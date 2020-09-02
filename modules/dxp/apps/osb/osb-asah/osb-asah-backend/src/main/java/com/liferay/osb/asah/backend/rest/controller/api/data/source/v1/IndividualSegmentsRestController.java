@@ -273,14 +273,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 					String individualId = jsonObject.getString("individualId");
 
-					if (_faroInfoMembershipDog.isMember(individualId, id)) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Not adding membership because individual " +
-									individualId + " is already a member of " +
-										"individual segment " + id);
-						}
-
+					if (_isMember(individualId, id)) {
 						return null;
 					}
 
@@ -303,14 +296,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 					String individualId = jsonObject.getString("individualId");
 
-					if (_faroInfoMembershipDog.isMember(individualId, id)) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Not adding membership because individual " +
-									individualId + " is already a member of " +
-										"individual segment " + id);
-						}
-
+					if (_isMember(individualId, id)) {
 						iterator.remove();
 
 						continue;
@@ -339,6 +325,21 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@Override
 			protected void onBeforeReturn(JSONObject responseJSONObject) {
 				responseJSONObject.remove("id");
+			}
+
+			private boolean _isMember(String individualId, String id) {
+				if (_faroInfoMembershipDog.isMember(individualId, id)) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"Not adding membership because individual " +
+								individualId + " is already a member of " +
+									"individual segment " + id);
+					}
+
+					return true;
+				}
+
+				return false;
 			}
 
 		};
