@@ -72,7 +72,7 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void clearCache() {
-		for (String cacheName : _CLEAR_CACHE_NAMES) {
+		for (String cacheName : _CACHE_NAMES) {
 			Cache cache = _cacheManager.getCache(cacheName);
 
 			cache.clear();
@@ -324,7 +324,7 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	private static final String[] _CLEAR_CACHE_NAMES = {
+	private static final String[] _CACHE_NAMES = {
 		"getActivityTransformations", "getGraphQLExecutionResult",
 		"getMembershipChangeTransformations"
 	};
