@@ -15,6 +15,7 @@
 package com.liferay.dynamic.data.lists.form.web.internal.portlet.action;
 
 import com.liferay.dynamic.data.lists.form.web.internal.constants.DDLFormPortletKeys;
+import com.liferay.dynamic.data.lists.form.web.internal.constants.DDLFormWebKeys;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.model.DDLRecordSetConstants;
 import com.liferay.dynamic.data.lists.model.DDLRecordSetSettings;
@@ -310,10 +311,12 @@ public class AddRecordSetMVCActionCommand
 
 		String workflowDefinition = getWorkflowDefinition(ddmFormValues);
 
-		workflowDefinitionLinkLocalService.updateWorkflowDefinitionLink(
-			themeDisplay.getUserId(), themeDisplay.getCompanyId(), groupId,
-			DDLRecordSet.class.getName(), recordSet.getRecordSetId(), 0,
-			workflowDefinition);
+		if (!workflowDefinition.equals(DDLFormWebKeys.NO_WORKFLOW)) {
+			workflowDefinitionLinkLocalService.updateWorkflowDefinitionLink(
+				themeDisplay.getUserId(), themeDisplay.getCompanyId(), groupId,
+				DDLRecordSet.class.getName(), recordSet.getRecordSetId(), 0,
+				workflowDefinition);
+		}
 	}
 
 	protected DDLRecordSetService ddlRecordSetService;
