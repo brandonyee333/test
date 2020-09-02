@@ -913,12 +913,13 @@ public class AssetUtil {
 				}
 			}
 			else {
-				sb.append(DDMIndexer.DDM_FIELD_ARRAY);
+				sb.append(_DDM_FIELD_ARRAY);
 				sb.append(StringPool.PERIOD);
 
 				try {
-					String indexType =
-						sortField.split(DDMIndexer.DDM_FIELD_SEPARATOR)[1];
+					String indexType = sortField.split(
+						DDMStructureManager.STRUCTURE_INDEXER_FIELD_SEPARATOR)
+						[1];
 
 					if (fieldLocalizable) {
 						sb.append(
@@ -1007,7 +1008,7 @@ public class AssetUtil {
 
 		NestedSort nestedSort = new NestedSort(
 			sort.getFieldName(), sort.getType(), sort.isReverse(),
-			DDMIndexer.DDM_FIELD_ARRAY);
+			_DDM_FIELD_ARRAY);
 
 		StringBundler sb = new StringBundler(3);
 
@@ -1021,8 +1022,7 @@ public class AssetUtil {
 		nestedSort.setFilterQuery(
 			new TermQueryImpl(
 				StringBundler.concat(
-					DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
-					DDMIndexer.DDM_FIELD_NAME),
+					_DDM_FIELD_ARRAY, StringPool.PERIOD, _DDM_FIELD_NAME),
 				sb.toString()));
 
 		return nestedSort;
@@ -1091,6 +1091,10 @@ public class AssetUtil {
 
 		return sortedAddPortletURLs;
 	}
+
+	private static final String _DDM_FIELD_ARRAY = "ddmFieldArray";
+
+	private static final String _DDM_FIELD_NAME = "ddmFieldName";
 
 	private static final Log _log = LogFactoryUtil.getLog(AssetUtil.class);
 
