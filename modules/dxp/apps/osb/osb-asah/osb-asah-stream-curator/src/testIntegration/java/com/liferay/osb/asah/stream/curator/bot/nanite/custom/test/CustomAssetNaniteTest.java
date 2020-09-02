@@ -54,7 +54,7 @@ public class CustomAssetNaniteTest {
 		resourcePath = "analytics_events_custom_asset_channel.json"
 	)
 	@Test
-	public void testViews() throws Exception {
+	public void testEvents() throws Exception {
 		_customAssetNanite.run();
 
 		ElasticsearchInvoker elasticsearchInvoker =
