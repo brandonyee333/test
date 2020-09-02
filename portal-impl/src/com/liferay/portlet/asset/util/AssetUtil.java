@@ -31,6 +31,7 @@ import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructureManager;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructureManagerUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -78,8 +79,12 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.asset.service.permission.AssetCategoryPermission;
 import com.liferay.portlet.asset.service.permission.AssetVocabularyPermission;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -903,7 +908,7 @@ public class AssetUtil {
 
 			StringBundler sb = new StringBundler(5);
 
-			if (_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
+			if (_isLegacyDDMIndexFieldsEnabled()) {
 				sb.append(sortField);
 				sb.append(StringPool.UNDERLINE);
 
@@ -922,12 +927,11 @@ public class AssetUtil {
 						[1];
 
 					if (fieldLocalizable) {
-						sb.append(
-							_ddmIndexer.getValueFieldName(indexType, locale));
+						sb.append(_getValueFieldName(indexType, locale));
 						sb.append(StringPool.UNDERLINE);
 					}
 					else {
-						sb.append(_ddmIndexer.getValueFieldName(indexType));
+						sb.append(_getValueFieldName(indexType));
 						sb.append(StringPool.UNDERLINE);
 					}
 				}
@@ -1001,7 +1005,7 @@ public class AssetUtil {
 
 		if (!sortField.startsWith(
 				DDMStructureManager.STRUCTURE_INDEXER_FIELD_PREFIX) ||
-			_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
+			_isLegacyDDMIndexFieldsEnabled()) {
 
 			return sort;
 		}
@@ -1090,6 +1094,48 @@ public class AssetUtil {
 		}
 
 		return sortedAddPortletURLs;
+	}
+
+	private static String _getValueFieldName(String indexType) {
+		return _getValueFieldName(indexType, null);
+	}
+
+	private static String _getValueFieldName(String indexType, Locale locale) {
+		try {
+			Registry registry = RegistryUtil.getRegistry();
+
+			Object ddmIndexer = registry.getService(
+				"com.liferay.dynamic.data.mapping.util.DDMIndexer");
+
+			Method getValueFieldNameMethod = ReflectionUtil.getDeclaredMethod(
+				ddmIndexer.getClass(), "getValueFieldName", String.class,
+				Locale.class);
+
+			return (String)getValueFieldNameMethod.invoke(
+				ddmIndexer, indexType, locale);
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+
+	private static boolean _isLegacyDDMIndexFieldsEnabled() {
+		try {
+			Registry registry = RegistryUtil.getRegistry();
+
+			Object ddmIndexer = registry.getService(
+				"com.liferay.dynamic.data.mapping.util.DDMIndexer");
+
+			Method isLegacyDDMIndexFieldsEnabledMethod =
+				ReflectionUtil.getDeclaredMethod(
+					ddmIndexer.getClass(), "isLegacyDDMIndexFieldsEnabled");
+
+			return (boolean)isLegacyDDMIndexFieldsEnabledMethod.invoke(
+				ddmIndexer);
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 	private static final String _DDM_FIELD_ARRAY = "ddmFieldArray";
