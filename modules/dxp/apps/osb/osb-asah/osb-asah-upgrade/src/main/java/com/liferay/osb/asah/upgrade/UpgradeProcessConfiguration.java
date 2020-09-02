@@ -16,6 +16,7 @@ package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v2_7_3.ActivitiesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_0.IndexSettingsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_8_0.IndividualsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_0.KnownIndividualInteractionsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_0.PageReferrersUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_0.RunLogCleanupUpgradeStep;
@@ -37,9 +38,9 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"2.7.1", "2.7.3", _activitiesUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"2.7.3", "2.8.0", _knownIndividualInteractionsUpgradeStep,
-			_indexSettingsUpgradeStep, _pageReferrersUpgradeStep,
-			_runLogCleanupUpgradeStep);
+			"2.7.3", "2.8.0", _indexSettingsUpgradeStep,
+			_individualsUpgradeStep, _knownIndividualInteractionsUpgradeStep,
+			_pageReferrersUpgradeStep, _runLogCleanupUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -49,6 +50,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private IndexSettingsUpgradeStep _indexSettingsUpgradeStep;
+
+	@Autowired
+	private IndividualsUpgradeStep _individualsUpgradeStep;
 
 	@Autowired
 	private KnownIndividualInteractionsUpgradeStep
