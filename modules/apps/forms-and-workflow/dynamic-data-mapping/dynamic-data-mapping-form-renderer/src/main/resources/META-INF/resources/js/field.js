@@ -192,7 +192,7 @@ AUI.add(
 
 						var value = instance.getLocalizedValue(instance.get('value'));
 
-						if (!value && predefinedValue && !instance.get('readOnly')) {
+						if (!instance.hasValue(value) && predefinedValue && !instance.get('readOnly')) {
 							value = instance.getLocalizedValue(predefinedValue);
 						}
 
@@ -332,6 +332,18 @@ AUI.add(
 						var inputNode = instance.getInputNode();
 
 						return Lang.String.unescapeHTML(inputNode.val());
+					},
+
+					hasValue: function(value) {
+						if (Array.isArray(value) && value.length > 0) {
+							return true;
+						}
+
+						if (!Array.isArray(value) && value) {
+							return true;
+						}
+
+						return false;
 					},
 
 					render: function(target) {
