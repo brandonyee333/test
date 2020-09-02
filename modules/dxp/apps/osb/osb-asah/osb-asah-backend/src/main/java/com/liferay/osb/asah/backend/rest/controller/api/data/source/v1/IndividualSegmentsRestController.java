@@ -305,6 +305,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 					onBeforeAdd(jsonObject);
 				}
 
+				if (jsonArray.length() == 0) {
+					return null;
+				}
+
 				JSONArray responseJSONArray =
 					_faroInfoMembershipDog.addMemberships(jsonArray);
 
