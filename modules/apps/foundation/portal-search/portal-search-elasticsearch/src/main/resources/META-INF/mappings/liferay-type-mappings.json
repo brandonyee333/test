@@ -3,6 +3,15 @@
 		"date_detection": false,
 		"dynamic_templates": [
 			{
+				"template_ddmFieldArray_ddmFieldValue_Number_sortable": {
+					"mapping": {
+						"store": true,
+						"type": "float"
+					},
+					"path_match": "ddmFieldArray.ddmFieldValue*Number_sortable"
+				}
+			},
+			{
 				"template_long_sortable": {
 					"mapping": {
 						"index": "not_analyzed",
@@ -45,6 +54,17 @@
 					},
 					"match": "assetCategoryTitles*",
 					"match_mapping_type": "string"
+				}
+			},
+			{
+				"template_ddmFieldArray_ddmFieldValueKeyword": {
+					"mapping": {
+						"index": "not_analyzed",
+						"store": true,
+						"type": "string"
+					},
+					"match_mapping_type": "string",
+					"path_match": "ddmFieldArray.ddmFieldValueKeyword*"
 				}
 			},
 			{
@@ -489,6 +509,17 @@
 				}
 			},
 			{
+				"template_ddmFieldArray_ddmFieldValueText": {
+					"mapping": {
+						"index": "analyzed",
+						"store": true,
+						"type": "string"
+					},
+					"match_mapping_type": "string",
+					"path_match": "ddmFieldArray.ddmFieldValueText*"
+				}
+			},
+			{
 				"template_ddm": {
 					"mapping": {
 						"index": "analyzed",
@@ -610,6 +641,19 @@
 				"store": "yes",
 				"term_vector": "with_positions_offsets",
 				"type": "string"
+			},
+			"ddmFieldArray": {
+				"properties": {
+					"ddmFieldName": {
+						"index": "not_analyzed",
+						"type": "string"
+					},
+					"ddmValueFieldName": {
+						"index": "not_analyzed",
+						"type": "string"
+					}
+				},
+				"type": "nested"
 			},
 			"ddmStructureKey": {
 				"index": "not_analyzed",
