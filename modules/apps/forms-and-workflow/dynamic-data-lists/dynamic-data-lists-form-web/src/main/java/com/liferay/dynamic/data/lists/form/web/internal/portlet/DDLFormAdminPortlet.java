@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.lists.form.web.internal.portlet;
 
 import com.liferay.dynamic.data.lists.form.web.configuration.DDLFormWebConfigurationActivator;
 import com.liferay.dynamic.data.lists.form.web.internal.constants.DDLFormPortletKeys;
+import com.liferay.dynamic.data.lists.form.web.internal.constants.DDLFormWebKeys;
 import com.liferay.dynamic.data.lists.form.web.internal.display.context.DDLFormAdminDisplayContext;
 import com.liferay.dynamic.data.lists.form.web.internal.instance.lifecycle.AddDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
@@ -269,7 +270,8 @@ public class DDLFormAdminPortlet extends MVCPortlet {
 		ddmFormFieldOptions.setDefaultLocale(locale);
 
 		ddmFormFieldOptions.addOptionLabel(
-			StringPool.BLANK, locale, LanguageUtil.get(locale, "no-workflow"));
+			DDLFormWebKeys.NO_WORKFLOW, locale,
+			LanguageUtil.get(locale, "no-workflow"));
 
 		addWorkflowDefinitionDDMFormFieldOptionLabels(
 			ddmFormFieldOptions, themeDisplay);

@@ -27,4 +27,6 @@ public class DDLFormWebKeys {
 
 	public static final String GROUP_ID = "GROUP_ID";
 
+	public static final String NO_WORKFLOW = "no-workflow";
+
 }
