@@ -51,7 +51,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
@@ -69,15 +70,17 @@ import org.springframework.stereotype.Component;
 @Profile("!test")
 public class OSBAsahBatchCuratorBot {
 
-	@CacheEvict(
-		allEntries = true,
-		value = {
-			"getActivityTransformations", "getGraphQLExecutionResult",
-			"getMembershipChangeTransformations"
-		}
-	)
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void clearCache() {
+		for (String cacheName : _CLEAR_CACHE_NAMES) {
+			Cache cache = _cacheManager.getCache(cacheName);
+
+			cache.clear();
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Cache cleared: " + cacheName);
+			}
+		}
 	}
 
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
@@ -321,11 +324,19 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
+	private static final String[] _CLEAR_CACHE_NAMES = {
+		"getActivityTransformations", "getGraphQLExecutionResult",
+		"getMembershipChangeTransformations"
+	};
+
 	private static final String _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY =
 		"${random.int[0,60]} ${random.int[0,15]} 0 * * ?";
 
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahBatchCuratorBot.class);
+
+	@Autowired(required = false)
+	private CacheManager _cacheManager;
 
 	@Autowired(required = false)
 	@Qualifier("deleteDXPBatchEntitiesRunnable")
