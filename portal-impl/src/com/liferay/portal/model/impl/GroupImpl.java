@@ -864,6 +864,15 @@ public class GroupImpl extends GroupBaseImpl {
 	}
 
 	@Override
+	public boolean isDepot() {
+		if (getType() == GroupConstants.TYPE_DEPOT) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
 	public boolean isGuest() {
 		String groupKey = getGroupKey();
 
