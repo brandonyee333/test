@@ -129,77 +129,6 @@ public class IndividualNaniteTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "blog_info_old.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_3_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@Test
-	public void testSkipUpdatePageAndAsset() {
-		Mockito.when(
-			_queueHttp.getMessagesCount(Mockito.anyString())
-		).thenReturn(
-			1
-		);
-
-		Mockito.when(
-			_queueHttp.getMessages(Mockito.anyString())
-		).thenReturn(
-			JSONUtil.put(
-				"messages",
-				JSONUtil.putAll(
-					JSONUtil.put(
-						"message",
-						JSONUtil.put(
-							"analyticsData", new JSONObject()
-						).put(
-							"channelId", "1"
-						).put(
-							"dataSourceId", "1"
-						).put(
-							"emailAddressHashed",
-							DigestUtils.sha256Hex("john@liferay.com")
-						).put(
-							"userId", "1"
-						).toString()),
-					JSONUtil.put(
-						"message",
-						JSONUtil.put(
-							"analyticsData", new JSONObject()
-						).put(
-							"channelId", "2"
-						).put(
-							"dataSourceId", "2"
-						).put(
-							"emailAddressHashed",
-							DigestUtils.sha256Hex("jane@liferay.com")
-						).put(
-							"userId", "1"
-						).toString()))
-			).toString()
-		);
-
-		_individualNanite.run();
-
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
-		JSONArray jsonArray = elasticsearchInvoker.get("blogs");
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject blogJSONObject = jsonArray.getJSONObject(i);
-
-			Assert.assertFalse(blogJSONObject.getBoolean("knownIndividual"));
-		}
-	}
-
-	@ElasticsearchIndex(
 		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -291,6 +220,77 @@ public class IndividualNaniteTest {
 
 			Assert.assertEquals("100", jsonObject.getString("individualId"));
 			Assert.assertTrue(jsonObject.getBoolean("knownIndividual"));
+		}
+	}
+
+	@ElasticsearchIndex(
+		name = "blogs", resourcePath = "blog_info_old.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_3_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testSkipUpdatePageAndAsset() {
+		Mockito.when(
+			_queueHttp.getMessagesCount(Mockito.anyString())
+		).thenReturn(
+			1
+		);
+
+		Mockito.when(
+			_queueHttp.getMessages(Mockito.anyString())
+		).thenReturn(
+			JSONUtil.put(
+				"messages",
+				JSONUtil.putAll(
+					JSONUtil.put(
+						"message",
+						JSONUtil.put(
+							"analyticsData", new JSONObject()
+						).put(
+							"channelId", "1"
+						).put(
+							"dataSourceId", "1"
+						).put(
+							"emailAddressHashed",
+							DigestUtils.sha256Hex("john@liferay.com")
+						).put(
+							"userId", "1"
+						).toString()),
+					JSONUtil.put(
+						"message",
+						JSONUtil.put(
+							"analyticsData", new JSONObject()
+						).put(
+							"channelId", "2"
+						).put(
+							"dataSourceId", "2"
+						).put(
+							"emailAddressHashed",
+							DigestUtils.sha256Hex("jane@liferay.com")
+						).put(
+							"userId", "1"
+						).toString()))
+			).toString()
+		);
+
+		_individualNanite.run();
+
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
+		JSONArray jsonArray = elasticsearchInvoker.get("blogs");
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject blogJSONObject = jsonArray.getJSONObject(i);
+
+			Assert.assertFalse(blogJSONObject.getBoolean("knownIndividual"));
 		}
 	}
 
