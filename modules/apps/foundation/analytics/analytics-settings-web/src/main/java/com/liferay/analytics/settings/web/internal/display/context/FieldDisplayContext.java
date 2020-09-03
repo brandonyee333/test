@@ -214,8 +214,6 @@ public class FieldDisplayContext {
 		).put(
 			"emailAddressVerified", "Boolean"
 		).put(
-			"externalReferenceCode", "String"
-		).put(
 			"facebookId", "Long"
 		).put(
 			"firstName", "String"
