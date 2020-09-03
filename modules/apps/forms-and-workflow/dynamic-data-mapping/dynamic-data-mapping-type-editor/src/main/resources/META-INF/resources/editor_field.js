@@ -81,6 +81,7 @@ AUI.add(
 										removePlugins: 'contextmenu,elementspath,image,link,liststyle,resize,tabletools,toolbar',
 										spritemap: Liferay.ThemeDisplay.getPathThemeImages() + '/lexicon/icons.svg',
 										srcNode: editorNode,
+										uiNode: editorNode.get('parentNode')._node,
 										toolbars: {
 											add: {
 												buttons: ['hline', 'table']
