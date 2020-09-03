@@ -25,6 +25,8 @@ import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplic
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.Iterator;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -194,6 +196,101 @@ public class IndividualNaniteTest {
 			JSONObject blogJSONObject = jsonArray.getJSONObject(i);
 
 			Assert.assertFalse(blogJSONObject.getBoolean("knownIndividual"));
+		}
+	}
+
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_2_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "user-sessions", resourcePath = "session_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testMergeIndividual() throws Exception {
+		Mockito.when(
+			_queueHttp.getMessagesCount(Mockito.anyString())
+		).thenReturn(
+			1
+		);
+
+		Mockito.when(
+			_queueHttp.getMessages(Mockito.anyString())
+		).thenReturn(
+			JSONUtil.put(
+				"messages",
+				JSONUtil.putAll(
+					JSONUtil.put(
+						"message",
+						JSONUtil.put(
+							"analyticsData", new JSONObject()
+						).put(
+							"channelId", "1"
+						).put(
+							"dataSourceId", "1"
+						).put(
+							"emailAddressHashed",
+							DigestUtils.sha256Hex("john@liferay.com")
+						).put(
+							"userId", "2"
+						).toString()))
+			).toString()
+		);
+
+		ElasticsearchInvoker faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+
+		JSONObject anonymousIndividualJSONObject =
+			faroInfoElasticsearchInvoker.fetch(
+				"individuals", QueryBuilders.termQuery("id", "200"));
+
+		Assert.assertNotNull(anonymousIndividualJSONObject);
+
+		_individualNanite.run();
+
+		anonymousIndividualJSONObject = faroInfoElasticsearchInvoker.fetch(
+			"individuals", QueryBuilders.termQuery("id", "200"));
+
+		Assert.assertNull(anonymousIndividualJSONObject);
+
+		JSONObject knownIndividualJSONObject =
+			faroInfoElasticsearchInvoker.fetch(
+				"individuals",
+				QueryBuilders.termQuery(
+					"demographics.email.value", "john@liferay.com"));
+
+		JSONArray activitiesCounts = knownIndividualJSONObject.getJSONArray(
+			"activitiesCounts");
+
+		JSONObject activitiesCount = activitiesCounts.getJSONObject(0);
+
+		Assert.assertEquals(2, activitiesCount.get("activitiesCount"));
+
+		activitiesCount = activitiesCounts.getJSONObject(1);
+
+		Assert.assertEquals(1, activitiesCount.get("activitiesCount"));
+
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
+		JSONArray jsonArray = elasticsearchInvoker.get("pages");
+
+		Iterator<Object> iterator = jsonArray.iterator();
+
+		while (iterator.hasNext()) {
+			JSONObject jsonObject = (JSONObject)iterator.next();
+
+			Assert.assertEquals("100", jsonObject.getString("individualId"));
+			Assert.assertTrue(jsonObject.getBoolean("knownIndividual"));
 		}
 	}
 
