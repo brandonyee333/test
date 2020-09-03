@@ -5,6 +5,7 @@
 	.form-control {
 		background-color: $color-white;
 		display: inline-block;
+		padding-right: 40px;
 
 		&:focus {
 			border-color: $color-primary-focus-border;
@@ -16,10 +17,6 @@
 	}
 
 	.search-filter-container {
-		background-image: $input-select-icon;
-		background-position: right 8px center;
-		background-repeat: no-repeat;
-		background-size: 24px auto;
 		border: 1px solid rgba(9, 16, 29, 0.11);
 		border-left-width: 0;
 		box-shadow: 0 6px 15px -7px rgba(9, 16, 29, 0.05);
@@ -39,7 +36,6 @@
 
 		select {
 			background-color: $color-white;
-			background-image: none;
 			border-width: 0;
 		}
 
