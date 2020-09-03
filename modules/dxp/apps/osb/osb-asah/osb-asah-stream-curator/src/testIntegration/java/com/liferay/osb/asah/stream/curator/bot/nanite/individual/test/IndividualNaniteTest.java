@@ -193,11 +193,12 @@ public class IndividualNaniteTest {
 		JSONArray activitiesCounts = individualJSONObject.getJSONArray(
 			"activitiesCounts");
 
-		JSONObject activitiesCount = activitiesCounts.getJSONObject(0);
+		JSONObject activitiesCount = JSONUtil.find(
+			activitiesCounts, "channelId", "1");
 
 		Assert.assertEquals(2, activitiesCount.get("activitiesCount"));
 
-		activitiesCount = activitiesCounts.getJSONObject(1);
+		activitiesCount = JSONUtil.find(activitiesCounts, "channelId", "2");
 
 		Assert.assertEquals(1, activitiesCount.get("activitiesCount"));
 
