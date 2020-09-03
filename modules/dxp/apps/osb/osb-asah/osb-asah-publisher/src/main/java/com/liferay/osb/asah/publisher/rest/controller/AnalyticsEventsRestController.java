@@ -77,7 +77,7 @@ public class AnalyticsEventsRestController {
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						"Discarding duplicate message: " +
-							analyticsEventsMessage.toString());
+							analyticsEventsMessage.toJSON());
 				}
 
 				return new ResponseEntity<>(
