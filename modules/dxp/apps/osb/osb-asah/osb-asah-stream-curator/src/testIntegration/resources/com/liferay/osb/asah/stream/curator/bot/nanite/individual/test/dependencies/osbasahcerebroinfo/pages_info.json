@@ -22,7 +22,7 @@
 		"indirectAccess": 0,
 		"indirectAccessDates": [
 		],
-		"individualId": null,
+		"individualId": "200",
 		"interactionDates": [
 			"2020-09-01T00:00:00.000Z",
 			"2020-09-01T00:00:00.000Z"
@@ -68,10 +68,10 @@
 		"indirectAccess": 0,
 		"indirectAccessDates": [
 		],
-		"individualId": null,
+		"individualId": "100",
 		"interactionDates": [
 		],
-		"knownIndividual": false,
+		"knownIndividual": true,
 		"lastEventDate": "2020-09-01T00:00:00.000Z",
 		"modifiedDate": "2020-09-01T00:00:00.000Z",
 		"pageScrolls": [
