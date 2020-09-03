@@ -244,6 +244,10 @@ public interface TicketLocalService
 	public List<Ticket> getTickets(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Ticket> getTickets(
+		long companyId, String className, long classPK, int type);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Ticket> getTickets(String className, long classPK, int type);
 
 	/**
@@ -253,6 +257,11 @@ public interface TicketLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketsCount();
+
+	public Ticket updateTicket(
+			long ticketId, String className, long classPK, int type,
+			String extraInfo, Date expirationDate)
+		throws PortalException;
 
 	/**
 	 * Updates the ticket in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

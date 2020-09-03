@@ -302,6 +302,14 @@ public class TicketLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.portal.kernel.model.Ticket> getTickets(
+		long companyId, java.lang.String className, long classPK, int type) {
+
+		return _ticketLocalService.getTickets(
+			companyId, className, classPK, type);
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.Ticket> getTickets(
 		java.lang.String className, long classPK, int type) {
 
 		return _ticketLocalService.getTickets(className, classPK, type);
@@ -315,6 +323,16 @@ public class TicketLocalServiceWrapper
 	@Override
 	public int getTicketsCount() {
 		return _ticketLocalService.getTicketsCount();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Ticket updateTicket(
+			long ticketId, java.lang.String className, long classPK, int type,
+			java.lang.String extraInfo, java.util.Date expirationDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ticketLocalService.updateTicket(
+			ticketId, className, classPK, type, extraInfo, expirationDate);
 	}
 
 	/**

@@ -295,6 +295,12 @@ public class TicketLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.portal.kernel.model.Ticket>
+		getTickets(long companyId, String className, long classPK, int type) {
+
+		return getService().getTickets(companyId, className, classPK, type);
+	}
+
+	public static java.util.List<com.liferay.portal.kernel.model.Ticket>
 		getTickets(String className, long classPK, int type) {
 
 		return getService().getTickets(className, classPK, type);
@@ -307,6 +313,15 @@ public class TicketLocalServiceUtil {
 	 */
 	public static int getTicketsCount() {
 		return getService().getTicketsCount();
+	}
+
+	public static com.liferay.portal.kernel.model.Ticket updateTicket(
+			long ticketId, String className, long classPK, int type,
+			String extraInfo, java.util.Date expirationDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateTicket(
+			ticketId, className, classPK, type, extraInfo, expirationDate);
 	}
 
 	/**
