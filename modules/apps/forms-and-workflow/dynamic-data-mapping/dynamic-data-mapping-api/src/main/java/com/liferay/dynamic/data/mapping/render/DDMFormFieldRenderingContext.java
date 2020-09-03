@@ -17,7 +17,9 @@ package com.liferay.dynamic.data.mapping.render;
 import com.liferay.dynamic.data.mapping.storage.Field;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -65,6 +67,14 @@ public class DDMFormFieldRenderingContext {
 
 	public String getPortletNamespace() {
 		return _portletNamespace;
+	}
+
+	public Map<String, Object> getProperties() {
+		return _properties;
+	}
+
+	public Object getProperty(String name) {
+		return _properties.get(name);
 	}
 
 	public String getTip() {
@@ -141,6 +151,14 @@ public class DDMFormFieldRenderingContext {
 		_portletNamespace = portletNamespace;
 	}
 
+	public void setProperties(Map<String, Object> properties) {
+		_properties.putAll(properties);
+	}
+
+	public void setProperty(String name, Object value) {
+		_properties.put(name, value);
+	}
+
 	public void setReadOnly(boolean readOnly) {
 		_readOnly = readOnly;
 	}
@@ -175,6 +193,7 @@ public class DDMFormFieldRenderingContext {
 	private String _name;
 	private String _namespace;
 	private String _portletNamespace;
+	private final Map<String, Object> _properties = new HashMap<>();
 	private boolean _readOnly;
 	private boolean _required;
 	private boolean _showEmptyFieldLabel;
