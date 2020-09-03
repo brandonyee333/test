@@ -64,9 +64,5 @@
 		border-left-width: 1px;
 		border-radius: $border-radius;
 		width: 100%;
-
-		&:not(:first-child) {
-			margin-top: $margin-md;
-		}
 	}
 }
