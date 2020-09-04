@@ -32,9 +32,11 @@ if (analyticsConfiguration != null) {
 
 <portlet:actionURL name="/analytics_settings/edit_synced_contacts_fields" var="editSyncedContactsFieldsURL" />
 
-<div class="pb-2 portlet-analytics-settings sheet sheet-lg">
-	<h2>
-		<liferay-ui:message key="sync-data-fields" />
+<div class="card container-fluid-1280 main-content-card portlet-analytics-settings">
+	<h2 class="autofit-row">
+		<span class="autofit-col autofit-col-expand">
+			<liferay-ui:message key="sync-data-fields" />
+		</span>
 	</h2>
 
 	<p class="mt-3 text-secondary">
@@ -91,7 +93,6 @@ if (analyticsConfiguration != null) {
 					<liferay-ui:search-iterator
 						markupView="lexicon"
 						paginate="<%= false %>"
-						searchResultCssClass="show-quick-actions-on-hover table table-autofit"
 					/>
 				</liferay-ui:search-container>
 			</liferay-ui:section>
@@ -139,7 +140,6 @@ if (analyticsConfiguration != null) {
 					<liferay-ui:search-iterator
 						markupView="lexicon"
 						paginate="<%= false %>"
-						searchResultCssClass="show-quick-actions-on-hover table table-autofit"
 					/>
 				</liferay-ui:search-container>
 			</liferay-ui:section>
