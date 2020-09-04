@@ -429,8 +429,8 @@ public class ElasticsearchIndexManagerImpl
 			}
 
 			return ResourceUtil.readResourceToString(
-				"../dependencies/" + weDeployDataServiceName + resourceName,
-				this);
+				"com/liferay/osb/asah/common/elasticsearch/dependencies/" +
+					weDeployDataServiceName + resourceName);
 		}
 		catch (Exception e) {
 			throw new IllegalStateException(e);
