@@ -1,0 +1,7 @@
+{
+	"settings": {
+		"index": {
+			"max_terms_count": 2147483647
+		}
+	}
+}

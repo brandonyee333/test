@@ -125,6 +125,9 @@ public class ElasticsearchIndexManagerImpl
 
 		Map<String, JSONObject> configurationJSONObjects = new HashMap<>();
 
+		configurationJSONObjects.put(
+			"root", new JSONObject(readIndexConfiguration("root", null)));
+
 		for (WeDeployDataService weDeployDataService :
 				WeDeployDataService.values()) {
 
@@ -156,6 +159,25 @@ public class ElasticsearchIndexManagerImpl
 				configurationJSONObjects.remove(
 					indexTemplateMetadata.getName());
 			}
+		}
+
+		JSONObject rootConfigurationJSONObject =
+			configurationJSONObjects.remove("root");
+
+		if (rootConfigurationJSONObject != null) {
+			PutIndexTemplateRequestBuilder putIndexTemplateRequestBuilder =
+				indicesAdminClient.preparePutTemplate("root");
+
+			putIndexTemplateRequestBuilder.setPatterns(
+				Collections.singletonList("*"));
+			putIndexTemplateRequestBuilder.setSource(
+				rootConfigurationJSONObject.toMap());
+			putIndexTemplateRequestBuilder.setVersion(
+				ReleaseInfo.getSchemaVersion());
+
+			ClientUtil.waitForConnection(_client);
+
+			putIndexTemplateRequestBuilder.get();
 		}
 
 		for (Map.Entry<String, JSONObject> entry :
@@ -400,9 +422,15 @@ public class ElasticsearchIndexManagerImpl
 				StringUtils.replace(collectionName.toLowerCase(), "-", "_") +
 					"_index_configuration.json";
 
+			String weDeployDataServiceName = "";
+
+			if (weDeployDataService != null) {
+				weDeployDataServiceName = weDeployDataService.toString() + "/";
+			}
+
 			return ResourceUtil.readResourceToString(
-				"com/liferay/osb/asah/common/elasticsearch/dependencies/" +
-					weDeployDataService.toString() + "/" + resourceName);
+				"../dependencies/" + weDeployDataServiceName + resourceName,
+				this);
 		}
 		catch (Exception e) {
 			throw new IllegalStateException(e);
