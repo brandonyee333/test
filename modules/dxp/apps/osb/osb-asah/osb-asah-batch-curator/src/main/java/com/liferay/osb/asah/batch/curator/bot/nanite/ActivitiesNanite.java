@@ -46,6 +46,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -190,6 +191,33 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			return activityGroupJSONObject;
 		}
 
+		String ownerId = analyticsEvent.getIndividualId();
+
+		if (ownerId != null) {
+			JSONObject individualJSONObject =
+				_faroInfoElasticsearchInvoker.fetch("individuals", ownerId);
+
+			if (individualJSONObject == null) {
+				individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
+					"individuals",
+					QueryBuilders.nestedQuery(
+						"dataSourceIndividualPKs",
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.termQuery(
+								"dataSourceIndividualPKs.dataSourceId",
+								dataSourceId)
+						).filter(
+							QueryBuilders.termQuery(
+								"dataSourceIndividualPKs.individualPKs", userId)
+						),
+						ScoreMode.None));
+
+				if (individualJSONObject != null) {
+					ownerId = individualJSONObject.getString("id");
+				}
+			}
+		}
+
 		return faroInfoElasticsearchInvoker.add(
 			"activity-groups",
 			JSONUtil.put(
@@ -203,7 +231,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			).put(
 				"endTime", dateString
 			).put(
-				"ownerId", analyticsEvent.getIndividualId()
+				"ownerId", ownerId
 			).put(
 				"startTime", dateString
 			).put(

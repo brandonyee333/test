@@ -22,10 +22,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
-
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -58,46 +55,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			return activityJSONObject;
 		}
 
-		JSONObject individualJSONObject = elasticsearchInvoker.fetch(
-			"individuals", activityJSONObject.getString("ownerId"));
-
-		if (individualJSONObject == null) {
-			individualJSONObject = elasticsearchInvoker.fetch(
-				"individuals",
-				QueryBuilders.nestedQuery(
-					"dataSourceIndividualPKs",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(
-							"dataSourceIndividualPKs.dataSourceId",
-							activityJSONObject.getString("dataSourceId"))
-					).filter(
-						QueryBuilders.termQuery(
-							"dataSourceIndividualPKs.individualPKs",
-							activityJSONObject.getString("userId"))
-					),
-					ScoreMode.None));
-
-			if (individualJSONObject != null) {
-				JSONObject activityGroupJSONObject = elasticsearchInvoker.fetch(
-					"activity-groups", activityJSONObject.getString("groupId"));
-
-				if (!Objects.equals(
-						individualJSONObject.getString("id"),
-						activityGroupJSONObject.getString("ownerId"))) {
-
-					elasticsearchInvoker.update(
-						"activity-groups",
-						activityGroupJSONObject.getString("id"),
-						JSONUtil.put(
-							"ownerId", individualJSONObject.getString("id")));
-				}
-
-				updateOwnerId(activityJSONObject, individualJSONObject);
-			}
-
-			return activityJSONObject;
-		}
-
 		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
@@ -107,7 +64,9 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 				"contains(filter, '" +
 					activityJSONObject.getString("activityKey") + "')"
 			).put(
-				"individualJSONObject", individualJSONObject
+				"individualJSONObject",
+				elasticsearchInvoker.get(
+					"individuals", activityJSONObject.getString("ownerId"))
 			));
 
 		return activityJSONObject;
