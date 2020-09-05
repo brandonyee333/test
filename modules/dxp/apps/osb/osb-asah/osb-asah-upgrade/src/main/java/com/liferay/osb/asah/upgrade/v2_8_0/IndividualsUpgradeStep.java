@@ -15,11 +15,13 @@
 package com.liferay.osb.asah.upgrade.v2_8_0;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
@@ -123,6 +125,26 @@ public class IndividualsUpgradeStep implements UpgradeStep {
 
 				_elasticsearchInvoker.delete(
 					"individuals", individualJSONObject);
+
+				String individualId = individualJSONObject.getString("id");
+
+				JSONArrayIterator.of(
+					"memberships", _elasticsearchInvoker,
+					membershipJSONObject -> {
+						_faroInfoMembershipDog.deactivateMembership(
+							DateUtil.newDateString(), individualId,
+							membershipJSONObject.getString(
+								"individualSegmentId"));
+
+						return null;
+					}
+				).setQueryBuilder(
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery("individualId", individualId)
+					).filter(
+						QueryBuilders.termQuery("status", "ACTIVE")
+					)
+				).iterate();
 			}
 
 			originalIndividualJSONObject.put(
@@ -480,8 +502,6 @@ public class IndividualsUpgradeStep implements UpgradeStep {
 		_updateOwnerId("fields", "ownerId", newIndividualId, oldIndividualId);
 		_updateOwnerId(
 			"interests", "ownerId", newIndividualId, oldIndividualId);
-		_updateOwnerId(
-			"memberships", "individualId", newIndividualId, oldIndividualId);
 	}
 
 	private ElasticsearchInvoker _elasticsearchInvoker;
@@ -491,5 +511,8 @@ public class IndividualsUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
+
+	@Autowired
+	private FaroInfoMembershipDog _faroInfoMembershipDog;
 
 }
