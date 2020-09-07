@@ -836,6 +836,8 @@ AUI.add(
 						if (dataType) {
 							var localizationMap = instance.get('localizationMap');
 
+							var predefinedValue = instance.getFieldDefinition().predefinedValue;
+
 							var value;
 
 							if (instance.get('localizable')) {
@@ -851,6 +853,10 @@ AUI.add(
 							}
 							else {
 								value = instance.getValue();
+							}
+
+							if (predefinedValue) {
+								value = predefinedValue[instance.get('displayLocale')];
 							}
 
 							if (Lang.isUndefined(value)) {
