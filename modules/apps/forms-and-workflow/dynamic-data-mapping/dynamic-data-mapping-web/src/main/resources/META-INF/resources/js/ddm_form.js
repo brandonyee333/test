@@ -2976,6 +2976,8 @@ AUI.add(
 
 						var localizationMap = instance.get('localizationMap');
 
+						var predefinedValue = instance.getFieldDefinition().predefinedValue;
+
 						if (isNode(editor)) {
 							TextHTMLField.superclass.setValue.apply(instance, arguments);
 						}
@@ -2986,7 +2988,9 @@ AUI.add(
 							Liferay.after(
 								editorComponentName + ':registered',
 								function() {
-									if (value === localizationMap[instance.get('displayLocale')]) {
+									if (predefinedValue &&
+										value === predefinedValue[instance.get('displayLocale')] ||
+										value === localizationMap[instance.get('displayLocale')]) {
 										editor.setHTML(value);
 									}
 								}
