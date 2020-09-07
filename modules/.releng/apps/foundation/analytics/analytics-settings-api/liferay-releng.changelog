@@ -12,3 +12,8 @@ bed41663d22eb58c93d98b4c86dadaaadcad1287^..8425076d7516642b869ad2d34df1e623b2de2
 # Bundle Version 1.1.0
 #
 35964a00375c9ca734b203d67fec41abaeb26f5a^..a450feb1c17bdfaec2012ec9204ccd89239f3f17=LRAC-5245
+
+#
+# Bundle Version 1.2.0
+#
+a450feb1c17bdfaec2012ec9204ccd89239f3f17^..b307c5dda9ccf979dc5f3543e9f30f2f986fd0fb=LRAC-6436 LRAC-6447 LRAC-6453
