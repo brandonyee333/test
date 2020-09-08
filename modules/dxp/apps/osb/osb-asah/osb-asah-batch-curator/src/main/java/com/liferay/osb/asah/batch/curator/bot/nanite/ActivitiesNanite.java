@@ -191,33 +191,6 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			return activityGroupJSONObject;
 		}
 
-		String ownerId = analyticsEvent.getIndividualId();
-
-		if (ownerId != null) {
-			JSONObject individualJSONObject =
-				_faroInfoElasticsearchInvoker.fetch("individuals", ownerId);
-
-			if (individualJSONObject == null) {
-				individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
-					"individuals",
-					QueryBuilders.nestedQuery(
-						"dataSourceIndividualPKs",
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery(
-								"dataSourceIndividualPKs.dataSourceId",
-								dataSourceId)
-						).filter(
-							QueryBuilders.termQuery(
-								"dataSourceIndividualPKs.individualPKs", userId)
-						),
-						ScoreMode.None));
-
-				if (individualJSONObject != null) {
-					ownerId = individualJSONObject.getString("id");
-				}
-			}
-		}
-
 		return faroInfoElasticsearchInvoker.add(
 			"activity-groups",
 			JSONUtil.put(
@@ -231,7 +204,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			).put(
 				"endTime", dateString
 			).put(
-				"ownerId", ownerId
+				"ownerId", _getOwnerId(analyticsEvent)
 			).put(
 				"startTime", dateString
 			).put(
@@ -578,6 +551,43 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		}
 
 		return MapUtil.getString(analyticsEvent.getContext(), "title");
+	}
+
+	private String _getOwnerId(AnalyticsEvent analyticsEvent) {
+		String ownerId = analyticsEvent.getIndividualId();
+
+		if ((ownerId != null) &&
+			_faroInfoElasticsearchInvoker.exists("individuals", ownerId)) {
+
+			return ownerId;
+		}
+
+		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
+			"individuals",
+			QueryBuilders.nestedQuery(
+				"dataSourceIndividualPKs",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"dataSourceIndividualPKs.dataSourceId",
+						analyticsEvent.getDataSourceId())
+				).filter(
+					QueryBuilders.termQuery(
+						"dataSourceIndividualPKs.individualPKs",
+						analyticsEvent.getUserId())
+				),
+				ScoreMode.None));
+
+		if (individualJSONObject != null) {
+			return individualJSONObject.getString("id");
+		}
+
+		if (_log.isWarnEnabled()) {
+			_log.warn(
+				"Unable to find individual for ownerId " + ownerId +
+					" or userId " + analyticsEvent.getUserId());
+		}
+
+		return null;
 	}
 
 	private String _getPageViewActivityId(AnalyticsEvent analyticsEvent) {
