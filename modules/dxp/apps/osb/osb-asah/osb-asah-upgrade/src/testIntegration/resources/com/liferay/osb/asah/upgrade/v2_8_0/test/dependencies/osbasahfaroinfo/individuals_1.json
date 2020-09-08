@@ -1,0 +1,64 @@
+[
+	{
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "990121114030678099",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"aedfa915-c7a1-4309-abcf-024e247d414c"
+				]
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:40.412Z",
+		"dateModified": "2019-02-08T22:40:40.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "990121114030678099",
+					"dataSourceName": "TEST-DATASOURCE-EXAMPLE",
+					"dateModified": "2019-02-08T22:40:40.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "TEST@liferay.com"
+				}
+			]
+		},
+		"emailAddressHashed": "7d45fdcda2426bc921e7c9a1f3ac32df4e546f25c2c8b91b906eebacec2abb1d",
+		"id": "337984659206412898"
+	},
+	{
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "990121114030678099",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"aedfa915-c7a1-4309-abcf-024e247d414c"
+				]
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "990121114030678099",
+					"dataSourceName": "TEST-DATASOURCE-EXAMPLE",
+					"dateModified": "2019-02-08T22:40:44.412Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "337984659206412899",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "test@liferay.com"
+				}
+			]
+		},
+		"emailAddressHashed": "47ff64395860b1d498241d907069f649b98c198a95b3ba5303b87094058590c1",
+		"id": "337984659206412899"
+	}
+]
