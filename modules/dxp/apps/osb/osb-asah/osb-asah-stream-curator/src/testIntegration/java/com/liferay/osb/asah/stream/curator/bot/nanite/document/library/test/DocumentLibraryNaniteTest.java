@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
 import com.liferay.osb.asah.stream.curator.bot.nanite.document.library.DocumentLibraryNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -29,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,7 +44,12 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class DocumentLibraryNaniteTest {
+public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
+
+	@Before
+	public void setUp() {
+		setUp(_documentLibraryNanite);
+	}
 
 	@ElasticsearchIndex(
 		name = "document-libraries",

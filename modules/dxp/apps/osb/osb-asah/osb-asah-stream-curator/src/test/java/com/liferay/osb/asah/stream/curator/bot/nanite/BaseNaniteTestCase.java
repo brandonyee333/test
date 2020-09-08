@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.function.UnsafeFunction;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
@@ -74,6 +75,38 @@ public abstract class BaseNaniteTestCase {
 
 		ReflectionTestUtils.setField(
 			nanite, "_cerebroInfoElasticsearchInvoker", elasticsearchInvoker);
+		ReflectionTestUtils.setField(
+			nanite, "_faroInfoElasticsearchInvoker", elasticsearchInvoker);
+
+		Mockito.when(
+			elasticsearchInvoker.get(
+				Mockito.eq("individuals"), Mockito.any(QueryBuilder.class))
+		).thenReturn(
+			new JSONArray()
+		);
+
+		if (nanite instanceof BaseNanite) {
+			FaroInfoIndividualDog faroInfoIndividualDog = Mockito.mock(
+				FaroInfoIndividualDog.class);
+
+			ReflectionTestUtils.setField(
+				nanite, "_faroInfoIndividualDog",
+				Mockito.mock(FaroInfoIndividualDog.class));
+
+			Mockito.when(
+				elasticsearchInvoker.exists(
+					Mockito.eq("individuals"), Mockito.isNull(String.class))
+			).thenReturn(
+				true
+			);
+
+			Mockito.when(
+				faroInfoIndividualDog.getIndividualJSONObject(
+					Mockito.anyString(), Mockito.anyString())
+			).thenReturn(
+				null
+			);
+		}
 
 		String fileName = getJSONFileName(clazz);
 

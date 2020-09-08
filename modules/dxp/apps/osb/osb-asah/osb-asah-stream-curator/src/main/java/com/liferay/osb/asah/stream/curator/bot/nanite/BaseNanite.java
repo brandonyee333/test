@@ -315,12 +315,14 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			_faroInfoIndividualDog.getIndividualJSONObject(
 				analyticsEvent.getDataSourceId(), analyticsEvent.getUserId());
 
-		model.setIndividualId(individualJSONObject.getString("id"));
-		model.setKnownIndividual(
-			FaroInfoIndividualUtil.isKnownIndividual(individualJSONObject));
-		model.setSegmentNames(
-			_faroInfoIndividualDog.getIndividualSegmentNames(
-				analyticsEvent.getChannelId(), individualJSONObject));
+		if (individualJSONObject != null) {
+			model.setIndividualId(individualJSONObject.getString("id"));
+			model.setKnownIndividual(
+				FaroInfoIndividualUtil.isKnownIndividual(individualJSONObject));
+			model.setSegmentNames(
+				_faroInfoIndividualDog.getIndividualSegmentNames(
+					analyticsEvent.getChannelId(), individualJSONObject));
+		}
 	}
 
 	private void _setModelLocation(AnalyticsEvent analyticsEvent, T model) {
