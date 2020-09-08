@@ -20,7 +20,7 @@ import com.liferay.osb.customer.admin.constants.AccountAttachmentConstants;
 import com.liferay.osb.customer.admin.exception.AccountEntryLanguageIdException;
 import com.liferay.osb.customer.admin.exception.DuplicateProductEntryException;
 import com.liferay.osb.customer.admin.exception.LicenseEntryNameException;
-import com.liferay.osb.customer.admin.exception.LicenseEntryPortalVersionException;
+import com.liferay.osb.customer.admin.exception.LicenseEntryVersionException;
 import com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException;
 import com.liferay.osb.customer.admin.exception.NoSuchProductEntryException;
 import com.liferay.osb.customer.admin.exception.ProductEntryEnvironmentException;
@@ -371,7 +371,7 @@ public class AdminPortlet extends MVCPortlet {
 				versionMin, versionMax);
 		}
 		else {
-			licenseEntryLocalService.updateLicenseEntry(
+			_licenseEntryLocalService.updateLicenseEntry(
 				licenseEntryId, productEntryId, name, type, versionMin,
 				versionMax);
 		}

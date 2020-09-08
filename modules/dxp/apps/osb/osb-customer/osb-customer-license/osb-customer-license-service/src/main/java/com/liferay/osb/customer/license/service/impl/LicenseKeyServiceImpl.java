@@ -133,19 +133,19 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			getPermissionChecker(), koroneikiAccountKey,
 			OSBActionKeys.ADD_LICENSE);
 
+		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
+			licenseEntryId);
+
 		ProductEntry productEntry = null;
 
 		if (productEntryId > 0) {
-			productEntry = productEntryLocalService.getProductEntry(
+			productEntry = _productEntryLocalService.getProductEntry(
 				productEntryId);
 		}
 		else {
-			productEntry = productEntryLocalService.getProductEntry(
-				offeringEntry.getProductEntryId());
+			productEntry = _productEntryLocalService.getProductEntry(
+				licenseEntry.getProductEntryId());
 		}
-
-		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
-			licenseEntryId);
 
 		String licenseEntryType = licenseEntry.getType();
 

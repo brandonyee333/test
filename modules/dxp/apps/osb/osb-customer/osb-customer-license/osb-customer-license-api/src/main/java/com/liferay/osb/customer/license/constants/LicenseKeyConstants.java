@@ -16,6 +16,7 @@ package com.liferay.osb.customer.license.constants;
 
 import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
 import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
+import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;

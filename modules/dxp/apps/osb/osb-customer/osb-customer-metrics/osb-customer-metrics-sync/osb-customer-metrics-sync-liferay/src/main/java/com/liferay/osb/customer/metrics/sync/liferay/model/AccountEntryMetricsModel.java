@@ -15,13 +15,11 @@
 package com.liferay.osb.customer.metrics.sync.liferay.model;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.model.SupportRegion;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +62,9 @@ public class AccountEntryMetricsModel
 
 		List<Map<String, Object>> mappingValues = new ArrayList<>();
 
+		/*
+		TODO
+
 		for (SupportRegion supportRegion : accountEntry.getSupportRegions()) {
 			Map<String, Object> mappingValue = new HashMap<>();
 
@@ -75,6 +76,7 @@ public class AccountEntryMetricsModel
 
 			mappingValues.add(mappingValue);
 		}
+		*/
 
 		return mappingValues;
 	}

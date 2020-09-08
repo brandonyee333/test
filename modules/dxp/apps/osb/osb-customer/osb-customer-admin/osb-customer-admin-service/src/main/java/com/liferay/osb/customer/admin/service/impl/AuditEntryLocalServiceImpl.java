@@ -17,6 +17,7 @@ package com.liferay.osb.customer.admin.service.impl;
 import com.liferay.osb.customer.admin.constants.AuditEntryConstants;
 import com.liferay.osb.customer.admin.model.AuditEntry;
 import com.liferay.osb.customer.admin.service.base.AuditEntryLocalServiceBaseImpl;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ArrayUtil;

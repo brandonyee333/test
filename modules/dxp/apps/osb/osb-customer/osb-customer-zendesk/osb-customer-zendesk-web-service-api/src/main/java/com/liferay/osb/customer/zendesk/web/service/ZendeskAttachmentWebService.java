@@ -16,8 +16,6 @@ package com.liferay.osb.customer.zendesk.web.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.exception.PortalException;
-
 /**
  * @author Jenny Chen
  */
@@ -27,6 +25,6 @@ public interface ZendeskAttachmentWebService {
 	public void deleteZendeskAttachment(
 			long zendeskTicketId, long zendeskTicketCommentId,
 			long zendeskAttachmentId)
-		throws PortalException;
+		throws Exception;
 
 }

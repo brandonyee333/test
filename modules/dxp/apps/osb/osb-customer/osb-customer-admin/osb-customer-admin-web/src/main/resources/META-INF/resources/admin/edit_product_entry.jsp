@@ -37,10 +37,8 @@ boolean licenses = BeanParamUtil.getBoolean(productEntry, request, "licenses");
 String versionsListType = BeanParamUtil.getString(productEntry, request, "versionsListType");
 String zendeskTag = ParamUtil.getString(request, "zendeskTag");
 
-if (productEntry != null) {
-	if (Validator.isNull(zendeskTag)) {
-		zendeskTag = productEntry.getZendeskTag();
-	}
+if ((productEntry != null) && Validator.isNull(zendeskTag)) {
+	zendeskTag = productEntry.getZendeskTag();
 }
 %>
 

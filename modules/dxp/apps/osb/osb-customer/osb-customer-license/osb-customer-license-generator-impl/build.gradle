@@ -15,10 +15,10 @@ dependencies {
 	compileOnly group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: "5.0.0"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.3.0"
-	compileOnly project(":private:apps:osb-customer:osb-customer-admin:osb-customer-admin-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-web-service-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-license:osb-customer-license-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-license:osb-customer-license-generator-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-admin:osb-customer-admin-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-web-service-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-license:osb-customer-license-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-license:osb-customer-license-generator-api")
 }

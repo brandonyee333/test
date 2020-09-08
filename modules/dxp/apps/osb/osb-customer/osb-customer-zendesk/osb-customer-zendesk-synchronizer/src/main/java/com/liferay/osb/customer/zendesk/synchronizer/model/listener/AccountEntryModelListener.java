@@ -119,14 +119,13 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				_accountSynchronizer.removeCustomers(account, accountEntry);
 			}
 
-			if (accountEntry.isActiveSupport()) {
-				if ((oldAccountEntry.isActiveTicketSupport() !=
-						accountEntry.isActiveTicketSupport()) ||
-					(oldAccountEntry.isActiveSupport() !=
-						accountEntry.isActiveSupport())) {
+			if (accountEntry.isActiveSupport() &&
+				((oldAccountEntry.isActiveTicketSupport() !=
+					accountEntry.isActiveTicketSupport()) ||
+				 (oldAccountEntry.isActiveSupport() !=
+					 accountEntry.isActiveSupport()))) {
 
-					_accountSynchronizer.addCustomers(account, accountEntry);
-				}
+				_accountSynchronizer.addCustomers(account, accountEntry);
 			}
 		}
 		catch (Exception e) {

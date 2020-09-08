@@ -201,11 +201,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			productEntryId);
 
 		return addLicenseKey(
-			userId, licenseKeySet, name, offeringEntry, licenseEntry,
-			productEntry, productVersion, clusterId, owner, maxServers,
-			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate, StringPool.BLANK,
-			complimentary, active);
+			userId, licenseKeySet, name, licenseEntry, productEntry,
+			koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
+			productVersion, clusterId, owner, maxServers, maxHttpSessions,
+			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
+			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
+			StringPool.BLANK, complimentary, active);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -801,8 +802,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKey = doAddLicenseKey(
 				user, now, licenseKeySet, licenseEntry, koroneikiAccountKey,
 				koroneikiProductPurchaseKey, accountEntryName, licenseEntryName,
-				licenseEntryType, licenseVersion, productEntryName,
-				productId, productVersion, productVersionLabel, clusterId, owner,
+				licenseEntryType, licenseVersion, productEntryName, productId,
+				productVersion, productVersionLabel, clusterId, owner,
 				maxServers, 0, 0, maxHttpSessions, 0, description,
 				StringPool.BLANK, StringPool.BLANK, macAddresses[i],
 				serverIds[i], key, startDate, expirationDate, additionalInfo,
@@ -818,10 +819,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String koroneikiProductPurchaseKey, String accountEntryName,
 			String licenseEntryName, String licenseEntryType,
 			int licenseVersion, String productEntryName, String productId,
-			int productVersion,
-			String productVersionLabel, long clusterId, String owner,
-			int maxServers, long maxConcurrentUsers, long maxUsers,
-			int maxHttpSessions, int sizing, String description,
+			int productVersion, String productVersionLabel, long clusterId,
+			String owner, int maxServers, long maxConcurrentUsers,
+			long maxUsers, int maxHttpSessions, int sizing, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, String key, Date startDate, Date expirationDate,
 			String additionalInfo, boolean complimentary, boolean active)
@@ -989,20 +989,17 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				accountEntryName, licenseEntryName, licenseEntryType,
 				licenseVersion, productEntryName, productId,
 				productVersionLabel, owner, maxServers, maxHttpSessions,
-				offeringEntry.getMaxConcurrentUsers(),
-				offeringEntry.getMaxUsers(), sizing, description, hostName,
+				maxConcurrentUsers, maxUsers, sizing, description, hostName,
 				curIpAddresses, curMacAddresses, new String[] {serverId},
 				startDate, expirationDate);
 
 			licenseKey = doAddLicenseKey(
-				user, now, licenseKeySet, licenseEntry,
-				koroneikiAccountKey, koroneikiProductPurchaseKey,
-				accountEntryName, licenseEntryName, licenseEntryType,
-				licenseVersion, productEntryName, productId, productVersion,
-				productVersionLabel, clusterId, owner, maxServers,
-				offeringEntry.getMaxConcurrentUsers(),
-				offeringEntry.getMaxUsers(), maxHttpSessions, sizing,
-				description, hostName, curIpAddresses, curMacAddresses,
+				user, now, licenseKeySet, licenseEntry, koroneikiAccountKey,
+				koroneikiProductPurchaseKey, accountEntryName, licenseEntryName,
+				licenseEntryType, licenseVersion, productEntryName, productId,
+				productVersion, productVersionLabel, clusterId, owner,
+				maxServers, maxConcurrentUsers, maxUsers, maxHttpSessions,
+				sizing, description, hostName, curIpAddresses, curMacAddresses,
 				serverId, key, startDate, expirationDate, additionalInfo,
 				complimentary, active);
 		}
@@ -1075,7 +1072,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			clusterLicenseKey.setComplimentary(complimentary);
 			clusterLicenseKey.setActive(active);
 
-			licenseKeyPersistence.update(clusterLicenseKey);
+			clusterLicenseKey = licenseKeyPersistence.update(clusterLicenseKey);
 
 			if (updateKoroneikiProductPurchaseKey) {
 				_deleteProductConsumption(user, clusterLicenseKey);
@@ -1168,7 +1165,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			clusterLicenseKey.setClusterId(clusterId);
 			clusterLicenseKey.setComplimentary(complimentary);
 
-			licenseKeyPersistence.update(clusterLicenseKey);
+			clusterLicenseKey = licenseKeyPersistence.update(clusterLicenseKey);
 
 			if (updateKoroneikiProductPurchaseKey) {
 				_deleteProductConsumption(user, clusterLicenseKey);

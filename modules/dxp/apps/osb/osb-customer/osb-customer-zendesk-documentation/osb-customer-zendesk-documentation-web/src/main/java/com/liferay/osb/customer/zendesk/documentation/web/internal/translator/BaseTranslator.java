@@ -50,7 +50,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 public abstract class BaseTranslator<T extends TranslatableModel> {
 
-	public void autoTranslate(Date stopDate) throws PortalException {
+	public void autoTranslate(Date stopDate) throws Exception {
 		Map<String, List<T>> manualTranslationModels = new HashMap<>();
 
 		Query query = queryFactory.createQuery();
@@ -100,7 +100,7 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 		notifyTranslators(manualTranslationModels);
 	}
 
-	protected void addZendeskTranslations(T model) throws PortalException {
+	protected void addZendeskTranslations(T model) throws Exception {
 		for (String zendeskLocale : ZendeskLocales.ZENDESK_LOCALES_ENABLED) {
 			if (zendeskLocale.equals(ZendeskLocales.US)) {
 				continue;
@@ -219,7 +219,7 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 
 	protected void updateZendeskTranslations(
 			T model, Map<String, List<T>> manualTranslationModels)
-		throws PortalException {
+		throws Exception {
 
 		boolean translationUpdated = false;
 		Set<String> manualTranslationLocales = new HashSet<>();

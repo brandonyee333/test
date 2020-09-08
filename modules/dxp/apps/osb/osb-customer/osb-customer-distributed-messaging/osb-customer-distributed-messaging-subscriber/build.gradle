@@ -4,11 +4,11 @@ dependencies {
 	compileOnly group: "com.rabbitmq", name: "amqp-client", version: "5.7.3"
 	compileOnly group: "org.osgi", name: "org.osgi.annotation.versioning", version: "1.1.0"
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
-	compileOnly project(":private:apps:osb-customer:osb-customer-distributed-messaging:osb-customer-distributed-messaging-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-distributed-messaging:osb-customer-distributed-messaging-connector")
-	compileOnly project(":private:apps:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-message-subscriber")
-	compileOnly project(":private:apps:osb-customer:osb-customer-legacy:osb-customer-legacy-message-subscriber")
-	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk:osb-customer-zendesk-message-subscriber")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-distributed-messaging:osb-customer-distributed-messaging-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-distributed-messaging:osb-customer-distributed-messaging-connector")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-message-subscriber")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-legacy:osb-customer-legacy-message-subscriber")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk:osb-customer-zendesk-message-subscriber")
 }
 
 deployDependencies {

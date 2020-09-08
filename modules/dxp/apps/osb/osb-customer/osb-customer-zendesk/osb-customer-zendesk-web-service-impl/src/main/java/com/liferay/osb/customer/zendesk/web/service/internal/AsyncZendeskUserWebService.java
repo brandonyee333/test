@@ -18,6 +18,7 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;

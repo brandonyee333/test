@@ -38,7 +38,8 @@ public class ProductEntryMetricsModel
 				productEntry.getModelAttributes());
 
 		attributes.put("environment", productEntry.getEnvironmentLabel());
-		attributes.put("type", productEntry.getTypeLabel());
+		//TODO
+		//attributes.put("type", productEntry.getTypeLabel());
 
 		return attributes;
 	}

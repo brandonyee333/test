@@ -14,27 +14,13 @@
 
 package com.liferay.osb.customer.subscription.model.listener;
 
-import com.liferay.osb.customer.subscription.model.listener.util.DXPCloudStatusPageSubscriptionUtil;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
-import com.liferay.petra.lang.CentralizedThreadLocal;
-import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.BaseModelListener;
-import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Jenny Chen
  */
-@Component(immediate = true, service = ModelListener.class)
-public class OfferingEntryModelListener
+//@Component(immediate = true, service = ModelListener.class)
+public class OfferingEntryModelListener {
+	/*
+	TODO
 	extends BaseModelListener<OfferingEntry> {
 
 	@Override
@@ -152,5 +138,7 @@ public class OfferingEntryModelListener
 	@Reference
 	private DXPCloudStatusPageSubscriptionUtil
 		_dxpCloudStatusPageSubscriptionUtil;
+
+	*/
 
 }

@@ -17,6 +17,7 @@ package com.liferay.osb.customer.zendesk.web.service.internal;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTranslationWebService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

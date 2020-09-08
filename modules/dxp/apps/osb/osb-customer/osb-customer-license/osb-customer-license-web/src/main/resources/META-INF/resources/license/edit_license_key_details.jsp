@@ -227,7 +227,7 @@ if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 			</aui:col>
 
 			<c:choose>
-				<c:when test="<%= LicenseKeyConstants.getLicenseVersion(productVersion) >= 3 %>">
+				<c:when test="<%= LicenseKeyConstants.getLicenseVersion(productEntry, productVersion) >= 3 %>">
 					<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 						<aui:col md="12">
 							<h2 class="control-label">
@@ -346,7 +346,7 @@ if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 						</c:otherwise>
 					</c:choose>
 				</c:when>
-				<c:when test="<%= LicenseKeyConstants.getLicenseVersion(productVersion) == 2 %>">
+				<c:when test="<%= LicenseKeyConstants.getLicenseVersion(productEntry, productVersion) == 2 %>">
 					<c:choose>
 						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 							<aui:col md="12">

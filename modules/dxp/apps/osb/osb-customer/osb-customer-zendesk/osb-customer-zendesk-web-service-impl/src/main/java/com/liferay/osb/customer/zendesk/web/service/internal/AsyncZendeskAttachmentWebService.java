@@ -18,7 +18,6 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskAttachmentWebService;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 
@@ -39,7 +38,7 @@ public class AsyncZendeskAttachmentWebService
 	public void deleteZendeskAttachment(
 			long zendeskTicketId, long zendeskTicketCommentId,
 			long zendeskAttachmentId)
-		throws PortalException {
+		throws Exception {
 
 		String endpoint = StringBundler.concat(
 			ZendeskRESTEndpoints.URL_API_V2, "tickets/",
@@ -52,7 +51,8 @@ public class AsyncZendeskAttachmentWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "put", null, jsonObject, null);
 
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisher.publish(
+			"zendesk.service", zendeskRequest.getMessage());
 	}
 
 }

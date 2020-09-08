@@ -17,6 +17,7 @@ package com.liferay.osb.customer.admin.service.persistence.impl;
 import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.model.impl.ProductEntryImpl;
 import com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;

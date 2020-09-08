@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.admin.constants;
 
 import com.liferay.osb.customer.admin.model.AccountEnvironment;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;

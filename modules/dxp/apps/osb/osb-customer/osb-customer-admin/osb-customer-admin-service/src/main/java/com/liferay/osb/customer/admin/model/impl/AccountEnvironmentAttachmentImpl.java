@@ -16,6 +16,7 @@ package com.liferay.osb.customer.admin.model.impl;
 
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
 

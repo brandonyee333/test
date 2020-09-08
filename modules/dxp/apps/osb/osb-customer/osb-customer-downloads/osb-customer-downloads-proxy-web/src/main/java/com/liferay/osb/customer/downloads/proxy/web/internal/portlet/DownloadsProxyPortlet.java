@@ -18,6 +18,8 @@ import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.downloads.proxy.web.internal.constants.DownloadsProxyPortletKeys;
 import com.liferay.osb.customer.downloads.proxy.web.internal.util.AgreementUtil;
 import com.liferay.osb.customer.downloads.proxy.web.internal.util.DownloadsUtil;
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouterUtil;
 import com.liferay.portal.kernel.exception.PortalException;

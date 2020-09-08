@@ -212,7 +212,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			</c:if>
 
 			<aui:button-row cssClass="pull-right">
-				<c:if test="<%= LicenseUtil.isAggregate(licenseKeySetId) && accountPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
+				<c:if test="<%= LicenseUtil.isAggregate(licenseKeySetId) && accountPermission.contains(permissionChecker, licenseKeySet.getKoroneikiAccountKey(), OSBActionKeys.ADD_LICENSE) %>">
 
 					<%
 					LicenseKey firstLicenseKey = licenseKeys.get(0);
@@ -233,7 +233,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					<aui:button onClick="<%= addAggregatedLicenseKeyURL %>" primary="<%= true %>" value="add-aggregated-license-key" />
 				</c:if>
 
-				<c:if test="<%= accountPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
+				<c:if test="<%= accountPermission.contains(permissionChecker, licenseKeySet.getKoroneikiAccountKey(), OSBActionKeys.ADD_LICENSE) %>">
 					<portlet:renderURL var="addLicenseKeyURL">
 						<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
 						<portlet:param name="redirect" value="<%= currentURL %>" />

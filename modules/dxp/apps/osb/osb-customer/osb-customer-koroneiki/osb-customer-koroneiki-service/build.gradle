@@ -3,8 +3,8 @@ dependencies {
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
 	compileOnly group: "org.osgi", name: "org.osgi.annotation.versioning", version: "1.1.0"
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
-	compileOnly project(":private:apps:osb-customer:osb-customer-admin:osb-customer-admin-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-identity-management:osb-customer-identity-management-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-web-service-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-admin:osb-customer-admin-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-identity-management:osb-customer-identity-management-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-web-service-api")
 }

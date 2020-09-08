@@ -18,6 +18,7 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.impl.AccountEntryImpl;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder;
 import com.liferay.osb.customer.util.OSBCustomSQL;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;

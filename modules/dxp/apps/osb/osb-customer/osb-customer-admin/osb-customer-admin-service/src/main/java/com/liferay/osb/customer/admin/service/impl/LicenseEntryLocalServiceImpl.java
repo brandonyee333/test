@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.admin.service.impl;
 
 import com.liferay.osb.customer.admin.exception.LicenseEntryNameException;
-import com.liferay.osb.customer.admin.exception.LicenseEntryPortalVersionException;
+import com.liferay.osb.customer.admin.exception.LicenseEntryVersionException;
 import com.liferay.osb.customer.admin.model.LicenseEntry;
 import com.liferay.osb.customer.admin.service.base.LicenseEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -124,7 +124,7 @@ public class LicenseEntryLocalServiceImpl
 		}
 
 		if ((portalVersionMax != 0) && (portalVersionMin >= portalVersionMax)) {
-			throw new LicenseEntryPortalVersionException();
+			throw new LicenseEntryVersionException();
 		}
 	}
 

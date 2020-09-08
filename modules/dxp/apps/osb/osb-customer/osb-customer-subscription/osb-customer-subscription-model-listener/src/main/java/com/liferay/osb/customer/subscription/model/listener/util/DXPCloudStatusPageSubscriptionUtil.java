@@ -15,13 +15,8 @@
 package com.liferay.osb.customer.subscription.model.listener.util;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.service.DXPCloudStatusPageWebService;
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
@@ -30,7 +25,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -45,6 +39,8 @@ public class DXPCloudStatusPageSubscriptionUtil {
 	public boolean hasActiveDXPCloud(AccountEntry accountEntry)
 		throws Exception {
 
+		/*
+		TODO
 		List<OfferingEntry> offeringEntries = accountEntry.getOfferingEntries();
 
 		for (OfferingEntry offeringEntry : offeringEntries) {
@@ -60,11 +56,14 @@ public class DXPCloudStatusPageSubscriptionUtil {
 				return true;
 			}
 		}
+		*/
 
 		return false;
 	}
 
 	public void subscribe(AccountEntry accountEntry) throws Exception {
+		/*
+		TODO
 		Map<String, String> subscribers = _getSubscribers();
 
 		for (AccountCustomer accountCustomer :
@@ -72,6 +71,7 @@ public class DXPCloudStatusPageSubscriptionUtil {
 
 			_subscribe(accountCustomer.getUserId(), subscribers);
 		}
+		*/
 	}
 
 	public void subscribe(long userId) throws Exception {
@@ -79,6 +79,8 @@ public class DXPCloudStatusPageSubscriptionUtil {
 	}
 
 	public void unsubscribe(AccountEntry accountEntry) throws Exception {
+		/*
+		TODO
 		Map<String, String> subscribers = _getSubscribers();
 
 		List<AccountCustomer> accountCustomers =
@@ -87,6 +89,7 @@ public class DXPCloudStatusPageSubscriptionUtil {
 		for (AccountCustomer accountCustomer : accountCustomers) {
 			_unsubscribe(accountCustomer.getUserId(), subscribers);
 		}
+		*/
 	}
 
 	public void unsubscribe(long userId) throws Exception {
@@ -143,6 +146,8 @@ public class DXPCloudStatusPageSubscriptionUtil {
 			return;
 		}
 
+		/*
+		TODO
 		List<AccountCustomer> accountCustomers =
 			AccountCustomerLocalServiceUtil.getUserAccountCustomers(userId);
 
@@ -155,7 +160,7 @@ public class DXPCloudStatusPageSubscriptionUtil {
 		ExpandoBridge expandoBridge = user.getExpandoBridge();
 
 		expandoBridge.setAttribute("osbDXPCloudSubscription", false, false);
-
+		*/
 		_dxpCloudStatusPagesWebService.deleteSubscriber(subscriberId);
 	}
 

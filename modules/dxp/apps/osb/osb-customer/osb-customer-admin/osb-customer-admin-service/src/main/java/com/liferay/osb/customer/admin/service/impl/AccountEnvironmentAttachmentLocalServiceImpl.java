@@ -20,6 +20,7 @@ import com.liferay.osb.customer.admin.exception.DuplicateAccountEnvironmentAttac
 import com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment;
 import com.liferay.osb.customer.admin.service.base.AccountEnvironmentAttachmentLocalServiceBaseImpl;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;

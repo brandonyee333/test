@@ -31,6 +31,7 @@ import com.liferay.osb.customer.admin.model.AccountEnvironment;
 import com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment;
 import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.base.AccountEnvironmentLocalServiceBaseImpl;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;

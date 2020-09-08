@@ -314,8 +314,6 @@ public class LicensePortlet extends MVCPortlet {
 		}
 
 		if (licenseKeyId <= 0) {
-			Date expirationDate = null;
-
 			boolean aggregateLicense = ParamUtil.getBoolean(
 				actionRequest, "aggregateLicense");
 

@@ -18,11 +18,11 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashMap;

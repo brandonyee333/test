@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
 import com.liferay.osb.customer.admin.model.ExternalIdMapper;
 import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalServiceUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.util.PortalUtil;

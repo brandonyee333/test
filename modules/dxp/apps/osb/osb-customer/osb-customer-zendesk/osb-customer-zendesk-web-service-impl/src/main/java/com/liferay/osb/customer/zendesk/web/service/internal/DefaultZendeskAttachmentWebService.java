@@ -15,9 +15,8 @@
 package com.liferay.osb.customer.zendesk.web.service.internal;
 
 import com.liferay.osb.customer.zendesk.web.service.ZendeskAttachmentWebService;
-import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.osb.distributed.messaging.publishing.MessagePublisher;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -35,13 +34,13 @@ public class DefaultZendeskAttachmentWebService
 	public void deleteZendeskAttachment(
 			long zendeskTicketId, long zendeskTicketCommentId,
 			long zendeskAttachmentId)
-		throws PortalException {
+		throws Exception {
 
 		throw new UnsupportedOperationException();
 	}
 
 	@Reference
-	protected MessagePublisherUtil messagePublisherUtil;
+	protected MessagePublisher messagePublisher;
 
 	@Reference
 	protected ZendeskConverter zendeskConverter;

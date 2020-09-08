@@ -422,7 +422,7 @@
 		<exception>DuplicateAccountEnvironmentAttachment</exception>
 		<exception>DuplicateProductEntry</exception>
 		<exception>LicenseEntryName</exception>
-		<exception>LicenseEntryPortalVersion</exception>
+		<exception>LicenseEntryVersion</exception>
 		<exception>ProductEntryEnvironment</exception>
 		<exception>ProductEntryKoroneikiProductKey</exception>
 		<exception>RequiredAccountEntry</exception>
