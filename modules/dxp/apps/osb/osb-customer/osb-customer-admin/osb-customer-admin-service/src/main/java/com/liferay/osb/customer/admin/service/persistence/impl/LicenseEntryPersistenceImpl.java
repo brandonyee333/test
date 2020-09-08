@@ -1706,7 +1706,7 @@ public class LicenseEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (licenseEntry.isNew()) {
+			if (isNew) {
 				session.save(licenseEntry);
 
 				licenseEntry.setNew(false);
@@ -2247,6 +2247,7 @@ public class LicenseEntryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LicenseEntryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

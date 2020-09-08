@@ -361,6 +361,11 @@ public class ProductEntryWrapper
 	}
 
 	@Override
+	public boolean isCommerceSubscription() {
+		return _productEntry.isCommerceSubscription();
+	}
+
+	@Override
 	public boolean isDeveloperTools() {
 		return _productEntry.isDeveloperTools();
 	}

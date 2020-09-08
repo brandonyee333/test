@@ -18,15 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.service.ClpSerializer;
 import com.liferay.osb.service.LCSSubscriptionEntryServiceUtil;
-import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
-import com.liferay.osb.service.LicenseEntryServiceUtil;
-import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
-import com.liferay.osb.service.LicenseKeyServiceUtil;
-import com.liferay.osb.service.LicenseKeySetLocalServiceUtil;
-import com.liferay.osb.service.LicenseKeySetServiceUtil;
-import com.liferay.osb.service.RemoteCorpEntryLocalServiceUtil;
-import com.liferay.osb.service.RemoteCorpProjectLocalServiceUtil;
-import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -49,20 +40,6 @@ public class ClpMessageListener extends BaseMessageListener {
 		if (command.equals("undeploy") &&
 				servletContextName.equals(getServletContextName())) {
 			LCSSubscriptionEntryServiceUtil.clearService();
-			LicenseEntryLocalServiceUtil.clearService();
-
-			LicenseEntryServiceUtil.clearService();
-			LicenseKeyLocalServiceUtil.clearService();
-
-			LicenseKeyServiceUtil.clearService();
-			LicenseKeySetLocalServiceUtil.clearService();
-
-			LicenseKeySetServiceUtil.clearService();
-			RemoteCorpEntryLocalServiceUtil.clearService();
-
-			RemoteCorpProjectLocalServiceUtil.clearService();
-
-			RemoteUserLocalServiceUtil.clearService();
 		}
 	}
 }

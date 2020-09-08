@@ -692,7 +692,7 @@ public class ProductEntryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -895,26 +895,20 @@ public class ProductEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ProductEntryModelImpl productEntryModelImpl = this;
+		_setModifiedDate = false;
+		_originalKoroneikiProductKey = _koroneikiProductKey;
 
-		productEntryModelImpl._setModifiedDate = false;
+		_originalName = _name;
 
-		productEntryModelImpl._originalKoroneikiProductKey =
-			productEntryModelImpl._koroneikiProductKey;
+		_originalEnvironment = _environment;
 
-		productEntryModelImpl._originalName = productEntryModelImpl._name;
+		_setOriginalEnvironment = false;
 
-		productEntryModelImpl._originalEnvironment =
-			productEntryModelImpl._environment;
+		_originalLicenses = _licenses;
 
-		productEntryModelImpl._setOriginalEnvironment = false;
+		_setOriginalLicenses = false;
 
-		productEntryModelImpl._originalLicenses =
-			productEntryModelImpl._licenses;
-
-		productEntryModelImpl._setOriginalLicenses = false;
-
-		productEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

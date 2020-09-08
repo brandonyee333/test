@@ -2112,7 +2112,7 @@ public class ExternalIdMapperPersistenceImpl
 		try {
 			session = openSession();
 
-			if (externalIdMapper.isNew()) {
+			if (isNew) {
 				session.save(externalIdMapper);
 
 				externalIdMapper.setNew(false);
@@ -2770,6 +2770,7 @@ public class ExternalIdMapperPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(ExternalIdMapperImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

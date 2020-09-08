@@ -902,7 +902,7 @@ public class AccountEnvironmentModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -1149,24 +1149,18 @@ public class AccountEnvironmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountEnvironmentModelImpl accountEnvironmentModelImpl = this;
+		_setModifiedDate = false;
+		_originalAccountEntryId = _accountEntryId;
 
-		accountEnvironmentModelImpl._setModifiedDate = false;
+		_setOriginalAccountEntryId = false;
 
-		accountEnvironmentModelImpl._originalAccountEntryId =
-			accountEnvironmentModelImpl._accountEntryId;
+		_originalProductEntryId = _productEntryId;
 
-		accountEnvironmentModelImpl._setOriginalAccountEntryId = false;
+		_setOriginalProductEntryId = false;
 
-		accountEnvironmentModelImpl._originalProductEntryId =
-			accountEnvironmentModelImpl._productEntryId;
+		_originalName = _name;
 
-		accountEnvironmentModelImpl._setOriginalProductEntryId = false;
-
-		accountEnvironmentModelImpl._originalName =
-			accountEnvironmentModelImpl._name;
-
-		accountEnvironmentModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

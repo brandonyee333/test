@@ -661,8 +661,6 @@ public class LicenseEntryModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
 		_name = name;
 	}
 
@@ -830,23 +828,18 @@ public class LicenseEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LicenseEntryModelImpl licenseEntryModelImpl = this;
+		_setModifiedDate = false;
+		_originalProductEntryId = _productEntryId;
 
-		licenseEntryModelImpl._setModifiedDate = false;
+		_setOriginalProductEntryId = false;
 
-		licenseEntryModelImpl._originalProductEntryId =
-			licenseEntryModelImpl._productEntryId;
+		_originalType = _type;
 
-		licenseEntryModelImpl._setOriginalProductEntryId = false;
+		_originalPortalVersionMin = _portalVersionMin;
 
-		licenseEntryModelImpl._originalType = licenseEntryModelImpl._type;
+		_setOriginalPortalVersionMin = false;
 
-		licenseEntryModelImpl._originalPortalVersionMin =
-			licenseEntryModelImpl._portalVersionMin;
-
-		licenseEntryModelImpl._setOriginalPortalVersionMin = false;
-
-		licenseEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

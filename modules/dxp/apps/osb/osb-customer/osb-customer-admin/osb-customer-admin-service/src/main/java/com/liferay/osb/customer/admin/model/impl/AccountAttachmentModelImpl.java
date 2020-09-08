@@ -598,8 +598,6 @@ public class AccountAttachmentModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
-
 		_createDate = createDate;
 	}
 
@@ -814,27 +812,21 @@ public class AccountAttachmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountAttachmentModelImpl accountAttachmentModelImpl = this;
+		_originalAccountEntryId = _accountEntryId;
 
-		accountAttachmentModelImpl._originalAccountEntryId =
-			accountAttachmentModelImpl._accountEntryId;
+		_setOriginalAccountEntryId = false;
 
-		accountAttachmentModelImpl._setOriginalAccountEntryId = false;
+		_originalAccountProjectId = _accountProjectId;
 
-		accountAttachmentModelImpl._originalAccountProjectId =
-			accountAttachmentModelImpl._accountProjectId;
+		_setOriginalAccountProjectId = false;
 
-		accountAttachmentModelImpl._setOriginalAccountProjectId = false;
+		_originalFileName = _fileName;
 
-		accountAttachmentModelImpl._originalFileName =
-			accountAttachmentModelImpl._fileName;
+		_originalType = _type;
 
-		accountAttachmentModelImpl._originalType =
-			accountAttachmentModelImpl._type;
+		_setOriginalType = false;
 
-		accountAttachmentModelImpl._setOriginalType = false;
-
-		accountAttachmentModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

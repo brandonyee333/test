@@ -835,7 +835,7 @@ public class AccountEntryLanguagePersistenceImpl
 		try {
 			session = openSession();
 
-			if (accountEntryLanguage.isNew()) {
+			if (isNew) {
 				session.save(accountEntryLanguage);
 
 				accountEntryLanguage.setNew(false);
@@ -1357,6 +1357,7 @@ public class AccountEntryLanguagePersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(AccountEntryLanguageImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

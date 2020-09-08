@@ -1892,7 +1892,7 @@ public class ProductEntryPersistenceImpl
 		try {
 			session = openSession();
 
-			if (productEntry.isNew()) {
+			if (isNew) {
 				session.save(productEntry);
 
 				productEntry.setNew(false);
@@ -2471,6 +2471,7 @@ public class ProductEntryPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(ProductEntryImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

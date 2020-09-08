@@ -1359,24 +1359,18 @@ public class AccountEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountEntryModelImpl accountEntryModelImpl = this;
+		_setModifiedDate = false;
+		_originalKoroneikiAccountKey = _koroneikiAccountKey;
 
-		accountEntryModelImpl._setModifiedDate = false;
+		_originalDossieraAccountKey = _dossieraAccountKey;
 
-		accountEntryModelImpl._originalKoroneikiAccountKey =
-			accountEntryModelImpl._koroneikiAccountKey;
+		_originalCorpProjectUuid = _corpProjectUuid;
 
-		accountEntryModelImpl._originalDossieraAccountKey =
-			accountEntryModelImpl._dossieraAccountKey;
+		_originalName = _name;
 
-		accountEntryModelImpl._originalCorpProjectUuid =
-			accountEntryModelImpl._corpProjectUuid;
+		_originalCode = _code;
 
-		accountEntryModelImpl._originalName = accountEntryModelImpl._name;
-
-		accountEntryModelImpl._originalCode = accountEntryModelImpl._code;
-
-		accountEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

@@ -827,7 +827,7 @@ public class AuditEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask = -1L;
+		_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
 
 		if (_originalCreateDate == null) {
 			_originalCreateDate = _createDate;
@@ -1253,44 +1253,37 @@ public class AuditEntryModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AuditEntryModelImpl auditEntryModelImpl = this;
+		_originalCreateDate = _createDate;
 
-		auditEntryModelImpl._originalCreateDate =
-			auditEntryModelImpl._createDate;
+		_originalClassNameId = _classNameId;
 
-		auditEntryModelImpl._originalClassNameId =
-			auditEntryModelImpl._classNameId;
+		_setOriginalClassNameId = false;
 
-		auditEntryModelImpl._setOriginalClassNameId = false;
+		_originalClassPK = _classPK;
 
-		auditEntryModelImpl._originalClassPK = auditEntryModelImpl._classPK;
+		_setOriginalClassPK = false;
 
-		auditEntryModelImpl._setOriginalClassPK = false;
+		_originalFieldClassNameId = _fieldClassNameId;
 
-		auditEntryModelImpl._originalFieldClassNameId =
-			auditEntryModelImpl._fieldClassNameId;
+		_setOriginalFieldClassNameId = false;
 
-		auditEntryModelImpl._setOriginalFieldClassNameId = false;
+		_originalFieldClassPK = _fieldClassPK;
 
-		auditEntryModelImpl._originalFieldClassPK =
-			auditEntryModelImpl._fieldClassPK;
+		_setOriginalFieldClassPK = false;
 
-		auditEntryModelImpl._setOriginalFieldClassPK = false;
+		_originalAction = _action;
 
-		auditEntryModelImpl._originalAction = auditEntryModelImpl._action;
+		_setOriginalAction = false;
 
-		auditEntryModelImpl._setOriginalAction = false;
+		_originalField = _field;
 
-		auditEntryModelImpl._originalField = auditEntryModelImpl._field;
+		_setOriginalField = false;
 
-		auditEntryModelImpl._setOriginalField = false;
+		_originalVisibility = _visibility;
 
-		auditEntryModelImpl._originalVisibility =
-			auditEntryModelImpl._visibility;
+		_setOriginalVisibility = false;
 
-		auditEntryModelImpl._setOriginalVisibility = false;
-
-		auditEntryModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

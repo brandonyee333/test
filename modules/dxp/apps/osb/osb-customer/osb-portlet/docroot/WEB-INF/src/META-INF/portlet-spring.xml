@@ -3,17 +3,4 @@
 <!-- @generated -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 	<bean class="com.liferay.osb.service.impl.LCSSubscriptionEntryServiceImpl" id="com.liferay.osb.service.LCSSubscriptionEntryService" />
-	<bean class="com.liferay.osb.service.impl.LicenseEntryLocalServiceImpl" id="com.liferay.osb.service.LicenseEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.LicenseEntryServiceImpl" id="com.liferay.osb.service.LicenseEntryService" />
-	<bean class="com.liferay.osb.service.persistence.impl.LicenseEntryPersistenceImpl" id="com.liferay.osb.service.persistence.LicenseEntryPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.LicenseKeyLocalServiceImpl" id="com.liferay.osb.service.LicenseKeyLocalService" />
-	<bean class="com.liferay.osb.service.impl.LicenseKeyServiceImpl" id="com.liferay.osb.service.LicenseKeyService" />
-	<bean class="com.liferay.osb.service.persistence.impl.LicenseKeyPersistenceImpl" id="com.liferay.osb.service.persistence.LicenseKeyPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.persistence.impl.LicenseKeyFinderImpl" id="com.liferay.osb.service.persistence.LicenseKeyFinder" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.LicenseKeySetLocalServiceImpl" id="com.liferay.osb.service.LicenseKeySetLocalService" />
-	<bean class="com.liferay.osb.service.impl.LicenseKeySetServiceImpl" id="com.liferay.osb.service.LicenseKeySetService" />
-	<bean class="com.liferay.osb.service.persistence.impl.LicenseKeySetPersistenceImpl" id="com.liferay.osb.service.persistence.LicenseKeySetPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.RemoteCorpEntryLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpProjectLocalService" />
-	<bean class="com.liferay.osb.service.impl.RemoteUserLocalServiceImpl" id="com.liferay.osb.service.RemoteUserLocalService" />
 </beans>

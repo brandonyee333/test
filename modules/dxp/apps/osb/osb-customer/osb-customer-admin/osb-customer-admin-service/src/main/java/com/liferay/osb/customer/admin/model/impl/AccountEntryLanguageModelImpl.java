@@ -425,8 +425,6 @@ public class AccountEntryLanguageModelImpl
 
 	@Override
 	public void setLanguageId(String languageId) {
-		_columnBitmask = -1L;
-
 		_languageId = languageId;
 	}
 
@@ -530,14 +528,11 @@ public class AccountEntryLanguageModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountEntryLanguageModelImpl accountEntryLanguageModelImpl = this;
+		_originalAccountEntryId = _accountEntryId;
 
-		accountEntryLanguageModelImpl._originalAccountEntryId =
-			accountEntryLanguageModelImpl._accountEntryId;
+		_setOriginalAccountEntryId = false;
 
-		accountEntryLanguageModelImpl._setOriginalAccountEntryId = false;
-
-		accountEntryLanguageModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

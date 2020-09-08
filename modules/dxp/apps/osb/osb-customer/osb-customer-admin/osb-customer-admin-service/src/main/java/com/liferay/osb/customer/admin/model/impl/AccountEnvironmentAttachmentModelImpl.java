@@ -848,26 +848,18 @@ public class AccountEnvironmentAttachmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		AccountEnvironmentAttachmentModelImpl
-			accountEnvironmentAttachmentModelImpl = this;
+		_setModifiedDate = false;
+		_originalAccountEnvironmentId = _accountEnvironmentId;
 
-		accountEnvironmentAttachmentModelImpl._setModifiedDate = false;
+		_setOriginalAccountEnvironmentId = false;
 
-		accountEnvironmentAttachmentModelImpl._originalAccountEnvironmentId =
-			accountEnvironmentAttachmentModelImpl._accountEnvironmentId;
+		_originalFileName = _fileName;
 
-		accountEnvironmentAttachmentModelImpl._setOriginalAccountEnvironmentId =
-			false;
+		_originalType = _type;
 
-		accountEnvironmentAttachmentModelImpl._originalFileName =
-			accountEnvironmentAttachmentModelImpl._fileName;
+		_setOriginalType = false;
 
-		accountEnvironmentAttachmentModelImpl._originalType =
-			accountEnvironmentAttachmentModelImpl._type;
-
-		accountEnvironmentAttachmentModelImpl._setOriginalType = false;
-
-		accountEnvironmentAttachmentModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override

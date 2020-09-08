@@ -678,29 +678,22 @@ public class ExternalIdMapperModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		ExternalIdMapperModelImpl externalIdMapperModelImpl = this;
+		_setModifiedDate = false;
+		_originalClassNameId = _classNameId;
 
-		externalIdMapperModelImpl._setModifiedDate = false;
+		_setOriginalClassNameId = false;
 
-		externalIdMapperModelImpl._originalClassNameId =
-			externalIdMapperModelImpl._classNameId;
+		_originalClassPK = _classPK;
 
-		externalIdMapperModelImpl._setOriginalClassNameId = false;
+		_setOriginalClassPK = false;
 
-		externalIdMapperModelImpl._originalClassPK =
-			externalIdMapperModelImpl._classPK;
+		_originalType = _type;
 
-		externalIdMapperModelImpl._setOriginalClassPK = false;
+		_setOriginalType = false;
 
-		externalIdMapperModelImpl._originalType =
-			externalIdMapperModelImpl._type;
+		_originalExternalId = _externalId;
 
-		externalIdMapperModelImpl._setOriginalType = false;
-
-		externalIdMapperModelImpl._originalExternalId =
-			externalIdMapperModelImpl._externalId;
-
-		externalIdMapperModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override
