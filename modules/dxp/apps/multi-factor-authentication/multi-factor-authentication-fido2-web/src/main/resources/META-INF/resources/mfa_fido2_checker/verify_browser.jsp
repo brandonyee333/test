@@ -29,9 +29,11 @@ String assertionRequest = (String)request.getAttribute("assertionRequest");
 				"assertionRequest", assertionRequest
 			).build()
 		%>'
-		label="start"
+		label="verify"
 		propsTransformer="js/AuthenticationTransformer"
 	/>
+
+	<liferay-ui:message key="button-verify-identity-using-a-registered-fido2-authenticator" />
 </aui:button-row>
 
 <aui:input name="responseJSON" showRequiredLabel="yes" type="hidden" />

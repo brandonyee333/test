@@ -29,9 +29,11 @@ String pkccOptions = (String)request.getAttribute("pkccOptions");
 				"pkccOptions", pkccOptions
 			).build()
 		%>'
-		label="start"
+		label="register"
 		propsTransformer="js/RegistrationTransformer"
 	/>
+
+	<liferay-ui:message key="button-register-a-fido2-authenticator" />
 </aui:button-row>
 
 <aui:input name="responseJSON" showRequiredLabel="yes" type="hidden" />
