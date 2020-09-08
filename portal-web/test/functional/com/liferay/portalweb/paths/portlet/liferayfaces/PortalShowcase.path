@@ -19,6 +19,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>INPUT_RICH_TEXT</td>
+	<td>//a[contains(text(),'${key_field}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>REQUIRED_CHECKBOX</td>
 	<td>//input[@id='_1_WAR_comliferayfacesdemoportalshowcaseportlet_:exampleForm:requiredCheckbox']</td>
 	<td></td>
@@ -34,8 +39,18 @@
     <td></td>
 </tr>
 <tr>
+    <td>WRITEABLE_FIELD_2</td>
+    <td>xpath=(//div[contains(@id,':comments')]//iframe)[2]</td>
+    <td></td>
+</tr>
+<tr>
     <td>SUBMIT_BUTTON</td>
     <td>//input[@value='Submit']</td>
+    <td></td>
+</tr>
+<tr>
+    <td>SUBMIT_BUTTON_2</td>
+    <td>xpath=(//input[@value='Submit'])[2]</td>
     <td></td>
 </tr>
 <tr>
@@ -46,6 +61,11 @@
 <tr>
     <td>MODAL_VALUE_TITLE</td>
     <td>//label[contains(text(),'Model Value')]</td>
+    <td></td>
+</tr>
+<tr>
+    <td>TEXT_FEEDBACK</td>
+    <td>//div[contains(@id,':feedback')]</td>
     <td></td>
 </tr>
 </tbody>
