@@ -17,6 +17,8 @@ package com.liferay.osb.asah.stream.curator.bot.nanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
@@ -46,6 +48,8 @@ import org.apache.commons.logging.Log;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -64,6 +68,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	public void init() {
 		_cerebroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroInfo();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	@Override
@@ -239,14 +245,12 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		model.setEventDate(analyticsEvent.getNormalizedEventDate());
 		model.setExperienceId(MapUtil.getString(context, "experienceId", ""));
 		model.setExperimentId(MapUtil.getString(context, "experimentId", ""));
-		model.setIndividualId(analyticsEvent.getIndividualId());
-		model.setKnownIndividual(analyticsEvent.isKnownIndividual());
 		model.setLastEventDate(analyticsEvent.getEventDate());
 		model.setModifiedDate(new Date());
-		model.setSegmentNames(analyticsEvent.getSegmentNames());
 		model.setUserId(analyticsEvent.getUserId());
 		model.setVariantId(MapUtil.getString(context, "variantId", ""));
 
+		_setModelIndividualProperties(analyticsEvent, model);
 		_setModelLocation(analyticsEvent, model);
 		_setModelTechnology(analyticsEvent, model);
 		_setModelTitle(analyticsEvent, model);
@@ -292,6 +296,31 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 			baseAssetModel.setAssetPrimaryKey(assetPrimaryKey);
 		}
+	}
+
+	private void _setModelIndividualProperties(
+		AnalyticsEvent analyticsEvent, T model) {
+
+		if (_faroInfoElasticsearchInvoker.exists(
+				"individuals", analyticsEvent.getIndividualId())) {
+
+			model.setIndividualId(analyticsEvent.getIndividualId());
+			model.setKnownIndividual(analyticsEvent.isKnownIndividual());
+			model.setSegmentNames(analyticsEvent.getSegmentNames());
+
+			return;
+		}
+
+		JSONObject individualJSONObject =
+			_faroInfoIndividualDog.getIndividualJSONObject(
+				analyticsEvent.getDataSourceId(), analyticsEvent.getUserId());
+
+		model.setIndividualId(individualJSONObject.getString("id"));
+		model.setKnownIndividual(
+			FaroInfoIndividualUtil.isKnownIndividual(individualJSONObject));
+		model.setSegmentNames(
+			_faroInfoIndividualDog.getIndividualSegmentNames(
+				analyticsEvent.getChannelId(), individualJSONObject));
 	}
 
 	private void _setModelLocation(AnalyticsEvent analyticsEvent, T model) {
@@ -361,5 +390,10 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 }

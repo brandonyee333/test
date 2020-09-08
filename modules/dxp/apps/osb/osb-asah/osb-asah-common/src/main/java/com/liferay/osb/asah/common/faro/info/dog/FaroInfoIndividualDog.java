@@ -34,6 +34,7 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -398,6 +399,23 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		return JSONUtil.toStringList(associatedIdsJSONArray, "id");
 	}
 
+	public JSONObject getIndividualJSONObject(
+		String dataSourceId, String userId) {
+
+		return elasticsearchInvoker.fetch(
+			"individuals",
+			QueryBuilders.nestedQuery(
+				"dataSourceIndividualPKs",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"dataSourceIndividualPKs.dataSourceId", dataSourceId)
+				).filter(
+					QueryBuilders.termsQuery(
+						"dataSourceIndividualPKs.individualPKs", userId)
+				),
+				ScoreMode.None));
+	}
+
 	public String getIndividualName(String individualId) {
 		JSONObject individualJSONObject = elasticsearchInvoker.fetch(
 			"individuals", individualId);
@@ -408,6 +426,32 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 		return FaroInfoIndividualUtil.getIndividualName(
 			individualJSONObject.optJSONObject("demographics"));
+	}
+
+	public Set<String> getIndividualSegmentNames(
+		String channelId, JSONObject individualJSONObject) {
+
+		if (individualJSONObject == null) {
+			return Collections.emptySet();
+		}
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termsQuery(
+				"id",
+				JSONUtil.toStringSet(
+					individualJSONObject.getJSONArray("individualSegmentIds")))
+		).filter(
+			QueryBuilders.termQuery("status", "ACTIVE")
+		);
+
+		if (StringUtils.isNotBlank(channelId)) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("channelId", channelId));
+		}
+
+		return JSONUtil.toStringSet(
+			elasticsearchInvoker.get("individual-segments", boolQueryBuilder),
+			"name");
 	}
 
 	@Override

@@ -270,6 +270,19 @@ public class FaroInfoIndividualUtil {
 		return individualPKsJSONArrays;
 	}
 
+	public static boolean isKnownIndividual(JSONObject individualJSONObject) {
+		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
+			"demographics");
+
+		if ((demographicsJSONObject != null) &&
+			demographicsJSONObject.has("email")) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private static Object _getFieldValue(
 		JSONObject contextJSONObject, String fieldName) {
 
