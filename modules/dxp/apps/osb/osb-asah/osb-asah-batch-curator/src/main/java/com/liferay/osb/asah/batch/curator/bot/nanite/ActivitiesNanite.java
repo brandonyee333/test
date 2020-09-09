@@ -571,8 +571,8 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		}
 
 		throw new IllegalStateException(
-			"Unable to find individual for ownerId " + ownerId + " or userId " +
-				analyticsEvent.getUserId());
+			"Unable to find individual for owner ID " + ownerId +
+				" or user ID " + analyticsEvent.getUserId());
 	}
 
 	private String _getPageViewActivityId(AnalyticsEvent analyticsEvent) {
