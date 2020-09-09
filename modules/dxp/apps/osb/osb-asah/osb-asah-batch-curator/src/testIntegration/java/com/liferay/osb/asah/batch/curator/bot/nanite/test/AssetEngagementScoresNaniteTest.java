@@ -25,6 +25,8 @@ import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
 import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
@@ -61,6 +63,10 @@ import org.springframework.context.annotation.Primary;
 )
 public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@Test
 	public void test() throws Exception {
 		JSONObject dataSourceJSONObject =
