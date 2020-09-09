@@ -31,7 +31,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:27.363Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-28T00:00:00.073Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -76,7 +76,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:27.363Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-28T00:00:00.074Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -121,7 +121,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:27.363Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-28T00:00:00.132Z",
 		"eventId": "pageLoaded",
 		"eventProperties": {
@@ -166,7 +166,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:30.727Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:28.647Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -211,7 +211,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:34.586Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:31.710Z",
 		"eventId": "pageDepthReached",
 		"eventProperties": {
@@ -256,7 +256,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:34.587Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:32.506Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -301,7 +301,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:36.582Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:34.707Z",
 		"eventId": "pageDepthReached",
 		"eventProperties": {
@@ -346,7 +346,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:40.337Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:38.264Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -391,7 +391,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:42.338Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:40.681Z",
 		"eventId": "pageDepthReached",
 		"eventProperties": {
@@ -436,7 +436,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:47.979Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:45.626Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -481,7 +481,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:49.699Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:49.307Z",
 		"eventId": "pageDepthReached",
 		"eventProperties": {
@@ -526,7 +526,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:56.346Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:52.375Z",
 		"eventId": "pageUnloaded",
 		"eventProperties": {
@@ -571,7 +571,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:56.351Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:54.270Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -615,7 +615,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:56.351Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:54.768Z",
 		"eventId": "pageLoaded",
 		"eventProperties": {
@@ -660,7 +660,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:13:59.719Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:13:57.641Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -705,7 +705,7 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T03:14:07.155Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:14:04.442Z",
 		"eventId": "pageUnloaded",
 		"eventProperties": {
@@ -750,7 +750,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:00:49.754Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T03:59:58.630Z",
 		"eventId": "pageDepthReached",
 		"eventProperties": {
@@ -793,7 +793,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.057Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -835,7 +835,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.072Z",
 		"eventId": "blogViewed",
 		"eventProperties": {
@@ -880,7 +880,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36"
 		},
 		"createDate": "2019-04-16T22:54:03.454Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2019-04-16T22:54:01.574Z",
 		"eventId": "posted",
 		"eventProperties": {
@@ -926,7 +926,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.073Z",
 		"eventId": "formViewed",
 		"eventProperties": {
@@ -970,7 +970,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.074Z",
 		"eventId": "formViewed",
 		"eventProperties": {
@@ -1014,7 +1014,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.075Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -1059,7 +1059,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.076Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -1104,7 +1104,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.077Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -1149,7 +1149,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.078Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -1194,7 +1194,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.079Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -1239,7 +1239,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.080Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -1284,7 +1284,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.081Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -1329,7 +1329,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.082Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -1374,7 +1374,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.083Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -1419,7 +1419,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.084Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -1464,7 +1464,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:05:34.199Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-08T00:00:00.143Z",
 		"eventId": "pageLoaded",
 		"eventProperties": {
@@ -1509,7 +1509,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:06:28.402Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:05:35.724Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -1553,7 +1553,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:06:28.402Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:05:36.419Z",
 		"eventId": "pageLoaded",
 		"eventProperties": {
@@ -1598,7 +1598,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:06:28.403Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:05:33.332Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -1643,7 +1643,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:06:28.403Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:05:33.994Z",
 		"eventId": "pageUnloaded",
 		"eventProperties": {
@@ -1688,7 +1688,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:06:32.382Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:05:40.839Z",
 		"eventId": "pageDepthReached",
 		"eventProperties": {
@@ -1733,7 +1733,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:06:36.492Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:05:42.762Z",
 		"eventId": "pageUnloaded",
 		"eventProperties": {
@@ -1778,7 +1778,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:06:36.492Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:05:43.815Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -1822,7 +1822,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:06:36.492Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:05:44.100Z",
 		"eventId": "pageLoaded",
 		"eventProperties": {
@@ -1865,7 +1865,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-10T14:08:33.082Z",
 		"eventId": "pageUnloaded",
 		"eventProperties": {
@@ -1908,7 +1908,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.212Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -1950,7 +1950,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.750Z",
 		"eventId": "formViewed",
 		"eventProperties": {
@@ -1994,7 +1994,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.769Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2039,7 +2039,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.783Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2084,7 +2084,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.797Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2129,7 +2129,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.810Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2174,7 +2174,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.836Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2219,7 +2219,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.865Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2264,7 +2264,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.873Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2309,7 +2309,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.879Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2354,7 +2354,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.885Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2399,7 +2399,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.895Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2444,7 +2444,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.902Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2489,7 +2489,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.957Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2534,7 +2534,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:13.965Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2579,7 +2579,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:07:20.779Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:07:14.833Z",
 		"eventId": "pageLoaded",
 		"eventProperties": {
@@ -2621,7 +2621,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:08:11.760Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-24T00:00:00.066Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -2661,7 +2661,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:08:11.760Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-24T00:00:00.082Z",
 		"eventId": "formViewed",
 		"eventProperties": {
@@ -2703,7 +2703,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:08:11.760Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-24T00:00:00.083Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2746,7 +2746,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:08:11.760Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-24T00:00:00.084Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2789,7 +2789,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:08:11.760Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-24T00:00:00.085Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2832,7 +2832,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:08:11.760Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-24T00:00:00.086Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2875,7 +2875,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:08:11.760Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-24T00:00:00.087Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2918,7 +2918,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:08:11.760Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-24T00:00:00.088Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -2961,7 +2961,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:08:11.760Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-06-24T00:00:00.095Z",
 		"eventId": "pageLoaded",
 		"eventProperties": {
@@ -3003,7 +3003,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:58.422Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:34.863Z",
 		"eventId": "pageUnloaded",
 		"eventProperties": {
@@ -3046,7 +3046,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:47.712Z",
 		"eventId": "formViewed",
 		"eventProperties": {
@@ -3090,7 +3090,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:49.116Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3135,7 +3135,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:49.135Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3180,7 +3180,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:49.402Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3225,7 +3225,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:49.441Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3270,7 +3270,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:49.451Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3315,7 +3315,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:49.723Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3360,7 +3360,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:49.793Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3405,7 +3405,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:49.831Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3450,7 +3450,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:49.847Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3495,7 +3495,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:49.857Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3540,7 +3540,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:50.087Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3585,7 +3585,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:50.100Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3630,7 +3630,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:50.105Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -3675,7 +3675,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:10:59.597Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:50.116Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -3717,7 +3717,7 @@
 			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:11:02.950Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:10:57.916Z",
 		"eventId": "pageLoaded",
 		"eventProperties": {
@@ -3762,7 +3762,7 @@
 			"userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:16:49.974Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:16:46.710Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -3806,7 +3806,7 @@
 			"userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:16:49.974Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:16:47.157Z",
 		"eventId": "pageLoaded",
 		"eventProperties": {
@@ -3851,7 +3851,7 @@
 			"userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:16:49.975Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-09T21:09:43.274Z",
 		"eventId": "pageUnloaded",
 		"eventProperties": {
@@ -3896,7 +3896,7 @@
 			"userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:16:59.791Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:16:57.048Z",
 		"eventId": "pageUnloaded",
 		"eventProperties": {
@@ -3941,7 +3941,7 @@
 			"userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:16:59.797Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:16:57.730Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -3985,7 +3985,7 @@
 			"userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:16:59.797Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:16:58.146Z",
 		"eventId": "pageLoaded",
 		"eventProperties": {
@@ -4030,7 +4030,7 @@
 			"userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:02.741Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-09-11T04:17:00.667Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -4072,7 +4072,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:03.609Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-09T00:00:00.077Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
@@ -4113,7 +4113,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:03.609Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-09T00:00:00.102Z",
 		"eventId": "formViewed",
 		"eventProperties": {
@@ -4156,7 +4156,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:03.609Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-09T00:00:00.103Z",
 		"eventId": "formViewed",
 		"eventProperties": {
@@ -4199,7 +4199,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:03.609Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-09T00:00:00.104Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -4242,7 +4242,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:03.609Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-09T00:00:00.105Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -4285,7 +4285,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:03.609Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-09T00:00:00.106Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -4328,7 +4328,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:03.609Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-09T00:00:00.107Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -4371,7 +4371,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:03.609Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-09T00:00:00.108Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -4414,7 +4414,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:03.609Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-09T00:00:00.109Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {
@@ -4457,7 +4457,7 @@
 			"userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36"
 		},
 		"createDate": "2018-09-11T04:17:03.609Z",
-		"dataSourceId": "[$DATA_SOURCE_ID$]",
+		"dataSourceId": "1",
 		"eventDate": "2018-07-09T00:00:00.110Z",
 		"eventId": "webContentViewed",
 		"eventProperties": {

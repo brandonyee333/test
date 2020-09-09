@@ -63,21 +63,19 @@ public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void test() throws Exception {
-		JSONObject dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
+		JSONObject dataSourceJSONObject =
+			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 
-		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_1.json", this);
-
-		JSONArray analyticsEventsJSONArray = new JSONArray(
-			analyticsEventsJSON.replace(
-				"[$DATA_SOURCE_ID$]", dataSourceJSONObject.getString("id")));
+		_faroInfoDataSourceDog.addDataSource(
+			dataSourceJSONObject.put("id", "1"));
 
 		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
 			_messageBus);
 
 		messageBusTestHelper.prepareMessageBusChannel(
-			Channel.ANALYTICS_EVENTS_ACTIVITY, analyticsEventsJSONArray);
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			ResourceUtil.readResourceToJSONArray(
+				"dependencies/analytics_events_1.json", this));
 
 		_activitiesNanite.run();
 

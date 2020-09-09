@@ -59,25 +59,22 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		_dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
-			"data-sources",
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
+		JSONObject dataSourceJSONObject =
+			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
+
+		faroInfoElasticsearchInvoker.add(
+			"data-sources", dataSourceJSONObject.put("id", "1"));
 	}
 
 	@Test
 	public void testCanonicalUrlSet() throws Exception {
-		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_1.json", this);
-
-		JSONArray analyticsEventsJSONArray = new JSONArray(
-			analyticsEventsJSON.replace(
-				"[$DATA_SOURCE_ID$]", _dataSourceJSONObject.getString("id")));
-
 		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
 			_messageBus);
 
 		messageBusTestHelper.prepareMessageBusChannel(
-			Channel.ANALYTICS_EVENTS_ACTIVITY, analyticsEventsJSONArray);
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			ResourceUtil.readResourceToJSONArray(
+				"dependencies/analytics_events_1.json", this));
 
 		_activitiesNanite.run();
 
@@ -99,18 +96,13 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void testCommentPostedActivityIsAdded() throws Exception {
-		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_1.json", this);
-
-		JSONArray analyticsEventsJSONArray = new JSONArray(
-			analyticsEventsJSON.replace(
-				"[$DATA_SOURCE_ID$]", _dataSourceJSONObject.getString("id")));
-
 		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
 			_messageBus);
 
 		messageBusTestHelper.prepareMessageBusChannel(
-			Channel.ANALYTICS_EVENTS_ACTIVITY, analyticsEventsJSONArray);
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			ResourceUtil.readResourceToJSONArray(
+				"dependencies/analytics_events_1.json", this));
 
 		_activitiesNanite.run();
 
@@ -143,18 +135,13 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void testFormSubmittedPropertiesAreAdded() throws Exception {
-		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_3.json", this);
-
-		JSONArray analyticsEventsJSONArray = new JSONArray(
-			analyticsEventsJSON.replace(
-				"[$DATA_SOURCE_ID$]", _dataSourceJSONObject.getString("id")));
-
 		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
 			_messageBus);
 
 		messageBusTestHelper.prepareMessageBusChannel(
-			Channel.ANALYTICS_EVENTS_ACTIVITY, analyticsEventsJSONArray);
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			ResourceUtil.readResourceToJSONArray(
+				"dependencies/analytics_events_3.json", this));
 
 		_activitiesNanite.run();
 
@@ -175,18 +162,13 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void testKeywordsLowercase() throws Exception {
-		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/analytics_events_1.json", this);
-
-		JSONArray analyticsEventsJSONArray = new JSONArray(
-			analyticsEventsJSON.replace(
-				"[$DATA_SOURCE_ID$]", _dataSourceJSONObject.getString("id")));
-
 		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
 			_messageBus);
 
 		messageBusTestHelper.prepareMessageBusChannel(
-			Channel.ANALYTICS_EVENTS_ACTIVITY, analyticsEventsJSONArray);
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			ResourceUtil.readResourceToJSONArray(
+				"dependencies/analytics_events_1.json", this));
 
 		_activitiesNanite.run();
 
@@ -212,8 +194,6 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private ActivitiesNanite _activitiesNanite;
-
-	private JSONObject _dataSourceJSONObject;
 
 	@Autowired
 	private MessageBus _messageBus;
