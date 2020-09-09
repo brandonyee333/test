@@ -258,9 +258,9 @@ public class PageMetric implements AssetMetric {
 			bounceRateMetric.setValue(1.0);
 		}
 
-		double previousValue = bounceRateMetric.getPreviousValue();
+		Double previousValue = bounceRateMetric.getPreviousValue();
 
-		if (previousValue > 1) {
+		if ((previousValue != null) && (previousValue > 1)) {
 			_log.error(
 				_buildRateErrorMessage(
 					PageMetricType.BOUNCE_RATE, true, previousValue));
@@ -311,9 +311,9 @@ public class PageMetric implements AssetMetric {
 			exitRateMetric.setValue(1.0);
 		}
 
-		double previousValue = exitRateMetric.getPreviousValue();
+		Double previousValue = exitRateMetric.getPreviousValue();
 
-		if (previousValue > 1) {
+		if ((previousValue != null) && (previousValue > 1)) {
 			_log.error(
 				_buildRateErrorMessage(
 					PageMetricType.EXIT_RATE, true, previousValue));

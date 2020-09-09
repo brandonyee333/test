@@ -164,6 +164,10 @@ public class Metric {
 	}
 
 	protected BigDecimal getPercentage() {
+		if (_previousValue == null) {
+			return null;
+		}
+
 		BigDecimal previousValueBigDecimal = BigDecimal.valueOf(_previousValue);
 
 		previousValueBigDecimal = previousValueBigDecimal.setScale(
@@ -199,7 +203,7 @@ public class Metric {
 
 	private List<Metric> _metrics;
 	private final MetricType _metricType;
-	private Double _previousValue = 0D;
+	private Double _previousValue;
 	private String _previousValueKey;
 	private Double _value = 0D;
 	private String _valueKey;
