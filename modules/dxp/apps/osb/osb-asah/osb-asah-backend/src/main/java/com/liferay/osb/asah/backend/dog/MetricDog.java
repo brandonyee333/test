@@ -115,6 +115,12 @@ public class MetricDog {
 				Collections.singletonList(canonicalUrl));
 		}
 
+		String title = searchQueryContext.getTitle();
+
+		if (StringUtils.isNotBlank(title)) {
+			assetMetric.setAssetTitle(title);
+		}
+
 		String url = searchQueryContext.getURL();
 
 		if (StringUtils.isNotBlank(url)) {
