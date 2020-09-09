@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -182,9 +183,10 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 			_totalElements = internalCardinality.getValue();
 
-			Map<String, JSONObject> assetJSONObjects = JSONUtil.toJSONObjectMap(
-				elasticsearchInvoker.get("assets", assetQueryBuilder),
-				"dataSourceAssetPK");
+			Map<String, JSONObject> assetJSONObjects = new CaseInsensitiveMap(
+				JSONUtil.toJSONObjectMap(
+					elasticsearchInvoker.get("assets", assetQueryBuilder),
+					"canonicalUrl"));
 
 			for (Map.Entry<Pair<String, String>, Double> entry :
 					uniqueVisitsCounts.entrySet()) {
@@ -213,7 +215,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 			return visitedPagesJSONArray;
 		}
 
-		Set<String> dataSourceAssetPKs = new HashSet<>();
+		Set<String> canonicalUrls = new HashSet<>();
 
 		List<SortBuilder> sortBuilders = new ArrayList<>();
 
@@ -247,10 +249,9 @@ public class VisitedPagesTransformationJSONArrayFunction
 		for (int i = 0; i < assetsJSONArray.length(); i++) {
 			JSONObject assetJSONObject = assetsJSONArray.getJSONObject(i);
 
-			String dataSourceAssetPK = assetJSONObject.getString(
-				"dataSourceAssetPK");
+			String canonicalUrl = assetJSONObject.getString("canonicalUrl");
 
-			if (dataSourceAssetPKs.contains(dataSourceAssetPK)) {
+			if (canonicalUrls.contains(canonicalUrl)) {
 				continue;
 			}
 
@@ -259,7 +260,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 			String assetTitle = assetJSONObject.getString("name");
 
 			Pair<String, String> titleUrlPair = Pair.of(
-				assetTitle.toLowerCase(), dataSourceAssetPK.toLowerCase());
+				assetTitle.toLowerCase(), canonicalUrl.toLowerCase());
 
 			if (uniqueVisitsCounts.containsKey(titleUrlPair)) {
 				uniqueVisitsCount = uniqueVisitsCounts.get(titleUrlPair);
@@ -276,7 +277,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 					"url", assetJSONObject.getString("url")
 				));
 
-			dataSourceAssetPKs.add(dataSourceAssetPK);
+			canonicalUrls.add(canonicalUrl);
 		}
 
 		_totalElements = elasticsearchInvoker.count(
@@ -313,7 +314,8 @@ public class VisitedPagesTransformationJSONArrayFunction
 				TermsAggregationBuilder termsAggregationBuilder =
 					AggregationBuilders.terms("url");
 
-				Script script = new Script("doc['title'] + ' ' + doc['url']");
+				Script script = new Script(
+					"doc['title'] + ' ' + doc['canonicalUrl']");
 
 				termsAggregationBuilder.script(
 					script
@@ -385,12 +387,12 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 		if (_visitedPages) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termsQuery("dataSourceAssetPK", urls));
+				QueryBuilders.termsQuery("canonicalUrl", urls));
 		}
 		else {
 			boolQueryBuilder.filter(
 				QueryBuilders.termsQuery(
-					"dataSourceAssetPK",
+					"canonicalUrl",
 					_getUrls(
 						collectionName, elasticsearchInvoker, queryBuilder,
 						urls)));
