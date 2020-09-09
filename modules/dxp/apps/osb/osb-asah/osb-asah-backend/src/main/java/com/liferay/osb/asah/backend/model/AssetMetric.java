@@ -14,7 +14,17 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+
+import java.lang.reflect.Method;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Inácio Nery
@@ -28,6 +38,31 @@ public interface AssetMetric {
 	public String getAssetTitle();
 
 	public String getAssetType();
+
+	public default Set<Metric> getAvailableMetrics() {
+		Set<Metric> availableMetrics = new HashSet<>();
+
+		try {
+			BeanInfo beanInfo = Introspector.getBeanInfo(getClass());
+
+			for (PropertyDescriptor propertyDescriptor :
+					beanInfo.getPropertyDescriptors()) {
+
+				Method readMethod = propertyDescriptor.getReadMethod();
+
+				if ((readMethod != null) &&
+					Objects.equals(
+						propertyDescriptor.getPropertyType(), Metric.class)) {
+
+					availableMetrics.add((Metric)readMethod.invoke(this));
+				}
+			}
+		}
+		catch (IntrospectionException | ReflectiveOperationException e) {
+		}
+
+		return availableMetrics;
+	}
 
 	public List<String> getCanonicalUrls();
 
