@@ -855,7 +855,7 @@ AUI.add(
 								value = instance.getValue();
 							}
 
-							if (predefinedValue) {
+							if (Lang.isUndefined(value) && predefinedValue) {
 								value = predefinedValue[instance.get('displayLocale')];
 							}
 
