@@ -249,7 +249,7 @@ public class ReportRestController extends BaseRestController {
 
 		List<FormMetric> formMetrics = _metricDog.getAssetMetrics(
 			assetMetricsCount, searchQueryContext, _getFormMetricTypeNames(),
-			_PAGE_SIZE, _createFormSort(sortMetric, sortOrder),
+			_PAGE_SIZE, _createSort(AssetType.FORM, sortMetric, sortOrder),
 			page * _PAGE_SIZE);
 
 		formMetricResultBag.setResults(formMetrics);
@@ -430,7 +430,8 @@ public class ReportRestController extends BaseRestController {
 
 		List<PageMetric> pageMetrics = _metricDog.getAssetMetrics(
 			assetMetricsCount, searchQueryContext, _getPageMetricTypeNames(),
-			_PAGE_SIZE, _createSort(sortMetric, sortOrder), page * _PAGE_SIZE);
+			_PAGE_SIZE, _createSort(AssetType.PAGE, sortMetric, sortOrder),
+			page * _PAGE_SIZE);
 
 		pageMetricResultBag.setResults(pageMetrics);
 
@@ -505,18 +506,11 @@ public class ReportRestController extends BaseRestController {
 		return bodyBuilder.build();
 	}
 
-	private Sort _createFormSort(
-		String metricTypeString, String sortOrderString) {
+	private Sort _createSort(
+		AssetType assetType, String metricTypeString, String sortOrderString) {
 
 		MetricType metricType = _metricTypeDog.getMetricType(
-			AssetType.FORM, metricTypeString);
-
-		return new Sort(metricType.getAggregationName(), sortOrderString);
-	}
-
-	private Sort _createSort(String metricTypeString, String sortOrderString) {
-		MetricType metricType = _metricTypeDog.getMetricType(
-			AssetType.PAGE, metricTypeString);
+			assetType, metricTypeString);
 
 		return new Sort(metricType.getAggregationName(), sortOrderString);
 	}
