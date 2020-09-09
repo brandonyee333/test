@@ -96,7 +96,7 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
+		name = "individuals", resourcePath = "individuals_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
