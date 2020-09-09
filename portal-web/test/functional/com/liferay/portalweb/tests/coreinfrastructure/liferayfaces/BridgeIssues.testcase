@@ -104,6 +104,10 @@ definition {
 
 		// Click the Perform Garbage Collection button and confirm that no AS7Leak class instances appear
 
+		User.loginPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
 		// FACES-1478
 
 		BridgeIssues.addPageAndPortlet(

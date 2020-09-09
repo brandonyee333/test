@@ -124,4 +124,38 @@ definition {
 		}
 	}
 
+	macro submitImmediate {
+		if ("${immediate}" == "true") {
+			Click(locator1 = "PortalShowcase#WRITEABLE_FIELD");
+
+			RobotType(locator1 = "${text}");
+
+			Click(locator1 = "PortalShowcase#SUBMIT_BUTTON");
+
+			AssertElementPresent(
+				key_message = "${messageImmediate1}",
+				locator1 = "JSFShowcase#RESULT_MESSAGE");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "JSFShowcase#MODEL_RESULT",
+				value1 = "${textResult}");
+		}
+
+		if ("${immediate}" == "false") {
+			Click(locator1 = "PortalShowcase#WRITEABLE_FIELD_2");
+
+			RobotType(locator1 = "${text}");
+
+			Click(locator1 = "PortalShowcase#SUBMIT_BUTTON_2");
+
+			AssertElementPresent(
+				key_message = "${messageImmediate2}",
+				locator1 = "JSFShowcase#RESULT_MESSAGE");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "JSFShowcase#MODEL_RESULT_2",
+				value1 = "${textResult}");
+		}
+	}
+
 }
