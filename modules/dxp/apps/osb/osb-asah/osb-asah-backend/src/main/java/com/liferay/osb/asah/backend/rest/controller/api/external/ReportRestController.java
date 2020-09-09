@@ -901,6 +901,10 @@ public class ReportRestController extends BaseRestController {
 		}
 
 		public Trend getTrend() {
+			if ((_trend == null) || (_trend.getPercentage() == null)) {
+				return null;
+			}
+
 			return _trend;
 		}
 
