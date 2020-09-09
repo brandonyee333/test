@@ -364,7 +364,7 @@ public class ReportRestController extends BaseRestController {
 							"individuals"
 						),
 						ControllerLinkBuilder.linkTo(
-							_getPageReportResultBagResource(
+							_getPageAssetReportResultBagResource(
 								null, null, null, null, null)
 						).withRel(
 							"pages"
@@ -379,7 +379,7 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/pages/{pageURL}")
-	public Resource<PageReport> getPageReportResource(
+	public Resource<PageAssetReport> getPageAssetReportResource(
 		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
 		@RequestParam(defaultValue = "") String pageTitle,
 		@PathVariable String pageURL,
@@ -397,22 +397,23 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		return _toPageReportResource(
-			_toPageReport(
-				expands,
-				_metricDog.getAssetMetric(
-					searchQueryContext, _getPageMetricTypeNames()),
-				searchQueryContext),
+		return _toPageAssetReportResource(
+			new PageAssetReport(
+				_toAssetReport(
+					_metricDog.getAssetMetric(
+						searchQueryContext, _getPageMetricTypeNames()),
+					expands, searchQueryContext)),
 			rangeKey);
 	}
 
 	@GetMapping("/pages")
-	public ResultBagResource<PageReport> getPageReportResultBagResource(
-		@RequestParam(defaultValue = "0") Integer page,
-		@RequestParam(defaultValue = "") String keywords,
-		@RequestParam(defaultValue = "30") Integer rangeKey,
-		@RequestParam(defaultValue = "viewsMetric") String sortMetric,
-		@RequestParam(defaultValue = "desc") String sortOrder) {
+	public ResultBagResource<PageAssetReport>
+		getPageAssetReportResultBagResource(
+			@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "") String keywords,
+			@RequestParam(defaultValue = "30") Integer rangeKey,
+			@RequestParam(defaultValue = "viewsMetric") String sortMetric,
+			@RequestParam(defaultValue = "desc") String sortOrder) {
 
 		ResultBag<PageMetric> pageMetricResultBag = new ResultBag<>();
 
@@ -436,14 +437,14 @@ public class ReportRestController extends BaseRestController {
 		pageMetricResultBag.setTotal(assetMetricsCount);
 
 		return _toResultBagResource(
-			_getPageReportResultBagResource(
+			_getPageAssetReportResultBagResource(
 				page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
-			_getPageReportResultBagResource(
+			_getPageAssetReportResultBagResource(
 				page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			pageMetricResultBag,
-			pageMetric -> _toPageReportResource(
-				new PageReport(pageMetric), rangeKey));
+			pageMetric -> _toPageAssetReportResource(
+				new PageAssetReport(new AssetReport(pageMetric)), rangeKey));
 	}
 
 	@GetMapping("/segments/{individualSegmentId}/individuals")
@@ -663,6 +664,18 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
+	private ResultBagResource<PageAssetReport>
+		_getPageAssetReportResultBagResource(
+			Integer page, String keywords, Integer rangeKey, String sortMetric,
+			String sortOrder) {
+
+		return ControllerLinkBuilder.methodOn(
+			ReportRestController.class
+		).getPageAssetReportResultBagResource(
+			page, keywords, rangeKey, sortMetric, sortOrder
+		);
+	}
+
 	private Set<String> _getPageMetricTypeNames() {
 		return Stream.of(
 			PageMetricType.values()
@@ -670,17 +683,6 @@ public class ReportRestController extends BaseRestController {
 			PageMetricType::getName
 		).collect(
 			Collectors.toSet()
-		);
-	}
-
-	private ResultBagResource<PageReport> _getPageReportResultBagResource(
-		Integer page, String keywords, Integer rangeKey, String sortMetric,
-		String sortOrder) {
-
-		return ControllerLinkBuilder.methodOn(
-			ReportRestController.class
-		).getPageReportResultBagResource(
-			page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
 
@@ -840,65 +842,17 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private PageReport _toPageReport(
-		Set<String> expands, PageMetric pageMetric,
-		SearchQueryContext searchQueryContext) {
-
-		Map<String, MetricReport> metricReports = new HashMap<>();
-
-		for (Metric metric : pageMetric.getAvailableMetrics()) {
-			MetricReport metricReport = new MetricReport(metric);
-
-			if (expands.contains("audience")) {
-				_expandMetricReportAudience(
-					metricReport, metric.getMetricType(), searchQueryContext);
-			}
-
-			if (expands.contains("browser")) {
-				List<Metric> browserMetrics = _technologyDog.getBrowserMetrics(
-					metric.getMetricType(), searchQueryContext);
-
-				_expandMetricReport(
-					browserMetrics, metricReport::_addBrowserMetricReport);
-			}
-
-			if (expands.contains("device")) {
-				List<Metric> deviceMetrics = _technologyDog.getDeviceMetrics(
-					metric.getMetricType(), searchQueryContext);
-
-				_expandMetricReport(
-					deviceMetrics, metricReport::_addDeviceMetricReport);
-			}
-
-			if (expands.contains("location")) {
-				List<Metric> geolocationMetrics =
-					_geolocationDog.getGeolocationMetrics(
-						metric.getMetricType(), searchQueryContext);
-
-				_expandMetricReport(
-					geolocationMetrics,
-					metricReport::_addGeolocationMetricReport);
-			}
-
-			MetricType metricType = metric.getMetricType();
-
-			metricReports.put(metricType.getName(), metricReport);
-		}
-
-		return new PageReport(metricReports, pageMetric);
-	}
-
-	private Resource<PageReport> _toPageReportResource(
-		PageReport pageReport, int rangeKey) {
+	private Resource<PageAssetReport> _toPageAssetReportResource(
+		PageAssetReport pageAssetReport, int rangeKey) {
 
 		return new Resource<>(
-			pageReport,
+			pageAssetReport,
 			ControllerLinkBuilder.linkTo(
 				ControllerLinkBuilder.methodOn(
 					ReportRestController.class
-				).getPageReportResource(
-					Collections.emptySet(), pageReport.getTitle(),
-					_encodeURL(pageReport.getURL()), rangeKey
+				).getPageAssetReportResource(
+					Collections.emptySet(), pageAssetReport.getTitle(),
+					_encodeURL(pageAssetReport.getURL()), rangeKey
 				)
 			).withSelfRel());
 	}
@@ -1162,42 +1116,27 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private static class PageReport {
+	private static class PageAssetReport {
 
-		public PageReport(
-			Map<String, MetricReport> metricReports, PageMetric pageMetric) {
-
-			_metricReports = metricReports;
-			_pageMetric = pageMetric;
-		}
-
-		public PageReport(PageMetric pageMetric) {
-			for (Metric metric : pageMetric.getAvailableMetrics()) {
-				MetricType metricType = metric.getMetricType();
-
-				_metricReports.put(
-					metricType.getName(), new MetricReport(metric));
-			}
-
-			_pageMetric = pageMetric;
+		public PageAssetReport(AssetReport assetReport) {
+			_assetReport = assetReport;
 		}
 
 		@JsonProperty("metrics")
 		public Map<String, MetricReport> getMetricReports() {
-			return Collections.synchronizedMap(_metricReports);
+			return _assetReport.getMetricReports();
 		}
 
 		public String getTitle() {
-			return _pageMetric.getAssetTitle();
+			return _assetReport.getTitle();
 		}
 
 		@JsonProperty("url")
 		public String getURL() {
-			return _pageMetric.getAssetId();
+			return _assetReport.getId();
 		}
 
-		private Map<String, MetricReport> _metricReports = new HashMap<>();
-		private final PageMetric _pageMetric;
+		private final AssetReport _assetReport;
 
 	}
 
