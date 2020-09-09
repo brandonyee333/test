@@ -98,8 +98,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				_accountSynchronizer.closeZendeskTickets(
 					account, accountEntry, null);
 
-				List<Contact> contacts = _contactWebService.getAccountContacts(
-					account.getKey(), 1, 1000);
+				List<Contact> contacts =
+					_contactWebService.getAccountCustomerContacts(
+						account.getKey(), 1, 1000);
 
 				for (Contact contact : contacts) {
 					User user = _userIdentityProvider.fetchUserByEmailAddress(

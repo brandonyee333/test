@@ -32,7 +32,6 @@ import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalServiceUtil;
-import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
@@ -66,7 +65,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
@@ -275,36 +273,8 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	public List<Contact> getCustomerContacts() throws Exception {
-		List<Contact> contacts = _contactWebService.getAccountContacts(
+		return _contactWebService.getAccountCustomerContacts(
 			_account.getKey(), 1, 1000);
-
-		Iterator<Contact> iterator = contacts.iterator();
-
-		while (iterator.hasNext()) {
-			Contact contact = iterator.next();
-
-			boolean liferayContact = false;
-
-			ContactRole[] contactRoles = contact.getContactRoles();
-
-			if (contactRoles != null) {
-				for (ContactRole contactRole : contactRoles) {
-					String name = contactRole.getName();
-
-					if (name.startsWith(
-							ContactRoleConstants.NAME_PREFIX_LIFERAY)) {
-
-						liferayContact = true;
-					}
-				}
-			}
-
-			if (liferayContact) {
-				iterator.remove();
-			}
-		}
-
-		return contacts;
 	}
 
 	public JSONObject getEnvCommerceJSONObject(
@@ -425,36 +395,8 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	public List<Contact> getLiferayContacts() throws Exception {
-		List<Contact> contacts = _contactWebService.getAccountContacts(
+		return _contactWebService.getAccountWorkerContacts(
 			_account.getKey(), 1, 1000);
-
-		Iterator<Contact> iterator = contacts.iterator();
-
-		while (iterator.hasNext()) {
-			Contact contact = iterator.next();
-
-			boolean liferayContact = false;
-
-			ContactRole[] contactRoles = contact.getContactRoles();
-
-			if (contactRoles != null) {
-				for (ContactRole contactRole : contactRoles) {
-					String name = contactRole.getName();
-
-					if (name.startsWith(
-							ContactRoleConstants.NAME_PREFIX_LIFERAY)) {
-
-						liferayContact = true;
-					}
-				}
-			}
-
-			if (!liferayContact) {
-				iterator.remove();
-			}
-		}
-
-		return contacts;
 	}
 
 	public String getPartnerManagedSupportName() {

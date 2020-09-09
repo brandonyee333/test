@@ -197,7 +197,7 @@ public class SynchronizeAccountEntryMessageListener
 
 		Map<String, User> customerUsersMap = new HashMap<>();
 
-		List<Contact> contacts = _contactWebService.getAccountContacts(
+		List<Contact> contacts = _contactWebService.getAccountCustomerContacts(
 			accountEntry.getKoroneikiAccountKey(), 1, 1000);
 
 		for (Contact contact : contacts) {

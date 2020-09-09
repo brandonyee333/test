@@ -79,7 +79,7 @@ public class AccountSynchronizer {
 	public void addCustomers(Account account, AccountEntry accountEntry)
 		throws Exception {
 
-		List<Contact> contacts = _contactWebService.getAccountContacts(
+		List<Contact> contacts = _contactWebService.getAccountCustomerContacts(
 			account.getKey(), 1, 1000);
 
 		for (Contact contact : contacts) {
@@ -361,7 +361,7 @@ public class AccountSynchronizer {
 	public void removeCustomers(Account account, AccountEntry accountEntry)
 		throws Exception {
 
-		List<Contact> contacts = _contactWebService.getAccountContacts(
+		List<Contact> contacts = _contactWebService.getAccountCustomerContacts(
 			account.getKey(), 1, 1000);
 
 		for (Contact contact : contacts) {
