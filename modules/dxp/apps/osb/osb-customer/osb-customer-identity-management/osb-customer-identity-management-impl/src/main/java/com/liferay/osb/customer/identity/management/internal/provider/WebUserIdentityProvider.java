@@ -16,10 +16,13 @@ package com.liferay.osb.customer.identity.management.internal.provider;
 
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailService;
+import com.liferay.osb.customer.identity.management.internal.configuration.WebUserIdentityConfiguration;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
+import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
+import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.petra.string.CharPool;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -29,7 +32,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StackTraceUtil;
@@ -48,23 +50,31 @@ import javax.mail.internet.InternetAddress;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpMessage;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.nio.reactor.IOReactorException;
+
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
  */
 @Component(
-	immediate = true,
-	property = {
-		"api.token=", "error.email.address=", "host=", "port=", "protocol=",
-		"provider=web"
-	},
+	immediate = true, property = "provider=web",
 	service = UserIdentityProvider.class
 )
-public class WebUserIdentityProvider implements UserIdentityProvider {
+public class WebUserIdentityProvider
+	extends BaseJSONWebServiceClientImpl implements UserIdentityProvider {
+
+	@Override
+	public void afterPropertiesSet() throws IOReactorException {
+		setMaxAttempts(3);
+
+		super.afterPropertiesSet();
+	}
 
 	public User fetchUserByEmailAddress(String emailAddress) throws Exception {
 		User user = _userLocalService.fetchUserByEmailAddress(
@@ -102,27 +112,10 @@ public class WebUserIdentityProvider implements UserIdentityProvider {
 	}
 
 	@Activate
+	@Modified
 	protected void activate(Map<String, Object> properties) throws Exception {
-		_errorEmailAddress = String.valueOf(
-			properties.get("error.email.address"));
-
-		if (Validator.isNotNull(properties.get("host"))) {
-			Map<String, Object> jsonWebServiceClientProperties =
-				new HashMap<>();
-
-			jsonWebServiceClientProperties.put(
-				"headers",
-				"Authorization=token " + properties.get("api.token"));
-			jsonWebServiceClientProperties.put(
-				"hostName", properties.get("host"));
-			jsonWebServiceClientProperties.put(
-				"hostPort", properties.get("port"));
-			jsonWebServiceClientProperties.put(
-				"protocol", properties.get("protocol"));
-
-			_jsonWebServiceClient = _jsonWebServiceClientFactory.getInstance(
-				jsonWebServiceClientProperties, false);
-		}
+		_webUserIdentityConfiguration = ConfigurableUtil.createConfigurable(
+			WebUserIdentityConfiguration.class, properties);
 
 		_companyId = _portalInstancesLocalService.getDefaultCompanyId();
 
@@ -131,23 +124,39 @@ public class WebUserIdentityProvider implements UserIdentityProvider {
 		_defaultUserId = user.getUserId();
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		if (_jsonWebServiceClient != null) {
-			_jsonWebServiceClient.destroy();
-		}
+	@Override
+	protected void addHeaders(
+		HttpMessage httpMessage, Map<String, String> headers) {
+
+		headers.put(
+			"Authorization",
+			"token " + _webUserIdentityConfiguration.apiToken());
+
+		super.addHeaders(httpMessage, headers);
+	}
+
+	@Override
+	protected String execute(HttpRequestBase httpRequestBase)
+		throws JSONWebServiceInvocationException,
+			   JSONWebServiceTransportException {
+
+		setHostName(_webUserIdentityConfiguration.hostName());
+		setHostPort(_webUserIdentityConfiguration.port());
+		setProtocol(_webUserIdentityConfiguration.protocol());
+
+		return super.execute(httpRequestBase);
+	}
+
+	@Override
+	protected void signRequest(HttpRequestBase httpRequestBase) {
 	}
 
 	private JSONObject _getToJSONObject(
 			String url, Map<String, String> parameters)
 		throws Exception {
 
-		if (_jsonWebServiceClient == null) {
-			return null;
-		}
-
 		try {
-			String response = _jsonWebServiceClient.doGet(url, parameters);
+			String response = doGet(url, parameters);
 
 			return _jsonFactory.createJSONObject(response);
 		}
@@ -226,7 +235,9 @@ public class WebUserIdentityProvider implements UserIdentityProvider {
 	}
 
 	private void _sendEmail(Exception e, Map<String, String> parameters) {
-		if (Validator.isNull(_errorEmailAddress)) {
+		if (Validator.isNull(
+				_webUserIdentityConfiguration.errorEmailAddress())) {
+
 			return;
 		}
 
@@ -246,7 +257,8 @@ public class WebUserIdentityProvider implements UserIdentityProvider {
 
 		try {
 			InternetAddress from = new InternetAddress("noreply@liferay.com");
-			InternetAddress to = new InternetAddress(_errorEmailAddress);
+			InternetAddress to = new InternetAddress(
+				_webUserIdentityConfiguration.errorEmailAddress());
 
 			MailMessage mailMessage = new MailMessage(
 				from, to, "Auto Generated Web API Error Message", sb.toString(),
@@ -266,15 +278,9 @@ public class WebUserIdentityProvider implements UserIdentityProvider {
 
 	private long _companyId;
 	private long _defaultUserId;
-	private String _errorEmailAddress;
 
 	@Reference
 	private JSONFactory _jsonFactory;
-
-	private JSONWebServiceClient _jsonWebServiceClient;
-
-	@Reference
-	private JSONWebServiceClientFactory _jsonWebServiceClientFactory;
 
 	@Reference
 	private MailService _mailService;
@@ -284,5 +290,7 @@ public class WebUserIdentityProvider implements UserIdentityProvider {
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	private volatile WebUserIdentityConfiguration _webUserIdentityConfiguration;
 
 }
