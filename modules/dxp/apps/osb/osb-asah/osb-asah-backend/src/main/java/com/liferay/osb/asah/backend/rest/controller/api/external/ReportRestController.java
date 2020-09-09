@@ -32,6 +32,8 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.FormMetric;
+import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.model.Interest;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -196,6 +198,75 @@ public class ReportRestController extends BaseRestController {
 		return bodyBuilder.body(new FileSystemResource(file.getAbsolutePath()));
 	}
 
+	@GetMapping("/forms/{formId}")
+	public Resource<FormReport> getFormReportResource(
+		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
+		@PathVariable String formId,
+		@RequestParam(defaultValue = "") String formTitle,
+		@RequestParam(defaultValue = "30") int rangeKey) {
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext() {
+			{
+				setAssetId(formId);
+				setAssetType(AssetType.FORM);
+				setTimeRange(TimeRange.of(rangeKey));
+
+				if (StringUtils.isNotEmpty(formTitle)) {
+					setTitle(formTitle);
+				}
+			}
+		};
+
+		return _toFormReportResource(
+			_toFormReport(
+				expands,
+				_metricDog.getAssetMetric(
+					searchQueryContext, _getFormMetricTypeNames()),
+				searchQueryContext),
+			rangeKey);
+	}
+
+	@GetMapping("/forms")
+	public ResultBagResource<FormReport> getFormReportResultBagResource(
+		@RequestParam(defaultValue = "0") Integer page,
+		@RequestParam(defaultValue = "") String keywords,
+		@RequestParam(defaultValue = "30") Integer rangeKey,
+		@RequestParam(defaultValue = "viewsMetric") String sortMetric,
+		@RequestParam(defaultValue = "desc") String sortOrder) {
+
+		ResultBag<FormMetric> formMetricResultBag = new ResultBag<>();
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext() {
+			{
+				setAssetType(AssetType.FORM);
+				setKeywords(keywords);
+				setTimeRange(TimeRange.of(rangeKey));
+			}
+		};
+
+		int assetMetricsCount = _metricDog.getAssetMetricsCount(
+			searchQueryContext);
+
+		List<FormMetric> formMetrics = _metricDog.getAssetMetrics(
+			assetMetricsCount, searchQueryContext, _getFormMetricTypeNames(),
+			_PAGE_SIZE, _createFormSort(sortMetric, sortOrder),
+			page * _PAGE_SIZE);
+
+		formMetricResultBag.setResults(formMetrics);
+
+		formMetricResultBag.setTotal(assetMetricsCount);
+
+		return _toResultBagResource(
+			_getFormReportResultBagResource(
+				page + 1, keywords, rangeKey, sortMetric, sortOrder),
+			page,
+			_getFormReportResultBagResource(
+				page - 1, keywords, rangeKey, sortMetric, sortOrder),
+			formMetricResultBag,
+			formMetric -> _toFormReportResource(
+				new FormReport(formMetric), rangeKey));
+	}
+
 	@GetMapping("/individuals/{individualId}/activities")
 	public ResultBagResource<Activity> getIndividualActivityResultBagResource(
 		@PathVariable String individualId,
@@ -280,6 +351,12 @@ public class ReportRestController extends BaseRestController {
 							_getAccountResultBagResource(null)
 						).withRel(
 							"accounts"
+						),
+						ControllerLinkBuilder.linkTo(
+							_getFormReportResultBagResource(
+								null, null, null, null, null)
+						).withRel(
+							"forms"
 						),
 						ControllerLinkBuilder.linkTo(
 							_getIndividualResultBagResource(null, null)
@@ -427,6 +504,15 @@ public class ReportRestController extends BaseRestController {
 		return bodyBuilder.build();
 	}
 
+	private Sort _createFormSort(
+		String metricTypeString, String sortOrderString) {
+
+		MetricType metricType = _metricTypeDog.getMetricType(
+			AssetType.FORM, metricTypeString);
+
+		return new Sort(metricType.getAggregationName(), sortOrderString);
+	}
+
 	private Sort _createSort(String metricTypeString, String sortOrderString) {
 		MetricType metricType = _metricTypeDog.getMetricType(
 			AssetType.PAGE, metricTypeString);
@@ -526,6 +612,27 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
+	private Set<String> _getFormMetricTypeNames() {
+		return Stream.of(
+			FormMetricType.values()
+		).map(
+			FormMetricType::getName
+		).collect(
+			Collectors.toSet()
+		);
+	}
+
+	private ResultBagResource<FormReport> _getFormReportResultBagResource(
+		Integer page, String keywords, Integer rangeKey, String sortMetric,
+		String sortOrder) {
+
+		return ControllerLinkBuilder.methodOn(
+			ReportRestController.class
+		).getFormReportResultBagResource(
+			page, keywords, rangeKey, sortMetric, sortOrder
+		);
+	}
+
 	private ResultBagResource<Activity> _getIndividualActivityResultBagResource(
 		String individualId, Integer page) {
 
@@ -622,6 +729,69 @@ public class ReportRestController extends BaseRestController {
 			).withRel(
 				"parent"
 			));
+	}
+
+	private FormReport _toFormReport(
+		Set<String> expands, FormMetric formMetric,
+		SearchQueryContext searchQueryContext) {
+
+		Map<String, MetricReport> metricReports = new HashMap<>();
+
+		for (Metric metric : formMetric.getAvailableMetrics()) {
+			MetricReport metricReport = new MetricReport(metric);
+
+			if (expands.contains("audience")) {
+				_expandMetricReportAudience(
+					metricReport, metric.getMetricType(), searchQueryContext);
+			}
+
+			if (expands.contains("browser")) {
+				List<Metric> browserMetrics = _technologyDog.getBrowserMetrics(
+					metric.getMetricType(), searchQueryContext);
+
+				_expandMetricReport(
+					browserMetrics, metricReport::_addBrowserMetricReport);
+			}
+
+			if (expands.contains("device")) {
+				List<Metric> deviceMetrics = _technologyDog.getDeviceMetrics(
+					metric.getMetricType(), searchQueryContext);
+
+				_expandMetricReport(
+					deviceMetrics, metricReport::_addDeviceMetricReport);
+			}
+
+			if (expands.contains("location")) {
+				List<Metric> geolocationMetrics =
+					_geolocationDog.getGeolocationMetrics(
+						metric.getMetricType(), searchQueryContext);
+
+				_expandMetricReport(
+					geolocationMetrics,
+					metricReport::_addGeolocationMetricReport);
+			}
+
+			MetricType metricType = metric.getMetricType();
+
+			metricReports.put(metricType.getName(), metricReport);
+		}
+
+		return new FormReport(metricReports, formMetric);
+	}
+
+	private Resource<FormReport> _toFormReportResource(
+		FormReport formReport, int rangeKey) {
+
+		return new Resource<>(
+			formReport,
+			ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder.methodOn(
+					ReportRestController.class
+				).getFormReportResource(
+					Collections.emptySet(), formReport.getId(),
+					formReport.getTitle(), rangeKey
+				)
+			).withSelfRel());
 	}
 
 	private Resource<Individual> _toIndividualResource(Individual individual) {
@@ -853,6 +1023,45 @@ public class ReportRestController extends BaseRestController {
 		private Long _nonsegmentedKnownUsersCount;
 		private Long _segmentedKnownUsersCount;
 		private ResultBag<MetricReport> _segmentMetricReportResultBag;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class FormReport {
+
+		public FormReport(FormMetric formMetric) {
+			for (Metric metric : formMetric.getAvailableMetrics()) {
+				MetricType metricType = metric.getMetricType();
+
+				_metricReports.put(
+					metricType.getName(), new MetricReport(metric));
+			}
+
+			_formMetric = formMetric;
+		}
+
+		public FormReport(
+			Map<String, MetricReport> metricReports, FormMetric formMetric) {
+
+			_metricReports = metricReports;
+			_formMetric = formMetric;
+		}
+
+		public String getId() {
+			return _formMetric.getAssetId();
+		}
+
+		@JsonProperty("metrics")
+		public Map<String, MetricReport> getMetricReports() {
+			return Collections.synchronizedMap(_metricReports);
+		}
+
+		public String getTitle() {
+			return _formMetric.getAssetTitle();
+		}
+
+		private final FormMetric _formMetric;
+		private Map<String, MetricReport> _metricReports = new HashMap<>();
 
 	}
 
