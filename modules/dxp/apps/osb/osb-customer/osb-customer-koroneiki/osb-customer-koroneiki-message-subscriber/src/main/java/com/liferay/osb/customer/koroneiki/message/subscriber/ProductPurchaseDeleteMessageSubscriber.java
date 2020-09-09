@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.koroneiki.message.subscriber;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.subscription.util.DXPCloudStatusPageSubscriptionUtil;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -25,6 +26,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -63,6 +65,13 @@ public class ProductPurchaseDeleteMessageSubscriber
 				accountReader.getTicketSupportEndDate(productPurchases),
 				accountReader.getStatus(account));
 		}
+
+		_dxpCloudStatusPageSubscriptionUtil.syncAccount(
+			productPurchase.getAccountKey());
 	}
+
+	@Reference
+	private DXPCloudStatusPageSubscriptionUtil
+		_dxpCloudStatusPageSubscriptionUtil;
 
 }

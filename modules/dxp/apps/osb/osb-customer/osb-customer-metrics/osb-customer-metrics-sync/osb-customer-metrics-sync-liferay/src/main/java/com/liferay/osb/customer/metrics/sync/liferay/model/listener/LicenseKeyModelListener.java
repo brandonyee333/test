@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.metrics.sync.liferay.model.listener;
 
+import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 
@@ -23,8 +24,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = ModelListener.class)
-public class LicenseKeyModelListener extends BaseMetricsModelListener {
-
-	//TODO
-
+public class LicenseKeyModelListener
+	extends BaseMetricsModelListener<LicenseKey> {
 }

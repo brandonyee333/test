@@ -19,8 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -39,59 +37,15 @@ public class AccountEntryMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				accountEntry.getModelAttributes());
 
-		/*
-		TODO
-		attributes.put("industry", accountEntry.getIndustryLabel());
 		attributes.put("status", accountEntry.getStatusLabel());
-		attributes.put(
-			"tier", AccountEntryConstants.getTierLabel(accountEntry.getTier()));
-		attributes.put("type", accountEntry.getTypeLabel());
-		*/
 
 		return attributes;
-	}
-
-	@Override
-	public String[] getMappingTables() {
-		return _MAPPING_TABLES;
-	}
-
-	@Override
-	public List<Map<String, Object>> getMappingValues(
-		AccountEntry accountEntry) {
-
-		List<Map<String, Object>> mappingValues = new ArrayList<>();
-
-		/*
-		TODO
-
-		for (SupportRegion supportRegion : accountEntry.getSupportRegions()) {
-			Map<String, Object> mappingValue = new HashMap<>();
-
-			mappingValue.put(
-				"accountEntryId", accountEntry.getAccountEntryId());
-			mappingValue.put("companyId", accountEntry.getCompanyId());
-			mappingValue.put(
-				"supportRegionId", supportRegion.getSupportRegionId());
-
-			mappingValues.add(mappingValue);
-		}
-		*/
-
-		return mappingValues;
 	}
 
 	@Override
 	public Class getModelClass() {
 		return AccountEntry.class;
 	}
-
-	@Override
-	public boolean hasMapping() {
-		return true;
-	}
-
-	private static final String[] _MAPPING_TABLES = {"SupportRegion"};
 
 	@Reference
 	private MetricsTransformationUtil _metricsTransformationUtil;

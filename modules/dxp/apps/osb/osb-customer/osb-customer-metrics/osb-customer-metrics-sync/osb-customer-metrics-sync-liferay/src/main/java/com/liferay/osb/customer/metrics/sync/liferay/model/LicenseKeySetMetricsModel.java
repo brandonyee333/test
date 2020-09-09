@@ -14,24 +14,23 @@
 
 package com.liferay.osb.customer.metrics.sync.liferay.model;
 
+import com.liferay.osb.customer.license.model.LicenseKeySet;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
+import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
+
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
  */
 @Component(immediate = true, service = MetricsModel.class)
-public class LicenseKeySetMetricsModel extends BaseModelMetricsModel {
+public class LicenseKeySetMetricsModel
+	extends BaseModelMetricsModel<LicenseKeySet> {
 
-	@Override
-	public Class getModelClass() {
-		return null;
-	}
-
-	/*
-	TODO
 	@Override
 	public Map<String, Object> getAttributes(LicenseKeySet licenseKeySet) {
 		return _metricsTransformationUtil.transformSharedAttributes(
@@ -45,6 +44,5 @@ public class LicenseKeySetMetricsModel extends BaseModelMetricsModel {
 
 	@Reference
 	private MetricsTransformationUtil _metricsTransformationUtil;
-	*/
 
 }

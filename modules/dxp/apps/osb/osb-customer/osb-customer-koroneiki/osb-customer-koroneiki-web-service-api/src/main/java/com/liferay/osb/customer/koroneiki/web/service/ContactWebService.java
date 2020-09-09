@@ -29,6 +29,10 @@ public interface ContactWebService {
 			String accountKey, int page, int pageSize)
 		throws Exception;
 
+	public List<Contact> getAccountCustomerContacts(
+			String accountKey, int page, int pageSize)
+		throws Exception;
+
 	public List<Contact> getTeamContacts(String teamKey, int page, int pageSize)
 		throws Exception;
 

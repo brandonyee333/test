@@ -1,0 +1,4 @@
+Bundle-Name: Liferay OSB Customer Subscription Util
+Bundle-SymbolicName: com.liferay.osb.customer.subscription.util
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.customer.subscription.util
