@@ -55,7 +55,7 @@
 			{
 				name: '<@liferay.language key="dxp"/> 7.3',
 				svgId: '#dxp-logo',
-				url: addLocaleParamToURI('${current_locale}', 'categories/360000872571')
+				url: addLocaleParamToURI('${current_locale}', 'categories/360004183251')
 			},
 			{
 				name: '<@liferay.language key="dxp-cloud" />',
