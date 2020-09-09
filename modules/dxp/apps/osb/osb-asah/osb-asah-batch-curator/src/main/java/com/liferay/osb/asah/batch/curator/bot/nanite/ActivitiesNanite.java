@@ -570,13 +570,9 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			return individualJSONObject.getString("id");
 		}
 
-		if (_log.isWarnEnabled()) {
-			_log.warn(
-				"Unable to find individual for ownerId " + ownerId +
-					" or userId " + analyticsEvent.getUserId());
-		}
-
-		return null;
+		throw new IllegalStateException(
+			"Unable to find individual for ownerId " + ownerId + " or userId " +
+				analyticsEvent.getUserId());
 	}
 
 	private String _getPageViewActivityId(AnalyticsEvent analyticsEvent) {
