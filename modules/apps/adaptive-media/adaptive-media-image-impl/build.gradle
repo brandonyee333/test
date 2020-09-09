@@ -14,6 +14,7 @@ dependencies {
 	compileOnly project(":apps:adaptive-media:adaptive-media-image-api")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype")
 	compileOnly project(":core:osgi-service-tracker-collections")
+	compileOnly project(":core:petra:petra-string")
 	compileOnly project(":core:registry-api")
 
 	testCompile group: "org.jabsorb", name: "jabsorb", version: "1.3.1"
