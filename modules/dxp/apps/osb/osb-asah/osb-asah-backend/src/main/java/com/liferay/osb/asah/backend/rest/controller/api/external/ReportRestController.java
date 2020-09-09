@@ -31,6 +31,7 @@ import com.liferay.osb.asah.backend.dog.UserDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.Activity;
+import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.FormMetricType;
@@ -199,7 +200,7 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/forms/{formId}")
-	public Resource<FormReport> getFormReportResource(
+	public Resource<AssetReport> getFormAssetReportResource(
 		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
 		@PathVariable String formId,
 		@RequestParam(defaultValue = "") String formTitle,
@@ -217,17 +218,16 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		return _toFormReportResource(
-			_toFormReport(
-				expands,
+		return _toFormAssetReportResource(
+			_toAssetReport(
 				_metricDog.getAssetMetric(
 					searchQueryContext, _getFormMetricTypeNames()),
-				searchQueryContext),
+				expands, searchQueryContext),
 			rangeKey);
 	}
 
 	@GetMapping("/forms")
-	public ResultBagResource<FormReport> getFormReportResultBagResource(
+	public ResultBagResource<AssetReport> getFormAssetReportResultBagResource(
 		@RequestParam(defaultValue = "0") Integer page,
 		@RequestParam(defaultValue = "") String keywords,
 		@RequestParam(defaultValue = "30") Integer rangeKey,
@@ -257,14 +257,14 @@ public class ReportRestController extends BaseRestController {
 		formMetricResultBag.setTotal(assetMetricsCount);
 
 		return _toResultBagResource(
-			_getFormReportResultBagResource(
+			_getFormAssetReportResultBagResource(
 				page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
-			_getFormReportResultBagResource(
+			_getFormAssetReportResultBagResource(
 				page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			formMetricResultBag,
-			formMetric -> _toFormReportResource(
-				new FormReport(formMetric), rangeKey));
+			formMetric -> _toFormAssetReportResource(
+				new AssetReport(formMetric), rangeKey));
 	}
 
 	@GetMapping("/individuals/{individualId}/activities")
@@ -353,7 +353,7 @@ public class ReportRestController extends BaseRestController {
 							"accounts"
 						),
 						ControllerLinkBuilder.linkTo(
-							_getFormReportResultBagResource(
+							_getFormAssetReportResultBagResource(
 								null, null, null, null, null)
 						).withRel(
 							"forms"
@@ -612,6 +612,17 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
+	private ResultBagResource<AssetReport> _getFormAssetReportResultBagResource(
+		Integer page, String keywords, Integer rangeKey, String sortMetric,
+		String sortOrder) {
+
+		return ControllerLinkBuilder.methodOn(
+			ReportRestController.class
+		).getFormAssetReportResultBagResource(
+			page, keywords, rangeKey, sortMetric, sortOrder
+		);
+	}
+
 	private Set<String> _getFormMetricTypeNames() {
 		return Stream.of(
 			FormMetricType.values()
@@ -619,17 +630,6 @@ public class ReportRestController extends BaseRestController {
 			FormMetricType::getName
 		).collect(
 			Collectors.toSet()
-		);
-	}
-
-	private ResultBagResource<FormReport> _getFormReportResultBagResource(
-		Integer page, String keywords, Integer rangeKey, String sortMetric,
-		String sortOrder) {
-
-		return ControllerLinkBuilder.methodOn(
-			ReportRestController.class
-		).getFormReportResultBagResource(
-			page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
 
@@ -717,27 +717,13 @@ public class ReportRestController extends BaseRestController {
 			).withSelfRel());
 	}
 
-	private <T> Resource<T> _toChildResource(String parentId, T t) {
-		return new Resource<>(
-			t,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
-					ReportRestController.class
-				).getIndividualResource(
-					parentId
-				)
-			).withRel(
-				"parent"
-			));
-	}
-
-	private FormReport _toFormReport(
-		Set<String> expands, FormMetric formMetric,
+	private AssetReport _toAssetReport(
+		AssetMetric assetMetric, Set<String> expands,
 		SearchQueryContext searchQueryContext) {
 
 		Map<String, MetricReport> metricReports = new HashMap<>();
 
-		for (Metric metric : formMetric.getAvailableMetrics()) {
+		for (Metric metric : assetMetric.getAvailableMetrics()) {
 			MetricReport metricReport = new MetricReport(metric);
 
 			if (expands.contains("audience")) {
@@ -776,20 +762,34 @@ public class ReportRestController extends BaseRestController {
 			metricReports.put(metricType.getName(), metricReport);
 		}
 
-		return new FormReport(metricReports, formMetric);
+		return new AssetReport(assetMetric, metricReports);
 	}
 
-	private Resource<FormReport> _toFormReportResource(
-		FormReport formReport, int rangeKey) {
-
+	private <T> Resource<T> _toChildResource(String parentId, T t) {
 		return new Resource<>(
-			formReport,
+			t,
 			ControllerLinkBuilder.linkTo(
 				ControllerLinkBuilder.methodOn(
 					ReportRestController.class
-				).getFormReportResource(
-					Collections.emptySet(), formReport.getId(),
-					formReport.getTitle(), rangeKey
+				).getIndividualResource(
+					parentId
+				)
+			).withRel(
+				"parent"
+			));
+	}
+
+	private Resource<AssetReport> _toFormAssetReportResource(
+		AssetReport assetReport, int rangeKey) {
+
+		return new Resource<>(
+			assetReport,
+			ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder.methodOn(
+					ReportRestController.class
+				).getFormAssetReportResource(
+					Collections.emptySet(), assetReport.getId(),
+					assetReport.getTitle(), rangeKey
 				)
 			).withSelfRel());
 	}
@@ -995,6 +995,45 @@ public class ReportRestController extends BaseRestController {
 	private UserDog _userDog;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class AssetReport {
+
+		public AssetReport(AssetMetric assetMetric) {
+			for (Metric metric : assetMetric.getAvailableMetrics()) {
+				MetricType metricType = metric.getMetricType();
+
+				_metricReports.put(
+					metricType.getName(), new MetricReport(metric));
+			}
+
+			_assetMetric = assetMetric;
+		}
+
+		public AssetReport(
+			AssetMetric assetMetric, Map<String, MetricReport> metricReports) {
+
+			_assetMetric = assetMetric;
+			_metricReports = metricReports;
+		}
+
+		public String getId() {
+			return _assetMetric.getAssetId();
+		}
+
+		@JsonProperty("metrics")
+		public Map<String, MetricReport> getMetricReports() {
+			return Collections.synchronizedMap(_metricReports);
+		}
+
+		public String getTitle() {
+			return _assetMetric.getAssetTitle();
+		}
+
+		private final AssetMetric _assetMetric;
+		private Map<String, MetricReport> _metricReports = new HashMap<>();
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private static class AudienceReport {
 
 		public Long getAnonymousUsersCount() {
@@ -1023,45 +1062,6 @@ public class ReportRestController extends BaseRestController {
 		private Long _nonsegmentedKnownUsersCount;
 		private Long _segmentedKnownUsersCount;
 		private ResultBag<MetricReport> _segmentMetricReportResultBag;
-
-	}
-
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private static class FormReport {
-
-		public FormReport(FormMetric formMetric) {
-			for (Metric metric : formMetric.getAvailableMetrics()) {
-				MetricType metricType = metric.getMetricType();
-
-				_metricReports.put(
-					metricType.getName(), new MetricReport(metric));
-			}
-
-			_formMetric = formMetric;
-		}
-
-		public FormReport(
-			Map<String, MetricReport> metricReports, FormMetric formMetric) {
-
-			_metricReports = metricReports;
-			_formMetric = formMetric;
-		}
-
-		public String getId() {
-			return _formMetric.getAssetId();
-		}
-
-		@JsonProperty("metrics")
-		public Map<String, MetricReport> getMetricReports() {
-			return Collections.synchronizedMap(_metricReports);
-		}
-
-		public String getTitle() {
-			return _formMetric.getAssetTitle();
-		}
-
-		private final FormMetric _formMetric;
-		private Map<String, MetricReport> _metricReports = new HashMap<>();
 
 	}
 
