@@ -14,11 +14,25 @@
 
 package com.liferay.osb.customer.github.internal.model.listener;
 
+import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.github.constants.GitHubCollaboratorConstants;
+import com.liferay.osb.customer.github.model.Collaborator;
+import com.liferay.osb.customer.github.service.CollaboratorLocalService;
+import com.liferay.osb.customer.github.web.service.GitHubWebService;
+import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 
+import java.util.List;
+
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
@@ -26,8 +40,7 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = ModelListener.class)
 public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
-	/*
-@Override
+	@Override
 	public void onAfterRemove(AccountEntry accountEntry)
 		throws ModelListenerException {
 
@@ -86,6 +99,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 						_collaboratorLocalService.deleteCollaborator(
 							collaborator);
 					}
+
+					_collaboratorLocalService.updateCollaborator(collaborator);
 				}
 			}
 			else if (accountEntry.getStatus() ==
@@ -125,7 +140,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 		try {
 			AccountEntry oldAccountEntry =
-				AccountEntryLocalServiceUtil.getAccountEntry(
+				_accountEntryLocalService.getAccountEntry(
 					accountEntry.getAccountEntryId());
 
 			_oldAccountEntry.set(oldAccountEntry);
@@ -137,14 +152,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		}
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountEntryModelListener.class);
 
@@ -153,10 +160,12 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			AccountEntryModelListener.class + "._oldAccountEntry");
 
 	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
 	private CollaboratorLocalService _collaboratorLocalService;
 
 	@Reference
 	private GitHubWebService _gitHubWebService;
-	*/
 
 }

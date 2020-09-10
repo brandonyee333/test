@@ -14,6 +14,11 @@
 
 package com.liferay.osb.customer.github.service.impl;
 
+import com.liferay.osb.customer.admin.constants.WorkflowConstants;
+import com.liferay.osb.customer.admin.exception.RequiredAccountEntryException;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.github.constants.GitHubCollaboratorConstants;
 import com.liferay.osb.customer.github.constants.GitHubConstants;
 import com.liferay.osb.customer.github.exception.CollaboratorEmailAddressException;
 import com.liferay.osb.customer.github.exception.CollaboratorFullNameException;
@@ -23,6 +28,7 @@ import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.base.CollaboratorLocalServiceBaseImpl;
 import com.liferay.osb.customer.github.web.service.GitHubWebService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -54,26 +60,24 @@ public class CollaboratorLocalServiceImpl
 		collaborator.setEmailAddress(emailAddress);
 		collaborator.setFullName(fullName);
 		collaborator.setGitHubUserName(gitHubUserName);
-		//collaborator.setStatus(WorkflowConstants.STATUS_PENDING);
+		collaborator.setStatus(WorkflowConstants.STATUS_PENDING);
 
-		/*
-				AccountEntry accountEntry =
-					AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
+			accountEntryId);
 
-				if (accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) {
-					_gitHubWebService.getUser(gitHubUserName);
+		if (accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) {
+			_gitHubWebService.getUser(gitHubUserName);
 
-					collaborator.setStatus(WorkflowConstants.STATUS_CLOSED);
-				}
-				else {
-					JSONObject jsonObject = _gitHubWebService.addCollaborator(
-						gitHubUserName);
+			collaborator.setStatus(WorkflowConstants.STATUS_CLOSED);
+		}
+		else {
+			JSONObject jsonObject = _gitHubWebService.addCollaborator(
+				gitHubUserName);
 
-					if (jsonObject != null) {
-						collaborator.setStatus(WorkflowConstants.STATUS_APPROVED);
-					}
-				}
-		*/
+			if (jsonObject != null) {
+				collaborator.setStatus(WorkflowConstants.STATUS_APPROVED);
+			}
+		}
 
 		return collaboratorPersistence.update(collaborator);
 	}
@@ -126,7 +130,7 @@ public class CollaboratorLocalServiceImpl
 		throws PortalException {
 
 		if (accountEntryId <= 0) {
-			//throw new RequiredAccountEntryException();
+			throw new RequiredAccountEntryException();
 		}
 
 		if (Validator.isNull(emailAddress)) {
@@ -148,6 +152,9 @@ public class CollaboratorLocalServiceImpl
 			throw new DuplicateCollaboratorException();
 		}
 	}
+
+	@ServiceReference(type = AccountEntryLocalService.class)
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@ServiceReference(type = GitHubWebService.class)
 	private GitHubWebService _gitHubWebService;
