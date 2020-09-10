@@ -33,6 +33,8 @@ import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.BlogMetric;
+import com.liferay.osb.asah.backend.model.BlogMetricType;
 import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.Individual;
@@ -118,6 +120,74 @@ public class ReportRestController extends BaseRestController {
 			_getAccountResultBagResource(page + 1), page,
 			_getAccountResultBagResource(page - 1), accountResultBag,
 			this::_toAccountResource);
+	}
+
+	@GetMapping("/blogs/{blogId}")
+	public Resource<AssetReport> getBlogAssetReportResource(
+		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
+		@PathVariable String blogId,
+		@RequestParam(defaultValue = "") String blogTitle,
+		@RequestParam(defaultValue = "30") int rangeKey) {
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext() {
+			{
+				setAssetId(blogId);
+				setAssetType(AssetType.BLOG);
+				setTimeRange(TimeRange.of(rangeKey));
+
+				if (StringUtils.isNotEmpty(blogTitle)) {
+					setTitle(blogTitle);
+				}
+			}
+		};
+
+		return _toBlogAssetReportResource(
+			_toAssetReport(
+				_metricDog.getAssetMetric(
+					searchQueryContext, _getBlogMetricTypeNames()),
+				expands, searchQueryContext),
+			rangeKey);
+	}
+
+	@GetMapping("/blogs")
+	public ResultBagResource<AssetReport> getBlogAssetReportResultBagResource(
+		@RequestParam(defaultValue = "0") Integer page,
+		@RequestParam(defaultValue = "") String keywords,
+		@RequestParam(defaultValue = "30") Integer rangeKey,
+		@RequestParam(defaultValue = "viewsMetric") String sortMetric,
+		@RequestParam(defaultValue = "desc") String sortOrder) {
+
+		ResultBag<BlogMetric> blogMetricResultBag = new ResultBag<>();
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext() {
+			{
+				setAssetType(AssetType.BLOG);
+				setKeywords(keywords);
+				setTimeRange(TimeRange.of(rangeKey));
+			}
+		};
+
+		int assetMetricsCount = _metricDog.getAssetMetricsCount(
+			searchQueryContext);
+
+		List<BlogMetric> blogMetrics = _metricDog.getAssetMetrics(
+			assetMetricsCount, searchQueryContext, _getBlogMetricTypeNames(),
+			_PAGE_SIZE, _createSort(AssetType.BLOG, sortMetric, sortOrder),
+			page * _PAGE_SIZE);
+
+		blogMetricResultBag.setResults(blogMetrics);
+
+		blogMetricResultBag.setTotal(assetMetricsCount);
+
+		return _toResultBagResource(
+			_getBlogAssetReportResultBagResource(
+				page + 1, keywords, rangeKey, sortMetric, sortOrder),
+			page,
+			_getBlogAssetReportResultBagResource(
+				page - 1, keywords, rangeKey, sortMetric, sortOrder),
+			blogMetricResultBag,
+			blogMetric -> _toBlogAssetReportResource(
+				new AssetReport(blogMetric), rangeKey));
 	}
 
 	@GetMapping("/export/{type}")
@@ -351,6 +421,12 @@ public class ReportRestController extends BaseRestController {
 							_getAccountResultBagResource(null)
 						).withRel(
 							"accounts"
+						),
+						ControllerLinkBuilder.linkTo(
+							_getBlogAssetReportResultBagResource(
+								null, null, null, null, null)
+						).withRel(
+							"blogs"
 						),
 						ControllerLinkBuilder.linkTo(
 							_getFormAssetReportResultBagResource(
@@ -607,6 +683,27 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
+	private ResultBagResource<AssetReport> _getBlogAssetReportResultBagResource(
+		Integer page, String keywords, Integer rangeKey, String sortMetric,
+		String sortOrder) {
+
+		return ControllerLinkBuilder.methodOn(
+			ReportRestController.class
+		).getBlogAssetReportResultBagResource(
+			page, keywords, rangeKey, sortMetric, sortOrder
+		);
+	}
+
+	private Set<String> _getBlogMetricTypeNames() {
+		return Stream.of(
+			BlogMetricType.values()
+		).map(
+			BlogMetricType::getName
+		).collect(
+			Collectors.toSet()
+		);
+	}
+
 	private ResultBagResource<AssetReport> _getFormAssetReportResultBagResource(
 		Integer page, String keywords, Integer rangeKey, String sortMetric,
 		String sortOrder) {
@@ -759,6 +856,21 @@ public class ReportRestController extends BaseRestController {
 		}
 
 		return new AssetReport(assetMetric, metricReports);
+	}
+
+	private Resource<AssetReport> _toBlogAssetReportResource(
+		AssetReport assetReport, int rangeKey) {
+
+		return new Resource<>(
+			assetReport,
+			ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder.methodOn(
+					ReportRestController.class
+				).getBlogAssetReportResource(
+					Collections.emptySet(), assetReport.getId(),
+					assetReport.getTitle(), rangeKey
+				)
+			).withSelfRel());
 	}
 
 	private <T> Resource<T> _toChildResource(String parentId, T t) {
