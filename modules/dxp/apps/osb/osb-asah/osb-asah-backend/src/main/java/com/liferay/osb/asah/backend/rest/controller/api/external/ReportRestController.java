@@ -35,6 +35,8 @@ import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.BlogMetric;
 import com.liferay.osb.asah.backend.model.BlogMetricType;
+import com.liferay.osb.asah.backend.model.DocumentLibraryMetric;
+import com.liferay.osb.asah.backend.model.DocumentLibraryMetricType;
 import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.Individual;
@@ -271,6 +273,78 @@ public class ReportRestController extends BaseRestController {
 		return bodyBuilder.body(new FileSystemResource(file.getAbsolutePath()));
 	}
 
+	@GetMapping("/documents-and-media/{documentId}")
+	public Resource<AssetReport> getDocumentLibraryAssetReportResource(
+		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
+		@PathVariable String documentId,
+		@RequestParam(defaultValue = "") String documentTitle,
+		@RequestParam(defaultValue = "30") int rangeKey) {
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext() {
+			{
+				setAssetId(documentId);
+				setAssetType(AssetType.DOCUMENT);
+				setTimeRange(TimeRange.of(rangeKey));
+
+				if (StringUtils.isNotEmpty(documentTitle)) {
+					setTitle(documentTitle);
+				}
+			}
+		};
+
+		return _toDocumentLibraryAssetReportResource(
+			_toAssetReport(
+				_metricDog.getAssetMetric(
+					searchQueryContext, _getDocumentLibraryMetricTypeNames()),
+				expands, searchQueryContext),
+			rangeKey);
+	}
+
+	@GetMapping("/documents-and-media")
+	public ResultBagResource<AssetReport>
+		getDocumentLibraryAssetReportResultBagResource(
+			@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "") String keywords,
+			@RequestParam(defaultValue = "30") Integer rangeKey,
+			@RequestParam(defaultValue = "downloadsMetric") String sortMetric,
+			@RequestParam(defaultValue = "desc") String sortOrder) {
+
+		ResultBag<DocumentLibraryMetric> documentLibraryMetricResultBag =
+			new ResultBag<>();
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext() {
+			{
+				setAssetType(AssetType.DOCUMENT);
+				setKeywords(keywords);
+				setTimeRange(TimeRange.of(rangeKey));
+			}
+		};
+
+		int assetMetricsCount = _metricDog.getAssetMetricsCount(
+			searchQueryContext);
+
+		List<DocumentLibraryMetric> documentLibraryMetrics =
+			_metricDog.getAssetMetrics(
+				assetMetricsCount, searchQueryContext,
+				_getDocumentLibraryMetricTypeNames(), _PAGE_SIZE,
+				_createSort(AssetType.DOCUMENT, sortMetric, sortOrder),
+				page * _PAGE_SIZE);
+
+		documentLibraryMetricResultBag.setResults(documentLibraryMetrics);
+
+		documentLibraryMetricResultBag.setTotal(assetMetricsCount);
+
+		return _toResultBagResource(
+			_getDocumentLibraryAssetReportResultBagResource(
+				page + 1, keywords, rangeKey, sortMetric, sortOrder),
+			page,
+			_getDocumentLibraryAssetReportResultBagResource(
+				page - 1, keywords, rangeKey, sortMetric, sortOrder),
+			documentLibraryMetricResultBag,
+			documentLibraryMetric -> _toDocumentLibraryAssetReportResource(
+				new AssetReport(documentLibraryMetric), rangeKey));
+	}
+
 	@GetMapping("/forms/{formId}")
 	public Resource<AssetReport> getFormAssetReportResource(
 		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
@@ -498,6 +572,12 @@ public class ReportRestController extends BaseRestController {
 								null, null, null, null, null)
 						).withRel(
 							"blogs"
+						),
+						ControllerLinkBuilder.linkTo(
+							_getDocumentLibraryAssetReportResultBagResource(
+								null, null, null, null, null)
+						).withRel(
+							"documents-and-media"
 						),
 						ControllerLinkBuilder.linkTo(
 							_getFormAssetReportResultBagResource(
@@ -781,6 +861,28 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
+	private ResultBagResource<AssetReport>
+		_getDocumentLibraryAssetReportResultBagResource(
+			Integer page, String keywords, Integer rangeKey, String sortMetric,
+			String sortOrder) {
+
+		return ControllerLinkBuilder.methodOn(
+			ReportRestController.class
+		).getDocumentLibraryAssetReportResultBagResource(
+			page, keywords, rangeKey, sortMetric, sortOrder
+		);
+	}
+
+	private Set<String> _getDocumentLibraryMetricTypeNames() {
+		return Stream.of(
+			DocumentLibraryMetricType.values()
+		).map(
+			DocumentLibraryMetricType::getName
+		).collect(
+			Collectors.toSet()
+		);
+	}
+
 	private ResultBagResource<AssetReport> _getFormAssetReportResultBagResource(
 		Integer page, String keywords, Integer rangeKey, String sortMetric,
 		String sortOrder) {
@@ -984,6 +1086,21 @@ public class ReportRestController extends BaseRestController {
 			).withRel(
 				"parent"
 			));
+	}
+
+	private Resource<AssetReport> _toDocumentLibraryAssetReportResource(
+		AssetReport assetReport, int rangeKey) {
+
+		return new Resource<>(
+			assetReport,
+			ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder.methodOn(
+					ReportRestController.class
+				).getDocumentLibraryAssetReportResource(
+					Collections.emptySet(), assetReport.getId(),
+					assetReport.getTitle(), rangeKey
+				)
+			).withSelfRel());
 	}
 
 	private Resource<AssetReport> _toFormAssetReportResource(
