@@ -39,6 +39,8 @@ import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.model.Interest;
+import com.liferay.osb.asah.backend.model.JournalMetric;
+import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetric;
@@ -411,6 +413,75 @@ public class ReportRestController extends BaseRestController {
 			segment -> _toChildResource(individualId, segment));
 	}
 
+	@GetMapping("/web-contents/{webContentId}")
+	public Resource<AssetReport> getJournalAssetReportResource(
+		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
+		@PathVariable String webContentId,
+		@RequestParam(defaultValue = "") String webContentTitle,
+		@RequestParam(defaultValue = "30") int rangeKey) {
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext() {
+			{
+				setAssetId(webContentId);
+				setAssetType(AssetType.JOURNAL);
+				setTimeRange(TimeRange.of(rangeKey));
+
+				if (StringUtils.isNotEmpty(webContentTitle)) {
+					setTitle(webContentTitle);
+				}
+			}
+		};
+
+		return _toFormAssetReportResource(
+			_toAssetReport(
+				_metricDog.getAssetMetric(
+					searchQueryContext, _getJournalMetricTypeNames()),
+				expands, searchQueryContext),
+			rangeKey);
+	}
+
+	@GetMapping("/web-contents")
+	public ResultBagResource<AssetReport>
+		getJournalAssetReportResultBagResource(
+			@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "") String keywords,
+			@RequestParam(defaultValue = "30") Integer rangeKey,
+			@RequestParam(defaultValue = "viewsMetric") String sortMetric,
+			@RequestParam(defaultValue = "desc") String sortOrder) {
+
+		ResultBag<JournalMetric> journalMetricResultBag = new ResultBag<>();
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext() {
+			{
+				setAssetType(AssetType.JOURNAL);
+				setKeywords(keywords);
+				setTimeRange(TimeRange.of(rangeKey));
+			}
+		};
+
+		int assetMetricsCount = _metricDog.getAssetMetricsCount(
+			searchQueryContext);
+
+		List<JournalMetric> journalMetrics = _metricDog.getAssetMetrics(
+			assetMetricsCount, searchQueryContext, _getJournalMetricTypeNames(),
+			_PAGE_SIZE, _createSort(AssetType.JOURNAL, sortMetric, sortOrder),
+			page * _PAGE_SIZE);
+
+		journalMetricResultBag.setResults(journalMetrics);
+
+		journalMetricResultBag.setTotal(assetMetricsCount);
+
+		return _toResultBagResource(
+			_getJournalAssetReportResultBagResource(
+				page + 1, keywords, rangeKey, sortMetric, sortOrder),
+			page,
+			_getJournalAssetReportResultBagResource(
+				page - 1, keywords, rangeKey, sortMetric, sortOrder),
+			journalMetricResultBag,
+			journalMetric -> _toJournalAssetReportResource(
+				new AssetReport(journalMetric), rangeKey));
+	}
+
 	@GetMapping
 	public ResourceSupport getLinksResourceSupport() {
 		return new ResourceSupport() {
@@ -449,6 +520,12 @@ public class ReportRestController extends BaseRestController {
 							_getSegmentResultBagResource(null)
 						).withRel(
 							"segments"
+						),
+						ControllerLinkBuilder.linkTo(
+							_getJournalAssetReportResultBagResource(
+								null, null, null, null, null)
+						).withRel(
+							"web-contents"
 						)));
 			}
 		};
@@ -755,6 +832,28 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
+	private ResultBagResource<AssetReport>
+		_getJournalAssetReportResultBagResource(
+			Integer page, String keywords, Integer rangeKey, String sortMetric,
+			String sortOrder) {
+
+		return ControllerLinkBuilder.methodOn(
+			ReportRestController.class
+		).getJournalAssetReportResultBagResource(
+			page, keywords, rangeKey, sortMetric, sortOrder
+		);
+	}
+
+	private Set<String> _getJournalMetricTypeNames() {
+		return Stream.of(
+			JournalMetricType.values()
+		).map(
+			JournalMetricType::getName
+		).collect(
+			Collectors.toSet()
+		);
+	}
+
 	private ResultBagResource<PageAssetReport>
 		_getPageAssetReportResultBagResource(
 			Integer page, String keywords, Integer rangeKey, String sortMetric,
@@ -933,6 +1032,21 @@ public class ReportRestController extends BaseRestController {
 			).withRel(
 				"segments"
 			));
+	}
+
+	private Resource<AssetReport> _toJournalAssetReportResource(
+		AssetReport assetReport, int rangeKey) {
+
+		return new Resource<>(
+			assetReport,
+			ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder.methodOn(
+					ReportRestController.class
+				).getJournalAssetReportResource(
+					Collections.emptySet(), assetReport.getId(),
+					assetReport.getTitle(), rangeKey
+				)
+			).withSelfRel());
 	}
 
 	private <T, R> List<Resource<R>> _toListResource(
