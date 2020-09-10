@@ -38,7 +38,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		TreeSet<AccountEntry> accountEntries = new TreeSet<AccountEntry>(new AccountEntryNameComparator(true));
 		Map<String, Set<ProductEntry>> accountEntryProductEntriesMap = new HashMap<String, Set<ProductEntry>>();
 
-		String filter = "customerContactUuids/any(s:s eq '" + user.getUuid() + "') and property_type eq 'primary' and state eq 'active'";
+		String filter = "customerContactUuids/any(s:s eq '" + user.getUuid() + "') and state eq 'active' and (property_type eq 'primary' or contains(name, 'Liferay DXP Cloud Subscription'))";
 
 		List<ProductPurchaseView> productPurchaseViews = productPurchaseViewWebService.getProductPurchaseViews(StringPool.BLANK, filter, 1, 1000, StringPool.BLANK);
 
