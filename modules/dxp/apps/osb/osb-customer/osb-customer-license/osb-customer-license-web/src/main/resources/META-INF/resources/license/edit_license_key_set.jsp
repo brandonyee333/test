@@ -219,13 +219,13 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					%>
 
 					<portlet:renderURL var="addAggregatedLicenseKeyURL">
-						<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
+						<portlet:param name="mvcPath" value="/license/edit_license_key_details.jsp" />
 						<portlet:param name="redirect" value="<%= currentURL %>" />
 						<portlet:param name="aggregateLicense" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="licenseEntryId" value="<%= String.valueOf(firstLicenseKey.getLicenseEntryId()) %>" />
-						<portlet:param name="licenseKeyId" value="<%= String.valueOf(firstLicenseKey.getLicenseKeyId()) %>" />
 						<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
-						<portlet:param name="offeringEntryId" value="<%= String.valueOf(firstLicenseKey.getOfferingEntryId()) %>" />
+						<portlet:param name="koroneikiAccountKey" value="<%= firstLicenseKey.getKoroneikiAccountKey() %>" />
+						<portlet:param name="koroneikiProductPurchaseKey" value="<%= firstLicenseKey.getKoroneikiProductPurchaseKey() %>" />
 						<portlet:param name="productEntryId" value="<%= String.valueOf(firstLicenseKey.getProductEntryId()) %>" />
 						<portlet:param name="productVersion" value="<%= String.valueOf(firstLicenseKey.getProductVersion()) %>" />
 					</portlet:renderURL>

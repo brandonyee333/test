@@ -27,12 +27,6 @@ LicenseKey licenseKey = LicenseKeyServiceUtil.getLicenseKey(licenseKeyId);
 
 ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntry(licenseKey.getProductEntryId());
 
-ProductPurchase productPurchase = null;
-
-if (Validator.isNotNull(licenseKey.getKoroneikiProductPurchaseKey())) {
-	productPurchase = productPurchaseWebService.getProductPurchase(licenseKey.getKoroneikiProductPurchaseKey());
-}
-
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("mvcPath", "/license/move_license_key.jsp");
@@ -135,7 +129,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 					Calendar startDateCal = Calendar.getInstance(timeZone, locale);
 
-					if (productPurchaseDisplay != null) {
+					if ((productPurchaseDisplay != null) && (productPurchaseDisplay.getStartDate() != null)) {
 						startDateCal.setTime(productPurchaseDisplay.getStartDate());
 					}
 					else {
@@ -144,7 +138,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 					Calendar expirationDateCal = Calendar.getInstance(timeZone, locale);
 
-					if (productPurchaseDisplay != null) {
+					if ((productPurchaseDisplay != null) && (productPurchaseDisplay.getEndDate() != null)) {
 						expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
 					}
 					else {

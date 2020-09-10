@@ -47,8 +47,6 @@ long licenseEntryId = ParamUtil.getLong(request, "licenseEntryId");
 
 LicenseEntry licenseEntry = LicenseEntryLocalServiceUtil.fetchLicenseEntry(licenseEntryId);
 
-boolean aggregateLicense = ParamUtil.getBoolean(request, "aggregateLicense");
-
 boolean hasUpdateAdmin = false;
 
 if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
@@ -72,7 +70,6 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
 			<aui:input name="koroneikiProductKey" type="hidden" value="" />
 			<aui:input name="koroneikiProductPurchaseKey" type="hidden" value="" />
-			<aui:input name="aggregateLicense" type="hidden" value="<%= aggregateLicense %>" />
 
 			<aui:button-row cssClass="pull-right">
 				<aui:button cssClass="btn-sm" onClick="<%= backURL %>" value="back-to-previous-page" />
@@ -322,35 +319,33 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 					<%
 					List<Object> productPurchaseDisplays = new ArrayList<Object>();
 
-					if (Validator.isNotNull(koroneikiAccountKey) && (productEntry != null) && (productVersion > 0) && (licenseEntry != null)) {
-						ProductPurchaseView productPurchaseView = productPurchaseViewWebService.fetchProductPurchaseView(koroneikiAccountKey, productEntry.getKoroneikiProductKey());
+					ProductPurchaseView productPurchaseView = productPurchaseViewWebService.fetchProductPurchaseView(koroneikiAccountKey, productEntry.getKoroneikiProductKey());
 
-						Map<String, List<ProductConsumption>> productConsumptionsMap = new HashMap<String, List<ProductConsumption>>();
+					Map<String, List<ProductConsumption>> productConsumptionsMap = new HashMap<String, List<ProductConsumption>>();
 
-						if (productPurchaseView != null) {
-							if (productPurchaseView.getProductConsumptions() != null) {
-								for (ProductConsumption productConsumption : productPurchaseView.getProductConsumptions()) {
-									List<ProductConsumption> curProductConsumptions = productConsumptionsMap.get(productConsumption.getProductPurchaseKey());
+					if (productPurchaseView != null) {
+						if (productPurchaseView.getProductConsumptions() != null) {
+							for (ProductConsumption productConsumption : productPurchaseView.getProductConsumptions()) {
+								List<ProductConsumption> curProductConsumptions = productConsumptionsMap.get(productConsumption.getProductPurchaseKey());
 
-									if (curProductConsumptions == null) {
-										curProductConsumptions = new ArrayList<ProductConsumption>();
+								if (curProductConsumptions == null) {
+									curProductConsumptions = new ArrayList<ProductConsumption>();
 
-										productConsumptionsMap.put(productConsumption.getProductPurchaseKey(), curProductConsumptions);
-									}
-
-									curProductConsumptions.add(productConsumption);
+									productConsumptionsMap.put(productConsumption.getProductPurchaseKey(), curProductConsumptions);
 								}
-							}
 
-							if (productPurchaseView.getProductPurchases() != null) {
-								for (ProductPurchase productPurchase : productPurchaseView.getProductPurchases()) {
-									productPurchaseDisplays.add(new ProductPurchaseDisplay(request, productPurchase, productConsumptionsMap.get(productPurchase.getKey())));
-								}
+								curProductConsumptions.add(productConsumption);
 							}
 						}
 
-						productPurchaseDisplays.add((Object)null);
+						if (productPurchaseView.getProductPurchases() != null) {
+							for (ProductPurchase productPurchase : productPurchaseView.getProductPurchases()) {
+								productPurchaseDisplays.add(new ProductPurchaseDisplay(request, productPurchase, productConsumptionsMap.get(productPurchase.getKey())));
+							}
+						}
 					}
+
+					productPurchaseDisplays.add((Object)null);
 					%>
 
 					<liferay-ui:search-container
@@ -381,13 +376,13 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 
 							Calendar startDateCal = Calendar.getInstance(timeZone, locale);
 
-							if (productPurchaseDisplay != null) {
+							if ((productPurchaseDisplay != null) && (productPurchaseDisplay.getStartDate() != null)) {
 								startDateCal.setTime(productPurchaseDisplay.getStartDate());
 							}
 
 							Calendar expirationDateCal = Calendar.getInstance(timeZone, locale);
 
-							if (productPurchaseDisplay == null) {
+							if ((productPurchaseDisplay == null) || (productPurchaseDisplay.getEndDate() == null)) {
 								expirationDateCal.add(Calendar.YEAR, 1);
 							}
 							else {
