@@ -53,7 +53,7 @@
 
 		var productConfigs = [
 			{
-				name: '<@liferay.language key="dxp"/> 7.3',
+				name: '<@liferay.language key="dxp" /> 7.3',
 				svgId: '#dxp-logo',
 				url: addLocaleParamToURI('${current_locale}', 'categories/360004183251')
 			},
