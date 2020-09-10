@@ -92,16 +92,4 @@
 		<echo file="docroot/WEB-INF/src/META-INF/javadocs-all.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><javadocs></javadocs>]]></echo>
 		<echo file="docroot/WEB-INF/src/META-INF/javadocs-rt.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><javadocs></javadocs>]]></echo>
 	</target>
-
-	<target name="format-source">
-		<java
-			classname="com.liferay.osb.tools.SourceFormatter"
-			classpathref="plugin.classpath"
-			failonerror="false"
-			fork="true"
-			newenvironment="true"
-		/>
-
-		<ant antfile="${portal.base.dir}/tools/sdk/portlets/build-common-portlet.xml" target="format-source" />
-	</target>
 </project>

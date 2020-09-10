@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-
-<model-hints>
-	<hint-collection name="EDITOR">
-		<hint name="editor">true</hint>
-		<hint name="max-length">2000000</hint>
-	</hint-collection>
-</model-hints>

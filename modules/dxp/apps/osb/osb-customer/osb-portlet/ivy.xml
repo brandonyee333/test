@@ -9,13 +9,4 @@
 	<info module="{ivy.module.name}" organisation="com.liferay">
 		<extends extendType="configurations,description,info" location="${sdk.dir}/ivy.xml" module="com.liferay.sdk" organisation="com.liferay" revision="latest.integration" />
 	</info>
-
-	<dependencies defaultconf="default">
-		<dependency name="ant" org="org.apache.ant" rev="1.8.2" />
-		<dependency name="com.liferay.petra.content" org="com.liferay" rev="1.0.0" />
-		<dependency name="com.liferay.portal.dao.orm.custom.sql" org="com.liferay" rev="1.0.0" />
-		<dependency name="commons-lang" org="commons-lang" rev="2.6" />
-		<dependency name="httpclient" org="org.apache.httpcomponents" rev="4.3.3" />
-		<dependency name="httpcore" org="org.apache.httpcomponents" rev="4.3.2" />
-	</dependencies>
 </ivy-module>
