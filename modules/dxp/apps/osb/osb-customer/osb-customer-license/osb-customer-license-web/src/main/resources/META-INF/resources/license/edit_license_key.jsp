@@ -239,7 +239,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 
 			<aui:col md="6">
 				<h2 class="control-label">
-					<liferay-ui:message key="choose-liferay-version" />
+					<liferay-ui:message key="choose-version" />
 				</h2>
 
 				<%
@@ -262,7 +262,11 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 
 							String name = productVersionType.getName();
 
-							String namePrefix = name.substring(0, 3);
+							String namePrefix = StringPool.BLANK;
+
+							if (name.length() >= 3) {
+								namePrefix = name.substring(0, 3);
+							}
 					%>
 
 							<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">

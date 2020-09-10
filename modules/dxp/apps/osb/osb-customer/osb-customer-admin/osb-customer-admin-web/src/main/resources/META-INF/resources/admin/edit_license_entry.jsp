@@ -121,6 +121,7 @@ int versionMax = BeanParamUtil.getInteger(licenseEntry, request, "versionMax");
 				%>
 
 				<aui:select label="" name="versionMin">
+					<aui:option label="N/A" value="" />
 
 					<%
 					String previousNamePrefix = StringPool.BLANK;
@@ -155,6 +156,7 @@ int versionMax = BeanParamUtil.getInteger(licenseEntry, request, "versionMax");
 			</td>
 			<td>
 				<aui:select label="" name="versionMax">
+					<aui:option label="N/A" value="" />
 
 					<%
 					ListType lastVersionType = portalVersionTypes.get(portalVersionTypes.size() - 2);

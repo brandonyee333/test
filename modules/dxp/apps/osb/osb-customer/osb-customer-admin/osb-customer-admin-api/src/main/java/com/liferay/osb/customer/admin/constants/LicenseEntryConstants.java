@@ -54,14 +54,11 @@ public class LicenseEntryConstants {
 		TYPE_TRIAL
 	};
 
-	public static String getPortalVersionLabel(
-		int portalVersionMin, int portalVersionMax) {
-
+	public static String getVersionLabel(int versionMin, int versionMax) {
 		StringBundler sb = new StringBundler(3);
 
 		try {
-			ListType listType = ListTypeServiceUtil.getListType(
-				portalVersionMin);
+			ListType listType = ListTypeServiceUtil.getListType(versionMin);
 
 			sb.append(listType.getName());
 		}
@@ -70,14 +67,11 @@ public class LicenseEntryConstants {
 		}
 
 		try {
-			if (portalVersionMax ==
-					ProductEntryConstants.PORTAL_VERSION_OTHER) {
-
+			if (versionMax == ProductEntryConstants.PORTAL_VERSION_OTHER) {
 				sb.append(StringPool.PLUS);
 			}
 			else {
-				ListType listType = ListTypeServiceUtil.getListType(
-					portalVersionMax);
+				ListType listType = ListTypeServiceUtil.getListType(versionMax);
 
 				sb.append(" - ");
 				sb.append(listType.getName());
