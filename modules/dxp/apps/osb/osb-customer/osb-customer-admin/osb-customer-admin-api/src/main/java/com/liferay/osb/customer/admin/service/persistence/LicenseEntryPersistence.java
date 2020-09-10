@@ -243,159 +243,159 @@ public interface LicenseEntryPersistence extends BasePersistence<LicenseEntry> {
 	public int countByPEI_T(long productEntryId, String type);
 
 	/**
-	 * Returns all the license entries where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns all the license entries where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @return the matching license entries
 	 */
-	public java.util.List<LicenseEntry> findByPEI_PV(
-		long productEntryId, int portalVersionMin);
+	public java.util.List<LicenseEntry> findByPEI_V(
+		long productEntryId, int versionMin);
 
 	/**
-	 * Returns a range of all the license entries where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns a range of all the license entries where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param start the lower bound of the range of license entries
 	 * @param end the upper bound of the range of license entries (not inclusive)
 	 * @return the range of matching license entries
 	 */
-	public java.util.List<LicenseEntry> findByPEI_PV(
-		long productEntryId, int portalVersionMin, int start, int end);
+	public java.util.List<LicenseEntry> findByPEI_V(
+		long productEntryId, int versionMin, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the license entries where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns an ordered range of all the license entries where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param start the lower bound of the range of license entries
 	 * @param end the upper bound of the range of license entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching license entries
 	 */
-	public java.util.List<LicenseEntry> findByPEI_PV(
-		long productEntryId, int portalVersionMin, int start, int end,
+	public java.util.List<LicenseEntry> findByPEI_V(
+		long productEntryId, int versionMin, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the license entries where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns an ordered range of all the license entries where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param start the lower bound of the range of license entries
 	 * @param end the upper bound of the range of license entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching license entries
 	 */
-	public java.util.List<LicenseEntry> findByPEI_PV(
-		long productEntryId, int portalVersionMin, int start, int end,
+	public java.util.List<LicenseEntry> findByPEI_V(
+		long productEntryId, int versionMin, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first license entry in the ordered set where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the first license entry in the ordered set where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license entry
 	 * @throws NoSuchLicenseEntryException if a matching license entry could not be found
 	 */
-	public LicenseEntry findByPEI_PV_First(
-			long productEntryId, int portalVersionMin,
+	public LicenseEntry findByPEI_V_First(
+			long productEntryId, int versionMin,
 			com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
 				orderByComparator)
 		throws NoSuchLicenseEntryException;
 
 	/**
-	 * Returns the first license entry in the ordered set where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the first license entry in the ordered set where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license entry, or <code>null</code> if a matching license entry could not be found
 	 */
-	public LicenseEntry fetchByPEI_PV_First(
-		long productEntryId, int portalVersionMin,
+	public LicenseEntry fetchByPEI_V_First(
+		long productEntryId, int versionMin,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
 			orderByComparator);
 
 	/**
-	 * Returns the last license entry in the ordered set where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the last license entry in the ordered set where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license entry
 	 * @throws NoSuchLicenseEntryException if a matching license entry could not be found
 	 */
-	public LicenseEntry findByPEI_PV_Last(
-			long productEntryId, int portalVersionMin,
+	public LicenseEntry findByPEI_V_Last(
+			long productEntryId, int versionMin,
 			com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
 				orderByComparator)
 		throws NoSuchLicenseEntryException;
 
 	/**
-	 * Returns the last license entry in the ordered set where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the last license entry in the ordered set where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license entry, or <code>null</code> if a matching license entry could not be found
 	 */
-	public LicenseEntry fetchByPEI_PV_Last(
-		long productEntryId, int portalVersionMin,
+	public LicenseEntry fetchByPEI_V_Last(
+		long productEntryId, int versionMin,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
 			orderByComparator);
 
 	/**
-	 * Returns the license entries before and after the current license entry in the ordered set where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the license entries before and after the current license entry in the ordered set where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param licenseEntryId the primary key of the current license entry
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next license entry
 	 * @throws NoSuchLicenseEntryException if a license entry with the primary key could not be found
 	 */
-	public LicenseEntry[] findByPEI_PV_PrevAndNext(
-			long licenseEntryId, long productEntryId, int portalVersionMin,
+	public LicenseEntry[] findByPEI_V_PrevAndNext(
+			long licenseEntryId, long productEntryId, int versionMin,
 			com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
 				orderByComparator)
 		throws NoSuchLicenseEntryException;
 
 	/**
-	 * Removes all the license entries where productEntryId = &#63; and portalVersionMin &le; &#63; from the database.
+	 * Removes all the license entries where productEntryId = &#63; and versionMin &le; &#63; from the database.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 */
-	public void removeByPEI_PV(long productEntryId, int portalVersionMin);
+	public void removeByPEI_V(long productEntryId, int versionMin);
 
 	/**
-	 * Returns the number of license entries where productEntryId = &#63; and portalVersionMin &le; &#63;.
+	 * Returns the number of license entries where productEntryId = &#63; and versionMin &le; &#63;.
 	 *
 	 * @param productEntryId the product entry ID
-	 * @param portalVersionMin the portal version min
+	 * @param versionMin the version min
 	 * @return the number of matching license entries
 	 */
-	public int countByPEI_PV(long productEntryId, int portalVersionMin);
+	public int countByPEI_V(long productEntryId, int versionMin);
 
 	/**
 	 * Caches the license entry in the entity cache if it is enabled.

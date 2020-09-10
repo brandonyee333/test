@@ -76,7 +76,7 @@ public interface LicenseEntryLocalService
 
 	public LicenseEntry addLicenseEntry(
 			long userId, long productEntryId, String name, String type,
-			int portalVersionMin, int portalVersionMax)
+			int versionMin, int versionMax)
 		throws PortalException;
 
 	/**
@@ -217,7 +217,7 @@ public interface LicenseEntryLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseEntry> getLicenseEntries(
-		long productEntryId, int portalVersion);
+		long productEntryId, int version);
 
 	/**
 	 * Returns the number of license entries.
@@ -272,7 +272,7 @@ public interface LicenseEntryLocalService
 
 	public LicenseEntry updateLicenseEntry(
 			long licenseEntryId, long productEntryId, String name, String type,
-			int portalVersionMin, int portalVersionMax)
+			int versionMin, int versionMax)
 		throws PortalException;
 
 }

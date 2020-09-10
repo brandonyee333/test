@@ -115,8 +115,8 @@ create table OSB_LicenseEntry (
 	productEntryId LONG,
 	name VARCHAR(75) null,
 	type_ VARCHAR(75) null,
-	portalVersionMin INTEGER,
-	portalVersionMax INTEGER
+	versionMin INTEGER,
+	versionMax INTEGER
 );
 
 create table OSB_ProductEntry (

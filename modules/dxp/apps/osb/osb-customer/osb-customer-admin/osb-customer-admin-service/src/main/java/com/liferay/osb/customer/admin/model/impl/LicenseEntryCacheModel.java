@@ -80,10 +80,10 @@ public class LicenseEntryCacheModel
 		sb.append(name);
 		sb.append(", type=");
 		sb.append(type);
-		sb.append(", portalVersionMin=");
-		sb.append(portalVersionMin);
-		sb.append(", portalVersionMax=");
-		sb.append(portalVersionMax);
+		sb.append(", versionMin=");
+		sb.append(versionMin);
+		sb.append(", versionMax=");
+		sb.append(versionMax);
 		sb.append("}");
 
 		return sb.toString();
@@ -133,8 +133,8 @@ public class LicenseEntryCacheModel
 			licenseEntryImpl.setType(type);
 		}
 
-		licenseEntryImpl.setPortalVersionMin(portalVersionMin);
-		licenseEntryImpl.setPortalVersionMax(portalVersionMax);
+		licenseEntryImpl.setVersionMin(versionMin);
+		licenseEntryImpl.setVersionMax(versionMax);
 
 		licenseEntryImpl.resetOriginalValues();
 
@@ -154,9 +154,9 @@ public class LicenseEntryCacheModel
 		name = objectInput.readUTF();
 		type = objectInput.readUTF();
 
-		portalVersionMin = objectInput.readInt();
+		versionMin = objectInput.readInt();
 
-		portalVersionMax = objectInput.readInt();
+		versionMax = objectInput.readInt();
 	}
 
 	@Override
@@ -191,9 +191,9 @@ public class LicenseEntryCacheModel
 			objectOutput.writeUTF(type);
 		}
 
-		objectOutput.writeInt(portalVersionMin);
+		objectOutput.writeInt(versionMin);
 
-		objectOutput.writeInt(portalVersionMax);
+		objectOutput.writeInt(versionMax);
 	}
 
 	public long licenseEntryId;
@@ -204,7 +204,7 @@ public class LicenseEntryCacheModel
 	public long productEntryId;
 	public String name;
 	public String type;
-	public int portalVersionMin;
-	public int portalVersionMax;
+	public int versionMin;
+	public int versionMax;
 
 }

@@ -190,32 +190,32 @@ public interface LicenseEntryModel extends BaseModel<LicenseEntry> {
 	public void setType(String type);
 
 	/**
-	 * Returns the portal version min of this license entry.
+	 * Returns the version min of this license entry.
 	 *
-	 * @return the portal version min of this license entry
+	 * @return the version min of this license entry
 	 */
-	public int getPortalVersionMin();
+	public int getVersionMin();
 
 	/**
-	 * Sets the portal version min of this license entry.
+	 * Sets the version min of this license entry.
 	 *
-	 * @param portalVersionMin the portal version min of this license entry
+	 * @param versionMin the version min of this license entry
 	 */
-	public void setPortalVersionMin(int portalVersionMin);
+	public void setVersionMin(int versionMin);
 
 	/**
-	 * Returns the portal version max of this license entry.
+	 * Returns the version max of this license entry.
 	 *
-	 * @return the portal version max of this license entry
+	 * @return the version max of this license entry
 	 */
-	public int getPortalVersionMax();
+	public int getVersionMax();
 
 	/**
-	 * Sets the portal version max of this license entry.
+	 * Sets the version max of this license entry.
 	 *
-	 * @param portalVersionMax the portal version max of this license entry
+	 * @param versionMax the version max of this license entry
 	 */
-	public void setPortalVersionMax(int portalVersionMax);
+	public void setVersionMax(int versionMax);
 
 	@Override
 	public boolean isNew();

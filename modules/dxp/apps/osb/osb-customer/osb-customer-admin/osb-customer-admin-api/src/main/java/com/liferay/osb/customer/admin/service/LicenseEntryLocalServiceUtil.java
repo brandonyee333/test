@@ -58,12 +58,11 @@ public class LicenseEntryLocalServiceUtil {
 	public static com.liferay.osb.customer.admin.model.LicenseEntry
 			addLicenseEntry(
 				long userId, long productEntryId, String name, String type,
-				int portalVersionMin, int portalVersionMax)
+				int versionMin, int versionMax)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addLicenseEntry(
-			userId, productEntryId, name, type, portalVersionMin,
-			portalVersionMax);
+			userId, productEntryId, name, type, versionMin, versionMax);
 	}
 
 	/**
@@ -255,9 +254,9 @@ public class LicenseEntryLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.osb.customer.admin.model.LicenseEntry> getLicenseEntries(
-			long productEntryId, int portalVersion) {
+			long productEntryId, int version) {
 
-		return getService().getLicenseEntries(productEntryId, portalVersion);
+		return getService().getLicenseEntries(productEntryId, version);
 	}
 
 	/**
@@ -329,12 +328,11 @@ public class LicenseEntryLocalServiceUtil {
 	public static com.liferay.osb.customer.admin.model.LicenseEntry
 			updateLicenseEntry(
 				long licenseEntryId, long productEntryId, String name,
-				String type, int portalVersionMin, int portalVersionMax)
+				String type, int versionMin, int versionMax)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateLicenseEntry(
-			licenseEntryId, productEntryId, name, type, portalVersionMin,
-			portalVersionMax);
+			licenseEntryId, productEntryId, name, type, versionMin, versionMax);
 	}
 
 	public static LicenseEntryLocalService getService() {

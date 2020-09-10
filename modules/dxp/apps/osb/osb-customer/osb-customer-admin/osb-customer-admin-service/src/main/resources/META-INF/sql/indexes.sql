@@ -22,8 +22,8 @@ create index IX_A70C3087 on OSB_AuditEntry (fieldClassNameId, fieldClassPK, fiel
 create index IX_86A7752 on OSB_ExternalIdMapper (classNameId, classPK, type_);
 create index IX_8FBE42CF on OSB_ExternalIdMapper (classNameId, type_, externalId[$COLUMN_LENGTH:75$]);
 
-create index IX_8B5D7FE4 on OSB_LicenseEntry (productEntryId, portalVersionMin);
 create unique index IX_7576438B on OSB_LicenseEntry (productEntryId, type_[$COLUMN_LENGTH:75$]);
+create index IX_19390E58 on OSB_LicenseEntry (productEntryId, versionMin);
 
 create index IX_884EBE59 on OSB_ProductEntry (environment);
 create unique index IX_9EC71E05 on OSB_ProductEntry (koroneikiProductKey[$COLUMN_LENGTH:75$]);

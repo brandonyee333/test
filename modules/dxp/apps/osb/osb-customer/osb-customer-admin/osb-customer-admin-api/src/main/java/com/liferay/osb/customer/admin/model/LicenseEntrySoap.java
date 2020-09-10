@@ -39,8 +39,8 @@ public class LicenseEntrySoap implements Serializable {
 		soapModel.setProductEntryId(model.getProductEntryId());
 		soapModel.setName(model.getName());
 		soapModel.setType(model.getType());
-		soapModel.setPortalVersionMin(model.getPortalVersionMin());
-		soapModel.setPortalVersionMax(model.getPortalVersionMax());
+		soapModel.setVersionMin(model.getVersionMin());
+		soapModel.setVersionMax(model.getVersionMax());
 
 		return soapModel;
 	}
@@ -158,20 +158,20 @@ public class LicenseEntrySoap implements Serializable {
 		_type = type;
 	}
 
-	public int getPortalVersionMin() {
-		return _portalVersionMin;
+	public int getVersionMin() {
+		return _versionMin;
 	}
 
-	public void setPortalVersionMin(int portalVersionMin) {
-		_portalVersionMin = portalVersionMin;
+	public void setVersionMin(int versionMin) {
+		_versionMin = versionMin;
 	}
 
-	public int getPortalVersionMax() {
-		return _portalVersionMax;
+	public int getVersionMax() {
+		return _versionMax;
 	}
 
-	public void setPortalVersionMax(int portalVersionMax) {
-		_portalVersionMax = portalVersionMax;
+	public void setVersionMax(int versionMax) {
+		_versionMax = versionMax;
 	}
 
 	private long _licenseEntryId;
@@ -182,7 +182,7 @@ public class LicenseEntrySoap implements Serializable {
 	private long _productEntryId;
 	private String _name;
 	private String _type;
-	private int _portalVersionMin;
-	private int _portalVersionMax;
+	private int _versionMin;
+	private int _versionMax;
 
 }

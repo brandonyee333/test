@@ -76,7 +76,7 @@ public class LicenseEntryModelImpl
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP}, {"productEntryId", Types.BIGINT},
 		{"name", Types.VARCHAR}, {"type_", Types.VARCHAR},
-		{"portalVersionMin", Types.INTEGER}, {"portalVersionMax", Types.INTEGER}
+		{"versionMin", Types.INTEGER}, {"versionMax", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -91,12 +91,12 @@ public class LicenseEntryModelImpl
 		TABLE_COLUMNS_MAP.put("productEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("portalVersionMin", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("portalVersionMax", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("versionMin", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("versionMax", Types.INTEGER);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_LicenseEntry (licenseEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,productEntryId LONG,name VARCHAR(75) null,type_ VARCHAR(75) null,portalVersionMin INTEGER,portalVersionMax INTEGER)";
+		"create table OSB_LicenseEntry (licenseEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,productEntryId LONG,name VARCHAR(75) null,type_ VARCHAR(75) null,versionMin INTEGER,versionMax INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_LicenseEntry";
 
@@ -127,11 +127,11 @@ public class LicenseEntryModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.osb.customer.admin.model.LicenseEntry"),
 		true);
 
-	public static final long PORTALVERSIONMIN_COLUMN_BITMASK = 1L;
+	public static final long PRODUCTENTRYID_COLUMN_BITMASK = 1L;
 
-	public static final long PRODUCTENTRYID_COLUMN_BITMASK = 2L;
+	public static final long TYPE_COLUMN_BITMASK = 2L;
 
-	public static final long TYPE_COLUMN_BITMASK = 4L;
+	public static final long VERSIONMIN_COLUMN_BITMASK = 4L;
 
 	public static final long NAME_COLUMN_BITMASK = 8L;
 
@@ -156,8 +156,8 @@ public class LicenseEntryModelImpl
 		model.setProductEntryId(soapModel.getProductEntryId());
 		model.setName(soapModel.getName());
 		model.setType(soapModel.getType());
-		model.setPortalVersionMin(soapModel.getPortalVersionMin());
-		model.setPortalVersionMax(soapModel.getPortalVersionMax());
+		model.setVersionMin(soapModel.getVersionMin());
+		model.setVersionMax(soapModel.getVersionMax());
 
 		return model;
 	}
@@ -491,48 +491,46 @@ public class LicenseEntryModelImpl
 
 			});
 		attributeGetterFunctions.put(
-			"portalVersionMin",
+			"versionMin",
 			new Function<LicenseEntry, Object>() {
 
 				@Override
 				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getPortalVersionMin();
+					return licenseEntry.getVersionMin();
 				}
 
 			});
 		attributeSetterBiConsumers.put(
-			"portalVersionMin",
+			"versionMin",
 			new BiConsumer<LicenseEntry, Object>() {
 
 				@Override
 				public void accept(
-					LicenseEntry licenseEntry, Object portalVersionMinObject) {
+					LicenseEntry licenseEntry, Object versionMinObject) {
 
-					licenseEntry.setPortalVersionMin(
-						(Integer)portalVersionMinObject);
+					licenseEntry.setVersionMin((Integer)versionMinObject);
 				}
 
 			});
 		attributeGetterFunctions.put(
-			"portalVersionMax",
+			"versionMax",
 			new Function<LicenseEntry, Object>() {
 
 				@Override
 				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getPortalVersionMax();
+					return licenseEntry.getVersionMax();
 				}
 
 			});
 		attributeSetterBiConsumers.put(
-			"portalVersionMax",
+			"versionMax",
 			new BiConsumer<LicenseEntry, Object>() {
 
 				@Override
 				public void accept(
-					LicenseEntry licenseEntry, Object portalVersionMaxObject) {
+					LicenseEntry licenseEntry, Object versionMaxObject) {
 
-					licenseEntry.setPortalVersionMax(
-						(Integer)portalVersionMaxObject);
+					licenseEntry.setVersionMax((Integer)versionMaxObject);
 				}
 
 			});
@@ -692,36 +690,36 @@ public class LicenseEntryModelImpl
 
 	@JSON
 	@Override
-	public int getPortalVersionMin() {
-		return _portalVersionMin;
+	public int getVersionMin() {
+		return _versionMin;
 	}
 
 	@Override
-	public void setPortalVersionMin(int portalVersionMin) {
-		_columnBitmask |= PORTALVERSIONMIN_COLUMN_BITMASK;
+	public void setVersionMin(int versionMin) {
+		_columnBitmask |= VERSIONMIN_COLUMN_BITMASK;
 
-		if (!_setOriginalPortalVersionMin) {
-			_setOriginalPortalVersionMin = true;
+		if (!_setOriginalVersionMin) {
+			_setOriginalVersionMin = true;
 
-			_originalPortalVersionMin = _portalVersionMin;
+			_originalVersionMin = _versionMin;
 		}
 
-		_portalVersionMin = portalVersionMin;
+		_versionMin = versionMin;
 	}
 
-	public int getOriginalPortalVersionMin() {
-		return _originalPortalVersionMin;
+	public int getOriginalVersionMin() {
+		return _originalVersionMin;
 	}
 
 	@JSON
 	@Override
-	public int getPortalVersionMax() {
-		return _portalVersionMax;
+	public int getVersionMax() {
+		return _versionMax;
 	}
 
 	@Override
-	public void setPortalVersionMax(int portalVersionMax) {
-		_portalVersionMax = portalVersionMax;
+	public void setVersionMax(int versionMax) {
+		_versionMax = versionMax;
 	}
 
 	public long getColumnBitmask() {
@@ -768,8 +766,8 @@ public class LicenseEntryModelImpl
 		licenseEntryImpl.setProductEntryId(getProductEntryId());
 		licenseEntryImpl.setName(getName());
 		licenseEntryImpl.setType(getType());
-		licenseEntryImpl.setPortalVersionMin(getPortalVersionMin());
-		licenseEntryImpl.setPortalVersionMax(getPortalVersionMax());
+		licenseEntryImpl.setVersionMin(getVersionMin());
+		licenseEntryImpl.setVersionMax(getVersionMax());
 
 		licenseEntryImpl.resetOriginalValues();
 
@@ -835,9 +833,9 @@ public class LicenseEntryModelImpl
 
 		_originalType = _type;
 
-		_originalPortalVersionMin = _portalVersionMin;
+		_originalVersionMin = _versionMin;
 
-		_setOriginalPortalVersionMin = false;
+		_setOriginalVersionMin = false;
 
 		_columnBitmask = 0;
 	}
@@ -895,9 +893,9 @@ public class LicenseEntryModelImpl
 			licenseEntryCacheModel.type = null;
 		}
 
-		licenseEntryCacheModel.portalVersionMin = getPortalVersionMin();
+		licenseEntryCacheModel.versionMin = getVersionMin();
 
-		licenseEntryCacheModel.portalVersionMax = getPortalVersionMax();
+		licenseEntryCacheModel.versionMax = getVersionMax();
 
 		return licenseEntryCacheModel;
 	}
@@ -984,10 +982,10 @@ public class LicenseEntryModelImpl
 	private String _name;
 	private String _type;
 	private String _originalType;
-	private int _portalVersionMin;
-	private int _originalPortalVersionMin;
-	private boolean _setOriginalPortalVersionMin;
-	private int _portalVersionMax;
+	private int _versionMin;
+	private int _originalVersionMin;
+	private boolean _setOriginalVersionMin;
+	private int _versionMax;
 	private long _columnBitmask;
 	private LicenseEntry _escapedModel;
 

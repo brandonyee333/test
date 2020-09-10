@@ -127,8 +127,8 @@
 		<field name="productEntryId" type="long" />
 		<field name="name" type="String" />
 		<field name="type" type="String" />
-		<field name="portalVersionMin" type="int" />
-		<field name="portalVersionMax" type="int" />
+		<field name="versionMin" type="int" />
+		<field name="versionMax" type="int" />
 	</model>
 	<model name="com.liferay.osb.customer.admin.model.ProductEntry">
 		<field name="productEntryId" type="long" />

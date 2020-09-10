@@ -137,8 +137,8 @@
 		<property name="productEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="portalVersionMin" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="portalVersionMax" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="versionMin" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="versionMax" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.customer.admin.model.impl.ProductEntryImpl" table="OSB_ProductEntry">
 		<id name="productEntryId" type="long">
