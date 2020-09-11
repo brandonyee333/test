@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.dog.AccountDog;
 import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.dog.DataExportTaskDog;
 import com.liferay.osb.asah.backend.dog.GeolocationDog;
+import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.IndividualDog;
 import com.liferay.osb.asah.backend.dog.InterestDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
@@ -42,6 +43,7 @@ import com.liferay.osb.asah.backend.model.FormFieldMetric;
 import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.FormPageMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.model.Interest;
 import com.liferay.osb.asah.backend.model.JournalMetric;
@@ -1069,6 +1071,15 @@ public class ReportRestController extends BaseRestController {
 					deviceMetrics, metricReport::_addDeviceMetricReport);
 			}
 
+			if (expands.contains("histogram")) {
+				List<HistogramMetric> histogramMetrics =
+					_histogramDog.getHistogramMetrics(
+						false, metric.getMetricType(), searchQueryContext);
+
+				metricReport._histogramReport = new HistogramReport(
+					histogramMetrics);
+			}
+
 			if (expands.contains("location")) {
 				List<Metric> geolocationMetrics =
 					_geolocationDog.getGeolocationMetrics(
@@ -1330,6 +1341,9 @@ public class ReportRestController extends BaseRestController {
 	private GeolocationDog _geolocationDog;
 
 	@Autowired
+	private HistogramDog _histogramDog;
+
+	@Autowired
 	private IndividualDog _individualDog;
 
 	@Autowired
@@ -1524,6 +1538,45 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class HistogramBucketReport {
+
+		public HistogramBucketReport(HistogramMetric histogramMetric) {
+			_histogramMetric = histogramMetric;
+		}
+
+		public String getKey() {
+			return _histogramMetric.getKey();
+		}
+
+		public Double getValue() {
+			return _histogramMetric.getValue();
+		}
+
+		private final HistogramMetric _histogramMetric;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class HistogramReport {
+
+		public HistogramReport(List<HistogramMetric> histogramMetrics) {
+			for (HistogramMetric histogramMetric : histogramMetrics) {
+				_histogramBucketReports.add(
+					new HistogramBucketReport(histogramMetric));
+			}
+		}
+
+		@JsonProperty("buckets")
+		public List<HistogramBucketReport> getHistogramBucketReports() {
+			return _histogramBucketReports;
+		}
+
+		private List<HistogramBucketReport> _histogramBucketReports =
+			new ArrayList<>();
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private static class MetricReport {
 
 		public MetricReport(Metric metric) {
@@ -1557,6 +1610,11 @@ public class ReportRestController extends BaseRestController {
 		@JsonProperty("locations")
 		public List<MetricReport> getGeolocationMetricReports() {
 			return _geolocationMetricReports;
+		}
+
+		@JsonProperty("histogram")
+		public HistogramReport getHistogramReport() {
+			return _histogramReport;
 		}
 
 		public String getName() {
@@ -1611,6 +1669,7 @@ public class ReportRestController extends BaseRestController {
 		private List<MetricReport> _browserMetricReports;
 		private List<MetricReport> _deviceMetricReports;
 		private List<MetricReport> _geolocationMetricReports;
+		private HistogramReport _histogramReport;
 		private String _name;
 		private final Double _previousValue;
 		private Trend _trend;
