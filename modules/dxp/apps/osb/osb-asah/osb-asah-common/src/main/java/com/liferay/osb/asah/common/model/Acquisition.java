@@ -60,6 +60,8 @@ public class Acquisition implements Serializable {
 
 		_source = decode(queryParams.getFirst("utm_source"));
 		_term = decode(queryParams.getFirst("utm_term"));
+
+		this.url = url;
 	}
 
 	@Override
@@ -214,6 +216,7 @@ public class Acquisition implements Serializable {
 
 	protected MultiValueMap<String, String> queryParams;
 	protected String referrer;
+	protected String url;
 
 	private String _campaign;
 	private String _content;

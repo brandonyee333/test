@@ -30,8 +30,6 @@ public class PageAcquisition extends Acquisition {
 
 	public PageAcquisition(String referrer, String url) {
 		super(referrer, url);
-
-		_url = url;
 	}
 
 	@Override
@@ -86,7 +84,7 @@ public class PageAcquisition extends Acquisition {
 
 	private boolean _isInternalReferrer() {
 		try {
-			URI uri = new URI(_url);
+			URI uri = new URI(url);
 
 			if (StringUtils.equals(uri.getHost(), referrer)) {
 				return true;
@@ -110,7 +108,5 @@ public class PageAcquisition extends Acquisition {
 		"facebook.com", "instagram.com", "linkedin.com", "pinterest.com",
 		"snapchat.com", "tiktok.com", "twitter.com", "youtube.com"
 	};
-
-	private String _url;
 
 }
