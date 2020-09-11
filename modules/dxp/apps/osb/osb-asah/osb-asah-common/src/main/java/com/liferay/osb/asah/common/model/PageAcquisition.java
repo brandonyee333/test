@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.model;
 
+import java.net.URI;
+
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +30,8 @@ public class PageAcquisition extends Acquisition {
 
 	public PageAcquisition(String referrer, String url) {
 		super(referrer, url);
+
+		_url = url;
 	}
 
 	@Override
@@ -53,13 +57,15 @@ public class PageAcquisition extends Acquisition {
 			return "social";
 		}
 
-		if (Objects.equals(channel, "referral") ||
-			!StringUtils.isBlank(referrer)) {
+		if (StringUtils.isBlank(referrer)) {
+			return "direct";
+		}
 
+		if (Objects.equals(channel, "referral") || !_isInternalReferrer()) {
 			return "referral";
 		}
 
-		return "direct";
+		return null;
 	}
 
 	private boolean _contains(String[] array, String referrer) {
@@ -78,6 +84,21 @@ public class PageAcquisition extends Acquisition {
 		return false;
 	}
 
+	private boolean _isInternalReferrer() {
+		try {
+			URI uri = new URI(_url);
+
+			if (StringUtils.equals(uri.getHost(), referrer)) {
+				return true;
+			}
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException(e);
+		}
+
+		return false;
+	}
+
 	private static final String[] _PAID_HOST_NAMES = {"googleadservices.com"};
 
 	private static final String[] _SEARCH_HOST_NAMES = {
@@ -89,5 +110,7 @@ public class PageAcquisition extends Acquisition {
 		"facebook.com", "instagram.com", "linkedin.com", "pinterest.com",
 		"snapchat.com", "tiktok.com", "twitter.com", "youtube.com"
 	};
+
+	private String _url;
 
 }
