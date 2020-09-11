@@ -382,7 +382,7 @@ public class ReportRestController extends BaseRestController {
 		@RequestParam(defaultValue = "0") Integer page,
 		@RequestParam(defaultValue = "") String keywords,
 		@RequestParam(defaultValue = "30") Integer rangeKey,
-		@RequestParam(defaultValue = "viewsMetric") String sortMetric,
+		@RequestParam(defaultValue = "submissionsMetric") String sortMetric,
 		@RequestParam(defaultValue = "desc") String sortOrder) {
 
 		ResultBag<FormMetric> formMetricResultBag = new ResultBag<>();
