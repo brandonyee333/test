@@ -35,12 +35,12 @@
 
 		<liferay-ui:search-container-column-text
 			name="start-date"
-			value="<%= longDateFormatDate.format(productPurchase.getStartDate()) %>"
+			value="<%= (productPurchase.getStartDate() != null) ? longDateFormatDate.format(productPurchase.getStartDate()) : StringPool.DASH %>"
 		/>
 
 		<liferay-ui:search-container-column-text
 			name="support-end-date"
-			value="<%= longDateFormatDate.format(productPurchase.getEndDate()) %>"
+			value="<%= (productPurchase.getEndDate() != null) ? longDateFormatDate.format(productPurchase.getEndDate()) : StringPool.DASH %>"
 		/>
 
 		<liferay-ui:search-container-column-text
