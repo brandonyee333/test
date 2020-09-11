@@ -317,7 +317,7 @@ portletURL.setParameter("aggregateLicense", String.valueOf(aggregateLicense));
 
 							<%
 							if (productEntry != null) {
-								List<ListType> productVersionTypes = productEntry.getAllVersionsListTypes();
+								List<ListType> productVersionTypes = productEntry.getAllLicenseVersionsListTypes();
 
 								String previousNamePrefix = StringPool.BLANK;
 
