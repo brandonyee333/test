@@ -207,6 +207,8 @@ services:
             - "11311:11311"
             - "8000:8000"
             - "8080:8080"
+        volumes:
+            - faro:/opt/liferay/data
     wedeploy-elasticsearch:
         container_name: wedeploy-elasticsearch
         env_file:
@@ -241,6 +243,8 @@ volumes:
     esdata1:
         driver: local
     export:
+        driver: local
+    faro:
         driver: local
     kibanadata:
         driver: local
