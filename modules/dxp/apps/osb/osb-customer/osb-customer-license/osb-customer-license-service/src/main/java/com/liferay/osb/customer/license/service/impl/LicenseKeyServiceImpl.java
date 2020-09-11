@@ -77,8 +77,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			sb.append(accountEntry.getKoroneikiAccountKey());
 			sb.append("' and customerContactUuids/any(s:s eq '");
 			sb.append(user.getUuid());
-			sb.append("') and property_type eq 'primary' and state eq ");
-			sb.append("'active'");
+			sb.append("') and state eq 'active' and (property_type eq ");
+			sb.append("'primary' or contains(name, 'Commerce Subscription') ");
+			sb.append("or contains(name, 'Liferay DXP Cloud Subscription'))");
 
 			List<ProductPurchaseView> productPurchaseViews =
 				_productPurchaseViewWebService.getProductPurchaseViews(
@@ -95,7 +96,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 					_productEntryLocalService.getProductEntryByKoroneikiKey(
 						product.getKey());
 
-				if ((curProductEntry.isDigitalEnterprise() &&
+				if ((curProductEntry.isCommerceSubscription() &&
+					 productEntry.isCommerceSubscription()) ||
+					(curProductEntry.isDigitalEnterprise() &&
 					 productEntry.isDigitalEnterprise()) ||
 					(curProductEntry.isDigitalEnterprise() &&
 					 productEntry.isDXPCloud()) ||

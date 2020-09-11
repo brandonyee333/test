@@ -38,7 +38,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		TreeSet<AccountEntry> accountEntries = new TreeSet<AccountEntry>(new AccountEntryNameComparator(true));
 		Map<String, Set<ProductEntry>> accountEntryProductEntriesMap = new HashMap<String, Set<ProductEntry>>();
 
-		String filter = "customerContactUuids/any(s:s eq '" + user.getUuid() + "') and state eq 'active' and (property_type eq 'primary' or contains(name, 'Liferay DXP Cloud Subscription'))";
+		String filter = "customerContactUuids/any(s:s eq '" + user.getUuid() + "') and state eq 'active' and (property_type eq 'primary' or contains(name, 'Commerce Subscription') or contains(name, 'Liferay DXP Cloud Subscription'))";
 
 		List<ProductPurchaseView> productPurchaseViews = productPurchaseViewWebService.getProductPurchaseViews(StringPool.BLANK, filter, 1, 1000, StringPool.BLANK);
 
@@ -174,6 +174,10 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 								for (ProductEntry productEntry : productEntries) {
 									String productEntryRootName = null;
 
+									if (productEntry.isCommerce()) {
+										productEntryRootName = ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION;
+									}
+
 									if (productEntry.isDigitalEnterprise() || productEntry.isDXPCloud()) {
 										productEntryRootName = ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE;
 									}
@@ -242,7 +246,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 						if (productEntryRootName == '<%= ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION %>') {
 
 							<%
-							for (ListType productMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_COMMERCE_LICENSE_PRODUCT_VERSIONS)) {
+							for (ListType productMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_COMMERCE_LICENSE_VERSIONS)) {
 							%>
 
 								productMinorVersionOptions.push('<option value="<%= productMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, productMinorVersionType.getName()) %></option>');

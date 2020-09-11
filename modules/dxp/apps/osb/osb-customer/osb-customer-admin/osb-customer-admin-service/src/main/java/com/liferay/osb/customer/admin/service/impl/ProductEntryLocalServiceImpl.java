@@ -127,7 +127,9 @@ public class ProductEntryLocalServiceImpl
 				ProductEntryConstants.ENVIRONMENT_DEVELOPMENT);
 
 		for (ProductEntry curProductEntry : productEntries) {
-			if ((curProductEntry.isDigitalEnterprise() &&
+			if ((curProductEntry.isCommerceSubscription() &&
+				 productEntry.isCommerceSubscription()) ||
+				(curProductEntry.isDigitalEnterprise() &&
 				 productEntry.isDigitalEnterprise()) ||
 				(curProductEntry.isDigitalEnterprise() &&
 				 productEntry.isDXPCloud()) ||

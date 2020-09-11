@@ -91,8 +91,8 @@ public class ProductEntryConstants {
 	public static final String LIST_TYPE_COMMERCE_ALL_VERSIONS =
 		ProductEntry.class.getName() + ".commerceAllVersions";
 
-	public static final String LIST_TYPE_COMMERCE_LICENSE_PRODUCT_VERSIONS =
-		ProductEntry.class.getName() + ".commerceLicenseProductVersions";
+	public static final String LIST_TYPE_COMMERCE_LICENSE_VERSIONS =
+		ProductEntry.class.getName() + ".commerceLicenseVersions";
 
 	public static final String LIST_TYPE_COMMERCE_MAJOR_VERSIONS =
 		ProductEntry.class.getName() + ".commerceMajorVersions";
