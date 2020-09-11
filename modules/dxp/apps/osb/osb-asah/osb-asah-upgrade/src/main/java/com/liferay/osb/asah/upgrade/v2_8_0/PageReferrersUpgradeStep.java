@@ -14,20 +14,10 @@
 
 package com.liferay.osb.asah.upgrade.v2_8_0;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.PageAcquisition;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
-
-import javax.annotation.PostConstruct;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,7 +29,7 @@ import org.springframework.stereotype.Component;
 public class PageReferrersUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) throws Exception {
+	public void upgrade(String version) {
 		_elasticsearchIndexManager.updateMapping(
 			"activities",
 			JSONUtil.put(
@@ -48,44 +38,9 @@ public class PageReferrersUpgradeStep implements UpgradeStep {
 					"acquisitionChannel", JSONUtil.put("type", "keyword"))
 			).toString(),
 			"activities", WeDeployDataService.OSB_ASAH_FARO_INFO);
-
-		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-			_elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
-
-		JSONArrayIterator.of(
-			"page-referrers", _elasticsearchInvoker,
-			pageReferrerJSONObject -> elasticsearchBulkRequestBuilder.update(
-				"page-referrers",
-				pageReferrerJSONObject.put(
-					"acquisitionChannel",
-					_getAcquisitionChannel(
-						pageReferrerJSONObject.getString("referrer"),
-						pageReferrerJSONObject.getString("url"))))
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.existsQuery("acquisitionChannel"))
-		).setStopOnExceptions(
-			false
-		).iterate();
-	}
-
-	private String _getAcquisitionChannel(String referrer, String url) {
-		PageAcquisition pageAcquisition = new PageAcquisition(referrer, url);
-
-		return pageAcquisition.getChannel();
-	}
-
-	@PostConstruct
-	private void _init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forCerebroInfo();
 	}
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
-
-	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }
