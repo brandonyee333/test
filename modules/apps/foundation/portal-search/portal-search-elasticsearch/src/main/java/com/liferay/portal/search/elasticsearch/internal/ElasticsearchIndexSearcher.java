@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.search.GeoDistanceSort;
 import com.liferay.portal.kernel.search.GroupBy;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.IndexSearcher;
+import com.liferay.portal.kernel.search.NestedSort;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
@@ -462,6 +463,19 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 					sortFieldName);
 
 				fieldSortBuilder.unmappedType("string");
+
+				if (sort instanceof NestedSort) {
+					NestedSort nestedSort = (NestedSort)sort;
+
+					if (nestedSort.getFilterQuery() != null) {
+						QueryBuilder queryBuilder = queryTranslator.translate(
+							nestedSort.getFilterQuery(), null);
+
+						fieldSortBuilder.setNestedFilter(queryBuilder);
+					}
+
+					fieldSortBuilder.setNestedPath(nestedSort.getPath());
+				}
 
 				sortBuilder = fieldSortBuilder;
 			}
