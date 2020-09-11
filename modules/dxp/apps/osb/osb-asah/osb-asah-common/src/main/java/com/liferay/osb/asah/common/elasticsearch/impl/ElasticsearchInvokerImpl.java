@@ -434,6 +434,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 			getIndexAlias(collectionName));
 
 		searchRequestBuilder.setQuery(queryBuilder);
+		searchRequestBuilder.setTrackTotalHits(true);
 
 		return _get(searchRequestBuilder);
 	}
@@ -724,6 +725,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
 			getIndexAlias(collectionName));
 
+		searchSourceBuilder.trackTotalHits(true);
+
 		if (searchSourceBuilder.size() == -1) {
 			int from = searchSourceBuilder.from();
 
@@ -740,6 +743,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	private JSONArray _get(SearchRequestBuilder searchRequestBuilder) {
 		searchRequestBuilder.setSize(_ELASTICSEARCH_MAX_SIZE);
+		searchRequestBuilder.setTrackTotalHits(true);
 
 		ClientUtil.waitForConnection(_client);
 
