@@ -28,6 +28,7 @@ import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.SegmentDog;
 import com.liferay.osb.asah.backend.dog.TechnologyDog;
 import com.liferay.osb.asah.backend.dog.UserDog;
+import com.liferay.osb.asah.backend.dog.form.FormPageDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.Activity;
@@ -37,8 +38,10 @@ import com.liferay.osb.asah.backend.model.BlogMetric;
 import com.liferay.osb.asah.backend.model.BlogMetricType;
 import com.liferay.osb.asah.backend.model.DocumentLibraryMetric;
 import com.liferay.osb.asah.backend.model.DocumentLibraryMetricType;
+import com.liferay.osb.asah.backend.model.FormFieldMetric;
 import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.FormMetricType;
+import com.liferay.osb.asah.backend.model.FormPageMetric;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.model.Interest;
 import com.liferay.osb.asah.backend.model.JournalMetric;
@@ -411,6 +414,31 @@ public class ReportRestController extends BaseRestController {
 			formMetricResultBag,
 			formMetric -> _toFormAssetReportResource(
 				new AssetReport(formMetric), rangeKey));
+	}
+
+	@GetMapping("/forms/{formId}/pages")
+	public Resource<FormPagesReport> getFormPagesReportResource(
+		@PathVariable String formId,
+		@RequestParam(defaultValue = "") String formTitle,
+		@RequestParam(defaultValue = "30") int rangeKey) {
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext() {
+			{
+				setAssetId(formId);
+				setAssetType(AssetType.FORM);
+				setTimeRange(TimeRange.of(rangeKey));
+
+				if (StringUtils.isNotEmpty(formTitle)) {
+					setTitle(formTitle);
+				}
+			}
+		};
+
+		return _toFormPagesReportResource(
+			new FormPagesReport(
+				formId, _formPageDog.getFormPageMetrics(searchQueryContext),
+				formTitle),
+			rangeKey);
 	}
 
 	@GetMapping("/individuals/{individualId}/activities")
@@ -1115,7 +1143,41 @@ public class ReportRestController extends BaseRestController {
 					Collections.emptySet(), assetReport.getId(),
 					assetReport.getTitle(), rangeKey
 				)
-			).withSelfRel());
+			).withSelfRel(),
+			ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder.methodOn(
+					ReportRestController.class
+				).getFormPagesReportResource(
+					assetReport.getId(), assetReport.getTitle(), rangeKey
+				)
+			).withRel(
+				"pages"
+			));
+	}
+
+	private Resource<FormPagesReport> _toFormPagesReportResource(
+		FormPagesReport formPagesReport, int rangeKey) {
+
+		return new Resource<>(
+			formPagesReport,
+			ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder.methodOn(
+					ReportRestController.class
+				).getFormPagesReportResource(
+					formPagesReport.getFormId(), formPagesReport.getFormTitle(),
+					rangeKey
+				)
+			).withSelfRel(),
+			ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder.methodOn(
+					ReportRestController.class
+				).getFormAssetReportResource(
+					Collections.emptySet(), formPagesReport.getFormId(),
+					formPagesReport.getFormTitle(), rangeKey
+				)
+			).withRel(
+				"parent"
+			));
 	}
 
 	private Resource<Individual> _toIndividualResource(Individual individual) {
@@ -1262,6 +1324,9 @@ public class ReportRestController extends BaseRestController {
 	private DataExportTaskDog _dataExportTaskDog;
 
 	@Autowired
+	private FormPageDog _formPageDog;
+
+	@Autowired
 	private GeolocationDog _geolocationDog;
 
 	@Autowired
@@ -1353,6 +1418,108 @@ public class ReportRestController extends BaseRestController {
 		private Long _nonsegmentedKnownUsersCount;
 		private Long _segmentedKnownUsersCount;
 		private ResultBag<MetricReport> _segmentMetricReportResultBag;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class FormFieldReport {
+
+		public FormFieldReport(FormFieldMetric formFieldMetric) {
+			for (Metric metric : formFieldMetric.getAvailableMetrics()) {
+				MetricType metricType = metric.getMetricType();
+
+				_metricReports.put(
+					metricType.getName(), new MetricReport(metric));
+			}
+		}
+
+		@JsonProperty("metrics")
+		public Map<String, MetricReport> getMetricReports() {
+			return Collections.synchronizedMap(_metricReports);
+		}
+
+		private Map<String, MetricReport> _metricReports = new HashMap<>();
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class FormPageReport {
+
+		public FormPageReport(FormPageMetric formPageMetric) {
+			for (Metric metric : formPageMetric.getAvailableMetrics()) {
+				MetricType metricType = metric.getMetricType();
+
+				_metricReports.put(
+					metricType.getName(), new MetricReport(metric));
+			}
+
+			for (FormFieldMetric formFieldMetric :
+					formPageMetric.getFormFieldMetrics()) {
+
+				_formFieldReports.put(
+					formFieldMetric.getFieldName(),
+					new FormFieldReport(formFieldMetric));
+			}
+
+			_formPageMetric = formPageMetric;
+		}
+
+		@JsonProperty("fields")
+		public Map<String, FormFieldReport> getFormFieldReports() {
+			return _formFieldReports;
+		}
+
+		public String getId() {
+			return _formPageMetric.getPageIndex();
+		}
+
+		@JsonProperty("metrics")
+		public Map<String, MetricReport> getMetricReports() {
+			return Collections.synchronizedMap(_metricReports);
+		}
+
+		public String getTitle() {
+			return _formPageMetric.getPageName();
+		}
+
+		private Map<String, FormFieldReport> _formFieldReports =
+			new HashMap<>();
+		private final FormPageMetric _formPageMetric;
+		private Map<String, MetricReport> _metricReports = new HashMap<>();
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class FormPagesReport {
+
+		public FormPagesReport(
+			String formId, List<FormPageMetric> formPageMetrics,
+			String formTitle) {
+
+			_formId = formId;
+			_formTitle = formTitle;
+
+			for (FormPageMetric formPageMetric : formPageMetrics) {
+				_formPageReports.add(new FormPageReport(formPageMetric));
+			}
+		}
+
+		public String getFormId() {
+			return _formId;
+		}
+
+		@JsonProperty("formPages")
+		public List<FormPageReport> getFormPageReports() {
+			return _formPageReports;
+		}
+
+		public String getFormTitle() {
+			return _formTitle;
+		}
+
+		private final String _formId;
+		private List<FormPageReport> _formPageReports = new ArrayList<>();
+		private final String _formTitle;
 
 	}
 
