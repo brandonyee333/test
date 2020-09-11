@@ -294,12 +294,10 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		try {
 			Class<?> clazz = getClass();
 
-			ClassLoader classLoader = clazz.getClassLoader();
-
 			String[] keys = StringUtil.split(
 				StringUtil.read(
-					classLoader,
-					"com/liferay/osb/customer/license/generator/internal" +
+					clazz.getClassLoader(),
+					"com/liferay/osb/customer/license/generator/dependencies" +
 						"/keys.txt"),
 				StringPool.NEW_LINE);
 
@@ -516,8 +514,5 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		KeyGeneratorImpl.class);
 
 	private final Key[] _keys = new Key[3];
-
-	//	@Reference
-	//	private LicenseKeyLocalService _licenseKeyLocalService;
 
 }
