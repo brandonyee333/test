@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.search.GeoDistanceSort;
 import com.liferay.portal.kernel.search.GroupBy;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.IndexSearcher;
+import com.liferay.portal.kernel.search.NestedSort;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
@@ -96,6 +97,7 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.NestedSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -486,6 +488,13 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 
 				fieldSortBuilder.unmappedType("string");
 
+				if (sort instanceof NestedSort) {
+					NestedSort nestedSort = (NestedSort)sort;
+
+					fieldSortBuilder.setNestedSort(
+						_getNestedSortBuilder(nestedSort));
+				}
+
 				sortBuilder = fieldSortBuilder;
 			}
 
@@ -869,6 +878,22 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 
 	@Reference
 	protected StatsTranslator statsTranslator;
+
+	private NestedSortBuilder _getNestedSortBuilder(NestedSort nestedSort) {
+		NestedSortBuilder nestedSortBuilder = new NestedSortBuilder(
+			nestedSort.getPath());
+
+		if (nestedSort.getFilterQuery() != null) {
+			QueryBuilder queryBuilder = queryTranslator.translate(
+				nestedSort.getFilterQuery(), null);
+
+			nestedSortBuilder.setFilter(queryBuilder);
+		}
+
+		nestedSortBuilder.setMaxChildren(nestedSort.getMaxChildren());
+
+		return nestedSortBuilder;
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ElasticsearchIndexSearcher.class);
