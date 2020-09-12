@@ -12,16 +12,12 @@
  * details.
  */
 
-package com.liferay.portal.search.buffer;
-
-import org.osgi.annotation.versioning.ProviderType;
+package com.liferay.portal.search.internal.buffer;
 
 /**
+ * @author André de Oliveira
  * @author Michael C. Han
- * @deprecated As of Athanasius (7.3.x)
  */
-@Deprecated
-@ProviderType
 public interface IndexerRequestBufferExecutor {
 
 	public void execute(IndexerRequestBuffer indexerRequestBuffer);
