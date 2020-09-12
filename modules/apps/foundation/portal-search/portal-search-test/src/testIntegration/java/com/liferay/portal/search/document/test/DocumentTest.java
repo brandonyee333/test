@@ -265,8 +265,8 @@ public class DocumentTest {
 		SearchContext searchContext = SearchContextTestUtil.getSearchContext();
 
 		searchContext.setAttribute(Field.STATUS, WorkflowConstants.STATUS_ANY);
-		searchContext.setKeywords(keywords);
 		searchContext.setGroupIds(new long[0]);
+		searchContext.setKeywords(keywords);
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 

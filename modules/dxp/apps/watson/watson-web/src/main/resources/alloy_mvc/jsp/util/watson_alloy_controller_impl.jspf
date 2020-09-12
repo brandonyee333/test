@@ -288,8 +288,8 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 	}
 
 	protected long getTotalHits(SearchContext searchContext) throws Exception {
-		searchContext.setStart(QueryUtil.ALL_POS);
 		searchContext.setEnd(QueryUtil.ALL_POS);
+		searchContext.setStart(QueryUtil.ALL_POS);
 
 		Hits hits = indexer.search(searchContext);
 
