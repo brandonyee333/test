@@ -63,19 +63,7 @@ public class AccountEntryPermission {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, long accountEntryId,
-			String actionId)
-		throws PortalException {
-
-		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
-			accountEntryId);
-
-		return contains(
-			permissionChecker, accountEntry.getKoroneikiAccountKey(), actionId);
-	}
-
-	public static boolean contains(
-			PermissionChecker permissionChecker, String koroneikiAccountKey,
+			PermissionChecker permissionChecker, AccountEntry accountEntry,
 			String actionId)
 		throws PortalException {
 
@@ -100,17 +88,15 @@ public class AccountEntryPermission {
 				return true;
 			}
 
-			/*
+			String name = accountEntry.getName();
 
-			if ((accountEntry.getAccountEntryId() ==
-					OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID) &&
+			if (name.equals("Liferay, Inc.") &&
 				_organizationLocalService.hasUserOrganization(
 					permissionChecker.getUserId(),
 					OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 				return true;
 			}
-			*/
 
 			return false;
 		}
@@ -130,13 +116,16 @@ public class AccountEntryPermission {
 
 			List<ContactRole> contactRoles =
 				_contactRoleWebService.getAccountContactRoles(
-					koroneikiAccountKey, user.getUuid(), 1, 1);
+					accountEntry.getKoroneikiAccountKey(), user.getUuid(), 1,
+					1);
 
 			if (!contactRoles.isEmpty()) {
 				return true;
 			}
 
-			if (isPartner(koroneikiAccountKey, user.getUuid())) {
+			if (isPartner(
+					accountEntry.getKoroneikiAccountKey(), user.getUuid())) {
+
 				return true;
 			}
 		}
@@ -145,6 +134,29 @@ public class AccountEntryPermission {
 		}
 
 		return false;
+	}
+
+	public static boolean contains(
+			PermissionChecker permissionChecker, long accountEntryId,
+			String actionId)
+		throws PortalException {
+
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
+			accountEntryId);
+
+		return contains(permissionChecker, accountEntry, actionId);
+	}
+
+	public static boolean contains(
+			PermissionChecker permissionChecker, String koroneikiAccountKey,
+			String actionId)
+		throws PortalException {
+
+		AccountEntry accountEntry =
+			_accountEntryLocalService.getKoroneikiAccountEntry(
+				koroneikiAccountKey);
+
+		return contains(permissionChecker, accountEntry, actionId);
 	}
 
 	protected static boolean isPartner(
