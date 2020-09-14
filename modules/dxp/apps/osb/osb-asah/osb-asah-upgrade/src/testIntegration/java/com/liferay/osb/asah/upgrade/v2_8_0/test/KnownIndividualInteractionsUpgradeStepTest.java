@@ -118,9 +118,9 @@ public class KnownIndividualInteractionsUpgradeStepTest {
 			}
 		}
 
-		_faroInfoElasticsearchInvoker.add("individuals", individualsJSONArray);
 		_cerebroInfoElasticsearchInvoker.add("blogs", blogsJSONArray);
 		_cerebroInfoElasticsearchInvoker.add("pages", pagesJSONArray);
+		_faroInfoElasticsearchInvoker.add("individuals", individualsJSONArray);
 
 		_knownKnownIndividualInteractionsUpgradeStep.upgrade("");
 
