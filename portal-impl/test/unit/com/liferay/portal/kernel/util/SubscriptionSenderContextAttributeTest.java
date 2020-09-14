@@ -27,7 +27,9 @@ public class SubscriptionSenderContextAttributeTest {
 
 	@Before
 	public void setUp() {
-		new HtmlUtil().setHtml(new HtmlImpl());
+		HtmlUtil htmlUtil = new HtmlUtil();
+
+		htmlUtil.setHtml(new HtmlImpl());
 	}
 
 	@Test
