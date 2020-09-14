@@ -5,7 +5,7 @@
 		"LOGGING_PATTERN_CONSOLE": "${CONSOLE_LOG_PATTERN:%clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"
 	},
 	"id": "osbasahupgrade",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-upgrade-20200803-8956c69",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-upgrade-20200914-3106e95",
 	"kind": "Deployment",
 	"memory": 2048
 }

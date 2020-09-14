@@ -1,7 +1,7 @@
 {
 	"cpu": 2,
 	"id": "osbasahredis",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-redis-20200803-8956c69",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-redis-20200914-3106e95",
 	"memory": 2048,
 	"ports": [
 		{
