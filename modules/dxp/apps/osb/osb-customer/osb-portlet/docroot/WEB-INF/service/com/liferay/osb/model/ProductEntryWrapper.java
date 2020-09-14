@@ -384,6 +384,11 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllLicenseVersionsListTypes() {
+		return _productEntry.getAllLicenseVersionsListTypes();
+	}
+
+	@Override
 	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllVersionsListTypes() {
 		return _productEntry.getAllVersionsListTypes();
 	}

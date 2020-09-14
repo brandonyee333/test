@@ -54,6 +54,8 @@ public interface ProductEntry extends ProductEntryModel, PersistedModel {
 			}
 		};
 
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllLicenseVersionsListTypes();
+
 	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllVersionsListTypes();
 
 	public java.lang.String getDisplayName();

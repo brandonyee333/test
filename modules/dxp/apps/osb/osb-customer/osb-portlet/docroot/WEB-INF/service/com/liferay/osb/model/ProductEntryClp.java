@@ -382,6 +382,25 @@ public class ProductEntryClp extends BaseModelImpl<ProductEntry>
 	}
 
 	@Override
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllLicenseVersionsListTypes() {
+		try {
+			String methodName = "getAllLicenseVersionsListTypes";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<com.liferay.portal.kernel.model.ListType> returnObj = (java.util.List<com.liferay.portal.kernel.model.ListType>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllVersionsListTypes() {
 		try {
 			String methodName = "getAllVersionsListTypes";
