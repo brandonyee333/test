@@ -622,8 +622,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public BulkByScrollResponse updateByQuery(
-		QueryBuilder queryBuilder, boolean refresh, Script script,
-		String... collectionNames) {
+		int batchSize, QueryBuilder queryBuilder, boolean refresh,
+		Script script, String... collectionNames) {
 
 		List<String> indices = _getExistingIndices(
 			queryBuilder, collectionNames);
@@ -650,7 +650,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		UpdateByQueryRequest updateByQueryRequest =
 			updateByQueryRequestBuilder.request();
 
-		updateByQueryRequest.setBatchSize(_ELASTICSEARCH_MAX_SIZE);
+		updateByQueryRequest.setBatchSize(batchSize);
 
 		ClientUtil.waitForConnection(_client);
 
@@ -658,15 +658,25 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
-	public boolean updateByQueryWithRetry(
+	public BulkByScrollResponse updateByQuery(
 		QueryBuilder queryBuilder, boolean refresh, Script script,
 		String... collectionNames) {
+
+		return updateByQuery(
+			_ELASTICSEARCH_MAX_SIZE, queryBuilder, refresh, script,
+			collectionNames);
+	}
+
+	@Override
+	public boolean updateByQueryWithRetry(
+		int batchSize, QueryBuilder queryBuilder, boolean refresh,
+		Script script, String... collectionNames) {
 
 		int retry = 0;
 
 		while (true) {
 			BulkByScrollResponse bulkByScrollResponse = updateByQuery(
-				queryBuilder, refresh, script, collectionNames);
+				batchSize, queryBuilder, refresh, script, collectionNames);
 
 			List<BulkItemResponse.Failure> bulkFailures =
 				bulkByScrollResponse.getBulkFailures();
@@ -692,6 +702,16 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 				thread.interrupt();
 			}
 		}
+	}
+
+	@Override
+	public boolean updateByQueryWithRetry(
+		QueryBuilder queryBuilder, boolean refresh, Script script,
+		String... collectionNames) {
+
+		return updateByQueryWithRetry(
+			_ELASTICSEARCH_MAX_SIZE, queryBuilder, refresh, script,
+			collectionNames);
 	}
 
 	@Override

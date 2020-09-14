@@ -118,8 +118,16 @@ public interface ElasticsearchInvoker {
 	public JSONObject update(String collectionName, String id, Script script);
 
 	public BulkByScrollResponse updateByQuery(
+		int batchSize, QueryBuilder queryBuilder, boolean refresh,
+		Script script, String... collectionNames);
+
+	public BulkByScrollResponse updateByQuery(
 		QueryBuilder queryBuilder, boolean refresh, Script script,
 		String... collectionNames);
+
+	public boolean updateByQueryWithRetry(
+		int batchSize, QueryBuilder queryBuilder, boolean refresh,
+		Script script, String... collectionNames);
 
 	public boolean updateByQueryWithRetry(
 		QueryBuilder queryBuilder, boolean refresh, Script script,
