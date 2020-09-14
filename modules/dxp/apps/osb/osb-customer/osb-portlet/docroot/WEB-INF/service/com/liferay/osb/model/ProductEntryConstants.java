@@ -36,6 +36,8 @@ public class ProductEntryConstants {
 
 	public static final int COMMERCE_VERSION_2_1 = 44120;
 
+	public static final int COMMERCE_VERSION_3_0 = 44200;
+
 	public static final int COMMERCE_VERSION_OTHER = 44999;
 
 	public static final int DIGITAL_ENTERPRISE_MAJOR_VERSION_7 = 42000;
@@ -56,7 +58,7 @@ public class ProductEntryConstants {
 
 	public static final int DIGITAL_ENTERPRISE_VERSION_7_2_10 = 41200;
 
-	public static final int DIGITAL_ENTERPRISE_VERSION_7_3 = 41300;
+	public static final int DIGITAL_ENTERPRISE_VERSION_7_3_10 = 41300;
 
 	public static final int ENVIRONMENT_ANY = 1;
 
@@ -428,6 +430,14 @@ public class ProductEntryConstants {
 		return false;
 	}
 
+	public static boolean isCommerceVersion3_0(long commerceVersion) {
+		if (commerceVersion == COMMERCE_VERSION_3_0) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public static boolean isDigitalEnterpriseMajorVersion7(
 		long digitalEnterpriseMajorVersion) {
 
@@ -475,7 +485,7 @@ public class ProductEntryConstants {
 	public static boolean isDigitalEnterpriseVersion7_3(
 		long digitalEnterpriseVersion) {
 
-		if (digitalEnterpriseVersion == DIGITAL_ENTERPRISE_VERSION_7_3) {
+		if (digitalEnterpriseVersion == DIGITAL_ENTERPRISE_VERSION_7_3_10) {
 			return true;
 		}
 

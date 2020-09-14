@@ -122,6 +122,9 @@ insert into ListType (listTypeId, name, type_) values (27065, 'wildfly-11.0', 'c
 insert into ListType (listTypeId, name, type_) values (27066, 'websphere-8.5.5-fix-pack-11+', 'com.liferay.osb.model.AccountEnvironment.envAS');
 insert into ListType (listTypeId, name, type_) values (27067, 'wildfly-16.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
 insert into ListType (listTypeId, name, type_) values (27068, 'jboss-eap-7.2', 'com.liferay.osb.model.AccountEnvironment.envAS');
+insert into ListType (listTypeId, name, type_) values (27069, 'jboss-eap-7.3', 'com.liferay.osb.model.AccountEnvironment.envAS');
+insert into ListType (listTypeId, name, type_) values (27070, 'wildfly-14.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
+insert into ListType (listTypeId, name, type_) values (27071, 'wildfly-17.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
 
 insert into ListType (listTypeId, name, type_) values (28000, 'db2-8.2', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28002, 'hypersonic', 'com.liferay.osb.model.AccountEnvironment.envDB');
@@ -169,9 +172,12 @@ insert into ListType (listTypeId, name, type_) values (28043, 'mariadb-10.2', 'c
 insert into ListType (listTypeId, name, type_) values (28044, 'postgresql-10', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28045, 'mysql-8', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28046, 'sql-server-2017', 'com.liferay.osb.model.AccountEnvironment.envDB');
-insert into ListType (listTypeId, name, type_) values (28047, 'postgresql-11.2', 'com.liferay.osb.model.AccountEnvironment.envDB');
+insert into ListType (listTypeId, name, type_) values (28047, 'postgresql-11', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28048, 'oracle-19c', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28049, 'sql-server-2019', 'com.liferay.osb.model.AccountEnvironment.envDB');
+insert into ListType (listTypeId, name, type_) values (28050, 'db2-11.5', 'com.liferay.osb.model.AccountEnvironment.envDB');
+insert into ListType (listTypeId, name, type_) values (28051, 'mariadb-10.4', 'com.liferay.osb.model.AccountEnvironment.envDB');
+insert into ListType (listTypeId, name, type_) values (28052, 'postgresql-12', 'com.liferay.osb.model.AccountEnvironment.envDB');
 
 insert into ListType (listTypeId, name, type_) values (29000, 'oracle-jdk-5', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29001, 'oracle-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
@@ -243,6 +249,9 @@ insert into ListType (listTypeId, name, type_) values (30048, 'suse-enterprise-l
 insert into ListType (listTypeId, name, type_) values (30049, 'ubuntu-lts-18.04', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30050, 'windows-server-2019', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30051, 'red-hat-enterprise-8', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30052, 'alpine-linux-3.10', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30053, 'centos-8', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30054, 'debian-10', 'com.liferay.osb.model.AccountEnvironment.envOS');
 
 insert into ListType (listTypeId, name, type_) values (34001, 'application-server', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34004, 'database', 'com.liferay.osb.model.AuditEntry.field');
@@ -335,6 +344,8 @@ insert into ListType (listTypeId, name, type_) values (37019, 'firefox-esr-52', 
 insert into ListType (listTypeId, name, type_) values (37020, 'safari-11', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
 insert into ListType (listTypeId, name, type_) values (37021, 'chrome-65', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
 insert into ListType (listTypeId, name, type_) values (37022, 'safari-12', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
+insert into ListType (listTypeId, name, type_) values (37023, 'safari-13', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
+insert into ListType (listTypeId, name, type_) values (37024, 'firefox-esr', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
 insert into ListType (listTypeId, name, type_) values (37999, 'other', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
 
 insert into ListType (listTypeId, name, type_) values (38000, 'e-mail', 'com.liferay.osb.model.SalesPartnership.emailAddress');
@@ -379,13 +390,16 @@ insert into ListType (listTypeId, name, type_) values (44000, '1.0', 'com.lifera
 insert into ListType (listTypeId, name, type_) values (44020, '1.1', 'com.liferay.osb.model.ProductEntry.commerceAllVersions');
 insert into ListType (listTypeId, name, type_) values (44100, '2.0', 'com.liferay.osb.model.ProductEntry.commerceAllVersions');
 insert into ListType (listTypeId, name, type_) values (44120, '2.1', 'com.liferay.osb.model.ProductEntry.commerceAllVersions');
+insert into ListType (listTypeId, name, type_) values (44200, '3.0', 'com.liferay.osb.model.ProductEntry.commerceAllVersions');
 
 insert into ListType (listTypeId, name, type_) values (45000, '1', 'com.liferay.osb.model.ProductEntry.commerceMajorVersions');
 insert into ListType (listTypeId, name, type_) values (45001, '2', 'com.liferay.osb.model.ProductEntry.commerceMajorVersions');
+insert into ListType (listTypeId, name, type_) values (45002, '3', 'com.liferay.osb.model.ProductEntry.commerceMajorVersions');
 
 insert into ListType (listTypeId, name, type_) values (46000, '1.0', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
 insert into ListType (listTypeId, name, type_) values (46001, '1.1', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
 insert into ListType (listTypeId, name, type_) values (46002, '2.0', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
 insert into ListType (listTypeId, name, type_) values (46003, '2.1', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
+insert into ListType (listTypeId, name, type_) values (46004, '3.0', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
 
 insert into ListType (listTypeId, name, type_) values (47000, '1', 'com.liferay.osb.model.ProductEntry.commerceLicenseProductVersions');

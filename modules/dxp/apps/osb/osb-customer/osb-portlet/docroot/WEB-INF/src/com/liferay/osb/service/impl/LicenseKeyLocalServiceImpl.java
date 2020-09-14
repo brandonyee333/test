@@ -1514,7 +1514,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 					ProductEntryConstants.
 						DIGITAL_ENTERPRISE_MINOR_VERSION_7_3) {
 
-			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_3;
+			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_3_10;
 		}
 		else if (productMinorVersion ==
 					ProductEntryConstants.
