@@ -167,6 +167,7 @@ public class KnownIndividualInteractionsUpgradeStep implements UpgradeStep {
 		List<String> individualIds, boolean knownIndividual) {
 
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			1000,
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termsQuery("individualId", individualIds)
 			).filter(
