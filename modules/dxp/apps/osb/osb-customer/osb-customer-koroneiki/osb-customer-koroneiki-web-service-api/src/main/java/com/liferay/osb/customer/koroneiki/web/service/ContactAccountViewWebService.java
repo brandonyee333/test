@@ -23,10 +23,6 @@ import java.util.List;
  */
 public interface ContactAccountViewWebService {
 
-	public List<ContactAccountView> getContactByOktaContactAccountViewsPage(
-			String oktaId, int page, int pageSize)
-		throws Exception;
-
 	public List<ContactAccountView>
 			getContactByUuidContactUuidContactAccountViewsPage(
 				String contactUuid, int page, int pageSize)

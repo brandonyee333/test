@@ -253,7 +253,7 @@ public class ContactMessageListener extends BaseMessageListener {
 
 	private ServiceRegistration<Destination> _serviceRegistration;
 
-	@Reference(target = "(provider=okta)")
+	@Reference(target = "(provider=web)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference

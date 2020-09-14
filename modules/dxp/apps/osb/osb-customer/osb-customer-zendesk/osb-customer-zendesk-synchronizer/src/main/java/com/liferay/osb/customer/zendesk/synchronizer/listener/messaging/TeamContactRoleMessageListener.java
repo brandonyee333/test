@@ -194,7 +194,7 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 	@Reference
 	private TeamSynchronizer _teamSynchronizer;
 
-	@Reference(target = "(provider=okta)")
+	@Reference(target = "(provider=web)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference

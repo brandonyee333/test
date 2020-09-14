@@ -40,23 +40,6 @@ import org.osgi.service.component.annotations.Component;
 public class ContactAccountViewWebServiceImpl
 	implements ContactAccountViewWebService {
 
-	public List<ContactAccountView> getContactByOktaContactAccountViewsPage(
-			String oktaId, int page, int pageSize)
-		throws Exception {
-
-		Page<ContactAccountView> contactAccountViewPage =
-			_contactAccountViewResource.getContactByOktaContactAccountViewsPage(
-				oktaId, Pagination.of(page, pageSize));
-
-		if ((contactAccountViewPage != null) &&
-			(contactAccountViewPage.getItems() != null)) {
-
-			return new ArrayList<>(contactAccountViewPage.getItems());
-		}
-
-		return Collections.emptyList();
-	}
-
 	public List<ContactAccountView>
 			getContactByUuidContactUuidContactAccountViewsPage(
 				String contactUuid, int page, int pageSize)

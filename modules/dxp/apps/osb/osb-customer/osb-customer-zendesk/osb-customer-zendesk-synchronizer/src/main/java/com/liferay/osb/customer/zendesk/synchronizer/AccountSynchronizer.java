@@ -655,7 +655,7 @@ public class AccountSynchronizer {
 	@Reference
 	private QueryFactory _queryFactory;
 
-	@Reference(target = "(provider=okta)")
+	@Reference(target = "(provider=web)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference

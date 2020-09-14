@@ -330,7 +330,7 @@ public class SynchronizeAccountEntryMessageListener
 	@Reference
 	private TeamSynchronizer _teamSynchronizer;
 
-	@Reference(target = "(provider=okta)")
+	@Reference(target = "(provider=web)")
 	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
