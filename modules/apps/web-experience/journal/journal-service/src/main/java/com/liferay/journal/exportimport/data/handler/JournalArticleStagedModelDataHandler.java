@@ -714,12 +714,6 @@ public class JournalArticleStagedModelDataHandler
 				article.setStatus(WorkflowConstants.STATUS_EXPIRED);
 			}
 
-			boolean expired = false;
-
-			if (article.getStatus() == WorkflowConstants.STATUS_EXPIRED) {
-				expired = true;
-			}
-
 			if ((article.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
 				(article.getStatus() != WorkflowConstants.STATUS_SCHEDULED)) {
 
@@ -827,7 +821,7 @@ public class JournalArticleStagedModelDataHandler
 					latest, serviceContext);
 			}
 
-			if (expired && !importedArticle.isExpired()) {
+			if (article.isExpired() && !importedArticle.isExpired()) {
 				_journalArticleLocalService.expireArticle(
 					userId, importedArticle.getGroupId(),
 					importedArticle.getArticleId(),
