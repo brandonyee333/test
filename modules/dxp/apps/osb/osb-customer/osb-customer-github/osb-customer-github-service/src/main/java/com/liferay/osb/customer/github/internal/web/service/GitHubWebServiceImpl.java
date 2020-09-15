@@ -35,6 +35,8 @@ import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.IOException;
+
 import java.nio.charset.Charset;
 
 import java.util.ArrayList;
@@ -46,7 +48,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.http.Header;
-import org.apache.http.HttpMessage;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -182,14 +183,6 @@ public class GitHubWebServiceImpl
 	protected void signRequest(HttpRequestBase httpRequestBase) {
 	}
 
-	private void _addHeaders(
-		HttpMessage httpMessage, Map<String, String> headers) {
-
-		for (Map.Entry<String, String> entry : headers.entrySet()) {
-			httpMessage.addHeader(entry.getKey(), entry.getValue());
-		}
-	}
-
 	private String _doPutAsJSON(
 			String url, String json, Map<String, String> headers)
 		throws JSONWebServiceInvocationException,
@@ -208,7 +201,7 @@ public class GitHubWebServiceImpl
 		return execute(httpPut);
 	}
 
-	private String _get(
+	private HttpResponse _getHttpResponse(
 			String url, Map<String, String> parameters,
 			Map<String, String> headers)
 		throws PortalException {
@@ -227,21 +220,23 @@ public class GitHubWebServiceImpl
 
 			HttpClient httpClient = new DefaultHttpClient();
 
-			HttpResponse httpResponse = httpClient.execute(httpGet);
-
-			_setResponseHeaders(httpResponse);
-
-			return EntityUtils.toString(httpResponse.getEntity());
+			return httpClient.execute(httpGet);
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
 		}
 	}
 
-	private JSONObject _getPageURLs() {
-		String headerValue = _responseHeaders.get(GitHubHttpHeaders.LINK);
+	private JSONObject _getPageURLs(HttpResponse httpResponse) {
+		Map<String, String> responseHeaders = new HashMap<>();
+
+		for (Header header : httpResponse.getAllHeaders()) {
+			responseHeaders.put(header.getName(), header.getValue());
+		}
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		String headerValue = responseHeaders.get(GitHubHttpHeaders.LINK);
 
 		if (Validator.isNotNull(headerValue)) {
 			String[] linkValue = headerValue.split(StringPool.COMMA);
@@ -302,10 +297,10 @@ public class GitHubWebServiceImpl
 		else {
 			jsonObject.put(
 				GitHubConstants.LAST,
-				_responseHeaders.get(GitHubHttpHeaders.X_LAST));
+				responseHeaders.get(GitHubHttpHeaders.X_LAST));
 			jsonObject.put(
 				GitHubConstants.NEXT,
-				_responseHeaders.get(GitHubHttpHeaders.X_NEXT));
+				responseHeaders.get(GitHubHttpHeaders.X_NEXT));
 		}
 
 		return jsonObject;
@@ -319,32 +314,14 @@ public class GitHubWebServiceImpl
 				GitHubConfigurationValues.REMOTE_REST_SERVICE_API_GITHUB_HOST +
 					_URL_GITHUB_REPOSITORY_COLLABORATORS;
 
-			String response = _get(url, query.getParameters(), _headers);
+			HttpResponse httpResponse = _getHttpResponse(
+				url, query.getParameters(), _headers);
 
-			JSONArray responseJSONArray = JSONFactoryUtil.createJSONArray(
-				response);
-
-			return _toCollaboratorSearchHits(responseJSONArray);
+			return _toCollaboratorSearchHits(httpResponse);
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
 		}
-	}
-
-	private void _setResponseHeaders(HttpResponse httpResponse) {
-		Map<String, String> responseHeaders = new HashMap<>();
-
-		for (Header header : httpResponse.getAllHeaders()) {
-			responseHeaders.put(header.getName(), header.getValue());
-		}
-
-		_responseHeaders = responseHeaders;
-	}
-
-	private String _toCollaborator(JSONObject jsonObject)
-		throws PortalException {
-
-		return jsonObject.getString("login");
 	}
 
 	private List<String> _toCollaborators(JSONArray jsonArray)
@@ -355,18 +332,19 @@ public class GitHubWebServiceImpl
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			collaborators.add(_toCollaborator(jsonObject));
+			collaborators.add(jsonObject.getString("login"));
 		}
 
 		return collaborators;
 	}
 
-	private SearchHits<String> _toCollaboratorSearchHits(JSONArray jsonArray)
-		throws PortalException {
+	private SearchHits<String> _toCollaboratorSearchHits(
+			HttpResponse httpResponse)
+		throws IOException, PortalException {
 
 		SearchHits<String> searchHits = new SearchHitsImpl<>();
 
-		JSONObject jsonObject = _getPageURLs();
+		JSONObject jsonObject = _getPageURLs(httpResponse);
 
 		String nextPageURL = jsonObject.getString("next");
 
@@ -375,6 +353,10 @@ public class GitHubWebServiceImpl
 
 			searchHits.setNextPage(GetterUtil.getInteger(nextPage));
 		}
+
+		String response = EntityUtils.toString(httpResponse.getEntity());
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(response);
 
 		searchHits.setResults(_toCollaborators(jsonArray));
 
@@ -411,7 +393,5 @@ public class GitHubWebServiceImpl
 
 	@Reference
 	private QueryFactory _queryFactory;
-
-	private Map<String, String> _responseHeaders = Collections.emptyMap();
 
 }
