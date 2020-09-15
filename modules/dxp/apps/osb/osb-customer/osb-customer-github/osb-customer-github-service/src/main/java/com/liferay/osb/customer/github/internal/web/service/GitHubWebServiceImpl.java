@@ -80,7 +80,8 @@ public class GitHubWebServiceImpl
 		jsonObject.put("permission", "pull");
 
 		try {
-			String response = doPutAsJSON(url, jsonObject.toString(), _headers);
+			String response = _doPutAsJSON(
+				url, jsonObject.toString(), _headers);
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}
@@ -122,57 +123,9 @@ public class GitHubWebServiceImpl
 		}
 	}
 
-	public String doPutAsJSON(
-			String url, String json, Map<String, String> headers)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceTransportException {
-
-		HttpPut httpPut = new HttpPut(url);
-
-		addHeaders(httpPut, headers);
-
-		StringEntity stringEntity = new StringEntity(json, _CHARSET);
-
-		stringEntity.setContentType("application/json");
-
-		httpPut.setEntity(stringEntity);
-
-		return execute(httpPut);
-	}
-
-	public String get(
-			String url, Map<String, String> parameters,
-			Map<String, String> headers)
-		throws PortalException {
-
-		try {
-			if (!parameters.isEmpty()) {
-				String queryString = URLEncodedUtils.format(
-					toNameValuePairs(parameters), _CHARSET);
-
-				url += "?" + queryString;
-			}
-
-			HttpGet httpGet = new HttpGet(Http.HTTPS_WITH_SLASH + url);
-
-			addHeaders(httpGet, headers);
-
-			HttpClient httpClient = new DefaultHttpClient();
-
-			HttpResponse httpResponse = httpClient.execute(httpGet);
-
-			setResponseHeaders(httpResponse);
-
-			return EntityUtils.toString(httpResponse.getEntity());
-		}
-		catch (Exception e) {
-			throw new PortalException(e);
-		}
-	}
-
 	@Override
 	public Set<String> getCollaborators() throws PortalException {
-		Query query = queryFactory.createQuery();
+		Query query = _queryFactory.createQuery();
 
 		query.setPerPage(100);
 
@@ -183,7 +136,7 @@ public class GitHubWebServiceImpl
 		while (page > 0) {
 			query.setPage(page);
 
-			SearchHits<String> searchHits = searchCollaborators(query);
+			SearchHits<String> searchHits = _searchCollaborators(query);
 
 			collaborators.addAll(searchHits.getResults());
 
@@ -208,62 +161,6 @@ public class GitHubWebServiceImpl
 		}
 	}
 
-	public void setResponseHeaders(HttpResponse httpResponse) {
-		Map<String, String> responseHeaders = new HashMap<>();
-
-		for (Header header : httpResponse.getAllHeaders()) {
-			responseHeaders.put(header.getName(), header.getValue());
-		}
-
-		_responseHeaders = responseHeaders;
-	}
-
-	public String toCollaborator(JSONObject jsonObject) throws PortalException {
-		return jsonObject.getString("login");
-	}
-
-	public List<String> toCollaborators(JSONArray jsonArray)
-		throws PortalException {
-
-		List<String> collaborators = new ArrayList<>();
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			collaborators.add(toCollaborator(jsonObject));
-		}
-
-		return collaborators;
-	}
-
-	public SearchHits<String> toCollaboratorSearchHits(JSONArray jsonArray)
-		throws PortalException {
-
-		SearchHits<String> searchHits = new SearchHitsImpl<>();
-
-		JSONObject jsonObject = _getPageURLs();
-
-		String nextPageURL = jsonObject.getString("next");
-
-		if (Validator.isNotNull(nextPageURL)) {
-			String nextPage = _http.getParameter(nextPageURL, "page", false);
-
-			searchHits.setNextPage(GetterUtil.getInteger(nextPage));
-		}
-
-		searchHits.setResults(toCollaborators(jsonArray));
-
-		return searchHits;
-	}
-
-	protected void addHeaders(
-		HttpMessage httpMessage, Map<String, String> headers) {
-
-		for (Map.Entry<String, String> entry : headers.entrySet()) {
-			httpMessage.addHeader(entry.getKey(), entry.getValue());
-		}
-	}
-
 	@Override
 	protected String execute(HttpRequestBase httpRequestBase)
 		throws JSONWebServiceInvocationException,
@@ -281,32 +178,65 @@ public class GitHubWebServiceImpl
 		return super.execute(httpRequestBase);
 	}
 
-	protected SearchHits<String> searchCollaborators(Query query)
+	@Override
+	protected void signRequest(HttpRequestBase httpRequestBase) {
+	}
+
+	private void _addHeaders(
+		HttpMessage httpMessage, Map<String, String> headers) {
+
+		for (Map.Entry<String, String> entry : headers.entrySet()) {
+			httpMessage.addHeader(entry.getKey(), entry.getValue());
+		}
+	}
+
+	private String _doPutAsJSON(
+			String url, String json, Map<String, String> headers)
+		throws JSONWebServiceInvocationException,
+			   JSONWebServiceTransportException {
+
+		HttpPut httpPut = new HttpPut(url);
+
+		addHeaders(httpPut, headers);
+
+		StringEntity stringEntity = new StringEntity(json, _CHARSET);
+
+		stringEntity.setContentType("application/json");
+
+		httpPut.setEntity(stringEntity);
+
+		return execute(httpPut);
+	}
+
+	private String _get(
+			String url, Map<String, String> parameters,
+			Map<String, String> headers)
 		throws PortalException {
 
 		try {
-			String url =
-				GitHubConfigurationValues.REMOTE_REST_SERVICE_API_GITHUB_HOST +
-					_URL_GITHUB_REPOSITORY_COLLABORATORS;
+			if (!parameters.isEmpty()) {
+				String queryString = URLEncodedUtils.format(
+					toNameValuePairs(parameters), _CHARSET);
 
-			String response = get(url, query.getParameters(), _headers);
+				url += "?" + queryString;
+			}
 
-			JSONArray responseJSONArray = JSONFactoryUtil.createJSONArray(
-				response);
+			HttpGet httpGet = new HttpGet(Http.HTTPS_WITH_SLASH + url);
 
-			return toCollaboratorSearchHits(responseJSONArray);
+			addHeaders(httpGet, headers);
+
+			HttpClient httpClient = new DefaultHttpClient();
+
+			HttpResponse httpResponse = httpClient.execute(httpGet);
+
+			_setResponseHeaders(httpResponse);
+
+			return EntityUtils.toString(httpResponse.getEntity());
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
 		}
 	}
-
-	@Override
-	protected void signRequest(HttpRequestBase httpRequestBase) {
-	}
-
-	@Reference
-	protected QueryFactory queryFactory;
 
 	private JSONObject _getPageURLs() {
 		String headerValue = _responseHeaders.get(GitHubHttpHeaders.LINK);
@@ -381,6 +311,76 @@ public class GitHubWebServiceImpl
 		return jsonObject;
 	}
 
+	private SearchHits<String> _searchCollaborators(Query query)
+		throws PortalException {
+
+		try {
+			String url =
+				GitHubConfigurationValues.REMOTE_REST_SERVICE_API_GITHUB_HOST +
+					_URL_GITHUB_REPOSITORY_COLLABORATORS;
+
+			String response = _get(url, query.getParameters(), _headers);
+
+			JSONArray responseJSONArray = JSONFactoryUtil.createJSONArray(
+				response);
+
+			return _toCollaboratorSearchHits(responseJSONArray);
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
+	}
+
+	private void _setResponseHeaders(HttpResponse httpResponse) {
+		Map<String, String> responseHeaders = new HashMap<>();
+
+		for (Header header : httpResponse.getAllHeaders()) {
+			responseHeaders.put(header.getName(), header.getValue());
+		}
+
+		_responseHeaders = responseHeaders;
+	}
+
+	private String _toCollaborator(JSONObject jsonObject)
+		throws PortalException {
+
+		return jsonObject.getString("login");
+	}
+
+	private List<String> _toCollaborators(JSONArray jsonArray)
+		throws PortalException {
+
+		List<String> collaborators = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			collaborators.add(_toCollaborator(jsonObject));
+		}
+
+		return collaborators;
+	}
+
+	private SearchHits<String> _toCollaboratorSearchHits(JSONArray jsonArray)
+		throws PortalException {
+
+		SearchHits<String> searchHits = new SearchHitsImpl<>();
+
+		JSONObject jsonObject = _getPageURLs();
+
+		String nextPageURL = jsonObject.getString("next");
+
+		if (Validator.isNotNull(nextPageURL)) {
+			String nextPage = _http.getParameter(nextPageURL, "page", false);
+
+			searchHits.setNextPage(GetterUtil.getInteger(nextPage));
+		}
+
+		searchHits.setResults(_toCollaborators(jsonArray));
+
+		return searchHits;
+	}
+
 	private static final Charset _CHARSET = Charset.forName("UTF-8");
 
 	private static final String _URL_GITHUB_REPOSITORY_COLLABORATORS =
@@ -408,6 +408,9 @@ public class GitHubWebServiceImpl
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private QueryFactory _queryFactory;
 
 	private Map<String, String> _responseHeaders = Collections.emptyMap();
 
