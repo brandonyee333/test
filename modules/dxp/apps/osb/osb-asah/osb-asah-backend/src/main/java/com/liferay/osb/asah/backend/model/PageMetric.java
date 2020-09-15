@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -369,12 +370,12 @@ public class PageMetric implements AssetMetric {
 		sb.append(" for page with title ");
 		sb.append(_assetTitle);
 
-		if (!_canonicalUrls.isEmpty()) {
+		if (CollectionUtils.isNotEmpty(_canonicalUrls)) {
 			sb.append(", canonical URL ");
 			sb.append(_canonicalUrls.get(0));
 		}
 
-		if (!_urls.isEmpty()) {
+		if (CollectionUtils.isNotEmpty(_urls)) {
 			sb.append(" and URL ");
 			sb.append(_urls.get(0));
 		}
