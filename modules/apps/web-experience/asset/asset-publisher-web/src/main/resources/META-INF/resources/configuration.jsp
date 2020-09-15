@@ -269,7 +269,7 @@ List<AssetRendererFactory<?>> classTypesAssetRendererFactories = new ArrayList<>
 
 			var currentTarget = $(event.currentTarget);
 
-			var searchContainerName = '<portlet:namespace/>groupsSearchContainer';
+			var searchContainerName = '<portlet:namespace />groupsSearchContainer';
 
 			var searchContainer = Liferay.SearchContainer.get(searchContainerName);
 

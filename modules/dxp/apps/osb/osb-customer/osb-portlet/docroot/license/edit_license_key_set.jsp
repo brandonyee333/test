@@ -250,7 +250,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 </div>
 
 <aui:script>
-	function <portlet:namespace/>renewLicenseKey(licenseKeyId) {
+	function <portlet:namespace />renewLicenseKey(licenseKeyId) {
 		document.<portlet:namespace />fm.<portlet:namespace />licenseKeyId.value = licenseKeyId;
 		document.<portlet:namespace />fm.<portlet:namespace />redirect.value = '<%= currentURL %>';
 

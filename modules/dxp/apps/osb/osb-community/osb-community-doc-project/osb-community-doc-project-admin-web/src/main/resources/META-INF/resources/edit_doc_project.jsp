@@ -196,8 +196,8 @@ renderResponse.setTitle(headerTitle);
 				A.one('.doc-project-type-url').hide();
 			}
 			else if (event.currentTarget.val() === "url") {
-				A.one('#<portlet:namespace/>headerGradientEndColor').val('#ffffff');
-				A.one('#<portlet:namespace/>headerGradientStartColor').val('#ffffff');
+				A.one('#<portlet:namespace />headerGradientEndColor').val('#ffffff');
+				A.one('#<portlet:namespace />headerGradientStartColor').val('#ffffff');
 
 				A.one('.doc-project-type-site').hide();
 				A.one('.doc-project-type-url').show();
