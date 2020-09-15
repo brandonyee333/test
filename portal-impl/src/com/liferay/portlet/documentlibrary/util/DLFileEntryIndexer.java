@@ -72,6 +72,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -80,11 +81,15 @@ import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.documentlibrary.service.permission.DLFileEntryPermission;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
 import com.liferay.trash.kernel.util.TrashUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+
+import java.lang.reflect.Method;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -384,9 +389,7 @@ public class DLFileEntryIndexer
 			}
 
 			if (indexContent) {
-				DLFileVersion fileVersion = dlFileEntry.getFileVersion();
-
-				is = fileVersion.getContentStream(false);
+				is = _getContentStream(dlFileEntry.getFileVersion());
 			}
 		}
 		catch (Exception e) {
@@ -721,6 +724,33 @@ public class DLFileEntryIndexer
 			});
 
 		actionableDynamicQuery.performActions();
+	}
+
+	private InputStream _getContentStream(DLFileVersion dlFileVersion)
+		throws PortalException {
+
+		try {
+			Registry registry = RegistryUtil.getRegistry();
+
+			Object inputStreamSanitizer = registry.getService(
+				"com.liferay.document.library.security.io." +
+					"InputStreamSanitizer");
+
+			Method sanitizeMethod = ReflectionUtil.getDeclaredMethod(
+				inputStreamSanitizer.getClass(), "sanitize",
+				InputStream.class);
+
+			return (InputStream)sanitizeMethod.invoke(
+				inputStreamSanitizer, dlFileVersion.getContentStream(false));
+		}
+		catch (PortalException portalException) {
+			throw portalException;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return null;
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
