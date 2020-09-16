@@ -79,13 +79,13 @@ public class ActivitiesRestControllerTest {
 
 	@Test
 	public void testGetActivityTransformations1() throws Exception {
-		JSONObject jsonObject = JSONUtil.put(
-			"day", DateUtil.newDateString()
-		).put(
-			"userId", "311355742999294554"
-		);
-
-		_elasticsearchInvoker.add("activities", jsonObject);
+		_elasticsearchInvoker.add(
+			"activities",
+			JSONUtil.put(
+				"day", DateUtil.newDateString()
+			).put(
+				"userId", "311355742999294554"
+			));
 
 		JSONObject activityTransformationsJSONObject = new JSONObject(
 			_activitiesRestController.getActivityTransformations(
@@ -106,13 +106,13 @@ public class ActivitiesRestControllerTest {
 
 	@Test
 	public void testGetActivityTransformations2() throws Exception {
-		JSONObject jsonObject = JSONUtil.put(
-			"day", DateUtil.newDateString()
-		).put(
-			"userId", "311355742999294554"
-		);
-
-		_elasticsearchInvoker.add("activities", jsonObject);
+		_elasticsearchInvoker.add(
+			"activities",
+			JSONUtil.put(
+				"day", DateUtil.newDateString()
+			).put(
+				"userId", "311355742999294554"
+			));
 
 		JSONObject activityTransformationsJSONObject = new JSONObject(
 			_activitiesRestController.getActivityTransformations(

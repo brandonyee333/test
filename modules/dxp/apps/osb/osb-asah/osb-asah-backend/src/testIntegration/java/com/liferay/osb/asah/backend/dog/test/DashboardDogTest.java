@@ -46,9 +46,7 @@ public class DashboardDogTest {
 	)
 	@Test
 	public void testDashboardNotFound() {
-		Dashboard dashboard = _dashboardDog.getDashboard("0");
-
-		Assert.assertNull(dashboard);
+		Assert.assertNull(_dashboardDog.getDashboard("0"));
 	}
 
 	@ElasticsearchIndex(
