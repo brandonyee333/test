@@ -143,8 +143,7 @@ public class AssignCanonicalUrlArm {
 
 		return _getSearchResponse(
 			collectionName, _faroInfoElasticsearchInvoker, "url",
-			BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.existsQuery("canonicalUrl")));
+			QueryBuilders.termQuery("canonicalUrl", ""));
 	}
 
 	@PostConstruct
@@ -270,8 +269,8 @@ public class AssignCanonicalUrlArm {
 		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termsQuery("url", url)
-			).mustNot(
-				QueryBuilders.termsQuery("canonicalUrl", canonicalUrl)
+			).filter(
+				QueryBuilders.termsQuery("canonicalUrl", "")
 			),
 			true,
 			new Script(
