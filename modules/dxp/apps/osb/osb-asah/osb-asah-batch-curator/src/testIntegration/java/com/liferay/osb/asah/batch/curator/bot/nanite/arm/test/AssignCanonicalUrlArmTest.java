@@ -17,6 +17,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.arm.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignCanonicalUrlArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignTempUrlsArm;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -27,7 +28,6 @@ import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -69,13 +69,19 @@ public class AssignCanonicalUrlArmTest {
 		JSONArray pagesJSONArray = new JSONArray();
 		JSONArray visitedPagesJSONArray = new JSONArray();
 
-		for (int i = 0; i < 1200; i++) {
+		for (int i = 0; i < 200; i++) {
 			String uuid = RandomTestUtil.randomUUID();
 
 			String url = "http://foo.com/" + uuid;
 
 			activitiesJSONArray.put(
-				JSONUtil.put("object", JSONUtil.put("url", url)));
+				JSONUtil.put(
+					"object",
+					JSONUtil.put(
+						"canonicalUrl", ""
+					).put(
+						"url", url
+					)));
 			analyticsEventsJSONArray.put(
 				JSONUtil.put(
 					"context",
@@ -88,17 +94,36 @@ public class AssignCanonicalUrlArmTest {
 			if ((RandomTestUtil.randomNumber() % 10) == 0) {
 				blogsJSONArray.put(
 					JSONUtil.put(
-						"urls",
-						JSONUtil.putAll(url, RandomTestUtil.randomURL())));
+						"canonicalUrls", JSONUtil.putAll("")
+					).put(
+						"urls", JSONUtil.putAll(url, RandomTestUtil.randomURL())
+					));
 				journalsJSONArray.put(
 					JSONUtil.put(
-						"urls",
-						JSONUtil.putAll(url, RandomTestUtil.randomURL())));
-				pageReferrersJSONArray.put(JSONUtil.put("url", url));
+						"canonicalUrls", JSONUtil.putAll("")
+					).put(
+						"urls", JSONUtil.putAll(url, RandomTestUtil.randomURL())
+					));
+				pageReferrersJSONArray.put(
+					JSONUtil.put(
+						"canonicalUrl", ""
+					).put(
+						"url", url
+					));
 			}
 
-			pagesJSONArray.put(JSONUtil.put("url", url));
-			visitedPagesJSONArray.put(JSONUtil.put("url", url));
+			pagesJSONArray.put(
+				JSONUtil.put(
+					"canonicalUrl", ""
+				).put(
+					"url", url
+				));
+			visitedPagesJSONArray.put(
+				JSONUtil.put(
+					"canonicalUrl", ""
+				).put(
+					"url", url
+				));
 		}
 
 		_faroInfoElasticsearchInvoker.add("activities", activitiesJSONArray);
@@ -120,113 +145,37 @@ public class AssignCanonicalUrlArmTest {
 			activitiesJSONArray.length(),
 			_faroInfoElasticsearchInvoker.count(
 				"activities",
-				QueryBuilders.existsQuery("object.canonicalUrl")));
+				QueryBuilders.regexpQuery("object.canonicalUrl", ".+")));
 		Assert.assertEquals(
 			blogsJSONArray.length(),
 			_cerebroInfoElasticsearchInvoker.count(
-				"blogs", QueryBuilders.existsQuery("canonicalUrls")));
+				"blogs",
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.termQuery("canonicalUrls", ""))));
 		Assert.assertEquals(
 			journalsJSONArray.length(),
 			_cerebroInfoElasticsearchInvoker.count(
-				"journals", QueryBuilders.existsQuery("canonicalUrls")));
+				"journals",
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.termQuery("canonicalUrls", ""))));
 		Assert.assertEquals(
 			pageReferrersJSONArray.length(),
 			_cerebroInfoElasticsearchInvoker.count(
-				"page-referrers", QueryBuilders.existsQuery("canonicalUrl")));
+				"page-referrers",
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.termQuery("canonicalUrl", ""))));
 		Assert.assertEquals(
 			pagesJSONArray.length(),
 			_cerebroInfoElasticsearchInvoker.count(
-				"pages", QueryBuilders.existsQuery("canonicalUrl")));
+				"pages",
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.termQuery("canonicalUrl", ""))));
 		Assert.assertEquals(
 			visitedPagesJSONArray.length(),
 			_faroInfoElasticsearchInvoker.count(
-				"visited-pages", QueryBuilders.existsQuery("canonicalUrl")));
-	}
-
-	@Test
-	public void testAssetMissingTempUrls() {
-		String canonicalUrl =
-			"http://foo.com/canonical/" + RandomTestUtil.randomUUID();
-		String url = "http://foo.com/?foo=" + RandomTestUtil.randomUUID();
-
-		_cerebroRawElasticsearchInvoker.add(
-			"analytics-events",
-			JSONUtil.put(
-				"context",
-				JSONUtil.put(
-					"canonicalUrl", canonicalUrl
-				).put(
-					"url", url
-				)));
-		_cerebroInfoElasticsearchInvoker.add(
-			"blogs", JSONUtil.put("urls", JSONUtil.putAll(url)));
-		_cerebroInfoElasticsearchInvoker.add("pages", JSONUtil.put("url", url));
-
-		_assignTempUrlsArm.execute();
-
-		_assignCanonicalUrlArm.execute();
-
-		JSONArray blogsJSONArray = _cerebroInfoElasticsearchInvoker.get(
-			"blogs");
-
-		Assert.assertEquals(1, blogsJSONArray.length());
-
-		JSONObject blogJSONObject = blogsJSONArray.getJSONObject(0);
-
-		JSONArray canonicalUrlsJSONArray = blogJSONObject.getJSONArray(
-			"canonicalUrls");
-
-		Assert.assertEquals(1, canonicalUrlsJSONArray.length());
-		Assert.assertEquals(canonicalUrl, canonicalUrlsJSONArray.getString(0));
-	}
-
-	@Test
-	public void testAssetSameCanonicalUrl() {
-		JSONArray analyticsEventsJSONArray = new JSONArray();
-		JSONArray urlsJSONArray = new JSONArray();
-
-		String canonicalUrl =
-			"http://foo.com/canonical/" + RandomTestUtil.randomUUID();
-
-		for (int i = 0; i < 1200; i++) {
-			String url = "http://foo.com/?foo=" + RandomTestUtil.randomUUID();
-
-			analyticsEventsJSONArray.put(
-				JSONUtil.put(
-					"context",
-					JSONUtil.put(
-						"canonicalUrl", canonicalUrl
-					).put(
-						"url", url
-					)));
-
-			urlsJSONArray.put(url);
-		}
-
-		_cerebroRawElasticsearchInvoker.add(
-			"analytics-events", analyticsEventsJSONArray);
-		_cerebroInfoElasticsearchInvoker.add(
-			"blogs",
-			JSONUtil.put(
-				"tempUrls", urlsJSONArray
-			).put(
-				"urls", urlsJSONArray
-			));
-
-		_assignCanonicalUrlArm.execute();
-
-		JSONArray blogsJSONArray = _cerebroInfoElasticsearchInvoker.get(
-			"blogs");
-
-		Assert.assertEquals(1, blogsJSONArray.length());
-
-		JSONObject blogJSONObject = blogsJSONArray.getJSONObject(0);
-
-		JSONArray canonicalUrlsJSONArray = blogJSONObject.getJSONArray(
-			"canonicalUrls");
-
-		Assert.assertEquals(1, canonicalUrlsJSONArray.length());
-		Assert.assertEquals(canonicalUrl, canonicalUrlsJSONArray.getString(0));
+				"visited-pages",
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.termQuery("canonicalUrl", ""))));
 	}
 
 	@Autowired
