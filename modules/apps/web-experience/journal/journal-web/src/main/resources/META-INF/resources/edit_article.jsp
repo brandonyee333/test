@@ -205,8 +205,6 @@ request.setAttribute("edit_article.jsp-changeStructure", changeStructure);
 			availableLocalesSet.addAll(ddmFormValues.getAvailableLocales());
 		}
 	}
-
-	Locale[] availableLocales = availableLocalesSet.toArray(new Locale[0]);
 	%>
 
 	<div class="lfr-form-content">
@@ -236,7 +234,7 @@ request.setAttribute("edit_article.jsp-changeStructure", changeStructure);
 			</liferay-frontend:info-bar>
 		</c:if>
 
-		<aui:translation-manager availableLocales="<%= availableLocales %>" changeableDefaultLanguage="<%= changeableDefaultLanguage %>" defaultLanguageId="<%= defaultLanguageId %>" id="translationManager" />
+		<aui:translation-manager availableLocales="<%= availableLocalesSet.toArray(new Locale[0]) %>" changeableDefaultLanguage="<%= changeableDefaultLanguage %>" defaultLanguageId="<%= defaultLanguageId %>" id="translationManager" />
 
 		<%
 		boolean approved = false;

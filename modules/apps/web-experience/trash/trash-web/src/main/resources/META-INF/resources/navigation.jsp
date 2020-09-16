@@ -16,10 +16,6 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-String redirect = ParamUtil.getString(request, "redirect");
-%>
-
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
 	<portlet:renderURL var="mainURL" />
 
@@ -32,7 +28,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 		<aui:form action="<%= searchURL.toString() %>" method="get" name="searchFm">
 			<liferay-portlet:renderURLParams varImpl="searchURL" />
-			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+			<aui:input name="redirect" type="hidden" value='<%= ParamUtil.getString(request, "redirect") %>' />
 			<aui:input name="deleteTrashEntryIds" type="hidden" />
 			<aui:input name="restoreTrashEntryIds" type="hidden" />
 

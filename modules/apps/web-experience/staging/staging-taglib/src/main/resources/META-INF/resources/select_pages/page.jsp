@@ -78,11 +78,6 @@
 
 		<li class="layout-selector-options">
 			<aui:fieldset label='<%= "pages-to-" + action %>'>
-
-				<%
-				long selPlid = ParamUtil.getLong(request, "selPlid", LayoutConstants.DEFAULT_PLID);
-				%>
-
 				<c:choose>
 					<c:when test="<%= disableInputs %>">
 						<liferay-util:buffer
@@ -127,7 +122,7 @@
 								rootNodeName="<%= group.getLayoutRootNodeName(privateLayout, locale) %>"
 								selectableTree="<%= true %>"
 								selectedLayoutIds="<%= selectedLayoutIds %>"
-								selPlid="<%= selPlid %>"
+								selPlid='<%= ParamUtil.getLong(request, "selPlid", LayoutConstants.DEFAULT_PLID) %>'
 								treeId="<%= treeId %>"
 							/>
 						</div>

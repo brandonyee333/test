@@ -19,20 +19,18 @@
 <%
 String confirmMessage = (String)request.getAttribute("liferay-trash:empty:confirmMessage");
 String emptyMessage = (String)request.getAttribute("liferay-trash:empty:emptyMessage");
-String infoMessage = (String)request.getAttribute("liferay-trash:empty:infoMessage");
-String portletURL = (String)request.getAttribute("liferay-trash:empty:portletURL");
 int totalEntries = GetterUtil.getInteger(request.getAttribute("liferay-trash:empty:totalEntries"));
 %>
 
 <c:if test="<%= totalEntries > 0 %>">
 	<div class="alert alert-info taglib-trash-empty">
-		<aui:form action="<%= portletURL %>" name="emptyForm">
+		<aui:form action='<%= (String)request.getAttribute("liferay-trash:empty:portletURL") %>' name="emptyForm">
 
 			<%
 			String trashEntriesMaxAgeTimeDescription = LanguageUtil.getTimeDescription(locale, TrashUtil.getMaxAge(themeDisplay.getScopeGroup()) * Time.MINUTE, true);
 			%>
 
-			<liferay-ui:message arguments="<%= StringUtil.toLowerCase(trashEntriesMaxAgeTimeDescription) %>" key="<%= infoMessage %>" translateArguments="<%= false %>" />
+			<liferay-ui:message arguments="<%= StringUtil.toLowerCase(trashEntriesMaxAgeTimeDescription) %>" key='<%= (String)request.getAttribute("liferay-trash:empty:infoMessage") %>' translateArguments="<%= false %>" />
 
 			<aui:a cssClass="alert-link trash-empty-link" href="javascript:;" id="empty" label="<%= emptyMessage %>" />
 
