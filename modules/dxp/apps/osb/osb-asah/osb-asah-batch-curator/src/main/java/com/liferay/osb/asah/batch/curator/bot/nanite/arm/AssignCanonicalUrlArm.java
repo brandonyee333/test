@@ -28,6 +28,7 @@ import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -189,14 +190,22 @@ public class AssignCanonicalUrlArm {
 
 				JSONObject jsonObject = _cerebroRawElasticsearchInvoker.fetch(
 					"analytics-events",
-					QueryBuilders.termsQuery("context.url", url), null,
-					"context.canonicalUrl");
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery("context.url", url)
+					).mustNot(
+						QueryBuilders.termQuery("context.canonicalUrl", "")
+					),
+					null, "context.canonicalUrl");
 
-				String canonicalUrl = url;
+				String canonicalUrl = null;
 
 				if (jsonObject != null) {
 					canonicalUrl = String.valueOf(
 						jsonObject.query("/context/canonicalUrl"));
+				}
+
+				if (StringUtils.isBlank(canonicalUrl)) {
+					canonicalUrl = url;
 				}
 
 				canonicalUrlSetterBiConsumer.accept(canonicalUrl, url);
