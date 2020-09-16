@@ -19,7 +19,6 @@
 <%
 long categoryId = ParamUtil.getLong(request, "categoryId");
 String navItemSelected = ParamUtil.getString(request, "navItemSelected");
-Boolean showSearchFm = GetterUtil.getBoolean(ParamUtil.getString(request, "showSearchFm"), Boolean.FALSE);
 %>
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
@@ -51,7 +50,7 @@ Boolean showSearchFm = GetterUtil.getBoolean(ParamUtil.getString(request, "showS
 		<aui:nav-item href="<%= bannedUsersURL.toString() %>" label="banned-users" selected='<%= navItemSelected.equals("banned-users") %>' />
 	</aui:nav>
 
-	<c:if test="<%= showSearchFm %>">
+	<c:if test='<%= GetterUtil.getBoolean(ParamUtil.getString(request, "showSearchFm"), Boolean.FALSE) %>'>
 		<liferay-portlet:renderURL varImpl="searchURL">
 			<portlet:param name="mvcRenderCommandName" value="/message_boards_admin/search" />
 		</liferay-portlet:renderURL>

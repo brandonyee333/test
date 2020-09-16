@@ -107,22 +107,14 @@ if (portletTitleBasedNavigation) {
 					<liferay-ui:message key="you-can-create-a-shortcut-to-any-document-that-you-have-read-access-for" />
 				</div>
 
-				<%
-				String toGroupName = toGroup.getDescriptiveName(locale);
-				%>
-
 				<div class="form-group">
-					<aui:input label="site" name="toGroupName" type="resource" value="<%= toGroupName %>" />
+					<aui:input label="site" name="toGroupName" type="resource" value="<%= toGroup.getDescriptiveName(locale) %>" />
 
 					<aui:button name="selectGroupButton" value="select" />
 				</div>
 
-				<%
-				String toFileEntryTitle = BeanPropertiesUtil.getString(toFileEntry, "title");
-				%>
-
 				<div class="form-group">
-					<aui:input label="document" name="toFileEntryTitle" type="resource" value="<%= toFileEntryTitle %>" />
+					<aui:input label="document" name="toFileEntryTitle" type="resource" value='<%= BeanPropertiesUtil.getString(toFileEntry, "title") %>' />
 
 					<aui:button name="selectToFileEntryButton" value="select" />
 				</div>

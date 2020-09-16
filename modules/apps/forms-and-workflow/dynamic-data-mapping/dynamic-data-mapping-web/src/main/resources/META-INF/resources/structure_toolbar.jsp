@@ -20,14 +20,13 @@
 SearchContainer searchContainer = (SearchContainer)request.getAttribute(WebKeys.SEARCH_CONTAINER);
 
 long classPK = ParamUtil.getLong(request, "classPK");
-String eventName = ParamUtil.getString(request, "eventName", "selectStructure");
 String scopedLabel = Validator.isNull(scopeTitle) ? ddmDisplay.getTitle(locale) : scopeTitle;
 %>
 
 <liferay-portlet:renderURL copyCurrentRenderParameters="<%= false %>" varImpl="searchURL">
 	<portlet:param name="mvcPath" value="/select_structure.jsp" />
 	<portlet:param name="classPK" value="<%= String.valueOf(classPK) %>" />
-	<portlet:param name="eventName" value="<%= eventName %>" />
+	<portlet:param name="eventName" value='<%= ParamUtil.getString(request, "eventName", "selectStructure") %>' />
 </liferay-portlet:renderURL>
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
