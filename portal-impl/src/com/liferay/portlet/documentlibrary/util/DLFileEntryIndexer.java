@@ -389,7 +389,7 @@ public class DLFileEntryIndexer
 			}
 
 			if (indexContent) {
-				is = _getContentStream(dlFileEntry.getFileVersion());
+				is = _getContentInputStream(dlFileEntry.getFileVersion());
 			}
 		}
 		catch (Exception e) {
@@ -726,7 +726,7 @@ public class DLFileEntryIndexer
 		actionableDynamicQuery.performActions();
 	}
 
-	private InputStream _getContentStream(DLFileVersion dlFileVersion)
+	private InputStream _getContentInputStream(DLFileVersion dlFileVersion)
 		throws PortalException {
 
 		try {
