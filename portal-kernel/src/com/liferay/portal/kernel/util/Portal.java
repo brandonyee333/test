@@ -1056,7 +1056,9 @@ public interface Portal {
 
 	public PreferencesValidator getPreferencesValidator(Portlet portlet);
 
-	public String getRelativeHomeURL(HttpServletRequest request)
+	public String getQueryString(HttpServletRequest httpServletRequest);
+
+	public String getRelativeHomeURL(HttpServletRequest httpServletRequest)
 		throws PortalException;
 
 	public ResourceBundle getResourceBundle(Locale locale);
