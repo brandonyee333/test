@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 
@@ -34,12 +33,10 @@ public class AssignTempUrlsArm {
 
 	public void execute() {
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.existsQuery("canonicalUrls")
-			).mustNot(
-				QueryBuilders.existsQuery("tempUrls")
-			),
-			true, new Script("ctx._source.tempUrls = ctx._source.urls"),
+			QueryBuilders.termQuery("canonicalUrls", ""), true,
+			new Script(
+				"ctx._source.tempUrls = ctx._source.urls;" +
+					"ctx._source.canonicalUrls = []"),
 			_ASSET_COLLECTION_NAMES);
 	}
 
