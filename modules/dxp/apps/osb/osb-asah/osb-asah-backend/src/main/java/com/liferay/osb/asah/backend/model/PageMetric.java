@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.backend.model.util.MetricUtil;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
@@ -93,6 +96,11 @@ public class PageMetric implements AssetMetric {
 	@Override
 	public String getAssetType() {
 		return AssetType.PAGE.getValue();
+	}
+
+	@Override
+	public Set<Metric> getAvailableMetrics() {
+		return MetricUtil.getAvailableMetrics(this);
 	}
 
 	public Metric getAvgTimeOnPageMetric() {

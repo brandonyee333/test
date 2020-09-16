@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.backend.model.util.MetricUtil;
+
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Matthew Kong
@@ -72,6 +75,11 @@ public class IndividualMetric implements AssetMetric {
 	@Override
 	public String getAssetType() {
 		return AssetType.INDIVIDUAL_METRIC.getValue();
+	}
+
+	@Override
+	public Set<Metric> getAvailableMetrics() {
+		return MetricUtil.getAvailableMetrics(this);
 	}
 
 	@Override

@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.backend.model.util.MetricUtil;
+
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Inácio Nery
@@ -66,6 +69,11 @@ public class JournalMetric implements AssetMetric {
 	@Override
 	public String getAssetType() {
 		return AssetType.JOURNAL.getValue();
+	}
+
+	@Override
+	public Set<Metric> getAvailableMetrics() {
+		return MetricUtil.getAvailableMetrics(this);
 	}
 
 	@Override

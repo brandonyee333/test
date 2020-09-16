@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.backend.model.util.MetricUtil;
+
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Marcellus Tavares
@@ -76,6 +79,11 @@ public class FormMetric implements AssetMetric {
 	@Override
 	public String getAssetType() {
 		return AssetType.FORM.getValue();
+	}
+
+	@Override
+	public Set<Metric> getAvailableMetrics() {
+		return MetricUtil.getAvailableMetrics(this);
 	}
 
 	@Override
