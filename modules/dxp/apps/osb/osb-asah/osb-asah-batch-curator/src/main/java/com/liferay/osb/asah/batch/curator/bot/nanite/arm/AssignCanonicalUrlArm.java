@@ -87,7 +87,7 @@ public class AssignCanonicalUrlArm {
 		return _getSearchResponse(
 			collectionName, _faroInfoElasticsearchInvoker, "object.url",
 			BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.existsQuery("object.canonicalUrl")));
+				QueryBuilders.regexpQuery("object.canonicalUrl", ".+")));
 	}
 
 	private SearchResponse _getAssetsSearchResponse(String collectionName) {
@@ -217,7 +217,7 @@ public class AssignCanonicalUrlArm {
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termsQuery("object.url", url)
 			).mustNot(
-				QueryBuilders.termsQuery("object.canonicalUrl", canonicalUrl)
+				QueryBuilders.regexpQuery("object.canonicalUrl", ".+")
 			),
 			true,
 			new Script(
