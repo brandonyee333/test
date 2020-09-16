@@ -214,7 +214,7 @@ public class AssignCanonicalUrlArm {
 	private void _updateActivities(String canonicalUrl, String url) {
 		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("object.url", url)
+				QueryBuilders.termQuery("object.url", url)
 			).mustNot(
 				QueryBuilders.regexpQuery("object.canonicalUrl", ".+")
 			),
@@ -231,7 +231,7 @@ public class AssignCanonicalUrlArm {
 
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("urls", url)
+				QueryBuilders.termQuery("urls", url)
 			).filter(
 				QueryBuilders.scriptQuery(_ASSET_QUERY_SCRIPT)
 			),
@@ -253,9 +253,9 @@ public class AssignCanonicalUrlArm {
 
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("url", url)
+				QueryBuilders.termQuery("url", url)
 			).filter(
-				QueryBuilders.termsQuery("canonicalUrl", "")
+				QueryBuilders.termQuery("canonicalUrl", "")
 			),
 			true,
 			new Script(
@@ -268,9 +268,9 @@ public class AssignCanonicalUrlArm {
 	private void _updateVisitedPages(String canonicalUrl, String url) {
 		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("url", url)
+				QueryBuilders.termQuery("url", url)
 			).filter(
-				QueryBuilders.termsQuery("canonicalUrl", "")
+				QueryBuilders.termQuery("canonicalUrl", "")
 			),
 			true,
 			new Script(
