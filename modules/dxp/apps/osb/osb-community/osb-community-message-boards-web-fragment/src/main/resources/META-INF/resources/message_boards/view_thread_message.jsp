@@ -20,11 +20,8 @@
 
 <%
 MBCategory category = (MBCategory)request.getAttribute("edit_message.jsp-category");
-Boolean editable = (Boolean)request.getAttribute("edit_message.jsp-editable");
 MBMessage message = (MBMessage)request.getAttribute("edit_message.jsp-message");
 Boolean showDeletedAttachmentsFileEntries = (Boolean)request.getAttribute("edit-message.jsp-showDeletedAttachmentsFileEntries");
-Boolean showPermanentLink = (Boolean)request.getAttribute("edit-message.jsp-showPermanentLink");
-Boolean showRecentPosts = (Boolean)request.getAttribute("edit-message.jsp-showRecentPosts");
 MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 %>
 
@@ -62,7 +59,7 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 
 				<h4 title="<%= HtmlUtil.escape(message.getSubject()) %>">
 					<c:choose>
-						<c:when test="<%= showPermanentLink %>">
+						<c:when test='<%= (Boolean)request.getAttribute("edit-message.jsp-showPermanentLink") %>'>
 							<a href="#<portlet:namespace />message_<%= message.getMessageId() %>" title="<liferay-ui:message key="permanent-link-to-this-item" />">
 								<%= HtmlUtil.escape(message.getSubject()) %>
 							</a>
@@ -106,7 +103,7 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 						<span><liferay-ui:message key="join-date" />:</span> <%= dateFormatDate.format(messageUser.getCreateDate()) %>
 					</span>
 
-					<c:if test="<%= showRecentPosts %>">
+					<c:if test='<%= (Boolean)request.getAttribute("edit-message.jsp-showRecentPosts") %>'>
 						<portlet:renderURL var="recentPostsURL">
 							<portlet:param name="mvcRenderCommandName" value="/message_boards/view_recent_posts" />
 							<portlet:param name="redirect" value="<%= currentURL %>" />
@@ -191,7 +188,7 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 			</div>
 
 			<div class="card-col-field">
-				<c:if test="<%= editable %>">
+				<c:if test='<%= (Boolean)request.getAttribute("edit_message.jsp-editable") %>'>
 
 					<%
 					boolean hasDeletePermission = !thread.isLocked() && (thread.getMessageCount() > 1) && MBMessagePermission.contains(permissionChecker, message, ActionKeys.DELETE);

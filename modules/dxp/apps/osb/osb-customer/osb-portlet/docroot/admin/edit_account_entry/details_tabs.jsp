@@ -105,17 +105,12 @@ for (SupportRegion supportRegion : supportRegions) {
 			<div class="hide tab-content-tab" id="<portlet:namespace />projectMessagesContent">
 				<c:choose>
 					<c:when test="<%= corpProjectId > 0 %>">
-
-						<%
-						List<CorpProjectMessage> corpProjectMessages = CorpProjectMessageLocalServiceUtil.getCorpProjectMessages(corpProjectId);
-						%>
-
 						<liferay-ui:search-container
 							emptyResultsMessage="there-are-no-messages"
 							headerNames="message,type,severity,display-cp,display-lcs"
 						>
 							<liferay-ui:search-container-results
-								results="<%= corpProjectMessages %>"
+								results="<%= CorpProjectMessageLocalServiceUtil.getCorpProjectMessages(corpProjectId) %>"
 							/>
 
 							<liferay-ui:search-container-row

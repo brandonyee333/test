@@ -15,13 +15,9 @@
 --%>
 
 <%
-String lcsClusterEntryLayoutURL = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_CLUSTER_ENTRY_LAYOUT_URL));
 String lcsClusterEntryName = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_CLUSTER_ENTRY_NAME));
-String lcsClusterNodeLayoutURL = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_CLUSTER_NODE_LAYOUT_URL));
 String lcsClusterNodeName = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_CLUSTER_NODE_NAME));
-String lcsProjectLayoutURL = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_PROJECT_LAYOUT_URL));
 String lcsProjectName = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_PROJECT_NAME));
-String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.REGISTRATION_LAYOUT_URL));
 %>
 
 <c:choose>
@@ -174,7 +170,7 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClie
 		</ul>
 
 		<div class="lcs-note">
-			<liferay-ui:message arguments="<%= registrationLayoutURL %>" key="to-enable-or-disable-services-you-need-to-regenerate-the-token" />
+			<liferay-ui:message arguments="<%= GetterUtil.getString(request.getAttribute(LCSClientWebKeys.REGISTRATION_LAYOUT_URL)) %>" key="to-enable-or-disable-services-you-need-to-regenerate-the-token" />
 		</div>
 
 		<ul class="list-group">
@@ -188,7 +184,7 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClie
 					</aui:col>
 
 					<aui:col width="<%= 50 %>">
-						<aui:a href="<%= lcsProjectLayoutURL %>" target="_blank">
+						<aui:a href="<%= GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_PROJECT_LAYOUT_URL)) %>" target="_blank">
 							<%= HtmlUtil.escape(lcsProjectName) %>
 						</aui:a>
 					</aui:col>
@@ -201,7 +197,7 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClie
 					</aui:col>
 
 					<aui:col width="<%= 50 %>">
-						<aui:a href="<%= lcsClusterEntryLayoutURL %>" target="_blank">
+						<aui:a href="<%= GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_CLUSTER_ENTRY_LAYOUT_URL)) %>" target="_blank">
 							<%= HtmlUtil.escape(lcsClusterEntryName) %>
 						</aui:a>
 					</aui:col>
@@ -214,7 +210,7 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClie
 					</aui:col>
 
 					<aui:col width="<%= 50 %>">
-						<aui:a href="<%= lcsClusterNodeLayoutURL %>" target="_blank">
+						<aui:a href="<%= GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_CLUSTER_NODE_LAYOUT_URL)) %>" target="_blank">
 							<%= HtmlUtil.escape(lcsClusterNodeName) %>
 						</aui:a>
 					</aui:col>

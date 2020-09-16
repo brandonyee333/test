@@ -20,8 +20,6 @@
 ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 
 KaleoDraftDefinition kaleoDraftDefinition = (KaleoDraftDefinition)row.getObject();
-
-String backURL = (String)row.getParameter("backURL");
 %>
 
 <liferay-ui:icon-menu
@@ -33,7 +31,7 @@ String backURL = (String)row.getParameter("backURL");
 >
 	<liferay-portlet:renderURL portletName="<%= KaleoDesignerPortletKeys.KALEO_DESIGNER %>" var="editURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 		<portlet:param name="mvcPath" value="/designer/edit_kaleo_draft_definition.jsp" />
-		<portlet:param name="closeRedirect" value="<%= backURL %>" />
+		<portlet:param name="closeRedirect" value='<%= (String)row.getParameter("backURL") %>' />
 		<portlet:param name="name" value="<%= kaleoDraftDefinition.getName() %>" />
 		<portlet:param name="version" value="<%= String.valueOf(kaleoDraftDefinition.getVersion()) %>" />
 		<portlet:param name="draftVersion" value="<%= String.valueOf(kaleoDraftDefinition.getDraftVersion()) %>" />

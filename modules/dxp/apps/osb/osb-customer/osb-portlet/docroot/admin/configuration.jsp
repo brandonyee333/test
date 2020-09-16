@@ -60,14 +60,13 @@ Locale[] locales = localesSet.toArray(new Locale[0]);
 			<c:when test='<%= tabs1.equals("trial") %>'>
 
 				<%
-				int maxTrialKeys = PrefsParamUtil.getInteger(portletPreferences, request, "maxTrialKeys", 0);
 				int trialLiferayVersion = PrefsParamUtil.getInteger(portletPreferences, request, "trialLiferayVersion", 0);
 				long trialProductEntryId = PrefsParamUtil.getLong(portletPreferences, request, "trialProductEntryId", 0);
 				long trialSupportResponseId = PrefsParamUtil.getLong(portletPreferences, request, "trialSupportResponseId", 0);
 				%>
 
 				<aui:fieldset>
-					<aui:input label="maximum-number-of-trial-keys" name="maxTrialKeys" value="<%= maxTrialKeys %>" />
+					<aui:input label="maximum-number-of-trial-keys" name="maxTrialKeys" value='<%= PrefsParamUtil.getInteger(portletPreferences, request, "maxTrialKeys", 0) %>' />
 				</aui:fieldset>
 
 				<aui:fieldset>

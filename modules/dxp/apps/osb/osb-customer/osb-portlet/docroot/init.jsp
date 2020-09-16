@@ -120,7 +120,6 @@ page import="com.liferay.osb.model.AccountWorkerConstants" %><%@
 page import="com.liferay.osb.model.AuditEntry" %><%@
 page import="com.liferay.osb.model.AuditEntryConstants" %><%@
 page import="com.liferay.osb.model.CorpProject" %><%@
-page import="com.liferay.osb.model.CorpProjectMessage" %><%@
 page import="com.liferay.osb.model.LicenseEntry" %><%@
 page import="com.liferay.osb.model.LicenseEntryConstants" %><%@
 page import="com.liferay.osb.model.LicenseKey" %><%@

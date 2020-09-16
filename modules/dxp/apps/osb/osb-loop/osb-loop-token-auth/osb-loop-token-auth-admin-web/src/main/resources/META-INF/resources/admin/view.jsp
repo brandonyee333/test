@@ -23,8 +23,6 @@ String orderByCol = ParamUtil.getString(request, "orderByCol", "name");
 String orderByType = ParamUtil.getString(request, "orderByType", "asc");
 
 OrderByComparator orderByComparator = TokenAuthUtil.getTokenAuthEntryOrderByComparator(orderByCol, orderByType);
-
-PortletURL portletURL = renderResponse.createRenderURL();
 %>
 
 <h3><liferay-ui:message key="authorization-tokens" /></h3>
@@ -33,7 +31,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 <liferay-ui:search-container
 	emptyResultsMessage="no-tokens-were-found"
-	iteratorURL="<%= portletURL %>"
+	iteratorURL="<%= renderResponse.createRenderURL() %>"
 	orderByCol="<%= orderByCol %>"
 	orderByComparator="<%= orderByComparator %>"
 	orderByType="<%= orderByType %>"
