@@ -22,8 +22,6 @@ String referer = ParamUtil.getString(request, WebKeys.REFERER, themeDisplay.getP
 if (referer.equals(themeDisplay.getPathMain() + "/portal/update_email_address")) {
 	referer = themeDisplay.getPathMain() + "?doAsUserId=" + themeDisplay.getDoAsUserId();
 }
-
-String ticketKey = ParamUtil.getString(request, "ticketKey");
 %>
 
 <aui:form action='<%= themeDisplay.getPathMain() + "/portal/verify_email_address" %>' method="post" name="fm">
@@ -43,7 +41,7 @@ String ticketKey = ParamUtil.getString(request, "ticketKey");
 		</div>
 	</c:if>
 
-	<aui:input autoFocus="<%= true %>" class="lfr-input-text-container" label="email-verification-code" name="ticketKey" size="36" type="text" value="<%= ticketKey %>" />
+	<aui:input autoFocus="<%= true %>" class="lfr-input-text-container" label="email-verification-code" name="ticketKey" size="36" type="text" value='<%= ParamUtil.getString(request, "ticketKey") %>' />
 
 	<aui:button-row>
 		<aui:button cssClass="btn-lg" type="submit" value="verify" />

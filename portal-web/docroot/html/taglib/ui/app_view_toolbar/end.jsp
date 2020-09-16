@@ -16,13 +16,9 @@
 
 <%@ include file="/html/taglib/init.jsp" %>
 
-<%
-boolean includeDisplayStyle = GetterUtil.getBoolean(request.getAttribute("liferay-ui:app_view_toolbar:includeDisplayStyle"));
-%>
-
 		</div>
 
-		<c:if test="<%= includeDisplayStyle %>">
+		<c:if test='<%= GetterUtil.getBoolean(request.getAttribute("liferay-ui:app_view_toolbar:includeDisplayStyle")) %>'>
 			<div class="display-style">
 				<span class="toolbar" id="<portlet:namespace />displayStyleToolbar"></span>
 			</div>

@@ -42,7 +42,6 @@ if (entry != null) {
 	classPK = entry.getClassPK();
 }
 
-String duplicateEntryId = ParamUtil.getString(request, "duplicateEntryId");
 String oldName = ParamUtil.getString(request, "oldName");
 boolean overridable = ParamUtil.getBoolean(request, "overridable");
 %>
@@ -53,7 +52,7 @@ boolean overridable = ParamUtil.getBoolean(request, "overridable");
 	<aui:form action="<%= restoreURL %>" enctype="multipart/form-data" method="post" name="restoreTrashEntryFm" onSubmit="event.preventDefault();">
 		<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 		<aui:input name="trashEntryId" type="hidden" value="<%= trashEntryId %>" />
-		<aui:input name="duplicateEntryId" type="hidden" value="<%= duplicateEntryId %>" />
+		<aui:input name="duplicateEntryId" type="hidden" value='<%= ParamUtil.getString(request, "duplicateEntryId") %>' />
 		<aui:input name="oldName" type="hidden" value="<%= oldName %>" />
 
 		<aui:fieldset-group markupview="lexicon">
