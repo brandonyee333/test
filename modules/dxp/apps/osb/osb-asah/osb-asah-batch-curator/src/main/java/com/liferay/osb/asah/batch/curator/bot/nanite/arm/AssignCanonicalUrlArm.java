@@ -99,8 +99,7 @@ public class AssignCanonicalUrlArm {
 	private SearchResponse _getPagesSearchResponse(String collectionName) {
 		return _getSearchResponse(
 			collectionName, _cerebroInfoElasticsearchInvoker, "url",
-			BoolQueryBuilderUtil.mustNot(
-				QueryBuilders.existsQuery("canonicalUrl")));
+			QueryBuilders.termQuery("canonicalUrl", ""));
 	}
 
 	private SearchResponse _getSearchResponse(
@@ -256,8 +255,8 @@ public class AssignCanonicalUrlArm {
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termsQuery("url", url)
-			).mustNot(
-				QueryBuilders.termsQuery("canonicalUrl", canonicalUrl)
+			).filter(
+				QueryBuilders.termsQuery("canonicalUrl", "")
 			),
 			true,
 			new Script(
