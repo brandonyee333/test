@@ -109,12 +109,10 @@
 				}
 
 				Date createdDate = mbMessage.getCreateDate();
-
-				String createdDateDescription = LanguageUtil.getTimeDescription(request, System.currentTimeMillis() - createdDate.getTime(), true);
 				%>
 
 				<%= StringPool.COMMA %>
-				<liferay-ui:message arguments="<%= createdDateDescription %>" key="x-ago" />
+				<liferay-ui:message arguments="<%= LanguageUtil.getTimeDescription(request, System.currentTimeMillis() - createdDate.getTime(), true) %>" key="x-ago" />
 			</h5>
 
 			<h4>

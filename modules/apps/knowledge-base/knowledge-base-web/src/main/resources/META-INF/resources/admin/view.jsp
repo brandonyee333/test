@@ -78,11 +78,6 @@ if (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 	searchContainerId="kbObjects"
 >
 	<c:if test="<%= Validator.isNull(keywords) %>">
-
-		<%
-		PortletURL displayStyleURL = PortletURLUtil.clone(currentURLObj, liferayPortletResponse);
-		%>
-
 		<liferay-frontend:management-bar-buttons>
 			<liferay-frontend:management-bar-sidenav-toggler-button
 				icon="info-circle"
@@ -91,19 +86,15 @@ if (parentResourcePrimKey != KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 
 			<liferay-frontend:management-bar-display-buttons
 				displayViews='<%= new String[] {"descriptive"} %>'
-				portletURL="<%= displayStyleURL %>"
+				portletURL="<%= PortletURLUtil.clone(currentURLObj, liferayPortletResponse) %>"
 				selectedDisplayStyle="descriptive"
 			/>
 		</liferay-frontend:management-bar-buttons>
 
-		<%
-		PortletURL navigationPortletURL = PortletURLUtil.clone(currentURLObj, liferayPortletResponse);
-		%>
-
 		<liferay-frontend:management-bar-filters>
 			<liferay-frontend:management-bar-navigation
 				navigationKeys='<%= new String[] {"all"} %>'
-				portletURL="<%= navigationPortletURL %>"
+				portletURL="<%= PortletURLUtil.clone(currentURLObj, liferayPortletResponse) %>"
 			/>
 
 			<liferay-frontend:management-bar-sort
