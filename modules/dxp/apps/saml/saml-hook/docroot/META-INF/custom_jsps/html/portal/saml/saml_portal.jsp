@@ -18,28 +18,22 @@
 
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
 
-<%
-String tilesContent = (String)request.getAttribute("tilesContent");
-String tilesPopUp = (String)request.getAttribute("tilesPopUp");
-String tilesTitle = (String)request.getAttribute("tilesTitle");
-%>
-
 <tiles:insert
 	flush="false"
 	template="/html/common/themes/portal.jsp"
 >
 	<tiles:put
 		name="content"
-		value="<%= tilesContent %>"
+		value='<%= (String)request.getAttribute("tilesContent") %>'
 	/>
 
 	<tiles:put
 		name="pop_up"
-		value="<%= tilesPopUp %>"
+		value='<%= (String)request.getAttribute("tilesPopUp") %>'
 	/>
 
 	<tiles:put
 		name="title"
-		value="<%= tilesTitle %>"
+		value='<%= (String)request.getAttribute("tilesTitle") %>'
 	/>
 </tiles:insert>
