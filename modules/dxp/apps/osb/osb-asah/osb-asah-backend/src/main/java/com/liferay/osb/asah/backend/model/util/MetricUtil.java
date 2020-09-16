@@ -27,6 +27,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author André Miranda
  */
@@ -52,9 +55,12 @@ public class MetricUtil {
 			}
 		}
 		catch (IntrospectionException | ReflectiveOperationException e) {
+			_log.error(e, e);
 		}
 
 		return availableMetrics;
 	}
+
+	private static final Log _log = LogFactory.getLog(MetricUtil.class);
 
 }
