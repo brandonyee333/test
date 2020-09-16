@@ -84,9 +84,7 @@ public class DDLRecordSetPermission {
 		recordSetScopes.add(DDLRecordSetConstants.SCOPE_DYNAMIC_DATA_LISTS);
 		recordSetScopes.add(DDLRecordSetConstants.SCOPE_FORMS);
 
-		if (!actionId.equals(DDLActionKeys.ADD_RECORD) &&
-			recordSetScopes.contains(recordSetScope)) {
-
+		if (recordSetScopes.contains(recordSetScope)) {
 			String className = DDLRecordConstants.getClassName(recordSetScope);
 
 			String portletId = PortletProviderUtil.getPortletId(
