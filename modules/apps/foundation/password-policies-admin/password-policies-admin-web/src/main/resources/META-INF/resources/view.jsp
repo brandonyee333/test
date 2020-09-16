@@ -45,13 +45,8 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "passwor
 	</aui:nav>
 
 	<c:if test="<%= !passwordPolicyEnabled %>">
-
-		<%
-		PortletURL searchURL = renderResponse.createRenderURL();
-		%>
-
 		<aui:nav-bar-search searchContainer="<%= searchContainer %>">
-			<aui:form action="<%= searchURL %>" name="searchFm">
+			<aui:form action="<%= renderResponse.createRenderURL() %>" name="searchFm">
 				<liferay-ui:input-search
 					autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>"
 					markupView="lexicon"

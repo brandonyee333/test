@@ -103,14 +103,8 @@ renderResponse.setTitle(StringBundler.concat(selectedUser.getFullName(), " - ", 
 						cssClass="table-cell-content"
 						name="status"
 					>
-
-						<%
-						String cssClass = "text-" + (uadApplicationSummaryDisplay.hasItems() ? "warning" : "success");
-						String labelKey = uadApplicationSummaryDisplay.hasItems() ? "pending" : "done";
-						%>
-
-						<span class="<%= cssClass %>">
-							<liferay-ui:message key="<%= labelKey %>" />
+						<span class="<%= "text-" + (uadApplicationSummaryDisplay.hasItems() ? "warning" : "success") %>">
+							<liferay-ui:message key='<%= uadApplicationSummaryDisplay.hasItems() ? "pending" : "done" %>' />
 						</span>
 					</liferay-ui:search-container-column-text>
 

@@ -21,7 +21,6 @@
 	<%
 	int frequencyThreshold = dataJSONObject.getInt("frequencyThreshold");
 	int maxTerms = dataJSONObject.getInt("maxTerms", 10);
-	boolean showAssetCount = dataJSONObject.getBoolean("showAssetCount", true);
 	%>
 
 	<div class="panel panel-default">
@@ -57,7 +56,7 @@
 							<a class="<%= userName.equals(curUserName) ? "text-primary" : "text-default" %>" data-value="<%= HtmlUtil.escapeAttribute(curUserName) %>" href="javascript:;">
 								<%= HtmlUtil.escape(curUserName) %>
 
-								<c:if test="<%= showAssetCount %>">
+								<c:if test='<%= dataJSONObject.getBoolean("showAssetCount", true) %>'>
 									<span class="frequency">(<%= termCollector.getFrequency() %>)</span>
 								</c:if>
 							</a>
