@@ -171,7 +171,7 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 
 		Locale locale = _portal.getLocale(request);
 
-		_portal.addPageSubtitle(journalArticle.getTitle(locale), request);
+		_portal.addPageTitle(journalArticle.getTitle(locale), request);
 		_portal.addPageDescription(
 			journalArticle.getDescription(locale), request);
 
