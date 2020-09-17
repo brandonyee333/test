@@ -98,8 +98,8 @@ definition {
 
 		SelectFrameTop();
 
-		if (IsElementPresent(locator1 = "IFrame#SELECT_TAG")) {
-			SelectFrame(locator1 = "IFrame#SELECT_TAG");
+		if (IsElementPresent(locator1 = "IFrame#DIALOG")) {
+			SelectFrame(locator1 = "IFrame#DIALOG");
 		}
 
 		for (var tagName : list "${tagNameList}") {
@@ -109,6 +109,10 @@ definition {
 		}
 
 		SelectFrameTop();
+
+		if (IsElementPresent(locator1 = "IFrame#DIALOG")) {
+			SelectFrame(locator1 = "IFrame#DIALOG");
+		}
 
 		if (IsElementPresent(locator1 = "Button#DONE")) {
 			AssertClick(
