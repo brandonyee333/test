@@ -19,8 +19,6 @@ package com.liferay.osb.customer.github.servlet;
  */
 public interface GitHubHttpHeaders {
 
-	// Names
-
 	public static final String LINK = "Link";
 
 	public static final String X_LAST = "X-Last";
