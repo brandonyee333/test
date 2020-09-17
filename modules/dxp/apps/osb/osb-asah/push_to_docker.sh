@@ -142,6 +142,8 @@ function generate_wedeploy_profile {
 }
 
 function generate_wedeploy_profiles {
+	local previous_git_hash=$(git log --pretty=tformat:"%h" -n1 ".wedeploy_profiles")
+
 	rm -fr .wedeploy_profiles
 
 	for file_name in `ls`
@@ -158,6 +160,12 @@ function generate_wedeploy_profiles {
 		fi
 
 		generate_wedeploy_profile ${file_name} ${marker##*.wedeploy-profile-}
+
+		if [ $(git diff ${previous_git_hash} osb-asah-common | wc -l) -gt 0 ] ||
+			 [ $(git diff ${previous_git_hash} ${file_name} | wc -l) -gt 0 ]; then
+
+			generate_wedeploy_profile ${file_name} customer-upgrade
+		fi
 	done
 
 	git add .wedeploy_profiles
