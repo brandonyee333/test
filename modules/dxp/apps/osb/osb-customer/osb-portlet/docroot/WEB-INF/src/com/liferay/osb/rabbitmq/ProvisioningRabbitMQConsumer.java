@@ -664,7 +664,9 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			}
 		}
 
-		if (productEntry.isDigitalEnterprise() || productEntry.isPortal()) {
+		if (productEntry.isDigitalEnterprise() || productEntry.isDXPCloud() ||
+			productEntry.isPortal()) {
+
 			_logWarning(
 				"No valid sizing was found for " + productEntry.getName() +
 					". Defaulting to sizing 1.");

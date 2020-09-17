@@ -22,7 +22,11 @@ import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.PortalException;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  * @author Jenny Chen
@@ -42,11 +46,29 @@ public class UpgradeLicenseEntry extends BaseUpgradeProcess {
 	}
 
 	protected void updateLicenseEntries() throws Exception {
-		LicenseEntryLocalServiceUtil.addLicenseEntry(
-			OSBConstants.USER_AMOS_FONG_USER_ID,
-			_commerceDevelopmentProductEntryId,
-			"Liferay Commerce Subscription Development",
-			LicenseEntryConstants.TYPE_DEVELOPER, 0, 0);
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			String sql =
+				"select * from OSB_LicenseEntry where name like '" +
+					"Liferay Commerce Subscription Development'";
+
+			ps = connection.prepareStatement(sql);
+
+			rs = ps.executeQuery();
+
+			if (!rs.next()) {
+				LicenseEntryLocalServiceUtil.addLicenseEntry(
+					OSBConstants.USER_AMOS_FONG_USER_ID,
+					_commerceDevelopmentProductEntryId,
+					"Liferay Commerce Subscription Development",
+					LicenseEntryConstants.TYPE_DEVELOPER, 0, 0);
+			}
+		}
+		finally {
+			DataAccess.cleanUp(ps, rs);
+		}
 	}
 
 	protected long updateProductEntry(String name, int environment)
