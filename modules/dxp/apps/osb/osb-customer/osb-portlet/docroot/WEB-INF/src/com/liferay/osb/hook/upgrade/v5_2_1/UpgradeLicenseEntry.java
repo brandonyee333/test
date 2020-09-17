@@ -50,11 +50,9 @@ public class UpgradeLicenseEntry extends BaseUpgradeProcess {
 		ResultSet rs = null;
 
 		try {
-			String sql =
+			ps = connection.prepareStatement(
 				"select * from OSB_LicenseEntry where name like '" +
-					"Liferay Commerce Subscription Development'";
-
-			ps = connection.prepareStatement(sql);
+					"Liferay Commerce Subscription Development'");
 
 			rs = ps.executeQuery();
 
