@@ -21,15 +21,15 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
  */
 public class GitHubConstants {
 
-	public static final String FIRST = "first";
+	public static final String PAGE_FIRST = "first";
 
-	public static final String LAST = "last";
+	public static final String PAGE_LAST = "last";
 
-	public static final String NEXT = "next";
+	public static final String PAGE_NEXT = "next";
 
-	public static final String PREV = "prev";
+	public static final String PAGE_PREV = "prev";
 
-	public static final String REL = "rel";
+	public static final String PAGE_REL = "rel";
 
 	public static final int[] STATUSES_ACTIVE = {
 		WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_PENDING

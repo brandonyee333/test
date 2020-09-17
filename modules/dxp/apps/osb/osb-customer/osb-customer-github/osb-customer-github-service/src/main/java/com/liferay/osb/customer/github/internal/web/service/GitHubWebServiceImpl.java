@@ -264,7 +264,7 @@ public class GitHubWebServiceImpl
 					String[] rel = linkPart.split(StringPool.EQUAL);
 
 					if ((rel.length < 2) ||
-						!GitHubConstants.REL.equals(rel[0])) {
+						!GitHubConstants.PAGE_REL.equals(rel[0])) {
 
 						continue;
 					}
@@ -279,27 +279,27 @@ public class GitHubWebServiceImpl
 						relValue = relValue.substring(1, relValue.length() - 1);
 					}
 
-					if (relValue.equals(GitHubConstants.FIRST)) {
-						jsonObject.put(GitHubConstants.FIRST, link);
+					if (relValue.equals(GitHubConstants.PAGE_FIRST)) {
+						jsonObject.put(GitHubConstants.PAGE_FIRST, link);
 					}
-					else if (relValue.equals(GitHubConstants.LAST)) {
-						jsonObject.put(GitHubConstants.LAST, link);
+					else if (relValue.equals(GitHubConstants.PAGE_LAST)) {
+						jsonObject.put(GitHubConstants.PAGE_LAST, link);
 					}
-					else if (relValue.equals(GitHubConstants.NEXT)) {
-						jsonObject.put(GitHubConstants.NEXT, link);
+					else if (relValue.equals(GitHubConstants.PAGE_NEXT)) {
+						jsonObject.put(GitHubConstants.PAGE_NEXT, link);
 					}
-					else if (relValue.equals(GitHubConstants.PREV)) {
-						jsonObject.put(GitHubConstants.PREV, link);
+					else if (relValue.equals(GitHubConstants.PAGE_PREV)) {
+						jsonObject.put(GitHubConstants.PAGE_PREV, link);
 					}
 				}
 			}
 		}
 		else {
 			jsonObject.put(
-				GitHubConstants.LAST,
+				GitHubConstants.PAGE_LAST,
 				responseHeaders.get(GitHubHttpHeaders.X_LAST));
 			jsonObject.put(
-				GitHubConstants.NEXT,
+				GitHubConstants.PAGE_NEXT,
 				responseHeaders.get(GitHubHttpHeaders.X_NEXT));
 		}
 
