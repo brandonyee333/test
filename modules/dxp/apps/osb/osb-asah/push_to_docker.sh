@@ -162,8 +162,8 @@ function generate_wedeploy_profiles {
 		generate_wedeploy_profile ${file_name} ${marker##*.wedeploy-profile-}
 
 		if [ $(git diff ${previous_git_hash} osb-asah-common | wc -l) -gt 0 ] ||
-			 [ $(git diff ${previous_git_hash} ${file_name} | wc -l) -gt 0 ]; then
-
+		   [ $(git diff ${previous_git_hash} ${file_name} | wc -l) -gt 0 ]
+		then
 			generate_wedeploy_profile ${file_name} customer-upgrade
 		fi
 	done
