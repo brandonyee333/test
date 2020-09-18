@@ -491,8 +491,7 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 				if (sort instanceof NestedSort) {
 					NestedSort nestedSort = (NestedSort)sort;
 
-					fieldSortBuilder.setNestedSort(
-						_getNestedSortBuilder(nestedSort));
+					fieldSortBuilder.setNestedSort(translate(nestedSort));
 				}
 
 				sortBuilder = fieldSortBuilder;
@@ -711,6 +710,22 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 		return groupByRequestFactory.getGroupByRequest(groupBy);
 	}
 
+	protected NestedSortBuilder translate(NestedSort nestedSort) {
+		NestedSortBuilder nestedSortBuilder = new NestedSortBuilder(
+			nestedSort.getPath());
+
+		if (nestedSort.getFilterQuery() != null) {
+			QueryBuilder queryBuilder = queryTranslator.translate(
+				nestedSort.getFilterQuery(), null);
+
+			nestedSortBuilder.setFilter(queryBuilder);
+		}
+
+		nestedSortBuilder.setMaxChildren(nestedSort.getMaxChildren());
+
+		return nestedSortBuilder;
+	}
+
 	protected void updateFacetCollectors(
 		SearchContext searchContext, SearchResponse searchResponse) {
 
@@ -878,22 +893,6 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 
 	@Reference
 	protected StatsTranslator statsTranslator;
-
-	private NestedSortBuilder _getNestedSortBuilder(NestedSort nestedSort) {
-		NestedSortBuilder nestedSortBuilder = new NestedSortBuilder(
-			nestedSort.getPath());
-
-		if (nestedSort.getFilterQuery() != null) {
-			QueryBuilder queryBuilder = queryTranslator.translate(
-				nestedSort.getFilterQuery(), null);
-
-			nestedSortBuilder.setFilter(queryBuilder);
-		}
-
-		nestedSortBuilder.setMaxChildren(nestedSort.getMaxChildren());
-
-		return nestedSortBuilder;
-	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ElasticsearchIndexSearcher.class);
