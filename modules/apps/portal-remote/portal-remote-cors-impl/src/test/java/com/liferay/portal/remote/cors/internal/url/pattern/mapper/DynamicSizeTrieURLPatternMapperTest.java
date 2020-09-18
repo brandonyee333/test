@@ -30,13 +30,13 @@ public class DynamicSizeTrieURLPatternMapperTest
 	public void testConstructor() {
 		Map<String, String> map = new HashMap<>();
 
-		for (int i = 0; i < 65; i++) {
+		for (int i = 0; i < 1024; i++) {
 			map.put("*.key" + i, "value" + i);
 		}
 
 		URLPatternMapper<String> urlPatternMapper = createURLPatternMapper(map);
 
-		for (int i = 0; i < 65; i++) {
+		for (int i = 0; i < 1024; i++) {
 			Assert.assertEquals(
 				"value" + i, urlPatternMapper.getValue("*.key" + i));
 		}
