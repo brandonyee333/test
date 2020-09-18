@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.configuration.FileConfiguration;
 import com.liferay.osb.asah.common.configuration.RuntimeConfiguration;
 import com.liferay.osb.asah.common.configuration.impl.BaseConfigurationManagerImpl;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.oauth2.DXPOAuth2Client;
 import com.liferay.osb.asah.common.security.Encryptor;
@@ -76,10 +77,9 @@ public class DXPExtractorConfigurationManagerImpl
 	public boolean deleteRuntimeConfiguration(String json) {
 		JSONObject jsonObject = new JSONObject(json);
 
-		String dataSourceId = jsonObject.getString("dataSourceId");
-
-		JSONObject dataSourceJSONObject = fetchDataSourceJSONObject(
-			dataSourceId);
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.getDataSourceJSONObject(
+				jsonObject.getString("dataSourceId"));
 
 		if ((dataSourceJSONObject != null) &&
 			Objects.equals(
@@ -475,6 +475,9 @@ public class DXPExtractorConfigurationManagerImpl
 
 	@Autowired
 	private Encryptor _encryptor;
+
+	@Autowired
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
 	private Http _http;

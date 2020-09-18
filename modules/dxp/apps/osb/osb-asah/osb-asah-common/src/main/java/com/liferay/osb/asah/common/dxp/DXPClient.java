@@ -14,16 +14,13 @@
 
 package com.liferay.osb.asah.common.dxp;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 
 import java.util.List;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,17 +42,8 @@ public class DXPClient extends BaseDXPClient {
 		String path = String.format(
 			"/o/segments-asah/v1.0/experiments/%s", experimentId);
 
-		return deleteJSONObject(getDataSourceJSONObject(dataSourceId), path);
-	}
-
-	public JSONObject getDataSourceJSONObject(String dataSourceId) {
-		return _faroInfoElasticsearchInvoker.get("data-sources", dataSourceId);
-	}
-
-	@PostConstruct
-	public void init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
+		return deleteJSONObject(
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId), path);
 	}
 
 	public JSONObject runDXPExperiment(
@@ -80,7 +68,7 @@ public class DXPClient extends BaseDXPClient {
 		);
 
 		return postJSONObject(
-			getDataSourceJSONObject(dataSourceId), path,
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId), path,
 			JSONUtil.put(
 				"confidenceLevel", confidenceLevel
 			).put(
@@ -106,12 +94,11 @@ public class DXPClient extends BaseDXPClient {
 		}
 
 		return postJSONObject(
-			getDataSourceJSONObject(dataSourceId), path, bodyJSONObject);
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId), path,
+			bodyJSONObject);
 	}
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 }

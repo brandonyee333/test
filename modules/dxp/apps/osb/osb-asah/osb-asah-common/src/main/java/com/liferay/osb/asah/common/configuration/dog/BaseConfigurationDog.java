@@ -61,9 +61,9 @@ public abstract class BaseConfigurationDog {
 		return dataSourceJSONObject;
 	}
 
-	public void deleteConfiguration(String dataSourceId) throws Exception {
-		JSONObject dataSourceJSONObject = _elasticsearchInvoker.get(
-			"data-sources", dataSourceId);
+	public void deleteConfiguration(String dataSourceId) {
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		String type = _faroInfoDataSourceDog.getDataSourceType(
 			dataSourceJSONObject);
@@ -258,8 +258,8 @@ public abstract class BaseConfigurationDog {
 
 		configurationsJSONObject.put("dataSourceId", dataSourceId);
 
-		JSONObject existingDataSourceJSONObject = _elasticsearchInvoker.get(
-			"data-sources", dataSourceId);
+		JSONObject existingDataSourceJSONObject =
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		configurationsJSONObject.put(
 			"existingDataSourceId",

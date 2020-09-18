@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.extractor.processor;
 
-import com.liferay.osb.asah.common.cache.DataSourceCache;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
@@ -378,7 +378,7 @@ public class DXPEntitiesMessageProcessor {
 		}
 
 		JSONObject dataSourceJSONObject =
-			_dataSourceCache.getDataSourceJSONObject(
+			_faroInfoDataSourceDog.getDataSourceJSONObject(
 				objectJSONObject.getString("osbAsahDataSourceId"));
 
 		if ((dataSourceJSONObject == null) ||
@@ -483,13 +483,13 @@ public class DXPEntitiesMessageProcessor {
 			"extractor_dxp_entities_message_queue_size",
 			"The number of DXP entities messages queued to be extracted");
 
-	@Autowired
-	private DataSourceCache _dataSourceCache;
-
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	@Autowired
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 

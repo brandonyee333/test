@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.dxp.extractor.bot.nanite.DXPExtractorNanite;
 import com.liferay.osb.asah.dxp.extractor.configuration.DXPExtractorConfiguration;
@@ -81,8 +82,8 @@ public class DXPExtractorConfigurableBot extends BaseConfigurableBot {
 			(DXPExtractorConfiguration)configuration;
 
 		JSONObject existingDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.get(
-				"data-sources", dxpExtractorConfiguration.getDataSourceId());
+			_faroInfoDataSourceDog.getDataSourceJSONObject(
+				dxpExtractorConfiguration.getDataSourceId());
 
 		String newDataSourceJSON =
 			_dxpExtractorConfigurationManagerImpl.refresh(
@@ -118,6 +119,9 @@ public class DXPExtractorConfigurableBot extends BaseConfigurableBot {
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	@Autowired
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 

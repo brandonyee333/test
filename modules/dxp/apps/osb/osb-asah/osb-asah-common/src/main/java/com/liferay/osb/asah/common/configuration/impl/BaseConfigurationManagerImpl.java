@@ -290,15 +290,6 @@ public abstract class BaseConfigurationManagerImpl
 
 	protected abstract RuntimeConfiguration buildRuntimeConfiguration();
 
-	protected JSONObject fetchDataSourceJSONObject(String dataSourceId) {
-		try {
-			return _elasticsearchInvoker.fetch("data-sources", dataSourceId);
-		}
-		catch (Exception e) {
-			return null;
-		}
-	}
-
 	protected abstract ConfigurableBot getConfigurableBot();
 
 	protected RuntimeConfiguration getInitializedRuntimeConfiguration(

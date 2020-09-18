@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
@@ -106,7 +107,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 		_faroInfoIndividualDog.updateIndividual(
 			null, getEmptyDataJSONObject(),
-			faroInfoElasticsearchInvoker.get("data-sources", dataSourceId),
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId),
 			individualJSONObject);
 	}
 
@@ -377,6 +378,9 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		String dataSourceId, boolean interrupted);
 
 	protected abstract void setRunning(String dataSourceId, boolean running);
+
+	@Autowired
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;

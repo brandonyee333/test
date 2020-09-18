@@ -100,9 +100,9 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}")
-	public String getDataSource(@PathVariable String id) throws Exception {
-		JSONObject dataSourceJSONObject = new JSONObject(
-			toItemGetResponse("data-sources", id));
+	public String getDataSource(@PathVariable String id) {
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.getDataSourceJSONObject(id);
 
 		_setLastSyncTime(dataSourceJSONObject);
 
@@ -253,12 +253,9 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}/progress")
-	public String getProgress(@PathVariable String id) throws Exception {
-		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.get(
-			"data-sources", id);
-
+	public String getProgress(@PathVariable String id) {
 		String type = _faroInfoDataSourceDog.getDataSourceType(
-			dataSourceJSONObject);
+			_faroInfoDataSourceDog.getDataSourceJSONObject(id));
 
 		if (type.equals("CSV")) {
 			return String.valueOf(_getCSVDataSourceProgressJSONObject(id));
@@ -922,11 +919,10 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private JSONObject _getSalesforceDataSourceProgressJSONObject(
-			String dataSourceId)
-		throws Exception {
+		String dataSourceId) {
 
-		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.get(
-			"data-sources", dataSourceId);
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
 			"provider");

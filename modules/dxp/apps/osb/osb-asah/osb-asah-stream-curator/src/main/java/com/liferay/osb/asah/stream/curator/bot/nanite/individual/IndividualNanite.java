@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.http.QueueHttp;
@@ -340,8 +341,8 @@ public class IndividualNanite implements Nanite {
 		else if ((individualJSONObject1 == null) &&
 				 (individualJSONObject2 == null)) {
 
-			JSONObject dataSourceJSONObject = _faroInfoElasticsearchInvoker.get(
-				"data-sources", dataSourceId);
+			JSONObject dataSourceJSONObject =
+				_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 			if (StringUtils.isBlank(channelId)) {
 				channelId = dataSourceJSONObject.optString("channelId");
@@ -352,15 +353,15 @@ public class IndividualNanite implements Nanite {
 				emailAddressHashed, userId);
 		}
 		else {
-			JSONObject dataSourceJSONObject = _faroInfoElasticsearchInvoker.get(
-				"data-sources", dataSourceId);
+			JSONObject dataSourceJSONObject =
+				_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+
+			JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
+				"provider");
 
 			if (individualJSONObject1 == null) {
 				individualJSONObject1 = individualJSONObject2;
 			}
-
-			JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-				"provider");
 
 			_faroInfoIndividualDog.addDataSourceIndividualPK(
 				userId, dataSourceJSONObject.getString("id"),
@@ -464,6 +465,9 @@ public class IndividualNanite implements Nanite {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
+
+	@Autowired
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 

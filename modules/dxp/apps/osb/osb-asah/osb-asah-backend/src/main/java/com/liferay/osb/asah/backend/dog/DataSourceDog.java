@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.model.DataSource;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
@@ -40,11 +41,8 @@ import org.springframework.stereotype.Component;
 public class DataSourceDog {
 
 	public DataSource getDataSource(String dataSourceId) {
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
-		JSONObject dataSourceJSONObject = elasticsearchInvoker.fetch(
-			"data-sources", dataSourceId);
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		if (dataSourceJSONObject == null) {
 			return null;
@@ -111,5 +109,8 @@ public class DataSourceDog {
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	@Autowired
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 }

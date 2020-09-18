@@ -38,6 +38,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.ExperimentMetricsBag;
@@ -521,14 +522,11 @@ public class ExperimentDog {
 			return experiment.getChannelId();
 		}
 
-		JSONObject dataSourceJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"data-sources", experiment.getDataSourceId());
+		String channelId = _faroInfoDataSourceDog.getChannelId(
+			experiment.getDataSourceId());
 
-		if ((dataSourceJSONObject != null) &&
-			StringUtils.isNotEmpty(
-				dataSourceJSONObject.optString("channelId"))) {
-
-			return dataSourceJSONObject.optString("channelId");
+		if (channelId != null) {
+			return channelId;
 		}
 
 		throw new OSBAsahException(
@@ -703,6 +701,9 @@ public class ExperimentDog {
 
 	@Autowired
 	private ExperimentMetricDog _experimentMetricDog;
+
+	@Autowired
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 

@@ -661,8 +661,8 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 				continue;
 			}
 
-			JSONObject dataSourceJSONObject = elasticsearchInvoker.fetch(
-				"data-sources", dataSourceId);
+			JSONObject dataSourceJSONObject =
+				_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 			if (dataSourceJSONObject == null) {
 				if (_log.isWarnEnabled()) {

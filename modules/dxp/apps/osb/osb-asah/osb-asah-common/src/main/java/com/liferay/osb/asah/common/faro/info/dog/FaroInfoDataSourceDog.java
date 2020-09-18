@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.liferay.osb.asah.common.cache.DataSourceCache;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -211,6 +212,10 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			"data-sources", dataSourceId, dataSourceJSONObject);
 	}
 
+	public String getChannelId(String dataSourceId) {
+		return _dataSourceCache.getChannelId(dataSourceId);
+	}
+
 	public List<String> getDataSourceFieldMappingIds(
 		String dataSourceId, boolean previewDelete) {
 
@@ -240,14 +245,22 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		return dataSourceFieldMappingIds;
 	}
 
-	public JSONObject getDataSourceJSONObject(String dataSourceId)
-		throws Exception {
+	public JSONObject getDataSourceJSONObject(String dataSourceId) {
+		return getDataSourceJSONObject(dataSourceId, true);
+	}
+
+	public JSONObject getDataSourceJSONObject(
+		String dataSourceId, boolean useCache) {
+
+		if (useCache) {
+			return _dataSourceCache.getDataSourceJSONObject(dataSourceId);
+		}
 
 		return elasticsearchInvoker.get("data-sources", dataSourceId);
 	}
 
-	public String getDataSourceName(String id) {
-		JSONObject jsonObject = elasticsearchInvoker.get("data-sources", id);
+	public String getDataSourceName(String dataSourceId) {
+		JSONObject jsonObject = getDataSourceJSONObject(dataSourceId);
 
 		return jsonObject.getString("name");
 	}
@@ -285,6 +298,10 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 						"provider.analyticsConfiguration.enableAllSites", true)
 				)
 			));
+	}
+
+	public boolean isValidDataSourceId(String dataSourceId) {
+		return _dataSourceCache.isValidDataSourceId(dataSourceId);
 	}
 
 	public JSONObject patchDataSource(
@@ -692,6 +709,9 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 	private static final Log _log = LogFactory.getLog(
 		FaroInfoDataSourceDog.class);
+
+	@Autowired
+	private DataSourceCache _dataSourceCache;
 
 	@Autowired
 	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
