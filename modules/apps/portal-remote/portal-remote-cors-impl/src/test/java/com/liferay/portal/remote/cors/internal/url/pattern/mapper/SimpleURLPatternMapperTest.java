@@ -37,6 +37,34 @@ public class SimpleURLPatternMapperTest {
 	public static final CodeCoverageAssertor codeCoverageAssertor =
 		CodeCoverageAssertor.INSTANCE;
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorWithEmptyPattern() {
+		createURLPatternMapper(
+			HashMapBuilder.put(
+				"", ""
+			).build());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testConstructorWithNullPattern() {
+		HashMap<String, String> map = new HashMap<>();
+
+		map.put(null, "null");
+
+		createURLPatternMapper(map);
+	}
+
+	@Test
+	public void testGetExtensionEdgeCases() {
+		URLPatternMapper<String> urlPatternMapper = createURLPatternMapper(
+			HashMapBuilder.put(
+				"*.jsp", "*.jsp"
+			).build());
+
+		Assert.assertNull(urlPatternMapper.getValue("jsp"));
+		Assert.assertEquals("*.jsp", urlPatternMapper.getValue(".jsp"));
+	}
+
 	@Test
 	public void testGetValue() {
 		KeyValuePair[] keyValuePairs = _createKeyValuePairs();
@@ -66,17 +94,6 @@ public class SimpleURLPatternMapperTest {
 	}
 
 	@Test
-	public void testGetExtensionEdgeCases() {
-		URLPatternMapper<String> urlPatternMapper = createURLPatternMapper(
-			HashMapBuilder.put(
-				"*.jsp", "*.jsp"
-			).build());
-
-		Assert.assertNull(urlPatternMapper.getValue("jsp"));
-		Assert.assertEquals("*.jsp", urlPatternMapper.getValue(".jsp"));
-	}
-
-	@Test
 	public void testGetValueWithNull() {
 		URLPatternMapper<String> urlPatternMapper = createURLPatternMapper(
 			HashMapBuilder.put(
@@ -84,23 +101,6 @@ public class SimpleURLPatternMapperTest {
 			).build());
 
 		Assert.assertNull(urlPatternMapper.getValue(null));
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testConstructorWithEmptyPattern() {
-		createURLPatternMapper(
-			HashMapBuilder.put(
-				"", ""
-			).build());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testConstructorWithNullPattern() {
-		HashMap<String, String> map = new HashMap<>();
-
-		map.put(null, "null");
-
-		createURLPatternMapper(map);
 	}
 
 	protected URLPatternMapper<String> createURLPatternMapper(
