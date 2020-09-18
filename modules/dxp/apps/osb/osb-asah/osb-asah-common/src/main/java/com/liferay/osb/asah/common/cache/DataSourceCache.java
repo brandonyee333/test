@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.extractor.cache;
+package com.liferay.osb.asah.common.cache;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;

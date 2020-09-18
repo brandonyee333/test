@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.extractor.processor;
 
+import com.liferay.osb.asah.common.cache.DataSourceCache;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -29,7 +30,6 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
-import com.liferay.osb.asah.extractor.cache.DataSourceCache;
 
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
