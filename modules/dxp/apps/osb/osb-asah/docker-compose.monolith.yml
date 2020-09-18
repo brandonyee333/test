@@ -1,23 +1,4 @@
 services:
-    osbasahelasticsearchexporter:
-        command:
-            - "--es.uri=http://wedeploy-elasticsearch:9200"
-        container_name: osbasahelasticsearchexporter
-        image: justwatch/elasticsearch_exporter:1.1.0
-        ports:
-            - "9114:9114"
-        restart: always
-    osbasahgrafana:
-        build: ./osb-asah-grafana
-        container_name: osbasahgrafana
-        depends_on:
-            - osbasahprometheus
-        ports:
-            - "3001:3000"
-        volumes:
-            - "./osb-asah-grafana/docker-resources/etc/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards"
-            - "./osb-asah-grafana/docker-resources/etc/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources"
-            - "./osb-asah-grafana/docker-resources/var/lib/grafana/dashboards:/var/lib/grafana/dashboards"
     osbasahmonolith:
         build:
             args:
@@ -44,11 +25,6 @@ services:
         volumes:
             - export:/export
             - temp:/temp
-    osbasahprometheus:
-        build: ./osb-asah-prometheus
-        container_name: osbasahprometheus
-        ports:
-            - "9090:9090"
     osbfarofrontend:
         container_name: com-liferay-osb-faro-private
         environment:
