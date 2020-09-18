@@ -51,7 +51,7 @@ public class UpgradeListTypes extends UpgradeProcess {
 		runSQL(
 			"update OSB_ProductEntry set versionsListType = replace(" +
 				"versionsListType, 'commerceLicenseProductVersions', " +
-					"commerceLicenseVersions')");
+					"'commerceLicenseVersions')");
 	}
 
 }
