@@ -26,8 +26,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -42,16 +40,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataSourceCache implements MessageListener {
 
-	public String getChannelId(String dataSourceId) {
-		return _channelIds.get(dataSourceId);
-	}
-
 	public JSONObject getDataSourceJSONObject(String dataSourceId) {
 		return _dataSources.get(dataSourceId);
-	}
-
-	public boolean isValidDataSourceId(String dataSourceId) {
-		return _dataSources.containsKey(dataSourceId);
 	}
 
 	@Override
@@ -60,7 +50,6 @@ public class DataSourceCache implements MessageListener {
 	}
 
 	private void _cacheDataSources() {
-		_channelIds = new HashMap<>();
 		_dataSources = new HashMap<>();
 
 		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
@@ -70,12 +59,6 @@ public class DataSourceCache implements MessageListener {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
 			_dataSources.put(jsonObject.getString("id"), jsonObject);
-
-			String channelId = jsonObject.optString("channelId");
-
-			if (StringUtils.isNotBlank(channelId)) {
-				_channelIds.put(jsonObject.getString("id"), channelId);
-			}
 		}
 	}
 
@@ -94,7 +77,6 @@ public class DataSourceCache implements MessageListener {
 		_messageBus.registerMessageListener(Channel.DATA_SOURCES_UPDATED, this);
 	}
 
-	private Map<String, String> _channelIds;
 	private Map<String, JSONObject> _dataSources;
 
 	@Autowired

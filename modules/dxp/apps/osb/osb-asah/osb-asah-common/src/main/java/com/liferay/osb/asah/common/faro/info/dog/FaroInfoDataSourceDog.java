@@ -213,7 +213,13 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 	}
 
 	public String getChannelId(String dataSourceId) {
-		return _dataSourceCache.getChannelId(dataSourceId);
+		JSONObject dataSourceJSONObject = getDataSourceJSONObject(dataSourceId);
+
+		if (dataSourceJSONObject == null) {
+			return null;
+		}
+
+		return dataSourceJSONObject.optString("channelId");
 	}
 
 	public List<String> getDataSourceFieldMappingIds(
@@ -298,10 +304,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 						"provider.analyticsConfiguration.enableAllSites", true)
 				)
 			));
-	}
-
-	public boolean isValidDataSourceId(String dataSourceId) {
-		return _dataSourceCache.isValidDataSourceId(dataSourceId);
 	}
 
 	public JSONObject patchDataSource(

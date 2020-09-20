@@ -359,8 +359,8 @@ public class AnalyticsEventsMessageProcessor {
 	private boolean _isDataSourceActive(
 		AnalyticsEventsMessage analyticsEventsMessage) {
 
-		if (_faroInfoDataSourceDog.isValidDataSourceId(
-				analyticsEventsMessage.getDataSourceId())) {
+		if (_faroInfoDataSourceDog.getDataSourceJSONObject(
+				analyticsEventsMessage.getDataSourceId()) != null) {
 
 			return true;
 		}
