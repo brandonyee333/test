@@ -37,6 +37,9 @@
 		"eventDate": "${now-1d}",
 		"individualId": "40",
 		"knownIndividual": false,
+		"segmentNames": [
+			"Developer"
+		],
 		"userId": "4",
 		"views": 1
 	},
@@ -46,6 +49,26 @@
 		"individualId": "50",
 		"knownIndividual": true,
 		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-1d}",
+		"individualId": "60",
+		"knownIndividual": false,
+		"segmentNames": [
+		],
+		"userId": "6",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-1d}",
+		"individualId": "70",
+		"knownIndividual": true,
+		"segmentNames": [
+		],
+		"userId": "7",
 		"views": 1
 	}
 ]

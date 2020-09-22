@@ -47,7 +47,7 @@ public class UserDogTest {
 		long anonymousUsersCount = _userDog.getAnonymousUsersCount(
 			JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(1, anonymousUsersCount);
+		Assert.assertEquals(2, anonymousUsersCount);
 	}
 
 	@ElasticsearchIndex(
@@ -59,7 +59,7 @@ public class UserDogTest {
 		long knownUsersCount = _userDog.getKnownUsersCount(
 			JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(3, knownUsersCount);
+		Assert.assertEquals(4, knownUsersCount);
 	}
 
 	@ElasticsearchIndex(
@@ -72,7 +72,7 @@ public class UserDogTest {
 			_userDog.getNonsegmentedKnownUsersCount(
 				JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(1, nonsegmentedKnownUsersCount);
+		Assert.assertEquals(2, nonsegmentedKnownUsersCount);
 	}
 
 	@ElasticsearchIndex(
