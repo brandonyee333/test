@@ -23,7 +23,7 @@ List<ManagementBarFilterItem> managementBarFilterItems = (List<ManagementBarFilt
 String value = (String)request.getAttribute("liferay-frontend:management-bar-filter:value");
 %>
 
-<c:if test="<%= managementBarFilterItems.size() > 0 %>">
+<c:if test="<%= !managementBarFilterItems.isEmpty() %>">
 	<c:choose>
 		<c:when test='<%= Validator.isNotNull(label) && label.equals("order-by") %>'>
 			<li class="dropdown <%= disabled ? "disabled" : StringPool.BLANK %> management-bar-item-xs-inline-block">

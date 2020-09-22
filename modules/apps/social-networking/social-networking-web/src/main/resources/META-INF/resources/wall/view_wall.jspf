@@ -200,7 +200,7 @@
 
 		</table>
 
-		<c:if test="<%= results.size() > 0 %>">
+		<c:if test="<%= !results.isEmpty() %>">
 			<div class="separator"><!-- --></div>
 
 			<div class="taglib-search-iterator-page-iterator-bottom">

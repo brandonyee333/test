@@ -97,7 +97,7 @@ if (!rankingNamesList.isEmpty()) {
 		searchContainer="<%= searchContainer %>"
 	/>
 
-	<c:if test="<%= results.size() > 0 %>">
+	<c:if test="<%= !results.isEmpty() %>">
 		<div class="taglib-search-iterator-page-iterator-bottom" id="<portlet:namespace />searchTopUsers">
 			<liferay-ui:search-paginator
 				searchContainer="<%= searchContainer %>"

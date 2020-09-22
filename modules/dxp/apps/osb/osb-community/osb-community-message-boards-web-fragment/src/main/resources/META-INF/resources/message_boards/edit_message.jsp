@@ -226,7 +226,7 @@ if (portletTitleBasedNavigation) {
 
 			<c:if test="<%= MBCategoryPermission.contains(permissionChecker, scopeGroupId, categoryId, ActionKeys.ADD_FILE) %>">
 				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="attachments">
-					<c:if test="<%= existingAttachmentsFileEntries.size() > 0 %>">
+					<c:if test="<%= !existingAttachmentsFileEntries.isEmpty() %>">
 						<ul>
 
 							<%
