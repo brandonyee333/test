@@ -61,17 +61,15 @@ public class AccountEntryConstants {
 		WorkflowConstants.STATUS_EXPIRED
 	};
 
-	public static final int TIER_OEM = 2;
+	public static final int TIER_T1 = 3;
 
-	public static final int TIER_PREMIER = 3;
+	public static final int TIER_T2 = 4;
 
-	public static final int TIER_REGULAR = 1;
+	public static final int TIER_T3 = 5;
 
-	public static final int TIER_STRATEGIC = 4;
+	public static final int TIER_T4 = 1;
 
-	public static final int[] TIERS = {
-		TIER_OEM, TIER_PREMIER, TIER_REGULAR, TIER_STRATEGIC
-	};
+	public static final int[] TIERS = {TIER_T1, TIER_T2, TIER_T3, TIER_T4};
 
 	public static final int TYPE_ANALYTICS_CLOUD_BASIC = 5;
 
@@ -110,17 +108,17 @@ public class AccountEntryConstants {
 	}
 
 	public static String getTierLabel(int tier) {
-		if (tier == TIER_OEM) {
-			return "oem";
+		if (tier == TIER_T1) {
+			return "T1";
 		}
-		else if (tier == TIER_PREMIER) {
-			return "premier";
+		else if (tier == TIER_T2) {
+			return "T2";
 		}
-		else if (tier == TIER_REGULAR) {
-			return "regular";
+		else if (tier == TIER_T3) {
+			return "T3";
 		}
-		else if (tier == TIER_STRATEGIC) {
-			return "strategic";
+		else if (tier == TIER_T4) {
+			return "T4";
 		}
 		else {
 			return StringPool.BLANK;

@@ -131,7 +131,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="tier" />
 					</td>
 					<td>
-						<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountEntry.getTier())) %>
+						<%= AccountEntryConstants.getTierLabel(accountEntry.getTier()) %>
 					</td>
 				</tr>
 				<tr>

@@ -889,7 +889,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			accountEntry.setType(AccountEntryConstants.TYPE_GROUP);
 			accountEntry.setIndustry(industry);
 			accountEntry.setPartnerManagedSupport(partnerManagedSupport);
-			accountEntry.setTier(AccountEntryConstants.TIER_REGULAR);
+			accountEntry.setTier(AccountEntryConstants.TIER_T4);
 			accountEntry.setMaxCustomers(10);
 			accountEntry.setNotes(notes);
 			accountEntry.setLanguageIds(new String[] {languageId});

@@ -390,7 +390,7 @@ public class AccountEntryLocalServiceImpl
 			userId, corpProject.getUuid(), corpProject.getCorpProjectId(),
 			StringPool.BLANK, StringPool.BLANK, companyName, null,
 			AccountEntryConstants.TYPE_TRIAL, industry, 0L, false,
-			AccountEntryConstants.TIER_REGULAR, 1, StringPool.BLANK,
+			AccountEntryConstants.TIER_T4, 1, StringPool.BLANK,
 			StringPool.BLANK, new String[0], new long[0], "N/A",
 			StringPool.BLANK, StringPool.BLANK, "N/A", "N/A", 0L, countryId,
 			StringPool.BLANK);

@@ -39,7 +39,7 @@ long corpProjectId = BeanParamUtil.getLong(accountEntry, request, "corpProjectId
 int type = BeanParamUtil.getInteger(accountEntry, request, "type", AccountEntryConstants.TYPE_GROUP);
 int industry = BeanParamUtil.getInteger(accountEntry, request, "industry");
 long partnerEntryId = BeanParamUtil.getLong(accountEntry, request, "partnerEntryId");
-int tier = BeanParamUtil.getInteger(accountEntry, request, "tier", AccountEntryConstants.TIER_REGULAR);
+int tier = BeanParamUtil.getInteger(accountEntry, request, "tier", AccountEntryConstants.TIER_T4);
 
 Address address = null;
 

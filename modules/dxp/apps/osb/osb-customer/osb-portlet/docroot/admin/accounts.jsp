@@ -122,9 +122,8 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
 				name="tier"
-			>
-				<liferay-ui:message key="<%= AccountEntryConstants.getTierLabel(accountEntry.getTier()) %>" />
-			</liferay-ui:search-container-column-text>
+				value="<%= AccountEntryConstants.getTierLabel(accountEntry.getTier()) %>"
+			/>
 
 			<liferay-ui:search-container-column-text
 				name="support-regions"
