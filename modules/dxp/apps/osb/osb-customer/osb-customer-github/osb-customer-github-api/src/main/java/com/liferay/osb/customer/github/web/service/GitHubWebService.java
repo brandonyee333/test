@@ -33,6 +33,11 @@ public interface GitHubWebService {
 
 	public Set<String> getCollaborators() throws PortalException;
 
+	public JSONObject getOrganizationMembership(String userName)
+		throws PortalException;
+
+	public Set<String> getTeamMembers(String teamSlug) throws PortalException;
+
 	public JSONObject getUser(String userName) throws PortalException;
 
 }

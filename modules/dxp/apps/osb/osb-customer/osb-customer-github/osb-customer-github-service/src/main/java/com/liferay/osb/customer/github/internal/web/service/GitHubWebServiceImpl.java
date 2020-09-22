@@ -170,6 +170,55 @@ public class GitHubWebServiceImpl
 	}
 
 	@Override
+	public JSONObject getOrganizationMembership(String gitHubUserName)
+		throws PortalException {
+
+		try {
+			String url = _URL_GITHUB_ORGS + "liferay/members/" + gitHubUserName;
+
+			String response = doGet(
+				url, Collections.<String, String>emptyMap(), _headers);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception e) {
+			String message = e.getMessage();
+
+			if (message.contains("does not exist") ||
+				message.contains("Not Found") ||
+				message.contains("not a member")) {
+
+				return null;
+			}
+
+			throw new PortalException(e);
+		}
+	}
+
+	@Override
+	public Set<String> getTeamMembers(String teamSlug) throws PortalException {
+		Query query = _queryFactory.createQuery();
+
+		query.setPerPage(100);
+
+		Set<String> members = new HashSet<>();
+
+		int page = 1;
+
+		while (page > 0) {
+			query.setPage(page);
+
+			SearchHits<String> searchHits = _searchTeamMembers(teamSlug, query);
+
+			members.addAll(searchHits.getResults());
+
+			page = searchHits.getNextPage();
+		}
+
+		return members;
+	}
+
+	@Override
 	public JSONObject getUser(String gitHubUserName) throws PortalException {
 		try {
 			String url = _URL_GITHUB_USERS + gitHubUserName;
@@ -346,6 +395,24 @@ public class GitHubWebServiceImpl
 		}
 	}
 
+	private SearchHits<String> _searchTeamMembers(String teamSlug, Query query)
+		throws PortalException {
+
+		try {
+			String url =
+				GitHubConfigurationValues.REMOTE_REST_SERVICE_API_GITHUB_HOST +
+					_URL_GITHUB_ORGS + "liferay/teams/" + teamSlug + "/members";
+
+			HttpResponse httpResponse = _getHttpResponse(
+				url, query.getParameters(), _headers);
+
+			return _toTeamMemberSearchHits(httpResponse);
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
+	}
+
 	private List<String> _toCollaborators(JSONArray jsonArray)
 		throws PortalException {
 
@@ -385,7 +452,48 @@ public class GitHubWebServiceImpl
 		return searchHits;
 	}
 
+	private List<String> _toTeamMembers(JSONArray jsonArray)
+		throws PortalException {
+
+		List<String> members = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			members.add(jsonObject.getString("login"));
+		}
+
+		return members;
+	}
+
+	private SearchHits<String> _toTeamMemberSearchHits(
+			HttpResponse httpResponse)
+		throws IOException, PortalException {
+
+		SearchHits<String> searchHits = new SearchHitsImpl<>();
+
+		JSONObject jsonObject = _getPageURLs(httpResponse);
+
+		String nextPageURL = jsonObject.getString("next");
+
+		if (Validator.isNotNull(nextPageURL)) {
+			String nextPage = _http.getParameter(nextPageURL, "page", false);
+
+			searchHits.setNextPage(GetterUtil.getInteger(nextPage));
+		}
+
+		String response = EntityUtils.toString(httpResponse.getEntity());
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(response);
+
+		searchHits.setResults(_toTeamMembers(jsonArray));
+
+		return searchHits;
+	}
+
 	private static final Charset _CHARSET = Charset.forName("UTF-8");
+
+	private static final String _URL_GITHUB_ORGS = "/orgs/";
 
 	private static final String _URL_GITHUB_REPOSITORY_COLLABORATORS =
 		StringBundler.concat(
