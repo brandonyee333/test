@@ -168,15 +168,8 @@ public class UserDog {
 	}
 
 	private BoolQueryBuilder _getKnownIndividualBoolQueryBuilder() {
-		return BoolQueryBuilderUtil.should(
-			QueryBuilders.termQuery("knownIndividual", true)
-		).should(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.existsQuery("individualId")
-			).mustNot(
-				QueryBuilders.existsQuery("knownIndividual")
-			)
-		);
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("knownIndividual", true));
 	}
 
 	private long _getUsersCountAggregationValue(Aggregations aggregations) {
