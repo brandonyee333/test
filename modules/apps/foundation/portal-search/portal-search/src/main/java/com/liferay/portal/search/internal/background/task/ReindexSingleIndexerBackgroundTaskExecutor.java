@@ -39,6 +39,7 @@ import java.util.Map;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -80,18 +81,24 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
+		systemIndexers = ServiceTrackerListFactory.open(
+			bundleContext, (Class<Indexer<?>>)(Class<?>)Indexer.class,
+			"(system.index=true)");
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		if (systemIndexers != null) {
+			systemIndexers.close();
+		}
 	}
 
 	protected boolean isSystemIndexer(Indexer<?> indexer) {
-		ServiceTrackerList<Indexer<?>, Indexer<?>> systemIndexers =
-			ServiceTrackerListFactory.open(
-				_bundleContext, (Class<Indexer<?>>)(Class<?>)Indexer.class,
-				"(system.index=true)");
-
-		for (Indexer<?> systemIndexer : systemIndexers) {
-			if (indexer.equals(systemIndexer)) {
-				return true;
+		if (systemIndexers.size() > 0) {
+			for (Indexer<?> systemIndexer : systemIndexers) {
+				if (indexer.equals(systemIndexer)) {
+					return true;
+				}
 			}
 		}
 
@@ -155,9 +162,9 @@ public class ReindexSingleIndexerBackgroundTaskExecutor
 	@Reference
 	protected SearchEngineHelper searchEngineHelper;
 
+	protected ServiceTrackerList<Indexer<?>, Indexer<?>> systemIndexers;
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		ReindexSingleIndexerBackgroundTaskExecutor.class);
-
-	private BundleContext _bundleContext;
 
 }
