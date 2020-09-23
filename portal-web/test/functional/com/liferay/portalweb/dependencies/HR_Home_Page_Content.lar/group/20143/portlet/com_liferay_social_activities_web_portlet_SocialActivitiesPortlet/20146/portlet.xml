@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<portlet portlet-id="com_liferay_social_activities_web_portlet_SocialActivitiesPortlet" root-portlet-id="com_liferay_social_activities_web_portlet_SocialActivitiesPortlet" old-plid="20146" scope-group-id="20143" private-layout="false">
+	<portlet-preferences path="/group/20143/portlet/com_liferay_social_activities_web_portlet_SocialActivitiesPortlet/preferences/layout/0/20146/portlet-preferences.xml">
+		<preference-data/>
+	</portlet-preferences>
+</portlet>

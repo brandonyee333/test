@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<root>
+	<header available-locales="zh_CN,es_ES,ja_JP,nl_NL,hu_HU,pt_BR,de_DE,iw_IL,fi_FI,ca_ES,fr_FR,en_US" build-number="7010" bundle-version="4.0.1" export-date="Thu, 04 Jan 2018 02:22:22 +0000" company-id="20116" company-group-id="20152" group-id="20143" user-personal-site-group-id="20149" private-layout="false" type="layout-set" theme-id="classic_WAR_classictheme" color-scheme-id="01">
+		<css><![CDATA[]]></css>
+		<settings><![CDATA[]]></settings>
+	</header>
+	<missing-references>
+		<missing-reference class-name="com.liferay.portal.kernel.model.adapter.StagedTheme" class-pk="classic_WAR_classictheme" display-name="classic_WAR_classictheme" type="dependency" referrer-class-name="com.liferay.portal.kernel.model.LayoutSet" uuid="" company-id="20116"/>
+		<missing-reference class-name="com.liferay.dynamic.data.mapping.model.DDMStructure" class-pk="34901" attached-class-name="com.liferay.journal.model.JournalArticle" display-name="Basic Web Content" group-id="20152" live-group-id="20152" type="dependency" referrer-class-name="com.liferay.journal.model.JournalArticle" referrer-display-name="Meet and Greet" uuid="f13ce3f3-0b35-f653-d39d-708792b3cbb3" company-id="20116" preloaded="true" referenced-class-name="com.liferay.journal.model.JournalArticle" structure-key="BASIC-WEB-CONTENT"/>
+		<missing-reference class-name="com.liferay.dynamic.data.mapping.model.DDMTemplate" class-pk="34904" attached-class-name="com.liferay.dynamic.data.mapping.model.DDMStructure" display-name="Basic Web Content" group-id="20152" live-group-id="20152" type="dependency" referrer-class-name="com.liferay.journal.model.JournalArticle" referrer-display-name="Meet and Greet" uuid="a7bf87bc-13ff-da29-faa6-67e95b65447d" company-id="20116" preloaded="true" referenced-class-name="com.liferay.dynamic.data.mapping.model.DDMStructure" template-key="BASIC-WEB-CONTENT"/>
+	</missing-references>
+	<LayoutSet>
+		<staged-model>
+			<references>
+				<reference class-name="com.liferay.portal.kernel.model.adapter.StagedTheme" class-pk="classic_WAR_classictheme" type="dependency" uuid="" company-id="20116" missing="true"/>
+			</references>
+		</staged-model>
+	</LayoutSet>
+	<Layout>
+		<staged-model group-id="20143" uuid="1474e62b-feca-513c-8ace-58de19f5f1e3" layout-uuid="1474e62b-feca-513c-8ace-58de19f5f1e3" layout-id="1" layout-priority="0" action="add" path="/group/20143/com.liferay.portal.kernel.model.Layout/20146.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.portal.kernel.model.LayoutFriendlyURL" class-pk="20147" group-id="20143" live-group-id="20143" type="dependency" uuid="e7519575-3221-4156-91d8-74a13977a293" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+	</Layout>
+	<LayoutFriendlyURL>
+		<staged-model group-id="20143" uuid="e7519575-3221-4156-91d8-74a13977a293" path="/group/20143/com.liferay.portal.kernel.model.LayoutFriendlyURL/20147.xml"/>
+	</LayoutFriendlyURL>
+	<portlets>
+		<portlet portlet-id="com_liferay_site_teams_web_portlet_SiteTeamsPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_site_teams_web_portlet_SiteTeamsPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_document_library_web_portlet_DLAdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_document_library_web_portlet_DLAdminPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_document_library_web_portlet_DLPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_document_library_web_portlet_DLPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_blogs_web_portlet_BlogsPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_blogs_web_portlet_BlogsPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_dynamic_data_lists_web_portlet_DDLPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_dynamic_data_lists_web_portlet_DDLPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_journal_web_portlet_JournalPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_journal_web_portlet_JournalPortlet/0/portlet.xml" portlet-data="true" schema-version="1.0.2" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_asset_tags_admin_web_portlet_AssetTagsAdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_asset_tags_admin_web_portlet_AssetTagsAdminPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_wiki_web_portlet_WikiPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_wiki_web_portlet_WikiPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_message_boards_web_portlet_MBPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_message_boards_web_portlet_MBPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_comment_page_comments_web_portlet_PageCommentsPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_comment_page_comments_web_portlet_PageCommentsPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_dynamic_data_lists_form_web_portlet_DDLFormAdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_dynamic_data_lists_form_web_portlet_DDLFormAdminPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_ratings_page_ratings_web_portlet_PageRatingsPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_ratings_page_ratings_web_portlet_PageRatingsPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_mobile_device_rules_web_portlet_MDRPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_mobile_device_rules_web_portlet_MDRPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_calendar_web_portlet_CalendarPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_calendar_web_portlet_CalendarPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_shopping_web_portlet_ShoppingPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_shopping_web_portlet_ShoppingPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_bookmarks_web_portlet_BookmarksPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_bookmarks_web_portlet_BookmarksPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_bookmarks_web_portlet_BookmarksAdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_bookmarks_web_portlet_BookmarksAdminPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_knowledge_base_web_portlet_AdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_knowledge_base_web_portlet_AdminPortlet/0/portlet.xml" portlet-data="false" schema-version="2.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_shopping_web_portlet_ShoppingAdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_shopping_web_portlet_ShoppingAdminPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_portal_reports_engine_console_web_display_portlet_DisplayPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_portal_reports_engine_console_web_display_portlet_DisplayPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_message_boards_web_portlet_MBAdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_message_boards_web_portlet_MBAdminPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_portal_reports_engine_console_web_admin_portlet_AdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_portal_reports_engine_console_web_admin_portlet_AdminPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_blogs_web_portlet_BlogsAdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_blogs_web_portlet_BlogsAdminPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_wiki_web_portlet_WikiAdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_wiki_web_portlet_WikiAdminPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_polls_web_portlet_PollsPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_polls_web_portlet_PollsPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_dynamic_data_mapping_web_portlet_PortletDisplayTemplatePortlet" layout-id="0" path="/group/20143/portlet/com_liferay_dynamic_data_mapping_web_portlet_PortletDisplayTemplatePortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_asset_categories_admin_web_portlet_AssetCategoriesAdminPortlet" layout-id="0" path="/group/20143/portlet/com_liferay_asset_categories_admin_web_portlet_AssetCategoriesAdminPortlet/0/portlet.xml" portlet-data="false" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_MdCIaTCUzIbM" layout-id="1" path="/group/20143/portlet/com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_MdCIaTCUzIbM/20146/portlet.xml" portlet-data="true" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_KGIAsGehK6oU" layout-id="1" path="/group/20143/portlet/com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_KGIAsGehK6oU/20146/portlet.xml" portlet-data="true" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_zoJuuKUEGTkl" layout-id="1" path="/group/20143/portlet/com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_zoJuuKUEGTkl/20146/portlet.xml" portlet-data="true" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_social_activities_web_portlet_SocialActivitiesPortlet" layout-id="1" path="/group/20143/portlet/com_liferay_social_activities_web_portlet_SocialActivitiesPortlet/20146/portlet.xml" portlet-data="true" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_oLvTWyFgm7p1" layout-id="1" path="/group/20143/portlet/com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_oLvTWyFgm7p1/20146/portlet.xml" portlet-data="true" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet" layout-id="1" path="/group/20143/portlet/com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet/20146/portlet.xml" portlet-data="true" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_portal_search_web_portlet_SearchPortlet" layout-id="1" path="/group/20143/portlet/com_liferay_portal_search_web_portlet_SearchPortlet/20146/portlet.xml" portlet-data="true" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+		<portlet portlet-id="com_liferay_site_navigation_menu_web_portlet_SiteNavigationMenuPortlet" layout-id="1" path="/group/20143/portlet/com_liferay_site_navigation_menu_web_portlet_SiteNavigationMenuPortlet/20146/portlet.xml" portlet-data="true" schema-version="1.0.0" portlet-configuration="setup,archived-setups,user-preferences"/>
+	</portlets>
+	<services/>
+	<manifest-summary>
+		<staged-model manifest-summary-key="com.liferay.journal.model.JournalFeed"/>
+		<staged-model manifest-summary-key="com.liferay.portal.kernel.model.LayoutFriendlyURL" addition-count="1"/>
+		<staged-model manifest-summary-key="com.liferay.journal.model.JournalFolder"/>
+		<staged-model manifest-summary-key="com.liferay.journal.model.JournalArticle" addition-count="3"/>
+		<staged-model manifest-summary-key="com.liferay.dynamic.data.mapping.model.DDMTemplate#com.liferay.dynamic.data.mapping.model.DDMStructure"/>
+		<staged-model manifest-summary-key="com.liferay.portal.kernel.model.Layout" addition-count="1"/>
+		<staged-model manifest-summary-key="com.liferay.dynamic.data.mapping.model.DDMStructure#com.liferay.journal.model.JournalArticle"/>
+	</manifest-summary>
+</root>

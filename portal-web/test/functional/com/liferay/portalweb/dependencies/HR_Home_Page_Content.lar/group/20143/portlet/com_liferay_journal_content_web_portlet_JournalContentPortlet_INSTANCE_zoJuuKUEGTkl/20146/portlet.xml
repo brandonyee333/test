@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<portlet portlet-id="com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_zoJuuKUEGTkl" root-portlet-id="com_liferay_journal_content_web_portlet_JournalContentPortlet" old-plid="20146" scope-group-id="20143" private-layout="false">
+	<portlet-preferences path="/group/20143/portlet/com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_zoJuuKUEGTkl/preferences/layout/0/20146/portlet-preferences.xml">
+		<preference-data>
+			<JournalArticle>
+				<staged-model group-id="20143" uuid="a94a441d-8891-4d4f-184e-dcff1167bee0" article-resource-uuid="76eed581-bd33-7ac5-e11d-bd00c0a4fb51" latest="true" path="/group/20143/com.liferay.journal.model.JournalArticle/37343.xml">
+					<references>
+						<reference class-name="com.liferay.dynamic.data.mapping.model.DDMStructure" class-pk="34901" attached-class-name="com.liferay.journal.model.JournalArticle" group-id="20152" live-group-id="20152" type="dependency" uuid="f13ce3f3-0b35-f653-d39d-708792b3cbb3" company-id="20116" preloaded="true" referenced-class-name="com.liferay.journal.model.JournalArticle" structure-key="BASIC-WEB-CONTENT" missing="true"/>
+						<reference class-name="com.liferay.dynamic.data.mapping.model.DDMTemplate" class-pk="34904" attached-class-name="com.liferay.dynamic.data.mapping.model.DDMStructure" group-id="20152" live-group-id="20152" type="dependency" uuid="a7bf87bc-13ff-da29-faa6-67e95b65447d" company-id="20116" preloaded="true" referenced-class-name="com.liferay.dynamic.data.mapping.model.DDMStructure" template-key="BASIC-WEB-CONTENT" missing="true"/>
+					</references>
+				</staged-model>
+			</JournalArticle>
+			<references>
+				<reference class-name="com.liferay.journal.model.JournalArticle" class-pk="37343" group-id="20143" live-group-id="20143" type="dependency" uuid="a94a441d-8891-4d4f-184e-dcff1167bee0" company-id="20116" article-id="37342" preloaded="false" article-resource-uuid="76eed581-bd33-7ac5-e11d-bd00c0a4fb51" missing="false"/>
+			</references>
+		</preference-data>
+	</portlet-preferences>
+</portlet>

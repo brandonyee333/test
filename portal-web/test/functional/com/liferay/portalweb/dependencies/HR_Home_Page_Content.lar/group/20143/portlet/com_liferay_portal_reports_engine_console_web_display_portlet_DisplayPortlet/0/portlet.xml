@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<portlet portlet-id="com_liferay_portal_reports_engine_console_web_display_portlet_DisplayPortlet" root-portlet-id="com_liferay_portal_reports_engine_console_web_display_portlet_DisplayPortlet" old-plid="0" scope-group-id="20143" scope-layout-type="" scope-layout-uuid="" private-layout="false">
+	<portlet-preferences path="/group/20143/portlet/com_liferay_portal_reports_engine_console_web_display_portlet_DisplayPortlet/preferences/layout/0/0/portlet-preferences.xml">
+		<preference-data/>
+	</portlet-preferences>
+</portlet>
