@@ -19,6 +19,9 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.dxp.extractor.client.ExtractorDXPClient;
 import com.liferay.osb.asah.dxp.extractor.configuration.DXPExtractorConfiguration;
 
+import java.util.Set;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -129,6 +132,8 @@ public class UserDog {
 			_extractorDXPClient.getJSONArray(
 				dxpExtractorConfiguration, "/api/jsonws/invoke",
 				bodyJSONObject));
+
+		_sanitize(usersJSONArray);
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Return " + usersJSONArray.length() + " users");
@@ -321,6 +326,44 @@ public class UserDog {
 
 		return usersJSONArray;
 	}
+
+	private JSONArray _sanitize(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject userJSONObject = jsonArray.getJSONObject(i);
+
+			Set<String> keys = userJSONObject.keySet();
+
+			keys.removeIf(key -> !ArrayUtils.contains(_USER_FIELD_NAMES, key));
+
+			JSONObject contactJSONObject = userJSONObject.getJSONObject(
+				"contact");
+
+			keys = contactJSONObject.keySet();
+
+			keys.removeIf(
+				key -> !ArrayUtils.contains(_CONTACT_FIELD_NAMES, key));
+		}
+
+		return jsonArray;
+	}
+
+	private static final String[] _CONTACT_FIELD_NAMES = {
+		"accountId", "birthday", "classNameId", "classPK", "companyId",
+		"contactId", "createDate", "emailAddress", "employeeNumber",
+		"employeeStatusId", "facebookSn", "firstName", "hoursOfOperation",
+		"jabberSn", "jobClass", "jobTitle", "lastName", "male", "middleName",
+		"modifiedDate", "parentContactId", "prefixId", "skypeSn", "smsSn",
+		"suffixId", "twitterSn", "userId", "userName"
+	};
+
+	private static final String[] _USER_FIELD_NAMES = {
+		"agreedToTermsOfUse", "comments", "companyId", "contact", "contactId",
+		"createDate", "defaultUser", "emailAddress", "emailAddressVerified",
+		"externalReferenceCode", "facebookId", "firstName", "googleUserId",
+		"greeting", "jobTitle", "languageId", "lastName", "ldapServerId",
+		"middleName", "modifiedDate", "openId", "portraitId", "screenName",
+		"status", "timeZoneId", "userId", "uuid"
+	};
 
 	private static final Log _log = LogFactory.getLog(UserDog.class);
 
