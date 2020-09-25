@@ -6844,3 +6844,81 @@ app.artifacts-7.0.93=\
 app.change.log-7.0.93=[[trimmed]]PS-65225 LPS-65362 LPS-65381 LPS-65385 LPS-65427 LPS-65555 LPS-65623 LPS-65651 LPS-65690 LPS-65738 LPS-65778 LPS-65909 LPS-66064 LPS-66381 LPS-66416 LPS-66494 LPS-66853 LPS-67049 LPS-67352 LPS-68062 LPS-68164 LPS-68289 LPS-69037 LPS-69271 LPS-69383 LPS-69661 LPS-69926 LPS-70158 LPS-70411 LPS-70816 LPS-71142 LPS-71314 LPS-71828 LPS-72275 LPS-72429 LPS-72849 LPS-72985 LPS-73350 LPS-73443 LPS-73564 LPS-73600 LPS-73935 LPS-74302 LPS-74401 LPS-74544 LPS-74849 LPS-74897 LPS-75010 LPS-75049 LPS-75476 LPS-75815 LPS-76221 LPS-76528 LPS-76701 LPS-76813 LPS-77111 LPS-77143 LPS-77295 LPS-77595 LPS-77699 LPS-77739 LPS-78033 LPS-78152 LPS-78433 LPS-78772 LPS-79236 LPS-79679 LPS-80064 LPS-80517 LPS-80780 LPS-81020 LPS-81474 LPS-81578 LPS-82828 LPS-83326 LPS-83705 LPS-83736 LPS-84119 LPS-84399 LPS-84400 LPS-84676 LPS-85765 LPS-85976 LPS-86408 LPS-87037 LPS-87746 LPS-87768 LPS-88612 LPS-88633 LPS-89362 LPS-90362 LPS-91149 LPS-91343 LPS-91420 LPS-91527 LPS-96481 LPS-97841 LPS-97912 LPS-99287 LRDOCS-8120
 
 app.git.id-7.0.93=9334428b955d2365f870d79d8e071f834f91649d
+
+#
+# Liferay App Version 7.0.94
+#
+
+app.artifacts-7.0.94=\
+	com.liferay.calendar.api-2.3.28.jar,\
+	com.liferay.calendar.service-2.11.28.jar,\
+	com.liferay.calendar.web-1.0.108.jar,\
+	com.liferay.dynamic.data.lists.api-2.1.38.jar,\
+	com.liferay.dynamic.data.lists.form.lang-1.0.7.jar,\
+	com.liferay.dynamic.data.lists.form.web-2.0.64.jar,\
+	com.liferay.dynamic.data.lists.lang-1.0.7.jar,\
+	com.liferay.dynamic.data.lists.service-1.3.35.jar,\
+	com.liferay.dynamic.data.lists.web-2.0.53.jar,\
+	com.liferay.dynamic.data.mapping.api-3.10.2.jar,\
+	com.liferay.dynamic.data.mapping.data.provider-2.0.11.jar,\
+	com.liferay.dynamic.data.mapping.data.provider.impl-1.0.22.jar,\
+	com.liferay.dynamic.data.mapping.data.provider.web-1.0.37.jar,\
+	com.liferay.dynamic.data.mapping.expression-2.1.9.jar,\
+	com.liferay.dynamic.data.mapping.form.analytics-1.0.6.jar,\
+	com.liferay.dynamic.data.mapping.form.evaluator-2.0.24.jar,\
+	com.liferay.dynamic.data.mapping.form.field.type-2.1.16.jar,\
+	com.liferay.dynamic.data.mapping.form.renderer-2.1.50.jar,\
+	com.liferay.dynamic.data.mapping.form.values.factory-2.0.20.jar,\
+	com.liferay.dynamic.data.mapping.form.values.query-2.0.18.jar,\
+	com.liferay.dynamic.data.mapping.io-2.0.32.jar,\
+	com.liferay.dynamic.data.mapping.lang-2.0.24.jar,\
+	com.liferay.dynamic.data.mapping.service-2.8.0.jar,\
+	com.liferay.dynamic.data.mapping.taglib-2.2.13.jar,\
+	com.liferay.dynamic.data.mapping.type.captcha-2.0.13.jar,\
+	com.liferay.dynamic.data.mapping.type.checkbox-2.0.25.jar,\
+	com.liferay.dynamic.data.mapping.type.checkbox.multiple-1.0.21.jar,\
+	com.liferay.dynamic.data.mapping.type.date-2.0.26.jar,\
+	com.liferay.dynamic.data.mapping.type.editor-2.0.14.jar,\
+	com.liferay.dynamic.data.mapping.type.key.value-2.0.12.jar,\
+	com.liferay.dynamic.data.mapping.type.options-2.0.24.jar,\
+	com.liferay.dynamic.data.mapping.type.paragraph-2.0.22.jar,\
+	com.liferay.dynamic.data.mapping.type.password-1.0.14.jar,\
+	com.liferay.dynamic.data.mapping.type.radio-2.0.33.jar,\
+	com.liferay.dynamic.data.mapping.type.select-2.0.36.jar,\
+	com.liferay.dynamic.data.mapping.type.text-2.0.24.jar,\
+	com.liferay.dynamic.data.mapping.type.validation-2.0.14.jar,\
+	com.liferay.dynamic.data.mapping.validator-2.1.20.jar,\
+	com.liferay.dynamic.data.mapping.web-1.0.135.jar,\
+	com.liferay.polls.api-4.0.23.jar,\
+	com.liferay.polls.service-3.0.71.jar,\
+	com.liferay.polls.web-2.0.43.jar,\
+	com.liferay.portal.reports.engine.api-3.0.6.jar,\
+	com.liferay.portal.rules.engine.api-2.0.15.jar,\
+	com.liferay.portal.rules.engine.wiring-2.0.9.jar,\
+	com.liferay.portal.workflow.api-3.0.2.jar,\
+	com.liferay.portal.workflow.definition.link.web-1.0.26.jar,\
+	com.liferay.portal.workflow.definition.web-1.0.28.jar,\
+	com.liferay.portal.workflow.instance.web-1.0.29.jar,\
+	com.liferay.portal.workflow.kaleo.api-2.6.2.jar,\
+	com.liferay.portal.workflow.kaleo.definition.api-2.1.7.jar,\
+	com.liferay.portal.workflow.kaleo.definition.impl-2.0.19.jar,\
+	com.liferay.portal.workflow.kaleo.designer.api-1.0.25.jar,\
+	com.liferay.portal.workflow.kaleo.designer.lang-1.0.7.jar,\
+	com.liferay.portal.workflow.kaleo.designer.service-1.1.42.jar,\
+	com.liferay.portal.workflow.kaleo.designer.web-1.0.52.jar,\
+	com.liferay.portal.workflow.kaleo.forms.api-1.1.22.jar,\
+	com.liferay.portal.workflow.kaleo.forms.lang-1.0.7.jar,\
+	com.liferay.portal.workflow.kaleo.forms.service-1.1.57.jar,\
+	com.liferay.portal.workflow.kaleo.forms.web-1.0.62.jar,\
+	com.liferay.portal.workflow.kaleo.runtime.api-2.3.4.jar,\
+	com.liferay.portal.workflow.kaleo.runtime.impl-2.0.40.jar,\
+	com.liferay.portal.workflow.kaleo.runtime.integration.impl-1.0.26.jar,\
+	com.liferay.portal.workflow.kaleo.runtime.scripting.impl-1.0.14.jar,\
+	com.liferay.portal.workflow.kaleo.service-2.0.93.jar,\
+	com.liferay.portal.workflow.lang-2.0.14.jar,\
+	com.liferay.portal.workflow.task.web-1.0.60.jar,\
+	com.liferay.portal.workflow.uad-2.0.3.jar
+
+app.change.log-7.0.94=[[trimmed]]-88139 LPS-88170 LPS-88181 LPS-88197 LPS-88247 LPS-88473 LPS-88560 LPS-88571 LPS-88612 LPS-88633 LPS-88665 LPS-88707 LPS-88790 LPS-88813 LPS-88995 LPS-89177 LPS-89362 LPS-89365 LPS-89445 LPS-89456 LPS-89567 LPS-89585 LPS-89655 LPS-90008 LPS-90082 LPS-90126 LPS-90220 LPS-90362 LPS-90453 LPS-90505 LPS-90699 LPS-90728 LPS-90920 LPS-91093 LPS-91149 LPS-91342 LPS-91343 LPS-91367 LPS-91388 LPS-91420 LPS-91527 LPS-91531 LPS-91735 LPS-91881 LPS-91949 LPS-91970 LPS-91985 LPS-92017 LPS-92039 LPS-92046 LPS-92069 LPS-92222 LPS-92334 LPS-92613 LPS-93204 LPS-93268 LPS-93842 LPS-94032 LPS-94929 LPS-95488 LPS-95604 LPS-95735 LPS-96018 LPS-96237 LPS-96448 LPS-96450 LPS-96481 LPS-96597 LPS-96785 LPS-96792 LPS-96830 LPS-96833 LPS-96879 LPS-96940 LPS-97169 LPS-97407 LPS-97748 LPS-97841 LPS-97912 LPS-98075 LPS-98175 LPS-98198 LPS-98228 LPS-98308 LPS-98525 LPS-98549 LPS-98588 LPS-98776 LPS-98828 LPS-98857 LPS-99154 LPS-99238 LPS-99252 LPS-99287 LPS-99386 LPS-99396 LPS-99488 LPS-99505 LRDOCS-6300 LRDOCS-8120
+
+app.git.id-7.0.94=75a194f0457084465a94e6b26fd5905a432f86b2
