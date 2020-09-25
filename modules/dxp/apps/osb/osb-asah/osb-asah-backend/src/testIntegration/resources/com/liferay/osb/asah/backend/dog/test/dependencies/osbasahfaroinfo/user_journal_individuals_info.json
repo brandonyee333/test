@@ -1,0 +1,100 @@
+[
+	{
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "user-1@liferay.com"
+				}
+			]
+		},
+		"id": "10"
+	},
+	{
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "user-2@liferay.com"
+				}
+			]
+		},
+		"id": "20"
+	},
+	{
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "user-3@liferay.com"
+				}
+			]
+		},
+		"id": "30"
+	},
+	{
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "user-4@liferay.com"
+				}
+			]
+		},
+		"id": "40"
+	},
+	{
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "user-5@liferay.com"
+				}
+			]
+		},
+		"id": "50"
+	},
+	{
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "user-6@liferay.com"
+				}
+			]
+		},
+		"id": "60"
+	},
+	{
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "user-7@liferay.com"
+				}
+			]
+		},
+		"id": "70"
+	}
+]

@@ -51,6 +51,11 @@ public class UserDogTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "individuals",
+		resourcePath = "user_journal_individuals_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
@@ -62,6 +67,11 @@ public class UserDogTest {
 		Assert.assertEquals(4, knownUsersCount);
 	}
 
+	@ElasticsearchIndex(
+		name = "individuals",
+		resourcePath = "user_journal_individuals_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@ElasticsearchIndex(
 		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
@@ -75,6 +85,11 @@ public class UserDogTest {
 		Assert.assertEquals(2, nonsegmentedKnownUsersCount);
 	}
 
+	@ElasticsearchIndex(
+		name = "individuals",
+		resourcePath = "user_journal_individuals_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@ElasticsearchIndex(
 		name = "journals", resourcePath = "user_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
