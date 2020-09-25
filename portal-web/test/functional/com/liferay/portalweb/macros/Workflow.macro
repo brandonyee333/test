@@ -140,9 +140,10 @@ definition {
 
 		Pause(locator1 = "1000");
 
-		Click(
+		AssertClick.assertPartialTextClickAt(
 			key_user = "${user}",
-			locator1 = "MyWorkflowTasks#DIALOG_BOX_ASSIGN_TO_VALUE");
+			locator1 = "MyWorkflowTasks#DIALOG_BOX_ASSIGN_TO_VALUE",
+			value1 = "${user}");
 
 		Pause(locator1 = "1000");
 
