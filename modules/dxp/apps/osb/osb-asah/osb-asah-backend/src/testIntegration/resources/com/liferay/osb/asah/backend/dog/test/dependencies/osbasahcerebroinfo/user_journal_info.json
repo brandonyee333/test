@@ -70,5 +70,16 @@
 		],
 		"userId": "7",
 		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-1d}",
+		"individualId": "80",
+		"knownIndividual": true,
+		"segmentNames": [
+			"Owner"
+		],
+		"userId": "8",
+		"views": 1
 	}
 ]
