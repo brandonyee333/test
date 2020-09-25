@@ -29,6 +29,8 @@ public interface GitHubWebService {
 	public JSONObject deleteCollaborator(String userName)
 		throws PortalException;
 
+	public JSONObject fetchUser(String userName) throws PortalException;
+
 	public Set<String> getCollaborators() throws PortalException;
 
 	public JSONObject getUser(String userName) throws PortalException;

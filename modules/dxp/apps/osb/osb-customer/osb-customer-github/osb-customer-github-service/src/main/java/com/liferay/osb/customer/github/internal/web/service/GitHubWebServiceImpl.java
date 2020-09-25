@@ -120,6 +120,28 @@ public class GitHubWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
+			String message = e.getMessage();
+
+			if (message.contains("Not Found")) {
+				return null;
+			}
+
+			throw new PortalException(e);
+		}
+	}
+
+	@Override
+	public JSONObject fetchUser(String gitHubUserName) throws PortalException {
+		try {
+			return getUser(gitHubUserName);
+		}
+		catch (Exception e) {
+			String message = e.getMessage();
+
+			if (message.contains("Not Found")) {
+				return null;
+			}
+
 			throw new PortalException(e);
 		}
 	}

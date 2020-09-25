@@ -80,15 +80,26 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				for (Collaborator collaborator : collaborators) {
 					collaborator.setStatus(WorkflowConstants.STATUS_PENDING);
 
-					JSONObject jsonObject = _gitHubWebService.addCollaborator(
+					JSONObject userJSONObject = _gitHubWebService.fetchUser(
 						collaborator.getGitHubUserName());
 
-					if (jsonObject != null) {
-						collaborator.setStatus(
-							WorkflowConstants.STATUS_APPROVED);
-					}
+					if (userJSONObject != null) {
+						JSONObject jsonObject =
+							_gitHubWebService.addCollaborator(
+								collaborator.getGitHubUserName());
 
-					_collaboratorLocalService.updateCollaborator(collaborator);
+						if (jsonObject != null) {
+							collaborator.setStatus(
+								WorkflowConstants.STATUS_APPROVED);
+						}
+
+						_collaboratorLocalService.updateCollaborator(
+							collaborator);
+					}
+					else {
+						_collaboratorLocalService.deleteCollaborator(
+							collaborator);
+					}
 				}
 			}
 			else if (accountEntry.getStatus() ==
