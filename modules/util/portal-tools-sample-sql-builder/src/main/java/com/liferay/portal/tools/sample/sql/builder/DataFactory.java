@@ -319,6 +319,29 @@ public class DataFactory {
 			classNameModel.setValue(model);
 
 			_classNameModels.put(model, classNameModel);
+
+			if (!model.contains(StringPool.UNDERLINE)) {
+				int index = model.lastIndexOf(StringPool.PERIOD) + 1;
+
+				_classNames.put(model.substring(index), model);
+			}
+			else {
+				String[] combineClassNames = model.split(StringPool.UNDERLINE);
+				StringBundler sb = new StringBundler(4);
+
+				for (String combineClassName : combineClassNames) {
+					int index =
+						combineClassName.lastIndexOf(StringPool.PERIOD) + 1;
+
+					sb.append(combineClassName.substring(index));
+
+					sb.append(StringPool.UNDERLINE);
+				}
+
+				sb.setIndex(3);
+
+				_classNames.put(sb.toString(), model);
+			}
 		}
 
 		_accountId = _counter.get();
@@ -486,7 +509,8 @@ public class DataFactory {
 	}
 
 	public long getClassNameId(String className) {
-		ClassNameModel classNameModel = _classNameModels.get(className);
+		ClassNameModel classNameModel = _classNameModels.get(
+			_classNames.get(className));
 
 		return classNameModel.getClassNameId();
 	}
@@ -5034,6 +5058,7 @@ public class DataFactory {
 			new HashMap<?, ?>[BenchmarksPropsValues.MAX_GROUP_COUNT];
 	private final Map<String, ClassNameModel> _classNameModels =
 		new HashMap<>();
+	private final Map<String, String> _classNames = new HashMap<>();
 	private final long _companyId;
 	private final SimpleCounter _counter;
 	private final PortletPreferencesImpl
