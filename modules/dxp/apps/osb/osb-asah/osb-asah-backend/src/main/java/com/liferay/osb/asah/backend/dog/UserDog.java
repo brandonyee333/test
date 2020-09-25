@@ -19,9 +19,14 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.annotation.PostConstruct;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -29,6 +34,9 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
@@ -75,9 +83,9 @@ public class UserDog {
 			_buildSearchSourceBuilder(
 				metricType, _getKnownIndividualBoolQueryBuilder(),
 				searchQueryContext,
-				_createCardinalityAggregationBuilder("individualId")));
+				_createIndividualIdsTermsAggregationBuilder()));
 
-		return _getUsersCountAggregationValue(aggregations);
+		return _countIndividuals(aggregations);
 	}
 
 	public Long getNonsegmentedKnownUsersCount(
@@ -96,9 +104,9 @@ public class UserDog {
 			dogConfiguration.getCollection(),
 			_buildSearchSourceBuilder(
 				metricType, boolQueryBuilder, searchQueryContext,
-				_createCardinalityAggregationBuilder("individualId")));
+				_createIndividualIdsTermsAggregationBuilder()));
 
-		return _getUsersCountAggregationValue(aggregations);
+		return _countIndividuals(aggregations);
 	}
 
 	public Long getSegmentedKnownUsersCount(
@@ -117,9 +125,9 @@ public class UserDog {
 			dogConfiguration.getCollection(),
 			_buildSearchSourceBuilder(
 				metricType, boolQueryBuilder, searchQueryContext,
-				_createCardinalityAggregationBuilder("individualId")));
+				_createIndividualIdsTermsAggregationBuilder()));
 
-		return _getUsersCountAggregationValue(aggregations);
+		return _countIndividuals(aggregations);
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(
@@ -155,6 +163,23 @@ public class UserDog {
 		return searchSourceBuilder;
 	}
 
+	private long _countIndividuals(Aggregations aggregations) {
+		List<String> individualIds = _getIndividualIds(
+			aggregations.get("individuals"));
+
+		if (individualIds.isEmpty()) {
+			return 0;
+		}
+
+		return _faroInfoElasticsearchInvoker.count(
+			"individuals",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termsQuery("id", individualIds)
+			).filter(
+				QueryBuilders.existsQuery("demographics.email")
+			));
+	}
+
 	private AggregationBuilder _createCardinalityAggregationBuilder(
 		String fieldName) {
 
@@ -165,6 +190,28 @@ public class UserDog {
 		cardinalityAggregationBuilder.precisionThreshold(1000);
 
 		return cardinalityAggregationBuilder;
+	}
+
+	private AggregationBuilder _createIndividualIdsTermsAggregationBuilder() {
+		TermsAggregationBuilder individualIdsTermsAggregationBuilder =
+			AggregationBuilders.terms("individuals");
+
+		individualIdsTermsAggregationBuilder.field("individualId");
+		individualIdsTermsAggregationBuilder.size(Integer.MAX_VALUE);
+
+		return individualIdsTermsAggregationBuilder;
+	}
+
+	private List<String> _getIndividualIds(Terms terms) {
+		List<? extends Terms.Bucket> buckets = terms.getBuckets();
+
+		Stream<? extends Terms.Bucket> stream = buckets.stream();
+
+		return stream.map(
+			MultiBucketsAggregation.Bucket::getKeyAsString
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private BoolQueryBuilder _getKnownIndividualBoolQueryBuilder() {
@@ -180,10 +227,21 @@ public class UserDog {
 		return DogUtil.getCardinalityAsLong(aggregations.get("users_count"));
 	}
 
+	@PostConstruct
+	private void _init() {
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+	}
+
 	@Autowired
 	private DataDog _dataDog;
 
 	private final DogConfigurationBag _dogConfigurationBag;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
