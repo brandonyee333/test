@@ -1,0 +1,22 @@
+bootstrap:
+  memory_lock: false
+cluster:
+  initial_master_nodes: esmaster-0,esmaster-1,esmaster-2,esmaster-3,esmaster-4
+  name: es-cluster
+discovery:
+  zen:
+    fd:
+      ping_retries: 5
+      ping_timeout: 120s
+    minimum_master_nodes: 1
+    ping:
+      unicast:
+        hosts: esmaster--cluster,esdata--cluster
+network.host: 0.0.0.0
+node:
+  data: false
+  ingest: true
+  master: true
+  max_local_storage_nodes: 1
+  name: "${HOSTNAME}"
+xpack.security.enabled: false

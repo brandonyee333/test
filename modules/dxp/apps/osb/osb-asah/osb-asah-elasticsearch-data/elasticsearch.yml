@@ -1,0 +1,21 @@
+bootstrap:
+  memory_lock: false
+cluster:
+  name: es-cluster
+discovery:
+  zen:
+    fd:
+      ping_retries: 5
+      ping_timeout: 120s
+    ping:
+      unicast:
+        hosts: esmaster--cluster,esdata--cluster
+http.cors.enabled: false
+network.host: 0.0.0.0
+node:
+  data: true
+  ingest: true
+  master: false
+  max_local_storage_nodes: 1
+  name: "${HOSTNAME}"
+xpack.security.enabled: false
