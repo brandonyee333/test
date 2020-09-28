@@ -12,21 +12,24 @@
  * details.
  */
 
-package com.liferay.portal.remote.cors.internal.url.pattern.mapper;
+package com.liferay.portal.remote.cors.internal.url.pattern.mapper.trie;
+
+import com.liferay.portal.remote.cors.internal.url.pattern.mapper.URLPatternMapper;
+import com.liferay.portal.remote.cors.internal.url.pattern.mapper.simple.SimpleURLPatternMapperPerformanceTest;
 
 import java.util.Map;
 
 /**
  * @author Arthur Chan
  */
-public class StaticSizeTrieURLPatternMapperPerformanceTest
+public class DynamicSizeTrieURLPatternMapperPerformanceTest
 	extends SimpleURLPatternMapperPerformanceTest {
 
 	@Override
 	protected URLPatternMapper<String> createURLPatternMapper(
 		Map<String, String> values) {
 
-		return new StaticSizeTrieURLPatternMapper<>(values);
+		return new DynamicSizeTrieURLPatternMapper<>(values);
 	}
 
 }

@@ -12,7 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.remote.cors.internal.url.pattern.mapper;
+package com.liferay.portal.remote.cors.internal.url.pattern.mapper.trie;
+
+import com.liferay.portal.remote.cors.internal.url.pattern.mapper.URLPatternMapper;
+import com.liferay.portal.remote.cors.internal.url.pattern.mapper.simple.SimpleURLPatternMapperTest;
 
 import java.util.HashMap;
 import java.util.Map;
