@@ -20,7 +20,9 @@ import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
+import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.journal.service.JournalFolderLocalService;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
@@ -31,6 +33,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -46,10 +49,12 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.generic.TermRangeQueryImpl;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -74,8 +79,9 @@ import org.osgi.service.component.annotations.Reference;
 public class FixPackSearcher extends BaseSearcher {
 
 	protected BooleanQuery buildFullQuery(
-			String product, double productVersion, double fromFixPackVersion,
-			double toFixPackVersion)
+			ThemeDisplay themeDisplay, String product, double productVersion,
+			double fromFixPackVersion, double toFixPackVersion,
+			boolean commerce)
 		throws PortalException {
 
 		BooleanQuery fullQuery = new BooleanQueryImpl();
@@ -106,6 +112,24 @@ public class FixPackSearcher extends BaseSearcher {
 		booleanFilter.addRequiredTerm(
 			"ddmStructureKey", DDMStructureConstants.KEY_FIX_PACK);
 		booleanFilter.addRequiredTerm("head", true);
+
+		Group group = _groupLocalService.fetchFriendlyURLGroup(
+			themeDisplay.getCompanyId(), "/customer");
+
+		JournalFolder parentFolder = _journalFolderLocalService.fetchFolder(
+			group.getGroupId(),
+			product + StringPool.SPACE + String.valueOf(productVersion));
+
+		if (commerce) {
+			JournalFolder folder = _journalFolderLocalService.fetchFolder(
+				group.getGroupId(), parentFolder.getFolderId(), "Commerce");
+
+			booleanFilter.addRequiredTerm("folderId", folder.getFolderId());
+		}
+		else {
+			booleanFilter.addRequiredTerm(
+				"folderId", parentFolder.getFolderId());
+		}
 
 		fullQuery.setPreBooleanFilter(booleanFilter);
 
@@ -150,6 +174,7 @@ public class FixPackSearcher extends BaseSearcher {
 			portletRequest, "fromFixPackVersion");
 		double toFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "toFixPackVersion");
+		boolean commerce = ParamUtil.getBoolean(portletRequest, "commerce");
 
 		String orderByType = ParamUtil.getString(portletRequest, "orderByType");
 
@@ -157,7 +182,8 @@ public class FixPackSearcher extends BaseSearcher {
 			themeDisplay, orderByType);
 
 		BooleanQuery fullQuery = buildFullQuery(
-			product, productVersion, fromFixPackVersion, toFixPackVersion);
+			themeDisplay, product, productVersion, fromFixPackVersion,
+			toFixPackVersion, commerce);
 
 		Hits hits = _indexSearcherHelper.search(searchContext, fullQuery);
 
@@ -286,6 +312,9 @@ public class FixPackSearcher extends BaseSearcher {
 	private DDMStructureLocalService _ddmStructureLocalService;
 
 	@Reference
+	private GroupLocalService _groupLocalService;
+
+	@Reference
 	private IndexSearcherHelper _indexSearcherHelper;
 
 	@Reference
@@ -293,6 +322,9 @@ public class FixPackSearcher extends BaseSearcher {
 
 	@Reference
 	private JournalConverter _journalConverter;
+
+	@Reference
+	private JournalFolderLocalService _journalFolderLocalService;
 
 	private final Format _releaseDateFormat =
 		FastDateFormatFactoryUtil.getSimpleDateFormat("MMM d, yyyy");
