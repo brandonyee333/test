@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Journal Content Web
 Bundle-SymbolicName: com.liferay.journal.content.web
-Bundle-Version: 2.0.56
+Bundle-Version: 2.0.57
 Liferay-Releng-Module-Group-Title: Web Content
 Provide-Capability:\
 	liferay.resource.bundle;\
