@@ -571,7 +571,7 @@ public class ElasticsearchIndexManagerImpl
 
 	@PostConstruct
 	private void _init() {
-		_client = _elasticsearchConnection.getClient();
+		_client = _elasticsearchConnection.getTransportClient();
 
 		_adminClient = _client.admin();
 

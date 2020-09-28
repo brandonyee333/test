@@ -141,7 +141,7 @@ public class ReindexHelper {
 
 	@PostConstruct
 	public void init() {
-		_client = _elasticsearchConnection.getClient();
+		_client = _elasticsearchConnection.getTransportClient();
 
 		_adminClient = _client.admin();
 	}
@@ -195,7 +195,8 @@ public class ReindexHelper {
 		throws Exception {
 
 		ReindexRequestBuilder reindexRequestBuilder = new ReindexRequestBuilder(
-			_elasticsearchConnection.getClient(), ReindexAction.INSTANCE);
+			_elasticsearchConnection.getTransportClient(),
+			ReindexAction.INSTANCE);
 
 		reindexRequestBuilder.destination(destination);
 

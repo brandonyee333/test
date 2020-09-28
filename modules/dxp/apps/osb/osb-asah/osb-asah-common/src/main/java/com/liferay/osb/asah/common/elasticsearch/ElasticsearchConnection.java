@@ -47,12 +47,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElasticsearchConnection {
 
-	public Client getClient() {
-		return _client;
-	}
-
 	public ClusterHealthResponse getClusterHealthResponse() {
-		AdminClient adminClient = _client.admin();
+		AdminClient adminClient = _transportClient.admin();
 
 		ClusterAdminClient clusterAdminClient = adminClient.cluster();
 
@@ -61,9 +57,13 @@ public class ElasticsearchConnection {
 
 		clusterHealthRequestBuilder.setWaitForYellowStatus();
 
-		ClientUtil.waitForConnection(_client);
+		ClientUtil.waitForConnection(_transportClient);
 
 		return clusterHealthRequestBuilder.get();
+	}
+
+	public Client getTransportClient() {
+		return _transportClient;
 	}
 
 	@PostConstruct
@@ -72,12 +72,12 @@ public class ElasticsearchConnection {
 
 		builder.loadFromSource(_readSettings(), XContentType.JSON);
 
-		_client = _createClient(builder.build());
+		_transportClient = _createTransportClient(builder.build());
 
 		_testConnection();
 	}
 
-	private Client _createClient(Settings settings) {
+	private Client _createTransportClient(Settings settings) {
 		if (StringUtils.isBlank(
 				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP)) {
 
@@ -102,8 +102,8 @@ public class ElasticsearchConnection {
 
 	@PreDestroy
 	private void _disconnect() {
-		if (_client != null) {
-			_client.close();
+		if (_transportClient != null) {
+			_transportClient.close();
 		}
 	}
 
@@ -153,12 +153,12 @@ public class ElasticsearchConnection {
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchConnection.class);
 
-	private Client _client;
-
 	@Value("${osb.asah.elasticsearch.connection.retry.attempts:5}")
 	private Integer _retryAttempts;
 
 	@Value("${osb.asah.elasticsearch.connection.retry.delay:3000}")
 	private Integer _retryDelay;
+
+	private Client _transportClient;
 
 }

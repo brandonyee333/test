@@ -67,7 +67,7 @@ public class ElasticsearchInvokerFactoryImpl
 
 		return new ElasticsearchInvokerImpl(
 			_elasticsearchIndexManager.getAliases(),
-			_elasticsearchConnection.getClient(),
+			_elasticsearchConnection.getTransportClient(),
 			_elasticsearchIndexManager.getIndexNamespace(weDeployDataService));
 	}
 

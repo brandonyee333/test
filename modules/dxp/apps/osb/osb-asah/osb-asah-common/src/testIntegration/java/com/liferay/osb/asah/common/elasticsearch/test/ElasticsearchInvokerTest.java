@@ -71,8 +71,8 @@ public class ElasticsearchInvokerTest {
 	@Before
 	public void setUp() {
 		_elasticsearchInvoker = new ElasticsearchInvokerImpl(
-			Collections.emptyMap(), _elasticsearchConnection.getClient(),
-			"test");
+			Collections.emptyMap(),
+			_elasticsearchConnection.getTransportClient(), "test");
 
 		_collectionName = RandomTestUtil.randomString();
 

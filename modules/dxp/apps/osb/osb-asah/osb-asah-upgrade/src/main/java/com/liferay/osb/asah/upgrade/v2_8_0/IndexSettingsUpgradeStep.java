@@ -53,7 +53,7 @@ public class IndexSettingsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
-		Client client = _elasticsearchConnection.getClient();
+		Client client = _elasticsearchConnection.getTransportClient();
 
 		AdminClient adminClient = client.admin();
 
