@@ -808,7 +808,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		table.removeChild(row.parentNode.parentNode);
 	}
 
-	function <portlet:namespace/>searchOfferingEntry() {
+	function <portlet:namespace />searchOfferingEntry() {
 		submitForm(document.<portlet:namespace />fm, '<portlet:actionURL><portlet:param name="jspPage" value="/admin/edit_account_entry.jsp" /></portlet:actionURL>');
 	}
 

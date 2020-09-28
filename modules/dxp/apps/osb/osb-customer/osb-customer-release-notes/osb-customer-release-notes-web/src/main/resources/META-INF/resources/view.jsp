@@ -76,7 +76,7 @@ portletURL.setParameter("tabs1", tabs1);
 						viewReleaseNotesURL.setParameter("jiraProjectVersionId", String.valueOf(jiraProjectVersion.getJiraProjectVersionId()));
 					%>
 
-						<a href="javascript:<portlet:namespace/>viewReleaseNotes('<%= HtmlUtil.escapeJS(viewReleaseNotesURL.toString()) %>')"><liferay-ui:message arguments="<%= jiraProjectVersion.getName() %>" key="liferay-portal-x-release-notes" /></a><br />
+						<a href="javascript:<portlet:namespace />viewReleaseNotes('<%= HtmlUtil.escapeJS(viewReleaseNotesURL.toString()) %>')"><liferay-ui:message arguments="<%= jiraProjectVersion.getName() %>" key="liferay-portal-x-release-notes" /></a><br />
 
 					<%
 					}

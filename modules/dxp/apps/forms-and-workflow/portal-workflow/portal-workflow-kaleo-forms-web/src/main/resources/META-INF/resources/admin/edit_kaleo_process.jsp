@@ -102,7 +102,7 @@ renderResponse.setTitle(title);
 
 			if (form === event.form) {
 				Liferay.component(
-					'<portlet:namespace/>KaleoFormsAdmin',
+					'<portlet:namespace />KaleoFormsAdmin',
 					function() {
 						return new Liferay.KaleoFormsAdmin(
 							{
@@ -118,7 +118,7 @@ renderResponse.setTitle(title);
 					}
 				);
 
-				Liferay.component('<portlet:namespace/>KaleoFormsAdmin').syncUI();
+				Liferay.component('<portlet:namespace />KaleoFormsAdmin').syncUI();
 			}
 		}
 
