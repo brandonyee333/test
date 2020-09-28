@@ -1484,7 +1484,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		productConsumption.setExternalLinks(new ExternalLink[] {externalLink});
 
 		_productConsumptionWebService.addProductConsumption(
-			user.getFullName(), StringPool.BLANK,
+			user.getFullName(), user.getUuid(),
 			licenseKey.getKoroneikiAccountKey(), productConsumption);
 	}
 
@@ -1499,7 +1499,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		for (ProductConsumption productConsumption : productConsumptions) {
 			_productConsumptionWebService.deleteProductConsumption(
-				user.getFullName(), StringPool.BLANK,
+				user.getFullName(), user.getUuid(),
 				productConsumption.getKey());
 		}
 	}
