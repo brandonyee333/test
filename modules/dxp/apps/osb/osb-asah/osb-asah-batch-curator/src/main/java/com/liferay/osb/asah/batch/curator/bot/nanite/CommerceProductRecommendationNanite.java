@@ -67,16 +67,7 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 			"commerce_application.yaml",
 			_collectJobSparkJars(jobJSONObject.getJSONArray("parameters")),
 			_jobTypeApplicationClassNameMap.get(jobType),
-			new HashMap<String, String>() {
-				{
-					put(
-						"spark.executor.extraJavaOptions",
-						"-XX:ThreadStackSize=8192");
-					put(
-						"spark.serializer",
-						"org.apache.spark.serializer.KryoSerializer");
-				}
-			});
+			_collectJobParameters(jobJSONObject.getJSONArray("parameters")));
 
 		_faroInfoElasticsearchInvoker.add(
 			"job-runs",
@@ -101,6 +92,35 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 	@Override
 	protected Log getLog() {
 		return LogFactory.getLog(CommerceProductRecommendationNanite.class);
+	}
+
+	private Map<String, String> _collectJobParameters(
+		JSONArray jobParametersJSONArray) {
+
+		Map<String, String> jobParameters = new HashMap<>();
+
+		jobParameters.put(
+			"spark.executor.extraJavaOptions", "-XX:ThreadStackSize=8192");
+
+		jobParameters.put(
+			"spark.serializer", "org.apache.spark.serializer.KryoSerializer");
+
+		for (int i = 0; i < jobParametersJSONArray.length(); i++) {
+			JSONObject jobParameterJSONObject =
+				jobParametersJSONArray.getJSONObject(i);
+
+			String name = jobParameterJSONObject.getString("name");
+
+			if (Objects.equals(name, "spark:jars")) {
+				continue;
+			}
+
+			String value = jobParameterJSONObject.getString("value");
+
+			jobParameters.put(name, value);
+		}
+
+		return jobParameters;
 	}
 
 	private List<String> _collectJobSparkJars(
