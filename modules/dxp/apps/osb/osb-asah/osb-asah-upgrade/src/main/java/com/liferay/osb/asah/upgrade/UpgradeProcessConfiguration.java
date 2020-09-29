@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.upgrade;
 
+import com.liferay.osb.asah.common.util.ReleaseInfo;
+import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_0.IndexSettingsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_0.IndividualsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_0.KnownIndividualInteractionsUpgradeStep;
@@ -34,6 +36,9 @@ public class UpgradeProcessConfiguration {
 	@Bean
 	public UpgradeProcess upgradeProcess() {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
+
+		upgradeProcess.addUpgradeSteps(
+			"0.0.0", ReleaseInfo.getVersion(), _snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"2.7.3", "2.8.0", _indexSettingsUpgradeStep,
@@ -64,5 +69,8 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private RunLogCleanupUpgradeStep _runLogCleanupUpgradeStep;
+
+	@Autowired
+	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
 
 }
