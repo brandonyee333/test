@@ -1,17 +1,9 @@
 commerce:
   ml:
     locale: en_US
-es:
-    net:
-        http:
-            auth:
-                pass: $ES_NET_HTTP_AUTH_PASS
-                user: $ES_NET_HTTP_AUTH_USER
-    nodes: http://localhost
-    port: 9200
 google:
   storage:
-    bucket: gs://analytics-cloud-analytics-events-uat
+    bucket: gs://analytics-cloud-dxp-batch-entities-uat
 product:
     content:
         recommendation:
