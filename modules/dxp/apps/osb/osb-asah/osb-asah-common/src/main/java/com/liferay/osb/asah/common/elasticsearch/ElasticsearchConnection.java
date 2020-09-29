@@ -27,14 +27,18 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpHost;
 
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequestBuilder;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.client.AdminClient;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.ClusterAdminClient;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
@@ -62,6 +66,10 @@ public class ElasticsearchConnection {
 		return clusterHealthRequestBuilder.get();
 	}
 
+	public RestHighLevelClient getRestHighLevelClient() {
+		return _restHighLevelClient;
+	}
+
 	public Client getTransportClient() {
 		return _transportClient;
 	}
@@ -72,12 +80,6 @@ public class ElasticsearchConnection {
 
 		builder.loadFromSource(_readSettings(), XContentType.JSON);
 
-		_transportClient = _createTransportClient(builder.build());
-
-		_testConnection();
-	}
-
-	private Client _createTransportClient(Settings settings) {
 		if (StringUtils.isBlank(
 				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP)) {
 
@@ -93,15 +95,37 @@ public class ElasticsearchConnection {
 					ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP);
 		}
 
+		Settings settings = builder.build();
+
+		TransportAddress transportAddress = ClientUtil.getTransportAddress();
+
+		_restHighLevelClient = _createHttpClient(transportAddress.getAddress());
+		_transportClient = _createTransportClient(settings, transportAddress);
+
+		_testConnection();
+	}
+
+	private RestHighLevelClient _createHttpClient(String hostName) {
+		return new RestHighLevelClient(
+			RestClient.builder(new HttpHost(hostName, 9200, "http")));
+	}
+
+	private Client _createTransportClient(
+		Settings settings, TransportAddress transportAddress) {
+
 		TransportClient transportClient = new PreBuiltTransportClient(settings);
 
-		transportClient.addTransportAddress(ClientUtil.getTransportAddress());
+		transportClient.addTransportAddress(transportAddress);
 
 		return transportClient;
 	}
 
 	@PreDestroy
-	private void _disconnect() {
+	private void _disconnect() throws Exception {
+		if (_restHighLevelClient != null) {
+			_restHighLevelClient.close();
+		}
+
 		if (_transportClient != null) {
 			_transportClient.close();
 		}
@@ -152,6 +176,8 @@ public class ElasticsearchConnection {
 
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchConnection.class);
+
+	private RestHighLevelClient _restHighLevelClient;
 
 	@Value("${osb.asah.elasticsearch.connection.retry.attempts:5}")
 	private Integer _retryAttempts;
