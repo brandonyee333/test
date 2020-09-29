@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.ml.JobState;
 import com.liferay.osb.asah.batch.curator.bot.nanite.ml.SparkManager;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
@@ -61,29 +62,8 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 
 		String jobType = jobJSONObject.getString("type");
 
-		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.add(
-			"job-runs",
-			JSONUtil.put(
-				"context", new JSONObject()
-			).put(
-				"createdDate", dateString
-			).put(
-				"job",
-				JSONUtil.put(
-					"id", jobJSONObject.getString("id")
-				).put(
-					"type", jobType
-				)
-			).put(
-				"lastUpdatedDate", dateString
-			).put(
-				"status", "RUNNING"
-			));
-
-		_sparkManager.submitJob(
-			Arrays.asList(
-				"--job-run-id", jobRunJSONObject.getString("id"),
-				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
+		String sparkJobId = _sparkManager.submitJob(
+			Arrays.asList("--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
 			"commerce_application.yaml",
 			_collectJobSparkJars(jobJSONObject.getJSONArray("parameters")),
 			_jobTypeApplicationClassNameMap.get(jobType),
@@ -97,6 +77,25 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 						"org.apache.spark.serializer.KryoSerializer");
 				}
 			});
+
+		_faroInfoElasticsearchInvoker.add(
+			"job-runs",
+			JSONUtil.put(
+				"context", JSONUtil.put("sparkJobId", sparkJobId)
+			).put(
+				"createdDate", dateString
+			).put(
+				"job",
+				JSONUtil.put(
+					"id", jobJSONObject.getString("id")
+				).put(
+					"type", jobType
+				)
+			).put(
+				"lastUpdatedDate", dateString
+			).put(
+				"status", JobState.UNKNOWN.toString()
+			));
 	}
 
 	@Override
