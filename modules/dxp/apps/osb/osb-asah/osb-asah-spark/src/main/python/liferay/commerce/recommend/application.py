@@ -24,6 +24,7 @@ from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
 
 import argparse
 import logging
+import os
 import sys
 
 class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
@@ -33,6 +34,16 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 		self.configuration = CommerceConfiguration(self.args.configuration)
 
 		self.log = self._initialize_logging()
+
+		spark_context = self.spark_session.sparkContext
+
+		spark_conf = spark_context.getConf()
+
+		for key, value in spark_conf.getAll():
+			if key.startswith('spark.yarn.appMasterEnv.'):
+				env_key = key[len('spark.yarn.appMasterEnv.'):]
+
+				os.environ[env_key] = value
 
 	def start(self):
 		spark_job_pipeline = self._create_spark_job_pipeline()
