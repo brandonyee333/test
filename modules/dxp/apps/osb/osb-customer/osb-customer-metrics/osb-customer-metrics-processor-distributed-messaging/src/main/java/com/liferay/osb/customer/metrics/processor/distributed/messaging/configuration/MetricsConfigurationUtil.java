@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.rabbitmq.configuration;
+package com.liferay.osb.customer.metrics.processor.distributed.messaging.configuration;
 
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 /**
  * @author Kyle Bischof
  */
-public class MetricsProcessorConfigurationUtil {
+public class MetricsConfigurationUtil {
 
 	public static String get(String key) {
 		return _configuration.get(key);
@@ -32,7 +32,6 @@ public class MetricsProcessorConfigurationUtil {
 
 	private static final Configuration _configuration =
 		ConfigurationFactoryUtil.getConfiguration(
-			MetricsProcessorConfigurationUtil.class.getClassLoader(),
-			"portlet");
+			MetricsConfigurationUtil.class.getClassLoader(), "portlet");
 
 }

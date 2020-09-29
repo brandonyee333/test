@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.rabbitmq.processor;
+package com.liferay.osb.customer.metrics.processor.distributed.messaging.subscriber;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -23,10 +23,10 @@ import org.osgi.service.component.annotations.Component;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "routing.key=metrics.drop",
-	service = MetricsDropMessageProcessor.class
+	immediate = true, property = "topic.pattern=metrics.drop",
+	service = MetricsDropMessageSubscriber.class
 )
-public class MetricsDropMessageProcessor extends BaseMessageProcessor {
+public class MetricsDropMessageSubscriber extends BaseMessageSubscriber {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		String schema = jsonObject.getString("schema");

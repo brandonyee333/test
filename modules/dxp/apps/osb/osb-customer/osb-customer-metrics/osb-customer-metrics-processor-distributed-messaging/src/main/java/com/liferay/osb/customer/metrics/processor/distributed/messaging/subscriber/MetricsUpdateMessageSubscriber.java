@@ -12,9 +12,9 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.rabbitmq.processor;
+package com.liferay.osb.customer.metrics.processor.distributed.messaging.subscriber;
 
-import com.liferay.osb.customer.metrics.rabbitmq.configuration.MetricsProcessorConfigurationValues;
+import com.liferay.osb.customer.metrics.processor.distributed.messaging.configuration.MetricsConfigurationValues;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.NoSuchClassNameException;
@@ -45,10 +45,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "routing.key=metrics.update",
-	service = MetricsUpdateMessageProcessor.class
+	immediate = true, property = "topic.pattern=metrics.update",
+	service = MetricsUpdateMessageSubscriber.class
 )
-public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
+public class MetricsUpdateMessageSubscriber extends BaseMessageSubscriber {
 
 	protected String buildSql(String tableName, Map<String, Object> columnMap) {
 		StringBundler sb = new StringBundler(6);
@@ -289,7 +289,7 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 		if (classNameId == null) {
 			String[] classNameMappings =
-				MetricsProcessorConfigurationValues.CLASSNAME_MAPPINGS;
+				MetricsConfigurationValues.CLASSNAME_MAPPINGS;
 
 			for (String mapping : classNameMappings) {
 				if (mapping.contains(value)) {

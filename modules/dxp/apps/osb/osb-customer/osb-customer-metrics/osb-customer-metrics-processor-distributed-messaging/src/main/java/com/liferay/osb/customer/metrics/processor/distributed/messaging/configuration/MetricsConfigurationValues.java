@@ -12,39 +12,33 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.rabbitmq.configuration;
+package com.liferay.osb.customer.metrics.processor.distributed.messaging.configuration;
 
 import com.liferay.portal.kernel.util.GetterUtil;
 
 /**
  * @author Kyle Bischof
  */
-public class MetricsProcessorConfigurationValues {
+public class MetricsConfigurationValues {
 
 	public static final String[] CLASSNAME_MAPPINGS =
-		MetricsProcessorConfigurationUtil.getArray("classname.mappings");
+		MetricsConfigurationUtil.getArray("classname.mappings");
 
 	public static final String[] DATABASE_SCHEMA_EMOJI_SUPPORTED_NAMES =
-		MetricsProcessorConfigurationUtil.getArray(
+		MetricsConfigurationUtil.getArray(
 			"database.schema.emoji.supported.names");
 
 	public static final String DATABASE_SCHEMA_NAME = GetterUtil.getString(
-		MetricsProcessorConfigurationUtil.get("database.schema.name"));
+		MetricsConfigurationUtil.get("database.schema.name"));
 
 	public static final String ERROR_EMAIL = GetterUtil.getString(
-		MetricsProcessorConfigurationUtil.get("error.email"));
+		MetricsConfigurationUtil.get("error.email"));
 
 	public static final long ERROR_NOTIFY_ATTEMPT_THRESHOLD =
 		GetterUtil.getInteger(
-			MetricsProcessorConfigurationUtil.get(
-				"error.notify.attempt.threshold"));
+			MetricsConfigurationUtil.get("error.notify.attempt.threshold"));
 
 	public static final long ERROR_SLEEP_MILLIS = GetterUtil.getLong(
-		MetricsProcessorConfigurationUtil.get("error.sleep.millis"));
-
-	public static final String METRICS_RABBITMQ_EXCHANGE_NAME =
-		GetterUtil.getString(
-			MetricsProcessorConfigurationUtil.get(
-				"metrics.rabbitmq.exchange.name"));
+		MetricsConfigurationUtil.get("error.sleep.millis"));
 
 }

@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.rabbitmq.processor;
+package com.liferay.osb.customer.metrics.processor.distributed.messaging.subscriber;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -29,10 +29,10 @@ import org.osgi.service.component.annotations.Component;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "routing.key=metrics.remove",
-	service = MetricsRemoveMessageProcessor.class
+	immediate = true, property = "topic.pattern=metrics.remove",
+	service = MetricsRemoveMessageSubscriber.class
 )
-public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
+public class MetricsRemoveMessageSubscriber extends BaseMessageSubscriber {
 
 	protected String buildSql(String tableName, Map<String, Object> columnMap) {
 		StringBundler sb = new StringBundler(3 + ((6 * columnMap.size()) - 1));

@@ -12,12 +12,13 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.rabbitmq.processor;
+package com.liferay.osb.customer.metrics.processor.distributed.messaging.subscriber;
 
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailServiceUtil;
-import com.liferay.osb.customer.metrics.rabbitmq.configuration.MetricsProcessorConfigurationValues;
-import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.osb.customer.metrics.processor.distributed.messaging.configuration.MetricsConfigurationValues;
+import com.liferay.osb.distributed.messaging.Message;
+import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -56,18 +57,16 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @author Kyle Bischof
  */
-public abstract class BaseMessageProcessor implements MessageProcessor {
+public abstract class BaseMessageSubscriber implements MessageSubscriber {
 
 	@Override
-	public void process(
-		String routingKey, String message, Map<String, Object> properties) {
-
+	public void receive(Message message) {
 		int errorCount = 0;
 
 		while (true) {
 			try {
 				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-					message.trim());
+					(String)message.getPayload());
 
 				doProcess(jsonObject);
 
@@ -79,7 +78,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 				errorCount++;
 
 				if (errorCount ==
-						MetricsProcessorConfigurationValues.
+						MetricsConfigurationValues.
 							ERROR_NOTIFY_ATTEMPT_THRESHOLD) {
 
 					sendEmail(StackTraceUtil.getStackTrace(e));
@@ -88,8 +87,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 				}
 
 				try {
-					Thread.sleep(
-						MetricsProcessorConfigurationValues.ERROR_SLEEP_MILLIS);
+					Thread.sleep(MetricsConfigurationValues.ERROR_SLEEP_MILLIS);
 				}
 				catch (InterruptedException ie) {
 					_log.error(ie, ie);
@@ -169,7 +167,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 	protected String getSchema(String schema) {
 		if (Validator.isNull(schema)) {
-			return MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
+			return MetricsConfigurationValues.DATABASE_SCHEMA_NAME;
 		}
 
 		return schema;
@@ -188,8 +186,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 	protected boolean isSchemaEmojiSupported(String schema) {
 		List<String> databaseSchemaEmojiSupportedNames = ListUtil.fromArray(
-			MetricsProcessorConfigurationValues.
-				DATABASE_SCHEMA_EMOJI_SUPPORTED_NAMES);
+			MetricsConfigurationValues.DATABASE_SCHEMA_EMOJI_SUPPORTED_NAMES);
 
 		return databaseSchemaEmojiSupportedNames.contains(schema);
 	}
@@ -221,7 +218,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		try {
 			InternetAddress from = new InternetAddress("noreply@liferay.com");
 			InternetAddress to = new InternetAddress(
-				MetricsProcessorConfigurationValues.ERROR_EMAIL);
+				MetricsConfigurationValues.ERROR_EMAIL);
 
 			String mailSubject = "Auto Generated DXP Metrics Error Message";
 
@@ -236,8 +233,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	}
 
 	protected static final String DATA_SOURCE_CONTEXT =
-		"java:comp/env/jdbc/" +
-			MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
+		"java:comp/env/jdbc/" + MetricsConfigurationValues.DATABASE_SCHEMA_NAME;
 
 	protected static final String JDBC_PATH = "java:comp/env/jdbc/";
 
@@ -248,14 +244,14 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 			"/bad_column_names.txt";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BaseMessageProcessor.class);
+		BaseMessageSubscriber.class);
 
 	private static final Set<String> _badColumnNames = new HashSet<>();
 
 	static {
 		try {
 			StringUtil.readLines(
-				BaseMessageProcessor.class.getResourceAsStream(
+				BaseMessageSubscriber.class.getResourceAsStream(
 					_BAD_COLUMN_FILE),
 				_badColumnNames);
 		}
