@@ -35,8 +35,6 @@ import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.io.IOException;
-
 import java.nio.charset.Charset;
 
 import java.util.ArrayList;
@@ -131,46 +129,7 @@ public class GitHubWebServiceImpl
 	}
 
 	@Override
-	public JSONObject fetchUser(String gitHubUserName) throws PortalException {
-		try {
-			return getUser(gitHubUserName);
-		}
-		catch (Exception e) {
-			String message = e.getMessage();
-
-			if (message.contains("Not Found")) {
-				return null;
-			}
-
-			throw new PortalException(e);
-		}
-	}
-
-	@Override
-	public Set<String> getCollaborators() throws PortalException {
-		Query query = _queryFactory.createQuery();
-
-		query.setPerPage(100);
-
-		Set<String> collaborators = new HashSet<>();
-
-		int page = 1;
-
-		while (page > 0) {
-			query.setPage(page);
-
-			SearchHits<String> searchHits = _searchCollaborators(query);
-
-			collaborators.addAll(searchHits.getResults());
-
-			page = searchHits.getNextPage();
-		}
-
-		return collaborators;
-	}
-
-	@Override
-	public JSONObject getOrganizationMembership(String gitHubUserName)
+	public JSONObject fetchLiferayOrganizationMembership(String gitHubUserName)
 		throws PortalException {
 
 		try {
@@ -196,7 +155,48 @@ public class GitHubWebServiceImpl
 	}
 
 	@Override
-	public Set<String> getTeamMembers(String teamSlug) throws PortalException {
+	public JSONObject fetchUser(String gitHubUserName) throws PortalException {
+		try {
+			return getUser(gitHubUserName);
+		}
+		catch (Exception e) {
+			String message = e.getMessage();
+
+			if (message.contains("Not Found")) {
+				return null;
+			}
+
+			throw new PortalException(e);
+		}
+	}
+
+	@Override
+	public Set<String> getCollaboratorUserNames() throws PortalException {
+		Query query = _queryFactory.createQuery();
+
+		query.setPerPage(100);
+
+		Set<String> collaborators = new HashSet<>();
+
+		int page = 1;
+
+		while (page > 0) {
+			query.setPage(page);
+
+			SearchHits<String> searchHits = _searchCollaborators(query);
+
+			collaborators.addAll(searchHits.getResults());
+
+			page = searchHits.getNextPage();
+		}
+
+		return collaborators;
+	}
+
+	@Override
+	public Set<String> getTeamMemberUserNames(String teamSlug)
+		throws PortalException {
+
 		Query query = _queryFactory.createQuery();
 
 		query.setPerPage(100);
@@ -388,7 +388,26 @@ public class GitHubWebServiceImpl
 			HttpResponse httpResponse = _getHttpResponse(
 				url, query.getParameters(), _headers);
 
-			return _toCollaboratorSearchHits(httpResponse);
+			SearchHits<String> searchHits = new SearchHitsImpl<>();
+
+			JSONObject jsonObject = _getPageURLs(httpResponse);
+
+			String nextPageURL = jsonObject.getString("next");
+
+			if (Validator.isNotNull(nextPageURL)) {
+				String nextPage = _http.getParameter(
+					nextPageURL, "page", false);
+
+				searchHits.setNextPage(GetterUtil.getInteger(nextPage));
+			}
+
+			String response = EntityUtils.toString(httpResponse.getEntity());
+
+			JSONArray jsonArray = JSONFactoryUtil.createJSONArray(response);
+
+			searchHits.setResults(_toCollaboratorUserNames(jsonArray));
+
+			return searchHits;
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
@@ -406,14 +425,33 @@ public class GitHubWebServiceImpl
 			HttpResponse httpResponse = _getHttpResponse(
 				url, query.getParameters(), _headers);
 
-			return _toTeamMemberSearchHits(httpResponse);
+			SearchHits<String> searchHits = new SearchHitsImpl<>();
+
+			JSONObject jsonObject = _getPageURLs(httpResponse);
+
+			String nextPageURL = jsonObject.getString("next");
+
+			if (Validator.isNotNull(nextPageURL)) {
+				String nextPage = _http.getParameter(
+					nextPageURL, "page", false);
+
+				searchHits.setNextPage(GetterUtil.getInteger(nextPage));
+			}
+
+			String response = EntityUtils.toString(httpResponse.getEntity());
+
+			JSONArray jsonArray = JSONFactoryUtil.createJSONArray(response);
+
+			searchHits.setResults(_toTeamMemberUserNames(jsonArray));
+
+			return searchHits;
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
 		}
 	}
 
-	private List<String> _toCollaborators(JSONArray jsonArray)
+	private List<String> _toCollaboratorUserNames(JSONArray jsonArray)
 		throws PortalException {
 
 		List<String> collaborators = new ArrayList<>();
@@ -427,32 +465,7 @@ public class GitHubWebServiceImpl
 		return collaborators;
 	}
 
-	private SearchHits<String> _toCollaboratorSearchHits(
-			HttpResponse httpResponse)
-		throws IOException, PortalException {
-
-		SearchHits<String> searchHits = new SearchHitsImpl<>();
-
-		JSONObject jsonObject = _getPageURLs(httpResponse);
-
-		String nextPageURL = jsonObject.getString("next");
-
-		if (Validator.isNotNull(nextPageURL)) {
-			String nextPage = _http.getParameter(nextPageURL, "page", false);
-
-			searchHits.setNextPage(GetterUtil.getInteger(nextPage));
-		}
-
-		String response = EntityUtils.toString(httpResponse.getEntity());
-
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(response);
-
-		searchHits.setResults(_toCollaborators(jsonArray));
-
-		return searchHits;
-	}
-
-	private List<String> _toTeamMembers(JSONArray jsonArray)
+	private List<String> _toTeamMemberUserNames(JSONArray jsonArray)
 		throws PortalException {
 
 		List<String> members = new ArrayList<>();
@@ -464,31 +477,6 @@ public class GitHubWebServiceImpl
 		}
 
 		return members;
-	}
-
-	private SearchHits<String> _toTeamMemberSearchHits(
-			HttpResponse httpResponse)
-		throws IOException, PortalException {
-
-		SearchHits<String> searchHits = new SearchHitsImpl<>();
-
-		JSONObject jsonObject = _getPageURLs(httpResponse);
-
-		String nextPageURL = jsonObject.getString("next");
-
-		if (Validator.isNotNull(nextPageURL)) {
-			String nextPage = _http.getParameter(nextPageURL, "page", false);
-
-			searchHits.setNextPage(GetterUtil.getInteger(nextPage));
-		}
-
-		String response = EntityUtils.toString(httpResponse.getEntity());
-
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(response);
-
-		searchHits.setResults(_toTeamMembers(jsonArray));
-
-		return searchHits;
 	}
 
 	private static final Charset _CHARSET = Charset.forName("UTF-8");

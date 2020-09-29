@@ -21,9 +21,9 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class GitHubConfigurationValues {
 
-	public static final String[] EXCLUDE_GITHUB_TEAMS =
+	public static final String[] EXCLUDE_GITHUB_TEAM_SLUGS =
 		GetterUtil.getStringValues(
-			GitHubConfigurationUtil.getArray("exclude.github.teams"));
+			GitHubConfigurationUtil.getArray("exclude.github.team.slugs"));
 
 	public static final String[] EXCLUDE_GITHUB_USERNAMES =
 		GetterUtil.getStringValues(

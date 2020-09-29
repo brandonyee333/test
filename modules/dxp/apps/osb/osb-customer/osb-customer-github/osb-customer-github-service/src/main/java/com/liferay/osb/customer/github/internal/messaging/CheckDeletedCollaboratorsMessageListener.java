@@ -79,15 +79,19 @@ public class CheckDeletedCollaboratorsMessageListener
 			return;
 		}
 
-		Set<String> gitHubCollaborators = _gitHubWebService.getCollaborators();
+		Set<String> excludeTeamMemberUserNames = new HashSet<>();
 
-		Set<String> githubTeamMembers = new HashSet<>();
+		for (String teamSlug :
+				GitHubConfigurationValues.EXCLUDE_GITHUB_TEAM_SLUGS) {
 
-		for (String team : GitHubConfigurationValues.EXCLUDE_GITHUB_TEAMS) {
-			githubTeamMembers.addAll(_gitHubWebService.getTeamMembers(team));
+			excludeTeamMemberUserNames.addAll(
+				_gitHubWebService.getTeamMemberUserNames(teamSlug));
 		}
 
-		for (String userName : gitHubCollaborators) {
+		Set<String> gitHubCollaboratorUserNames =
+			_gitHubWebService.getCollaboratorUserNames();
+
+		for (String userName : gitHubCollaboratorUserNames) {
 			if (userName.equals(
 					GitHubConfigurationValues.
 						REMOTE_REST_SERVICE_API_GITHUB_REPOSITORY_OWNER) ||
@@ -98,12 +102,12 @@ public class CheckDeletedCollaboratorsMessageListener
 				continue;
 			}
 
-			if (githubTeamMembers.contains(userName)) {
+			if (excludeTeamMemberUserNames.contains(userName)) {
 				continue;
 			}
 
-			JSONObject jsonObject = _gitHubWebService.getOrganizationMembership(
-				userName);
+			JSONObject jsonObject =
+				_gitHubWebService.fetchLiferayOrganizationMembership(userName);
 
 			if (jsonObject != null) {
 				continue;
