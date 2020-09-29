@@ -37,7 +37,12 @@ import org.springframework.stereotype.Component;
 public class LocalSparkManager implements SparkManager {
 
 	@Override
-	public void submitJob(
+	public JobState getJobState(String jobId) {
+		return JobState.UNKNOWN;
+	}
+
+	@Override
+	public String submitJob(
 		List<String> arguments, String configuration, List<String> jars,
 		String name, Map<String, String> properties) {
 
@@ -49,6 +54,8 @@ public class LocalSparkManager implements SparkManager {
 			).put(
 				"file", "local:///opt/osb-asah-spark.py"
 			));
+
+		return null;
 	}
 
 	private JSONArray _createJobArgumentsJSONArray(

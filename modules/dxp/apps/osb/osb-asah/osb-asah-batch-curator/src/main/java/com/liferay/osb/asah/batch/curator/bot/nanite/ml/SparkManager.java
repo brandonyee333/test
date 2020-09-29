@@ -23,7 +23,9 @@ import java.util.Map;
  */
 public interface SparkManager {
 
-	public void submitJob(
+	public JobState getJobState(String jobId);
+
+	public String submitJob(
 		List<String> arguments, String configuration, List<String> jars,
 		String name, Map<String, String> properties);
 

@@ -18,6 +18,7 @@ import com.google.cloud.dataproc.v1.Job;
 import com.google.cloud.dataproc.v1.JobControllerClient;
 import com.google.cloud.dataproc.v1.JobControllerSettings;
 import com.google.cloud.dataproc.v1.JobPlacement;
+import com.google.cloud.dataproc.v1.JobStatus;
 import com.google.cloud.dataproc.v1.PySparkJob;
 import com.google.cloud.dataproc.v1.SubmitJobRequest;
 
@@ -45,23 +46,52 @@ import org.springframework.stereotype.Component;
 public class DataprocSparkManager implements SparkManager {
 
 	@Override
-	public void submitJob(
+	public JobState getJobState(String jobId) {
+		try (JobControllerClient jobControllerClient =
+				_buildJobControllerClient()) {
+
+			Job job = jobControllerClient.getJob(_projectId, _region, jobId);
+
+			JobStatus jobStatus = job.getStatus();
+
+			JobStatus.State state = jobStatus.getState();
+
+			if (JobStatus.State.DONE.equals(state)) {
+				return JobState.COMPLETE;
+			}
+			else if (JobStatus.State.RUNNING.equals(state)) {
+				return JobState.RUNNING;
+			}
+			else if (JobStatus.State.ERROR.equals(state)) {
+				return JobState.ERROR;
+			}
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+
+		return JobState.UNKNOWN;
+	}
+
+	@Override
+	public String submitJob(
 		List<String> arguments, String configuration, List<String> jars,
 		String name, Map<String, String> properties) {
 
-		try {
-			JobControllerClient jobControllerClient =
-				_buildJobControllerClient();
+		try (JobControllerClient jobControllerClient =
+				_buildJobControllerClient()) {
 
-			jobControllerClient.submitJob(
+			Job job = jobControllerClient.submitJob(
 				_buildSubmitJobRequest(
 					arguments, configuration, jars, name, properties));
 
-			jobControllerClient.close();
+			return job.getJobUuid();
 		}
 		catch (IOException ioe) {
 			_log.error(ioe.getMessage(), ioe);
 		}
+
+		return null;
 	}
 
 	private Job _buildJob(
