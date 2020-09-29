@@ -10,21 +10,16 @@
 #
 
 from liferay.common.configuration import Configuration
-from liferay.common.util import new_utc_date_string
 
 class CommerceConfiguration(Configuration):
-	def __init__(self, configuration_path, job_manager):
+	def __init__(self, configuration_path):
 		super(CommerceConfiguration, self).__init__(configuration_path)
-
-		self.job_manager = job_manager
 
 	def get(self, key, default_value=None):
 		value = self._get_environment_variable(key)
 
 		if value is not None:
 			return self._cast_value(value)
-
-		value = self.job_manager.get_job_parameter(key)
 
 		if value is not None:
 			return self._cast_value(value)
@@ -59,61 +54,3 @@ class CommerceConfiguration(Configuration):
 			return float(value) if '.' in value else int(value)
 
 		return value
-
-class JobManager(object):
-	def __init__(self, elasticsearch_bridge, job_run_id):
-		self.elasticsearch_bridge = elasticsearch_bridge
-
-		self.job_run_id = job_run_id
-
-		self.job_id = self._get_job_id()
-
-	def get_job_parameter(self, parameter_name, default_value=None):
-		parameters = self.get_job_parameters()
-
-		for parameter in parameters:
-			if parameter['name'] == parameter_name:
-				return parameter['value']
-
-		return default_value
-
-	def get_job_parameters(self):
-		document = self.elasticsearch_bridge.get_document(
-		    'jobs', self.job_id, 'osbasahfaroinfo'
-		)
-
-		return document['parameters']
-
-	def get_job_run_context_attribute(self, attribute_name, default_value=None):
-		document = self.elasticsearch_bridge.get_document(
-		    'job-runs', self.job_run_id, 'osbasahfaroinfo'
-		)
-
-		context = document['context']
-
-		return context.get(attribute_name, default_value=default_value)
-
-	def update_job_run_context_attribute(self, attribute_name, attribute_value):
-		self.elasticsearch_bridge.update_document(
-		    'job-runs', {
-		        'context': {
-		            attribute_name: attribute_value
-		        },
-		        'lastUpdatedDate': new_utc_date_string(),
-		    }, self.job_run_id, 'osbasahfaroinfo'
-		)
-
-	def update_job_run_status(self, status):
-		self.elasticsearch_bridge.update_document(
-		    'job-runs', {
-		        'status': status,
-		        'lastUpdatedDate': new_utc_date_string(),
-		    }, self.job_run_id, 'osbasahfaroinfo'
-		)
-
-	def _get_job_id(self):
-		document = self.elasticsearch_bridge.get_document(
-		    'job-runs', self.job_run_id, 'osbasahfaroinfo'
-		)
-
-		return document['job']['id']

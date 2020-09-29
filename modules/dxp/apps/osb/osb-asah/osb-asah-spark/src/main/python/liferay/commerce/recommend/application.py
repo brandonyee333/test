@@ -11,7 +11,7 @@
 
 from abc import ABCMeta, abstractmethod
 
-from liferay.commerce.configuration import CommerceConfiguration, JobManager
+from liferay.commerce.configuration import CommerceConfiguration
 from liferay.commerce.recommend.job import ContextUserInteractionRecommendationDataFrameWriterSparkJob, \
  OrderInteractionDataFrameReaderSparkJob, ProductContentDataFrameReaderSparkJob, \
  ProductContentPipelineSparkJob, ProductContentRecommendationDataFrameWriter, \
@@ -20,7 +20,6 @@ from liferay.commerce.recommend.job import ContextUserInteractionRecommendationD
  ProductInteractionRecommendationSparkJob, UserInteractionCollaborativeFilteringSparkJob, \
  UserInteractionDataPreparationSparkJob
 from liferay.commerce.udf import TanimotoCoefficientUDFFunction, ToDenseVectorUDFFunction
-from liferay.common.elasticsearch import ElasticsearchBridge
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
 
 import argparse
@@ -31,14 +30,7 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 	def __init__(self):
 		super(BaseCommerceSparkApplication, self).__init__()
 
-		self.job_manager = JobManager(
-		    elasticsearch_bridge=ElasticsearchBridge(self),
-		    job_run_id=self.args.job_run_id
-		)
-
-		self.configuration = CommerceConfiguration(
-		    self.args.configuration, self.job_manager
-		)
+		self.configuration = CommerceConfiguration(self.args.configuration)
 
 		self.log = self._initialize_logging()
 
@@ -48,23 +40,19 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 		try:
 			spark_job_pipeline.run()
 		except Exception as e:
-			self.job_manager.update_job_run_status("FAILED")
+			self.log.error(e)
 
 			raise e
-
-		self.job_manager.update_job_run_status("COMPLETED")
 
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(
 		    usage='{} liferay.commerce.recommend.<ApplicationName> '
 		    '--configuration <Configuration Path> '
-		    '--job-run-id <Job Run ID> '
 		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
 		)
 
 		argument_parser.add_argument('application')
 		argument_parser.add_argument('--configuration', required=True)
-		argument_parser.add_argument('--job-run-id', required=True)
 		argument_parser.add_argument('--lcp-project-id', required=True)
 
 		return argument_parser

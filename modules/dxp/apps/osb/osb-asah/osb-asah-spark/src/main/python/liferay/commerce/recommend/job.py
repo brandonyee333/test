@@ -134,7 +134,8 @@ class ContextUserInteractionRecommendationDataFrameWriterSparkJob(
 	def pre_process(self, data_frame):
 		data_frame = data_frame.withColumn('createDate', current_date())
 		data_frame = data_frame.withColumn(
-		    'jobId', lit(self.spark_application.args.job_run_id)
+		    'jobId',
+		    lit(self.spark_application_configuration.get('spark.app.id'))
 		)
 		data_frame = data_frame.withColumn(
 		    'entryClassPK',
@@ -319,7 +320,8 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 		    'createDate', current_date()
 		)
 		recommendations_data_frame = recommendations_data_frame.withColumn(
-		    'jobId', lit(self.spark_application.args.job_run_id)
+		    'jobId',
+		    lit(self.spark_application_configuration.get('spark.app.id'))
 		)
 		recommendations_data_frame = recommendations_data_frame.withColumn(
 		    'entryClassPK',
