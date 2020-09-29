@@ -40,18 +40,6 @@ public class UpgradeProcessRunner {
 	public void run() throws Exception {
 		String currentVersion = _getCurrentVersion();
 
-		if (currentVersion == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Skipping upgrade on new workspace");
-			}
-
-			_saveCurrentVersion(_upgradeProcess.getMaxVersionString());
-
-			_upgradeState.complete();
-
-			return;
-		}
-
 		List<UpgradeStep> upgradeSteps = _upgradeProcess.getUpgradeSteps(
 			currentVersion);
 
