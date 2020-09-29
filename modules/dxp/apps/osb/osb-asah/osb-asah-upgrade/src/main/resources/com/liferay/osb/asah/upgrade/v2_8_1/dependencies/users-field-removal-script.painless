@@ -1,0 +1,5 @@
+for (fieldName in params.fieldNames) {
+	if (ctx._source.containsKey(fieldName)) {
+		ctx._source.remove(fieldName);
+	}
+}
