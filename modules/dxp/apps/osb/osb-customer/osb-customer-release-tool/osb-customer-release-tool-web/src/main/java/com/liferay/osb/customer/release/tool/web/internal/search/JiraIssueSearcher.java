@@ -47,7 +47,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 	protected String buildJQL(
 			String jiraFixPackCustomField, double fromFixPackVersion,
 			double toFixPackVersion, String keywords, String[] components,
-			String orderByType)
+			String orderByType, boolean commerce)
 		throws PortalException {
 
 		int pos = jiraFixPackCustomField.indexOf(StringPool.UNDERLINE);
@@ -58,10 +58,17 @@ public class JiraIssueSearcher extends BaseSearcher {
 		StringBundler sb = new StringBundler(27);
 
 		sb.append("project in (\"");
-		sb.append(
-			StringUtil.merge(
-				ReleaseToolConfigurationValues.FIX_PACK_JIRA_PROJECTS,
-				"\",\""));
+
+		if (commerce) {
+			sb.append("COMMERCE");
+		}
+		else {
+			sb.append(
+				StringUtil.merge(
+					ReleaseToolConfigurationValues.FIX_PACK_JIRA_PROJECTS,
+					"\",\""));
+		}
+
 		sb.append("\") AND ");
 		sb.append(jiraFixPackJQLField);
 		sb.append(">=");
@@ -126,6 +133,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 			portletRequest, "maxResults",
 			ReleaseToolConfigurationValues.FIX_PACK_JIRA_MAX_RESULTS);
 		String orderByType = ParamUtil.getString(portletRequest, "orderByType");
+		boolean commerce = ParamUtil.getBoolean(portletRequest, "commerce");
 
 		AssetCategory productAssetCategory =
 			_releasesAssetCategoryUtil.getProductAssetCategory(
@@ -138,7 +146,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 
 		String jql = buildJQL(
 			jiraFixPackCustomField, fromFixPackVersion, toFixPackVersion,
-			keywords, components, orderByType);
+			keywords, components, orderByType, commerce);
 
 		JSONObject jiraResultsJSONObject = _jiraIssueRESTService.getJIRAIssues(
 			jql, "renderedFields", _ISSUE_FIELDS + "," + jiraFixPackCustomField,
