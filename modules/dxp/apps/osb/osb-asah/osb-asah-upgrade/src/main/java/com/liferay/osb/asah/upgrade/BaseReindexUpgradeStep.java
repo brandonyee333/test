@@ -23,6 +23,8 @@ import java.util.Objects;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.index.query.QueryBuilder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -33,6 +35,10 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 	public abstract String[] getCollectionNames();
 
 	public Map<String, Object> getParams() {
+		return null;
+	}
+
+	public QueryBuilder getQueryBuilder() {
 		return null;
 	}
 
@@ -114,7 +120,8 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 		throws Exception {
 
 		_reindexHelper.reindex(
-			newIndexName, getParams(), getScript(), oldIndexName);
+			newIndexName, getParams(), getQueryBuilder(), getScript(),
+			oldIndexName);
 	}
 
 	private static final Log _log = LogFactory.getLog(

@@ -42,6 +42,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.ClusterAdminClient;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.ReindexAction;
 import org.elasticsearch.index.reindex.ReindexRequestBuilder;
@@ -189,8 +190,8 @@ public class ReindexHelper {
 	}
 
 	public void reindex(
-			String destination, Map<String, Object> params, String script,
-			String source)
+			String destination, Map<String, Object> params,
+			QueryBuilder queryBuilder, String script, String source)
 		throws Exception {
 
 		ReindexRequestBuilder reindexRequestBuilder = new ReindexRequestBuilder(
@@ -198,6 +199,10 @@ public class ReindexHelper {
 
 		reindexRequestBuilder.destination(destination);
 		reindexRequestBuilder.source(source);
+
+		if (queryBuilder != null) {
+			reindexRequestBuilder.filter(queryBuilder);
+		}
 
 		if (script != null) {
 			reindexRequestBuilder.script(
@@ -249,7 +254,7 @@ public class ReindexHelper {
 	}
 
 	public void reindex(String destination, String source) throws Exception {
-		reindex(destination, null, null, source);
+		reindex(destination, null, null, null, source);
 	}
 
 	private boolean _isSnapshotInProgress() {
