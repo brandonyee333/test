@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch:7.9.2
+FROM elasticsearch:7.9.2
 
 ENV TAKE_FILE_OWNERSHIP true
 
