@@ -19,9 +19,9 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.dxp.extractor.client.ExtractorDXPClient;
 import com.liferay.osb.asah.dxp.extractor.configuration.DXPExtractorConfiguration;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -327,45 +327,89 @@ public class UserDog {
 		return usersJSONArray;
 	}
 
-	private JSONArray _sanitize(JSONArray jsonArray) {
+	private void _sanitize(JSONArray jsonArray) {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject userJSONObject = jsonArray.getJSONObject(i);
 
 			Set<String> keys = userJSONObject.keySet();
 
-			keys.removeIf(key -> !ArrayUtils.contains(_USER_FIELD_NAMES, key));
+			keys.removeIf(key -> !_userFieldNames.contains(key));
 
 			JSONObject contactJSONObject = userJSONObject.getJSONObject(
 				"contact");
 
 			keys = contactJSONObject.keySet();
 
-			keys.removeIf(
-				key -> !ArrayUtils.contains(_CONTACT_FIELD_NAMES, key));
+			keys.removeIf(key -> !_contactFieldNames.contains(key));
 		}
-
-		return jsonArray;
 	}
 
-	private static final String[] _CONTACT_FIELD_NAMES = {
-		"accountId", "birthday", "classNameId", "classPK", "companyId",
-		"contactId", "createDate", "emailAddress", "employeeNumber",
-		"employeeStatusId", "facebookSn", "firstName", "hoursOfOperation",
-		"jabberSn", "jobClass", "jobTitle", "lastName", "male", "middleName",
-		"modifiedDate", "parentContactId", "prefixId", "skypeSn", "smsSn",
-		"suffixId", "twitterSn", "userId", "userName"
-	};
-
-	private static final String[] _USER_FIELD_NAMES = {
-		"agreedToTermsOfUse", "comments", "companyId", "contact", "contactId",
-		"createDate", "defaultUser", "emailAddress", "emailAddressVerified",
-		"externalReferenceCode", "facebookId", "firstName", "googleUserId",
-		"greeting", "jobTitle", "languageId", "lastName", "ldapServerId",
-		"middleName", "modifiedDate", "openId", "portraitId", "screenName",
-		"status", "timeZoneId", "userId", "uuid"
-	};
-
 	private static final Log _log = LogFactory.getLog(UserDog.class);
+
+	private static final Set<String> _contactFieldNames =
+		new HashSet<String>() {
+			{
+				add("accountId");
+				add("birthday");
+				add("classNameId");
+				add("classPK");
+				add("companyId");
+				add("contactId");
+				add("createDate");
+				add("emailAddress");
+				add("employeeNumber");
+				add("employeeStatusId");
+				add("facebookSn");
+				add("firstName");
+				add("hoursOfOperation");
+				add("jabberSn");
+				add("jobClass");
+				add("jobTitle");
+				add("lastName");
+				add("male");
+				add("middleName");
+				add("modifiedDate");
+				add("parentContactId");
+				add("prefixId");
+				add("skypeSn");
+				add("smsSn");
+				add("suffixId");
+				add("twitterSn");
+				add("userId");
+				add("userName");
+			}
+		};
+	private static final Set<String> _userFieldNames = new HashSet<String>() {
+		{
+			add("agreedToTermsOfUse");
+			add("comments");
+			add("companyId");
+			add("contact");
+			add("contactId");
+			add("createDate");
+			add("defaultUser");
+			add("emailAddress");
+			add("emailAddressVerified");
+			add("externalReferenceCode");
+			add("facebookId");
+			add("firstName");
+			add("googleUserId");
+			add("greeting");
+			add("jobTitle");
+			add("languageId");
+			add("lastName");
+			add("ldapServerId");
+			add("middleName");
+			add("modifiedDate");
+			add("openId");
+			add("portraitId");
+			add("screenName");
+			add("status");
+			add("timeZoneId");
+			add("userId");
+			add("uuid");
+		}
+	};
 
 	@Autowired
 	private DXPExtractorUserDog _dxpExtractorUserDog;
