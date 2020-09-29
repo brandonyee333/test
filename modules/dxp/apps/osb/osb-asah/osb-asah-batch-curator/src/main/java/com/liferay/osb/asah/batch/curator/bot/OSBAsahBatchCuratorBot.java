@@ -212,6 +212,11 @@ public class OSBAsahBatchCuratorBot {
 		run("DeleteTempFilesNanite");
 	}
 
+	@Scheduled(fixedDelay = DateUtil.MINUTE)
+	public void runSparkManagerMonitoringNanite() {
+		run("SparkManagerMonitoringNanite");
+	}
+
 	public void scheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
 		Nanite nanite = _nanitesMap.get(
 			osbAsahTaskJSONObject.getString("className"));
