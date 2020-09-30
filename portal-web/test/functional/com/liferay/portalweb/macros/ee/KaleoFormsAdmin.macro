@@ -501,7 +501,11 @@ definition {
 
 		SelectFrame(locator1 = "IFrame#DIALOG");
 
-		KaleoFormsAdmin.publishWorkflow();
+		PortletEntry.publish();
+
+		SelectFrame(value1 = "relative=top");
+
+		Refresh();
 	}
 
 	macro saveAndContinueForm {
