@@ -100,7 +100,6 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 
 		jobParameters.put(
 			"spark.executor.extraJavaOptions", "-XX:ThreadStackSize=8192");
-
 		jobParameters.put(
 			"spark.serializer", "org.apache.spark.serializer.KryoSerializer");
 
@@ -114,9 +113,7 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 				continue;
 			}
 
-			String value = jobParameterJSONObject.getString("value");
-
-			jobParameters.put(name, value);
+			jobParameters.put(name, jobParameterJSONObject.getString("value"));
 		}
 
 		return jobParameters;
