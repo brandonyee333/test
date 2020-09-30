@@ -1471,6 +1471,19 @@ definition {
 
 		DDLList.saveViaDDLDisplayPG();
 
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Dynamic Data Lists");
+
+		DDLList.editPermissions(ddlListName = "List Name");
+
+		Role.definePermissionPG(
+			permissionDefinitionKey = "CONTENT_PERMISSIONS_VIEW_CHECKBOX",
+			roleName = "Guest");
+
 		Navigator.gotoPage(pageName = "Dynamic Data Lists Display Page");
 
 		DDLRecord.addViaDDLDisplayPG(
