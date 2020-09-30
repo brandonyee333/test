@@ -30,7 +30,7 @@ if (analyticsConfiguration != null) {
 }
 %>
 
-<portlet:actionURL name="/analytics_settings/edit_synced_contacts_fields" var="editSyncedContactsFieldsURL" />
+<portlet:actionURL name="/analytics_settings/edit_synced_contacts" var="editSyncedContactsURL" />
 
 <div class="card container-fluid-1280 main-content-card portlet-analytics-settings">
 	<h2 class="autofit-row">
@@ -43,7 +43,8 @@ if (analyticsConfiguration != null) {
 		<liferay-ui:message key="sync-data-fields-help" />
 	</p>
 
-	<aui:form action="<%= editSyncedContactsFieldsURL %>" method="post" name="fm">
+	<aui:form action="<%= editSyncedContactsURL %>" method="post" name="fm">
+		<aui:input name="<%= Constants.CMD %>" type="hidden" value="update_synced_contacts_fields" />
 		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 
 		<liferay-ui:tabs
