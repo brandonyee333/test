@@ -215,7 +215,7 @@ definition {
 		Panel.expandPanel(panelHeading = "Details");
 
 		if (IsElementNotPresent(locator1 = "DDMEditTemplate#DETAILS_SMALL_IMAGE_URL")) {
-			Check(locator1 = "DDMEditTemplate#DETAILS_SMALL_IMAGE");
+			Click(locator1 = "DDMEditTemplate#DETAILS_SMALL_IMAGE");
 		}
 		else {
 			Click(locator1 = "DDMEditTemplate#DETAILS_SMALL_IMAGE");
