@@ -198,7 +198,6 @@ public class ReindexHelper {
 			_elasticsearchConnection.getClient(), ReindexAction.INSTANCE);
 
 		reindexRequestBuilder.destination(destination);
-		reindexRequestBuilder.source(source);
 
 		if (queryBuilder != null) {
 			reindexRequestBuilder.filter(queryBuilder);
@@ -210,6 +209,8 @@ public class ReindexHelper {
 					Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 					script, params));
 		}
+
+		reindexRequestBuilder.source(source);
 
 		for (int i = _MAX_RETRIES; i >= 0; i--) {
 			ClientUtil.waitForConnection(_client);
