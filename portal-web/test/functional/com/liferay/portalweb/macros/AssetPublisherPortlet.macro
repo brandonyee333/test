@@ -622,9 +622,18 @@ definition {
 
 		SelectFrame(value1 = "relative=top");
 
-		Click(locator1 = "Icon#CLOSE");
+		if (IsElementPresent(locator1 = "IFrame#DIALOG")) {
+			IFrame.selectDialogFrame();
+		}
 
-		SelectFrame(locator1 = "IFrame#DIALOG");
+		if (IsElementPresent(locator1 = "Button#DONE")) {
+			AssertClick(
+				locator1 = "Button#DONE",
+				value1 = "Done");
+		}
+		else {
+			Click(locator1 = "Icon#CLOSE");
+		}
 
 		PortletEntry.save();
 	}
