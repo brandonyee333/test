@@ -55,7 +55,7 @@ public class VisitorCohortHeatMapDogTest {
 	@Test
 	public void testVisitorCohortHeatMetricsAllVisitorsByDay() {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
-			_getCohortHeatMapMetrics(SiteMetricType.VISITORS, Interval.DAY);
+			_getCohortHeatMapMetrics(Interval.DAY, SiteMetricType.VISITORS);
 
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
@@ -80,7 +80,7 @@ public class VisitorCohortHeatMapDogTest {
 			};
 
 		double[] expectedRetentions = _getExpectedRetentions(
-			expectedRetentionsMap, 8, cohortHeatMapMetrics.size());
+			expectedRetentionsMap, cohortHeatMapMetrics.size(), 8);
 
 		double[] actualRetentions = _getActualRetentions(cohortHeatMapMetrics);
 
@@ -95,7 +95,7 @@ public class VisitorCohortHeatMapDogTest {
 	@Test
 	public void testVisitorCohortHeatMetricsAllVisitorsByMonth() {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
-			_getCohortHeatMapMetrics(SiteMetricType.VISITORS, Interval.MONTH);
+			_getCohortHeatMapMetrics(Interval.MONTH, SiteMetricType.VISITORS);
 
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 34, cohortHeatMapMetrics.size());
@@ -120,7 +120,7 @@ public class VisitorCohortHeatMapDogTest {
 			};
 
 		double[] expectedRetentions = _getExpectedRetentions(
-			expectedRetentionsMap, 7, cohortHeatMapMetrics.size());
+			expectedRetentionsMap, cohortHeatMapMetrics.size(), 7);
 
 		double[] actualRetentions = _getActualRetentions(cohortHeatMapMetrics);
 
@@ -135,7 +135,7 @@ public class VisitorCohortHeatMapDogTest {
 	@Test
 	public void testVisitorCohortHeatMetricsAllVisitorsByWeek() {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
-			_getCohortHeatMapMetrics(SiteMetricType.VISITORS, Interval.WEEK);
+			_getCohortHeatMapMetrics(Interval.WEEK, SiteMetricType.VISITORS);
 
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 34, cohortHeatMapMetrics.size());
@@ -160,7 +160,7 @@ public class VisitorCohortHeatMapDogTest {
 			};
 
 		double[] expectedRetentions = _getExpectedRetentions(
-			expectedRetentionsMap, 7, cohortHeatMapMetrics.size());
+			expectedRetentionsMap, cohortHeatMapMetrics.size(), 7);
 
 		double[] actualRetentions = _getActualRetentions(cohortHeatMapMetrics);
 
@@ -176,7 +176,7 @@ public class VisitorCohortHeatMapDogTest {
 	public void testVisitorCohortHeatMetricsAnonymousVisitorsByDay() {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(
-				SiteMetricType.ANONYMOUS_VISITORS, Interval.DAY);
+				Interval.DAY, SiteMetricType.ANONYMOUS_VISITORS);
 
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
@@ -201,7 +201,7 @@ public class VisitorCohortHeatMapDogTest {
 			};
 
 		double[] expectedRetentions = _getExpectedRetentions(
-			expectedRetentionsMap, 8, cohortHeatMapMetrics.size());
+			expectedRetentionsMap, cohortHeatMapMetrics.size(), 8);
 
 		double[] actualRetentions = _getActualRetentions(cohortHeatMapMetrics);
 
@@ -217,7 +217,7 @@ public class VisitorCohortHeatMapDogTest {
 	public void testVisitorCohortHeatMetricsKnownVisitorsByDay() {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(
-				SiteMetricType.KNOWN_VISITORS, Interval.DAY);
+				Interval.DAY, SiteMetricType.KNOWN_VISITORS);
 
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
@@ -238,7 +238,7 @@ public class VisitorCohortHeatMapDogTest {
 			};
 
 		double[] expectedRetentions = _getExpectedRetentions(
-			expectedRetentionsMap, 8, cohortHeatMapMetrics.size());
+			expectedRetentionsMap, cohortHeatMapMetrics.size(), 8);
 
 		double[] actualRetentions = _getActualRetentions(cohortHeatMapMetrics);
 
@@ -257,7 +257,7 @@ public class VisitorCohortHeatMapDogTest {
 	}
 
 	private List<CohortHeatMapMetric> _getCohortHeatMapMetrics(
-		MetricType metricType, Interval interval) {
+		Interval interval, MetricType metricType) {
 
 		return _visitorCohortHeatMapDog.getCohortHeatMapMetrics(
 			metricType,
@@ -269,8 +269,8 @@ public class VisitorCohortHeatMapDogTest {
 	}
 
 	private double[] _getExpectedRetentions(
-		Map<Pair<Integer, Integer>, Double> expectedRetentionsMap,
-		int totalLines, int size) {
+		Map<Pair<Integer, Integer>, Double> expectedRetentionsMap, int size,
+		int totalLines) {
 
 		double[] expectedRetentions = new double[size];
 
