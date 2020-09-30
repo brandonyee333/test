@@ -1046,7 +1046,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.petra.json.web.service.client.jar!jackson-databind.jar</file-name>
-				<version>2.9.10.1</version>
+				<version>2.9.10.6</version>
 				<project-name>jackson-databind</project-name>
 				<project-url>http://github.com/FasterXML/jackson</project-url>
 				<licenses>
@@ -1099,6 +1099,18 @@
 					<license>
 						<license-name>GNU Lesser General Public Licence</license-name>
 						<license-url>http://www.gnu.org/licenses/lgpl.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.portal.cluster.multiple.jar!jgroups.jar</file-name>
+				<version>3.6.16.Final</version>
+				<project-name>JGroups</project-name>
+				<project-url>http://www.jgroups.org</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -1422,7 +1434,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.scripting.groovy.jar!groovy.jar</file-name>
-				<version>2.4.5</version>
+				<version>2.4.8</version>
 				<project-name>Groovy Runtime</project-name>
 				<project-url>http://groovy-lang.org</project-url>
 				<licenses>
@@ -2199,12 +2211,13 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.google.jar!google-oauth-client.jar</file-name>
-				<version>1.21.0</version>
+				<version>1.31.0</version>
 				<project-name>Google OAuth Client Library for Java</project-name>
+				<project-url>https://www.google.com/</project-url>
 				<licenses>
 					<license>
 						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -2426,8 +2439,8 @@
 			<library>
 				<file-name>com.liferay.portal.security.sso.openid.jar!xercesImpl.jar</file-name>
 				<version>2.12.0</version>
-				<project-name>Xerces2 Java Parser</project-name>
-				<project-url>http://xerces.apache.org/xerces2-j/</project-url>
+				<project-name>Xerces2-j</project-name>
+				<project-url>https://xerces.apache.org/xerces2-j/</project-url>
 				<licenses>
 					<license>
 						<license-name>The Apache Software License, Version 2.0</license-name>
@@ -2724,7 +2737,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!jackson-databind.jar</file-name>
-				<version>2.9.10.1</version>
+				<version>2.9.10.6</version>
 				<project-name>jackson-databind</project-name>
 				<project-url>http://github.com/FasterXML/jackson</project-url>
 				<licenses>
@@ -3039,7 +3052,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.push.notifications.sender.apple.jar!jackson-databind.jar</file-name>
-				<version>2.9.10.1</version>
+				<version>2.9.10.6</version>
 				<project-name>jackson-databind</project-name>
 				<project-url>http://github.com/FasterXML/jackson</project-url>
 				<licenses>
@@ -3705,7 +3718,7 @@
 			</library>
 			<library>
 				<file-name>lib/development/com.liferay.jenkins.results.parser.jar</file-name>
-				<version>1.0.543</version>
+				<version>1.0.667</version>
 				<project-name>Liferay Jenkins Results Parser</project-name>
 				<licenses>
 					<license>
