@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -49,7 +48,6 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.generic.TermRangeQueryImpl;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
-import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -113,16 +111,14 @@ public class FixPackSearcher extends BaseSearcher {
 			"ddmStructureKey", DDMStructureConstants.KEY_FIX_PACK);
 		booleanFilter.addRequiredTerm("head", true);
 
-		Group group = _groupLocalService.fetchFriendlyURLGroup(
-			themeDisplay.getCompanyId(), "/customer");
-
 		JournalFolder parentFolder = _journalFolderLocalService.fetchFolder(
-			group.getGroupId(),
+			themeDisplay.getScopeGroupId(),
 			product + StringPool.SPACE + String.valueOf(productVersion));
 
 		if (commerce) {
 			JournalFolder folder = _journalFolderLocalService.fetchFolder(
-				group.getGroupId(), parentFolder.getFolderId(), "Commerce");
+				themeDisplay.getScopeGroupId(), parentFolder.getFolderId(),
+				"Commerce");
 
 			booleanFilter.addRequiredTerm("folderId", folder.getFolderId());
 		}
@@ -310,9 +306,6 @@ public class FixPackSearcher extends BaseSearcher {
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
-
-	@Reference
-	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private IndexSearcherHelper _indexSearcherHelper;
