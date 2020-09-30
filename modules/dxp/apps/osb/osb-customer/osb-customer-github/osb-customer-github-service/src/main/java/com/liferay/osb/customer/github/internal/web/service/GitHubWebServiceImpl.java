@@ -71,8 +71,8 @@ public class GitHubWebServiceImpl
 	public JSONObject addCollaborator(String gitHubUserName)
 		throws PortalException {
 
-		String url =
-			_URL_GITHUB_REPOSITORY_COLLABORATORS + "/" + gitHubUserName;
+		String url = StringBundler.concat(
+			_URL_GITHUB_REPOSITORY_COLLABORATORS, "/", gitHubUserName);
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -109,8 +109,8 @@ public class GitHubWebServiceImpl
 		throws PortalException {
 
 		try {
-			String url =
-				_URL_GITHUB_REPOSITORY_COLLABORATORS + "/" + gitHubUserName;
+			String url = StringBundler.concat(
+				_URL_GITHUB_REPOSITORY_COLLABORATORS, "/", gitHubUserName);
 
 			String response = doDelete(
 				url, Collections.<String, String>emptyMap(), _headers);
@@ -133,7 +133,8 @@ public class GitHubWebServiceImpl
 		throws PortalException {
 
 		try {
-			String url = _URL_GITHUB_ORGS + "liferay/members/" + gitHubUserName;
+			String url = StringBundler.concat(
+				_URL_GITHUB_ORGS, "liferay/members/", gitHubUserName);
 
 			String response = doGet(
 				url, Collections.<String, String>emptyMap(), _headers);
@@ -418,9 +419,9 @@ public class GitHubWebServiceImpl
 		throws PortalException {
 
 		try {
-			String url =
-				GitHubConfigurationValues.REMOTE_REST_SERVICE_API_GITHUB_HOST +
-					_URL_GITHUB_ORGS + "liferay/teams/" + teamSlug + "/members";
+			String url = StringBundler.concat(
+				GitHubConfigurationValues.REMOTE_REST_SERVICE_API_GITHUB_HOST,
+				_URL_GITHUB_ORGS, "liferay/teams/", teamSlug, "/members");
 
 			HttpResponse httpResponse = _getHttpResponse(
 				url, query.getParameters(), _headers);
