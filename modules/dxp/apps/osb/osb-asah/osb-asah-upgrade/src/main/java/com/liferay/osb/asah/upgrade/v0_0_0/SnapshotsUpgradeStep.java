@@ -22,6 +22,8 @@ import java.util.Collections;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequest;
 import org.elasticsearch.client.IndexLifecycleClient;
 import org.elasticsearch.client.RequestOptions;
@@ -44,6 +46,10 @@ public class SnapshotsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
+		if (StringUtils.isEmpty(System.getenv("LCP_PROJECT_CLUSTER"))) {
+			return;
+		}
+
 		_createRepository();
 		_createSnapshotLifecyclePolicy();
 	}
