@@ -687,7 +687,7 @@ definition {
 
 		DDLRecord.viewTextFieldRepeated(
 			ddlRecordFieldData1 = "Contenido",
-			ddlRecordFieldData2 = "Content 2",
+			ddlRecordFieldData2 = "",
 			ddlRecordFieldData3 = "Contenido 2");
 	}
 
