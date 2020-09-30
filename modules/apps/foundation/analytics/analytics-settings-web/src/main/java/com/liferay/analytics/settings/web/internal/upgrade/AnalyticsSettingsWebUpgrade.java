@@ -27,7 +27,9 @@ public class AnalyticsSettingsWebUpgrade implements UpgradeStepRegistrator {
 
 	@Override
 	public void register(Registry registry) {
-		registry.register("0.0.0", "0.0.1", new DummyUpgradeStep());
+		registry.register(
+			"com.liferay.analytics.settings.web", "0.0.0", "0.0.1",
+			new DummyUpgradeStep());
 	}
 
 }

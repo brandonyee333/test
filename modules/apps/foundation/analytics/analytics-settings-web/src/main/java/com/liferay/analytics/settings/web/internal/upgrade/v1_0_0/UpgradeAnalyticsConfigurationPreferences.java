@@ -110,8 +110,9 @@ public class UpgradeAnalyticsConfigurationPreferences extends UpgradeProcess {
 		"agreedToTermsOfUse", "comments", "companyId", "contactId",
 		"createDate", "defaultUser", "emailAddress", "emailAddressVerified",
 		"facebookId", "firstName", "googleUserId", "greeting", "jobTitle",
-		"languageId", "lastName", "ldapServerId", "middleName", "modifiedDate", "openId", "portraitId", "screenName",
-		"status", "timeZoneId", "userId", "uuid"
+		"languageId", "lastName", "ldapServerId", "middleName", "modifiedDate",
+		"openId", "portraitId", "screenName", "status", "timeZoneId", "userId",
+		"uuid"
 	};
 
 	private final ConfigurationAdmin _configurationAdmin;
