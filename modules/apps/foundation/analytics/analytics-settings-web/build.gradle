@@ -17,6 +17,7 @@ dependencies {
 	compileOnly project(":apps:foundation:portal-search:portal-search-api")
 	compileOnly project(":apps:foundation:portal-search:portal-search-spi")
 	compileOnly project(":apps:foundation:portal-security:portal-security-service-access-policy-api")
+	compileOnly project(":apps:portal:portal-upgrade-api")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-persistence")
 	compileOnly project(":apps:web-experience:application-list:application-list-api")
 	compileOnly project(":core:petra:petra-function")
