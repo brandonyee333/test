@@ -326,7 +326,7 @@ definition {
 	macro addSmallImageViaURL {
 		Panel.expandPanel(panelHeading = "Small Image");
 
-		Check(locator1 = "WCEditWebContent#USE_SMALL_IMAGE_CHECKBOX");
+		Click.clickAt(locator1 = "WCEditWebContent#USE_SMALL_IMAGE_CHECKBOX");
 		Click(locator1 = "WCEditWebContent#SMALL_IMAGE_URL");
 
 		Type(
