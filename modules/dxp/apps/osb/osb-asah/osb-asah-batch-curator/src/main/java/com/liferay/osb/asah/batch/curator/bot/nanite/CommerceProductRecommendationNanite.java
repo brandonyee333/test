@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.ml.JobState;
 import com.liferay.osb.asah.batch.curator.bot.nanite.ml.SparkManager;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
@@ -85,7 +84,7 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 			).put(
 				"lastUpdatedDate", dateString
 			).put(
-				"status", JobState.UNKNOWN.toString()
+				"status", "UNKNOWN"
 			));
 	}
 
