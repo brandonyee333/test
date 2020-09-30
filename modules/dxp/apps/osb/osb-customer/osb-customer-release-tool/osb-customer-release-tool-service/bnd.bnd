@@ -1,5 +1,5 @@
 Bundle-Name: Liferay OSB Customer Release Tool Service
 Bundle-SymbolicName: com.liferay.osb.customer.release.tool.service
 Bundle-Version: 1.0.0
-Liferay-Require-SchemaVersion: 1.0.0
+Liferay-Require-SchemaVersion: 1.0.1
 Liferay-Service: true

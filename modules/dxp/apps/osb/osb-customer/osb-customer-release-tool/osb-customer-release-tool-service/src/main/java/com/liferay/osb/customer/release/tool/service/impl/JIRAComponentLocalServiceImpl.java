@@ -27,7 +27,7 @@ public class JIRAComponentLocalServiceImpl
 	extends JIRAComponentLocalServiceBaseImpl {
 
 	public JIRAComponent addJIRAComponent(
-			long remoteId, String name, boolean visible)
+			long remoteId, String remoteProject, String name, boolean visible)
 		throws PortalException {
 
 		long jiraComponentId = counterLocalService.increment();
@@ -36,14 +36,21 @@ public class JIRAComponentLocalServiceImpl
 			jiraComponentId);
 
 		jiraComponent.setRemoteId(remoteId);
+		jiraComponent.setRemoteProject(remoteProject);
 		jiraComponent.setName(name);
 		jiraComponent.setVisible(visible);
 
 		return jiraComponentPersistence.update(jiraComponent);
 	}
 
-	public List<JIRAComponent> getJIRAComponents(boolean visible) {
-		return jiraComponentPersistence.findByVisible(visible);
+	public List<JIRAComponent> getJIRAComponents(String remoteProject) {
+		return jiraComponentPersistence.findByRemoteProject(remoteProject);
+	}
+
+	public List<JIRAComponent> getJIRAComponents(
+		String remoteProject, boolean visible) {
+
+		return jiraComponentPersistence.findByRP_V(remoteProject, visible);
 	}
 
 	public JIRAComponent updateJIRAComponent(
@@ -58,14 +65,15 @@ public class JIRAComponentLocalServiceImpl
 		return jiraComponentPersistence.update(jiraComponent);
 	}
 
-	public JIRAComponent updateJIRAComponent(long remoteId, String name)
+	public JIRAComponent updateJIRAComponent(
+			long remoteId, String remoteProject, String name)
 		throws PortalException {
 
-		JIRAComponent jiraComponent = jiraComponentPersistence.fetchByRemoteId(
-			remoteId);
+		JIRAComponent jiraComponent = jiraComponentPersistence.fetchByRI_RP(
+			remoteId, remoteProject);
 
 		if (jiraComponent == null) {
-			return addJIRAComponent(remoteId, name, true);
+			return addJIRAComponent(remoteId, remoteProject, name, true);
 		}
 
 		jiraComponent.setName(name);

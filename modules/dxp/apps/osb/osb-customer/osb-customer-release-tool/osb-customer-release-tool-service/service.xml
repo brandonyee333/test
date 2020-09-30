@@ -46,6 +46,7 @@
 		<!-- Other fields -->
 
 		<column name="remoteId" type="long" />
+		<column name="remoteProject" type="String" />
 		<column name="name" type="String" />
 		<column name="visible" type="boolean" />
 
@@ -57,10 +58,15 @@
 
 		<!-- Finder methods -->
 
-		<finder name="RemoteId" return-type="JIRAComponent">
-			<finder-column name="remoteId" />
+		<finder name="RemoteProject" return-type="Collection">
+			<finder-column name="remoteProject" />
 		</finder>
-		<finder name="Visible" return-type="Collection">
+		<finder name="RI_RP" return-type="JIRAComponent">
+			<finder-column name="remoteId" />
+			<finder-column name="remoteProject" />
+		</finder>
+		<finder name="RP_V" return-type="Collection">
+			<finder-column name="remoteProject" />
 			<finder-column name="visible" />
 		</finder>
 	</entity>

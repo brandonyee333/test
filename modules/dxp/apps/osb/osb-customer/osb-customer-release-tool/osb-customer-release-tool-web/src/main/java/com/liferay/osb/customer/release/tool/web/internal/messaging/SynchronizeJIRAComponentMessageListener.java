@@ -17,7 +17,6 @@ package com.liferay.osb.customer.release.tool.web.internal.messaging;
 import com.liferay.osb.customer.jira.rest.connector.service.JIRAComponentRESTService;
 import com.liferay.osb.customer.release.tool.model.JIRAComponent;
 import com.liferay.osb.customer.release.tool.service.JIRAComponentLocalService;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
@@ -73,12 +72,18 @@ public class SynchronizeJIRAComponentMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
+		synchronizeJIRACompoents("COMMERCE");
+		synchronizeJIRACompoents("LPS");
+	}
+
+	protected void synchronizeJIRACompoents(String remoteProject)
+		throws Exception {
+
 		JSONArray jsonArray = _jiraComponentRESTService.getJIRAComponents(
-			"LPS");
+			remoteProject);
 
 		List<JIRAComponent> jiraComponents = ListUtil.copy(
-			_jiraComponentLocalService.getJIRAComponents(
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS));
+			_jiraComponentLocalService.getJIRAComponents(remoteProject));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -88,7 +93,7 @@ public class SynchronizeJIRAComponentMessageListener
 
 			JIRAComponent jiraComponent =
 				_jiraComponentLocalService.updateJIRAComponent(
-					jiraComponentRemoteId, name);
+					jiraComponentRemoteId, remoteProject, name);
 
 			jiraComponents.remove(jiraComponent);
 		}

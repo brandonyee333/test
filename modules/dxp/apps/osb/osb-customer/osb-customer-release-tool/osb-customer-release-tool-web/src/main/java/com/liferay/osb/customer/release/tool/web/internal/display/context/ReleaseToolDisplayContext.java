@@ -189,9 +189,11 @@ public class ReleaseToolDisplayContext {
 		return _highlightsFiltersJSONArray;
 	}
 
-	public JSONArray getJIRAComponentFiltersJSONArray() throws PortalException {
+	public JSONArray getJIRAComponentFiltersJSONArray(String jiraProject)
+		throws PortalException {
+
 		List<JIRAComponent> jiraComponents =
-			JIRAComponentLocalServiceUtil.getJIRAComponents(true);
+			JIRAComponentLocalServiceUtil.getJIRAComponents(jiraProject, true);
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
