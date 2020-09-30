@@ -57,34 +57,29 @@ public class VisitorCohortHeatMapDogTest {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(Interval.DAY, SiteMetricType.VISITORS);
 
+		Assert.assertArrayEquals(
+			_getExpectedRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(0, 5), 100.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(0, 7), 100.0);
+						put(Pair.of(1, 0), 60.0);
+						put(Pair.of(1, 5), 60.0);
+						put(Pair.of(1, 6), 66.66666666666666);
+						put(Pair.of(1, 7), 50.0);
+						put(Pair.of(2, 0), 37.5);
+						put(Pair.of(2, 5), 40.0);
+						put(Pair.of(2, 6), 33.33333333333333);
+						put(Pair.of(3, 0), 20.0);
+						put(Pair.of(3, 5), 20.0);
+					}
+				},
+				cohortHeatMapMetrics.size(), 8),
+			_getActualRetentions(cohortHeatMapMetrics), 0);
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
-
-		Map<Pair<Integer, Integer>, Double> expectedRetentionsMap =
-			new HashMap<Pair<Integer, Integer>, Double>() {
-				{
-					put(Pair.of(0, 0), 100.0);
-					put(Pair.of(0, 5), 100.0);
-					put(Pair.of(0, 6), 100.0);
-					put(Pair.of(0, 7), 100.0);
-					put(Pair.of(1, 0), 60.0);
-					put(Pair.of(1, 5), 60.0);
-					put(Pair.of(1, 6), 66.66666666666666);
-					put(Pair.of(1, 7), 50.0);
-					put(Pair.of(2, 0), 37.5);
-					put(Pair.of(2, 5), 40.0);
-					put(Pair.of(2, 6), 33.33333333333333);
-					put(Pair.of(3, 0), 20.0);
-					put(Pair.of(3, 5), 20.0);
-				}
-			};
-
-		double[] expectedRetentions = _getExpectedRetentions(
-			expectedRetentionsMap, cohortHeatMapMetrics.size(), 8);
-
-		double[] actualRetentions = _getActualRetentions(cohortHeatMapMetrics);
-
-		Assert.assertArrayEquals(expectedRetentions, actualRetentions, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -97,34 +92,29 @@ public class VisitorCohortHeatMapDogTest {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(Interval.MONTH, SiteMetricType.VISITORS);
 
+		Assert.assertArrayEquals(
+			_getExpectedRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(0, 4), 100.0);
+						put(Pair.of(0, 5), 100.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(1, 0), 60.0);
+						put(Pair.of(1, 4), 60.0);
+						put(Pair.of(1, 5), 66.66666666666666);
+						put(Pair.of(1, 6), 50.0);
+						put(Pair.of(2, 0), 37.5);
+						put(Pair.of(2, 4), 40.0);
+						put(Pair.of(2, 5), 33.33333333333333);
+						put(Pair.of(3, 0), 20.0);
+						put(Pair.of(3, 4), 20.0);
+					}
+				},
+				cohortHeatMapMetrics.size(), 7),
+			_getActualRetentions(cohortHeatMapMetrics), 0);
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 34, cohortHeatMapMetrics.size());
-
-		Map<Pair<Integer, Integer>, Double> expectedRetentionsMap =
-			new HashMap<Pair<Integer, Integer>, Double>() {
-				{
-					put(Pair.of(0, 0), 100.0);
-					put(Pair.of(0, 4), 100.0);
-					put(Pair.of(0, 5), 100.0);
-					put(Pair.of(0, 6), 100.0);
-					put(Pair.of(1, 0), 60.0);
-					put(Pair.of(1, 4), 60.0);
-					put(Pair.of(1, 5), 66.66666666666666);
-					put(Pair.of(1, 6), 50.0);
-					put(Pair.of(2, 0), 37.5);
-					put(Pair.of(2, 4), 40.0);
-					put(Pair.of(2, 5), 33.33333333333333);
-					put(Pair.of(3, 0), 20.0);
-					put(Pair.of(3, 4), 20.0);
-				}
-			};
-
-		double[] expectedRetentions = _getExpectedRetentions(
-			expectedRetentionsMap, cohortHeatMapMetrics.size(), 7);
-
-		double[] actualRetentions = _getActualRetentions(cohortHeatMapMetrics);
-
-		Assert.assertArrayEquals(expectedRetentions, actualRetentions, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -137,34 +127,29 @@ public class VisitorCohortHeatMapDogTest {
 		List<CohortHeatMapMetric> cohortHeatMapMetrics =
 			_getCohortHeatMapMetrics(Interval.WEEK, SiteMetricType.VISITORS);
 
+		Assert.assertArrayEquals(
+			_getExpectedRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(0, 4), 100.0);
+						put(Pair.of(0, 5), 100.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(1, 0), 60.0);
+						put(Pair.of(1, 4), 60.0);
+						put(Pair.of(1, 5), 66.66666666666666);
+						put(Pair.of(1, 6), 50.0);
+						put(Pair.of(2, 0), 37.5);
+						put(Pair.of(2, 4), 40.0);
+						put(Pair.of(2, 5), 33.33333333333333);
+						put(Pair.of(3, 0), 20.0);
+						put(Pair.of(3, 4), 20.0);
+					}
+				},
+				cohortHeatMapMetrics.size(), 7),
+			_getActualRetentions(cohortHeatMapMetrics), 0);
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 34, cohortHeatMapMetrics.size());
-
-		Map<Pair<Integer, Integer>, Double> expectedRetentionsMap =
-			new HashMap<Pair<Integer, Integer>, Double>() {
-				{
-					put(Pair.of(0, 0), 100.0);
-					put(Pair.of(0, 4), 100.0);
-					put(Pair.of(0, 5), 100.0);
-					put(Pair.of(0, 6), 100.0);
-					put(Pair.of(1, 0), 60.0);
-					put(Pair.of(1, 4), 60.0);
-					put(Pair.of(1, 5), 66.66666666666666);
-					put(Pair.of(1, 6), 50.0);
-					put(Pair.of(2, 0), 37.5);
-					put(Pair.of(2, 4), 40.0);
-					put(Pair.of(2, 5), 33.33333333333333);
-					put(Pair.of(3, 0), 20.0);
-					put(Pair.of(3, 4), 20.0);
-				}
-			};
-
-		double[] expectedRetentions = _getExpectedRetentions(
-			expectedRetentionsMap, cohortHeatMapMetrics.size(), 7);
-
-		double[] actualRetentions = _getActualRetentions(cohortHeatMapMetrics);
-
-		Assert.assertArrayEquals(expectedRetentions, actualRetentions, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -178,34 +163,29 @@ public class VisitorCohortHeatMapDogTest {
 			_getCohortHeatMapMetrics(
 				Interval.DAY, SiteMetricType.ANONYMOUS_VISITORS);
 
+		Assert.assertArrayEquals(
+			_getExpectedRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(0, 5), 100.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(0, 7), 100.0);
+						put(Pair.of(1, 0), 75.0);
+						put(Pair.of(1, 5), 50.0);
+						put(Pair.of(1, 6), 100.0);
+						put(Pair.of(1, 7), 100.0);
+						put(Pair.of(2, 0), 66.66666666666666);
+						put(Pair.of(2, 5), 50.0);
+						put(Pair.of(2, 6), 100.0);
+						put(Pair.of(3, 0), 50.0);
+						put(Pair.of(3, 5), 50.0);
+					}
+				},
+				cohortHeatMapMetrics.size(), 8),
+			_getActualRetentions(cohortHeatMapMetrics), 0);
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
-
-		Map<Pair<Integer, Integer>, Double> expectedRetentionsMap =
-			new HashMap<Pair<Integer, Integer>, Double>() {
-				{
-					put(Pair.of(0, 0), 100.0);
-					put(Pair.of(0, 5), 100.0);
-					put(Pair.of(0, 6), 100.0);
-					put(Pair.of(0, 7), 100.0);
-					put(Pair.of(1, 0), 75.0);
-					put(Pair.of(1, 5), 50.0);
-					put(Pair.of(1, 6), 100.0);
-					put(Pair.of(1, 7), 100.0);
-					put(Pair.of(2, 0), 66.66666666666666);
-					put(Pair.of(2, 5), 50.0);
-					put(Pair.of(2, 6), 100.0);
-					put(Pair.of(3, 0), 50.0);
-					put(Pair.of(3, 5), 50.0);
-				}
-			};
-
-		double[] expectedRetentions = _getExpectedRetentions(
-			expectedRetentionsMap, cohortHeatMapMetrics.size(), 8);
-
-		double[] actualRetentions = _getActualRetentions(cohortHeatMapMetrics);
-
-		Assert.assertArrayEquals(expectedRetentions, actualRetentions, 0);
 	}
 
 	@ElasticsearchIndex(
@@ -219,30 +199,25 @@ public class VisitorCohortHeatMapDogTest {
 			_getCohortHeatMapMetrics(
 				Interval.DAY, SiteMetricType.KNOWN_VISITORS);
 
+		Assert.assertArrayEquals(
+			_getExpectedRetentions(
+				new HashMap<Pair<Integer, Integer>, Double>() {
+					{
+						put(Pair.of(0, 0), 100.0);
+						put(Pair.of(0, 5), 100.0);
+						put(Pair.of(0, 6), 100.0);
+						put(Pair.of(0, 7), 100.0);
+						put(Pair.of(1, 0), 50.0);
+						put(Pair.of(1, 5), 66.66666666666666);
+						put(Pair.of(1, 6), 50.0);
+						put(Pair.of(2, 0), 20.0);
+						put(Pair.of(2, 5), 33.33333333333333);
+					}
+				},
+				cohortHeatMapMetrics.size(), 8),
+			_getActualRetentions(cohortHeatMapMetrics), 0);
 		Assert.assertEquals(
 			cohortHeatMapMetrics.toString(), 43, cohortHeatMapMetrics.size());
-
-		Map<Pair<Integer, Integer>, Double> expectedRetentionsMap =
-			new HashMap<Pair<Integer, Integer>, Double>() {
-				{
-					put(Pair.of(0, 0), 100.0);
-					put(Pair.of(0, 5), 100.0);
-					put(Pair.of(0, 6), 100.0);
-					put(Pair.of(0, 7), 100.0);
-					put(Pair.of(1, 0), 50.0);
-					put(Pair.of(1, 5), 66.66666666666666);
-					put(Pair.of(1, 6), 50.0);
-					put(Pair.of(2, 0), 20.0);
-					put(Pair.of(2, 5), 33.33333333333333);
-				}
-			};
-
-		double[] expectedRetentions = _getExpectedRetentions(
-			expectedRetentionsMap, cohortHeatMapMetrics.size(), 8);
-
-		double[] actualRetentions = _getActualRetentions(cohortHeatMapMetrics);
-
-		Assert.assertArrayEquals(expectedRetentions, actualRetentions, 0);
 	}
 
 	private double[] _getActualRetentions(
