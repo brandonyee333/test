@@ -19,9 +19,7 @@ definition {
 
 		Check(locator1 = "ConfigurationAdmin#XSL_CONTENT_CONFIGURATION_XML_DOCTYPE_DECLARATION_CHECKBOX");
 
-		Click(locator1 = "Button#SAVE");
-
-		Alert.viewSuccessMessage();
+		SystemSettings.saveConfiguration();
 	}
 
 	macro gotoDocumentURL {
