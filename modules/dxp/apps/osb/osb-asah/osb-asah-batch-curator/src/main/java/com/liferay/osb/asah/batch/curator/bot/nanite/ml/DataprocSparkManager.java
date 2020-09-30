@@ -46,23 +46,24 @@ import org.springframework.stereotype.Component;
 public class DataprocSparkManager implements SparkManager {
 
 	@Override
-	public JobState getJobState(String jobId) {
+	public JobState getJobState(String sparkJobId) {
 		try (JobControllerClient jobControllerClient =
 				_buildJobControllerClient()) {
 
-			Job job = jobControllerClient.getJob(_projectId, _region, jobId);
+			Job job = jobControllerClient.getJob(
+				_projectId, _region, sparkJobId);
 
 			JobStatus jobStatus = job.getStatus();
 
-			JobStatus.State state = jobStatus.getState();
+			JobStatus.State jobStatusState = jobStatus.getState();
 
-			if (JobStatus.State.DONE.equals(state)) {
+			if (JobStatus.State.DONE.equals(jobStatusState)) {
 				return JobState.COMPLETE;
 			}
-			else if (JobStatus.State.RUNNING.equals(state)) {
+			else if (JobStatus.State.RUNNING.equals(jobStatusState)) {
 				return JobState.RUNNING;
 			}
-			else if (JobStatus.State.ERROR.equals(state)) {
+			else if (JobStatus.State.ERROR.equals(jobStatusState)) {
 				return JobState.ERROR;
 			}
 		}

@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
 public class LocalSparkManager implements SparkManager {
 
 	@Override
-	public JobState getJobState(String jobId) {
+	public JobState getJobState(String sparkJobId) {
 		return JobState.UNKNOWN;
 	}
 

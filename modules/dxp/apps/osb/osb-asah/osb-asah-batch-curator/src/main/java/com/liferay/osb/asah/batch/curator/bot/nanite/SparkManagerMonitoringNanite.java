@@ -74,14 +74,16 @@ public class SparkManagerMonitoringNanite extends BaseNanite {
 	}
 
 	private void _updateJobRun(JSONObject jobRunJSONObject) {
-		String jobRunId = jobRunJSONObject.optString("jobRunId", null);
+		JSONObject contextJSONObject = jobRunJSONObject.getJSONObject(
+			"context");
 
-		if (jobRunId == null) {
+		String sparkJobId = contextJSONObject.optString("sparkJobId", null);
+
+		if (sparkJobId == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					String.format(
-						"No jobRunId for job-run id: %s",
-						jobRunJSONObject.getString("id")));
+					"No sparkJobId for job-run ID" +
+						jobRunJSONObject.getString("id"));
 			}
 
 			return;
@@ -89,7 +91,7 @@ public class SparkManagerMonitoringNanite extends BaseNanite {
 
 		jobRunJSONObject.put("lastUpdatedDate", DateUtil.newUTCDateString());
 
-		JobState jobState = _sparkManager.getJobState(jobRunId);
+		JobState jobState = _sparkManager.getJobState(sparkJobId);
 
 		jobRunJSONObject.put("status", jobState.toString());
 
