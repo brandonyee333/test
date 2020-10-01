@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.Collections;
+import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
 
@@ -84,17 +85,28 @@ public class SnapshotsUpgradeStep implements UpgradeStep {
 	}
 
 	private void _createSnapshotLifecyclePolicy() throws Exception {
+		String lcpProjectId = ServiceConstants.LCP_PROJECT_ID;
+
+		IntStream intStream = lcpProjectId.chars();
+
+		int minute = intStream.filter(
+			Character::isDigit
+		).findFirst(
+		).orElse(
+			Character.forDigit(0, 10)
+		);
+
+		String schedule = "0 " + (char)minute + " * * * ?";
+
 		PutSnapshotLifecyclePolicyRequest putSnapshotLifecyclePolicyRequest =
 			new PutSnapshotLifecyclePolicyRequest(
 				new SnapshotLifecyclePolicy(
-					ServiceConstants.LCP_PROJECT_ID + "-hourly-snapshots",
-					"<" + ServiceConstants.LCP_PROJECT_ID +
-						"-snapshot-{now{YYYY.MM.dd.HH|UTC}}>",
-					"0 0 * * * ?", ServiceConstants.LCP_PROJECT_ID,
+					lcpProjectId + "-hourly-snapshots",
+					"<" + lcpProjectId + "-snapshot-{now{YYYY.MM.dd.HH|UTC}}>",
+					schedule, lcpProjectId,
 					Collections.singletonMap(
 						"indices",
-						Collections.singletonList(
-							ServiceConstants.LCP_PROJECT_ID + "_*")),
+						Collections.singletonList(lcpProjectId + "_*")),
 					new SnapshotRetentionConfiguration(
 						TimeValue.timeValueDays(30), 1, 720)));
 
