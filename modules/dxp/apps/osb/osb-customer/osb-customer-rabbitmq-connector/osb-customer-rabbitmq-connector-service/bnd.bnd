@@ -1,4 +1,0 @@
-Bundle-Name: Liferay OSB Customer RabbitMQ Connector Service
-Bundle-SymbolicName: com.liferay.osb.customer.rabbitmq.connector.service
-Bundle-Version: 1.0.0
-Export-Package: com.liferay.osb.customer.rabbitmq.connector.configuration

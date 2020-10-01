@@ -6,7 +6,6 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-distributed-messaging:osb-customer-distributed-messaging-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-metrics:osb-customer-metrics-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-metrics:osb-customer-metrics-sync:osb-customer-metrics-sync-api")
-	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-rabbitmq-connector:osb-customer-rabbitmq-connector-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk-connector:osb-customer-zendesk-connector-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk:osb-customer-zendesk-api")
 }
