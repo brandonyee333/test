@@ -26,7 +26,7 @@ public class OSBAsahMonolithSchedulingConfigurer
 	extends BaseSchedulingConfigurer {
 
 	public OSBAsahMonolithSchedulingConfigurer() {
-		super(15);
+		super(16);
 	}
 
 }

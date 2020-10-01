@@ -28,7 +28,7 @@ public class OSBAsahBatchCuratorSchedulingConfigurer
 	extends BaseSchedulingConfigurer {
 
 	public OSBAsahBatchCuratorSchedulingConfigurer() {
-		super(12);
+		super(13);
 	}
 
 }
