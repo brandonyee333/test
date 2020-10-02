@@ -89,7 +89,7 @@ import com.liferay.portal.kernel.util.UnicodeFormatter_IW;
 import com.liferay.portal.kernel.util.Validator_IW;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.webserver.WebServerServletTokenUtil;
-import com.liferay.portal.kernel.xml.SAXReader;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.struts.Definition;
 import com.liferay.portal.struts.TilesUtil;
 
@@ -655,9 +655,7 @@ public class TemplateContextHelper {
 			// SAX reader util
 
 			try {
-				variables.put(
-					"saxReaderUtil",
-					utilLocator.findUtil(SAXReader.class.getName()));
+				variables.put("saxReaderUtil", SAXReaderUtil.getSAXReader());
 			}
 			catch (SecurityException securityException) {
 				_log.error(securityException, securityException);
