@@ -1,36 +1,35 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.release.tool.service.persistence;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.osb.customer.release.tool.model.JIRAComponent;
+
+import com.liferay.osgi.util.ServiceTrackerFactory;
+
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import java.io.Serializable;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.ServiceTracker;
 
+import java.util.List;
+
 /**
- * The persistence utility for the jira component service. This utility wraps <code>com.liferay.osb.customer.release.tool.service.persistence.impl.JIRAComponentPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
+ * The persistence utility for the jira component service. This utility wraps {@link com.liferay.osb.customer.release.tool.service.persistence.impl.JIRAComponentPersistenceImpl} and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
  * <p>
  * Caching information and settings can be found in <code>portal.properties</code>
@@ -38,10 +37,11 @@ import org.osgi.util.tracker.ServiceTracker;
  *
  * @author Brian Wing Shun Chan
  * @see JIRAComponentPersistence
+ * @see com.liferay.osb.customer.release.tool.service.persistence.impl.JIRAComponentPersistenceImpl
  * @generated
  */
+@ProviderType
 public class JIRAComponentUtil {
-
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -70,20 +70,10 @@ public class JIRAComponentUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#fetchByPrimaryKeys(Set)
-	 */
-	public static Map<Serializable, JIRAComponent> fetchByPrimaryKeys(
-		Set<Serializable> primaryKeys) {
-
-		return getPersistence().fetchByPrimaryKeys(primaryKeys);
-	}
-
-	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<JIRAComponent> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
-
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -92,7 +82,6 @@ public class JIRAComponentUtil {
 	 */
 	public static List<JIRAComponent> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
-
 		return getPersistence().findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -102,9 +91,9 @@ public class JIRAComponentUtil {
 	public static List<JIRAComponent> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
 		OrderByComparator<JIRAComponent> orderByComparator) {
-
-		return getPersistence().findWithDynamicQuery(
-			dynamicQuery, start, end, orderByComparator);
+		return getPersistence()
+				   .findWithDynamicQuery(dynamicQuery, start, end,
+			orderByComparator);
 	}
 
 	/**
@@ -117,280 +106,463 @@ public class JIRAComponentUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
-	public static JIRAComponent update(
-		JIRAComponent jiraComponent, ServiceContext serviceContext) {
-
+	public static JIRAComponent update(JIRAComponent jiraComponent,
+		ServiceContext serviceContext) {
 		return getPersistence().update(jiraComponent, serviceContext);
 	}
 
 	/**
-	 * Returns the jira component where remoteId = &#63; or throws a <code>NoSuchJIRAComponentException</code> if it could not be found.
-	 *
-	 * @param remoteId the remote ID
-	 * @return the matching jira component
-	 * @throws NoSuchJIRAComponentException if a matching jira component could not be found
-	 */
-	public static JIRAComponent findByRemoteId(long remoteId)
-		throws com.liferay.osb.customer.release.tool.exception.
-			NoSuchJIRAComponentException {
-
-		return getPersistence().findByRemoteId(remoteId);
+	* Returns all the jira components where remoteProject = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @return the matching jira components
+	*/
+	public static List<JIRAComponent> findByRemoteProject(
+		java.lang.String remoteProject) {
+		return getPersistence().findByRemoteProject(remoteProject);
 	}
 
 	/**
-	 * Returns the jira component where remoteId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param remoteId the remote ID
-	 * @return the matching jira component, or <code>null</code> if a matching jira component could not be found
-	 */
-	public static JIRAComponent fetchByRemoteId(long remoteId) {
-		return getPersistence().fetchByRemoteId(remoteId);
+	* Returns a range of all the jira components where remoteProject = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param remoteProject the remote project
+	* @param start the lower bound of the range of jira components
+	* @param end the upper bound of the range of jira components (not inclusive)
+	* @return the range of matching jira components
+	*/
+	public static List<JIRAComponent> findByRemoteProject(
+		java.lang.String remoteProject, int start, int end) {
+		return getPersistence().findByRemoteProject(remoteProject, start, end);
 	}
 
 	/**
-	 * Returns the jira component where remoteId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param remoteId the remote ID
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching jira component, or <code>null</code> if a matching jira component could not be found
-	 */
-	public static JIRAComponent fetchByRemoteId(
-		long remoteId, boolean useFinderCache) {
-
-		return getPersistence().fetchByRemoteId(remoteId, useFinderCache);
-	}
-
-	/**
-	 * Removes the jira component where remoteId = &#63; from the database.
-	 *
-	 * @param remoteId the remote ID
-	 * @return the jira component that was removed
-	 */
-	public static JIRAComponent removeByRemoteId(long remoteId)
-		throws com.liferay.osb.customer.release.tool.exception.
-			NoSuchJIRAComponentException {
-
-		return getPersistence().removeByRemoteId(remoteId);
-	}
-
-	/**
-	 * Returns the number of jira components where remoteId = &#63;.
-	 *
-	 * @param remoteId the remote ID
-	 * @return the number of matching jira components
-	 */
-	public static int countByRemoteId(long remoteId) {
-		return getPersistence().countByRemoteId(remoteId);
-	}
-
-	/**
-	 * Returns all the jira components where visible = &#63;.
-	 *
-	 * @param visible the visible
-	 * @return the matching jira components
-	 */
-	public static List<JIRAComponent> findByVisible(boolean visible) {
-		return getPersistence().findByVisible(visible);
-	}
-
-	/**
-	 * Returns a range of all the jira components where visible = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
-	 * </p>
-	 *
-	 * @param visible the visible
-	 * @param start the lower bound of the range of jira components
-	 * @param end the upper bound of the range of jira components (not inclusive)
-	 * @return the range of matching jira components
-	 */
-	public static List<JIRAComponent> findByVisible(
-		boolean visible, int start, int end) {
-
-		return getPersistence().findByVisible(visible, start, end);
-	}
-
-	/**
-	 * Returns an ordered range of all the jira components where visible = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
-	 * </p>
-	 *
-	 * @param visible the visible
-	 * @param start the lower bound of the range of jira components
-	 * @param end the upper bound of the range of jira components (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching jira components
-	 */
-	public static List<JIRAComponent> findByVisible(
-		boolean visible, int start, int end,
+	* Returns an ordered range of all the jira components where remoteProject = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param remoteProject the remote project
+	* @param start the lower bound of the range of jira components
+	* @param end the upper bound of the range of jira components (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching jira components
+	*/
+	public static List<JIRAComponent> findByRemoteProject(
+		java.lang.String remoteProject, int start, int end,
 		OrderByComparator<JIRAComponent> orderByComparator) {
-
-		return getPersistence().findByVisible(
-			visible, start, end, orderByComparator);
+		return getPersistence()
+				   .findByRemoteProject(remoteProject, start, end,
+			orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the jira components where visible = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
-	 * </p>
-	 *
-	 * @param visible the visible
-	 * @param start the lower bound of the range of jira components
-	 * @param end the upper bound of the range of jira components (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching jira components
-	 */
-	public static List<JIRAComponent> findByVisible(
-		boolean visible, int start, int end,
+	* Returns an ordered range of all the jira components where remoteProject = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param remoteProject the remote project
+	* @param start the lower bound of the range of jira components
+	* @param end the upper bound of the range of jira components (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching jira components
+	*/
+	public static List<JIRAComponent> findByRemoteProject(
+		java.lang.String remoteProject, int start, int end,
 		OrderByComparator<JIRAComponent> orderByComparator,
-		boolean useFinderCache) {
-
-		return getPersistence().findByVisible(
-			visible, start, end, orderByComparator, useFinderCache);
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByRemoteProject(remoteProject, start, end,
+			orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	 * Returns the first jira component in the ordered set where visible = &#63;.
-	 *
-	 * @param visible the visible
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching jira component
-	 * @throws NoSuchJIRAComponentException if a matching jira component could not be found
-	 */
-	public static JIRAComponent findByVisible_First(
-			boolean visible, OrderByComparator<JIRAComponent> orderByComparator)
-		throws com.liferay.osb.customer.release.tool.exception.
-			NoSuchJIRAComponentException {
-
-		return getPersistence().findByVisible_First(visible, orderByComparator);
+	* Returns the first jira component in the ordered set where remoteProject = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching jira component
+	* @throws NoSuchJIRAComponentException if a matching jira component could not be found
+	*/
+	public static JIRAComponent findByRemoteProject_First(
+		java.lang.String remoteProject,
+		OrderByComparator<JIRAComponent> orderByComparator)
+		throws com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException {
+		return getPersistence()
+				   .findByRemoteProject_First(remoteProject, orderByComparator);
 	}
 
 	/**
-	 * Returns the first jira component in the ordered set where visible = &#63;.
-	 *
-	 * @param visible the visible
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching jira component, or <code>null</code> if a matching jira component could not be found
-	 */
-	public static JIRAComponent fetchByVisible_First(
-		boolean visible, OrderByComparator<JIRAComponent> orderByComparator) {
+	* Returns the first jira component in the ordered set where remoteProject = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching jira component, or <code>null</code> if a matching jira component could not be found
+	*/
+	public static JIRAComponent fetchByRemoteProject_First(
+		java.lang.String remoteProject,
+		OrderByComparator<JIRAComponent> orderByComparator) {
+		return getPersistence()
+				   .fetchByRemoteProject_First(remoteProject, orderByComparator);
+	}
 
-		return getPersistence().fetchByVisible_First(
+	/**
+	* Returns the last jira component in the ordered set where remoteProject = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching jira component
+	* @throws NoSuchJIRAComponentException if a matching jira component could not be found
+	*/
+	public static JIRAComponent findByRemoteProject_Last(
+		java.lang.String remoteProject,
+		OrderByComparator<JIRAComponent> orderByComparator)
+		throws com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException {
+		return getPersistence()
+				   .findByRemoteProject_Last(remoteProject, orderByComparator);
+	}
+
+	/**
+	* Returns the last jira component in the ordered set where remoteProject = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching jira component, or <code>null</code> if a matching jira component could not be found
+	*/
+	public static JIRAComponent fetchByRemoteProject_Last(
+		java.lang.String remoteProject,
+		OrderByComparator<JIRAComponent> orderByComparator) {
+		return getPersistence()
+				   .fetchByRemoteProject_Last(remoteProject, orderByComparator);
+	}
+
+	/**
+	* Returns the jira components before and after the current jira component in the ordered set where remoteProject = &#63;.
+	*
+	* @param jiraComponentId the primary key of the current jira component
+	* @param remoteProject the remote project
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next jira component
+	* @throws NoSuchJIRAComponentException if a jira component with the primary key could not be found
+	*/
+	public static JIRAComponent[] findByRemoteProject_PrevAndNext(
+		long jiraComponentId, java.lang.String remoteProject,
+		OrderByComparator<JIRAComponent> orderByComparator)
+		throws com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException {
+		return getPersistence()
+				   .findByRemoteProject_PrevAndNext(jiraComponentId,
+			remoteProject, orderByComparator);
+	}
+
+	/**
+	* Removes all the jira components where remoteProject = &#63; from the database.
+	*
+	* @param remoteProject the remote project
+	*/
+	public static void removeByRemoteProject(java.lang.String remoteProject) {
+		getPersistence().removeByRemoteProject(remoteProject);
+	}
+
+	/**
+	* Returns the number of jira components where remoteProject = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @return the number of matching jira components
+	*/
+	public static int countByRemoteProject(java.lang.String remoteProject) {
+		return getPersistence().countByRemoteProject(remoteProject);
+	}
+
+	/**
+	* Returns the jira component where remoteId = &#63; and remoteProject = &#63; or throws a {@link NoSuchJIRAComponentException} if it could not be found.
+	*
+	* @param remoteId the remote ID
+	* @param remoteProject the remote project
+	* @return the matching jira component
+	* @throws NoSuchJIRAComponentException if a matching jira component could not be found
+	*/
+	public static JIRAComponent findByRI_RP(long remoteId,
+		java.lang.String remoteProject)
+		throws com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException {
+		return getPersistence().findByRI_RP(remoteId, remoteProject);
+	}
+
+	/**
+	* Returns the jira component where remoteId = &#63; and remoteProject = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	*
+	* @param remoteId the remote ID
+	* @param remoteProject the remote project
+	* @return the matching jira component, or <code>null</code> if a matching jira component could not be found
+	*/
+	public static JIRAComponent fetchByRI_RP(long remoteId,
+		java.lang.String remoteProject) {
+		return getPersistence().fetchByRI_RP(remoteId, remoteProject);
+	}
+
+	/**
+	* Returns the jira component where remoteId = &#63; and remoteProject = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	*
+	* @param remoteId the remote ID
+	* @param remoteProject the remote project
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the matching jira component, or <code>null</code> if a matching jira component could not be found
+	*/
+	public static JIRAComponent fetchByRI_RP(long remoteId,
+		java.lang.String remoteProject, boolean retrieveFromCache) {
+		return getPersistence()
+				   .fetchByRI_RP(remoteId, remoteProject, retrieveFromCache);
+	}
+
+	/**
+	* Removes the jira component where remoteId = &#63; and remoteProject = &#63; from the database.
+	*
+	* @param remoteId the remote ID
+	* @param remoteProject the remote project
+	* @return the jira component that was removed
+	*/
+	public static JIRAComponent removeByRI_RP(long remoteId,
+		java.lang.String remoteProject)
+		throws com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException {
+		return getPersistence().removeByRI_RP(remoteId, remoteProject);
+	}
+
+	/**
+	* Returns the number of jira components where remoteId = &#63; and remoteProject = &#63;.
+	*
+	* @param remoteId the remote ID
+	* @param remoteProject the remote project
+	* @return the number of matching jira components
+	*/
+	public static int countByRI_RP(long remoteId, java.lang.String remoteProject) {
+		return getPersistence().countByRI_RP(remoteId, remoteProject);
+	}
+
+	/**
+	* Returns all the jira components where remoteProject = &#63; and visible = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @param visible the visible
+	* @return the matching jira components
+	*/
+	public static List<JIRAComponent> findByRP_V(
+		java.lang.String remoteProject, boolean visible) {
+		return getPersistence().findByRP_V(remoteProject, visible);
+	}
+
+	/**
+	* Returns a range of all the jira components where remoteProject = &#63; and visible = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param remoteProject the remote project
+	* @param visible the visible
+	* @param start the lower bound of the range of jira components
+	* @param end the upper bound of the range of jira components (not inclusive)
+	* @return the range of matching jira components
+	*/
+	public static List<JIRAComponent> findByRP_V(
+		java.lang.String remoteProject, boolean visible, int start, int end) {
+		return getPersistence().findByRP_V(remoteProject, visible, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the jira components where remoteProject = &#63; and visible = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param remoteProject the remote project
+	* @param visible the visible
+	* @param start the lower bound of the range of jira components
+	* @param end the upper bound of the range of jira components (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching jira components
+	*/
+	public static List<JIRAComponent> findByRP_V(
+		java.lang.String remoteProject, boolean visible, int start, int end,
+		OrderByComparator<JIRAComponent> orderByComparator) {
+		return getPersistence()
+				   .findByRP_V(remoteProject, visible, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the jira components where remoteProject = &#63; and visible = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param remoteProject the remote project
+	* @param visible the visible
+	* @param start the lower bound of the range of jira components
+	* @param end the upper bound of the range of jira components (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching jira components
+	*/
+	public static List<JIRAComponent> findByRP_V(
+		java.lang.String remoteProject, boolean visible, int start, int end,
+		OrderByComparator<JIRAComponent> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByRP_V(remoteProject, visible, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first jira component in the ordered set where remoteProject = &#63; and visible = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @param visible the visible
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching jira component
+	* @throws NoSuchJIRAComponentException if a matching jira component could not be found
+	*/
+	public static JIRAComponent findByRP_V_First(
+		java.lang.String remoteProject, boolean visible,
+		OrderByComparator<JIRAComponent> orderByComparator)
+		throws com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException {
+		return getPersistence()
+				   .findByRP_V_First(remoteProject, visible, orderByComparator);
+	}
+
+	/**
+	* Returns the first jira component in the ordered set where remoteProject = &#63; and visible = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @param visible the visible
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching jira component, or <code>null</code> if a matching jira component could not be found
+	*/
+	public static JIRAComponent fetchByRP_V_First(
+		java.lang.String remoteProject, boolean visible,
+		OrderByComparator<JIRAComponent> orderByComparator) {
+		return getPersistence()
+				   .fetchByRP_V_First(remoteProject, visible, orderByComparator);
+	}
+
+	/**
+	* Returns the last jira component in the ordered set where remoteProject = &#63; and visible = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @param visible the visible
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching jira component
+	* @throws NoSuchJIRAComponentException if a matching jira component could not be found
+	*/
+	public static JIRAComponent findByRP_V_Last(
+		java.lang.String remoteProject, boolean visible,
+		OrderByComparator<JIRAComponent> orderByComparator)
+		throws com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException {
+		return getPersistence()
+				   .findByRP_V_Last(remoteProject, visible, orderByComparator);
+	}
+
+	/**
+	* Returns the last jira component in the ordered set where remoteProject = &#63; and visible = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @param visible the visible
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching jira component, or <code>null</code> if a matching jira component could not be found
+	*/
+	public static JIRAComponent fetchByRP_V_Last(
+		java.lang.String remoteProject, boolean visible,
+		OrderByComparator<JIRAComponent> orderByComparator) {
+		return getPersistence()
+				   .fetchByRP_V_Last(remoteProject, visible, orderByComparator);
+	}
+
+	/**
+	* Returns the jira components before and after the current jira component in the ordered set where remoteProject = &#63; and visible = &#63;.
+	*
+	* @param jiraComponentId the primary key of the current jira component
+	* @param remoteProject the remote project
+	* @param visible the visible
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next jira component
+	* @throws NoSuchJIRAComponentException if a jira component with the primary key could not be found
+	*/
+	public static JIRAComponent[] findByRP_V_PrevAndNext(long jiraComponentId,
+		java.lang.String remoteProject, boolean visible,
+		OrderByComparator<JIRAComponent> orderByComparator)
+		throws com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException {
+		return getPersistence()
+				   .findByRP_V_PrevAndNext(jiraComponentId, remoteProject,
 			visible, orderByComparator);
 	}
 
 	/**
-	 * Returns the last jira component in the ordered set where visible = &#63;.
-	 *
-	 * @param visible the visible
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching jira component
-	 * @throws NoSuchJIRAComponentException if a matching jira component could not be found
-	 */
-	public static JIRAComponent findByVisible_Last(
-			boolean visible, OrderByComparator<JIRAComponent> orderByComparator)
-		throws com.liferay.osb.customer.release.tool.exception.
-			NoSuchJIRAComponentException {
-
-		return getPersistence().findByVisible_Last(visible, orderByComparator);
+	* Removes all the jira components where remoteProject = &#63; and visible = &#63; from the database.
+	*
+	* @param remoteProject the remote project
+	* @param visible the visible
+	*/
+	public static void removeByRP_V(java.lang.String remoteProject,
+		boolean visible) {
+		getPersistence().removeByRP_V(remoteProject, visible);
 	}
 
 	/**
-	 * Returns the last jira component in the ordered set where visible = &#63;.
-	 *
-	 * @param visible the visible
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching jira component, or <code>null</code> if a matching jira component could not be found
-	 */
-	public static JIRAComponent fetchByVisible_Last(
-		boolean visible, OrderByComparator<JIRAComponent> orderByComparator) {
-
-		return getPersistence().fetchByVisible_Last(visible, orderByComparator);
+	* Returns the number of jira components where remoteProject = &#63; and visible = &#63;.
+	*
+	* @param remoteProject the remote project
+	* @param visible the visible
+	* @return the number of matching jira components
+	*/
+	public static int countByRP_V(java.lang.String remoteProject,
+		boolean visible) {
+		return getPersistence().countByRP_V(remoteProject, visible);
 	}
 
 	/**
-	 * Returns the jira components before and after the current jira component in the ordered set where visible = &#63;.
-	 *
-	 * @param jiraComponentId the primary key of the current jira component
-	 * @param visible the visible
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next jira component
-	 * @throws NoSuchJIRAComponentException if a jira component with the primary key could not be found
-	 */
-	public static JIRAComponent[] findByVisible_PrevAndNext(
-			long jiraComponentId, boolean visible,
-			OrderByComparator<JIRAComponent> orderByComparator)
-		throws com.liferay.osb.customer.release.tool.exception.
-			NoSuchJIRAComponentException {
-
-		return getPersistence().findByVisible_PrevAndNext(
-			jiraComponentId, visible, orderByComparator);
-	}
-
-	/**
-	 * Removes all the jira components where visible = &#63; from the database.
-	 *
-	 * @param visible the visible
-	 */
-	public static void removeByVisible(boolean visible) {
-		getPersistence().removeByVisible(visible);
-	}
-
-	/**
-	 * Returns the number of jira components where visible = &#63;.
-	 *
-	 * @param visible the visible
-	 * @return the number of matching jira components
-	 */
-	public static int countByVisible(boolean visible) {
-		return getPersistence().countByVisible(visible);
-	}
-
-	/**
-	 * Caches the jira component in the entity cache if it is enabled.
-	 *
-	 * @param jiraComponent the jira component
-	 */
+	* Caches the jira component in the entity cache if it is enabled.
+	*
+	* @param jiraComponent the jira component
+	*/
 	public static void cacheResult(JIRAComponent jiraComponent) {
 		getPersistence().cacheResult(jiraComponent);
 	}
 
 	/**
-	 * Caches the jira components in the entity cache if it is enabled.
-	 *
-	 * @param jiraComponents the jira components
-	 */
+	* Caches the jira components in the entity cache if it is enabled.
+	*
+	* @param jiraComponents the jira components
+	*/
 	public static void cacheResult(List<JIRAComponent> jiraComponents) {
 		getPersistence().cacheResult(jiraComponents);
 	}
 
 	/**
-	 * Creates a new jira component with the primary key. Does not add the jira component to the database.
-	 *
-	 * @param jiraComponentId the primary key for the new jira component
-	 * @return the new jira component
-	 */
+	* Creates a new jira component with the primary key. Does not add the jira component to the database.
+	*
+	* @param jiraComponentId the primary key for the new jira component
+	* @return the new jira component
+	*/
 	public static JIRAComponent create(long jiraComponentId) {
 		return getPersistence().create(jiraComponentId);
 	}
 
 	/**
-	 * Removes the jira component with the primary key from the database. Also notifies the appropriate model listeners.
-	 *
-	 * @param jiraComponentId the primary key of the jira component
-	 * @return the jira component that was removed
-	 * @throws NoSuchJIRAComponentException if a jira component with the primary key could not be found
-	 */
+	* Removes the jira component with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param jiraComponentId the primary key of the jira component
+	* @return the jira component that was removed
+	* @throws NoSuchJIRAComponentException if a jira component with the primary key could not be found
+	*/
 	public static JIRAComponent remove(long jiraComponentId)
-		throws com.liferay.osb.customer.release.tool.exception.
-			NoSuchJIRAComponentException {
-
+		throws com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException {
 		return getPersistence().remove(jiraComponentId);
 	}
 
@@ -399,105 +571,105 @@ public class JIRAComponentUtil {
 	}
 
 	/**
-	 * Returns the jira component with the primary key or throws a <code>NoSuchJIRAComponentException</code> if it could not be found.
-	 *
-	 * @param jiraComponentId the primary key of the jira component
-	 * @return the jira component
-	 * @throws NoSuchJIRAComponentException if a jira component with the primary key could not be found
-	 */
+	* Returns the jira component with the primary key or throws a {@link NoSuchJIRAComponentException} if it could not be found.
+	*
+	* @param jiraComponentId the primary key of the jira component
+	* @return the jira component
+	* @throws NoSuchJIRAComponentException if a jira component with the primary key could not be found
+	*/
 	public static JIRAComponent findByPrimaryKey(long jiraComponentId)
-		throws com.liferay.osb.customer.release.tool.exception.
-			NoSuchJIRAComponentException {
-
+		throws com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException {
 		return getPersistence().findByPrimaryKey(jiraComponentId);
 	}
 
 	/**
-	 * Returns the jira component with the primary key or returns <code>null</code> if it could not be found.
-	 *
-	 * @param jiraComponentId the primary key of the jira component
-	 * @return the jira component, or <code>null</code> if a jira component with the primary key could not be found
-	 */
+	* Returns the jira component with the primary key or returns <code>null</code> if it could not be found.
+	*
+	* @param jiraComponentId the primary key of the jira component
+	* @return the jira component, or <code>null</code> if a jira component with the primary key could not be found
+	*/
 	public static JIRAComponent fetchByPrimaryKey(long jiraComponentId) {
 		return getPersistence().fetchByPrimaryKey(jiraComponentId);
 	}
 
+	public static java.util.Map<java.io.Serializable, JIRAComponent> fetchByPrimaryKeys(
+		java.util.Set<java.io.Serializable> primaryKeys) {
+		return getPersistence().fetchByPrimaryKeys(primaryKeys);
+	}
+
 	/**
-	 * Returns all the jira components.
-	 *
-	 * @return the jira components
-	 */
+	* Returns all the jira components.
+	*
+	* @return the jira components
+	*/
 	public static List<JIRAComponent> findAll() {
 		return getPersistence().findAll();
 	}
 
 	/**
-	 * Returns a range of all the jira components.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
-	 * </p>
-	 *
-	 * @param start the lower bound of the range of jira components
-	 * @param end the upper bound of the range of jira components (not inclusive)
-	 * @return the range of jira components
-	 */
+	* Returns a range of all the jira components.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of jira components
+	* @param end the upper bound of the range of jira components (not inclusive)
+	* @return the range of jira components
+	*/
 	public static List<JIRAComponent> findAll(int start, int end) {
 		return getPersistence().findAll(start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the jira components.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
-	 * </p>
-	 *
-	 * @param start the lower bound of the range of jira components
-	 * @param end the upper bound of the range of jira components (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of jira components
-	 */
-	public static List<JIRAComponent> findAll(
-		int start, int end,
+	* Returns an ordered range of all the jira components.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of jira components
+	* @param end the upper bound of the range of jira components (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of jira components
+	*/
+	public static List<JIRAComponent> findAll(int start, int end,
 		OrderByComparator<JIRAComponent> orderByComparator) {
-
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
 
 	/**
-	 * Returns an ordered range of all the jira components.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
-	 * </p>
-	 *
-	 * @param start the lower bound of the range of jira components
-	 * @param end the upper bound of the range of jira components (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of jira components
-	 */
-	public static List<JIRAComponent> findAll(
-		int start, int end, OrderByComparator<JIRAComponent> orderByComparator,
-		boolean useFinderCache) {
-
-		return getPersistence().findAll(
-			start, end, orderByComparator, useFinderCache);
+	* Returns an ordered range of all the jira components.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of jira components
+	* @param end the upper bound of the range of jira components (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of jira components
+	*/
+	public static List<JIRAComponent> findAll(int start, int end,
+		OrderByComparator<JIRAComponent> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findAll(start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	 * Removes all the jira components from the database.
-	 */
+	* Removes all the jira components from the database.
+	*/
 	public static void removeAll() {
 		getPersistence().removeAll();
 	}
 
 	/**
-	 * Returns the number of jira components.
-	 *
-	 * @return the number of jira components
-	 */
+	* Returns the number of jira components.
+	*
+	* @return the number of jira components
+	*/
 	public static int countAll() {
 		return getPersistence().countAll();
 	}
@@ -506,22 +678,6 @@ public class JIRAComponentUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker
-		<JIRAComponentPersistence, JIRAComponentPersistence> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(JIRAComponentPersistence.class);
-
-		ServiceTracker<JIRAComponentPersistence, JIRAComponentPersistence>
-			serviceTracker =
-				new ServiceTracker
-					<JIRAComponentPersistence, JIRAComponentPersistence>(
-						bundle.getBundleContext(),
-						JIRAComponentPersistence.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
-
+	private static ServiceTracker<JIRAComponentPersistence, JIRAComponentPersistence> _serviceTracker =
+		ServiceTrackerFactory.open(JIRAComponentPersistence.class);
 }

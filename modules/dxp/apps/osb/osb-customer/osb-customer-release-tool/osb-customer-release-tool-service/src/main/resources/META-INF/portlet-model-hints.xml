@@ -16,6 +16,7 @@
 	<model name="com.liferay.osb.customer.release.tool.model.JIRAComponent">
 		<field name="jiraComponentId" type="long" />
 		<field name="remoteId" type="long" />
+		<field name="remoteProject" type="String" />
 		<field name="name" type="String" />
 		<field name="visible" type="boolean" />
 	</model>

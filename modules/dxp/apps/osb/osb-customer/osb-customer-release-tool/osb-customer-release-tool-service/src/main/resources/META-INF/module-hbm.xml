@@ -21,6 +21,7 @@
 			<generator class="assigned" />
 		</id>
 		<property name="remoteId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="remoteProject" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>

@@ -1,20 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * The contents of this file are subject to the terms of the Liferay Enterprise
- * Subscription License ("License"). You may not use this file except in
- * compliance with the License. You can obtain a copy of the License by
- * contacting Liferay, Inc. See the License for the specific language governing
- * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
  *
- *
- *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  */
 
 package com.liferay.osb.customer.release.tool.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -33,9 +36,9 @@ import java.util.Objects;
  * @see ArtifactVersion
  * @generated
  */
-public class ArtifactVersionWrapper
-	implements ArtifactVersion, ModelWrapper<ArtifactVersion> {
-
+@ProviderType
+public class ArtifactVersionWrapper implements ArtifactVersion,
+	ModelWrapper<ArtifactVersion> {
 	public ArtifactVersionWrapper(ArtifactVersion artifactVersion) {
 		_artifactVersion = artifactVersion;
 	}
@@ -75,7 +78,7 @@ public class ArtifactVersionWrapper
 		}
 
 		Long releaseAssetCategoryId = (Long)attributes.get(
-			"releaseAssetCategoryId");
+				"releaseAssetCategoryId");
 
 		if (releaseAssetCategoryId != null) {
 			setReleaseAssetCategoryId(releaseAssetCategoryId);
@@ -119,119 +122,13 @@ public class ArtifactVersionWrapper
 	}
 
 	@Override
-	public Object clone() {
-		return new ArtifactVersionWrapper(
-			(ArtifactVersion)_artifactVersion.clone());
+	public ArtifactVersion toEscapedModel() {
+		return new ArtifactVersionWrapper(_artifactVersion.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(ArtifactVersion artifactVersion) {
-		return _artifactVersion.compareTo(artifactVersion);
-	}
-
-	/**
-	 * Returns the artifact version ID of this artifact version.
-	 *
-	 * @return the artifact version ID of this artifact version
-	 */
-	@Override
-	public long getArtifactVersionId() {
-		return _artifactVersion.getArtifactVersionId();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _artifactVersion.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the group of this artifact version.
-	 *
-	 * @return the group of this artifact version
-	 */
-	@Override
-	public String getGroup() {
-		return _artifactVersion.getGroup();
-	}
-
-	/**
-	 * Returns the name of this artifact version.
-	 *
-	 * @return the name of this artifact version
-	 */
-	@Override
-	public String getName() {
-		return _artifactVersion.getName();
-	}
-
-	/**
-	 * Returns the owner of this artifact version.
-	 *
-	 * @return the owner of this artifact version
-	 */
-	@Override
-	public int getOwner() {
-		return _artifactVersion.getOwner();
-	}
-
-	/**
-	 * Returns the packaging of this artifact version.
-	 *
-	 * @return the packaging of this artifact version
-	 */
-	@Override
-	public String getPackaging() {
-		return _artifactVersion.getPackaging();
-	}
-
-	/**
-	 * Returns the primary key of this artifact version.
-	 *
-	 * @return the primary key of this artifact version
-	 */
-	@Override
-	public long getPrimaryKey() {
-		return _artifactVersion.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _artifactVersion.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the release asset category ID of this artifact version.
-	 *
-	 * @return the release asset category ID of this artifact version
-	 */
-	@Override
-	public long getReleaseAssetCategoryId() {
-		return _artifactVersion.getReleaseAssetCategoryId();
-	}
-
-	/**
-	 * Returns the repository of this artifact version.
-	 *
-	 * @return the repository of this artifact version
-	 */
-	@Override
-	public int getRepository() {
-		return _artifactVersion.getRepository();
-	}
-
-	/**
-	 * Returns the version of this artifact version.
-	 *
-	 * @return the version of this artifact version
-	 */
-	@Override
-	public String getVersion() {
-		return _artifactVersion.getVersion();
-	}
-
-	@Override
-	public int hashCode() {
-		return _artifactVersion.hashCode();
+	public ArtifactVersion toUnescapedModel() {
+		return new ArtifactVersionWrapper(_artifactVersion.toUnescapedModel());
 	}
 
 	@Override
@@ -250,15 +147,145 @@ public class ArtifactVersionWrapper
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _artifactVersion.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<ArtifactVersion> toCacheModel() {
+		return _artifactVersion.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(ArtifactVersion artifactVersion) {
+		return _artifactVersion.compareTo(artifactVersion);
+	}
+
+	/**
+	* Returns the owner of this artifact version.
+	*
+	* @return the owner of this artifact version
+	*/
+	@Override
+	public int getOwner() {
+		return _artifactVersion.getOwner();
+	}
+
+	/**
+	* Returns the repository of this artifact version.
+	*
+	* @return the repository of this artifact version
+	*/
+	@Override
+	public int getRepository() {
+		return _artifactVersion.getRepository();
+	}
+
+	@Override
+	public int hashCode() {
+		return _artifactVersion.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _artifactVersion.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new ArtifactVersionWrapper((ArtifactVersion)_artifactVersion.clone());
+	}
+
+	/**
+	* Returns the group of this artifact version.
+	*
+	* @return the group of this artifact version
+	*/
+	@Override
+	public java.lang.String getGroup() {
+		return _artifactVersion.getGroup();
+	}
+
+	/**
+	* Returns the name of this artifact version.
+	*
+	* @return the name of this artifact version
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _artifactVersion.getName();
+	}
+
+	/**
+	* Returns the packaging of this artifact version.
+	*
+	* @return the packaging of this artifact version
+	*/
+	@Override
+	public java.lang.String getPackaging() {
+		return _artifactVersion.getPackaging();
+	}
+
+	/**
+	* Returns the version of this artifact version.
+	*
+	* @return the version of this artifact version
+	*/
+	@Override
+	public java.lang.String getVersion() {
+		return _artifactVersion.getVersion();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _artifactVersion.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _artifactVersion.toXmlString();
+	}
+
+	/**
+	* Returns the artifact version ID of this artifact version.
+	*
+	* @return the artifact version ID of this artifact version
+	*/
+	@Override
+	public long getArtifactVersionId() {
+		return _artifactVersion.getArtifactVersionId();
+	}
+
+	/**
+	* Returns the primary key of this artifact version.
+	*
+	* @return the primary key of this artifact version
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _artifactVersion.getPrimaryKey();
+	}
+
+	/**
+	* Returns the release asset category ID of this artifact version.
+	*
+	* @return the release asset category ID of this artifact version
+	*/
+	@Override
+	public long getReleaseAssetCategoryId() {
+		return _artifactVersion.getReleaseAssetCategoryId();
+	}
+
+	@Override
 	public void persist() {
 		_artifactVersion.persist();
 	}
 
 	/**
-	 * Sets the artifact version ID of this artifact version.
-	 *
-	 * @param artifactVersionId the artifact version ID of this artifact version
-	 */
+	* Sets the artifact version ID of this artifact version.
+	*
+	* @param artifactVersionId the artifact version ID of this artifact version
+	*/
 	@Override
 	public void setArtifactVersionId(long artifactVersionId) {
 		_artifactVersion.setArtifactVersionId(artifactVersionId);
@@ -270,15 +297,14 @@ public class ArtifactVersionWrapper
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_artifactVersion.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_artifactVersion.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_artifactVersion.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_artifactVersion.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -287,22 +313,22 @@ public class ArtifactVersionWrapper
 	}
 
 	/**
-	 * Sets the group of this artifact version.
-	 *
-	 * @param group the group of this artifact version
-	 */
+	* Sets the group of this artifact version.
+	*
+	* @param group the group of this artifact version
+	*/
 	@Override
-	public void setGroup(String group) {
+	public void setGroup(java.lang.String group) {
 		_artifactVersion.setGroup(group);
 	}
 
 	/**
-	 * Sets the name of this artifact version.
-	 *
-	 * @param name the name of this artifact version
-	 */
+	* Sets the name of this artifact version.
+	*
+	* @param name the name of this artifact version
+	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_artifactVersion.setName(name);
 	}
 
@@ -312,30 +338,30 @@ public class ArtifactVersionWrapper
 	}
 
 	/**
-	 * Sets the owner of this artifact version.
-	 *
-	 * @param owner the owner of this artifact version
-	 */
+	* Sets the owner of this artifact version.
+	*
+	* @param owner the owner of this artifact version
+	*/
 	@Override
 	public void setOwner(int owner) {
 		_artifactVersion.setOwner(owner);
 	}
 
 	/**
-	 * Sets the packaging of this artifact version.
-	 *
-	 * @param packaging the packaging of this artifact version
-	 */
+	* Sets the packaging of this artifact version.
+	*
+	* @param packaging the packaging of this artifact version
+	*/
 	@Override
-	public void setPackaging(String packaging) {
+	public void setPackaging(java.lang.String packaging) {
 		_artifactVersion.setPackaging(packaging);
 	}
 
 	/**
-	 * Sets the primary key of this artifact version.
-	 *
-	 * @param primaryKey the primary key of this artifact version
-	 */
+	* Sets the primary key of this artifact version.
+	*
+	* @param primaryKey the primary key of this artifact version
+	*/
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_artifactVersion.setPrimaryKey(primaryKey);
@@ -347,78 +373,49 @@ public class ArtifactVersionWrapper
 	}
 
 	/**
-	 * Sets the release asset category ID of this artifact version.
-	 *
-	 * @param releaseAssetCategoryId the release asset category ID of this artifact version
-	 */
+	* Sets the release asset category ID of this artifact version.
+	*
+	* @param releaseAssetCategoryId the release asset category ID of this artifact version
+	*/
 	@Override
 	public void setReleaseAssetCategoryId(long releaseAssetCategoryId) {
 		_artifactVersion.setReleaseAssetCategoryId(releaseAssetCategoryId);
 	}
 
 	/**
-	 * Sets the repository of this artifact version.
-	 *
-	 * @param repository the repository of this artifact version
-	 */
+	* Sets the repository of this artifact version.
+	*
+	* @param repository the repository of this artifact version
+	*/
 	@Override
 	public void setRepository(int repository) {
 		_artifactVersion.setRepository(repository);
 	}
 
 	/**
-	 * Sets the version of this artifact version.
-	 *
-	 * @param version the version of this artifact version
-	 */
+	* Sets the version of this artifact version.
+	*
+	* @param version the version of this artifact version
+	*/
 	@Override
-	public void setVersion(String version) {
+	public void setVersion(java.lang.String version) {
 		_artifactVersion.setVersion(version);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ArtifactVersion>
-		toCacheModel() {
-
-		return _artifactVersion.toCacheModel();
-	}
-
-	@Override
-	public ArtifactVersion toEscapedModel() {
-		return new ArtifactVersionWrapper(_artifactVersion.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _artifactVersion.toString();
-	}
-
-	@Override
-	public ArtifactVersion toUnescapedModel() {
-		return new ArtifactVersionWrapper(_artifactVersion.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _artifactVersion.toXmlString();
-	}
-
-	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
+	public boolean equals(Object obj) {
+		if (this == obj) {
 			return true;
 		}
 
-		if (!(object instanceof ArtifactVersionWrapper)) {
+		if (!(obj instanceof ArtifactVersionWrapper)) {
 			return false;
 		}
 
-		ArtifactVersionWrapper artifactVersionWrapper =
-			(ArtifactVersionWrapper)object;
+		ArtifactVersionWrapper artifactVersionWrapper = (ArtifactVersionWrapper)obj;
 
-		if (Objects.equals(
-				_artifactVersion, artifactVersionWrapper._artifactVersion)) {
-
+		if (Objects.equals(_artifactVersion,
+					artifactVersionWrapper._artifactVersion)) {
 			return true;
 		}
 
@@ -446,5 +443,4 @@ public class ArtifactVersionWrapper
 	}
 
 	private final ArtifactVersion _artifactVersion;
-
 }
