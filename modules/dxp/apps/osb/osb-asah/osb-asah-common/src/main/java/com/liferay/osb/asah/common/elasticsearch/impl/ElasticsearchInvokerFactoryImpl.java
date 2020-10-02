@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 /**
@@ -66,7 +67,7 @@ public class ElasticsearchInvokerFactoryImpl
 		WeDeployDataService weDeployDataService) {
 
 		return new ElasticsearchInvokerImpl(
-			_elasticsearchIndexManager.getAliases(),
+			_elasticsearchIndexManager.getAliases(), _cacheManager,
 			_elasticsearchConnection.getTransportClient(),
 			_elasticsearchIndexManager.getIndexNamespace(weDeployDataService));
 	}
@@ -76,6 +77,9 @@ public class ElasticsearchInvokerFactoryImpl
 		_elasticsearchIndexManager.addTemplates();
 		_elasticsearchIndexManager.checkIndices();
 	}
+
+	@Autowired(required = false)
+	private CacheManager _cacheManager;
 
 	@Autowired
 	private ElasticsearchConnection _elasticsearchConnection;

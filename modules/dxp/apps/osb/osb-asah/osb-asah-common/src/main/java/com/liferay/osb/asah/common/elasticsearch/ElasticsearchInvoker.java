@@ -43,6 +43,9 @@ public interface ElasticsearchInvoker {
 
 	public JSONObject add(String collectionName, JSONObject jsonObject);
 
+	public JSONObject add(
+		String collectionName, JSONObject jsonObject, boolean updateCache);
+
 	public boolean clearScroll(String scrollId) throws Exception;
 
 	public long count(String collectionName, QueryBuilder queryBuilder);
@@ -52,9 +55,15 @@ public interface ElasticsearchInvoker {
 
 	public boolean delete(String collectionName, JSONObject jsonObject);
 
+	public boolean delete(
+		String collectionName, JSONObject jsonObject, boolean updateCache);
+
 	public void delete(String collectionName, QueryBuilder queryBuilder);
 
 	public boolean delete(String collectionName, String id);
+
+	public boolean delete(
+		String collectionName, String id, boolean updateCache);
 
 	public BulkByScrollResponse deleteByQuery(
 		QueryBuilder queryBuilder, boolean refresh, String... collectionNames);
@@ -75,6 +84,8 @@ public interface ElasticsearchInvoker {
 
 	public JSONObject fetch(String collectionName, String id);
 
+	public JSONObject fetch(String collectionName, String id, boolean useCache);
+
 	public JSONArray get(String collectionName);
 
 	public String get(
@@ -83,6 +94,9 @@ public interface ElasticsearchInvoker {
 	public JSONArray get(String collectionName, QueryBuilder queryBuilder);
 
 	public JSONObject get(String collectionName, String id)
+		throws ResourceNotFoundException;
+
+	public JSONObject get(String collectionName, String id, boolean useCache)
 		throws ResourceNotFoundException;
 
 	public String getIndexAlias(String collectionName);
@@ -113,7 +127,14 @@ public interface ElasticsearchInvoker {
 	public JSONObject update(String collectionName, JSONObject jsonObject);
 
 	public JSONObject update(
+		String collectionName, JSONObject jsonObject, boolean useCache);
+
+	public JSONObject update(
 		String collectionName, String id, JSONObject jsonObject);
+
+	public JSONObject update(
+		String collectionName, String id, JSONObject jsonObject,
+		boolean useCache);
 
 	public JSONObject update(String collectionName, String id, Script script);
 
