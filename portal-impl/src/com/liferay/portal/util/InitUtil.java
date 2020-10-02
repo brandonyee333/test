@@ -27,9 +27,11 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
+import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.log.SanitizerLogWrapper;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProvider;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -45,7 +47,10 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
+import com.liferay.portal.kernel.xml.SAXReader;
+import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
+import com.liferay.portal.license.util.DefaultLicenseManagerImpl;
 import com.liferay.portal.log.Log4jLogFactoryImpl;
 import com.liferay.portal.module.framework.ModuleFrameworkUtilAdapter;
 import com.liferay.portal.security.xml.SecureXMLFactoryProviderImpl;
@@ -168,16 +173,25 @@ public class InitUtil {
 
 		// XML
 
+		SecureXMLFactoryProvider secureXMLFactoryProvider =
+			new SecureXMLFactoryProviderImpl();
+
 		SecureXMLFactoryProviderUtil secureXMLFactoryProviderUtil =
 			new SecureXMLFactoryProviderUtil();
 
 		secureXMLFactoryProviderUtil.setSecureXMLFactoryProvider(
-			new SecureXMLFactoryProviderImpl());
+			secureXMLFactoryProvider);
 
 		UnsecureSAXReaderUtil unsecureSAXReaderUtil =
 			new UnsecureSAXReaderUtil();
 
-		unsecureSAXReaderUtil.setSAXReader(new SAXReaderImpl());
+		unsecureSAXReaderUtil.setSAXReader(
+			_createSAXReader(secureXMLFactoryProvider, false));
+
+		SAXReaderUtil saxReaderUtil = new SAXReaderUtil();
+
+		saxReaderUtil.setSAXReader(
+			_createSAXReader(secureXMLFactoryProvider, true));
 
 		XmlReader.setDefaultEncoding(StringPool.UTF8);
 
@@ -185,6 +199,12 @@ public class InitUtil {
 			System.out.println(
 				"InitAction takes " + stopWatch.getTime() + " ms");
 		}
+
+		// License manager
+
+		LicenseManagerUtil licenseManagerUtil = new LicenseManagerUtil();
+
+		licenseManagerUtil.setLicenseManager(new DefaultLicenseManagerImpl());
 
 		_initialized = true;
 	}
@@ -344,6 +364,17 @@ public class InitUtil {
 		catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
+	}
+
+	private static SAXReader _createSAXReader(
+		SecureXMLFactoryProvider secureXMLFactoryProvider, boolean secure) {
+
+		SAXReaderImpl saxReaderImpl = new SAXReaderImpl();
+
+		saxReaderImpl.setSecureXMLFactoryProvider(secureXMLFactoryProvider);
+		saxReaderImpl.setSecure(secure);
+
+		return saxReaderImpl;
 	}
 
 	private static final boolean _PRINT_TIME = false;

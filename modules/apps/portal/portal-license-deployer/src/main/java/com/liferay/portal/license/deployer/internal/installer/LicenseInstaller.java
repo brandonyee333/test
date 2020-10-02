@@ -17,7 +17,7 @@ package com.liferay.portal.license.deployer.internal.installer;
 import com.liferay.portal.file.install.FileInstaller;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
+import com.liferay.portal.kernel.license.util.LicenseManager;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.xml.Document;
@@ -72,7 +72,7 @@ public class LicenseInstaller implements FileInstaller {
 
 		JSONObject jsonObject = JSONUtil.put("licenseXML", content);
 
-		LicenseManagerUtil.registerLicense(jsonObject);
+		_licenseManager.registerLicense(jsonObject);
 
 		return null;
 	}
@@ -81,7 +81,10 @@ public class LicenseInstaller implements FileInstaller {
 	public void uninstall(File file) {
 	}
 
-	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
+	@Reference
+	private LicenseManager _licenseManager;
+
+	@Reference(target = ModuleServiceLifecycle.LICENSE_INSTALL)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
 }

@@ -22,24 +22,29 @@ import com.liferay.marketplace.store.web.internal.configuration.MarketplaceStore
 import com.liferay.marketplace.store.web.internal.constants.MarketplaceConstants;
 import com.liferay.marketplace.store.web.internal.constants.MarketplaceStoreWebKeys;
 import com.liferay.marketplace.store.web.internal.oauth.util.OAuthManager;
-import com.liferay.marketplace.store.web.internal.util.MarketplaceLicenseUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.license.util.LicenseManager;
 import com.liferay.portal.kernel.patcher.PatcherUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.util.LicenseUtil;
 
 import java.io.File;
 import java.io.IOException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -280,12 +285,11 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			if (Validator.isNull(orderUuid) &&
 				Validator.isNotNull(productEntryName)) {
 
-				orderUuid = MarketplaceLicenseUtil.getOrder(productEntryName);
+				orderUuid = _getOrder(productEntryName);
 			}
 
 			if (Validator.isNotNull(orderUuid)) {
-				MarketplaceLicenseUtil.registerOrder(
-					orderUuid, productEntryName);
+				LicenseUtil.registerOrder(orderUuid, productEntryName, 0);
 			}
 
 			_appService.installApp(app.getRemoteAppId());
@@ -320,11 +324,11 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		if (Validator.isNull(orderUuid) &&
 			Validator.isNotNull(productEntryName)) {
 
-			orderUuid = MarketplaceLicenseUtil.getOrder(productEntryName);
+			orderUuid = _getOrder(productEntryName);
 		}
 
 		if (Validator.isNotNull(orderUuid)) {
-			MarketplaceLicenseUtil.registerOrder(orderUuid, productEntryName);
+			LicenseUtil.registerOrder(orderUuid, productEntryName, 0);
 
 			jsonObject.put("message", "success");
 		}
@@ -549,8 +553,48 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		super.setOAuthManager(oAuthManager);
 	}
 
+	private String _getOrder(String productEntryName) throws Exception {
+		JSONObject jsonObject = JSONUtil.put(
+			"cmd", "GET_ORDER"
+		).put(
+			"hostName", _licenseManager.getHostName()
+		).put(
+			"ipAddresses", StringUtil.merge(_licenseManager.getIpAddresses())
+		).put(
+			"macAddresses", StringUtil.merge(_licenseManager.getMacAddresses())
+		).put(
+			"productEntryName", productEntryName
+		).put(
+			"serverId", Arrays.toString(_getServerIdBytes())
+		);
+
+		String response = LicenseUtil.sendRequest(jsonObject.toString());
+
+		JSONObject responseJSONObject = JSONFactoryUtil.createJSONObject(
+			response);
+
+		return responseJSONObject.getString("orderUuid");
+	}
+
+	private byte[] _getServerIdBytes() throws Exception {
+		File serverIdFile = new File(_LICENSE_SERVER_ID_FILE_NAME);
+
+		if (!serverIdFile.exists()) {
+			return new byte[0];
+		}
+
+		return FileUtil.getBytes(serverIdFile);
+	}
+
+	private static final String _LICENSE_SERVER_ID_FILE_NAME =
+		PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/license/server/serverId";
+
 	private AppLocalService _appLocalService;
 	private AppService _appService;
+
+	@Reference
+	private LicenseManager _licenseManager;
+
 	private final ReentrantLock _reentrantLock = new ReentrantLock();
 
 }
