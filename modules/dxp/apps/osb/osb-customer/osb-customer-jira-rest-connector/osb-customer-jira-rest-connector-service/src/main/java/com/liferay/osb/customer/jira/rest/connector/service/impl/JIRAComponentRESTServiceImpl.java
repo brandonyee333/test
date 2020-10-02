@@ -120,7 +120,9 @@ public class JIRAComponentRESTServiceImpl implements JIRAComponentRESTService {
 			response = response.replaceAll(
 				"\"refType\":\"COMPONENT\",", StringPool.BLANK);
 
-			return JSONFactoryUtil.createJSONArray(response);
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(response);
+
+			return jsonObject.getJSONArray("subcomponents");
 		}
 
 		return JSONFactoryUtil.createJSONArray();
