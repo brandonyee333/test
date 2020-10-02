@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.extractor.processor.test;
 
-import com.liferay.osb.asah.common.cache.DataSourceCache;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -39,7 +38,6 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Marcellus Tavares
@@ -66,8 +64,6 @@ public class AnalyticsEventsMessageProcessorTest {
 	)
 	@Test
 	public void testProcessQueuedMessages() throws Exception {
-		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
-
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
@@ -102,8 +98,6 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesAssignMissingChannelId()
 		throws Exception {
 
-		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
-
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
@@ -128,8 +122,6 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesDataSourceCreatedDynamically()
 		throws Exception {
 
-		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
-
 		ElasticsearchInvoker elasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 
@@ -142,8 +134,6 @@ public class AnalyticsEventsMessageProcessorTest {
 			).put(
 				"provider", JSONUtil.put("type", "LIFERAY")
 			));
-
-		_dataSourceCache.onMessage("");
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
@@ -165,8 +155,6 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesDiscardDueMissingChannelId()
 		throws Exception {
 
-		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
-
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
@@ -187,8 +175,6 @@ public class AnalyticsEventsMessageProcessorTest {
 	@Test
 	public void testProcessQueuedMessagesMissingCanonicalUrl()
 		throws Exception {
-
-		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
@@ -215,8 +201,6 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesNotReplacingCanonicalUrl()
 		throws Exception {
 
-		ReflectionTestUtils.invokeMethod(_dataSourceCache, "_cacheDataSources");
-
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
 		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
@@ -232,9 +216,6 @@ public class AnalyticsEventsMessageProcessorTest {
 
 	@Autowired
 	private AnalyticsEventsMessageProcessor _analyticsEventsMessageProcessor;
-
-	@Autowired
-	private DataSourceCache _dataSourceCache;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;

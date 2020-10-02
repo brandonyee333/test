@@ -14,15 +14,12 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
-import com.liferay.osb.asah.common.cache.DataSourceCache;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
@@ -90,14 +87,9 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 				dataSourceJSONObject);
 		}
 
-		dataSourceJSONObject = elasticsearchInvoker.update(
+		return elasticsearchInvoker.update(
 			"data-sources", dataSourceJSONObject.getString("id"),
-			dataSourceJSONObject);
-
-		_messageBus.sendMessage(
-			Channel.DATA_SOURCES_UPDATED, "DATA_SOURCES_UPDATED");
-
-		return dataSourceJSONObject;
+			dataSourceJSONObject, true);
 	}
 
 	public void deleteDataSource(
@@ -115,7 +107,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		deleteFieldMappings(
 			dataSourceId, processedCountMonitorConsumer, queueMonitorConsumer);
 
-		elasticsearchInvoker.delete("data-sources", dataSourceId);
+		elasticsearchInvoker.delete("data-sources", dataSourceId, true);
 
 		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
 			"provider");
@@ -126,9 +118,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 			_nanitesHttp.refreshAnalytics();
 		}
-
-		_messageBus.sendMessage(
-			Channel.DATA_SOURCES_UPDATED, "DATA_SOURCES_UPDATED");
 	}
 
 	public void deleteFieldMappings(
@@ -209,7 +198,11 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		dataSourceJSONObject.put("status", "INACTIVE");
 
 		return elasticsearchInvoker.update(
-			"data-sources", dataSourceId, dataSourceJSONObject);
+			"data-sources", dataSourceId, dataSourceJSONObject, true);
+	}
+
+	public JSONObject fetchDataSourceJSONObject(String dataSourceId) {
+		return elasticsearchInvoker.fetch("data-sources", dataSourceId, true);
 	}
 
 	public String getChannelId(String dataSourceId) {
@@ -252,17 +245,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject getDataSourceJSONObject(String dataSourceId) {
-		return getDataSourceJSONObject(dataSourceId, true);
-	}
-
-	public JSONObject getDataSourceJSONObject(
-		String dataSourceId, boolean useCache) {
-
-		if (useCache) {
-			return _dataSourceCache.getDataSourceJSONObject(dataSourceId);
-		}
-
-		return elasticsearchInvoker.get("data-sources", dataSourceId);
+		return elasticsearchInvoker.get("data-sources", dataSourceId, true);
 	}
 
 	public String getDataSourceName(String dataSourceId) {
@@ -356,7 +339,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		}
 
 		return elasticsearchInvoker.update(
-			"data-sources", dataSourceId, dataSourceJSONObject);
+			"data-sources", dataSourceId, dataSourceJSONObject, true);
 	}
 
 	public JSONObject updateDataSourceDetails(
@@ -373,7 +356,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			JSONUtil.merge(existingDetailsJSONObject, newDetailsJSONObject));
 
 		JSONObject jsonObject = elasticsearchInvoker.update(
-			"data-sources", dataSourceId, dataSourceJSONObject);
+			"data-sources", dataSourceId, dataSourceJSONObject, true);
 
 		if (newDetailsJSONObject.optBoolean("sitesSelected") &&
 			((existingDetailsJSONObject == null) ||
@@ -533,7 +516,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 				elasticsearchInvoker.update(
 					"individuals", individualJSONObject.getString("id"),
-					modifiedJSONObject);
+					modifiedJSONObject, true);
 
 				return null;
 			}
@@ -650,7 +633,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 				elasticsearchInvoker.update(
 					"individuals", individualJSONObject.getString("id"),
-					modifiedJSONObject);
+					modifiedJSONObject, true);
 
 				return null;
 			}
@@ -713,9 +696,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		FaroInfoDataSourceDog.class);
 
 	@Autowired
-	private DataSourceCache _dataSourceCache;
-
-	@Autowired
 	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
@@ -737,9 +717,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
-
-	@Autowired
-	private MessageBus _messageBus;
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;

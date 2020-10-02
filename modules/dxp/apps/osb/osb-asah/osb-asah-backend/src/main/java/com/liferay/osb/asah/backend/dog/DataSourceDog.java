@@ -42,7 +42,7 @@ public class DataSourceDog {
 
 	public DataSource getDataSource(String dataSourceId) {
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+			_faroInfoDataSourceDog.fetchDataSourceJSONObject(dataSourceId);
 
 		if (dataSourceJSONObject == null) {
 			return null;
