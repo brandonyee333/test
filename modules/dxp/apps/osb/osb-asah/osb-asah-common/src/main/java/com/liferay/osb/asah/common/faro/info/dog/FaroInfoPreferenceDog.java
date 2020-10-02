@@ -37,18 +37,14 @@ import org.springframework.stereotype.Component;
 public class FaroInfoPreferenceDog {
 
 	public Preference addPreference(String key, String value) {
-		JSONObject preferenceJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"preferences", key);
-
-		if (preferenceJSONObject == null) {
-			preferenceJSONObject = JSONUtil.put("id", key);
-		}
-
-		preferenceJSONObject.put("value", value);
-
 		return new Preference(
 			_faroInfoElasticsearchInvoker.add(
-				"preferences", preferenceJSONObject));
+				"preferences",
+				JSONUtil.put(
+					"id", key
+				).put(
+					"value", value
+				)));
 	}
 
 	public Preference getPreference(String key) {
