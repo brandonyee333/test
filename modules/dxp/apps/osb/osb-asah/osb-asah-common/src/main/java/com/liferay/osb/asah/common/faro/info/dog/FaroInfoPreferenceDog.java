@@ -25,8 +25,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +38,10 @@ public class FaroInfoPreferenceDog {
 
 	public Preference addPreference(String key, String value) {
 		JSONObject preferenceJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"preferences", QueryBuilders.termQuery("key", key));
+			"preferences", key);
 
 		if (preferenceJSONObject == null) {
-			preferenceJSONObject = JSONUtil.put("key", key);
+			preferenceJSONObject = JSONUtil.put("id", key);
 		}
 
 		preferenceJSONObject.put("value", value);
@@ -55,7 +53,7 @@ public class FaroInfoPreferenceDog {
 
 	public Preference getPreference(String key) {
 		JSONObject preferenceJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"preferences", QueryBuilders.termQuery("key", key));
+			"preferences", key);
 
 		if (preferenceJSONObject == null) {
 			return new Preference(key, _defaultPreferences.get(key));
