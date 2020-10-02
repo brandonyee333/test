@@ -1302,8 +1302,9 @@ definition {
 				panel = "Control Panel",
 				portlet = "Sites");
 
-			// Site.addCommunityCP(siteName = "${siteName}"); Deprecated
-
+			Site.addCP(
+				siteName = "${siteName}",
+				siteType = "Blank");
 		}
 
 		ApplicationsMenu.gotoPortlet(
