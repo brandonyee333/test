@@ -42,6 +42,8 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:renderURL>
 
+<div class="hide sticky-header" id="<portlet:namespace />stickyHeader"></div>
+
 <div class="main-heading">
 	<aui:container cssClass="container-fluid-max-xl heading-container" fluid="<%= true %>">
 		<div class="heading-icon">
@@ -64,7 +66,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 
 <div class="container-fluid container-fluid-max-xl fixpack-filters" id="<portlet:namespace />fixpackFilters"></div>
 
-<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
+<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>" id="mainContent">
 	<c:choose>
 		<c:when test="<%= (fromFixPackVersion < 1) && (productVersion < 1) && (toFixPackVersion < 1) %>">
 			<div class="card main-content-card taglib-empty-result-message">
@@ -111,5 +113,14 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
 		},
 		document.getElementById('<portlet:namespace />fixpackFilters')
+	);
+
+	ReleaseTool.render(
+		ReleaseTool.StickyHeader,
+		{
+			headerText: '<liferay-ui:message key="liferay-dxp-release-notes" />',
+			svgId: '#dxp-logo'
+		},
+		document.getElementById('<portlet:namespace />stickyHeader')
 	);
 </aui:script>

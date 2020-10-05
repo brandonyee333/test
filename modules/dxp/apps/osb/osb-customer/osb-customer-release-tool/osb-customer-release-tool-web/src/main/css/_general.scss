@@ -102,6 +102,21 @@
 	}
 }
 
+.sticky-header {
+	background-color: $color-white;
+	border-bottom: 1px solid $color-border;
+	font-weight: $font-weight-semi-bold;
+	padding-bottom: $padding-sm;
+	padding-top: $padding-sm;
+	position: fixed;
+	width: 100%;
+	z-index: 1;
+
+	.lexicon-icon-product-logo {
+		margin-right: $margin-sm;
+	}
+}
+
 .tab-description {
 	width: 80%;
 
