@@ -38,11 +38,11 @@ String twitterSn = contact.getTwitterSn();
 	<c:otherwise>
 
 		<%
-		String configureHREF = "javascript:Liferay.Util.openWindow({id: '" + renderResponse.getNamespace() + "configureTwitter', title: '" + HtmlUtil.escapeJS(LanguageUtil.get(request, "my-account")) + "', uri: '" + HtmlUtil.escapeJS(themeDisplay.getURLMyAccount() + "#_" + PortletKeys.MY_ACCOUNT + "_tab=_" + PortletKeys.MY_ACCOUNT + "_socialNetwork") + "'});";
+		String taglibConfigureHREF = "javascript:Liferay.Util.openWindow({id: '" + renderResponse.getNamespace() + "configureTwitter', title: '" + HtmlUtil.escapeJS(LanguageUtil.get(request, "my-account")) + "', uri: '" + HtmlUtil.escapeJS(themeDisplay.getURLMyAccount() + "#_" + PortletKeys.MY_ACCOUNT + "_tab=_" + PortletKeys.MY_ACCOUNT + "_socialNetwork") + "'});";
 		%>
 
 		<div class="alert alert-info">
-			<a href="<%= configureHREF %>"><liferay-ui:message key="please-configure-your-twitter-screen-name" /></a>
+			<a href="<%= taglibConfigureHREF %>"><liferay-ui:message key="please-configure-your-twitter-screen-name" /></a>
 		</div>
 	</c:otherwise>
 </c:choose>
