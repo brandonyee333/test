@@ -1,0 +1,10 @@
+[
+	{
+		"id": "data-retention-period",
+		"value": "3600000"
+	},
+	{
+		"id": "search-query-strings",
+		"value": "[q,qu,s,search]"
+	}
+]
