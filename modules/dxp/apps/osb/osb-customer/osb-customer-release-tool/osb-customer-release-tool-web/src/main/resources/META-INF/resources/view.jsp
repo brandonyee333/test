@@ -43,14 +43,22 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 </liferay-portlet:renderURL>
 
 <div class="main-heading">
-	<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
-		<h1>
-			<liferay-ui:message key="liferay-dxp-release-notes" />
-		</h1>
+	<aui:container cssClass="container-fluid-max-xl heading-container" fluid="<%= true %>">
+		<div class="heading-icon">
+			<svg class="lexicon-icon-product-logo">
+				<use xlink:href="#dxp-logo-block"></use>
+			</svg>
+		</div>
 
-		<h5 class="section-subtitle">
-			<liferay-ui:message key="display-the-fix-pack-information-relevant-to-your-liferay-build" />
-		</h5>
+		<div class="heading-text">
+			<h1>
+				<liferay-ui:message key="liferay-dxp-release-notes" />
+			</h1>
+
+			<h5 class="section-subtitle">
+				<liferay-ui:message key="display-the-fix-pack-information-relevant-to-your-liferay-build" />
+			</h5>
+		</div>
 	</aui:container>
 </div>
 
