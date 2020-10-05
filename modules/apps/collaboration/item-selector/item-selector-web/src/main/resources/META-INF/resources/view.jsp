@@ -89,12 +89,8 @@ List<String> titles = localizedItemSelectorRendering.getTitles();
 			</c:if>
 		</aui:nav-bar>
 
-		<%
-		boolean showGroupSelector = ParamUtil.getBoolean(request, "showGroupSelector");
-		%>
-
 		<c:choose>
-			<c:when test="<%= showGroupSelector %>">
+			<c:when test='<%= ParamUtil.getBoolean(request, "showGroupSelector") %>'>
 				<liferay-item-selector:group-selector />
 			</c:when>
 			<c:otherwise>

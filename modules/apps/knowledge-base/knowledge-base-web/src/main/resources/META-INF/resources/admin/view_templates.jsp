@@ -65,27 +65,18 @@ String keywords = ParamUtil.getString(request, "keywords");
 	searchContainerId="kbTemplates"
 >
 	<c:if test="<%= Validator.isNull(keywords) %>">
-
-		<%
-		PortletURL displayStyleURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
-		%>
-
 		<liferay-frontend:management-bar-buttons>
 			<liferay-frontend:management-bar-display-buttons
 				displayViews='<%= new String[] {"descriptive"} %>'
-				portletURL="<%= displayStyleURL %>"
+				portletURL="<%= PortletURLUtil.clone(portletURL, liferayPortletResponse) %>"
 				selectedDisplayStyle="descriptive"
 			/>
 		</liferay-frontend:management-bar-buttons>
 
-		<%
-		PortletURL navigationPortletURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
-		%>
-
 		<liferay-frontend:management-bar-filters>
 			<liferay-frontend:management-bar-navigation
 				navigationKeys='<%= new String[] {"all"} %>'
-				portletURL="<%= navigationPortletURL %>"
+				portletURL="<%= PortletURLUtil.clone(portletURL, liferayPortletResponse) %>"
 			/>
 
 			<%

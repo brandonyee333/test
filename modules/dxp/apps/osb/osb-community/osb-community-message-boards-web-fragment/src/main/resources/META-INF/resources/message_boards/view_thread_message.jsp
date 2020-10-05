@@ -349,13 +349,9 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 			<%= msgBody %>
 		</div>
 
-		<%
-		String assetTagNames = (String)request.getAttribute("edit_message.jsp-assetTagNames");
-		%>
-
 		<div class="tags">
 			<liferay-ui:asset-tags-summary
-				assetTagNames="<%= assetTagNames %>"
+				assetTagNames='<%= (String)request.getAttribute("edit_message.jsp-assetTagNames") %>'
 				className="<%= MBMessage.class.getName() %>"
 				classPK="<%= message.getMessageId() %>"
 			/>
