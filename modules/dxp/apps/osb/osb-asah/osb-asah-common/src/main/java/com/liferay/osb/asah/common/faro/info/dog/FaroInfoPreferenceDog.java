@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -21,7 +22,6 @@ import com.liferay.osb.asah.common.model.Preference;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
@@ -70,7 +70,7 @@ public class FaroInfoPreferenceDog {
 			{
 				put(
 					"data-retention-period",
-					String.valueOf(TimeUnit.DAYS.toMillis(30 * 13)));
+					String.valueOf(13 * DateUtil.MONTH));
 			}
 		};
 

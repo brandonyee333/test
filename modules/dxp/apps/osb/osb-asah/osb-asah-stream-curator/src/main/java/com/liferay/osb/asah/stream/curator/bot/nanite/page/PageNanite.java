@@ -28,7 +28,6 @@ import com.liferay.osb.asah.stream.curator.model.page.PageScroll;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Objects;
@@ -355,10 +354,8 @@ public class PageNanite extends BaseNanite<Page> {
 			return searchQueryStrings;
 		}
 
-		searchQueryStrings = new HashSet<>();
-
-		JSONUtil.addToStringCollection(
-			searchQueryStrings, new JSONArray(preference.getValue()));
+		searchQueryStrings = JSONUtil.toStringSet(
+			new JSONArray(preference.getValue()));
 
 		searchQueryStrings.add("q");
 
