@@ -25,8 +25,6 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.page.Page;
 import com.liferay.osb.asah.stream.curator.model.page.PageScroll;
 
-import java.nio.charset.StandardCharsets;
-
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,13 +45,14 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author Inácio Nery
@@ -361,6 +360,8 @@ public class PageNanite extends BaseNanite<Page> {
 		JSONUtil.addToStringCollection(
 			searchQueryStrings, new JSONArray(preference.getValue()));
 
+		searchQueryStrings.add("q");
+
 		_searchQueryStringsMap.clear();
 
 		_searchQueryStringsMap.put(preference.getValue(), searchQueryStrings);
@@ -387,14 +388,24 @@ public class PageNanite extends BaseNanite<Page> {
 					url.indexOf("http", url.indexOf("http") + 1));
 			}
 
+			UriComponentsBuilder uriComponentsBuilder =
+				UriComponentsBuilder.fromHttpUrl(url);
+
+			UriComponents uriComponents = uriComponentsBuilder.build();
+
+			MultiValueMap<String, String> parameters =
+				uriComponents.getQueryParams();
+
 			Set<String> searchQueryStrings = _getSearchQueryStrings();
 
-			for (NameValuePair nameValuePair :
-					URLEncodedUtils.parse(url, StandardCharsets.UTF_8)) {
+			for (String searchQueryString : searchQueryStrings) {
+				String searchTerm = parameters.getFirst(searchQueryString);
 
-				if (searchQueryStrings.contains(nameValuePair.getName())) {
-					page.setSearchTerm(nameValuePair.getValue());
+				if (searchTerm == null) {
+					continue;
 				}
+
+				page.setSearchTerm(searchTerm);
 			}
 		}
 		catch (Exception e) {
