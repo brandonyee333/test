@@ -71,6 +71,7 @@ public class FaroInfoPreferenceDog {
 				put(
 					"data-retention-period",
 					String.valueOf(TimeUnit.DAYS.toMillis(30 * 13)));
+				put("search-query-strings", JSONUtil.put("q").toString());
 			}
 		};
 

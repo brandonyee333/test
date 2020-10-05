@@ -346,17 +346,24 @@ public class PageNanite extends BaseNanite<Page> {
 	}
 
 	private Set<String> _getSearchQueryStrings() {
-		Set<String> searchQueryStrings = new HashSet<>();
-
 		Preference preference = _faroInfoPreferenceDog.getPreference(
 			"search-query-strings");
 
-		if (preference.getValue() != null) {
-			JSONUtil.addToStringCollection(
-				searchQueryStrings, new JSONArray(preference.getValue()));
+		Set<String> searchQueryStrings = _searchQueryStringsMap.get(
+			preference.getValue());
+
+		if (searchQueryStrings != null) {
+			return searchQueryStrings;
 		}
 
-		searchQueryStrings.add("q");
+		searchQueryStrings = new HashSet<>();
+
+		JSONUtil.addToStringCollection(
+			searchQueryStrings, new JSONArray(preference.getValue()));
+
+		_searchQueryStringsMap.clear();
+
+		_searchQueryStringsMap.put(preference.getValue(), searchQueryStrings);
 
 		return searchQueryStrings;
 	}
@@ -426,5 +433,8 @@ public class PageNanite extends BaseNanite<Page> {
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
 	private MessageSubscriber _messageSubscriber;
+
+	private final Map<String, Set<String>> _searchQueryStringsMap =
+		new HashMap<>();
 
 }
