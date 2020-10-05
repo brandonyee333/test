@@ -16,11 +16,6 @@ package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_8_0.IndexSettingsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_8_0.IndividualsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_8_0.KnownIndividualInteractionsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_8_0.PageReferrersUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_8_0.RunLogCleanupUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_1.DXPRawUsersUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_1.PreferencesUpgradeStep;
 
@@ -42,11 +37,6 @@ public class UpgradeProcessConfiguration {
 			"0.0.0", ReleaseInfo.getVersion(), _snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.7.3", "2.8.0", _indexSettingsUpgradeStep,
-			_individualsUpgradeStep, _knownIndividualInteractionsUpgradeStep,
-			_pageReferrersUpgradeStep, _runLogCleanupUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
 			"2.8.0", "2.8.1", _dxpRawUsersUpgradeStep, _preferencesUpgradeStep);
 
 		return upgradeProcess;
@@ -56,23 +46,7 @@ public class UpgradeProcessConfiguration {
 	private DXPRawUsersUpgradeStep _dxpRawUsersUpgradeStep;
 
 	@Autowired
-	private IndexSettingsUpgradeStep _indexSettingsUpgradeStep;
-
-	@Autowired
-	private IndividualsUpgradeStep _individualsUpgradeStep;
-
-	@Autowired
-	private KnownIndividualInteractionsUpgradeStep
-		_knownIndividualInteractionsUpgradeStep;
-
-	@Autowired
-	private PageReferrersUpgradeStep _pageReferrersUpgradeStep;
-
-	@Autowired
 	private PreferencesUpgradeStep _preferencesUpgradeStep;
-
-	@Autowired
-	private RunLogCleanupUpgradeStep _runLogCleanupUpgradeStep;
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
