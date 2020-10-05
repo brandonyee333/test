@@ -17,8 +17,6 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.page;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageBus;
-import com.liferay.osb.asah.common.messaging.MessageListener;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.Preference;
@@ -27,15 +25,12 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.page.Page;
 import com.liferay.osb.asah.stream.curator.model.page.PageScroll;
 
-import java.net.URI;
-
 import java.nio.charset.StandardCharsets;
 
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Objects;
@@ -64,7 +59,7 @@ import org.springframework.stereotype.Component;
  * @author Inácio Nery
  */
 @Component
-public class PageNanite extends BaseNanite<Page> implements MessageListener {
+public class PageNanite extends BaseNanite<Page> {
 
 	@Override
 	public String getCollectionName() {
@@ -74,15 +69,6 @@ public class PageNanite extends BaseNanite<Page> implements MessageListener {
 	@PostConstruct
 	public void init() {
 		super.init();
-
-		_cacheSearchQueryStrings();
-
-		_messageBus.registerMessageListener(Channel.SEARCH_QUERY_STRINGS, this);
-	}
-
-	@Override
-	public void onMessage(String message) {
-		_cacheSearchQueryStrings();
 	}
 
 	@Override
@@ -213,20 +199,6 @@ public class PageNanite extends BaseNanite<Page> implements MessageListener {
 		_setPageEngagementScore(page);
 		_setPageSearchTerm(page);
 		_setPageTitle(analyticsEvent, page);
-	}
-
-	private void _cacheSearchQueryStrings() {
-		_searchQueryStrings.clear();
-
-		_searchQueryStrings.add("q");
-
-		Preference preference = _faroInfoPreferenceDog.getPreference(
-			"search-query-strings");
-
-		if (preference.getValue() != null) {
-			JSONUtil.addToStringCollection(
-				_searchQueryStrings, new JSONArray(preference.getValue()));
-		}
 	}
 
 	private double _computeEngagementScore(Page page) {
@@ -373,6 +345,22 @@ public class PageNanite extends BaseNanite<Page> implements MessageListener {
 		);
 	}
 
+	private Set<String> _getSearchQueryStrings() {
+		Set<String> searchQueryStrings = new HashSet<>();
+
+		Preference preference = _faroInfoPreferenceDog.getPreference(
+			"search-query-strings");
+
+		if (preference.getValue() != null) {
+			JSONUtil.addToStringCollection(
+				searchQueryStrings, new JSONArray(preference.getValue()));
+		}
+
+		searchQueryStrings.add("q");
+
+		return searchQueryStrings;
+	}
+
 	private Page _setPageEngagementScore(Page page) {
 		double enagementScore = _computeEngagementScore(page);
 
@@ -392,11 +380,12 @@ public class PageNanite extends BaseNanite<Page> implements MessageListener {
 					url.indexOf("http", url.indexOf("http") + 1));
 			}
 
-			List<NameValuePair> nameValuePairs = URLEncodedUtils.parse(
-				new URI(url), StandardCharsets.UTF_8);
+			Set<String> searchQueryStrings = _getSearchQueryStrings();
 
-			for (NameValuePair nameValuePair : nameValuePairs) {
-				if (_searchQueryStrings.contains(nameValuePair.getName())) {
+			for (NameValuePair nameValuePair :
+					URLEncodedUtils.parse(url, StandardCharsets.UTF_8)) {
+
+				if (searchQueryStrings.contains(nameValuePair.getName())) {
 					page.setSearchTerm(nameValuePair.getValue());
 				}
 			}
@@ -435,12 +424,7 @@ public class PageNanite extends BaseNanite<Page> implements MessageListener {
 	@Autowired
 	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
 
-	@Autowired
-	private MessageBus _messageBus;
-
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
 	private MessageSubscriber _messageSubscriber;
-
-	private final Set<String> _searchQueryStrings = new HashSet<>();
 
 }

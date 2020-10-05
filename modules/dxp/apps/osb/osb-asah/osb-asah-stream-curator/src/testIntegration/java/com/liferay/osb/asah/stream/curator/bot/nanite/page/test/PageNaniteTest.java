@@ -34,7 +34,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Marcellus Tavares
@@ -62,9 +61,6 @@ public class PageNaniteTest extends BaseNaniteTestCase {
 	)
 	@Test
 	public void testPageMetrics() throws Exception {
-		ReflectionTestUtils.invokeMethod(
-			_pageNanite, "_cacheSearchQueryStrings");
-
 		_pageNanite.run();
 
 		ElasticsearchInvoker elasticsearchInvoker =

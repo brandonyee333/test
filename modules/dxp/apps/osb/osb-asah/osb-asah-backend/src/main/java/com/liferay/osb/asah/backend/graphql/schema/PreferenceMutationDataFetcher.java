@@ -15,9 +15,8 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
-import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.Preference;
 
 import graphql.schema.DataFetcher;
@@ -25,8 +24,6 @@ import graphql.schema.DataFetchingEnvironment;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.json.JSONArray;
@@ -48,21 +45,7 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 
 		_validate(key, value);
 
-		Preference preference = _faroInfoPreferenceDog.addPreference(
-			key, value);
-
-		_postAction(preference);
-
-		return preference;
-	}
-
-	private void _postAction(Preference preference) {
-		Consumer<Preference> consumer = _postActionConsumers.get(
-			preference.getKey());
-
-		if (consumer != null) {
-			consumer.accept(preference);
-		}
+		return _faroInfoPreferenceDog.addPreference(key, value);
 	}
 
 	private void _validate(String key, String value) {
@@ -83,7 +66,7 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 						long longValue = Long.parseLong(value);
 
 						if ((longValue <= 0) ||
-							(longValue > TimeUnit.DAYS.toMillis(30 * 13))) {
+							(longValue > (13 * DateUtil.MONTH))) {
 
 							return false;
 						}
@@ -107,18 +90,5 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 
 	@Autowired
 	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
-
-	@Autowired
-	private MessageBus _messageBus;
-
-	private final Map<String, Consumer<Preference>> _postActionConsumers =
-		new HashMap<String, Consumer<Preference>>() {
-			{
-				put(
-					"search-query-strings",
-					preference -> _messageBus.sendMessage(
-						Channel.SEARCH_QUERY_STRINGS, preference.getValue()));
-			}
-		};
 
 }

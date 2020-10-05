@@ -44,12 +44,13 @@ public class FaroInfoPreferenceDog {
 					"id", key
 				).put(
 					"value", value
-				)));
+				),
+				true));
 	}
 
 	public Preference getPreference(String key) {
 		JSONObject preferenceJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"preferences", key);
+			"preferences", key, true);
 
 		if (preferenceJSONObject == null) {
 			return new Preference(key, _defaultPreferences.get(key));
