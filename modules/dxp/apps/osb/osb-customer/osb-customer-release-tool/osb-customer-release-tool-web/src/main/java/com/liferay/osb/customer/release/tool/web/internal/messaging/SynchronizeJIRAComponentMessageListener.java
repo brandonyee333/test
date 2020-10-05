@@ -72,18 +72,18 @@ public class SynchronizeJIRAComponentMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		synchronizeJIRACompoents("COMMERCE");
-		synchronizeJIRACompoents("LPS");
+		synchronizeJIRAComponents("COMMERCE");
+		synchronizeJIRAComponents("LPS");
 	}
 
-	protected void synchronizeJIRACompoents(String remoteProject)
+	protected void synchronizeJIRAComponents(String jiraProject)
 		throws Exception {
 
 		JSONArray jsonArray = _jiraComponentRESTService.getJIRAComponents(
-			remoteProject);
+			jiraProject);
 
 		List<JIRAComponent> jiraComponents = ListUtil.copy(
-			_jiraComponentLocalService.getJIRAComponents(remoteProject));
+			_jiraComponentLocalService.getJIRAComponents(jiraProject));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -93,7 +93,7 @@ public class SynchronizeJIRAComponentMessageListener
 
 			JIRAComponent jiraComponent =
 				_jiraComponentLocalService.updateJIRAComponent(
-					jiraComponentRemoteId, remoteProject, name);
+					jiraComponentRemoteId, jiraProject, name);
 
 			jiraComponents.remove(jiraComponent);
 		}
