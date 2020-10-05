@@ -15,6 +15,7 @@
 package com.liferay.wiki.search;
 
 import com.liferay.document.library.kernel.model.DLFileEntry;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -31,11 +32,13 @@ import com.liferay.portal.kernel.search.BaseRelatedEntryIndexer;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.IndexWriterHelper;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.RelatedEntryIndexer;
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.TermsFilter;
@@ -44,6 +47,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.trash.kernel.util.TrashUtil;
 import com.liferay.wiki.engine.impl.WikiEngineRenderer;
@@ -181,6 +185,19 @@ public class WikiPageIndexer
 					nodesIdTermsFilter, BooleanClauseOccur.MUST);
 			}
 		}
+	}
+
+	@Override
+	public Hits search(SearchContext searchContext) throws SearchException {
+		Hits hits = super.search(searchContext);
+
+		hits.setQueryTerms(
+			ArrayUtil.append(
+				GetterUtil.getStringValues(hits.getQueryTerms()),
+				StringUtil.split(
+					searchContext.getKeywords(), StringPool.SPACE)));
+
+		return hits;
 	}
 
 	@Override
