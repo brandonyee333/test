@@ -22,6 +22,7 @@ import com.liferay.osb.asah.upgrade.v2_8_0.KnownIndividualInteractionsUpgradeSte
 import com.liferay.osb.asah.upgrade.v2_8_0.PageReferrersUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_0.RunLogCleanupUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_8_1.DXPRawUsersUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_8_1.PreferencesUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -46,7 +47,7 @@ public class UpgradeProcessConfiguration {
 			_pageReferrersUpgradeStep, _runLogCleanupUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.8.0", "2.8.1", _dxpRawUsersUpgradeStep);
+			"2.8.0", "2.8.1", _dxpRawUsersUpgradeStep, _preferencesUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -66,6 +67,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private PageReferrersUpgradeStep _pageReferrersUpgradeStep;
+
+	@Autowired
+	private PreferencesUpgradeStep _preferencesUpgradeStep;
 
 	@Autowired
 	private RunLogCleanupUpgradeStep _runLogCleanupUpgradeStep;
