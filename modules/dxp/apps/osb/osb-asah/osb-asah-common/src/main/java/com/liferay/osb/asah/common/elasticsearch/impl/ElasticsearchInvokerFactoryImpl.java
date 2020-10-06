@@ -20,8 +20,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
@@ -110,12 +108,6 @@ public class ElasticsearchInvokerFactoryImpl
 			_elasticsearchIndexManager.getAliases(),
 			_elasticsearchConnection.getTransportClient(),
 			_elasticsearchIndexManager.getIndexNamespace(weDeployDataService));
-	}
-
-	@PostConstruct
-	private void _init() {
-		_elasticsearchIndexManager.addTemplates();
-		_elasticsearchIndexManager.checkIndices();
 	}
 
 	@Autowired(required = false)

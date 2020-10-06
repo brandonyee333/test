@@ -576,6 +576,9 @@ public class ElasticsearchIndexManagerImpl
 		_adminClient = _client.admin();
 
 		_indicesJSONObject = new JSONObject(_readIndices());
+
+		addTemplates();
+		checkIndices();
 	}
 
 	private String _readIndices() {
