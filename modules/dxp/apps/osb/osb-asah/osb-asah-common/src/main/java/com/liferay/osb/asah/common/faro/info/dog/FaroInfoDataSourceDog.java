@@ -71,7 +71,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 		String type = getDataSourceType(dataSourceJSONObject);
 
-		dataSourceJSONObject = elasticsearchInvoker.add(
+		dataSourceJSONObject = cacheableElasticsearchInvoker.add(
 			"data-sources", dataSourceJSONObject);
 
 		if (Objects.equals(type, "CSV")) {
@@ -87,9 +87,9 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 				dataSourceJSONObject);
 		}
 
-		return elasticsearchInvoker.update(
+		return cacheableElasticsearchInvoker.update(
 			"data-sources", dataSourceJSONObject.getString("id"),
-			dataSourceJSONObject, true);
+			dataSourceJSONObject);
 	}
 
 	public void deleteDataSource(
@@ -107,7 +107,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		deleteFieldMappings(
 			dataSourceId, processedCountMonitorConsumer, queueMonitorConsumer);
 
-		elasticsearchInvoker.delete("data-sources", dataSourceId, true);
+		cacheableElasticsearchInvoker.delete("data-sources", dataSourceId);
 
 		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
 			"provider");
@@ -197,12 +197,13 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		dataSourceJSONObject.put("state", "DISCONNECTED");
 		dataSourceJSONObject.put("status", "INACTIVE");
 
-		return elasticsearchInvoker.update(
-			"data-sources", dataSourceId, dataSourceJSONObject, true);
+		return cacheableElasticsearchInvoker.update(
+			"data-sources", dataSourceId, dataSourceJSONObject);
 	}
 
 	public JSONObject fetchDataSourceJSONObject(String dataSourceId) {
-		return elasticsearchInvoker.fetch("data-sources", dataSourceId, true);
+		return cacheableElasticsearchInvoker.fetch(
+			"data-sources", dataSourceId);
 	}
 
 	public String getChannelId(String dataSourceId) {
@@ -245,7 +246,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject getDataSourceJSONObject(String dataSourceId) {
-		return elasticsearchInvoker.get("data-sources", dataSourceId, true);
+		return elasticsearchInvoker.get("data-sources", dataSourceId);
 	}
 
 	public String getDataSourceName(String dataSourceId) {
@@ -338,8 +339,8 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 				dataSourceJSONObject);
 		}
 
-		return elasticsearchInvoker.update(
-			"data-sources", dataSourceId, dataSourceJSONObject, true);
+		return cacheableElasticsearchInvoker.update(
+			"data-sources", dataSourceId, dataSourceJSONObject);
 	}
 
 	public JSONObject updateDataSourceDetails(
@@ -355,8 +356,8 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			"details",
 			JSONUtil.merge(existingDetailsJSONObject, newDetailsJSONObject));
 
-		JSONObject jsonObject = elasticsearchInvoker.update(
-			"data-sources", dataSourceId, dataSourceJSONObject, true);
+		JSONObject jsonObject = cacheableElasticsearchInvoker.update(
+			"data-sources", dataSourceId, dataSourceJSONObject);
 
 		if (newDetailsJSONObject.optBoolean("sitesSelected") &&
 			((existingDetailsJSONObject == null) ||
@@ -516,7 +517,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 				elasticsearchInvoker.update(
 					"individuals", individualJSONObject.getString("id"),
-					modifiedJSONObject, true);
+					modifiedJSONObject);
 
 				return null;
 			}
@@ -633,7 +634,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 				elasticsearchInvoker.update(
 					"individuals", individualJSONObject.getString("id"),
-					modifiedJSONObject, true);
+					modifiedJSONObject);
 
 				return null;
 			}

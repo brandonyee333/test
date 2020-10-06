@@ -29,8 +29,11 @@ public abstract class BaseFaroInfoDog {
 	@PostConstruct
 	public void init() {
 		elasticsearchInvoker = elasticsearchInvokerFactory.forFaroInfo();
+		cacheableElasticsearchInvoker = elasticsearchInvokerFactory.forFaroInfo(
+			true);
 	}
 
+	protected ElasticsearchInvoker cacheableElasticsearchInvoker;
 	protected ElasticsearchInvoker elasticsearchInvoker;
 
 	@Autowired

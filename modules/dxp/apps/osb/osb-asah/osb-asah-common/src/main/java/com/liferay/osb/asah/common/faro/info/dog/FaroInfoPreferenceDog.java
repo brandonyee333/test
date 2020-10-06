@@ -44,13 +44,12 @@ public class FaroInfoPreferenceDog {
 					"id", key
 				).put(
 					"value", value
-				),
-				true));
+				)));
 	}
 
 	public Preference getPreference(String key) {
 		JSONObject preferenceJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"preferences", key, true);
+			"preferences", key);
 
 		if (preferenceJSONObject == null) {
 			return new Preference(key, _defaultPreferences.get(key));
@@ -62,7 +61,7 @@ public class FaroInfoPreferenceDog {
 	@PostConstruct
 	private void _init() {
 		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
+			_elasticsearchInvokerFactory.forFaroInfo(true);
 	}
 
 	private static final Map<String, String> _defaultPreferences =
