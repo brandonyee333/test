@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import throttle from 'lodash.throttle';
+
 const BANNER_HEIGHT = 56;
 
 const StickyHeader = ({ headerText, svgId }) => {
@@ -9,15 +11,17 @@ const StickyHeader = ({ headerText, svgId }) => {
 	const stickyHeader = document.getElementById(`${namespace}stickyHeader`);
 
 	if (mainContent && stickyHeader) {
-		window.addEventListener('scroll', () => {
+		const throttleHeaderDisplay = throttle(() => {
 			const mainContentBoundingRect = mainContent.getBoundingClientRect();
 
 			if (mainContentBoundingRect.top <= BANNER_HEIGHT) {
 				stickyHeader.classList.remove('hide');
 			} else {
-			stickyHeader.classList.add('hide');
+				stickyHeader.classList.add('hide');
 			}
-		});
+		}, 300);
+
+		window.addEventListener('scroll', throttleHeaderDisplay);
 	}
 
 	return (
