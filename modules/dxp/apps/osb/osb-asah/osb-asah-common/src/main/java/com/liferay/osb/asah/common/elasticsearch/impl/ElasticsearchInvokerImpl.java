@@ -79,9 +79,6 @@ import org.elasticsearch.search.sort.SortBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-
 /**
  * @author Michael Bowerman
  * @author Rachael Koestartyo
@@ -90,11 +87,9 @@ import org.springframework.cache.CacheManager;
 public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	public ElasticsearchInvokerImpl(
-		Map<String, String> aliases, CacheManager cacheManager, Client client,
-		String indexNamespace) {
+		Map<String, String> aliases, Client client, String indexNamespace) {
 
 		_aliases = aliases;
-		_cacheManager = cacheManager;
 		_client = client;
 		_indexNamespace = indexNamespace;
 	}
@@ -161,13 +156,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONObject add(String collectionName, JSONObject jsonObject) {
-		return add(collectionName, jsonObject, false);
-	}
-
-	@Override
-	public JSONObject add(
-		String collectionName, JSONObject jsonObject, boolean updateCache) {
-
 		if (jsonObject == null) {
 			return null;
 		}
@@ -184,16 +172,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		indexRequestBuilder.setRefreshPolicy(
 			WriteRequest.RefreshPolicy.IMMEDIATE);
-
-		String json = jsonObject.toString();
-
-		indexRequestBuilder.setSource(json, XContentType.JSON);
-
-		if (updateCache && (_cacheManager != null)) {
-			Cache cache = _cacheManager.getCache(collectionName);
-
-			cache.put(id, json);
-		}
+		indexRequestBuilder.setSource(jsonObject.toString(), XContentType.JSON);
 
 		ClientUtil.waitForConnection(_client);
 
@@ -248,13 +227,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
-	public boolean delete(
-		String collectionName, JSONObject jsonObject, boolean updateCache) {
-
-		return delete(collectionName, jsonObject.getString("id"), updateCache);
-	}
-
-	@Override
 	public void delete(String collectionName, QueryBuilder queryBuilder) {
 		try {
 			DeleteByQueryRequestBuilder deleteByQueryRequestBuilder =
@@ -281,13 +253,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public boolean delete(String collectionName, String id) {
-		return delete(collectionName, id, false);
-	}
-
-	@Override
-	public boolean delete(
-		String collectionName, String id, boolean updateCache) {
-
 		DeleteRequestBuilder deleteRequestBuilder = _client.prepareDelete(
 			getIndexAlias(collectionName), collectionName, id);
 
@@ -301,12 +266,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		RestStatus restStatus = deleteResponse.status();
 
 		if (restStatus == RestStatus.OK) {
-			if (updateCache && (_cacheManager != null)) {
-				Cache cache = _cacheManager.getCache(collectionName);
-
-				cache.evict(id);
-			}
-
 			return true;
 		}
 
@@ -421,26 +380,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONObject fetch(String collectionName, String id) {
-		return fetch(collectionName, id, false);
-	}
-
-	@Override
-	public JSONObject fetch(
-		String collectionName, String id, boolean useCache) {
-
 		try {
-			Cache cache = null;
-
-			if (useCache && (_cacheManager != null)) {
-				cache = _cacheManager.getCache(collectionName);
-
-				Cache.ValueWrapper valueWrapper = cache.get(id);
-
-				if (valueWrapper != null) {
-					return new JSONObject((String)valueWrapper.get());
-				}
-			}
-
 			GetRequestBuilder getRequestBuilder = _client.prepareGet(
 				getIndexAlias(collectionName), null, id);
 
@@ -452,13 +392,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 				return null;
 			}
 
-			String sourceAsString = getResponse.getSourceAsString();
-
-			if (useCache && (_cacheManager != null)) {
-				cache.put(id, sourceAsString);
-			}
-
-			return new JSONObject(sourceAsString);
+			return new JSONObject(getResponse.getSourceAsString());
 		}
 		catch (IndexNotFoundException infe) {
 			return null;
@@ -507,12 +441,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONObject get(String collectionName, String id) {
-		return get(collectionName, id, false);
-	}
-
-	@Override
-	public JSONObject get(String collectionName, String id, boolean useCache) {
-		JSONObject jsonObject = fetch(collectionName, id, useCache);
+		JSONObject jsonObject = fetch(collectionName, id);
 
 		if (jsonObject == null) {
 			throw new ResourceNotFoundException(
@@ -658,43 +587,17 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONObject update(String collectionName, JSONObject jsonObject) {
-		return update(
-			collectionName, jsonObject.getString("id"), jsonObject, false);
-	}
-
-	@Override
-	public JSONObject update(
-		String collectionName, JSONObject jsonObject, boolean updateCache) {
-
-		return update(
-			collectionName, jsonObject.getString("id"), jsonObject,
-			updateCache);
+		return update(collectionName, jsonObject.getString("id"), jsonObject);
 	}
 
 	@Override
 	public JSONObject update(
 		String collectionName, String id, JSONObject jsonObject) {
 
-		return update(collectionName, id, jsonObject, false);
-	}
-
-	@Override
-	public JSONObject update(
-		String collectionName, String id, JSONObject jsonObject,
-		boolean updateCache) {
-
-		JSONObject responseJSONObject = _update(
+		return _update(
 			jsonObject,
 			_client.prepareUpdate(
 				getIndexAlias(collectionName), collectionName, id));
-
-		if (updateCache && (_cacheManager != null)) {
-			Cache cache = _cacheManager.getCache(collectionName);
-
-			cache.put(id, responseJSONObject.toString());
-		}
-
-		return responseJSONObject;
 	}
 
 	@Override
@@ -963,7 +866,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		ElasticsearchInvokerImpl.class);
 
 	private final Map<String, String> _aliases;
-	private final CacheManager _cacheManager;
 	private final Client _client;
 	private final String _indexNamespace;
 	private TimeOrderedUuidGenerator _timeOrderedUuidGenerator =

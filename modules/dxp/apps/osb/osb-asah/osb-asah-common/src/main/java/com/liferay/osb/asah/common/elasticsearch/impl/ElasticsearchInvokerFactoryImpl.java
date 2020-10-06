@@ -37,27 +37,52 @@ public class ElasticsearchInvokerFactoryImpl
 
 	@Override
 	public ElasticsearchInvoker forCerebroInfo() {
+		return forCerebroInfo(false);
+	}
+
+	@Override
+	public ElasticsearchInvoker forCerebroInfo(boolean cacheable) {
 		return forWeDeployDataService(
 			WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
 	}
 
 	@Override
 	public ElasticsearchInvoker forCerebroRaw() {
+		return forCerebroRaw(false);
+	}
+
+	@Override
+	public ElasticsearchInvoker forCerebroRaw(boolean cacheable) {
 		return forWeDeployDataService(WeDeployDataService.OSB_ASAH_CEREBRO_RAW);
 	}
 
 	@Override
 	public ElasticsearchInvoker forDXPRaw() {
+		return forDXPRaw(false);
+	}
+
+	@Override
+	public ElasticsearchInvoker forDXPRaw(boolean cacheable) {
 		return forWeDeployDataService(WeDeployDataService.OSB_ASAH_DXP_RAW);
 	}
 
 	@Override
 	public ElasticsearchInvoker forFaroInfo() {
+		return forFaroInfo(false);
+	}
+
+	@Override
+	public ElasticsearchInvoker forFaroInfo(boolean cacheable) {
 		return forWeDeployDataService(WeDeployDataService.OSB_ASAH_FARO_INFO);
 	}
 
 	@Override
 	public ElasticsearchInvoker forSalesforceRaw() {
+		return forSalesforceRaw(false);
+	}
+
+	@Override
+	public ElasticsearchInvoker forSalesforceRaw(boolean cacheable) {
 		return forWeDeployDataService(
 			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 	}
@@ -66,8 +91,23 @@ public class ElasticsearchInvokerFactoryImpl
 	public ElasticsearchInvoker forWeDeployDataService(
 		WeDeployDataService weDeployDataService) {
 
+		return forWeDeployDataService(weDeployDataService, false);
+	}
+
+	@Override
+	public ElasticsearchInvoker forWeDeployDataService(
+		WeDeployDataService weDeployDataService, boolean cacheable) {
+
+		if (cacheable) {
+			return new CacheableElasticsearchInvokerImpl(
+				_elasticsearchIndexManager.getAliases(), _cacheManager,
+				_elasticsearchConnection.getTransportClient(),
+				_elasticsearchIndexManager.getIndexNamespace(
+					weDeployDataService));
+		}
+
 		return new ElasticsearchInvokerImpl(
-			_elasticsearchIndexManager.getAliases(), _cacheManager,
+			_elasticsearchIndexManager.getAliases(),
 			_elasticsearchConnection.getTransportClient(),
 			_elasticsearchIndexManager.getIndexNamespace(weDeployDataService));
 	}

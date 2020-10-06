@@ -23,15 +23,28 @@ public interface ElasticsearchInvokerFactory {
 
 	public ElasticsearchInvoker forCerebroInfo();
 
+	public ElasticsearchInvoker forCerebroInfo(boolean cacheable);
+
 	public ElasticsearchInvoker forCerebroRaw();
+
+	public ElasticsearchInvoker forCerebroRaw(boolean cacheable);
 
 	public ElasticsearchInvoker forDXPRaw();
 
+	public ElasticsearchInvoker forDXPRaw(boolean cacheable);
+
 	public ElasticsearchInvoker forFaroInfo();
+
+	public ElasticsearchInvoker forFaroInfo(boolean cacheable);
 
 	public ElasticsearchInvoker forSalesforceRaw();
 
+	public ElasticsearchInvoker forSalesforceRaw(boolean cacheable);
+
 	public ElasticsearchInvoker forWeDeployDataService(
 		WeDeployDataService weDeployDataService);
+
+	public ElasticsearchInvoker forWeDeployDataService(
+		WeDeployDataService weDeployDataService, boolean cacheable);
 
 }
