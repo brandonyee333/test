@@ -1574,7 +1574,14 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			portalInstanceLifecycleManager.preregisterCompany(companyId);
 		}
 
-		SearchEngineHelperUtil.initialize(companyId);
+		try {
+			SearchEngineHelperUtil.initialize(companyId);
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to initialize search engine for company " + companyId,
+				exception);
+		}
 	}
 
 	protected void registerCompany(Company company) {
