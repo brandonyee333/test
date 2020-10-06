@@ -58,6 +58,18 @@ else {
 }
 %>
 
+<c:if test='<%= SessionErrors.contains(renderRequest, "unsavedContactsFields") %>'>
+	<aui:script>
+		Liferay.Util.openToast({
+			message: '<liferay-ui:message key="synced-fields-have-not-been-saved" />',
+			toastProps: {
+				autoClose: 5000,
+			},
+			type: 'warning',
+		});
+	</aui:script>
+</c:if>
+
 <div class="card container-fluid-1280 main-content-card portlet-analytics-settings">
 	<h2 class="autofit-row">
 		<span class="autofit-col autofit-col-expand">
