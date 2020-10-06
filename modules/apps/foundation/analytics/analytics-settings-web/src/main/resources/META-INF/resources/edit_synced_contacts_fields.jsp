@@ -92,10 +92,6 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(resourceBundle, "
 			refresh="<%= false %>"
 		>
 			<liferay-ui:section>
-				<liferay-frontend:management-bar
-					includeCheckBox="<%= true %>"
-					searchContainerId="selectContactsFields"
-				/>
 
 				<%
 				FieldDisplayContext fieldDisplayContext = new FieldDisplayContext("/analytics_settings/edit_synced_contacts_fields", renderRequest, renderResponse);
@@ -139,10 +135,6 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(resourceBundle, "
 			</liferay-ui:section>
 
 			<liferay-ui:section>
-				<liferay-frontend:management-bar
-					includeCheckBox="<%= true %>"
-					searchContainerId="selectUsersFields"
-				/>
 
 				<%
 				FieldDisplayContext fieldDisplayContext = new FieldDisplayContext("/analytics_settings/edit_synced_users_fields", renderRequest, renderResponse);
