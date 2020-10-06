@@ -16,10 +16,10 @@ package com.liferay.osb.asah.dxp.extractor.bot.nanite.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.dxp.extractor.bot.nanite.DXPExtractorNanite;
 import com.liferay.osb.asah.dxp.extractor.configuration.DXPExtractorConfiguration;
 import com.liferay.osb.asah.dxp.extractor.configuration.impl.DXPExtractorRuntimeConfigurationImpl;
@@ -72,8 +72,6 @@ public class DXPExtractorNaniteTest {
 
 		_elasticsearchIndexManager.checkIndices();
 
-		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
-
 		_dxpRawElasticsearchInvoker.add(
 			"OSBAsahMarkers",
 			JSONUtil.put(
@@ -124,9 +122,6 @@ public class DXPExtractorNaniteTest {
 				additionalInfoJSONObject.toString(), "32577",
 				DXPEntityType.CLASS_NAME_USER, "32523", 1546560430679L,
 				"ASSIGN", null));
-
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
 
 		_faroInfoElasticsearchInvoker.add(
 			"data-sources", _buildLiferayDataSourceJSONObject());
@@ -570,14 +565,13 @@ public class DXPExtractorNaniteTest {
 	@InjectMocks
 	private DXPExtractorNanite _dxpExtractorNanite;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Mock

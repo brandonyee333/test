@@ -16,12 +16,12 @@ package com.liferay.osb.asah.stream.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
 import com.liferay.osb.asah.stream.curator.model.BaseAssetModel;
 import com.liferay.osb.asah.stream.curator.model.Model;
@@ -40,8 +40,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -62,14 +60,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	@Override
 	public long getInterval() {
 		return DateUtil.MINUTE;
-	}
-
-	@PostConstruct
-	public void init() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	@Override
@@ -388,11 +378,10 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

@@ -34,7 +34,6 @@ import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
@@ -47,6 +46,7 @@ import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.VariantMetrics;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.IOException;
 
@@ -60,8 +60,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -551,12 +549,6 @@ public class ExperimentDog {
 		return TimeRange.of(startLocalDate);
 	}
 
-	@PostConstruct
-	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	private void _setExperimentSettings(
 		Experiment experiment, ExperimentSettings experimentSettings) {
 
@@ -697,14 +689,12 @@ public class ExperimentDog {
 	private DXPClient _dxpClient;
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
-	@Autowired
 	private ExperimentMetricDog _experimentMetricDog;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

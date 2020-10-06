@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataRetentionNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -25,7 +24,6 @@ import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfigurati
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,14 +41,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 	}
 )
 public class DataRetentionNaniteTest extends BaseNaniteTestCase {
-
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-	}
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "data_retention_blogs.json",
@@ -80,12 +70,10 @@ public class DataRetentionNaniteTest extends BaseNaniteTestCase {
 				faroInfoElasticsearchInvoker.get("individuals"), "id"));
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private DataRetentionNanite _dataRetentionNanite;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

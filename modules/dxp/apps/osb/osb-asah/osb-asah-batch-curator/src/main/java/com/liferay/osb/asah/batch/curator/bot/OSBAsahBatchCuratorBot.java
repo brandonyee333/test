@@ -19,11 +19,11 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -129,8 +129,6 @@ public class OSBAsahBatchCuratorBot {
 
 	@PostConstruct
 	public void init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-
 		for (Nanite nanite : _nanites) {
 			Class<?> clazz = nanite.getClass();
 
@@ -337,10 +335,8 @@ public class OSBAsahBatchCuratorBot {
 	@Qualifier("deleteDXPBatchEntitiesRunnable")
 	private Runnable _deleteDXPBatchEntitiesRunnable;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;

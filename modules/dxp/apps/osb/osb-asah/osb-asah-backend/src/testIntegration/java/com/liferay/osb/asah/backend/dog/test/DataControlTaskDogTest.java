@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.dog.DataControlTaskDog;
 import com.liferay.osb.asah.backend.model.DataControlTask;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -70,8 +69,6 @@ public class DataControlTaskDogTest {
 
 	@Before
 	public void setUp() throws Exception {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-
 		_tempPath = Files.createTempDirectory("temp");
 	}
 
@@ -261,10 +258,8 @@ public class DataControlTaskDogTest {
 	@Autowired
 	private DataControlTaskDog _dataControlTaskDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	private Path _tempPath;
 

@@ -63,10 +63,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	extends BaseNaniteTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		_mock();
 
 		_dataSourceJSONObject =

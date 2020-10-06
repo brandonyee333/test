@@ -16,12 +16,12 @@ package com.liferay.osb.asah.common.faro.info.dog.test;
 
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -50,12 +50,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
-		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
-
 		for (int i = 0; i < 3; i++) {
 			JSONObject liferayDataSourceJSONObject =
 				_faroInfoDataSourceDog.addDataSource(
@@ -1061,10 +1056,8 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 	@MockBean
 	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;

@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.common.upgrade;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Objects;
 
@@ -46,10 +46,7 @@ public class UpgradeCheck {
 			return;
 		}
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
-		JSONObject osbAsahMarkerJSONObject = elasticsearchInvoker.fetch(
+		JSONObject osbAsahMarkerJSONObject = _elasticsearchInvoker.fetch(
 			"OSBAsahMarkers", "Upgrade");
 
 		if ((osbAsahMarkerJSONObject != null) &&
@@ -73,8 +70,8 @@ public class UpgradeCheck {
 
 	private static final Log _log = LogFactory.getLog(UpgradeCheck.class);
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private UpgradeState _upgradeState;

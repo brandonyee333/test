@@ -15,11 +15,9 @@
 package com.liferay.osb.asah.publisher.servlet.filter;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.servlet.filter.BaseSecurityFilter;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
-
-import javax.annotation.PostConstruct;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,11 +34,6 @@ import org.springframework.stereotype.Component;
 @ConditionalOnProperty("osb.asah.security.enabled")
 @MonolithExclude
 public class SecurityFilter extends BaseSecurityFilter {
-
-	@PostConstruct
-	public void init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
 
 	@Override
 	protected boolean isInvalidRequest(HttpServletRequest httpServletRequest) {
@@ -78,9 +71,7 @@ public class SecurityFilter extends BaseSecurityFilter {
 		return super.shouldNotFilter(httpServletRequest);
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

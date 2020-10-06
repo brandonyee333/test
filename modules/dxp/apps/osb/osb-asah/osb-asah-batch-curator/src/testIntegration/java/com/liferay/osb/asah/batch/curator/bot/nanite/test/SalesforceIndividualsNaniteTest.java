@@ -18,10 +18,10 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.SalesforceIndividualsNanite
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -58,9 +58,6 @@ public class SalesforceIndividualsNaniteTest
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-
-		_salesforceRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forSalesforceRaw();
 	}
 
 	@Test
@@ -169,12 +166,11 @@ public class SalesforceIndividualsNaniteTest
 	}
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
-	@Autowired
 	private SalesforceIndividualsNanite _salesforceIndividualsNanite;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
+
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
 

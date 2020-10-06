@@ -16,10 +16,10 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.custom;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
 
@@ -29,8 +29,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -57,12 +55,6 @@ public class CustomAssetDashboardNanite implements Nanite {
 	@Override
 	public long getInterval() {
 		return DateUtil.MINUTE;
-	}
-
-	@PostConstruct
-	public void init() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
 	}
 
 	@Override
@@ -188,10 +180,8 @@ public class CustomAssetDashboardNanite implements Nanite {
 	private static final Log _log = LogFactory.getLog(
 		CustomAssetDashboardNanite.class);
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@MessageSubscriber.Autowired(
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET

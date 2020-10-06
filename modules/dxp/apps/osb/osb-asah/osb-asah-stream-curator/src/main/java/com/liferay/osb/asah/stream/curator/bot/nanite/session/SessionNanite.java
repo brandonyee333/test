@@ -24,7 +24,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -33,6 +32,7 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEvents;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeSessionArm;
 
@@ -85,11 +85,6 @@ public class SessionNanite implements Nanite {
 
 	@PostConstruct
 	public void init() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
 		_sessionUpdateScriptSource = ScriptUtil.loadScriptSource(
 			getClass(), "session_update_script.painless");
 	}
@@ -509,11 +504,10 @@ public class SessionNanite implements Nanite {
 
 	private static final Log _log = LogFactory.getLog(SessionNanite.class);
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

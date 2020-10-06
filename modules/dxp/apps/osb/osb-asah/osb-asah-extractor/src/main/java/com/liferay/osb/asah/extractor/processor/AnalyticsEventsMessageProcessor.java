@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -34,6 +33,7 @@ import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.extractor.fiftyonedegrees.FiftyOneDegreesDevice;
 import com.liferay.osb.asah.extractor.fiftyonedegrees.FiftyOneDegreesEngine;
 import com.liferay.osb.asah.extractor.ip.geocoder.IPGeocoder;
@@ -335,9 +335,6 @@ public class AnalyticsEventsMessageProcessor {
 
 	@PostConstruct
 	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
 			_analyticsEventsStoragePath);
 
@@ -428,11 +425,9 @@ public class AnalyticsEventsMessageProcessor {
 	private String _analyticsEventsStoragePath;
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
-	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

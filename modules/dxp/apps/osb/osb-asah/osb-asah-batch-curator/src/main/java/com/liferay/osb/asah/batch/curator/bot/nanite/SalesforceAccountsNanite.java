@@ -20,8 +20,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
-
-import javax.annotation.PostConstruct;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,15 +38,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SalesforceAccountsNanite extends BaseNanite {
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-
-		_salesforceRawElasticsearchInvoker =
-			elasticsearchInvokerFactory.forSalesforceRaw();
-	}
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -208,6 +198,7 @@ public class SalesforceAccountsNanite extends BaseNanite {
 	@Autowired
 	private RunLogger _runLogger;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

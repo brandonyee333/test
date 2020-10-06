@@ -19,8 +19,7 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.ml.SparkManager;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-
-import javax.annotation.PostConstruct;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,15 +37,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SparkManagerMonitoringNanite extends BaseNanite {
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-
-		_faroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forFaroInfo();
-	}
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -101,6 +91,7 @@ public class SparkManagerMonitoringNanite extends BaseNanite {
 	private static final Log _log = LogFactory.getLog(
 		SparkManagerMonitoringNanite.class);
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

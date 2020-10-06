@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -101,7 +101,6 @@ public class AdminRestController extends BaseRestController {
 		return toDownloadResponse(file, file.getName());
 	}
 
-	@Override
 	@PostConstruct
 	public void init() {
 		for (WeDeployDataService weDeployDataService :
@@ -109,7 +108,7 @@ public class AdminRestController extends BaseRestController {
 
 			_elasticsearchInvokers.put(
 				weDeployDataService.toString(),
-				_elasticsearchInvokerFactory.forWeDeployDataService(
+				_elasticsearchInvokerManager.forWeDeployDataService(
 					weDeployDataService));
 		}
 
@@ -161,14 +160,11 @@ public class AdminRestController extends BaseRestController {
 
 	@PostMapping("/nanites")
 	public void run(@RequestBody String json) {
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
 		JSONArray jsonArray = new JSONArray(json);
 
 		_naniteListSchema.validate(jsonArray);
 
-		elasticsearchInvoker.delete(
+		_faroElasticsearchInvoker.delete(
 			"OSBAsahMarkers",
 			QueryBuilders.termsQuery("id", JSONUtil.toStringList(jsonArray)));
 
@@ -259,10 +255,13 @@ public class AdminRestController extends BaseRestController {
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	private ElasticsearchInvokerManager _elasticsearchInvokerManager;
 
 	private final Map<String, ElasticsearchInvoker> _elasticsearchInvokers =
 		new HashMap<>();
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;

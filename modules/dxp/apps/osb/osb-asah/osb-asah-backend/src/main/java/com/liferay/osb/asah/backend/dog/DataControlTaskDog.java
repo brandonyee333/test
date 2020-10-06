@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.model.DataControlTask;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
@@ -27,6 +26,7 @@ import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -41,8 +41,6 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -201,12 +199,6 @@ public class DataControlTaskDog {
 			SortBuilderUtil.fieldSort("id", sortOrder));
 	}
 
-	@PostConstruct
-	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	private List<String> _readFile(File file) {
 		CsvParserSettings csvParserSettings = new CsvParserSettings();
 
@@ -248,10 +240,9 @@ public class DataControlTaskDog {
 	@Autowired
 	private DataDog _dataDog;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
 

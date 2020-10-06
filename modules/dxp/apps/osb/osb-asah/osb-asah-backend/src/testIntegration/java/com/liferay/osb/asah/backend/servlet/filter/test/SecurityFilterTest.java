@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -30,7 +30,6 @@ import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -53,11 +52,6 @@ import org.springframework.test.web.servlet.result.StatusResultMatchers;
 @TestPropertySource(properties = "osb.asah.security.enabled=true")
 @WebMvcTest(secure = false)
 public class SecurityFilterTest {
-
-	@Before
-	public void setUp() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
 
 	@Test
 	public void testGet() throws Exception {
@@ -115,10 +109,8 @@ public class SecurityFilterTest {
 			_mockMvc.perform(mockHttpServletRequestBuilder2));
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private MockMvc _mockMvc;

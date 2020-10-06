@@ -17,7 +17,6 @@ package com.liferay.osb.asah.salesforce.extractor.bot.nanite.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -79,11 +78,6 @@ public class SalesforceExtractorNaniteTest {
 		_elasticsearchIndexManager.clearIndices();
 
 		_elasticsearchIndexManager.checkIndices();
-
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-		_salesforceRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forSalesforceRaw();
 
 		_setUpConfigurationManager();
 	}
@@ -482,9 +476,7 @@ public class SalesforceExtractorNaniteTest {
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
@@ -493,6 +485,7 @@ public class SalesforceExtractorNaniteTest {
 	@Autowired
 	private SalesforcePartnerClientInvoker _salesforcePartnerClientInvoker;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

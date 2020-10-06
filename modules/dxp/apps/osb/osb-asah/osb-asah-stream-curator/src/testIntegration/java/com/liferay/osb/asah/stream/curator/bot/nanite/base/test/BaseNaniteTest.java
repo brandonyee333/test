@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.base.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -59,19 +58,16 @@ public class BaseNaniteTest extends BaseNaniteTestCase {
 	public void testMergeURLs() throws Exception {
 		_defaultBaseNanite.run();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"default_base_info_new_urls.json", this),
-			elasticsearchInvoker.get("default-base"), false);
+			_cerebroInfoElasticsearchInvoker.get("default-base"), false);
 	}
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private DefaultBaseNanite _defaultBaseNanite;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

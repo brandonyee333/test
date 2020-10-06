@@ -51,10 +51,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		faroInfoElasticsearchInvoker.add(
 			"experiments",
 			FaroInfoTestUtil.buildExperimentJSONObject(

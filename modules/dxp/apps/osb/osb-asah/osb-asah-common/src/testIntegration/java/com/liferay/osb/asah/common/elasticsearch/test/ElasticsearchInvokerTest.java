@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerImpl;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -71,7 +72,7 @@ public class ElasticsearchInvokerTest {
 	@Before
 	public void setUp() {
 		_elasticsearchInvoker = new ElasticsearchInvokerImpl(
-			Collections.emptyMap(), null,
+			Collections.emptyMap(),
 			_elasticsearchConnection.getTransportClient(), "test");
 
 		_collectionName = RandomTestUtil.randomString();
@@ -636,7 +637,9 @@ public class ElasticsearchInvokerTest {
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
 	private String _indexName;
 
 }

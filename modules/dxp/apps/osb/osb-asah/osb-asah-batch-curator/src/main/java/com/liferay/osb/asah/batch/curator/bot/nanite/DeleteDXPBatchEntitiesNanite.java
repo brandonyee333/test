@@ -104,8 +104,6 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 
 	@PostConstruct
 	private void _init() {
-		super.init();
-
 		StorageOptions storageOptions = StorageOptions.getDefaultInstance();
 
 		_storage = storageOptions.getService();

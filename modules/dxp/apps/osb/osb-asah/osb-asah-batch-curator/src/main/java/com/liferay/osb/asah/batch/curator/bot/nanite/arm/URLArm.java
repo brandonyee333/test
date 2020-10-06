@@ -16,12 +16,10 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
-
-import javax.annotation.PostConstruct;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -78,14 +76,7 @@ public class URLArm {
 		return JSONUtil.toStringList(assetsJSONArray, "dataSourceAssetPK");
 	}
 
-	@PostConstruct
-	protected void init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

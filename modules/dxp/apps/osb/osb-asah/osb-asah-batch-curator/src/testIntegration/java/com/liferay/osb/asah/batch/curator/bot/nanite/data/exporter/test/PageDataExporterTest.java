@@ -18,7 +18,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExporter;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -37,7 +37,6 @@ import org.junit.runner.RunWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -62,8 +61,7 @@ public class PageDataExporterTest {
 			new ByteArrayOutputStream();
 
 		PageDataExporter pageDataExporter = new PageDataExporter(
-			new JsonFactory(), byteArrayOutputStream,
-			_elasticsearchInvokerFactory.forCerebroInfo());
+			new JsonFactory(), byteArrayOutputStream, _elasticsearchInvoker);
 
 		pageDataExporter.export();
 
@@ -82,7 +80,7 @@ public class PageDataExporterTest {
 		}
 	}
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 }

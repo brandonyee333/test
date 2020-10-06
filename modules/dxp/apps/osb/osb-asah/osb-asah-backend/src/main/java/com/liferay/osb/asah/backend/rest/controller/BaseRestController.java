@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.rest.response.DeleteResponse;
 import com.liferay.osb.asah.common.rest.response.ItemGetResponse;
@@ -25,20 +24,18 @@ import com.liferay.osb.asah.common.rest.response.PutResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationGetResponse;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
 
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.json.JSONArray;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -48,17 +45,6 @@ import org.springframework.http.ResponseEntity;
  * @author Brian Wing Shun Chan
  */
 public abstract class BaseRestController {
-
-	@PostConstruct
-	public void init() {
-		cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-		dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
-		faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-		salesforceRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forSalesforceRaw();
-	}
 
 	protected String toCollectionGetResponse(
 			String collectionName,
@@ -256,9 +242,16 @@ public abstract class BaseRestController {
 			transformationJSONArrayFunction, transformationName);
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	protected ElasticsearchInvoker cerebroInfoElasticsearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	protected ElasticsearchInvoker dxpRawElasticsearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	protected ElasticsearchInvoker salesforceRawElasticsearchInvoker;
 
 	private String _toCollectionGetResponse(
@@ -287,8 +280,5 @@ public abstract class BaseRestController {
 
 		return collectionGetResponse.respond();
 	}
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

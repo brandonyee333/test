@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.rest.response.test;
 
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -37,7 +36,6 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.json.JSONArray;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -52,11 +50,6 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class TermsAggregationTransformationJSONArrayFunctionTest {
-
-	@Before
-	public void setUp() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
 
 	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals.json",
@@ -220,9 +213,7 @@ public class TermsAggregationTransformationJSONArrayFunctionTest {
 			true);
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

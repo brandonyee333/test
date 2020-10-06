@@ -42,8 +42,6 @@ public class FaroInfoFieldDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
-
 		_dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources", FaroInfoTestUtil.buildCSVDataSourceJSONObject());
 

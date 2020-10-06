@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,8 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,15 +42,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CommerceProductRecommendationNanite extends BaseNanite {
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-
-		_faroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forFaroInfo();
-	}
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -138,7 +128,9 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 		return Collections.emptyList();
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
 	private final Map<String, String> _jobTypeApplicationClassNameMap =
 		new HashMap<String, String>() {
 			{

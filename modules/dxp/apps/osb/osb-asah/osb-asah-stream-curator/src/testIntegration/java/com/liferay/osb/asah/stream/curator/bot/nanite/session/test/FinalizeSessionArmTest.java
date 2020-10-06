@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeSessionArm;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
@@ -28,35 +26,18 @@ import java.util.Collections;
 import java.util.Date;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 /**
  * @author André Miranda
  */
-@Ignore
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
 public class FinalizeSessionArmTest {
-
-	@Before
-	public void setUp() {
-		Mockito.when(
-			_elasticsearchInvokerFactory.forCerebroInfo()
-		).thenReturn(
-			Mockito.mock(ElasticsearchInvoker.class)
-		);
-
-		_finalizeSessionArm.init();
-	}
 
 	@Test
 	public void testCompleteReasonInactivity() throws Exception {
@@ -83,9 +64,6 @@ public class FinalizeSessionArmTest {
 		Assert.assertTrue(userSession.getCompleted());
 		Assert.assertEquals("inactivity", userSession.getCompleteReason());
 	}
-
-	@MockBean
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private FinalizeSessionArm _finalizeSessionArm;

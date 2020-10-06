@@ -15,19 +15,17 @@
 package com.liferay.osb.asah.common.configuration.dog;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.Http;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.security.KeyPair;
 
 import java.util.Objects;
 import java.util.UUID;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -80,11 +78,6 @@ public abstract class BaseConfigurationDog {
 	public String getState(JSONObject dataSourceJSONObject) {
 		return configurationHttp.getState(
 			dataSourceJSONObject, getProviderType());
-	}
-
-	@PostConstruct
-	public void init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	public abstract void setUpDataSource(JSONObject dataSourceJSONObject);
@@ -280,10 +273,8 @@ public abstract class BaseConfigurationDog {
 	private static final Log _log = LogFactory.getLog(
 		BaseConfigurationDog.class);
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private Encryptor _encryptor;

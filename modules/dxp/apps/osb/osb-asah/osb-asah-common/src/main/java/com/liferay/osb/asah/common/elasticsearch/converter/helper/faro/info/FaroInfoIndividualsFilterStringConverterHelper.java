@@ -17,13 +17,13 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.lucene.search.join.ScoreMode;
 
@@ -152,15 +150,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		}
 
 		return null;
-	}
-
-	@PostConstruct
-	public void init() {
-		_cerebroInfoElasticSearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	private void _checkSurroundingQuotes(String s) {
@@ -944,16 +933,18 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			add("ne");
 		}
 	};
-	private ElasticsearchInvoker _cerebroInfoElasticSearchInvoker;
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _cerebroInfoElasticSearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
+	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoActivitiesFilterStringConverterHelper
 		_faroInfoActivitiesFilterStringConverterHelper;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.StringUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,8 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -166,14 +165,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		).iterate();
 
 		return referencedAssetIds;
-	}
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-
-		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
 	}
 
 	public JSONObject replaceIndividualSegment(
@@ -918,6 +909,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	@Autowired(required = false)
 	private CacheManager _cacheManager;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired

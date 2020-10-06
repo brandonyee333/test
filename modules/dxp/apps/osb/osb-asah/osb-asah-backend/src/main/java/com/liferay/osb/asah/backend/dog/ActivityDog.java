@@ -19,7 +19,6 @@ import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -31,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
-import javax.annotation.PostConstruct;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -141,25 +138,18 @@ public class ActivityDog {
 		return rangeQueryBuilder;
 	}
 
-	@PostConstruct
-	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	@Autowired
 	private DataDog _dataDog;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
 	private final Set<String> _eventContextKeysExclude = SetUtil.of(
 		"crawler", "devicePixelRatio", "experienceId", "experimentId",
 		"referrer", "screenHeight", "screenHeightSize", "screenWidth",
 		"screenWidthSize", "timezoneOffset", "userAgent", "variantId");
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

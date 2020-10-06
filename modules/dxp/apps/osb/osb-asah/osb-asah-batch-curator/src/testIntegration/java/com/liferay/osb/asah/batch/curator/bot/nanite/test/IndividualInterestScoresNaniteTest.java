@@ -59,10 +59,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());

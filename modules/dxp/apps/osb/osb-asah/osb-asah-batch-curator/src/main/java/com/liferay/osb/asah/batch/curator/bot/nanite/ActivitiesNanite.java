@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,16 +82,8 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		}
 	}
 
-	@Override
 	@PostConstruct
 	public void init() {
-		super.init();
-
-		_cerebroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroInfo();
-		_faroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forFaroInfo();
-
 		_queueHttp.initializeQueue();
 	}
 
@@ -669,11 +662,14 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		};
 
 	private boolean _active;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

@@ -15,11 +15,9 @@
 package com.liferay.osb.asah.upgrade.v2_9_0;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
-
-import javax.annotation.PostConstruct;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -56,14 +54,7 @@ public class PreferencesUpgradeStep implements UpgradeStep {
 		}
 	}
 
-	@PostConstruct
-	private void _init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

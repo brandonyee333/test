@@ -454,22 +454,14 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			"name");
 	}
 
-	@Override
 	@PostConstruct
 	public void init() {
-		super.init();
-
-		_cerebroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroInfo();
-
 		String[] collections = JSONUtil.toStringArray(
 			_elasticsearchIndexManager.getCollectionsJSONArray(
 				WeDeployDataService.OSB_ASAH_CEREBRO_INFO));
 
 		_collections = ArrayUtils.remove(
 			collections, ArrayUtils.indexOf(collections, "user-sessions"));
-
-		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
 	}
 
 	public JSONObject removeDataSourceIndividualPKs(
@@ -791,8 +783,12 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		}
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
 	private String[] _collections;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired

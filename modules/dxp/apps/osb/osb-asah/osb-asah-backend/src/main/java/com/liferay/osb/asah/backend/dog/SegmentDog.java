@@ -22,11 +22,11 @@ import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.Segment;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -297,9 +297,6 @@ public class SegmentDog {
 
 	@PostConstruct
 	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
 		_segmentScriptSource = ScriptUtil.loadScriptSource(
 			getClass(), "segment_script.painless");
 	}
@@ -309,9 +306,7 @@ public class SegmentDog {
 
 	private final DogConfigurationBag _dogConfigurationBag;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

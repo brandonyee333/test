@@ -25,7 +25,7 @@ import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
@@ -34,6 +34,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ObjectMapperUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -480,11 +481,10 @@ public class JobDog {
 	@PostConstruct
 	private void _init() {
 		_jobElasticsearchRepository = new ElasticsearchRepository<>(
-			"jobs", _elasticsearchInvokerFactory.forFaroInfo(), Job.class);
+			"jobs", _faroInfoElasticsearchInvoker, Job.class);
 
 		_jobRunElasticsearchRepository = new ElasticsearchRepository<>(
-			"job-runs", _elasticsearchInvokerFactory.forFaroInfo(),
-			JobRun.class);
+			"job-runs", _faroInfoElasticsearchInvoker, JobRun.class);
 	}
 
 	private void _rescheduleOSBAsahTask(
@@ -531,8 +531,8 @@ public class JobDog {
 		job.setOSBAsahTaskId("");
 	}
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;

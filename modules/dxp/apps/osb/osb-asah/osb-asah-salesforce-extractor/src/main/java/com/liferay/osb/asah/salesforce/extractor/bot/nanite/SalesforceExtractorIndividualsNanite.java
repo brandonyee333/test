@@ -18,10 +18,10 @@ import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 import com.liferay.osb.asah.salesforce.extractor.util.TimeUtil;
 
@@ -29,8 +29,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
@@ -65,11 +63,6 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		_osbAsahDataSourceIdTermQueryBuilder = QueryBuilders.termQuery(
 			"osbAsahDataSourceId",
 			_salesforceExtractorConfiguration.getDataSourceId());
-	}
-
-	@PostConstruct
-	public void init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forSalesforceRaw();
 	}
 
 	@Override
@@ -514,10 +507,8 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	private static final Log _log = LogFactory.getLog(
 		SalesforceExtractorIndividualsNanite.class);
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;

@@ -19,8 +19,8 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.arm.AssignTempUrlsArm;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -30,7 +30,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,16 +47,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 	}
 )
 public class AssignCanonicalUrlArmTest {
-
-	@Before
-	public void setUp() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-		_cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
 
 	@Test
 	public void testAllIndices() {
@@ -184,12 +173,13 @@ public class AssignCanonicalUrlArmTest {
 	@Autowired
 	private AssignTempUrlsArm _assignTempUrlsArm;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_RAW)
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

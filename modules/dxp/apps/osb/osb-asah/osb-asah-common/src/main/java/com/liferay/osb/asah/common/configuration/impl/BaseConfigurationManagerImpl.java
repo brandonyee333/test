@@ -20,8 +20,8 @@ import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.configuration.FileConfiguration;
 import com.liferay.osb.asah.common.configuration.RuntimeConfiguration;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Map;
 import java.util.Objects;
@@ -153,8 +153,6 @@ public abstract class BaseConfigurationManagerImpl
 
 	@PostConstruct
 	public void init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-
 		if ((_fileConfiguration != null) &&
 			StringUtils.isNotEmpty(_fileConfiguration.getDataSourceId())) {
 
@@ -353,10 +351,8 @@ public abstract class BaseConfigurationManagerImpl
 
 	// TODO ASAH-526
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	private final FileConfiguration _fileConfiguration =
 		buildFileConfiguration();

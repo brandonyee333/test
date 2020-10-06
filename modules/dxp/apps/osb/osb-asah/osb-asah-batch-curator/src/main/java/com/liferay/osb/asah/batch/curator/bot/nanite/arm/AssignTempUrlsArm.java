@@ -15,14 +15,11 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
-
-import javax.annotation.PostConstruct;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,21 +37,13 @@ public class AssignTempUrlsArm {
 			_ASSET_COLLECTION_NAMES);
 	}
 
-	@PostConstruct
-	private void _init() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-	}
-
 	private static final String[] _ASSET_COLLECTION_NAMES = {
 		"blog-clicks", "blog-social-shares", "blog-traffic-sources", "blogs",
 		"custom-assets", "document-libraries", "forms", "journal-clicks",
 		"journals"
 	};
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

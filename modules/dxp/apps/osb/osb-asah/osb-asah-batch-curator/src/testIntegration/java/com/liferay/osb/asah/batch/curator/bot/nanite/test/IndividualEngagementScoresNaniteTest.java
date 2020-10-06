@@ -65,10 +65,7 @@ import org.springframework.context.annotation.Primary;
 public class IndividualEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		_dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 

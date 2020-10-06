@@ -14,13 +14,14 @@
 
 package com.liferay.osb.asah.common.elasticsearch.test;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
@@ -32,7 +33,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -46,7 +46,7 @@ public class ElasticsearchRepositoryTest {
 	public void testAdd() {
 		ElasticsearchRepository<MyPreference> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"preferences", _elasticsearchInvokerFactory.forFaroInfo(),
+				"preferences", _faroInfoElasticsearchInvoker,
 				MyPreference.class);
 
 		MyPreference myPreference = elasticsearchRepository.add(
@@ -61,7 +61,7 @@ public class ElasticsearchRepositoryTest {
 	public void testFetchFirst() {
 		ElasticsearchRepository<MyPreference> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"preferences", _elasticsearchInvokerFactory.forFaroInfo(),
+				"preferences", _faroInfoElasticsearchInvoker,
 				MyPreference.class);
 
 		MyPreference myPreference1 = elasticsearchRepository.add(
@@ -81,7 +81,7 @@ public class ElasticsearchRepositoryTest {
 	public void testGet() {
 		ElasticsearchRepository<MyPreference> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"preferences", _elasticsearchInvokerFactory.forFaroInfo(),
+				"preferences", _faroInfoElasticsearchInvoker,
 				MyPreference.class);
 
 		MyPreference myPreference = elasticsearchRepository.add(
@@ -97,7 +97,7 @@ public class ElasticsearchRepositoryTest {
 	public void testSearch() {
 		ElasticsearchRepository<MyPreference> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"preferences", _elasticsearchInvokerFactory.forFaroInfo(),
+				"preferences", _faroInfoElasticsearchInvoker,
 				MyPreference.class);
 
 		MyPreference myPreference1 = elasticsearchRepository.add(
@@ -116,8 +116,8 @@ public class ElasticsearchRepositoryTest {
 			resultBag.getResults());
 	}
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	private static class MyPreference extends Preference {
 

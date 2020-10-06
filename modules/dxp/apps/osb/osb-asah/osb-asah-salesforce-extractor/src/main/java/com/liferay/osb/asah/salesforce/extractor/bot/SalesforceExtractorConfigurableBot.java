@@ -19,8 +19,8 @@ import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorIndividualsNanite;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorNanite;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
@@ -48,9 +48,6 @@ public class SalesforceExtractorConfigurableBot extends BaseConfigurableBot {
 	@PostConstruct
 	public void init() {
 		super.init();
-
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	public void setTableNames(String[] tableNames) {
@@ -86,7 +83,7 @@ public class SalesforceExtractorConfigurableBot extends BaseConfigurableBot {
 
 	@Override
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
-		return _elasticsearchInvokerFactory.forSalesforceRaw();
+		return _salesforceRawElasticsearchInvoker;
 	}
 
 	@Override
@@ -129,14 +126,15 @@ public class SalesforceExtractorConfigurableBot extends BaseConfigurableBot {
 			updateRuntimeConfiguration(configurationsJSONObject.toString());
 	}
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private SalesforceExtractorConfigurationManagerImpl
 		_salesforceExtractorConfigurationManagerImpl;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
+	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 	private String[] _tableNames;
 

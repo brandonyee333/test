@@ -24,7 +24,7 @@ import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -33,8 +33,6 @@ import java.time.LocalTime;
 
 import java.util.Set;
 import java.util.function.BiConsumer;
-
-import javax.annotation.PostConstruct;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -152,14 +150,7 @@ public class IndividualMetricDog {
 		return previousLocalDate.minusDays(timeRange.getDeltaDays());
 	}
 
-	@PostConstruct
-	private void _init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

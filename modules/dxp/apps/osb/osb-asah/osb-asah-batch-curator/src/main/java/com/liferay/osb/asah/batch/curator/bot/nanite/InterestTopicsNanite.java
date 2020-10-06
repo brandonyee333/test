@@ -27,6 +27,7 @@ import cc.mallet.types.InstanceList;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -144,7 +145,7 @@ public class InterestTopicsNanite extends BaseNanite {
 			new SerialPipes(_createPreprocessPipes()));
 
 		Iterator<Instance> instanceIterator = new InstanceIterator(
-			elasticsearchInvokerFactory.forFaroInfo());
+			_faroInfoElasticsearchInvoker);
 
 		instanceList.addThruPipe(instanceIterator);
 
@@ -152,17 +153,17 @@ public class InterestTopicsNanite extends BaseNanite {
 	}
 
 	private void _saveModel(ParallelTopicModel parallelTopicModel) {
-		ElasticsearchInvoker elasticsearchInvoker =
-			elasticsearchInvokerFactory.forFaroInfo();
-
-		elasticsearchInvoker.delete(
+		_faroInfoElasticsearchInvoker.delete(
 			"interest-topics", QueryBuilders.matchAllQuery());
 
-		elasticsearchInvoker.add(
+		_faroInfoElasticsearchInvoker.add(
 			"interest-topics", _createTopicsJSONArray(parallelTopicModel));
 	}
 
 	private static final String _SEPARATOR = "_SEPARATOR_";
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Value("${lda.alpha.sum:1.0}")
 	private double _ldaAlphaSum;

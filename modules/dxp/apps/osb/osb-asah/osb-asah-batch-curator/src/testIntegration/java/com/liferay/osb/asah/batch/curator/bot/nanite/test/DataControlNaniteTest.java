@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataControlNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -61,14 +60,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class DataControlNaniteTest extends BaseNaniteTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
-		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
 		_exportPath = Files.createTempDirectory("export");
-		_salesforceRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forSalesforceRaw();
 	}
 
 	@After
@@ -165,12 +158,12 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 	@Autowired
 	private DataControlNanite _dataControlNanite;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
 	private Path _exportPath;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

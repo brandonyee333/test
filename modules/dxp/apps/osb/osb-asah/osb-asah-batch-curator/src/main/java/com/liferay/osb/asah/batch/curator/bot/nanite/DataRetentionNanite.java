@@ -21,10 +21,9 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.Preference;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,15 +40,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DataRetentionNanite extends BaseNanite {
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-
-		_cerebroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroInfo();
-	}
 
 	@Override
 	public boolean isLogRunEnabled() {
@@ -114,6 +104,7 @@ public class DataRetentionNanite extends BaseNanite {
 		"page-referrers", "pages", "user-sessions"
 	};
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired

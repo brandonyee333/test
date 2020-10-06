@@ -33,8 +33,6 @@ public abstract class BaseActivityFieldsNaniteTestCase
 
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
-
 		dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());

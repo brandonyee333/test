@@ -15,28 +15,17 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
-
-import org.junit.Before;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 /**
  * @author Brian Wing Shun Chan
  */
 public abstract class BaseNaniteTestCase {
 
-	@Before
-	public void setUp() throws Exception {
-		dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
-		faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	protected ElasticsearchInvoker dxpRawElasticsearchInvoker;
-	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
 }

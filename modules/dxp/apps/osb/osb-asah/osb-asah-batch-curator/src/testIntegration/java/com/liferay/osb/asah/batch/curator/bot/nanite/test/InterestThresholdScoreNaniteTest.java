@@ -51,10 +51,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		_dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());

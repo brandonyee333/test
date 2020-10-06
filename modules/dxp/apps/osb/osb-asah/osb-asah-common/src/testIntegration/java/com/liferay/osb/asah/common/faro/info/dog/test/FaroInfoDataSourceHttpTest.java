@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
@@ -27,6 +26,7 @@ import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -63,15 +63,8 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		_mock();
-
-		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
-		_salesforceRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forSalesforceRaw();
 	}
 
 	@Test
@@ -777,10 +770,8 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	@MockBean
 	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
@@ -799,6 +790,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	private SalesforceExtractorConfigurationDog
 		_salesforceExtractorConfigurationDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

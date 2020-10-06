@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,8 +32,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -260,16 +259,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			"provider");
 
 		return providerJSONObject.getString("type");
-	}
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-
-		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
-		_salesforceElasticsearchInvoker =
-			elasticsearchInvokerFactory.forSalesforceRaw();
 	}
 
 	public boolean isAnalyticsConfigured() {
@@ -699,6 +688,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 	@Autowired
 	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
@@ -722,6 +712,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 	@Autowired
 	private NanitesHttp _nanitesHttp;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceElasticsearchInvoker;
 
 	@Autowired

@@ -17,11 +17,9 @@ package com.liferay.osb.asah.batch.curator.rest.controller;
 import com.liferay.osb.asah.batch.curator.bot.OSBAsahBatchCuratorBot;
 import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
-
-import javax.annotation.PostConstruct;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -71,15 +69,8 @@ public class NanitesRestController {
 			new JSONObject(osbAsahTaskJSON));
 	}
 
-	@PostConstruct
-	private void _init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;

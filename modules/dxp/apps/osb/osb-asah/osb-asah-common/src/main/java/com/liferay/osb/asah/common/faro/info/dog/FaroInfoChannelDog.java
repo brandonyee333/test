@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,8 +34,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -176,15 +175,6 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		}
 
 		return channelNamesByGroupIds;
-	}
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-
-		_cerebroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroInfo();
 	}
 
 	public JSONObject patchChannel(String id, JSONObject inputJSONObject) {
@@ -514,6 +504,7 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 
 	private static final Log _log = LogFactory.getLog(FaroInfoChannelDog.class);
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired

@@ -42,10 +42,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		_salesforceDataSourceJSONObject =
 			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
 

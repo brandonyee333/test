@@ -16,8 +16,8 @@ package com.liferay.osb.asah.salesforce.extractor.bot.nanite.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorIndividualsNanite;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorFileConfigurationImpl;
 import com.liferay.osb.asah.salesforce.extractor.spring.OSBAsahSalesforceExtractorSpringBootApplication;
@@ -60,8 +60,6 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		_elasticsearchIndexManager.clearIndices();
 
 		_elasticsearchIndexManager.checkIndices();
-
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forSalesforceRaw();
 
 		JSONObject accountJSONObject = JSONUtil.put(
 			"id", "1"
@@ -308,13 +306,14 @@ public class SalesforceExtractorIndividualsNaniteTest {
 			individualJSONObject.optString("osbAsahDataSourceId"));
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private SalesforceExtractorIndividualsNanite

@@ -57,10 +57,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		JSONObject dataSourceJSONObject =
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 

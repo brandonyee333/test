@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.journal.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -59,17 +58,14 @@ public class JournalNaniteTest extends BaseNaniteTestCase {
 	public void testJournalMetrics() throws Exception {
 		_journalNanite.run();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_journal_info.json", this),
-			elasticsearchInvoker.get("journals"), false);
+			_elasticsearchInvoker.get("journals"), false);
 	}
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private JournalNanite _journalNanite;

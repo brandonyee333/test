@@ -22,19 +22,17 @@ import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.model.DataExportTaskStatus;
 import com.liferay.osb.asah.common.model.DataExportTaskType;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
 import java.io.IOException;
 
 import java.util.Date;
-
-import javax.annotation.PostConstruct;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -111,21 +109,13 @@ public class DataExportTaskDog {
 		return new File(_exportPath + "/" + dataExportTaskId + ".json");
 	}
 
-	@PostConstruct
-	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	@Autowired
 	private DataDog _dataDog;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Value("${osb.asah.batch.curator.data.export.path:/export}")
 	private String _exportPath;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	private final ObjectMapper _objectMapper = new ObjectMapper() {

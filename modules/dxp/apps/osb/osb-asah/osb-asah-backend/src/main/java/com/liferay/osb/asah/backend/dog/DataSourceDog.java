@@ -16,10 +16,10 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.DataSource;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +57,6 @@ public class DataSourceDog {
 	public List<DataSource> getDataSources(
 		String credentialsType, Integer size, Sort sort, String type) {
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
 		if (credentialsType != null) {
@@ -73,7 +70,7 @@ public class DataSourceDog {
 		}
 
 		JSONArray dataSourcesJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
+			_elasticsearchInvoker.get(
 				"data-sources",
 				searchSourceBuilder -> {
 					searchSourceBuilder.query(boolQueryBuilder);
@@ -107,8 +104,8 @@ public class DataSourceDog {
 		return dataSources;
 	}
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;

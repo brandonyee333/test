@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.extractor.processor.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -122,10 +121,7 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesDataSourceCreatedDynamically()
 		throws Exception {
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
-		elasticsearchInvoker.add(
+		_elasticsearchInvoker.add(
 			"data-sources",
 			JSONUtil.put(
 				"channelId", "999"
@@ -217,8 +213,8 @@ public class AnalyticsEventsMessageProcessorTest {
 	@Autowired
 	private AnalyticsEventsMessageProcessor _analyticsEventsMessageProcessor;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
 	private MessageSubscriber _messageSubscriber;

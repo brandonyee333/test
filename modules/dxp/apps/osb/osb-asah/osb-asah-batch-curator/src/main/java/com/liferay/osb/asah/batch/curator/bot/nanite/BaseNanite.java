@@ -15,15 +15,13 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.util.StringUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -36,12 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Michael Bowerman
  */
 public abstract class BaseNanite implements Nanite {
-
-	@PostConstruct
-	public void init() {
-		faroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forFaroInfo();
-	}
 
 	@Override
 	public boolean isLogRunEnabled() {
@@ -167,9 +159,7 @@ public abstract class BaseNanite implements Nanite {
 		child.set(size);
 	}
 
-	@Autowired
-	protected ElasticsearchInvokerFactory elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
 	private void _log(String message) {

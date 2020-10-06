@@ -50,10 +50,7 @@ public class DashboardGraphQLRestControllerTest
 	}
 
 	@Before
-	@Override
 	public void setUp() {
-		super.setUp();
-
 		ReflectionTestUtils.setField(
 			_dashboardDog, "_cerebroInfoElasticsearchInvoker",
 			elasticsearchInvoker);

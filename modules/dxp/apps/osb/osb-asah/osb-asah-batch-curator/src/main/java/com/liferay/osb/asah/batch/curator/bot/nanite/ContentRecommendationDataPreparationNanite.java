@@ -20,11 +20,10 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Arrays;
 import java.util.Collections;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,15 +41,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ContentRecommendationDataPreparationNanite extends BaseNanite {
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-
-		_faroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forFaroInfo();
-	}
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -136,6 +126,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 	private static final Log _log = LogFactory.getLog(
 		ContentRecommendationDataPreparationNanite.class);
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Value("${osb.asah.content.recommendation.max.monthly.job.runs:10}")

@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
@@ -75,18 +74,12 @@ public class IndividualNanite implements Nanite {
 
 	@PostConstruct
 	public void init() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		String[] collections = JSONUtil.toStringArray(
 			_elasticsearchIndexManager.getCollectionsJSONArray(
 				WeDeployDataService.OSB_ASAH_CEREBRO_INFO));
 
 		_collections = ArrayUtils.remove(
 			collections, ArrayUtils.indexOf(collections, "user-sessions"));
-
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	@Override
@@ -454,14 +447,13 @@ public class IndividualNanite implements Nanite {
 			"stream_curator_identity_messages_count",
 			"The number of identity messages processed");
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
 	private String[] _collections;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
@@ -469,6 +461,7 @@ public class IndividualNanite implements Nanite {
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

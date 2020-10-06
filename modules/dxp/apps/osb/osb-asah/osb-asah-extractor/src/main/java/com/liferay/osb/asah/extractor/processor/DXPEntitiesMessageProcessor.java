@@ -17,7 +17,6 @@ package com.liferay.osb.asah.extractor.processor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
@@ -30,14 +29,13 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 
 import java.util.Collections;
 import java.util.Objects;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -170,13 +168,6 @@ public class DXPEntitiesMessageProcessor {
 		}
 
 		return null;
-	}
-
-	@PostConstruct
-	private void _init() {
-		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	private void _processAssociationObject(
@@ -483,14 +474,13 @@ public class DXPEntitiesMessageProcessor {
 			"extractor_dxp_entities_message_queue_size",
 			"The number of DXP entities messages queued to be extracted");
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

@@ -15,13 +15,11 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.upgrade.UpgradeState;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -68,12 +66,6 @@ public class UpgradeProcessRunner {
 		return jsonObject.getString("version");
 	}
 
-	@PostConstruct
-	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	private void _run(List<UpgradeStep> upgradeSteps, String version)
 		throws Exception {
 
@@ -108,9 +100,7 @@ public class UpgradeProcessRunner {
 	private static final Log _log = LogFactory.getLog(
 		UpgradeProcessRunner.class);
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

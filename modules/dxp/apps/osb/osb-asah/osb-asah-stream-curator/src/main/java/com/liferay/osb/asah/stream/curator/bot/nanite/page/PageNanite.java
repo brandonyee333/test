@@ -39,8 +39,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,11 +60,6 @@ public class PageNanite extends BaseNanite<Page> {
 	@Override
 	public String getCollectionName() {
 		return "pages";
-	}
-
-	@PostConstruct
-	public void init() {
-		super.init();
 	}
 
 	@Override

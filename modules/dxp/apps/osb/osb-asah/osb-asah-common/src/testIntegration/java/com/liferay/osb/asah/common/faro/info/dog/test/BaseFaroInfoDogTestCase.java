@@ -15,29 +15,17 @@
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
-
-import org.junit.Before;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 /**
  * @author Michael Bowerman
  */
 public abstract class BaseFaroInfoDogTestCase {
 
-	@Before
-	public void setUp() throws Exception {
-		cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-		faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	protected ElasticsearchInvoker cerebroInfoElasticsearchInvoker;
-	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
 }
