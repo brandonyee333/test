@@ -9,6 +9,7 @@ import {filtersJSONObjectType} from '../types/generic';
 import Button from './Button';
 import FilterSelect from './FilterSelect';
 
+const DXP = 'dxp';
 const PORTLET_ID =
 	'com_liferay_osb_customer_release_tool_web_portlet_ReleaseToolPortlet';
 
@@ -123,6 +124,16 @@ export default class FixpackFilters extends Component {
 			</Fragment>
 		);
 
+		const productLabel =
+		productName === DXP
+			? Liferay.Language.get('product')
+			: Liferay.Language.get('dxp-version');
+
+		const productPlaceholder =
+		productName === DXP
+			? Liferay.Language.get('select-product')
+			: Liferay.Language.get('select-dxp-version');
+
 		return (
 			<Fragment>
 				<form ref={this.fixpackFiltersFormRef} action={actionURL} method="get">
@@ -134,10 +145,10 @@ export default class FixpackFilters extends Component {
 						<div className="search-filter-container">
 							<FilterSelect
 								id={`${namespace}productVersion`}
-								label={Liferay.Language.get('product')}
+								label={productLabel}
 								onChange={this.handleProductVersionOnChange}
 								options={filtersJSON}
-								placeholder={Liferay.Language.get('select-product')}
+								placeholder={productPlaceholder}
 								selected={productVersion}
 							/>
 						</div>

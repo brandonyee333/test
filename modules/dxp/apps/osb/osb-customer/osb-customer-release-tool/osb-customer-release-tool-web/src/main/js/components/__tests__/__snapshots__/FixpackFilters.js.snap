@@ -34,7 +34,7 @@ exports[`FixpackFilters renders empty filters correctly 1`] = `
             class="control-label"
             for="namespaceproductVersion"
           >
-            product:
+            dxp-version:
           </label>
           <select
             class="form-control "
@@ -44,7 +44,7 @@ exports[`FixpackFilters renders empty filters correctly 1`] = `
             <option
               value=""
             >
-              select-product
+              select-dxp-version
             </option>
             <option
               label="DXP 7.0"
@@ -159,7 +159,7 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
             class="control-label"
             for="namespaceproductVersion"
           >
-            product:
+            dxp-version:
           </label>
           <select
             class="form-control "
@@ -169,7 +169,7 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
             <option
               value=""
             >
-              select-product
+              select-dxp-version
             </option>
             <option
               label="DXP 7.0"

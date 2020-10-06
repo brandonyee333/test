@@ -71,7 +71,7 @@ describe('FixpackFilters', () => {
 	it('renders empty filters correctly', () => {
 		const {container, getAllByText, queryByRole} = setup();
 
-		expect(getAllByText('select-product').length).toBe(1);
+		expect(getAllByText('select-dxp-version').length).toBe(1);
 		expect(getAllByText('select-release').length).toBe(2);
 		expect(queryByRole('link')).toBeFalsy();
 		expect(container).toMatchSnapshot();
@@ -100,6 +100,22 @@ describe('FixpackFilters', () => {
 			expect.stringContaining('get Fixpack 2')
 		);
 		expect(container).toMatchSnapshot();
+	});
+
+	it('renders the "Product:" label and "Select Product" placeholder filter input for a DXP product', () => {
+		const {JSONArray} = setup();
+
+		const {container, getByText} = render(
+			<FixpackFilters
+				actionURL="/"
+				filtersJSON={JSONArray}
+				productName="dxp"
+				tabName="tab"
+			/>
+		);
+
+		expect(getByText('product:')).toBeTruthy();
+		expect(getByText('select-product')).toBeTruthy();
 	});
 
 	it('enables one dropdown at a time as the previous dropdown gets filled out', () => {
