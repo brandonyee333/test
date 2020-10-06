@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,6 +36,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * @author André Miranda
  */
+@Ignore
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
 public class FinalizeSessionArmTest {

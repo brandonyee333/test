@@ -651,7 +651,7 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			}
 
 			JSONObject dataSourceJSONObject =
-				_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+				_faroInfoDataSourceDog.fetchDataSourceJSONObject(dataSourceId);
 
 			if (dataSourceJSONObject == null) {
 				if (_log.isWarnEnabled()) {

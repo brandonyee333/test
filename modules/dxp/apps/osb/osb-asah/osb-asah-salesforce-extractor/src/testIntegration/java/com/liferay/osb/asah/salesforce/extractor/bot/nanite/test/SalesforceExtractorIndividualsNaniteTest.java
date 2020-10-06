@@ -306,13 +306,10 @@ public class SalesforceExtractorIndividualsNaniteTest {
 			individualJSONObject.optString("osbAsahDataSourceId"));
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
