@@ -22,7 +22,7 @@ String cmd = ParamUtil.getString(request, Constants.CMD);
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("mvcRenderCommandName", "/analytics_settings/view");
-portletURL.setParameter("tabs1", "synced-contacts-data");
+portletURL.setParameter("tabs1", "synced-contact-data");
 
 String redirect = ParamUtil.getString(request, "redirect", portletURL.toString());
 

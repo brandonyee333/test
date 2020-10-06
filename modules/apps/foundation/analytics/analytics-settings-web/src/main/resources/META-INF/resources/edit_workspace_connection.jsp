@@ -159,7 +159,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 			<%
 			PortletURL syncedContactDataURL = PortletURLUtil.clone(portletURL, renderResponse);
 
-			syncedContactsURL.setParameter("tabs1", "synced-contact-data");
+			syncedContactDataURL.setParameter("tabs1", "synced-contact-data");
 			%>
 
 			<aui:button disabled="<%= !connected %>" href="<%= syncedContactDataURL.toString() %>" primary="<%= true %>" value="select-contacts" />

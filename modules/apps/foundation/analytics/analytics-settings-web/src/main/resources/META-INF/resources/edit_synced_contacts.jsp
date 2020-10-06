@@ -80,9 +80,9 @@ if (includeSyncContactsFields) {
 		</span>
 	</h2>
 
-	<div class="form-text">
+	<p class="mt-3 text-secondary">
 		<liferay-ui:message key="contact-data-help" />
-	</div>
+	</p>
 
 	<aui:form action="<%= includeSyncContactsFields ? editSyncedContactsFieldsURL : editSyncedContactsURL %>" method="post" name="fm">
 		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
@@ -92,8 +92,6 @@ if (includeSyncContactsFields) {
 			<h4>
 				<liferay-ui:message key="sync-all-contacts" />
 			</h4>
-
-			<br />
 
 			<div class="sync-all-contacts">
 

@@ -59,15 +59,12 @@ else {
 %>
 
 <c:if test='<%= SessionErrors.contains(renderRequest, "unsavedContactsFields") %>'>
-	<aui:script>
-		Liferay.Util.openToast({
-			message: '<liferay-ui:message key="synced-fields-have-not-been-saved" />',
-			toastProps: {
-				autoClose: 5000
-			},
-			type: 'warning'
-		});
-	</aui:script>
+	<liferay-ui:alert
+		icon="exclamation-full"
+		message='<%= LanguageUtil.get(resourceBundle, "synced-fields-have-not-been-saved") %>'
+		timeout="<%= 5000 %>"
+		type="danger"
+	/>
 </c:if>
 
 <div class="card container-fluid-1280 main-content-card portlet-analytics-settings">
@@ -77,105 +74,102 @@ else {
 		</span>
 	</h2>
 
-	<hr />
-
-	<div class="autofit-row form-text">
-		<span class="autofit-col autofit-col-expand pb-3">
-			<liferay-ui:message key="select-contact-data-help" />
-		</span>
-	</div>
+	<p class="mt-3 text-secondary">
+		<liferay-ui:message key="select-contact-data-help" />
+	</p>
 
 	<fieldset <%= connected ? "" : "disabled" %>>
-		<label class="control-label">
+		<h4>
 			<liferay-ui:message key="contact-sync-options" />
-		</label>
+		</h4>
 
-		<c:choose>
-			<c:when test="<%= connected %>">
-				<portlet:renderURL var="editSyncedContactsURL">
-					<portlet:param name="mvcRenderCommandName" value="/analytics_settings/edit_synced_contacts" />
-					<portlet:param name="redirect" value="<%= currentURL %>" />
-					<portlet:param name="includeSyncContactsFields" value="true" />
-				</portlet:renderURL>
+		<ul class="list-group-sync">
+			<li>
+				<c:choose>
+					<c:when test="<%= connected %>">
+						<portlet:renderURL var="editSyncedContactsURL">
+							<portlet:param name="mvcRenderCommandName" value="/analytics_settings/edit_synced_contacts" />
+							<portlet:param name="redirect" value="<%= currentURL %>" />
+							<portlet:param name="includeSyncContactsFields" value="true" />
+						</portlet:renderURL>
 
-				<a class="d-flex m-4 p-2 text-decoration-none" href=<%= editSyncedContactsURL %>>
-			</c:when>
-			<c:otherwise>
-				<span class="contacts-link-disabled d-flex m-4 p-2">
-			</c:otherwise>
-		</c:choose>
+						<a class="d-flex m-4 p-2 text-decoration-none" href=<%= editSyncedContactsURL %>>
+					</c:when>
+					<c:otherwise>
+						<span class="contacts-link-disabled d-flex m-4 p-2">
+					</c:otherwise>
+				</c:choose>
 
-		<div class="pr-3">
-			<div class="list-icon sticker sticker-default sticker-lg sticker-static">
-				<liferay-ui:icon
-					icon="user"
-					markupView="lexicon"
-				/>
-			</div>
-		</div>
+				<div class="list-icon sticker sticker-default sticker-lg sticker-static">
+					<liferay-ui:icon
+						icon="user"
+						markupView="lexicon"
+					/>
+				</div>
 
-		<div>
-			<p class="list-group-title">
-				<liferay-ui:message key="sync-contacts" />
-			</p>
+				<div class="sync-options">
+					<p class="list-group-title">
+						<liferay-ui:message key="sync-contacts" />
+					</p>
 
-			<small class="list-group-subtext">
-				<liferay-ui:message arguments='<%= syncAllContacts ? "all" : totalContactsSelected %>' key="x-contacts-selected" />
-			</small>
-		</div>
+					<small class="list-group-subtext">
+						<liferay-ui:message arguments='<%= syncAllContacts ? "all" : totalContactsSelected %>' key="x-contacts-selected" />
+					</small>
+				</div>
 
-		<c:choose>
-			<c:when test="<%= connected %>">
-				</a>
-			</c:when>
-			<c:otherwise>
-				</span>
-			</c:otherwise>
-		</c:choose>
+				<c:choose>
+					<c:when test="<%= connected %>">
+						</a>
+					</c:when>
+					<c:otherwise>
+						</span>
+					</c:otherwise>
+				</c:choose>
+			</li>
+			<li>
+				<c:choose>
+					<c:when test="<%= connected %>">
+						<portlet:renderURL var="editSyncedContactsFieldsURL">
+							<portlet:param name="mvcRenderCommandName" value="/analytics_settings/edit_synced_contacts_fields" />
+							<portlet:param name="redirect" value="<%= currentURL %>" />
+							<portlet:param name="syncAllContacts" value="<%= String.valueOf(syncAllContacts) %>" />
+							<portlet:param name="syncedOrganizationIds" value="<%= StringUtil.merge(syncedOrganizationIds) %>" />
+							<portlet:param name="syncedUserGroupIds" value="<%= StringUtil.merge(syncedUserGroupIds) %>" />
+						</portlet:renderURL>
 
-		<c:choose>
-			<c:when test="<%= connected %>">
-				<portlet:renderURL var="editSyncedContactsFieldsURL">
-					<portlet:param name="mvcRenderCommandName" value="/analytics_settings/edit_synced_contacts_fields" />
-					<portlet:param name="redirect" value="<%= currentURL %>" />
-					<portlet:param name="syncAllContacts" value="<%= String.valueOf(syncAllContacts) %>" />
-					<portlet:param name="syncedOrganizationIds" value="<%= StringUtil.merge(syncedOrganizationIds) %>" />
-					<portlet:param name="syncedUserGroupIds" value="<%= StringUtil.merge(syncedUserGroupIds) %>" />
-				</portlet:renderURL>
+						<a class="d-flex m-4 p-2 text-decoration-none" href=<%= editSyncedContactsFieldsURL %>>
+					</c:when>
+					<c:otherwise>
+						<span class="contacts-link-disabled d-flex m-4 p-2">
+					</c:otherwise>
+				</c:choose>
 
-				<a class="d-flex m-4 p-2 text-decoration-none" href=<%= editSyncedContactsFieldsURL %>>
-			</c:when>
-			<c:otherwise>
-				<span class="contacts-link-disabled d-flex m-4 p-2">
-			</c:otherwise>
-		</c:choose>
+				<div class="list-icon sticker sticker-default sticker-lg sticker-static">
+					<liferay-ui:icon
+						icon="check-circle"
+						markupView="lexicon"
+					/>
+				</div>
 
-		<div class="pr-3">
-			<div class="list-icon sticker sticker-default sticker-lg sticker-static">
-				<liferay-ui:icon
-					icon="check-square"
-					markupView="lexicon"
-				/>
-			</div>
-		</div>
+				<div class="sync-options">
+					<p class="list-group-title">
+						<liferay-ui:message key="sync-data-fields" />
+					</p>
 
-		<div>
-			<p class="list-group-title">
-				<liferay-ui:message key="sync-data-fields" />
-			</p>
+					<small class="list-group-subtext">
+						<liferay-ui:message arguments="<%= syncedContactFieldNames.size() + syncedUserFieldNames.size() %>" key="x-fields-selected" />
+					</small>
+				</div>
 
-			<small class="list-group-subtext">
-				<liferay-ui:message arguments="<%= syncedContactFieldNames.size() + syncedUserFieldNames.size() %>" key="x-fields-selected" />
-			</small>
-		</div>
-
-		<c:choose>
-			<c:when test="<%= connected %>">
-				</a>
-			</c:when>
-			<c:otherwise>
-				</span>
-			</c:otherwise>
-		</c:choose>
+				<c:choose>
+					<c:when test="<%= connected %>">
+						</a>
+					</c:when>
+					<c:otherwise>
+						</span>
+					</c:otherwise>
+				</c:choose>
+			</li>
+		</ul>
 	<fieldset>
 </div>
