@@ -91,7 +91,7 @@ public class EditWorkspaceConnectionMVCActionCommand
 			Validator.isBlank(
 				AnalyticsSettingsUtil.getConnectionType(companyId))) {
 
-			upgrade = false;
+			upgrade = true;
 		}
 
 		_connect(actionRequest, configurationProperties, upgrade);
@@ -284,11 +284,11 @@ public class EditWorkspaceConnectionMVCActionCommand
 				new String[] {
 					"agreedToTermsOfUse", "comments", "companyId", "contactId",
 					"createDate", "defaultUser", "emailAddress",
-					"emailAddressVerified", "externalReferenceCode",
-					"facebookId", "firstName", "googleUserId", "greeting",
-					"jobTitle", "languageId", "lastName", "ldapServerId",
-					"middleName", "modifiedDate", "openId", "portraitId",
-					"screenName", "status", "timeZoneId", "userId", "uuid"
+					"emailAddressVerified", "facebookId", "firstName",
+					"googleUserId", "greeting", "jobTitle", "languageId",
+					"lastName", "ldapServerId", "middleName", "modifiedDate",
+					"openId", "portraitId", "screenName", "status",
+					"timeZoneId", "userId", "uuid"
 				});
 		}
 
