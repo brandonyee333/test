@@ -1,5 +1,5 @@
-import 'core-js/library/fn/array/from';
-import 'core-js/library/fn/map';
+import 'core-js/features/array/from';
+import 'core-js/features/map';
 
 /**
  * Parses the current URL for all the search parameters
