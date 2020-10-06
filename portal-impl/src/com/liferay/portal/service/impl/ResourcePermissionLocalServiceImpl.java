@@ -14,11 +14,14 @@
 
 package com.liferay.portal.service.impl;
 
+import com.liferay.document.library.kernel.service.DLFileEntryLocalServiceUtil;
+import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -33,6 +36,7 @@ import com.liferay.portal.kernel.internal.service.permission.ModelPermissionsImp
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.AuditedModel;
+import com.liferay.portal.kernel.model.BaseChildModel;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.Resource;
@@ -776,6 +780,43 @@ public class ResourcePermissionLocalServiceImpl
 		}
 
 		return availableActionIds;
+	}
+
+	@Override
+	public List<Role> getDynamicInheritanceRoles(
+			long companyId, String name, int scope, String primKey,
+			String actionId)
+		throws PortalException {
+
+		List<Role> roles = getRoles(companyId, name, scope, primKey, actionId);
+
+		BaseChildModel baseChildModel = _getChildModel(name, primKey);
+
+		if (baseChildModel == null) {
+			return roles;
+		}
+
+		String parentClassPK = baseChildModel.getParentClassPK();
+
+		if (Validator.isNull(parentClassPK) || parentClassPK.equals("0")) {
+			return roles;
+		}
+
+		List<Role> parentAccessRoles = getRoles(
+			companyId, baseChildModel.getParentClassName(),
+			ResourceConstants.SCOPE_INDIVIDUAL, parentClassPK, "ACCESS");
+
+		parentAccessRoles.retainAll(roles);
+
+		List<Role> parentViewRoles = _getTreePathRoles(
+			baseChildModel, companyId, roles);
+
+		Set<Role> rolesSet = new HashSet<>();
+
+		rolesSet.addAll(parentAccessRoles);
+		rolesSet.addAll(parentViewRoles);
+
+		return new ArrayList<>(rolesSet);
 	}
 
 	@Override
@@ -1955,6 +1996,39 @@ public class ResourcePermissionLocalServiceImpl
 		}
 	}
 
+	private BaseChildModel _getChildModel(String name, String primKey) {
+		try {
+			if (name.equals(
+					"com.liferay.document.library.kernel.model.DLFileEntry")) {
+
+				return DLFileEntryLocalServiceUtil.getDLFileEntry(
+					GetterUtil.getLong(primKey));
+			}
+
+			if (name.equals(
+					"com.liferay.document.library.kernel.model.DLFolder")) {
+
+				return DLFolderLocalServiceUtil.getDLFolder(
+					GetterUtil.getLong(primKey));
+			}
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				StringBundler sb = new StringBundler(5);
+
+				sb.append("Unable to retrieve parent of ");
+				sb.append(name);
+				sb.append(" with primKey ");
+				sb.append(primKey);
+				sb.append(".");
+
+				_log.debug(sb.toString(), portalException);
+			}
+		}
+
+		return null;
+	}
+
 	private Map<Long, ResourcePermission> _getResourcePermissionsMap(
 		List<ResourcePermission> resourcePermissions) {
 
@@ -1966,6 +2040,28 @@ public class ResourcePermissionLocalServiceImpl
 		}
 
 		return resourcePermissionsMap;
+	}
+
+	private List<Role> _getTreePathRoles(
+			BaseChildModel baseChildModel, long companyId, List<Role> roles)
+		throws PortalException {
+
+		String[] parentFolderIds = StringUtil.split(
+			baseChildModel.getTreePath(), StringPool.SLASH);
+
+		List<Role> folderRoles;
+
+		for (int i = parentFolderIds.length - 1; !roles.isEmpty() && (i > 0);
+			 i--) {
+
+			folderRoles = getRoles(
+				companyId, baseChildModel.getParentClassName(),
+				ResourceConstants.SCOPE_INDIVIDUAL, parentFolderIds[i], "VIEW");
+
+			roles.retainAll(folderRoles);
+		}
+
+		return roles;
 	}
 
 	private void _initPortletDefaultPermissions(
