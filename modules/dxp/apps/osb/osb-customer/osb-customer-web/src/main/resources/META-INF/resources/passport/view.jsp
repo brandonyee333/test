@@ -16,14 +16,10 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-String redirect = ParamUtil.getString(request, "redirect");
-%>
-
 <portlet:actionURL name="/submit_passport_access" var="submitPassportAccessURL" />
 
 <aui:form action="<%= submitPassportAccessURL %>" cssClass="container-fluid-1280" method="post" name="fm">
-	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="redirect" type="hidden" value='<%= ParamUtil.getString(request, "redirect") %>' />
 
 	<liferay-ui:error exception="<%= EmailAddressDomainException.class %>" message="end-user-work-email-address-domain-must-match-your-own-email-address-domain" />
 	<liferay-ui:error exception="<%= RequiredFieldException.class %>" message="please-fill-out-all-required-fields" />

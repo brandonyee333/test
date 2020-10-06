@@ -24,8 +24,6 @@ String entityId = properties.getProperty(PortletPropsKeys.SAML_ENTITY_ID, (Strin
 CertificateTool certificateTool = (CertificateTool)request.getAttribute(SamlWebKeys.SAML_CERTIFICATE_TOOL);
 
 X509Certificate x509Certificate = (X509Certificate)request.getAttribute(SamlWebKeys.SAML_X509_CERTIFICATE);
-
-boolean certificateAuthNeeded = GetterUtil.getBoolean(request.getAttribute(SamlWebKeys.SAML_X509_CERTIFICATE_AUTH_NEEDED));
 %>
 
 <portlet:actionURL name="/admin/updateGeneral" var="updateGeneralURL">
@@ -137,7 +135,7 @@ boolean certificateAuthNeeded = GetterUtil.getBoolean(request.getAttribute(SamlW
 					<liferay-ui:message key="entity-id-must-be-set-before-private-key-and-certificate-can-be-generated" />
 				</div>
 			</c:when>
-			<c:when test="<%= certificateAuthNeeded %>">
+			<c:when test="<%= GetterUtil.getBoolean(request.getAttribute(SamlWebKeys.SAML_X509_CERTIFICATE_AUTH_NEEDED)) %>">
 				<portlet:renderURL copyCurrentRenderParameters="<%= false %>" var="authCertificateURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcRenderCommandName" value="/admin/updateCertificate" />
 					<portlet:param name="cmd" value="auth" />

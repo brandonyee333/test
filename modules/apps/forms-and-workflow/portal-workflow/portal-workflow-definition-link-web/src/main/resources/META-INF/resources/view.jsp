@@ -16,10 +16,6 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-WorkflowDefinitionLinkSearch workflowDefinitionLinkSearchContainer = workflowDefinitionLinkDisplayContext.getSearchContainer();
-%>
-
 <liferay-util:include page="/search_bar.jsp" servletContext="<%= application %>" />
 
 <liferay-util:include page="/management_bar.jsp" servletContext="<%= application %>" />
@@ -27,7 +23,7 @@ WorkflowDefinitionLinkSearch workflowDefinitionLinkSearchContainer = workflowDef
 <div class="container-fluid-1280 workflow-definition-link-container" id="<portlet:namespace />Container">
 	<liferay-ui:search-container
 		id="searchContainer"
-		searchContainer="<%= workflowDefinitionLinkSearchContainer %>"
+		searchContainer="<%= workflowDefinitionLinkDisplayContext.getSearchContainer() %>"
 	>
 		<liferay-ui:search-container-row
 			className="com.liferay.portal.workflow.definition.link.web.internal.search.WorkflowDefinitionLinkSearchEntry"

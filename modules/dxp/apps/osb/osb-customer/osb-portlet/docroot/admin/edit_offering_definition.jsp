@@ -28,7 +28,6 @@ OfferingDefinition offeringDefinition = OfferingDefinitionLocalServiceUtil.fetch
 long productEntryId = BeanParamUtil.getLong(offeringDefinition, request, "productEntryId");
 long supportResponseId = BeanParamUtil.getLong(offeringDefinition, request, "supportResponseId");
 boolean licenses = BeanParamUtil.getBoolean(offeringDefinition, request, "licenses");
-boolean unlimitedLicenses = BeanParamUtil.getBoolean(offeringDefinition, request, "unlimitedLicenses");
 %>
 
 <script type="text/javascript">
@@ -131,7 +130,7 @@ boolean unlimitedLicenses = BeanParamUtil.getBoolean(offeringDefinition, request
 			</td>
 			<td>
 				<liferay-ui:input-checkbox
-					defaultValue="<%= unlimitedLicenses %>"
+					defaultValue='<%= BeanParamUtil.getBoolean(offeringDefinition, request, "unlimitedLicenses") %>'
 					disabled="<%= !licenses %>"
 					param="unlimitedLicenses"
 				/>

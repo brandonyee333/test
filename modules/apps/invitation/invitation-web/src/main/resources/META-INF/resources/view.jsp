@@ -45,7 +45,6 @@
 			Set invalidEmailAddresses = (Set)SessionErrors.get(renderRequest, "emailAddresses");
 
 			for (int i = 0; i < emailMessageMaxRecipients; i++) {
-				String emailAddress = ParamUtil.getString(request, "emailAddress" + i);
 			%>
 
 				<c:if test='<%= (invalidEmailAddresses != null) && invalidEmailAddresses.contains("emailAddress" + i) %>'>
@@ -54,7 +53,7 @@
 					</div>
 				</c:if>
 
-				<aui:input cssClass="lfr-input-text-container" label="" name='<%= "emailAddress" + i %>' size="65" title='<%= LanguageUtil.get(request, "email-address") + StringPool.SPACE + (i + 1) %>' type="text" value="<%= emailAddress %>" />
+				<aui:input cssClass="lfr-input-text-container" label="" name='<%= "emailAddress" + i %>' size="65" title='<%= LanguageUtil.get(request, "email-address") + StringPool.SPACE + (i + 1) %>' type="text" value='<%= ParamUtil.getString(request, "emailAddress" + i) %>' />
 
 			<%
 			}

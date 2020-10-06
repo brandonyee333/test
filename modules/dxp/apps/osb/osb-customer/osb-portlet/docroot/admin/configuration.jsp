@@ -132,15 +132,6 @@ Locale[] locales = localesSet.toArray(new Locale[0]);
 				</aui:fieldset>
 			</c:when>
 			<c:otherwise>
-
-				<%
-				String emailFromName = PrefsParamUtil.getString(portletPreferences, request, "emailFromName");
-				String emailFromAddress = PrefsParamUtil.getString(portletPreferences, request, "emailFromAddress");
-
-				String emailProvisioningCreateAccountSubject = PrefsParamUtil.getString(portletPreferences, request, "emailProvisioningCreateAccountSubject_" + currentLanguageId, StringPool.BLANK);
-				String emailProvisioningCreateAccountBody = PrefsParamUtil.getString(portletPreferences, request, "emailProvisioningCreateAccountBody_" + currentLanguageId, StringPool.BLANK);
-				%>
-
 				<liferay-ui:tabs
 					names="general,provisioning-create-account"
 					param="tabs2"
@@ -182,9 +173,9 @@ Locale[] locales = localesSet.toArray(new Locale[0]);
 						</table>
 
 						<aui:fieldset>
-							<aui:input label="subject" name='<%= "emailProvisioningCreateAccountSubject_" + currentLanguageId %>' value="<%= emailProvisioningCreateAccountSubject %>" />
+							<aui:input label="subject" name='<%= "emailProvisioningCreateAccountSubject_" + currentLanguageId %>' value='<%= PrefsParamUtil.getString(portletPreferences, request, "emailProvisioningCreateAccountSubject_" + currentLanguageId, StringPool.BLANK) %>' />
 
-							<aui:input label="body" name='<%= "emailProvisioningCreateAccountBody_" + currentLanguageId %>' type="textarea" value="<%= emailProvisioningCreateAccountBody %>" />
+							<aui:input label="body" name='<%= "emailProvisioningCreateAccountBody_" + currentLanguageId %>' type="textarea" value='<%= PrefsParamUtil.getString(portletPreferences, request, "emailProvisioningCreateAccountBody_" + currentLanguageId, StringPool.BLANK) %>' />
 						</aui:fieldset>
 
 						<div class="definition-of-terms">
@@ -204,11 +195,11 @@ Locale[] locales = localesSet.toArray(new Locale[0]);
 					</c:when>
 					<c:otherwise>
 						<aui:fieldset>
-							<aui:input label="name" name="emailFromName" value="<%= emailFromName %>" />
+							<aui:input label="name" name="emailFromName" value='<%= PrefsParamUtil.getString(portletPreferences, request, "emailFromName") %>' />
 
 							<liferay-ui:error key="emailFromAddress" message="please-enter-a-valid-email-address" />
 
-							<aui:input label="address" name="emailFromAddress" value="<%= emailFromAddress %>" />
+							<aui:input label="address" name="emailFromAddress" value='<%= PrefsParamUtil.getString(portletPreferences, request, "emailFromAddress") %>' />
 						</aui:fieldset>
 					</c:otherwise>
 				</c:choose>

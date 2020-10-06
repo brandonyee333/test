@@ -20,7 +20,6 @@
 SearchContainer searchContainer = (SearchContainer)request.getAttribute(WebKeys.SEARCH_CONTAINER);
 
 long classPK = ParamUtil.getLong(request, "classPK");
-String scopedLabel = Validator.isNull(scopeTitle) ? ddmDisplay.getTitle(locale) : scopeTitle;
 %>
 
 <liferay-portlet:renderURL copyCurrentRenderParameters="<%= false %>" varImpl="searchURL">
@@ -31,7 +30,7 @@ String scopedLabel = Validator.isNull(scopeTitle) ? ddmDisplay.getTitle(locale) 
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
 	<aui:nav cssClass="navbar-nav">
-		<aui:nav-item label="<%= scopedLabel %>" selected="<%= true %>" />
+		<aui:nav-item label="<%= Validator.isNull(scopeTitle) ? ddmDisplay.getTitle(locale) : scopeTitle %>" selected="<%= true %>" />
 	</aui:nav>
 
 	<aui:nav-bar-search searchContainer="<%= searchContainer %>">

@@ -55,8 +55,6 @@ searchURL.setParameter("mvcPath", "/view.jsp");
 PortletURL viewDefinitionsURL = renderResponse.createRenderURL();
 
 viewDefinitionsURL.setParameter("navigation", "definitions");
-
-WorkflowDefinitionSearch workflowDefinitionSearch = new WorkflowDefinitionSearch(renderRequest, portletURL);
 %>
 
 <liferay-ui:error exception="<%= RequiredWorkflowDefinitionException.class %>" message="you-cannot-deactivate-or-delete-this-definition" />
@@ -108,7 +106,7 @@ WorkflowDefinitionSearch workflowDefinitionSearch = new WorkflowDefinitionSearch
 	<liferay-ui:search-container
 		emptyResultsMessage="no-workflow-definitions-are-defined"
 		id="workflowDefinitions"
-		searchContainer="<%= workflowDefinitionSearch %>"
+		searchContainer="<%= new WorkflowDefinitionSearch(renderRequest, portletURL) %>"
 	>
 
 		<%

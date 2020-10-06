@@ -52,11 +52,6 @@ String widgetURL = PortalUtil.getWidgetURL(portlet, themeDisplay);
 			<div class="container-fluid-1280">
 				<aui:fieldset-group markupView="lexicon">
 					<aui:fieldset collapsed="<%= false %>" collapsible="<%= true %>" label="any-website">
-
-						<%
-						boolean widgetShowAddAppLink = GetterUtil.getBoolean(portletPreferences.getValue("lfrWidgetShowAddAppLink", null), PropsValues.THEME_PORTLET_SHARING_DEFAULT);
-						%>
-
 						<div class="alert alert-info">
 							<liferay-ui:message key="share-this-application-on-any-website" />
 						</div>
@@ -71,7 +66,7 @@ String widgetURL = PortalUtil.getWidgetURL(portlet, themeDisplay);
 							<textarea class="field form-control lfr-textarea" id="<portlet:namespace />widgetScript" onClick="this.select();" readonly="true"><%= HtmlUtil.escape(textAreaContent) %></textarea>
 						</aui:field-wrapper>
 
-						<aui:input label='<%= LanguageUtil.format(request, "allow-users-to-add-x-to-any-website", HtmlUtil.escape(portletDisplay.getTitle()), false) %>' name="widgetShowAddAppLink" type="toggle-switch" value="<%= widgetShowAddAppLink %>" />
+						<aui:input label='<%= LanguageUtil.format(request, "allow-users-to-add-x-to-any-website", HtmlUtil.escape(portletDisplay.getTitle()), false) %>' name="widgetShowAddAppLink" type="toggle-switch" value='<%= GetterUtil.getBoolean(portletPreferences.getValue("lfrWidgetShowAddAppLink", null), PropsValues.THEME_PORTLET_SHARING_DEFAULT) %>' />
 					</aui:fieldset>
 
 					<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="facebook">
@@ -119,33 +114,23 @@ String widgetURL = PortalUtil.getWidgetURL(portlet, themeDisplay);
 					</aui:fieldset>
 
 					<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="opensocial-gadget">
-
-						<%
-						boolean iGoogleShowAddAppLink = PrefsParamUtil.getBoolean(portletPreferences, request, "lfrIgoogleShowAddAppLink");
-						%>
-
 						<div class="alert alert-info">
 							<liferay-ui:message key="use-the-opensocial-gadget-url-to-create-an-opensocial-gadget" />
 						</div>
 
 						<aui:input name="opensocialGadgetURL" type="resource" value="<%= PortalUtil.getGoogleGadgetURL(portlet, themeDisplay) %>" />
 
-						<aui:input label='<%= LanguageUtil.format(request, "allow-users-to-add-x-to-an-open-social-platform", HtmlUtil.escape(portletDisplay.getTitle()), false) %>' name="iGoogleShowAddAppLink" type="toggle-switch" value="<%= iGoogleShowAddAppLink %>" />
+						<aui:input label='<%= LanguageUtil.format(request, "allow-users-to-add-x-to-an-open-social-platform", HtmlUtil.escape(portletDisplay.getTitle()), false) %>' name="iGoogleShowAddAppLink" type="toggle-switch" value='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "lfrIgoogleShowAddAppLink") %>' />
 					</aui:fieldset>
 
 					<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="netvibes">
-
-						<%
-						boolean netvibesShowAddAppLink = PrefsParamUtil.getBoolean(portletPreferences, request, "lfrNetvibesShowAddAppLink");
-						%>
-
 						<div class="alert alert-info">
 							<liferay-ui:message key="use-the-netvibes-widget-url-to-create-a-netvibes-widget" />
 						</div>
 
 						<aui:input name="netvibesWidgetURL" type="resource" value="<%= PortalUtil.getNetvibesURL(portlet, themeDisplay) %>" />
 
-						<aui:input label='<%= LanguageUtil.format(request, "allow-users-to-add-x-to-netvibes-pages", HtmlUtil.escape(portletDisplay.getTitle()), false) %>' name="netvibesShowAddAppLink" type="toggle-switch" value="<%= netvibesShowAddAppLink %>" />
+						<aui:input label='<%= LanguageUtil.format(request, "allow-users-to-add-x-to-netvibes-pages", HtmlUtil.escape(portletDisplay.getTitle()), false) %>' name="netvibesShowAddAppLink" type="toggle-switch" value='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "lfrNetvibesShowAddAppLink") %>' />
 					</aui:fieldset>
 				</aui:fieldset-group>
 			</div>

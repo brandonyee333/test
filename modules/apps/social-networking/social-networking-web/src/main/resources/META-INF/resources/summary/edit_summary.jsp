@@ -16,10 +16,6 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-String aboutMe = HtmlUtil.escape(ExpandoValueLocalServiceUtil.getData(themeDisplay.getCompanyId(), User.class.getName(), "SN", "aboutMe", user2.getUserId(), StringPool.BLANK));
-%>
-
 <portlet:renderURL var="redirectURL" windowState="<%= WindowState.NORMAL.toString() %>" />
 
 <portlet:actionURL name="updateSummary" var="updateSummaryURL" />
@@ -35,7 +31,7 @@ String aboutMe = HtmlUtil.escape(ExpandoValueLocalServiceUtil.getData(themeDispl
 
 	<aui:input name="jobTitle" />
 
-	<aui:input label="about-me" name="aboutMe" type="textarea" value="<%= aboutMe %>" />
+	<aui:input label="about-me" name="aboutMe" type="textarea" value='<%= HtmlUtil.escape(ExpandoValueLocalServiceUtil.getData(themeDisplay.getCompanyId(), User.class.getName(), "SN", "aboutMe", user2.getUserId(), StringPool.BLANK)) %>' />
 
 	<aui:button-row>
 		<aui:button cssClass="btn-lg" type="submit" />

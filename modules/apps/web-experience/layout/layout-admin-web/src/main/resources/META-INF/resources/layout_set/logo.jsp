@@ -19,8 +19,6 @@
 <%
 Group liveGroup = layoutsAdminDisplayContext.getLiveGroup();
 LayoutSet selLayoutSet = layoutsAdminDisplayContext.getSelLayoutSet();
-
-boolean showButtons = GroupPermissionUtil.contains(permissionChecker, layoutsAdminDisplayContext.getSelGroup(), ActionKeys.MANAGE_LAYOUTS) && SitesUtil.isLayoutSetPrototypeUpdateable(selLayoutSet);
 %>
 
 <liferay-ui:error-marker
@@ -73,7 +71,7 @@ else {
 	defaultLogo="<%= defaultLogo %>"
 	defaultLogoURL="<%= companyLogoURL %>"
 	logoDisplaySelector=".layoutset-logo"
-	showButtons="<%= showButtons %>"
+	showButtons="<%= GroupPermissionUtil.contains(permissionChecker, layoutsAdminDisplayContext.getSelGroup(), ActionKeys.MANAGE_LAYOUTS) && SitesUtil.isLayoutSetPrototypeUpdateable(selLayoutSet) %>"
 	tempImageFileName="<%= String.valueOf(selLayoutSet.getLayoutSetId()) %>"
 />
 

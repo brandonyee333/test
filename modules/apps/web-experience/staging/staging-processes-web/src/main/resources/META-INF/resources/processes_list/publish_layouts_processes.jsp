@@ -41,8 +41,6 @@ renderURL.setParameter("orderByType", orderByType);
 renderURL.setParameter("searchContainerId", searchContainerId);
 
 String taskExecutorClassName = localPublishing ? BackgroundTaskExecutorNames.LAYOUT_STAGING_BACKGROUND_TASK_EXECUTOR : BackgroundTaskExecutorNames.LAYOUT_REMOTE_STAGING_BACKGROUND_TASK_EXECUTOR;
-
-OrderByComparator<BackgroundTask> orderByComparator = BackgroundTaskComparatorFactoryUtil.getBackgroundTaskOrderByComparator(orderByCol, orderByType);
 %>
 
 <portlet:actionURL name="deleteBackgroundTasks" var="deleteBackgroundTasksURL">
@@ -65,7 +63,7 @@ OrderByComparator<BackgroundTask> orderByComparator = BackgroundTaskComparatorFa
 		id="<%= searchContainerId %>"
 		iteratorURL="<%= renderURL %>"
 		orderByCol="<%= orderByCol %>"
-		orderByComparator="<%= orderByComparator %>"
+		orderByComparator="<%= BackgroundTaskComparatorFactoryUtil.getBackgroundTaskOrderByComparator(orderByCol, orderByType) %>"
 		orderByType="<%= orderByType %>"
 		rowChecker="<%= new EmptyOnClickRowChecker(liferayPortletResponse) %>"
 	>

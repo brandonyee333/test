@@ -22,8 +22,6 @@ PortletURL portletURL = renderResponse.createRenderURL();
 portletURL.setParameter("mvcPath", "/view.jsp");
 
 String displayStyle = ddlDisplayContext.getDDLRecordSetDisplayStyle();
-
-RecordSetSearch recordSetSearch = ddlDisplayContext.getRecordSetSearch(portletURL);
 %>
 
 <liferay-util:include page="/search_bar.jsp" servletContext="<%= application %>" />
@@ -38,7 +36,7 @@ RecordSetSearch recordSetSearch = ddlDisplayContext.getRecordSetSearch(portletUR
 		<liferay-ui:search-container
 			id="ddlRecordSet"
 			rowChecker="<%= new EmptyOnClickRowChecker(renderResponse) %>"
-			searchContainer="<%= recordSetSearch %>"
+			searchContainer="<%= ddlDisplayContext.getRecordSetSearch(portletURL) %>"
 		>
 
 			<%

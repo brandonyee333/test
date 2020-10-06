@@ -16,16 +16,12 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-Group liveGroup = (Group)request.getAttribute("site.liveGroup");
-%>
-
 <liferay-ui:error-marker
 	key="<%= WebKeys.ERROR_SECTION %>"
 	value="categorization"
 />
 
-<aui:model-context bean="<%= liveGroup %>" model="<%= Group.class %>" />
+<aui:model-context bean='<%= (Group)request.getAttribute("site.liveGroup") %>' model="<%= Group.class %>" />
 
 <liferay-ui:asset-categories-error />
 

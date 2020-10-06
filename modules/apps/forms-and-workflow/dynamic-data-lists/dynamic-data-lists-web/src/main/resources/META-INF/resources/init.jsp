@@ -52,7 +52,6 @@ page import="com.liferay.dynamic.data.lists.util.comparator.DDLRecordSetNameComp
 page import="com.liferay.dynamic.data.lists.web.internal.display.context.DDLDisplayContext" %><%@
 page import="com.liferay.dynamic.data.lists.web.internal.display.context.DDLViewRecordsDisplayContext" %><%@
 page import="com.liferay.dynamic.data.lists.web.internal.search.RecordSetDisplayTerms" %><%@
-page import="com.liferay.dynamic.data.lists.web.internal.search.RecordSetSearch" %><%@
 page import="com.liferay.dynamic.data.lists.web.internal.search.RecordSetSearchTerms" %><%@
 page import="com.liferay.dynamic.data.lists.web.internal.template.DDLDisplayTemplateTransformer" %><%@
 page import="com.liferay.dynamic.data.mapping.exception.NoSuchStructureException" %><%@
