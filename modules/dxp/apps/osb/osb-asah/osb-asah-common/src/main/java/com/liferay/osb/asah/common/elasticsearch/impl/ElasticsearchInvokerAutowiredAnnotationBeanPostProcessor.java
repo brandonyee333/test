@@ -78,7 +78,7 @@ public class ElasticsearchInvokerAutowiredAnnotationBeanPostProcessor
 
 			if (!fieldTypeClass.equals(ElasticsearchInvoker.class)) {
 				throw new IllegalArgumentException(
-					"Unable to autowire ElasticsearchInvoker due " +
+					"Unable to autowire ElasticsearchInvoker due to " +
 						"inconsistent bean type");
 			}
 
