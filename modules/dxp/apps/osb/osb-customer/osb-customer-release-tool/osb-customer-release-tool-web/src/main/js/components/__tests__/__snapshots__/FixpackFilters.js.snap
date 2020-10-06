@@ -14,7 +14,7 @@ exports[`FixpackFilters renders empty filters correctly 1`] = `
     <input
       name="namespaceproduct"
       type="hidden"
-      value="dxp"
+      value="test"
     />
     <input
       name="namespacetabs1"
@@ -139,7 +139,7 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
     <input
       name="namespaceproduct"
       type="hidden"
-      value="dxp"
+      value="test"
     />
     <input
       name="namespacetabs1"

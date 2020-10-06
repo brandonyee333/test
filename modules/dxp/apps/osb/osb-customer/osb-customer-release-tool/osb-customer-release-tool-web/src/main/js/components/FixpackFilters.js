@@ -27,6 +27,7 @@ export default class FixpackFilters extends Component {
 		filtersJSON: filtersJSONObjectType.isRequired,
 		fixpackURL: PropTypes.string,
 		fromFixPackVersion: PropTypes.string,
+		productName: PropTypes.string.isRequired,
 		productVersion: PropTypes.string,
 		tabName: PropTypes.string.isRequired,
 		toFixPackVersion: PropTypes.string
@@ -102,7 +103,7 @@ export default class FixpackFilters extends Component {
 	};
 
 	render() {
-		const {actionURL, filtersJSON, tabName} = this.props;
+		const {actionURL, filtersJSON, productName, tabName} = this.props;
 		const {
 			fixpackURL,
 			fromFixPackVersion,
@@ -126,7 +127,7 @@ export default class FixpackFilters extends Component {
 			<Fragment>
 				<form ref={this.fixpackFiltersFormRef} action={actionURL} method="get">
 					<input name="p_p_id" type="hidden" value={PORTLET_ID} />
-					<input name={`${namespace}product`} type="hidden" value="dxp" />
+					<input name={`${namespace}product`} type="hidden" value={productName} />
 					<input name={`${namespace}tabs1`} type="hidden" value={tabName} />
 
 					<div className="search-filters">
