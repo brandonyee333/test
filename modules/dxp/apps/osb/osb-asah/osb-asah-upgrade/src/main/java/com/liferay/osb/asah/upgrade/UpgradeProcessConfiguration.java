@@ -17,6 +17,7 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_9_0.DXPRawUsersUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_9_0.OSBAsahTasksUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_9_0.PreferencesUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,17 @@ public class UpgradeProcessConfiguration {
 			"0.0.0", ReleaseInfo.getVersion(), _snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.8.0", "2.9.0", _dxpRawUsersUpgradeStep, _preferencesUpgradeStep);
+			"2.8.0", "2.9.0", _dxpRawUsersUpgradeStep, _osbAsahTasksUpgradeStep,
+			_preferencesUpgradeStep);
 
 		return upgradeProcess;
 	}
 
 	@Autowired
 	private DXPRawUsersUpgradeStep _dxpRawUsersUpgradeStep;
+
+	@Autowired
+	private OSBAsahTasksUpgradeStep _osbAsahTasksUpgradeStep;
 
 	@Autowired
 	private PreferencesUpgradeStep _preferencesUpgradeStep;
