@@ -80,7 +80,7 @@ public class CacheableElasticsearchInvokerImpl
 
 		JSONObject jsonObject = super.fetch(collectionName, id);
 
-		if (_cacheManager != null) {
+		if ((_cacheManager != null) && (jsonObject != null)) {
 			cache.put(id, jsonObject.toString());
 		}
 
