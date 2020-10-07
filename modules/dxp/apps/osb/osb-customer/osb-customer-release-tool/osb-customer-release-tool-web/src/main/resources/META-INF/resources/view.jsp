@@ -46,21 +46,42 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 
 <div class="main-heading">
 	<aui:container cssClass="container-fluid-max-xl heading-container" fluid="<%= true %>">
-		<div class="heading-icon">
-			<svg class="lexicon-icon-product-logo">
-				<use xlink:href="#dxp-logo-block"></use>
-			</svg>
-		</div>
+		<c:choose>
+			<c:when test='<%= productName.equals("dxp") %>'>
+				<div class="heading-icon">
+					<svg class="lexicon-icon-product-logo">
+						<use xlink:href="#dxp-logo-block"></use>
+					</svg>
+				</div>
 
-		<div class="heading-text">
-			<h1>
-				<liferay-ui:message key="liferay-dxp-release-notes" />
-			</h1>
+				<div class="heading-text">
+					<h1>
+						<liferay-ui:message key="liferay-dxp-release-notes" />
+					</h1>
 
-			<h5 class="section-subtitle">
-				<liferay-ui:message key="display-the-fix-pack-information-relevant-to-your-liferay-build" />
-			</h5>
-		</div>
+					<h5 class="section-subtitle">
+						<liferay-ui:message key="display-the-fix-pack-information-relevant-to-your-liferay-build" />
+					</h5>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="heading-icon">
+					<svg class="lexicon-icon-product-logo">
+						<use xlink:href="#commerce-logo-block"></use>
+					</svg>
+				</div>
+
+				<div class="heading-text">
+					<h1>
+						<liferay-ui:message key="liferay-commerce-release-notes" />
+					</h1>
+
+					<h5 class="section-subtitle">
+						<liferay-ui:message key="display-the-fix-pack-information-relevant-to-your-liferay-build" />
+					</h5>
+				</div>
+			</c:otherwise>
+		</c:choose>
 	</aui:container>
 </div>
 
@@ -119,8 +140,12 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 	ReleaseTool.render(
 		ReleaseTool.StickyHeader,
 		{
-			headerText: '<liferay-ui:message key="liferay-dxp-release-notes" />',
-			svgId: '#dxp-logo'
+			headerText: <%= productName.equals("dxp") %>
+				? '<liferay-ui:message key="liferay-dxp-release-notes" />'
+				: '<liferay-ui:message key="liferay-commerce-release-notes" />',
+			svgId: <%= productName.equals("dxp") %>
+				? '#dxp-logo'
+				: '#commerce-logo'
 		},
 		document.getElementById('<portlet:namespace />stickyHeader')
 	);
