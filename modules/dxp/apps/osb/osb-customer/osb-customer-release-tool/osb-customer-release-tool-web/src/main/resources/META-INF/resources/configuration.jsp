@@ -26,6 +26,18 @@
 			<aui:fieldset-group markupView="lexicon">
 				<aui:fieldset>
 					<h2>
+						<liferay-ui:message key="product" />
+					</h2>
+
+					<aui:select name="preferences--productName--" required="<%= true %>">
+						<aui:option label="dxp" value="dxp" />
+
+						<aui:option label="commerce" value="commerce" />
+					</aui:select>
+				</aui:fieldset>
+
+				<aui:fieldset>
+					<h2>
 						<liferay-ui:message key="tab-description-journal-article-ids" />
 					</h2>
 
