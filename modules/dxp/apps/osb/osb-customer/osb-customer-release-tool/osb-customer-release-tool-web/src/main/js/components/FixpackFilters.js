@@ -138,7 +138,7 @@ export default class FixpackFilters extends Component {
 			<Fragment>
 				<form ref={this.fixpackFiltersFormRef} action={actionURL} method="get">
 					<input name="p_p_id" type="hidden" value={PORTLET_ID} />
-					<input name={`${namespace}product`} type="hidden" value={productName} />
+					<input name={`${namespace}product`} type="hidden" value="dxp" />
 					<input name={`${namespace}tabs1`} type="hidden" value={tabName} />
 
 					<div className="search-filters">
