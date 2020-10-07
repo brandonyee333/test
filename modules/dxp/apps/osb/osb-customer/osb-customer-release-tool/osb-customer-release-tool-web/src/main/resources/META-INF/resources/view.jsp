@@ -108,7 +108,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 			filtersJSON: <%= releaseToolDisplayContext.getFixPackFiltersJSONArray() %>,
 			fixpackURL: '<%= releaseToolDisplayContext.getFixPackDownloadURL(product, productVersion, toFixPackVersion) %>',
 			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
-			productName: '<%= HtmlUtil.escapeJS(product) %>',
+			productName: '<%= HtmlUtil.escapeJS(productName) %>',
 			productVersion: '<%= String.valueOf(productVersion) %>',
 			tabName: '<%= HtmlUtil.escape(tabs1) %>',
 			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
