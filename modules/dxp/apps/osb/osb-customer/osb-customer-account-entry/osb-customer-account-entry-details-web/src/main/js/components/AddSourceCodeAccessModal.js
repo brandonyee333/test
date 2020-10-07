@@ -10,7 +10,7 @@ import {langSub} from '../helpers/language';
 import {CollaboratorsRecord} from '../store/sourceCodeAccessCollaborator';
 
 const ERROR_VALIDATION = {
-	emailAddress: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/i,
+	emailAddress: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/i,
 	fullName: /^[a-z,.'-]+\s[a-z\s,.'-]+$/i,
 	gitHubUserName: /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i
 };
