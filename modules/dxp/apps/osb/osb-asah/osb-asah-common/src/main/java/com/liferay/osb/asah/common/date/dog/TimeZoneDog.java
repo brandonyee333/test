@@ -1,0 +1,55 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.date.dog;
+
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
+import com.liferay.osb.asah.common.model.Preference;
+
+import java.time.ZoneId;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author Geyson Silva
+ */
+@Component
+public class TimeZoneDog {
+
+	public String getTimeZoneId() {
+		ZoneId zoneId = getZoneId();
+
+		return zoneId.getId();
+	}
+
+	public ZoneId getZoneId() {
+		Preference preference = _faroInfoPreferenceDog.getPreference(
+			"time-zone-id");
+
+		return ZoneId.of(preference.getValue());
+	}
+
+	@PostConstruct
+	private void _init() {
+		TimeZoneDogUtil.setTimeZoneDog(this);
+	}
+
+	@Autowired
+	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
+
+}
