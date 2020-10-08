@@ -11,6 +11,7 @@ import {jiraComponentsType, jiraIssueJSONObjectType} from '../types/changelog';
 
 import * as changelogTable from './ChangelogTable';
 
+import AdditionalInfo from './AdditionalInfo';
 import Button from './Button';
 import FilterCheckbox from './FilterCheckbox';
 import Pagination from './Pagination';
@@ -286,6 +287,8 @@ export default class Changelog extends Component {
 							)}
 						</div>
 					)}
+
+					<AdditionalInfo />
 				</div>
 
 				<div className="col-md-9">

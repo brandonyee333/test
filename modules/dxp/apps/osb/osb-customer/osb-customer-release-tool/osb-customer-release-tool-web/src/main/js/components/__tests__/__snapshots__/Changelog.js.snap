@@ -61,6 +61,32 @@ exports[`Changelog does not show a See More option below the filters if seven or
         </div>
       </div>
     </div>
+    <a
+      class="additional-info"
+      href="/commerce-release-notes"
+    >
+      <div
+        class="sidebar-cta"
+      >
+        <svg
+          class="lexicon-icon-product-logo"
+        >
+          <use
+            xlink:href="#commerce"
+          />
+        </svg>
+        <h4>
+          Liferay Commerce Release Notes
+        </h4>
+        <svg
+          class="lexicon-icon lexicon-icon-arrow-right"
+        >
+          <use
+            xlink:href="#arrow-right"
+          />
+        </svg>
+      </div>
+    </a>
   </div>
   <div
     class="col-md-9"
@@ -367,6 +393,32 @@ exports[`Changelog renders changelog results correctly 1`] = `
         </button>
       </div>
     </div>
+    <a
+      class="additional-info"
+      href="/commerce-release-notes"
+    >
+      <div
+        class="sidebar-cta"
+      >
+        <svg
+          class="lexicon-icon-product-logo"
+        >
+          <use
+            xlink:href="#commerce"
+          />
+        </svg>
+        <h4>
+          Liferay Commerce Release Notes
+        </h4>
+        <svg
+          class="lexicon-icon lexicon-icon-arrow-right"
+        >
+          <use
+            xlink:href="#arrow-right"
+          />
+        </svg>
+      </div>
+    </a>
   </div>
   <div
     class="col-md-9"
@@ -673,6 +725,32 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         </button>
       </div>
     </div>
+    <a
+      class="additional-info"
+      href="/commerce-release-notes"
+    >
+      <div
+        class="sidebar-cta"
+      >
+        <svg
+          class="lexicon-icon-product-logo"
+        >
+          <use
+            xlink:href="#commerce"
+          />
+        </svg>
+        <h4>
+          Liferay Commerce Release Notes
+        </h4>
+        <svg
+          class="lexicon-icon lexicon-icon-arrow-right"
+        >
+          <use
+            xlink:href="#arrow-right"
+          />
+        </svg>
+      </div>
+    </a>
   </div>
   <div
     class="col-md-9"
@@ -2681,6 +2759,32 @@ exports[`Changelog renders details modal when a ticket summary is clicked 1`] = 
         </button>
       </div>
     </div>
+    <a
+      class="additional-info"
+      href="/commerce-release-notes"
+    >
+      <div
+        class="sidebar-cta"
+      >
+        <svg
+          class="lexicon-icon-product-logo"
+        >
+          <use
+            xlink:href="#commerce"
+          />
+        </svg>
+        <h4>
+          Liferay Commerce Release Notes
+        </h4>
+        <svg
+          class="lexicon-icon lexicon-icon-arrow-right"
+        >
+          <use
+            xlink:href="#arrow-right"
+          />
+        </svg>
+      </div>
+    </a>
   </div>
   <div
     class="col-md-9"
@@ -3058,6 +3162,32 @@ exports[`Changelog renders no results correctly 1`] = `
         </button>
       </div>
     </div>
+    <a
+      class="additional-info"
+      href="/commerce-release-notes"
+    >
+      <div
+        class="sidebar-cta"
+      >
+        <svg
+          class="lexicon-icon-product-logo"
+        >
+          <use
+            xlink:href="#commerce"
+          />
+        </svg>
+        <h4>
+          Liferay Commerce Release Notes
+        </h4>
+        <svg
+          class="lexicon-icon lexicon-icon-arrow-right"
+        >
+          <use
+            xlink:href="#arrow-right"
+          />
+        </svg>
+      </div>
+    </a>
   </div>
   <div
     class="col-md-9"
@@ -3305,6 +3435,32 @@ exports[`Changelog updates details modal when a different ticket summary is clic
         </button>
       </div>
     </div>
+    <a
+      class="additional-info"
+      href="/commerce-release-notes"
+    >
+      <div
+        class="sidebar-cta"
+      >
+        <svg
+          class="lexicon-icon-product-logo"
+        >
+          <use
+            xlink:href="#commerce"
+          />
+        </svg>
+        <h4>
+          Liferay Commerce Release Notes
+        </h4>
+        <svg
+          class="lexicon-icon lexicon-icon-arrow-right"
+        >
+          <use
+            xlink:href="#arrow-right"
+          />
+        </svg>
+      </div>
+    </a>
   </div>
   <div
     class="col-md-9"
