@@ -32,16 +32,14 @@ import org.springframework.stereotype.Component;
 public class TimeZoneDog {
 
 	public String getTimeZoneId() {
-		ZoneId zoneId = getZoneId();
-
-		return zoneId.getId();
-	}
-
-	public ZoneId getZoneId() {
 		Preference preference = _faroInfoPreferenceDog.getPreference(
 			"time-zone-id");
 
-		return ZoneId.of(preference.getValue());
+		return preference.getValue();
+	}
+
+	public ZoneId getZoneId() {
+		return ZoneId.of(getTimeZoneId());
 	}
 
 	@PostConstruct
