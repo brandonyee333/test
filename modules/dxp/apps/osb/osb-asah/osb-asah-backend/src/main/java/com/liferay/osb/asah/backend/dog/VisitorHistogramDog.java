@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 
 import java.time.Clock;
@@ -138,7 +139,8 @@ public class VisitorHistogramDog {
 		}
 
 		Map<String, Metric> metrics = _metricHelper.createMetrics(
-			Clock.systemUTC(), interval, timeRange, metricType);
+			Clock.system(_timeZoneDog.getZoneId()), interval, timeRange,
+			metricType);
 
 		List<LocalDateTime> histogramBuckets = _getHistogramBuckets(
 			metrics.keySet());
@@ -327,6 +329,9 @@ public class VisitorHistogramDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 	private Script _visitorHistogramCombineScript;
 	private Script _visitorHistogramInitScript;

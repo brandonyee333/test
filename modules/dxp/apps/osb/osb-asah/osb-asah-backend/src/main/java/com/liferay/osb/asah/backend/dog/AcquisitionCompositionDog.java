@@ -54,7 +54,7 @@ public class AcquisitionCompositionDog {
 
 	public CompositionResultBag getCompositionResultBag(
 		String acquisitionType, String channelId, String dataSourceId, int size,
-		int start, TimeRange timeRange) {
+		int start, TimeRange timeRange, String timeZoneId) {
 
 		List<Composition> compositions = new ArrayList<>();
 
@@ -84,7 +84,7 @@ public class AcquisitionCompositionDog {
 
 				BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 					_searchQueryHelper.createRangeQueryBuilder(
-						"lastEventDate", timeRange));
+						"lastEventDate", timeRange, timeZoneId));
 
 				BoolQueryBuilderUtil.filterTerm(
 					boolQueryBuilder, "channelId", channelId);

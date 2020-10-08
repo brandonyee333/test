@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetricType;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.petra.string.StringPool;
 
@@ -110,6 +111,8 @@ public class PageDog {
 		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
 			"eventDate");
 
+		rangeQueryBuilder.timeZone(_timeZoneDog.getTimeZoneId());
+
 		fromDateStringOptional.map(rangeQueryBuilder::gte);
 		toDateStringOptional.map(rangeQueryBuilder::lte);
 
@@ -155,5 +158,8 @@ public class PageDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

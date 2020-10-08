@@ -32,7 +32,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.temporal.WeekFields;
 
 import java.util.ArrayList;
@@ -199,9 +198,6 @@ public class VisitorCohortHeatMapDog {
 			throw new RuntimeException("Invalid interval: " + interval);
 		}
 
-		ZonedDateTime zonedDateTime = startLocalDateTime.atZone(
-			ZoneId.of(searchQueryContext.getTimeZoneId()));
-
 		searchQueryContext.setDataSourceId(searchQueryContext.getAssetId());
 
 		return _searchQueryHelper.createSearchSourceBuilder(
@@ -210,7 +206,9 @@ public class VisitorCohortHeatMapDog {
 				QueryBuilders.rangeQuery(
 					"eventDate"
 				).gte(
-					String.valueOf(zonedDateTime.toLocalDate())
+					String.valueOf(startLocalDateTime.toLocalDate())
+				).timeZone(
+					searchQueryContext.getTimeZoneId()
 				)),
 			searchQueryContext);
 	}

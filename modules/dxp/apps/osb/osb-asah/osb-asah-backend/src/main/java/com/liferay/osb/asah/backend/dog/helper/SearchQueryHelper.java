@@ -126,12 +126,6 @@ public class SearchQueryHelper {
 	}
 
 	public RangeQueryBuilder createRangeQueryBuilder(
-		String name, TimeRange timeRange) {
-
-		return createRangeQueryBuilder(name, timeRange, "UTC");
-	}
-
-	public RangeQueryBuilder createRangeQueryBuilder(
 		String name, TimeRange timeRange, String timeZoneId) {
 
 		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(name);

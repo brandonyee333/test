@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.DataControlTask;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
@@ -36,7 +37,6 @@ import java.io.File;
 import java.nio.file.Path;
 
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -138,7 +138,7 @@ public class DataControlTaskDog {
 		}
 
 		if (rangeKey != null) {
-			LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
+			LocalDate localDate = LocalDate.now(_timeZoneDog.getZoneId());
 
 			localDate = localDate.minusDays(rangeKey);
 
@@ -147,6 +147,8 @@ public class DataControlTaskDog {
 					"createDate"
 				).gte(
 					localDate.toString()
+				).timeZone(
+					_timeZoneDog.getTimeZoneId()
 				));
 		}
 
@@ -245,5 +247,8 @@ public class DataControlTaskDog {
 
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

@@ -26,10 +26,10 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -81,6 +81,8 @@ public class IndividualMetricDog {
 				metricType.getFieldName()
 			).lte(
 				localDateTime.toString()
+			).timeZone(
+				searchQueryContext.getTimeZoneId()
 			));
 
 		BoolQueryBuilderUtil.filterTerm(
@@ -123,7 +125,8 @@ public class IndividualMetricDog {
 
 		Metric metric = new Metric(metricResolver.getMetricType());
 
-		LocalDate localDate = LocalDate.now(Clock.systemUTC());
+		LocalDate localDate = LocalDate.now(
+			ZoneId.of(searchQueryContext.getTimeZoneId()));
 
 		LocalDate previousLocalDate = _getPreviousLocalDate(
 			localDate, searchQueryContext.getTimeRange());

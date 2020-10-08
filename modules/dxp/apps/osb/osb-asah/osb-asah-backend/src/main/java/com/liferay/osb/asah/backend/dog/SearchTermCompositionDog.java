@@ -48,7 +48,7 @@ public class SearchTermCompositionDog {
 
 	public CompositionResultBag getCompositionResultBag(
 		String channelId, String dataSourceId, int size, int start,
-		TimeRange timeRange) {
+		TimeRange timeRange, String timeZoneId) {
 
 		List<Composition> compositions = new ArrayList<>();
 
@@ -84,7 +84,7 @@ public class SearchTermCompositionDog {
 
 				BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 					_searchQueryHelper.createRangeQueryBuilder(
-						"eventDate", timeRange)
+						"eventDate", timeRange, timeZoneId)
 				).filter(
 					QueryBuilders.existsQuery("searchTerm")
 				).mustNot(

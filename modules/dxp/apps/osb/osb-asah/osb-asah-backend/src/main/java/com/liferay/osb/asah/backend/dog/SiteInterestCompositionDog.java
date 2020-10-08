@@ -58,12 +58,12 @@ public class SiteInterestCompositionDog {
 
 	public CompositionResultBag getCompositionResultBag(
 		String channelId, String dataSourceId, int size, int start,
-		TimeRange timeRange) {
+		TimeRange timeRange, String timeZoneId) {
 
 		List<Composition> compositions = new ArrayList<>();
 
 		Map<String, Set<String>> keywords = _getKeywords(
-			channelId, dataSourceId, timeRange);
+			channelId, dataSourceId, timeRange, timeZoneId);
 
 		for (Map.Entry<String, Set<String>> keyword : keywords.entrySet()) {
 			Set<String> sessionIds = keyword.getValue();
@@ -87,14 +87,16 @@ public class SiteInterestCompositionDog {
 
 		return new CompositionResultBag(
 			compositions.subList(start, end), compositions.size(),
-			_getTotalUsers(channelId, dataSourceId, timeRange));
+			_getTotalUsers(channelId, dataSourceId, timeRange, timeZoneId));
 	}
 
 	private BoolQueryBuilder _getActivitiesBoolQueryBuilder(
-		String channelId, String dataSourceId, TimeRange timeRange) {
+		String channelId, String dataSourceId, TimeRange timeRange,
+		String timeZoneId) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			_searchQueryHelper.createRangeQueryBuilder("endTime", timeRange)
+			_searchQueryHelper.createRangeQueryBuilder(
+				"endTime", timeRange, timeZoneId)
 		).filter(
 			QueryBuilders.termQuery("applicationId", "Page")
 		).filter(
@@ -110,7 +112,8 @@ public class SiteInterestCompositionDog {
 	}
 
 	private Map<String, Set<String>> _getKeywords(
-		String channelId, String dataSourceId, TimeRange timeRange) {
+		String channelId, String dataSourceId, TimeRange timeRange,
+		String timeZoneId) {
 
 		Map<String, Set<String>> keywords = new HashMap<>();
 
@@ -198,7 +201,7 @@ public class SiteInterestCompositionDog {
 		}
 
 		Map<String, Set<String>> users = _getUsers(
-			channelId, dataSourceId, timeRange);
+			channelId, dataSourceId, timeRange, timeZoneId);
 
 		for (Map.Entry<String, Set<String>> entry : assets.entrySet()) {
 			String keyword = entry.getKey();
@@ -226,7 +229,8 @@ public class SiteInterestCompositionDog {
 	}
 
 	private long _getTotalUsers(
-		String channelId, String dataSourceId, TimeRange timeRange) {
+		String channelId, String dataSourceId, TimeRange timeRange,
+		String timeZoneId) {
 
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			"activities",
@@ -244,7 +248,7 @@ public class SiteInterestCompositionDog {
 					));
 				searchSourceBuilder.query(
 					_getActivitiesBoolQueryBuilder(
-						channelId, dataSourceId, timeRange));
+						channelId, dataSourceId, timeRange, timeZoneId));
 				searchSourceBuilder.size(0);
 			});
 
@@ -257,7 +261,8 @@ public class SiteInterestCompositionDog {
 	}
 
 	private Map<String, Set<String>> _getUsers(
-		String channelId, String dataSourceId, TimeRange timeRange) {
+		String channelId, String dataSourceId, TimeRange timeRange,
+		String timeZoneId) {
 
 		Map<String, Set<String>> users = new HashMap<>();
 
@@ -296,7 +301,8 @@ public class SiteInterestCompositionDog {
 		searchSourceBuilder.aggregation(compositeAggregationBuilder);
 
 		searchSourceBuilder.query(
-			_getActivitiesBoolQueryBuilder(channelId, dataSourceId, timeRange));
+			_getActivitiesBoolQueryBuilder(
+				channelId, dataSourceId, timeRange, timeZoneId));
 		searchSourceBuilder.size(0);
 
 		while (true) {

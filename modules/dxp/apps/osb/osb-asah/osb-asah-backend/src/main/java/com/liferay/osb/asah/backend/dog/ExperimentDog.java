@@ -53,7 +53,9 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 import java.util.Collections;
@@ -251,7 +253,9 @@ public class ExperimentDog {
 			{
 				setExperimentId(experimentId);
 				setTimeRange(
-					_getTimeRange(experiment.getStartedDateLocalDateTime()));
+					_getTimeRange(
+						experiment.getStartedDateLocalDateTime(),
+						ZoneId.of(getTimeZoneId())));
 				setVariantId(variantId);
 			}
 		};
@@ -539,14 +543,21 @@ public class ExperimentDog {
 			experimentStartedDate.toInstant(), Instant.now());
 	}
 
-	private TimeRange _getTimeRange(LocalDateTime startedDateLocalDateTime) {
-		LocalDate startLocalDate = LocalDate.now(ZoneOffset.UTC);
+	private TimeRange _getTimeRange(
+		LocalDateTime startedDateLocalDateTime, ZoneId zoneId) {
+
+		ZonedDateTime startZonedDateTime = ZonedDateTime.now(zoneId);
 
 		if (startedDateLocalDateTime != null) {
-			startLocalDate = startedDateLocalDateTime.toLocalDate();
+			ZonedDateTime startedDateZoneDateTime =
+				startedDateLocalDateTime.atZone(ZoneOffset.UTC);
+
+			startZonedDateTime = startedDateZoneDateTime.withZoneSameInstant(
+				zoneId);
 		}
 
-		return TimeRange.of(startLocalDate);
+		return TimeRange.of(
+			LocalDate.now(zoneId), startZonedDateTime.toLocalDate());
 	}
 
 	private void _setExperimentSettings(

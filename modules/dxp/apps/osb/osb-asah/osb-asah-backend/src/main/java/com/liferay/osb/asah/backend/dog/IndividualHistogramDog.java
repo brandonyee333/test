@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.petra.string.StringPool;
 
 import java.time.Clock;
@@ -44,8 +45,9 @@ public class IndividualHistogramDog {
 		List<HistogramMetric> histogramMetrics = new ArrayList<>();
 
 		Map<String, Metric> metrics = _metricHelper.createMetrics(
-			Clock.systemUTC(), searchQueryContext.getInterval(),
-			searchQueryContext.getTimeRange(), metricType);
+			Clock.system(_timeZoneDog.getZoneId()),
+			searchQueryContext.getInterval(), searchQueryContext.getTimeRange(),
+			metricType);
 
 		for (Map.Entry<String, Metric> entry : metrics.entrySet()) {
 			Metric metric = entry.getValue();
@@ -79,5 +81,8 @@ public class IndividualHistogramDog {
 
 	@Autowired
 	private MetricHelper _metricHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

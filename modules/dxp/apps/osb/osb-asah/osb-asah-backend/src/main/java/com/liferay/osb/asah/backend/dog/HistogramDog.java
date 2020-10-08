@@ -25,12 +25,14 @@ import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.petra.string.StringPool;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 import java.util.Collections;
@@ -102,7 +104,8 @@ public class HistogramDog {
 		DateHistogramAggregationBuilder dateHistogramAggregationBuilder =
 			_getDateHistogramAggregationBuilder(
 				searchQueryContext.getInterval(),
-				searchQueryContext.getTimeRange());
+				searchQueryContext.getTimeRange(),
+				searchQueryContext.getTimeZoneId());
 
 		MetricResolver metricResolver = dogConfiguration.getMetricResolver(
 			metricType);
@@ -151,7 +154,8 @@ public class HistogramDog {
 		}
 
 		Map<String, Metric> metrics = _metricHelper.createMetrics(
-			Clock.systemUTC(), interval, timeRange, metricType);
+			Clock.system(_timeZoneDog.getZoneId()), interval, timeRange,
+			metricType);
 
 		DogConfiguration dogConfiguration =
 			_dogConfigurationBag.getDogConfiguration(assetType);
@@ -226,12 +230,14 @@ public class HistogramDog {
 	}
 
 	private DateHistogramAggregationBuilder _getDateHistogramAggregationBuilder(
-		Interval interval, TimeRange timeRange) {
+		Interval interval, TimeRange timeRange, String timeZoneId) {
 
 		DateHistogramAggregationBuilder dateHistogramAggregationBuilder =
 			AggregationBuilders.dateHistogram("metric_over_time");
 
 		dateHistogramAggregationBuilder.field("eventDate");
+
+		dateHistogramAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
 
 		if (timeRange.equals(TimeRange.LAST_24_HOURS) ||
 			timeRange.equals(TimeRange.YESTERDAY)) {
@@ -306,5 +312,8 @@ public class HistogramDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -130,7 +131,7 @@ public class ActivityDog {
 		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
 			fieldName);
 
-		rangeQueryBuilder.timeZone("UTC");
+		rangeQueryBuilder.timeZone(_timeZoneDog.getTimeZoneId());
 
 		rangeQueryBuilder.gte(String.format("now-%sd/d", rangeKey));
 		rangeQueryBuilder.lt("now/d");
@@ -151,5 +152,8 @@ public class ActivityDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

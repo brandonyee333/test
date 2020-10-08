@@ -42,7 +42,8 @@ public class SiteInterestCompositionBagDataFetcher
 			searchQueryContext.getDataSourceId(),
 			dataFetchingEnvironment.getArgument("size"),
 			dataFetchingEnvironment.getArgument("start"),
-			searchQueryContext.getTimeRange());
+			searchQueryContext.getTimeRange(),
+			searchQueryContext.getTimeZoneId());
 	}
 
 	@Autowired
