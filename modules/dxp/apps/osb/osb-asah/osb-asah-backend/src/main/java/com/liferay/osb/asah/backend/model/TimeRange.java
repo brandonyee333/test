@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
+
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -265,7 +267,7 @@ public class TimeRange {
 	}
 
 	private TimeRange(boolean includeToday, String key, int rangeKey) {
-		_clock = Clock.systemUTC();
+		_clock = Clock.system(TimeZoneDogUtil.getZoneId());
 		_deltaDays = rangeKey;
 		_includeToday = includeToday;
 		_key = key;
