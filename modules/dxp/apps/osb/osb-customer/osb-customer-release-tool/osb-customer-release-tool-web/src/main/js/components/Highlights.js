@@ -10,6 +10,7 @@ import {getSearchParamValue, setSearchParam} from '../helpers/url-search-params'
 
 import * as highlightsTable from './HightlightsTable';
 
+import AdditionalInfo from './AdditionalInfo';
 import Button from './Button';
 import FilterCheckbox from './FilterCheckbox';
 import TableResults from './TableResults';
@@ -124,6 +125,8 @@ export default class Highlights extends Component {
 							)}
 						</div>
 					)}
+
+					<AdditionalInfo />
 				</div>
 
 				<div className="col-md-9">

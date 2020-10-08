@@ -84,6 +84,32 @@ exports[`Highlights renders correctly 1`] = `
         </label>
       </div>
     </div>
+    <a
+      class="additional-info"
+      href="/commerce-release-notes"
+    >
+      <div
+        class="sidebar-cta"
+      >
+        <svg
+          class="lexicon-icon-product-logo"
+        >
+          <use
+            xlink:href="#commerce"
+          />
+        </svg>
+        <h4>
+          Liferay Commerce Release Notes
+        </h4>
+        <svg
+          class="lexicon-icon lexicon-icon-arrow-right"
+        >
+          <use
+            xlink:href="#arrow-right"
+          />
+        </svg>
+      </div>
+    </a>
   </div>
   <div
     class="col-md-9"
@@ -260,6 +286,32 @@ exports[`Highlights renders no results correctly 1`] = `
         </label>
       </div>
     </div>
+    <a
+      class="additional-info"
+      href="/commerce-release-notes"
+    >
+      <div
+        class="sidebar-cta"
+      >
+        <svg
+          class="lexicon-icon-product-logo"
+        >
+          <use
+            xlink:href="#commerce"
+          />
+        </svg>
+        <h4>
+          Liferay Commerce Release Notes
+        </h4>
+        <svg
+          class="lexicon-icon lexicon-icon-arrow-right"
+        >
+          <use
+            xlink:href="#arrow-right"
+          />
+        </svg>
+      </div>
+    </a>
   </div>
   <div
     class="col-md-9"
