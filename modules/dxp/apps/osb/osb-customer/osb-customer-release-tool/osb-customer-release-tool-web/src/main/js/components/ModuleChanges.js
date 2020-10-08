@@ -14,6 +14,7 @@ import {
 
 import * as moduleChangesTable from './ModuleChangesTable';
 
+import AdditionalInfo from './AdditionalInfo';
 import Button from './Button';
 import CompareVersionFilters from './CompareVersionFilters';
 import FilterCheckbox from './FilterCheckbox';
@@ -291,6 +292,8 @@ export default class ModuleChanges extends Component {
 					{!!cta && (
 						<div className="sidebar-cta" dangerouslySetInnerHTML={{__html: cta}}></div>
 					)}
+
+					<AdditionalInfo />
 				</div>
 
 				<div className="col-md-9">
