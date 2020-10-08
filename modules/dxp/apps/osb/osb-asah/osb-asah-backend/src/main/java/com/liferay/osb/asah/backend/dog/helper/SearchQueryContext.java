@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.model.Geolocation;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Technology;
 import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 
 /**
  * @author Marcellus Tavares
@@ -221,7 +222,7 @@ public class SearchQueryContext {
 	private Technology _technology = Technology.any();
 	private String _terms;
 	private TimeRange _timeRange = TimeRange.LAST_30_DAYS;
-	private String _timeZoneId = "UTC";
+	private String _timeZoneId = TimeZoneDogUtil.getTimeZoneId();
 	private String _title;
 	private String _url;
 	private String _variantId;
