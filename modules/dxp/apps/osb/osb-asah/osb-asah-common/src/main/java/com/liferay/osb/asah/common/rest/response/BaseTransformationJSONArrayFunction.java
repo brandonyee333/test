@@ -15,12 +15,14 @@
 package com.liferay.osb.asah.common.rest.response;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -74,12 +76,16 @@ public abstract class BaseTransformationJSONArrayFunction
 				supportedFieldName
 			).lte(
 				endDayDateString
+			).timeZone(
+				TimeZoneDogUtil.getTimeZoneId()
 			)
 		).filter(
 			QueryBuilders.rangeQuery(
 				supportedFieldName
 			).gte(
 				startDayDateString
+			).timeZone(
+				TimeZoneDogUtil.getTimeZoneId()
 			)
 		);
 
@@ -121,61 +127,63 @@ public abstract class BaseTransformationJSONArrayFunction
 		return null;
 	}
 
-	protected String computeEndDayDateString() throws Exception {
+	protected void computeEndDayDateString() throws Exception {
 		if (_rangeEnd != null) {
-			LocalDate endDate = LocalDate.parse(_rangeEnd);
+			LocalDateTime endLocalDateTime = LocalDateTime.of(
+				LocalDate.parse(_rangeEnd), LocalTime.MAX);
 
-			Calendar calendar = Calendar.getInstance();
+			endDayDateString = endLocalDateTime.toString();
 
-			calendar.set(
-				endDate.getYear(), endDate.getMonthValue() - 1,
-				endDate.getDayOfMonth(), 23, 59, 59);
-
-			endDayDateString = DateUtil.toString(calendar.getTime());
-
-			return endDayDateString;
+			return;
 		}
 
-		endDayDateString = DateUtil.newDateString();
+		LocalDateTime nowLocalDateTime = LocalDateTime.now(
+			TimeZoneDogUtil.getZoneId());
+
+		endDayDateString = nowLocalDateTime.toString();
 
 		if (!_includeToday) {
-			endDayDateString = DateUtil.newEndOfDayDateString(
-				DateUtil.addDays(endDayDateString, -1));
-		}
+			LocalDateTime localDateTime = nowLocalDateTime.minusDays(1);
 
-		return endDayDateString;
+			localDateTime = LocalDateTime.of(
+				localDateTime.toLocalDate(), LocalTime.MAX);
+
+			endDayDateString = localDateTime.toString();
+		}
 	}
 
-	protected String computeStartDayDateString(int size) throws Exception {
+	protected void computeStartDayDateString(int size) throws Exception {
 		if (_rangeStart != null) {
-			LocalDate startDate = LocalDate.parse(_rangeStart);
+			LocalDateTime startLocalDateTime = LocalDateTime.of(
+				LocalDate.parse(_rangeStart), LocalTime.MIDNIGHT);
 
-			Calendar calendar = Calendar.getInstance();
+			startLocalDateTime = startLocalDateTime.minusDays(
+				DateUtil.getDeltaDays(
+					startLocalDateTime.toString(), endDayDateString) + 1);
 
-			calendar.set(
-				startDate.getYear(), startDate.getMonthValue() - 1,
-				startDate.getDayOfMonth(), 0, 0, 0);
+			startDayDateString = startLocalDateTime.toString();
 
-			startDayDateString = DateUtil.toString(calendar.getTime());
-
-			int deltaDays =
-				DateUtil.getDeltaDays(startDayDateString, endDayDateString) + 1;
-
-			startDayDateString = DateUtil.addDays(
-				startDayDateString, -deltaDays);
-
-			return startDayDateString;
+			return;
 		}
 
 		if (size == 0) {
-			startDayDateString = DateUtil.addHours(endDayDateString, -47);
+			LocalDateTime localDateTime = LocalDateTime.parse(endDayDateString);
+
+			localDateTime = localDateTime.minusHours(47);
+
+			startDayDateString = localDateTime.toString();
 		}
 		else {
-			startDayDateString = DateUtil.newDayDateString(
-				DateUtil.addDays(DateUtil.newDateString(), 1 - size));
-		}
+			LocalDateTime localDateTime = LocalDateTime.now(
+				TimeZoneDogUtil.getZoneId());
 
-		return startDayDateString;
+			localDateTime = LocalDateTime.of(
+				localDateTime.toLocalDate(), LocalTime.MIDNIGHT);
+
+			localDateTime = localDateTime.plusDays(1 - size);
+
+			startDayDateString = localDateTime.toString();
+		}
 	}
 
 	protected double getAggregationValue(
