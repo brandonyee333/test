@@ -65,6 +65,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.portlet.MimeResponse;
+import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Component;
@@ -79,7 +80,7 @@ public class FixPackSearcher extends BaseSearcher {
 	protected BooleanQuery buildFullQuery(
 			ThemeDisplay themeDisplay, String product, double productVersion,
 			double fromFixPackVersion, double toFixPackVersion,
-			boolean commerce)
+			PortletPreferences preferences)
 		throws PortalException {
 
 		BooleanQuery fullQuery = new BooleanQueryImpl();
@@ -115,7 +116,9 @@ public class FixPackSearcher extends BaseSearcher {
 			themeDisplay.getScopeGroupId(),
 			product + StringPool.SPACE + String.valueOf(productVersion));
 
-		if (commerce) {
+		String productName = preferences.getValue("productName", null);
+
+		if (productName.equals("commerce")) {
 			JournalFolder folder = _journalFolderLocalService.fetchFolder(
 				themeDisplay.getScopeGroupId(), parentFolder.getFolderId(),
 				"Commerce");
@@ -163,6 +166,8 @@ public class FixPackSearcher extends BaseSearcher {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		PortletPreferences preferences = portletRequest.getPreferences();
+
 		String product = ParamUtil.getString(portletRequest, "product");
 		double productVersion = ParamUtil.getDouble(
 			portletRequest, "productVersion");
@@ -170,7 +175,6 @@ public class FixPackSearcher extends BaseSearcher {
 			portletRequest, "fromFixPackVersion");
 		double toFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "toFixPackVersion");
-		boolean commerce = ParamUtil.getBoolean(portletRequest, "commerce");
 
 		String orderByType = ParamUtil.getString(portletRequest, "orderByType");
 
@@ -179,7 +183,7 @@ public class FixPackSearcher extends BaseSearcher {
 
 		BooleanQuery fullQuery = buildFullQuery(
 			themeDisplay, product, productVersion, fromFixPackVersion,
-			toFixPackVersion, commerce);
+			toFixPackVersion, preferences);
 
 		Hits hits = _indexSearcherHelper.search(searchContext, fullQuery);
 

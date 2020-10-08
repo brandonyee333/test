@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.MimeResponse;
+import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Component;
@@ -47,7 +48,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 	protected String buildJQL(
 			String jiraFixPackCustomField, double fromFixPackVersion,
 			double toFixPackVersion, String keywords, String[] components,
-			String orderByType, boolean commerce)
+			String orderByType, PortletPreferences preferences)
 		throws PortalException {
 
 		int pos = jiraFixPackCustomField.indexOf(StringPool.UNDERLINE);
@@ -59,7 +60,9 @@ public class JiraIssueSearcher extends BaseSearcher {
 
 		sb.append("project in (\"");
 
-		if (commerce) {
+		String productName = preferences.getValue("productName", null);
+
+		if (productName.equals("commerce")) {
 			sb.append("COMMERCE");
 		}
 		else {
@@ -118,6 +121,8 @@ public class JiraIssueSearcher extends BaseSearcher {
 			PortletRequest portletRequest, MimeResponse mimeResponse)
 		throws Exception {
 
+		PortletPreferences preferences = portletRequest.getPreferences();
+
 		String product = ParamUtil.getString(portletRequest, "product");
 		double productVersion = ParamUtil.getDouble(
 			portletRequest, "productVersion");
@@ -133,7 +138,6 @@ public class JiraIssueSearcher extends BaseSearcher {
 			portletRequest, "maxResults",
 			ReleaseToolConfigurationValues.FIX_PACK_JIRA_MAX_RESULTS);
 		String orderByType = ParamUtil.getString(portletRequest, "orderByType");
-		boolean commerce = ParamUtil.getBoolean(portletRequest, "commerce");
 
 		AssetCategory productAssetCategory =
 			_releasesAssetCategoryUtil.getProductAssetCategory(
@@ -146,7 +150,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 
 		String jql = buildJQL(
 			jiraFixPackCustomField, fromFixPackVersion, toFixPackVersion,
-			keywords, components, orderByType, commerce);
+			keywords, components, orderByType, preferences);
 
 		JSONObject jiraResultsJSONObject = _jiraIssueRESTService.getJIRAIssues(
 			jql, "renderedFields", _ISSUE_FIELDS + "," + jiraFixPackCustomField,
