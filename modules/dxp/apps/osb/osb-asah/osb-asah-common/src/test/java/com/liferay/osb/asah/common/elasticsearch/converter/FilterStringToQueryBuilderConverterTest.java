@@ -105,6 +105,8 @@ public class FilterStringToQueryBuilderConverterTest {
 						"column1"
 					).gt(
 						42
+					).timeZone(
+						"UTC"
 					)
 				).should(
 					BoolQueryBuilderUtil.should(
@@ -121,6 +123,8 @@ public class FilterStringToQueryBuilderConverterTest {
 								"column4"
 							).lte(
 								97531.8642
+							).timeZone(
+								"UTC"
 							)
 						)
 					)
@@ -156,12 +160,16 @@ public class FilterStringToQueryBuilderConverterTest {
 							"column5"
 						).gt(
 							-53.21
+						).timeZone(
+							"UTC"
 						)
 					).filter(
 						QueryBuilders.rangeQuery(
 							"column6"
 						).lte(
 							-8192
+						).timeZone(
+							"UTC"
 						)
 					)
 				)
@@ -194,6 +202,8 @@ public class FilterStringToQueryBuilderConverterTest {
 				"column1"
 			).gte(
 				"value1"
+			).timeZone(
+				"UTC"
 			),
 			"column1 ge 'value1'");
 	}
@@ -205,6 +215,8 @@ public class FilterStringToQueryBuilderConverterTest {
 				"column1"
 			).gt(
 				"value1"
+			).timeZone(
+				"UTC"
 			),
 			"column1 gt 'value1'");
 	}
@@ -252,6 +264,8 @@ public class FilterStringToQueryBuilderConverterTest {
 				"column1"
 			).lte(
 				"value1"
+			).timeZone(
+				"UTC"
 			),
 			"column1 le 'value1'");
 	}
@@ -263,6 +277,8 @@ public class FilterStringToQueryBuilderConverterTest {
 				"column1"
 			).lt(
 				"value1"
+			).timeZone(
+				"UTC"
 			),
 			"column1 lt 'value1'");
 	}
@@ -325,12 +341,16 @@ public class FilterStringToQueryBuilderConverterTest {
 						"column2"
 					).lte(
 						"value2"
+					).timeZone(
+						"UTC"
 					)
 				).filter(
 					QueryBuilders.rangeQuery(
 						"column3"
 					).gte(
 						"value3"
+					).timeZone(
+						"UTC"
 					)
 				)
 			),
@@ -347,12 +367,16 @@ public class FilterStringToQueryBuilderConverterTest {
 						"column1"
 					).lt(
 						"value1"
+					).timeZone(
+						"UTC"
 					)
 				).should(
 					QueryBuilders.rangeQuery(
 						"column2"
 					).gt(
 						"value2"
+					).timeZone(
+						"UTC"
 					)
 				)
 			).filter(
@@ -371,12 +395,16 @@ public class FilterStringToQueryBuilderConverterTest {
 					"column1"
 				).gt(
 					"value1"
+				).timeZone(
+					"UTC"
 				)
 			).should(
 				QueryBuilders.rangeQuery(
 					"column2"
 				).lt(
 					"value2"
+				).timeZone(
+					"UTC"
 				)
 			),
 			"column1 gt 'value1' or column2 lt 'value2'");

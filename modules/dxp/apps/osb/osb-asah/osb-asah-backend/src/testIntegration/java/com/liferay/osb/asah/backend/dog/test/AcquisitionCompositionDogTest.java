@@ -46,7 +46,8 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetChannelCompositionResultBag() {
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
-				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(90)),
+				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(90),
+				"UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("referral", 2L);
@@ -59,7 +60,8 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testReferrerCompositionResultBag() {
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
-				"REFERRER", "1", "355524992631037473", 10, 0, TimeRange.of(90)),
+				"REFERRER", "1", "355524992631037473", 10, 0, TimeRange.of(90),
+				"UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("www.liferay.com", 1L);
@@ -74,7 +76,7 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
 				"SOURCE_MEDIUM", "1", "355524992631037473", 10, 0,
-				TimeRange.of(90)),
+				TimeRange.of(90), "UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("www.liferay.com / referral", 1L);
@@ -88,7 +90,8 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testTimeRangeCompositionResultBag() {
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
-				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(30)),
+				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(30),
+				"UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("referral", 2L);
@@ -97,7 +100,8 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 			2, 1, 2);
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
-				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(180)),
+				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(180),
+				"UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("referral", 3L);
@@ -106,7 +110,8 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 			3, 1, 3);
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
-				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(365)),
+				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(365),
+				"UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("referral", 4L);
@@ -119,7 +124,8 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
 				"CHANNEL", "1", "355524992631037473", 10, 0,
-				TimeRange.of(localDate.minusDays(4), localDate.minusDays(80))),
+				TimeRange.of(localDate.minusDays(4), localDate.minusDays(80)),
+				"UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("referral", 1L);
