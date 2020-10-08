@@ -47,7 +47,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 <div class="main-heading">
 	<aui:container cssClass="container-fluid-max-xl heading-container" fluid="<%= true %>">
 		<c:choose>
-			<c:when test='<%= productName.equals("dxp") %>'>
+			<c:when test="<%= productName.equals(ProductConstants.DXP) %>">
 				<div class="heading-icon">
 					<svg class="lexicon-icon-product-logo">
 						<use xlink:href="#dxp-logo-block"></use>
@@ -140,10 +140,10 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 	ReleaseTool.render(
 		ReleaseTool.StickyHeader,
 		{
-			headerText: <%= productName.equals("dxp") %>
+			headerText: <%= productName.equals(ProductConstants.DXP) %>
 				? '<liferay-ui:message key="liferay-dxp-release-notes" />'
 				: '<liferay-ui:message key="liferay-commerce-release-notes" />',
-			svgId: <%= productName.equals("dxp") %>
+			svgId: <%= productName.equals(ProductConstants.DXP) %>
 				? '#dxp-logo'
 				: '#commerce-logo'
 		},

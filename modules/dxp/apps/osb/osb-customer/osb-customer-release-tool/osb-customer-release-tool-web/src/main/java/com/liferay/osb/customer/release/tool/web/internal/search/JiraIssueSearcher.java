@@ -18,6 +18,7 @@ import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.osb.customer.jira.rest.connector.configuration.JIRARESTConnectorConfigurationValues;
 import com.liferay.osb.customer.jira.rest.connector.service.JIRAIssueRESTService;
 import com.liferay.osb.customer.release.tool.configuration.ReleaseToolConfigurationValues;
+import com.liferay.osb.customer.release.tool.web.internal.constants.ProductConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAssetCategoryProperty;
 import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -62,7 +63,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 
 		String productName = preferences.getValue("productName", null);
 
-		if (productName.equals("commerce")) {
+		if (productName.equals(ProductConstants.COMMERCE)) {
 			sb.append("COMMERCE");
 		}
 		else {

@@ -26,6 +26,7 @@ import com.liferay.journal.service.JournalFolderLocalService;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
+import com.liferay.osb.customer.release.tool.web.internal.constants.ProductConstants;
 import com.liferay.osb.customer.release.tool.web.internal.util.DDMFieldsUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -118,7 +119,7 @@ public class FixPackSearcher extends BaseSearcher {
 
 		String productName = preferences.getValue("productName", null);
 
-		if (productName.equals("commerce")) {
+		if (productName.equals(ProductConstants.COMMERCE)) {
 			JournalFolder folder = _journalFolderLocalService.fetchFolder(
 				themeDisplay.getScopeGroupId(), parentFolder.getFolderId(),
 				"Commerce");

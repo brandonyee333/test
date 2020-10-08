@@ -30,9 +30,9 @@
 					</h2>
 
 					<aui:select name="preferences--productName--" required="<%= true %>">
-						<aui:option label="dxp" value="dxp" />
+						<aui:option label="<%= ProductConstants.DXP %>" value="<%= ProductConstants.DXP %>" />
 
-						<aui:option label="commerce" value="commerce" />
+						<aui:option label="<%= ProductConstants.COMMERCE %>" value="<%= ProductConstants.COMMERCE %>" />
 					</aui:select>
 				</aui:fieldset>
 

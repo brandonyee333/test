@@ -28,6 +28,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.journal.model.JournalArticle" %><%@
 page import="com.liferay.journal.model.JournalArticleDisplay" %><%@
 page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
+page import="com.liferay.osb.customer.release.tool.web.internal.constants.ProductConstants" %><%@
 page import="com.liferay.osb.customer.release.tool.web.internal.display.context.ReleaseToolDisplayContext" %><%@
 page import="com.liferay.osb.customer.release.tool.web.internal.search.ArtifactVersionSearcher" %><%@
 page import="com.liferay.osb.customer.release.tool.web.internal.search.FixPackSearcher" %><%@
