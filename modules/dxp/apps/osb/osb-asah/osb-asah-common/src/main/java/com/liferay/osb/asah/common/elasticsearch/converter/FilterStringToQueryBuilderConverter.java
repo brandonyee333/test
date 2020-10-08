@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter;
 
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.FilterStringConverterHelper;
@@ -195,6 +196,7 @@ public class FilterStringToQueryBuilderConverter {
 				fieldName);
 
 			rangeQueryBuilder.gt(value);
+			rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
 
 			queryBuilders.add(rangeQueryBuilder);
 		}
@@ -203,6 +205,7 @@ public class FilterStringToQueryBuilderConverter {
 				fieldName);
 
 			rangeQueryBuilder.gte(value);
+			rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
 
 			queryBuilders.add(rangeQueryBuilder);
 		}
@@ -211,6 +214,7 @@ public class FilterStringToQueryBuilderConverter {
 				fieldName);
 
 			rangeQueryBuilder.lt(value);
+			rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
 
 			queryBuilders.add(rangeQueryBuilder);
 		}
@@ -219,6 +223,7 @@ public class FilterStringToQueryBuilderConverter {
 				fieldName);
 
 			rangeQueryBuilder.lte(value);
+			rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
 
 			queryBuilders.add(rangeQueryBuilder);
 		}
@@ -292,6 +297,8 @@ public class FilterStringToQueryBuilderConverter {
 				value
 			).lte(
 				StringUtil.unquote(arguments.get(2))
+			).timeZone(
+				TimeZoneDogUtil.getTimeZoneId()
 			);
 		}
 		else if (stringFunction.equalsIgnoreCase("contains")) {

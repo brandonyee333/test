@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
-import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
@@ -24,6 +24,10 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -664,35 +668,56 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		String timeFrame = fieldName.substring(
 			_BEHAVIORAL_CRITERIA_FIELD_NAME_PREFIX.length());
 
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
 		if (timeFrame.equalsIgnoreCase("ever")) {
 		}
 		else if (timeFrame.equalsIgnoreCase("last7Days")) {
+			localDateTime = localDateTime.minusDays(7);
+
 			boolQueryBuilder.filter(
 				QueryBuilders.rangeQuery(
 					"day"
 				).gt(
-					DateUtil.addDays(DateUtil.newDayDateString(), -7)
+					localDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				));
 		}
 		else if (timeFrame.equalsIgnoreCase("last30Days")) {
+			localDateTime = localDateTime.minusDays(30);
+
 			boolQueryBuilder.filter(
 				QueryBuilders.rangeQuery(
 					"day"
 				).gt(
-					DateUtil.addDays(DateUtil.newDayDateString(), -30)
+					localDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				));
 		}
 		else if (timeFrame.equalsIgnoreCase("lastYear")) {
+			localDateTime = localDateTime.minusDays(365);
+
 			boolQueryBuilder.filter(
 				QueryBuilders.rangeQuery(
 					"day"
 				).gt(
-					DateUtil.addDays(DateUtil.newDayDateString(), -365)
+					localDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				));
 		}
 		else if (timeFrame.equalsIgnoreCase("today")) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("day", DateUtil.newDayDateString()));
+				QueryBuilders.rangeQuery(
+					"day"
+				).gte(
+					localDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
+				));
 		}
 		else {
 			throw new Exception("Invalid time frame: " + timeFrame);

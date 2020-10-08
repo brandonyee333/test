@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.DefaultFilterStringConverterHelper;
@@ -61,6 +62,8 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				value
 			).lte(
 				StringUtil.unquote(arguments.get(2))
+			).timeZone(
+				TimeZoneDogUtil.getTimeZoneId()
 			);
 		}
 		else if (customFunctionName.equalsIgnoreCase("contains")) {
@@ -130,6 +133,7 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				fieldName);
 
 			rangeQueryBuilder.gt(value);
+			rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
 
 			return QueryBuilders.nestedQuery(
 				"interactions", rangeQueryBuilder, ScoreMode.None);
@@ -139,6 +143,7 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				fieldName);
 
 			rangeQueryBuilder.gte(value);
+			rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
 
 			return QueryBuilders.nestedQuery(
 				"interactions", rangeQueryBuilder, ScoreMode.None);
@@ -148,6 +153,7 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				fieldName);
 
 			rangeQueryBuilder.lt(value);
+			rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
 
 			return QueryBuilders.nestedQuery(
 				"interactions", rangeQueryBuilder, ScoreMode.None);
@@ -157,6 +163,7 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				fieldName);
 
 			rangeQueryBuilder.lte(value);
+			rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
 
 			return QueryBuilders.nestedQuery(
 				"interactions", rangeQueryBuilder, ScoreMode.None);

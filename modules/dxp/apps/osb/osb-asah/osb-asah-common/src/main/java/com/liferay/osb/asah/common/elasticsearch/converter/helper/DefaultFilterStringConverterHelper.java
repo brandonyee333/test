@@ -14,9 +14,13 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter.helper;
 
-import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import java.util.List;
 
@@ -62,55 +66,82 @@ public class DefaultFilterStringConverterHelper
 
 		String value = (String)StringUtil.toObject(valueString);
 
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
 		if ((value == null) || value.equalsIgnoreCase("ever")) {
 			return null;
 		}
 		else if (value.equalsIgnoreCase("last24Hours")) {
+			localDateTime = localDateTime.minusHours(24);
+
 			queryBuilder = BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					fieldName
 				).gt(
-					DateUtil.addHours(DateUtil.newDayDateString(), -24)
+					localDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				));
 		}
 		else if (value.equalsIgnoreCase("last28Days")) {
+			localDateTime = localDateTime.minusDays(28);
+
 			queryBuilder = BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					fieldName
 				).gt(
-					DateUtil.addDays(DateUtil.newDayDateString(), -28)
+					localDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				));
 		}
 		else if (value.equalsIgnoreCase("last30Days")) {
+			localDateTime = localDateTime.minusDays(30);
+
 			queryBuilder = BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					fieldName
 				).gt(
-					DateUtil.addDays(DateUtil.newDayDateString(), -30)
+					localDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				));
 		}
 		else if (value.equalsIgnoreCase("last7Days")) {
+			localDateTime = localDateTime.minusDays(7);
+
 			queryBuilder = BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					fieldName
 				).gt(
-					DateUtil.addDays(DateUtil.newDayDateString(), -7)
+					localDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				));
 		}
 		else if (value.equalsIgnoreCase("last90Days")) {
+			localDateTime = localDateTime.minusDays(90);
+
 			queryBuilder = BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					fieldName
 				).gt(
-					DateUtil.addDays(DateUtil.newDayDateString(), -90)
+					localDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				));
 		}
 		else if (value.equalsIgnoreCase("yesterday")) {
+			localDateTime = localDateTime.minusDays(1);
+
 			queryBuilder = BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					fieldName
 				).gt(
-					DateUtil.addDays(DateUtil.newDayDateString(), -1)
+					localDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				));
 		}
 		else {
