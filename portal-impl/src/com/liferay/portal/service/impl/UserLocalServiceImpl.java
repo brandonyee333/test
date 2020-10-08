@@ -120,6 +120,7 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PwdGenerator;
@@ -5430,7 +5431,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		user.setPasswordReset(passwordReset);
 
 		if (Validator.isNotNull(reminderQueryQuestion) &&
-			Validator.isNotNull(reminderQueryAnswer)) {
+			Validator.isNotNull(reminderQueryAnswer) &&
+			!reminderQueryAnswer.equals(Portal.TEMP_OBFUSCATION_VALUE)) {
 
 			user.setReminderQueryQuestion(reminderQueryQuestion);
 			user.setReminderQueryAnswer(reminderQueryAnswer);
