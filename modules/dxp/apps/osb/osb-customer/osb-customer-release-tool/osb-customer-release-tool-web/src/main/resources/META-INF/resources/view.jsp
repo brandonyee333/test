@@ -139,14 +139,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 
 	ReleaseTool.render(
 		ReleaseTool.StickyHeader,
-		{
-			headerText: <%= productName.equals(ProductConstants.DXP) %>
-				? '<liferay-ui:message key="liferay-dxp-release-notes" />'
-				: '<liferay-ui:message key="liferay-commerce-release-notes" />',
-			svgId: <%= productName.equals(ProductConstants.DXP) %>
-				? '#dxp-logo'
-				: '#commerce-logo'
-		},
+		null,
 		document.getElementById('<portlet:namespace />stickyHeader')
 	);
 </aui:script>

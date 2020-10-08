@@ -1,12 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import throttle from 'lodash.throttle';
 
 const BANNER_HEIGHT = 56;
 
-const StickyHeader = ({ headerText, svgId }) => {
-	const { namespace } = window.ReleaseToolConstants;
+const StickyHeader = () => {
+	const { currentProduct, namespace} = window.ReleaseToolConstants;
+
 	const mainContent = document.getElementById(`${namespace}mainContent`);
 	const stickyHeader = document.getElementById(`${namespace}stickyHeader`);
 
@@ -27,17 +27,12 @@ const StickyHeader = ({ headerText, svgId }) => {
 	return (
 		<div className="container-fluid container-fluid-max-xl">
 			<svg className="lexicon-icon lexicon-icon-product-logo">
-				<use xlinkHref={svgId} />
+				<use xlinkHref={currentProduct.svgId} />
 			</svg>
 
-			{headerText}
+			{currentProduct.headerText}
 		</div>
 	);
-};
-
-StickyHeader.propTypes = {
-	headerText: PropTypes.string.isRequired,
-	svgId: PropTypes.string.isRequired,
 };
 
 export default StickyHeader;

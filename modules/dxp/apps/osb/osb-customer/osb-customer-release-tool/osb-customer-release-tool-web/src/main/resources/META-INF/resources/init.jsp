@@ -62,7 +62,31 @@ String productName = portletPreferences.getValue("productName", null);
 %>
 
 <aui:script>
+	var availableProduct = {
+		headerText: '<liferay-ui:message key="liferay-commerce-release-notes" />',
+		svgId: '#commerce-logo'
+	};
+
+	var currentProduct = {
+		headerText: '<liferay-ui:message key="liferay-dxp-release-notes" />',
+		svgId: '#dxp-logo'
+	};
+
+	if (<%= productName.equals(ProductConstants.COMMERCE) %>) {
+		availableProduct = {
+			headerText: '<liferay-ui:message key="liferay-dxp-release-notes" />',
+			svgId: '#dxp-logo'
+		}
+
+		currentProduct = {
+			headerText: '<liferay-ui:message key="liferay-commerce-release-notes" />',
+			svgId: '#commerce-logo'
+		}
+	}
+
 	window.ReleaseToolConstants = {
-		namespace: '${renderResponse.namespace}'
+		availableProduct,
+		currentProduct,
+		namespace: '${renderResponse.namespace}',
 	};
 </aui:script>

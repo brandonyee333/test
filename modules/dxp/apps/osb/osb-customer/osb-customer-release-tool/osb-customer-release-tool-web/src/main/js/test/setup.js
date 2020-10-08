@@ -7,7 +7,15 @@ window.Liferay = {
 };
 
 window.ReleaseToolConstants = {
-	namespace: 'namespace'
+	availableProduct: {
+		headerText: 'Liferay Commerce Release Notes',
+		svgId: '#commerce'
+	},
+	currentProduct: {
+		headerText: 'Liferay DXP Release Notes',
+		svgId: '#dxp'
+	},
+	namespace: 'namespace',
 };
 
 window.scroll = () => console.log('scroll');
