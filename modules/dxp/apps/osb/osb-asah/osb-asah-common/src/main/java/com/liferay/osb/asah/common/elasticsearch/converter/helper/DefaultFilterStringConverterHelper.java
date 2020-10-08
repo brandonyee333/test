@@ -51,8 +51,7 @@ public class DefaultFilterStringConverterHelper
 	}
 
 	public QueryBuilder getTimeFrameQueryBuilder(
-			String fieldName, String operator, String type, String valueString)
-		throws Exception {
+		String fieldName, String operator, String type, String valueString) {
 
 		if ((!fieldName.equalsIgnoreCase("completeDate") &&
 			 type.equalsIgnoreCase("sessions")) ||
@@ -62,91 +61,45 @@ public class DefaultFilterStringConverterHelper
 			return null;
 		}
 
-		QueryBuilder queryBuilder = null;
-
 		String value = (String)StringUtil.toObject(valueString);
-
-		LocalDateTime localDateTime = LocalDateTime.of(
-			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
 
 		if ((value == null) || value.equalsIgnoreCase("ever")) {
 			return null;
 		}
-		else if (value.equalsIgnoreCase("last24Hours")) {
-			localDateTime = localDateTime.minusHours(24);
 
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					fieldName
-				).gt(
-					localDateTime.toString()
-				).timeZone(
-					TimeZoneDogUtil.getTimeZoneId()
-				));
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		if (value.equalsIgnoreCase("last24Hours")) {
+			localDateTime = localDateTime.minusHours(24);
 		}
 		else if (value.equalsIgnoreCase("last28Days")) {
 			localDateTime = localDateTime.minusDays(28);
-
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					fieldName
-				).gt(
-					localDateTime.toString()
-				).timeZone(
-					TimeZoneDogUtil.getTimeZoneId()
-				));
 		}
 		else if (value.equalsIgnoreCase("last30Days")) {
 			localDateTime = localDateTime.minusDays(30);
-
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					fieldName
-				).gt(
-					localDateTime.toString()
-				).timeZone(
-					TimeZoneDogUtil.getTimeZoneId()
-				));
 		}
 		else if (value.equalsIgnoreCase("last7Days")) {
 			localDateTime = localDateTime.minusDays(7);
-
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					fieldName
-				).gt(
-					localDateTime.toString()
-				).timeZone(
-					TimeZoneDogUtil.getTimeZoneId()
-				));
 		}
 		else if (value.equalsIgnoreCase("last90Days")) {
 			localDateTime = localDateTime.minusDays(90);
-
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					fieldName
-				).gt(
-					localDateTime.toString()
-				).timeZone(
-					TimeZoneDogUtil.getTimeZoneId()
-				));
 		}
 		else if (value.equalsIgnoreCase("yesterday")) {
 			localDateTime = localDateTime.minusDays(1);
-
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				QueryBuilders.rangeQuery(
-					fieldName
-				).gt(
-					localDateTime.toString()
-				).timeZone(
-					TimeZoneDogUtil.getTimeZoneId()
-				));
 		}
 		else {
 			return null;
 		}
+
+		QueryBuilder queryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.rangeQuery(
+				fieldName
+			).gt(
+				localDateTime.toString()
+			).timeZone(
+				TimeZoneDogUtil.getTimeZoneId()
+			));
 
 		if (!operator.equals("eq") && !operator.equals("ge") &&
 			!operator.equals("gt")) {
