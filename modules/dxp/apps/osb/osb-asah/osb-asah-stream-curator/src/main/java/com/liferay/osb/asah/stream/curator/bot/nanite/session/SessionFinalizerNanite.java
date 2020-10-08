@@ -22,6 +22,7 @@ import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -98,6 +99,8 @@ public class SessionFinalizerNanite implements Nanite {
 					"lastEventDate"
 				).lt(
 					"now/d"
+				).timeZone(
+					_timeZoneDog.getTimeZoneId()
 				)
 			)
 		);
@@ -193,5 +196,8 @@ public class SessionFinalizerNanite implements Nanite {
 			registerModule(new JsonOrgModule());
 		}
 	};
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
