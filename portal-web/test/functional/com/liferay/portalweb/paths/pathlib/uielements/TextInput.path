@@ -12,7 +12,7 @@
 <tbody>
 <tr>
 	<td>ANSWER</td>
-	<td>//div[label[contains(.,'Answer')]]/input[@type='text']</td>
+	<td>//div[label[contains(.,'Answer')]]/input[@type='password']</td>
 	<td></td>
 </tr>
 <tr>
