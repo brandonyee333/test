@@ -3,21 +3,6 @@
 		margin-top: $margin-default;
 	}
 
-	.sidebar-cta {
-		background-color: transparent;
-		border: 1px solid $color-border;
-		font-size: $font-size-md;
-		margin-left: -$margin-sm;
-		margin-right: 48px;
-
-		.btn-link {
-			font-size: $font-size-md;
-			padding: 0;
-			text-align: left;
-			white-space: pre-wrap;
-		}
-	}
-
 	.sidebar-filters {
 		margin-bottom: $margin-default;
 	}

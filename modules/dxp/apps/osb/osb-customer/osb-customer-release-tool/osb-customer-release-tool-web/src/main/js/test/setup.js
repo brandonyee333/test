@@ -9,11 +9,13 @@ window.Liferay = {
 window.ReleaseToolConstants = {
 	availableProduct: {
 		headerText: 'Liferay Commerce Release Notes',
-		svgId: '#commerce'
+		svgId: '#commerce',
+		url: '/commerce-release-notes'
 	},
 	currentProduct: {
 		headerText: 'Liferay DXP Release Notes',
-		svgId: '#dxp'
+		svgId: '#dxp',
+		url: '/dxp-release-notes'
 	},
 	namespace: 'namespace',
 };

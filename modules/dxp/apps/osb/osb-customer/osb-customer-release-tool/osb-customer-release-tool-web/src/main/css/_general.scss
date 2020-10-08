@@ -1,3 +1,28 @@
+.additional-info {
+	display: block;
+	margin-top: $margin-default;
+
+	.sidebar-cta {
+		align-items: center;
+		display: flex;
+
+		h4 {
+			color: $color-default;
+			margin-left: $margin-md;
+			margin-right: $margin-md;
+		}
+
+		.lexicon-icon-arrow-right {
+			padding: 0;
+		}
+
+		.lexicon-icon-product-logo {
+			height: 48px;
+			width: 48px;
+		}
+	}
+}
+
 .main-heading {
 	background: linear-gradient(119.51deg, #113B87 0.45%, #123C8A 28.91%, #103880 100%);
 	color: $color-white;
@@ -29,6 +54,21 @@
 
 .section-subtitle {
 	padding-bottom: $padding-sm;
+}
+
+.sidebar-cta {
+	background-color: transparent;
+	border: 1px solid $color-border;
+	font-size: $font-size-md;
+	margin-left: -$margin-sm;
+	margin-right: 48px;
+
+	.btn-link {
+		font-size: $font-size-md;
+		padding: 0;
+		text-align: left;
+		white-space: pre-wrap;
+	}
 }
 
 .sidebar-filters {
