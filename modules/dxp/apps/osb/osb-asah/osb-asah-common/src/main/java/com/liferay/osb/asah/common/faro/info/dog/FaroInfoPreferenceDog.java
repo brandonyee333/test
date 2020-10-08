@@ -62,6 +62,7 @@ public class FaroInfoPreferenceDog {
 				put(
 					"data-retention-period",
 					String.valueOf(13 * DateUtil.MONTH));
+				put("time-zone-id", "UTC");
 			}
 		};
 

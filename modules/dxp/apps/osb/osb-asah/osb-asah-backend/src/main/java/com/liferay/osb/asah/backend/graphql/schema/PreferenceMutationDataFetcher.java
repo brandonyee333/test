@@ -85,6 +85,7 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 
 						return true;
 					});
+				put("time-zone-id", value -> true);
 			}
 		};
 
