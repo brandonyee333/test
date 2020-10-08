@@ -40,7 +40,6 @@ definition {
 
 	@priority = "3"
 	test AddSitePageXSS {
-
 		var sitePage3Name = '''<script>alert(123);</script>''';
 
 		Page.add(pageName = "Site Page 1");
