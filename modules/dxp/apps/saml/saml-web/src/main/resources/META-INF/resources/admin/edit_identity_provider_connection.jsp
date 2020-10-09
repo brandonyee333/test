@@ -30,7 +30,7 @@ long clockSkew = GetterUtil.getLong(request.getAttribute(SamlWebKeys.SAML_CLOCK_
 	<portlet:param name="tabs1" value="identity-provider-connection" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateIdentityProviderConnectionURL %>" enctype="multipart/form-data">
+<aui:form action="<%= updateIdentityProviderConnectionURL %>" cssClass="main-content-card panel-body" enctype="multipart/form-data">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 
 	<liferay-ui:error exception="<%= DuplicateSamlSpIdpConnectionSamlIdpEntityIdException.class %>" message="please-enter-a-unique-identity-provider-entity-id" />
