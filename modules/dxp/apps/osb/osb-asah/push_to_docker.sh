@@ -5,7 +5,7 @@ GIT_HASH=$(git rev-parse --short=7 HEAD)
 PREVIOUS_GIT_HASH=${1}
 
 function build_and_push_docker_images {
-	if [[ $(docker images -q liferaycloud/com-liferay-osb-asah-private 2> /dev/null) ]]
+	if [ "$(docker images -q liferaycloud/com-liferay-osb-asah-private 2> /dev/null)" ]
 	then
 		echo ""
 		echo "Removing local images."
@@ -41,14 +41,14 @@ function build_docker_image {
 	echo "Building ${docker_image_tag}."
 	echo ""
 
-	if [[ ${file_name} == osb-asah-backend ]] ||
-	   [[ ${file_name} == osb-asah-batch-curator ]] ||
-	   [[ ${file_name} == osb-asah-dxp-extractor ]] ||
-	   [[ ${file_name} == osb-asah-extractor ]] ||
-	   [[ ${file_name} == osb-asah-publisher ]] ||
-	   [[ ${file_name} == osb-asah-salesforce-extractor ]] ||
-	   [[ ${file_name} == osb-asah-stream-curator ]] ||
-	   [[ ${file_name} == osb-asah-upgrade ]]
+	if [ ${file_name} == osb-asah-backend ] ||
+	   [ ${file_name} == osb-asah-batch-curator ] ||
+	   [ ${file_name} == osb-asah-dxp-extractor ] ||
+	   [ ${file_name} == osb-asah-extractor ] ||
+	   [ ${file_name} == osb-asah-publisher ] ||
+	   [ ${file_name} == osb-asah-salesforce-extractor ] ||
+	   [ ${file_name} == osb-asah-stream-curator ] ||
+	   [ ${file_name} == osb-asah-upgrade ]
 	then
 		cp ~/.asah/gcp_credentials.json ${file_name}/build/gcp_credentials.json
 
@@ -68,7 +68,7 @@ function build_docker_image {
 }
 
 function check_repository {
-	if [[ ! -f ~/.asah/gcp_credentials.json ]]
+	if [ ! -f ~/.asah/gcp_credentials.json ]
 	then
 		echo "${HOME}/.asah/gcp_credentials.json does not exist.";
 
@@ -153,7 +153,7 @@ function generate_wedeploy_profiles {
 
 		local marker=${markers[0]}
 
-		if [[ ! -f ${marker} ]]
+		if [ ! -f ${marker} ]
 		then
 			continue
 		fi
@@ -203,7 +203,7 @@ function get_docker_image_tag {
 function gradlew {
 	./gradlew "$@"
 
-	if [[ $? -ne 0 ]]
+	if [ $? -ne 0 ]
 	then
 		exit 1
 	fi
