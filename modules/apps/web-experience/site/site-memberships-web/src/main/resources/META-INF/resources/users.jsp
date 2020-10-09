@@ -158,16 +158,11 @@ userSearch.setResults(users);
 			/>
 
 			<c:if test="<%= role != null %>">
-
-				<%
-				String label = LanguageUtil.format(request, "remove-site-role-x", role.getTitle(themeDisplay.getLocale()), false);
-				%>
-
 				<liferay-frontend:management-bar-button
 					href="javascript:;"
 					icon="remove-role"
 					id="removeUserSiteRole"
-					label="<%= label %>"
+					label='<%= LanguageUtil.format(request, "remove-site-role-x", role.getTitle(themeDisplay.getLocale()), false) %>'
 				/>
 			</c:if>
 		</c:if>

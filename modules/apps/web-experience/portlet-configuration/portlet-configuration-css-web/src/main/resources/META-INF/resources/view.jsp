@@ -193,10 +193,9 @@ String portletResource = ParamUtil.getString(request, "portletResource");
 											DecimalFormat decimalFormat = new DecimalFormat("#.##em", decimalFormatSymbols);
 
 											for (double i = 0.1; i <= 12; i += 0.1) {
-												String value = decimalFormat.format(i);
 											%>
 
-												<aui:option label="<%= value %>" />
+												<aui:option label="<%= decimalFormat.format(i) %>" />
 
 											<%
 											}

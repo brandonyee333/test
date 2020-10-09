@@ -383,12 +383,7 @@ String selectStyle = (String)request.getAttribute("configuration.jsp-selectStyle
 					<c:if test="<%= assetPublisherDisplayContext.isOrderingAndGroupingEnabled() %>">
 						<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" id="assetPublisherOrderingAndGroupingPanel" label="ordering-and-grouping">
 							<span class="field-row">
-
-								<%
-								String orderByColumn1 = assetPublisherDisplayContext.getOrderByColumn1();
-								%>
-
-								<aui:select inlineField="<%= true %>" inlineLabel="left" label="order-by" name="preferences--orderByColumn1--" value="<%= orderByColumn1 %>">
+								<aui:select inlineField="<%= true %>" inlineLabel="left" label="order-by" name="preferences--orderByColumn1--" value="<%= assetPublisherDisplayContext.getOrderByColumn1() %>">
 									<c:if test="<%= assetPublisherDisplayContext.isOrderingByTitleEnabled() %>">
 										<aui:option label="title" />
 									</c:if>
