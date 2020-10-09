@@ -66,7 +66,7 @@ import com.amazonaws.services.personalize.model.Solution;
 import com.amazonaws.services.personalize.model.SolutionSummary;
 import com.amazonaws.services.personalize.model.SolutionVersion;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.ml.DataprocSparkManager;
+import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;

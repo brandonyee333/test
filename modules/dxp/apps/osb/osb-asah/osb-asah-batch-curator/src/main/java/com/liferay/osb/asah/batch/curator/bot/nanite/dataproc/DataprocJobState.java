@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite.ml;
+package com.liferay.osb.asah.batch.curator.bot.nanite.dataproc;
 
 import java.util.HashMap;
 import java.util.Map;

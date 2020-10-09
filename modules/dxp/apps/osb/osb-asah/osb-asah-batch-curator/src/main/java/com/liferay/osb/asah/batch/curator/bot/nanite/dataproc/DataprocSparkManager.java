@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite.ml;
+package com.liferay.osb.asah.batch.curator.bot.nanite.dataproc;
 
 import com.google.cloud.dataproc.v1.Job;
 import com.google.cloud.dataproc.v1.JobControllerClient;

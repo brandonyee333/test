@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.ml.DataprocJobState;
-import com.liferay.osb.asah.batch.curator.bot.nanite.ml.DataprocSparkManager;
+import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocJobState;
+import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
