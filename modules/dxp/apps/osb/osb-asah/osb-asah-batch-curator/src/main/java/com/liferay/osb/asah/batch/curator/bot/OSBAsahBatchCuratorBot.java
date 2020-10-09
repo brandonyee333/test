@@ -167,8 +167,6 @@ public class OSBAsahBatchCuratorBot {
 
 		run("StaleDynamicIndividualSegmentsNanite");
 
-		run("UpgradeNanite");
-
 		_executeOSBAsahTasks();
 
 		_scheduleOSBAsahTasks();
