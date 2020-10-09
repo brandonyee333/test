@@ -9,8 +9,5 @@
 			"protocol": "TCP",
 			"targetPort": 6379
 		}
-	],
-	"volumes": {
-		"osbasahredisdata": "/data"
-	}
+	]
 }
