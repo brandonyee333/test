@@ -77,6 +77,6 @@ String productName = portletPreferences.getValue("productName", null);
 	window.ReleaseToolConstants = {
 		availableProduct: <%= productName.equals(ProductConstants.DXP) %> ? commerce : dxp,
 		currentProduct: <%= productName.equals(ProductConstants.DXP) %> ? dxp : commerce,
-		namespace: '${renderResponse.namespace}',
+		namespace: '${renderResponse.namespace}'
 	};
 </aui:script>
