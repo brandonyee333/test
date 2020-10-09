@@ -178,8 +178,8 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void runContentRecommendationDataSolutionNanite() {
-		if (_contentRecommendationDataSolutionRunnable != null) {
-			_contentRecommendationDataSolutionRunnable.run();
+		if (_contentRecommendationDataSolutionNaniteRunnable != null) {
+			_contentRecommendationDataSolutionNaniteRunnable.run();
 		}
 	}
 
@@ -200,8 +200,8 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void runDeleteDXPBatchEntitiesNanite() {
-		if (_deleteDXPBatchEntitiesRunnable != null) {
-			_deleteDXPBatchEntitiesRunnable.run();
+		if (_deleteDXPBatchEntitiesNaniteRunnable != null) {
+			_deleteDXPBatchEntitiesNaniteRunnable.run();
 		}
 	}
 
@@ -212,8 +212,8 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void runSparkManagerMonitoringNanite() {
-		if (_sparkManagerMonitoringRunnable != null) {
-			_sparkManagerMonitoringRunnable.run();
+		if (_sparkManagerMonitoringNaniteRunnable != null) {
+			_sparkManagerMonitoringNaniteRunnable.run();
 		}
 	}
 
@@ -275,15 +275,15 @@ public class OSBAsahBatchCuratorBot {
 		return false;
 	}
 
-	@Bean(name = "contentRecommendationDataSolutionRunnable")
+	@Bean(name = "contentRecommendationDataSolutionNaniteRunnable")
 	@ConditionalOnGoogleApplicationCredentials
-	private Runnable _contentRecommendationDataSolutionRunnable() {
+	private Runnable _contentRecommendationDataSolutionNaniteRunnable() {
 		return () -> run("ContentRecommendationDataSolutionNanite");
 	}
 
-	@Bean(name = "deleteDXPBatchEntitiesRunnable")
+	@Bean(name = "deleteDXPBatchEntitiesNaniteRunnable")
 	@ConditionalOnGoogleApplicationCredentials
-	private Runnable _deleteDXPBatchEntitiesRunnable() {
+	private Runnable _deleteDXPBatchEntitiesNaniteRunnable() {
 		return () -> run("DeleteDXPBatchEntitiesNanite");
 	}
 
@@ -325,9 +325,9 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	@Bean(name = "sparkManagerMonitoringRunnable")
+	@Bean(name = "sparkManagerMonitoringNaniteRunnable")
 	@ConditionalOnGoogleApplicationCredentials
-	private Runnable _sparkManagerMonitoringRunnable() {
+	private Runnable _sparkManagerMonitoringNaniteRunnable() {
 		return () -> run("SparkManagerMonitoringNanite");
 	}
 
@@ -346,12 +346,12 @@ public class OSBAsahBatchCuratorBot {
 	private CacheManager _cacheManager;
 
 	@Autowired(required = false)
-	@Qualifier("contentRecommendationDataSolutionRunnable")
-	private Runnable _contentRecommendationDataSolutionRunnable;
+	@Qualifier("contentRecommendationDataSolutionNaniteRunnable")
+	private Runnable _contentRecommendationDataSolutionNaniteRunnable;
 
 	@Autowired(required = false)
-	@Qualifier("deleteDXPBatchEntitiesRunnable")
-	private Runnable _deleteDXPBatchEntitiesRunnable;
+	@Qualifier("deleteDXPBatchEntitiesNaniteRunnable")
+	private Runnable _deleteDXPBatchEntitiesNaniteRunnable;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
@@ -371,8 +371,8 @@ public class OSBAsahBatchCuratorBot {
 		new HashMap<>();
 
 	@Autowired(required = false)
-	@Qualifier("sparkManagerMonitoringRunnable")
-	private Runnable _sparkManagerMonitoringRunnable;
+	@Qualifier("sparkManagerMonitoringNaniteRunnable")
+	private Runnable _sparkManagerMonitoringNaniteRunnable;
 
 	private final ExecutorService _threadPoolTaskExecutor =
 		Executors.newFixedThreadPool(10);
