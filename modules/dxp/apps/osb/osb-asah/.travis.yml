@@ -12,7 +12,7 @@ jobs:
           script: ./gradlew checkSourceFormatting pmdMain pmdTest pmdTestIntegration spotbugsMain spotbugsTest spotbugsTestIntegration --configure-on-demand --parallel
         - stage: "Tests"
           before_script: docker-compose -f docker-compose.integration-test.yml up -d
-          script: ./gradlew test --configure-on-demand --parallel && ./gradlew testIntegration --configure-on-demand
+          script: ./gradlew test --configure-on-demand --parallel && ./gradlew testIntegration --configure-on-demand && ./gradlew jacocoTestCoverageVerification
           after_script: docker-compose -f docker-compose.integration-test.yml down
           after_success:
               - test $TRAVIS_BRANCH = "7.0.x" &&
