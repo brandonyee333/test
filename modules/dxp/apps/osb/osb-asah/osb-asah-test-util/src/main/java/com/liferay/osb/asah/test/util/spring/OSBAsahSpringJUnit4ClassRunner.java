@@ -29,13 +29,13 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 	public OSBAsahSpringJUnit4ClassRunner(Class<?> clazz) throws Exception {
 		super(clazz);
 
-		System.setProperty("spring.profiles.active", "test");
 		System.setProperty(
 			"spring.autoconfigure.exclude",
 			"org.springframework.boot.autoconfigure.data.redis." +
 				"RedisAutoConfiguration," +
 					"org.springframework.boot.autoconfigure.data.redis." +
 						"RedisRepositoriesAutoConfiguration");
+		System.setProperty("spring.profiles.active", "test");
 
 		_registerOSBAsahTestExecutionListener();
 	}
