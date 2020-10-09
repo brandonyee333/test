@@ -51,7 +51,6 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -93,18 +92,9 @@ public class AnalyticsEventsMessageProcessor {
 
 		String userId = analyticsEventsMessage.getUserId();
 
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.nestedQuery(
-				"dataSourceIndividualPKs",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId", dataSourceId)
-				).filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.individualPKs", userId)
-				),
-				ScoreMode.None));
+		JSONObject individualJSONObject =
+			_faroInfoIndividualDog.getIndividualJSONObject(
+				dataSourceId, userId);
 
 		if (individualJSONObject == null) {
 			individualJSONObject = _faroInfoIndividualDog.addIndividual(

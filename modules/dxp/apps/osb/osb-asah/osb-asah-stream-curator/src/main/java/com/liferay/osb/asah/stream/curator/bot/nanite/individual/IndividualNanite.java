@@ -43,7 +43,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -299,18 +298,9 @@ public class IndividualNanite implements Nanite {
 			String dataSourceId, String emailAddressHashed, String userId)
 		throws Exception {
 
-		JSONObject individualJSONObject1 = _faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.nestedQuery(
-				"dataSourceIndividualPKs",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId", dataSourceId)
-				).filter(
-					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.individualPKs", userId)
-				),
-				ScoreMode.None));
+		JSONObject individualJSONObject1 =
+			_faroInfoIndividualDog.getIndividualJSONObject(
+				dataSourceId, userId);
 
 		if ((individualJSONObject1 != null) &&
 			Objects.equals(

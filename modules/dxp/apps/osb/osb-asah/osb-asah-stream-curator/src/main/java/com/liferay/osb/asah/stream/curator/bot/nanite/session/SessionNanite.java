@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.Acquisition;
@@ -56,7 +57,6 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -177,25 +177,8 @@ public class SessionNanite implements Nanite {
 			return null;
 		}
 
-		try {
-			return _faroInfoElasticsearchInvoker.fetch(
-				"individuals",
-				QueryBuilders.nestedQuery(
-					"dataSourceIndividualPKs",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(
-							"dataSourceIndividualPKs.dataSourceId",
-							analyticsEvent.getDataSourceId())
-					).filter(
-						QueryBuilders.termsQuery(
-							"dataSourceIndividualPKs.individualPKs",
-							analyticsEvent.getUserId())
-					),
-					ScoreMode.None));
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return _faroInfoIndividualDog.getIndividualJSONObject(
+			analyticsEvent.getDataSourceId(), analyticsEvent.getUserId());
 	}
 
 	private JSONObject _getUserSession(String userId, Date firstEventDate) {
@@ -509,6 +492,9 @@ public class SessionNanite implements Nanite {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
 	private FinalizeSessionArm _finalizeSessionArm;
