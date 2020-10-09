@@ -42,9 +42,9 @@ public class CacheableElasticsearchInvokerImpl
 	public JSONObject add(String collectionName, JSONObject jsonObject) {
 		jsonObject = super.add(collectionName, jsonObject);
 
-		if (_cacheManager != null) {
-			Cache cache = _cacheManager.getCache(collectionName);
+		Cache cache = _getCache(collectionName);
 
+		if (cache != null) {
 			cache.put(jsonObject.get("id"), jsonObject.toString());
 		}
 
@@ -55,9 +55,9 @@ public class CacheableElasticsearchInvokerImpl
 	public boolean delete(String collectionName, String id) {
 		boolean deleted = super.delete(collectionName, id);
 
-		if (deleted && (_cacheManager != null)) {
-			Cache cache = _cacheManager.getCache(collectionName);
+		Cache cache = _getCache(collectionName);
 
+		if (deleted && (cache != null)) {
 			cache.evict(id);
 		}
 
@@ -66,11 +66,9 @@ public class CacheableElasticsearchInvokerImpl
 
 	@Override
 	public JSONObject fetch(String collectionName, String id) {
-		Cache cache = null;
+		Cache cache = _getCache(collectionName);
 
-		if (_cacheManager != null) {
-			cache = _cacheManager.getCache(collectionName);
-
+		if (cache != null) {
 			Cache.ValueWrapper valueWrapper = cache.get(id);
 
 			if (valueWrapper != null) {
@@ -80,7 +78,7 @@ public class CacheableElasticsearchInvokerImpl
 
 		JSONObject jsonObject = super.fetch(collectionName, id);
 
-		if ((_cacheManager != null) && (jsonObject != null)) {
+		if ((cache != null) && (jsonObject != null)) {
 			cache.put(id, jsonObject.toString());
 		}
 
@@ -93,13 +91,21 @@ public class CacheableElasticsearchInvokerImpl
 
 		jsonObject = super.update(collectionName, id, jsonObject);
 
-		if (_cacheManager != null) {
-			Cache cache = _cacheManager.getCache(collectionName);
+		Cache cache = _getCache(collectionName);
 
+		if (cache != null) {
 			cache.put(id, jsonObject.toString());
 		}
 
 		return jsonObject;
+	}
+
+	private Cache _getCache(String collectionName) {
+		if (_cacheManager != null) {
+			return _cacheManager.getCache(collectionName);
+		}
+
+		return null;
 	}
 
 	private final CacheManager _cacheManager;
