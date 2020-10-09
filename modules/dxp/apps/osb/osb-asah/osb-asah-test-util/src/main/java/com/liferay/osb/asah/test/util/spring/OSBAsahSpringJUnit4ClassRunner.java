@@ -40,25 +40,7 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 		_registerOSBAsahTestExecutionListener();
 	}
 
-	private OSBAsahTestExecutionListener _createOSBAsahTestExecutionListener()
-		throws Exception {
-
-		OSBAsahTestExecutionListener osbAsahTestExecutionListener =
-			new OSBAsahTestExecutionListener();
-
-		_setAutowireCapability(osbAsahTestExecutionListener);
-
-		return osbAsahTestExecutionListener;
-	}
-
-	private void _registerOSBAsahTestExecutionListener() throws Exception {
-		TestContextManager testContextManager = getTestContextManager();
-
-		testContextManager.registerTestExecutionListeners(
-			_createOSBAsahTestExecutionListener());
-	}
-
-	private void _setAutowireCapability(Object object) {
+	private void _registerOSBAsahTestExecutionListener() {
 		TestContextManager testContextManager = getTestContextManager();
 
 		TestContext testContext = testContextManager.getTestContext();
@@ -69,7 +51,9 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 		AutowireCapableBeanFactory autowireCapableBeanFactory =
 			applicationContext.getAutowireCapableBeanFactory();
 
-		autowireCapableBeanFactory.autowireBean(object);
+		testContextManager.registerTestExecutionListeners(
+			autowireCapableBeanFactory.createBean(
+				OSBAsahTestExecutionListener.class));
 	}
 
 }
