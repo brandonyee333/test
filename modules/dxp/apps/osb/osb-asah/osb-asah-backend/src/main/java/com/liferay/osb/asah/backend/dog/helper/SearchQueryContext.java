@@ -91,6 +91,10 @@ public class SearchQueryContext {
 	}
 
 	public String getTimeZoneId() {
+		if (_timeZoneId == null) {
+			return TimeZoneDogUtil.getTimeZoneId();
+		}
+
 		return _timeZoneId;
 	}
 
@@ -222,7 +226,7 @@ public class SearchQueryContext {
 	private Technology _technology = Technology.any();
 	private String _terms;
 	private TimeRange _timeRange = TimeRange.LAST_30_DAYS;
-	private String _timeZoneId = TimeZoneDogUtil.getTimeZoneId();
+	private String _timeZoneId;
 	private String _title;
 	private String _url;
 	private String _variantId;

@@ -188,6 +188,10 @@ public class TimeRange {
 	}
 
 	public Clock getClock() {
+		if (_clock == null) {
+			return Clock.system(TimeZoneDogUtil.getZoneId());
+		}
+
 		return _clock;
 	}
 
@@ -196,7 +200,7 @@ public class TimeRange {
 	}
 
 	public LocalDate getEndLocalDate() {
-		LocalDateTime localDateTime = LocalDateTime.now(_clock);
+		LocalDateTime localDateTime = LocalDateTime.now(getClock());
 
 		if (!_includeToday) {
 			localDateTime = localDateTime.minusDays(1);
@@ -206,7 +210,7 @@ public class TimeRange {
 	}
 
 	public LocalDateTime getEndLocalDateTime() {
-		LocalDateTime localDateTime = LocalDateTime.now(_clock);
+		LocalDateTime localDateTime = LocalDateTime.now(getClock());
 
 		if (_includeToday) {
 			localDateTime = localDateTime.withMinute(0);
@@ -267,7 +271,6 @@ public class TimeRange {
 	}
 
 	private TimeRange(boolean includeToday, String key, int rangeKey) {
-		_clock = Clock.system(TimeZoneDogUtil.getZoneId());
 		_deltaDays = rangeKey;
 		_includeToday = includeToday;
 		_key = key;
@@ -298,7 +301,7 @@ public class TimeRange {
 			}
 		};
 
-	private final Clock _clock;
+	private Clock _clock;
 	private final int _deltaDays;
 	private final boolean _includeToday;
 	private final String _key;
