@@ -40,9 +40,9 @@ dependencies {
 		force = true
 	}
 
-	compile group: "org.elasticsearch", name: "elasticsearch", version: "7.8.1"
-	compile group: "org.elasticsearch.client", name: "elasticsearch-rest-high-level-client", version: "7.8.1"
-	compile group: "org.elasticsearch.client", name: "transport", version: "7.8.1"
+	compile group: "org.elasticsearch", name: "elasticsearch", version: "7.9.2"
+	compile group: "org.elasticsearch.client", name: "elasticsearch-rest-high-level-client", version: "7.9.2"
+	compile group: "org.elasticsearch.client", name: "transport", version: "7.9.2"
 	compile group: "org.json", name: "json"
 	compile group: "org.springframework.boot", name: "spring-boot-starter-web"
 	compile group: "org.springframework.data", name: "spring-data-redis"
