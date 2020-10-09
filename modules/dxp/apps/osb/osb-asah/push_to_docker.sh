@@ -2,6 +2,7 @@
 
 CURRENT_DATE=$(date)
 GIT_HASH=$(git rev-parse --short=7 HEAD)
+PREVIOUS_GIT_HASH=${1}
 
 function build_and_push_docker_images {
 	if [[ $(docker images -q liferaycloud/com-liferay-osb-asah-private 2> /dev/null) ]]
@@ -142,8 +143,6 @@ function generate_wedeploy_profile {
 }
 
 function generate_wedeploy_profiles {
-	local previous_git_hash=$(git log --pretty=tformat:"%h" -n1 ".wedeploy_profiles")
-
 	rm -fr .wedeploy_profiles
 
 	for file_name in `ls`
@@ -161,8 +160,28 @@ function generate_wedeploy_profiles {
 
 		generate_wedeploy_profile ${file_name} ${marker##*.wedeploy-profile-}
 
-		if [ $(git diff ${previous_git_hash} osb-asah-common | wc -l) -gt 0 ] ||
-		   [ $(git diff ${previous_git_hash} ${file_name} | wc -l) -gt 0 ]
+		if [ ! ${PREVIOUS_GIT_HASH} ] ||
+		   [ $(basename ${marker}) != ".wedeploy-profile-customer" ]
+		then
+			continue;
+		fi
+
+		if [ $(git diff ${PREVIOUS_GIT_HASH} ${file_name} | wc -l) -gt 0 ]
+		then
+			generate_wedeploy_profile ${file_name} customer-upgrade
+
+			continue;
+		fi
+
+		if [ ! -f ${file_name}/build.gradle ]
+		then
+			continue;
+		fi
+
+		local file_content=$(<${file_name}/build.gradle)
+
+		if [ $(git diff ${PREVIOUS_GIT_HASH} osb-asah-common | wc -l) -gt 0 ] &&
+		   [[ ${file_content} == *\":dxp:apps:osb:osb-asah:osb-asah-common\"* ]]
 		then
 			generate_wedeploy_profile ${file_name} customer-upgrade
 		fi
