@@ -178,7 +178,9 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void runContentRecommendationDataSolutionNanite() {
-		run("ContentRecommendationDataSolutionNanite");
+		if (_contentRecommendationDataSolutionRunnable != null) {
+			_contentRecommendationDataSolutionRunnable.run();
+		}
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
@@ -210,7 +212,9 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void runSparkManagerMonitoringNanite() {
-		run("SparkManagerMonitoringNanite");
+		if (_sparkManagerMonitoringRunnable != null) {
+			_sparkManagerMonitoringRunnable.run();
+		}
 	}
 
 	public void scheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
@@ -271,6 +275,12 @@ public class OSBAsahBatchCuratorBot {
 		return false;
 	}
 
+	@Bean(name = "contentRecommendationDataSolutionRunnable")
+	@ConditionalOnGoogleApplicationCredentials
+	private Runnable _contentRecommendationDataSolutionRunnable() {
+		return () -> run("ContentRecommendationDataSolutionNanite");
+	}
+
 	@Bean(name = "deleteDXPBatchEntitiesRunnable")
 	@ConditionalOnGoogleApplicationCredentials
 	private Runnable _deleteDXPBatchEntitiesRunnable() {
@@ -315,6 +325,12 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
+	@Bean(name = "sparkManagerMonitoringRunnable")
+	@ConditionalOnGoogleApplicationCredentials
+	private Runnable _sparkManagerMonitoringRunnable() {
+		return () -> run("SparkManagerMonitoringNanite");
+	}
+
 	private static final String[] _CACHE_NAMES = {
 		"getActivityTransformations", "getGraphQLExecutionResult",
 		"getMembershipChangeTransformations"
@@ -328,6 +344,10 @@ public class OSBAsahBatchCuratorBot {
 
 	@Autowired(required = false)
 	private CacheManager _cacheManager;
+
+	@Autowired(required = false)
+	@Qualifier("contentRecommendationDataSolutionRunnable")
+	private Runnable _contentRecommendationDataSolutionRunnable;
 
 	@Autowired(required = false)
 	@Qualifier("deleteDXPBatchEntitiesRunnable")
@@ -349,6 +369,11 @@ public class OSBAsahBatchCuratorBot {
 
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
+
+	@Autowired(required = false)
+	@Qualifier("sparkManagerMonitoringRunnable")
+	private Runnable _sparkManagerMonitoringRunnable;
+
 	private final ExecutorService _threadPoolTaskExecutor =
 		Executors.newFixedThreadPool(10);
 
