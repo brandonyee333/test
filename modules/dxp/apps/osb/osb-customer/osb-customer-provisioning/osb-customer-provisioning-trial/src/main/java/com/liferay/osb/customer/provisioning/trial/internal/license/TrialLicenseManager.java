@@ -18,7 +18,9 @@ import com.liferay.osb.license.util.KeyGenerator;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKeyConstants;
+import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
+import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -42,9 +44,12 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author Amos Fong
  */
-public class DXPTrialLicenseManager {
+public class TrialLicenseManager {
 
-	public DXPTrialLicenseManager(int version, String versionLabel) {
+	public TrialLicenseManager(
+		String productId, int version, String versionLabel) {
+
+		_productId = productId;
 		_version = version;
 		_versionLabel = versionLabel;
 	}
@@ -118,16 +123,33 @@ public class DXPTrialLicenseManager {
 
 		Date expirationDate = new Date(startDate.getTime() + (Time.DAY * 30));
 
-		Map<String, String> properties = KeyGenerator.getProperties(
-			"Liferay Trial", "Digital Enterprise Development",
-			LicenseEntryConstants.TYPE_DEVELOPER,
-			LicenseKeyConstants.getLicenseVersionByMajorProductVersion(
-				_version),
-			"Digital Enterprise Development",
-			ProductEntryConstants.PRODUCT_ID_PORTAL, _versionLabel,
-			"Liferay Trial", 0, 5, 0, 0, 0, "Liferay Trial", StringPool.BLANK,
-			StringPool.BLANK, StringPool.BLANK, new String[0], startDate,
-			expirationDate);
+		Map<String, String> properties = new ConcurrentHashMap<>();
+
+		if (_productId.equals(ProductEntryConstants.PRODUCT_ID_COMMERCE)) {
+			ProductEntry productEntry =
+				ProductEntryLocalServiceUtil.getProductEntryByName(
+					"Liferay Commerce Subscription Development");
+
+			properties = KeyGenerator.getProperties(
+				"Liferay Trial", "Liferay Commerce Subscription Development",
+				LicenseEntryConstants.TYPE_DEVELOPER,
+				LicenseKeyConstants.getLicenseVersion(productEntry, _version),
+				productEntry.getName(), _productId, _versionLabel,
+				"Liferay Trial", 0, 5, 0, 0, 0, "Liferay Trial",
+				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
+				new String[0], startDate, expirationDate);
+		}
+		else {
+			properties = KeyGenerator.getProperties(
+				"Liferay Trial", "Digital Enterprise Development",
+				LicenseEntryConstants.TYPE_DEVELOPER,
+				LicenseKeyConstants.getLicenseVersionByMajorProductVersion(
+					_version),
+				"Digital Enterprise Development", _productId, _versionLabel,
+				"Liferay Trial", 0, 5, 0, 0, 0, "Liferay Trial",
+				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
+				new String[0], startDate, expirationDate);
+		}
 
 		String key = KeyGenerator.generate(properties);
 
@@ -159,7 +181,7 @@ public class DXPTrialLicenseManager {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DXPTrialLicenseManager.class);
+		TrialLicenseManager.class);
 
 	private final Format _dateFormat =
 		FastDateFormatFactoryUtil.getSimpleDateFormat("yyyyMMdd");
@@ -167,6 +189,7 @@ public class DXPTrialLicenseManager {
 	private String _lastRefreshDay;
 	private final Map<String, String> _licenseXMLMap =
 		new ConcurrentHashMap<>();
+	private final String _productId;
 	private final int _version;
 	private final String _versionLabel;
 

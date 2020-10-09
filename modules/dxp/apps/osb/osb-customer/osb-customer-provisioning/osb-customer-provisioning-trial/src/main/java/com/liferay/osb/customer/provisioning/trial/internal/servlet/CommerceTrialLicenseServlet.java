@@ -40,17 +40,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Amos Fong
+ * @author Jenny Chen
  */
 @Component(
 	immediate = true,
 	property = {
-		"osgi.http.whiteboard.servlet.name=com.liferay.osb.provisioning.trial.internal.servlet.DXPTrialLicenseServlet",
-		"osgi.http.whiteboard.servlet.pattern=/dxp-trial/*"
+		"osgi.http.whiteboard.servlet.name=com.liferay.osb.provisioning.trial.internal.servlet.CommerceTrialLicenseServlet",
+		"osgi.http.whiteboard.servlet.pattern=/commerce-trial/*"
 	},
 	service = Servlet.class
 )
-public class DXPTrialLicenseServlet extends HttpServlet {
+public class CommerceTrialLicenseServlet extends HttpServlet {
 
 	@Override
 	protected void service(
@@ -74,7 +74,8 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 					if (Validator.isNotNull(licenseXML)) {
 						ServletResponseUtil.sendFile(
 							httpServletRequest, httpServletResponse,
-							"activation-key-dxp-trial-" + versionLabel + ".xml",
+							"activation-key-commerce-trial" + versionLabel +
+								".xml",
 							licenseXML.getBytes(), ContentTypes.TEXT_XML);
 
 						return;
@@ -87,7 +88,7 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 		}
 
 		httpServletResponse.sendRedirect(
-			ProvisioningTrialConfigurationValues.DXP_TRIAL_EXPIRED_PAGE);
+			ProvisioningTrialConfigurationValues.COMMERCE_TRIAL_EXPIRED_PAGE);
 	}
 
 	private String _getLicenseXML(String versionLabel, long dayHash)
@@ -104,7 +105,7 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 			_licenseManagerMap.put(
 				versionLabel,
 				new TrialLicenseManager(
-					ProductEntryConstants.PRODUCT_ID_PORTAL, version,
+					ProductEntryConstants.PRODUCT_ID_COMMERCE, version,
 					versionLabel));
 		}
 
@@ -116,7 +117,7 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 
 	private boolean _isValidVersion(String versionLabel) {
 		if (ArrayUtil.contains(
-				ProvisioningTrialConfigurationValues.DXP_TRIAL_VERSIONS,
+				ProvisioningTrialConfigurationValues.COMMERCE_TRIAL_VERSIONS,
 				versionLabel)) {
 
 			return true;
@@ -126,7 +127,7 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DXPTrialLicenseServlet.class);
+		CommerceTrialLicenseServlet.class);
 
 	private final Map<String, TrialLicenseManager> _licenseManagerMap =
 		new ConcurrentHashMap<>();

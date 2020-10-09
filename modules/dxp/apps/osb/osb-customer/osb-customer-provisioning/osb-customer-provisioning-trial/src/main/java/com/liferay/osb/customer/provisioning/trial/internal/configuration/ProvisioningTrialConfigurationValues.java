@@ -22,6 +22,14 @@ import com.liferay.portal.kernel.util.StringUtil;
  */
 public class ProvisioningTrialConfigurationValues {
 
+	public static final String COMMERCE_TRIAL_EXPIRED_PAGE =
+		GetterUtil.getString(
+			ProvisioningTrialConfigurationUtil.get(
+				"commerce.trial.expired.page"));
+
+	public static final String[] COMMERCE_TRIAL_VERSIONS = StringUtil.split(
+		ProvisioningTrialConfigurationUtil.get("commerce.trial.versions"));
+
 	public static final String DXP_TRIAL_EXPIRED_PAGE = GetterUtil.getString(
 		ProvisioningTrialConfigurationUtil.get("dxp.trial.expired.page"));
 
