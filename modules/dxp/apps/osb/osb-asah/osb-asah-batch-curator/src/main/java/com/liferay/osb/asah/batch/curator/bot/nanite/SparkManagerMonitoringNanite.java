@@ -19,6 +19,7 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.ml.SparkManager;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.apache.commons.logging.Log;
@@ -36,6 +37,7 @@ import org.springframework.stereotype.Component;
  * @author Riccardo Ferrari
  */
 @Component
+@ConditionalOnGoogleApplicationCredentials
 public class SparkManagerMonitoringNanite extends BaseNanite {
 
 	@Override
