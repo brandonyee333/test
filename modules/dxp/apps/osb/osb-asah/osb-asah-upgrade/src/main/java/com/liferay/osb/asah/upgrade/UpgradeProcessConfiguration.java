@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_9_0.DXPRawUsersUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_9_0.OSBAsahTasksUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_9_0.PageReferrersUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_9_0.PreferencesUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class UpgradeProcessConfiguration {
 
 		upgradeProcess.addUpgradeSteps(
 			"2.8.0", "2.9.0", _dxpRawUsersUpgradeStep, _osbAsahTasksUpgradeStep,
-			_preferencesUpgradeStep);
+			_pageReferrersUpgradeStep, _preferencesUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -49,6 +50,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private OSBAsahTasksUpgradeStep _osbAsahTasksUpgradeStep;
+
+	@Autowired
+	private PageReferrersUpgradeStep _pageReferrersUpgradeStep;
 
 	@Autowired
 	private PreferencesUpgradeStep _preferencesUpgradeStep;
