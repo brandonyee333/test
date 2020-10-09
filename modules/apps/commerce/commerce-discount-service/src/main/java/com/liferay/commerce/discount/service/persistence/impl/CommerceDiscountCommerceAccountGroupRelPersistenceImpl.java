@@ -2218,6 +2218,17 @@ public class CommerceDiscountCommerceAccountGroupRelPersistenceImpl
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"commerceDiscountCommerceAccountGroupRelId"});
 
+	@Override
+	protected FinderPath getFinderPath(
+		String sql, String cacheName, String[] params,
+		boolean baseModelResult) {
+
+		return _dslQueryFinderPathMap.computeIfAbsent(
+			sql,
+			key -> _createFinderPath(
+				cacheName, "", params, new String[0], baseModelResult));
+	}
+
 	private FinderPath _createFinderPath(
 		String cacheName, String methodName, String[] params,
 		String[] columnNames, boolean baseModelResult) {
@@ -2239,6 +2250,8 @@ public class CommerceDiscountCommerceAccountGroupRelPersistenceImpl
 		_argumentsResolverServiceRegistration;
 	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
 		new HashSet<>();
+	private Map<String, FinderPath> _dslQueryFinderPathMap =
+		new ConcurrentHashMap();
 
 	private static class
 		CommerceDiscountCommerceAccountGroupRelModelArgumentsResolver
