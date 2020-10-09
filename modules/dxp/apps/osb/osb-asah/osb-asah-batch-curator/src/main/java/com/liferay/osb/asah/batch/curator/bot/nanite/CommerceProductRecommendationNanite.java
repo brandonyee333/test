@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.ml.SparkManager;
+import com.liferay.osb.asah.batch.curator.bot.nanite.ml.DataprocSparkManager;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -53,7 +53,7 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 
 		String jobType = jobJSONObject.getString("type");
 
-		String sparkJobId = _sparkManager.submitJob(
+		String sparkJobId = _dataprocSparkManager.submitJob(
 			Arrays.asList("--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
 			"commerce_application.yaml",
 			_collectJobSparkJars(jobJSONObject.getJSONArray("parameters")),
@@ -130,6 +130,9 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 		return Collections.emptyList();
 	}
 
+	@Autowired
+	private DataprocSparkManager _dataprocSparkManager;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
@@ -146,8 +149,5 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 						"UserInteractionRecommendationApplication");
 			}
 		};
-
-	@Autowired
-	private SparkManager _sparkManager;
 
 }

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.ml.SparkManager;
+import com.liferay.osb.asah.batch.curator.bot.nanite.ml.DataprocSparkManager;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -92,7 +92,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 				"trigger", contextJSONObject.optString("trigger", "SCHEDULE")
 			));
 
-		_sparkManager.submitJob(
+		_dataprocSparkManager.submitJob(
 			Arrays.asList(
 				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
@@ -128,13 +128,13 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 	private static final Log _log = LogFactory.getLog(
 		ContentRecommendationDataPreparationNanite.class);
 
+	@Autowired
+	private DataprocSparkManager _dataprocSparkManager;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Value("${osb.asah.content.recommendation.max.monthly.job.runs:10}")
 	private int _maxMonthlyJobRuns;
-
-	@Autowired
-	private SparkManager _sparkManager;
 
 }

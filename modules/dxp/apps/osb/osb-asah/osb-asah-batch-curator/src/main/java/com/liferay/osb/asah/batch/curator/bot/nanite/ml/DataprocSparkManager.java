@@ -43,9 +43,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConditionalOnGoogleApplicationCredentials
-public class DataprocSparkManager implements SparkManager {
+public class DataprocSparkManager {
 
-	@Override
 	public JobState getJobState(String sparkJobId) {
 		try (JobControllerClient jobControllerClient =
 				_buildJobControllerClient()) {
@@ -74,7 +73,6 @@ public class DataprocSparkManager implements SparkManager {
 		return JobState.UNKNOWN;
 	}
 
-	@Override
 	public String submitJob(
 		List<String> arguments, String configuration, List<String> jars,
 		String name, Map<String, String> properties) {

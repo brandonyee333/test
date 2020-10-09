@@ -66,7 +66,7 @@ import com.amazonaws.services.personalize.model.Solution;
 import com.amazonaws.services.personalize.model.SolutionSummary;
 import com.amazonaws.services.personalize.model.SolutionVersion;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.ml.SparkManager;
+import com.liferay.osb.asah.batch.curator.bot.nanite.ml.DataprocSparkManager;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -783,7 +783,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		_updateJobRun(jobRunJSONObject);
 
-		_sparkManager.submitJob(
+		_dataprocSparkManager.submitJob(
 			Arrays.asList(
 				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
@@ -840,10 +840,10 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	@Value("${aws.personalize.role.arn:}")
 	private String _awsPersonalizeRoleArn;
 
+	@Autowired
+	private DataprocSparkManager _dataprocSparkManager;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private SparkManager _sparkManager;
 
 }
