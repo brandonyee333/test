@@ -21,12 +21,12 @@ import java.util.Optional;
 /**
  * @author Riccardo Ferrari
  */
-public enum JobState {
+public enum DataprocJobState {
 
 	COMPLETE("complete"), ERROR("error"), RUNNING("running"),
 	UNKNOWN("unknown");
 
-	public static JobState of(String value) {
+	public static DataprocJobState of(String value) {
 		return Optional.ofNullable(
 			_states.get(value)
 		).orElseThrow(
@@ -43,14 +43,14 @@ public enum JobState {
 		return _value;
 	}
 
-	private JobState(String value) {
+	private DataprocJobState(String value) {
 		_value = value;
 	}
 
-	private static Map<String, JobState> _states = new HashMap<>();
+	private static Map<String, DataprocJobState> _states = new HashMap<>();
 
 	static {
-		for (JobState state : values()) {
+		for (DataprocJobState state : values()) {
 			_states.put(state.getValue(), state);
 		}
 	}

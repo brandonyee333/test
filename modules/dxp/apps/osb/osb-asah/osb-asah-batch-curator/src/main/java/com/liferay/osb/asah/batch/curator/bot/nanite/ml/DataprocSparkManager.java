@@ -45,7 +45,7 @@ import org.springframework.stereotype.Component;
 @ConditionalOnGoogleApplicationCredentials
 public class DataprocSparkManager {
 
-	public JobState getJobState(String sparkJobId) {
+	public DataprocJobState getJobState(String sparkJobId) {
 		try (JobControllerClient jobControllerClient =
 				_buildJobControllerClient()) {
 
@@ -57,20 +57,20 @@ public class DataprocSparkManager {
 			JobStatus.State jobStatusState = jobStatus.getState();
 
 			if (JobStatus.State.DONE.equals(jobStatusState)) {
-				return JobState.COMPLETE;
+				return DataprocJobState.COMPLETE;
 			}
 			else if (JobStatus.State.RUNNING.equals(jobStatusState)) {
-				return JobState.RUNNING;
+				return DataprocJobState.RUNNING;
 			}
 			else if (JobStatus.State.ERROR.equals(jobStatusState)) {
-				return JobState.ERROR;
+				return DataprocJobState.ERROR;
 			}
 		}
 		catch (Exception e) {
 			_log.error(e, e);
 		}
 
-		return JobState.UNKNOWN;
+		return DataprocJobState.UNKNOWN;
 	}
 
 	public String submitJob(

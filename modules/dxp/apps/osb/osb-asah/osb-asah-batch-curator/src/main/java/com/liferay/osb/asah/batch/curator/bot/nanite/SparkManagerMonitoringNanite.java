@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.ml.DataprocJobState;
 import com.liferay.osb.asah.batch.curator.bot.nanite.ml.DataprocSparkManager;
-import com.liferay.osb.asah.batch.curator.bot.nanite.ml.JobState;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -83,9 +83,10 @@ public class SparkManagerMonitoringNanite extends BaseNanite {
 
 		jobRunJSONObject.put("lastUpdatedDate", DateUtil.newUTCDateString());
 
-		JobState jobState = _dataprocSparkManager.getJobState(sparkJobId);
+		DataprocJobState dataprocJobState = _dataprocSparkManager.getJobState(
+			sparkJobId);
 
-		jobRunJSONObject.put("status", jobState.toString());
+		jobRunJSONObject.put("status", dataprocJobState.toString());
 
 		_faroInfoElasticsearchInvoker.update("job-runs", jobRunJSONObject);
 	}
