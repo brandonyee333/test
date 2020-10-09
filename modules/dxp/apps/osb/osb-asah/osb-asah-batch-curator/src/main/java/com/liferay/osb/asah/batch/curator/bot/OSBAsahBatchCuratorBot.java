@@ -193,6 +193,13 @@ public class OSBAsahBatchCuratorBot {
 		run("DataExportNanite");
 	}
 
+	@Scheduled(fixedDelay = DateUtil.MINUTE)
+	public void runDataprocSparkManagerMonitoringNanite() {
+		if (_dataprocSparkManagerMonitoringNaniteRunnable != null) {
+			_dataprocSparkManagerMonitoringNaniteRunnable.run();
+		}
+	}
+
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void runDataRetentionNanite() {
 		run("DataRetentionNanite");
@@ -208,13 +215,6 @@ public class OSBAsahBatchCuratorBot {
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void runDeleteTempFilesNanite() {
 		run("DeleteTempFilesNanite");
-	}
-
-	@Scheduled(fixedDelay = DateUtil.MINUTE)
-	public void runSparkManagerMonitoringNanite() {
-		if (_sparkManagerMonitoringNaniteRunnable != null) {
-			_sparkManagerMonitoringNaniteRunnable.run();
-		}
 	}
 
 	public void scheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
@@ -281,6 +281,12 @@ public class OSBAsahBatchCuratorBot {
 		return () -> run("ContentRecommendationDataSolutionNanite");
 	}
 
+	@Bean(name = "dataprocSparkManagerMonitoringNaniteRunnable")
+	@ConditionalOnGoogleApplicationCredentials
+	private Runnable _dataprocSparkManagerMonitoringNaniteRunnable() {
+		return () -> run("DataprocSparkManagerMonitoringNanite");
+	}
+
 	@Bean(name = "deleteDXPBatchEntitiesNaniteRunnable")
 	@ConditionalOnGoogleApplicationCredentials
 	private Runnable _deleteDXPBatchEntitiesNaniteRunnable() {
@@ -325,12 +331,6 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	@Bean(name = "sparkManagerMonitoringNaniteRunnable")
-	@ConditionalOnGoogleApplicationCredentials
-	private Runnable _sparkManagerMonitoringNaniteRunnable() {
-		return () -> run("SparkManagerMonitoringNanite");
-	}
-
 	private static final String[] _CACHE_NAMES = {
 		"getActivityTransformations", "getGraphQLExecutionResult",
 		"getMembershipChangeTransformations"
@@ -348,6 +348,10 @@ public class OSBAsahBatchCuratorBot {
 	@Autowired(required = false)
 	@Qualifier("contentRecommendationDataSolutionNaniteRunnable")
 	private Runnable _contentRecommendationDataSolutionNaniteRunnable;
+
+	@Autowired(required = false)
+	@Qualifier("dataprocSparkManagerMonitoringNaniteRunnable")
+	private Runnable _dataprocSparkManagerMonitoringNaniteRunnable;
 
 	@Autowired(required = false)
 	@Qualifier("deleteDXPBatchEntitiesNaniteRunnable")
@@ -369,11 +373,6 @@ public class OSBAsahBatchCuratorBot {
 
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
-
-	@Autowired(required = false)
-	@Qualifier("sparkManagerMonitoringNaniteRunnable")
-	private Runnable _sparkManagerMonitoringNaniteRunnable;
-
 	private final ExecutorService _threadPoolTaskExecutor =
 		Executors.newFixedThreadPool(10);
 

@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConditionalOnGoogleApplicationCredentials
-public class SparkManagerMonitoringNanite extends BaseNanite {
+public class DataprocSparkManagerMonitoringNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -92,7 +92,7 @@ public class SparkManagerMonitoringNanite extends BaseNanite {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		SparkManagerMonitoringNanite.class);
+		DataprocSparkManagerMonitoringNanite.class);
 
 	@Autowired
 	private DataprocSparkManager _dataprocSparkManager;
