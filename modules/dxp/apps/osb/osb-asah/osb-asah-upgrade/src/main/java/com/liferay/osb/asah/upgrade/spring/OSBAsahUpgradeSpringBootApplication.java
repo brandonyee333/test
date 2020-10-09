@@ -26,8 +26,8 @@ import org.springframework.context.annotation.FilterType;
  */
 @ComponentScan(
 	basePackages = {
-		"com.liferay.osb.asah.common.cerebro.info",
 		"com.liferay.osb.asah.common.configuration",
+		"com.liferay.osb.asah.common.date.dog",
 		"com.liferay.osb.asah.common.dxp",
 		"com.liferay.osb.asah.common.elasticsearch",
 		"com.liferay.osb.asah.common.faro.info",
