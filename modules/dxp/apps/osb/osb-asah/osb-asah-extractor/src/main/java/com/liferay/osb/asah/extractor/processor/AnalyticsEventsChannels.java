@@ -89,7 +89,7 @@ public class AnalyticsEventsChannels {
 				return true;
 			}
 
-			return true;
+			return false;
 		};
 	}
 
