@@ -18,9 +18,7 @@ import com.liferay.osb.license.util.KeyGenerator;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKeyConstants;
-import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -126,16 +124,12 @@ public class TrialLicenseManager {
 		Map<String, String> properties = new ConcurrentHashMap<>();
 
 		if (_productId.equals(ProductEntryConstants.PRODUCT_ID_COMMERCE)) {
-			ProductEntry productEntry =
-				ProductEntryLocalServiceUtil.getProductEntryByName(
-					"Liferay Commerce Subscription Development");
-
 			properties = KeyGenerator.getProperties(
 				"Liferay Trial", "Liferay Commerce Subscription Development",
 				LicenseEntryConstants.TYPE_DEVELOPER,
-				LicenseKeyConstants.getLicenseVersion(productEntry, _version),
-				productEntry.getName(), _productId, _versionLabel,
-				"Liferay Trial", 0, 5, 0, 0, 0, "Liferay Trial",
+				LicenseKeyConstants.getAppLicenseVersion(),
+				"Liferay Commerce Subscription Development", _productId,
+				_versionLabel, "Liferay Trial", 0, 5, 0, 0, 0, "Liferay Trial",
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
 				new String[0], startDate, expirationDate);
 		}

@@ -74,8 +74,7 @@ public class CommerceTrialLicenseServlet extends HttpServlet {
 					if (Validator.isNotNull(licenseXML)) {
 						ServletResponseUtil.sendFile(
 							httpServletRequest, httpServletResponse,
-							"activation-key-commerce-trial" + versionLabel +
-								".xml",
+							"activation-key-commerce-trial.xml",
 							licenseXML.getBytes(), ContentTypes.TEXT_XML);
 
 						return;
@@ -109,10 +108,10 @@ public class CommerceTrialLicenseServlet extends HttpServlet {
 					versionLabel));
 		}
 
-		TrialLicenseManager dxpTrialLicenseManager = _licenseManagerMap.get(
+		TrialLicenseManager trialLicenseManager = _licenseManagerMap.get(
 			versionLabel);
 
-		return dxpTrialLicenseManager.getLicenseXML(dayHash);
+		return trialLicenseManager.getLicenseXML(dayHash);
 	}
 
 	private boolean _isValidVersion(String versionLabel) {

@@ -47,11 +47,15 @@ public class LicenseKeyConstants {
 
 	public static final int STATE_OVERLOAD = 6;
 
+	public static int getAppLicenseVersion() {
+		return 3;
+	}
+
 	public static int getLicenseVersion(
 		ProductEntry productEntry, int productVersion) {
 
 		if (productEntry.isCommerce()) {
-			return 3;
+			return getAppLicenseVersion();
 		}
 
 		if (productVersion >=
