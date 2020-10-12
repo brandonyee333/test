@@ -14,25 +14,30 @@
 
 package com.liferay.osb.asah.upgrade.v2_9_0;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.upgrade.BaseReindexUpgradeStep;
+import com.liferay.osb.asah.upgrade.UpgradeStep;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Leslie Wong
  */
 @Component
-public class OSBAsahTasksUpgradeStep extends BaseReindexUpgradeStep {
+public class OSBAsahTasksUpgradeStep implements UpgradeStep {
 
-	@Override
-	public String[] getCollectionNames() {
-		return new String[] {"osbasahtasks"};
+	public void upgrade(String version) throws Exception {
+		_elasticsearchIndexManager.updateSettings(
+			"osbasahtasks",
+			JSONUtil.put(
+				"index.mapping.total_fields.limit", 5000
+			).toString(),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 	}
 
-	@Override
-	public WeDeployDataService getWeDeployDataService() {
-		return WeDeployDataService.OSB_ASAH_FARO_INFO;
-	}
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 }
