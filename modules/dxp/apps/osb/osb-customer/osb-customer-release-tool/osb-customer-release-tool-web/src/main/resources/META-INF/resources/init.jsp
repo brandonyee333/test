@@ -58,7 +58,7 @@ String changelogJournalArticleId = portletPreferences.getValue("changelogJournal
 String highlightsJournalArticleId = portletPreferences.getValue("highlightsJournalArticleId", null);
 String moduleChangesJournalArticleId = portletPreferences.getValue("moduleChangesJournalArticleId", null);
 String moduleChangesCTAJournalArticleId = portletPreferences.getValue("moduleChangesCTAJournalArticleId", null);
-String productName = portletPreferences.getValue("productName", null);
+String productName = portletPreferences.getValue("productName", "dxp");
 %>
 
 <aui:script>
