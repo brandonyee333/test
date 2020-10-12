@@ -68,4 +68,8 @@ public interface ElasticsearchIndexManager {
 		String collectionName, String mappingSource, String mappingType,
 		WeDeployDataService weDeployDataService);
 
+	public boolean updateSettings(
+		String collectionName, String settingsJSON,
+		WeDeployDataService weDeployDataService);
+
 }

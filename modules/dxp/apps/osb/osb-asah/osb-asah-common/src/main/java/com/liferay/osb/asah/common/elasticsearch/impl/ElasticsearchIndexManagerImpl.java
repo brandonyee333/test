@@ -55,6 +55,7 @@ import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRespon
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest;
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequestBuilder;
+import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequestBuilder;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesRequestBuilder;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesResponse;
 import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateRequestBuilder;
@@ -472,6 +473,46 @@ public class ElasticsearchIndexManagerImpl
 
 		AcknowledgedResponse acknowledgedResponse =
 			putMappingRequestBuilder.get();
+
+		return acknowledgedResponse.isAcknowledged();
+	}
+
+	@Override
+	public boolean updateSettings(
+		String collectionName, String settingsJSON,
+		WeDeployDataService weDeployDataService) {
+
+		String indexName = ElasticsearchIndexUtil.getIndexName(
+			collectionName, getIndexNamespace(weDeployDataService));
+
+		String indexAlias = ElasticsearchIndexUtil.getIndexAlias(
+			collectionName, getIndexNamespace(weDeployDataService));
+
+		if (aliasExists(indexAlias)) {
+			indexName = getIndexName(indexAlias);
+		}
+
+		if (!exists(indexName)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to find index " + indexName);
+			}
+
+			return false;
+		}
+
+		IndicesAdminClient indicesAdminClient = _adminClient.indices();
+
+		UpdateSettingsRequestBuilder updateSettingsRequestBuilder =
+			indicesAdminClient.prepareUpdateSettings(indexName);
+
+		updateSettingsRequestBuilder.setSettings(
+			settingsJSON, XContentType.JSON);
+		updateSettingsRequestBuilder.setPreserveExisting(true);
+
+		ClientUtil.waitForConnection(_client);
+
+		AcknowledgedResponse acknowledgedResponse =
+			updateSettingsRequestBuilder.get();
 
 		return acknowledgedResponse.isAcknowledged();
 	}
