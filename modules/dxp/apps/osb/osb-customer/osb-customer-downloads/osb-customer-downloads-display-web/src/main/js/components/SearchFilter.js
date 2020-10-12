@@ -98,7 +98,7 @@ export default class SearchFilters extends React.Component {
 
 					<Filter
 						id={`${namespace}fileTypeAssetCategoryId`}
-						label={Liferay.Language.get('file-type')}
+						label={Liferay.Language.get('type')}
 						onSelectChange={this.handleFileTypeChange}
 						options={availableFileTypes}
 						placeholder={Liferay.Language.get('select-file-type')}
