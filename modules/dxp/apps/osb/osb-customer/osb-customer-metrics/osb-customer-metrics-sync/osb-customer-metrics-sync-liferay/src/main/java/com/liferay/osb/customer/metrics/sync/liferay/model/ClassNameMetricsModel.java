@@ -18,8 +18,8 @@ import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.rabbitmq.constants.RoutingKeys;
 import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
+import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 
@@ -60,11 +60,10 @@ public class ClassNameMetricsModel extends BaseModelMetricsModel<ClassName> {
 			String classNameValue = className.getValue();
 
 			if (classNameValue.contains("osb")) {
-				JSONObject jsonObject = messageFactory.createUpdateJSONObject(
+				Message message = messageFactory.createUpdateMessage(
 					className.getModelClassName(), className);
 
-				messagePublisher.sendMessage(
-					RoutingKeys.METRICS_UPDATE, jsonObject);
+				messagePublisher.publish(RoutingKeys.METRICS_UPDATE, message);
 			}
 		}
 	}

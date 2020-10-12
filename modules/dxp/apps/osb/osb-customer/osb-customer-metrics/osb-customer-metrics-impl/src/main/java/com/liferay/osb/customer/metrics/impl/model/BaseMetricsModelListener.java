@@ -15,10 +15,10 @@
 package com.liferay.osb.customer.metrics.impl.model;
 
 import com.liferay.osb.customer.metrics.rabbitmq.MessageFactory;
-import com.liferay.osb.customer.metrics.rabbitmq.MessagePublisher;
 import com.liferay.osb.customer.metrics.rabbitmq.constants.RoutingKeys;
+import com.liferay.osb.distributed.messaging.Message;
+import com.liferay.osb.distributed.messaging.publishing.MessagePublisher;
 import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -67,11 +67,10 @@ public abstract class BaseMetricsModelListener<T extends BaseModel<T>>
 
 	protected void sendRemoveMetricsMessage(BaseModel<T> model) {
 		try {
-			JSONObject jsonObject = messageFactory.createRemoveJSONObject(
+			Message message = messageFactory.createRemoveMessage(
 				model.getModelClassName(), model);
 
-			messagePublisher.sendMessage(
-				RoutingKeys.METRICS_REMOVE, jsonObject);
+			messagePublisher.publish(RoutingKeys.METRICS_REMOVE, message);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -80,11 +79,10 @@ public abstract class BaseMetricsModelListener<T extends BaseModel<T>>
 
 	protected void sendUpdateMetricsMessage(BaseModel<T> model) {
 		try {
-			JSONObject jsonObject = messageFactory.createUpdateJSONObject(
+			Message message = messageFactory.createUpdateMessage(
 				model.getModelClassName(), model);
 
-			messagePublisher.sendMessage(
-				RoutingKeys.METRICS_UPDATE, jsonObject);
+			messagePublisher.publish(RoutingKeys.METRICS_UPDATE, message);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

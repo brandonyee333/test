@@ -18,7 +18,7 @@ import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.rabbitmq.constants.RoutingKeys;
 import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
-import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.service.CountryService;
 
@@ -55,11 +55,10 @@ public class CountryMetricsModel extends BaseModelMetricsModel<Country> {
 		List<Country> countries = _countryService.getCountries();
 
 		for (Country country : countries) {
-			JSONObject jsonObject = messageFactory.createUpdateJSONObject(
+			Message message = messageFactory.createUpdateMessage(
 				country.getModelClassName(), country);
 
-			messagePublisher.sendMessage(
-				RoutingKeys.METRICS_UPDATE, jsonObject);
+			messagePublisher.publish(RoutingKeys.METRICS_UPDATE, message);
 		}
 	}
 

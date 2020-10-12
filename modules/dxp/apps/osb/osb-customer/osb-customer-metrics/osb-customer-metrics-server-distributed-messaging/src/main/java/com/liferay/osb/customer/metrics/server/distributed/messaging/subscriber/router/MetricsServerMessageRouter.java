@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.sync.zendesk.router;
+package com.liferay.osb.customer.metrics.server.distributed.messaging.subscriber.router;
 
 import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskArticleTransformer;
 import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskGroupTransformer;
@@ -21,8 +21,9 @@ import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskTicketEv
 import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskTicketMetricsTransformer;
 import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskTicketTransformer;
 import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskUserTransformer;
-import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
-import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
+import com.liferay.osb.customer.zendesk.message.subscriber.ZendeskWebServiceMessageSubscriber;
+import com.liferay.osb.distributed.messaging.subscribing.router.BaseMessageRouter;
+import com.liferay.osb.distributed.messaging.subscribing.router.MessageRouter;
 
 import java.util.Map;
 
@@ -32,11 +33,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Kyle Bischof
  */
-@Component(
-	immediate = true, property = "queue=is_zendesk_metrics_queue",
-	service = MessageRouter.class
-)
-public class ZendeskMessageRouter extends BaseMessageRouter {
+@Component(immediate = true, service = MessageRouter.class)
+public class MetricsServerMessageRouter extends BaseMessageRouter {
 
 	@Reference(unbind = "-")
 	protected void setZendeskArticleTransformer(
@@ -92,6 +90,14 @@ public class ZendeskMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(zendeskUserTransformer, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskWebServiceMessageSubscriber(
+		ZendeskWebServiceMessageSubscriber zendeskWebServiceMessageSubscriber,
+		Map<String, Object> properties) {
+
+		addRoute(zendeskWebServiceMessageSubscriber, properties);
 	}
 
 }

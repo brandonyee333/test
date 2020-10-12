@@ -17,6 +17,7 @@ package com.liferay.osb.customer.metrics.impl.internal.rabbitmq;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.model.MetricsModelRegistry;
 import com.liferay.osb.customer.metrics.rabbitmq.MessageFactory;
+import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -38,9 +39,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = MessageFactory.class)
 public class MessageFactoryImpl implements MessageFactory {
 
-	public JSONObject createDropJSONObject(String modelClassName)
-		throws Exception {
-
+	public Message createDropMessage(String modelClassName) throws Exception {
 		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
 			modelClassName);
 
@@ -68,11 +67,10 @@ public class MessageFactoryImpl implements MessageFactory {
 			jsonObject.put("mappings", mappingTablesJSONArray);
 		}
 
-		return jsonObject;
+		return new Message(jsonObject.toString());
 	}
 
-	public JSONObject createRemoveJSONObject(
-			String modelClassName, Object model)
+	public Message createRemoveMessage(String modelClassName, Object model)
 		throws Exception {
 
 		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
@@ -114,11 +112,10 @@ public class MessageFactoryImpl implements MessageFactory {
 			jsonObject.put("mappings", mappingTablesJSONArray);
 		}
 
-		return jsonObject;
+		return new Message(jsonObject.toString());
 	}
 
-	public JSONObject createUpdateJSONObject(
-			String modelClassName, Object model)
+	public Message createUpdateMessage(String modelClassName, Object model)
 		throws Exception {
 
 		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
@@ -223,7 +220,7 @@ public class MessageFactoryImpl implements MessageFactory {
 			jsonObject.put("mappings", mappingTablesJSONArray);
 		}
 
-		return jsonObject;
+		return new Message(jsonObject.toString());
 	}
 
 	@Reference

@@ -8,6 +8,7 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-account-entry:osb-customer-account-entry-details-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-admin:osb-customer-admin-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-distributed-messaging:osb-customer-distributed-messaging-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-github:osb-customer-github-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-license:osb-customer-license-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-metrics:osb-customer-metrics-api")

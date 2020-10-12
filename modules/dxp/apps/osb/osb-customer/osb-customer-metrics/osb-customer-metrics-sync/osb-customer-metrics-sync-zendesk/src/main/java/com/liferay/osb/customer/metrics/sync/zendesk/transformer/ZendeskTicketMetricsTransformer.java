@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = "routing.key=zendesk.metrics.ticket.metrics.update",
+	property = "topic.pattern=zendesk.metrics.ticket.metrics.update",
 	service = ZendeskTicketMetricsTransformer.class
 )
 public class ZendeskTicketMetricsTransformer extends BaseTransformer {

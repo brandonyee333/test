@@ -12,17 +12,19 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.rabbitmq;
+package com.liferay.osb.customer.metrics.server.distributed.messaging.rabbitmq.connector;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.osb.distributed.messaging.rabbitmq.connector.BaseConnection;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Jenny Chen
+ * @author Amos Fong
  */
-public interface MessagePublisher {
-
-	public void sendMessage(String routingKey, JSONObject jsonObject)
-		throws PortalException;
-
+@Component(
+	immediate = true,
+	property = {"host=", "password=", "port=", "username=", "useSSL="},
+	service = LegacyConnection.class
+)
+public class LegacyConnection extends BaseConnection {
 }

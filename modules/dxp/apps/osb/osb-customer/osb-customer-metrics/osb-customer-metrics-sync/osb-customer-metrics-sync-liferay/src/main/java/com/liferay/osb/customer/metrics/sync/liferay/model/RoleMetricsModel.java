@@ -18,8 +18,8 @@ import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.rabbitmq.constants.RoutingKeys;
 import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
+import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.service.RoleLocalService;
 
@@ -57,11 +57,10 @@ public class RoleMetricsModel extends BaseModelMetricsModel<Role> {
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		for (Role role : roles) {
-			JSONObject jsonObject = messageFactory.createUpdateJSONObject(
+			Message message = messageFactory.createUpdateMessage(
 				role.getModelClassName(), role);
 
-			messagePublisher.sendMessage(
-				RoutingKeys.METRICS_UPDATE, jsonObject);
+			messagePublisher.publish(RoutingKeys.METRICS_UPDATE, message);
 		}
 	}
 

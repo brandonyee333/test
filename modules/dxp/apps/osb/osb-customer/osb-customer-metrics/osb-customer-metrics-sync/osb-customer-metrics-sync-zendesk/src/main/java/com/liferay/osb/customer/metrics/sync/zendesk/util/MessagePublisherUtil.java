@@ -14,9 +14,9 @@
 
 package com.liferay.osb.customer.metrics.sync.zendesk.util;
 
-import com.liferay.osb.customer.metrics.sync.zendesk.configuration.ZendeskSyncConfigurationValues;
-import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
+import com.liferay.osb.distributed.messaging.Message;
+import com.liferay.osb.distributed.messaging.publishing.MessagePublisher;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 
@@ -33,9 +33,8 @@ public class MessagePublisherUtil {
 		throws PortalException {
 
 		try {
-			_messagePublisher.sendMessage(
-				ZendeskSyncConfigurationValues.METRICS_RABBITMQ_EXCHANGE_NAME,
-				"metrics.update", jsonObject);
+			_messagePublisher.publish(
+				"metrics.update", new Message(jsonObject.toString()));
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
@@ -46,10 +45,8 @@ public class MessagePublisherUtil {
 		throws PortalException {
 
 		try {
-			_messagePublisher.sendMessage(
-				ZendeskSyncConfigurationValues.
-					ZENDESK_SERVICE_RABBITMQ_EXCHANGE_NAME,
-				"zendesk.service", zendeskRequest.toJSONObject());
+			_messagePublisher.publish(
+				"zendesk.service", zendeskRequest.getMessage());
 		}
 		catch (Exception e) {
 			throw new PortalException(e);

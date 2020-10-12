@@ -14,22 +14,19 @@
 
 package com.liferay.osb.customer.metrics.rabbitmq;
 
-import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.osb.distributed.messaging.Message;
 
 /**
  * @author Jenny Chen
  */
 public interface MessageFactory {
 
-	public JSONObject createDropJSONObject(String modelClassName)
+	public Message createDropMessage(String modelClassName) throws Exception;
+
+	public Message createRemoveMessage(String modelClassName, Object model)
 		throws Exception;
 
-	public JSONObject createRemoveJSONObject(
-			String modelClassName, Object model)
-		throws Exception;
-
-	public JSONObject createUpdateJSONObject(
-			String modelClassName, Object model)
+	public Message createUpdateMessage(String modelClassName, Object model)
 		throws Exception;
 
 }

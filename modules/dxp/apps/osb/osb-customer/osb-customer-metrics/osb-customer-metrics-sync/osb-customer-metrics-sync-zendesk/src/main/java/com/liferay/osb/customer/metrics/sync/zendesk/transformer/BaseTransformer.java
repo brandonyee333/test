@@ -15,7 +15,8 @@
 package com.liferay.osb.customer.metrics.sync.zendesk.transformer;
 
 import com.liferay.osb.customer.metrics.sync.zendesk.configuration.ZendeskSyncConfigurationValues;
-import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.osb.distributed.messaging.Message;
+import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -32,15 +33,13 @@ import java.util.Map;
 /**
  * @author Kyle Bischof
  */
-public abstract class BaseTransformer implements MessageProcessor {
+public abstract class BaseTransformer implements MessageSubscriber {
 
 	@Override
-	public void process(
-		String routingKey, String message, Map<String, Object> properties) {
-
+	public void receive(Message message) {
 		try {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-				message.trim());
+				(String)message.getPayload());
 
 			doProcess(jsonObject);
 		}

@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = "routing.key=zendesk.metrics.ticket.event.update",
+	property = "topic.pattern=zendesk.metrics.ticket.event.update",
 	service = ZendeskTicketEventTransformer.class
 )
 public class ZendeskTicketEventTransformer extends BaseTransformer {

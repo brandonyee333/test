@@ -17,10 +17,10 @@ package com.liferay.osb.customer.metrics.impl.model;
 import com.liferay.osb.customer.metrics.impl.util.MetricsBaseModelUtil;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.rabbitmq.MessageFactory;
-import com.liferay.osb.customer.metrics.rabbitmq.MessagePublisher;
 import com.liferay.osb.customer.metrics.rabbitmq.constants.RoutingKeys;
+import com.liferay.osb.distributed.messaging.Message;
+import com.liferay.osb.distributed.messaging.publishing.MessagePublisher;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.CharPool;
 
@@ -42,10 +42,10 @@ public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 	public void deleteAll() throws Exception {
 		Class<T> modelClass = getModelClass();
 
-		JSONObject jsonObject = messageFactory.createDropJSONObject(
+		Message message = messageFactory.createDropMessage(
 			modelClass.getName());
 
-		messagePublisher.sendMessage(RoutingKeys.METRICS_DROP, jsonObject);
+		messagePublisher.publish(RoutingKeys.METRICS_DROP, message);
 	}
 
 	public Map<String, Object> getAttributes(T model) {
@@ -94,11 +94,10 @@ public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 		List<BaseModel<?>> models = metricsBaseModelUtil.getModelList(this);
 
 		for (BaseModel<?> model : models) {
-			JSONObject jsonObject = messageFactory.createUpdateJSONObject(
+			Message message = messageFactory.createUpdateMessage(
 				model.getModelClassName(), model);
 
-			messagePublisher.sendMessage(
-				RoutingKeys.METRICS_UPDATE, jsonObject);
+			messagePublisher.publish(RoutingKeys.METRICS_UPDATE, message);
 		}
 	}
 

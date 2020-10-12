@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "routing.key=zendesk.metrics.article.update",
+	immediate = true, property = "topic.pattern=zendesk.metrics.article.update",
 	service = ZendeskArticleTransformer.class
 )
 public class ZendeskArticleTransformer extends BaseTransformer {
