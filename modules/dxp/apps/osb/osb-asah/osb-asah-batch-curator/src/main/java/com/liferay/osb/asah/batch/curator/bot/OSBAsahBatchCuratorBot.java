@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskScheduler;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
@@ -61,14 +62,15 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
-	public void curateEngagements() {
-		_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
+	public Runnable curateEngagements() {
+		return () -> {
+			_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
 
-		_osbAsahTaskManager.runNanites(
-			"IndividualEngagementScoresNanite",
-			"IndividualSegmentEngagementScoresNanite",
-			"AccountEngagementScoresNanite");
+			_osbAsahTaskManager.runNanites(
+				"IndividualEngagementScoresNanite",
+				"IndividualSegmentEngagementScoresNanite",
+				"AccountEngagementScoresNanite");
+		};
 	}
 
 	@Scheduled(fixedDelay = DateUtil.HOUR * 6)
@@ -76,18 +78,19 @@ public class OSBAsahBatchCuratorBot {
 		_osbAsahTaskManager.runNanites("ExperimentNanite");
 	}
 
-	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
-	public void curateInterests() {
-		_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
+	public Runnable curateInterests() {
+		return () -> {
+			_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
 
-		_osbAsahTaskManager.runNanites("InterestTopicsNanite");
+			_osbAsahTaskManager.runNanites("InterestTopicsNanite");
 
-		_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
+			_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
+		};
 	}
 
-	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
-	public void curateStaleDynamicIndividualSegments() {
-		_osbAsahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
+	public Runnable curateStaleDynamicIndividualSegments() {
+		return () -> _osbAsahTaskManager.runNanites(
+			"StaleDynamicIndividualSegmentsNanite");
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
@@ -124,6 +127,8 @@ public class OSBAsahBatchCuratorBot {
 		_osbAsahTaskManager.executeOSBAsahTasks();
 
 		_osbAsahTaskManager.scheduleOSBAsahTasks();
+
+		scheduleNanites();
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -150,21 +155,42 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
-	public void runDataRetentionNanite() {
-		_osbAsahTaskManager.runNanites("DataRetentionNanite");
+	public Runnable runDataRetentionNanite() {
+		return () -> _osbAsahTaskManager.runNanites("DataRetentionNanite");
 	}
 
-	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
-	public void runDeleteDXPBatchEntitiesNanite() {
-		if (_deleteDXPBatchEntitiesNaniteRunnable != null) {
-			_deleteDXPBatchEntitiesNaniteRunnable.run();
-		}
+	public Runnable runDeleteDXPBatchEntitiesNanite() {
+		return () -> {
+			if (_deleteDXPBatchEntitiesNaniteRunnable != null) {
+				_deleteDXPBatchEntitiesNaniteRunnable.run();
+			}
+		};
 	}
 
-	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
-	public void runDeleteTempFilesNanite() {
-		_osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
+	public Runnable runDeleteTempFilesNanite() {
+		return () -> _osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
+	}
+
+	public void scheduleNanites() {
+		_scheduleNanite(curateEngagements(), "Engagements");
+
+		_scheduleNanite(curateInterests(), "Interests");
+
+		_scheduleNanite(
+			curateStaleDynamicIndividualSegments(),
+			"StaleDynamicIndividualSegments");
+
+		_scheduleNanite(runDataRetentionNanite(), "DataRetentionNanite");
+
+		_scheduleNanite(
+			runDeleteDXPBatchEntitiesNanite(), "DeleteDXPBatchEntitiesNanite");
+
+		_scheduleNanite(runDeleteTempFilesNanite(), "DeleteTempFilesNanite");
+	}
+
+	private void _scheduleNanite(Runnable runnable, String taskId) {
+		_osbAsahTaskScheduler.schedule(
+			_CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY, runnable, taskId);
 	}
 
 	private static final String[] _CACHE_NAMES = {
@@ -201,5 +227,8 @@ public class OSBAsahBatchCuratorBot {
 
 	@Autowired
 	private OSBAsahTaskManager _osbAsahTaskManager;
+
+	@Autowired
+	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
 
 }
