@@ -45,6 +45,13 @@ public class OSBAsahTaskRunnable implements Runnable {
 	}
 
 	public OSBAsahTaskRunnable(
+		JSONObject osbAsahTaskJSONObject,
+		OSBAsahTaskManager osbAsahTaskManager) {
+
+		this(false, osbAsahTaskJSONObject, osbAsahTaskManager);
+	}
+
+	public OSBAsahTaskRunnable(
 		OSBAsahTaskManager osbAsahTaskManager, String... naniteClassNames) {
 
 		_contextJSONObject = null;
@@ -84,14 +91,14 @@ public class OSBAsahTaskRunnable implements Runnable {
 
 				nanite.logCompleted(
 					_contextJSONObject, System.currentTimeMillis() - start,
-					null);
+					_osbAsahTaskId);
 			}
 			catch (Exception e) {
 				_log.error(e, e);
 
 				nanite.logFailed(
 					_contextJSONObject, System.currentTimeMillis() - start,
-					null, e);
+					_osbAsahTaskId, e);
 			}
 			finally {
 				_osbAsahTaskManager.deleteOSBAsahTask(_osbAsahTaskId);

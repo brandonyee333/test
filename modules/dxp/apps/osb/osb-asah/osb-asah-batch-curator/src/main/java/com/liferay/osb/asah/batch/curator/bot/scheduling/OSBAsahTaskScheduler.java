@@ -64,12 +64,11 @@ public class OSBAsahTaskScheduler {
 	}
 
 	public void schedule(
-		String cronExpression,
-		OSBAsahScheduledTaskRunnable osbAsahScheduledTaskRunnable,
+		String cronExpression, OSBAsahTaskRunnable osbAsahTaskRunnable,
 		String osbAsahTaskId) {
 
 		ScheduledFuture<?> scheduledFuture = _threadPoolTaskScheduler.schedule(
-			osbAsahScheduledTaskRunnable, new CronTrigger(cronExpression));
+			osbAsahTaskRunnable, new CronTrigger(cronExpression));
 
 		if (osbAsahTaskId != null) {
 			_scheduledFuturesMap.put(osbAsahTaskId, scheduledFuture);

@@ -127,8 +127,7 @@ public class OSBAsahTaskManager {
 
 		_osbAsahTaskScheduler.schedule(
 			cronExpression,
-			new OSBAsahScheduledTaskRunnable(
-				nanite, osbAsahTaskJSONObject, this),
+			new OSBAsahTaskRunnable(osbAsahTaskJSONObject, this),
 			osbAsahTaskJSONObject.getString("id"));
 	}
 
