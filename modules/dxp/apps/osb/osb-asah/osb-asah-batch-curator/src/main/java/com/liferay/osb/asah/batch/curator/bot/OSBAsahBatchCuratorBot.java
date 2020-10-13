@@ -23,6 +23,8 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.logging.Log;
@@ -106,6 +108,20 @@ public class OSBAsahBatchCuratorBot {
 		_scheduleNanites();
 	}
 
+	public void rescheduleNanites() {
+		for (String scheduledTask : _scheduledTasks) {
+			if (_log.isInfoEnabled()) {
+				_log.info(scheduledTask + " unscheduled");
+			}
+
+			_osbAsahTaskScheduler.unschedule(scheduledTask);
+		}
+
+		_scheduledTasks.clear();
+
+		_scheduleNanites();
+	}
+
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void runContentRecommendationDataSolutionNanite() {
 		if (_contentRecommendationDataSolutionNaniteRunnable != null) {
@@ -178,10 +194,16 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	private void _scheduleNanite(Runnable runnable, String taskId) {
-		_osbAsahTaskScheduler.schedule(
-			_buildCronExpression(
-				RandomUtils.nextInt(0, 61), RandomUtils.nextInt(0, 16)),
-			runnable, taskId);
+		String cronExpression = _buildCronExpression(
+			RandomUtils.nextInt(0, 61), RandomUtils.nextInt(0, 16));
+
+		_osbAsahTaskScheduler.schedule(cronExpression, runnable, taskId);
+
+		if (_log.isInfoEnabled()) {
+			_log.info(taskId + " scheduled to run at " + cronExpression);
+		}
+
+		_scheduledTasks.add(taskId);
 	}
 
 	private void _scheduleNanites() {
@@ -231,5 +253,7 @@ public class OSBAsahBatchCuratorBot {
 
 	@Autowired
 	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
+
+	private final Set<String> _scheduledTasks = new HashSet<>();
 
 }
