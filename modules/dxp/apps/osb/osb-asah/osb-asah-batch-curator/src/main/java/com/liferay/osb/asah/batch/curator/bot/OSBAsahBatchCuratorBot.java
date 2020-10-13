@@ -19,7 +19,6 @@ import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
-import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
@@ -35,7 +34,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -167,27 +165,6 @@ public class OSBAsahBatchCuratorBot {
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void runDeleteTempFilesNanite() {
 		_osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
-	}
-
-	@Bean(name = "contentRecommendationDataSolutionNaniteRunnable")
-	@ConditionalOnGoogleApplicationCredentials
-	private Runnable _contentRecommendationDataSolutionNaniteRunnable() {
-		return () -> _osbAsahTaskManager.runNanites(
-			"ContentRecommendationDataSolutionNanite");
-	}
-
-	@Bean(name = "dataprocSparkManagerMonitoringNaniteRunnable")
-	@ConditionalOnGoogleApplicationCredentials
-	private Runnable _dataprocSparkManagerMonitoringNaniteRunnable() {
-		return () -> _osbAsahTaskManager.runNanites(
-			"DataprocSparkManagerMonitoringNanite");
-	}
-
-	@Bean(name = "deleteDXPBatchEntitiesNaniteRunnable")
-	@ConditionalOnGoogleApplicationCredentials
-	private Runnable _deleteDXPBatchEntitiesNaniteRunnable() {
-		return () -> _osbAsahTaskManager.runNanites(
-			"DeleteDXPBatchEntitiesNanite");
 	}
 
 	private static final String[] _CACHE_NAMES = {
