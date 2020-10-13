@@ -93,7 +93,7 @@ public class LegacyWebServiceImpl
 		throws PortalException {
 
 		try {
-			String response = doGet(url, parameters);
+			String response = doGet(url, parameters, new HashMap<>());
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}

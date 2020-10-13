@@ -40,7 +40,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -156,7 +155,7 @@ public class WebUserIdentityProvider
 		throws Exception {
 
 		try {
-			String response = doGet(url, parameters);
+			String response = doGet(url, parameters, new HashMap<>());
 
 			return _jsonFactory.createJSONObject(response);
 		}
@@ -210,7 +209,7 @@ public class WebUserIdentityProvider
 
 	private User _importUserByUuid(String uuid) throws Exception {
 		JSONObject jsonObject = _getToJSONObject(
-			_URL_API_REST_USERS + uuid, Collections.emptyMap());
+			_URL_API_REST_USERS + uuid, new HashMap<>());
 
 		if (jsonObject == null) {
 			return null;
