@@ -62,35 +62,9 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	public Runnable curateEngagements() {
-		return () -> {
-			_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
-
-			_osbAsahTaskManager.runNanites(
-				"IndividualEngagementScoresNanite",
-				"IndividualSegmentEngagementScoresNanite",
-				"AccountEngagementScoresNanite");
-		};
-	}
-
 	@Scheduled(fixedDelay = DateUtil.HOUR * 6)
 	public void curateExperiments() {
 		_osbAsahTaskManager.runNanites("ExperimentNanite");
-	}
-
-	public Runnable curateInterests() {
-		return () -> {
-			_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
-
-			_osbAsahTaskManager.runNanites("InterestTopicsNanite");
-
-			_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
-		};
-	}
-
-	public Runnable curateStaleDynamicIndividualSegments() {
-		return () -> _osbAsahTaskManager.runNanites(
-			"StaleDynamicIndividualSegmentsNanite");
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
@@ -155,11 +129,54 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	public Runnable runDataRetentionNanite() {
+	public void scheduleNanites() {
+		_scheduleNanite(_curateEngagements(), "Engagements");
+
+		_scheduleNanite(_curateInterests(), "Interests");
+
+		_scheduleNanite(
+			_curateStaleDynamicIndividualSegments(),
+			"StaleDynamicIndividualSegments");
+
+		_scheduleNanite(_runDataRetentionNanite(), "DataRetentionNanite");
+
+		_scheduleNanite(
+			_runDeleteDXPBatchEntitiesNanite(), "DeleteDXPBatchEntitiesNanite");
+
+		_scheduleNanite(_runDeleteTempFilesNanite(), "DeleteTempFilesNanite");
+	}
+
+	private Runnable _curateEngagements() {
+		return () -> {
+			_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
+
+			_osbAsahTaskManager.runNanites(
+				"IndividualEngagementScoresNanite",
+				"IndividualSegmentEngagementScoresNanite",
+				"AccountEngagementScoresNanite");
+		};
+	}
+
+	private Runnable _curateInterests() {
+		return () -> {
+			_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
+
+			_osbAsahTaskManager.runNanites("InterestTopicsNanite");
+
+			_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
+		};
+	}
+
+	private Runnable _curateStaleDynamicIndividualSegments() {
+		return () -> _osbAsahTaskManager.runNanites(
+			"StaleDynamicIndividualSegmentsNanite");
+	}
+
+	private Runnable _runDataRetentionNanite() {
 		return () -> _osbAsahTaskManager.runNanites("DataRetentionNanite");
 	}
 
-	public Runnable runDeleteDXPBatchEntitiesNanite() {
+	private Runnable _runDeleteDXPBatchEntitiesNanite() {
 		return () -> {
 			if (_deleteDXPBatchEntitiesNaniteRunnable != null) {
 				_deleteDXPBatchEntitiesNaniteRunnable.run();
@@ -167,25 +184,8 @@ public class OSBAsahBatchCuratorBot {
 		};
 	}
 
-	public Runnable runDeleteTempFilesNanite() {
+	private Runnable _runDeleteTempFilesNanite() {
 		return () -> _osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
-	}
-
-	public void scheduleNanites() {
-		_scheduleNanite(curateEngagements(), "Engagements");
-
-		_scheduleNanite(curateInterests(), "Interests");
-
-		_scheduleNanite(
-			curateStaleDynamicIndividualSegments(),
-			"StaleDynamicIndividualSegments");
-
-		_scheduleNanite(runDataRetentionNanite(), "DataRetentionNanite");
-
-		_scheduleNanite(
-			runDeleteDXPBatchEntitiesNanite(), "DeleteDXPBatchEntitiesNanite");
-
-		_scheduleNanite(runDeleteTempFilesNanite(), "DeleteTempFilesNanite");
 	}
 
 	private void _scheduleNanite(Runnable runnable, String taskId) {
