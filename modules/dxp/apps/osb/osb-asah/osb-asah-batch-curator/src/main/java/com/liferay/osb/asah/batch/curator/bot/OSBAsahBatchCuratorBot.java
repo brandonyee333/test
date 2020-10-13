@@ -130,23 +130,41 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	public void scheduleNanites() {
-		_scheduleNanite(_curateEngagements(), "Engagements");
+		_scheduleNanite(_getEngagementsRunnable(), "Engagements");
 
-		_scheduleNanite(_curateInterests(), "Interests");
+		_scheduleNanite(_getInterestsRunnable(), "Interests");
 
 		_scheduleNanite(
-			_curateStaleDynamicIndividualSegments(),
+			_getStaleDynamicIndividualSegmentsRunnable(),
 			"StaleDynamicIndividualSegments");
 
-		_scheduleNanite(_runDataRetentionNanite(), "DataRetentionNanite");
+		_scheduleNanite(_getDataRetentionRunnable(), "DataRetentionNanite");
 
 		_scheduleNanite(
-			_runDeleteDXPBatchEntitiesNanite(), "DeleteDXPBatchEntitiesNanite");
+			_getDeleteDXPBatchEntitiesRunnable(),
+			"DeleteDXPBatchEntitiesNanite");
 
-		_scheduleNanite(_runDeleteTempFilesNanite(), "DeleteTempFilesNanite");
+		_scheduleNanite(_getDeleteTempFilesRunnable(), "DeleteTempFilesNanite");
 	}
 
-	private Runnable _curateEngagements() {
+	private Runnable _getDataRetentionRunnable() {
+		return () -> _osbAsahTaskManager.runNanites("DataRetentionNanite");
+	}
+
+	private Runnable _getDeleteDXPBatchEntitiesRunnable() {
+		if (_deleteDXPBatchEntitiesNaniteRunnable == null) {
+			return () -> {
+			};
+		}
+
+		return _deleteDXPBatchEntitiesNaniteRunnable;
+	}
+
+	private Runnable _getDeleteTempFilesRunnable() {
+		return () -> _osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
+	}
+
+	private Runnable _getEngagementsRunnable() {
 		return () -> {
 			_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
 
@@ -157,7 +175,7 @@ public class OSBAsahBatchCuratorBot {
 		};
 	}
 
-	private Runnable _curateInterests() {
+	private Runnable _getInterestsRunnable() {
 		return () -> {
 			_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
 
@@ -167,25 +185,9 @@ public class OSBAsahBatchCuratorBot {
 		};
 	}
 
-	private Runnable _curateStaleDynamicIndividualSegments() {
+	private Runnable _getStaleDynamicIndividualSegmentsRunnable() {
 		return () -> _osbAsahTaskManager.runNanites(
 			"StaleDynamicIndividualSegmentsNanite");
-	}
-
-	private Runnable _runDataRetentionNanite() {
-		return () -> _osbAsahTaskManager.runNanites("DataRetentionNanite");
-	}
-
-	private Runnable _runDeleteDXPBatchEntitiesNanite() {
-		return () -> {
-			if (_deleteDXPBatchEntitiesNaniteRunnable != null) {
-				_deleteDXPBatchEntitiesNaniteRunnable.run();
-			}
-		};
-	}
-
-	private Runnable _runDeleteTempFilesNanite() {
-		return () -> _osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
 	}
 
 	private void _scheduleNanite(Runnable runnable, String taskId) {
