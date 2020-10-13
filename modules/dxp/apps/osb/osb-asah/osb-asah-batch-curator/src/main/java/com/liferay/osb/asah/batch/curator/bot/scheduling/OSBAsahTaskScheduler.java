@@ -14,10 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.scheduling;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -25,8 +22,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -48,19 +43,6 @@ public class OSBAsahTaskScheduler {
 
 		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.execute(
 			osbAsahTaskRunnable);
-	}
-
-	public Nanite getNanite(String className) {
-		return _nanitesMap.get(className);
-	}
-
-	@PostConstruct
-	public void init() {
-		for (Nanite nanite : _nanites) {
-			Class<?> clazz = nanite.getClass();
-
-			_nanitesMap.put(clazz.getSimpleName(), nanite);
-		}
 	}
 
 	public void schedule(
@@ -87,10 +69,6 @@ public class OSBAsahTaskScheduler {
 		scheduledFuture.cancel(false);
 	}
 
-	@Autowired
-	private List<Nanite> _nanites;
-
-	private final Map<String, Nanite> _nanitesMap = new HashMap<>();
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
 	private final ExecutorService _threadPoolTaskExecutor =

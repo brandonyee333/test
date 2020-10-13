@@ -21,7 +21,12 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -97,7 +102,16 @@ public class OSBAsahTaskManager {
 	}
 
 	public Nanite getNanite(String className) {
-		return _osbAsahTaskScheduler.getNanite(className);
+		return _nanitesMap.get(className);
+	}
+
+	@PostConstruct
+	public void init() {
+		for (Nanite nanite : _nanites) {
+			Class<?> clazz = nanite.getClass();
+
+			_nanitesMap.put(clazz.getSimpleName(), nanite);
+		}
 	}
 
 	public void runNanites(String... naniteClassNames) {
@@ -158,6 +172,11 @@ public class OSBAsahTaskManager {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private List<Nanite> _nanites;
+
+	private final Map<String, Nanite> _nanitesMap = new HashMap<>();
 
 	@Autowired
 	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
