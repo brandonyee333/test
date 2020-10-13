@@ -48,12 +48,14 @@ public class OSBAsahTaskScheduler {
 	public void schedule(
 		String cronExpression, Runnable runnable, String taskId) {
 
+		if (taskId == null) {
+			throw new IllegalArgumentException("TaskId is null");
+		}
+
 		ScheduledFuture<?> scheduledFuture = _threadPoolTaskScheduler.schedule(
 			runnable, new CronTrigger(cronExpression));
 
-		if (taskId != null) {
-			_scheduledFuturesMap.put(taskId, scheduledFuture);
-		}
+		_scheduledFuturesMap.put(taskId, scheduledFuture);
 	}
 
 	public void unschedule(String taskId) {
