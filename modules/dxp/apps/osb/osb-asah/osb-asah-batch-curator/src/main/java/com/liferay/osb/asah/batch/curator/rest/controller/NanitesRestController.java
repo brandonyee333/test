@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.rest.controller;
 
+import com.liferay.osb.asah.batch.curator.bot.OSBAsahBatchCuratorBot;
 import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -51,6 +52,11 @@ public class NanitesRestController {
 			_faroInfoDataSourceDog.isAnalyticsConfigured());
 	}
 
+	@PostMapping("/reschedule")
+	public void reschedule() {
+		_osbAsahBatchCuratorBot.rescheduleNanites();
+	}
+
 	@PostMapping("/run")
 	public void run(@RequestBody String json) {
 		_osbAsahTaskManager.runNanites(
@@ -74,6 +80,9 @@ public class NanitesRestController {
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+
+	@Autowired
+	private OSBAsahBatchCuratorBot _osbAsahBatchCuratorBot;
 
 	@Autowired
 	private OSBAsahTaskManager _osbAsahTaskManager;
