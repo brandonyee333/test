@@ -185,21 +185,16 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	private void _scheduleNanites() {
-		_scheduleNanite(_getEngagementsRunnable(), "Engagements");
-
-		_scheduleNanite(_getInterestsRunnable(), "Interests");
-
-		_scheduleNanite(
-			_getStaleDynamicIndividualSegmentsRunnable(),
-			"StaleDynamicIndividualSegments");
-
 		_scheduleNanite(_getDataRetentionRunnable(), "DataRetentionNanite");
-
 		_scheduleNanite(
 			_getDeleteDXPBatchEntitiesRunnable(),
 			"DeleteDXPBatchEntitiesNanite");
-
 		_scheduleNanite(_getDeleteTempFilesRunnable(), "DeleteTempFilesNanite");
+		_scheduleNanite(_getEngagementsRunnable(), "Engagements");
+		_scheduleNanite(_getInterestsRunnable(), "Interests");
+		_scheduleNanite(
+			_getStaleDynamicIndividualSegmentsRunnable(),
+			"StaleDynamicIndividualSegments");
 	}
 
 	private static final String[] _CACHE_NAMES = {
