@@ -128,7 +128,7 @@ else {
 			</li>
 			<li>
 				<c:choose>
-					<c:when test="<%= connected %>">
+					<c:when test="<%= connected && (syncAllContacts || (totalContactsSelected > 0)) %>">
 						<portlet:renderURL var="editSyncedContactsFieldsURL">
 							<portlet:param name="mvcRenderCommandName" value="/analytics_settings/edit_synced_contacts_fields" />
 							<portlet:param name="redirect" value="<%= currentURL %>" />
@@ -162,7 +162,7 @@ else {
 				</div>
 
 				<c:choose>
-					<c:when test="<%= connected %>">
+					<c:when test="<%= connected && (syncAllContacts || (totalContactsSelected > 0)) %>">
 						</a>
 					</c:when>
 					<c:otherwise>
