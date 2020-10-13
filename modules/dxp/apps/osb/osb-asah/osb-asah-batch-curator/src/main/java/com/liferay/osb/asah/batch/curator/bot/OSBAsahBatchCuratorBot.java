@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -147,6 +148,10 @@ public class OSBAsahBatchCuratorBot {
 		_scheduleNanite(_getDeleteTempFilesRunnable(), "DeleteTempFilesNanite");
 	}
 
+	private String _buildCronExpression(int second, int minute) {
+		return String.format("%d %d 0 * * ?", second, minute);
+	}
+
 	private Runnable _getDataRetentionRunnable() {
 		return () -> _osbAsahTaskManager.runNanites("DataRetentionNanite");
 	}
@@ -192,16 +197,15 @@ public class OSBAsahBatchCuratorBot {
 
 	private void _scheduleNanite(Runnable runnable, String taskId) {
 		_osbAsahTaskScheduler.schedule(
-			_CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY, runnable, taskId);
+			_buildCronExpression(
+				RandomUtils.nextInt(0, 61), RandomUtils.nextInt(0, 16)),
+			runnable, taskId);
 	}
 
 	private static final String[] _CACHE_NAMES = {
 		"getActivityTransformations", "getGraphQLExecutionResult",
 		"getMembershipChangeTransformations"
 	};
-
-	private static final String _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY =
-		"${random.int[0,60]} ${random.int[0,15]} 0 * * ?";
 
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahBatchCuratorBot.class);
