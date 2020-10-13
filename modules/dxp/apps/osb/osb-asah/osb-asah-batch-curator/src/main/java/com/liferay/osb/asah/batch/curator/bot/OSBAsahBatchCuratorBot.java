@@ -16,29 +16,27 @@ package com.liferay.osb.asah.batch.curator.bot;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahRetryRejectedExecutionHandler;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahScheduledTaskRunnable;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskRunnable;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskScheduler;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -119,20 +117,13 @@ public class OSBAsahBatchCuratorBot {
 
 		if (className.equals("UpdateDynamicMembershipsNanite")) {
 			_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.execute(
-				new NanitesRunnable(false, osbAsahTaskJSONObject));
+				new OSBAsahTaskRunnable(
+					false, _osbAsahTaskScheduler, osbAsahTaskJSONObject));
 		}
 		else {
 			_threadPoolTaskExecutor.execute(
-				new NanitesRunnable(force, osbAsahTaskJSONObject));
-		}
-	}
-
-	@PostConstruct
-	public void init() {
-		for (Nanite nanite : _nanites) {
-			Class<?> clazz = nanite.getClass();
-
-			_nanitesMap.put(clazz.getSimpleName(), nanite);
+				new OSBAsahTaskRunnable(
+					force, _osbAsahTaskScheduler, osbAsahTaskJSONObject));
 		}
 	}
 
@@ -173,7 +164,8 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	public void run(String... naniteClassNames) {
-		_threadPoolTaskExecutor.execute(new NanitesRunnable(naniteClassNames));
+		_threadPoolTaskExecutor.execute(
+			new OSBAsahTaskRunnable(_osbAsahTaskScheduler, naniteClassNames));
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -218,7 +210,7 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	public void scheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
-		Nanite nanite = _nanitesMap.get(
+		Nanite nanite = _osbAsahTaskScheduler.getNanite(
 			osbAsahTaskJSONObject.getString("className"));
 
 		if (nanite == null) {
@@ -238,7 +230,8 @@ public class OSBAsahBatchCuratorBot {
 		}
 
 		ScheduledFuture<?> scheduledFuture = _threadPoolTaskScheduler.schedule(
-			new OSBAsahScheduledTaskRunnable(nanite, osbAsahTaskJSONObject),
+			new OSBAsahScheduledTaskRunnable(
+				nanite, _osbAsahTaskScheduler, osbAsahTaskJSONObject),
 			new CronTrigger(cronExpression));
 
 		_scheduledFuturesMap.put(
@@ -256,23 +249,6 @@ public class OSBAsahBatchCuratorBot {
 		}
 
 		scheduledFuture.cancel(false);
-	}
-
-	private boolean _checkNanite(String className) {
-		JSONObject latestRunLogJSONObject =
-			_runLogger.fetchLatestRunLogJSONObject(
-				null, _elasticsearchInvoker, className);
-
-		if ((latestRunLogJSONObject != null) &&
-			Objects.equals(
-				latestRunLogJSONObject.getString("status"), "STARTED")) {
-
-			_log.error("Nanite is already running: " + latestRunLogJSONObject);
-
-			return true;
-		}
-
-		return false;
 	}
 
 	@Bean(name = "contentRecommendationDataSolutionNaniteRunnable")
@@ -364,12 +340,7 @@ public class OSBAsahBatchCuratorBot {
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
-	private List<Nanite> _nanites;
-
-	private final Map<String, Nanite> _nanitesMap = new HashMap<>();
-
-	@Autowired
-	private RunLogger _runLogger;
+	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
 
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
@@ -385,155 +356,5 @@ public class OSBAsahBatchCuratorBot {
 				1, 1, 0, TimeUnit.MILLISECONDS,
 				new ArrayBlockingQueue<>(100000),
 				new OSBAsahRetryRejectedExecutionHandler());
-
-	private static class OSBAsahRetryRejectedExecutionHandler
-		implements RejectedExecutionHandler {
-
-		@Override
-		public void rejectedExecution(
-			Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
-
-			if (_log.isInfoEnabled()) {
-				_log.info("Queue is full. Retrying in 5 seconds.");
-			}
-
-			try {
-				Thread.sleep(5000);
-			}
-			catch (InterruptedException ie) {
-				_log.error(ie, ie);
-			}
-
-			threadPoolExecutor.execute(runnable);
-		}
-
-	}
-
-	private class NanitesRunnable implements Runnable {
-
-		public NanitesRunnable(
-			boolean force, JSONObject osbAsahTaskJSONObject) {
-
-			_contextJSONObject = osbAsahTaskJSONObject.optJSONObject("context");
-			_force = force;
-
-			_naniteClassNames = new String[] {
-				osbAsahTaskJSONObject.getString("className")
-			};
-
-			_osbAsahTaskId = osbAsahTaskJSONObject.optString("id");
-		}
-
-		public NanitesRunnable(String... naniteClassNames) {
-			_contextJSONObject = null;
-			_force = false;
-			_naniteClassNames = naniteClassNames;
-			_osbAsahTaskId = null;
-		}
-
-		@Override
-		public void run() {
-			for (String naniteClassName : _naniteClassNames) {
-				Nanite nanite = _nanitesMap.get(naniteClassName);
-
-				if (nanite == null) {
-					_log.error(
-						"Unable to get nanite with class name " +
-							naniteClassName);
-
-					continue;
-				}
-
-				if (((!_force && (nanite instanceof BaseActivitiesNanite)) ||
-					 nanite.isLogRunEnabled()) &&
-					_checkNanite(naniteClassName)) {
-
-					if (_osbAsahTaskId != null) {
-						_elasticsearchInvoker.delete(
-							"OSBAsahTasks", _osbAsahTaskId);
-					}
-
-					continue;
-				}
-
-				long start = System.currentTimeMillis();
-
-				try {
-					nanite.logStart(_contextJSONObject);
-
-					nanite.run(_contextJSONObject);
-
-					nanite.logCompleted(
-						_contextJSONObject, System.currentTimeMillis() - start,
-						null);
-				}
-				catch (Exception e) {
-					_log.error(e, e);
-
-					nanite.logFailed(
-						_contextJSONObject, System.currentTimeMillis() - start,
-						null, e);
-				}
-				finally {
-					if (_osbAsahTaskId != null) {
-						_elasticsearchInvoker.delete(
-							"OSBAsahTasks", _osbAsahTaskId);
-					}
-				}
-			}
-		}
-
-		private final JSONObject _contextJSONObject;
-		private final boolean _force;
-		private final String[] _naniteClassNames;
-		private final String _osbAsahTaskId;
-
-	}
-
-	private class OSBAsahScheduledTaskRunnable implements Runnable {
-
-		public OSBAsahScheduledTaskRunnable(
-			Nanite nanite, JSONObject osbAsahTaskJSONObject) {
-
-			_nanite = nanite;
-			_osbAsahTaskJSONObject = osbAsahTaskJSONObject;
-		}
-
-		@Override
-		public void run() {
-			Class<?> clazz = _nanite.getClass();
-
-			if (_nanite.isLogRunEnabled() &&
-				_checkNanite(clazz.getSimpleName())) {
-
-				return;
-			}
-
-			String osbAsahTaskId = _osbAsahTaskJSONObject.getString("id");
-			long start = System.currentTimeMillis();
-
-			try {
-				JSONObject contextJSONObject =
-					_osbAsahTaskJSONObject.optJSONObject("context");
-
-				_nanite.run(contextJSONObject);
-
-				_nanite.logCompleted(
-					contextJSONObject, System.currentTimeMillis() - start,
-					osbAsahTaskId);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-
-				_nanite.logFailed(
-					_osbAsahTaskJSONObject.optJSONObject("context"),
-					System.currentTimeMillis() - start, osbAsahTaskId, e);
-			}
-		}
-
-		private final Nanite _nanite;
-		private final JSONObject _osbAsahTaskJSONObject;
-
-	}
 
 }
