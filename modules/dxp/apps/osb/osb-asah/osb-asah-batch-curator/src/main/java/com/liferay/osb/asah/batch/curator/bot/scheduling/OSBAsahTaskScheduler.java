@@ -47,23 +47,23 @@ public class OSBAsahTaskScheduler {
 
 	public void schedule(
 		String cronExpression, OSBAsahTaskRunnable osbAsahTaskRunnable,
-		String osbAsahTaskId) {
+		String taskId) {
 
 		ScheduledFuture<?> scheduledFuture = _threadPoolTaskScheduler.schedule(
 			osbAsahTaskRunnable, new CronTrigger(cronExpression));
 
-		if (osbAsahTaskId != null) {
-			_scheduledFuturesMap.put(osbAsahTaskId, scheduledFuture);
+		if (taskId != null) {
+			_scheduledFuturesMap.put(taskId, scheduledFuture);
 		}
 	}
 
-	public void unschedule(String osbAsahTaskId) {
+	public void unschedule(String taskId) {
 		ScheduledFuture<?> scheduledFuture = _scheduledFuturesMap.remove(
-			osbAsahTaskId);
+			taskId);
 
 		if (scheduledFuture == null) {
 			throw new IllegalArgumentException(
-				"Unable to unschedule OSB Asah task " + osbAsahTaskId);
+				"Unable to unschedule task " + taskId);
 		}
 
 		scheduledFuture.cancel(false);
