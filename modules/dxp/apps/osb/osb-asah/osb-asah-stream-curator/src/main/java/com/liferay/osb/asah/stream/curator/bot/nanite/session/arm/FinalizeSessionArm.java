@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -87,6 +88,16 @@ public class FinalizeSessionArm {
 
 		_cerebroInfoElasticsearchInvoker.update(
 			"user-sessions", userSession.getId(), partialUserSessionJSONObject);
+
+		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+			"UpdateDynamicMembershipsNanite",
+			JSONUtil.put(
+				"dateModified", DateUtil.newDateString()
+			).put(
+				"individualJSONObject",
+				_faroInfoElasticsearchInvoker.fetch(
+					"individuals", userSession.getIndividualId())
+			));
 	}
 
 	public void reprocessSession(UserSession userSession) throws Exception {
@@ -649,5 +660,8 @@ public class FinalizeSessionArm {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 }
