@@ -28,12 +28,12 @@ import org.json.JSONObject;
 public class OSBAsahScheduledTaskRunnable implements Runnable {
 
 	public OSBAsahScheduledTaskRunnable(
-		Nanite nanite, OSBAsahTaskScheduler osbAsahTaskScheduler,
-		JSONObject osbAsahTaskJSONObject) {
+		Nanite nanite, JSONObject osbAsahTaskJSONObject,
+		OSBAsahTaskManager osbAsahTaskManager) {
 
 		_nanite = nanite;
-		_osbAsahTaskScheduler = osbAsahTaskScheduler;
 		_osbAsahTaskJSONObject = osbAsahTaskJSONObject;
+		_osbAsahTaskManager = osbAsahTaskManager;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class OSBAsahScheduledTaskRunnable implements Runnable {
 		Class<?> clazz = _nanite.getClass();
 
 		if (_nanite.isLogRunEnabled() &&
-			_osbAsahTaskScheduler.checkNotRunning(clazz.getSimpleName())) {
+			_osbAsahTaskManager.checkNanite(clazz.getSimpleName())) {
 
 			return;
 		}
@@ -73,6 +73,6 @@ public class OSBAsahScheduledTaskRunnable implements Runnable {
 
 	private final Nanite _nanite;
 	private final JSONObject _osbAsahTaskJSONObject;
-	private final OSBAsahTaskScheduler _osbAsahTaskScheduler;
+	private final OSBAsahTaskManager _osbAsahTaskManager;
 
 }

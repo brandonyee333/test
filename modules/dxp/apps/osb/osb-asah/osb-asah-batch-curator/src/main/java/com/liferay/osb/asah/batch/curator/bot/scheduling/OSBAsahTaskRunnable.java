@@ -30,26 +30,26 @@ import org.json.JSONObject;
 public class OSBAsahTaskRunnable implements Runnable {
 
 	public OSBAsahTaskRunnable(
-		boolean force, OSBAsahTaskScheduler osbAsahTaskScheduler,
-		JSONObject osbAsahTaskJSONObject) {
+		boolean force, JSONObject osbAsahTaskJSONObject,
+		OSBAsahTaskManager osbAsahTaskManager) {
 
 		_contextJSONObject = osbAsahTaskJSONObject.optJSONObject("context");
 		_force = force;
-		_osbAsahTaskScheduler = osbAsahTaskScheduler;
 
 		_naniteClassNames = new String[] {
 			osbAsahTaskJSONObject.getString("className")
 		};
 
 		_osbAsahTaskId = osbAsahTaskJSONObject.optString("id");
+		_osbAsahTaskManager = osbAsahTaskManager;
 	}
 
 	public OSBAsahTaskRunnable(
-		OSBAsahTaskScheduler osbAsahTaskScheduler, String... naniteClassNames) {
+		OSBAsahTaskManager osbAsahTaskManager, String... naniteClassNames) {
 
 		_contextJSONObject = null;
 		_force = false;
-		_osbAsahTaskScheduler = osbAsahTaskScheduler;
+		_osbAsahTaskManager = osbAsahTaskManager;
 		_naniteClassNames = naniteClassNames;
 		_osbAsahTaskId = null;
 	}
@@ -57,7 +57,7 @@ public class OSBAsahTaskRunnable implements Runnable {
 	@Override
 	public void run() {
 		for (String naniteClassName : _naniteClassNames) {
-			Nanite nanite = _osbAsahTaskScheduler.getNanite(naniteClassName);
+			Nanite nanite = _osbAsahTaskManager.getNanite(naniteClassName);
 
 			if (nanite == null) {
 				_log.error(
@@ -68,9 +68,9 @@ public class OSBAsahTaskRunnable implements Runnable {
 
 			if (((!_force && (nanite instanceof BaseActivitiesNanite)) ||
 				 nanite.isLogRunEnabled()) &&
-				_osbAsahTaskScheduler.checkNotRunning(naniteClassName)) {
+				_osbAsahTaskManager.checkNanite(naniteClassName)) {
 
-				_osbAsahTaskScheduler.deleteOSBAsahTask(_osbAsahTaskId);
+				_osbAsahTaskManager.deleteOSBAsahTask(_osbAsahTaskId);
 
 				continue;
 			}
@@ -94,7 +94,7 @@ public class OSBAsahTaskRunnable implements Runnable {
 					null, e);
 			}
 			finally {
-				_osbAsahTaskScheduler.deleteOSBAsahTask(_osbAsahTaskId);
+				_osbAsahTaskManager.deleteOSBAsahTask(_osbAsahTaskId);
 			}
 		}
 	}
@@ -106,6 +106,6 @@ public class OSBAsahTaskRunnable implements Runnable {
 	private final boolean _force;
 	private final String[] _naniteClassNames;
 	private final String _osbAsahTaskId;
-	private final OSBAsahTaskScheduler _osbAsahTaskScheduler;
+	private final OSBAsahTaskManager _osbAsahTaskManager;
 
 }

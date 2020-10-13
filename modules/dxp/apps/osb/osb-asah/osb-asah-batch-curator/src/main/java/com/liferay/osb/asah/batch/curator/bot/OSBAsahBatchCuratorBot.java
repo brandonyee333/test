@@ -15,36 +15,20 @@
 package com.liferay.osb.asah.batch.curator.bot;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
-import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahRetryRejectedExecutionHandler;
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahScheduledTaskRunnable;
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskRunnable;
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskScheduler;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -56,8 +40,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -83,9 +65,9 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void curateEngagements() {
-		run("AssetEngagementScoresNanite");
+		_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
 
-		run(
+		_osbAsahTaskManager.runNanites(
 			"IndividualEngagementScoresNanite",
 			"IndividualSegmentEngagementScoresNanite",
 			"AccountEngagementScoresNanite");
@@ -93,38 +75,21 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.HOUR * 6)
 	public void curateExperiments() {
-		run("ExperimentNanite");
+		_osbAsahTaskManager.runNanites("ExperimentNanite");
 	}
 
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void curateInterests() {
-		run("InterestThresholdScoreNanite");
+		_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
 
-		run("InterestTopicsNanite");
+		_osbAsahTaskManager.runNanites("InterestTopicsNanite");
 
-		run("IndividualInterestScoresNanite");
+		_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
 	}
 
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void curateStaleDynamicIndividualSegments() {
-		run("StaleDynamicIndividualSegmentsNanite");
-	}
-
-	public void executeOSBAsahTask(
-		boolean force, JSONObject osbAsahTaskJSONObject) {
-
-		String className = osbAsahTaskJSONObject.getString("className");
-
-		if (className.equals("UpdateDynamicMembershipsNanite")) {
-			_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.execute(
-				new OSBAsahTaskRunnable(
-					false, _osbAsahTaskScheduler, osbAsahTaskJSONObject));
-		}
-		else {
-			_threadPoolTaskExecutor.execute(
-				new OSBAsahTaskRunnable(
-					force, _osbAsahTaskScheduler, osbAsahTaskJSONObject));
-		}
+		_osbAsahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
@@ -139,33 +104,28 @@ public class OSBAsahBatchCuratorBot {
 				"ctx._source.status = 'INTERRUPTED'", Collections.emptyMap()),
 			"run-logs");
 
-		run("AssetEngagementScoresNanite");
+		_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
 
-		run("DataRetentionNanite");
+		_osbAsahTaskManager.runNanites("DataRetentionNanite");
 
-		run("DeleteTempFilesNanite");
+		_osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
 
-		run(
+		_osbAsahTaskManager.runNanites(
 			"IndividualEngagementScoresNanite",
 			"IndividualSegmentEngagementScoresNanite",
 			"AccountEngagementScoresNanite");
 
-		run("InterestThresholdScoreNanite");
+		_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
 
-		run("InterestTopicsNanite");
+		_osbAsahTaskManager.runNanites("InterestTopicsNanite");
 
-		run("IndividualInterestScoresNanite");
+		_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
 
-		run("StaleDynamicIndividualSegmentsNanite");
+		_osbAsahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
 
-		_executeOSBAsahTasks();
+		_osbAsahTaskManager.executeOSBAsahTasks();
 
-		_scheduleOSBAsahTasks();
-	}
-
-	public void run(String... naniteClassNames) {
-		_threadPoolTaskExecutor.execute(
-			new OSBAsahTaskRunnable(_osbAsahTaskScheduler, naniteClassNames));
+		_osbAsahTaskManager.scheduleOSBAsahTasks();
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -177,12 +137,12 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runDataControlTasks() {
-		run("DataControlNanite");
+		_osbAsahTaskManager.runNanites("DataControlNanite");
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runDataExportTasks() {
-		run("DataExportNanite");
+		_osbAsahTaskManager.runNanites("DataExportNanite");
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -194,7 +154,7 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void runDataRetentionNanite() {
-		run("DataRetentionNanite");
+		_osbAsahTaskManager.runNanites("DataRetentionNanite");
 	}
 
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
@@ -206,105 +166,28 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(cron = _CRON_EXPRESSION_AT_MIDNIGHT_WITH_RANDOM_DELAY)
 	public void runDeleteTempFilesNanite() {
-		run("DeleteTempFilesNanite");
-	}
-
-	public void scheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
-		Nanite nanite = _osbAsahTaskScheduler.getNanite(
-			osbAsahTaskJSONObject.getString("className"));
-
-		if (nanite == null) {
-			throw new IllegalArgumentException(
-				"Unable to schedule nanite with class name " +
-					osbAsahTaskJSONObject.getString("className"));
-		}
-
-		String cronExpression = osbAsahTaskJSONObject.getString(
-			"cronExpression");
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				String.format(
-					"Scheduling task %s according CRON expression %s",
-					osbAsahTaskJSONObject, cronExpression));
-		}
-
-		ScheduledFuture<?> scheduledFuture = _threadPoolTaskScheduler.schedule(
-			new OSBAsahScheduledTaskRunnable(
-				nanite, _osbAsahTaskScheduler, osbAsahTaskJSONObject),
-			new CronTrigger(cronExpression));
-
-		_scheduledFuturesMap.put(
-			osbAsahTaskJSONObject.getString("id"), scheduledFuture);
-	}
-
-	public void unscheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
-		ScheduledFuture<?> scheduledFuture = _scheduledFuturesMap.remove(
-			osbAsahTaskJSONObject.getString("id"));
-
-		if (scheduledFuture == null) {
-			throw new IllegalArgumentException(
-				"Unable to unschedule OSB Asah task " +
-					osbAsahTaskJSONObject.getString("id"));
-		}
-
-		scheduledFuture.cancel(false);
+		_osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
 	}
 
 	@Bean(name = "contentRecommendationDataSolutionNaniteRunnable")
 	@ConditionalOnGoogleApplicationCredentials
 	private Runnable _contentRecommendationDataSolutionNaniteRunnable() {
-		return () -> run("ContentRecommendationDataSolutionNanite");
+		return () -> _osbAsahTaskManager.runNanites(
+			"ContentRecommendationDataSolutionNanite");
 	}
 
 	@Bean(name = "dataprocSparkManagerMonitoringNaniteRunnable")
 	@ConditionalOnGoogleApplicationCredentials
 	private Runnable _dataprocSparkManagerMonitoringNaniteRunnable() {
-		return () -> run("DataprocSparkManagerMonitoringNanite");
+		return () -> _osbAsahTaskManager.runNanites(
+			"DataprocSparkManagerMonitoringNanite");
 	}
 
 	@Bean(name = "deleteDXPBatchEntitiesNaniteRunnable")
 	@ConditionalOnGoogleApplicationCredentials
 	private Runnable _deleteDXPBatchEntitiesNaniteRunnable() {
-		return () -> run("DeleteDXPBatchEntitiesNanite");
-	}
-
-	private void _executeOSBAsahTasks() {
-		try {
-			JSONArrayIterator.of(
-				"OSBAsahTasks", _elasticsearchInvoker,
-				osbAsahTaskJSONObject -> {
-					executeOSBAsahTask(true, osbAsahTaskJSONObject);
-
-					return null;
-				}
-			).setQueryBuilder(
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.existsQuery("cronExpression"))
-			).iterate();
-		}
-		catch (Exception e) {
-			_log.error("Unable to run existing tasks on startup", e);
-		}
-	}
-
-	private void _scheduleOSBAsahTasks() {
-		try {
-			JSONArrayIterator.of(
-				"OSBAsahTasks", _elasticsearchInvoker,
-				osbAsahTaskJSONObject -> {
-					scheduleOSBAsahTask(osbAsahTaskJSONObject);
-
-					return null;
-				}
-			).setQueryBuilder(
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.existsQuery("cronExpression"))
-			).iterate();
-		}
-		catch (Exception e) {
-			_log.error("Unable to schedule existing tasks on startup", e);
-		}
+		return () -> _osbAsahTaskManager.runNanites(
+			"DeleteDXPBatchEntitiesNanite");
 	}
 
 	private static final String[] _CACHE_NAMES = {
@@ -340,21 +223,6 @@ public class OSBAsahBatchCuratorBot {
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
-	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
-
-	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
-		new HashMap<>();
-	private final ExecutorService _threadPoolTaskExecutor =
-		Executors.newFixedThreadPool(10);
-
-	@Autowired
-	private ThreadPoolTaskScheduler _threadPoolTaskScheduler;
-
-	private final ExecutorService
-		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor =
-			new ThreadPoolExecutor(
-				1, 1, 0, TimeUnit.MILLISECONDS,
-				new ArrayBlockingQueue<>(100000),
-				new OSBAsahRetryRejectedExecutionHandler());
+	private OSBAsahTaskManager _osbAsahTaskManager;
 
 }

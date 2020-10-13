@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.rest.controller;
 
-import com.liferay.osb.asah.batch.curator.bot.OSBAsahBatchCuratorBot;
 import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -41,7 +41,7 @@ public class NanitesRestController {
 
 	@PostMapping
 	public void post(@RequestBody String osbAsahTaskJSON) {
-		_osbAsahBatchCuratorBot.executeOSBAsahTask(
+		_osbAsahTaskManager.executeOSBAsahTask(
 			false, new JSONObject(osbAsahTaskJSON));
 	}
 
@@ -53,19 +53,19 @@ public class NanitesRestController {
 
 	@PostMapping("/run")
 	public void run(@RequestBody String json) {
-		_osbAsahBatchCuratorBot.run(
+		_osbAsahTaskManager.runNanites(
 			JSONUtil.toStringArray(new JSONArray(json)));
 	}
 
 	@PostMapping("/schedule")
 	public void schedule(@RequestBody String osbAsahTaskJSON) {
-		_osbAsahBatchCuratorBot.scheduleOSBAsahTask(
+		_osbAsahTaskManager.scheduleOSBAsahTask(
 			new JSONObject(osbAsahTaskJSON));
 	}
 
 	@PostMapping("/unschedule")
 	public void unschedule(@RequestBody String osbAsahTaskJSON) {
-		_osbAsahBatchCuratorBot.unscheduleOSBAsahTask(
+		_osbAsahTaskManager.unscheduleOSBAsahTask(
 			new JSONObject(osbAsahTaskJSON));
 	}
 
@@ -76,6 +76,6 @@ public class NanitesRestController {
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
-	private OSBAsahBatchCuratorBot _osbAsahBatchCuratorBot;
+	private OSBAsahTaskManager _osbAsahTaskManager;
 
 }

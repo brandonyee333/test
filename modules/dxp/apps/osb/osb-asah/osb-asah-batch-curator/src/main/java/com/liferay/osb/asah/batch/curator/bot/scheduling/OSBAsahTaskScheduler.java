@@ -15,23 +15,22 @@
 package com.liferay.osb.asah.batch.curator.bot.scheduling;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.run.logger.RunLogger;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,27 +39,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class OSBAsahTaskScheduler {
 
-	public boolean checkNotRunning(String className) {
-		JSONObject latestRunLogJSONObject =
-			_runLogger.fetchLatestRunLogJSONObject(
-				null, _elasticsearchInvoker, className);
-
-		if ((latestRunLogJSONObject != null) &&
-			Objects.equals(
-				latestRunLogJSONObject.getString("status"), "STARTED")) {
-
-			_log.error("Nanite is already running: " + latestRunLogJSONObject);
-
-			return true;
-		}
-
-		return false;
+	public void execute(OSBAsahTaskRunnable osbAsahTaskRunnable) {
+		_threadPoolTaskExecutor.execute(osbAsahTaskRunnable);
 	}
 
-	public void deleteOSBAsahTask(String osbAsahTaskId) {
-		if (osbAsahTaskId != null) {
-			_elasticsearchInvoker.delete("OSBAsahTasks", osbAsahTaskId);
-		}
+	public void executeUpdateDynamicMembershipsNanite(
+		OSBAsahTaskRunnable osbAsahTaskRunnable) {
+
+		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.execute(
+			osbAsahTaskRunnable);
 	}
 
 	public Nanite getNanite(String className) {
@@ -76,18 +63,48 @@ public class OSBAsahTaskScheduler {
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		OSBAsahTaskScheduler.class);
+	public void schedule(
+		String cronExpression,
+		OSBAsahScheduledTaskRunnable osbAsahScheduledTaskRunnable,
+		String osbAsahTaskId) {
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+		ScheduledFuture<?> scheduledFuture = _threadPoolTaskScheduler.schedule(
+			osbAsahScheduledTaskRunnable, new CronTrigger(cronExpression));
+
+		if (osbAsahTaskId != null) {
+			_scheduledFuturesMap.put(osbAsahTaskId, scheduledFuture);
+		}
+	}
+
+	public void unschedule(String osbAsahTaskId) {
+		ScheduledFuture<?> scheduledFuture = _scheduledFuturesMap.remove(
+			osbAsahTaskId);
+
+		if (scheduledFuture == null) {
+			throw new IllegalArgumentException(
+				"Unable to unschedule OSB Asah task " + osbAsahTaskId);
+		}
+
+		scheduledFuture.cancel(false);
+	}
 
 	@Autowired
 	private List<Nanite> _nanites;
 
 	private final Map<String, Nanite> _nanitesMap = new HashMap<>();
+	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
+		new HashMap<>();
+	private final ExecutorService _threadPoolTaskExecutor =
+		Executors.newFixedThreadPool(10);
 
 	@Autowired
-	private RunLogger _runLogger;
+	private ThreadPoolTaskScheduler _threadPoolTaskScheduler;
+
+	private final ExecutorService
+		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor =
+			new ThreadPoolExecutor(
+				1, 1, 0, TimeUnit.MILLISECONDS,
+				new ArrayBlockingQueue<>(100000),
+				new OSBAsahRetryRejectedExecutionHandler());
 
 }
