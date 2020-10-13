@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -225,10 +226,30 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 				}
 			}
 
+			Date now = new Date();
+
 			ProductPurchase[] productPurchases = account.getProductPurchases();
 
 			if (productPurchases != null) {
 				for (ProductPurchase productPurchase : productPurchases) {
+					if (productPurchase.getStatus() ==
+							ProductPurchase.Status.CANCELLED) {
+
+						continue;
+					}
+
+					if ((productPurchase.getEndDate() != null) &&
+						now.after(productPurchase.getEndDate())) {
+
+						continue;
+					}
+
+					if ((productPurchase.getStartDate() != null) &&
+						now.before(productPurchase.getStartDate())) {
+
+						continue;
+					}
+
 					Product product = productPurchase.getProduct();
 
 					Map<String, String> properties = product.getProperties();
