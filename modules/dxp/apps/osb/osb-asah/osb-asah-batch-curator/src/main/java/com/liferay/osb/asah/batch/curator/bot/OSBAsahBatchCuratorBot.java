@@ -103,7 +103,7 @@ public class OSBAsahBatchCuratorBot {
 
 		_osbAsahTaskManager.scheduleOSBAsahTasks();
 
-		scheduleNanites();
+		_scheduleNanites();
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -128,24 +128,6 @@ public class OSBAsahBatchCuratorBot {
 		if (_dataprocSparkManagerMonitoringNaniteRunnable != null) {
 			_dataprocSparkManagerMonitoringNaniteRunnable.run();
 		}
-	}
-
-	public void scheduleNanites() {
-		_scheduleNanite(_getEngagementsRunnable(), "Engagements");
-
-		_scheduleNanite(_getInterestsRunnable(), "Interests");
-
-		_scheduleNanite(
-			_getStaleDynamicIndividualSegmentsRunnable(),
-			"StaleDynamicIndividualSegments");
-
-		_scheduleNanite(_getDataRetentionRunnable(), "DataRetentionNanite");
-
-		_scheduleNanite(
-			_getDeleteDXPBatchEntitiesRunnable(),
-			"DeleteDXPBatchEntitiesNanite");
-
-		_scheduleNanite(_getDeleteTempFilesRunnable(), "DeleteTempFilesNanite");
 	}
 
 	private String _buildCronExpression(int second, int minute) {
@@ -200,6 +182,24 @@ public class OSBAsahBatchCuratorBot {
 			_buildCronExpression(
 				RandomUtils.nextInt(0, 61), RandomUtils.nextInt(0, 16)),
 			runnable, taskId);
+	}
+
+	private void _scheduleNanites() {
+		_scheduleNanite(_getEngagementsRunnable(), "Engagements");
+
+		_scheduleNanite(_getInterestsRunnable(), "Interests");
+
+		_scheduleNanite(
+			_getStaleDynamicIndividualSegmentsRunnable(),
+			"StaleDynamicIndividualSegments");
+
+		_scheduleNanite(_getDataRetentionRunnable(), "DataRetentionNanite");
+
+		_scheduleNanite(
+			_getDeleteDXPBatchEntitiesRunnable(),
+			"DeleteDXPBatchEntitiesNanite");
+
+		_scheduleNanite(_getDeleteTempFilesRunnable(), "DeleteTempFilesNanite");
 	}
 
 	private static final String[] _CACHE_NAMES = {
