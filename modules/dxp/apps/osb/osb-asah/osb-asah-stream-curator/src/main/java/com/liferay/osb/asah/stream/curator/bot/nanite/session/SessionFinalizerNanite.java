@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
@@ -158,6 +159,16 @@ public class SessionFinalizerNanite implements Nanite {
 
 			for (UserSession userSession : userSessions) {
 				_finalizeSessionArm.processSession(userSession);
+
+				_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+					"UpdateDynamicMembershipsNanite",
+					JSONUtil.put(
+						"dateModified", DateUtil.newDateString()
+					).put(
+						"individualJSONObject",
+						_faroInfoElasticsearchInvoker.fetch(
+							"individuals", userSession.getIndividualId())
+					));
 			}
 
 			if (_log.isInfoEnabled()) {
@@ -182,6 +193,12 @@ public class SessionFinalizerNanite implements Nanite {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
 	private FinalizeSessionArm _finalizeSessionArm;
