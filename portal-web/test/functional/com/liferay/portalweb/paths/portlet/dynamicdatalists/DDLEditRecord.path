@@ -51,7 +51,7 @@
 </tr>
 <tr>
 	<td>HTML_FIELD</td>
-	<td>//div[contains(@id,'${key_fieldName}') and @contenteditable='true']</td>
+	<td>//div[contains(@id,'${key_fieldName}') and @contenteditable='true']</td> 
 	<td></td>
 </tr>
 <tr>

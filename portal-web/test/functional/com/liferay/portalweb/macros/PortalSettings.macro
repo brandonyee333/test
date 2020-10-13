@@ -112,6 +112,16 @@ definition {
 		}
 	}
 
+	macro setCurrentInstanceLanguageCP{
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Localization",
+			configurationName = "Language",
+			configurationScope = "Virtual Instance Scope");
+
+		PortalSettings.configureCurrentLanguagesCP(defaultPortalLanguage = "${newLanguage}");
+	}
+
 	macro configureCurrentLanguagesCP {
 		if (isSet(defaultPortalLanguage)) {
 			var defaultPortalLanguage = "${defaultPortalLanguage}";

@@ -77,7 +77,7 @@
 </tr>
 <tr>
 	<td>RECORD_TABLE_PREVIEW_INVALID_IMG</td>
-	<td>//img[@src='x']</td>
+	<td>//p[contains(text(), 'img src=x')]</td>
 	<td></td>
 </tr>
 <tr>
