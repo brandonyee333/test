@@ -303,7 +303,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 		accountEntry.setKoroneikiAccountKey(account.getKey());
 		accountEntry.setName(account.getName());
 
-		if (account.getStatus() == Account.Status.APPROVED) {
+		if (account.getStatus() == Account.Status.ACTIVE) {
 			accountEntry.setStatus(WorkflowConstants.STATUS_APPROVED);
 		}
 		else if (account.getStatus() == Account.Status.CLOSED) {

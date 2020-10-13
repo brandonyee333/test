@@ -99,7 +99,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 						StringBundler sb = new StringBundler(5);
 
 						sb.append("status eq ");
-						sb.append(Account.Status.APPROVED);
+						sb.append(Account.Status.ACTIVE);
 						sb.append(" and workerContactUuids/any(s:s eq '");
 						sb.append(user.getUuid());
 						sb.append("')");

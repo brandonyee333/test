@@ -183,7 +183,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 		sb.append("customerContactEmailAddresses/any(s:contains(s, '@");
 		sb.append(domain);
 		sb.append("')) and status eq '");
-		sb.append(Account.Status.APPROVED);
+		sb.append(Account.Status.ACTIVE);
 		sb.append("'");
 
 		List<Account> accounts = _accountWebService.search(
