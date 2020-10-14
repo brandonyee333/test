@@ -63,16 +63,13 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 		}
 
 		String dateString = DateUtil.newUTCDateString();
+		String jobRunRunDataPeriod = contextJSONObject.optString(
+			"runDataPeriod", jobJSONObject.getString("runDataPeriod"));
 
 		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.add(
 			"job-runs",
 			JSONUtil.put(
-				"context",
-				JSONUtil.put(
-					"runDataPeriod",
-					contextJSONObject.optString(
-						"runDataPeriod",
-						jobJSONObject.getString("runDataPeriod")))
+				"context", JSONUtil.put("runDataPeriod", jobRunRunDataPeriod)
 			).put(
 				"createdDate", dateString
 			).put(
@@ -94,8 +91,12 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 
 		_dataprocSparkManager.submitJob(
 			Arrays.asList(
+				"--job-id", jobJSONObject.getString("id"), "--job-parameters",
+				String.valueOf(jobJSONObject.getJSONArray("parameters")),
 				"--job-run-id", jobRunJSONObject.getString("id"),
-				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
+				"--job-run-data-period", jobRunRunDataPeriod, "--job-run-step",
+				jobRunJSONObject.getString("step"), "--lcp-project-id",
+				ServiceConstants.LCP_PROJECT_ID),
 			"content_recommendation.yaml", Collections.emptyList(),
 			"liferay.content_recommendation.ContentRecommendationApplication",
 			Collections.emptyMap());
