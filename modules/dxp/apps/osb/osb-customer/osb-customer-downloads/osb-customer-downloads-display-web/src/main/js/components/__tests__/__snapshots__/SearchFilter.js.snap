@@ -54,7 +54,7 @@ exports[`SearchFilter renders correctly with both filters preselected 1`] = `
           class="control-label"
           for="namespacefileTypeAssetCategoryId"
         >
-          file-type:
+          type:
         </label>
         <select
           class="form-control"
@@ -127,7 +127,7 @@ exports[`SearchFilter renders correctly with no selection 1`] = `
           class="control-label"
           for="namespacefileTypeAssetCategoryId"
         >
-          file-type:
+          type:
         </label>
         <select
           class="form-control"

@@ -82,7 +82,7 @@ describe('SearchFilter', () => {
 			}
 		);
 
-		const fileTypeInput = getByLabelText('file-type:');
+		const fileTypeInput = getByLabelText('type:');
 
 		fireEvent.change(
 			fileTypeInput,
@@ -117,7 +117,7 @@ describe('SearchFilter', () => {
 			}
 		);
 
-		const fileTypeInput = getByLabelText('file-type:');
+		const fileTypeInput = getByLabelText('type:');
 
 		expect(fileTypeInput.value).toBe('one');
 	});
