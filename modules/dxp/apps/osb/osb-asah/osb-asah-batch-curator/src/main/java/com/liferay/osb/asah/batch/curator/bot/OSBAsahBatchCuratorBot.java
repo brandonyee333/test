@@ -18,6 +18,7 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskScheduler;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -25,6 +26,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.logging.Log;
@@ -42,6 +44,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -197,10 +200,17 @@ public class OSBAsahBatchCuratorBot {
 		String cronExpression = _buildCronExpression(
 			RandomUtils.nextInt(0, 61), RandomUtils.nextInt(0, 16));
 
-		_osbAsahTaskScheduler.schedule(cronExpression, runnable, taskId);
+		String timeZoneId = _timeZoneDog.getTimeZoneId();
+
+		_osbAsahTaskScheduler.schedule(
+			new CronTrigger(cronExpression, TimeZone.getTimeZone(timeZoneId)),
+			runnable, taskId);
 
 		if (_log.isInfoEnabled()) {
-			_log.info(taskId + " scheduled to run at " + cronExpression);
+			_log.info(
+				String.format(
+					"%s scheduled to run at %s (%s)", taskId, cronExpression,
+					timeZoneId));
 		}
 
 		_scheduledTasks.add(taskId);
@@ -255,5 +265,8 @@ public class OSBAsahBatchCuratorBot {
 	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
 
 	private final Set<String> _scheduledTasks = new HashSet<>();
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
