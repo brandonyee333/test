@@ -223,16 +223,15 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 	def run(self):
 		data_frame_reader = self.spark_session.read
 
-		job = self.spark_application.job
-
 		recommended_items_data_frame = data_frame_reader.json(
 		    '{}/{}/{}/inference_result/*.json.out'.format(
 		        self.spark_application_configuration.get('aws.storage.path'),
-		        self.spark_application_args.lcp_project_id, job.get('id')
+		        self.spark_application_args.lcp_project_id,
+		        self.spark_application.job_id
 		    )
-		).filter('error is null').withColumn('jobId', lit(
-		    job.get('id')
-		)).selectExpr(
+		).filter('error is null').withColumn(
+		    'jobId', lit(self.spark_application.job_id)
+		).selectExpr(
 		    'sha1(concat(jobId, input.itemId)) as id', 'input.itemId as itemId',
 		    'jobId', 'output.recommendedItems as recommendedItemIds'
 		)
@@ -264,15 +263,13 @@ class WriteDataframeSparkJob(BaseSparkJob):
 
 		data_frame_writer = data_frame.write
 
-		job = self.spark_application.job
-
 		data_frame_writer.format(
 		    self._output_format
 		).mode('overwrite').option("header", "True").save(
 		    '{}/{}/{}/{}'.format(
 		        self.spark_application_configuration.get('aws.storage.path'),
-		        self.spark_application_args.lcp_project_id, job.get('id'),
-		        self._data_frame_name
+		        self.spark_application_args.lcp_project_id,
+		        self.spark_application.job_id, self._data_frame_name
 		    )
 		)
 
