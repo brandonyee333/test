@@ -26,6 +26,8 @@ public interface NanitesHttp {
 
 	public void refreshAnalytics();
 
+	public void rescheduleNanites();
+
 	public void run(JSONArray jsonArray);
 
 	public void scheduleOSBAsahTask(JSONObject jsonObject);

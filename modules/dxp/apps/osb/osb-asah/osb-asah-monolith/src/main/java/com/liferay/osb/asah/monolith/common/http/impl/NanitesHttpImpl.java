@@ -42,6 +42,11 @@ public class NanitesHttpImpl implements NanitesHttp {
 	}
 
 	@Override
+	public void rescheduleNanites() {
+		_nanitesRestController.reschedule();
+	}
+
+	@Override
 	public void run(JSONArray jsonArray) {
 		_nanitesRestController.run(jsonArray.toString());
 	}

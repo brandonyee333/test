@@ -509,6 +509,10 @@ type MutationType {
 		runDataPeriod: JobRunDataPeriod!
 	): Job
 
+	timeZone(
+		value: String!
+	): String
+
 	updateJob(
 		jobId: String!
 		name: String!
