@@ -50,6 +50,13 @@ public class SessionsRestController extends BaseRestController {
 			@RequestParam(required = false) String value)
 		throws Exception {
 
+		QueryBuilder queryBuilder = null;
+
+		if (StringUtils.isNotBlank(filterString)) {
+			queryBuilder = FilterStringToQueryBuilderConverter.convert(
+				filterString.replaceAll("context/", ""));
+		}
+
 		fieldName = fieldName.replace("context/", "");
 
 		if (_contextFieldNames.contains(fieldName)) {
@@ -60,13 +67,6 @@ public class SessionsRestController extends BaseRestController {
 			new TermsAggregationTransformationJSONArrayFunction(
 				value, fieldName,
 				MultiBucketsAggregation.Bucket::getKeyAsString);
-
-		QueryBuilder queryBuilder = null;
-
-		if (StringUtils.isNotBlank(filterString)) {
-			queryBuilder = FilterStringToQueryBuilderConverter.convert(
-				filterString.replaceAll("context/", ""));
-		}
 
 		return toTransformationGetResponse(
 			null, "user-sessions", cerebroInfoElasticsearchInvoker, page,
