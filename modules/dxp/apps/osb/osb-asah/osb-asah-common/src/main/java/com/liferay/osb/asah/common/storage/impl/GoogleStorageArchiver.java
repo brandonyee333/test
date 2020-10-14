@@ -71,7 +71,7 @@ public class GoogleStorageArchiver {
 
 		Blob successBlob = _storage.get(successBlobId);
 
-		if (!successBlob.exists()) {
+		if ((successBlob == null) || !successBlob.exists()) {
 			_log.error("_SUCCESS file missing");
 
 			return null;
@@ -212,7 +212,10 @@ public class GoogleStorageArchiver {
 			sb.append(bucketFolder);
 		}
 
-		sb.append("/");
+		if (!fileName.startsWith("/")) {
+			sb.append("/");
+		}
+
 		sb.append(fileName);
 
 		return sb.toString();
