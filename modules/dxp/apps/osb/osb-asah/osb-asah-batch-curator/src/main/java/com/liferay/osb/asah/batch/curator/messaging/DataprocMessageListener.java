@@ -42,21 +42,29 @@ public class DataprocMessageListener implements MessageListener {
 
 	@Override
 	public void onMessage(String message) {
-		JSONObject messageJSONObject = new JSONObject(message);
+		try {
+			JSONObject jsonObject = new JSONObject(message);
 
-		List<DataprocMessageProcessor> dataprocMessageProcessors =
-			_dataprocMessageProcessors.get(
-				messageJSONObject.optString("applicationId"));
+			List<DataprocMessageProcessor> dataprocMessageProcessors =
+				_dataprocMessageProcessors.get(
+					jsonObject.optString("applicationId"));
 
-		if (dataprocMessageProcessors == null) {
-			_log.error("Unable to process Dataproc message " + message);
+			if (dataprocMessageProcessors == null) {
+				_log.error(
+					"There are no message processors registered to handle " +
+						message);
 
-			return;
+				return;
+			}
+
+			dataprocMessageProcessors.forEach(
+				dataprocMessageProcessor -> dataprocMessageProcessor.process(
+					jsonObject.getJSONObject("message")));
 		}
-
-		dataprocMessageProcessors.forEach(
-			dataprocMessageProcessor -> dataprocMessageProcessor.process(
-				messageJSONObject));
+		catch (Exception e) {
+			_log.error(
+				"An error occurred while processing message " + message, e);
+		}
 	}
 
 	@PostConstruct
