@@ -7,17 +7,9 @@ aws:
             key: $AWS_SECRET_ACCESS_KEY
     storage:
         path: s3a://analytics-cloud-aws-personalize
-es:
-    net:
-        http:
-            auth:
-                pass: $ES_NET_HTTP_AUTH_PASS
-                user: $ES_NET_HTTP_AUTH_USER
-    nodes: http://localhost
-    port: 9200
 google:
     storage:
         path: gs://analytics-cloud-analytics-events-uat
 spark:
     jars:
-        packages: "org.apache.hadoop:hadoop-aws:2.7.3,org.elasticsearch:elasticsearch-spark-20_2.11:6.8.2"
+        packages: "org.apache.hadoop:hadoop-aws:2.7.3"
