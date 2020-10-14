@@ -196,7 +196,7 @@ public class OSBAsahBatchCuratorBot {
 			"StaleDynamicIndividualSegmentsNanite");
 	}
 
-	private void _scheduleNanite(Runnable runnable, String taskId) {
+	private void _scheduleNanite(Runnable runnable, String scheduledTaskId) {
 		String cronExpression = _buildCronExpression(
 			RandomUtils.nextInt(0, 60), RandomUtils.nextInt(0, 16));
 
@@ -204,16 +204,16 @@ public class OSBAsahBatchCuratorBot {
 
 		_osbAsahTaskScheduler.schedule(
 			new CronTrigger(cronExpression, TimeZone.getTimeZone(timeZoneId)),
-			runnable, taskId);
+			runnable, scheduledTaskId);
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				String.format(
-					"%s scheduled to run at %s (%s)", taskId, cronExpression,
-					timeZoneId));
+					"%s scheduled to run at %s (%s)", scheduledTaskId,
+					cronExpression, timeZoneId));
 		}
 
-		_scheduledTasks.add(taskId);
+		_scheduledTasks.add(scheduledTaskId);
 	}
 
 	private void _scheduleNanites() {
