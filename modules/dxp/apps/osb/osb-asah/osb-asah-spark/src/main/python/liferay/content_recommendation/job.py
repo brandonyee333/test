@@ -10,7 +10,6 @@
 #
 
 from liferay.common.spark import BaseSparkJob
-from liferay.common.util import new_utc_date_string
 
 from pyspark.sql import Window
 from pyspark.sql.functions import col, count, current_date, datediff, expr, lit, unix_timestamp
@@ -19,15 +18,27 @@ import json
 
 class GenerateItemsSparkJob(BaseSparkJob):
 	def _update_job_run_items_dataset_count(self, items_data_frame):
-		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
+		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
-		elasticsearch_bridge.update_document(
-		    'job-runs', {
-		        'context': {
-		            'itemsDatasetCount': items_data_frame.count()
-		        },
-		        'lastUpdatedDate': new_utc_date_string(),
-		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
+		pub_sub_bridge.send(
+		    json.dumps(
+		        {
+		            'applicationId': 'content_recommendation',
+		            'message':
+		                {
+		                    'operation': 'UpdateJobRun',
+		                    'jobRunId': self.spark_application.job_run_id,
+		                    'body':
+		                        {
+		                            'context':
+		                                {
+		                                    'itemsDatasetCount':
+		                                        items_data_frame.count()
+		                                }
+		                        }
+		                }
+		        }
+		    )
 		)
 
 	def run(self):
@@ -43,17 +54,28 @@ class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
 	def _update_job_run_user_item_interactions_dataset_count(
 	    self, user_item_interactions_data_frame
 	):
-		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
+		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
-		elasticsearch_bridge.update_document(
-		    'job-runs', {
-		        'context':
-		            {
-		                'userItemInteractionsDatasetCount':
-		                    user_item_interactions_data_frame.count()
-		            },
-		        'lastUpdatedDate': new_utc_date_string(),
-		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
+		pub_sub_bridge.send(
+		    json.dumps(
+		        {
+		            'applicationId': 'content_recommendation',
+		            'message':
+		                {
+		                    'operation': 'UpdateJobRun',
+		                    'jobRunId': self.spark_application.job_run_id,
+		                    'body':
+		                        {
+		                            'context':
+		                                {
+		                                    'userItemInteractionsDatasetCount':
+		                                        user_item_interactions_data_frame
+		                                        .count()
+		                                }
+		                        }
+		                }
+		        }
+		    )
 		)
 
 	def run(self):
@@ -80,56 +102,21 @@ class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
 
 class PublishJobRunSparkJob(BaseSparkJob):
 	def run(self):
-		self._complete_previous_published_job_runs()
+		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
-		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
-
-		date_string = new_utc_date_string()
-
-		elasticsearch_bridge.update_document(
-		    'job-runs', {
-		        'completedDate': date_string,
-		        'lastUpdatedDate': date_string,
-		        'status': 'PUBLISHED'
-		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
+		pub_sub_bridge.send(
+		    json.dumps(
+		        {
+		            'applicationId': 'content_recommendation',
+		            'message':
+		                {
+		                    'operation': 'PublishJobRun',
+		                    'jobId': self.spark_application.job_id,
+		                    'jobRunId': self.spark_application.job_run_id,
+		                }
+		        }
+		    )
 		)
-
-	def _complete_previous_published_job_runs(self):
-		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
-		job = self.spark_application.job
-
-		job_runs, total = elasticsearch_bridge.search(
-		    {
-		        'query':
-		            {
-		                'bool':
-		                    {
-		                        'filter':
-		                            [
-		                                {
-		                                    "term": {
-		                                        "job.id": job.get('id')
-		                                    }
-		                                }, {
-		                                    "term": {
-		                                        "status": 'PUBLISHED'
-		                                    }
-		                                }
-		                            ]
-		                    }
-		            }
-		    }, 'job-runs', 'osbasahfaroinfo'
-		)
-
-		date_string = new_utc_date_string()
-
-		for job_run in job_runs:
-			elasticsearch_bridge.update_document(
-			    'job-runs', {
-			        'lastUpdatedDate': date_string,
-			        'status': 'COMPLETED'
-			    }, job_run.get('id'), 'osbasahfaroinfo'
-			)
 
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
@@ -241,13 +228,22 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 
 class UpdateJobRunStepSparkJob(BaseSparkJob):
 	def run(self):
-		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
+		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
-		elasticsearch_bridge.update_document(
-		    'job-runs', {
-		        'lastUpdatedDate': new_utc_date_string(),
-		        'step': 'DATA_SOLUTION'
-		    }, self.spark_application_args.job_run_id, 'osbasahfaroinfo'
+		pub_sub_bridge.send(
+		    json.dumps(
+		        {
+		            'applicationId': 'content_recommendation',
+		            'message':
+		                {
+		                    'operation': 'UpdateJobRun',
+		                    'jobRunId': self.spark_application.job_run_id,
+		                    'body': {
+		                        'step': 'DATA_SOLUTION'
+		                    }
+		                }
+		        }
+		    )
 		)
 
 class WriteDataframeSparkJob(BaseSparkJob):
