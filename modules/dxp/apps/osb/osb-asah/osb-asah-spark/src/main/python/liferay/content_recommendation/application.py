@@ -9,9 +9,8 @@
 # distribution rights of the Software.
 #
 
-from liferay.common.elasticsearch import ElasticsearchBridge
+from liferay.common.pubsub import PubSubBridge
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
-from liferay.common.util import new_utc_date_string
 from liferay.content_recommendation.job import GenerateItemsSparkJob, \
 GenerateUserItemInteractionsSparkJob, PublishJobRunSparkJob, \
 ReadAnalyticsEventsSparkJob, ReadRecommendedItemsSparkJob, \
@@ -27,7 +26,7 @@ class ContentRecommendationApplication(BaseSparkApplication):
 	def __init__(self):
 		super(ContentRecommendationApplication, self).__init__()
 
-		self.elasticsearch_bridge = ElasticsearchBridge(self)
+		self.pub_sub_bridge = PubSubBridge(self)
 
 		self.job_id = self.args.job_id
 		self.job_run_id = self.args.job_run_id
