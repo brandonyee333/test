@@ -151,6 +151,8 @@ public class MembershipChangesHistogramTransformationJSONArrayFunction
 								"dateChanged"
 							).lt(
 								startDayDateString
+							).timeZone(
+								TimeZoneDogUtil.getTimeZoneId()
 							)
 						));
 					searchSourceBuilder.size(1);
