@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-
-<suppressions>
-	<source-check>
-		<suppress checks="JavaModuleIllegalImportsCheck" files="docroot/WEB-INF/src/com/liferay/osb/admin/servlet/AdminServletContextListener\.java" />
-	</source-check>
-</suppressions>

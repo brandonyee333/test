@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.Filter;
@@ -46,7 +48,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"dispatcher=FORWARD", "dispatcher=REQUEST", "servlet-context-name=",
+		"api.token=ke8eJgsT2nla73NsRe", "api.token=lakIw83Ha2vbapqz3j",
+		"api.token=lwn8C5iAlUi2bvaqSm", "api.token=sP3Ujen2h1kfMeRWkx",
+		"api.token=vuH6GaVgwkueqmxsR3", "dispatcher=FORWARD",
+		"dispatcher=REQUEST", "servlet-context-name=",
 		"servlet-filter-name=Secure JSON Filter", "url-pattern=/api/jsonws/*",
 		"url-pattern=/o/account-attachment"
 	},
@@ -65,9 +70,8 @@ public class SecureJSONFilter extends BaseFilter {
 		try {
 			String requestToken = request.getHeader("OSB_API_Token");
 
-			if (Validator.isNotNull(requestToken) &&
-				Validator.isNotNull(_apiToken) &&
-				requestToken.equals(_apiToken)) {
+			if (Validator.isNotNull(requestToken) && (_apiTokens != null) &&
+				_apiTokens.contains(requestToken)) {
 
 				User user = _userLocalService.getUser(_USER_JSON_ID);
 
@@ -95,7 +99,7 @@ public class SecureJSONFilter extends BaseFilter {
 
 	@Activate
 	protected void activate(Map<String, Object> properties) throws Exception {
-		_apiToken = String.valueOf(properties.get("api.token"));
+		_apiTokens = Arrays.asList((String[])properties.get("api.token"));
 	}
 
 	@Override
@@ -108,7 +112,7 @@ public class SecureJSONFilter extends BaseFilter {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SecureJSONFilter.class);
 
-	private String _apiToken;
+	private List<String> _apiTokens;
 
 	@Reference
 	private UserLocalService _userLocalService;
