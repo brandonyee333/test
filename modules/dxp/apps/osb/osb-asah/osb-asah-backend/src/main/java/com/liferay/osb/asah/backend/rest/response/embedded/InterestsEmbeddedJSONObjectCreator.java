@@ -15,10 +15,13 @@
 package com.liferay.osb.asah.backend.rest.response.embedded;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.embedded.BaseEmbeddedJSONObjectCreator;
+
+import java.time.LocalDateTime;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -82,15 +85,16 @@ public class InterestsEmbeddedJSONObjectCreator
 			"interests", id);
 
 		if (days > 0) {
-			String endDateDayString = DateUtil.newDayDateString();
+			LocalDateTime endDayLocalDateTime = DateUtil.newDayLocalDateTime(
+				TimeZoneDogUtil.getZoneId());
 
 			embeddedJSONObject.put(
 				"interest-aggregation-last-" + days + "-days",
 				_getInterestAggregationJSONArray(
-					endDateDayString, interestJSONObject.getString("name"),
+					endDayLocalDateTime, interestJSONObject.getString("name"),
 					interestJSONObject.getString("ownerId"),
 					interestJSONObject.getString("ownerType"),
-					DateUtil.addDays(endDateDayString, 1 - days)));
+					endDayLocalDateTime.plusDays(1 - days)));
 		}
 
 		if (expandParts.contains("pages-visited")) {
@@ -102,8 +106,8 @@ public class InterestsEmbeddedJSONObjectCreator
 	}
 
 	private JSONArray _getInterestAggregationJSONArray(
-			String endDayDateString, String name, String ownerId,
-			String ownerType, String startDayDateString)
+			LocalDateTime endDayLocalDateTime, String name, String ownerId,
+			String ownerType, LocalDateTime startDayLocalDateTime)
 		throws Exception {
 
 		JSONArray interestAggregationJSONArray = new JSONArray();
@@ -114,13 +118,11 @@ public class InterestsEmbeddedJSONObjectCreator
 				QueryBuilders.rangeQuery(
 					"dateRecorded"
 				).gte(
-					startDayDateString
-				)
-			).filter(
-				QueryBuilders.rangeQuery(
-					"dateRecorded"
+					startDayLocalDateTime.toString()
 				).lte(
-					endDayDateString
+					endDayLocalDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				)
 			).filter(
 				QueryBuilders.termQuery("name", name)
@@ -130,26 +132,29 @@ public class InterestsEmbeddedJSONObjectCreator
 				QueryBuilders.termQuery("ownerType", ownerType)
 			));
 
-		Map<String, JSONObject> interestJSONObjects = new HashMap<>();
+		Map<LocalDateTime, JSONObject> interestJSONObjects = new HashMap<>();
 
 		for (int i = 0; i < interestsJSONArray.length(); i++) {
 			JSONObject interestJSONObject = interestsJSONArray.getJSONObject(i);
 
 			interestJSONObjects.put(
-				interestJSONObject.getString("dateRecorded"),
+				DateUtil.toLocalDateTime(
+					DateUtil.toUTCDate(
+						interestJSONObject.getString("dateRecorded")),
+					TimeZoneDogUtil.getZoneId()),
 				interestJSONObject);
 		}
 
-		String currentDayDateString = startDayDateString;
+		LocalDateTime currentDayLocalDateTime = startDayLocalDateTime;
 
-		while (currentDayDateString.compareTo(endDayDateString) <= 0) {
+		while (currentDayLocalDateTime.compareTo(endDayLocalDateTime) <= 0) {
 			JSONObject interestJSONObject = interestJSONObjects.get(
-				currentDayDateString);
+				currentDayLocalDateTime);
 
 			if (interestJSONObject != null) {
 				interestAggregationJSONArray.put(
 					JSONUtil.put(
-						"intervalInitDate", currentDayDateString
+						"intervalInitDate", currentDayLocalDateTime.toString()
 					).put(
 						"scoreAvg", interestJSONObject.getDouble("score")
 					).put(
@@ -161,7 +166,7 @@ public class InterestsEmbeddedJSONObjectCreator
 			else {
 				interestAggregationJSONArray.put(
 					JSONUtil.put(
-						"intervalInitDate", currentDayDateString
+						"intervalInitDate", currentDayLocalDateTime.toString()
 					).put(
 						"scoreAvg", 0.0
 					).put(
@@ -171,7 +176,7 @@ public class InterestsEmbeddedJSONObjectCreator
 					));
 			}
 
-			currentDayDateString = DateUtil.addDays(currentDayDateString, 1);
+			currentDayLocalDateTime = currentDayLocalDateTime.plusDays(1);
 		}
 
 		return interestAggregationJSONArray;

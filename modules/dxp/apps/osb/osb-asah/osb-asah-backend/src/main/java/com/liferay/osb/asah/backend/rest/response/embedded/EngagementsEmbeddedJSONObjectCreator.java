@@ -15,10 +15,13 @@
 package com.liferay.osb.asah.backend.rest.response.embedded;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.embedded.BaseEmbeddedJSONObjectCreator;
+
+import java.time.LocalDateTime;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -74,7 +77,8 @@ public class EngagementsEmbeddedJSONObjectCreator
 			return null;
 		}
 
-		String endDateDayString = DateUtil.newDayDateString();
+		LocalDateTime endDayLocalDateTime = DateUtil.newDayLocalDateTime(
+			TimeZoneDogUtil.getZoneId());
 
 		JSONObject engagementJSONObject = _elasticsearchInvoker.get(
 			"engagements", id);
@@ -82,14 +86,14 @@ public class EngagementsEmbeddedJSONObjectCreator
 		return JSONUtil.put(
 			"engagement-aggregation-last-" + days + "-days",
 			_getEngagementAggregationJSONArray(
-				endDateDayString, engagementJSONObject.getString("ownerId"),
+				endDayLocalDateTime, engagementJSONObject.getString("ownerId"),
 				engagementJSONObject.getString("ownerType"),
-				DateUtil.addDays(endDateDayString, 1 - days)));
+				endDayLocalDateTime.plusDays(1 - days)));
 	}
 
 	private JSONArray _getEngagementAggregationJSONArray(
-			String endDayDateString, String ownerId, String ownerType,
-			String startDayDateString)
+			LocalDateTime endDayLocalDateTime, String ownerId, String ownerType,
+			LocalDateTime startDayLocalDateTime)
 		throws Exception {
 
 		JSONArray engagementAggregationJSONArray = new JSONArray();
@@ -100,13 +104,11 @@ public class EngagementsEmbeddedJSONObjectCreator
 				QueryBuilders.rangeQuery(
 					"dateRecorded"
 				).gte(
-					startDayDateString
-				)
-			).filter(
-				QueryBuilders.rangeQuery(
-					"dateRecorded"
+					startDayLocalDateTime.toString()
 				).lte(
-					endDayDateString
+					endDayLocalDateTime.toString()
+				).timeZone(
+					TimeZoneDogUtil.getTimeZoneId()
 				)
 			).filter(
 				QueryBuilders.termQuery("ownerId", ownerId)
@@ -114,26 +116,29 @@ public class EngagementsEmbeddedJSONObjectCreator
 				QueryBuilders.termQuery("ownerType", ownerType)
 			));
 
-		Map<String, Double> scores = new HashMap<>();
+		Map<LocalDateTime, Double> scores = new HashMap<>();
 
 		for (int i = 0; i < engagementsJSONArray.length(); i++) {
 			JSONObject engagementJSONObject =
 				engagementsJSONArray.getJSONObject(i);
 
 			scores.put(
-				engagementJSONObject.getString("dateRecorded"),
+				DateUtil.toLocalDateTime(
+					DateUtil.toUTCDate(
+						engagementJSONObject.getString("dateRecorded")),
+					TimeZoneDogUtil.getZoneId()),
 				engagementJSONObject.getDouble("score"));
 		}
 
-		String currentDayDateString = startDayDateString;
+		LocalDateTime currentDayLocalDateTime = startDayLocalDateTime;
 
-		while (currentDayDateString.compareTo(endDayDateString) <= 0) {
-			Double score = scores.get(currentDayDateString);
+		while (currentDayLocalDateTime.compareTo(endDayLocalDateTime) <= 0) {
+			Double score = scores.get(currentDayLocalDateTime);
 
 			if (score != null) {
 				engagementAggregationJSONArray.put(
 					JSONUtil.put(
-						"intervalInitDate", currentDayDateString
+						"intervalInitDate", currentDayLocalDateTime.toString()
 					).put(
 						"scoreAvg", score
 					).put(
@@ -143,7 +148,7 @@ public class EngagementsEmbeddedJSONObjectCreator
 			else {
 				engagementAggregationJSONArray.put(
 					JSONUtil.put(
-						"intervalInitDate", currentDayDateString
+						"intervalInitDate", currentDayLocalDateTime.toString()
 					).put(
 						"scoreAvg", 0.0
 					).put(
@@ -151,7 +156,7 @@ public class EngagementsEmbeddedJSONObjectCreator
 					));
 			}
 
-			currentDayDateString = DateUtil.addDays(currentDayDateString, 1);
+			currentDayLocalDateTime = currentDayLocalDateTime.plusDays(1);
 		}
 
 		return engagementAggregationJSONArray;
