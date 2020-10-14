@@ -289,9 +289,15 @@ class WriteUserItemInteractionsSparkJob(WriteDataframeSparkJob):
 
 class WriteRecommendedItemsSparkJob(BaseSparkJob):
 	def run(self):
-		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
+		data_frame = self.spark_session.table('recommended_items')
 
-		elasticsearch_bridge.write(
-		    'recommended-items', self.spark_session.table('recommended_items'),
-		    'overwrite', 'osbasahfaroinfo'
+		data_frame_writer = data_frame.write
+
+		data_frame_writer.json(
+		    '{}/{}/{}/{}'.format(
+		        self.spark_application_configuration.
+		        get('google.storage.path.content-recommendations'),
+		        self.spark_application_args.lcp_project_id,
+		        self.spark_application.job_id, self.spark_application.job_run_id
+		    )
 		)
