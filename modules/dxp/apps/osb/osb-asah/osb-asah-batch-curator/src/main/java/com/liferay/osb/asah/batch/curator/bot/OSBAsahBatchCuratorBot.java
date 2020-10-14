@@ -198,7 +198,7 @@ public class OSBAsahBatchCuratorBot {
 
 	private void _scheduleNanite(Runnable runnable, String taskId) {
 		String cronExpression = _buildCronExpression(
-			RandomUtils.nextInt(0, 61), RandomUtils.nextInt(0, 16));
+			RandomUtils.nextInt(0, 60), RandomUtils.nextInt(0, 16));
 
 		String timeZoneId = _timeZoneDog.getTimeZoneId();
 
