@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageListener;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,22 +63,26 @@ public class DataprocMessageListener implements MessageListener {
 	private void _init() {
 		_messageBus.registerMessageListener(Channel.DATAPROC, this);
 
-		Stream<DataprocMessageProcessor> stream = _messageProcessors.stream();
+		if (_messageProcessors != null) {
+			Stream<DataprocMessageProcessor> stream =
+				_messageProcessors.stream();
 
-		_dataprocMessageProcessors = stream.collect(
-			Collectors.groupingBy(DataprocMessageProcessor::getApplicationId));
+			_dataprocMessageProcessors = stream.collect(
+				Collectors.groupingBy(
+					DataprocMessageProcessor::getApplicationId));
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		DataprocMessageListener.class);
 
 	private Map<String, List<DataprocMessageProcessor>>
-		_dataprocMessageProcessors;
+		_dataprocMessageProcessors = new HashMap<>();
 
 	@Autowired
 	private MessageBus _messageBus;
 
-	@Autowired
+	@Autowired(required = false)
 	private List<DataprocMessageProcessor> _messageProcessors;
 
 }
