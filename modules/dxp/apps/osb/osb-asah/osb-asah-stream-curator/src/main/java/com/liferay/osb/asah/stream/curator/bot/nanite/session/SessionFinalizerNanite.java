@@ -183,9 +183,6 @@ public class SessionFinalizerNanite implements Nanite {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
 	@Autowired
 	private FinalizeSessionArm _finalizeSessionArm;
 
