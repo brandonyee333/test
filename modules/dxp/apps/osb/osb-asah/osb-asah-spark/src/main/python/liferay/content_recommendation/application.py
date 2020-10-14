@@ -37,6 +37,8 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		    usage='{} liferay.hello_world.ContentRecommendationApplication '
 		    '--configuration <Configuration Path> '
 		    '--job-id <Job ID> '
+		    '--job-parameters <Job Parameters> '
+		    '--job-run-data-period <Job Run Data Period> '
 		    '--job-run-id <Job Run ID> '
 		    '--job-run-step <Job Run Step> '
 		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
@@ -45,6 +47,8 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		argument_parser.add_argument('application')
 		argument_parser.add_argument('-configuration', required=True)
 		argument_parser.add_argument('-job-id', required=True)
+		argument_parser.add_argument('-job-parameters', required=True)
+		argument_parser.add_argument('-job-run-data-period', required=True)
 		argument_parser.add_argument('-job-run-id', required=True)
 		argument_parser.add_argument('-job-run-step', required=True)
 		argument_parser.add_argument('-lcp-project-id', required=True)

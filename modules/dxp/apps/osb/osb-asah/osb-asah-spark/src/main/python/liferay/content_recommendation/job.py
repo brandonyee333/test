@@ -15,6 +15,8 @@ from liferay.common.util import new_utc_date_string
 from pyspark.sql import Window
 from pyspark.sql.functions import col, count, current_date, datediff, expr, lit, unix_timestamp
 
+import json
+
 class GenerateItemsSparkJob(BaseSparkJob):
 	def _update_job_run_items_dataset_count(self, items_data_frame):
 		elasticsearch_bridge = self.spark_application.elasticsearch_bridge
@@ -162,9 +164,9 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 	def _get_filter_expresssions(self):
 		expressions = ['(eventId = "pageUnloaded")']
 
-		job = self.spark_application.job
+		job_parameters = json.loads(self.spark_application_args.job_parameters)
 
-		for parameter in job.get('parameters'):
+		for parameter in job_parameters:
 			if parameter.get('name') == 'excludeFilter':
 				expressions.append(
 				    self._get_expression(parameter.get('value'), True)
@@ -177,12 +179,8 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		return " AND ".join(expressions)
 
 	def _get_maximum_days_delta(self):
-		job_run = self.spark_application.job_run
-
-		job_run_context = job_run.get('context')
-
 		return self._run_data_periods_days_delta.get(
-		    job_run_context.get('runDataPeriod')
+		    self.spark_application_args.job_run_data_period
 		)
 
 	def run(self):
