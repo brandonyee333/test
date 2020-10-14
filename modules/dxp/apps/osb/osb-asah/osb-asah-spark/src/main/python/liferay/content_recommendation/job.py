@@ -190,7 +190,8 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		analytics_events_data_frame = data_frame_reader.json(
 		    '{}/{}/*'.format(
-		        self.spark_application_configuration.get('google.storage.path'),
+		        self.spark_application_configuration.
+		        get('google.storage.path.analytics-events'),
 		        self.spark_application_args.lcp_project_id
 		    )
 		).withColumn(
