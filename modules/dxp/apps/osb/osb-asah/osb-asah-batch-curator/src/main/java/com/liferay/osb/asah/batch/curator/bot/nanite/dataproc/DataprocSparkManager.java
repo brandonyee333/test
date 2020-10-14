@@ -212,7 +212,7 @@ public class DataprocSparkManager {
 	private String _clusterName;
 
 	@Value(
-		"${osb.asah.spark.manager.dataproc.project.id:liferaycloud-customer-ac}"
+		"${osb.asah.spark.manager.dataproc.project.id:liferaycloud-customer-ac-uat}"
 	)
 	private String _projectId;
 
