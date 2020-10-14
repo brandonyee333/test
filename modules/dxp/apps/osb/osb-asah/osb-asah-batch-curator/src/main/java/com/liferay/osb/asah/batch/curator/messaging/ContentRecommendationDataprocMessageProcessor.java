@@ -14,7 +14,12 @@
 
 package com.liferay.osb.asah.batch.curator.messaging;
 
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
+import java.util.Objects;
 
 import org.json.JSONObject;
 
@@ -35,6 +40,20 @@ public class ContentRecommendationDataprocMessageProcessor
 
 	@Override
 	public void process(JSONObject messageJSONObject) {
+		String operation = messageJSONObject.getString("operation");
+
+		if (Objects.equals(operation, "UpdateJobRun")) {
+			JSONObject jsonObject = messageJSONObject.getJSONObject("body");
+
+			jsonObject.put("lastUpdatedDate", DateUtil.newUTCDateString());
+
+			_faroInfoElasticsearchInvoker.update(
+				"job-runs", messageJSONObject.getString("jobRunId"),
+				jsonObject);
+		}
 	}
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }
