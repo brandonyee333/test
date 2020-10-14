@@ -29,22 +29,25 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		self.elasticsearch_bridge = ElasticsearchBridge(self)
 
-		self.job_run = self._get_job_run()
-
-		self.job = self._get_job()
+		self.job_id = self.args.job_id
+		self.job_run_id = self.args.job_run_id
 
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(
 		    usage='{} liferay.hello_world.ContentRecommendationApplication '
 		    '--configuration <Configuration Path> '
+		    '--job-id <Job ID> '
 		    '--job-run-id <Job Run ID> '
+		    '--job-run-step <Job Run Step> '
 		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
 		)
 
 		argument_parser.add_argument('application')
-		argument_parser.add_argument('--configuration', required=True)
-		argument_parser.add_argument('--job-run-id', required=True)
-		argument_parser.add_argument('--lcp-project-id', required=True)
+		argument_parser.add_argument('-configuration', required=True)
+		argument_parser.add_argument('-job-id', required=True)
+		argument_parser.add_argument('-job-run-id', required=True)
+		argument_parser.add_argument('-job-run-step', required=True)
+		argument_parser.add_argument('-lcp-project-id', required=True)
 
 		return argument_parser
 
@@ -80,7 +83,9 @@ class ContentRecommendationApplication(BaseSparkApplication):
 	def _create_spark_job_pipeline(self):
 		jobs = []
 
-		if self.job_run.get('step') == 'DATA_PREPARATION':
+		job_run_step = self.args.job_run_step
+
+		if job_run_step == 'DATA_PREPARATION':
 			jobs.append(ReadAnalyticsEventsSparkJob(self))
 
 			jobs.append(GenerateUserItemInteractionsSparkJob(self))
@@ -100,32 +105,7 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		return SparkJobPipeline(jobs)
 
-	def _get_job(self):
-		job = self.job_run.get('job')
-
-		return self.elasticsearch_bridge.get_document(
-		    'jobs', job.get('id'), 'osbasahfaroinfo'
-		)
-
-	def _get_job_run(self):
-		return self.elasticsearch_bridge.get_document(
-		    'job-runs', self.args.job_run_id, 'osbasahfaroinfo'
-		)
-
-	def _update_job_run_status(self, status):
-		self.elasticsearch_bridge.update_document(
-		    'job-runs', {
-		        'lastUpdatedDate': new_utc_date_string(),
-		        'status': status
-		    }, self.job_run.get('id'), 'osbasahfaroinfo'
-		)
-
 	def start(self):
 		spark_job_pipeline = self._create_spark_job_pipeline()
 
-		try:
-			spark_job_pipeline.run()
-		except Exception as e:
-			self._update_job_run_status('FAILED')
-
-			raise e
+		spark_job_pipeline.run()
