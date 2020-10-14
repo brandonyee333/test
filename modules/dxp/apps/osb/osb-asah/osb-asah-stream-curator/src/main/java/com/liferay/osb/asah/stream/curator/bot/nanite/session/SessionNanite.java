@@ -22,6 +22,7 @@ import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
@@ -38,17 +39,15 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeSessionArm;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -182,14 +181,11 @@ public class SessionNanite implements Nanite {
 	}
 
 	private JSONObject _getUserSession(String userId, Date firstEventDate) {
-		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+		LocalDateTime firstEventLocalDateTime = DateUtil.toLocalDateTime(
+			firstEventDate, _timeZoneDog.getZoneId());
 
-		calendar.setTime(firstEventDate);
-
-		calendar.set(Calendar.HOUR, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
+		LocalDateTime nowLocalDateTime = LocalDateTime.now(
+			_timeZoneDog.getZoneId());
 
 		return _cerebroInfoElasticsearchInvoker.fetch(
 			"user-sessions",
@@ -203,21 +199,28 @@ public class SessionNanite implements Nanite {
 						QueryBuilders.rangeQuery(
 							"firstEventDate"
 						).lte(
-							DateUtil.toUTCString(firstEventDate)
+							firstEventLocalDateTime.toString()
+						).timeZone(
+							_timeZoneDog.getTimeZoneId()
 						)
 					).filter(
 						QueryBuilders.rangeQuery(
 							"lastEventDate"
 						).gte(
-							firstEventDate.getTime() - (DateUtil.MINUTE * 30)
+							DateUtil.minusMinutes(firstEventLocalDateTime, 30)
 						).lt(
-							System.currentTimeMillis() - (DateUtil.MINUTE * 30)
+							DateUtil.minusMinutes(nowLocalDateTime, 30)
+						).timeZone(
+							_timeZoneDog.getTimeZoneId()
 						)
 					).filter(
 						QueryBuilders.rangeQuery(
 							"lastEventDate"
 						).gte(
-							calendar.getTimeInMillis()
+							DateUtil.newDayLocalDateTimeString(
+								firstEventLocalDateTime)
+						).timeZone(
+							_timeZoneDog.getTimeZoneId()
 						)
 					)
 				).should(
@@ -227,20 +230,27 @@ public class SessionNanite implements Nanite {
 						QueryBuilders.rangeQuery(
 							"firstEventDate"
 						).lte(
-							DateUtil.toUTCString(firstEventDate)
+							firstEventLocalDateTime.toString()
+						).timeZone(
+							_timeZoneDog.getTimeZoneId()
 						)
 					).mustNot(
 						BoolQueryBuilderUtil.should(
 							QueryBuilders.rangeQuery(
 								"lastEventDate"
 							).lt(
-								"now-30m"
+								DateUtil.minusMinutes(nowLocalDateTime, 30)
+							).timeZone(
+								_timeZoneDog.getTimeZoneId()
 							)
 						).should(
 							QueryBuilders.rangeQuery(
 								"lastEventDate"
 							).lt(
-								"now/d"
+								DateUtil.newDayLocalDateTimeString(
+									nowLocalDateTime)
+							).timeZone(
+								_timeZoneDog.getTimeZoneId()
 							)
 						)
 					)
@@ -514,5 +524,8 @@ public class SessionNanite implements Nanite {
 	};
 
 	private String _sessionUpdateScriptSource;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

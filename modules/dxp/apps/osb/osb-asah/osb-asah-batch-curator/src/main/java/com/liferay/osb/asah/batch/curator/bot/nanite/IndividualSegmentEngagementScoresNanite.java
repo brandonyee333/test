@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoEngagementDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
@@ -177,8 +178,9 @@ public class IndividualSegmentEngagementScoresNanite
 			String dayDateString, String individualSegmentId)
 		throws Exception {
 
-		String endOfDayDateString = DateUtil.newEndOfDayDateString(
-			dayDateString);
+		String endOfDayLocalDateTimeString =
+			DateUtil.newEndOfDayLocalDateTimeString(
+				dayDateString, _timeZoneDog.getZoneId());
 
 		JSONArray membershipChangesJSONArray = new JSONArray(
 			faroInfoElasticsearchInvoker.get(
@@ -189,7 +191,7 @@ public class IndividualSegmentEngagementScoresNanite
 							QueryBuilders.rangeQuery(
 								"dateChanged"
 							).lte(
-								endOfDayDateString
+								endOfDayLocalDateTimeString
 							)
 						).filter(
 							QueryBuilders.termQuery(
@@ -217,5 +219,8 @@ public class IndividualSegmentEngagementScoresNanite
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
