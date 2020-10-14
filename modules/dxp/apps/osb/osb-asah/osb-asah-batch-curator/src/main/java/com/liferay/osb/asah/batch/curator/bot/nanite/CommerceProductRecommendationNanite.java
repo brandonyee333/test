@@ -140,6 +140,10 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 		new HashMap<String, String>() {
 			{
 				put(
+					"COMMERCE_PRODUCT_RECOMMENDATION_FREQUENT_PATTERN",
+					"liferay.commerce.recommend." +
+						"FrequentPatternRecommendationApplication");
+				put(
 					"COMMERCE_PRODUCT_RECOMMENDATION_PRODUCT_CONTENT",
 					"liferay.commerce.recommend." +
 						"ProductContentRecommendationApplication");
