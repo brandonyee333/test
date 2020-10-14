@@ -13,12 +13,15 @@ from abc import ABCMeta, abstractmethod
 
 from liferay.commerce.configuration import CommerceConfiguration
 from liferay.commerce.recommend.job import ContextUserInteractionRecommendationDataFrameWriterSparkJob, \
+ FrequentPatternOrderDataFrameReaderSparkJob, FrequentPatternRecommendationSparkJob, \
+ FrequentPatternPostProcessRecommendationSparkJob, FrequentPatternRecommendationDataFrameWriterSparkJob, \
  OrderInteractionDataFrameReaderSparkJob, ProductContentDataFrameReaderSparkJob, \
  ProductContentPipelineSparkJob, ProductContentRecommendationDataFrameWriter, \
  ProductContentRecommendationSparkJob, ProductInteractionDataFrameReaderSparkJob, \
  ProductInteractionRecommendationDataFrameWriterSparkJob, \
  ProductInteractionRecommendationSparkJob, UserInteractionCollaborativeFilteringSparkJob, \
- UserInteractionDataPreparationSparkJob
+ UserInteractionDataPreparationSparkJob, FrequentPatternProductDataFrameReaderSparkJob, \
+ FrequentPatternDataPreparationSparkJob
 from liferay.commerce.udf import TanimotoCoefficientUDFFunction, ToDenseVectorUDFFunction
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
 
@@ -79,6 +82,22 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 	@abstractmethod
 	def _create_spark_job_pipeline(self):
 		pass
+
+class FrequentPatternRecommendationApplication(BaseCommerceSparkApplication):
+	def __init__(self):
+		super(FrequentPatternRecommendationApplication, self).__init__()
+
+	def _create_spark_job_pipeline(self):
+		jobs = list()
+
+		jobs.append(FrequentPatternOrderDataFrameReaderSparkJob(self))
+		jobs.append(FrequentPatternProductDataFrameReaderSparkJob(self))
+		jobs.append(FrequentPatternDataPreparationSparkJob(self))
+		jobs.append(FrequentPatternRecommendationSparkJob(self))
+		jobs.append(FrequentPatternPostProcessRecommendationSparkJob(self))
+		jobs.append(FrequentPatternRecommendationDataFrameWriterSparkJob(self))
+
+		return SparkJobPipeline(jobs)
 
 class ProductContentRecommendationApplication(BaseCommerceSparkApplication):
 	def __init__(self):
