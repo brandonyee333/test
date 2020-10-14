@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.ChannelHttp;
@@ -22,6 +23,8 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -284,7 +287,8 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 			Consumer<Integer> queueMonitorConsumer)
 		throws Exception {
 
-		String deletionDayDateString = DateUtil.newDayDateString();
+		LocalDateTime deletionDayLocalDateTime = DateUtil.newDayLocalDateTime(
+			_timeZoneDog.getZoneId());
 
 		JSONArrayIterator.of(
 			"assets", elasticsearchInvoker,
@@ -304,7 +308,7 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 
 				if (channelIdsJSONArray.length() == 0) {
 					_faroInfoAssetDog.deleteAsset(
-						assetJSONObject, deletionDayDateString);
+						assetJSONObject, deletionDayLocalDateTime.toString());
 				}
 				else {
 					elasticsearchInvoker.update(
@@ -512,5 +516,8 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoAssetDog _faroInfoAssetDog;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }
