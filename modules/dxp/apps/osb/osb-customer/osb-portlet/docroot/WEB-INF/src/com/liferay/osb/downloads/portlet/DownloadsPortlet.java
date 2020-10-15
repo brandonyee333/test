@@ -314,7 +314,7 @@ public class DownloadsPortlet extends MVCPortlet {
 
 	private static final String _FIX_PACK_DIR = "/fix-packs/";
 
-	private static final String _URL_PREFIX = "http://downloads.liferay.com";
+	private static final String _URL_PREFIX = "https://downloads.liferay.com";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DownloadsPortlet.class);
