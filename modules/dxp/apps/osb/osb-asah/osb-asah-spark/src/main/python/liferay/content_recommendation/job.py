@@ -9,6 +9,7 @@
 # distribution rights of the Software.
 #
 
+from liferay.common.pubsub import PubSubMessage
 from liferay.common.spark import BaseSparkJob
 
 from pyspark.sql import Window
@@ -21,20 +22,16 @@ class GenerateItemsSparkJob(BaseSparkJob):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
 		pub_sub_bridge.send(
-		    json.dumps(
-		        {
-		            'applicationId': 'content_recommendation',
-		            'message':
+		    PubSubMessage(
+		        'content_recommendation', {
+		            'operation': 'UpdateJobRun',
+		            'jobRunId': self.spark_application.job_run_id,
+		            'body':
 		                {
-		                    'operation': 'UpdateJobRun',
-		                    'jobRunId': self.spark_application.job_run_id,
-		                    'body':
+		                    'context':
 		                        {
-		                            'context':
-		                                {
-		                                    'itemsDatasetCount':
-		                                        items_data_frame.count()
-		                                }
+		                            'itemsDatasetCount':
+		                                items_data_frame.count()
 		                        }
 		                }
 		        }
@@ -57,21 +54,17 @@ class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
 		pub_sub_bridge.send(
-		    json.dumps(
-		        {
-		            'applicationId': 'content_recommendation',
-		            'message':
+		    PubSubMessage(
+		        'content_recommendation', {
+		            'operation': 'UpdateJobRun',
+		            'jobRunId': self.spark_application.job_run_id,
+		            'body':
 		                {
-		                    'operation': 'UpdateJobRun',
-		                    'jobRunId': self.spark_application.job_run_id,
-		                    'body':
+		                    'context':
 		                        {
-		                            'context':
-		                                {
-		                                    'userItemInteractionsDatasetCount':
-		                                        user_item_interactions_data_frame
-		                                        .count()
-		                                }
+		                            'userItemInteractionsDatasetCount':
+		                                user_item_interactions_data_frame.count(
+		                                )
 		                        }
 		                }
 		        }
@@ -105,15 +98,11 @@ class PublishJobRunSparkJob(BaseSparkJob):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
 		pub_sub_bridge.send(
-		    json.dumps(
-		        {
-		            'applicationId': 'content_recommendation',
-		            'message':
-		                {
-		                    'operation': 'PublishJobRun',
-		                    'jobId': self.spark_application.job_id,
-		                    'jobRunId': self.spark_application.job_run_id,
-		                }
+		    PubSubMessage(
+		        'content_recommendation', {
+		            'operation': 'PublishJobRun',
+		            'jobId': self.spark_application.job_id,
+		            'jobRunId': self.spark_application.job_run_id,
 		        }
 		    )
 		)
@@ -231,17 +220,13 @@ class UpdateJobRunStepSparkJob(BaseSparkJob):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
 		pub_sub_bridge.send(
-		    json.dumps(
-		        {
-		            'applicationId': 'content_recommendation',
-		            'message':
-		                {
-		                    'operation': 'UpdateJobRun',
-		                    'jobRunId': self.spark_application.job_run_id,
-		                    'body': {
-		                        'step': 'DATA_SOLUTION'
-		                    }
-		                }
+		    PubSubMessage(
+		        'content_recommendation', {
+		            'operation': 'UpdateJobRun',
+		            'jobRunId': self.spark_application.job_run_id,
+		            'body': {
+		                'step': 'DATA_SOLUTION'
+		            }
 		        }
 		    )
 		)
