@@ -78,17 +78,6 @@ public class SessionNaniteTest {
 		Assert.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
-
-		JSONArray interactionsJSONArray = userSessionJSONObject.getJSONArray(
-			"interactions");
-
-		Assert.assertEquals(1, interactionsJSONArray.length());
-
-		JSONObject interactionJSONObject = interactionsJSONArray.getJSONObject(
-			0);
-
-		Assert.assertEquals(
-			"blogViewed", interactionJSONObject.getString("eventId"));
 	}
 
 	@ElasticsearchIndex(
@@ -133,11 +122,6 @@ public class SessionNaniteTest {
 			"http://192.168.108.90:8089/about",
 			userSessionJSONObject.getString("exitPage"));
 
-		JSONArray interactionsJSONArray = userSessionJSONObject.getJSONArray(
-			"interactions");
-
-		Assert.assertEquals(3, interactionsJSONArray.length());
-
 		JSONObject pageJSONObject = _elasticsearchInvoker.fetch(
 			"pages", QueryBuilders.matchAllQuery());
 
@@ -174,22 +158,12 @@ public class SessionNaniteTest {
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
 
-		JSONArray interactionsJSONArray = userSessionJSONObject.getJSONArray(
-			"interactions");
-
-		Assert.assertEquals(1, interactionsJSONArray.length());
-
 		userSessionJSONObject = userSessionsJSONArray.getJSONObject(1);
 
 		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
 		Assert.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
-
-		interactionsJSONArray = userSessionJSONObject.getJSONArray(
-			"interactions");
-
-		Assert.assertEquals(3, interactionsJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -269,11 +243,6 @@ public class SessionNaniteTest {
 		Assert.assertFalse(userSessionJSONObject.getBoolean("bounced"));
 		Assert.assertFalse(userSessionJSONObject.getBoolean("completed"));
 		Assert.assertNull(userSessionJSONObject.optString("exitPage", null));
-
-		JSONArray interactionsJSONArray = userSessionJSONObject.getJSONArray(
-			"interactions");
-
-		Assert.assertEquals(3, interactionsJSONArray.length());
 	}
 
 	@ElasticsearchIndex(
@@ -300,17 +269,6 @@ public class SessionNaniteTest {
 		Assert.assertEquals(
 			"0cbc8e60-99cd-11e9-9129-a75b6df1b957",
 			userSessionJSONObject.getString("userId"));
-
-		JSONArray interactionsJSONArray = userSessionJSONObject.getJSONArray(
-			"interactions");
-
-		Assert.assertEquals(2, interactionsJSONArray.length());
-
-		JSONObject interactionJSONObject = interactionsJSONArray.getJSONObject(
-			1);
-
-		Assert.assertEquals(
-			"blogViewed", interactionJSONObject.getString("eventId"));
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)

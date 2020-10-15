@@ -22,7 +22,6 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-import java.util.Collections;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -57,7 +56,6 @@ public class FinalizeSessionArmTest {
 		userSession.setDataSourceId("1");
 		userSession.setFirstEventDate(eventDate);
 		userSession.setId("1");
-		userSession.setInteractions(Collections.emptyList());
 		userSession.setLastEventDate(eventDate);
 		userSession.setUserId("1");
 

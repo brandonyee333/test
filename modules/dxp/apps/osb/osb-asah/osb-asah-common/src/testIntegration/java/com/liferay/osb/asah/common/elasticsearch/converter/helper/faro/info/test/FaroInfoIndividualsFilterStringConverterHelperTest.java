@@ -1261,7 +1261,15 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	public void testSessionsFilterReferrerEqEmpty() throws Exception {
 		testFilterString(
 			"individuals", "sessions.filter(filter='context/referrer eq ''''')",
-			"346468603851271125", "346468609906122549");
+			"346468603851271125");
+	}
+
+	@Test
+	public void testSessionsFilterReferrersEqNull() throws Exception {
+		testFilterString(
+			"individuals",
+			"sessions.filter(filter='(context/referrers eq null)')",
+			"346468609906122549");
 	}
 
 	@Test

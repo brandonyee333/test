@@ -57,8 +57,7 @@ public class SessionNaniteTest extends BaseNaniteTestCase {
 		Mockito.when(
 			elasticsearchInvoker.fetch(
 				Mockito.eq(nanite.getCollectionName()),
-				Mockito.any(QueryBuilder.class), Mockito.anyString(),
-				Mockito.anyString())
+				Mockito.any(QueryBuilder.class))
 		).thenReturn(
 			new JSONObject(
 				ResourceUtil.readResourceToString(
@@ -106,7 +105,7 @@ public class SessionNaniteTest extends BaseNaniteTestCase {
 
 		Map<String, Object> params = script.getParams();
 
-		Assert.assertEquals(params.toString(), 8, params.size());
+		Assert.assertEquals(params.toString(), 7, params.size());
 	}
 
 }
