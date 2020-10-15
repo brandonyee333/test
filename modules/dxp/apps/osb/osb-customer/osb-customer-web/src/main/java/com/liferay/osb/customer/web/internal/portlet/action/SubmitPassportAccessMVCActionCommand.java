@@ -263,11 +263,9 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 						String productName = product.getName();
 
 						if (productName.startsWith(
-								ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
+								ProductConstants.NAME_PREFIX_DXP) ||
 							productName.startsWith(
-								ProductConstants.NAME_LIFERAY_DXP) ||
-							productName.startsWith(
-								ProductConstants.NAME_PORTAL)) {
+								ProductConstants.NAME_PREFIX_PORTAL)) {
 
 							return true;
 						}

@@ -25,6 +25,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -74,6 +75,32 @@ public class AccountReaderImpl implements AccountReader {
 		sb.append("' and state eq 'active'");
 
 		return _productPurchaseWebService.search(sb.toString(), 1, 1000);
+	}
+
+	public ProductPurchase getSLAProductPurchase(
+		List<ProductPurchase> productPurchases) {
+
+		ProductPurchase slaProductPurchase = null;
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			if (!_isActive(productPurchase)) {
+				continue;
+			}
+
+			Product product = productPurchase.getProduct();
+
+			if (!ArrayUtil.contains(
+					ProductConstants.NAMES_SUBSCRIPTION, product.getName())) {
+
+				continue;
+			}
+
+			if (_isHigherSLA(slaProductPurchase, productPurchase)) {
+				slaProductPurchase = productPurchase;
+			}
+		}
+
+		return slaProductPurchase;
 	}
 
 	public int getStatus(Account account) {
@@ -141,6 +168,87 @@ public class AccountReaderImpl implements AccountReader {
 		}
 
 		return ticketSupportEndDate;
+	}
+
+	private int _getSLARank(Product product) {
+		String name = product.getName();
+
+		if (name.equals(ProductConstants.NAME_GOLD)) {
+			return 3;
+		}
+		else if (name.equals(ProductConstants.NAME_LIMITED)) {
+			return 1;
+		}
+		else if (name.equals(ProductConstants.NAME_PLATINUM)) {
+			return 4;
+		}
+		else if (name.equals(ProductConstants.NAME_SILVER)) {
+			return 2;
+		}
+
+		return 0;
+	}
+
+	private boolean _isActive(ProductPurchase productPurchase) {
+		if (productPurchase.getStatus() == ProductPurchase.Status.CANCELLED) {
+			return false;
+		}
+
+		Date now = new Date();
+
+		if ((productPurchase.getEndDate() != null) &&
+			now.after(productPurchase.getEndDate())) {
+
+			return false;
+		}
+
+		if ((productPurchase.getStartDate() != null) &&
+			now.before(productPurchase.getStartDate())) {
+
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean _isHigherSLA(
+		ProductPurchase curProductPurchase, ProductPurchase productPurchase) {
+
+		if (curProductPurchase == null) {
+			return true;
+		}
+
+		int curSLARank = _getSLARank(curProductPurchase.getProduct());
+		int slaRank = _getSLARank(productPurchase.getProduct());
+
+		if (slaRank > curSLARank) {
+			return true;
+		}
+
+		if (slaRank < curSLARank) {
+			return false;
+		}
+
+		if (productPurchase.getPerpetual() &&
+			!curProductPurchase.getPerpetual()) {
+
+			return true;
+		}
+
+		if (!productPurchase.getPerpetual() &&
+			curProductPurchase.getPerpetual()) {
+
+			return false;
+		}
+
+		Date curEndDate = curProductPurchase.getEndDate();
+		Date endDate = productPurchase.getEndDate();
+
+		if (endDate.after(curEndDate)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private static final Date _END_DATE_PERPETUAL = new Date(4102444800000L);

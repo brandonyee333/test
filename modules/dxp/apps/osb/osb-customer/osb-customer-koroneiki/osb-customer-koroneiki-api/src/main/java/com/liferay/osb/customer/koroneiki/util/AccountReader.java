@@ -31,6 +31,9 @@ public interface AccountReader {
 	public List<ProductPurchase> getProductPurchases(String accountKey)
 		throws Exception;
 
+	public ProductPurchase getSLAProductPurchase(
+		List<ProductPurchase> productPurchases);
+
 	public int getStatus(Account account);
 
 	public Date getSupportEndDate(List<ProductPurchase> productPurchases);

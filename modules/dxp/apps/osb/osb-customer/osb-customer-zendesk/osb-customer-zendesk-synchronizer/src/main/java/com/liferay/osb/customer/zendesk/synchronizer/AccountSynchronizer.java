@@ -24,7 +24,6 @@ import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
-import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
@@ -514,19 +513,14 @@ public class AccountSynchronizer {
 		List<ProductPurchase> productPurchases =
 			_accountReader.getProductPurchases(accountKey);
 
-		for (ProductPurchase productPurchase : productPurchases) {
+		ProductPurchase productPurchase = _accountReader.getSLAProductPurchase(
+			productPurchases);
+
+		if (productPurchase != null) {
 			Product product = productPurchase.getProduct();
 
-			String name = product.getName();
-
-			if (name.equals(ProductConstants.NAME_FLOATING) ||
-				name.equals(ProductConstants.NAME_GOLD) ||
-				name.equals(ProductConstants.NAME_LIMITED) ||
-				name.equals(ProductConstants.NAME_PLATINUM) ||
-				name.equals(ProductConstants.NAME_SILVER)) {
-
-				return StringUtil.removeSubstring(name, " Subscription");
-			}
+			return StringUtil.removeSubstring(
+				product.getName(), " Subscription");
 		}
 
 		return StringPool.BLANK;

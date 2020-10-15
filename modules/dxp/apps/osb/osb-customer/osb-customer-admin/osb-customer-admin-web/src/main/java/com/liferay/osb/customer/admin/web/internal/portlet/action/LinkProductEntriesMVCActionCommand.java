@@ -24,6 +24,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.List;
 
@@ -55,8 +57,9 @@ public class LinkProductEntriesMVCActionCommand extends BaseMVCActionCommand {
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		for (ProductEntry productEntry : productEntries) {
-			Product product = _productWebService.fetchProductByName(
-				productEntry.getName());
+			String name = _getNewName(productEntry.getName());
+
+			Product product = _productWebService.fetchProductByName(name);
 
 			if (product == null) {
 				_log.error(
@@ -66,9 +69,21 @@ public class LinkProductEntriesMVCActionCommand extends BaseMVCActionCommand {
 			}
 
 			productEntry.setKoroneikiProductKey(product.getKey());
+			productEntry.setName(name);
 
 			_productEntryLocalService.updateProductEntry(productEntry);
 		}
+	}
+
+	private String _getNewName(String name) {
+		String newName = StringUtil.replace(name, "Digital Enterprise", "DXP");
+
+		if (newName.startsWith("Liferay")) {
+			newName = StringUtil.replaceFirst(
+				newName, "Liferay", StringPool.BLANK);
+		}
+
+		return newName;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
