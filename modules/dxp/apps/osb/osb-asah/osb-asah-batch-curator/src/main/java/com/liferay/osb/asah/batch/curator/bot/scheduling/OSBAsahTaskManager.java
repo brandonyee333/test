@@ -135,7 +135,7 @@ public class OSBAsahTaskManager {
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				String.format(
-					"Scheduling task %s according CRON expression %s",
+					"Scheduling task %s according cron expression %s",
 					osbAsahTaskJSONObject, cronExpression));
 		}
 
