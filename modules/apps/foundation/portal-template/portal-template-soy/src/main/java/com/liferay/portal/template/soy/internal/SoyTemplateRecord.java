@@ -310,6 +310,7 @@ public class SoyTemplateRecord extends SoyAbstractValue implements SoyRecord {
 
 				if ((parameterTypes.length == 0) &&
 					!returnType.equals(Void.class) &&
+					!returnType.equals(void.class) &&
 					!declaringClass.equals(Object.class) &&
 					!declaringClass.equals(Annotation.class)) {
 
