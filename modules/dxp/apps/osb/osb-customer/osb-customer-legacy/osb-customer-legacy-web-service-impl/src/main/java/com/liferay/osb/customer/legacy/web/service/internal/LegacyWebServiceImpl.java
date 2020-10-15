@@ -109,7 +109,7 @@ public class LegacyWebServiceImpl
 		throws JSONWebServiceInvocationException,
 			   JSONWebServiceTransportException {
 
-		setHostName(_legacyConfiguration.hostName());
+		setHostName(_legacyConfiguration.host());
 		setHostPort(_legacyConfiguration.port());
 		setProtocol(_legacyConfiguration.protocol());
 

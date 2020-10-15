@@ -139,7 +139,7 @@ public class WebUserIdentityProvider
 		throws JSONWebServiceInvocationException,
 			   JSONWebServiceTransportException {
 
-		setHostName(_webUserIdentityConfiguration.hostName());
+		setHostName(_webUserIdentityConfiguration.host());
 		setHostPort(_webUserIdentityConfiguration.port());
 		setProtocol(_webUserIdentityConfiguration.protocol());
 

@@ -31,7 +31,7 @@ public interface WebUserIdentityConfiguration {
 	@Meta.AD(
 		deflt = "web-uat.liferay.com", name = "host-name", required = false
 	)
-	public String hostName();
+	public String host();
 
 	@Meta.AD(deflt = "443", name = "port", required = false)
 	public int port();
@@ -43,7 +43,8 @@ public interface WebUserIdentityConfiguration {
 	public String apiToken();
 
 	@Meta.AD(
-		deflt = "is-lrsd-uat@liferay.com", name = "api-token", required = false
+		deflt = "is-lrsd-uat@liferay.com", name = "error-email-address",
+		required = false
 	)
 	public String errorEmailAddress();
 
