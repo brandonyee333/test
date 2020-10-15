@@ -78,9 +78,9 @@ public class LinkProductEntriesMVCActionCommand extends BaseMVCActionCommand {
 	private String _getNewName(String name) {
 		String newName = StringUtil.replace(name, "Digital Enterprise", "DXP");
 
-		if (newName.startsWith("Liferay")) {
+		if (newName.startsWith("Liferay ")) {
 			newName = StringUtil.replaceFirst(
-				newName, "Liferay", StringPool.BLANK);
+				newName, "Liferay ", StringPool.BLANK);
 		}
 
 		return newName;
