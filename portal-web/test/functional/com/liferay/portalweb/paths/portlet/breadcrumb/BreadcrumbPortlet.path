@@ -20,7 +20,7 @@
 </tr>
 <tr>
 	<td>BREADCRUMB_ADT</td>
-	<td>//div/ul[contains(@class,'breadcrumb-${key_breadcrumbADTType}')] | //div[contains(@class,'breadcrumb-${key_breadcrumbADTType}')]</td>
+	<td>//div/ul[contains(@class,'breadcrumb-${key_breadcrumbADTType}')] | //div[contains(@class,'breadcrumb-${key_breadcrumbADTType}')] | //div/nav/ul[contains(@class,'breadcrumb-${key_breadcrumbADTType}')]</td>
 	<td></td>
 </tr>
 <tr>
