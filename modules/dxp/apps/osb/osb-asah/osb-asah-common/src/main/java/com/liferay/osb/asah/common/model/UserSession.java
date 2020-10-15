@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import java.io.Serializable;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -63,7 +62,6 @@ public class UserSession implements Serializable {
 			Objects.equals(_firstEventDate, userSession._firstEventDate) &&
 			Objects.equals(_id, userSession._id) &&
 			Objects.equals(_individualId, userSession._individualId) &&
-			Objects.equals(_interactions, userSession._interactions) &&
 			Objects.equals(_lastEventDate, userSession._lastEventDate) &&
 			Objects.equals(_platformName, userSession._platformName) &&
 			Objects.equals(_region, userSession._region) &&
@@ -175,10 +173,6 @@ public class UserSession implements Serializable {
 		return _individualId;
 	}
 
-	public List<AnalyticsEvent> getInteractions() {
-		return _interactions;
-	}
-
 	public Long getInteractionsCount() {
 		return _interactionsCount;
 	}
@@ -225,8 +219,8 @@ public class UserSession implements Serializable {
 			_acquisition, _bounced, _browserName, _canonicalUrls, _channelId,
 			_city, _completed, _completeDate, _completeReason, _country,
 			_dataSourceId, _date, _deviceType, _duration, _entryPage, _exitPage,
-			_firstEventDate, _id, _individualId, _interactions, _lastEventDate,
-			_platformName, _referrers, _region, _urls, _userId);
+			_firstEventDate, _id, _individualId, _lastEventDate, _platformName,
+			_referrers, _region, _urls, _userId);
 	}
 
 	public void setAcquisition(Acquisition acquisition) {
@@ -311,10 +305,6 @@ public class UserSession implements Serializable {
 		_individualId = individualId;
 	}
 
-	public void setInteractions(List<AnalyticsEvent> interactions) {
-		_interactions = interactions;
-	}
-
 	public void setInteractionsCount(Long interactionsCount) {
 		_interactionsCount = interactionsCount;
 	}
@@ -368,7 +358,6 @@ public class UserSession implements Serializable {
 	private Date _firstEventDate;
 	private String _id;
 	private String _individualId;
-	private List<AnalyticsEvent> _interactions;
 	private Long _interactionsCount;
 	private Date _lastEventDate;
 	private Long _pageViewsCount;

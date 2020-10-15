@@ -1,5 +1,4 @@
 ctx._source.bounced = params.bounced;
-ctx._source.interactions.addAll(params.interactions);
 ctx._source.interactionsCount = params.interactionsCount;
 ctx._source.pageViewsCount = params.pageViewsCount;
 

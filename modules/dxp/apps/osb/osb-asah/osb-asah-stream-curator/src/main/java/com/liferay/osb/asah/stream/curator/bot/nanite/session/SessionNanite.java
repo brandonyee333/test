@@ -141,7 +141,6 @@ public class SessionNanite implements Nanite {
 
 		userSession.setInteractionsCount(
 			analyticsEvents.getInteractionsCount());
-		userSession.setInteractions(analyticsEvents.getAnalyticsEventsList());
 		userSession.setLastEventDate(
 			analyticsEvents.getLastAnalyticsEventDate());
 		userSession.setPageViewsCount(analyticsEvents.getPageViewsCount());
@@ -429,18 +428,6 @@ public class SessionNanite implements Nanite {
 	private void _updateUserSession(
 		AnalyticsEvents analyticsEvents, JSONObject userSessionJSONObject) {
 
-		List<AnalyticsEvent> analyticsEventsList =
-			analyticsEvents.getAnalyticsEventsList();
-
-		Stream<AnalyticsEvent> stream = analyticsEventsList.stream();
-
-		List<Map> analyticsEventMaps = stream.map(
-			analyticsEvent -> _objectMapper.convertValue(
-				analyticsEvent, Map.class)
-		).collect(
-			Collectors.toList()
-		);
-
 		long interactionsCount =
 			analyticsEvents.getInteractionsCount() +
 				userSessionJSONObject.optLong("interactionsCount");
@@ -459,7 +446,6 @@ public class SessionNanite implements Nanite {
 					put(
 						"canonicalUrls",
 						new ArrayList<>(analyticsEvents.getCanonicalUrls()));
-					put("interactions", analyticsEventMaps);
 					put("interactionsCount", interactionsCount);
 					put(
 						"lastEventDate",
