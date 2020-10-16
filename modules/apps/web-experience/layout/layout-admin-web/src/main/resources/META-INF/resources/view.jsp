@@ -17,9 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-Group group = layoutsAdminDisplayContext.getGroup();
-
-SitesUtil.addPortletBreadcrumbEntries(group, layoutsAdminDisplayContext.getPagesName(), layoutsAdminDisplayContext.getRedirectURL(), request, renderResponse);
+SitesUtil.addPortletBreadcrumbEntries(layoutsAdminDisplayContext.getGroup(), layoutsAdminDisplayContext.getPagesName(), layoutsAdminDisplayContext.getRedirectURL(), request, renderResponse);
 
 Layout selLayout = layoutsAdminDisplayContext.getSelLayout();
 

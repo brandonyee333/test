@@ -109,17 +109,13 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		long testrayRoutineId = ParamUtil.getLong(request, "testrayRoutineId");
 
-		Map<TestrayFactorCategory, List<TestrayFactorOption>> testrayFactorCategoryMap = TestrayFactorCategoryUtil.getTestrayFactorCategoryMap(TestrayRoutine.class.getName(), testrayRoutineId);
-
-		portletRequest.setAttribute("testrayFactorCategoryMap", testrayFactorCategoryMap);
+		portletRequest.setAttribute("testrayFactorCategoryMap", TestrayFactorCategoryUtil.getTestrayFactorCategoryMap(TestrayRoutine.class.getName(), testrayRoutineId));
 
 		String redirect = ParamUtil.getString(request, "redirect");
 
 		portletRequest.setAttribute("redirect", redirect);
 
-		List<List<TestrayFactor>> testrayFactorCombinations = TestrayFactorUtil.getTestrayFactorCombinations(this);
-
-		portletRequest.setAttribute("testrayFactorCombinations", testrayFactorCombinations);
+		portletRequest.setAttribute("testrayFactorCombinations", TestrayFactorUtil.getTestrayFactorCombinations(this));
 
 		if (renderRequest == null) {
 			render("factors/select");
@@ -174,9 +170,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 			throw new AlloyException("a-run-with-these-factor-options-already-exists", false);
 		}
 
-		long number = TestrayRunUtil.getNumber(testrayFactorOptionIds, testrayBuildId);
-
-		testrayRun.setNumber(number);
+		testrayRun.setNumber(TestrayRunUtil.getNumber(testrayFactorOptionIds, testrayBuildId));
 
 		updateModel(testrayRun, "testrayRunId", testrayRun.getTestrayRunId());
 

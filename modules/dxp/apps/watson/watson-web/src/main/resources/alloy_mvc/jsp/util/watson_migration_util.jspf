@@ -397,9 +397,7 @@ public static class WatsonDataMigrationUtil {
 			String birthDateString = csvRecord.get("birthDate");
 
 			if (Validator.isNotNull(birthDateString)) {
-				Date birthDate = DateUtil.parseDate(birthDateString, locale);
-
-				watsonPerson.setBirthDate(birthDate);
+				watsonPerson.setBirthDate(DateUtil.parseDate(birthDateString, locale));
 			}
 
 			watsonPerson.setAccepted(Boolean.parseBoolean(csvRecord.get("acceptedToZOE")));

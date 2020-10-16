@@ -147,9 +147,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		List<Long> testrayFactorCategoryIds = ListUtil.toList(ParamUtil.getLongValues(request, "testrayFactorCategoryIds"));
 
-		Map<TestrayFactorCategory, List<TestrayFactorOption>> testrayFactorCategoryMap = TestrayFactorCategoryUtil.getTestrayFactorCategoryMap(className, classPK, testrayFactorCategoryIds);
-
-		portletRequest.setAttribute("testrayFactorCategoryMap", testrayFactorCategoryMap);
+		portletRequest.setAttribute("testrayFactorCategoryMap", TestrayFactorCategoryUtil.getTestrayFactorCategoryMap(className, classPK, testrayFactorCategoryIds));
 
 		if (renderRequest == null) {
 			render("factor_options/select");

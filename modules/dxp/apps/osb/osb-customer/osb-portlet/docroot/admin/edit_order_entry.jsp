@@ -90,29 +90,18 @@ for (int i = 0; i < offeringEntriesCount; i++) {
 		continue;
 	}
 
-	long offeringEntryId = ParamUtil.getLong(request, "offeringEntryId_" + i);
-	long productEntryId = ParamUtil.getLong(request, "productEntryId_" + i);
-	long supportResponseId = ParamUtil.getLong(request, "supportResponseId_" + i);
-	String productDescription = ParamUtil.getString(request, "productDescription_" + i);
-	int type = ParamUtil.getInteger(request, "type_" + i);
-	boolean licenses = ParamUtil.getBoolean(request, "licenses_" + i);
-	long licenseLifetime = ParamUtil.getLong(request, "licenseLifetime_" + i);
-	boolean supportTickets = ParamUtil.getBoolean(request, "supportTickets_" + i);
-	long supportLifetime = ParamUtil.getLong(request, "supportLifetime_" + i);
-	int sizing = ParamUtil.getInteger(request, "sizing_" + i);
-
 	OfferingEntry offeringEntry = new OfferingEntryImpl();
 
-	offeringEntry.setOfferingEntryId(offeringEntryId);
-	offeringEntry.setProductEntryId(productEntryId);
-	offeringEntry.setSupportResponseId(supportResponseId);
-	offeringEntry.setProductDescription(productDescription);
-	offeringEntry.setType(type);
-	offeringEntry.setLicenses(licenses);
-	offeringEntry.setLicenseLifetime(licenseLifetime);
-	offeringEntry.setSupportTickets(supportTickets);
-	offeringEntry.setSupportLifetime(supportLifetime);
-	offeringEntry.setSizing(sizing);
+	offeringEntry.setOfferingEntryId(ParamUtil.getLong(request, "offeringEntryId_" + i));
+	offeringEntry.setProductEntryId(ParamUtil.getLong(request, "productEntryId_" + i));
+	offeringEntry.setSupportResponseId(ParamUtil.getLong(request, "supportResponseId_" + i));
+	offeringEntry.setProductDescription(ParamUtil.getString(request, "productDescription_" + i));
+	offeringEntry.setType(ParamUtil.getInteger(request, "type_" + i));
+	offeringEntry.setLicenses(ParamUtil.getBoolean(request, "licenses_" + i));
+	offeringEntry.setLicenseLifetime(ParamUtil.getLong(request, "licenseLifetime_" + i));
+	offeringEntry.setSupportTickets(ParamUtil.getBoolean(request, "supportTickets_" + i));
+	offeringEntry.setSupportLifetime(ParamUtil.getLong(request, "supportLifetime_" + i));
+	offeringEntry.setSizing(ParamUtil.getInteger(request, "sizing_" + i));
 	offeringEntry.setQuantity(quantity);
 
 	offeringEntries.add(offeringEntry);

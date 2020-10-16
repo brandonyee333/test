@@ -17,11 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-FileEntry fileEntry = ActionUtil.getFileEntry(liferayPortletRequest);
-
-FileVersion fileVersion = ActionUtil.getFileVersion(liferayPortletRequest, fileEntry);
-
-UIItemsBuilder uiItemsBuilder = new UIItemsBuilder(request, fileVersion);
+UIItemsBuilder uiItemsBuilder = new UIItemsBuilder(request, ActionUtil.getFileVersion(liferayPortletRequest, ActionUtil.getFileEntry(liferayPortletRequest)));
 %>
 
 <liferay-ui:menu-item

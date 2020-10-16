@@ -30,9 +30,7 @@ EntrySearchTerms searchTerms = (EntrySearchTerms)entrySearch.getSearchTerms();
 List trashEntries = null;
 
 if (Validator.isNotNull(searchTerms.getKeywords())) {
-	Sort sort = SortFactoryUtil.getSort(TrashEntry.class, entrySearch.getOrderByCol(), entrySearch.getOrderByType());
-
-	BaseModelSearchResult<TrashEntry> baseModelSearchResult = TrashEntryLocalServiceUtil.searchTrashEntries(company.getCompanyId(), themeDisplay.getScopeGroupId(), user.getUserId(), searchTerms.getKeywords(), entrySearch.getStart(), entrySearch.getEnd(), sort);
+	BaseModelSearchResult<TrashEntry> baseModelSearchResult = TrashEntryLocalServiceUtil.searchTrashEntries(company.getCompanyId(), themeDisplay.getScopeGroupId(), user.getUserId(), searchTerms.getKeywords(), entrySearch.getStart(), entrySearch.getEnd(), SortFactoryUtil.getSort(TrashEntry.class, entrySearch.getOrderByCol(), entrySearch.getOrderByType()));
 
 	entrySearch.setTotal(baseModelSearchResult.getLength());
 

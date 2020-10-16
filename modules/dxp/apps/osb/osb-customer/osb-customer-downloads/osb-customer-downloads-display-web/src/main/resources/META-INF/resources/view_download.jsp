@@ -59,11 +59,9 @@ String logo = downloadsAssetCategoryUtil.getPropertyValue(productAssetCategory.g
 			>
 
 				<%
-				Fields ddmFields = journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent());
-
 				DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
 
-				Date releaseDate = dateFormat.parse(DDMFieldsUtil.getString(ddmFields, "releaseDate"));
+				Date releaseDate = dateFormat.parse(DDMFieldsUtil.getString(journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent()), "releaseDate"));
 				%>
 
 				<%= mediumDateFormatDate.format(releaseDate) %>

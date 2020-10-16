@@ -439,9 +439,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayCaseResultReporter", testrayCaseResultReporter);
 
-		TestrayProductVersion testrayProductVersion = TestrayProductVersionLocalServiceUtil.getTestrayProductVersion(testrayBuild.getTestrayProductVersionId());
-
-		renderRequest.setAttribute("testrayProductVersion", testrayProductVersion);
+		renderRequest.setAttribute("testrayProductVersion", TestrayProductVersionLocalServiceUtil.getTestrayProductVersion(testrayBuild.getTestrayProductVersionId()));
 
 		int[] startAndEnd = TestrayUtil.getStartAndEnd(request, portletRequest, portletURL);
 
@@ -477,9 +475,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayCaseTypes", testrayCaseTypes);
 
-		List<TestrayTeam> testrayTeams = TestrayTeamUtil.getTestrayTeams(testrayProjectId);
-
-		renderRequest.setAttribute("testrayTeams", testrayTeams);
+		renderRequest.setAttribute("testrayTeams", TestrayTeamUtil.getTestrayTeams(testrayProjectId));
 	}
 
 	private TestrayRun _getLatestTestrayRun(long testrayRoutineId, long jenkinsJobKey) throws Exception {

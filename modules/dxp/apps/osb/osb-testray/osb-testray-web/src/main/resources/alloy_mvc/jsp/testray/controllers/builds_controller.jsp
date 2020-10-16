@@ -427,9 +427,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayProductVersions", testrayProductVersions);
 
-		List<TestrayTeam> testrayTeams = TestrayTeamUtil.getTestrayTeams(testrayProjectId);
-
-		renderRequest.setAttribute("testrayTeams", testrayTeams);
+		renderRequest.setAttribute("testrayTeams", TestrayTeamUtil.getTestrayTeams(testrayProjectId));
 	}
 
 	public void latestBuildComponents() throws Exception {
@@ -699,9 +697,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		_validateUpdatePromoted(testrayBuild);
 
-		boolean promoted = ParamUtil.getBoolean(request, "promoted");
-
-		testrayBuild.setPromoted(promoted);
+		testrayBuild.setPromoted(ParamUtil.getBoolean(request, "promoted"));
 
 		updateModelIgnoreRequest(testrayBuild);
 

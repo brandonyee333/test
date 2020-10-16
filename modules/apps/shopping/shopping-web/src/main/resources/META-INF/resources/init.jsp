@@ -187,11 +187,9 @@ page import="javax.portlet.WindowState" %>
 <%
 ShoppingGroupServiceOverriddenConfiguration shoppingGroupServiceOverriddenConfiguration = ConfigurationProviderUtil.getConfiguration(ShoppingGroupServiceOverriddenConfiguration.class, new GroupServiceSettingsLocator(scopeGroupId, ShoppingConstants.SERVICE_NAME));
 
-Currency currency = Currency.getInstance(shoppingGroupServiceOverriddenConfiguration.getCurrencyId());
-
 NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(locale);
 
-currencyFormat.setCurrency(currency);
+currencyFormat.setCurrency(Currency.getInstance(shoppingGroupServiceOverriddenConfiguration.getCurrencyId()));
 
 Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZone);
 

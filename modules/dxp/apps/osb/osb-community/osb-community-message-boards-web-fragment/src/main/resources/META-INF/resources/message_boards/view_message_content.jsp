@@ -234,9 +234,7 @@ if (portletTitleBasedNavigation) {
 
 	searchContainer = new SearchContainer(renderRequest, null, null, SearchContainer.DEFAULT_CUR_PARAM, cur, delta, portletURL, null, null);
 
-	int total = MBMessageServiceUtil.getThreadMessagesCount(message.getGroupId(), category.getCategoryId(), message.getThreadId(), WorkflowConstants.STATUS_ANY);
-
-	searchContainer.setTotal(total);
+	searchContainer.setTotal(MBMessageServiceUtil.getThreadMessagesCount(message.getGroupId(), category.getCategoryId(), message.getThreadId(), WorkflowConstants.STATUS_ANY));
 
 	messages = MBMessageServiceUtil.getThreadMessages(message.getGroupId(), category.getCategoryId(), message.getThreadId(), WorkflowConstants.STATUS_ANY, searchContainer.getStart(), searchContainer.getEnd());
 

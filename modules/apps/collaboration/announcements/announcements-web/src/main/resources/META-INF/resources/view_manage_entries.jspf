@@ -72,9 +72,7 @@ if ((classNameId == 0) && (classPK == 0) && !PortalPermissionUtil.contains(permi
 
 		SearchContainer searchContainer = new SearchContainer(renderRequest, null, null, SearchContainer.DEFAULT_CUR_PARAM, SearchContainer.DEFAULT_DELTA, iteratorURL, headerNames, "no-entries-were-found");
 
-		int total = AnnouncementsEntryLocalServiceUtil.getEntriesCount(themeDisplay.getCompanyId(), classNameId, classPK, portletName.equals(AnnouncementsPortletKeys.ALERTS));
-
-		searchContainer.setTotal(total);
+		searchContainer.setTotal(AnnouncementsEntryLocalServiceUtil.getEntriesCount(themeDisplay.getCompanyId(), classNameId, classPK, portletName.equals(AnnouncementsPortletKeys.ALERTS)));
 
 		List<AnnouncementsEntry> results = AnnouncementsEntryLocalServiceUtil.getEntries(themeDisplay.getCompanyId(), classNameId, classPK, portletName.equals(AnnouncementsPortletKeys.ALERTS), searchContainer.getStart(), searchContainer.getEnd());
 

@@ -17,9 +17,7 @@
 <%@ include file="/html/portal/init.jsp" %>
 
 <%
-String currentURL = PortalUtil.getCurrentURL(request);
-
-String referer = ParamUtil.getString(request, WebKeys.REFERER, currentURL);
+String referer = ParamUtil.getString(request, WebKeys.REFERER, PortalUtil.getCurrentURL(request));
 
 if (referer.equals(themeDisplay.getPathMain() + "/portal/update_reminder_query")) {
 	referer = themeDisplay.getPathMain() + "?doAsUserId=" + themeDisplay.getDoAsUserId();

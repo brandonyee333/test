@@ -177,9 +177,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 			updateModelIgnoreRequest(testrayRequirement);
 
 			if (newRequirement) {
-				String url = TestrayUtil.getURL(this, "requirements", null, testrayRequirement.getTestrayRequirementId());
-
-				TestrayIssueEngineUtil.addLink(url, testrayRequirement.getKey(), issueKey.trim(), user);
+				TestrayIssueEngineUtil.addLink(TestrayUtil.getURL(this, "requirements", null, testrayRequirement.getTestrayRequirementId()), testrayRequirement.getKey(), issueKey.trim(), user);
 			}
 		}
 

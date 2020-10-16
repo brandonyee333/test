@@ -112,9 +112,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		attributes.put("testrayProjectId", testrayProjectId);
 
-		TestrayProject testrayProject = TestrayProjectLocalServiceUtil.getTestrayProject(testrayProjectId);
-
-		renderRequest.setAttribute("testrayProject", testrayProject);
+		renderRequest.setAttribute("testrayProject", TestrayProjectLocalServiceUtil.getTestrayProject(testrayProjectId));
 
 		if (isRespondingTo("json")) {
 			String orderByCol = ParamUtil.getString(request, "orderByCol", "name_sortable");

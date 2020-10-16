@@ -32,7 +32,6 @@ page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.search.BaseModelSearchResult" %><%@
-page import="com.liferay.portal.kernel.search.Sort" %><%@
 page import="com.liferay.portal.kernel.search.SortFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.security.permission.ResourceActionsUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@

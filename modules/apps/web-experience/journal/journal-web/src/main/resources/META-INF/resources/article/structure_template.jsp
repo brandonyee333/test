@@ -17,9 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-JournalArticle article = journalDisplayContext.getArticle();
-
-long groupId = BeanParamUtil.getLong(article, request, "groupId", scopeGroupId);
+long groupId = BeanParamUtil.getLong(journalDisplayContext.getArticle(), request, "groupId", scopeGroupId);
 long classNameId = ParamUtil.getLong(request, "classNameId");
 
 DDMStructure ddmStructure = (DDMStructure)request.getAttribute("edit_article.jsp-structure");

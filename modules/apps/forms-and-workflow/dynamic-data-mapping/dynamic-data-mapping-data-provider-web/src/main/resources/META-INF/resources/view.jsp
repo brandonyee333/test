@@ -23,10 +23,8 @@ portletURL.setParameter("displayStyle", "descriptive");
 
 DDMDataProviderSearch ddmDataProviderSearch = new DDMDataProviderSearch(renderRequest, portletURL);
 
-OrderByComparator<DDMDataProviderInstance> orderByComparator = DDMDataProviderPortletUtil.getDDMDataProviderOrderByComparator(ddmDataProviderDisplayContext.getOrderByCol(), ddmDataProviderDisplayContext.getOrderByType());
-
 ddmDataProviderSearch.setOrderByCol(ddmDataProviderDisplayContext.getOrderByCol());
-ddmDataProviderSearch.setOrderByComparator(orderByComparator);
+ddmDataProviderSearch.setOrderByComparator(DDMDataProviderPortletUtil.getDDMDataProviderOrderByComparator(ddmDataProviderDisplayContext.getOrderByCol(), ddmDataProviderDisplayContext.getOrderByType()));
 ddmDataProviderSearch.setOrderByType(ddmDataProviderDisplayContext.getOrderByType());
 %>
 

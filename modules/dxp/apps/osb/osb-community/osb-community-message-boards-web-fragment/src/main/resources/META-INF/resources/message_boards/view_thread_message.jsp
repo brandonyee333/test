@@ -48,9 +48,7 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 					messageUserName = message.getUserName();
 				}
 
-					Date modifiedDate = message.getModifiedDate();
-
-					String userDisplayText = LanguageUtil.format(request, "x-modified-on-x", new Object[] {messageUserName, dateFormatDateTime.format(modifiedDate)});
+					String userDisplayText = LanguageUtil.format(request, "x-modified-on-x", new Object[] {messageUserName, dateFormatDateTime.format(message.getModifiedDate())});
 				%>
 
 				<h5 class="message-user-display text-default" title="<%= HtmlUtil.escapeAttribute(userDisplayText) %>">

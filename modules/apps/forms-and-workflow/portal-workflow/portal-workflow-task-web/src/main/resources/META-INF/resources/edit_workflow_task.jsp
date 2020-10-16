@@ -41,12 +41,10 @@ AssetRendererFactory<?> assetRendererFactory = assetRenderer.getAssetRendererFac
 
 AssetEntry assetEntry = assetRendererFactory.getAssetEntry(workflowHandler.getClassName(), assetRenderer.getClassPK());
 
-String headerTitle = workflowTaskDisplayContext.getHeaderTitle(workflowTask);
-
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(backURL);
 
-renderResponse.setTitle(headerTitle);
+renderResponse.setTitle(workflowTaskDisplayContext.getHeaderTitle(workflowTask));
 %>
 
 <div class="container-fluid-1280">

@@ -57,9 +57,7 @@ else if (Validator.isNotNull(urlTitle)) {
 	assetRenderer = assetRendererFactory.getAssetRenderer(groupId, urlTitle);
 
 	if (workflowPreview && permissionChecker.isContentReviewer(companyId, groupId)) {
-		long classPK = assetRenderer.getClassPK();
-
-		assetRenderer = assetRendererFactory.getAssetRenderer(classPK, AssetRendererFactory.TYPE_LATEST);
+		assetRenderer = assetRendererFactory.getAssetRenderer(assetRenderer.getClassPK(), AssetRendererFactory.TYPE_LATEST);
 	}
 
 	assetEntry = assetRendererFactory.getAssetEntry(assetRendererFactory.getClassName(), assetRenderer.getClassPK());

@@ -44,9 +44,7 @@ Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(Organization.class);
 if (indexer.isIndexerEnabled() && PropsValues.ORGANIZATIONS_SEARCH_WITH_INDEX) {
 	organizationParams.put("expandoAttributes", searchTerms.getKeywords());
 
-	Sort sort = SortFactoryUtil.getSort(Organization.class, organizationSearch.getOrderByCol(), organizationSearch.getOrderByType());
-
-	BaseModelSearchResult<Organization> baseModelSearchResult = OrganizationLocalServiceUtil.searchOrganizations(themeDisplay.getCompanyId(), OrganizationConstants.ANY_PARENT_ORGANIZATION_ID, searchTerms.getKeywords(), organizationParams, organizationSearch.getStart(), organizationSearch.getEnd(), sort);
+	BaseModelSearchResult<Organization> baseModelSearchResult = OrganizationLocalServiceUtil.searchOrganizations(themeDisplay.getCompanyId(), OrganizationConstants.ANY_PARENT_ORGANIZATION_ID, searchTerms.getKeywords(), organizationParams, organizationSearch.getStart(), organizationSearch.getEnd(), SortFactoryUtil.getSort(Organization.class, organizationSearch.getOrderByCol(), organizationSearch.getOrderByType()));
 
 	organizations = baseModelSearchResult.getBaseModels();
 	organizationsCount = baseModelSearchResult.getLength();

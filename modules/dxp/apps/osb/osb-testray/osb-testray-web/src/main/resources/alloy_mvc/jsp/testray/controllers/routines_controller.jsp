@@ -166,9 +166,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayProject", testrayProject);
 
-		List<TestrayTeam> testrayTeams = TestrayTeamUtil.getTestrayTeams(testrayProjectId);
-
-		renderRequest.setAttribute("testrayTeams", testrayTeams);
+		renderRequest.setAttribute("testrayTeams", TestrayTeamUtil.getTestrayTeams(testrayProjectId));
 	}
 
 	@JSONWebServiceMethod(lifecycle = PortletRequest.ACTION_PHASE, parameterNames = {"defaultTestrayFactors", "id", "name", "testrayProjectId"}, parameterTypes = {String.class, Long.class, String.class, Long.class})

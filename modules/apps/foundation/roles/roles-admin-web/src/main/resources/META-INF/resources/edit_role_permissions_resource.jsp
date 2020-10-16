@@ -55,9 +55,7 @@ SearchContainer searchContainer = new SearchContainer(liferayPortletRequest, nul
 
 searchContainer.setRowChecker(new ResourceActionRowChecker(liferayPortletResponse));
 
-int total = curActions.size();
-
-searchContainer.setTotal(total);
+searchContainer.setTotal(curActions.size());
 
 List results = curActions;
 

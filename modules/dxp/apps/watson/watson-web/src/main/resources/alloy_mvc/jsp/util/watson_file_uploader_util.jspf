@@ -69,9 +69,7 @@ public static class WatsonFileUploaderUtil {
 
 		fileName = DLValidatorUtil.fixName(fileName);
 
-		String contentType = MimeTypesUtil.getContentType(fileName);
-
-		FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(userId, repository.getRepositoryId(), classPK, fileName, contentType, fileName, originalFileName, StringPool.BLANK, file, serviceContext);
+		FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(userId, repository.getRepositoryId(), classPK, fileName, MimeTypesUtil.getContentType(fileName), fileName, originalFileName, StringPool.BLANK, file, serviceContext);
 
 		DLFileEntry dlFileEntry = DLFileEntryLocalServiceUtil.getDLFileEntry(fileEntry.getFileEntryId());
 

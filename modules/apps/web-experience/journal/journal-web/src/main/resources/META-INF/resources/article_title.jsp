@@ -21,15 +21,13 @@ ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_
 
 JournalArticle article = (JournalArticle)row.getObject();
 
-JournalArticle latestArticle = journalDisplayContext.getLatestArticle(article);
-
 String href = (String)request.getAttribute(WebKeys.SEARCH_ENTRY_HREF);
 
 String title = article.getTitle(locale);
 
 boolean latestVersion = false;
 
-if (article.equals(latestArticle)) {
+if (article.equals(journalDisplayContext.getLatestArticle(article))) {
 	latestVersion = true;
 }
 

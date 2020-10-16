@@ -270,9 +270,8 @@ public static class TestrayAlloyControllerImpl extends BaseAlloyControllerImpl {
 	}
 
 	protected void setBreadcrumb() throws Exception {
-		List<TestrayBreadcrumbComposite> testrayBreadcrumbComposites = TestrayBreadcrumbUtil.getTestrayBreadcrumbComposites(this, actionPath, controllerPath);
 
-		renderRequest.setAttribute("testrayBreadcrumbComposites", testrayBreadcrumbComposites);
+		renderRequest.setAttribute("testrayBreadcrumbComposites", TestrayBreadcrumbUtil.getTestrayBreadcrumbComposites(this, actionPath, controllerPath));
 	}
 
 	@Override

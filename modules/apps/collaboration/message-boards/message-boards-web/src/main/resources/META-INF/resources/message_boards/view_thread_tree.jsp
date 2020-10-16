@@ -58,12 +58,11 @@ if (message.getMessageId() == selMessage.getMessageId()) {
 <c:if test="<%= message.getMessageId() != treeWalker.getRoot().getMessageId() %>">
 
 	<%
-	List messages = treeWalker.getMessages();
 	int[] range = treeWalker.getChildrenRange(message);
 
 	depth++;
 
-	MBMessageIterator mbMessageIterator = new MBMessageIteratorImpl(messages, range[0], range[1]);
+	MBMessageIterator mbMessageIterator = new MBMessageIteratorImpl(treeWalker.getMessages(), range[0], range[1]);
 
 	while (mbMessageIterator.hasNext()) {
 		MBMessage curMessage = mbMessageIterator.next();

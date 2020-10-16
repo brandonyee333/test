@@ -53,9 +53,7 @@ String ddmStructureKey = downloadsDisplayContext.getDDMStructureKey();
 				<%
 				DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
 
-				Fields ddmFields = journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent());
-
-				Date releaseDate = dateFormat.parse(DDMFieldsUtil.getString(ddmFields, "releaseDate"));
+				Date releaseDate = dateFormat.parse(DDMFieldsUtil.getString(journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent()), "releaseDate"));
 				%>
 
 				<%= mediumDateFormatDate.format(releaseDate) %>

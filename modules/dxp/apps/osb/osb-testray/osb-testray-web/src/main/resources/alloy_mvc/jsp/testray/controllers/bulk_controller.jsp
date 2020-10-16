@@ -136,9 +136,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayComponents", testrayComponents);
 
-		List<TestrayTeam> testrayTeams = TestrayTeamUtil.getTestrayTeams(testrayProjectId);
-
-		renderRequest.setAttribute("testrayTeams", testrayTeams);
+		renderRequest.setAttribute("testrayTeams", TestrayTeamUtil.getTestrayTeams(testrayProjectId));
 
 		render("case_results/select");
 	}

@@ -73,9 +73,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayTaskComposite", testrayTaskComposite);
 
-		List<User> users = UserLocalServiceUtil.getUsers(themeDisplay.getCompanyId(), false, WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new UserFirstNameComparator(true));
-
-		renderRequest.setAttribute("users", users);
+		renderRequest.setAttribute("users", UserLocalServiceUtil.getUsers(themeDisplay.getCompanyId(), false, WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new UserFirstNameComparator(true)));
 	}
 
 	@JSONWebServiceMethod(lifecycle = PortletRequest.ACTION_PHASE, parameterNames = {"names", "testraySubtaskIds", "testrayTaskId"}, parameterTypes = {String.class, String.class, Long.class})

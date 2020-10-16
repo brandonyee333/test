@@ -54,9 +54,7 @@ portletURL.setParameter("tabs1", "order");
 		searchUserId = 0;
 	}
 
-	int total = ShoppingOrderLocalServiceUtil.searchCount(scopeGroupId, company.getCompanyId(), searchUserId, searchTerms.getNumber(), searchTerms.getFirstName(), searchTerms.getLastName(), searchTerms.getEmailAddress(), searchTerms.getFirstName(), searchTerms.getLastName(), searchTerms.getEmailAddress(), searchTerms.getStatus(), searchTerms.isAndOperator());
-
-	searchContainer.setTotal(total);
+	searchContainer.setTotal(ShoppingOrderLocalServiceUtil.searchCount(scopeGroupId, company.getCompanyId(), searchUserId, searchTerms.getNumber(), searchTerms.getFirstName(), searchTerms.getLastName(), searchTerms.getEmailAddress(), searchTerms.getFirstName(), searchTerms.getLastName(), searchTerms.getEmailAddress(), searchTerms.getStatus(), searchTerms.isAndOperator()));
 
 	List results = ShoppingOrderLocalServiceUtil.search(scopeGroupId, company.getCompanyId(), searchUserId, searchTerms.getNumber(), searchTerms.getFirstName(), searchTerms.getLastName(), searchTerms.getEmailAddress(), searchTerms.getFirstName(), searchTerms.getLastName(), searchTerms.getEmailAddress(), searchTerms.getStatus(), searchTerms.isAndOperator(), searchContainer.getStart(), searchContainer.getEnd());
 

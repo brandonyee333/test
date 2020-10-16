@@ -362,8 +362,6 @@ if (Validator.isNotNull(keywords)) {
 								}
 
 								if (fileEntry != null) {
-									FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
-
 									String title = fileEntry.getTitle();
 
 									JSONObject itemMedatadaJSONObject = ItemSelectorRepositoryEntryBrowserUtil.getItemMetadataJSONObject(fileEntry, locale);
@@ -374,7 +372,7 @@ if (Validator.isNotNull(keywords)) {
 									data.put("metadata", itemMedatadaJSONObject.toString());
 									data.put("returnType", ItemSelectorRepositoryEntryBrowserUtil.getItemSelectorReturnTypeClassName(itemSelectorReturnTypeResolver, existingFileEntryReturnType));
 									data.put("title", title);
-									data.put("url", DLUtil.getPreviewURL(fileEntry, latestFileVersion, themeDisplay, StringPool.BLANK));
+									data.put("url", DLUtil.getPreviewURL(fileEntry, fileEntry.getLatestFileVersion(), themeDisplay, StringPool.BLANK));
 									data.put("value", ItemSelectorRepositoryEntryBrowserUtil.getValue(itemSelectorReturnTypeResolver, existingFileEntryReturnType, fileEntry, themeDisplay));
 
 									String stickerCssClass = "file-icon-color-0";

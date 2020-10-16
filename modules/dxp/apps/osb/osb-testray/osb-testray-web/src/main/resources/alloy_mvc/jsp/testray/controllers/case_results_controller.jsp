@@ -349,9 +349,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayCaseResultComposites", testrayCaseResultComposites);
 
-		List<TestrayRoutine> testrayRoutines = TestrayRoutineUtil.getTestrayRoutines(testrayProjectId);
-
-		renderRequest.setAttribute("testrayRoutines", testrayRoutines);
+		renderRequest.setAttribute("testrayRoutines", TestrayRoutineUtil.getTestrayRoutines(testrayProjectId));
 
 		List<TestrayTeam> testrayTeams = TestrayTeamUtil.getTestrayTeams(testrayProjectId);
 

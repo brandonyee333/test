@@ -248,11 +248,9 @@ if (portletTitleBasedNavigation) {
 		int rootIndexPage = 0;
 		boolean moreMessagesPagination = false;
 
-		List<MBMessage> messages = mbTreeWalker.getMessages();
-
 		int[] range = mbTreeWalker.getChildrenRange(rootMessage);
 
-		MBMessageIterator mbMessageIterator = new MBMessageIteratorImpl(messages, range[0], range[1]);
+		MBMessageIterator mbMessageIterator = new MBMessageIteratorImpl(mbTreeWalker.getMessages(), range[0], range[1]);
 
 		while (mbMessageIterator.hasNext()) {
 			boolean messageFound = GetterUtil.getBoolean(request.getAttribute("view_thread_tree.jsp-messageFound"));
