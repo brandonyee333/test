@@ -232,6 +232,12 @@ public class DateUtil {
 		return newLocalDateTime.toString();
 	}
 
+	public static String newDayLocalDateTimeString(ZoneId zoneId) {
+		LocalDateTime newDayLocalDateTime = newDayLocalDateTime(zoneId);
+
+		return newDayLocalDateTime.toString();
+	}
+
 	public static Date newEndOfDayDate(Date date) {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
