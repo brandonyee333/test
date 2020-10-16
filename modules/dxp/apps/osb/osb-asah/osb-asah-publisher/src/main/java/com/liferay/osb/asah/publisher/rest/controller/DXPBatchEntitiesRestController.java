@@ -20,8 +20,6 @@ import com.liferay.osb.asah.common.storage.StorageFactory;
 
 import java.io.File;
 
-import java.nio.file.Files;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.zip.ZipInputStream;
@@ -31,7 +29,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -94,8 +92,7 @@ public class DXPBatchEntitiesRestController {
 				}
 			});
 
-		return bodyBuilder.body(
-			new ByteArrayResource(Files.readAllBytes(file.toPath())));
+		return bodyBuilder.body(new FileSystemResource(file));
 	}
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
