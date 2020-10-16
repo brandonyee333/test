@@ -34,6 +34,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 import java.util.Collections;
 import java.util.List;
@@ -203,10 +204,10 @@ public class HistogramDog {
 			"metric_over_time");
 
 		for (Histogram.Bucket histogramBucket : currentHistogram.getBuckets()) {
-			Instant instant = Instant.parse(histogramBucket.getKeyAsString());
+			ZonedDateTime zonedDateTime = ZonedDateTime.parse(
+				histogramBucket.getKeyAsString());
 
-			LocalDateTime localDateTime = LocalDateTime.ofInstant(
-				instant, ZoneOffset.UTC);
+			LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
 
 			Metric metric = metrics.get(localDateTime.toString());
 
