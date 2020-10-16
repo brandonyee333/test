@@ -289,11 +289,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 					<liferay-ui:message key="type" />
 				</h2>
 
-				<%
-				String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productVersion.value, this.value);";
-				%>
-
-				<aui:select label="" name="licenseEntryId" onChange="<%= taglibOnChange %>">
+				<aui:select label="" name="licenseEntryId" onChange='<%= renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productVersion.value, this.value);" %>'>
 					<aui:option value="" />
 
 					<%

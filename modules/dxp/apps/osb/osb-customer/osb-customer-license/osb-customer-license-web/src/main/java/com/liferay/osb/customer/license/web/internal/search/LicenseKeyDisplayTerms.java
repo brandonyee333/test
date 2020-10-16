@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.license.web.internal.search;
 
+import com.liferay.osb.customer.admin.model.ProductEntry;
+import com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -70,6 +72,8 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 	public static final String KEY = "key";
 
 	public static final String KORONEIKI_ACCOUNT_KEY = "koroneikiAccountKey";
+
+	public static final String KORONEIKI_PRODUCT_KEY = "koroneikiProductKey";
 
 	public static final String KORONEIKI_PRODUCT_PURCHASE_KEY =
 		"koroneikiProductPurchaseKey";
@@ -185,8 +189,24 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		modifiedUserName = ParamUtil.getString(
 			portletRequest, MODIFIED_USER_NAME);
 		owner = ParamUtil.getString(portletRequest, OWNER);
+
 		productEntryIds = ParamUtil.getLongValues(
 			portletRequest, PRODUCT_ENTRY_IDS);
+
+		String koroneikiProductKey = ParamUtil.getString(
+			portletRequest, KORONEIKI_PRODUCT_KEY);
+
+		if (Validator.isNotNull(koroneikiProductKey)) {
+			ProductEntry productEntry =
+				ProductEntryLocalServiceUtil.fetchProductEntryByKoroneikiKey(
+					koroneikiProductKey);
+
+			if (productEntry != null) {
+				productEntryIds = ArrayUtil.append(
+					productEntryIds, productEntry.getProductEntryId());
+			}
+		}
+
 		productEntryName = ParamUtil.getString(
 			portletRequest, PRODUCT_ENTRY_NAME);
 		productVersions = ParamUtil.getIntegerValues(

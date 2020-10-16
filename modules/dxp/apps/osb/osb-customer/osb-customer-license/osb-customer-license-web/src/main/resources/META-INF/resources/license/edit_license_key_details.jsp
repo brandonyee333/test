@@ -78,8 +78,6 @@ int[] serverIdsIndexes = ParamUtil.getIntegerValues(request, "serverIdsIndexes")
 if ((serverIdsIndexes == null) || (serverIdsIndexes.length <= 0)) {
 	serverIdsIndexes = new int[] {0};
 }
-
-boolean aggregateLicense = ParamUtil.getBoolean(request, "aggregateLicense");
 %>
 
 <portlet:actionURL name="updateLicenseKey" var="updateLicenseKeyURL">
@@ -101,7 +99,7 @@ boolean aggregateLicense = ParamUtil.getBoolean(request, "aggregateLicense");
 			<aui:input name="accountEntryName" type="hidden" value="<%= koroneikiAccount.getName() %>" />
 			<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 			<aui:input name="sizing" type="hidden" value="<%= sizing %>" />
-			<aui:input name="aggregateLicense" type="hidden" value="<%= aggregateLicense %>" />
+			<aui:input name="aggregateLicense" type="hidden" value='<%= ParamUtil.getBoolean(request, "aggregateLicense") %>' />
 
 			<aui:button-row cssClass="pull-right">
 				<aui:button cssClass="btn-sm" onClick="<%= backURL %>" value="back-to-previous-page" />
