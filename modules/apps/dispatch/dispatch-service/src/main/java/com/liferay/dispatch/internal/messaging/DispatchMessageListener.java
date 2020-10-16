@@ -15,14 +15,14 @@
 package com.liferay.dispatch.internal.messaging;
 
 import com.liferay.dispatch.constants.DispatchConstants;
-import com.liferay.dispatch.executor.ScheduledTaskExecutor;
+import com.liferay.dispatch.executor.DispatchTaskExecutor;
+import com.liferay.dispatch.executor.DispatchTaskStatus;
 import com.liferay.dispatch.model.DispatchLog;
 import com.liferay.dispatch.model.DispatchTrigger;
-import com.liferay.dispatch.service.DispatchLogLocalServiceUtil;
+import com.liferay.dispatch.service.DispatchLogLocalService;
 import com.liferay.dispatch.service.DispatchTriggerLocalService;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
@@ -59,46 +59,49 @@ public class DispatchMessageListener extends BaseMessageListener {
 
 		if (!dispatchTrigger.isOverlapAllowed()) {
 			DispatchLog dispatchLog =
-				DispatchLogLocalServiceUtil.fetchLatestDispatchLog(
+				_dispatchLogLocalService.fetchLatestDispatchLog(
 					dispatchTriggerId);
 
 			if ((dispatchLog != null) &&
-				(dispatchLog.getStatus() ==
-					BackgroundTaskConstants.STATUS_IN_PROGRESS)) {
+				(DispatchTaskStatus.valueOf(dispatchLog.getStatus()) ==
+					DispatchTaskStatus.IN_PROGRESS)) {
 
-				DispatchLogLocalServiceUtil.addDispatchLog(
+				_dispatchLogLocalService.addDispatchLog(
 					dispatchTrigger.getUserId(),
 					dispatchTrigger.getDispatchTriggerId(), null, null, null,
-					new Date(), BackgroundTaskConstants.STATUS_CANCELLED);
+					new Date(), DispatchTaskStatus.CANCELED);
 
 				return;
 			}
 		}
 
-		ScheduledTaskExecutor scheduledTaskExecutor =
-			_scheduledTaskExecutorServiceTrackerMap.getService(
+		DispatchTaskExecutor dispatchTaskExecutor =
+			_dispatchTaskExecutorServiceTrackerMap.getService(
 				dispatchTrigger.getTaskType());
 
-		scheduledTaskExecutor.execute(dispatchTriggerId);
+		dispatchTaskExecutor.execute(dispatchTriggerId);
 	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_scheduledTaskExecutorServiceTrackerMap =
+		_dispatchTaskExecutorServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
-				bundleContext, ScheduledTaskExecutor.class,
-				"scheduled.task.executor.type");
+				bundleContext, DispatchTaskExecutor.class,
+				"dispatch.task.executor.type");
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_scheduledTaskExecutorServiceTrackerMap.close();
+		_dispatchTaskExecutorServiceTrackerMap.close();
 	}
 
 	@Reference
-	private DispatchTriggerLocalService _dispatchTriggerLocalService;
+	private DispatchLogLocalService _dispatchLogLocalService;
 
-	private ServiceTrackerMap<String, ScheduledTaskExecutor>
-		_scheduledTaskExecutorServiceTrackerMap;
+	private ServiceTrackerMap<String, DispatchTaskExecutor>
+		_dispatchTaskExecutorServiceTrackerMap;
+
+	@Reference
+	private DispatchTriggerLocalService _dispatchTriggerLocalService;
 
 }
