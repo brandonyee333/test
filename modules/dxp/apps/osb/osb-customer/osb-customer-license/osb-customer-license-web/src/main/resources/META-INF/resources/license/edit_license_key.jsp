@@ -185,7 +185,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 								if (koroneikiProductKey.equals(product.getKey())) {
 									ProductPurchase[] productPurchases = productPurchaseView.getProductPurchases();
 
-									if (productPurchases != null) {
+									if (!ArrayUtil.isEmpty(productPurchases)) {
 										purchased = true;
 
 										break;
