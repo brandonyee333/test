@@ -1,0 +1,194 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.storage.impl;
+
+import static java.util.stream.Collectors.toList;
+
+import com.liferay.osb.asah.common.util.ObjectMapperUtil;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecordBuilder;
+
+import org.json.JSONObject;
+
+import org.springframework.stereotype.Component;
+
+/**
+ * @author Marcellus Tavares
+ */
+@Component
+public class JSONAvroTransformer {
+
+	public GenericData.Record transform(JSONObject jsonObject, Schema schema) {
+		return _toRecord(
+			ObjectMapperUtil.convertValue(jsonObject, Map.class), schema);
+	}
+
+	private Object _toEnumSymbol(
+		Schema.Field field, Schema fieldSchema, Object value) {
+
+		List<String> enumSymbols = fieldSchema.getEnumSymbols();
+
+		if (enumSymbols.contains(value)) {
+			return new GenericData.EnumSymbol(fieldSchema, value);
+		}
+
+		throw new IllegalStateException(
+			"Enum symbol incorrectly set for field " + field.name());
+	}
+
+	private List<Object> _toListItemType(
+		Schema.Field field, Schema fieldSchema, List<Object> items) {
+
+		Stream<Object> stream = items.stream();
+
+		return stream.map(
+			element -> _toType(field, fieldSchema.getElementType(), element)
+		).collect(
+			toList()
+		);
+	}
+
+	private Map<String, Object> _toMapValueType(
+		Schema.Field field, Schema fieldSchema, Map<String, Object> map) {
+
+		Map<String, Object> result = new HashMap<>(map.size());
+
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
+			result.put(
+				entry.getKey(),
+				_toType(field, fieldSchema.getValueType(), entry.getValue()));
+		}
+
+		return result;
+	}
+
+	private GenericData.Record _toRecord(
+		Map<String, Object> map, Schema schema) {
+
+		GenericRecordBuilder genericRecordBuilder = new GenericRecordBuilder(
+			schema);
+
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
+			Schema.Field field = schema.getField(entry.getKey());
+
+			if (field == null) {
+				continue;
+			}
+
+			genericRecordBuilder.set(
+				field, _toType(field, field.schema(), entry.getValue()));
+		}
+
+		return genericRecordBuilder.build();
+	}
+
+	private <T> Object _toType(
+		Schema.Field field, Class<T> type, Object value,
+		Function<T, Object> mapperFunction) {
+
+		if (!type.isInstance(value)) {
+			throw new IllegalStateException(
+				"Value was incorrectly set for field " + field.name());
+		}
+
+		return mapperFunction.apply((T)value);
+	}
+
+	private Object _toType(
+		Schema.Field field, Schema fieldSchema, Object fieldValue) {
+
+		Schema.Type fieldType = fieldSchema.getType();
+
+		if (fieldType == Schema.Type.ARRAY) {
+			return _toType(
+				field, List.class, fieldValue,
+				list -> _toListItemType(field, fieldSchema, list));
+		}
+
+		if (fieldType == Schema.Type.BOOLEAN) {
+			return _toType(
+				field, Boolean.class, fieldValue, Boolean::booleanValue);
+		}
+
+		if (fieldType == Schema.Type.BYTES) {
+			return _toType(
+				field, String.class, fieldValue,
+				string -> ByteBuffer.wrap(
+					string.getBytes(StandardCharsets.UTF_8)));
+		}
+
+		if (fieldType == Schema.Type.DOUBLE) {
+			return _toType(
+				field, Double.class, fieldValue, Double::doubleValue);
+		}
+
+		if (fieldType == Schema.Type.ENUM) {
+			return _toType(
+				field, String.class, fieldValue,
+				string -> _toEnumSymbol(field, fieldSchema, string));
+		}
+
+		if (fieldType == Schema.Type.FLOAT) {
+			return _toType(field, Float.class, fieldValue, Float::floatValue);
+		}
+
+		if (fieldType == Schema.Type.INT) {
+			return _toType(field, Integer.class, fieldValue, Integer::intValue);
+		}
+
+		if (fieldType == Schema.Type.LONG) {
+			return _toType(field, Long.class, fieldValue, Long::longValue);
+		}
+
+		if (fieldType == Schema.Type.MAP) {
+			return _toType(
+				field, Map.class, fieldValue,
+				map -> _toMapValueType(field, fieldSchema, map));
+		}
+
+		if (fieldType == Schema.Type.NULL) {
+			if (fieldValue != null) {
+				throw new IllegalStateException(
+					"Non null value set for field " + field.name());
+			}
+
+			return null;
+		}
+
+		if (fieldType == Schema.Type.RECORD) {
+			return _toType(
+				field, Map.class, fieldValue,
+				map -> _toRecord(map, fieldSchema));
+		}
+
+		if (fieldType == Schema.Type.STRING) {
+			return _toType(field, String.class, fieldValue, string -> string);
+		}
+
+		throw new IllegalStateException("Unsupported type " + fieldType);
+	}
+
+}
