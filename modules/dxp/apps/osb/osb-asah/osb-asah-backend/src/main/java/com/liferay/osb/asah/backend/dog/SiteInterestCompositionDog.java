@@ -254,6 +254,10 @@ public class SiteInterestCompositionDog {
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
+		if (DogUtil.isEmpty(aggregations)) {
+			return 0;
+		}
+
 		InternalCardinality internalCardinality = aggregations.get(
 			"totalUsers");
 
