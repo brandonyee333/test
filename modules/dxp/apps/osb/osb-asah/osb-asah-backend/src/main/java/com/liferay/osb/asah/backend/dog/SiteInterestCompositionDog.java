@@ -65,6 +65,10 @@ public class SiteInterestCompositionDog {
 		Map<String, Set<String>> keywords = _getKeywords(
 			channelId, dataSourceId, timeRange, timeZoneId);
 
+		if (keywords.isEmpty()) {
+			return new CompositionResultBag();
+		}
+
 		for (Map.Entry<String, Set<String>> keyword : keywords.entrySet()) {
 			Set<String> sessionIds = keyword.getValue();
 
