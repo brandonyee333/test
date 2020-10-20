@@ -14,18 +14,38 @@
 
 package com.liferay.osb.customer.admin.internal.upgrade.v1_0_0;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Amos Fong
  */
-public class UpgradeListTypes extends UpgradeProcess {
+public class UpgradeAdmin extends UpgradeProcess {
 
-	public UpgradeListTypes() {
+	public UpgradeAdmin(ClassNameLocalService classNameLocalService) {
+		_classNameLocalService = classNameLocalService;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		upgradeSchema();
+
+		upgradeClassNameId();
+
+		upgradeListTypes();
+	}
+
+	protected void upgradeClassNameId() throws Exception {
+		long classNameId = _classNameLocalService.getClassNameId(
+			AccountEntry.class);
+
+		runSQL(
+			"update OSB_ExternalIdMapper set classNameId = " + classNameId +
+				" where classNameId = 1400963");
+	}
+
+	protected void upgradeListTypes() throws Exception {
 		runSQL("delete from ListType where type_ like '%deprecated'");
 
 		runSQL(
@@ -53,5 +73,25 @@ public class UpgradeListTypes extends UpgradeProcess {
 				"versionsListType, 'commerceLicenseProductVersions', " +
 					"'commerceLicenseVersions')");
 	}
+
+	protected void upgradeSchema() throws Exception {
+		runSQL(
+			"alter table OSB_AccountEntry add column koroneikiAccountKey " +
+				"varchar(75)");
+		runSQL(
+			"alter table OSB_AccountEntry add column supportEndDate datetime");
+		runSQL(
+			"alter table OSB_AccountEntry add column ticketSupportEndDate " +
+				"datetime");
+
+		runSQL(
+			"alter table OSB_ProductEntry add column accountEnvironments " +
+				"tinyint");
+		runSQL(
+			"alter table OSB_ProductEntry add column koroneikiProductKey " +
+				"varchar(75)");
+	}
+
+	private final ClassNameLocalService _classNameLocalService;
 
 }

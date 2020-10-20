@@ -14,9 +14,7 @@
 
 package com.liferay.osb.customer.admin.internal.upgrade;
 
-import com.liferay.osb.customer.admin.internal.upgrade.v1_0_0.UpgradeClassNameId;
-import com.liferay.osb.customer.admin.internal.upgrade.v1_0_0.UpgradeListTypes;
-import com.liferay.osb.customer.admin.internal.upgrade.v1_0_0.UpgradeSchema;
+import com.liferay.osb.customer.admin.internal.upgrade.v1_0_0.UpgradeAdmin;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
@@ -33,8 +31,7 @@ public class OSBCustomerAdminServiceUpgrade implements UpgradeStepRegistrator {
 	public void register(Registry registry) {
 		registry.register(
 			"com.liferay.osb.customer.admin.service", "5.2.2", "6.0.0",
-			new UpgradeClassNameId(_classNameLocalService),
-			new UpgradeListTypes(), new UpgradeSchema());
+			new UpgradeAdmin(_classNameLocalService));
 	}
 
 	@Reference
