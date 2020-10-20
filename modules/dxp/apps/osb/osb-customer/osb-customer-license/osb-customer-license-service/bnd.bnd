@@ -1,3 +1,4 @@
+Bundle-Activator: com.liferay.osb.customer.license.internal.activator.OSBCustomerLicenseServiceBundleActivator
 Bundle-Name: Liferay OSB Customer License Service
 Bundle-SymbolicName: com.liferay.osb.customer.license.service
 Bundle-Version: 1.0.0

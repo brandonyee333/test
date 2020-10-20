@@ -32,7 +32,7 @@ public class OSBCustomerAdminServiceUpgrade implements UpgradeStepRegistrator {
 	@Override
 	public void register(Registry registry) {
 		registry.register(
-			"com.liferay.osb.customer.admin.service", "0.0.0", "1.0.0",
+			"com.liferay.osb.customer.admin.service", "5.2.2", "6.0.0",
 			new UpgradeClassNameId(_classNameLocalService),
 			new UpgradeListTypes(), new UpgradeSchema());
 	}
