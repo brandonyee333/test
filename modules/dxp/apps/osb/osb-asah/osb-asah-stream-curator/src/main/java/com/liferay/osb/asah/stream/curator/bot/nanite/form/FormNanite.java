@@ -471,9 +471,7 @@ public class FormNanite extends BaseNanite<Form> {
 
 		formPage.addFormField(formField);
 		formPage.setAbandonments(1);
-
 		formPage.setPageIndex(_getPageIndex(eventProperties));
-
 		formPage.setViews(1);
 
 		form.addFormPage(formPage);

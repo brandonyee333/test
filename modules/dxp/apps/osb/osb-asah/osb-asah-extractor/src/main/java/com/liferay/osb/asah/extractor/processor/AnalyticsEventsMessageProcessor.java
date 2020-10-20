@@ -216,9 +216,7 @@ public class AnalyticsEventsMessageProcessor {
 				analyticsEvent.setDataSourceId(dataSourceId);
 				analyticsEvent.setEventDate(event.getEventDate());
 				analyticsEvent.setEventId(event.getEventId());
-
 				analyticsEvent.setEventProperties(event.getProperties());
-
 				analyticsEvent.setIndividualId(
 					individualJSONObject.getString("id"));
 				analyticsEvent.setKnownIndividual(knownIndividual);
