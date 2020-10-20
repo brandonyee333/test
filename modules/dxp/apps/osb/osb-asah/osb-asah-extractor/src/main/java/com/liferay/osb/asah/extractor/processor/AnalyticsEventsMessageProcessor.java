@@ -217,9 +217,7 @@ public class AnalyticsEventsMessageProcessor {
 				analyticsEvent.setEventDate(event.getEventDate());
 				analyticsEvent.setEventId(event.getEventId());
 
-				Map<String, String> eventProperties = event.getProperties();
-
-				analyticsEvent.setEventProperties(eventProperties);
+				analyticsEvent.setEventProperties(event.getProperties());
 
 				analyticsEvent.setIndividualId(
 					individualJSONObject.getString("id"));
