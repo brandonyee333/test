@@ -172,7 +172,7 @@ public class JSONAvroTransformer {
 		if (fieldType == Schema.Type.NULL) {
 			if (fieldValue != null) {
 				throw new IllegalStateException(
-					"Non null value set for field " + field.name());
+					"Nonnull value set for field " + field.name());
 			}
 
 			return null;
