@@ -10,12 +10,12 @@
 <tbody>
 <tr>
 	<td>BREADCRUMB_ENTRY</td>
-	<td>//div[contains(@id,'breadcrumb')]//li[contains(.,'${key_breadcrumbName}')]</td>
+	<td>//nav[contains(@id,'breadcrumb')]//li[contains(.,'${key_breadcrumbName}')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>BREADCRUMB_ENTRY_ACTIVE_ENTRY</td>
-	<td>//div[contains(@id,'breadcrumb')]//li[@class='active'] | //div[contains(@id,'breadcrumb')]//li[2]</td>
+	<td>//nav[contains(@id,'breadcrumb')]//li[@class='active'] | //nav[contains(@id,'breadcrumb')]//li[2]</td>
 	<td></td>
 </tr>
 </tbody>
