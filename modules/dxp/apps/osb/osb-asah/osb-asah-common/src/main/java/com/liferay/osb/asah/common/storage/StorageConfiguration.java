@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.storage;
 
+import org.apache.avro.Schema;
+
 /**
  * @author Marcellus Tavares
  * @author Riccardo Ferrari
@@ -26,6 +28,14 @@ public class StorageConfiguration {
 
 	public long getChunkSize() {
 		return _chunkSize;
+	}
+
+	public FileFormat getFileFormat() {
+		return _fileFormat;
+	}
+
+	public Schema getFileSchema() {
+		return _fileSchema;
 	}
 
 	public String getGoogleBucket() {
@@ -55,11 +65,31 @@ public class StorageConfiguration {
 				_storageConfiguration._chunkSize = _DEFAULT_CHUNK_SIZE;
 			}
 
+			if ((_storageConfiguration._fileFormat ==
+					FileFormat.SNAPPY_PARQUET) &&
+				(_storageConfiguration._fileSchema == null)) {
+
+				throw new IllegalStateException(
+					"Schema is required for parquet file format");
+			}
+
 			return _storageConfiguration;
 		}
 
 		public Builder chunkSize(long chunkSize) {
 			_storageConfiguration._chunkSize = chunkSize;
+
+			return this;
+		}
+
+		public Builder fileFormat(FileFormat fileFormat) {
+			_storageConfiguration._fileFormat = fileFormat;
+
+			return this;
+		}
+
+		public Builder fileSchema(Schema fileSchema) {
+			_storageConfiguration._fileSchema = fileSchema;
 
 			return this;
 		}
@@ -87,10 +117,18 @@ public class StorageConfiguration {
 
 	}
 
+	public enum FileFormat {
+
+		JSON, SNAPPY_PARQUET
+
+	}
+
 	private StorageConfiguration() {
 	}
 
 	private long _chunkSize;
+	private FileFormat _fileFormat = FileFormat.JSON;
+	private Schema _fileSchema;
 	private String _googleBucket;
 	private String _googleBucketFolder;
 	private String _path;
