@@ -47,12 +47,12 @@ public class JSONAvroTransformer {
 	}
 
 	private Object _toEnumSymbol(
-		Schema.Field field, Schema fieldSchema, Object value) {
+		Schema.Field field, Schema fieldSchema, Object fieldValue) {
 
 		List<String> enumSymbols = fieldSchema.getEnumSymbols();
 
-		if (enumSymbols.contains(value)) {
-			return new GenericData.EnumSymbol(fieldSchema, value);
+		if (enumSymbols.contains(fieldValue)) {
+			return new GenericData.EnumSymbol(fieldSchema, fieldValue);
 		}
 
 		throw new IllegalStateException(
@@ -106,15 +106,15 @@ public class JSONAvroTransformer {
 	}
 
 	private <T> Object _toType(
-		Schema.Field field, Class<T> type, Object value,
+		Schema.Field field, Class<T> type, Object fieldValue,
 		Function<T, Object> mapperFunction) {
 
-		if (!type.isInstance(value)) {
+		if (!type.isInstance(fieldValue)) {
 			throw new IllegalStateException(
 				"Value was incorrectly set for field " + field.name());
 		}
 
-		return mapperFunction.apply((T)value);
+		return mapperFunction.apply((T)fieldValue);
 	}
 
 	private Object _toType(
