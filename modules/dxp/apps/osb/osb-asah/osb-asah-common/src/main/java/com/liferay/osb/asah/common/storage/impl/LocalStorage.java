@@ -17,10 +17,8 @@ package com.liferay.osb.asah.common.storage.impl;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -57,7 +55,7 @@ public class LocalStorage implements Storage {
 	@Override
 	public void close() {
 		try {
-			_bufferedOutputStream.close();
+			_fileEncoder.close();
 		}
 		catch (IOException ioe) {
 			_log.error(
@@ -136,15 +134,13 @@ public class LocalStorage implements Storage {
 				_rollover();
 			}
 
-			String newLineAppendedData =
-				data + System.getProperty("line.separator");
-
-			_bufferedOutputStream.write(
-				newLineAppendedData.getBytes(StandardCharsets.UTF_8));
+			_fileEncoder.encode(data);
 
 			return true;
 		}
-		catch (IOException e) {
+		catch (IOException ioe) {
+			_log.error("Unable to write data " + data, ioe);
+
 			return false;
 		}
 	}
@@ -158,20 +154,6 @@ public class LocalStorage implements Storage {
 			_storageStorageConfiguration.getGoogleBucket(),
 			_storageStorageConfiguration.getGoogleBucketFolder(), file,
 			_getArchiveFileName(file.getName()));
-	}
-
-	private void _createMissingParentFileDirectories(File file) {
-		File parentFile = file.getParentFile();
-
-		if (parentFile == null) {
-			return;
-		}
-
-		boolean result = parentFile.mkdirs();
-
-		if (result && _log.isDebugEnabled()) {
-			_log.debug("Parent directories created for file " + file);
-		}
 	}
 
 	private void _deleteFile(File file) throws IOException {
@@ -195,7 +177,9 @@ public class LocalStorage implements Storage {
 	}
 
 	private boolean _isFileSizeLimitReached() {
-		if (_file.length() >= _storageStorageConfiguration.getChunkSize()) {
+		if (_fileEncoder.getDataSize() >=
+				_storageStorageConfiguration.getChunkSize()) {
+
 			return true;
 		}
 
@@ -213,14 +197,10 @@ public class LocalStorage implements Storage {
 	}
 
 	private void _open() throws IOException {
-		_file = new File(_storageStorageConfiguration.getPath());
+		_fileEncoder = new JSONFileEncoder(
+			_storageStorageConfiguration.getPath());
 
-		_createMissingParentFileDirectories(_file);
-
-		_fileOutputStream = new FileOutputStream(_file, true);
-
-		_bufferedOutputStream = new BufferedOutputStream(
-			_fileOutputStream, _DEFAULT_FILE_BUFFER_SIZE);
+		_fileEncoder.open();
 	}
 
 	private void _renameFile(File srcFile, File targetFile) throws IOException {
@@ -239,7 +219,7 @@ public class LocalStorage implements Storage {
 	}
 
 	private void _rollover() throws IOException {
-		_bufferedOutputStream.close();
+		_fileEncoder.close();
 
 		File targetFile = new File(
 			_storageStorageConfiguration.getPath() + "." +
@@ -247,20 +227,17 @@ public class LocalStorage implements Storage {
 
 		_deleteFile(targetFile);
 
-		_renameFile(_file, targetFile);
+		_renameFile(
+			new File(_storageStorageConfiguration.getPath()), targetFile);
 
 		_archiveFile(targetFile);
 
 		_open();
 	}
 
-	private static final int _DEFAULT_FILE_BUFFER_SIZE = 8192;
-
 	private static final Log _log = LogFactory.getLog(LocalStorage.class);
 
-	private BufferedOutputStream _bufferedOutputStream;
-	private File _file;
-	private FileOutputStream _fileOutputStream;
+	private FileEncoder _fileEncoder;
 	private GoogleStorageArchiver _googleStorageArchiver;
 	private final StorageConfiguration _storageStorageConfiguration;
 
