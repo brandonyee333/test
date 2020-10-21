@@ -31,6 +31,7 @@ import com.liferay.osb.customer.release.tool.service.JIRAComponentLocalServiceUt
 import com.liferay.osb.customer.release.tool.util.comparator.AssetCategoryPropertyComparator;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
+import com.liferay.osb.customer.release.tool.web.internal.constants.ProductConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAssetCategoryProperty;
 import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -84,10 +85,23 @@ public class ReleaseToolDisplayContext {
 		_initHighlightsFilters();
 	}
 
-	public JSONArray getArtifactVersionFiltersJSONArray() {
+	public JSONArray getArtifactVersionFiltersJSONArray(String productName) {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		for (int owner : ArtifactVersionConstants.OWNERS) {
+		if (productName.equals(ProductConstants.COMMERCE)) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("label", "Commerce Artifacts");
+			jsonObject.put(
+				"value",
+				String.valueOf(ArtifactVersionConstants.OWNER_COMMERCE));
+
+			jsonArray.put(jsonObject);
+
+			return jsonArray;
+		}
+
+		for (int owner : ArtifactVersionConstants.OWNERS_DXP) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 			if (owner == ArtifactVersionConstants.OWNER_LIFERAY) {

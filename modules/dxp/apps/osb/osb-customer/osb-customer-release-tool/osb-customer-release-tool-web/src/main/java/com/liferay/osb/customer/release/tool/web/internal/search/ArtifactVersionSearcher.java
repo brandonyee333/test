@@ -18,6 +18,7 @@ import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.osb.customer.release.tool.constants.ArtifactVersionConstants;
 import com.liferay.osb.customer.release.tool.model.ArtifactVersionRange;
 import com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalService;
+import com.liferay.osb.customer.release.tool.web.internal.constants.ProductConstants;
 import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -29,6 +30,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.List;
 
 import javax.portlet.MimeResponse;
+import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Component;
@@ -43,6 +45,8 @@ public class ArtifactVersionSearcher extends BaseSearcher {
 	protected JSONObject doSearch(
 			PortletRequest portletRequest, MimeResponse mimeResponse)
 		throws Exception {
+
+		PortletPreferences preferences = portletRequest.getPreferences();
 
 		String product = ParamUtil.getString(portletRequest, "product");
 
@@ -78,6 +82,15 @@ public class ArtifactVersionSearcher extends BaseSearcher {
 		AssetCategory toFixPackAssetCategory =
 			_releasesAssetCategoryUtil.getFixPackAssetCategory(
 				toProductAssetCategory.getCategoryId(), toFixPackVersion);
+
+		String productName = preferences.getValue("productName", null);
+
+		if (productName.equals(ProductConstants.COMMERCE)) {
+			owners = new int[] {ArtifactVersionConstants.OWNER_COMMERCE};
+		}
+		else if (owners.length <= 0) {
+			owners = ArtifactVersionConstants.OWNERS_DXP;
+		}
 
 		List<ArtifactVersionRange> artifactVersionRanges =
 			_artifactVersionLocalService.getArtifactVersionRanges(

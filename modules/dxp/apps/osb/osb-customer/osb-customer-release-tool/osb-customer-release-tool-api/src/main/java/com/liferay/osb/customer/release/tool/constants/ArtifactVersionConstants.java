@@ -25,11 +25,15 @@ import com.liferay.portal.kernel.util.Validator;
  */
 public class ArtifactVersionConstants {
 
+	public static final long DXP_7_3_ASSET_CATEGORY_ID = 120353972;
+
+	public static final int OWNER_COMMERCE = 3;
+
 	public static final int OWNER_LIFERAY = 1;
 
 	public static final int OWNER_THIRD_PARTY = 2;
 
-	public static final int[] OWNERS = {OWNER_LIFERAY, OWNER_THIRD_PARTY};
+	public static final int[] OWNERS_DXP = {OWNER_LIFERAY, OWNER_THIRD_PARTY};
 
 	public static final String PACKAGING_JAR = "jar";
 
