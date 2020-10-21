@@ -197,8 +197,17 @@ public class LocalStorage implements Storage {
 	}
 
 	private void _open() throws IOException {
-		_fileEncoder = new JSONFileEncoder(
-			_storageStorageConfiguration.getPath());
+		if (_storageStorageConfiguration.getFileFormat() ==
+				StorageConfiguration.FileFormat.JSON) {
+
+			_fileEncoder = new JSONFileEncoder(
+				_storageStorageConfiguration.getPath());
+		}
+		else {
+			_fileEncoder = new ParquetFileEncoder(
+				_storageStorageConfiguration.getPath(),
+				_storageStorageConfiguration.getFileSchema());
+		}
 
 		_fileEncoder.open();
 	}
