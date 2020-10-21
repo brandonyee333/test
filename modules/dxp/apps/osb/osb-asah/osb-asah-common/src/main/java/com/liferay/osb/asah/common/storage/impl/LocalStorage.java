@@ -36,12 +36,12 @@ import org.apache.commons.logging.LogFactory;
 public class LocalStorage implements Storage {
 
 	public LocalStorage(StorageConfiguration storageConfiguration) {
-		_storageStorageConfiguration = storageConfiguration;
+		_storageConfiguration = storageConfiguration;
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Storage writer initialized for path " +
-					_storageStorageConfiguration.getPath());
+				"Local storage initialized for path " +
+					_storageConfiguration.getPath());
 		}
 
 		try {
@@ -59,8 +59,8 @@ public class LocalStorage implements Storage {
 		}
 		catch (IOException ioe) {
 			_log.error(
-				"Unable to close storage writer for path " +
-					_storageStorageConfiguration.getPath(),
+				"Unable to close local storage for path " +
+					_storageConfiguration.getPath(),
 				ioe);
 		}
 	}
@@ -84,8 +84,8 @@ public class LocalStorage implements Storage {
 
 		try {
 			return _googleStorageArchiver.readSparkJobResult(
-				_storageStorageConfiguration.getGoogleBucket(),
-				_storageStorageConfiguration.getGoogleBucketFolder(),
+				_storageConfiguration.getGoogleBucket(),
+				_storageConfiguration.getGoogleBucketFolder(),
 				sparkJobResultDateAfter, sparkJobResultPathPrefix);
 		}
 		catch (Exception e) {
@@ -151,8 +151,8 @@ public class LocalStorage implements Storage {
 		}
 
 		_googleStorageArchiver.archiveAsync(
-			_storageStorageConfiguration.getGoogleBucket(),
-			_storageStorageConfiguration.getGoogleBucketFolder(), file,
+			_storageConfiguration.getGoogleBucket(),
+			_storageConfiguration.getGoogleBucketFolder(), file,
 			_getArchiveFileName(file.getName()));
 	}
 
@@ -178,7 +178,7 @@ public class LocalStorage implements Storage {
 
 	private boolean _isFileSizeLimitReached() {
 		if (_fileEncoder.getDataSize() >=
-				_storageStorageConfiguration.getChunkSize()) {
+				_storageConfiguration.getChunkSize()) {
 
 			return true;
 		}
@@ -188,7 +188,7 @@ public class LocalStorage implements Storage {
 
 	private boolean _isGoogleStorageArchiverEnabled() {
 		if ((_googleStorageArchiver == null) ||
-			(_storageStorageConfiguration.getGoogleBucket() == null)) {
+			(_storageConfiguration.getGoogleBucket() == null)) {
 
 			return false;
 		}
@@ -197,16 +197,15 @@ public class LocalStorage implements Storage {
 	}
 
 	private void _open() throws IOException {
-		if (_storageStorageConfiguration.getFileFormat() ==
+		if (_storageConfiguration.getFileFormat() ==
 				StorageConfiguration.FileFormat.JSON) {
 
-			_fileEncoder = new JSONFileEncoder(
-				_storageStorageConfiguration.getPath());
+			_fileEncoder = new JSONFileEncoder(_storageConfiguration.getPath());
 		}
 		else {
 			_fileEncoder = new ParquetFileEncoder(
-				_storageStorageConfiguration.getPath(),
-				_storageStorageConfiguration.getFileSchema());
+				_storageConfiguration.getPath(),
+				_storageConfiguration.getFileSchema());
 		}
 
 		_fileEncoder.open();
@@ -231,13 +230,11 @@ public class LocalStorage implements Storage {
 		_fileEncoder.close();
 
 		File targetFile = new File(
-			_storageStorageConfiguration.getPath() + "." +
-				System.currentTimeMillis());
+			_storageConfiguration.getPath() + "." + System.currentTimeMillis());
 
 		_deleteFile(targetFile);
 
-		_renameFile(
-			new File(_storageStorageConfiguration.getPath()), targetFile);
+		_renameFile(new File(_storageConfiguration.getPath()), targetFile);
 
 		_archiveFile(targetFile);
 
@@ -248,6 +245,6 @@ public class LocalStorage implements Storage {
 
 	private FileEncoder _fileEncoder;
 	private GoogleStorageArchiver _googleStorageArchiver;
-	private final StorageConfiguration _storageStorageConfiguration;
+	private final StorageConfiguration _storageConfiguration;
 
 }
