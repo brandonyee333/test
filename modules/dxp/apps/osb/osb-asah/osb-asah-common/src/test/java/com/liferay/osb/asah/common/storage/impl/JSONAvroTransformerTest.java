@@ -378,7 +378,33 @@ public class JSONAvroTransformerTest {
 	}
 
 	@Test
-	public void testRecordWithStringOptional() {
+	public void testRecordWithStringOptionalSet() {
+		SchemaBuilder.RecordBuilder<Schema> recordBuilder =
+			SchemaBuilder.record("user");
+
+		SchemaBuilder.FieldAssembler<Schema> fieldAssembler =
+			recordBuilder.fields();
+
+		fieldAssembler.optionalString("title");
+
+		Schema schema = fieldAssembler.endRecord();
+
+		GenericData.Record expectedRecord = _buildRecord(
+			new HashMap<String, Object>() {
+				{
+					put("title", "Hello World");
+				}
+			},
+			schema);
+
+		GenericData.Record actualRecord = _jsonAvroTransformer.transform(
+			JSONUtil.put("title", "Hello World"), schema);
+
+		Assert.assertEquals(expectedRecord, actualRecord);
+	}
+
+	@Test
+	public void testRecordWithStringOptionalUnset() {
 		SchemaBuilder.RecordBuilder<Schema> recordBuilder =
 			SchemaBuilder.record("user");
 
