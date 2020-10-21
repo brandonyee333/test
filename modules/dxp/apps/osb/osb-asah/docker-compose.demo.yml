@@ -20,8 +20,8 @@ services:
     analytics-elasticsearch:
         container_name: analytics-elasticsearch
         environment:
-            - discovery.type=single-node
             - ES_JAVA_OPTS=-Xms512m -Xmx512m
+            - discovery.type=single-node
             - http.cors.allow-origin=*
             - http.cors.enabled=true
         healthcheck:
