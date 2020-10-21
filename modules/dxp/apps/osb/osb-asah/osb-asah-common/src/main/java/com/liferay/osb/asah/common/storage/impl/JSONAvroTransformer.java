@@ -188,7 +188,26 @@ public class JSONAvroTransformer {
 			return _toType(field, String.class, fieldValue, string -> string);
 		}
 
+		if (fieldType == Schema.Type.UNION) {
+			return _toUnionType(field, fieldSchema, fieldValue);
+		}
+
 		throw new IllegalStateException("Unsupported type " + fieldType);
+	}
+
+	private Object _toUnionType(
+		Schema.Field field, Schema fieldSchema, Object fieldValue) {
+
+		for (Schema fieldSchemaType : fieldSchema.getTypes()) {
+			try {
+				return _toType(field, fieldSchemaType, fieldValue);
+			}
+			catch (IllegalStateException ise) {
+			}
+		}
+
+		throw new IllegalStateException(
+			"Value was incorrectly set for field " + field.name());
 	}
 
 }
