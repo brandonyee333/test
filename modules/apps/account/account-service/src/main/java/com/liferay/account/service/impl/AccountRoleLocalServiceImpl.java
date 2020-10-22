@@ -203,7 +203,7 @@ public class AccountRoleLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Cavanaugh (7.4.x)
+	 * @deprecated As of Athanasius (7.3.x)
 	 */
 	@Deprecated
 	@Override
@@ -217,7 +217,7 @@ public class AccountRoleLocalServiceImpl
 	}
 
 	/**
-	 * @deprecated As of Cavanaugh (7.4.x)
+	 * @deprecated As of Athanasius (7.3.x)
 	 */
 	@Deprecated
 	@Override
