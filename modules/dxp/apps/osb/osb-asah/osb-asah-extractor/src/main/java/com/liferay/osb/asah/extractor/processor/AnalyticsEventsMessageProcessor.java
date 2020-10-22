@@ -47,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -220,6 +221,7 @@ public class AnalyticsEventsMessageProcessor {
 				analyticsEvent.setEventDate(event.getEventDate());
 				analyticsEvent.setEventId(event.getEventId());
 				analyticsEvent.setEventProperties(event.getProperties());
+				analyticsEvent.setId(String.valueOf(UUID.randomUUID()));
 				analyticsEvent.setIndividualId(
 					individualJSONObject.getString("id"));
 				analyticsEvent.setKnownIndividual(knownIndividual);
