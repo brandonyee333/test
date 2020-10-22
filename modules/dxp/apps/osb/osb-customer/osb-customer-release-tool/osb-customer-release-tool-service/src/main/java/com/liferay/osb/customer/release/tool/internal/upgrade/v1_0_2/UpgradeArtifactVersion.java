@@ -27,6 +27,7 @@ public class UpgradeArtifactVersion extends UpgradeProcess {
 			"delete from OSBCustomer_ArtifactVersion where " +
 				"releaseAssetCategoryId = 120353977 and group_ = " +
 					"'com.liferay' and name like '%commerce%'");
+
 		runSQL(
 			"update OSBCustomer_ArtifactVersion set owner = 3 where group_ = " +
 				"'com.liferay.commerce'");

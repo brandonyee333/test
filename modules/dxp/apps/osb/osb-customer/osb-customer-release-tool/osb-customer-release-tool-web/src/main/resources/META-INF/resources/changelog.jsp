@@ -51,7 +51,7 @@ if (journalArticle != null) {
 		{
 			description: '<%= HtmlUtil.escapeJS(changelogDescription) %>',
 			endpoint: '<%= jiraIssueSearchURL %>',
-			filters: <%= productName.equals(ProductConstants.COMMERCE) ? releaseToolDisplayContext.getJIRAComponentFiltersJSONArray("COMMERCE") : releaseToolDisplayContext.getJIRAComponentFiltersJSONArray("LPS") %>,
+			filters: <%= releaseToolDisplayContext.getJIRAComponentFiltersJSONArray() %>,
 			jsonObject: <%= jiraIssueSearcher.search(renderRequest, renderResponse) %>
 		},
 		document.getElementById('<portlet:namespace />changelog')

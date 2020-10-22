@@ -144,6 +144,20 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 		return file;
 	}
 
+	protected int getOwner(int releaseBuild, String[] parts) {
+		if ((releaseBuild >= 7300) && parts[0].equals("com.liferay.commerce")) {
+			return ArtifactVersionConstants.OWNER_COMMERCE;
+		}
+
+		return ArtifactVersionConstants.OWNER_LIFERAY;
+	}
+
+	protected int getReleaseBuild(String releaseId) {
+		int pos = releaseId.indexOf(StringPool.DASH);
+
+		return GetterUtil.getInteger(releaseId.substring(0, pos));
+	}
+
 	protected void importArtifacts(
 			ZipReader zipReader, List<Long> assetCategoryIds)
 		throws IOException, PortalException {
@@ -156,25 +170,27 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 				continue;
 			}
 
+			int releaseBuild = getReleaseBuild(releaseId);
+
 			try (InputStream inputStream = zipReader.getEntryAsInputStream(
 					"bootstrap-" + releaseId + ".txt")) {
 
 				importBootstrapArtifacts(
-					inputStream, releaseId, assetCategoryId);
+					inputStream, releaseBuild, assetCategoryId);
 			}
 
 			try (InputStream inputStream = zipReader.getEntryAsInputStream(
 					"bundleinfo-" + releaseId + ".txt")) {
 
 				importBundleInfoArtifacts(
-					inputStream, releaseId, assetCategoryId);
+					inputStream, releaseBuild, assetCategoryId);
 			}
 
 			try (InputStream inputStream = zipReader.getEntryAsInputStream(
 					"bundleinfo-" + releaseId + "-private.txt")) {
 
 				importBundleInfoArtifacts(
-					inputStream, releaseId, assetCategoryId);
+					inputStream, releaseBuild, assetCategoryId);
 			}
 
 			try (InputStream inputStream = zipReader.getEntryAsInputStream(
@@ -186,7 +202,7 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 	}
 
 	protected void importBootstrapArtifacts(
-			InputStream inputStream, String releaseId, long assetCategoryId)
+			InputStream inputStream, int releaseBuild, long assetCategoryId)
 		throws IOException, PortalException {
 
 		if (inputStream == null) {
@@ -205,33 +221,23 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 					continue;
 				}
 
-				if (isMPCommerceApp(releaseId, bootstrapParts)) {
+				if (isMarketplaceCommerceApp(releaseBuild, bootstrapParts)) {
 					continue;
 				}
 
-				if (isDXP7310(releaseId) &&
-					bootstrapParts[0].equals("com.liferay.commerce")) {
+				int owner = getOwner(releaseBuild, bootstrapParts);
 
-					_artifactVersionLocalService.addArtifactVersion(
-						assetCategoryId,
-						ArtifactVersionConstants.OWNER_COMMERCE,
-						ArtifactVersionConstants.REPOSITORY_PUBLIC,
-						bootstrapParts[0], bootstrapParts[1], bootstrapParts[2],
-						ArtifactVersionConstants.PACKAGING_JAR);
-				}
-				else {
-					_artifactVersionLocalService.addArtifactVersion(
-						assetCategoryId, ArtifactVersionConstants.OWNER_LIFERAY,
-						ArtifactVersionConstants.REPOSITORY_PUBLIC,
-						bootstrapParts[0], bootstrapParts[1], bootstrapParts[2],
-						ArtifactVersionConstants.PACKAGING_JAR);
-				}
+				_artifactVersionLocalService.addArtifactVersion(
+					assetCategoryId, owner,
+					ArtifactVersionConstants.REPOSITORY_PUBLIC,
+					bootstrapParts[0], bootstrapParts[1], bootstrapParts[2],
+					ArtifactVersionConstants.PACKAGING_JAR);
 			}
 		}
 	}
 
 	protected void importBundleInfoArtifacts(
-			InputStream inputStream, String releaseId, long assetCategoryId)
+			InputStream inputStream, int releaseBuild, long assetCategoryId)
 		throws IOException, PortalException {
 
 		if (inputStream == null) {
@@ -250,27 +256,17 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 					continue;
 				}
 
-				if (isMPCommerceApp(releaseId, bundleParts)) {
+				if (isMarketplaceCommerceApp(releaseBuild, bundleParts)) {
 					continue;
 				}
 
-				if (isDXP7310(releaseId) &&
-					bundleParts[0].equals("com.liferay.commerce")) {
+				int owner = getOwner(releaseBuild, bundleParts);
 
-					_artifactVersionLocalService.addArtifactVersion(
-						assetCategoryId,
-						ArtifactVersionConstants.OWNER_COMMERCE,
-						ArtifactVersionConstants.getRepository(bundleParts[3]),
-						bundleParts[0], bundleParts[1], bundleParts[2],
-						bundleParts[6]);
-				}
-				else {
-					_artifactVersionLocalService.addArtifactVersion(
-						assetCategoryId, ArtifactVersionConstants.OWNER_LIFERAY,
-						ArtifactVersionConstants.getRepository(bundleParts[3]),
-						bundleParts[0], bundleParts[1], bundleParts[2],
-						bundleParts[6]);
-				}
+				_artifactVersionLocalService.addArtifactVersion(
+					assetCategoryId, owner,
+					ArtifactVersionConstants.REPOSITORY_PUBLIC, bundleParts[0],
+					bundleParts[1], bundleParts[2],
+					ArtifactVersionConstants.PACKAGING_JAR);
 			}
 		}
 	}
@@ -304,20 +300,10 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 		}
 	}
 
-	protected boolean isDXP7310(String releaseId) {
-		int pos = releaseId.indexOf(StringPool.DASH);
+	protected boolean isMarketplaceCommerceApp(
+		int releaseBuild, String[] parts) {
 
-		int releaseBuild = GetterUtil.getInteger(releaseId.substring(0, pos));
-
-		if (releaseBuild >= 7310) {
-			return true;
-		}
-
-		return false;
-	}
-
-	protected boolean isMPCommerceApp(String releaseId, String[] parts) {
-		if (isDXP7310(releaseId) && parts[0].equals("com.liferay") &&
+		if ((releaseBuild < 7300) && parts[0].equals("com.liferay") &&
 			parts[1].contains("commerce")) {
 
 			return true;

@@ -61,6 +61,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import java.util.List;
 
 import javax.portlet.MimeResponse;
+import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
@@ -76,6 +77,8 @@ public class ReleaseToolDisplayContext {
 
 		_renderRequest = renderRequest;
 
+		_portletPreferences = _renderRequest.getPreferences();
+
 		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 		_releasesAssetCategoryUtil =
@@ -85,10 +88,10 @@ public class ReleaseToolDisplayContext {
 		_initHighlightsFilters();
 	}
 
-	public JSONArray getArtifactVersionFiltersJSONArray(String productName) {
+	public JSONArray getArtifactVersionFiltersJSONArray() {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		if (productName.equals(ProductConstants.COMMERCE)) {
+		if (_isCommerce()) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 			jsonObject.put("label", "Commerce Artifacts");
@@ -203,8 +206,15 @@ public class ReleaseToolDisplayContext {
 		return _highlightsFiltersJSONArray;
 	}
 
-	public JSONArray getJIRAComponentFiltersJSONArray(String jiraProject)
-		throws PortalException {
+	public JSONArray getJIRAComponentFiltersJSONArray() throws PortalException {
+		String jiraProject = null;
+
+		if (_isCommerce()) {
+			jiraProject = "COMMERCE";
+		}
+		else {
+			jiraProject = "LPS";
+		}
 
 		List<JIRAComponent> jiraComponents =
 			JIRAComponentLocalServiceUtil.getJIRAComponents(jiraProject, true);
@@ -304,7 +314,19 @@ public class ReleaseToolDisplayContext {
 		}
 	}
 
+	private boolean _isCommerce() {
+		String productName = GetterUtil.getString(
+			_portletPreferences.getValue("productName", ProductConstants.DXP));
+
+		if (productName.equals(ProductConstants.COMMERCE)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private JSONArray _highlightsFiltersJSONArray;
+	private final PortletPreferences _portletPreferences;
 	private final ReleasesAssetCategoryUtil _releasesAssetCategoryUtil;
 	private final RenderRequest _renderRequest;
 	private final ThemeDisplay _themeDisplay;
