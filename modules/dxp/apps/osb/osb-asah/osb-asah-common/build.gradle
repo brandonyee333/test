@@ -19,8 +19,9 @@ bootRepackage {
 }
 
 configurations.all {
-	exclude group: "org.apache.geronimo.bundles", module: "json"
 	exclude group: "com.vaadin.external.google", module: "android-json"
+	exclude group: "org.apache.geronimo.bundles", module: "json"
+	exclude group: "org.slf4j", module: "slf4j-log4j12"
 }
 
 dependencies {
