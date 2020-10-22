@@ -57,16 +57,21 @@ public class JiraIssueSearcher extends BaseSearcher {
 		String jiraFixPackJQLField =
 			"cf[" + jiraFixPackCustomField.substring(pos + 1) + "]";
 
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("project in (\"");
 
 		String productName = preferences.getValue("productName", null);
+		String jiraParentProject = StringPool.BLANK;
 
 		if (productName.equals(ProductConstants.COMMERCE)) {
+			jiraParentProject = "COMMERCE";
+
 			sb.append("COMMERCE");
 		}
 		else {
+			jiraParentProject = "LPS";
+
 			sb.append(
 				StringUtil.merge(
 					ReleaseToolConfigurationValues.FIX_PACK_JIRA_PROJECTS,
@@ -94,7 +99,9 @@ public class JiraIssueSearcher extends BaseSearcher {
 			sb.append(" AND (");
 
 			for (String component : components) {
-				sb.append("component in subcomponents(LPS, \"");
+				sb.append("component in subcomponents(");
+				sb.append(jiraParentProject);
+				sb.append(", \"");
 				sb.append(component);
 				sb.append("\", \"true\") OR ");
 			}
