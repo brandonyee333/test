@@ -1,6 +1,7 @@
 [
 	{
 		"channelId": "123",
+		"clientIP": "127.0.0.1",
 		"context": {
 			"canonicalUrl": "https://www.liferay.com",
 			"description": "This is the Liferay Analytics JS client test page.",
@@ -26,6 +27,7 @@
 	},
 	{
 		"channelId": "456",
+		"clientIP": "127.0.0.1",
 		"context": {
 			"canonicalUrl": "https://www.liferay.com/products/analytics-cloud",
 			"languageId": "en-US",

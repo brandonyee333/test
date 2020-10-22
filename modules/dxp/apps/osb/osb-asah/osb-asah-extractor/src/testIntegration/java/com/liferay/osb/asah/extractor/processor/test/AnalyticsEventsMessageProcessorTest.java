@@ -78,7 +78,7 @@ public class AnalyticsEventsMessageProcessorTest {
 			analyticsEvent.getSegmentNames(),
 			new HashSet<>(Arrays.asList("Developer", "Support")));
 
-		Map<String, Object> context = analyticsEvent.getContext();
+		Map<String, String> context = analyticsEvent.getContext();
 
 		Assert.assertEquals("Chrome", context.get("browserName"));
 		Assert.assertEquals("Desktop", context.get("deviceType"));
@@ -178,7 +178,7 @@ public class AnalyticsEventsMessageProcessorTest {
 			50, AnalyticsEvent::toAnalyticsEvent);
 
 		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-			Map<String, Object> context = analyticsEvent.getContext();
+			Map<String, String> context = analyticsEvent.getContext();
 
 			Assert.assertEquals(
 				context.get("url"), context.get("canonicalUrl"));
@@ -203,7 +203,7 @@ public class AnalyticsEventsMessageProcessorTest {
 			50, AnalyticsEvent::toAnalyticsEvent);
 
 		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-			Map<String, Object> context = analyticsEvent.getContext();
+			Map<String, String> context = analyticsEvent.getContext();
 
 			Assert.assertNotEquals(
 				context.get("url"), context.get("canonicalUrl"));
