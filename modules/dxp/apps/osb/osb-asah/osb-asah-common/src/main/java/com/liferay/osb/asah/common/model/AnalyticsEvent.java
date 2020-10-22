@@ -108,7 +108,7 @@ public class AnalyticsEvent implements Serializable {
 		return _clientIP;
 	}
 
-	public Map<String, Object> getContext() {
+	public Map<String, String> getContext() {
 		return _context;
 	}
 
@@ -199,7 +199,7 @@ public class AnalyticsEvent implements Serializable {
 		_clientIP = clientIP;
 	}
 
-	public void setContext(Map<String, Object> context) {
+	public void setContext(Map<String, String> context) {
 		_context = context;
 	}
 
@@ -274,7 +274,7 @@ public class AnalyticsEvent implements Serializable {
 	private String _applicationId;
 	private String _channelId;
 	private String _clientIP;
-	private Map<String, Object> _context;
+	private Map<String, String> _context;
 	private Date _createDate = new Date();
 	private String _dataSourceId;
 	private Date _eventDate = new Date();
