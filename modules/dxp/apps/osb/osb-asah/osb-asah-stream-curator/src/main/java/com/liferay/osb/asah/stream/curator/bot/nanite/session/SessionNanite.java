@@ -106,7 +106,7 @@ public class SessionNanite implements Nanite {
 		AnalyticsEvent firstAnalyticsEvent =
 			analyticsEvents.getFirstAnalyticsEvent();
 
-		Map<String, Object> context = firstAnalyticsEvent.getContext();
+		Map<String, String> context = firstAnalyticsEvent.getContext();
 
 		String url = MapUtil.getString(context, "url");
 

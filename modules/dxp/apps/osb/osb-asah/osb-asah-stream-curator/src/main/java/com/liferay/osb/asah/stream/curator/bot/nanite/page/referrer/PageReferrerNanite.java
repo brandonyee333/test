@@ -124,7 +124,7 @@ public class PageReferrerNanite extends BaseNanite<PageReferrer> {
 		pageReferrer.addAccessDate(analyticsEvent.getEventDate());
 		pageReferrer.setAccess(1);
 
-		Map<String, Object> context = analyticsEvent.getContext();
+		Map<String, String> context = analyticsEvent.getContext();
 
 		String referrer = MapUtil.getString(context, "referrer", "");
 

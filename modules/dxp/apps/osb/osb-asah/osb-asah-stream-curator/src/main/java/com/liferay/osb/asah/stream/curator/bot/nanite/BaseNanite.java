@@ -224,7 +224,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 		T model = supplier.get();
 
-		Map<String, Object> context = analyticsEvent.getContext();
+		Map<String, String> context = analyticsEvent.getContext();
 
 		model.setChannelId(analyticsEvent.getChannelId());
 
@@ -316,7 +316,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	private void _setModelLocation(AnalyticsEvent analyticsEvent, T model) {
-		Map<String, Object> context = analyticsEvent.getContext();
+		Map<String, String> context = analyticsEvent.getContext();
 
 		model.setCity(MapUtil.getString(context, "city"));
 		model.setCountry(MapUtil.getString(context, "country"));
@@ -333,7 +333,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	private void _setModelTechnology(AnalyticsEvent analyticsEvent, T model) {
-		Map<String, Object> context = analyticsEvent.getContext();
+		Map<String, String> context = analyticsEvent.getContext();
 
 		model.setBrowserName(MapUtil.getString(context, "browserName"));
 		model.setDeviceType(MapUtil.getString(context, "deviceType"));

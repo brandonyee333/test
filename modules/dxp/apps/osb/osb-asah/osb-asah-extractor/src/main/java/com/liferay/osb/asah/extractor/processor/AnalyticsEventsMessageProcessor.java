@@ -42,6 +42,7 @@ import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
 import io.prometheus.client.Counter;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -152,7 +153,7 @@ public class AnalyticsEventsMessageProcessor {
 				continue;
 			}
 
-			Map<String, Object> context = _getContext(analyticsEventsMessage);
+			Map<String, String> context = _getContext(analyticsEventsMessage);
 
 			if (_isCrawler(context)) {
 				if (_log.isDebugEnabled()) {
@@ -239,11 +240,20 @@ public class AnalyticsEventsMessageProcessor {
 		return analyticsEventJSONArray;
 	}
 
-	private Map<String, Object> _getContext(
+	private Map<String, String> _getContext(
 			AnalyticsEventsMessage analyticsEventsMessage)
 		throws IllegalArgumentException {
 
-		Map<String, Object> context = analyticsEventsMessage.getContext();
+		Map<String, String> context = new HashMap<>();
+
+		Map<String, Object> analyticsEventsMessageContext =
+			analyticsEventsMessage.getContext();
+
+		for (Map.Entry<String, Object> entry :
+				analyticsEventsMessageContext.entrySet()) {
+
+			context.put(entry.getKey(), String.valueOf(entry.getValue()));
+		}
 
 		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
 			_fiftyOneDegreesEngine.getDevice(
@@ -329,10 +339,8 @@ public class AnalyticsEventsMessageProcessor {
 		_storage = _storageFactory.getStorage(builder.build());
 	}
 
-	private boolean _isCrawler(Map<String, Object> context) {
-		if (Boolean.parseBoolean(
-				(String)context.getOrDefault("crawler", null))) {
-
+	private boolean _isCrawler(Map<String, String> context) {
+		if (Boolean.parseBoolean(context.getOrDefault("crawler", null))) {
 			return true;
 		}
 
@@ -364,8 +372,8 @@ public class AnalyticsEventsMessageProcessor {
 		return false;
 	}
 
-	private boolean _isValidURL(Map<String, Object> context) {
-		String url = (String)context.get("url");
+	private boolean _isValidURL(Map<String, String> context) {
+		String url = context.get("url");
 
 		if ((url == null) || url.startsWith("file://") ||
 			url.startsWith("http://127.0.0.1") ||

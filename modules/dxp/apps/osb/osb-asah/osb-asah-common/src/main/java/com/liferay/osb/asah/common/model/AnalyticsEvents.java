@@ -46,7 +46,7 @@ public class AnalyticsEvents {
 				pageViewsCount++;
 			}
 
-			Map<String, Object> context = analyticsEvent.getContext();
+			Map<String, String> context = analyticsEvent.getContext();
 
 			String canonicalUrl = MapUtil.getString(context, "canonicalUrl");
 

@@ -214,7 +214,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 		JSONObject objectJSONObject = new JSONObject();
 
-		Map<String, Object> context = analyticsEvent.getContext();
+		Map<String, String> context = analyticsEvent.getContext();
 
 		objectJSONObject.put(
 			"canonicalUrl", MapUtil.getString(context, "canonicalUrl"));
@@ -362,7 +362,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			return null;
 		}
 
-		Map<String, Object> context = analyticsEvent.getContext();
+		Map<String, String> context = analyticsEvent.getContext();
 
 		assetJSONObject = JSONUtil.put(
 			"assetType", analyticsEvent.getApplicationId()
@@ -479,7 +479,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 	}
 
 	private Set<Pair<String, String>> _getKeywordPairs(
-		Map<String, Object> context) {
+		Map<String, String> context) {
 
 		Set<Pair<String, String>> keywords = new HashSet<>();
 
