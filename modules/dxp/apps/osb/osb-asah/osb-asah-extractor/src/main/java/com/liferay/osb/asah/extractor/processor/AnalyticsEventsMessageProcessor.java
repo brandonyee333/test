@@ -28,6 +28,7 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
@@ -49,6 +50,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.avro.Schema;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -330,9 +332,18 @@ public class AnalyticsEventsMessageProcessor {
 	}
 
 	@PostConstruct
-	private void _init() {
+	private void _init() throws Exception {
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
 			_analyticsEventsStoragePath);
+
+		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
+
+		Schema.Parser parser = new Schema.Parser();
+
+		builder.fileSchema(
+			parser.parse(
+				ResourceUtil.readResourceToString(
+					"dependencies/analytics_events.avsc", getClass())));
 
 		builder.googleBucket(_analyticsEventsBucket);
 
@@ -414,7 +425,7 @@ public class AnalyticsEventsMessageProcessor {
 	private AnalyticsEventsChannels _analyticsEventsChannels;
 
 	@Value(
-		"${osb.asah.analytics.events.storage.path:/tmp/analytics_events.json}"
+		"${osb.asah.analytics.events.storage.path:/tmp/analytics_events.snappy.parquet}"
 	)
 	private String _analyticsEventsStoragePath;
 
