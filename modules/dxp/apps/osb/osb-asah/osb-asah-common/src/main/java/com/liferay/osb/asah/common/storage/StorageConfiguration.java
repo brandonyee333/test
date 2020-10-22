@@ -70,7 +70,7 @@ public class StorageConfiguration {
 				(_storageConfiguration._fileSchema == null)) {
 
 				throw new IllegalStateException(
-					"Schema is required for parquet file format");
+					"Schema is required for Parquet file format");
 			}
 
 			return _storageConfiguration;
