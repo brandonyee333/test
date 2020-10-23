@@ -24,6 +24,7 @@ import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
@@ -408,6 +409,9 @@ public class AccountSynchronizer {
 	public void update(Account account, AccountEntry accountEntry)
 		throws Exception {
 
+		List<ProductPurchase> productPurchases =
+			_accountReader.getProductPurchases(account.getKey());
+
 		boolean externalIdMappers =
 			_externalIdMapperLocalService.hasExternalIdMappers(
 				_classNameLocalService.getClassNameId(AccountEntry.class),
@@ -474,11 +478,11 @@ public class AccountSynchronizer {
 			account.getCode(), countryName, address,
 			String.valueOf(accountEntry.getAccountEntryId()), account.getName(),
 			accountEntry.getInstructions(), String.valueOf(firstLineSupport),
-			partnerJiraProject, partnerName, getSupportLevel(account.getKey()),
-			account.getStatusAsString(),
+			partnerJiraProject, partnerName, getSupportLevel(productPurchases),
+			getStatus(productPurchases),
 			AccountEntryConstants.getLanguageLabel(languageIds[0]),
 			account.getRegionAsString(), account.getTierAsString(),
-			getTags(account));
+			getTags(productPurchases));
 
 		if (!externalIdMappers) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
@@ -510,9 +514,21 @@ public class AccountSynchronizer {
 		return "no-reply@" + String.valueOf(accountEntryId) + ".com.broken";
 	}
 
-	protected String getSupportLevel(String accountKey) throws Exception {
-		List<ProductPurchase> productPurchases =
-			_accountReader.getProductPurchases(accountKey);
+	protected String getStatus(List<ProductPurchase> productPurchases) {
+		String state = _accountReader.getSubscriptionState(productPurchases);
+
+		if (state.equals(ProductPurchaseConstants.STATE_ACTIVE)) {
+			return "Approved";
+		}
+		else if (state.equals(ProductPurchaseConstants.STATE_EXPIRED)) {
+			return "Expired";
+		}
+
+		return "Closed";
+	}
+
+	protected String getSupportLevel(List<ProductPurchase> productPurchases)
+		throws Exception {
 
 		ProductPurchase productPurchase = _accountReader.getSLAProductPurchase(
 			productPurchases);
@@ -527,13 +543,12 @@ public class AccountSynchronizer {
 		return StringPool.BLANK;
 	}
 
-	protected Set<String> getTags(Account account) throws Exception {
+	protected Set<String> getTags(List<ProductPurchase> productPurchases)
+		throws Exception {
+
 		Set<String> tags = new HashSet<>();
 
 		Date now = new Date();
-
-		List<ProductPurchase> productPurchases =
-			_accountReader.getProductPurchases(account.getKey());
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			Map<String, String> properties = productPurchase.getProperties();

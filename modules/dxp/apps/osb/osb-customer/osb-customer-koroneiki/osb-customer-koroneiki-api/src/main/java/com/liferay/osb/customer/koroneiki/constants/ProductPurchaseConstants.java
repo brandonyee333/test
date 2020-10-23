@@ -21,4 +21,12 @@ public class ProductPurchaseConstants {
 
 	public static final String PROPERTY_SIZING = "Sizing";
 
+	public static final String STATE_ACTIVE = "Active";
+
+	public static final String STATE_CANCELLED = "Cancelled";
+
+	public static final String STATE_EXPIRED = "Expired";
+
+	public static final String STATE_UNACTIVATED = "Unactivated";
+
 }

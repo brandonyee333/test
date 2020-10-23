@@ -16,6 +16,7 @@ package com.liferay.osb.customer.koroneiki.service.internal.util;
 
 import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
+import com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
@@ -28,6 +29,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Date;
@@ -111,6 +113,30 @@ public class AccountReaderImpl implements AccountReader {
 		return WorkflowConstants.getLabelStatus(statusLabel);
 	}
 
+	public String getSubscriptionState(List<ProductPurchase> productPurchases) {
+		String state = StringPool.BLANK;
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			Product product = productPurchase.getProduct();
+
+			if (!ArrayUtil.contains(
+					ProductConstants.NAMES_PARTNERSHIP, product.getName()) &&
+				!ArrayUtil.contains(
+					ProductConstants.NAMES_SUBSCRIPTION, product.getName())) {
+
+				continue;
+			}
+
+			String curState = _getProductPurchaseState(productPurchase);
+
+			if (_isHigherState(state, curState)) {
+				state = curState;
+			}
+		}
+
+		return state;
+	}
+
 	public Date getSupportEndDate(List<ProductPurchase> productPurchases) {
 		Date supportEndDate = null;
 
@@ -170,6 +196,28 @@ public class AccountReaderImpl implements AccountReader {
 		return ticketSupportEndDate;
 	}
 
+	private String _getProductPurchaseState(ProductPurchase productPurchase) {
+		if (productPurchase.getStatus() == ProductPurchase.Status.CANCELLED) {
+			return ProductPurchaseConstants.STATE_CANCELLED;
+		}
+
+		Date now = new Date();
+
+		if ((productPurchase.getEndDate() != null) &&
+			now.after(productPurchase.getEndDate())) {
+
+			return ProductPurchaseConstants.STATE_EXPIRED;
+		}
+
+		if ((productPurchase.getStartDate() != null) &&
+			now.before(productPurchase.getStartDate())) {
+
+			return ProductPurchaseConstants.STATE_UNACTIVATED;
+		}
+
+		return ProductPurchaseConstants.STATE_ACTIVE;
+	}
+
 	private int _getSLARank(Product product) {
 		String name = product.getName();
 
@@ -184,6 +232,23 @@ public class AccountReaderImpl implements AccountReader {
 		}
 		else if (name.equals(ProductConstants.NAME_SILVER)) {
 			return 2;
+		}
+
+		return 0;
+	}
+
+	private int _getStateRank(String state) {
+		if (state.equals(ProductPurchaseConstants.STATE_ACTIVE)) {
+			return 4;
+		}
+		else if (state.equals(ProductPurchaseConstants.STATE_CANCELLED)) {
+			return 1;
+		}
+		else if (state.equals(ProductPurchaseConstants.STATE_EXPIRED)) {
+			return 2;
+		}
+		else if (state.equals(ProductPurchaseConstants.STATE_UNACTIVATED)) {
+			return 3;
 		}
 
 		return 0;
@@ -245,6 +310,14 @@ public class AccountReaderImpl implements AccountReader {
 		Date endDate = productPurchase.getEndDate();
 
 		if (endDate.after(curEndDate)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isHigherState(String curState, String newState) {
+		if (_getStateRank(newState) > _getStateRank(curState)) {
 			return true;
 		}
 

@@ -36,6 +36,8 @@ public interface AccountReader {
 
 	public int getStatus(Account account);
 
+	public String getSubscriptionState(List<ProductPurchase> productPurchases);
+
 	public Date getSupportEndDate(List<ProductPurchase> productPurchases);
 
 	public Date getTicketSupportEndDate(List<ProductPurchase> productPurchases);
