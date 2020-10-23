@@ -401,8 +401,22 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			AnalyticsEvent analyticsEvent)
 		throws Exception {
 
-		JSONObject eventPropertiesJSONObject = new JSONObject(
-			analyticsEvent.getEventProperties());
+		JSONObject eventPropertiesJSONObject = new JSONObject();
+
+		for (String eventPropertyKey :
+				new String[] {"depth", "title", "viewDuration"}) {
+
+			if (!StringUtils.isEmpty(
+					MapUtil.getString(
+						analyticsEvent.getEventProperties(),
+						eventPropertyKey))) {
+
+				eventPropertiesJSONObject.put(
+					eventPropertyKey,
+					MapUtil.getString(
+						analyticsEvent.getEventProperties(), eventPropertyKey));
+			}
+		}
 
 		String pageViewActivityId = _getPageViewActivityId(analyticsEvent);
 
