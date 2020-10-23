@@ -17,7 +17,7 @@ class PubSubBridge:
 	def __init__(self, spark_application):
 		self.publisher_client = pubsub_v1.PublisherClient()
 
-		self.topic_path = self.self.publisher_client.topic_path(
+		self.topic_path = self.publisher_client.topic_path(
 		    spark_application.configuration.get('google.project.id'),
 		    '{lcp_project_id}_dataproc'.format(
 		        spark_application.args.lcp_project_id
