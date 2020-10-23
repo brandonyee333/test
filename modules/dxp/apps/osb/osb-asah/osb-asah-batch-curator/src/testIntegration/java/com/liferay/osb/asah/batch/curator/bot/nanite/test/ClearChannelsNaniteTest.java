@@ -84,7 +84,7 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, assetJSONObject, channelId,
-				"pageViewed", new String[] {"pageLoadTime", "1000"}));
+				"pageViewed", new String[0]));
 
 		_clearChannelsNanite.run(
 			JSONUtil.put("channelIds", JSONUtil.put(channelId)));

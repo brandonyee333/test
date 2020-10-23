@@ -110,7 +110,7 @@ public class DataSourcesRestControllerTest {
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, assetJSONObject, "pageViewed",
-				new String[] {"pageLoadTime", "1000"}));
+				new String[0]));
 
 		_dataSourcesRestController.deleteDataSource(
 			dataSourceJSONObject.getString("id"));

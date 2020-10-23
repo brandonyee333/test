@@ -230,7 +230,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, _assetJSONObject, "pageViewed",
-				new String[] {"pageLoadTime", "1000"}));
+				new String[0]));
 	}
 
 	private JSONArray _addMemberships(String... durations) throws Exception {

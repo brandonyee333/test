@@ -118,7 +118,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroup1JSONObject, assetJSONObject, "pageViewed",
-				new String[] {"pageLoadTime", "1000"}));
+				new String[0]));
 		faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(

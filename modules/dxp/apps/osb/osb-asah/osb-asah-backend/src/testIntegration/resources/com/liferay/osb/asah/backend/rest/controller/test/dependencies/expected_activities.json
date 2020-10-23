@@ -10,7 +10,6 @@
 				"endTime": "2019-04-06T22:20:10.843Z",
 				"eventId": "pageViewed",
 				"eventProperties": {
-					"page": "/web/guest/home",
 					"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
 				},
 				"groupId": "348853726639670821",
@@ -35,7 +34,6 @@
 				"endTime": "2019-04-06T22:20:10.843Z",
 				"eventId": "pageViewed",
 				"eventProperties": {
-					"page": "/web/guest/home",
 					"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
 				},
 				"groupId": "348853726639670821",
@@ -60,7 +58,6 @@
 				"endTime": "2019-04-06T22:20:10.843Z",
 				"eventId": "pageViewed",
 				"eventProperties": {
-					"page": "/web/guest/home",
 					"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecefserw"
 				},
 				"groupId": "348853726639670821",
@@ -85,7 +82,6 @@
 				"endTime": "2019-04-06T22:20:10.843Z",
 				"eventId": "pageViewed",
 				"eventProperties": {
-					"page": "/web/guest/home",
 					"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecefserw"
 				},
 				"groupId": "348853726639670821",

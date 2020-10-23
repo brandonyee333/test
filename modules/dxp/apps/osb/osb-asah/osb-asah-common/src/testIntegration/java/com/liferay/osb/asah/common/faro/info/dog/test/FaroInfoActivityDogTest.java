@@ -75,7 +75,7 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, assetJSONObject, "pageViewed",
-				new String[] {"pageLoadTime", "1000"}));
+				new String[0]));
 
 		Assert.assertTrue(
 			faroInfoElasticsearchInvoker.exists(

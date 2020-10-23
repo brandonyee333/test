@@ -178,7 +178,7 @@ public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 				"activities",
 				FaroInfoTestUtil.buildActivityJSONObject(
 					activityGroupJSONObject, pageAssetJSONObject, "pageViewed",
-					new String[] {"pageLoadTime", "1000"}, pageViewActivityId));
+					new String[0], pageViewActivityId));
 		}
 	}
 

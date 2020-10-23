@@ -891,7 +891,7 @@ public class IndividualEngagementScoresNaniteTest extends BaseNaniteTestCase {
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, assetJSONObject, "pageViewed",
-				new String[] {"pageLoadTime", "1000"}, pageViewActivityId));
+				new String[0], pageViewActivityId));
 	}
 
 	private void _addPageVisitActivities(

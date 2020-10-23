@@ -294,13 +294,13 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, _assetJSONObject1, "pageViewed",
-				new String[] {"pageLoadTime", "1000"}));
+				new String[0]));
 
 		faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, _assetJSONObject2, "pageViewed",
-				new String[] {"pageLoadTime", "1000"}));
+				new String[0]));
 	}
 
 	private void _assertInterestScoreDirection(
