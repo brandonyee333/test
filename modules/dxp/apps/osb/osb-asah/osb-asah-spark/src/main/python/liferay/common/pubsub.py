@@ -19,9 +19,7 @@ class PubSubBridge:
 
 		self.topic_path = self.publisher_client.topic_path(
 		    spark_application.configuration.get('google.project.id'),
-		    '{lcp_project_id}_dataproc'.format(
-		        spark_application.args.lcp_project_id
-		    )
+		    '{}_dataproc'.format(spark_application.args.lcp_project_id)
 		)
 
 	def send(self, pub_sub_message):
