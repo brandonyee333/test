@@ -471,10 +471,11 @@ public class AccountSynchronizer {
 		String[] languageIds = accountEntry.getLanguageIds();
 
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
-			account.getCode(), countryName, address, account.getKey(),
-			account.getName(), accountEntry.getInstructions(),
-			String.valueOf(firstLineSupport), partnerJiraProject, partnerName,
-			getSupportLevel(account.getKey()), account.getStatusAsString(),
+			account.getCode(), countryName, address,
+			String.valueOf(accountEntry.getAccountEntryId()), account.getName(),
+			accountEntry.getInstructions(), String.valueOf(firstLineSupport),
+			partnerJiraProject, partnerName, getSupportLevel(account.getKey()),
+			account.getStatusAsString(),
 			AccountEntryConstants.getLanguageLabel(languageIds[0]),
 			account.getRegionAsString(), account.getTierAsString(),
 			getTags(account));
