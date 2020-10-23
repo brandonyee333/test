@@ -9,6 +9,11 @@
 </thead>
 <tbody>
 <tr>
+	<td>BODY</td>
+	<td>//body</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DRAFT_VERSION_HEADER</td>
 	<td>//span[contains(.,'Draft Version')]</td>
 	<td></td>
