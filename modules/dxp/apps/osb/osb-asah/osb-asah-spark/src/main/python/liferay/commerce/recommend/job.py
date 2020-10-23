@@ -9,8 +9,8 @@
 # distribution rights of the Software.
 #
 
-from abc import abstractmethod
-
+from liferay.commerce.common import BaseJSONDataFrameReaderSparkJob, \
+	BaseJSONDataFrameWriterSparkJob
 from liferay.commerce.recommend.feature import CommerceFeatureExtractor, \
 	MAPEvaluator
 
@@ -41,110 +41,8 @@ from pyspark.sql.functions import coalesce, \
 
 import logging
 
-class BaseDataFrameReaderSparkJob(BaseSparkJob):
-	def __init__(
-		self,
-		spark_application,
-		file_pattern,
-		table_name,
-		cache=True,
-		latest=True
-	):
-		super(BaseDataFrameReaderSparkJob, self).__init__(spark_application)
-
-		self.cache = cache
-		self.file_pattern = file_pattern
-		self.latest = latest
-		self.table_name = table_name
-
-	def _get_bucket_path(self):
-		configuration = self.spark_application_configuration
-
-		bucket_path = "{}/{}/{}/{}/".format(
-			configuration.get('google.storage.bucket'),
-			self.spark_application.args.lcp_project_id,
-			configuration.get('dataSourceId'), self.file_pattern
-		)
-
-		if self.latest:
-			jvm = self.spark_session._jvm
-			spark_context = self.spark_session.sparkContext
-
-			file_system = jvm.org.apache.hadoop.fs.FileSystem
-
-			file_system_instance = file_system.get(
-				jvm.java.net.URI(bucket_path),
-				spark_context._jsc.hadoopConfiguration()
-			)
-
-			file_status_list = file_system_instance.globStatus(
-				jvm.org.apache.hadoop.fs.Path(
-					'{}*/_SUCCESS'.format(bucket_path)
-				)
-			)
-
-			file_status_list_sorted = sorted(
-				file_status_list, key=lambda f: f.getModificationTime()
-			)
-
-			bucket_path = str(file_status_list_sorted[-1].getPath())
-
-			bucket_path = bucket_path[:-len('_SUCCESS')]
-
-		self.spark_application.log.info(
-			"Loading data from: {}".format(bucket_path)
-		)
-
-		return bucket_path
-
-	@abstractmethod
-	def _post_process(self, data_frame):
-		raise NotImplementedError()
-
-	def run(self):
-		data_frame_reader = self.spark_session.read
-
-		data_frame = data_frame_reader.json(self._get_bucket_path())
-
-		data_frame = self._post_process(data_frame)
-
-		data_frame.createOrReplaceTempView(self.table_name)
-
-		if self.cache:
-			self.spark_session.catalog.cacheTable(self.table_name)
-
-class BaseDataFrameWriterSparkJob(BaseSparkJob):
-	def __init__(self, spark_application, target_folder, table_name):
-		super(BaseDataFrameWriterSparkJob, self).__init__(spark_application)
-
-		self.table_name = table_name
-		self.target_folder = target_folder
-
-	def _get_bucket_path(self):
-		configuration = self.spark_application_configuration
-
-		return "{}/{}/{}/{}/".format(
-			configuration.get('google.storage.bucket'),
-			self.spark_application.args.lcp_project_id,
-			configuration.get('dataSourceId'), self.target_folder
-		)
-
-	def pre_process(self, data_frame):
-		return data_frame
-
-	def run(self):
-		data_frame = self.spark_session.table(self.table_name)
-
-		data_frame = self.pre_process(data_frame)
-
-		data_frame_writer = data_frame.write
-
-		data_frame_writer.format("json").mode("overwrite").save(
-			self._get_bucket_path()
-		)
-
-class ContextUserInteractionRecommendationDataFrameWriterSparkJob(
-	BaseDataFrameWriterSparkJob
+class ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob(
+	BaseJSONDataFrameWriterSparkJob
 ):
 	def __init__(self, spark_application):
 		super().__init__(
@@ -153,7 +51,7 @@ class ContextUserInteractionRecommendationDataFrameWriterSparkJob(
 			'UserRecommendation', 'context_user_interaction_recommendation'
 		)
 
-	def pre_process(self, data_frame):
+	def _pre_process(self, data_frame):
 		data_frame = data_frame.withColumn('createDate', current_date())
 		data_frame = data_frame.withColumn(
 			'jobId',
@@ -173,9 +71,251 @@ class ContextUserInteractionRecommendationDataFrameWriterSparkJob(
 
 		return data_frame
 
-class ProductContentDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
+class FrequentPatternDataPreparationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
-		super(ProductContentDataFrameReaderSparkJob, self).__init__(
+		super().__init__(spark_application)
+
+		self._log = logging.getLogger(self.__class__.__name__)
+
+	def run(self):
+		order_data_frame = self.spark_session.table('order')
+
+		product_data_frame = self.spark_session.table('product')
+
+		items_data_frame = order_data_frame.join(product_data_frame, on='sku')
+
+		items_grouped_data = items_data_frame.groupBy('orderId')
+
+		items_data_frame = items_grouped_data.agg(
+			collect_set('CPDefinitionId').alias('items')
+		)
+
+		items_data_frame.createOrReplaceTempView('items')
+
+		self.spark_session.catalog.cacheTable('items')
+
+class FrequentPatternOrderJSONDataFrameReaderSparkJob(
+	BaseJSONDataFrameReaderSparkJob
+):
+	def __init__(self, spark_application):
+		super().__init__(
+			spark_application,
+			'com.liferay.headless.commerce.admin.order.dto.v1_0.Order', 'order'
+		)
+
+	def _post_process(self, data_frame):
+		return data_frame.selectExpr(
+			'id as orderId', 'EXPLODE(orderItems.sku) as sku'
+		)
+
+class FrequentPatternPostProcessRecommendationSparkJob(BaseSparkJob):
+	def __init__(self, spark_application):
+		super().__init__(spark_application)
+
+	def run(self):
+		association_rules_data_frame = self.spark_session.table(
+			'association_rules'
+		)
+
+		frequent_itemsets_data_frame = self.spark_session.table(
+			'frequent_itemsets'
+		)
+
+		order_data_frame = self.spark_session.table('order')
+
+		order_count = order_data_frame.count()
+
+		association_rules_data_frame = association_rules_data_frame.filter(
+			'lift > 1.0'
+		)
+
+		association_rules_data_frame = association_rules_data_frame.join(
+			frequent_itemsets_data_frame.withColumnRenamed(
+				'items', 'antecedent'
+			),
+			on='antecedent'
+		)
+
+		association_rules_data_frame = association_rules_data_frame.withColumnRenamed(
+			'freq', 'antecedent_freq'
+		)
+
+		association_rules_data_frame = association_rules_data_frame.withColumn(
+			'antecedent_support',
+			expr('antecedent_freq / {}'.format(order_count))
+		)
+
+		association_rules_data_frame = association_rules_data_frame.withColumn(
+			'consequent_support', expr('confidence/lift')
+		)
+
+		association_rules_data_frame = association_rules_data_frame.withColumn(
+			'lambda',
+			expr(
+				'GREATEST(antecedent_support + consequent_support - 1, '
+				'1 / {})'.format(order_count)
+			)
+		)
+
+		association_rules_data_frame = association_rules_data_frame.withColumn(
+			'delta',
+			expr('1 / GREATEST(antecedent_support, consequent_support)')
+		)
+
+		association_rules_data_frame = association_rules_data_frame.withColumn(
+			'stdLift', expr('(lift - lambda)/(delta - lambda)')
+		)
+
+		association_rules_data_frame = association_rules_data_frame.select(
+			'antecedent',
+			explode('consequent').alias('consequent'), 'confidence', 'lift',
+			'stdLift'
+		)
+
+		window_spec = Window.partitionBy('antecedent')
+
+		window_spec = window_spec.orderBy(
+			col('stdLift').desc(),
+			col('lift').desc()
+		)
+
+		association_rules_data_frame = association_rules_data_frame.withColumn(
+			'row_num',
+			row_number().over(window_spec)
+		)
+
+		itemset_items_max_count = self.spark_application_configuration.get(
+			'frequent.pattern.recommendation.itemset.items.max.count'
+		)
+
+		association_rules_data_frame = association_rules_data_frame.filter(
+			'row_num <= {}'.format(itemset_items_max_count)
+		)
+
+		frequent_pattern_recommendation_data_frame = association_rules_data_frame.drop(
+			'row_num'
+		)
+
+		frequent_pattern_recommendation_data_frame.createOrReplaceTempView(
+			'frequent_pattern_recommendation'
+		)
+
+		self.spark_session.catalog.cacheTable('frequent_pattern_recommendation')
+
+class FrequentPatternProductJSONDataFrameReaderSparkJob(
+	BaseJSONDataFrameReaderSparkJob
+):
+	def __init__(self, spark_application):
+		super().__init__(
+			spark_application,
+			'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
+			'product'
+		)
+
+	def _post_process(self, data_frame):
+		return data_frame.selectExpr(
+			'id AS CPDefinitionId', 'EXPLODE(skus.sku) AS sku'
+		)
+
+class FrequentPatternRecommendationJSONDataFrameWriterSparkJob(
+	BaseJSONDataFrameWriterSparkJob
+):
+	def __init__(self, spark_application):
+		super().__init__(
+			spark_application,
+			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
+			'FrequentPatternRecommendation', 'frequent_pattern_recommendation'
+		)
+
+	def _pre_process(self, data_frame):
+		data_frame = data_frame.withColumnRenamed('antecedent', 'antecedentIds')
+		data_frame = data_frame.withColumn(
+			'antecedentIdsLength', col_size('antecedentIds')
+		)
+		data_frame = data_frame.drop('confidence')
+		data_frame = data_frame.drop('lift')
+		data_frame = data_frame.withColumnRenamed(
+			'consequent', 'recommendedEntryClassPK'
+		)
+		data_frame = data_frame.withColumnRenamed('stdLift', 'score')
+
+		return data_frame
+
+class FrequentPatternRecommendationSparkJob(BaseSparkJob):
+	def __init__(self, spark_application):
+		super().__init__(spark_application)
+
+		self._log = logging.getLogger(self.__class__.__name__)
+
+	def run(self):
+		order_data_frame = self.spark_session.table('order')
+
+		distinct_items_data_frame = order_data_frame.select('sku')
+
+		distinct_items_data_frame = distinct_items_data_frame.distinct()
+
+		distinct_items_count = distinct_items_data_frame.count()
+
+		ordered_items_count = order_data_frame.count()
+
+		self._log.info(
+			"There {} distinct items over {} ordered items".format(
+				distinct_items_count, ordered_items_count
+			)
+		)
+
+		min_support_factor = self.spark_application_configuration.get(
+			'frequent.pattern.recommendation.min.support.factor'
+		)
+
+		min_support = (distinct_items_count / ordered_items_count)
+		min_support = min_support * min_support_factor
+
+		min_confidence = self.spark_application_configuration.get(
+			'frequent.pattern.recommendation.min.confidence'
+		)
+
+		fp_growth = FPGrowth(
+			minSupport=min_support, minConfidence=min_confidence
+		)
+
+		items_data_frame = self.spark_session.table('items')
+
+		fp_growth_model = fp_growth.fit(items_data_frame)
+
+		association_rules = fp_growth_model.associationRules
+
+		association_rules.createOrReplaceTempView('association_rules')
+
+		self.spark_session.catalog.cacheTable('association_rules')
+
+		frequent_itemsets = fp_growth_model.freqItemsets
+
+		frequent_itemsets.createOrReplaceTempView('frequent_itemsets')
+
+		self.spark_session.catalog.cacheTable('frequent_itemsets')
+
+class OrderInteractionJSONDataFrameReaderSparkJob(
+	BaseJSONDataFrameReaderSparkJob
+):
+	def __init__(self, spark_application):
+		super().__init__(
+			spark_application,
+			'com.liferay.headless.commerce.admin.order.dto.v1_0.Order',
+			'order_interactions'
+		)
+
+	def _post_process(self, data_frame):
+		return data_frame.selectExpr(
+			'accountId as commerceAccountId', 'createDate',
+			'explode(orderItems.sku) as sku'
+		)
+
+class ProductContentJSONDataFrameReaderSparkJob(
+	BaseJSONDataFrameReaderSparkJob
+):
+	def __init__(self, spark_application):
+		super(ProductContentJSONDataFrameReaderSparkJob, self).__init__(
 			spark_application,
 			'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
 			'products'
@@ -295,7 +435,9 @@ class ProductContentPipelineSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('pipeline_data')
 
-class ProductContentRecommendationDataFrameWriter(BaseDataFrameWriterSparkJob):
+class ProductContentRecommendationJSONDataFrameWriter(
+	BaseJSONDataFrameWriterSparkJob
+):
 	def __init__(self, spark_application):
 		super().__init__(
 			spark_application,
@@ -305,8 +447,7 @@ class ProductContentRecommendationDataFrameWriter(BaseDataFrameWriterSparkJob):
 
 class ProductContentRecommendationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
-		super(ProductContentRecommendationSparkJob,
-			  self).__init__(spark_application)
+		super().__init__(spark_application)
 
 	def run(self):
 		pipeline_data_frame = self.spark_session.table('pipeline_data')
@@ -364,7 +505,9 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('product_content_recommendations')
 
-class ProductInteractionDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
+class ProductInteractionJSONDataFrameReaderSparkJob(
+	BaseJSONDataFrameReaderSparkJob
+):
 	def __init__(self, spark_application):
 		super().__init__(
 			spark_application,
@@ -378,8 +521,8 @@ class ProductInteractionDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
 			"skus.sku AS sku_list"
 		)
 
-class ProductInteractionRecommendationDataFrameWriterSparkJob(
-	BaseDataFrameWriterSparkJob
+class ProductInteractionRecommendationJSONDataFrameWriterSparkJob(
+	BaseJSONDataFrameWriterSparkJob
 ):
 	def __init__(self, spark_application):
 		super().__init__(
@@ -459,20 +602,6 @@ class ProductInteractionRecommendationSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable(
 			'product_interaction_recommendations'
-		)
-
-class OrderInteractionDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
-	def __init__(self, spark_application):
-		super().__init__(
-			spark_application,
-			'com.liferay.headless.commerce.admin.order.dto.v1_0.Order',
-			'order_interactions'
-		)
-
-	def _post_process(self, data_frame):
-		return data_frame.selectExpr(
-			'accountId as commerceAccountId', 'createDate',
-			'explode(orderItems.sku) as sku'
 		)
 
 class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
@@ -706,225 +835,3 @@ class UserInteractionDataPreparationSparkJob(BaseSparkJob):
 		)
 
 		self.spark_session.catalog.cacheTable('user_item_rating_table')
-
-class FrequentPatternOrderDataFrameReaderSparkJob(BaseDataFrameReaderSparkJob):
-	def __init__(self, spark_application):
-		super().__init__(
-			spark_application,
-			'com.liferay.headless.commerce.admin.order.dto.v1_0.Order', 'order'
-		)
-
-	def _post_process(self, data_frame):
-		return data_frame.selectExpr(
-			'id as orderId', 'EXPLODE(orderItems.sku) as sku'
-		)
-
-class FrequentPatternProductDataFrameReaderSparkJob(
-	BaseDataFrameReaderSparkJob
-):
-	def __init__(self, spark_application):
-		super().__init__(
-			spark_application,
-			'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
-			'product'
-		)
-
-	def _post_process(self, data_frame):
-		return data_frame.selectExpr(
-			'id AS CPDefinitionId', 'EXPLODE(skus.sku) AS sku'
-		)
-
-class FrequentPatternDataPreparationSparkJob(BaseSparkJob):
-	def __init__(self, spark_application):
-		super().__init__(spark_application)
-
-		self._log = logging.getLogger(self.__class__.__name__)
-
-	def run(self):
-		order_data_frame = self.spark_session.table('order')
-
-		product_data_frame = self.spark_session.table('product')
-
-		items_data_frame = order_data_frame.join(product_data_frame, on='sku')
-
-		items_grouped_data = items_data_frame.groupBy('orderId')
-
-		items_data_frame = items_grouped_data.agg(
-			collect_set('CPDefinitionId').alias('items')
-		)
-
-		items_data_frame.createOrReplaceTempView('items')
-
-		self.spark_session.catalog.cacheTable('items')
-
-class FrequentPatternRecommendationSparkJob(BaseSparkJob):
-	def __init__(self, spark_application):
-		super().__init__(spark_application)
-
-		self._log = logging.getLogger(self.__class__.__name__)
-
-	def run(self):
-		order_data_frame = self.spark_session.table('order')
-
-		distinct_items_data_frame = order_data_frame.select('sku')
-
-		distinct_items_data_frame = distinct_items_data_frame.distinct()
-
-		distinct_items_count = distinct_items_data_frame.count()
-
-		ordered_items_count = order_data_frame.count()
-
-		self._log.info(
-			"There {} distinct items over {} ordered items".format(
-				distinct_items_count, ordered_items_count
-			)
-		)
-
-		min_support_factor = self.spark_application_configuration.get(
-			'frequent.pattern.recommendation.min.support.factor'
-		)
-
-		min_support = (distinct_items_count / ordered_items_count)
-		min_support = min_support * min_support_factor
-
-		min_confidence = self.spark_application_configuration.get(
-			'frequent.pattern.recommendation.min.confidence'
-		)
-
-		fp_growth = FPGrowth(
-			minSupport=min_support, minConfidence=min_confidence
-		)
-
-		items_data_frame = self.spark_session.table('items')
-
-		fp_growth_model = fp_growth.fit(items_data_frame)
-
-		association_rules = fp_growth_model.associationRules
-
-		association_rules.createOrReplaceTempView('association_rules')
-
-		self.spark_session.catalog.cacheTable('association_rules')
-
-		frequent_itemsets = fp_growth_model.freqItemsets
-
-		frequent_itemsets.createOrReplaceTempView('frequent_itemsets')
-
-		self.spark_session.catalog.cacheTable('frequent_itemsets')
-
-class FrequentPatternPostProcessRecommendationSparkJob(BaseSparkJob):
-	def __init__(self, spark_application):
-		super().__init__(spark_application)
-
-	def run(self):
-		association_rules_data_frame = self.spark_session.table(
-			'association_rules'
-		)
-
-		frequent_itemsets_data_frame = self.spark_session.table(
-			'frequent_itemsets'
-		)
-
-		order_data_frame = self.spark_session.table('order')
-
-		order_count = order_data_frame.count()
-
-		association_rules_data_frame = association_rules_data_frame.filter(
-			'lift > 1.0'
-		)
-
-		association_rules_data_frame = association_rules_data_frame.join(
-			frequent_itemsets_data_frame.withColumnRenamed(
-				'items', 'antecedent'
-			),
-			on='antecedent'
-		)
-
-		association_rules_data_frame = association_rules_data_frame.withColumnRenamed(
-			'freq', 'antecedent_freq'
-		)
-
-		association_rules_data_frame = association_rules_data_frame.withColumn(
-			'antecedent_support',
-			expr('antecedent_freq / {}'.format(order_count))
-		)
-
-		association_rules_data_frame = association_rules_data_frame.withColumn(
-			'consequent_support', expr('confidence/lift')
-		)
-
-		association_rules_data_frame = association_rules_data_frame.withColumn(
-			'lambda',
-			expr(
-				'GREATEST(antecedent_support + consequent_support - 1, '
-				'1 / {})'.format(order_count)
-			)
-		)
-
-		association_rules_data_frame = association_rules_data_frame.withColumn(
-			'delta',
-			expr('1 / GREATEST(antecedent_support, consequent_support)')
-		)
-
-		association_rules_data_frame = association_rules_data_frame.withColumn(
-			'stdLift', expr('(lift - lambda)/(delta - lambda)')
-		)
-
-		association_rules_data_frame = association_rules_data_frame.select(
-			'antecedent',
-			explode('consequent').alias('consequent'), 'confidence', 'lift',
-			'stdLift'
-		)
-
-		window_spec = Window.partitionBy('antecedent')
-
-		window_spec = window_spec.orderBy(
-			col('stdLift').desc(),
-			col('lift').desc()
-		)
-
-		association_rules_data_frame = association_rules_data_frame.withColumn(
-			'row_num',
-			row_number().over(window_spec)
-		)
-
-		itemset_items_max_count = self.spark_application_configuration.get(
-			'frequent.pattern.recommendation.itemset.items.max.count'
-		)
-
-		association_rules_data_frame = association_rules_data_frame.filter(
-			'row_num <= {}'.format(itemset_items_max_count)
-		)
-
-		frequent_pattern_recommendation_data_frame = association_rules_data_frame.drop(
-			'row_num'
-		)
-
-		frequent_pattern_recommendation_data_frame.createOrReplaceTempView(
-			'frequent_pattern_recommendation'
-		)
-
-		self.spark_session.catalog.cacheTable('frequent_pattern_recommendation')
-
-class FrequentPatternRecommendationDataFrameWriterSparkJob(
-	BaseDataFrameWriterSparkJob
-):
-	def __init__(self, spark_application):
-		super().__init__(
-			spark_application,
-			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
-			'FrequentPatternRecommendation', 'frequent_pattern_recommendation'
-		)
-
-	def pre_process(self, data_frame):
-		data_frame = data_frame.withColumnRenamed('antecedent', 'antecedentIds')
-		data_frame = data_frame.withColumn(
-			'antecedentIdsLength', col_size('antecedentIds')
-		)
-		data_frame = data_frame.drop('confidence')
-		data_frame = data_frame.drop('lift')
-		data_frame = data_frame.withColumnRenamed(
-			'consequent', 'recommendedEntryClassPK'
-		)
-		data_frame = data_frame.withColumnRenamed('stdLift', 'score')
-
-		return data_frame

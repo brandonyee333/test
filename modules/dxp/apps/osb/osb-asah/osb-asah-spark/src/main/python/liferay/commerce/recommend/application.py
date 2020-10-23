@@ -13,20 +13,20 @@ from abc import ABCMeta, \
 	abstractmethod
 
 from liferay.commerce.configuration import CommerceConfiguration
-from liferay.commerce.recommend.job import ContextUserInteractionRecommendationDataFrameWriterSparkJob, \
+from liferay.commerce.recommend.job import ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob, \
 	FrequentPatternDataPreparationSparkJob, \
-	FrequentPatternOrderDataFrameReaderSparkJob, \
+	FrequentPatternOrderJSONDataFrameReaderSparkJob, \
 	FrequentPatternPostProcessRecommendationSparkJob, \
-	FrequentPatternProductDataFrameReaderSparkJob, \
-	FrequentPatternRecommendationDataFrameWriterSparkJob, \
+	FrequentPatternProductJSONDataFrameReaderSparkJob, \
+	FrequentPatternRecommendationJSONDataFrameWriterSparkJob, \
 	FrequentPatternRecommendationSparkJob, \
-	OrderInteractionDataFrameReaderSparkJob, \
-	ProductContentDataFrameReaderSparkJob, \
+	OrderInteractionJSONDataFrameReaderSparkJob, \
+	ProductContentJSONDataFrameReaderSparkJob, \
 	ProductContentPipelineSparkJob, \
-	ProductContentRecommendationDataFrameWriter, \
+	ProductContentRecommendationJSONDataFrameWriter, \
 	ProductContentRecommendationSparkJob, \
-	ProductInteractionDataFrameReaderSparkJob, \
-	ProductInteractionRecommendationDataFrameWriterSparkJob, \
+	ProductInteractionJSONDataFrameReaderSparkJob, \
+	ProductInteractionRecommendationJSONDataFrameWriterSparkJob, \
 	ProductInteractionRecommendationSparkJob, \
 	UserInteractionCollaborativeFilteringSparkJob, \
 	UserInteractionDataPreparationSparkJob
@@ -101,12 +101,19 @@ class FrequentPatternRecommendationApplication(BaseCommerceSparkApplication):
 	def _create_spark_job_pipeline(self):
 		jobs = list()
 
-		jobs.append(FrequentPatternOrderDataFrameReaderSparkJob(self))
-		jobs.append(FrequentPatternProductDataFrameReaderSparkJob(self))
+		jobs.append(FrequentPatternOrderJSONDataFrameReaderSparkJob(self))
+
+		jobs.append(FrequentPatternProductJSONDataFrameReaderSparkJob(self))
+
 		jobs.append(FrequentPatternDataPreparationSparkJob(self))
+
 		jobs.append(FrequentPatternRecommendationSparkJob(self))
+
 		jobs.append(FrequentPatternPostProcessRecommendationSparkJob(self))
-		jobs.append(FrequentPatternRecommendationDataFrameWriterSparkJob(self))
+
+		jobs.append(
+			FrequentPatternRecommendationJSONDataFrameWriterSparkJob(self)
+		)
 
 		return SparkJobPipeline(jobs)
 
@@ -119,10 +126,13 @@ class ProductContentRecommendationApplication(BaseCommerceSparkApplication):
 	def _create_spark_job_pipeline(self):
 		jobs = list()
 
-		jobs.append(ProductContentDataFrameReaderSparkJob(self))
+		jobs.append(ProductContentJSONDataFrameReaderSparkJob(self))
+
 		jobs.append(ProductContentPipelineSparkJob(self))
+
 		jobs.append(ProductContentRecommendationSparkJob(self))
-		jobs.append(ProductContentRecommendationDataFrameWriter(self))
+
+		jobs.append(ProductContentRecommendationJSONDataFrameWriter(self))
 
 		return SparkJobPipeline(jobs)
 
@@ -136,12 +146,18 @@ class UserInteractionRecommendationApplication(BaseCommerceSparkApplication):
 	def _create_spark_job_pipeline(self):
 		jobs = list()
 
-		jobs.append(ProductInteractionDataFrameReaderSparkJob(self))
-		jobs.append(OrderInteractionDataFrameReaderSparkJob(self))
+		jobs.append(ProductInteractionJSONDataFrameReaderSparkJob(self))
+
+		jobs.append(OrderInteractionJSONDataFrameReaderSparkJob(self))
+
 		jobs.append(UserInteractionDataPreparationSparkJob(self))
+
 		jobs.append(UserInteractionCollaborativeFilteringSparkJob(self))
+
 		jobs.append(
-			ContextUserInteractionRecommendationDataFrameWriterSparkJob(self)
+			ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob(
+				self
+			)
 		)
 
 		product_interaction_recommendation_enable = self.configuration.get(
@@ -150,8 +166,11 @@ class UserInteractionRecommendationApplication(BaseCommerceSparkApplication):
 
 		if product_interaction_recommendation_enable:
 			jobs.append(ProductInteractionRecommendationSparkJob(self))
+
 			jobs.append(
-				ProductInteractionRecommendationDataFrameWriterSparkJob(self)
+				ProductInteractionRecommendationJSONDataFrameWriterSparkJob(
+					self
+				)
 			)
 
 		return SparkJobPipeline(jobs)
