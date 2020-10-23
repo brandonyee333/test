@@ -403,18 +403,12 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 		JSONObject eventPropertiesJSONObject = new JSONObject();
 
-		for (String eventPropertyKey :
-				new String[] {"depth", "title", "viewDuration"}) {
+		for (String eventPropertyKey : _EVENT_PROPERTY_KEYS) {
+			String value = MapUtil.getString(
+				analyticsEvent.getEventProperties(), eventPropertyKey);
 
-			if (!StringUtils.isEmpty(
-					MapUtil.getString(
-						analyticsEvent.getEventProperties(),
-						eventPropertyKey))) {
-
-				eventPropertiesJSONObject.put(
-					eventPropertyKey,
-					MapUtil.getString(
-						analyticsEvent.getEventProperties(), eventPropertyKey));
+			if (value != null) {
+				eventPropertiesJSONObject.put(eventPropertyKey, value);
 			}
 		}
 
@@ -659,6 +653,10 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 		return userSessionJSONObject.getString("id");
 	}
+
+	private static final String[] _EVENT_PROPERTY_KEYS = {
+		"depth", "title", "viewDuration"
+	};
 
 	private static final Log _log = LogFactory.getLog(ActivitiesNanite.class);
 
