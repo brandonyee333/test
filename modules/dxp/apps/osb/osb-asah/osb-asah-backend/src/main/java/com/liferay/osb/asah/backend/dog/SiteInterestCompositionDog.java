@@ -31,9 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -208,8 +205,6 @@ public class SiteInterestCompositionDog {
 			channelId, dataSourceId, timeRange, timeZoneId);
 
 		for (Map.Entry<String, Set<String>> entry : assets.entrySet()) {
-			String keyword = entry.getKey();
-
 			Set<String> userIds = new HashSet<>();
 
 			for (String assetId : entry.getValue()) {
@@ -219,14 +214,10 @@ public class SiteInterestCompositionDog {
 			}
 
 			if (userIds.isEmpty()) {
-				if (_log.isInfoEnabled()) {
-					_log.info("No users found for keyword " + keyword);
-				}
-
 				continue;
 			}
 
-			keywords.put(keyword, userIds);
+			keywords.put(entry.getKey(), userIds);
 		}
 
 		return keywords;
@@ -356,9 +347,6 @@ public class SiteInterestCompositionDog {
 
 		return users;
 	}
-
-	private static final Log _log = LogFactory.getLog(
-		SiteInterestCompositionDog.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
