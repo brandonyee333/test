@@ -146,7 +146,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			// https://issues.liferay.com/browse/LPS-120753
 
 			if (Validator.isNull(jndiName)) {
-				testDatabaseClass(properties);
+				testDatabaseClass(driverClassName);
 			}
 
 			try {
@@ -181,7 +181,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			}
 		}
 		else {
-			testDatabaseClass(properties);
+			testDatabaseClass(driverClassName);
 
 			_waitForJDBCConnection(properties);
 		}
@@ -586,9 +586,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			ConnectionPoolMetrics.class, connectionPoolMetrics);
 	}
 
-	protected void testDatabaseClass(Properties properties) throws Exception {
-		String driverClassName = properties.getProperty("driverClassName");
-
+	protected void testDatabaseClass(String driverClassName) throws Exception {
 		try {
 			Class.forName(driverClassName);
 		}
