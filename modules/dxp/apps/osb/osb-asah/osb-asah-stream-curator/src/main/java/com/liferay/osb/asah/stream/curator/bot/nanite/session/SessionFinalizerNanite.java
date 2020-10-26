@@ -35,6 +35,7 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeSessio
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -62,7 +63,7 @@ public class SessionFinalizerNanite implements Nanite {
 	@Override
 	public void run() {
 		try {
-			_run();
+			run(false);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -84,29 +85,33 @@ public class SessionFinalizerNanite implements Nanite {
 		return osbAsahMarkerJSONObject;
 	}
 
-	private QueryBuilder _getQueryBuilder() {
-		return BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("completed", false)
-		).filter(
-			BoolQueryBuilderUtil.should(
-				QueryBuilders.rangeQuery(
-					"lastEventDate"
-				).lt(
-					"now-30m"
-				)
-			).should(
-				QueryBuilders.rangeQuery(
-					"lastEventDate"
-				).lt(
-					"now/d"
-				).timeZone(
-					_timeZoneDog.getTimeZoneId()
-				)
-			)
-		);
+	private QueryBuilder _getQueryBuilder(boolean force) {
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("completed", false));
+
+		if (!force) {
+			boolQueryBuilder.filter(
+				BoolQueryBuilderUtil.should(
+					QueryBuilders.rangeQuery(
+						"lastEventDate"
+					).lt(
+						"now-30m"
+					)
+				).should(
+					QueryBuilders.rangeQuery(
+						"lastEventDate"
+					).lt(
+						"now/d"
+					).timeZone(
+						_timeZoneDog.getTimeZoneId()
+					)
+				));
+		}
+
+		return boolQueryBuilder;
 	}
 
-	private void _run() throws Exception {
+	public void run(boolean force) throws Exception {
 		JSONObject osbAsahMarkerJSONObject = _getOSBAsahMarkerJSONObject();
 
 		String lastSuccessfulSessionFinalizerDate =
@@ -145,7 +150,7 @@ public class SessionFinalizerNanite implements Nanite {
 				"user-sessions",
 				searchSourceBuilder -> {
 					searchSourceBuilder.fetchSource(null, "interactions");
-					searchSourceBuilder.query(_getQueryBuilder());
+					searchSourceBuilder.query(_getQueryBuilder(force));
 					searchSourceBuilder.size(50);
 				});
 
