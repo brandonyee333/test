@@ -731,8 +731,7 @@ public class DLFileEntryIndexer
 					"InputStreamSanitizer");
 
 			Method sanitizeMethod = ReflectionUtil.getDeclaredMethod(
-				inputStreamSanitizer.getClass(), "sanitize",
-				InputStream.class);
+				inputStreamSanitizer.getClass(), "sanitize", InputStream.class);
 
 			return (InputStream)sanitizeMethod.invoke(
 				inputStreamSanitizer, dlFileVersion.getContentStream(false));
