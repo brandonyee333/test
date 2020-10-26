@@ -1,0 +1,40 @@
+[
+	{
+		"browserName": "Firefox",
+		"channelId": "1",
+		"country": "USA",
+		"dataSourceId": "1",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"eventDate": "${now-29m}",
+		"indirectAccess": 1,
+		"individualId": "1",
+		"lastEventDate": "${now-29m}",
+		"platformName": "Linux",
+		"primaryKey": "4d1edbcc014b40bcca80c0ce29fff970947bccc32a154bf4d0d798c1b98e360f",
+		"region": "California",
+		"sessionId": null,
+		"title": "Liferay DXP",
+		"url": "http://192.168.108.90:8089",
+		"userId": "1"
+	},
+	{
+		"browserName": "Chrome",
+		"channelId": "1",
+		"country": "Brazil",
+		"dataSourceId": "1",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"eventDate": "${now-9m}",
+		"indirectAccess": 1,
+		"individualId": "2",
+		"lastEventDate": "${now-9m}",
+		"platformName": "Windows",
+		"primaryKey": "fe24fc8b1c551951d729d76227c84ee65a10894d90a9d5fb652b26129b848d81",
+		"region": "Pernambuco",
+		"sessionId": null,
+		"title": "Liferay DXP",
+		"url": "http://192.168.108.90:8089",
+		"userId": "2"
+	}
+]
