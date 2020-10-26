@@ -70,47 +70,6 @@ public class SessionFinalizerNanite implements Nanite {
 		}
 	}
 
-	private JSONObject _getOSBAsahMarkerJSONObject() {
-		JSONObject osbAsahMarkerJSONObject =
-			_cerebroInfoElasticsearchInvoker.fetch(
-				"OSBAsahMarkers", "SessionNanite");
-
-		if (osbAsahMarkerJSONObject == null) {
-			osbAsahMarkerJSONObject = JSONUtil.put("id", "SessionNanite");
-
-			_cerebroInfoElasticsearchInvoker.add(
-				"OSBAsahMarkers", osbAsahMarkerJSONObject);
-		}
-
-		return osbAsahMarkerJSONObject;
-	}
-
-	private QueryBuilder _getQueryBuilder(boolean force) {
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("completed", false));
-
-		if (!force) {
-			boolQueryBuilder.filter(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.rangeQuery(
-						"lastEventDate"
-					).lt(
-						"now-30m"
-					)
-				).should(
-					QueryBuilders.rangeQuery(
-						"lastEventDate"
-					).lt(
-						"now/d"
-					).timeZone(
-						_timeZoneDog.getTimeZoneId()
-					)
-				));
-		}
-
-		return boolQueryBuilder;
-	}
-
 	public void run(boolean force) throws Exception {
 		JSONObject osbAsahMarkerJSONObject = _getOSBAsahMarkerJSONObject();
 
@@ -180,6 +139,47 @@ public class SessionFinalizerNanite implements Nanite {
 			"OSBAsahMarkers",
 			osbAsahMarkerJSONObject.put(
 				"lastSuccessfulSessionFinalizerDate", dateString));
+	}
+
+	private JSONObject _getOSBAsahMarkerJSONObject() {
+		JSONObject osbAsahMarkerJSONObject =
+			_cerebroInfoElasticsearchInvoker.fetch(
+				"OSBAsahMarkers", "SessionNanite");
+
+		if (osbAsahMarkerJSONObject == null) {
+			osbAsahMarkerJSONObject = JSONUtil.put("id", "SessionNanite");
+
+			_cerebroInfoElasticsearchInvoker.add(
+				"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		}
+
+		return osbAsahMarkerJSONObject;
+	}
+
+	private QueryBuilder _getQueryBuilder(boolean force) {
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("completed", false));
+
+		if (!force) {
+			boolQueryBuilder.filter(
+				BoolQueryBuilderUtil.should(
+					QueryBuilders.rangeQuery(
+						"lastEventDate"
+					).lt(
+						"now-30m"
+					)
+				).should(
+					QueryBuilders.rangeQuery(
+						"lastEventDate"
+					).lt(
+						"now/d"
+					).timeZone(
+						_timeZoneDog.getTimeZoneId()
+					)
+				));
+		}
+
+		return boolQueryBuilder;
 	}
 
 	private static final Log _log = LogFactory.getLog(
