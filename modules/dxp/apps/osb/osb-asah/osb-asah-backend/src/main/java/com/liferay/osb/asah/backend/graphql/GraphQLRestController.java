@@ -101,7 +101,8 @@ public class GraphQLRestController {
 		String query, Map<String, Object> variables) {
 
 		if (!query.startsWith("{pagesCount") &&
-			!query.startsWith("query IndividualMetrics")) {
+			!query.startsWith("query IndividualMetrics") &&
+			!query.startsWith("query CustomAssetsList")) {
 
 			JSONObject variablesJSONObject = new JSONObject(variables);
 
