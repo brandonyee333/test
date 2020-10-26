@@ -380,13 +380,16 @@ public class AnalyticsConfigurationTrackerImpl
 		_userLocalService.updateUser(user);
 	}
 
-	private void _addAnalyticsMessages(List<? extends BaseModel> baseModels) {
+	private void _addAnalyticsMessages(
+		String action, List<? extends BaseModel> baseModels) {
+
 		if (baseModels.isEmpty()) {
 			return;
 		}
 
 		Message message = new Message();
 
+		message.put("action", action);
 		message.put("command", AnalyticsMessagesProcessorCommand.ADD);
 
 		BaseModel baseModel = baseModels.get(0);
@@ -466,9 +469,9 @@ public class AnalyticsConfigurationTrackerImpl
 			}
 		}
 
-		_addAnalyticsMessages(analyticsUsers);
+		_addAnalyticsMessages("update", analyticsUsers);
 
-		_addAnalyticsMessages(contacts);
+		_addAnalyticsMessages("update", contacts);
 	}
 
 	private void _deactivate() {
@@ -750,7 +753,7 @@ public class AnalyticsConfigurationTrackerImpl
 		}
 
 		if (!expandoColumns.isEmpty()) {
-			_addAnalyticsMessages(expandoColumns);
+			_addAnalyticsMessages("add", expandoColumns);
 		}
 	}
 
