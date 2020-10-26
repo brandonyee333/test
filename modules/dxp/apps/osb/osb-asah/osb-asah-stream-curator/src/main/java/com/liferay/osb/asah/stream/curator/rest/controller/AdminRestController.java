@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author André Miranda
  */
-@Profile({"dev", "test"})
+@Profile("!prod")
 @RequestMapping("/admin")
 @RestController(
 	"com.liferay.osb.asah.stream.curator.rest.controller.AdminRestController"

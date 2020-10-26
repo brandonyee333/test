@@ -68,7 +68,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Vishal Reddy
  * @author Matthew Kong
  */
-@Profile({"dev", "test"})
+@Profile("!prod")
 @RequestMapping("/admin")
 @RestController(
 	"com.liferay.osb.asah.backend.rest.controller.AdminRestController"
