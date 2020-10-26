@@ -70,7 +70,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Profile({"dev", "test"})
 @RequestMapping("/admin")
-@RestController
+@RestController(
+	"com.liferay.osb.asah.backend.rest.controller.AdminRestController"
+)
 public class AdminRestController extends BaseRestController {
 
 	@DeleteMapping("/cache")

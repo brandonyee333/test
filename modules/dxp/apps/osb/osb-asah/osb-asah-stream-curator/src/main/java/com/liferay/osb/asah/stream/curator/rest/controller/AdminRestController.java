@@ -30,7 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Profile("dev")
 @RequestMapping("/admin")
-@RestController
+@RestController(
+	"com.liferay.osb.asah.stream.curator.rest.controller.AdminRestController"
+)
 public class AdminRestController {
 
 	@PostMapping("/sessions/close")
