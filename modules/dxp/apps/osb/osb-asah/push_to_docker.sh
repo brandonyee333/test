@@ -55,6 +55,9 @@ function build_docker_image {
 		echo "" >> ${file_name}/Dockerfile
 		echo "COPY ./build/gcp_credentials.json gcp_credentials.json" >> ${file_name}/Dockerfile
 		echo "ENV GOOGLE_APPLICATION_CREDENTIALS=/root/gcp_credentials.json" >> ${file_name}/Dockerfile
+
+		echo "" >> ${file_name}/Dockerfile
+		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
 	fi
 
 	docker build \
