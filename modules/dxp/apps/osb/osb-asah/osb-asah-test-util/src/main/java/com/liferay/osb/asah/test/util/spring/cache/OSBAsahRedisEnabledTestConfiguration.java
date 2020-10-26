@@ -68,7 +68,7 @@ public class OSBAsahRedisEnabledTestConfiguration {
 	}
 
 	@Bean
-	@Profile("!default")
+	@Profile("!prod")
 	public HealthIndicator redisHealthIndicator() {
 		return () -> null;
 	}

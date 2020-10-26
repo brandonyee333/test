@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @MonolithExclude
-@Profile("default")
+@Profile({"dev", "prod"})
 public class UpgradeCheck {
 
 	@PostConstruct
