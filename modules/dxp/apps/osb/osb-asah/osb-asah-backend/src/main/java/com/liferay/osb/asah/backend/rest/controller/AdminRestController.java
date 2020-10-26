@@ -52,9 +52,9 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,7 +68,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Vishal Reddy
  * @author Matthew Kong
  */
-@ConditionalOnProperty("osb.asah.backend.admin.rest.controller.enabled")
+@Profile({"dev", "test"})
 @RequestMapping("/admin")
 @RestController
 public class AdminRestController extends BaseRestController {

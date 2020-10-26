@@ -50,7 +50,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 
 /**
  * @author Vishal Reddy
@@ -58,9 +57,6 @@ import org.springframework.test.context.TestPropertySource;
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @EnableCaching
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@TestPropertySource(
-	properties = "osb.asah.backend.admin.rest.controller.enabled=true"
-)
 public class AdminRestControllerTest {
 
 	@Test
