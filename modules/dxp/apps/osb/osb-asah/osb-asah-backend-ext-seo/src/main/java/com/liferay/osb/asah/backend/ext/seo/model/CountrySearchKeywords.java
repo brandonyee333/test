@@ -24,6 +24,9 @@ import java.util.Objects;
  */
 public class CountrySearchKeywords {
 
+	public CountrySearchKeywords() {
+	}
+
 	public CountrySearchKeywords(
 		String countryCode, List<SearchKeyword> searchKeywords) {
 
