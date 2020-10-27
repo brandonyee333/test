@@ -30,6 +30,10 @@ definition {
 
 		SelectFrameTop();
 
+		if (IsElementPresent(locator1 = "IFrame#DIALOG")) {
+			IFrame.selectDialogFrame();
+		}
+
 		var key_categoryName = "${categoryName}";
 
 		Click(locator1 = "RelatedassetsConfiguration#CATEGORIES_WINDOW_CATEGORY_CHECKBOX");
