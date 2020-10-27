@@ -77,10 +77,12 @@ public class AdminRestController extends BaseRestController {
 
 	@DeleteMapping("/cache")
 	public void clearCache() {
-		for (String cacheName : _cacheManager.getCacheNames()) {
-			Cache cache = _cacheManager.getCache(cacheName);
+		if (_cacheManager != null) {
+			for (String cacheName : _cacheManager.getCacheNames()) {
+				Cache cache = _cacheManager.getCache(cacheName);
 
-			cache.clear();
+				cache.clear();
+			}
 		}
 	}
 
@@ -250,7 +252,7 @@ public class AdminRestController extends BaseRestController {
 	private static final Log _log = LogFactory.getLog(
 		AdminRestController.class);
 
-	@Autowired
+	@Autowired(required = false)
 	private CacheManager _cacheManager;
 
 	@Autowired
