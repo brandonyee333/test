@@ -27,10 +27,8 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -106,11 +104,11 @@ public class AccountReaderImpl implements AccountReader {
 	}
 
 	public int getStatus(Account account) {
-		String statusLabel = StringUtil.toLowerCase(
-			StringUtil.replace(
-				account.getStatusAsString(), CharPool.SPACE, CharPool.DASH));
+		if (account.getStatus() == Account.Status.ACTIVE) {
+			return WorkflowConstants.STATUS_APPROVED;
+		}
 
-		return WorkflowConstants.getLabelStatus(statusLabel);
+		return WorkflowConstants.STATUS_CLOSED;
 	}
 
 	public String getSubscriptionState(List<ProductPurchase> productPurchases) {

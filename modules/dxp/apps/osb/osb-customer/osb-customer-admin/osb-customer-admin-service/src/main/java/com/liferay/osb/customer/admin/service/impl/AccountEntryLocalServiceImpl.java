@@ -238,7 +238,6 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.setActiveTicketSupport(false);
 		}
 
-		accountEntry.setTicketSupportEndDate(ticketSupportEndDate);
 		accountEntry.setStatus(status);
 
 		accountEntry = accountEntryPersistence.update(accountEntry);

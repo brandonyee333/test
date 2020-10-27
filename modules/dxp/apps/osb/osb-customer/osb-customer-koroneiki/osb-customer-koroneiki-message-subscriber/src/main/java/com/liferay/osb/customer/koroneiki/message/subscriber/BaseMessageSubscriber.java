@@ -153,8 +153,8 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 			return true;
 		}
 
-		if (name.startsWith("Digital Enterprise") ||
-			name.startsWith("Liferay Commerce") || name.startsWith("Portal")) {
+		if (name.startsWith("DXP") ||
+			name.startsWith("Commerce") || name.startsWith("Portal")) {
 
 			return true;
 		}
