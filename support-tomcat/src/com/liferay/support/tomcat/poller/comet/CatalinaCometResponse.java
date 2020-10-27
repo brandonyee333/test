@@ -17,77 +17,38 @@ package com.liferay.support.tomcat.poller.comet;
 import com.liferay.portal.kernel.poller.comet.CometException;
 import com.liferay.portal.kernel.poller.comet.CometResponse;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Writer;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.catalina.comet.CometEvent;
 
 /**
  * @author Edward Han
  * @author Brian Wing Shun Chan
+ * @deprecated As of Wilberforce (7.0.x), with no direct replacement
  */
+@Deprecated
 public class CatalinaCometResponse implements CometResponse {
 
 	public CatalinaCometResponse(CometEvent cometEvent) {
-		_response = cometEvent.getHttpServletResponse();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void close() {
-		synchronized (this) {
-			_open = false;
-		}
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean isOpen() {
-		return _open;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void writeData(byte[] data) throws CometException {
-		synchronized (this) {
-			if (!_open) {
-				throw new CometException("Stream is closed");
-			}
-
-			try {
-				OutputStream outputStream = _response.getOutputStream();
-
-				outputStream.write(data);
-
-				outputStream.flush();
-			}
-			catch (IOException ioe) {
-				throw new CometException(ioe);
-			}
-		}
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void writeData(String data) throws CometException {
-		synchronized (this) {
-			if (!_open) {
-				throw new CometException("Writer is closed");
-			}
-
-			try {
-				Writer writer = _response.getWriter();
-
-				writer.write(data);
-
-				writer.flush();
-			}
-			catch (IOException ioe) {
-				throw new CometException(ioe);
-			}
-		}
+		throw new UnsupportedOperationException();
 	}
-
-	private boolean _open = true;
-	private final HttpServletResponse _response;
 
 }

@@ -19,39 +19,35 @@ import com.liferay.portal.kernel.poller.comet.BaseCometRequest;
 import java.util.Enumeration;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.catalina.comet.CometEvent;
 
 /**
  * @author Edward Han
  * @author Brian Wing Shun Chan
+ * @deprecated As of Wilberforce (7.0.x), with no direct replacement
  */
+@Deprecated
 public class CatalinaCometRequest extends BaseCometRequest {
 
 	public CatalinaCometRequest(CometEvent cometEvent) {
-		super(cometEvent.getHttpServletRequest());
+		super(null);
+
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getParameter(String name) {
-		HttpServletRequest request = getRequest();
-
-		return request.getParameter(name);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Map<String, String[]> getParameterMap() {
-		HttpServletRequest request = getRequest();
-
-		return request.getParameterMap();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Enumeration<String> getParameterNames() {
-		HttpServletRequest request = getRequest();
-
-		return request.getParameterNames();
+		throw new UnsupportedOperationException();
 	}
 
 }

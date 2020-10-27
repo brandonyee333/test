@@ -14,56 +14,35 @@
 
 package com.liferay.support.tomcat.poller.comet;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.poller.comet.BaseCometSession;
-
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.comet.CometEvent;
 
 /**
  * @author Edward Han
  * @author Brian Wing Shun Chan
+ * @deprecated As of Wilberforce (7.0.x), with no direct replacement
  */
+@Deprecated
 public class CatalinaCometSession extends BaseCometSession {
 
 	public CatalinaCometSession(CometEvent cometEvent) {
-		_cometEvent = cometEvent;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Object getAttribute(String name) {
-		HttpServletRequest request = _cometEvent.getHttpServletRequest();
-
-		HttpSession session = request.getSession();
-
-		return session.getAttribute(name);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setAttribute(String name, Object object) {
-		HttpServletRequest request = _cometEvent.getHttpServletRequest();
-
-		HttpSession session = request.getSession();
-
-		session.setAttribute(name, object);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	protected void doClose() {
-		try {
-			_cometEvent.close();
-		}
-		catch (IllegalStateException ise) {
-		}
-		catch (IOException ioe) {
-			throw new SystemException(ioe);
-		}
+		throw new UnsupportedOperationException();
 	}
-
-	private final CometEvent _cometEvent;
 
 }

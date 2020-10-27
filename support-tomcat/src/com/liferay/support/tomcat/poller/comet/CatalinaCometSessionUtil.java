@@ -14,32 +14,17 @@
 
 package com.liferay.support.tomcat.poller.comet;
 
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.catalina.comet.CometEvent;
 
 /**
  * @author Edward Han
+ * @deprecated As of Wilberforce (7.0.x), with no direct replacement
  */
+@Deprecated
 public class CatalinaCometSessionUtil {
 
 	public static String getSessionId(CometEvent cometEvent) {
-		HttpServletRequest request = cometEvent.getHttpServletRequest();
-
-		Object sessionId = request.getAttribute(_CATALINA_COMET_CONNECTION_ID);
-
-		if ((sessionId == null) || !(sessionId instanceof String)) {
-			sessionId = PortalUUIDUtil.generate();
-
-			request.setAttribute(_CATALINA_COMET_CONNECTION_ID, sessionId);
-		}
-
-		return (String)sessionId;
+		throw new UnsupportedOperationException();
 	}
-
-	private static final String _CATALINA_COMET_CONNECTION_ID =
-		"CATALINA_COMET_CONNECTION_ID";
 
 }
