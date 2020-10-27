@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
@@ -254,6 +255,12 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 			"Autor"
 		);
 
+		when(
+			_language.get(locale, "default-language")
+		).thenReturn(
+			"Idioma"
+		);
+
 		LocalizedValue localizedValue1 = new LocalizedValue();
 
 		localizedValue1.addString(locale, "Campo 1");
@@ -293,12 +300,13 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 			ddmFormInstanceRecordExporterImpl.getDDMFormFieldsLabel(
 				ddmFormFieldMap, locale);
 
+		Assert.assertEquals("Autor", ddmFormFieldsLabel.get("author"));
+		Assert.assertEquals("Idioma", ddmFormFieldsLabel.get("languageId"));
+		Assert.assertEquals(
+			"Data de Modificação", ddmFormFieldsLabel.get("modifiedDate"));
 		Assert.assertEquals("Campo 1", ddmFormFieldsLabel.get("reference1"));
 		Assert.assertEquals("Campo 2", ddmFormFieldsLabel.get("reference2"));
 		Assert.assertEquals("Estado", ddmFormFieldsLabel.get("status"));
-		Assert.assertEquals(
-			"Data de Modificação", ddmFormFieldsLabel.get("modifiedDate"));
-		Assert.assertEquals("Autor", ddmFormFieldsLabel.get("author"));
 	}
 
 	@Test
@@ -481,8 +489,8 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 		Map<String, String> valuesMap = ddmFormFieldValues.get(0);
 
 		Assert.assertEquals("User Name", valuesMap.get("author"));
-		Assert.assertEquals(StringPool.BLANK, valuesMap.get("reference1"));
-		Assert.assertEquals("value", valuesMap.get("reference2"));
+		Assert.assertEquals(
+			LocaleUtil.US.toString(), valuesMap.get("languageId"));
 
 		Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(
 			locale);
@@ -491,6 +499,8 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 
 		Assert.assertEquals(modifiedDate, valuesMap.get("modifiedDate"));
 
+		Assert.assertEquals(StringPool.BLANK, valuesMap.get("reference1"));
+		Assert.assertEquals("value", valuesMap.get("reference2"));
 		Assert.assertEquals("aprovado", valuesMap.get("status"));
 
 		InOrder inOrder = Mockito.inOrder(
