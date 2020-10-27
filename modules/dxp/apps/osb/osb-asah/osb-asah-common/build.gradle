@@ -25,9 +25,9 @@ configurations.all {
 }
 
 dependencies {
-	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jdk8", version: "2.8.4"
-	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-json-org", version: "2.8.4"
-	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jsr310", version: "2.8.4"
+	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jdk8", version: "2.9.8"
+	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-json-org", version: "2.9.8"
+	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jsr310", version: "2.9.8"
 	compile group: "com.google.cloud", name: "google-cloud-pubsub", version: "1.103.1"
 	compile group: "com.google.cloud", name: "google-cloud-storage", version: "1.107.0"
 	compile group: "com.joestelmach", name: "natty", version: "0.11"
