@@ -196,6 +196,12 @@ public class ReleaseToolDisplayContext {
 				ReleaseAssetCategoryProperty.VERSION));
 
 		for (AssetCategory assetCategory : assetCategories) {
+			if (_isCommerce() &&
+				(getAssetCategoryVersion(assetCategory) <= 7.2)) {
+
+				continue;
+			}
+
 			jsonArray.put(getRootAssetCategoryJSONObject(assetCategory));
 		}
 
@@ -254,6 +260,12 @@ public class ReleaseToolDisplayContext {
 		}
 
 		return jsonObject;
+	}
+
+	protected double getAssetCategoryVersion(AssetCategory assetCategory) {
+		JSONObject jsonObject = getAssetCategoryJSONObject(assetCategory);
+
+		return GetterUtil.getDouble(jsonObject.get("version"));
 	}
 
 	protected JSONObject getRootAssetCategoryJSONObject(
