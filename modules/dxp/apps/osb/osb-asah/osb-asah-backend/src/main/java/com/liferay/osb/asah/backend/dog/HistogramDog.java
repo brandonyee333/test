@@ -29,11 +29,9 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.petra.string.StringPool;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import java.util.Collections;
@@ -281,8 +279,9 @@ public class HistogramDog {
 	}
 
 	private String _getPreviousValueKey(Interval interval, String timestamp) {
-		LocalDateTime localDateTime = LocalDateTime.ofInstant(
-			Instant.parse(timestamp), ZoneOffset.UTC);
+		ZonedDateTime zonedDateTime = ZonedDateTime.parse(timestamp);
+
+		LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
 
 		if (Interval.WEEK.equals(interval)) {
 			LocalDate startLocalDate = localDateTime.toLocalDate();
