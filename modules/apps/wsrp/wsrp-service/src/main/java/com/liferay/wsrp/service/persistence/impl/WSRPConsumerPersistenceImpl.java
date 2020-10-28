@@ -2260,7 +2260,7 @@ public class WSRPConsumerPersistenceImpl
 		}
 
 		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
 		sb.append(_SQL_SELECT_WSRPCONSUMER_WHERE_PKS_IN);
 

@@ -806,7 +806,7 @@ public class ZendeskCategoryPersistenceImpl
 		}
 
 		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
 		sb.append(_SQL_SELECT_ZENDESKCATEGORY_WHERE_PKS_IN);
 

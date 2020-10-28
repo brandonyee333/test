@@ -819,7 +819,7 @@ public class LoopTopicPersistenceImpl
 		}
 
 		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
 		sb.append(_SQL_SELECT_LOOPTOPIC_WHERE_PKS_IN);
 

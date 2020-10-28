@@ -1,27 +1,24 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.release.tool.service.base;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.release.tool.model.ArtifactVersion;
 import com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalService;
 import com.liferay.osb.customer.release.tool.service.persistence.ArtifactVersionFinder;
 import com.liferay.osb.customer.release.tool.service.persistence.ArtifactVersionPersistence;
 import com.liferay.osb.customer.release.tool.service.persistence.JIRAComponentPersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -41,8 +38,10 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -62,21 +61,24 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.osb.customer.release.tool.service.impl.ArtifactVersionLocalServiceImpl
- * @see com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalServiceUtil
  * @generated
  */
-@ProviderType
 public abstract class ArtifactVersionLocalServiceBaseImpl
-	extends BaseLocalServiceImpl implements ArtifactVersionLocalService,
-		IdentifiableOSGiService {
+	extends BaseLocalServiceImpl
+	implements ArtifactVersionLocalService, IdentifiableOSGiService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalServiceUtil} to access the artifact version local service.
+	 * Never modify or reference this class directly. Use <code>ArtifactVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalServiceUtil</code>.
 	 */
 
 	/**
 	 * Adds the artifact version to the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ArtifactVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param artifactVersion the artifact version
 	 * @return the artifact version that was added
@@ -96,12 +98,17 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 * @return the new artifact version
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public ArtifactVersion createArtifactVersion(long artifactVersionId) {
 		return artifactVersionPersistence.create(artifactVersionId);
 	}
 
 	/**
 	 * Deletes the artifact version with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ArtifactVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param artifactVersionId the primary key of the artifact version
 	 * @return the artifact version that was removed
@@ -111,11 +118,16 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	@Override
 	public ArtifactVersion deleteArtifactVersion(long artifactVersionId)
 		throws PortalException {
+
 		return artifactVersionPersistence.remove(artifactVersionId);
 	}
 
 	/**
 	 * Deletes the artifact version from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ArtifactVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param artifactVersion the artifact version
 	 * @return the artifact version that was removed
@@ -124,6 +136,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	@Override
 	public ArtifactVersion deleteArtifactVersion(
 		ArtifactVersion artifactVersion) {
+
 		return artifactVersionPersistence.remove(artifactVersion);
 	}
 
@@ -131,8 +144,8 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(ArtifactVersion.class,
-			clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(
+			ArtifactVersion.class, clazz.getClassLoader());
 	}
 
 	/**
@@ -150,7 +163,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.release.tool.model.impl.ArtifactVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.release.tool.model.impl.ArtifactVersionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -159,17 +172,18 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end) {
-		return artifactVersionPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
+
+		return artifactVersionPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end);
 	}
 
 	/**
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.release.tool.model.impl.ArtifactVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.release.tool.model.impl.ArtifactVersionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -179,10 +193,12 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator) {
-		return artifactVersionPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		return artifactVersionPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -204,10 +220,11 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) {
-		return artifactVersionPersistence.countWithDynamicQuery(dynamicQuery,
-			projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection) {
+
+		return artifactVersionPersistence.countWithDynamicQuery(
+			dynamicQuery, projection);
 	}
 
 	@Override
@@ -225,12 +242,14 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	@Override
 	public ArtifactVersion getArtifactVersion(long artifactVersionId)
 		throws PortalException {
+
 		return artifactVersionPersistence.findByPrimaryKey(artifactVersionId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			new DefaultActionableDynamicQuery();
 
 		actionableDynamicQuery.setBaseLocalService(artifactVersionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
@@ -242,10 +261,14 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
+	public IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
 
-		indexableActionableDynamicQuery.setBaseLocalService(artifactVersionLocalService);
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			new IndexableActionableDynamicQuery();
+
+		indexableActionableDynamicQuery.setBaseLocalService(
+			artifactVersionLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
 		indexableActionableDynamicQuery.setModelClass(ArtifactVersion.class);
 
@@ -257,6 +280,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
+
 		actionableDynamicQuery.setBaseLocalService(artifactVersionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(ArtifactVersion.class);
@@ -270,12 +294,22 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-		return artifactVersionLocalService.deleteArtifactVersion((ArtifactVersion)persistedModel);
+
+		return artifactVersionLocalService.deleteArtifactVersion(
+			(ArtifactVersion)persistedModel);
 	}
 
+	public BasePersistence<ArtifactVersion> getBasePersistence() {
+		return artifactVersionPersistence;
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
+
 		return artifactVersionPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -283,7 +317,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 * Returns a range of all the artifact versions.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.release.tool.model.impl.ArtifactVersionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.release.tool.model.impl.ArtifactVersionModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of artifact versions
@@ -308,6 +342,10 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	/**
 	 * Updates the artifact version in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect ArtifactVersionLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param artifactVersion the artifact version
 	 * @return the artifact version that was updated
 	 */
@@ -315,6 +353,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	@Override
 	public ArtifactVersion updateArtifactVersion(
 		ArtifactVersion artifactVersion) {
+
 		return artifactVersionPersistence.update(artifactVersion);
 	}
 
@@ -334,6 +373,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 */
 	public void setArtifactVersionLocalService(
 		ArtifactVersionLocalService artifactVersionLocalService) {
+
 		this.artifactVersionLocalService = artifactVersionLocalService;
 	}
 
@@ -353,6 +393,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 */
 	public void setArtifactVersionPersistence(
 		ArtifactVersionPersistence artifactVersionPersistence) {
+
 		this.artifactVersionPersistence = artifactVersionPersistence;
 	}
 
@@ -372,6 +413,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 */
 	public void setArtifactVersionFinder(
 		ArtifactVersionFinder artifactVersionFinder) {
+
 		this.artifactVersionFinder = artifactVersionFinder;
 	}
 
@@ -380,7 +422,10 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 *
 	 * @return the jira component local service
 	 */
-	public com.liferay.osb.customer.release.tool.service.JIRAComponentLocalService getJIRAComponentLocalService() {
+	public
+		com.liferay.osb.customer.release.tool.service.JIRAComponentLocalService
+			getJIRAComponentLocalService() {
+
 		return jiraComponentLocalService;
 	}
 
@@ -390,7 +435,9 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 * @param jiraComponentLocalService the jira component local service
 	 */
 	public void setJIRAComponentLocalService(
-		com.liferay.osb.customer.release.tool.service.JIRAComponentLocalService jiraComponentLocalService) {
+		com.liferay.osb.customer.release.tool.service.JIRAComponentLocalService
+			jiraComponentLocalService) {
+
 		this.jiraComponentLocalService = jiraComponentLocalService;
 	}
 
@@ -410,6 +457,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 */
 	public void setJIRAComponentPersistence(
 		JIRAComponentPersistence jiraComponentPersistence) {
+
 		this.jiraComponentPersistence = jiraComponentPersistence;
 	}
 
@@ -418,7 +466,9 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -428,7 +478,9 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -437,7 +489,9 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -447,7 +501,9 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -467,6 +523,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -475,7 +532,9 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -485,7 +544,9 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -494,7 +555,9 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -505,6 +568,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -527,7 +591,8 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.osb.customer.release.tool.model.ArtifactVersion",
+		persistedModelLocalServiceRegistry.register(
+			"com.liferay.osb.customer.release.tool.model.ArtifactVersion",
 			artifactVersionLocalService);
 	}
 
@@ -568,38 +633,67 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
 	@BeanReference(type = ArtifactVersionLocalService.class)
 	protected ArtifactVersionLocalService artifactVersionLocalService;
+
 	@BeanReference(type = ArtifactVersionPersistence.class)
 	protected ArtifactVersionPersistence artifactVersionPersistence;
+
 	@BeanReference(type = ArtifactVersionFinder.class)
 	protected ArtifactVersionFinder artifactVersionFinder;
-	@BeanReference(type = com.liferay.osb.customer.release.tool.service.JIRAComponentLocalService.class)
-	protected com.liferay.osb.customer.release.tool.service.JIRAComponentLocalService jiraComponentLocalService;
+
+	@BeanReference(
+		type = com.liferay.osb.customer.release.tool.service.JIRAComponentLocalService.class
+	)
+	protected
+		com.liferay.osb.customer.release.tool.service.JIRAComponentLocalService
+			jiraComponentLocalService;
+
 	@BeanReference(type = JIRAComponentPersistence.class)
 	protected JIRAComponentPersistence jiraComponentPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
+	protected PersistedModelLocalServiceRegistry
+		persistedModelLocalServiceRegistry;
+
 }

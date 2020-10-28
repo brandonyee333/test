@@ -169,8 +169,8 @@ public class BounceEntryPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (BounceEntry bounceEntry : list) {
-					if (bounceDate.getTime() <=
-							bounceEntry.getBounceDate().getTime()) {
+					if (bounceDate.getTime() <= bounceEntry.getBounceDate(
+						).getTime()) {
 
 						list = null;
 
@@ -709,8 +709,8 @@ public class BounceEntryPersistenceImpl
 			if ((list != null) && !list.isEmpty()) {
 				for (BounceEntry bounceEntry : list) {
 					if (!emailAddress.equals(bounceEntry.getEmailAddress()) ||
-						(bounceDate.getTime() >
-							bounceEntry.getBounceDate().getTime())) {
+						(bounceDate.getTime() > bounceEntry.getBounceDate(
+						).getTime())) {
 
 						list = null;
 
@@ -1617,7 +1617,7 @@ public class BounceEntryPersistenceImpl
 		}
 
 		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
 		sb.append(_SQL_SELECT_BOUNCEENTRY_WHERE_PKS_IN);
 

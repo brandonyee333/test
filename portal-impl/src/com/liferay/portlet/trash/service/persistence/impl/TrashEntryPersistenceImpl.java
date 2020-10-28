@@ -1176,8 +1176,8 @@ public class TrashEntryPersistenceImpl
 			if ((list != null) && !list.isEmpty()) {
 				for (TrashEntry trashEntry : list) {
 					if ((groupId != trashEntry.getGroupId()) ||
-						(createDate.getTime() <=
-							trashEntry.getCreateDate().getTime())) {
+						(createDate.getTime() <= trashEntry.getCreateDate(
+						).getTime())) {
 
 						list = null;
 
@@ -2971,7 +2971,7 @@ public class TrashEntryPersistenceImpl
 		}
 
 		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
 		sb.append(_SQL_SELECT_TRASHENTRY_WHERE_PKS_IN);
 

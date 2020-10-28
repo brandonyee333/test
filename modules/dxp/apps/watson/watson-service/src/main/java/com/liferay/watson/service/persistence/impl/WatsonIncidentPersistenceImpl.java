@@ -521,7 +521,7 @@ public class WatsonIncidentPersistenceImpl
 		}
 
 		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
 		sb.append(_SQL_SELECT_WATSONINCIDENT_WHERE_PKS_IN);
 

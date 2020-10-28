@@ -526,7 +526,7 @@ public class TestrayTaskPersistenceImpl
 		}
 
 		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
 		sb.append(_SQL_SELECT_TESTRAYTASK_WHERE_PKS_IN);
 

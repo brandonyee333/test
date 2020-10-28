@@ -531,7 +531,7 @@ public class WatsonActivityAuditPersistenceImpl
 		}
 
 		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
 		sb.append(_SQL_SELECT_WATSONACTIVITYAUDIT_WHERE_PKS_IN);
 

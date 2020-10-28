@@ -1,27 +1,24 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.release.tool.service.persistence.impl;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.release.tool.exception.NoSuchJIRAComponentException;
 import com.liferay.osb.customer.release.tool.model.JIRAComponent;
 import com.liferay.osb.customer.release.tool.model.impl.JIRAComponentImpl;
 import com.liferay.osb.customer.release.tool.model.impl.JIRAComponentModelImpl;
 import com.liferay.osb.customer.release.tool.service.persistence.JIRAComponentPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -33,12 +30,14 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,56 +56,32 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see JIRAComponentPersistence
- * @see com.liferay.osb.customer.release.tool.service.persistence.JIRAComponentUtil
  * @generated
  */
-@ProviderType
-public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRAComponent>
+public class JIRAComponentPersistenceImpl
+	extends BasePersistenceImpl<JIRAComponent>
 	implements JIRAComponentPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link JIRAComponentUtil} to access the jira component persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>JIRAComponentUtil</code> to access the jira component persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = JIRAComponentImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
-			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
-			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_REMOTEPROJECT =
-		new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
-			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByRemoteProject",
-			new String[] {
-				String.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_REMOTEPROJECT =
-		new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
-			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByRemoteProject", new String[] { String.class.getName() },
-			JIRAComponentModelImpl.REMOTEPROJECT_COLUMN_BITMASK |
-			JIRAComponentModelImpl.NAME_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_REMOTEPROJECT = new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRemoteProject",
-			new String[] { String.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		JIRAComponentImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByRemoteProject;
+	private FinderPath _finderPathWithoutPaginationFindByRemoteProject;
+	private FinderPath _finderPathCountByRemoteProject;
 
 	/**
 	 * Returns all the jira components where remoteProject = &#63;.
@@ -116,15 +91,15 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 */
 	@Override
 	public List<JIRAComponent> findByRemoteProject(String remoteProject) {
-		return findByRemoteProject(remoteProject, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+		return findByRemoteProject(
+			remoteProject, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the jira components where remoteProject = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param remoteProject the remote project
@@ -133,8 +108,9 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @return the range of matching jira components
 	 */
 	@Override
-	public List<JIRAComponent> findByRemoteProject(String remoteProject,
-		int start, int end) {
+	public List<JIRAComponent> findByRemoteProject(
+		String remoteProject, int start, int end) {
+
 		return findByRemoteProject(remoteProject, start, end, null);
 	}
 
@@ -142,7 +118,7 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * Returns an ordered range of all the jira components where remoteProject = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param remoteProject the remote project
@@ -152,59 +128,65 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @return the ordered range of matching jira components
 	 */
 	@Override
-	public List<JIRAComponent> findByRemoteProject(String remoteProject,
-		int start, int end, OrderByComparator<JIRAComponent> orderByComparator) {
-		return findByRemoteProject(remoteProject, start, end,
-			orderByComparator, true);
+	public List<JIRAComponent> findByRemoteProject(
+		String remoteProject, int start, int end,
+		OrderByComparator<JIRAComponent> orderByComparator) {
+
+		return findByRemoteProject(
+			remoteProject, start, end, orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the jira components where remoteProject = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param remoteProject the remote project
 	 * @param start the lower bound of the range of jira components
 	 * @param end the upper bound of the range of jira components (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching jira components
 	 */
 	@Override
-	public List<JIRAComponent> findByRemoteProject(String remoteProject,
-		int start, int end, OrderByComparator<JIRAComponent> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<JIRAComponent> findByRemoteProject(
+		String remoteProject, int start, int end,
+		OrderByComparator<JIRAComponent> orderByComparator,
+		boolean useFinderCache) {
+
+		remoteProject = Objects.toString(remoteProject, "");
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_REMOTEPROJECT;
-			finderArgs = new Object[] { remoteProject };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByRemoteProject;
+				finderArgs = new Object[] {remoteProject};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_REMOTEPROJECT;
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByRemoteProject;
 			finderArgs = new Object[] {
-					remoteProject,
-					
-					start, end, orderByComparator
-				};
+				remoteProject, start, end, orderByComparator
+			};
 		}
 
 		List<JIRAComponent> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<JIRAComponent>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<JIRAComponent>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (JIRAComponent jiraComponent : list) {
-					if (!Objects.equals(remoteProject,
-								jiraComponent.getRemoteProject())) {
+					if (!remoteProject.equals(
+							jiraComponent.getRemoteProject())) {
+
 						list = null;
 
 						break;
@@ -214,77 +196,67 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(3);
+				sb = new StringBundler(3);
 			}
 
-			query.append(_SQL_SELECT_JIRACOMPONENT_WHERE);
+			sb.append(_SQL_SELECT_JIRACOMPONENT_WHERE);
 
 			boolean bindRemoteProject = false;
 
-			if (remoteProject == null) {
-				query.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_1);
-			}
-			else if (remoteProject.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_3);
+			if (remoteProject.isEmpty()) {
+				sb.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_3);
 			}
 			else {
 				bindRemoteProject = true;
 
-				query.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_2);
+				sb.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_2);
 			}
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(JIRAComponentModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(JIRAComponentModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindRemoteProject) {
-					qPos.add(remoteProject);
+					queryPos.add(remoteProject);
 				}
 
-				if (!pagination) {
-					list = (List<JIRAComponent>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JIRAComponent>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<JIRAComponent>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -303,26 +275,28 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @throws NoSuchJIRAComponentException if a matching jira component could not be found
 	 */
 	@Override
-	public JIRAComponent findByRemoteProject_First(String remoteProject,
-		OrderByComparator<JIRAComponent> orderByComparator)
+	public JIRAComponent findByRemoteProject_First(
+			String remoteProject,
+			OrderByComparator<JIRAComponent> orderByComparator)
 		throws NoSuchJIRAComponentException {
-		JIRAComponent jiraComponent = fetchByRemoteProject_First(remoteProject,
-				orderByComparator);
+
+		JIRAComponent jiraComponent = fetchByRemoteProject_First(
+			remoteProject, orderByComparator);
 
 		if (jiraComponent != null) {
 			return jiraComponent;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("remoteProject=");
-		msg.append(remoteProject);
+		sb.append("remoteProject=");
+		sb.append(remoteProject);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchJIRAComponentException(msg.toString());
+		throw new NoSuchJIRAComponentException(sb.toString());
 	}
 
 	/**
@@ -333,10 +307,12 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @return the first matching jira component, or <code>null</code> if a matching jira component could not be found
 	 */
 	@Override
-	public JIRAComponent fetchByRemoteProject_First(String remoteProject,
+	public JIRAComponent fetchByRemoteProject_First(
+		String remoteProject,
 		OrderByComparator<JIRAComponent> orderByComparator) {
-		List<JIRAComponent> list = findByRemoteProject(remoteProject, 0, 1,
-				orderByComparator);
+
+		List<JIRAComponent> list = findByRemoteProject(
+			remoteProject, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -354,26 +330,28 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @throws NoSuchJIRAComponentException if a matching jira component could not be found
 	 */
 	@Override
-	public JIRAComponent findByRemoteProject_Last(String remoteProject,
-		OrderByComparator<JIRAComponent> orderByComparator)
+	public JIRAComponent findByRemoteProject_Last(
+			String remoteProject,
+			OrderByComparator<JIRAComponent> orderByComparator)
 		throws NoSuchJIRAComponentException {
-		JIRAComponent jiraComponent = fetchByRemoteProject_Last(remoteProject,
-				orderByComparator);
+
+		JIRAComponent jiraComponent = fetchByRemoteProject_Last(
+			remoteProject, orderByComparator);
 
 		if (jiraComponent != null) {
 			return jiraComponent;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("remoteProject=");
-		msg.append(remoteProject);
+		sb.append("remoteProject=");
+		sb.append(remoteProject);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchJIRAComponentException(msg.toString());
+		throw new NoSuchJIRAComponentException(sb.toString());
 	}
 
 	/**
@@ -384,16 +362,18 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @return the last matching jira component, or <code>null</code> if a matching jira component could not be found
 	 */
 	@Override
-	public JIRAComponent fetchByRemoteProject_Last(String remoteProject,
+	public JIRAComponent fetchByRemoteProject_Last(
+		String remoteProject,
 		OrderByComparator<JIRAComponent> orderByComparator) {
+
 		int count = countByRemoteProject(remoteProject);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<JIRAComponent> list = findByRemoteProject(remoteProject,
-				count - 1, count, orderByComparator);
+		List<JIRAComponent> list = findByRemoteProject(
+			remoteProject, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -413,9 +393,12 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 */
 	@Override
 	public JIRAComponent[] findByRemoteProject_PrevAndNext(
-		long jiraComponentId, String remoteProject,
-		OrderByComparator<JIRAComponent> orderByComparator)
+			long jiraComponentId, String remoteProject,
+			OrderByComparator<JIRAComponent> orderByComparator)
 		throws NoSuchJIRAComponentException {
+
+		remoteProject = Objects.toString(remoteProject, "");
+
 		JIRAComponent jiraComponent = findByPrimaryKey(jiraComponentId);
 
 		Session session = null;
@@ -425,135 +408,136 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 
 			JIRAComponent[] array = new JIRAComponentImpl[3];
 
-			array[0] = getByRemoteProject_PrevAndNext(session, jiraComponent,
-					remoteProject, orderByComparator, true);
+			array[0] = getByRemoteProject_PrevAndNext(
+				session, jiraComponent, remoteProject, orderByComparator, true);
 
 			array[1] = jiraComponent;
 
-			array[2] = getByRemoteProject_PrevAndNext(session, jiraComponent,
-					remoteProject, orderByComparator, false);
+			array[2] = getByRemoteProject_PrevAndNext(
+				session, jiraComponent, remoteProject, orderByComparator,
+				false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected JIRAComponent getByRemoteProject_PrevAndNext(Session session,
-		JIRAComponent jiraComponent, String remoteProject,
+	protected JIRAComponent getByRemoteProject_PrevAndNext(
+		Session session, JIRAComponent jiraComponent, String remoteProject,
 		OrderByComparator<JIRAComponent> orderByComparator, boolean previous) {
-		StringBundler query = null;
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(4 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(3);
+			sb = new StringBundler(3);
 		}
 
-		query.append(_SQL_SELECT_JIRACOMPONENT_WHERE);
+		sb.append(_SQL_SELECT_JIRACOMPONENT_WHERE);
 
 		boolean bindRemoteProject = false;
 
-		if (remoteProject == null) {
-			query.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_1);
-		}
-		else if (remoteProject.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_3);
+		if (remoteProject.isEmpty()) {
+			sb.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_3);
 		}
 		else {
 			bindRemoteProject = true;
 
-			query.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_2);
+			sb.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_2);
 		}
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(JIRAComponentModelImpl.ORDER_BY_JPQL);
+			sb.append(JIRAComponentModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
 		if (bindRemoteProject) {
-			qPos.add(remoteProject);
+			queryPos.add(remoteProject);
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(jiraComponent);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						jiraComponent)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<JIRAComponent> list = q.list();
+		List<JIRAComponent> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -570,8 +554,11 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 */
 	@Override
 	public void removeByRemoteProject(String remoteProject) {
-		for (JIRAComponent jiraComponent : findByRemoteProject(remoteProject,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+		for (JIRAComponent jiraComponent :
+				findByRemoteProject(
+					remoteProject, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
 			remove(jiraComponent);
 		}
 	}
@@ -584,54 +571,53 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 */
 	@Override
 	public int countByRemoteProject(String remoteProject) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_REMOTEPROJECT;
+		remoteProject = Objects.toString(remoteProject, "");
 
-		Object[] finderArgs = new Object[] { remoteProject };
+		FinderPath finderPath = _finderPathCountByRemoteProject;
+
+		Object[] finderArgs = new Object[] {remoteProject};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_JIRACOMPONENT_WHERE);
+			sb.append(_SQL_COUNT_JIRACOMPONENT_WHERE);
 
 			boolean bindRemoteProject = false;
 
-			if (remoteProject == null) {
-				query.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_1);
-			}
-			else if (remoteProject.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_3);
+			if (remoteProject.isEmpty()) {
+				sb.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_3);
 			}
 			else {
 				bindRemoteProject = true;
 
-				query.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_2);
+				sb.append(_FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindRemoteProject) {
-					qPos.add(remoteProject);
+					queryPos.add(remoteProject);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -641,22 +627,17 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_1 = "jiraComponent.remoteProject IS NULL";
-	private static final String _FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_2 = "jiraComponent.remoteProject = ?";
-	private static final String _FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_3 = "(jiraComponent.remoteProject IS NULL OR jiraComponent.remoteProject = '')";
-	public static final FinderPath FINDER_PATH_FETCH_BY_RI_RP = new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
-			JIRAComponentImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByRI_RP",
-			new String[] { Long.class.getName(), String.class.getName() },
-			JIRAComponentModelImpl.REMOTEID_COLUMN_BITMASK |
-			JIRAComponentModelImpl.REMOTEPROJECT_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_RI_RP = new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRI_RP",
-			new String[] { Long.class.getName(), String.class.getName() });
+	private static final String _FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_2 =
+		"jiraComponent.remoteProject = ?";
+
+	private static final String _FINDER_COLUMN_REMOTEPROJECT_REMOTEPROJECT_3 =
+		"(jiraComponent.remoteProject IS NULL OR jiraComponent.remoteProject = '')";
+
+	private FinderPath _finderPathFetchByRI_RP;
+	private FinderPath _finderPathCountByRI_RP;
 
 	/**
-	 * Returns the jira component where remoteId = &#63; and remoteProject = &#63; or throws a {@link NoSuchJIRAComponentException} if it could not be found.
+	 * Returns the jira component where remoteId = &#63; and remoteProject = &#63; or throws a <code>NoSuchJIRAComponentException</code> if it could not be found.
 	 *
 	 * @param remoteId the remote ID
 	 * @param remoteProject the remote project
@@ -666,26 +647,27 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	@Override
 	public JIRAComponent findByRI_RP(long remoteId, String remoteProject)
 		throws NoSuchJIRAComponentException {
+
 		JIRAComponent jiraComponent = fetchByRI_RP(remoteId, remoteProject);
 
 		if (jiraComponent == null) {
-			StringBundler msg = new StringBundler(6);
+			StringBundler sb = new StringBundler(6);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("remoteId=");
-			msg.append(remoteId);
+			sb.append("remoteId=");
+			sb.append(remoteId);
 
-			msg.append(", remoteProject=");
-			msg.append(remoteProject);
+			sb.append(", remoteProject=");
+			sb.append(remoteProject);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchJIRAComponentException(msg.toString());
+			throw new NoSuchJIRAComponentException(sb.toString());
 		}
 
 		return jiraComponent;
@@ -708,84 +690,97 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 *
 	 * @param remoteId the remote ID
 	 * @param remoteProject the remote project
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching jira component, or <code>null</code> if a matching jira component could not be found
 	 */
 	@Override
-	public JIRAComponent fetchByRI_RP(long remoteId, String remoteProject,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { remoteId, remoteProject };
+	public JIRAComponent fetchByRI_RP(
+		long remoteId, String remoteProject, boolean useFinderCache) {
+
+		remoteProject = Objects.toString(remoteProject, "");
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {remoteId, remoteProject};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_RI_RP,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByRI_RP, finderArgs, this);
 		}
 
 		if (result instanceof JIRAComponent) {
 			JIRAComponent jiraComponent = (JIRAComponent)result;
 
 			if ((remoteId != jiraComponent.getRemoteId()) ||
-					!Objects.equals(remoteProject,
-						jiraComponent.getRemoteProject())) {
+				!Objects.equals(
+					remoteProject, jiraComponent.getRemoteProject())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_SELECT_JIRACOMPONENT_WHERE);
+			sb.append(_SQL_SELECT_JIRACOMPONENT_WHERE);
 
-			query.append(_FINDER_COLUMN_RI_RP_REMOTEID_2);
+			sb.append(_FINDER_COLUMN_RI_RP_REMOTEID_2);
 
 			boolean bindRemoteProject = false;
 
-			if (remoteProject == null) {
-				query.append(_FINDER_COLUMN_RI_RP_REMOTEPROJECT_1);
-			}
-			else if (remoteProject.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_RI_RP_REMOTEPROJECT_3);
+			if (remoteProject.isEmpty()) {
+				sb.append(_FINDER_COLUMN_RI_RP_REMOTEPROJECT_3);
 			}
 			else {
 				bindRemoteProject = true;
 
-				query.append(_FINDER_COLUMN_RI_RP_REMOTEPROJECT_2);
+				sb.append(_FINDER_COLUMN_RI_RP_REMOTEPROJECT_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(remoteId);
+				queryPos.add(remoteId);
 
 				if (bindRemoteProject) {
-					qPos.add(remoteProject);
+					queryPos.add(remoteProject);
 				}
 
-				List<JIRAComponent> list = q.list();
+				List<JIRAComponent> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_RI_RP,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByRI_RP, finderArgs, list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									remoteId, remoteProject
+								};
+							}
+
 							_log.warn(
 								"JIRAComponentPersistenceImpl.fetchByRI_RP(long, String, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -794,20 +789,15 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 					result = jiraComponent;
 
 					cacheResult(jiraComponent);
-
-					if ((jiraComponent.getRemoteId() != remoteId) ||
-							(jiraComponent.getRemoteProject() == null) ||
-							!jiraComponent.getRemoteProject()
-											  .equals(remoteProject)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_RI_RP,
-							finderArgs, jiraComponent);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_RI_RP, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByRI_RP, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -832,6 +822,7 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	@Override
 	public JIRAComponent removeByRI_RP(long remoteId, String remoteProject)
 		throws NoSuchJIRAComponentException {
+
 		JIRAComponent jiraComponent = findByRI_RP(remoteId, remoteProject);
 
 		return remove(jiraComponent);
@@ -846,58 +837,57 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 */
 	@Override
 	public int countByRI_RP(long remoteId, String remoteProject) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_RI_RP;
+		remoteProject = Objects.toString(remoteProject, "");
 
-		Object[] finderArgs = new Object[] { remoteId, remoteProject };
+		FinderPath finderPath = _finderPathCountByRI_RP;
+
+		Object[] finderArgs = new Object[] {remoteId, remoteProject};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_JIRACOMPONENT_WHERE);
+			sb.append(_SQL_COUNT_JIRACOMPONENT_WHERE);
 
-			query.append(_FINDER_COLUMN_RI_RP_REMOTEID_2);
+			sb.append(_FINDER_COLUMN_RI_RP_REMOTEID_2);
 
 			boolean bindRemoteProject = false;
 
-			if (remoteProject == null) {
-				query.append(_FINDER_COLUMN_RI_RP_REMOTEPROJECT_1);
-			}
-			else if (remoteProject.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_RI_RP_REMOTEPROJECT_3);
+			if (remoteProject.isEmpty()) {
+				sb.append(_FINDER_COLUMN_RI_RP_REMOTEPROJECT_3);
 			}
 			else {
 				bindRemoteProject = true;
 
-				query.append(_FINDER_COLUMN_RI_RP_REMOTEPROJECT_2);
+				sb.append(_FINDER_COLUMN_RI_RP_REMOTEPROJECT_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(remoteId);
+				queryPos.add(remoteId);
 
 				if (bindRemoteProject) {
-					qPos.add(remoteProject);
+					queryPos.add(remoteProject);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -907,32 +897,18 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_RI_RP_REMOTEID_2 = "jiraComponent.remoteId = ? AND ";
-	private static final String _FINDER_COLUMN_RI_RP_REMOTEPROJECT_1 = "jiraComponent.remoteProject IS NULL";
-	private static final String _FINDER_COLUMN_RI_RP_REMOTEPROJECT_2 = "jiraComponent.remoteProject = ?";
-	private static final String _FINDER_COLUMN_RI_RP_REMOTEPROJECT_3 = "(jiraComponent.remoteProject IS NULL OR jiraComponent.remoteProject = '')";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_RP_V = new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
-			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findByRP_V",
-			new String[] {
-				String.class.getName(), Boolean.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_RP_V = new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
-			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByRP_V",
-			new String[] { String.class.getName(), Boolean.class.getName() },
-			JIRAComponentModelImpl.REMOTEPROJECT_COLUMN_BITMASK |
-			JIRAComponentModelImpl.VISIBLE_COLUMN_BITMASK |
-			JIRAComponentModelImpl.NAME_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_RP_V = new FinderPath(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-			JIRAComponentModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRP_V",
-			new String[] { String.class.getName(), Boolean.class.getName() });
+	private static final String _FINDER_COLUMN_RI_RP_REMOTEID_2 =
+		"jiraComponent.remoteId = ? AND ";
+
+	private static final String _FINDER_COLUMN_RI_RP_REMOTEPROJECT_2 =
+		"jiraComponent.remoteProject = ?";
+
+	private static final String _FINDER_COLUMN_RI_RP_REMOTEPROJECT_3 =
+		"(jiraComponent.remoteProject IS NULL OR jiraComponent.remoteProject = '')";
+
+	private FinderPath _finderPathWithPaginationFindByRP_V;
+	private FinderPath _finderPathWithoutPaginationFindByRP_V;
+	private FinderPath _finderPathCountByRP_V;
 
 	/**
 	 * Returns all the jira components where remoteProject = &#63; and visible = &#63;.
@@ -942,16 +918,18 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @return the matching jira components
 	 */
 	@Override
-	public List<JIRAComponent> findByRP_V(String remoteProject, boolean visible) {
-		return findByRP_V(remoteProject, visible, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+	public List<JIRAComponent> findByRP_V(
+		String remoteProject, boolean visible) {
+
+		return findByRP_V(
+			remoteProject, visible, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the jira components where remoteProject = &#63; and visible = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param remoteProject the remote project
@@ -961,8 +939,9 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @return the range of matching jira components
 	 */
 	@Override
-	public List<JIRAComponent> findByRP_V(String remoteProject,
-		boolean visible, int start, int end) {
+	public List<JIRAComponent> findByRP_V(
+		String remoteProject, boolean visible, int start, int end) {
+
 		return findByRP_V(remoteProject, visible, start, end, null);
 	}
 
@@ -970,7 +949,7 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * Returns an ordered range of all the jira components where remoteProject = &#63; and visible = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param remoteProject the remote project
@@ -981,18 +960,19 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @return the ordered range of matching jira components
 	 */
 	@Override
-	public List<JIRAComponent> findByRP_V(String remoteProject,
-		boolean visible, int start, int end,
+	public List<JIRAComponent> findByRP_V(
+		String remoteProject, boolean visible, int start, int end,
 		OrderByComparator<JIRAComponent> orderByComparator) {
-		return findByRP_V(remoteProject, visible, start, end,
-			orderByComparator, true);
+
+		return findByRP_V(
+			remoteProject, visible, start, end, orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the jira components where remoteProject = &#63; and visible = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param remoteProject the remote project
@@ -1000,44 +980,47 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @param start the lower bound of the range of jira components
 	 * @param end the upper bound of the range of jira components (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching jira components
 	 */
 	@Override
-	public List<JIRAComponent> findByRP_V(String remoteProject,
-		boolean visible, int start, int end,
+	public List<JIRAComponent> findByRP_V(
+		String remoteProject, boolean visible, int start, int end,
 		OrderByComparator<JIRAComponent> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+		boolean useFinderCache) {
+
+		remoteProject = Objects.toString(remoteProject, "");
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_RP_V;
-			finderArgs = new Object[] { remoteProject, visible };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByRP_V;
+				finderArgs = new Object[] {remoteProject, visible};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_RP_V;
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByRP_V;
 			finderArgs = new Object[] {
-					remoteProject, visible,
-					
-					start, end, orderByComparator
-				};
+				remoteProject, visible, start, end, orderByComparator
+			};
 		}
 
 		List<JIRAComponent> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<JIRAComponent>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<JIRAComponent>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (JIRAComponent jiraComponent : list) {
-					if (!Objects.equals(remoteProject,
-								jiraComponent.getRemoteProject()) ||
-							(visible != jiraComponent.getVisible())) {
+					if (!remoteProject.equals(
+							jiraComponent.getRemoteProject()) ||
+						(visible != jiraComponent.isVisible())) {
+
 						list = null;
 
 						break;
@@ -1047,81 +1030,71 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(4 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					4 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(4);
+				sb = new StringBundler(4);
 			}
 
-			query.append(_SQL_SELECT_JIRACOMPONENT_WHERE);
+			sb.append(_SQL_SELECT_JIRACOMPONENT_WHERE);
 
 			boolean bindRemoteProject = false;
 
-			if (remoteProject == null) {
-				query.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_1);
-			}
-			else if (remoteProject.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_3);
+			if (remoteProject.isEmpty()) {
+				sb.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_3);
 			}
 			else {
 				bindRemoteProject = true;
 
-				query.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_2);
+				sb.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_2);
 			}
 
-			query.append(_FINDER_COLUMN_RP_V_VISIBLE_2);
+			sb.append(_FINDER_COLUMN_RP_V_VISIBLE_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(JIRAComponentModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(JIRAComponentModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindRemoteProject) {
-					qPos.add(remoteProject);
+					queryPos.add(remoteProject);
 				}
 
-				qPos.add(visible);
+				queryPos.add(visible);
 
-				if (!pagination) {
-					list = (List<JIRAComponent>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JIRAComponent>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<JIRAComponent>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1141,29 +1114,31 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @throws NoSuchJIRAComponentException if a matching jira component could not be found
 	 */
 	@Override
-	public JIRAComponent findByRP_V_First(String remoteProject,
-		boolean visible, OrderByComparator<JIRAComponent> orderByComparator)
+	public JIRAComponent findByRP_V_First(
+			String remoteProject, boolean visible,
+			OrderByComparator<JIRAComponent> orderByComparator)
 		throws NoSuchJIRAComponentException {
-		JIRAComponent jiraComponent = fetchByRP_V_First(remoteProject, visible,
-				orderByComparator);
+
+		JIRAComponent jiraComponent = fetchByRP_V_First(
+			remoteProject, visible, orderByComparator);
 
 		if (jiraComponent != null) {
 			return jiraComponent;
 		}
 
-		StringBundler msg = new StringBundler(6);
+		StringBundler sb = new StringBundler(6);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("remoteProject=");
-		msg.append(remoteProject);
+		sb.append("remoteProject=");
+		sb.append(remoteProject);
 
-		msg.append(", visible=");
-		msg.append(visible);
+		sb.append(", visible=");
+		sb.append(visible);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchJIRAComponentException(msg.toString());
+		throw new NoSuchJIRAComponentException(sb.toString());
 	}
 
 	/**
@@ -1175,10 +1150,12 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @return the first matching jira component, or <code>null</code> if a matching jira component could not be found
 	 */
 	@Override
-	public JIRAComponent fetchByRP_V_First(String remoteProject,
-		boolean visible, OrderByComparator<JIRAComponent> orderByComparator) {
-		List<JIRAComponent> list = findByRP_V(remoteProject, visible, 0, 1,
-				orderByComparator);
+	public JIRAComponent fetchByRP_V_First(
+		String remoteProject, boolean visible,
+		OrderByComparator<JIRAComponent> orderByComparator) {
+
+		List<JIRAComponent> list = findByRP_V(
+			remoteProject, visible, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1197,29 +1174,31 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @throws NoSuchJIRAComponentException if a matching jira component could not be found
 	 */
 	@Override
-	public JIRAComponent findByRP_V_Last(String remoteProject, boolean visible,
-		OrderByComparator<JIRAComponent> orderByComparator)
+	public JIRAComponent findByRP_V_Last(
+			String remoteProject, boolean visible,
+			OrderByComparator<JIRAComponent> orderByComparator)
 		throws NoSuchJIRAComponentException {
-		JIRAComponent jiraComponent = fetchByRP_V_Last(remoteProject, visible,
-				orderByComparator);
+
+		JIRAComponent jiraComponent = fetchByRP_V_Last(
+			remoteProject, visible, orderByComparator);
 
 		if (jiraComponent != null) {
 			return jiraComponent;
 		}
 
-		StringBundler msg = new StringBundler(6);
+		StringBundler sb = new StringBundler(6);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("remoteProject=");
-		msg.append(remoteProject);
+		sb.append("remoteProject=");
+		sb.append(remoteProject);
 
-		msg.append(", visible=");
-		msg.append(visible);
+		sb.append(", visible=");
+		sb.append(visible);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		sb.append("}");
 
-		throw new NoSuchJIRAComponentException(msg.toString());
+		throw new NoSuchJIRAComponentException(sb.toString());
 	}
 
 	/**
@@ -1231,16 +1210,18 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @return the last matching jira component, or <code>null</code> if a matching jira component could not be found
 	 */
 	@Override
-	public JIRAComponent fetchByRP_V_Last(String remoteProject,
-		boolean visible, OrderByComparator<JIRAComponent> orderByComparator) {
+	public JIRAComponent fetchByRP_V_Last(
+		String remoteProject, boolean visible,
+		OrderByComparator<JIRAComponent> orderByComparator) {
+
 		int count = countByRP_V(remoteProject, visible);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<JIRAComponent> list = findByRP_V(remoteProject, visible,
-				count - 1, count, orderByComparator);
+		List<JIRAComponent> list = findByRP_V(
+			remoteProject, visible, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1260,10 +1241,13 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @throws NoSuchJIRAComponentException if a jira component with the primary key could not be found
 	 */
 	@Override
-	public JIRAComponent[] findByRP_V_PrevAndNext(long jiraComponentId,
-		String remoteProject, boolean visible,
-		OrderByComparator<JIRAComponent> orderByComparator)
+	public JIRAComponent[] findByRP_V_PrevAndNext(
+			long jiraComponentId, String remoteProject, boolean visible,
+			OrderByComparator<JIRAComponent> orderByComparator)
 		throws NoSuchJIRAComponentException {
+
+		remoteProject = Objects.toString(remoteProject, "");
+
 		JIRAComponent jiraComponent = findByPrimaryKey(jiraComponentId);
 
 		Session session = null;
@@ -1273,139 +1257,142 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 
 			JIRAComponent[] array = new JIRAComponentImpl[3];
 
-			array[0] = getByRP_V_PrevAndNext(session, jiraComponent,
-					remoteProject, visible, orderByComparator, true);
+			array[0] = getByRP_V_PrevAndNext(
+				session, jiraComponent, remoteProject, visible,
+				orderByComparator, true);
 
 			array[1] = jiraComponent;
 
-			array[2] = getByRP_V_PrevAndNext(session, jiraComponent,
-					remoteProject, visible, orderByComparator, false);
+			array[2] = getByRP_V_PrevAndNext(
+				session, jiraComponent, remoteProject, visible,
+				orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
 		}
 	}
 
-	protected JIRAComponent getByRP_V_PrevAndNext(Session session,
-		JIRAComponent jiraComponent, String remoteProject, boolean visible,
-		OrderByComparator<JIRAComponent> orderByComparator, boolean previous) {
-		StringBundler query = null;
+	protected JIRAComponent getByRP_V_PrevAndNext(
+		Session session, JIRAComponent jiraComponent, String remoteProject,
+		boolean visible, OrderByComparator<JIRAComponent> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(5 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(4);
+			sb = new StringBundler(4);
 		}
 
-		query.append(_SQL_SELECT_JIRACOMPONENT_WHERE);
+		sb.append(_SQL_SELECT_JIRACOMPONENT_WHERE);
 
 		boolean bindRemoteProject = false;
 
-		if (remoteProject == null) {
-			query.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_1);
-		}
-		else if (remoteProject.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_3);
+		if (remoteProject.isEmpty()) {
+			sb.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_3);
 		}
 		else {
 			bindRemoteProject = true;
 
-			query.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_2);
+			sb.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_2);
 		}
 
-		query.append(_FINDER_COLUMN_RP_V_VISIBLE_2);
+		sb.append(_FINDER_COLUMN_RP_V_VISIBLE_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(JIRAComponentModelImpl.ORDER_BY_JPQL);
+			sb.append(JIRAComponentModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
 		if (bindRemoteProject) {
-			qPos.add(remoteProject);
+			queryPos.add(remoteProject);
 		}
 
-		qPos.add(visible);
+		queryPos.add(visible);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(jiraComponent);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						jiraComponent)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<JIRAComponent> list = q.list();
+		List<JIRAComponent> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1423,8 +1410,11 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 */
 	@Override
 	public void removeByRP_V(String remoteProject, boolean visible) {
-		for (JIRAComponent jiraComponent : findByRP_V(remoteProject, visible,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+		for (JIRAComponent jiraComponent :
+				findByRP_V(
+					remoteProject, visible, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null)) {
+
 			remove(jiraComponent);
 		}
 	}
@@ -1438,58 +1428,57 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 */
 	@Override
 	public int countByRP_V(String remoteProject, boolean visible) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_RP_V;
+		remoteProject = Objects.toString(remoteProject, "");
 
-		Object[] finderArgs = new Object[] { remoteProject, visible };
+		FinderPath finderPath = _finderPathCountByRP_V;
+
+		Object[] finderArgs = new Object[] {remoteProject, visible};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_JIRACOMPONENT_WHERE);
+			sb.append(_SQL_COUNT_JIRACOMPONENT_WHERE);
 
 			boolean bindRemoteProject = false;
 
-			if (remoteProject == null) {
-				query.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_1);
-			}
-			else if (remoteProject.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_3);
+			if (remoteProject.isEmpty()) {
+				sb.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_3);
 			}
 			else {
 				bindRemoteProject = true;
 
-				query.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_2);
+				sb.append(_FINDER_COLUMN_RP_V_REMOTEPROJECT_2);
 			}
 
-			query.append(_FINDER_COLUMN_RP_V_VISIBLE_2);
+			sb.append(_FINDER_COLUMN_RP_V_VISIBLE_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindRemoteProject) {
-					qPos.add(remoteProject);
+					queryPos.add(remoteProject);
 				}
 
-				qPos.add(visible);
+				queryPos.add(visible);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1499,10 +1488,14 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_RP_V_REMOTEPROJECT_1 = "jiraComponent.remoteProject IS NULL AND ";
-	private static final String _FINDER_COLUMN_RP_V_REMOTEPROJECT_2 = "jiraComponent.remoteProject = ? AND ";
-	private static final String _FINDER_COLUMN_RP_V_REMOTEPROJECT_3 = "(jiraComponent.remoteProject IS NULL OR jiraComponent.remoteProject = '') AND ";
-	private static final String _FINDER_COLUMN_RP_V_VISIBLE_2 = "jiraComponent.visible = ?";
+	private static final String _FINDER_COLUMN_RP_V_REMOTEPROJECT_2 =
+		"jiraComponent.remoteProject = ? AND ";
+
+	private static final String _FINDER_COLUMN_RP_V_REMOTEPROJECT_3 =
+		"(jiraComponent.remoteProject IS NULL OR jiraComponent.remoteProject = '') AND ";
+
+	private static final String _FINDER_COLUMN_RP_V_VISIBLE_2 =
+		"jiraComponent.visible = ?";
 
 	public JIRAComponentPersistenceImpl() {
 		setModelClass(JIRAComponent.class);
@@ -1515,14 +1508,17 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 */
 	@Override
 	public void cacheResult(JIRAComponent jiraComponent) {
-		entityCache.putResult(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
 			JIRAComponentImpl.class, jiraComponent.getPrimaryKey(),
 			jiraComponent);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_RI_RP,
+		finderCache.putResult(
+			_finderPathFetchByRI_RP,
 			new Object[] {
 				jiraComponent.getRemoteId(), jiraComponent.getRemoteProject()
-			}, jiraComponent);
+			},
+			jiraComponent);
 
 		jiraComponent.resetOriginalValues();
 	}
@@ -1536,8 +1532,10 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	public void cacheResult(List<JIRAComponent> jiraComponents) {
 		for (JIRAComponent jiraComponent : jiraComponents) {
 			if (entityCache.getResult(
-						JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-						JIRAComponentImpl.class, jiraComponent.getPrimaryKey()) == null) {
+					JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+					JIRAComponentImpl.class, jiraComponent.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(jiraComponent);
 			}
 			else {
@@ -1550,7 +1548,7 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * Clears the cache for all jira components.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1566,12 +1564,13 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * Clears the cache for the jira component.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(JIRAComponent jiraComponent) {
-		entityCache.removeResult(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
 			JIRAComponentImpl.class, jiraComponent.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -1586,47 +1585,64 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (JIRAComponent jiraComponent : jiraComponents) {
-			entityCache.removeResult(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
 				JIRAComponentImpl.class, jiraComponent.getPrimaryKey());
 
-			clearUniqueFindersCache((JIRAComponentModelImpl)jiraComponent, true);
+			clearUniqueFindersCache(
+				(JIRAComponentModelImpl)jiraComponent, true);
+		}
+	}
+
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+				JIRAComponentImpl.class, primaryKey);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		JIRAComponentModelImpl jiraComponentModelImpl) {
-		Object[] args = new Object[] {
-				jiraComponentModelImpl.getRemoteId(),
-				jiraComponentModelImpl.getRemoteProject()
-			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_RI_RP, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_RI_RP, args,
-			jiraComponentModelImpl, false);
+		Object[] args = new Object[] {
+			jiraComponentModelImpl.getRemoteId(),
+			jiraComponentModelImpl.getRemoteProject()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByRI_RP, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByRI_RP, args, jiraComponentModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		JIRAComponentModelImpl jiraComponentModelImpl, boolean clearCurrent) {
+
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-					jiraComponentModelImpl.getRemoteId(),
-					jiraComponentModelImpl.getRemoteProject()
-				};
+				jiraComponentModelImpl.getRemoteId(),
+				jiraComponentModelImpl.getRemoteProject()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_RI_RP, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_RI_RP, args);
+			finderCache.removeResult(_finderPathCountByRI_RP, args);
+			finderCache.removeResult(_finderPathFetchByRI_RP, args);
 		}
 
 		if ((jiraComponentModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_RI_RP.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					jiraComponentModelImpl.getOriginalRemoteId(),
-					jiraComponentModelImpl.getOriginalRemoteProject()
-				};
+			 _finderPathFetchByRI_RP.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_RI_RP, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_RI_RP, args);
+			Object[] args = new Object[] {
+				jiraComponentModelImpl.getOriginalRemoteId(),
+				jiraComponentModelImpl.getOriginalRemoteProject()
+			};
+
+			finderCache.removeResult(_finderPathCountByRI_RP, args);
+			finderCache.removeResult(_finderPathFetchByRI_RP, args);
 		}
 	}
 
@@ -1656,6 +1672,7 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	@Override
 	public JIRAComponent remove(long jiraComponentId)
 		throws NoSuchJIRAComponentException {
+
 		return remove((Serializable)jiraComponentId);
 	}
 
@@ -1669,30 +1686,31 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	@Override
 	public JIRAComponent remove(Serializable primaryKey)
 		throws NoSuchJIRAComponentException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			JIRAComponent jiraComponent = (JIRAComponent)session.get(JIRAComponentImpl.class,
-					primaryKey);
+			JIRAComponent jiraComponent = (JIRAComponent)session.get(
+				JIRAComponentImpl.class, primaryKey);
 
 			if (jiraComponent == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchJIRAComponentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchJIRAComponentException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(jiraComponent);
 		}
-		catch (NoSuchJIRAComponentException nsee) {
-			throw nsee;
+		catch (NoSuchJIRAComponentException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1701,24 +1719,22 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 
 	@Override
 	protected JIRAComponent removeImpl(JIRAComponent jiraComponent) {
-		jiraComponent = toUnwrappedModel(jiraComponent);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(jiraComponent)) {
-				jiraComponent = (JIRAComponent)session.get(JIRAComponentImpl.class,
-						jiraComponent.getPrimaryKeyObj());
+				jiraComponent = (JIRAComponent)session.get(
+					JIRAComponentImpl.class, jiraComponent.getPrimaryKeyObj());
 			}
 
 			if (jiraComponent != null) {
 				session.delete(jiraComponent);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1733,18 +1749,34 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 
 	@Override
 	public JIRAComponent updateImpl(JIRAComponent jiraComponent) {
-		jiraComponent = toUnwrappedModel(jiraComponent);
-
 		boolean isNew = jiraComponent.isNew();
 
-		JIRAComponentModelImpl jiraComponentModelImpl = (JIRAComponentModelImpl)jiraComponent;
+		if (!(jiraComponent instanceof JIRAComponentModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(jiraComponent.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					jiraComponent);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in jiraComponent proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom JIRAComponent implementation " +
+					jiraComponent.getClass());
+		}
+
+		JIRAComponentModelImpl jiraComponentModelImpl =
+			(JIRAComponentModelImpl)jiraComponent;
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			if (jiraComponent.isNew()) {
+			if (isNew) {
 				session.save(jiraComponent);
 
 				jiraComponent.setNew(false);
@@ -1753,8 +1785,8 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 				jiraComponent = (JIRAComponent)session.merge(jiraComponent);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1765,73 +1797,74 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 		if (!JIRAComponentModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
+		else if (isNew) {
 			Object[] args = new Object[] {
-					jiraComponentModelImpl.getRemoteProject()
-				};
+				jiraComponentModelImpl.getRemoteProject()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_REMOTEPROJECT, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_REMOTEPROJECT,
-				args);
+			finderCache.removeResult(_finderPathCountByRemoteProject, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByRemoteProject, args);
 
 			args = new Object[] {
-					jiraComponentModelImpl.getRemoteProject(),
-					jiraComponentModelImpl.getVisible()
-				};
+				jiraComponentModelImpl.getRemoteProject(),
+				jiraComponentModelImpl.isVisible()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_RP_V, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_RP_V,
-				args);
+			finderCache.removeResult(_finderPathCountByRP_V, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByRP_V, args);
 
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
-
 		else {
 			if ((jiraComponentModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_REMOTEPROJECT.getColumnBitmask()) != 0) {
+				 _finderPathWithoutPaginationFindByRemoteProject.
+					 getColumnBitmask()) != 0) {
+
 				Object[] args = new Object[] {
-						jiraComponentModelImpl.getOriginalRemoteProject()
-					};
+					jiraComponentModelImpl.getOriginalRemoteProject()
+				};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_REMOTEPROJECT,
-					args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_REMOTEPROJECT,
-					args);
+				finderCache.removeResult(_finderPathCountByRemoteProject, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByRemoteProject, args);
 
-				args = new Object[] { jiraComponentModelImpl.getRemoteProject() };
+				args = new Object[] {jiraComponentModelImpl.getRemoteProject()};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_REMOTEPROJECT,
-					args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_REMOTEPROJECT,
-					args);
+				finderCache.removeResult(_finderPathCountByRemoteProject, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByRemoteProject, args);
 			}
 
 			if ((jiraComponentModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_RP_V.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						jiraComponentModelImpl.getOriginalRemoteProject(),
-						jiraComponentModelImpl.getOriginalVisible()
-					};
+				 _finderPathWithoutPaginationFindByRP_V.getColumnBitmask()) !=
+					 0) {
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_RP_V, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_RP_V,
-					args);
+				Object[] args = new Object[] {
+					jiraComponentModelImpl.getOriginalRemoteProject(),
+					jiraComponentModelImpl.getOriginalVisible()
+				};
+
+				finderCache.removeResult(_finderPathCountByRP_V, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByRP_V, args);
 
 				args = new Object[] {
-						jiraComponentModelImpl.getRemoteProject(),
-						jiraComponentModelImpl.getVisible()
-					};
+					jiraComponentModelImpl.getRemoteProject(),
+					jiraComponentModelImpl.isVisible()
+				};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_RP_V, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_RP_V,
-					args);
+				finderCache.removeResult(_finderPathCountByRP_V, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByRP_V, args);
 			}
 		}
 
-		entityCache.putResult(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
 			JIRAComponentImpl.class, jiraComponent.getPrimaryKey(),
 			jiraComponent, false);
 
@@ -1843,27 +1876,8 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 		return jiraComponent;
 	}
 
-	protected JIRAComponent toUnwrappedModel(JIRAComponent jiraComponent) {
-		if (jiraComponent instanceof JIRAComponentImpl) {
-			return jiraComponent;
-		}
-
-		JIRAComponentImpl jiraComponentImpl = new JIRAComponentImpl();
-
-		jiraComponentImpl.setNew(jiraComponent.isNew());
-		jiraComponentImpl.setPrimaryKey(jiraComponent.getPrimaryKey());
-
-		jiraComponentImpl.setJiraComponentId(jiraComponent.getJiraComponentId());
-		jiraComponentImpl.setRemoteId(jiraComponent.getRemoteId());
-		jiraComponentImpl.setRemoteProject(jiraComponent.getRemoteProject());
-		jiraComponentImpl.setName(jiraComponent.getName());
-		jiraComponentImpl.setVisible(jiraComponent.isVisible());
-
-		return jiraComponentImpl;
-	}
-
 	/**
-	 * Returns the jira component with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the jira component with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the jira component
 	 * @return the jira component
@@ -1872,6 +1886,7 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	@Override
 	public JIRAComponent findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchJIRAComponentException {
+
 		JIRAComponent jiraComponent = fetchByPrimaryKey(primaryKey);
 
 		if (jiraComponent == null) {
@@ -1879,15 +1894,15 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchJIRAComponentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchJIRAComponentException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return jiraComponent;
 	}
 
 	/**
-	 * Returns the jira component with the primary key or throws a {@link NoSuchJIRAComponentException} if it could not be found.
+	 * Returns the jira component with the primary key or throws a <code>NoSuchJIRAComponentException</code> if it could not be found.
 	 *
 	 * @param jiraComponentId the primary key of the jira component
 	 * @return the jira component
@@ -1896,6 +1911,7 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	@Override
 	public JIRAComponent findByPrimaryKey(long jiraComponentId)
 		throws NoSuchJIRAComponentException {
+
 		return findByPrimaryKey((Serializable)jiraComponentId);
 	}
 
@@ -1907,8 +1923,9 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 */
 	@Override
 	public JIRAComponent fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-				JIRAComponentImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -1922,22 +1939,24 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 			try {
 				session = openSession();
 
-				jiraComponent = (JIRAComponent)session.get(JIRAComponentImpl.class,
-						primaryKey);
+				jiraComponent = (JIRAComponent)session.get(
+					JIRAComponentImpl.class, primaryKey);
 
 				if (jiraComponent != null) {
 					cacheResult(jiraComponent);
 				}
 				else {
-					entityCache.putResult(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
 						JIRAComponentImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
 					JIRAComponentImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1961,11 +1980,13 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	@Override
 	public Map<Serializable, JIRAComponent> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, JIRAComponent> map = new HashMap<Serializable, JIRAComponent>();
+		Map<Serializable, JIRAComponent> map =
+			new HashMap<Serializable, JIRAComponent>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -1984,8 +2005,9 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
-					JIRAComponentImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+				JIRAComponentImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -2005,31 +2027,33 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
-		query.append(_SQL_SELECT_JIRACOMPONENT_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_JIRACOMPONENT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (JIRAComponent jiraComponent : (List<JIRAComponent>)q.list()) {
+			for (JIRAComponent jiraComponent :
+					(List<JIRAComponent>)query.list()) {
+
 				map.put(jiraComponent.getPrimaryKeyObj(), jiraComponent);
 
 				cacheResult(jiraComponent);
@@ -2038,12 +2062,13 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
 					JIRAComponentImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2066,7 +2091,7 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * Returns a range of all the jira components.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of jira components
@@ -2082,7 +2107,7 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * Returns an ordered range of all the jira components.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of jira components
@@ -2091,8 +2116,10 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * @return the ordered range of jira components
 	 */
 	@Override
-	public List<JIRAComponent> findAll(int start, int end,
+	public List<JIRAComponent> findAll(
+		int start, int end,
 		OrderByComparator<JIRAComponent> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -2100,62 +2127,62 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * Returns an ordered range of all the jira components.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link JIRAComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>JIRAComponentModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of jira components
 	 * @param end the upper bound of the range of jira components (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of jira components
 	 */
 	@Override
-	public List<JIRAComponent> findAll(int start, int end,
-		OrderByComparator<JIRAComponent> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<JIRAComponent> findAll(
+		int start, int end, OrderByComparator<JIRAComponent> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<JIRAComponent> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<JIRAComponent>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<JIRAComponent>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_JIRACOMPONENT);
+				sb.append(_SQL_SELECT_JIRACOMPONENT);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_JIRACOMPONENT;
 
-				if (pagination) {
-					sql = sql.concat(JIRAComponentModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(JIRAComponentModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -2163,29 +2190,23 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<JIRAComponent>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JIRAComponent>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<JIRAComponent>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2213,8 +2234,8 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -2222,18 +2243,18 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_JIRACOMPONENT);
+				Query query = session.createQuery(_SQL_COUNT_JIRACOMPONENT);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2252,10 +2273,93 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 	 * Initializes the jira component persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
+			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
+			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findAll", new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByRemoteProject = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
+			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByRemoteProject",
+			new String[] {
+				String.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByRemoteProject = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
+			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByRemoteProject", new String[] {String.class.getName()},
+			JIRAComponentModelImpl.REMOTEPROJECT_COLUMN_BITMASK |
+			JIRAComponentModelImpl.NAME_COLUMN_BITMASK);
+
+		_finderPathCountByRemoteProject = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRemoteProject",
+			new String[] {String.class.getName()});
+
+		_finderPathFetchByRI_RP = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
+			JIRAComponentImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByRI_RP",
+			new String[] {Long.class.getName(), String.class.getName()},
+			JIRAComponentModelImpl.REMOTEID_COLUMN_BITMASK |
+			JIRAComponentModelImpl.REMOTEPROJECT_COLUMN_BITMASK);
+
+		_finderPathCountByRI_RP = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRI_RP",
+			new String[] {Long.class.getName(), String.class.getName()});
+
+		_finderPathWithPaginationFindByRP_V = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
+			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByRP_V",
+			new String[] {
+				String.class.getName(), Boolean.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByRP_V = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED,
+			JIRAComponentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByRP_V",
+			new String[] {String.class.getName(), Boolean.class.getName()},
+			JIRAComponentModelImpl.REMOTEPROJECT_COLUMN_BITMASK |
+			JIRAComponentModelImpl.VISIBLE_COLUMN_BITMASK |
+			JIRAComponentModelImpl.NAME_COLUMN_BITMASK);
+
+		_finderPathCountByRP_V = new FinderPath(
+			JIRAComponentModelImpl.ENTITY_CACHE_ENABLED,
+			JIRAComponentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRP_V",
+			new String[] {String.class.getName(), Boolean.class.getName()});
 	}
 
 	public void destroy() {
 		entityCache.removeCache(JIRAComponentImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -2263,15 +2367,34 @@ public class JIRAComponentPersistenceImpl extends BasePersistenceImpl<JIRACompon
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_JIRACOMPONENT = "SELECT jiraComponent FROM JIRAComponent jiraComponent";
-	private static final String _SQL_SELECT_JIRACOMPONENT_WHERE_PKS_IN = "SELECT jiraComponent FROM JIRAComponent jiraComponent WHERE jiraComponentId IN (";
-	private static final String _SQL_SELECT_JIRACOMPONENT_WHERE = "SELECT jiraComponent FROM JIRAComponent jiraComponent WHERE ";
-	private static final String _SQL_COUNT_JIRACOMPONENT = "SELECT COUNT(jiraComponent) FROM JIRAComponent jiraComponent";
-	private static final String _SQL_COUNT_JIRACOMPONENT_WHERE = "SELECT COUNT(jiraComponent) FROM JIRAComponent jiraComponent WHERE ";
+
+	private static final String _SQL_SELECT_JIRACOMPONENT =
+		"SELECT jiraComponent FROM JIRAComponent jiraComponent";
+
+	private static final String _SQL_SELECT_JIRACOMPONENT_WHERE_PKS_IN =
+		"SELECT jiraComponent FROM JIRAComponent jiraComponent WHERE jiraComponentId IN (";
+
+	private static final String _SQL_SELECT_JIRACOMPONENT_WHERE =
+		"SELECT jiraComponent FROM JIRAComponent jiraComponent WHERE ";
+
+	private static final String _SQL_COUNT_JIRACOMPONENT =
+		"SELECT COUNT(jiraComponent) FROM JIRAComponent jiraComponent";
+
+	private static final String _SQL_COUNT_JIRACOMPONENT_WHERE =
+		"SELECT COUNT(jiraComponent) FROM JIRAComponent jiraComponent WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "jiraComponent.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No JIRAComponent exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No JIRAComponent exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(JIRAComponentPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No JIRAComponent exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No JIRAComponent exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		JIRAComponentPersistenceImpl.class);
+
 }
