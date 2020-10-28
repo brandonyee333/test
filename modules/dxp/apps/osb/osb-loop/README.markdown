@@ -28,7 +28,7 @@
 
 7. Add a file called `portal-ext.properties` to your bundle with the following minimum properties. The example below uses a MySQL database.
     ```java
-    jdbc.default.driverClassName=com.mysql.jdbc.Driver
+    jdbc.default.driverClassName=com.mysql.cj.jdbc.Driver
     jdbc.default.url=jdbc:mysql://localhost/lportal?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
     jdbc.default.username=root
     jdbc.default.password=liferay
