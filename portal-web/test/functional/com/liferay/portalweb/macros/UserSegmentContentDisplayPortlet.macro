@@ -33,6 +33,10 @@ definition {
 
 		SelectFrame(value1 = "relative=top");
 
+		if (IsElementPresent(locator1 = "IFrame#DIALOG")) {
+			IFrame.selectDialogFrame();
+		}
+
 		for (var userSegmentName : list "${userSegmentName}") {
 			var key_userSegmentName = "${userSegmentName}";
 
@@ -50,6 +54,8 @@ definition {
 		AssertClick(
 			locator1 = "Button#OK",
 			value1 = "OK");
+
+		SelectFrame(value1 = "relative=top");
 
 		IFrame.selectConfigurationFrame();
 
