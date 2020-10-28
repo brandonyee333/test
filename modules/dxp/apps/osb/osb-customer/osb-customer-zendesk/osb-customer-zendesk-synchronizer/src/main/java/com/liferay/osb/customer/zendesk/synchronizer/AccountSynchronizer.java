@@ -472,15 +472,12 @@ public class AccountSynchronizer {
 			}
 		}
 
-		String[] languageIds = accountEntry.getLanguageIds();
-
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
 			account.getCode(), countryName, address,
 			String.valueOf(accountEntry.getAccountEntryId()), account.getName(),
 			accountEntry.getInstructions(), String.valueOf(firstLineSupport),
 			partnerJiraProject, partnerName, getSupportLevel(productPurchases),
-			getStatus(productPurchases),
-			AccountEntryConstants.getLanguageLabel(languageIds[0]),
+			getStatus(productPurchases), getSupportLanguage(accountEntry),
 			account.getRegionAsString(), account.getTierAsString(),
 			getTags(productPurchases));
 
@@ -525,6 +522,16 @@ public class AccountSynchronizer {
 		}
 
 		return "Closed";
+	}
+
+	protected String getSupportLanguage(AccountEntry accountEntry) {
+		String[] languageIds = accountEntry.getLanguageIds();
+
+		if (ArrayUtil.isEmpty(languageIds)) {
+			return StringPool.BLANK;
+		}
+
+		return AccountEntryConstants.getLanguageLabel(languageIds[0]);
 	}
 
 	protected String getSupportLevel(List<ProductPurchase> productPurchases)
