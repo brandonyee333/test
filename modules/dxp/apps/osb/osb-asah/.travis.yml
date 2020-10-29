@@ -2,9 +2,6 @@ dist: trusty
 env:
     global:
         - _JAVA_OPTIONS=-Xmx3g
-        - COVERALLS_REPO_TOKEN=K6H7NNheywdSaWWIV7zofu4poOAC29NnF
-        - DOCKER_PASSWORD=EJp28mGMQ9eQGfs
-        - DOCKER_USERNAME=liferayci
 jdk: openjdk8
 jobs:
     include:
