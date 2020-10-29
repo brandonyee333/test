@@ -21,6 +21,16 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 
 String product = ParamUtil.getString(request, "product");
 double productVersion = ParamUtil.getDouble(request, "productVersion");
+
+JSONArray fixPackFiltersJSONArray = releaseToolDisplayContext.getFixPackFiltersJSONArray();
+
+if (fixPackFiltersJSONArray.length() == 1) {
+	JSONObject jsonObject = fixPackFiltersJSONArray.getJSONObject(0);
+
+	product = jsonObject.getString("product");
+	productVersion = jsonObject.getDouble("version");
+}
+
 double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 
@@ -126,7 +136,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 		ReleaseTool.FixpackFilters,
 		{
 			actionURL: '<%= fixPacksURL %>',
-			filtersJSON: <%= releaseToolDisplayContext.getFixPackFiltersJSONArray() %>,
+			filtersJSON: <%= fixPackFiltersJSONArray %>,
 			fixpackURL: '<%= releaseToolDisplayContext.getFixPackDownloadURL(product, productVersion, toFixPackVersion) %>',
 			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
 			productName: '<%= HtmlUtil.escapeJS(productName) %>',
