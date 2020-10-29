@@ -478,7 +478,7 @@ public class AccountSynchronizer {
 			accountEntry.getInstructions(), String.valueOf(firstLineSupport),
 			partnerJiraProject, partnerName, getSupportLevel(productPurchases),
 			getStatus(productPurchases), getSupportLanguage(accountEntry),
-			account.getRegionAsString(), account.getTierAsString(),
+			getSupportRegion(account), account.getTierAsString(),
 			getTags(productPurchases));
 
 		if (!externalIdMappers) {
@@ -548,6 +548,14 @@ public class AccountSynchronizer {
 		}
 
 		return StringPool.BLANK;
+	}
+
+	protected String getSupportRegion(Account account) {
+		if (account.getRegion() == Account.Region.UNITED_STATES) {
+			return "US";
+		}
+
+		return account.getRegionAsString();
 	}
 
 	protected Set<String> getTags(List<ProductPurchase> productPurchases)
