@@ -989,6 +989,8 @@ definition {
 			siteName = "Site Name");
 
 		AssertConsoleTextNotPresent(value1 = "java.lang.StringIndexOutOfBoundsException");
+
+		AssertConsoleTextNotPresent(value1 = "java.lang.NullPointerException");
 	}
 
 	@priority = "5"
