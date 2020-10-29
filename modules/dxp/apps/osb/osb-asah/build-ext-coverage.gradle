@@ -41,6 +41,7 @@ allprojects {
 	}
 
 	pmd {
+		incrementalAnalysis = false
 		toolVersion = "5.8.1"
 	}
 
