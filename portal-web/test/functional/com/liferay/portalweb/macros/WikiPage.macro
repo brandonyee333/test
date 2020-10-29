@@ -17,7 +17,7 @@ definition {
 
 			Click(locator1 = "Icon#INFO");
 
-			AssertClick(
+			AssertClick.assertPartialTextClickAt(
 				locator1 = "RSS#FEED_LINK",
 				value1 = "Feed");
 
