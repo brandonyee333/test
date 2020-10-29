@@ -20,6 +20,7 @@ dependencies {
 	testIntegrationCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-io")
 	testIntegrationCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-service")
 	testIntegrationCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-test-util")
+	testIntegrationCompile project(":apps:foundation:portal-configuration:portal-configuration-test-util")
 	testIntegrationCompile project(":apps:web-experience:journal:journal-service")
 	testIntegrationCompile project(":apps:web-experience:journal:journal-test-util")
 	testIntegrationCompile project(":apps:web-experience:journal:journal-web")
