@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
@@ -249,14 +250,17 @@ public class HistogramDogTest {
 	private List<HistogramMetric> _getHistogramMetrics(
 		Interval interval, TimeRange timeRange) {
 
-		return _histogramDog.getHistogramMetrics(
-			true, JournalMetricType.VIEWS,
-			new SearchQueryContext("1", AssetType.JOURNAL) {
-				{
-					setInterval(interval.getKey());
-					setTimeRange(timeRange);
-				}
-			});
+		HistogramMetricBag histogramMetricBag =
+			_histogramDog.getHistogramMetricBag(
+				true, JournalMetricType.VIEWS,
+				new SearchQueryContext("1", AssetType.JOURNAL) {
+					{
+						setInterval(interval.getKey());
+						setTimeRange(timeRange);
+					}
+				});
+
+		return histogramMetricBag.getMetrics();
 	}
 
 	@Autowired

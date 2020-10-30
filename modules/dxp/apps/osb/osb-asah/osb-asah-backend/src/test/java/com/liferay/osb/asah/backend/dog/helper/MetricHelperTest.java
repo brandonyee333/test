@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog.helper;
 
+import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
@@ -30,6 +32,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,7 +48,7 @@ import org.mockito.Mock;
 public class MetricHelperTest {
 
 	@Test
-	public void testCreateMetricsCustomRange() {
+	public void testCreateHistogramMetricBagCustomRange() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-12-02T00:00", "2018-12-03T00:00", "2018-12-04T00:00",
 			"2018-12-05T00:00", "2018-12-06T00:00", "2018-12-07T00:00",
@@ -61,7 +64,7 @@ public class MetricHelperTest {
 	}
 
 	@Test
-	public void testCreateMetricsLast7Days() {
+	public void testCreateHistogramMetricBagLast7Days() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-03-25T00:00", "2018-03-26T00:00", "2018-03-27T00:00",
 			"2018-03-28T00:00", "2018-03-29T00:00", "2018-03-30T00:00",
@@ -75,7 +78,7 @@ public class MetricHelperTest {
 	}
 
 	@Test
-	public void testCreateMetricsLast24Hours() {
+	public void testCreateHistogramMetricBagLast24Hours() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-03-31T11:00", "2018-03-31T12:00", "2018-03-31T13:00",
 			"2018-03-31T14:00", "2018-03-31T15:00", "2018-03-31T16:00",
@@ -94,7 +97,7 @@ public class MetricHelperTest {
 	}
 
 	@Test
-	public void testCreateMetricsLast28Days() {
+	public void testCreateHistogramMetricBagLast28Days() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-03-04T00:00", "2018-03-05T00:00", "2018-03-06T00:00",
 			"2018-03-07T00:00", "2018-03-08T00:00", "2018-03-09T00:00",
@@ -115,7 +118,7 @@ public class MetricHelperTest {
 	}
 
 	@Test
-	public void testCreateMetricsLast30Days() {
+	public void testCreateHistogramMetricBagLast30Days() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-03-02T00:00", "2018-03-03T00:00", "2018-03-04T00:00",
 			"2018-03-05T00:00", "2018-03-06T00:00", "2018-03-07T00:00",
@@ -136,7 +139,7 @@ public class MetricHelperTest {
 	}
 
 	@Test
-	public void testCreateMetricsLast90DaysTodayOnSaturday() {
+	public void testCreateHistogramMetricBagLast90DaysTodayOnSaturday() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-08-26T00:00", "2018-09-02T00:00", "2018-09-09T00:00",
 			"2018-09-16T00:00", "2018-09-23T00:00", "2018-09-30T00:00",
@@ -180,7 +183,7 @@ public class MetricHelperTest {
 	}
 
 	@Test
-	public void testCreateMetricsLast90DaysTodayOnSundayOrWeekday1() {
+	public void testCreateHistogramMetricBagLast90DaysTodayOnSundayOrWeekday1() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-08-26T00:00", "2018-09-02T00:00", "2018-09-09T00:00",
 			"2018-09-16T00:00", "2018-09-23T00:00", "2018-09-30T00:00",
@@ -224,7 +227,7 @@ public class MetricHelperTest {
 	}
 
 	@Test
-	public void testCreateMetricsLast90DaysTodayOnSundayOrWeekday2() {
+	public void testCreateHistogramMetricBagLast90DaysTodayOnSundayOrWeekday2() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-09-09T00:00", "2018-09-16T00:00", "2018-09-23T00:00",
 			"2018-09-30T00:00", "2018-10-07T00:00", "2018-10-14T00:00",
@@ -268,7 +271,7 @@ public class MetricHelperTest {
 	}
 
 	@Test
-	public void testCreateMetricsLast180Days() {
+	public void testCreateHistogramMetricBagLast180Days() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-06-17T00:00", "2018-06-24T00:00", "2018-07-01T00:00",
 			"2018-07-08T00:00", "2018-07-15T00:00", "2018-07-22T00:00",
@@ -328,7 +331,7 @@ public class MetricHelperTest {
 	}
 
 	@Test
-	public void testCreateMetricsLastYear() {
+	public void testCreateHistogramMetricBagLastYear() {
 		List<String> expectedKeys = Arrays.asList(
 			"2017-12-01T00:00", "2018-01-01T00:00", "2018-02-01T00:00",
 			"2018-03-01T00:00", "2018-04-01T00:00", "2018-05-01T00:00",
@@ -372,7 +375,7 @@ public class MetricHelperTest {
 	}
 
 	@Test
-	public void testCreateMetricsYesterday() {
+	public void testCreateHistogramMetricBagYesterday() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-03-31T00:00", "2018-03-31T01:00", "2018-03-31T02:00",
 			"2018-03-31T03:00", "2018-03-31T04:00", "2018-03-31T05:00",
@@ -401,8 +404,23 @@ public class MetricHelperTest {
 
 		Clock clock = _createFixedClock(localDateTime);
 
-		return _metricHelper.createMetrics(
-			clock, interval, timeRange.withClock(clock), _metricType);
+		HistogramMetricBag histogramMetricBag =
+			_metricHelper.createHistogramMetricBag(
+				clock, interval, timeRange.withClock(clock), _metricType);
+
+		List<HistogramMetric> histogramMetrics =
+			histogramMetricBag.getMetrics();
+
+		Stream<HistogramMetric> stream = histogramMetrics.stream();
+
+		return stream.collect(
+			Collectors.toMap(
+				HistogramMetric::getKey, Function.identity(),
+				(oldMetric, newMetric) -> {
+					throw new RuntimeException(
+						"Created histogram metrics with duplicate keys");
+				},
+				TreeMap::new));
 	}
 
 	private List<String> _createMetricsKeys(

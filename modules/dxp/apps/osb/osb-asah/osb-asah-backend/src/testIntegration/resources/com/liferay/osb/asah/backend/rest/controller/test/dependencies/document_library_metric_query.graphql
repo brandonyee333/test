@@ -33,15 +33,17 @@ fragment geolocationFragment on Metric {
 
 fragment metricFragment on Metric {
 	histogram {
-		key
-		previousValue
-		previousValueKey
-		trend {
-			percentage
-			trendClassification
+		metrics {
+			key
+			previousValue
+			previousValueKey
+			trend {
+				percentage
+				trendClassification
+			}
+			value
+			valueKey
 		}
-		value
-		valueKey
 	}
 	previousValue
 	trend {

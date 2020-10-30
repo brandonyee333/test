@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.IndividualHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
@@ -161,15 +162,18 @@ public class IndividualHistogramDogTest {
 	private List<HistogramMetric> _getHistogramMetrics(
 		Boolean active, MetricType metricType) {
 
-		return _individualHistogramDog.getHistogramMetrics(
-			metricType,
-			new SearchQueryContext(AssetType.INDIVIDUAL_METRIC) {
-				{
-					setActive(active);
-					setInterval("D");
-					setRangeKey(30);
-				}
-			});
+		HistogramMetricBag histogramMetricBag =
+			_individualHistogramDog.getHistogramMetricBag(
+				metricType,
+				new SearchQueryContext(AssetType.INDIVIDUAL_METRIC) {
+					{
+						setActive(active);
+						setInterval("D");
+						setRangeKey(30);
+					}
+				});
+
+		return histogramMetricBag.getMetrics();
 	}
 
 	@Autowired
