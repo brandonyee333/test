@@ -1440,8 +1440,6 @@ public class LicenseKeyModelImpl
 
 	@Override
 	public void setLicenseKeyId(long licenseKeyId) {
-		_columnBitmask = -1L;
-
 		_licenseKeyId = licenseKeyId;
 	}
 
@@ -2205,7 +2203,7 @@ public class LicenseKeyModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask = -1L;
+		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
 
 		if (!_setOriginalActive) {
 			_setOriginalActive = true;
@@ -2375,69 +2373,56 @@ public class LicenseKeyModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LicenseKeyModelImpl licenseKeyModelImpl = this;
+		_originalUuid = _uuid;
 
-		licenseKeyModelImpl._originalUuid = licenseKeyModelImpl._uuid;
+		_originalUserId = _userId;
 
-		licenseKeyModelImpl._originalUserId = licenseKeyModelImpl._userId;
+		_setOriginalUserId = false;
 
-		licenseKeyModelImpl._setOriginalUserId = false;
+		_setModifiedDate = false;
+		_originalLicenseKeySetId = _licenseKeySetId;
 
-		licenseKeyModelImpl._setModifiedDate = false;
+		_setOriginalLicenseKeySetId = false;
 
-		licenseKeyModelImpl._originalLicenseKeySetId =
-			licenseKeyModelImpl._licenseKeySetId;
+		_originalAssetReceiptLicenseUuid = _assetReceiptLicenseUuid;
 
-		licenseKeyModelImpl._setOriginalLicenseKeySetId = false;
+		_originalKoroneikiAccountKey = _koroneikiAccountKey;
 
-		licenseKeyModelImpl._originalAssetReceiptLicenseUuid =
-			licenseKeyModelImpl._assetReceiptLicenseUuid;
+		_originalKoroneikiProductPurchaseKey = _koroneikiProductPurchaseKey;
 
-		licenseKeyModelImpl._originalKoroneikiAccountKey =
-			licenseKeyModelImpl._koroneikiAccountKey;
+		_originalAccountEntryId = _accountEntryId;
 
-		licenseKeyModelImpl._originalKoroneikiProductPurchaseKey =
-			licenseKeyModelImpl._koroneikiProductPurchaseKey;
+		_setOriginalAccountEntryId = false;
 
-		licenseKeyModelImpl._originalAccountEntryId =
-			licenseKeyModelImpl._accountEntryId;
+		_originalOfferingEntryId = _offeringEntryId;
 
-		licenseKeyModelImpl._setOriginalAccountEntryId = false;
+		_setOriginalOfferingEntryId = false;
 
-		licenseKeyModelImpl._originalOfferingEntryId =
-			licenseKeyModelImpl._offeringEntryId;
+		_originalProductEntryId = _productEntryId;
 
-		licenseKeyModelImpl._setOriginalOfferingEntryId = false;
+		_setOriginalProductEntryId = false;
 
-		licenseKeyModelImpl._originalProductEntryId =
-			licenseKeyModelImpl._productEntryId;
+		_originalLicenseEntryType = _licenseEntryType;
 
-		licenseKeyModelImpl._setOriginalProductEntryId = false;
+		_originalProductEntryName = _productEntryName;
 
-		licenseKeyModelImpl._originalLicenseEntryType =
-			licenseKeyModelImpl._licenseEntryType;
+		_originalProductId = _productId;
 
-		licenseKeyModelImpl._originalProductEntryName =
-			licenseKeyModelImpl._productEntryName;
+		_originalClusterId = _clusterId;
 
-		licenseKeyModelImpl._originalProductId = licenseKeyModelImpl._productId;
+		_setOriginalClusterId = false;
 
-		licenseKeyModelImpl._originalClusterId = licenseKeyModelImpl._clusterId;
+		_originalServerId = _serverId;
 
-		licenseKeyModelImpl._setOriginalClusterId = false;
+		_originalComplimentary = _complimentary;
 
-		licenseKeyModelImpl._originalServerId = licenseKeyModelImpl._serverId;
+		_setOriginalComplimentary = false;
 
-		licenseKeyModelImpl._originalComplimentary =
-			licenseKeyModelImpl._complimentary;
+		_originalActive = _active;
 
-		licenseKeyModelImpl._setOriginalComplimentary = false;
+		_setOriginalActive = false;
 
-		licenseKeyModelImpl._originalActive = licenseKeyModelImpl._active;
-
-		licenseKeyModelImpl._setOriginalActive = false;
-
-		licenseKeyModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override
@@ -2701,7 +2686,7 @@ public class LicenseKeyModelImpl
 			getAttributeGetterFunctions();
 
 		StringBundler sb = new StringBundler(
-			4 * attributeGetterFunctions.size() + 2);
+			(4 * attributeGetterFunctions.size()) + 2);
 
 		sb.append("{");
 
@@ -2733,7 +2718,7 @@ public class LicenseKeyModelImpl
 			getAttributeGetterFunctions();
 
 		StringBundler sb = new StringBundler(
-			5 * attributeGetterFunctions.size() + 4);
+			(5 * attributeGetterFunctions.size()) + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());

@@ -2098,7 +2098,7 @@ public class LicenseKeySetPersistenceImpl
 		try {
 			session = openSession();
 
-			if (licenseKeySet.isNew()) {
+			if (isNew) {
 				session.save(licenseKeySet);
 
 				licenseKeySet.setNew(false);
@@ -2386,7 +2386,7 @@ public class LicenseKeySetPersistenceImpl
 		}
 
 		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
 		sb.append(_SQL_SELECT_LICENSEKEYSET_WHERE_PKS_IN);
 
@@ -2735,6 +2735,7 @@ public class LicenseKeySetPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(LicenseKeySetImpl.class.getName());
+
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);

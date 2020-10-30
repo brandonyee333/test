@@ -46,6 +46,10 @@ public class LicenseKeyLocalServiceWrapper
 	/**
 	 * Adds the license key to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseKeyLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param licenseKey the license key
 	 * @return the license key that was added
 	 */
@@ -136,6 +140,10 @@ public class LicenseKeyLocalServiceWrapper
 	/**
 	 * Deletes the license key from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseKeyLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param licenseKey the license key
 	 * @return the license key that was removed
 	 */
@@ -148,6 +156,10 @@ public class LicenseKeyLocalServiceWrapper
 
 	/**
 	 * Deletes the license key with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseKeyLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param licenseKeyId the primary key of the license key
 	 * @return the license key that was removed
@@ -692,6 +704,10 @@ public class LicenseKeyLocalServiceWrapper
 
 	/**
 	 * Updates the license key in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseKeyLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param licenseKey the license key
 	 * @return the license key that was updated

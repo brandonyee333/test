@@ -55,7 +55,7 @@ public interface LicenseKeySetService extends BaseService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link LicenseKeySetServiceUtil} to access the license key set remote service. Add custom service methods to <code>com.liferay.osb.customer.license.service.impl.LicenseKeySetServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.license.service.impl.LicenseKeySetServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the license key set remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link LicenseKeySetServiceUtil} if injection and service tracking are not available.
 	 */
 	public LicenseKeySet deleteLicenseKeySet(long licenseKeySetId)
 		throws PortalException;

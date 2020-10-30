@@ -36,6 +36,10 @@ public class LicenseKeySetLocalServiceWrapper
 	/**
 	 * Adds the license key set to the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseKeySetLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param licenseKeySet the license key set
 	 * @return the license key set that was added
 	 */
@@ -83,6 +87,10 @@ public class LicenseKeySetLocalServiceWrapper
 	/**
 	 * Deletes the license key set from the database. Also notifies the appropriate model listeners.
 	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseKeySetLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
+	 *
 	 * @param licenseKeySet the license key set
 	 * @return the license key set that was removed
 	 * @throws PortalException
@@ -99,6 +107,10 @@ public class LicenseKeySetLocalServiceWrapper
 
 	/**
 	 * Deletes the license key set with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseKeySetLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param licenseKeySetId the primary key of the license key set
 	 * @return the license key set that was removed
@@ -315,6 +327,10 @@ public class LicenseKeySetLocalServiceWrapper
 
 	/**
 	 * Updates the license key set in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * <p>
+	 * <strong>Important:</strong> Inspect LicenseKeySetLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * </p>
 	 *
 	 * @param licenseKeySet the license key set
 	 * @return the license key set that was updated

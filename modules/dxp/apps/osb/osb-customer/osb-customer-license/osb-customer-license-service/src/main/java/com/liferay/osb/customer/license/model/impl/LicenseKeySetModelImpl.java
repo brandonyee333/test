@@ -652,7 +652,7 @@ public class LicenseKeySetModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
+		_columnBitmask |= NAME_COLUMN_BITMASK;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -767,25 +767,20 @@ public class LicenseKeySetModelImpl
 
 	@Override
 	public void resetOriginalValues() {
-		LicenseKeySetModelImpl licenseKeySetModelImpl = this;
+		_originalUserId = _userId;
 
-		licenseKeySetModelImpl._originalUserId = licenseKeySetModelImpl._userId;
+		_setOriginalUserId = false;
 
-		licenseKeySetModelImpl._setOriginalUserId = false;
+		_setModifiedDate = false;
+		_originalKoroneikiAccountKey = _koroneikiAccountKey;
 
-		licenseKeySetModelImpl._setModifiedDate = false;
+		_originalAccountEntryId = _accountEntryId;
 
-		licenseKeySetModelImpl._originalKoroneikiAccountKey =
-			licenseKeySetModelImpl._koroneikiAccountKey;
+		_setOriginalAccountEntryId = false;
 
-		licenseKeySetModelImpl._originalAccountEntryId =
-			licenseKeySetModelImpl._accountEntryId;
+		_originalName = _name;
 
-		licenseKeySetModelImpl._setOriginalAccountEntryId = false;
-
-		licenseKeySetModelImpl._originalName = licenseKeySetModelImpl._name;
-
-		licenseKeySetModelImpl._columnBitmask = 0;
+		_columnBitmask = 0;
 	}
 
 	@Override
@@ -853,7 +848,7 @@ public class LicenseKeySetModelImpl
 			getAttributeGetterFunctions();
 
 		StringBundler sb = new StringBundler(
-			4 * attributeGetterFunctions.size() + 2);
+			(4 * attributeGetterFunctions.size()) + 2);
 
 		sb.append("{");
 
@@ -885,7 +880,7 @@ public class LicenseKeySetModelImpl
 			getAttributeGetterFunctions();
 
 		StringBundler sb = new StringBundler(
-			5 * attributeGetterFunctions.size() + 4);
+			(5 * attributeGetterFunctions.size()) + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());

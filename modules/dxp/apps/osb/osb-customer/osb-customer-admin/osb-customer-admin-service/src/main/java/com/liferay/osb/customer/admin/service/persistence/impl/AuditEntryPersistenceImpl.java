@@ -179,8 +179,8 @@ public class AuditEntryPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (AuditEntry auditEntry : list) {
-					if ((createDate.getTime() >=
-							auditEntry.getCreateDate().getTime()) ||
+					if ((createDate.getTime() >= auditEntry.getCreateDate(
+						).getTime()) ||
 						(classNameId != auditEntry.getClassNameId())) {
 
 						list = null;
@@ -3285,7 +3285,7 @@ public class AuditEntryPersistenceImpl
 		}
 
 		StringBundler sb = new StringBundler(
-			uncachedPrimaryKeys.size() * 2 + 1);
+			(uncachedPrimaryKeys.size() * 2) + 1);
 
 		sb.append(_SQL_SELECT_AUDITENTRY_WHERE_PKS_IN);
 

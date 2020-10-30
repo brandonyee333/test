@@ -289,18 +289,18 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			Account parentAccount = _accountWebService.getAccount(
 				account.getParentAccountKey());
 
-			accountEntry.setCorpEntryName(parentAccount.getName());
 			accountEntry.setDossieraAccountKey(
 				getExternalLinkEntityId(
 					parentAccount, ExternalLinkDomain.DOSSIERA,
 					ExternalLinkEntityName.DOSSIERA_ACCOUNT));
+			accountEntry.setCorpEntryName(parentAccount.getName());
 		}
 
+		accountEntry.setKoroneikiAccountKey(account.getKey());
 		accountEntry.setCorpProjectUuid(
 			getExternalLinkEntityId(
 				account, ExternalLinkDomain.WEB,
 				ExternalLinkEntityName.WEB_CORP_PROJECT));
-		accountEntry.setKoroneikiAccountKey(account.getKey());
 		accountEntry.setName(account.getName());
 
 		if (account.getStatus() == Account.Status.ACTIVE) {
