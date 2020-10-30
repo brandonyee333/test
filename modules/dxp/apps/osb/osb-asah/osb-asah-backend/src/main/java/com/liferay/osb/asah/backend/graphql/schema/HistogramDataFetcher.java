@@ -20,7 +20,7 @@ import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.VisitorHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetricType;
@@ -44,11 +44,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "histogram", typeName = "Metric")
-public class HistogramDataFetcher
-	extends BaseDataFetcher<List<HistogramMetric>> {
+public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 
 	@Override
-	public List<HistogramMetric> get(
+	public HistogramMetricBag get(
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
@@ -82,15 +81,15 @@ public class HistogramDataFetcher
 			(metricType == IndividualMetricType.KNOWN_INDIVIDUALS) ||
 			(metricType == IndividualMetricType.TOTAL_INDIVIDUALS)) {
 
-			return _individualHistogramDog.getHistogramMetrics(
+			return _individualHistogramDog.getHistogramMetricBag(
 				metricType, searchQueryContext);
 		}
 		else if (metricType == PageMetricType.VISITORS) {
-			return _visitorHistogramDog.getHistogramMetrics(
+			return _visitorHistogramDog.getHistogramMetricBag(
 				includePrevious, metricType, searchQueryContext);
 		}
 
-		return _histogramDog.getHistogramMetrics(
+		return _histogramDog.getHistogramMetricBag(
 			includePrevious, metricType, searchQueryContext);
 	}
 

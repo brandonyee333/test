@@ -326,6 +326,12 @@ type FormMetric implements AssetMetric {
 	viewsMetric: Metric
 }
 
+type HistogramMetricBag {
+	asymmetricComparison: Boolean
+	metrics: [HistogramMetric]
+	total: Int
+}
+
 type FormPageMetric {
 	formFieldMetrics: [FormFieldMetric]
 	pageAbandonmentsMetric: Metric
@@ -442,7 +448,7 @@ type Metric {
 	cohortHeatMap: [CohortHeatMapMetric]
 	device : [Metric]
 	geolocation : [Metric]
-	histogram: [HistogramMetric]
+	histogram: HistogramMetricBag
 	individuals(keywords: String, size: Int!, start: Int!): IndividualBag
 	knownUsersCount: Int
 	metrics : [Metric]
