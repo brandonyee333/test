@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog.helper;
 
+import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
@@ -31,7 +33,11 @@ import java.time.ZonedDateTime;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
@@ -42,7 +48,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MetricHelper {
 
-	public Map<String, Metric> createMetrics(
+	public HistogramMetricBag createHistogramMetricBag(
 		Clock clock, Interval interval, TimeRange timeRange,
 		MetricType metricType) {
 
@@ -84,7 +90,19 @@ public class MetricHelper {
 			_addMetric(interval, localDateTime, metricType, metrics, timeRange);
 		}
 
-		return metrics;
+		Set<Map.Entry<String, Metric>> entries = metrics.entrySet();
+
+		Stream<Map.Entry<String, Metric>> stream = entries.stream();
+
+		List<HistogramMetric> histogramMetrics = stream.map(
+			entry -> new HistogramMetric(entry.getKey(), entry.getValue())
+		).collect(
+			Collectors.toList()
+		);
+
+		return new HistogramMetricBag(
+			_isAsymmetricComparison(interval, timeRange), histogramMetrics,
+			histogramMetrics.size());
 	}
 
 	public Map<String, VisitorCohortMetric> createVisitorCohortMetrics(
@@ -337,6 +355,41 @@ public class MetricHelper {
 		}
 
 		return localDateTime.toString();
+	}
+
+	private boolean _isAsymmetricComparison(
+		Interval interval, TimeRange timeRange) {
+
+		int deltaDays = timeRange.getDeltaDays();
+
+		LocalDate startLocalDate = timeRange.getStartLocalDate();
+
+		if (Interval.WEEK.equals(interval)) {
+			int currentNumOfBins = _countWeeks(
+				deltaDays, timeRange.getEndLocalDate());
+			int previousNumOfBins = _countWeeks(
+				deltaDays, startLocalDate.minusDays(1));
+
+			if (previousNumOfBins > currentNumOfBins) {
+				return true;
+			}
+
+			return false;
+		}
+		else if (Interval.MONTH.equals(interval)) {
+			int currentNumOfBins = _countMonths(
+				deltaDays, timeRange.getEndLocalDate());
+			int previousNumOfBins = _countMonths(
+				deltaDays, startLocalDate.minusDays(1));
+
+			if (previousNumOfBins > currentNumOfBins) {
+				return true;
+			}
+
+			return false;
+		}
+
+		return false;
 	}
 
 }
