@@ -233,6 +233,9 @@ public class UpgradeSubscription extends UpgradeProcess {
 		_getGroupIdSQLPartsMap.put(
 			Layout.class.getName(), "Layout,groupId,plid");
 		_getGroupIdSQLPartsMap.put(
+			"com.liferay.calendar.model.CalendarBooking",
+			"CalendarBooking,groupId,calendarBookingId");
+		_getGroupIdSQLPartsMap.put(
 			MBCategory.class.getName(), "MBCategory,groupId,categoryId");
 		_getGroupIdSQLPartsMap.put(
 			MBThread.class.getName(), "MBThread,groupId,threadId");
