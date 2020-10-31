@@ -205,16 +205,7 @@ public class ServiceConstants {
 		URL_BATCH_CURATOR = _getURL("BATCH_CURATOR", "8080", false);
 		URL_DXP_EXTRACTOR = _getURL("DXP_EXTRACTOR", "8080", false);
 		URL_EXTRACTOR = _getURL("EXTRACTOR", "8080", false);
-
-		String osbFaroFrontendURL = System.getenv("OSB_FARO_FRONTEND_URL");
-
-		if (StringUtils.isEmpty(osbFaroFrontendURL)) {
-			URL_FRONTEND = "https://analytics.liferay.com";
-		}
-		else {
-			URL_FRONTEND = osbFaroFrontendURL;
-		}
-
+		URL_FRONTEND = System.getenv("OSB_FARO_FRONTEND_URL");
 		URL_PUBLISHER = _getURL("PUBLISHER", "8080", true);
 		URL_PUBSUB_EMULATOR = _getURL("PUBSUB_EMULATOR", "8095", false);
 		URL_QUEUE = _getURL("QUEUE", "3000", false);
