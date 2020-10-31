@@ -1,5 +1,13 @@
+baseline {
+	enabled = false
+}
+
 buildService {
 	apiDir = "../osb-customer-admin-api/src/main/java"
+}
+
+buildWSDD {
+	enabled = false
 }
 
 dependencies {
