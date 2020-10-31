@@ -48,6 +48,35 @@ import org.mockito.Mock;
 public class MetricHelperTest {
 
 	@Test
+	public void testCreateHistogramMetricBagAsymmetricComparison() {
+		Clock clock = _createFixedClock(LocalDateTime.of(2018, 4, 1, 10, 30));
+
+		TimeRange timeRange = TimeRange.of(
+			LocalDate.parse("2020-10-09"), LocalDate.parse("2020-10-05"));
+
+		HistogramMetricBag histogramMetricBag =
+			_metricHelper.createHistogramMetricBag(
+				clock, Interval.WEEK, timeRange.withClock(clock), _metricType);
+
+		Assert.assertTrue(histogramMetricBag.isAsymmetricComparison());
+
+		histogramMetricBag = _metricHelper.createHistogramMetricBag(
+			clock, Interval.MONTH, timeRange.withClock(clock), _metricType);
+
+		Assert.assertTrue(histogramMetricBag.isAsymmetricComparison());
+
+		histogramMetricBag = _metricHelper.createHistogramMetricBag(
+			clock, Interval.DAY, timeRange.withClock(clock), _metricType);
+
+		Assert.assertFalse(histogramMetricBag.isAsymmetricComparison());
+
+		histogramMetricBag = _metricHelper.createHistogramMetricBag(
+			clock, Interval.DAY, TimeRange.LAST_24_HOURS, _metricType);
+
+		Assert.assertFalse(histogramMetricBag.isAsymmetricComparison());
+	}
+
+	@Test
 	public void testCreateHistogramMetricBagCustomRange() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-12-02T00:00", "2018-12-03T00:00", "2018-12-04T00:00",

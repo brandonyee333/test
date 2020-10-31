@@ -23,6 +23,12 @@ query SiteMetric($assetId: String!, $channelId: String, $country: String, $devic
 		}
 		visitorsMetric {
 			value
+			histogram {
+				asymmetricComparison
+				metrics {
+					value
+				}
+			}
 		}
 	}
 }
