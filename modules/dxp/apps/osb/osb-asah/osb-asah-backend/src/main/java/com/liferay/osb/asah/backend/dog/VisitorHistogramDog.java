@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.dog.helper.MetricHelper;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
@@ -36,6 +37,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -63,7 +65,7 @@ public class VisitorHistogramDog {
 		_dogConfigurationBag = new DogConfigurationBag(dogConfigurations);
 	}
 
-	public List<HistogramMetric> getHistogramMetrics(
+	public HistogramMetricBag getHistogramMetricBag(
 		boolean includePrevious, MetricType metricType,
 		SearchQueryContext searchQueryContext) {
 
@@ -77,7 +79,7 @@ public class VisitorHistogramDog {
 				dogConfiguration, includePrevious, searchQueryContext));
 
 		if (DogUtil.isEmpty(aggregations)) {
-			return Collections.emptyList();
+			return new HistogramMetricBag();
 		}
 
 		String aggregationKey = "ranges";
@@ -86,7 +88,7 @@ public class VisitorHistogramDog {
 			aggregationKey = "period_ranges";
 		}
 
-		return _createHistogramMetrics(
+		return _createHistogramMetricBag(
 			searchQueryContext.getInterval(), includePrevious, metricType,
 			aggregations.get(aggregationKey),
 			searchQueryContext.getTimeRange());
@@ -126,7 +128,7 @@ public class VisitorHistogramDog {
 			searchQueryContext);
 	}
 
-	private List<HistogramMetric> _createHistogramMetrics(
+	private HistogramMetricBag _createHistogramMetricBag(
 		Interval interval, boolean includePrevious, MetricType metricType,
 		Range range, TimeRange timeRange) {
 
@@ -135,12 +137,15 @@ public class VisitorHistogramDog {
 		if ((includePrevious && (rangeBuckets.size() < 2)) ||
 			rangeBuckets.isEmpty()) {
 
-			return Collections.emptyList();
+			return new HistogramMetricBag();
 		}
 
-		Map<String, Metric> metrics = _metricHelper.createMetrics(
-			Clock.system(_timeZoneDog.getZoneId()), interval, timeRange,
-			metricType);
+		HistogramMetricBag histogramMetricBag =
+			_metricHelper.createHistogramMetricBag(
+				Clock.system(_timeZoneDog.getZoneId()), interval, timeRange,
+				metricType);
+
+		Map<String, Metric> metrics = _getMetrics(histogramMetricBag);
 
 		List<LocalDateTime> histogramBuckets = _getHistogramBuckets(
 			metrics.keySet());
@@ -203,15 +208,7 @@ public class VisitorHistogramDog {
 			metrics.put(timeKey, metric);
 		}
 
-		Set<Map.Entry<String, Metric>> entries = metrics.entrySet();
-
-		Stream<Map.Entry<String, Metric>> stream = entries.stream();
-
-		return stream.map(
-			entry -> new HistogramMetric(entry.getKey(), entry.getValue())
-		).collect(
-			Collectors.toList()
-		);
+		return histogramMetricBag;
 	}
 
 	private LocalDateTime _getCurrentLocalDateTime(
@@ -239,6 +236,19 @@ public class VisitorHistogramDog {
 		).collect(
 			Collectors.toList()
 		);
+	}
+
+	private Map<String, Metric> _getMetrics(
+		HistogramMetricBag histogramMetricBag) {
+
+		List<HistogramMetric> histogramMetrics =
+			histogramMetricBag.getMetrics();
+
+		Stream<HistogramMetric> histogramMetricStream =
+			histogramMetrics.stream();
+
+		return histogramMetricStream.collect(
+			Collectors.toMap(HistogramMetric::getKey, Function.identity()));
 	}
 
 	private LocalDateTime _getPreviousLocalDateTime(

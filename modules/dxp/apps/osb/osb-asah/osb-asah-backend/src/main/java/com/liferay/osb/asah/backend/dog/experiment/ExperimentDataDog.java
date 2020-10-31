@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetric;
@@ -153,9 +154,12 @@ public class ExperimentDataDog {
 		searchQueryContext.setTimeRange(
 			TimeRange.of(endLocalDate, startLocalDateTime.toLocalDate()));
 
-		List<HistogramMetric> sessionHistogramMetrics =
-			_histogramDog.getHistogramMetrics(
+		HistogramMetricBag histogramMetricBag =
+			_histogramDog.getHistogramMetricBag(
 				false, PageMetricType.SESSIONS, searchQueryContext);
+
+		List<HistogramMetric> sessionHistogramMetrics =
+			histogramMetricBag.getMetrics();
 
 		for (int i = 0; i < sessionHistogramMetrics.size(); i++) {
 			ExperimentDataPoint<Double[]> experimentDataPoint =

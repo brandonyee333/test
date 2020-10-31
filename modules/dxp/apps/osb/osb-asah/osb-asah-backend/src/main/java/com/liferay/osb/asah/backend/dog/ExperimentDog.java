@@ -29,6 +29,7 @@ import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.backend.model.Goal;
 import com.liferay.osb.asah.backend.model.GoalMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.PageMetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.common.dxp.DXPClient;
@@ -260,8 +261,11 @@ public class ExperimentDog {
 			}
 		};
 
-		return _histogramDog.getHistogramMetrics(
-			false, PageMetricType.SESSIONS, searchQueryContext);
+		HistogramMetricBag histogramMetricBag =
+			_histogramDog.getHistogramMetricBag(
+				false, PageMetricType.SESSIONS, searchQueryContext);
+
+		return histogramMetricBag.getMetrics();
 	}
 
 	public Long getExperimentSessions(String experimentId) {

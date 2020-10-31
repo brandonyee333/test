@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
@@ -66,7 +67,7 @@ public class HistogramDog {
 		_dogConfigurationBag = new DogConfigurationBag(dogConfigurations);
 	}
 
-	public List<HistogramMetric> getHistogramMetrics(
+	public HistogramMetricBag getHistogramMetricBag(
 		boolean includePrevious, MetricType metricType,
 		SearchQueryContext searchQueryContext) {
 
@@ -81,7 +82,7 @@ public class HistogramDog {
 				searchQueryContext));
 
 		if (DogUtil.isEmpty(aggregations)) {
-			return Collections.emptyList();
+			return new HistogramMetricBag();
 		}
 
 		String aggregationKey = "ranges";
@@ -90,7 +91,7 @@ public class HistogramDog {
 			aggregationKey = "period_ranges";
 		}
 
-		return _createHistogramMetrics(
+		return _createHistogramMetricBag(
 			searchQueryContext.getAssetType(), includePrevious,
 			searchQueryContext.getInterval(), aggregations.get(aggregationKey),
 			metricType, searchQueryContext.getTimeRange());
@@ -140,7 +141,7 @@ public class HistogramDog {
 			searchQueryContext);
 	}
 
-	private List<HistogramMetric> _createHistogramMetrics(
+	private HistogramMetricBag _createHistogramMetricBag(
 		AssetType assetType, boolean includePrevious, Interval interval,
 		Range range, MetricType metricType, TimeRange timeRange) {
 
@@ -149,12 +150,16 @@ public class HistogramDog {
 		if ((includePrevious && (rangeBuckets.size() < 2)) ||
 			rangeBuckets.isEmpty()) {
 
-			return Collections.emptyList();
+			return new HistogramMetricBag();
 		}
 
-		Map<String, Metric> metrics = _metricHelper.createMetrics(
-			Clock.system(_timeZoneDog.getZoneId()), interval, timeRange,
-			metricType);
+		HistogramMetricBag histogramMetricBag =
+			_metricHelper.createHistogramMetricBag(
+				Clock.system(_timeZoneDog.getZoneId()), interval, timeRange,
+				metricType);
+
+		Map<String, Metric> metrics = _getHistogramMetricBuckets(
+			histogramMetricBag);
 
 		DogConfiguration dogConfiguration =
 			_dogConfigurationBag.getDogConfiguration(assetType);
@@ -217,15 +222,7 @@ public class HistogramDog {
 				mapperFunction.apply(histogramBucket.getAggregations()));
 		}
 
-		Set<Map.Entry<String, Metric>> entries = metrics.entrySet();
-
-		Stream<Map.Entry<String, Metric>> stream = entries.stream();
-
-		return stream.map(
-			entry -> new HistogramMetric(entry.getKey(), entry.getValue())
-		).collect(
-			Collectors.toList()
-		);
+		return histogramMetricBag;
 	}
 
 	private DateHistogramAggregationBuilder _getDateHistogramAggregationBuilder(
@@ -241,27 +238,40 @@ public class HistogramDog {
 		if (timeRange.equals(TimeRange.LAST_24_HOURS) ||
 			timeRange.equals(TimeRange.YESTERDAY)) {
 
-			dateHistogramAggregationBuilder.dateHistogramInterval(
+			dateHistogramAggregationBuilder.calendarInterval(
 				DateHistogramInterval.HOUR);
 
 			return dateHistogramAggregationBuilder;
 		}
 
 		if (Interval.MONTH.equals(interval)) {
-			dateHistogramAggregationBuilder.dateHistogramInterval(
+			dateHistogramAggregationBuilder.calendarInterval(
 				DateHistogramInterval.MONTH);
 		}
 		else if (Interval.WEEK.equals(interval)) {
-			dateHistogramAggregationBuilder.dateHistogramInterval(
+			dateHistogramAggregationBuilder.calendarInterval(
 				DateHistogramInterval.WEEK);
 			dateHistogramAggregationBuilder.offset("-1d");
 		}
 		else {
-			dateHistogramAggregationBuilder.dateHistogramInterval(
+			dateHistogramAggregationBuilder.calendarInterval(
 				DateHistogramInterval.DAY);
 		}
 
 		return dateHistogramAggregationBuilder;
+	}
+
+	private Map<String, Metric> _getHistogramMetricBuckets(
+		HistogramMetricBag histogramMetricBag) {
+
+		List<HistogramMetric> histogramMetrics =
+			histogramMetricBag.getMetrics();
+
+		Stream<HistogramMetric> histogramMetricStream =
+			histogramMetrics.stream();
+
+		return histogramMetricStream.collect(
+			Collectors.toMap(HistogramMetric::getKey, Function.identity()));
 	}
 
 	private Metric _getMetricFromPreviousTimestamp(

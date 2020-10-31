@@ -44,6 +44,7 @@ import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.FormPageMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.model.Interest;
 import com.liferay.osb.asah.backend.model.JournalMetric;
@@ -1072,12 +1073,12 @@ public class ReportRestController extends BaseRestController {
 			}
 
 			if (expands.contains("histogram")) {
-				List<HistogramMetric> histogramMetrics =
-					_histogramDog.getHistogramMetrics(
+				HistogramMetricBag histogramMetricBag =
+					_histogramDog.getHistogramMetricBag(
 						false, metric.getMetricType(), searchQueryContext);
 
 				metricReport._histogramReport = new HistogramReport(
-					histogramMetrics);
+					histogramMetricBag.getMetrics());
 			}
 
 			if (expands.contains("location")) {
