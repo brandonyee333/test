@@ -18,7 +18,6 @@ import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.admin.exception.RequiredAccountEntryException;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
-import com.liferay.osb.customer.github.constants.GitHubCollaboratorConstants;
 import com.liferay.osb.customer.github.constants.GitHubConstants;
 import com.liferay.osb.customer.github.exception.CollaboratorEmailAddressException;
 import com.liferay.osb.customer.github.exception.CollaboratorFullNameException;

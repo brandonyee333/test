@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.distributed.messaging.subscriber.rabbitmq.consumer;
 
-import com.liferay.osb.customer.distributed.messaging.rabbitmq.connector.LegacyConnection;
+import com.liferay.osb.customer.distributed.messaging.connector.rabbitmq.LegacyConnection;
 import com.liferay.osb.distributed.messaging.rabbitmq.connector.Connection;
 import com.liferay.osb.distributed.messaging.rabbitmq.connector.consumer.BaseConsumer;
 

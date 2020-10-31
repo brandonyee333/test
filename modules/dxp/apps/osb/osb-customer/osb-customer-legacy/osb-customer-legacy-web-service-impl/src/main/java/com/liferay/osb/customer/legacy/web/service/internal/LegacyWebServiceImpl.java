@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.legacy.web.service.internal;
 
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailServiceUtil;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.osb.customer.legacy.web.service.LegacyWebService;
 import com.liferay.osb.customer.legacy.web.service.internal.configuration.LegacyConfiguration;
 import com.liferay.osb.customer.legacy.web.service.util.LegacyConverter;
@@ -53,7 +53,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Amos Fong
  */
-@Component(immediate = true, service = LegacyWebService.class)
+@Component(
+	configurationPid = "com.liferay.osb.customer.legacy.web.service.internal.configuration.LegacyConfiguration",
+	immediate = true, service = LegacyWebService.class
+)
 public class LegacyWebServiceImpl
 	extends BaseJSONWebServiceClientImpl implements LegacyWebService {
 
@@ -141,7 +144,7 @@ public class LegacyWebServiceImpl
 			MailMessage mailMessage = new MailMessage(
 				from, to, mailSubject, sb.toString(), true);
 
-			MailServiceUtil.sendEmail(mailMessage);
+			_mailService.sendEmail(mailMessage);
 		}
 		catch (AddressException addressException) {
 			_log.error(addressException, addressException);
@@ -163,5 +166,8 @@ public class LegacyWebServiceImpl
 
 	@Reference
 	private LegacyConverter _legacyConverter;
+
+	@Reference
+	private MailService _mailService;
 
 }

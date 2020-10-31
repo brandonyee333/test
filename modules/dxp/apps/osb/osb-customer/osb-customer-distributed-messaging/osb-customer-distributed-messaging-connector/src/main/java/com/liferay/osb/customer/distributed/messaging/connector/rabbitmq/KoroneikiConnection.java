@@ -12,19 +12,19 @@
  *
  */
 
-package com.liferay.osb.customer.distributed.messaging.rabbitmq.connector;
+package com.liferay.osb.customer.distributed.messaging.connector.rabbitmq;
 
 import com.liferay.osb.distributed.messaging.rabbitmq.connector.BaseConnection;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Amos Fong
+ * @author Kyle Bischof
  */
 @Component(
 	immediate = true,
 	property = {"host=", "password=", "port=", "username=", "useSSL="},
-	service = LegacyConnection.class
+	service = KoroneikiConnection.class
 )
-public class LegacyConnection extends BaseConnection {
+public class KoroneikiConnection extends BaseConnection {
 }

@@ -182,14 +182,10 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 							for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
 								Product product = productPurchaseView.getProduct();
 
-								if (koroneikiProductKey.equals(product.getKey())) {
-									ProductPurchase[] productPurchases = productPurchaseView.getProductPurchases();
+								if (koroneikiProductKey.equals(product.getKey()) && !ArrayUtil.isEmpty(productPurchaseView.getProductPurchases())) {
+									purchased = true;
 
-									if (!ArrayUtil.isEmpty(productPurchases)) {
-										purchased = true;
-
-										break;
-									}
+									break;
 								}
 							}
 

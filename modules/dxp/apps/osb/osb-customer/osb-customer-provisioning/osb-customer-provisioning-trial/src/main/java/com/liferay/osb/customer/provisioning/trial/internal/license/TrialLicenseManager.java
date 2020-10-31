@@ -46,10 +46,11 @@ public class TrialLicenseManager {
 
 	public TrialLicenseManager(
 		KeyGenerator keyGenerator, LicenseKeyExporter licenseKeyExporter,
-		int version, String versionLabel) {
+		String productId, int version, String versionLabel) {
 
 		_keyGenerator = keyGenerator;
 		_licenseKeyExporter = licenseKeyExporter;
+		_productId = productId;
 		_version = version;
 		_versionLabel = versionLabel;
 	}

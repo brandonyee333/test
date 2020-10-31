@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalService;
 
 import java.util.List;
 
@@ -63,14 +63,14 @@ public class LicenseKeyPermission {
 			String actionId)
 		throws PortalException {
 
-		if (RoleLocalServiceUtil.hasUserRole(
+		if (_roleLocalService.hasUserRole(
 				permissionChecker.getUserId(),
 				OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
 
 			return true;
 		}
 
-		if (RoleLocalServiceUtil.hasUserRole(
+		if (_roleLocalService.hasUserRole(
 				permissionChecker.getUserId(),
 				OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
 
@@ -161,6 +161,12 @@ public class LicenseKeyPermission {
 		_contactRoleWebService = contactRoleWebService;
 	}
 
+	@Reference(unbind = "-")
+	protected void setRoleLocalService(RoleLocalService roleLocalService) {
+		_roleLocalService = roleLocalService;
+	}
+
 	private static ContactRoleWebService _contactRoleWebService;
+	private static RoleLocalService _roleLocalService;
 
 }

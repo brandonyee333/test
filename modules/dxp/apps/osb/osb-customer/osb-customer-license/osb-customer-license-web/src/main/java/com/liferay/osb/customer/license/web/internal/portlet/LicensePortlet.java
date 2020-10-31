@@ -57,6 +57,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -406,8 +407,9 @@ public class LicensePortlet extends MVCPortlet {
 
 			portletURL.setParameter(
 				"scroll",
-				actionResponse.getNamespace() + koroneikiProductPurchaseKey +
-					StringPool.DASH + clusterId);
+				StringBundler.concat(
+					actionResponse.getNamespace(), koroneikiProductPurchaseKey,
+					StringPool.DASH, String.valueOf(clusterId)));
 			portletURL.setParameter(
 				"mvcPath", "/license/edit_license_key_set.jsp");
 			portletURL.setParameter(

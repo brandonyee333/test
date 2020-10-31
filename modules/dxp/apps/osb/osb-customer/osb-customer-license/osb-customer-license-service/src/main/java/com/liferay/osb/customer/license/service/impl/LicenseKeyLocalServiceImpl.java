@@ -536,8 +536,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			new String[] {licenseKey.getIpAddresses()},
 			new String[] {licenseKey.getMacAddresses()},
 			new String[] {licenseKey.getServerId()}, startDate, expirationDate,
-			licenseKey.getAdditionalInfo(), licenseKey.getComplimentary(),
-			true);
+			licenseKey.getAdditionalInfo(), licenseKey.isComplimentary(), true);
 	}
 
 	public List<LicenseKey> search(
@@ -682,8 +681,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKeyId);
 
 		licenseKey.setAccountEntryId(accountEntryId);
-		licenseKey.setOfferingEntryId(offeringEntryId);
 		licenseKey.setOrderEntryId(orderEntryId);
+		licenseKey.setOfferingEntryId(offeringEntryId);
 
 		return licenseKeyPersistence.update(licenseKey);
 	}
@@ -1054,11 +1053,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				updateKoroneikiProductPurchaseKey = true;
 			}
 
-			if (complimentary != clusterLicenseKey.getComplimentary()) {
+			if (complimentary != clusterLicenseKey.isComplimentary()) {
 				updateComplimentary = true;
 			}
 
-			if (active != clusterLicenseKey.getActive()) {
+			if (active != clusterLicenseKey.isActive()) {
 				updateActive = true;
 			}
 
@@ -1142,11 +1141,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				updateKoroneikiProductPurchaseKey = true;
 			}
 
-			if (complimentary != clusterLicenseKey.getComplimentary()) {
+			if (complimentary != clusterLicenseKey.isComplimentary()) {
 				updateComplimentary = true;
 			}
 
-			if (active != clusterLicenseKey.getActive()) {
+			if (active != clusterLicenseKey.isActive()) {
 				updateActive = true;
 			}
 

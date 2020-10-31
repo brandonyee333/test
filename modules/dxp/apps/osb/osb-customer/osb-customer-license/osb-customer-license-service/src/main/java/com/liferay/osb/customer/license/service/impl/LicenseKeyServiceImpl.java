@@ -71,7 +71,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		try {
 			User user = getUser();
 
-			StringBundler sb = new StringBundler(6);
+			StringBundler sb = new StringBundler(7);
 
 			sb.append("accountKey eq '");
 			sb.append(accountEntry.getKoroneikiAccountKey());
@@ -555,7 +555,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
 
-		if (licenseKey.getActive() != active) {
+		if (licenseKey.isActive() != active) {
 			if (Validator.isNull(licenseKey.getServerId())) {
 				LicenseKeyPermission.check(
 					getPermissionChecker(), licenseKey,
@@ -589,7 +589,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			LicenseKeyPermission.check(
 				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_ADMIN);
 		}
-		else if (licenseKey.getActive() != active) {
+		else if (licenseKey.isActive() != active) {
 			LicenseKeyPermission.check(
 				getPermissionChecker(), licenseKey,
 				OSBActionKeys.UPDATE_ADVANCED);

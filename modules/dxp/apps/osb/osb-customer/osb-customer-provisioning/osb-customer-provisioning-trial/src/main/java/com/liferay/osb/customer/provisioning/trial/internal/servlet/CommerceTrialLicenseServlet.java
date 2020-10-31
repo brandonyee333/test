@@ -14,9 +14,11 @@
 
 package com.liferay.osb.customer.provisioning.trial.internal.servlet;
 
+import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
+import com.liferay.osb.customer.license.generator.KeyGenerator;
+import com.liferay.osb.customer.license.util.LicenseKeyExporter;
 import com.liferay.osb.customer.provisioning.trial.internal.configuration.ProvisioningTrialConfigurationValues;
 import com.liferay.osb.customer.provisioning.trial.internal.license.TrialLicenseManager;
-import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
@@ -38,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
@@ -104,6 +107,7 @@ public class CommerceTrialLicenseServlet extends HttpServlet {
 			_licenseManagerMap.put(
 				versionLabel,
 				new TrialLicenseManager(
+					_keyGenerator, _licenseKeyExporter,
 					ProductEntryConstants.PRODUCT_ID_COMMERCE, version,
 					versionLabel));
 		}
@@ -127,6 +131,12 @@ public class CommerceTrialLicenseServlet extends HttpServlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceTrialLicenseServlet.class);
+
+	@Reference
+	private KeyGenerator _keyGenerator;
+
+	@Reference
+	private LicenseKeyExporter _licenseKeyExporter;
 
 	private final Map<String, TrialLicenseManager> _licenseManagerMap =
 		new ConcurrentHashMap<>();

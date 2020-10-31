@@ -17,7 +17,7 @@ package com.liferay.osb.customer.github.internal.model.listener;
 import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
-import com.liferay.osb.customer.github.constants.GitHubCollaboratorConstants;
+import com.liferay.osb.customer.github.constants.GitHubConstants;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalService;
 import com.liferay.osb.customer.github.web.service.GitHubWebService;

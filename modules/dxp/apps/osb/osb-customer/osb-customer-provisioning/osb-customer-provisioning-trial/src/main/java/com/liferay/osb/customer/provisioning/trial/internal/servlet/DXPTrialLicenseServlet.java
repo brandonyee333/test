@@ -14,11 +14,11 @@
 
 package com.liferay.osb.customer.provisioning.trial.internal.servlet;
 
+import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
 import com.liferay.osb.customer.license.generator.KeyGenerator;
 import com.liferay.osb.customer.license.util.LicenseKeyExporter;
 import com.liferay.osb.customer.provisioning.trial.internal.configuration.ProvisioningTrialConfigurationValues;
 import com.liferay.osb.customer.provisioning.trial.internal.license.TrialLicenseManager;
-import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
@@ -107,7 +107,9 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 			_licenseManagerMap.put(
 				versionLabel,
 				new TrialLicenseManager(
-					_keyGenerator, _licenseKeyExporter, version, versionLabel));
+					_keyGenerator, _licenseKeyExporter,
+					ProductEntryConstants.PRODUCT_ID_PORTAL, version,
+					versionLabel));
 		}
 
 		TrialLicenseManager dxpTrialLicenseManager = _licenseManagerMap.get(
