@@ -73,6 +73,18 @@ if [[ -f bin/elasticsearch-users ]]; then
 	fi
 fi
 
+if [[ -n "$S3_REPOSITORY_ACCESS_KEY" ]]; then
+	if ! (run_as_other_user_if_needed elasticsearch-keystore list | grep -q '^s3.client.asah.access_key$'); then
+		(run_as_other_user_if_needed echo $S3_REPOSITORY_ACCESS_KEY | /usr/share/elasticsearch/bin/elasticsearch-keystore add -x s3.client.asah.access_key)
+	fi
+fi
+
+if [[ -n "$S3_REPOSITORY_SECRET_KEY" ]]; then
+	if ! (run_as_other_user_if_needed elasticsearch-keystore list | grep -q '^s3.client.asah.secret_key$'); then
+		(run_as_other_user_if_needed echo $S3_REPOSITORY_SECRET_KEY | /usr/share/elasticsearch/bin/elasticsearch-keystore add -x s3.client.asah.secret_key)
+	fi
+fi
+
 if [[ "$(id -u)" == "0" ]]; then
 	# If requested and running as root, mutate the ownership of bind-mounts
 	if [[ -n "$TAKE_FILE_OWNERSHIP" ]]; then
