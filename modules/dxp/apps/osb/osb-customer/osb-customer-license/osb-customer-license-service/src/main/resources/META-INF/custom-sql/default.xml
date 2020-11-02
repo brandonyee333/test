@@ -58,7 +58,7 @@
 			LEFT JOIN
 				OSB_AccountEntry ON
 					OSB_AccountEntry.accountEntryId = OSB_LicenseKey.accountEntryId
-			LEFT JOIN
+			INNER JOIN
 				OSB_LicenseKeySet ON
 					OSB_LicenseKeySet.licenseKeySetId = OSB_LicenseKey.licenseKeySetId
 			[$JOIN$]
