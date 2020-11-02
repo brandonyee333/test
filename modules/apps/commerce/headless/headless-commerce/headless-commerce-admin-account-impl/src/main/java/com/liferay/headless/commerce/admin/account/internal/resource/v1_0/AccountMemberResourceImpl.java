@@ -74,7 +74,7 @@ public class AccountMemberResourceImpl extends BaseAccountMemberResourceImpl {
 		_commerceAccountUserRelService.deleteCommerceAccountUserRel(
 			commerceAccount.getCommerceAccountId(), userId);
 
-		Response.ResponseBuilder responseBuilder = Response.ok();
+		Response.ResponseBuilder responseBuilder = Response.noContent();
 
 		return responseBuilder.build();
 	}
@@ -85,7 +85,7 @@ public class AccountMemberResourceImpl extends BaseAccountMemberResourceImpl {
 
 		_commerceAccountUserRelService.deleteCommerceAccountUserRel(id, userId);
 
-		Response.ResponseBuilder responseBuilder = Response.ok();
+		Response.ResponseBuilder responseBuilder = Response.noContent();
 
 		return responseBuilder.build();
 	}
@@ -155,7 +155,7 @@ public class AccountMemberResourceImpl extends BaseAccountMemberResourceImpl {
 				contextAcceptLanguage.getPreferredLocale()));
 	}
 
-	@NestedField(parentClass = Account.class, value = "users")
+	@NestedField(parentClass = Account.class, value = "accountMembers")
 	@Override
 	public Page<AccountMember> getAccountIdAccountMembersPage(
 			Long id, Pagination pagination)
@@ -189,11 +189,7 @@ public class AccountMemberResourceImpl extends BaseAccountMemberResourceImpl {
 		}
 
 		_updateCommerceAccountUserRel(
-			commerceAccount,
-			AccountMemberUtil.getUser(
-				_userLocalService, accountMember,
-				contextCompany.getCompanyId()),
-			accountMember);
+			commerceAccount, _userLocalService.getUser(userId), accountMember);
 
 		Response.ResponseBuilder responseBuilder = Response.ok();
 
@@ -207,10 +203,7 @@ public class AccountMemberResourceImpl extends BaseAccountMemberResourceImpl {
 
 		_updateCommerceAccountUserRel(
 			_commerceAccountService.getCommerceAccount(id),
-			AccountMemberUtil.getUser(
-				_userLocalService, accountMember,
-				contextCompany.getCompanyId()),
-			accountMember);
+			_userLocalService.getUser(userId), accountMember);
 
 		Response.ResponseBuilder responseBuilder = Response.ok();
 
@@ -290,6 +283,10 @@ public class AccountMemberResourceImpl extends BaseAccountMemberResourceImpl {
 			AccountMember accountMember)
 		throws Exception {
 
+		_userGroupRoleLocalService.deleteUserGroupRoles(
+			user.getUserId(),
+			new long[] {commerceAccount.getCommerceAccountGroupId()});
+
 		long[] roleIds = null;
 
 		AccountRole[] accountRoles = accountMember.getAccountRoles();
@@ -300,15 +297,11 @@ public class AccountMemberResourceImpl extends BaseAccountMemberResourceImpl {
 			roleIds = accountRoleStream.mapToLong(
 				AccountRole::getRoleId
 			).toArray();
+
+			_userGroupRoleLocalService.addUserGroupRoles(
+				user.getUserId(), commerceAccount.getCommerceAccountGroupId(),
+				roleIds);
 		}
-
-		_userGroupRoleLocalService.deleteUserGroupRoles(
-			user.getUserId(),
-			new long[] {commerceAccount.getCommerceAccountGroupId()});
-
-		_userGroupRoleLocalService.addUserGroupRoles(
-			user.getUserId(), commerceAccount.getCommerceAccountGroupId(),
-			roleIds);
 	}
 
 	@Reference
