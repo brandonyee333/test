@@ -1,7 +1,7 @@
 apply plugin: "com.liferay.dependency.local.copy"
 apply plugin: "com.liferay.spring.boot.defaults"
 
-bootRepackage {
+bootJar {
 	enabled = false
 }
 

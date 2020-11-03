@@ -14,7 +14,7 @@ targetCompatibility = "1.8"
 
 group = "com.liferay"
 
-bootRepackage {
+bootJar {
 	enabled = false
 }
 
