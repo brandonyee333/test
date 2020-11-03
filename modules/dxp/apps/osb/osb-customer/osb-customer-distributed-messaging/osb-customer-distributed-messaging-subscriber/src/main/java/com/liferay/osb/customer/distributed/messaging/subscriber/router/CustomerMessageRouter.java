@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.distributed.messaging.subscriber.router;
 
 import com.liferay.osb.customer.koroneiki.message.subscriber.AccountContactRoleMessageSubscriber;
-import com.liferay.osb.customer.koroneiki.message.subscriber.AccountDeleteMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.AccountTeamRoleAssignedMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.AccountTeamRoleUnassignedMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.message.subscriber.AccountUpdateMessageSubscriber;
@@ -41,6 +40,7 @@ import com.liferay.osb.customer.legacy.message.subscriber.ZendeskOrganizationCre
 import com.liferay.osb.customer.legacy.message.subscriber.ZendeskUserCreateMessageSubscriber;
 import com.liferay.osb.customer.legacy.message.subscriber.ZendeskUserDeleteMessageSubscriber;
 import com.liferay.osb.customer.legacy.message.subscriber.ZendeskUserIdentityCreateMessageSubscriber;
+import com.liferay.osb.customer.zendesk.message.subscriber.AccountDeleteMessageSubscriber;
 import com.liferay.osb.customer.zendesk.message.subscriber.ZendeskWebServiceMessageSubscriber;
 import com.liferay.osb.distributed.messaging.subscribing.router.BaseMessageRouter;
 import com.liferay.osb.distributed.messaging.subscribing.router.MessageRouter;

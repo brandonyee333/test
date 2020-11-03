@@ -109,7 +109,7 @@ public class ContactWebServiceImpl implements ContactWebService {
 		throws Exception {
 
 		Page<Contact> contactsPage =
-			_contactResource.getAccountAccountKeyContactsPage(
+			_contactResource.getTeamTeamKeyContactsPage(
 				teamKey, Pagination.of(page, pageSize));
 
 		if ((contactsPage != null) && (contactsPage.getItems() != null)) {

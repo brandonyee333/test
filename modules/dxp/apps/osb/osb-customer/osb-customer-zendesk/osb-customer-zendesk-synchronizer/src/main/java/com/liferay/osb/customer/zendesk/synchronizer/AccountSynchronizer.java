@@ -16,7 +16,6 @@ package com.liferay.osb.customer.zendesk.synchronizer;
 
 import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
-import com.liferay.osb.customer.admin.exception.RequiredAccountEntryException;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
@@ -320,18 +319,6 @@ public class AccountSynchronizer {
 			return;
 		}
 
-		Set<String> criteria = new HashSet<>();
-
-		criteria.add("organization:" + zendeskOrganizationId);
-
-		List<ZendeskTicket> zendeskTickets =
-			_zendeskTicketWebService.getZendeskTickets(criteria);
-
-		if (!zendeskTickets.isEmpty()) {
-			throw new RequiredAccountEntryException(
-				"You cannot delete projects with tickets");
-		}
-
 		Query query = _queryFactory.createQuery();
 
 		query.addCriterion("organization_id:" + zendeskOrganizationId);
@@ -348,14 +335,23 @@ public class AccountSynchronizer {
 				zendeskUser.getZendeskUserId());
 		}
 
-		removeCustomers(account, accountEntry);
+		removeCustomers(accountEntry, zendeskOrganizationId);
 
 		if (hasFirstLineSupport(account)) {
 			removeFirstLineSupport(account, accountEntry);
 		}
 
-		_asyncZendeskOrganizationWebService.deleteZendeskOrganization(
-			zendeskOrganizationId);
+		Set<String> criteria = new HashSet<>();
+
+		criteria.add("organization:" + zendeskOrganizationId);
+
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		if (zendeskTickets.isEmpty()) {
+			_asyncZendeskOrganizationWebService.deleteZendeskOrganization(
+				zendeskOrganizationId);
+		}
 	}
 
 	public void removeCustomers(Account account, AccountEntry accountEntry)
@@ -607,6 +603,40 @@ public class AccountSynchronizer {
 		}
 
 		return false;
+	}
+
+	protected void removeCustomers(
+			AccountEntry accountEntry, long zendeskOrganizationId)
+		throws Exception {
+
+		Query query = _queryFactory.createQuery();
+
+		query.addCriterion("organization_id:" + zendeskOrganizationId);
+		query.setPage(1);
+
+		SearchHits<ZendeskUser> searchHits =
+			_zendeskUserWebService.getZendeskUsers(query);
+
+		List<ZendeskUser> zendeskUsers = searchHits.getResults();
+
+		for (ZendeskUser zendeskUser : zendeskUsers) {
+			String emailAddress = zendeskUser.getEmail();
+
+			if (emailAddress.equals(
+					getDefaultUserEmail(accountEntry.getAccountEntryId()))) {
+
+				continue;
+			}
+
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				emailAddress);
+
+			if (user == null) {
+				continue;
+			}
+
+			_customerSynchronizer.remove(user, accountEntry);
+		}
 	}
 
 	protected void removeFirstLineSupport(

@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.zendesk.synchronizer.model.listener;
 
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
@@ -54,7 +55,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			if (!accountEntry.isActiveSupport()) {
+			if (!isActiveSupport(accountEntry)) {
 				return;
 			}
 
@@ -78,7 +79,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			AccountEntry oldAccountEntry = _oldAccountEntry.get();
 
 			if ((!_zendeskOrganization.get() &&
-				 !accountEntry.isActiveSupport()) ||
+				 !isActiveSupport(accountEntry)) ||
 				(accountEntry.getAccountEntryId() ==
 					OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
 
@@ -114,37 +115,20 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				}
 			}
 
-			if (oldAccountEntry.isActiveSupport() &&
-				!accountEntry.isActiveSupport()) {
+			if (isActiveSupport(oldAccountEntry) &&
+				!isActiveSupport(accountEntry)) {
 
 				_accountSynchronizer.removeCustomers(account, accountEntry);
 			}
 
-			if (accountEntry.isActiveSupport() &&
+			if (isActiveSupport(accountEntry) &&
 				((oldAccountEntry.isActiveTicketSupport() !=
 					accountEntry.isActiveTicketSupport()) ||
-				 (oldAccountEntry.isActiveSupport() !=
-					 accountEntry.isActiveSupport()))) {
+				 (isActiveSupport(oldAccountEntry) != isActiveSupport(
+					 accountEntry)))) {
 
 				_accountSynchronizer.addCustomers(account, accountEntry);
 			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new ZendeskIntegrationException(e);
-		}
-	}
-
-	@Override
-	public void onBeforeRemove(AccountEntry accountEntry)
-		throws ModelListenerException {
-
-		try {
-			Account account = _accountWebService.getAccount(
-				accountEntry.getKoroneikiAccountKey());
-
-			_accountSynchronizer.remove(account, accountEntry);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -191,6 +175,18 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		return false;
 	}
 
+	protected boolean isActiveSupport(AccountEntry accountEntry) {
+		if (accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) {
+			return false;
+		}
+
+		if (!accountEntry.isActiveSupport()) {
+			return false;
+		}
+
+		return true;
+	}
+
 	protected boolean isUpdateAccountEntry(
 		AccountEntry oldAccountEntry, AccountEntry accountEntry) {
 
@@ -201,12 +197,12 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			return false;
 		}
 
-		if (accountEntry.isActiveSupport()) {
+		if (isActiveSupport(accountEntry)) {
 			return true;
 		}
 
-		if (oldAccountEntry.isActiveSupport() &&
-			!accountEntry.isActiveSupport()) {
+		if (isActiveSupport(oldAccountEntry) &&
+			!isActiveSupport(accountEntry)) {
 
 			return true;
 		}
