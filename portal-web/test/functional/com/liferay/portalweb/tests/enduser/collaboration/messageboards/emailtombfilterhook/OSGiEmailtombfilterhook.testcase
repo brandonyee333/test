@@ -1,9 +1,9 @@
 @component-name = "portal-plugins-osgi"
 definition {
 
+	property plugins.deployment.type = "osgi";
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property plugins.deployment.type = "osgi";
 	property testray.main.component.name = "Message Boards";
 
 	setUp {
@@ -13,6 +13,7 @@ definition {
 	@priority = "4"
 	test EmailToMBFilterHookSmoke {
 		property hook.plugins.includes = "email-to-mb-filter-hook";
+
 		var appName = "Email to Message Boards Filter";
 		var portletName = "email-to-mb-filter-hook";
 

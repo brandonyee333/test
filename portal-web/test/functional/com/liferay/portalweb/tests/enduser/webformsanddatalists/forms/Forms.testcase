@@ -198,6 +198,7 @@ definition {
 	@priority = "5"
 	test ConfigureDataProviderWithSelectField {
 		property test.name.skip.portal.instance = "Forms#ConfigureDataProviderWithSelectField";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		Navigator.openURL();

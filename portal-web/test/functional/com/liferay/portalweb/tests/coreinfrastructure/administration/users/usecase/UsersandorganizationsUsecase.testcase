@@ -1238,6 +1238,7 @@ definition {
 	@priority = "4"
 	test ViewContentInLocationOrganizationSite {
 		property custom.properties = "organizations.types=organization,location${line.separator}organizations.rootable[location]=true${line.separator}organizations.children.types[organization]=organization,location";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		ProductMenu.gotoPortlet(

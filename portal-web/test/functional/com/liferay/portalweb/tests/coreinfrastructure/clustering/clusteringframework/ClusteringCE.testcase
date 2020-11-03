@@ -1,11 +1,11 @@
 @component-name = "portal-performance-and-fault-tolerance-ce"
 definition {
 
-	property portal.release = "true";
-	property portal.upstream = "true";
 	property app.server.bundles.size = "1";
 	property cluster.enabled = "true";
 	property osgi.modules.includes = "portal-cluster-multiple,portal-cache-ehcache-multiple,portal-scheduler-multiple";
+	property portal.release = "true";
+	property portal.upstream = "true";
 	property remote.elasticsearch.enabled = "true";
 	property test.run.environment = "CE";
 	property testray.main.component.name = "Clustering";

@@ -372,8 +372,8 @@ definition {
 	@description = "This is a use case for LPS-91735."
 	@priority = "3"
 	test ExportImportGlobalDDMStructureViaInstances {
-		property test.name.skip.portal.instance = "ExportImport#ExportImportGlobalDDMStructureViaInstances";
 		property portal.release = "false";
+		property test.name.skip.portal.instance = "ExportImport#ExportImportGlobalDDMStructureViaInstances";
 
 		Navigator.openSiteLanding(siteURLKey = "Global");
 

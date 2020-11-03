@@ -5,6 +5,7 @@ definition {
 	property portal.upstream = "true";
 	property portlet.plugins.includes = "test-localized-portlet";
 	property testray.main.component.name = "Site Localization";
+
 	var pageName = "Test Localization";
 	var portletName = "Test Localized Portlet";
 

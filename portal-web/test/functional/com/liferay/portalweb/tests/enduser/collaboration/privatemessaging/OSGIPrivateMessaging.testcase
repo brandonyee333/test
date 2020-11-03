@@ -2,9 +2,9 @@
 definition {
 
 	property osgi.app.includes = "social-private-messaging";
+	property plugins.deployment.type = "osgi";
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property plugins.deployment.type = "osgi";
 	property testray.main.component.name = "Private Messaging";
 
 	setUp {

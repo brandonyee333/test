@@ -24,6 +24,7 @@ definition {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "WesterosTheme#AddThemeSite";
 		property theme.file.name = "westeros-bank-theme.war";
+
 		var themeContainsResources = PropsUtil.get("theme.contains.resources");
 
 		if ("${themeContainsResources}" == "true") {

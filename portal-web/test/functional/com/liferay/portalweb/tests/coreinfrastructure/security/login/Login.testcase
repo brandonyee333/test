@@ -13,6 +13,7 @@ definition {
 	test CASSmoke {
 		property test.name.skip.portal.instance = "Login#CASSmoke";
 		property web.plugins.includes = "cas-web";
+
 		var portalURL = PropsUtil.get("portal.url");
 		var userEmailAddress = "userea@liferay.com";
 		var userFirstName = "userfn";
@@ -69,6 +70,7 @@ definition {
 	test FacebookSSOSmoke {
 		property dummy.socket.proxy.disabled = "true";
 		property test.name.skip.portal.instance = "Login#FacebookSSOSmoke";
+
 		var facebookApplicationID = PropsUtil.get("facebook.application.id");
 		var facebookApplicationSecret = PropsUtil.get("facebook.application.secret");
 		var facebookEmail = PropsUtil.get("facebook.email");
@@ -110,6 +112,7 @@ definition {
 	test GoogleSSOSmoke {
 		property dummy.socket.proxy.disabled = "true";
 		property test.name.skip.portal.instance = "Login#GoogleSSOSmoke";
+
 		var googleClientID = PropsUtil.get("google.client.id.2");
 		var googleClientSecret = PropsUtil.get("google.client.secret.2");
 		var userEmailAddress = PropsUtil.get("email.address.1");

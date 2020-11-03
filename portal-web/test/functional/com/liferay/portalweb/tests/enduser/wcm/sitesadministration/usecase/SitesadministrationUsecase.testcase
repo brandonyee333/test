@@ -860,6 +860,7 @@ definition {
 	test SitesDemoSiteManagement {
 		property portal.release = "false";
 		property test.name.skip.portal.instance = "SitesadministrationUsecase#SitesDemoSiteManagement";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		ProductMenu.gotoPortlet(

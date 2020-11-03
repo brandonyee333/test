@@ -3,9 +3,9 @@ definition {
 
 	property custom.properties = "organizations.types=organization,location";
 	property database.types = "db2,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
+	property ignore.errors = "Plugin security management is not enabled. Enable a security manager, then restart.";
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property ignore.errors = "Plugin security management is not enabled. Enable a security manager, then restart.";
 	property testray.main.component.name = "Upgrades User and System Management";
 
 	setUp {
@@ -84,6 +84,7 @@ definition {
 		property data.archive.type = "data-archive-admin-org-with-user";
 		property database.types = "db2,mysql,oracle,sybase";
 		property portal.version = "6.2.10.15";
+
 		Upgrade.addUserAndSuborganization();
 	}
 
@@ -93,6 +94,7 @@ definition {
 		property data.archive.type = "data-archive-admin-org-with-user";
 		property database.types = "db2,mysql,oracle,postgresql,sybase";
 		property portal.version = "6.2.10.21";
+
 		Upgrade.addUserAndSuborganization();
 	}
 

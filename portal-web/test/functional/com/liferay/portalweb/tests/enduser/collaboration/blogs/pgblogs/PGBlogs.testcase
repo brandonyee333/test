@@ -1,10 +1,11 @@
 @component-name = "portal-collaboration"
 definition {
 
+	property custom.properties = "default.layout.template.id=1_column";
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property custom.properties = "default.layout.template.id=1_column";
 	property testray.main.component.name = "Blogs";
+
 	var pageName = "Blogs Page";
 
 	setUp {
@@ -339,6 +340,7 @@ definition {
 	@priority = "4"
 	test AddBlogsEntryWithTrackbackURL {
 		property custom.properties = "blogs.trackback.enabled=true";
+
 		var ipAddress = "${getIPAddress()}";
 
 		Navigator.gotoPage(pageName = "Blogs Page");
@@ -1375,9 +1377,9 @@ definition {
 
 	@priority = "4"
 	test ViewBlogsEntryCommentAsGuest {
-		property portal.upstream = "false";
 		property osgi.module.configuration.file.names = "com.liferay.portal.bundle.blacklist.internal.BundleBlacklistConfiguration.config";
 		property osgi.module.configurations = "blacklistBundleSymbolicNames=&quot;com.liferay.saml.addon.keep.alive.web,com.liferay.saml.api,com.liferay.saml.impl,com.liferay.saml.opensaml.integration,com.liferay.saml.persistence.api,com.liferay.saml.persistence.service,com.liferay.saml.web,saml-hook&quot;";
+		property portal.upstream = "false";
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 

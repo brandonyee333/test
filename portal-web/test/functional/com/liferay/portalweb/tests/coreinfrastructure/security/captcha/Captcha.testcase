@@ -34,6 +34,7 @@ definition {
 	@priority = "4"
 	test ViewRecaptchaEnabled {
 		property test.name.skip.portal.instance = "Captcha#ViewRecaptchaEnabled";
+
 		var recaptchaPrivateKey = PropsUtil.get("recaptcha.private.key");
 		var recaptchaPublicKey = PropsUtil.get("recaptcha.public.key");
 

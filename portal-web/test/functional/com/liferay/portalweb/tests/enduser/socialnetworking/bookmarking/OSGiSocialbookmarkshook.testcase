@@ -1,10 +1,10 @@
 @component-name = "portal-plugins-osgi"
 definition {
 
+	property osgi.app.includes = "social-bookmarks";
+	property plugins.deployment.type = "osgi";
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property plugins.deployment.type = "osgi";
-	property osgi.app.includes = "social-bookmarks";
 	property testray.main.component.name = "Social Networking";
 
 	setUp {

@@ -27,6 +27,7 @@ definition {
 	@priority = "4"
 	test ViewNoDisplayPortletConfigurationPermission {
 		property custom.properties = "virtual.hosts.default.site.name=Guest";
+
 		var portalURL = PropsUtil.get("portal.url");
 		var url1 = "${portalURL}/testxxx/?p_p_id=com_liferay_portlet_configuration_web_portlet_PortletConfigurationPortlet&amp;p_p_lifecycle=0&amp;p_p_state=maximized&amp;_com_liferay_portlet_configuration_web_portlet_PortletConfigurationPortlet_mvcPath=%2Fedit_configuration.jsp&amp;_com_liferay_portlet_configuration_web_portlet_PortletConfigurationPortlet_portletResource=com_liferay_users_admin_web_portlet_UsersAdminPortlet";
 		var url2 = "${portalURL}/testxxx/?p_p_id=com_liferay_users_admin_web_portlet_UsersAdminPortlet&amp;p_p_state=maximized";

@@ -7,6 +7,7 @@ definition {
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Knowledge Base";
+
 	var pageName = "Knowledge Base Display Page";
 	var portletName = "Knowledge Base Display";
 

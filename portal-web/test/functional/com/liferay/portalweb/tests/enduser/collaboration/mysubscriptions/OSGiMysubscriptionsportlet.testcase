@@ -2,9 +2,9 @@
 definition {
 
 	property osgi.app.includes = "my-subscriptions";
+	property plugins.deployment.type = "osgi";
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property plugins.deployment.type = "osgi";
 	property testray.main.component.name = "My Subscriptions";
 
 	setUp {

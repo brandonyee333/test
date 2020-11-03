@@ -9,6 +9,7 @@ definition {
 	property portal.upstream = "true";
 	property solr.enabled = "true";
 	property testray.main.component.name = "Web Search";
+
 	var searchPageName = "Test Page";
 	var searchPortletName = "Search";
 

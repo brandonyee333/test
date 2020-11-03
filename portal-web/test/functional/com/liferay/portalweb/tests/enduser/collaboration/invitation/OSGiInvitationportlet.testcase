@@ -2,10 +2,10 @@
 definition {
 
 	property osgi.app.includes = "invitation";
-	property portal.upstream = "true";
 	property plugins.deployment.type = "osgi";
-	property testray.main.component.name = "Invite Members";
+	property portal.upstream = "true";
 	property test.assert.warning.exceptions = "true";
+	property testray.main.component.name = "Invite Members";
 
 	setUp {
 		User.firstLoginPG();
@@ -20,6 +20,7 @@ definition {
 	@priority = "4"
 	test InvitationPortletSmoke {
 		property portal.release = "true";
+
 		var appName = "Invitation";
 
 		Navigator.gotoPage(pageName = "Test Page");

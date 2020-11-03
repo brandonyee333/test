@@ -180,6 +180,7 @@ definition {
 	@priority = "4"
 	test AddStructureViaLocaleURL {
 		property test.name.skip.portal.instance = "CPWebcontent#AddStructureViaLocaleURL";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		Navigator.openSpecificURL(url = "${portalURL}/en/");

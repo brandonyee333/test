@@ -5,6 +5,7 @@ definition {
 	property portal.suite.search.engine = "elasticsearch2,elasticsearch6";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Web Search";
+
 	var searchPageName = "Test Page";
 	var searchPortletName = "Search";
 

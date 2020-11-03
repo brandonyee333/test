@@ -100,6 +100,7 @@ definition {
 	@priority = "4"
 	test StagingSharepointRepositoryPG {
 		property test.name.skip.portal.instance = "StagingSharepoint#StagingSharepointRepositoryPG";
+
 		var sharepointVMHostName = PropsUtil.get("cmis.repository.vm.host.name");
 
 		Navigator.gotoStagedSitePage(

@@ -1,8 +1,8 @@
 @component-name = "portal-deployment-mysql"
 definition {
 
-	property portal.acceptance = "true";
 	property database.types = "mysql";
+	property portal.acceptance = "true";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property setup.wizard.enabled = "true";

@@ -3,11 +3,11 @@ definition {
 
 	property dummy.socket.proxy.disabled = "true";
 	property osgi.app.includes = "twitter";
+	property plugins.deployment.type = "osgi";
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property plugins.deployment.type = "osgi";
-	property testray.main.component.name = "Social Networking";
 	property test.assert.warning.exceptions = "true";
+	property testray.main.component.name = "Social Networking";
 
 	setUp {
 		User.firstLoginPG();

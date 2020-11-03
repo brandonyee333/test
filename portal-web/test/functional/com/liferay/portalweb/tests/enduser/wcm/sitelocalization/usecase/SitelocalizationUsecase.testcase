@@ -58,6 +58,7 @@ definition {
 	test LocalizationStyle0 {
 		property custom.properties = "locale.prepend.friendly.url.style=0";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizationStyle0";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		Page.add(pageName = "Language Test Page");
@@ -87,6 +88,7 @@ definition {
 	test LocalizationStyle1 {
 		property custom.properties = "locale.prepend.friendly.url.style=1";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizationStyle1";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		Page.add(pageName = "Language Test Page");
@@ -116,6 +118,7 @@ definition {
 	test LocalizationStyle2 {
 		property custom.properties = "locale.prepend.friendly.url.style=2";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizationStyle2";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		Page.add(pageName = "Language Test Page");
@@ -218,6 +221,7 @@ definition {
 	@priority = "3"
 	test NoLocalePrependedWhenLocaleMatchMyPreferredLocalization {
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#NoLocalePrependedWhenLocaleMatchMyPreferredLocalization";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		ProductMenu.gotoPortlet(
@@ -488,6 +492,7 @@ definition {
 	@priority = "4"
 	test RedirectLocalizedFriendlyURL {
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#RedirectLocalizedFriendlyURL";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		ProductMenu.gotoPortlet(
@@ -678,6 +683,7 @@ definition {
 	test ViewEditURLLocale {
 		property custom.properties = "locale.use.default.if.not.available=true";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#ViewEditURLLocale";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		ProductMenu.gotoPortlet(

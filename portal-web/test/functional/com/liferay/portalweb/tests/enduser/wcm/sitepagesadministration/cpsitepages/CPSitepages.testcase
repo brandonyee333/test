@@ -77,6 +77,7 @@ definition {
 	@priority = "4"
 	test AddPageViaNavigationMenu {
 		property test.name.skip.portal.instance = "CPSitepages#AddPageViaNavigationMenu";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		NavigationMenu.gotoAddPage();
