@@ -27,14 +27,8 @@ import com.liferay.osb.asah.backend.model.PageMetricType;
 
 import graphql.execution.ExecutionTypeInfo;
 
-import graphql.language.Field;
-
 import graphql.schema.DataFetchingEnvironment;
-import graphql.schema.DataFetchingFieldSelectionSet;
 import graphql.schema.GraphQLFieldDefinition;
-
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,18 +45,7 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		DataFetchingFieldSelectionSet dataFetchingFieldSelectionSet =
-			dataFetchingEnvironment.getSelectionSet();
-
-		Map<String, List<Field>> fields = dataFetchingFieldSelectionSet.get();
-
-		boolean includePrevious = false;
-
-		if (fields.containsKey("previousValue") ||
-			fields.containsKey("trend")) {
-
-			includePrevious = true;
-		}
+		boolean includePrevious = searchQueryContext.isIncludePrevious();
 
 		ExecutionTypeInfo fieldExecutionTypeInfo =
 			dataFetchingEnvironment.getFieldTypeInfo();
