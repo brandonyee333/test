@@ -14,7 +14,7 @@ definition {
 
 		SetupWizard.viewDefaultPortalNamePG();
 
-		WaitForElementPresent(locator1 = "SetupWizard#BASIC_CONFIGURATION");
+		AssertElementPresent(locator1 = "SetupWizard#BASIC_CONFIGURATION");
 
 		SikuliAssertElementPresent(locator1 = "SetupWizard#SETUP_WIZARD_BASIC_CONFIGURATION_PNG");
 
