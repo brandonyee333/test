@@ -38,6 +38,8 @@ if [[ "$1" != "eswrapper" ]]; then
 	fi
 fi
 
+[[ -f /usr/share/elasticsearch/config/elasticsearch.keystore ]] || (run_as_other_user_if_needed elasticsearch-keystore create)
+
 # Allow environment variables to be set by creating a file with the
 # contents, and setting an environment variable with the suffix _FILE to
 # point to it. This can be used to provide secrets to a container, without
@@ -56,7 +58,6 @@ if [[ -f bin/elasticsearch-users ]]; then
 	# enabled, but we have no way of knowing which node we are yet. We'll just
 	# honor the variable if it's present.
 	if [[ -n "$ELASTIC_PASSWORD" ]]; then
-		[[ -f /usr/share/elasticsearch/config/elasticsearch.keystore ]] || (run_as_other_user_if_needed elasticsearch-keystore create)
 		if ! (run_as_other_user_if_needed elasticsearch-keystore has-passwd --silent) ; then
 			# keystore is unencrypted
 			if ! (run_as_other_user_if_needed elasticsearch-keystore list | grep -q '^bootstrap.password$'); then
