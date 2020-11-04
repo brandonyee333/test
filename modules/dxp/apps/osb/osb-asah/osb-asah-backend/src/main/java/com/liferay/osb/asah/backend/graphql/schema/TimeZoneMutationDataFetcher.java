@@ -22,6 +22,8 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,8 +41,17 @@ public class TimeZoneMutationDataFetcher implements DataFetcher<String> {
 
 		_nanitesHttp.rescheduleNanites();
 
+		for (String cacheName : _cacheManager.getCacheNames()) {
+			Cache cache = _cacheManager.getCache(cacheName);
+
+			cache.clear();
+		}
+
 		return value;
 	}
+
+	@Autowired
+	private CacheManager _cacheManager;
 
 	@Autowired
 	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
