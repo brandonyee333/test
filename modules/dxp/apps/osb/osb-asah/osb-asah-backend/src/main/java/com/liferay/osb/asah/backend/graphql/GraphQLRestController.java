@@ -14,36 +14,23 @@
 
 package com.liferay.osb.asah.backend.graphql;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
-import graphql.GraphQLError;
-import graphql.GraphqlErrorHelper;
 
 import graphql.introspection.IntrospectionQuery;
 
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
 
-import java.io.IOException;
-
 import java.nio.charset.Charset;
 
 import java.time.LocalDate;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -100,13 +87,7 @@ public class GraphQLRestController {
 		ExecutionResult executionResult = _graphQL.execute(
 			IntrospectionQuery.INTROSPECTION_QUERY);
 
-		return _toString(executionResult);
-	}
-
-	@PostConstruct
-	public void init() {
-		_objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-		_objectMapper.registerModule(new Jdk8Module());
+		return _graphQLSerializer.toString(executionResult);
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "")
@@ -118,8 +99,7 @@ public class GraphQLRestController {
 			_log.debug("Post body: " + body);
 		}
 
-		return _getGraphQLExecutionResult(
-			_objectMapper.readValue(body, GraphQLRequest.class));
+		return _getGraphQLExecutionResult(_graphQLSerializer.fromString(body));
 	}
 
 	private String _getGraphQLExecutionResult(GraphQLRequest graphQLRequest)
@@ -167,7 +147,8 @@ public class GraphQLRestController {
 
 			ExecutionResult executionResult = _graphQL.execute(executionInput);
 
-			String executionResultString = _toString(executionResult);
+			String executionResultString = _graphQLSerializer.toString(
+				executionResult);
 
 			if ((_cache != null) && !skipCache) {
 				_cache.put(cacheKey, executionResultString);
@@ -187,30 +168,6 @@ public class GraphQLRestController {
 		}
 	}
 
-	private String _toString(ExecutionResult executionResult)
-		throws IOException {
-
-		Map<String, Object> map = new HashMap<>();
-
-		map.put("data", executionResult.getData());
-
-		List<GraphQLError> graphQLErrors = executionResult.getErrors();
-
-		if ((graphQLErrors != null) && !graphQLErrors.isEmpty()) {
-			Stream<GraphQLError> stream = graphQLErrors.stream();
-
-			map.put(
-				"errors",
-				stream.map(
-					GraphqlErrorHelper::toSpecification
-				).collect(
-					Collectors.toList()
-				));
-		}
-
-		return _objectMapper.writeValueAsString(map);
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		GraphQLRestController.class);
 
@@ -228,12 +185,7 @@ public class GraphQLRestController {
 	@Autowired
 	private GraphQL _graphQL;
 
-	private final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-			registerModule(new Jdk8Module());
-		}
-	};
+	@Autowired
+	private GraphQLSerializer _graphQLSerializer;
 
 }
