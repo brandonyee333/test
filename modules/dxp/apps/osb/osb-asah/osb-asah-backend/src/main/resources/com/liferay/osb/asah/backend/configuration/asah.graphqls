@@ -326,12 +326,6 @@ type FormMetric implements AssetMetric {
 	viewsMetric: Metric
 }
 
-type HistogramMetricBag {
-	asymmetricComparison: Boolean
-	metrics: [HistogramMetric]
-	total: Int
-}
-
 type FormPageMetric {
 	formFieldMetrics: [FormFieldMetric]
 	pageAbandonmentsMetric: Metric
@@ -358,6 +352,12 @@ type HistogramMetric {
 	trend: Trend
 	value: Float
 	valueKey: String
+}
+
+type HistogramMetricBag {
+	asymmetricComparison: Boolean
+	metrics: [HistogramMetric]
+	total: Int
 }
 
 type Individual {

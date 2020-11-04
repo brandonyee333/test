@@ -22,13 +22,13 @@ query SiteMetric($assetId: String!, $channelId: String, $country: String, $devic
 			value
 		}
 		visitorsMetric {
-			value
 			histogram {
 				asymmetricComparison
 				metrics {
 					value
 				}
 			}
+			value
 		}
 	}
 }
