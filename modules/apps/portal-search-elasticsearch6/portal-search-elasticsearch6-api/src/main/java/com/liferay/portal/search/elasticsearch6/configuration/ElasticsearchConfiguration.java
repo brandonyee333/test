@@ -194,6 +194,10 @@ public interface ElasticsearchConfiguration {
 	)
 	public String overrideTypeMappings();
 
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement
+	 */
+	@Deprecated
 	@Meta.AD(
 		deflt = "true", description = "sync-search-help", name = "sync-search",
 		required = false
