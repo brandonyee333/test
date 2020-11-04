@@ -20,8 +20,6 @@ import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
 
-import graphql.introspection.IntrospectionQuery;
-
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
 
@@ -45,7 +43,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -80,14 +77,6 @@ public class GraphQLRestController {
 		}
 
 		return true;
-	}
-
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/schema")
-	public String get() throws Exception {
-		ExecutionResult executionResult = _graphQL.execute(
-			IntrospectionQuery.INTROSPECTION_QUERY);
-
-		return _graphQLSerializer.toString(executionResult);
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "")
