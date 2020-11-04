@@ -70,9 +70,11 @@ public class GraphQLConfiguration {
 	public GraphQL graphQL() {
 		SchemaGenerator schemaGenerator = new SchemaGenerator();
 
+		RuntimeWiring.Builder runtimeWiringBuilder = _getRuntimeWiringBuilder();
+
 		GraphQL.Builder builder = GraphQL.newGraphQL(
 			schemaGenerator.makeExecutableSchema(
-				_buildTypeDefinitionRegistry(), _buildRuntimeWiring()));
+				_buildTypeDefinitionRegistry(), runtimeWiringBuilder.build()));
 
 		return builder.build();
 	}
@@ -118,7 +120,7 @@ public class GraphQLConfiguration {
 		};
 	}
 
-	private RuntimeWiring _buildRuntimeWiring() {
+	private RuntimeWiring.Builder _getRuntimeWiringBuilder() {
 		RuntimeWiring.Builder builder = RuntimeWiring.newRuntimeWiring();
 
 		builder.type(
@@ -193,7 +195,7 @@ public class GraphQLConfiguration {
 			}
 		}
 
-		return builder.build();
+		return builder;
 	}
 
 	private TypeDefinitionRegistry _buildTypeDefinitionRegistry() {
