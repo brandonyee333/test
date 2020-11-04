@@ -120,6 +120,17 @@ public class GraphQLConfiguration {
 		};
 	}
 
+	private TypeDefinitionRegistry _buildTypeDefinitionRegistry() {
+		SchemaParser schemaParser = new SchemaParser();
+
+		Class<?> clazz = getClass();
+
+		return schemaParser.parse(
+			new InputStreamReader(
+				clazz.getResourceAsStream("asah.graphqls"),
+				Charset.defaultCharset()));
+	}
+
 	private RuntimeWiring.Builder _getRuntimeWiringBuilder() {
 		RuntimeWiring.Builder builder = RuntimeWiring.newRuntimeWiring();
 
@@ -196,17 +207,6 @@ public class GraphQLConfiguration {
 		}
 
 		return builder;
-	}
-
-	private TypeDefinitionRegistry _buildTypeDefinitionRegistry() {
-		SchemaParser schemaParser = new SchemaParser();
-
-		Class<?> clazz = getClass();
-
-		return schemaParser.parse(
-			new InputStreamReader(
-				clazz.getResourceAsStream("asah.graphqls"),
-				Charset.defaultCharset()));
 	}
 
 	private Set<Class<?>> _scanAnnotatedGraphQLTypes(String basePackage) {
