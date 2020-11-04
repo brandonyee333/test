@@ -57,6 +57,7 @@ function build_docker_image {
 		echo "ENV GOOGLE_APPLICATION_CREDENTIALS=/root/gcp_credentials.json" >> ${file_name}/Dockerfile
 
 		echo "" >> ${file_name}/Dockerfile
+		echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
 		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
 	fi
 
