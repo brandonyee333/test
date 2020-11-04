@@ -30,9 +30,9 @@ public class HistogramMetricBag {
 		boolean asymmetricComparison, List<HistogramMetric> metrics,
 		long total) {
 
-		this.asymmetricComparison = asymmetricComparison;
-		this.metrics = metrics;
-		this.total = total;
+		_asymmetricComparison = asymmetricComparison;
+		_metrics = metrics;
+		_total = total;
 	}
 
 	@Override
@@ -47,11 +47,11 @@ public class HistogramMetricBag {
 
 		HistogramMetricBag histogramMetricBag = (HistogramMetricBag)obj;
 
-		if (Objects.equals(metrics, histogramMetricBag.metrics) &&
+		if (Objects.equals(_metrics, histogramMetricBag._metrics) &&
 			Objects.equals(
-				asymmetricComparison,
-				histogramMetricBag.asymmetricComparison) &&
-			Objects.equals(total, histogramMetricBag.total)) {
+				_asymmetricComparison,
+				histogramMetricBag._asymmetricComparison) &&
+			Objects.equals(_total, histogramMetricBag._total)) {
 
 			return true;
 		}
@@ -60,36 +60,36 @@ public class HistogramMetricBag {
 	}
 
 	public List<HistogramMetric> getMetrics() {
-		return metrics;
+		return _metrics;
 	}
 
 	public long getTotal() {
-		return total;
+		return _total;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(metrics, asymmetricComparison, total);
+		return Objects.hash(_metrics, _asymmetricComparison, _total);
 	}
 
 	public boolean isAsymmetricComparison() {
-		return asymmetricComparison;
+		return _asymmetricComparison;
 	}
 
 	public void setAsymmetricComparison(boolean asymmetricComparison) {
-		this.asymmetricComparison = asymmetricComparison;
+		_asymmetricComparison = asymmetricComparison;
 	}
 
 	public void setHistogramMetrics(List<HistogramMetric> histogramMetrics) {
-		this.metrics = histogramMetrics;
+		_metrics = histogramMetrics;
 	}
 
 	public void setTotal(long total) {
-		this.total = total;
+		_total = total;
 	}
 
-	protected boolean asymmetricComparison;
-	protected List<HistogramMetric> metrics = new ArrayList<>();
-	protected long total;
+	private boolean _asymmetricComparison;
+	private List<HistogramMetric> _metrics = new ArrayList<>();
+	private long _total;
 
 }
