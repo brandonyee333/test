@@ -35,6 +35,7 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import graphql.schema.visibility.NoIntrospectionGraphqlFieldVisibility;
 
 import java.io.InputStreamReader;
 
@@ -58,6 +59,7 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 /**
@@ -67,10 +69,16 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 public class GraphQLConfiguration {
 
 	@Bean
-	public GraphQL graphQL() {
+	public GraphQL graphQL(Environment environment) {
 		SchemaGenerator schemaGenerator = new SchemaGenerator();
 
 		RuntimeWiring.Builder runtimeWiringBuilder = _getRuntimeWiringBuilder();
+
+		if (environment.acceptsProfiles("prod")) {
+			runtimeWiringBuilder.fieldVisibility(
+				NoIntrospectionGraphqlFieldVisibility.
+					NO_INTROSPECTION_FIELD_VISIBILITY);
+		}
 
 		GraphQL.Builder builder = GraphQL.newGraphQL(
 			schemaGenerator.makeExecutableSchema(
