@@ -47,10 +47,10 @@ public class HistogramMetricBag {
 
 		HistogramMetricBag histogramMetricBag = (HistogramMetricBag)obj;
 
-		if (Objects.equals(_metrics, histogramMetricBag._metrics) &&
-			Objects.equals(
+		if (Objects.equals(
 				_asymmetricComparison,
 				histogramMetricBag._asymmetricComparison) &&
+			Objects.equals(_metrics, histogramMetricBag._metrics) &&
 			Objects.equals(_total, histogramMetricBag._total)) {
 
 			return true;
@@ -69,7 +69,7 @@ public class HistogramMetricBag {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_metrics, _asymmetricComparison, _total);
+		return Objects.hash(_asymmetricComparison, _metrics, _total);
 	}
 
 	public boolean isAsymmetricComparison() {
