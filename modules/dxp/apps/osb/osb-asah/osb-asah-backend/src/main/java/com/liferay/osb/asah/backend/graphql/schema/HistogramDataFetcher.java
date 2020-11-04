@@ -45,8 +45,6 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		boolean includePrevious = searchQueryContext.isIncludePrevious();
-
 		ExecutionTypeInfo fieldExecutionTypeInfo =
 			dataFetchingEnvironment.getFieldTypeInfo();
 
@@ -69,11 +67,13 @@ public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 		}
 		else if (metricType == PageMetricType.VISITORS) {
 			return _visitorHistogramDog.getHistogramMetricBag(
-				includePrevious, metricType, searchQueryContext);
+				searchQueryContext.isIncludePrevious(), metricType,
+				searchQueryContext);
 		}
 
 		return _histogramDog.getHistogramMetricBag(
-			includePrevious, metricType, searchQueryContext);
+			searchQueryContext.isIncludePrevious(), metricType,
+			searchQueryContext);
 	}
 
 	@Autowired
