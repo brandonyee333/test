@@ -93,8 +93,9 @@ public class HistogramDog {
 
 		return _createHistogramMetricBag(
 			searchQueryContext.getAssetType(), includePrevious,
-			searchQueryContext.getInterval(), aggregations.get(aggregationKey),
-			metricType, searchQueryContext.getTimeRange());
+			searchQueryContext.getInterval(), metricType,
+			aggregations.get(aggregationKey),
+			searchQueryContext.getTimeRange());
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(
@@ -143,7 +144,7 @@ public class HistogramDog {
 
 	private HistogramMetricBag _createHistogramMetricBag(
 		AssetType assetType, boolean includePrevious, Interval interval,
-		Range range, MetricType metricType, TimeRange timeRange) {
+		MetricType metricType, Range range, TimeRange timeRange) {
 
 		List<? extends Range.Bucket> rangeBuckets = range.getBuckets();
 
@@ -155,8 +156,8 @@ public class HistogramDog {
 
 		HistogramMetricBag histogramMetricBag =
 			_metricHelper.createHistogramMetricBag(
-				Clock.system(_timeZoneDog.getZoneId()), interval, timeRange,
-				metricType);
+				Clock.system(_timeZoneDog.getZoneId()), interval, metricType,
+				timeRange);
 
 		Map<String, Metric> metrics = _getHistogramMetricBuckets(
 			histogramMetricBag);

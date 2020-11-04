@@ -49,8 +49,8 @@ import org.springframework.stereotype.Component;
 public class MetricHelper {
 
 	public HistogramMetricBag createHistogramMetricBag(
-		Clock clock, Interval interval, TimeRange timeRange,
-		MetricType metricType) {
+		Clock clock, Interval interval, MetricType metricType,
+		TimeRange timeRange) {
 
 		Map<String, Metric> metrics = new LinkedHashMap<>();
 
