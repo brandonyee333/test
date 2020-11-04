@@ -29,7 +29,7 @@ This service exposes endpoints to the [Faro frontend](https://github.com/liferay
 
 ### osb-asah-backend-ext-alfa
 
-Template service used as reference to create modules that provide additional endpoints.
+This template service is used as a reference to create modules that provide additional endpoints.
 
 ### osb-asah-backend-ext-seo
 
@@ -110,9 +110,9 @@ Note that `docker-compose` YAML includes an Elasticsearch instance, which will c
 
 ### Environment Variables
 
-When executing services with docker-compose, you generally do not need to worry about environment variables, default values should be sane for local development.
+When executing services with Docker Compose, you generally do not need to worry about environment variables because default values should be sane for local development.
 
-However, if you choose to run services with IntelliJ or `gradle bootRun`, you will need to define the following variables, possibly with values different from default ones:
+However, if you choose to run services with IntelliJ or `gradle bootRun`, you will need to define the following variables, possibly with values different from the default ones:
 
 - `LCP_ENGINE_ELASTICSEARCH_SERVER_IP`: Used to point to another Elasticsearch instance (default: `127.0.0.1`).
 - `LCP_PROJECT_ID`: Used to set the project id which will determine the prefix in Elasticsearch indices (default `null`).
@@ -121,11 +121,12 @@ However, if you choose to run services with IntelliJ or `gradle bootRun`, you wi
 - `OSB_FARO_FRONTEND_URL`: Used to point to a Faro instance, please set it your local instance (default: `https://analytics.liferay.com`).
 - `SPRING_PROFILES_ACTIVE`: Used set the active profile, 'default' profile is not allowed, use of the possible values: `dev`, `prod`, `test`.
 
-For example, when running `osb-asah-monolith` from IntelliJ these variables/values have to be used:
+For example, when running `osb-asah-monolith` from IntelliJ, these variables and values have to be used:
+
 - `LCP_PROJECT_ID=osbasah`
 - `OSB_ASAH_BACKEND_URL=http://172.17.0.1:8081` - Use your IP, this url is passed to Faro/DXP, if they are running in containers `localhost` is not accessible.
 - `OSB_ASAH_PUBLISHER_URL=http://172.17.0.1:8081` - Same as above.
 - `OSB_FARO_FRONTEND_URL=http://localhost:8080`
 - `SPRING_PROFILES_ACTIVE=dev` - Alternatively, the profile can be set in Run/Debug Configurations dialog, in "Active profiles".
 
-The following is a non-exhaustive list, see `ServiceConstants.java` for more details.
+The following is a nonexhaustive list, see `ServiceConstants.java` for more details.

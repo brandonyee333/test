@@ -29,7 +29,7 @@ public class ProfileChecker {
 	@PostConstruct
 	public void init() {
 		throw new IllegalStateException(
-			"No profile was specified. Using 'default' is not allowed.");
+			"No profile was specified. Using \"default\" is not allowed.");
 	}
 
 }
