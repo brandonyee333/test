@@ -41,16 +41,18 @@ public class TimeZoneMutationDataFetcher implements DataFetcher<String> {
 
 		_nanitesHttp.rescheduleNanites();
 
-		for (String cacheName : _cacheManager.getCacheNames()) {
-			Cache cache = _cacheManager.getCache(cacheName);
+		if (_cacheManager != null) {
+			for (String cacheName : _cacheManager.getCacheNames()) {
+				Cache cache = _cacheManager.getCache(cacheName);
 
-			cache.clear();
+				cache.clear();
+			}
 		}
 
 		return value;
 	}
 
-	@Autowired
+	@Autowired(required = false)
 	private CacheManager _cacheManager;
 
 	@Autowired
