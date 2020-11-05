@@ -193,8 +193,6 @@ public class SynchronizeAccountEntryMessageListener
 	protected void synchronize(Account account, AccountEntry accountEntry)
 		throws Exception {
 
-		_accountSynchronizer.update(account, accountEntry);
-
 		Map<String, User> customerUsersMap = new HashMap<>();
 
 		List<Contact> contacts = _contactWebService.getAccountCustomerContacts(

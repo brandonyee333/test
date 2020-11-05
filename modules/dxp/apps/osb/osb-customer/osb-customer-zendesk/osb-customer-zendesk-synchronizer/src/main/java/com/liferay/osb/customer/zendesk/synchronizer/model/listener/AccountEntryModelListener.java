@@ -197,26 +197,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			return false;
 		}
 
-		if (isActiveSupport(accountEntry)) {
-			return true;
-		}
-
-		if (isActiveSupport(oldAccountEntry) &&
-			!isActiveSupport(accountEntry)) {
-
-			return true;
-		}
-
-		String oldAccountEntryCode = oldAccountEntry.getCode();
-		String oldAccountEntryName = oldAccountEntry.getName();
-
-		if (!oldAccountEntryCode.equals(accountEntry.getCode()) ||
-			!oldAccountEntryName.equals(accountEntry.getName())) {
-
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

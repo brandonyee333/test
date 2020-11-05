@@ -26,6 +26,7 @@ import com.liferay.osb.customer.admin.service.base.AccountEntryServiceBaseImpl;
 import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
@@ -183,14 +184,26 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 		return accountEntry;
 	}
 
-	public void syncToZendesk(String koroneikiAccountKey)
-		throws PortalException {
-
+	public void syncToZendesk(String koroneikiAccountKey) throws Exception {
 		validateJSONWebServicePermissions();
 
 		AccountEntry accountEntry =
 			accountEntryLocalService.getKoroneikiAccountEntry(
 				koroneikiAccountKey);
+
+		Account account = _accountWebService.fetchAccount(
+			accountEntry.getKoroneikiAccountKey());
+
+		if (account != null) {
+			List<ProductPurchase> productPurchases =
+				_accountReader.getProductPurchases(account.getKey());
+
+			accountEntry = accountEntryLocalService.updateAccountEntry(
+				accountEntry.getAccountEntryId(),
+				_accountReader.getSupportEndDate(productPurchases),
+				_accountReader.getTicketSupportEndDate(productPurchases),
+				_accountReader.getStatus(account));
+		}
 
 		Message message = new Message();
 
@@ -344,6 +357,9 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			throw new PrincipalException();
 		}
 	}
+
+	@ServiceReference(type = AccountReader.class)
+	private AccountReader _accountReader;
 
 	@ServiceReference(type = AccountWebService.class)
 	private AccountWebService _accountWebService;
