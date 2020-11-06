@@ -14,47 +14,11 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.dataproc;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 /**
  * @author Riccardo Ferrari
  */
 public enum DataprocJobState {
 
-	COMPLETE("complete"), ERROR("error"), RUNNING("running"),
-	UNKNOWN("unknown");
-
-	public static DataprocJobState of(String value) {
-		return Optional.ofNullable(
-			_states.get(value)
-		).orElseThrow(
-			IllegalArgumentException::new
-		);
-	}
-
-	public String getValue() {
-		return _value;
-	}
-
-	@Override
-	public String toString() {
-		return _value;
-	}
-
-	private DataprocJobState(String value) {
-		_value = value;
-	}
-
-	private static Map<String, DataprocJobState> _states = new HashMap<>();
-
-	static {
-		for (DataprocJobState state : values()) {
-			_states.put(state.getValue(), state);
-		}
-	}
-
-	private final String _value;
+	COMPLETED, FAILED, RUNNING, UNKNOWN
 
 }

@@ -45,7 +45,7 @@ public class DataprocSparkManagerMonitoringNanite extends BaseNanite {
 		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
 			"job-runs",
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("status", "running", "unknown")));
+				QueryBuilders.termsQuery("status", "RUNNING", "UNKNOWN")));
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(

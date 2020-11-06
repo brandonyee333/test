@@ -57,13 +57,15 @@ public class DataprocSparkManager {
 			JobStatus.State jobStatusState = jobStatus.getState();
 
 			if (JobStatus.State.DONE.equals(jobStatusState)) {
-				return DataprocJobState.COMPLETE;
+				return DataprocJobState.COMPLETED;
 			}
 			else if (JobStatus.State.RUNNING.equals(jobStatusState)) {
 				return DataprocJobState.RUNNING;
 			}
-			else if (JobStatus.State.ERROR.equals(jobStatusState)) {
-				return DataprocJobState.ERROR;
+			else if (JobStatus.State.ERROR.equals(jobStatusState) ||
+					 JobStatus.State.CANCELLED.equals(jobStatusState)) {
+
+				return DataprocJobState.FAILED;
 			}
 		}
 		catch (Exception e) {
