@@ -67,7 +67,6 @@ public class GraphQLSerializer {
 	private final ObjectMapper _objectMapper = new ObjectMapper() {
 		{
 			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
 			registerModule(new Jdk8Module());
 		}
 	};
