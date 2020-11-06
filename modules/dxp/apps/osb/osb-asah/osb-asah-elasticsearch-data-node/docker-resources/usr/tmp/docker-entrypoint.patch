@@ -1,0 +1,23 @@
+40a41,42
+> [[ -f /usr/share/elasticsearch/config/elasticsearch.keystore ]] || (run_as_other_user_if_needed elasticsearch-keystore create)
+> 
+59d60
+<     [[ -f /usr/share/elasticsearch/config/elasticsearch.keystore ]] || (run_as_other_user_if_needed elasticsearch-keystore create)
+75a77,88
+> if [[ -n "$S3_REPOSITORY_ACCESS_KEY" ]]; then
+>   if ! (run_as_other_user_if_needed elasticsearch-keystore list | grep -q '^s3.client.asah.access_key$'); then
+>     (run_as_other_user_if_needed echo $S3_REPOSITORY_ACCESS_KEY | /usr/share/elasticsearch/bin/elasticsearch-keystore add -x s3.client.asah.access_key)
+>   fi
+> fi
+> 
+> if [[ -n "$S3_REPOSITORY_SECRET_KEY" ]]; then
+>   if ! (run_as_other_user_if_needed elasticsearch-keystore list | grep -q '^s3.client.asah.secret_key$'); then
+>     (run_as_other_user_if_needed echo $S3_REPOSITORY_SECRET_KEY | /usr/share/elasticsearch/bin/elasticsearch-keystore add -x s3.client.asah.secret_key)
+>   fi
+> fi
+> 
+83c96
+< run_as_other_user_if_needed /usr/share/elasticsearch/bin/elasticsearch <<<"$KEYSTORE_PASSWORD"
+---
+> run_as_other_user_if_needed /usr/share/elasticsearch/bin/elasticsearch <<<"$KEYSTORE_PASSWORD"
+\ No newline at end of file
