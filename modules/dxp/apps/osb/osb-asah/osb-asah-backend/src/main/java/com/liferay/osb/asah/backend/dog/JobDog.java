@@ -231,11 +231,15 @@ public class JobDog {
 			});
 
 		if (jobRun != null) {
-			if (jobRun.getJobRunStatus() == JobRunStatus.RUNNING) {
+			if ((jobRun.getJobRunStatus() == JobRunStatus.RUNNING) ||
+				(jobRun.getJobRunStatus() == JobRunStatus.UNKNOWN)) {
+
 				return JobStatus.RUNNING;
 			}
 
-			return JobStatus.FAILED;
+			if (jobRun.getJobRunStatus() == JobRunStatus.FAILED) {
+				return JobStatus.FAILED;
+			}
 		}
 
 		Job job = getJob(id);
