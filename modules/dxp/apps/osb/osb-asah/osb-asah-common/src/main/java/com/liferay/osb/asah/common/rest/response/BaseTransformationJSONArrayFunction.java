@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.common.rest.response;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -127,7 +127,7 @@ public abstract class BaseTransformationJSONArrayFunction
 		return null;
 	}
 
-	protected void computeEndDayDateString() throws Exception {
+	protected void computeEndDayDateString() {
 		if (_rangeEnd != null) {
 			LocalDateTime endLocalDateTime = LocalDateTime.of(
 				LocalDate.parse(_rangeEnd), LocalTime.MAX);
@@ -152,14 +152,16 @@ public abstract class BaseTransformationJSONArrayFunction
 		}
 	}
 
-	protected void computeStartDayDateString(int size) throws Exception {
+	protected void computeStartDayDateString(int size) {
 		if (_rangeStart != null) {
 			LocalDateTime startLocalDateTime = LocalDateTime.of(
 				LocalDate.parse(_rangeStart), LocalTime.MIDNIGHT);
 
+			Duration duration = Duration.between(
+				startLocalDateTime, LocalDateTime.parse(endDayDateString));
+
 			startLocalDateTime = startLocalDateTime.minusDays(
-				DateUtil.getDeltaDays(
-					startLocalDateTime.toString(), endDayDateString) + 1);
+				duration.toDays() + 1);
 
 			startDayDateString = startLocalDateTime.toString();
 
