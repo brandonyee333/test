@@ -62,8 +62,8 @@ public class DataprocSparkManager {
 			else if (JobStatus.State.RUNNING.equals(jobStatusState)) {
 				return DataprocJobState.RUNNING;
 			}
-			else if (JobStatus.State.ERROR.equals(jobStatusState) ||
-					 JobStatus.State.CANCELLED.equals(jobStatusState)) {
+			else if (JobStatus.State.CANCELLED.equals(jobStatusState) ||
+					 JobStatus.State.ERROR.equals(jobStatusState)) {
 
 				return DataprocJobState.FAILED;
 			}

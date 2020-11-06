@@ -231,14 +231,13 @@ public class JobDog {
 			});
 
 		if (jobRun != null) {
-			if ((jobRun.getJobRunStatus() == JobRunStatus.RUNNING) ||
-				(jobRun.getJobRunStatus() == JobRunStatus.UNKNOWN)) {
-
-				return JobStatus.RUNNING;
-			}
-
 			if (jobRun.getJobRunStatus() == JobRunStatus.FAILED) {
 				return JobStatus.FAILED;
+			}
+			else if ((jobRun.getJobRunStatus() == JobRunStatus.RUNNING) ||
+					 (jobRun.getJobRunStatus() == JobRunStatus.UNKNOWN)) {
+
+				return JobStatus.RUNNING;
 			}
 		}
 
