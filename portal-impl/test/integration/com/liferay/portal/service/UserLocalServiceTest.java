@@ -45,6 +45,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.LongStream;
 
 import org.junit.Assert;
@@ -310,6 +311,33 @@ public class UserLocalServiceTest {
 			LongStream.rangeClosed(
 				1000, 3000
 			).toArray());
+	}
+
+	@Test
+	public void testSearchCountsUserRole() throws Exception {
+		Group group = GroupTestUtil.addGroup();
+
+		PermissionChecker oldPermissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		PermissionThreadLocal.setPermissionChecker(
+			PermissionCheckerFactoryUtil.create(UserTestUtil.addUser()));
+
+		try {
+			Map<Long, Integer> counts = UserLocalServiceUtil.searchCounts(
+				TestPropsValues.getCompanyId(),
+				WorkflowConstants.STATUS_APPROVED,
+				new long[] {group.getGroupId()});
+
+			Integer count = counts.get(group.getGroupId());
+
+			Assert.assertNotNull(count);
+
+			Assert.assertEquals(1, count.intValue());
+		}
+		finally {
+			PermissionThreadLocal.setPermissionChecker(oldPermissionChecker);
+		}
 	}
 
 	@Test
