@@ -21,6 +21,9 @@ import com.liferay.portal.kernel.model.User;
  */
 public interface UserIdentityProvider {
 
+	public void addOrganizationMembership(long organizationId, long userId)
+		throws Exception;
+
 	public User fetchUserByEmailAddress(String emailAddress) throws Exception;
 
 	public User fetchUserByProviderId(String providerId) throws Exception;
@@ -28,5 +31,8 @@ public interface UserIdentityProvider {
 	public User getUserByEmailAddress(String emailAddress) throws Exception;
 
 	public User getUserByProviderId(String providerId) throws Exception;
+
+	public void removeOrganizationMembership(long organizationId, long userId)
+		throws Exception;
 
 }

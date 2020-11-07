@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.koroneiki.message.subscriber;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.distributed.messaging.Message;
@@ -67,6 +68,17 @@ public class EntitlementDeleteMessageSubscriber
 
 		userLocalService.unsetOrganizationUsers(
 			organization.getOrganizationId(), new long[] {user.getUserId()});
+
+		ExpandoBridge organizationExpandoBridge =
+			organization.getExpandoBridge();
+
+		boolean remote = (Boolean)organizationExpandoBridge.getAttribute(
+			"remote", false);
+
+		if (remote) {
+			userIdentityProvider.removeOrganizationMembership(
+				organization.getOrganizationId(), user.getUserId());
+		}
 	}
 
 }

@@ -29,7 +29,9 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -62,11 +64,28 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(
+	configurationPid = "com.liferay.osb.customer.identity.management.internal.configuration.WebUserIdentityConfiguration",
 	immediate = true, property = "provider=web",
 	service = UserIdentityProvider.class
 )
 public class WebUserIdentityProvider
 	extends BaseJSONWebServiceClientImpl implements UserIdentityProvider {
+
+	public void addOrganizationMembership(long organizationId, long userId)
+		throws Exception {
+
+		Organization organization = _organizationLocalService.getOrganization(
+			organizationId);
+		User user = _userLocalService.getUser(userId);
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("userUUID", user.getUuid());
+
+		doPut(
+			_URL_API_REST_ORGANIZATIONS + organization.getUuid() + "/user",
+			parameters, new HashMap<>());
+	}
 
 	@Override
 	public void afterPropertiesSet() throws IOReactorException {
@@ -108,6 +127,22 @@ public class WebUserIdentityProvider
 	public User getUserByProviderId(String providerId) throws Exception {
 		return _userLocalService.getUserByUuidAndCompanyId(
 			providerId, _companyId);
+	}
+
+	public void removeOrganizationMembership(long organizationId, long userId)
+		throws Exception {
+
+		Organization organization = _organizationLocalService.getOrganization(
+			organizationId);
+		User user = _userLocalService.getUser(userId);
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("userUUID", user.getUuid());
+
+		doDelete(
+			_URL_API_REST_ORGANIZATIONS + organization.getUuid() + "/user",
+			parameters, new HashMap<>());
 	}
 
 	@Activate
@@ -270,6 +305,9 @@ public class WebUserIdentityProvider
 		}
 	}
 
+	private static final String _URL_API_REST_ORGANIZATIONS =
+		"/osb-entity-web/organizations/";
+
 	private static final String _URL_API_REST_USERS = "/osb-entity-web/users/";
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -283,6 +321,9 @@ public class WebUserIdentityProvider
 
 	@Reference
 	private MailService _mailService;
+
+	@Reference
+	private OrganizationLocalService _organizationLocalService;
 
 	@Reference
 	private PortalInstancesLocalService _portalInstancesLocalService;
