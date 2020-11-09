@@ -38,7 +38,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		TreeSet<AccountEntry> accountEntries = new TreeSet<AccountEntry>(new AccountEntryNameComparator(true));
 		Map<String, Set<ProductEntry>> accountEntryProductEntriesMap = new HashMap<String, Set<ProductEntry>>();
 
-		String filter = "customerContactUuids/any(s:s eq '" + user.getUuid() + "') and state eq 'active' and (property_type eq 'primary' or contains(name, 'Commerce Subscription') or contains(name, 'Liferay DXP Cloud Subscription'))";
+		String filter = "customerContactUuids/any(s:s eq '" + user.getUuid() + "') and state eq 'active' and (property_type eq 'primary' or contains(name, 'Commerce Subscription') or contains(name, 'DXP Cloud Subscription'))";
 
 		List<ProductPurchaseView> productPurchaseViews = productPurchaseViewWebService.getProductPurchaseViews(StringPool.BLANK, filter, 1, 1000, StringPool.BLANK);
 
@@ -51,19 +51,35 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 
 			ProductPurchase productPurchase = productPurchases[0];
 
+			AccountEntry accountEntry = AccountEntryLocalServiceUtil.fetchKoroneikiAccountEntry(productPurchase.getAccountKey());
+
+			if (accountEntry == null) {
+				continue;
+			}
+
+			ProductEntry productEntry = ProductEntryLocalServiceUtil.fetchProductEntryByKoroneikiKey(productPurchase.getProductKey());
+
+			if (productEntry == null) {
+				continue;
+			}
+
+			ProductEntry developerProductEntry = ProductEntryLocalServiceUtil.getDeveloperProductEntry(productEntry.getProductEntryId());
+
+			if (developerProductEntry == null) {
+				continue;
+			}
+
 			Set<ProductEntry> productEntries = accountEntryProductEntriesMap.get(productPurchase.getAccountKey());
 
 			if (productEntries == null) {
-				accountEntries.add(AccountEntryLocalServiceUtil.getKoroneikiAccountEntry(productPurchase.getAccountKey()));
+				accountEntries.add(accountEntry);
 
 				productEntries = new TreeSet<>(new ProductEntryNameComparator(true));
 
 				accountEntryProductEntriesMap.put(productPurchase.getAccountKey(), productEntries);
 			}
 
-			ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(productPurchase.getProductKey());
-
-			productEntries.add(ProductEntryLocalServiceUtil.getDeveloperProductEntry(productEntry.getProductEntryId()));
+			productEntries.add(developerProductEntry);
 		}
 		%>
 

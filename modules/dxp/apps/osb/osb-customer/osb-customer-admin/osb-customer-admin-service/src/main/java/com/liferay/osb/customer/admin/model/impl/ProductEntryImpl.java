@@ -186,7 +186,7 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 			return true;
 		}
 
-		if (name.startsWith("Liferay DXP")) {
+		if (name.startsWith("DXP")) {
 			return true;
 		}
 

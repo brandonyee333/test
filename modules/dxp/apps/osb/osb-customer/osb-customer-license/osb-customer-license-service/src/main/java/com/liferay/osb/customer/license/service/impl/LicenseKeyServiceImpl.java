@@ -79,7 +79,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			sb.append(user.getUuid());
 			sb.append("') and state eq 'active' and (property_type eq ");
 			sb.append("'primary' or contains(name, 'Commerce Subscription') ");
-			sb.append("or contains(name, 'Liferay DXP Cloud Subscription'))");
+			sb.append("or contains(name, 'DXP Cloud Subscription'))");
 
 			List<ProductPurchaseView> productPurchaseViews =
 				_productPurchaseViewWebService.getProductPurchaseViews(
