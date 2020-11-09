@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.spring.http.exception;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,16 +23,32 @@ import java.util.Map;
  */
 public abstract class OSBAsahErrorAttributes {
 
-	public abstract Map<String, Object> getErrorAttributes();
+	public Map<String, Object> getErrorAttributes() {
+		Map<String, Object> filteredErrorAttributes = new HashMap<>();
+
+		List<String> errorAttributeFilterList = getErrorAttributeFilterList();
+
+		for (Map.Entry<String, Object> entry : _errorAttributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			if (errorAttributeFilterList.contains(attributeName)) {
+				filteredErrorAttributes.put(attributeName, entry.getValue());
+			}
+		}
+
+		return filteredErrorAttributes;
+	}
 
 	public void setErrorAttribute(String attributeName, Object attributeValue) {
-		errorAttributes.put(attributeName, attributeValue);
+		_errorAttributes.put(attributeName, attributeValue);
 	}
 
 	public void setErrorAttributes(Map<String, Object> errorAttributes) {
-		this.errorAttributes = errorAttributes;
+		_errorAttributes = errorAttributes;
 	}
 
-	protected Map<String, Object> errorAttributes = new HashMap<>();
+	protected abstract List<String> getErrorAttributeFilterList();
+
+	private Map<String, Object> _errorAttributes = new HashMap<>();
 
 }

@@ -14,7 +14,8 @@
 
 package com.liferay.osb.asah.common.spring.http.exception;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -23,12 +24,24 @@ import org.springframework.stereotype.Component;
  * @author Leslie Wong
  */
 @Component
-@Profile("!prod")
+@Profile({"dev","test"})
 public class OSBAsahErrorAttributesDev extends OSBAsahErrorAttributes {
 
 	@Override
-	public Map<String, Object> getErrorAttributes() {
-		return errorAttributes;
+	protected List<String> getErrorAttributeFilterList() {
+		return new ArrayList<String>() {
+			{
+				add("debugInfo");
+				add("error");
+				add("errors");
+				add("exception");
+				add("message");
+				add("path");
+				add("status");
+				add("timestamp");
+				add("trace");
+			}
+		};
 	}
 
 }
