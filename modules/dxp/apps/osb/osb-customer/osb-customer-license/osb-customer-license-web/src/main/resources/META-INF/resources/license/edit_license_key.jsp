@@ -247,7 +247,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 
 					<%
 					if (productEntry != null) {
-						List<ListType> productVersionTypes = productEntry.getAllVersionsListTypes();
+						List<ListType> productVersionTypes = productEntry.getAllLicenseVersionsListTypes();
 
 						String previousNamePrefix = StringPool.BLANK;
 
