@@ -14,41 +14,38 @@
 
 package com.liferay.osb.asah.common.spring.http.exception;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
 
 /**
  * @author Leslie Wong
  */
-public abstract class OSBAsahErrorAttributes {
+@Component
+public class OSBAsahErrorAttributes extends DefaultErrorAttributes {
 
-	public Map<String, Object> getErrorAttributes() {
-		Map<String, Object> filteredErrorAttributes = new HashMap<>();
+	@Override
+	public Map<String, Object> getErrorAttributes(
+		RequestAttributes requestAttributes, boolean includeStackTrace) {
 
-		List<String> errorAttributeFilterList = getErrorAttributeFilterList();
+		_log.error("Unable to process request", getError(requestAttributes));
 
-		for (Map.Entry<String, Object> entry : _errorAttributes.entrySet()) {
-			String attributeName = entry.getKey();
+		_osbAsahError.setErrorAttributes(
+			super.getErrorAttributes(requestAttributes, includeStackTrace));
 
-			if (errorAttributeFilterList.contains(attributeName)) {
-				filteredErrorAttributes.put(attributeName, entry.getValue());
-			}
-		}
-
-		return filteredErrorAttributes;
+		return _osbAsahError.getErrorAttributes();
 	}
 
-	public void setErrorAttribute(String attributeName, Object attributeValue) {
-		_errorAttributes.put(attributeName, attributeValue);
-	}
+	private static final Log _log = LogFactory.getLog(
+		OSBAsahErrorAttributes.class);
 
-	public void setErrorAttributes(Map<String, Object> errorAttributes) {
-		_errorAttributes = errorAttributes;
-	}
-
-	protected abstract List<String> getErrorAttributeFilterList();
-
-	private Map<String, Object> _errorAttributes = new HashMap<>();
+	@Autowired
+	private OSBAsahError _osbAsahError;
 
 }

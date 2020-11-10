@@ -24,22 +24,17 @@ import org.springframework.stereotype.Component;
  * @author Leslie Wong
  */
 @Component
-@Profile({"dev","test"})
-public class OSBAsahErrorAttributesDev extends OSBAsahErrorAttributes {
+@Profile("prod")
+public class OSBAsahErrorProd extends OSBAsahError {
 
 	@Override
 	protected List<String> getErrorAttributeFilterList() {
 		return new ArrayList<String>() {
 			{
-				add("debugInfo");
 				add("error");
-				add("errors");
-				add("exception");
-				add("message");
 				add("path");
 				add("status");
 				add("timestamp");
-				add("trace");
 			}
 		};
 	}
