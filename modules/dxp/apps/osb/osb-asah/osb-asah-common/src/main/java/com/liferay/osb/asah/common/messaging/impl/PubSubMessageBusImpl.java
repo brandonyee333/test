@@ -61,9 +61,19 @@ import org.springframework.stereotype.Component;
 public class PubSubMessageBusImpl implements MessageBus {
 
 	public PubsubMessage createPubsubMessage(String message) {
+		return createPubsubMessage(message, null);
+	}
+
+	public PubsubMessage createPubsubMessage(
+		String message, String orderingKey) {
+
 		PubsubMessage.Builder builder = PubsubMessage.newBuilder();
 
 		builder.setData(ByteString.copyFromUtf8(message));
+
+		if (StringUtils.isNotEmpty(orderingKey)) {
+			builder.setOrderingKey(orderingKey);
+		}
 
 		return builder.build();
 	}
@@ -239,8 +249,14 @@ public class PubSubMessageBusImpl implements MessageBus {
 			return publisher;
 		}
 
+		boolean enableOrdering = false;
+
+		if (channel == Channel.DXP_ENTITIES_MESSAGE) {
+			enableOrdering = true;
+		}
+
 		publisher = _pubSubClientFactory.createPublisher(
-			getProjectTopicName(channel));
+			enableOrdering, getProjectTopicName(channel));
 
 		_channels.put(channel, publisher);
 
