@@ -134,7 +134,14 @@ public class PubSubMessageBusImpl implements MessageBus {
 		try {
 			Publisher publisher = _getOrCreatePublisher(channel);
 
-			publisher.publish(createPubsubMessage(message));
+			if (channel == Channel.DXP_ENTITIES_MESSAGE) {
+				publisher.publish(
+					createPubsubMessage(
+						message, Channel.DXP_ENTITIES_MESSAGE.name()));
+			}
+			else {
+				publisher.publish(createPubsubMessage(message));
+			}
 		}
 		catch (Exception e) {
 			_log.error(e, e);
