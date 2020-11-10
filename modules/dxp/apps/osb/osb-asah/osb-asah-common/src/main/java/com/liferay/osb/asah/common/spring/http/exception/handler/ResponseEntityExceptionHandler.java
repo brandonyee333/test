@@ -20,6 +20,9 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.ResourceNotFoundException;
 
 import org.json.JSONObject;
@@ -127,6 +130,8 @@ public class ResponseEntityExceptionHandler {
 		JSONObject debugInfoJSONObject, Exception e,
 		HttpServletRequest httpServletRequest, HttpStatus httpStatus) {
 
+		_log.error("Unable to process request", e);
+
 		if (debugInfoJSONObject != null) {
 			_osbAsahErrorAttributes.setErrorAttribute(
 				"debugInfo", debugInfoJSONObject);
@@ -148,6 +153,9 @@ public class ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<>(_osbAsahErrorAttributes, httpStatus);
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		ResponseEntityExceptionHandler.class);
 
 	@Autowired
 	private OSBAsahErrorAttributes _osbAsahErrorAttributes;
