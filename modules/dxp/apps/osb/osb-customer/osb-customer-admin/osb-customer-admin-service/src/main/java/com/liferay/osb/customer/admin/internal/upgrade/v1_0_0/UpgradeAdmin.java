@@ -53,6 +53,10 @@ public class UpgradeAdmin extends UpgradeProcess {
 				"socialOfficeMinorVersions' where listTypeId = 25000");
 
 		runSQL(
+			"update ListType set type_ = replace(type_, " +
+				"'commerceLicenseProductVersions', 'commerceLicenseVersions'" +
+					") where type_ like '%com.liferay.osb.model%'");
+		runSQL(
 			"update ListType set type_ = replace(type_, 'digitalEnterprise', " +
 				"'dxp') where type_ like '%com.liferay.osb.model%'");
 		runSQL(
