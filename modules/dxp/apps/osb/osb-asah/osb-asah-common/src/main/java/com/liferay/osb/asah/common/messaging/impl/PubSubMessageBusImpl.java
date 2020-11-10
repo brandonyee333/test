@@ -290,9 +290,20 @@ public class PubSubMessageBusImpl implements MessageBus {
 						projectSubscriptionName.toString());
 			}
 
-			return subscriptionAdminClient.createSubscription(
-				projectSubscriptionName, getProjectTopicName(channel),
-				PushConfig.getDefaultInstance(), 10);
+			ProjectTopicName projectTopicName = getProjectTopicName(channel);
+
+			Subscription.Builder builder = Subscription.newBuilder();
+
+			builder.setAckDeadlineSeconds(10);
+			builder.setName(projectSubscriptionName.toString());
+			builder.setPushConfig(PushConfig.getDefaultInstance());
+			builder.setTopic(projectTopicName.toString());
+
+			if (channel == Channel.DXP_ENTITIES_MESSAGE) {
+				builder.setEnableMessageOrdering(true);
+			}
+
+			return subscriptionAdminClient.createSubscription(builder.build());
 		}
 		finally {
 			pubSubClient.close();
