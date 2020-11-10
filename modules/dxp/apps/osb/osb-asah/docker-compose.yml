@@ -202,7 +202,7 @@ services:
             - JAVA_OPTS=-Xmx256m
     osbfarofrontend:
         container_name: com-liferay-osb-faro-private
-        image: liferay/com-liferay-osb-faro:asah-local-latest
+        image: liferay/com-liferay-osb-faro:latest
         ports:
             - "11311:11311"
             - "8000:8000"

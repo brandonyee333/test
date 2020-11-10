@@ -30,7 +30,7 @@ services:
         environment:
             - OSB_ASAH_BACKEND_URL=http://osbasahmonolith:8080
             - OSB_ASAH_PUBLISHER_URL=http://osbasahmonolith:8080
-        image: liferay/com-liferay-osb-faro:asah-local-latest
+        image: liferay/com-liferay-osb-faro:latest
         ports:
             - "11311:11311"
             - "8000:8000"
