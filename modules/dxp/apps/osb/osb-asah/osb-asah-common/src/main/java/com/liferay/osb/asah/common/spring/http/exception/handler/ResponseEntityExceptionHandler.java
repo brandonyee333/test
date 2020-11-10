@@ -41,6 +41,14 @@ import org.springframework.web.client.RestClientException;
 @ControllerAdvice
 public class ResponseEntityExceptionHandler {
 
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<OSBAsahErrorAttributes> handleException(
+		HttpServletRequest httpServletRequest, Exception e) {
+
+		return _getResponseEntity(
+			e, httpServletRequest, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<OSBAsahErrorAttributes>
 		handleIllegalArgumentException(
