@@ -106,10 +106,6 @@ public class QueueHttpImpl implements QueueHttp {
 			_createQueue(QUEUE_NAME_ACTIVE_INDIVIDUAL_IDS);
 		}
 
-		if (!queueNames.contains(QUEUE_NAME_DXP_ENTITIES)) {
-			_createQueue(QUEUE_NAME_DXP_ENTITIES);
-		}
-
 		if (!queueNames.contains(QUEUE_NAME_IDENTITY)) {
 			_createQueue(QUEUE_NAME_IDENTITY);
 		}
