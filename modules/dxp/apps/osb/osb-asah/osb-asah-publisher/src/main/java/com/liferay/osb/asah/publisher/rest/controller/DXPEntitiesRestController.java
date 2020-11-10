@@ -15,8 +15,9 @@
 package com.liferay.osb.asah.publisher.rest.controller;
 
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorUserDog;
-import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 
@@ -47,11 +48,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/dxp-entities")
 @RestController
 public class DXPEntitiesRestController {
-
-	@PostConstruct
-	public void init() {
-		_queueHttp.initializeQueue();
-	}
 
 	@PostMapping
 	public ResponseEntity<?> post(
@@ -116,9 +112,8 @@ public class DXPEntitiesRestController {
 					"object", objectJSONObject
 				);
 
-				_queueHttp.pushMessage(
-					messageJSONObject.toString(),
-					QueueHttp.QUEUE_NAME_DXP_ENTITIES);
+				_messageBus.sendMessage(
+					Channel.DXP_ENTITIES_MESSAGE, messageJSONObject.toString());
 			}
 
 			return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
@@ -137,6 +132,6 @@ public class DXPEntitiesRestController {
 	private DXPExtractorUserDog _dxpExtractorUserDog;
 
 	@Autowired
-	private QueueHttp _queueHttp;
+	private MessageBus _messageBus;
 
 }
