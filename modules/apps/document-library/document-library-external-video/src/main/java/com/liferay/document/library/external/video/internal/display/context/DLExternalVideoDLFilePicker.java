@@ -41,11 +41,11 @@ import javax.servlet.http.HttpServletRequest;
 public class DLExternalVideoDLFilePicker implements DLFilePicker {
 
 	public DLExternalVideoDLFilePicker(
-		HttpServletRequest httpServletRequest, DLExternalVideo dlExternalVideo,
+		DLExternalVideo dlExternalVideo, HttpServletRequest httpServletRequest,
 		String onFilePickCallback) {
 
-		_httpServletRequest = httpServletRequest;
 		_dlExternalVideo = dlExternalVideo;
+		_httpServletRequest = httpServletRequest;
 		_onFilePickCallback = onFilePickCallback;
 	}
 
