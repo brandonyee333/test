@@ -201,7 +201,7 @@ services:
         environment:
             - JAVA_OPTS=-Xmx256m
     osbfarofrontend:
-        container_name: com-liferay-osb-faro-private
+        container_name: faro
         image: liferay/com-liferay-osb-faro:latest
         ports:
             - "11311:11311"
