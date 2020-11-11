@@ -14,29 +14,32 @@
 
 package com.liferay.osb.asah.common.spring.http.exception;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+
 /**
  * @author Leslie Wong
  */
-public abstract class OSBAsahError {
+@Component
+public class OSBAsahError {
 
 	public Map<String, Object> getErrorAttributes() {
-		Map<String, Object> filteredErrorAttributes = new HashMap<>();
+		Map<String, Object> errorAttributes = new HashMap<>();
 
-		List<String> errorAttributeFilterList = getErrorAttributeFilterList();
-
-		for (Map.Entry<String, Object> entry : _errorAttributes.entrySet()) {
-			String attributeName = entry.getKey();
-
-			if (errorAttributeFilterList.contains(attributeName)) {
-				filteredErrorAttributes.put(attributeName, entry.getValue());
-			}
+		for (String errorAttributeName : _errorAttributeNames) {
+			errorAttributes.put(
+				errorAttributeName, _errorAttributes.get(errorAttributeName));
 		}
 
-		return filteredErrorAttributes;
+		return errorAttributes;
 	}
 
 	public void setErrorAttribute(String attributeName, Object attributeValue) {
@@ -47,8 +50,31 @@ public abstract class OSBAsahError {
 		_errorAttributes = errorAttributes;
 	}
 
-	protected abstract List<String> getErrorAttributeFilterList();
+	@PostConstruct
+	private void _init() {
+		if (_environment.acceptsProfiles("prod")) {
+			_errorAttributeNames.add("error");
+			_errorAttributeNames.add("path");
+			_errorAttributeNames.add("status");
+			_errorAttributeNames.add("timestamp");
+		}
+		else if (_environment.acceptsProfiles("dev", "test")) {
+			_errorAttributeNames.add("debugInfo");
+			_errorAttributeNames.add("error");
+			_errorAttributeNames.add("errors");
+			_errorAttributeNames.add("exception");
+			_errorAttributeNames.add("message");
+			_errorAttributeNames.add("path");
+			_errorAttributeNames.add("status");
+			_errorAttributeNames.add("timestamp");
+			_errorAttributeNames.add("trace");
+		}
+	}
 
+	@Autowired
+	private Environment _environment;
+
+	private final List<String> _errorAttributeNames = new ArrayList<>();
 	private Map<String, Object> _errorAttributes = new HashMap<>();
 
 }
