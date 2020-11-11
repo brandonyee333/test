@@ -21,9 +21,9 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
@@ -41,8 +41,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -72,19 +70,14 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		_faroInfoActivityDog.addActivity(activityJSONObject);
 
 		if (_faroInfoActivityDog.isActivity(applicationId, eventId)) {
-			_queueHttp.pushMessage(
+			_messageBus.sendMessage(
+				Channel.ACTIVE_INDIVIDUAL_IDS,
 				JSONUtil.put(
 					"channelId", activityJSONObject.get("channelId")
 				).put(
 					"ownerId", ownerId
-				).toString(),
-				QueueHttp.QUEUE_NAME_ACTIVE_INDIVIDUAL_IDS);
+				).toString());
 		}
-	}
-
-	@PostConstruct
-	public void init() {
-		_queueHttp.initializeQueue();
 	}
 
 	@Override
@@ -687,10 +680,10 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
+	@Autowired
+	private MessageBus _messageBus;
+
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_ACTIVITY)
 	private MessageSubscriber _messageSubscriber;
-
-	@Autowired
-	private QueueHttp _queueHttp;
 
 }
