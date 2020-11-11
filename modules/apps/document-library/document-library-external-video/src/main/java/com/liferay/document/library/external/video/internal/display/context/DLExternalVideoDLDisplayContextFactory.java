@@ -98,7 +98,7 @@ public class DLExternalVideoDLDisplayContextFactory
 			return new DLExternalVideoDLEditFileEntryDisplayContext(
 				parentDLEditFileEntryDisplayContext, httpServletRequest,
 				httpServletResponse, fileEntry,
-				_getExternalVideo(dlExternalVideoMetadataHelper));
+				_getDLExternalVideo(dlExternalVideoMetadataHelper));
 		}
 
 		return parentDLEditFileEntryDisplayContext;
@@ -155,7 +155,7 @@ public class DLExternalVideoDLDisplayContextFactory
 		return parentDLViewFileVersionDisplayContext;
 	}
 
-	private DLExternalVideo _getExternalVideo(
+	private DLExternalVideo _getDLExternalVideo(
 		DLExternalVideoMetadataHelper dlExternalVideoMetadataHelper) {
 
 		if (dlExternalVideoMetadataHelper.containsField(
