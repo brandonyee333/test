@@ -146,15 +146,17 @@ public class ServiceConstants {
 	}
 
 	private static String _setInternalURL(String serviceName, String port) {
+		String internalServiceURL = null;
+
 		if (_MONOLITH_ENABLED) {
-			serviceName = "MONOLITH";
-			port = "8080";
+			internalServiceURL = "http://localhost:8080";
 		}
+		else {
+			serviceName = serviceName.replace("_", "");
+			serviceName = serviceName.toLowerCase();
 
-		serviceName = serviceName.replace("_", "");
-		serviceName = serviceName.toLowerCase();
-
-		String internalServiceURL = "http://osbasah" + serviceName + ":" + port;
+			internalServiceURL = "http://osbasah" + serviceName + ":" + port;
+		}
 
 		_internalServiceURLs.add(internalServiceURL);
 
