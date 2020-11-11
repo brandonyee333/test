@@ -12,6 +12,14 @@
 		"targetPort": 8080
 	},
 	"memory": 8192,
+	"ports": [
+		{
+			"external": false,
+			"port": 8080,
+			"protocol": "TCP",
+			"targetPort": 8080
+		}
+	],
 	"volumes": {
 		"export": "/export",
 		"temp": "/temp"
