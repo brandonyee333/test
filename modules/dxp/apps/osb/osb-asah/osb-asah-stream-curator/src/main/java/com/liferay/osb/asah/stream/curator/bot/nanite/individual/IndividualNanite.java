@@ -22,9 +22,10 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
-import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
@@ -44,7 +45,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
@@ -83,26 +83,15 @@ public class IndividualNanite implements Nanite {
 
 	@Override
 	public void run() {
-		int messagesCount = _queueHttp.getMessagesCount(
-			QueueHttp.QUEUE_NAME_IDENTITY);
+		List<String> messages = _messageSubscriber.pullMessages(50);
 
-		if (messagesCount <= 0) {
+		if (messages.isEmpty()) {
 			return;
 		}
 
-		JSONObject responseJSONObject = new JSONObject(
-			_queueHttp.getMessages(QueueHttp.QUEUE_NAME_IDENTITY));
-
-		JSONArray identityMessagesJSONArray = responseJSONObject.getJSONArray(
-			"messages");
-
-		for (int i = 0; i < identityMessagesJSONArray.length(); i++) {
+		for (String message : messages) {
 			try {
-				JSONObject identityMessageJSONObject = new JSONObject(
-					String.valueOf(identityMessagesJSONArray.get(i)));
-
-				JSONObject messageJSONObject = new JSONObject(
-					identityMessageJSONObject.getString("message"));
+				JSONObject messageJSONObject = new JSONObject(message);
 
 				if (!_faroInfoSuppressionDog.isSuppressed(
 						null,
@@ -128,11 +117,6 @@ public class IndividualNanite implements Nanite {
 				}
 
 				_identityMessagesCount.inc();
-			}
-			catch (ResourceNotFoundException rnfe) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(rnfe.getMessage(), rnfe);
-				}
 			}
 			catch (Exception e) {
 				_log.error(e.getMessage(), e);
@@ -460,7 +444,7 @@ public class IndividualNanite implements Nanite {
 	@Autowired
 	private FaroInfoSuppressionDog _faroInfoSuppressionDog;
 
-	@Autowired
-	private QueueHttp _queueHttp;
+	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
+	private MessageSubscriber _messageSubscriber;
 
 }
