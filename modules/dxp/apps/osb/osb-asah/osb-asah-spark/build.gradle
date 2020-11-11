@@ -1,1 +1,0 @@
-apply plugin: "com.liferay.dependency.local.copy"

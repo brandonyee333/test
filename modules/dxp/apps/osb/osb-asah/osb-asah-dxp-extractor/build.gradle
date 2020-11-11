@@ -1,11 +1,11 @@
-apply plugin: "com.liferay.dependency.local.copy"
 apply plugin: "com.liferay.spring.boot.defaults"
 
 dependencies {
 	compile group: "com.liferay", name: "com.liferay.petra.json.web.service.client", version: "7.1.0"
-	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-common"
 
-	testCompile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-test-util"
+	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
+
+	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }
 
 testIntegration {
