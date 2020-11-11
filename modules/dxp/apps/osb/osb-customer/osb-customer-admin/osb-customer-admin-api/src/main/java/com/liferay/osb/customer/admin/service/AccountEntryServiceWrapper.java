@@ -100,9 +100,7 @@ public class AccountEntryServiceWrapper
 	}
 
 	@Override
-	public void syncToZendesk(String koroneikiAccountKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public void syncToZendesk(String koroneikiAccountKey) throws Exception {
 		_accountEntryService.syncToZendesk(koroneikiAccountKey);
 	}
 

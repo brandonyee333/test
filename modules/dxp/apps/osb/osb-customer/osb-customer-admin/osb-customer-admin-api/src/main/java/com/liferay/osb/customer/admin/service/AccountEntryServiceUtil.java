@@ -97,7 +97,7 @@ public class AccountEntryServiceUtil {
 	}
 
 	public static void syncToZendesk(String koroneikiAccountKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		getService().syncToZendesk(koroneikiAccountKey);
 	}

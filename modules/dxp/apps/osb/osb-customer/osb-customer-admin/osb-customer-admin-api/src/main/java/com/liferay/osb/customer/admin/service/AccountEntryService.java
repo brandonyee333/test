@@ -99,8 +99,7 @@ public interface AccountEntryService extends BaseService {
 	 */
 	public String getOSGiServiceIdentifier();
 
-	public void syncToZendesk(String koroneikiAccountKey)
-		throws PortalException;
+	public void syncToZendesk(String koroneikiAccountKey) throws Exception;
 
 	public AccountEntry updateInstructions(
 			long accountEntryId, String instructions)
