@@ -1,5 +1,9 @@
 apply plugin: "com.liferay.spring.boot.defaults"
 
+bootJar {
+	classifier = "application"
+}
+
 dependencies {
 	compile group: "com.force.api", name: "force-wsc", version: "39.0.0"
 	compile group: "com.github.fge", name: "uri-template", version: "0.9"
@@ -12,6 +16,10 @@ dependencies {
 	testIntegrationCompile group: "org.springframework.boot", name: "spring-boot-starter-test"
 
 	testIntegrationImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
+}
+
+jar {
+	enabled = true
 }
 
 testIntegration {

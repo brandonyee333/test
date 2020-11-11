@@ -70,6 +70,10 @@ dependencyManagement {
 	}
 }
 
+jar {
+	enabled = true
+}
+
 testIntegration {
 	doFirst {
 		environment "LCP_ENGINE_ELASTICSEARCH_SERVER_IP", "127.0.0.1"

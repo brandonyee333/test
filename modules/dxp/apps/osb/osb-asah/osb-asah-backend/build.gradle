@@ -1,5 +1,9 @@
 apply plugin: "com.liferay.spring.boot.defaults"
 
+bootJar {
+	classifier = "application"
+}
+
 configurations.all {
 	exclude group: "org.apache.geronimo.bundles", module: "json"
 	exclude group: "org.nd4j", module: "nd4j-native-platform"
@@ -30,6 +34,10 @@ dependencies {
 	testIntegrationCompile group: "io.rest-assured", name: "rest-assured", version: "3.2.0"
 
 	testIntegrationImplementation project(":dxp:apps:osb:osb-asah:osb-asah-batch-curator")
+}
+
+jar {
+	enabled = true
 }
 
 testIntegration {

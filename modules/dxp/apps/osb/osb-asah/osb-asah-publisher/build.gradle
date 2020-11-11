@@ -1,10 +1,17 @@
 apply plugin: "com.liferay.spring.boot.defaults"
 
+bootJar {
+	classifier = "application"
+}
+
 dependencies {
 	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
 
 	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
+}
 
+jar {
+	enabled = true
 }
 
 testIntegration {

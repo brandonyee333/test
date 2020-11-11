@@ -16,3 +16,7 @@ dependencies {
 
 	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
 }
+
+jar {
+	enabled = true
+}

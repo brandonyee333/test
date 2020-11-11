@@ -1,5 +1,9 @@
 apply plugin: "com.liferay.spring.boot.defaults"
 
+bootJar {
+	classifier = "application"
+}
+
 dependencies {
 	compile ext: "gz", group: "com.liferay", name: "com.51degrees.dat.enterprise", version: "latest.release"
 	compile ext: "gz", group: "com.liferay", name: "com.maxmind.geoip.dat", version: "20180327"
@@ -9,6 +13,10 @@ dependencies {
 	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
 
 	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
+}
+
+jar {
+	enabled = true
 }
 
 processResources {

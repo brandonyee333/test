@@ -3,6 +3,10 @@ import com.liferay.gradle.util.copy.StripPathSegmentsAction
 
 apply plugin: "com.liferay.spring.boot.defaults"
 
+bootJar {
+	classifier = "application"
+}
+
 configurations.all {
 	exclude group: "org.apache.geronimo.bundles", module: "json"
 }
@@ -40,6 +44,10 @@ if (!langDetectProfileDir.exists()) {
 		includeEmptyDirs = false
 		into langDetectProfileDir
 	}
+}
+
+jar {
+	enabled = true
 }
 
 testIntegration {

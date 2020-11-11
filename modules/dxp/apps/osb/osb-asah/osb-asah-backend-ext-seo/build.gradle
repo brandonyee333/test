@@ -10,6 +10,10 @@ dependencies {
 	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }
 
+jar {
+	enabled = true
+}
+
 testIntegration {
 	doFirst {
 		environment "OSB_ASAH_PUBSUB_EMULATOR_URL", "http://127.0.0.1:8095"
