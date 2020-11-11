@@ -18,6 +18,8 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminPortletKeys;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.license.model.LicenseKey;
+import com.liferay.osb.customer.license.service.LicenseKeyLocalService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -25,6 +27,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -56,6 +59,10 @@ public class LinkAccountEntriesMVCActionCommand extends BaseMVCActionCommand {
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		for (AccountEntry accountEntry : accountEntries) {
+			if (Validator.isNotNull(accountEntry.getKoroneikiAccountKey())) {
+				continue;
+			}
+
 			List<Account> accounts = _accountWebService.search(
 				StringPool.BLANK, "code eq '" + accountEntry.getCode() + "'", 1,
 				1000, null);
@@ -80,6 +87,16 @@ public class LinkAccountEntriesMVCActionCommand extends BaseMVCActionCommand {
 			accountEntry.setKoroneikiAccountKey(account.getKey());
 
 			_accountEntryLocalService.updateAccountEntry(accountEntry);
+
+			List<LicenseKey> licenseKeys =
+				_licenseKeyLocalService.getAccountEntryLicenseKeys(
+					accountEntry.getAccountEntryId());
+
+			for (LicenseKey licenseKey : licenseKeys) {
+				licenseKey.setKoroneikiAccountKey(account.getKey());
+
+				_licenseKeyLocalService.updateLicenseKey(licenseKey);
+			}
 		}
 	}
 
@@ -91,5 +108,8 @@ public class LinkAccountEntriesMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private AccountWebService _accountWebService;
+
+	@Reference
+	private LicenseKeyLocalService _licenseKeyLocalService;
 
 }
