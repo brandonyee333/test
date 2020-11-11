@@ -135,11 +135,11 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 		}
 	}
 
-	project.afterEvaluate {
-		assemble {
-			dependsOn packagePython
-		}
+	task assemble {
+		dependsOn packagePython
+	}
 
+	project.afterEvaluate {
 		formatSourcePython {
 			dependsOn installProjectEnvDependencies
 			dependsOn installTestEnvDependencies
