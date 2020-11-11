@@ -29,7 +29,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -55,12 +54,7 @@ import org.springframework.context.annotation.Primary;
  * @author Edward Kwok-Yu Wong
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = {
-		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahBatchCuratorSpringBootApplication.class
-	}
-)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(

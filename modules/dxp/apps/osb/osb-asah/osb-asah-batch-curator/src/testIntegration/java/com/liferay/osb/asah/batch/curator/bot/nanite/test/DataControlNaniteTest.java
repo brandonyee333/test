@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.io.File;
@@ -51,12 +50,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Matthew Kong
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = {
-		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahBatchCuratorSpringBootApplication.class
-	}
-)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class DataControlNaniteTest extends BaseNaniteTestCase {
 
 	@Before

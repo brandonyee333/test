@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -42,12 +41,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Leslie Wong
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = {
-		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahBatchCuratorSpringBootApplication.class
-	}
-)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class InterestThresholdScoreNaniteTest extends BaseNaniteTestCase {
 
 	@Before

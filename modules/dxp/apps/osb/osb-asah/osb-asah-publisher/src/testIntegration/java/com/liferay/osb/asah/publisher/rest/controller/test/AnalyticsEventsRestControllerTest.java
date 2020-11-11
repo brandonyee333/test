@@ -16,7 +16,6 @@ package com.liferay.osb.asah.publisher.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -104,9 +103,9 @@ public class AnalyticsEventsRestControllerTest {
 			String.class);
 
 		Mockito.verify(
-			_queueHttp, Mockito.times(1)
-		).pushMessage(
-			argumentCaptor.capture(), Mockito.anyString()
+			_messageBus, Mockito.times(1)
+		).sendMessage(
+			Mockito.any(), Mockito.anyString()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(
@@ -297,9 +296,9 @@ public class AnalyticsEventsRestControllerTest {
 			String.class);
 
 		Mockito.verify(
-			_queueHttp, Mockito.times(1)
-		).pushMessage(
-			argumentCaptor.capture(), Mockito.anyString()
+			_messageBus, Mockito.times(1)
+		).sendMessage(
+			Mockito.any(), Mockito.anyString()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(
@@ -314,9 +313,6 @@ public class AnalyticsEventsRestControllerTest {
 
 	@MockBean
 	private MessageBus _messageBus;
-
-	@MockBean
-	private QueueHttp _queueHttp;
 
 	@Autowired
 	private TestRestTemplate _testRestTemplate;

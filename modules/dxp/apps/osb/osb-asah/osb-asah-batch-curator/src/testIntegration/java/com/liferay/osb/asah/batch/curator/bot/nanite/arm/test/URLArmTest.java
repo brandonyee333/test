@@ -19,7 +19,6 @@ import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootAp
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
@@ -37,12 +36,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Vishal Reddy
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = {
-		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahBatchCuratorSpringBootApplication.class
-	}
-)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class URLArmTest {
 
 	@ElasticsearchIndex(

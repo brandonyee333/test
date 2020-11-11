@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -56,12 +55,7 @@ import org.springframework.context.annotation.Primary;
  * @author Leslie Wong
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = {
-		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahBatchCuratorSpringBootApplication.class
-	}
-)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class IndividualEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Before
