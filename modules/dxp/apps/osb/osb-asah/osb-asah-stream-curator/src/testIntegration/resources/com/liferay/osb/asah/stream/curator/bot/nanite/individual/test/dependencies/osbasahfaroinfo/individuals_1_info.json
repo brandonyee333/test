@@ -2,7 +2,7 @@
 	{
 		"dataSourceIndividualPKs": [
 			{
-				"dataSourceId": "www.liferay.com",
+				"dataSourceId": "1",
 				"individualPKs": [
 					"1"
 				]
@@ -25,7 +25,7 @@
 	{
 		"dataSourceIndividualPKs": [
 			{
-				"dataSourceId": "www.liferay.com",
+				"dataSourceId": "2",
 				"individualPKs": [
 					"2"
 				]

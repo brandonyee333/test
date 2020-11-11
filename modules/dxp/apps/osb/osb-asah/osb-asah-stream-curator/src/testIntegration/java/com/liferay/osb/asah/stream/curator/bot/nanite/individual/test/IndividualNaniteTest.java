@@ -16,16 +16,16 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.individual.test;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.individual.IndividualNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-
-import org.apache.commons.codec.digest.DigestUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -36,13 +36,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Mockito;
-
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 /**
  * @author André Miranda
@@ -68,51 +65,12 @@ public class IndividualNaniteTest {
 		name = "individuals", resourcePath = "individuals_1_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
+	@MessageBusChannel(
+		channel = Channel.IDENTITY_MESSAGE,
+		resourcePath = "identity_message_1.json"
+	)
 	@Test
 	public void testIndividualResolution() throws Exception {
-		Mockito.when(
-			_queueHttp.getMessagesCount(Mockito.anyString())
-		).thenReturn(
-			1
-		);
-
-		Mockito.when(
-			_queueHttp.getMessages(Mockito.anyString())
-		).thenReturn(
-			JSONUtil.put(
-				"messages",
-				JSONUtil.putAll(
-					JSONUtil.put(
-						"message",
-						JSONUtil.put(
-							"analyticsData", new JSONObject()
-						).put(
-							"channelId", "1"
-						).put(
-							"dataSourceId", "1"
-						).put(
-							"emailAddressHashed",
-							DigestUtils.sha256Hex("john@liferay.com")
-						).put(
-							"userId", "1"
-						).toString()),
-					JSONUtil.put(
-						"message",
-						JSONUtil.put(
-							"analyticsData", new JSONObject()
-						).put(
-							"channelId", "2"
-						).put(
-							"dataSourceId", "2"
-						).put(
-							"emailAddressHashed",
-							DigestUtils.sha256Hex("jane@liferay.com")
-						).put(
-							"userId", "1"
-						).toString()))
-			).toString()
-		);
-
 		_individualNanite.run();
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
@@ -139,37 +97,12 @@ public class IndividualNaniteTest {
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@MessageBusChannel(
+		channel = Channel.IDENTITY_MESSAGE,
+		resourcePath = "identity_message_2.json"
+	)
 	@Test
 	public void testMergeIndividual() {
-		Mockito.when(
-			_queueHttp.getMessagesCount(Mockito.anyString())
-		).thenReturn(
-			1
-		);
-
-		Mockito.when(
-			_queueHttp.getMessages(Mockito.anyString())
-		).thenReturn(
-			JSONUtil.put(
-				"messages",
-				JSONUtil.putAll(
-					JSONUtil.put(
-						"message",
-						JSONUtil.put(
-							"analyticsData", new JSONObject()
-						).put(
-							"channelId", "1"
-						).put(
-							"dataSourceId", "1"
-						).put(
-							"emailAddressHashed",
-							DigestUtils.sha256Hex("john@liferay.com")
-						).put(
-							"userId", "2"
-						).toString()))
-			).toString()
-		);
-
 		Assert.assertTrue(
 			_faroInfoElasticsearchInvoker.exists("individuals", "200"));
 
@@ -217,51 +150,12 @@ public class IndividualNaniteTest {
 		name = "individuals", resourcePath = "individuals_3_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
+	@MessageBusChannel(
+		channel = Channel.IDENTITY_MESSAGE,
+		resourcePath = "identity_message_3.json"
+	)
 	@Test
 	public void testSkipUpdatePageAndAsset() {
-		Mockito.when(
-			_queueHttp.getMessagesCount(Mockito.anyString())
-		).thenReturn(
-			1
-		);
-
-		Mockito.when(
-			_queueHttp.getMessages(Mockito.anyString())
-		).thenReturn(
-			JSONUtil.put(
-				"messages",
-				JSONUtil.putAll(
-					JSONUtil.put(
-						"message",
-						JSONUtil.put(
-							"analyticsData", new JSONObject()
-						).put(
-							"channelId", "1"
-						).put(
-							"dataSourceId", "1"
-						).put(
-							"emailAddressHashed",
-							DigestUtils.sha256Hex("john@liferay.com")
-						).put(
-							"userId", "1"
-						).toString()),
-					JSONUtil.put(
-						"message",
-						JSONUtil.put(
-							"analyticsData", new JSONObject()
-						).put(
-							"channelId", "2"
-						).put(
-							"dataSourceId", "2"
-						).put(
-							"emailAddressHashed",
-							DigestUtils.sha256Hex("jane@liferay.com")
-						).put(
-							"userId", "1"
-						).toString()))
-			).toString()
-		);
-
 		_individualNanite.run();
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
@@ -289,37 +183,12 @@ public class IndividualNaniteTest {
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@MessageBusChannel(
+		channel = Channel.IDENTITY_MESSAGE,
+		resourcePath = "identity_message_2.json"
+	)
 	@Test
 	public void testSuppressedUserUpdate() {
-		Mockito.when(
-			_queueHttp.getMessagesCount(Mockito.anyString())
-		).thenReturn(
-			1
-		);
-
-		Mockito.when(
-			_queueHttp.getMessages(Mockito.anyString())
-		).thenReturn(
-			JSONUtil.put(
-				"messages",
-				JSONUtil.putAll(
-					JSONUtil.put(
-						"message",
-						JSONUtil.put(
-							"analyticsData", new JSONObject()
-						).put(
-							"channelId", "1"
-						).put(
-							"dataSourceId", "1"
-						).put(
-							"emailAddressHashed",
-							DigestUtils.sha256Hex("john@liferay.com")
-						).put(
-							"userId", "2"
-						).toString()))
-			).toString()
-		);
-
 		_individualNanite.run();
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
@@ -352,37 +221,12 @@ public class IndividualNaniteTest {
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@MessageBusChannel(
+		channel = Channel.IDENTITY_MESSAGE,
+		resourcePath = "identity_message_2.json"
+	)
 	@Test
 	public void testUserSessionUpdate() {
-		Mockito.when(
-			_queueHttp.getMessagesCount(Mockito.anyString())
-		).thenReturn(
-			1
-		);
-
-		Mockito.when(
-			_queueHttp.getMessages(Mockito.anyString())
-		).thenReturn(
-			JSONUtil.put(
-				"messages",
-				JSONUtil.putAll(
-					JSONUtil.put(
-						"message",
-						JSONUtil.put(
-							"analyticsData", new JSONObject()
-						).put(
-							"channelId", "1"
-						).put(
-							"dataSourceId", "1"
-						).put(
-							"emailAddressHashed",
-							DigestUtils.sha256Hex("john@liferay.com")
-						).put(
-							"userId", "2"
-						).toString()))
-			).toString()
-		);
-
 		_individualNanite.run();
 
 		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
@@ -412,7 +256,7 @@ public class IndividualNaniteTest {
 	@Autowired
 	private IndividualNanite _individualNanite;
 
-	@MockBean
-	private QueueHttp _queueHttp;
+	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
+	private MessageSubscriber _messageSubscriber;
 
 }
