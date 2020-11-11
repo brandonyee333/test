@@ -121,8 +121,8 @@ public class DLExternalVideoDLDisplayContextFactory
 		}
 		catch (PortalException portalException) {
 			throw new SystemException(
-				"Unable to build ExternalVideoDLViewFileVersionDisplay" +
-					"Context for shortcut " + fileShortcut.getPrimaryKey(),
+				"Unable to build document library view file version display " +
+					"context for file shortcut " + fileShortcut.getPrimaryKey(),
 				portalException);
 		}
 	}
