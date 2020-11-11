@@ -32,7 +32,6 @@ services:
             context: ./osb-asah-batch-curator
         container_name: osbasahbatchcurator
         depends_on:
-            - osbasahqueue
             - osbasahupgrade
         env_file:
             - common.env
@@ -82,7 +81,6 @@ services:
         depends_on:
             - osbasahpublisher
             - osbasahpubsubemulator
-            - osbasahqueue
             - osbasahupgrade
         env_file:
             - common.env
@@ -106,7 +104,6 @@ services:
         container_name: osbasahpublisher
         depends_on:
             - osbasahpubsubemulator
-            - osbasahqueue
             - osbasahupgrade
         env_file:
             - common.env
@@ -126,14 +123,6 @@ services:
         container_name: osbasahpubsubemulator
         ports:
             - "8095:8095"
-    osbasahqueue:
-        container_name: osbasahqueue
-        env_file:
-            - common.env
-            - local.env
-        image: wedeploy/message-queue:0.0.15
-        ports:
-            - "3000:3000"
     osbasahredis:
         build: ./osb-asah-redis
         container_name: osbasahredis
@@ -170,7 +159,6 @@ services:
         container_name: osbasahstreamcurator
         depends_on:
             - osbasahpubsubemulator
-            - osbasahqueue
             - osbasahupgrade
         env_file:
             - common.env
