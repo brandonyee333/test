@@ -26,8 +26,6 @@ import io.prometheus.client.SimpleTimer;
 
 import java.util.Collections;
 
-import javax.annotation.PostConstruct;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
