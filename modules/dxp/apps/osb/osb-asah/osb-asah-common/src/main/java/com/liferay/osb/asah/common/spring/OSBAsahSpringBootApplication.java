@@ -18,8 +18,10 @@ import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
@@ -30,7 +32,11 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @ComponentScan("com.liferay.osb.asah.common")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootApplication(
-	exclude = {MetricsAutoConfiguration.class, SecurityAutoConfiguration.class}
+	exclude = {
+		ManagementWebSecurityAutoConfiguration.class,
+		MetricsAutoConfiguration.class, SecurityAutoConfiguration.class,
+		UserDetailsServiceAutoConfiguration.class
+	}
 )
 public class OSBAsahSpringBootApplication {
 

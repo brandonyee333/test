@@ -15,6 +15,10 @@
 package com.liferay.osb.asah.test.util.spring;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
@@ -31,10 +35,11 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 
 		System.setProperty(
 			"spring.autoconfigure.exclude",
-			"org.springframework.boot.autoconfigure.data.redis." +
-				"RedisAutoConfiguration," +
-					"org.springframework.boot.autoconfigure.data.redis." +
-						"RedisRepositoriesAutoConfiguration");
+			String.join(
+				",", ManagementWebSecurityAutoConfiguration.class.getName(),
+				RedisAutoConfiguration.class.getName(),
+				RedisRepositoriesAutoConfiguration.class.getName(),
+				SecurityAutoConfiguration.class.getName()));
 		System.setProperty("spring.profiles.active", "test");
 
 		_registerOSBAsahTestExecutionListener();
