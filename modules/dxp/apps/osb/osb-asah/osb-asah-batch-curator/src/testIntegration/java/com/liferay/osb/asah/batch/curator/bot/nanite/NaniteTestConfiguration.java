@@ -50,8 +50,8 @@ public class NaniteTestConfiguration {
 
 		Mockito.doAnswer(
 			invocation -> {
-				String className = invocation.getArgumentAt(0, String.class);
-				JSONObject contextJSONObject = invocation.getArgumentAt(
+				String className = invocation.getArgument(0, String.class);
+				JSONObject contextJSONObject = invocation.getArgument(
 					1, JSONObject.class);
 
 				if (_nanitesMap.isEmpty()) {

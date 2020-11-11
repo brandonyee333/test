@@ -125,7 +125,7 @@ public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 			individualJSONObject.getJSONArray("individualSegmentIds");
 
 		for (int i = 0; i < individualSegmentIdsJSONArray.length(); i++) {
-			Assert.assertNotEquals(
+			Assert.assertNotSame(
 				"Individual segment ID should be removed from individual on " +
 					"individual segment deletion",
 				individualSegmentId,

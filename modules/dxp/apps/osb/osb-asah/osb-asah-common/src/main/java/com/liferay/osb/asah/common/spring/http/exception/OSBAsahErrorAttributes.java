@@ -20,10 +20,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.WebRequest;
 
 /**
  * @author Leslie Wong
@@ -33,15 +34,15 @@ public class OSBAsahErrorAttributes extends DefaultErrorAttributes {
 
 	@Override
 	public Map<String, Object> getErrorAttributes(
-		RequestAttributes requestAttributes, boolean includeStackTrace) {
+		WebRequest webRequest, ErrorAttributeOptions options) {
 
-		_log.error("Unable to process request", getError(requestAttributes));
+		_log.error("Unable to process request", getError(webRequest));
 
 		OSBAsahError osbAsahError = new OSBAsahError(
 			_environment.getActiveProfiles());
 
 		osbAsahError.setErrorAttributes(
-			super.getErrorAttributes(requestAttributes, includeStackTrace));
+			super.getErrorAttributes(webRequest, options));
 
 		return osbAsahError.getErrorAttributes();
 	}

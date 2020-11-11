@@ -142,7 +142,7 @@ public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
 			score = engagementJSONObject.getDouble("score");
 
-			Assert.assertNotEquals(
+			Assert.assertNotSame(
 				"Engagements with a score of 0 should not be stored in the " +
 					"data service",
 				0, score);

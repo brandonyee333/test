@@ -48,7 +48,7 @@ import org.springframework.test.web.servlet.result.StatusResultMatchers;
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @TestPropertySource(properties = "osb.asah.security.enabled=true")
-@WebMvcTest(secure = false)
+@WebMvcTest
 public class SecurityOncePerRequestFilterTest {
 
 	@Test

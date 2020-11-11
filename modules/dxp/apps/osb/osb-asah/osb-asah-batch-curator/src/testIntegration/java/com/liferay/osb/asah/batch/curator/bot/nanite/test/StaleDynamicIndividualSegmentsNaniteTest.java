@@ -383,7 +383,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		Mockito.doAnswer(
 			invocation -> {
 				_updateDynamicMembershipsNanite.run(
-					invocation.getArgumentAt(1, JSONObject.class));
+					invocation.getArgument(1, JSONObject.class));
 
 				return null;
 			}

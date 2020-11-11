@@ -22,8 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.EmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
+import org.springframework.boot.web.server.WebServer;
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,20 +72,21 @@ public class BulkRestController {
 	}
 
 	private int _getPort() {
-		if (_embeddedWebApplicationContext != null) {
-			EmbeddedServletContainer embeddedServletContainer =
-				_embeddedWebApplicationContext.getEmbeddedServletContainer();
+		if (_servletWebServerApplicationContext != null) {
+			WebServer webServer =
+				_servletWebServerApplicationContext.getWebServer();
 
-			return embeddedServletContainer.getPort();
+			return webServer.getPort();
 		}
 
 		return 8080;
 	}
 
-	@Autowired(required = false)
-	private EmbeddedWebApplicationContext _embeddedWebApplicationContext;
-
 	@Autowired
 	private Http _http;
+
+	@Autowired(required = false)
+	private ServletWebServerApplicationContext
+		_servletWebServerApplicationContext;
 
 }

@@ -46,10 +46,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,13 +67,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecommendationRestController extends BaseRestController {
 
 	@GetMapping
-	public ResourceSupport getLinksResourceSupport() {
-		return new ResourceSupport() {
+	public RepresentationModel getLinksRepresentationModel() {
+		return new RepresentationModel() {
 			{
 				add(
 					Arrays.asList(
-						ControllerLinkBuilder.linkTo(
-							_getModelResultBagResource(null, null)
+						WebMvcLinkBuilder.linkTo(
+							_getModelResultBagEntityModel(null, null)
 						).withRel(
 							"models"
 						)));
@@ -82,49 +82,51 @@ public class RecommendationRestController extends BaseRestController {
 	}
 
 	@GetMapping("/models/{modelId}")
-	public Resource<Model> getModelResource(@PathVariable String modelId) {
-		return _toModelResource(_jobDog.getJob(modelId));
+	public EntityModel<Model> getModelEntityModel(
+		@PathVariable String modelId) {
+
+		return _toModelEntityModel(_jobDog.getJob(modelId));
 	}
 
 	@GetMapping("/models")
-	public ResultBagResource<Model> getModelResultBagResource(
+	public ResultBagEntityModel<Model> getModelResultBagEntityModel(
 		@RequestParam(defaultValue = "0") Integer page,
 		@RequestParam(defaultValue = "") String keywords) {
 
 		ResultBag<Job> jobResultBag = _jobDog.getJobResultBag(
 			keywords, _PAGE_SIZE, Sort.desc("id"), page * _PAGE_SIZE);
 
-		return _toResultBagResource(
-			_getModelResultBagResource(page + 1, keywords), page,
-			_getModelResultBagResource(page - 1, keywords), jobResultBag,
-			this::_toModelResource);
+		return _toResultBagEntityModel(
+			_getModelResultBagEntityModel(page + 1, keywords), page,
+			_getModelResultBagEntityModel(page - 1, keywords), jobResultBag,
+			this::_toModelEntityModel);
 	}
 
 	@PostMapping("/page-recommendations")
-	public Resource<PageRecommendation> getPageRecommendationResource(
+	public EntityModel<PageRecommendation> getPageRecommendationEntityModel(
 		@RequestBody String json) {
 
 		JSONObject jsonObject = new JSONObject(json);
 
-		return getPageRecommendationResource(
+		return getPageRecommendationEntityModel(
 			jsonObject.getString("modelId"),
 			DigestUtils.sha1Hex(
 				jsonObject.getString("modelId") + jsonObject.getString("url")));
 	}
 
 	@GetMapping("/models/{modelId}/page-recommendations/{recommendationId}")
-	public Resource<PageRecommendation> getPageRecommendationResource(
+	public EntityModel<PageRecommendation> getPageRecommendationEntityModel(
 		@PathVariable String modelId, @PathVariable String recommendationId) {
 
 		_checkJobStatus(modelId);
 
-		return _toPageRecommendationResource(
+		return _toPageRecommendationEntityModel(
 			_recommendationDog.getItemRecommendation(recommendationId));
 	}
 
 	@GetMapping("/models/{modelId}/page-recommendations")
-	public ResultBagResource<PageRecommendation>
-		getPageRecommendationResultBagResource(
+	public ResultBagEntityModel<PageRecommendation>
+		getPageRecommendationResultBagEntityModel(
 			@PathVariable String modelId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
@@ -134,10 +136,11 @@ public class RecommendationRestController extends BaseRestController {
 			_recommendationDog.getItemRecommendationResultBag(
 				modelId, _PAGE_SIZE, Sort.asc("itemId"), page * _PAGE_SIZE);
 
-		return _toResultBagResource(
-			_getPageRecommendationResultBagResource(modelId, page + 1), page,
-			_getPageRecommendationResultBagResource(modelId, page - 1),
-			itemRecommendationResultBag, this::_toPageRecommendationResource);
+		return _toResultBagEntityModel(
+			_getPageRecommendationResultBagEntityModel(modelId, page + 1), page,
+			_getPageRecommendationResultBagEntityModel(modelId, page - 1),
+			itemRecommendationResultBag,
+			this::_toPageRecommendationEntityModel);
 	}
 
 	private void _checkJobStatus(String jobId) {
@@ -186,46 +189,47 @@ public class RecommendationRestController extends BaseRestController {
 		return null;
 	}
 
-	private ResultBagResource<Model> _getModelResultBagResource(
+	private ResultBagEntityModel<Model> _getModelResultBagEntityModel(
 		Integer page, String keywords) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			RecommendationRestController.class
-		).getModelResultBagResource(
+		).getModelResultBagEntityModel(
 			page, keywords
 		);
 	}
 
-	private ResultBagResource<PageRecommendation>
-		_getPageRecommendationResultBagResource(String modelId, Integer page) {
+	private ResultBagEntityModel<PageRecommendation>
+		_getPageRecommendationResultBagEntityModel(
+			String modelId, Integer page) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			RecommendationRestController.class
-		).getPageRecommendationResultBagResource(
+		).getPageRecommendationResultBagEntityModel(
 			modelId, page
 		);
 	}
 
-	private <T, R> List<Resource<R>> _toListResource(
+	private <T, R> List<EntityModel<R>> _toListEntityModel(
 		List<T> results,
-		Function<T, Resource<R>> resultResourceMapperFunction) {
+		Function<T, EntityModel<R>> resultEntityModelMapperFunction) {
 
 		Stream<T> stream = results.stream();
 
 		return stream.map(
-			resultResourceMapperFunction
+			resultEntityModelMapperFunction
 		).collect(
 			Collectors.toList()
 		);
 	}
 
-	private Resource<Model> _toModelResource(Job job) {
-		return new Resource<>(
+	private EntityModel<Model> _toModelEntityModel(Job job) {
+		return EntityModel.of(
 			new Model(job, _jobDog.getJobStatus(job.getId())),
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					RecommendationRestController.class
-				).getModelResource(
+				).getModelEntityModel(
 					job.getId()
 				)
 			).withSelfRel());
@@ -262,34 +266,34 @@ public class RecommendationRestController extends BaseRestController {
 		return pageRecommendation;
 	}
 
-	private Resource<PageRecommendation> _toPageRecommendationResource(
+	private EntityModel<PageRecommendation> _toPageRecommendationEntityModel(
 		ItemRecommendation itemRecommendation) {
 
-		return new Resource<>(
+		return EntityModel.of(
 			_toPageRecommendation(itemRecommendation),
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					RecommendationRestController.class
-				).getPageRecommendationResource(
+				).getPageRecommendationEntityModel(
 					itemRecommendation.getJobId(), itemRecommendation.getId()
 				)
 			).withSelfRel());
 	}
 
-	private <T, R> ResultBagResource<R> _toResultBagResource(
+	private <T, R> ResultBagEntityModel<R> _toResultBagEntityModel(
 		Object nextPageMethodInvocation, int page,
 		Object prevPageMethodInvocation, ResultBag<T> resultBag,
-		Function<T, Resource<R>> resultResourceMapperFunction) {
+		Function<T, EntityModel<R>> resultEntityModelMapperFunction) {
 
-		ResultBagResource<R> resultBagResource = new ResultBagResource<>(
+		ResultBagEntityModel<R> resultBagResource = new ResultBagEntityModel<>(
 			new ResultBag<>(
-				_toListResource(
-					resultBag.getResults(), resultResourceMapperFunction),
+				_toListEntityModel(
+					resultBag.getResults(), resultEntityModelMapperFunction),
 				resultBag.getTotal()));
 
 		if (((page + 1L) * _PAGE_SIZE) < resultBag.getTotal()) {
 			resultBagResource.add(
-				ControllerLinkBuilder.linkTo(
+				WebMvcLinkBuilder.linkTo(
 					nextPageMethodInvocation
 				).withRel(
 					"next"
@@ -298,7 +302,7 @@ public class RecommendationRestController extends BaseRestController {
 
 		if (page > 0) {
 			resultBagResource.add(
-				ControllerLinkBuilder.linkTo(
+				WebMvcLinkBuilder.linkTo(
 					prevPageMethodInvocation
 				).withRel(
 					"prev"
@@ -397,15 +401,15 @@ public class RecommendationRestController extends BaseRestController {
 		}
 
 		@JsonProperty("recommendedPages")
-		public List<Resource<PageRecommendation>>
-			getPageRecommendationResources() {
+		public List<EntityModel<PageRecommendation>>
+			getPageRecommendationEntityModels() {
 
 			if (_pageRecommendations == null) {
 				return null;
 			}
 
 			return ListUtil.map(
-				_pageRecommendations, this::_toPageRecommendationResource);
+				_pageRecommendations, this::_toPageRecommendationEntityModel);
 		}
 
 		@JsonIgnore
@@ -451,15 +455,16 @@ public class RecommendationRestController extends BaseRestController {
 			_url = url;
 		}
 
-		private Resource<PageRecommendation> _toPageRecommendationResource(
-			PageRecommendation pageRecommendation) {
+		private EntityModel<PageRecommendation>
+			_toPageRecommendationEntityModel(
+				PageRecommendation pageRecommendation) {
 
-			return new Resource<>(
+			return EntityModel.of(
 				pageRecommendation,
-				ControllerLinkBuilder.linkTo(
-					ControllerLinkBuilder.methodOn(
+				WebMvcLinkBuilder.linkTo(
+					WebMvcLinkBuilder.methodOn(
 						RecommendationRestController.class
-					).getPageRecommendationResource(
+					).getPageRecommendationEntityModel(
 						pageRecommendation.getJobId(),
 						pageRecommendation.getId()
 					)
@@ -476,11 +481,11 @@ public class RecommendationRestController extends BaseRestController {
 
 	}
 
-	private static class ResultBagResource<T>
-		extends Resource<ResultBag<Resource<T>>> {
+	private static class ResultBagEntityModel<T>
+		extends EntityModel<ResultBag<EntityModel<T>>> {
 
-		public ResultBagResource(
-			ResultBag<Resource<T>> content, Link... links) {
+		public ResultBagEntityModel(
+			ResultBag<EntityModel<T>> content, Link... links) {
 
 			super(content, links);
 		}

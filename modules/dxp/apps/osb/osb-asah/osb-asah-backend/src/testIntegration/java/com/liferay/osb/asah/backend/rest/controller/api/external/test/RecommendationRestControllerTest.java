@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -66,16 +66,16 @@ public class RecommendationRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetPageRecommendationResource() {
-		Resource<?> pageRecommendationResource =
-			_recommendationRestController.getPageRecommendationResource(
+	public void testGetPageRecommendationEntityModel() {
+		EntityModel<?> pageRecommendationEntityModel =
+			_recommendationRestController.getPageRecommendationEntityModel(
 				JSONUtil.put(
 					"modelId", "1"
 				).put(
 					"url", "https://page-a"
 				).toString());
 
-		Assert.assertNotNull(pageRecommendationResource);
+		Assert.assertNotNull(pageRecommendationEntityModel);
 	}
 
 	@Autowired

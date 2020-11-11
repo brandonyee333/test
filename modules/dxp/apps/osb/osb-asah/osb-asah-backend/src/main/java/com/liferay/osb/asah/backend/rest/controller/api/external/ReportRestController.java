@@ -90,10 +90,10 @@ import org.apache.http.HttpStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -113,27 +113,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/accounts/{accountId}")
-	public Resource<Account> getAccountResource(
+	public EntityModel<Account> getAccountEntityModel(
 		@PathVariable String accountId) {
 
-		return _toAccountResource(_accountDog.getAccount(accountId));
+		return _toAccountEntityModel(_accountDog.getAccount(accountId));
 	}
 
 	@GetMapping("/accounts")
-	public ResultBagResource<Account> getAccountResultBagResource(
+	public ResultBagEntityModel<Account> getAccountResultBagEntityModel(
 		@RequestParam(defaultValue = "0") Integer page) {
 
 		ResultBag<Account> accountResultBag = _accountDog.getAccountResultBag(
 			_PAGE_SIZE, page * _PAGE_SIZE);
 
-		return _toResultBagResource(
-			_getAccountResultBagResource(page + 1), page,
-			_getAccountResultBagResource(page - 1), accountResultBag,
-			this::_toAccountResource);
+		return _toResultBagEntityModel(
+			_getAccountResultBagEntityModel(page + 1), page,
+			_getAccountResultBagEntityModel(page - 1), accountResultBag,
+			this::_toAccountEntityModel);
 	}
 
 	@GetMapping("/blogs/{blogId}")
-	public Resource<AssetReport> getBlogAssetReportResource(
+	public EntityModel<AssetReport> getBlogAssetReportEntityModel(
 		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
 		@PathVariable String blogId,
 		@RequestParam(defaultValue = "") String blogTitle,
@@ -151,7 +151,7 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		return _toBlogAssetReportResource(
+		return _toBlogAssetReportEntityModel(
 			_toAssetReport(
 				_metricDog.getAssetMetric(
 					searchQueryContext, _getBlogMetricTypeNames()),
@@ -160,12 +160,13 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/blogs")
-	public ResultBagResource<AssetReport> getBlogAssetReportResultBagResource(
-		@RequestParam(defaultValue = "0") Integer page,
-		@RequestParam(defaultValue = "") String keywords,
-		@RequestParam(defaultValue = "30") Integer rangeKey,
-		@RequestParam(defaultValue = "viewsMetric") String sortMetric,
-		@RequestParam(defaultValue = "desc") String sortOrder) {
+	public ResultBagEntityModel<AssetReport>
+		getBlogAssetReportResultBagEntityModel(
+			@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "") String keywords,
+			@RequestParam(defaultValue = "30") Integer rangeKey,
+			@RequestParam(defaultValue = "viewsMetric") String sortMetric,
+			@RequestParam(defaultValue = "desc") String sortOrder) {
 
 		ResultBag<BlogMetric> blogMetricResultBag = new ResultBag<>();
 
@@ -189,14 +190,14 @@ public class ReportRestController extends BaseRestController {
 
 		blogMetricResultBag.setTotal(assetMetricsCount);
 
-		return _toResultBagResource(
-			_getBlogAssetReportResultBagResource(
+		return _toResultBagEntityModel(
+			_getBlogAssetReportResultBagEntityModel(
 				page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
-			_getBlogAssetReportResultBagResource(
+			_getBlogAssetReportResultBagEntityModel(
 				page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			blogMetricResultBag,
-			blogMetric -> _toBlogAssetReportResource(
+			blogMetric -> _toBlogAssetReportEntityModel(
 				new AssetReport(blogMetric), rangeKey));
 	}
 
@@ -280,7 +281,7 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/documents-and-media/{documentId}")
-	public Resource<AssetReport> getDocumentLibraryAssetReportResource(
+	public EntityModel<AssetReport> getDocumentLibraryAssetReportEntityModel(
 		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
 		@PathVariable String documentId,
 		@RequestParam(defaultValue = "") String documentTitle,
@@ -298,7 +299,7 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		return _toDocumentLibraryAssetReportResource(
+		return _toDocumentLibraryAssetReportEntityModel(
 			_toAssetReport(
 				_metricDog.getAssetMetric(
 					searchQueryContext, _getDocumentLibraryMetricTypeNames()),
@@ -307,8 +308,8 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/documents-and-media")
-	public ResultBagResource<AssetReport>
-		getDocumentLibraryAssetReportResultBagResource(
+	public ResultBagEntityModel<AssetReport>
+		getDocumentLibraryAssetReportResultBagEntityModel(
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String keywords,
 			@RequestParam(defaultValue = "30") Integer rangeKey,
@@ -340,19 +341,19 @@ public class ReportRestController extends BaseRestController {
 
 		documentLibraryMetricResultBag.setTotal(assetMetricsCount);
 
-		return _toResultBagResource(
-			_getDocumentLibraryAssetReportResultBagResource(
+		return _toResultBagEntityModel(
+			_getDocumentLibraryAssetReportResultBagEntityModel(
 				page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
-			_getDocumentLibraryAssetReportResultBagResource(
+			_getDocumentLibraryAssetReportResultBagEntityModel(
 				page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			documentLibraryMetricResultBag,
-			documentLibraryMetric -> _toDocumentLibraryAssetReportResource(
+			documentLibraryMetric -> _toDocumentLibraryAssetReportEntityModel(
 				new AssetReport(documentLibraryMetric), rangeKey));
 	}
 
 	@GetMapping("/forms/{formId}")
-	public Resource<AssetReport> getFormAssetReportResource(
+	public EntityModel<AssetReport> getFormAssetReportEntityModel(
 		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
 		@PathVariable String formId,
 		@RequestParam(defaultValue = "") String formTitle,
@@ -370,7 +371,7 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		return _toFormAssetReportResource(
+		return _toFormAssetReportEntityModel(
 			_toAssetReport(
 				_metricDog.getAssetMetric(
 					searchQueryContext, _getFormMetricTypeNames()),
@@ -379,12 +380,13 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/forms")
-	public ResultBagResource<AssetReport> getFormAssetReportResultBagResource(
-		@RequestParam(defaultValue = "0") Integer page,
-		@RequestParam(defaultValue = "") String keywords,
-		@RequestParam(defaultValue = "30") Integer rangeKey,
-		@RequestParam(defaultValue = "submissionsMetric") String sortMetric,
-		@RequestParam(defaultValue = "desc") String sortOrder) {
+	public ResultBagEntityModel<AssetReport>
+		getFormAssetReportResultBagEntityModel(
+			@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "") String keywords,
+			@RequestParam(defaultValue = "30") Integer rangeKey,
+			@RequestParam(defaultValue = "submissionsMetric") String sortMetric,
+			@RequestParam(defaultValue = "desc") String sortOrder) {
 
 		ResultBag<FormMetric> formMetricResultBag = new ResultBag<>();
 
@@ -408,19 +410,19 @@ public class ReportRestController extends BaseRestController {
 
 		formMetricResultBag.setTotal(assetMetricsCount);
 
-		return _toResultBagResource(
-			_getFormAssetReportResultBagResource(
+		return _toResultBagEntityModel(
+			_getFormAssetReportResultBagEntityModel(
 				page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
-			_getFormAssetReportResultBagResource(
+			_getFormAssetReportResultBagEntityModel(
 				page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			formMetricResultBag,
-			formMetric -> _toFormAssetReportResource(
+			formMetric -> _toFormAssetReportEntityModel(
 				new AssetReport(formMetric), rangeKey));
 	}
 
 	@GetMapping("/forms/{formId}/pages")
-	public Resource<FormPagesReport> getFormPagesReportResource(
+	public EntityModel<FormPagesReport> getFormPagesReportEntityModel(
 		@PathVariable String formId,
 		@RequestParam(defaultValue = "") String formTitle,
 		@RequestParam(defaultValue = "30") int rangeKey) {
@@ -437,7 +439,7 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		return _toFormPagesReportResource(
+		return _toFormPagesReportEntityModel(
 			new FormPagesReport(
 				formId, _formPageDog.getFormPageMetrics(searchQueryContext),
 				formTitle),
@@ -445,49 +447,51 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/individuals/{individualId}/activities")
-	public ResultBagResource<Activity> getIndividualActivityResultBagResource(
-		@PathVariable String individualId,
-		@RequestParam(defaultValue = "0") Integer page) {
+	public ResultBagEntityModel<Activity>
+		getIndividualActivityResultBagEntityModel(
+			@PathVariable String individualId,
+			@RequestParam(defaultValue = "0") Integer page) {
 
 		ResultBag<Activity> activityResultBag =
 			_activityDog.getActivityResultBag(
 				individualId, _PAGE_SIZE, page * _PAGE_SIZE);
 
-		return _toResultBagResource(
-			_getIndividualActivityResultBagResource(individualId, page + 1),
+		return _toResultBagEntityModel(
+			_getIndividualActivityResultBagEntityModel(individualId, page + 1),
 			page,
-			_getIndividualActivityResultBagResource(individualId, page - 1),
+			_getIndividualActivityResultBagEntityModel(individualId, page - 1),
 			activityResultBag,
-			activity -> _toChildResource(individualId, activity));
+			activity -> _toChildEntityModel(individualId, activity));
+	}
+
+	@GetMapping("/individuals/{individualId}")
+	public EntityModel<Individual> getIndividualEntityModel(
+		@PathVariable String individualId) {
+
+		return _toIndividualEntityModel(
+			_individualDog.getIndividual(individualId));
 	}
 
 	@GetMapping("/individuals/{individualId}/interests")
-	public ResultBagResource<Interest> getIndividualInterestResultBagResource(
-		@PathVariable String individualId,
-		@RequestParam(defaultValue = "0") Integer page) {
+	public ResultBagEntityModel<Interest>
+		getIndividualInterestResultBagEntityModel(
+			@PathVariable String individualId,
+			@RequestParam(defaultValue = "0") Integer page) {
 
 		ResultBag<Interest> interestResultBag =
 			_interestDog.getInterestResultBag(
 				individualId, "individual", _PAGE_SIZE, page * _PAGE_SIZE);
 
-		return _toResultBagResource(
-			_getIndividualInterestResultBagResource(individualId, page + 1),
+		return _toResultBagEntityModel(
+			_getIndividualInterestResultBagEntityModel(individualId, page + 1),
 			page,
-			_getIndividualInterestResultBagResource(individualId, page - 1),
+			_getIndividualInterestResultBagEntityModel(individualId, page - 1),
 			interestResultBag,
-			interest -> _toChildResource(individualId, interest));
-	}
-
-	@GetMapping("/individuals/{individualId}")
-	public Resource<Individual> getIndividualResource(
-		@PathVariable String individualId) {
-
-		return _toIndividualResource(
-			_individualDog.getIndividual(individualId));
+			interest -> _toChildEntityModel(individualId, interest));
 	}
 
 	@GetMapping("/individuals")
-	public ResultBagResource<Individual> getIndividualResultBagResource(
+	public ResultBagEntityModel<Individual> getIndividualResultBagEntityModel(
 		@RequestParam(defaultValue = "0") Integer page,
 		@RequestParam(defaultValue = "") String query) {
 
@@ -495,15 +499,16 @@ public class ReportRestController extends BaseRestController {
 			_individualDog.getIndividualResultBag(
 				null, query, _PAGE_SIZE, page * _PAGE_SIZE);
 
-		return _toResultBagResource(
-			_getIndividualResultBagResource(page + 1, query), page,
-			_getIndividualResultBagResource(page - 1, query),
-			individualResultBag, this::_toIndividualResource);
+		return _toResultBagEntityModel(
+			_getIndividualResultBagEntityModel(page + 1, query), page,
+			_getIndividualResultBagEntityModel(page - 1, query),
+			individualResultBag, this::_toIndividualEntityModel);
 	}
 
 	@GetMapping("/individuals/{individualId}/segments")
-	public ResultBagResource<Segment> getIndividualSegmentResultBagResource(
-		@PathVariable String individualId) {
+	public ResultBagEntityModel<Segment>
+		getIndividualSegmentResultBagEntityModel(
+			@PathVariable String individualId) {
 
 		Individual individual = _individualDog.getIndividual(individualId);
 
@@ -513,13 +518,13 @@ public class ReportRestController extends BaseRestController {
 		List<Segment> segments = _segmentDog.getSegments(
 			individualSegmentIds.toArray(new String[0]));
 
-		return _toResultBagResource(
+		return _toResultBagEntityModel(
 			null, 0, null, new ResultBag<>(segments, segments.size()),
-			segment -> _toChildResource(individualId, segment));
+			segment -> _toChildEntityModel(individualId, segment));
 	}
 
 	@GetMapping("/web-contents/{webContentId}")
-	public Resource<AssetReport> getJournalAssetReportResource(
+	public EntityModel<AssetReport> getJournalAssetReportEntityModel(
 		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
 		@PathVariable String webContentId,
 		@RequestParam(defaultValue = "") String webContentTitle,
@@ -537,7 +542,7 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		return _toFormAssetReportResource(
+		return _toFormAssetReportEntityModel(
 			_toAssetReport(
 				_metricDog.getAssetMetric(
 					searchQueryContext, _getJournalMetricTypeNames()),
@@ -546,8 +551,8 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/web-contents")
-	public ResultBagResource<AssetReport>
-		getJournalAssetReportResultBagResource(
+	public ResultBagEntityModel<AssetReport>
+		getJournalAssetReportResultBagEntityModel(
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String keywords,
 			@RequestParam(defaultValue = "30") Integer rangeKey,
@@ -576,64 +581,64 @@ public class ReportRestController extends BaseRestController {
 
 		journalMetricResultBag.setTotal(assetMetricsCount);
 
-		return _toResultBagResource(
-			_getJournalAssetReportResultBagResource(
+		return _toResultBagEntityModel(
+			_getJournalAssetReportResultBagEntityModel(
 				page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
-			_getJournalAssetReportResultBagResource(
+			_getJournalAssetReportResultBagEntityModel(
 				page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			journalMetricResultBag,
-			journalMetric -> _toJournalAssetReportResource(
+			journalMetric -> _toJournalAssetReportEntityModel(
 				new AssetReport(journalMetric), rangeKey));
 	}
 
 	@GetMapping
-	public ResourceSupport getLinksResourceSupport() {
-		return new ResourceSupport() {
+	public RepresentationModel getLinksRepresentationModel() {
+		return new RepresentationModel() {
 			{
 				add(
 					Arrays.asList(
-						ControllerLinkBuilder.linkTo(
-							_getAccountResultBagResource(null)
+						WebMvcLinkBuilder.linkTo(
+							_getAccountResultBagEntityModel(null)
 						).withRel(
 							"accounts"
 						),
-						ControllerLinkBuilder.linkTo(
-							_getBlogAssetReportResultBagResource(
+						WebMvcLinkBuilder.linkTo(
+							_getBlogAssetReportResultBagEntityModel(
 								null, null, null, null, null)
 						).withRel(
 							"blogs"
 						),
-						ControllerLinkBuilder.linkTo(
-							_getDocumentLibraryAssetReportResultBagResource(
+						WebMvcLinkBuilder.linkTo(
+							_getDocumentLibraryAssetReportResultBagEntityModel(
 								null, null, null, null, null)
 						).withRel(
 							"documents-and-media"
 						),
-						ControllerLinkBuilder.linkTo(
-							_getFormAssetReportResultBagResource(
+						WebMvcLinkBuilder.linkTo(
+							_getFormAssetReportResultBagEntityModel(
 								null, null, null, null, null)
 						).withRel(
 							"forms"
 						),
-						ControllerLinkBuilder.linkTo(
-							_getIndividualResultBagResource(null, null)
+						WebMvcLinkBuilder.linkTo(
+							_getIndividualResultBagEntityModel(null, null)
 						).withRel(
 							"individuals"
 						),
-						ControllerLinkBuilder.linkTo(
-							_getPageAssetReportResultBagResource(
+						WebMvcLinkBuilder.linkTo(
+							_getPageAssetReportResultBagEntityModel(
 								null, null, null, null, null)
 						).withRel(
 							"pages"
 						),
-						ControllerLinkBuilder.linkTo(
-							_getSegmentResultBagResource(null)
+						WebMvcLinkBuilder.linkTo(
+							_getSegmentResultBagEntityModel(null)
 						).withRel(
 							"segments"
 						),
-						ControllerLinkBuilder.linkTo(
-							_getJournalAssetReportResultBagResource(
+						WebMvcLinkBuilder.linkTo(
+							_getJournalAssetReportResultBagEntityModel(
 								null, null, null, null, null)
 						).withRel(
 							"web-contents"
@@ -643,7 +648,7 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/pages/{pageURL}")
-	public Resource<PageAssetReport> getPageAssetReportResource(
+	public EntityModel<PageAssetReport> getPageAssetReportEntityModel(
 		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
 		@RequestParam(defaultValue = "") String pageTitle,
 		@PathVariable String pageURL,
@@ -661,7 +666,7 @@ public class ReportRestController extends BaseRestController {
 			}
 		};
 
-		return _toPageAssetReportResource(
+		return _toPageAssetReportEntityModel(
 			new PageAssetReport(
 				_toAssetReport(
 					_metricDog.getAssetMetric(
@@ -671,8 +676,8 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/pages")
-	public ResultBagResource<PageAssetReport>
-		getPageAssetReportResultBagResource(
+	public ResultBagEntityModel<PageAssetReport>
+		getPageAssetReportResultBagEntityModel(
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String keywords,
 			@RequestParam(defaultValue = "30") Integer rangeKey,
@@ -701,54 +706,55 @@ public class ReportRestController extends BaseRestController {
 
 		pageMetricResultBag.setTotal(assetMetricsCount);
 
-		return _toResultBagResource(
-			_getPageAssetReportResultBagResource(
+		return _toResultBagEntityModel(
+			_getPageAssetReportResultBagEntityModel(
 				page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
-			_getPageAssetReportResultBagResource(
+			_getPageAssetReportResultBagEntityModel(
 				page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			pageMetricResultBag,
-			pageMetric -> _toPageAssetReportResource(
+			pageMetric -> _toPageAssetReportEntityModel(
 				new PageAssetReport(new AssetReport(pageMetric)), rangeKey));
 	}
 
+	@GetMapping("/segments/{segmentId}")
+	public EntityModel<Segment> getSegmentEntityModel(
+		@PathVariable String segmentId) {
+
+		return _toSegmentEntityModel(_segmentDog.getSegment(segmentId));
+	}
+
 	@GetMapping("/segments/{individualSegmentId}/individuals")
-	public ResultBagResource<Individual> getSegmentIndividualResultBagResource(
-		@PathVariable String individualSegmentId,
-		@RequestParam(defaultValue = "0") Integer page,
-		@RequestParam(defaultValue = "") String query) {
+	public ResultBagEntityModel<Individual>
+		getSegmentIndividualResultBagEntityModel(
+			@PathVariable String individualSegmentId,
+			@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "") String query) {
 
 		ResultBag<Individual> individualResultBag =
 			_individualDog.getIndividualResultBag(
 				individualSegmentId, query, _PAGE_SIZE, page * _PAGE_SIZE);
 
-		return _toResultBagResource(
-			_getSegmentIndividualResultBagResource(
+		return _toResultBagEntityModel(
+			_getSegmentIndividualResultBagEntityModel(
 				individualSegmentId, page + 1, query),
 			page,
-			_getSegmentIndividualResultBagResource(
+			_getSegmentIndividualResultBagEntityModel(
 				individualSegmentId, page - 1, query),
-			individualResultBag, this::_toIndividualResource);
-	}
-
-	@GetMapping("/segments/{segmentId}")
-	public Resource<Segment> getSegmentResource(
-		@PathVariable String segmentId) {
-
-		return _toSegmentResource(_segmentDog.getSegment(segmentId));
+			individualResultBag, this::_toIndividualEntityModel);
 	}
 
 	@GetMapping("/segments")
-	public ResultBagResource<Segment> getSegmentResultBagResource(
+	public ResultBagEntityModel<Segment> getSegmentResultBagEntityModel(
 		@RequestParam(defaultValue = "0") Integer page) {
 
 		ResultBag<Segment> segmentResultBag = _segmentDog.getSegmentResultBag(
 			_PAGE_SIZE, page * _PAGE_SIZE);
 
-		return _toResultBagResource(
-			_getSegmentResultBagResource(page + 1), page,
-			_getSegmentResultBagResource(page - 1), segmentResultBag,
-			this::_toSegmentResource);
+		return _toResultBagEntityModel(
+			_getSegmentResultBagEntityModel(page + 1), page,
+			_getSegmentResultBagEntityModel(page - 1), segmentResultBag,
+			this::_toSegmentEntityModel);
 	}
 
 	private ResponseEntity _addDataExportTask(String type) {
@@ -861,23 +867,24 @@ public class ReportRestController extends BaseRestController {
 		metricReport._audienceReport = audienceReport;
 	}
 
-	private ResultBagResource<Account> _getAccountResultBagResource(
+	private ResultBagEntityModel<Account> _getAccountResultBagEntityModel(
 		Integer page) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getAccountResultBagResource(
+		).getAccountResultBagEntityModel(
 			page
 		);
 	}
 
-	private ResultBagResource<AssetReport> _getBlogAssetReportResultBagResource(
-		Integer page, String keywords, Integer rangeKey, String sortMetric,
-		String sortOrder) {
+	private ResultBagEntityModel<AssetReport>
+		_getBlogAssetReportResultBagEntityModel(
+			Integer page, String keywords, Integer rangeKey, String sortMetric,
+			String sortOrder) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getBlogAssetReportResultBagResource(
+		).getBlogAssetReportResultBagEntityModel(
 			page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
@@ -892,14 +899,14 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private ResultBagResource<AssetReport>
-		_getDocumentLibraryAssetReportResultBagResource(
+	private ResultBagEntityModel<AssetReport>
+		_getDocumentLibraryAssetReportResultBagEntityModel(
 			Integer page, String keywords, Integer rangeKey, String sortMetric,
 			String sortOrder) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getDocumentLibraryAssetReportResultBagResource(
+		).getDocumentLibraryAssetReportResultBagEntityModel(
 			page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
@@ -914,13 +921,14 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private ResultBagResource<AssetReport> _getFormAssetReportResultBagResource(
-		Integer page, String keywords, Integer rangeKey, String sortMetric,
-		String sortOrder) {
+	private ResultBagEntityModel<AssetReport>
+		_getFormAssetReportResultBagEntityModel(
+			Integer page, String keywords, Integer rangeKey, String sortMetric,
+			String sortOrder) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getFormAssetReportResultBagResource(
+		).getFormAssetReportResultBagEntityModel(
 			page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
@@ -935,44 +943,46 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private ResultBagResource<Activity> _getIndividualActivityResultBagResource(
-		String individualId, Integer page) {
+	private ResultBagEntityModel<Activity>
+		_getIndividualActivityResultBagEntityModel(
+			String individualId, Integer page) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getIndividualActivityResultBagResource(
+		).getIndividualActivityResultBagEntityModel(
 			individualId, page
 		);
 	}
 
-	private ResultBagResource<Interest> _getIndividualInterestResultBagResource(
-		String individualId, Integer page) {
+	private ResultBagEntityModel<Interest>
+		_getIndividualInterestResultBagEntityModel(
+			String individualId, Integer page) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getIndividualInterestResultBagResource(
+		).getIndividualInterestResultBagEntityModel(
 			individualId, page
 		);
 	}
 
-	private ResultBagResource<Individual> _getIndividualResultBagResource(
+	private ResultBagEntityModel<Individual> _getIndividualResultBagEntityModel(
 		Integer page, String query) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getIndividualResultBagResource(
+		).getIndividualResultBagEntityModel(
 			page, query
 		);
 	}
 
-	private ResultBagResource<AssetReport>
-		_getJournalAssetReportResultBagResource(
+	private ResultBagEntityModel<AssetReport>
+		_getJournalAssetReportResultBagEntityModel(
 			Integer page, String keywords, Integer rangeKey, String sortMetric,
 			String sortOrder) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getJournalAssetReportResultBagResource(
+		).getJournalAssetReportResultBagEntityModel(
 			page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
@@ -987,14 +997,14 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private ResultBagResource<PageAssetReport>
-		_getPageAssetReportResultBagResource(
+	private ResultBagEntityModel<PageAssetReport>
+		_getPageAssetReportResultBagEntityModel(
 			Integer page, String keywords, Integer rangeKey, String sortMetric,
 			String sortOrder) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getPageAssetReportResultBagResource(
+		).getPageAssetReportResultBagEntityModel(
 			page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
@@ -1009,34 +1019,34 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
-	private ResultBagResource<Individual>
-		_getSegmentIndividualResultBagResource(
+	private ResultBagEntityModel<Individual>
+		_getSegmentIndividualResultBagEntityModel(
 			String individualSegmentId, Integer page, String query) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getSegmentIndividualResultBagResource(
+		).getSegmentIndividualResultBagEntityModel(
 			individualSegmentId, page, query
 		);
 	}
 
-	private ResultBagResource<Segment> _getSegmentResultBagResource(
+	private ResultBagEntityModel<Segment> _getSegmentResultBagEntityModel(
 		Integer page) {
 
-		return ControllerLinkBuilder.methodOn(
+		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getSegmentResultBagResource(
+		).getSegmentResultBagEntityModel(
 			page
 		);
 	}
 
-	private Resource<Account> _toAccountResource(Account account) {
-		return new Resource<>(
+	private EntityModel<Account> _toAccountEntityModel(Account account) {
+		return new EntityModel<>(
 			account,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getAccountResource(
+				).getAccountEntityModel(
 					account.getId()
 				)
 			).withSelfRel());
@@ -1099,28 +1109,28 @@ public class ReportRestController extends BaseRestController {
 		return new AssetReport(assetMetric, metricReports);
 	}
 
-	private Resource<AssetReport> _toBlogAssetReportResource(
+	private EntityModel<AssetReport> _toBlogAssetReportEntityModel(
 		AssetReport assetReport, int rangeKey) {
 
-		return new Resource<>(
+		return new EntityModel<>(
 			assetReport,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getBlogAssetReportResource(
+				).getBlogAssetReportEntityModel(
 					Collections.emptySet(), assetReport.getId(),
 					assetReport.getTitle(), rangeKey
 				)
 			).withSelfRel());
 	}
 
-	private <T> Resource<T> _toChildResource(String parentId, T t) {
-		return new Resource<>(
+	private <T> EntityModel<T> _toChildEntityModel(String parentId, T t) {
+		return new EntityModel<>(
 			t,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getIndividualResource(
+				).getIndividualEntityModel(
 					parentId
 				)
 			).withRel(
@@ -1128,38 +1138,38 @@ public class ReportRestController extends BaseRestController {
 			));
 	}
 
-	private Resource<AssetReport> _toDocumentLibraryAssetReportResource(
+	private EntityModel<AssetReport> _toDocumentLibraryAssetReportEntityModel(
 		AssetReport assetReport, int rangeKey) {
 
-		return new Resource<>(
+		return new EntityModel<>(
 			assetReport,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getDocumentLibraryAssetReportResource(
+				).getDocumentLibraryAssetReportEntityModel(
 					Collections.emptySet(), assetReport.getId(),
 					assetReport.getTitle(), rangeKey
 				)
 			).withSelfRel());
 	}
 
-	private Resource<AssetReport> _toFormAssetReportResource(
+	private EntityModel<AssetReport> _toFormAssetReportEntityModel(
 		AssetReport assetReport, int rangeKey) {
 
-		return new Resource<>(
+		return new EntityModel<>(
 			assetReport,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getFormAssetReportResource(
+				).getFormAssetReportEntityModel(
 					Collections.emptySet(), assetReport.getId(),
 					assetReport.getTitle(), rangeKey
 				)
 			).withSelfRel(),
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getFormPagesReportResource(
+				).getFormPagesReportEntityModel(
 					assetReport.getId(), assetReport.getTitle(), rangeKey
 				)
 			).withRel(
@@ -1167,23 +1177,23 @@ public class ReportRestController extends BaseRestController {
 			));
 	}
 
-	private Resource<FormPagesReport> _toFormPagesReportResource(
+	private EntityModel<FormPagesReport> _toFormPagesReportEntityModel(
 		FormPagesReport formPagesReport, int rangeKey) {
 
-		return new Resource<>(
+		return new EntityModel<>(
 			formPagesReport,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getFormPagesReportResource(
+				).getFormPagesReportEntityModel(
 					formPagesReport.getFormId(), formPagesReport.getFormTitle(),
 					rangeKey
 				)
 			).withSelfRel(),
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getFormAssetReportResource(
+				).getFormAssetReportEntityModel(
 					Collections.emptySet(), formPagesReport.getFormId(),
 					formPagesReport.getFormTitle(), rangeKey
 				)
@@ -1192,32 +1202,34 @@ public class ReportRestController extends BaseRestController {
 			));
 	}
 
-	private Resource<Individual> _toIndividualResource(Individual individual) {
-		return new Resource<>(
+	private EntityModel<Individual> _toIndividualEntityModel(
+		Individual individual) {
+
+		return new EntityModel<>(
 			individual,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getIndividualResource(
+				).getIndividualEntityModel(
 					individual.getId()
 				)
 			).withSelfRel(),
-			ControllerLinkBuilder.linkTo(
-				_getIndividualActivityResultBagResource(
+			WebMvcLinkBuilder.linkTo(
+				_getIndividualActivityResultBagEntityModel(
 					individual.getId(), null)
 			).withRel(
 				"activities"
 			),
-			ControllerLinkBuilder.linkTo(
-				_getIndividualInterestResultBagResource(
+			WebMvcLinkBuilder.linkTo(
+				_getIndividualInterestResultBagEntityModel(
 					individual.getId(), null)
 			).withRel(
 				"interests"
 			),
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getIndividualSegmentResultBagResource(
+				).getIndividualSegmentResultBagEntityModel(
 					individual.getId()
 				)
 			).withRel(
@@ -1225,63 +1237,65 @@ public class ReportRestController extends BaseRestController {
 			));
 	}
 
-	private Resource<AssetReport> _toJournalAssetReportResource(
+	private EntityModel<AssetReport> _toJournalAssetReportEntityModel(
 		AssetReport assetReport, int rangeKey) {
 
-		return new Resource<>(
+		return new EntityModel<>(
 			assetReport,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getJournalAssetReportResource(
+				).getJournalAssetReportEntityModel(
 					Collections.emptySet(), assetReport.getId(),
 					assetReport.getTitle(), rangeKey
 				)
 			).withSelfRel());
 	}
 
-	private <T, R> List<Resource<R>> _toListResource(
+	private <T, R> List<EntityModel<R>> _toListEntityModel(
 		List<T> results,
-		Function<T, Resource<R>> resultResourceMapperFunction) {
+		Function<T, EntityModel<R>> resultEntityModelMapperFunction) {
 
 		Stream<T> stream = results.stream();
 
 		return stream.map(
-			resultResourceMapperFunction
+			resultEntityModelMapperFunction
 		).collect(
 			Collectors.toList()
 		);
 	}
 
-	private Resource<PageAssetReport> _toPageAssetReportResource(
+	private EntityModel<PageAssetReport> _toPageAssetReportEntityModel(
 		PageAssetReport pageAssetReport, int rangeKey) {
 
-		return new Resource<>(
+		return new EntityModel<>(
 			pageAssetReport,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getPageAssetReportResource(
+				).getPageAssetReportEntityModel(
 					Collections.emptySet(), pageAssetReport.getTitle(),
 					_encodeURL(pageAssetReport.getURL()), rangeKey
 				)
 			).withSelfRel());
 	}
 
-	private <T, R> ResultBagResource<R> _toResultBagResource(
+	private <T, R> ResultBagEntityModel<R> _toResultBagEntityModel(
 		Object nextPageMethodInvocation, int page,
 		Object prevPageMethodInvocation, ResultBag<T> resultBag,
-		Function<T, Resource<R>> resultResourceMapperFunction) {
+		Function<T, EntityModel<R>> resultEntityModelMapperFunction) {
 
-		ResultBagResource<R> resultBagResource = new ResultBagResource<>(
-			new ResultBag<>(
-				_toListResource(
-					resultBag.getResults(), resultResourceMapperFunction),
-				resultBag.getTotal()));
+		ResultBagEntityModel<R> resultBagEntityModel =
+			new ResultBagEntityModel<>(
+				new ResultBag<>(
+					_toListEntityModel(
+						resultBag.getResults(),
+						resultEntityModelMapperFunction),
+					resultBag.getTotal()));
 
 		if (((page + 1L) * _PAGE_SIZE) < resultBag.getTotal()) {
-			resultBagResource.add(
-				ControllerLinkBuilder.linkTo(
+			resultBagEntityModel.add(
+				WebMvcLinkBuilder.linkTo(
 					nextPageMethodInvocation
 				).withRel(
 					"next"
@@ -1289,31 +1303,31 @@ public class ReportRestController extends BaseRestController {
 		}
 
 		if (page > 0) {
-			resultBagResource.add(
-				ControllerLinkBuilder.linkTo(
+			resultBagEntityModel.add(
+				WebMvcLinkBuilder.linkTo(
 					prevPageMethodInvocation
 				).withRel(
 					"prev"
 				));
 		}
 
-		return resultBagResource;
+		return resultBagEntityModel;
 	}
 
-	private Resource<Segment> _toSegmentResource(Segment segment) {
-		return new Resource<>(
+	private EntityModel<Segment> _toSegmentEntityModel(Segment segment) {
+		return new EntityModel<>(
 			segment,
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getSegmentResource(
+				).getSegmentEntityModel(
 					segment.getId()
 				)
 			).withSelfRel(),
-			ControllerLinkBuilder.linkTo(
-				ControllerLinkBuilder.methodOn(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
-				).getSegmentIndividualResultBagResource(
+				).getSegmentIndividualResultBagEntityModel(
 					segment.getId(), 0, null
 				)
 			).withRel(
@@ -1704,11 +1718,11 @@ public class ReportRestController extends BaseRestController {
 
 	}
 
-	private static class ResultBagResource<T>
-		extends Resource<ResultBag<Resource<T>>> {
+	private static class ResultBagEntityModel<T>
+		extends EntityModel<ResultBag<EntityModel<T>>> {
 
-		public ResultBagResource(
-			ResultBag<Resource<T>> content, Link... links) {
+		public ResultBagEntityModel(
+			ResultBag<EntityModel<T>> content, Link... links) {
 
 			super(content, links);
 		}

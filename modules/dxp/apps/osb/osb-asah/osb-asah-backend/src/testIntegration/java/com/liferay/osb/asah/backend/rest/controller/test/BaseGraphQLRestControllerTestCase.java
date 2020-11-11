@@ -52,7 +52,7 @@ import org.springframework.test.web.servlet.result.StatusResultMatchers;
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @TestPropertySource(properties = "osb.asah.security.enabled=false")
-@WebMvcTest(secure = false, value = GraphQLRestController.class)
+@WebMvcTest(GraphQLRestController.class)
 public abstract class BaseGraphQLRestControllerTestCase {
 
 	public abstract String getBodyPath();
@@ -107,6 +107,8 @@ public abstract class BaseGraphQLRestControllerTestCase {
 		MockHttpServletRequestBuilder mockHttpServletRequestBuilder = post(
 			"/graphql");
 
+		mockHttpServletRequestBuilder.accept(
+			MediaType.APPLICATION_JSON_UTF8_VALUE);
 		mockHttpServletRequestBuilder.content(jsonObject.toString());
 		mockHttpServletRequestBuilder.contentType(
 			MediaType.APPLICATION_JSON_UTF8);
