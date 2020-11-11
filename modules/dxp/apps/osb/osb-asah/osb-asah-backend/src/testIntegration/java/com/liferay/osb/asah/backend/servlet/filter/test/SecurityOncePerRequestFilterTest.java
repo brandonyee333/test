@@ -25,8 +25,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import io.prometheus.client.spring.boot.SpringBootMetricsCollector;
-
 import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -37,7 +35,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -118,8 +115,5 @@ public class SecurityOncePerRequestFilterTest {
 
 	@Value("${osb.asah.security.token}")
 	private String _osbAsahFaroBackendSecurityToken;
-
-	@MockBean
-	private SpringBootMetricsCollector _springBootMetricsCollector;
 
 }

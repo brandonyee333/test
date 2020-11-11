@@ -16,9 +16,6 @@ package com.liferay.osb.asah.common.spring;
 
 import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
 
-import io.prometheus.client.spring.boot.EnablePrometheusEndpoint;
-import io.prometheus.client.spring.boot.EnableSpringBootMetricsCollector;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.MetricExportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,8 +29,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  */
 @ComponentScan("com.liferay.osb.asah.common")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@EnablePrometheusEndpoint
-@EnableSpringBootMetricsCollector
 @SpringBootApplication(
 	exclude = {
 		MetricExportAutoConfiguration.class, SecurityAutoConfiguration.class

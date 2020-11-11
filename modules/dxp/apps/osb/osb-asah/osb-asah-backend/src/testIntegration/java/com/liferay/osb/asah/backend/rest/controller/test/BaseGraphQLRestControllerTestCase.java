@@ -25,8 +25,6 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import io.prometheus.client.spring.boot.SpringBootMetricsCollector;
-
 import org.json.JSONObject;
 
 import org.junit.Assert;
@@ -37,7 +35,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -130,8 +127,5 @@ public abstract class BaseGraphQLRestControllerTestCase {
 
 	@Autowired
 	private MockMvc _mockMvc;
-
-	@MockBean
-	private SpringBootMetricsCollector _springBootMetricsCollector;
 
 }
