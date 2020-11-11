@@ -21,8 +21,6 @@ public interface QueueHttp {
 
 	public static final String QUEUE_NAME_ACTIVE_INDIVIDUAL_IDS = "104";
 
-	public static final String QUEUE_NAME_IDENTITY = "102";
-
 	public String getMessages(String queueName);
 
 	public String getMessages(String queueName, long total);

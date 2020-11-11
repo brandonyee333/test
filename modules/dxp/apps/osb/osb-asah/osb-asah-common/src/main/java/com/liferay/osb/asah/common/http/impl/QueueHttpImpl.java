@@ -105,10 +105,6 @@ public class QueueHttpImpl implements QueueHttp {
 		if (!queueNames.contains(QUEUE_NAME_ACTIVE_INDIVIDUAL_IDS)) {
 			_createQueue(QUEUE_NAME_ACTIVE_INDIVIDUAL_IDS);
 		}
-
-		if (!queueNames.contains(QUEUE_NAME_IDENTITY)) {
-			_createQueue(QUEUE_NAME_IDENTITY);
-		}
 	}
 
 	@Override
