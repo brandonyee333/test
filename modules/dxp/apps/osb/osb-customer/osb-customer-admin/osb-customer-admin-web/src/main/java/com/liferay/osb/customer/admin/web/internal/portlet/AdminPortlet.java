@@ -32,6 +32,7 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.AccountAttachmentLocalService;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.admin.service.AccountEntryService;
 import com.liferay.osb.customer.admin.service.LicenseEntryLocalService;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
 import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminPortletKeys;
@@ -53,8 +54,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -299,12 +298,11 @@ public class AdminPortlet extends MVCPortlet {
 		long accountEntryId = ParamUtil.getLong(
 			actionRequest, "accountEntryId");
 
-		Message message = new Message();
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
+			accountEntryId);
 
-		message.put("accountEntryId", accountEntryId);
-
-		MessageBusUtil.sendMessage(
-			"liferay/zendesk_account_entry_sync", message);
+		_accountEntryService.syncToZendesk(
+			accountEntry.getKoroneikiAccountKey());
 	}
 
 	public void updateAccountEntry(
@@ -668,6 +666,9 @@ public class AdminPortlet extends MVCPortlet {
 
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
+	private AccountEntryService _accountEntryService;
 
 	@Reference
 	private AccountWebService _accountWebService;
