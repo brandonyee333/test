@@ -1,4 +1,5 @@
 apply plugin: "com.liferay.spring.boot.defaults"
+apply plugin: "io.spring.dependency-management"
 
 bootJar {
 	enabled = false

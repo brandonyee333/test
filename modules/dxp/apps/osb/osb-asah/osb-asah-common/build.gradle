@@ -1,5 +1,3 @@
-import org.springframework.boot.gradle.plugin.DependencyManagementPluginAction
-
 apply plugin: "com.liferay.source.formatter"
 apply plugin: "com.liferay.source.formatter.defaults"
 apply plugin: "com.liferay.spring.boot.defaults"
@@ -62,12 +60,6 @@ dependencies {
 	testCompile group: "org.springframework.boot", name: "spring-boot-starter-test"
 
 	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.boot:spring-boot-dependencies:${DependencyManagementPluginAction.class.package.implementationVersion}"
-	}
 }
 
 jar {

@@ -1,4 +1,5 @@
 apply plugin: "com.liferay.spring.boot.defaults"
+apply plugin: "io.spring.dependency-management"
 
 configurations.all {
 	exclude group: "com.google.cloud", module: "google-cloud-pubsub"
