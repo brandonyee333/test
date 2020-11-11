@@ -19,9 +19,10 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 
 import java.util.Collections;
 import java.util.List;
@@ -55,19 +56,11 @@ public class IndividualActivityFieldsNanite extends BaseActivitiesNanite {
 	@Override
 	public void run() throws Exception {
 		while (true) {
-			int messagesCount = _queueHttp.getMessagesCount(
-				QueueHttp.QUEUE_NAME_ACTIVE_INDIVIDUAL_IDS);
+			List<String> messages = _messageSubscriber.pullMessages(100);
 
-			if (messagesCount <= 0) {
+			if (messages.isEmpty()) {
 				break;
 			}
-
-			JSONObject responseJSONObject = new JSONObject(
-				_queueHttp.getMessages(
-					QueueHttp.QUEUE_NAME_ACTIVE_INDIVIDUAL_IDS, 100));
-
-			List<String> messages = JSONUtil.toStringList(
-				responseJSONObject.getJSONArray("messages"), "message");
 
 			Stream<String> stream = messages.stream();
 
@@ -248,7 +241,7 @@ public class IndividualActivityFieldsNanite extends BaseActivitiesNanite {
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
 
-	@Autowired
-	private QueueHttp _queueHttp;
+	@MessageSubscriber.Autowired(channel = Channel.ACTIVE_INDIVIDUAL_IDS)
+	private MessageSubscriber _messageSubscriber;
 
 }
