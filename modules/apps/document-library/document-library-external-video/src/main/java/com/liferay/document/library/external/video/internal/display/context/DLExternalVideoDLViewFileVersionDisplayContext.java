@@ -69,9 +69,9 @@ public class DLExternalVideoDLViewFileVersionDisplayContext
 		while (iterator.hasNext()) {
 			DDMStructure ddmStructure = iterator.next();
 
-			String structureKey = ddmStructure.getStructureKey();
+			String ddmStructureKey = ddmStructure.getStructureKey();
 
-			if (structureKey.equals(
+			if (ddmStructureKey.equals(
 					DLExternalVideoConstants.
 						DDM_STRUCTURE_KEY_EXTERNAL_VIDEO)) {
 
