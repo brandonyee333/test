@@ -81,7 +81,7 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 	public String getJavaScript() throws PortalException {
 		String templateId =
 			"/com/liferay/document/library/external/video/internal/display" +
-				"/context/dependencies/external_video_file_picker.ftl";
+				"/context/dependencies/dl_external_video_file_picker.ftl";
 
 		Class<?> clazz = getClass();
 
@@ -108,7 +108,7 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 
 	@Override
 	public String getJavaScriptModuleName() {
-		return "ExternalVideoPicker";
+		return "DLExternalVideoPicker";
 	}
 
 	@Override
