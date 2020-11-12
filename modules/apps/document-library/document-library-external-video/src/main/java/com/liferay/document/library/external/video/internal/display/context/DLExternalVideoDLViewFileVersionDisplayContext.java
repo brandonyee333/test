@@ -123,6 +123,9 @@ public class DLExternalVideoDLViewFileVersionDisplayContext
 			HttpServletResponse httpServletResponse)
 		throws IOException, ServletException {
 
+		RequestDispatcher requestDispatcher =
+			_servletContext.getRequestDispatcher("/preview.jsp");
+
 		if (_dlExternalVideoMetadataHelper.containsField(
 				DLExternalVideoConstants.DDM_FIELD_NAME_HTML)) {
 
@@ -131,9 +134,6 @@ public class DLExternalVideoDLViewFileVersionDisplayContext
 				_dlExternalVideoMetadataHelper.getFieldValue(
 					DLExternalVideoConstants.DDM_FIELD_NAME_HTML));
 		}
-
-		RequestDispatcher requestDispatcher =
-			_servletContext.getRequestDispatcher("/preview.jsp");
 
 		requestDispatcher.include(request, response);
 	}
