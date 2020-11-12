@@ -14,7 +14,7 @@
 
 package com.liferay.document.library.external.video.internal.instance.lifecycle;
 
-import com.liferay.document.library.external.video.internal.util.DLExternalVideoDLFileEntryTypeHelper;
+import com.liferay.document.library.external.video.internal.helper.DLExternalVideoDLFileEntryTypeHelper;
 import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructureManager;

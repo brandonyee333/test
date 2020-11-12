@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.document.library.external.video.internal.util;
+package com.liferay.document.library.external.video.internal.helper;
 
 import com.liferay.document.library.external.video.internal.constants.DLExternalVideoConstants;
 import com.liferay.document.library.kernel.model.DLFileEntryType;

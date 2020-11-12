@@ -18,7 +18,7 @@ import com.liferay.document.library.display.context.BaseDLViewFileVersionDisplay
 import com.liferay.document.library.display.context.DLViewFileVersionDisplayContext;
 import com.liferay.document.library.external.video.internal.constants.DLExternalVideoConstants;
 import com.liferay.document.library.external.video.internal.constants.DLExternalVideoWebKeys;
-import com.liferay.document.library.external.video.internal.util.DLExternalVideoMetadataHelper;
+import com.liferay.document.library.external.video.internal.helper.DLExternalVideoMetadataHelper;
 import com.liferay.document.library.external.video.internal.util.DLExternalVideoUIItemsUtil;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.portal.kernel.exception.PortalException;

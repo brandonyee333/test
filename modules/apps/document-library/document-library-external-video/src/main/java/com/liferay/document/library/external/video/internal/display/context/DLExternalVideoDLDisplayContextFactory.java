@@ -20,8 +20,8 @@ import com.liferay.document.library.display.context.DLEditFileEntryDisplayContex
 import com.liferay.document.library.display.context.DLViewFileVersionDisplayContext;
 import com.liferay.document.library.external.video.internal.DLExternalVideo;
 import com.liferay.document.library.external.video.internal.constants.DLExternalVideoConstants;
+import com.liferay.document.library.external.video.internal.helper.DLExternalVideoMetadataHelper;
 import com.liferay.document.library.external.video.internal.resolver.DLExternalVideoResolver;
-import com.liferay.document.library.external.video.internal.util.DLExternalVideoMetadataHelper;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.model.DLFileVersion;
