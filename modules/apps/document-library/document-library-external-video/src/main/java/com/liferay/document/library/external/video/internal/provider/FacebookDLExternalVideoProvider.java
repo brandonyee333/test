@@ -53,10 +53,10 @@ public class FacebookDLExternalVideoProvider
 					"<iframe allowFullScreen=\"true\" ",
 					"allowTransparency=\"true\" frameborder=\"0\" ",
 					"height=\"315\" ",
-					"src=\"https://www.facebook.com/plugins/video.php?href=",
-					url,
-					"&show_text=0&width=560&height=315\" scrolling=\"no\" ",
-					"style=\"border:none;overflow:hidden\" width=\"560\">",
+					"src=\"https://www.facebook.com/plugins/video.php?",
+					"height=315&href=", url,
+					"&show_text=0&width=560\" scrolling=\"no\" ",
+					"style=\"border: none; overflow: hidden;\" width=\"560\">",
 					"</iframe>");
 			}
 
