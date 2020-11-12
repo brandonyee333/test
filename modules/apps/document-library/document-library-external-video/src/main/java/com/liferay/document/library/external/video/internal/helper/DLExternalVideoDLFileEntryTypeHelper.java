@@ -71,6 +71,32 @@ public class DLExternalVideoDLFileEntryTypeHelper {
 		}
 	}
 
+	private void _addDLExternalVideoDLFileEntryType(long ddmStructureId)
+		throws Exception {
+
+		long defaultUserId = _userLocalService.getDefaultUserId(
+			_company.getCompanyId());
+
+		Map<Locale, String> nameMap = HashMapBuilder.put(
+			LocaleUtil.getDefault(),
+			DLExternalVideoConstants.DL_FILE_ENTRY_TYPE_NAME
+		).build();
+
+		Map<Locale, String> descriptionMap = new HashMap<>();
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setAddGuestPermissions(true);
+		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setScopeGroupId(_company.getGroupId());
+		serviceContext.setUserId(defaultUserId);
+
+		_dlFileEntryTypeLocalService.addFileEntryType(
+			defaultUserId, _company.getGroupId(),
+			DLExternalVideoConstants.DL_FILE_ENTRY_TYPE_KEY, nameMap,
+			descriptionMap, new long[] {ddmStructureId}, serviceContext);
+	}
+
 	private DDMStructure _addExternalVideoDDMStructure() throws Exception {
 		ServiceContext serviceContext = new ServiceContext();
 
@@ -101,32 +127,6 @@ public class DLExternalVideoDLFileEntryTypeHelper {
 		_ddmStructureLocalService.updateDDMStructure(ddmStructure);
 
 		return ddmStructure;
-	}
-
-	private void _addDLExternalVideoDLFileEntryType(long ddmStructureId)
-		throws Exception {
-
-		long defaultUserId = _userLocalService.getDefaultUserId(
-			_company.getCompanyId());
-
-		Map<Locale, String> nameMap = HashMapBuilder.put(
-			LocaleUtil.getDefault(),
-			DLExternalVideoConstants.DL_FILE_ENTRY_TYPE_NAME
-		).build();
-
-		Map<Locale, String> descriptionMap = new HashMap<>();
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setAddGuestPermissions(true);
-		serviceContext.setAddGroupPermissions(true);
-		serviceContext.setScopeGroupId(_company.getGroupId());
-		serviceContext.setUserId(defaultUserId);
-
-		_dlFileEntryTypeLocalService.addFileEntryType(
-			defaultUserId, _company.getGroupId(),
-			DLExternalVideoConstants.DL_FILE_ENTRY_TYPE_KEY, nameMap,
-			descriptionMap, new long[] {ddmStructureId}, serviceContext);
 	}
 
 	private Map<Locale, String> _updateNameMap(Map<Locale, String> nameMap) {
