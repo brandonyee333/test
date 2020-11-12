@@ -91,7 +91,8 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 		Template template = TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_FTL, templateResource, false);
 
-		template.put("getExternalVideoFieldsURL", _getExternalVideoFieldsURL());
+		template.put(
+			"getDLExternalVideoFieldsURL", _getDLExternalVideoFieldsURL());
 		template.put(
 			"namespace",
 			PortalUtil.getPortletNamespace(
@@ -120,18 +121,18 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 		return DLExternalVideoConstants.DDM_FIELD_NAME_TITLE;
 	}
 
-	private String _getExternalVideoFieldsURL() {
+	private String _getDLExternalVideoFieldsURL() {
 		RequestBackedPortletURLFactory requestBackedPortletURLFactory =
 			RequestBackedPortletURLFactoryUtil.create(_httpServletRequest);
 
-		ResourceURL getExternalVideoFieldsURL =
+		ResourceURL getDLExternalVideoFieldsURL =
 			(ResourceURL)requestBackedPortletURLFactory.createResourceURL(
 				DLExternalVideoPortletKeys.DL_EXTERNAL_VIDEO);
 
-		getExternalVideoFieldsURL.setResourceID(
+		getDLExternalVideoFieldsURL.setResourceID(
 			"/document_library_external_video/get_dl_external_video_fields");
 
-		return getExternalVideoFieldsURL.toString();
+		return getDLExternalVideoFieldsURL.toString();
 	}
 
 	private final DLExternalVideo _dlExternalVideo;
