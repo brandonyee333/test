@@ -187,30 +187,29 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	public void syncToZendesk(String koroneikiAccountKey) throws Exception {
 		validateJSONWebServicePermissions();
 
-		AccountEntry accountEntry =
-			accountEntryLocalService.getKoroneikiAccountEntry(
-				koroneikiAccountKey);
-
-		Account account = _accountWebService.fetchAccount(
-			accountEntry.getKoroneikiAccountKey());
+		Account account = _accountWebService.fetchAccount(koroneikiAccountKey);
 
 		if (account != null) {
+			AccountEntry accountEntry =
+				accountEntryLocalService.getKoroneikiAccountEntry(
+					koroneikiAccountKey);
+
 			List<ProductPurchase> productPurchases =
 				_accountReader.getProductPurchases(account.getKey());
 
-			accountEntry = accountEntryLocalService.updateAccountEntry(
+			accountEntryLocalService.updateAccountEntry(
 				accountEntry.getAccountEntryId(),
 				_accountReader.getSupportEndDate(productPurchases),
 				_accountReader.getTicketSupportEndDate(productPurchases),
 				_accountReader.getStatus(account));
+
+			Message message = new Message();
+
+			message.put("accountEntryId", accountEntry.getAccountEntryId());
+
+			MessageBusUtil.sendMessage(
+				"liferay/zendesk_account_entry_sync", message);
 		}
-
-		Message message = new Message();
-
-		message.put("accountEntryId", accountEntry.getAccountEntryId());
-
-		MessageBusUtil.sendMessage(
-			"liferay/zendesk_account_entry_sync", message);
 	}
 
 	public AccountEntry updateInstructions(
