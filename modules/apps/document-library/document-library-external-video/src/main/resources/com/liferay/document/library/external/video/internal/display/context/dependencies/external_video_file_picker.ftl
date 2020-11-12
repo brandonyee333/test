@@ -9,7 +9,7 @@ ExternalVideoPicker.prototype = {
 		const url = prompt('Video URL')
 		if (url) {
 			fetch(
-				'${getExternalVideoFieldsURL}&${namespace}externalVideoURL=' + url
+				'${getExternalVideoFieldsURL}&${namespace}dlExternalVideoURL=' + url
 			)
 			.then(
 				res => res.json()

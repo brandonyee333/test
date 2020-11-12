@@ -50,7 +50,7 @@ public class GetDLExternalVideoFieldsMVCResourceCommand
 		throws Exception {
 
 		DLExternalVideo dlExternalVideo = _dlExternalVideoResolver.resolve(
-			ParamUtil.getString(resourceRequest, "externalVideoURL"));
+			ParamUtil.getString(resourceRequest, "dlExternalVideoURL"));
 
 		if (dlExternalVideo != null) {
 			JSONPortletResponseUtil.writeJSON(
