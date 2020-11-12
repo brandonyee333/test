@@ -18,23 +18,13 @@ import '../../../src/main/resources/META-INF/resources/styles/main.scss';
 
 launcher('quantity-selector', 'quantity-selector', {
 
-	// disabled: true,
-	
 	inputName: 'test-name',
 	orderQuantity: 1,
 	settings: {
-		// allowedQuantitiy: [3, 5, 10, 15],
-
-		// allowedQuantitiy: [-1],
-
+		allowedQuantitiy: [-1],
 		maxQuantity: 29,
 		minQuantity: 1,
-
-		// multipleQuantity: 2,
 	},
 	size: 'large',
 	spritemap: './assets/icons.svg',
-
-	// style: 'select'
-
 });

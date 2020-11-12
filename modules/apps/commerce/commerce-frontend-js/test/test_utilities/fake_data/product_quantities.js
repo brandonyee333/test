@@ -12,4 +12,15 @@
  * details.
  */
 
-export const testAllowedQuantities = [2,4,65,33,913,267,323,122,90,113]
+export const testAllowedQuantities = [
+	2,
+	4,
+	65,
+	33,
+	913,
+	267,
+	323,
+	122,
+	90,
+	113,
+];

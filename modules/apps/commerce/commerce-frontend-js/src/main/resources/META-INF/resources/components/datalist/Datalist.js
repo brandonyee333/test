@@ -12,74 +12,73 @@
  * details.
  */
 
-import { ClayInput } from '@clayui/form';
+import {ClayInput} from '@clayui/form';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 const Datalist = (props) => {
-    const name = props.options?.name || 'quantity_datalist'
-    const gHash = s => {
-        const h = 0;
-        if (s.length == 0)
-            {return h}
-        Array.from(s.length).forEach((h,i) => {
-            var charCode = s.charCodeAt(i);
-            h = ((h << 7) - h) + charCode;
-            h = h & h;
-        });
+	const name = props.options?.name || 'quantity_datalist';
+	const gHash = (s) => {
+		const h = 0;
+		if (s.length == 0) {
+			return h;
+		}
+		Array.from(s.length).forEach((h, i) => {
+			var charCode = s.charCodeAt(i);
+			h = (h << 7) - h + charCode;
+			h = h & h;
+		});
 
-        return h
-    }
-    const listId = `cs-` + gHash(name) + `-list`
-    
-    return (
-        <>
-            <ClayInput
-                aria-label={name + '_label'}
-                className={classnames(
-                    "quantitySelect",
-                    "text-center",
-                    props.size === 'small' && 'form-control-sm',
-                    props.size === 'large' && 'form-control-lg'
-                )}
-                disabled={props.disabledProp}
-                id={listId + 'choice'}
-                list={listId}
-                onChange={e => {
-                    if (name === 'quantity_datalist' && e.target.value !== '') {
-                        props.updateQuantity(parseInt(e.target.value, 10)) 
-                    }
-                }}
-                pattern={props.pattern}
-                style={props.inputStyle}
-                type={props.type}
-            >
-               
-            </ClayInput>
-            <datalist id={listId}>
-                {props.children}
-            </datalist>
-        </>
-    )
-}
+		return h;
+	};
+	const listId = `cs-` + gHash(name) + `-list`;
+
+	return (
+		<>
+			<ClayInput
+				aria-label={name + '_label'}
+				className={classnames(
+					'quantitySelect',
+					'text-center',
+					props.size === 'small' && 'form-control-sm',
+					props.size === 'large' && 'form-control-lg'
+				)}
+				disabled={props.disabledProp}
+				id={listId + 'choice'}
+				list={listId}
+				onChange={(e) => {
+					if (name === 'quantity_datalist' && e.target.value !== '') {
+						props.updateQuantity(parseInt(e.target.value, 10));
+					}
+				}}
+				pattern={props.pattern}
+				style={props.inputStyle}
+				type={props.type}
+			></ClayInput>
+			<datalist id={listId}>{props.children}</datalist>
+		</>
+	);
+};
 
 Datalist.defaultProps = {
-    type: 'number'
-}
+	type: 'number',
+};
 
 Datalist.propTypes = {
-    inputStyle: PropTypes.string,
-    items: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string,
-        options: PropTypes.arrayOf(PropTypes.number),
-        pattern: PropTypes.string,
-        style: PropTypes.oneOf(['select', 'datalist']),
-        type: PropTypes.string
-    })),
-    size: PropTypes.string,
-    type: PropTypes.string,
-    updateQuantity: PropTypes.func,
+	inputStyle: PropTypes.string,
+	items: PropTypes.arrayOf(
+		PropTypes.shape({
+			name: PropTypes.string,
+			options: PropTypes.arrayOf(PropTypes.number),
+			pattern: PropTypes.string,
+			style: PropTypes.oneOf(['select', 'datalist']),
+			type: PropTypes.string,
+		})
+	),
+	size: PropTypes.string,
+	type: PropTypes.string,
+	updateQuantity: PropTypes.func,
 };
 
 export default Datalist;
