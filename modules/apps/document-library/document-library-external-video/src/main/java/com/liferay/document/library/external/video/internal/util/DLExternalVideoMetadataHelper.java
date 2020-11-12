@@ -45,7 +45,7 @@ import java.util.Map;
  */
 public class DLExternalVideoMetadataHelper {
 
-	public static DDMStructure getExternalVideoDDMStructure(
+	public static DDMStructure getDLExternalVideoDDMStructure(
 		DLFileEntryType dlFileEntryType) {
 
 		if (dlFileEntryType == null) {
@@ -84,7 +84,7 @@ public class DLExternalVideoMetadataHelper {
 			_storageEngine = storageEngine;
 
 			_dlFileVersion = dlFileEntry.getFileVersion();
-			_ddmStructure = getExternalVideoDDMStructure(
+			_ddmStructure = getDLExternalVideoDDMStructure(
 				dlFileEntry.getDLFileEntryType());
 		}
 		catch (PortalException portalException) {
@@ -108,7 +108,7 @@ public class DLExternalVideoMetadataHelper {
 		_storageEngine = storageEngine;
 
 		try {
-			_ddmStructure = getExternalVideoDDMStructure(
+			_ddmStructure = getDLExternalVideoDDMStructure(
 				dlFileVersion.getDLFileEntryType());
 		}
 		catch (PortalException portalException) {
