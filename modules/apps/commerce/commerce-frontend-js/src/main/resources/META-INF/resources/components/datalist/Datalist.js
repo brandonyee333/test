@@ -52,6 +52,7 @@ const Datalist = (props) => {
                     }
                 }}
                 pattern={props.pattern}
+                style={props.inputStyle}
                 type={props.type}
             >
                
@@ -68,6 +69,7 @@ Datalist.defaultProps = {
 }
 
 Datalist.propTypes = {
+    inputStyle: PropTypes.string,
     items: PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string,
         options: PropTypes.arrayOf(PropTypes.number),

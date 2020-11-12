@@ -12,7 +12,7 @@
  * details.
  */
 
-import { ClayInput, ClaySelect } from '@clayui/form';
+import { ClaySelect } from '@clayui/form';
 import ClayIcon, {ClayIconSpriteContext} from '@clayui/icon';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -21,7 +21,7 @@ import React, {createRef, useEffect, useState} from 'react';
 import Datalist from '../datalist/Datalist'
 
 function QuantitySelector(props) {
-	const [selectedQuantity, setSelectedQuantity] = useState(null)
+	const [selectedQuantity, setSelectedQuantity] = useState(props.quantity)
 
 	const generateOptions = (allowed, max, min, multiple) => {
 		const multi = multiple || 1;
@@ -77,9 +77,12 @@ function QuantitySelector(props) {
 	}
 
 	useEffect(() => {
-		updateQuantity(selectedQuantity)
+		// eslint-disable-next-line no-unused-expressions
+		props.quantity 
+		? updateQuantity(props.quantity )
+		: updateQuantity(selectedQuantity)
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [props, selectedQuantity, setSelectedQuantity])
+	}, [props, selectedQuantity, setSelectedQuantity, props.quantity])
 
 	const content = (
 		<div className="input-group input-group-sm quantity-selector simple" style={inputStyle}>
@@ -106,7 +109,9 @@ function QuantitySelector(props) {
 
 				{props.style === 'datalist' && (
 					<Datalist
+					className="quantity-selector-input"
 						disabled={props.disabled}
+						inputSize={props.inputSize}
 						size={props.size}
 						updateQuantity={updateQuantity}
 					>
@@ -123,14 +128,14 @@ function QuantitySelector(props) {
 					<ClaySelect 
 						aria-label="Select Label"
 						classnames={classnames(
-							'quantitySelect',
+							'quantity-selector-input',
 							props.size === 'small' && 'form-control-sm',
 							props.size === 'large'  && 'form-control-lg' 
 						)}
 						disabled={props.disabled}
 						id="quantitySelect"
 						onChange={ e => {
-							setSelectedQuantity(parseInt(e.target.value, 10))
+							updateQuantity(e.target.value)
 						}}
 					>	
 						{quantitiesList.map(item => (
@@ -173,7 +178,7 @@ function QuantitySelector(props) {
 
 QuantitySelector.defaultProps = {
 	disabled: false,
-	inputSize: 'limited',
+	inputSize: '200',
 	settings: {
 		// allowedQuantity: [-1],
 
@@ -181,7 +186,7 @@ QuantitySelector.defaultProps = {
 		minQuantity: 1,
 		multipleQuantity: 1
 	},
-	style: 'datalist',
+	style: 'select',
 
 }
 
@@ -195,6 +200,7 @@ QuantitySelector.propTypes = {
 	inputSize: PropTypes.string,
 	prependedIcon: PropTypes.string,
 	prependedText: PropTypes.string,
+	quantity: PropTypes.number,
 	rtl: PropTypes.bool,
 	settings: PropTypes.shape({
 		allowedQuantity: PropTypes.arrayOf(PropTypes.number),

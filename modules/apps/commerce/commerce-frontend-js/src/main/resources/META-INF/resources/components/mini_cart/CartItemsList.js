@@ -26,7 +26,9 @@ function CartItemsList({items}) {
 	const {cartState, isUpdating, spritemap} = useContext(MiniCartContext),
 		{summary = {}} = cartState,
 		{itemsQuantity = 0} = summary,
-		numberOfItems = (items || []).length;
+		{ length: numberOfItems = 0 } = items || [];
+
+		// numberOfItems = (items || []).length;
 
 	return (
 		<div className={'mini-cart-items-list'}>
