@@ -53,7 +53,7 @@ public class DLExternalVideoDLFileEntryTypeHelper {
 		_userLocalService = userLocalService;
 	}
 
-	public void addExternalVideoDLFileEntryType() throws Exception {
+	public void addDLExternalVideoDLFileEntryType() throws Exception {
 		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
 			_company.getGroupId(), _dlFileEntryMetadataClassNameId,
 			DLExternalVideoConstants.DDM_STRUCTURE_KEY_EXTERNAL_VIDEO);
@@ -67,7 +67,7 @@ public class DLExternalVideoDLFileEntryTypeHelper {
 				ddmStructure.getStructureId());
 
 		if (dlFileEntryTypes.isEmpty()) {
-			_addExternalVideoDLFileEntryType(ddmStructure.getStructureId());
+			_addDLExternalVideoDLFileEntryType(ddmStructure.getStructureId());
 		}
 	}
 
@@ -103,7 +103,7 @@ public class DLExternalVideoDLFileEntryTypeHelper {
 		return ddmStructure;
 	}
 
-	private void _addExternalVideoDLFileEntryType(long ddmStructureId)
+	private void _addDLExternalVideoDLFileEntryType(long ddmStructureId)
 		throws Exception {
 
 		long defaultUserId = _userLocalService.getDefaultUserId(
