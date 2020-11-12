@@ -35,6 +35,8 @@ import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -324,6 +326,12 @@ public class DXPEntitiesMessageProcessor {
 			return;
 		}
 
+		if (dxpEntityType.isUserField()) {
+			_processUserFieldObject(action, objectJSONObject);
+
+			return;
+		}
+
 		JSONObject jsonObject = _dxpRawElasticsearchInvoker.fetch(
 			dxpEntityType.getCollectionName(),
 			BoolQueryBuilderUtil.filter(
@@ -430,6 +438,23 @@ public class DXPEntitiesMessageProcessor {
 		}
 	}
 
+	private void _processUserFieldObject(
+		String action, JSONObject objectJSONObject) {
+
+		if (!action.equals("add")) {
+			return;
+		}
+
+		String dataType = objectJSONObject.getString("dataType");
+		String name = objectJSONObject.getString("name");
+
+		_faroInfoFieldMappingDog.addFieldMapping(
+			"demographics", name,
+			objectJSONObject.getString("osbAsahDataSourceId"), null,
+			_defaultLiferayFieldMappingMaps.getOrDefault(name, name),
+			_getFieldType(dataType, dataType), "individual");
+	}
+
 	private void _processUserObject(
 		JSONObject dataSourceJSONObject, JSONObject objectJSONObject) {
 
@@ -467,6 +492,18 @@ public class DXPEntitiesMessageProcessor {
 	private static final Log _log = LogFactory.getLog(
 		DXPEntitiesMessageProcessor.class);
 
+	private static final Map<String, String> _defaultLiferayFieldMappingMaps =
+		new HashMap<String, String>() {
+			{
+				put("addresses", "address");
+				put("birthday", "birthDate");
+				put("emailAddress", "email");
+				put("firstName", "givenName");
+				put("lastName", "familyName");
+				put("middleName", "additionalName");
+				put("phones", "telephone");
+			}
+		};
 	private static final Counter _dxpEntitiesCounter = PrometheusUtil.counter(
 		"extractor_dxp_entities_count", "The number of extracted DXP entities");
 	private static final Gauge _dxpEntitiesMessageQueueGauge =
