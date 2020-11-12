@@ -255,7 +255,7 @@ public class DLExternalVideoMetadataHelper {
 		}
 		catch (PortalException portalException) {
 			throw new SystemException(
-				"Unable to load DDM fields for file version " +
+				"Unable to load dynamic data mapping fields for file version " +
 					_dlFileVersion.getFileVersionId(),
 				portalException);
 		}
