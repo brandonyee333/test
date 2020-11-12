@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + DLExternalVideoPortletKeys.DL_EXTERNAL_VIDEO,
-		"mvc.command.name=/document_library_external_video/get_external_video_fields"
+		"mvc.command.name=/document_library_external_video/get_dl_external_video_fields"
 	},
 	service = MVCResourceCommand.class
 )

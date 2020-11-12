@@ -129,7 +129,7 @@ public class DLExternalVideoDLFilePicker implements DLFilePicker {
 				DLExternalVideoPortletKeys.DL_EXTERNAL_VIDEO);
 
 		getExternalVideoFieldsURL.setResourceID(
-			"/document_library_external_video/get_external_video_fields");
+			"/document_library_external_video/get_dl_external_video_fields");
 
 		return getExternalVideoFieldsURL.toString();
 	}
