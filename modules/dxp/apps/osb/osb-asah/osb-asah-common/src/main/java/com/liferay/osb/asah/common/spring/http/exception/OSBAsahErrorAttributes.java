@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 
@@ -36,16 +37,19 @@ public class OSBAsahErrorAttributes extends DefaultErrorAttributes {
 
 		_log.error("Unable to process request", getError(requestAttributes));
 
-		_osbAsahError.setErrorAttributes(
+		OSBAsahError osbAsahError = new OSBAsahError(
+			_environment.getActiveProfiles());
+
+		osbAsahError.setErrorAttributes(
 			super.getErrorAttributes(requestAttributes, includeStackTrace));
 
-		return _osbAsahError.getErrorAttributes();
+		return osbAsahError.getErrorAttributes();
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahErrorAttributes.class);
 
 	@Autowired
-	private OSBAsahError _osbAsahError;
+	private Environment _environment;
 
 }

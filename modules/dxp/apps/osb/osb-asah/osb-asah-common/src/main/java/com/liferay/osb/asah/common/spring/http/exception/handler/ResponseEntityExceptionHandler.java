@@ -28,6 +28,7 @@ import org.elasticsearch.ResourceNotFoundException;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -119,30 +120,32 @@ public class ResponseEntityExceptionHandler {
 
 		_log.error("Unable to process request", e);
 
+		OSBAsahError osbAsahError = new OSBAsahError(
+			_environment.getActiveProfiles());
+
 		if (debugInfoJSONObject != null) {
-			_osbAsahError.setErrorAttribute("debugInfo", debugInfoJSONObject);
+			osbAsahError.setErrorAttribute("debugInfo", debugInfoJSONObject);
 		}
 
-		_osbAsahError.setErrorAttribute("error", httpStatus.getReasonPhrase());
+		osbAsahError.setErrorAttribute("error", httpStatus.getReasonPhrase());
 
 		Class<?> clazz = e.getClass();
 
-		_osbAsahError.setErrorAttribute("exception", clazz.getName());
+		osbAsahError.setErrorAttribute("exception", clazz.getName());
 
-		_osbAsahError.setErrorAttribute("message", e.getMessage());
-		_osbAsahError.setErrorAttribute(
+		osbAsahError.setErrorAttribute("message", e.getMessage());
+		osbAsahError.setErrorAttribute(
 			"path", httpServletRequest.getRequestURI());
-		_osbAsahError.setErrorAttribute("status", httpStatus.value());
-		_osbAsahError.setErrorAttribute(
-			"timestamp", System.currentTimeMillis());
+		osbAsahError.setErrorAttribute("status", httpStatus.value());
+		osbAsahError.setErrorAttribute("timestamp", System.currentTimeMillis());
 
-		return new ResponseEntity<>(_osbAsahError, httpStatus);
+		return new ResponseEntity<>(osbAsahError, httpStatus);
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		ResponseEntityExceptionHandler.class);
 
 	@Autowired
-	private OSBAsahError _osbAsahError;
+	private Environment _environment;
 
 }
