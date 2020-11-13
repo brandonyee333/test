@@ -35,6 +35,10 @@ public class CustomerSynchronizer {
 	public void add(User user, Account account, AccountEntry accountEntry)
 		throws Exception {
 
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		_userSynchronizer.update(user, account.getName());
 
 		if (accountEntry.isActiveTicketSupport()) {
@@ -43,6 +47,10 @@ public class CustomerSynchronizer {
 	}
 
 	public void remove(User user, AccountEntry accountEntry) throws Exception {
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
 				accountEntry.getAccountEntryId());
@@ -59,6 +67,10 @@ public class CustomerSynchronizer {
 	}
 
 	public void update(User user) throws Exception {
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
 

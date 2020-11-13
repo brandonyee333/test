@@ -63,6 +63,10 @@ import org.osgi.service.component.annotations.Reference;
 public class UserSynchronizer {
 
 	public void addPhone(long userId, Phone phone) throws Exception {
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 
 		String number = _phoneUtil.convertToE164(phone);
@@ -74,6 +78,10 @@ public class UserSynchronizer {
 	}
 
 	public void deletePhone(long userId, Phone phone) throws Exception {
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 		long zendeskUserIdentityId =
 			_zendeskMapperUtil.fetchZendeskUserIdentityId(phone.getPhoneId());
@@ -85,6 +93,10 @@ public class UserSynchronizer {
 	}
 
 	public void sync(User user, ZendeskUser zendeskUser) throws Exception {
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		String emailAddress = user.getEmailAddress();
 
 		String fullName = user.getFullName();
@@ -117,6 +129,10 @@ public class UserSynchronizer {
 	}
 
 	public long update(User user, String organizationName) throws Exception {
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return 0;
+		}
+
 		String zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
 			user.getLanguageId());
 
@@ -158,6 +174,10 @@ public class UserSynchronizer {
 	public void updateEmailAddress(long userId, String emailAddress)
 		throws Exception {
 
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 
 		if (zendeskUserId <= 0) {
@@ -185,6 +205,10 @@ public class UserSynchronizer {
 	}
 
 	public void updatePhone(long userId, Phone phone) throws Exception {
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 		long zendeskUserIdentityId =
 			_zendeskMapperUtil.fetchZendeskUserIdentityId(phone.getPhoneId());
@@ -203,6 +227,10 @@ public class UserSynchronizer {
 	}
 
 	public void updateTags(User user) throws Exception {
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		Set<String> tags = getTags(user);
 
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(

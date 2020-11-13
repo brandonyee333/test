@@ -43,6 +43,10 @@ import org.osgi.service.component.annotations.Reference;
 public class TeamSynchronizer {
 
 	public void add(Team team, User user) throws Exception {
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		long[] zendeskOrganizationIds = getZendeskOrganizationIds(team);
 
 		long zendeskUserId = _userSynchronizer.update(user, null);
@@ -51,6 +55,10 @@ public class TeamSynchronizer {
 	}
 
 	public void remove(Team team, User user) throws Exception {
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		long[] zendeskOrganizationIds = getZendeskOrganizationIds(team);
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());

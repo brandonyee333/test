@@ -78,6 +78,10 @@ public class AccountSynchronizer {
 	public void addCustomers(Account account, AccountEntry accountEntry)
 		throws Exception {
 
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		List<Contact> contacts = _contactWebService.getAccountCustomerContacts(
 			account.getKey(), 1, 1000);
 
@@ -106,6 +110,10 @@ public class AccountSynchronizer {
 			Account account, AccountEntry accountEntry, Team team)
 		throws Exception {
 
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		List<Contact> contacts = _contactWebService.getTeamContacts(
 			team.getKey(), 1, 1000);
 
@@ -131,6 +139,10 @@ public class AccountSynchronizer {
 	public void closeZendeskTickets(
 			Account account, AccountEntry accountEntry, User user)
 		throws PortalException {
+
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
 
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
@@ -167,6 +179,10 @@ public class AccountSynchronizer {
 
 	public void reassignTickets(AccountEntry accountEntry, Team team, User user)
 		throws Exception {
+
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
 
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
@@ -231,6 +247,10 @@ public class AccountSynchronizer {
 	public void reassignTickets(
 			String accountKey, AccountEntry accountEntry, User user)
 		throws Exception {
+
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
 
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
@@ -311,6 +331,10 @@ public class AccountSynchronizer {
 	public void remove(Account account, AccountEntry accountEntry)
 		throws Exception {
 
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
 				accountEntry.getAccountEntryId());
@@ -357,6 +381,10 @@ public class AccountSynchronizer {
 	public void removeCustomers(Account account, AccountEntry accountEntry)
 		throws Exception {
 
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
+
 		List<Contact> contacts = _contactWebService.getAccountCustomerContacts(
 			account.getKey(), 1, 1000);
 
@@ -375,6 +403,10 @@ public class AccountSynchronizer {
 	public void removeFirstLineSupport(
 			Account account, AccountEntry accountEntry, Team team)
 		throws Exception {
+
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
 
 		List<Contact> contacts = _contactWebService.getTeamContacts(
 			team.getKey(), 1, 1000);
@@ -404,6 +436,10 @@ public class AccountSynchronizer {
 
 	public void update(Account account, AccountEntry accountEntry)
 		throws Exception {
+
+		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
+			return;
+		}
 
 		List<ProductPurchase> productPurchases =
 			_accountReader.getProductPurchases(account.getKey());

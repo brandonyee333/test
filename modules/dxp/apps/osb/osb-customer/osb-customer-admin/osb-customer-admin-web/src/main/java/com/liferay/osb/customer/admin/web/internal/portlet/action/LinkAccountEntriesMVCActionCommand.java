@@ -20,6 +20,7 @@ import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminPortle
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.osb.customer.license.service.LicenseKeyLocalService;
+import com.liferay.osb.customer.zendesk.synchronizer.ZendeskSynchronizerThreadLocal;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -53,6 +54,8 @@ public class LinkAccountEntriesMVCActionCommand extends BaseMVCActionCommand {
 	protected void doProcessAction(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
+
+		ZendeskSynchronizerThreadLocal.setEnabled(false);
 
 		List<AccountEntry> accountEntries =
 			_accountEntryLocalService.getAccountEntries(
@@ -98,6 +101,8 @@ public class LinkAccountEntriesMVCActionCommand extends BaseMVCActionCommand {
 				_licenseKeyLocalService.updateLicenseKey(licenseKey);
 			}
 		}
+
+		ZendeskSynchronizerThreadLocal.setEnabled(true);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

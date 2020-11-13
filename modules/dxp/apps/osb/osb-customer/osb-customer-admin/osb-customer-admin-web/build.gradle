@@ -18,4 +18,5 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-web-service-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-license:osb-customer-license-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-license:osb-customer-license-generator-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk:osb-customer-zendesk-synchronizer")
 }
