@@ -533,23 +533,6 @@ AUI.add(
 						return window[instance.getInputName() + 'Editor'];
 					},
 
-					getFieldByName: function(fields, name) {
-						var instance = this;
-
-						return AArray.find(
-							fields,
-							function(item) {
-								if (item.name === name) {
-									return true;
-								}
-
-								if (item.nestedFields) {
-									return instance.getFieldByName(item.nestedFields, name);
-								}
-							}
-						);
-					},
-
 					getFieldByNameInFieldDefinition: function(name) {
 						var instance = this;
 
@@ -572,7 +555,14 @@ AUI.add(
 							);
 						}
 
-						return instance.getFieldByName(fields, name);
+						return AArray.find(
+							fields,
+							function(item) {
+								if (item.name === name) {
+									return true;
+								}
+							}
+						);
 					},
 
 					getFieldDefinition: function() {
