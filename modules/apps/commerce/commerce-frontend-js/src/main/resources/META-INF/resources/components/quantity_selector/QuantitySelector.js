@@ -19,26 +19,11 @@ import PropTypes from 'prop-types';
 import React, {createRef, useEffect, useState} from 'react';
 
 import Datalist from '../datalist/Datalist';
+import {generateOptions} from './utils/index'
 
 function QuantitySelector(props) {
 	const [selectedQuantity, setSelectedQuantity] = useState(props.quantity);
 
-	const generateOptions = (allowed, max, min, multiple) => {
-		const multi = multiple || 1;
-		const quantitiesList = [];
-		if (allowed !== [-1] && allowed !== undefined) {
-			Array.from({length: allowed.length}).map((_, i) =>
-				quantitiesList.push(i)
-			);
-		}
-		else {
-			for (let i = min; i <= max; i++) {
-				quantitiesList.push(i * multi);
-			}
-		}
-
-		return quantitiesList;
-	};
 	const quantitiesList = generateOptions(
 		props.settings.allowedQuantity,
 		props.settings.maxQuantity,
@@ -73,7 +58,7 @@ function QuantitySelector(props) {
 		};
 	}
 	else {
-		const n = parseInt(props.size, 10);
+		const n = parseInt(props.inputSize, 10);
 		const wid = n + 'px';
 		inputStyle = {
 			display: 'block',
@@ -119,7 +104,7 @@ function QuantitySelector(props) {
 					<Datalist
 						className="quantity-selector-input"
 						disabled={props.disabled}
-						inputSize={props.inputSize}
+						id="quantitySelect"
 						size={props.size}
 						updateQuantity={updateQuantity}
 					>
@@ -182,11 +167,10 @@ function QuantitySelector(props) {
 
 QuantitySelector.defaultProps = {
 	disabled: false,
-	inputSize: '200',
+	inputSize: 'limited',
 	settings: {
 
-		// allowedQuantity: [-1],
-
+		allowedQuantity: [],
 		maxQuantity: 99,
 		minQuantity: 1,
 		multipleQuantity: 1,
@@ -211,7 +195,7 @@ QuantitySelector.propTypes = {
 		maxQuantity: PropTypes.number,
 		minQuantity: PropTypes.number,
 		multipleQuantity: PropTypes.number,
-	}),
+	}).isRequired,
 	size: PropTypes.oneOf(['large', 'medium', 'small']),
 	spritemap: PropTypes.string.isRequired,
 	style: PropTypes.oneOf(['select', 'datalist']),

@@ -12,18 +12,17 @@
  * details.
  */
 
-import launcher from '../../../src/main/resources/META-INF/resources/components/quantity_selector/entry';
+export const generateOptions = (allowed = [], max = 1, min = 1, multiple = 1) => {
+    if (allowed.length > 0) {
+        return allowed
+    }
+    else {
+        const [MIN, MAX] = [max, min].sort()
+        const quantitiesList = []
+        for (let i = MIN; i <= MAX; i++) {
+            quantitiesList.push(i * multiple);
+        }
 
-import '../../../src/main/resources/META-INF/resources/styles/main.scss';
-
-launcher('quantity-selector', 'quantity-selector', {
-
-	inputName: 'test-name',
-	orderQuantity: 1,
-	settings: {
-		maxQuantity: 29,
-		minQuantity: 1,
-	},
-	size: 'large',
-	spritemap: './assets/icons.svg',
-});
+        return quantitiesList
+    }
+};
