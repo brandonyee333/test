@@ -389,12 +389,13 @@ definition {
 			depotName = "Test Depot Name");
 
 		for (var documentNumber : list "_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11,_12,_13,_14,_15,_16,_17,_18,_19,_20,_21,_22,_23") {
-			JSONDocument.addFileWithUploadedFile(
+			DepotNavigator.openDepotDocumentsAndMediaAdmin(depotName = "Test Depot Name");
+
+			DMDocument.addCP(
 				dmDocumentDescription = "DM Document Description",
-				dmDocumentTitle = "DM Document JPG${documentNumber}",
-				groupName = "Test Depot Name",
-				mimeType = "image/jpeg",
-				sourceFileName = "Document_4.jpg");
+				dmDocumentFile = "Document_4.jpg",
+				dmDocumentFileName = "Document${documentNumber}.jpg",
+				dmDocumentTitle = "DM Document JPG${documentNumber}");
 		}
 
 		DepotNavigator.openDepotAdmin();
@@ -406,12 +407,13 @@ definition {
 		Depot.connectSite(siteList = "Site Name");
 
 		for (var documentNumber : list "_1,_2,_3,_4,_5,_6,_7") {
-			JSONDocument.addFileWithUploadedFile(
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
+
+			DMDocument.addCP(
 				dmDocumentDescription = "DM Document Description",
-				dmDocumentTitle = "DM Document JPG${documentNumber}",
-				groupName = "Site Name",
-				mimeType = "image/jpeg",
-				sourceFileName = "Document_1.jpg");
+				dmDocumentFile = "Document_1.jpg",
+				dmDocumentFileName = "Document${documentNumber}.jpg",
+				dmDocumentTitle = "DM Document JPG${documentNumber}");
 		}
 
 		BlogsNavigator.openBlogsAdmin(siteURLKey = "site-name");
@@ -462,90 +464,6 @@ definition {
 		ItemSelector.gotoPreviewViaSelectFile(navTab = "Documents and Media");
 
 		AssertVisible(locator1 = "ItemSelector#SELECT_IMAGE_PREVIEW");
-	}
-
-	@priority = "4"
-	test ViewBlogsEntryWithImageEditedViaItemSelector {
-		property portal.acceptance = "quarantine";
-
-		JSONLayout.addPublicLayout(
-			groupName = "Guest",
-			layoutName = "Blogs Page");
-
-		JSONLayout.addWidgetToPublicLayout(
-			column = "1",
-			groupName = "Guest",
-			layoutName = "Blogs Page",
-			widgetName = "Blogs");
-
-		JSONDocument.addFileWithUploadedFile(
-			dmDocumentDescription = "DM Document Description",
-			dmDocumentTitle = "Document_2.jpg",
-			groupName = "Guest",
-			mimeType = "image/jpeg",
-			sourceFileName = "Document_2.jpg");
-
-		BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
-
-		BlogsNavigator.gotoAddEntry();
-
-		BlogsEntry.addTitle(entryTitle = "Blogs Entry Title");
-
-		BlogsEntry.addContent(entryContent = "Blogs Entry Content");
-
-		ImageEditor.gotoImageEditorViaItemSelector(
-			imageFileName = "Document_2.jpg",
-			navTab = "Documents and Media");
-
-		ImageEditor.rotateImage(rotateDirection = "right");
-
-		Pause(locator1 = "3000");
-
-		ImageEditor.applyChangesAndSaveFile();
-
-		Pause(locator1 = "3000");
-
-		SelectFrameTop(value1 = "relative=top");
-
-		SelectFrame(locator1 = "ItemSelector#ITEM_SELECTOR_IFRAME");
-
-		AssertClick(
-			locator1 = "ItemSelector#ADD_BUTTON",
-			value1 = "Add");
-
-		BlogsEntry.viewInlineImage(uploadFileName = '''Document_2+%281%29.jpg''');
-
-		AssertClick(
-			locator1 = "Button#PUBLISH",
-			value1 = "Publish");
-
-		Pause(locator1 = "3000");
-
-		AssertTextEquals(
-			locator1 = "Portlet#HEADER",
-			value1 = "Blogs");
-
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
-
-		DMNavigator.gotoDocumentCP(dmDocumentTitle = "Document_2 (1).jpg");
-
-		DMDocument.viewDocumentVersionNumberCmdPG(dmDocumentVersionNumber = "1.0");
-
-		Navigator.gotoPage(pageName = "Blogs Page");
-
-		BlogsNavigator.gotoEntryPG(
-			entryContent = "Blogs Entry Content",
-			entryTitle = "Blogs Entry Title");
-
-		BlogsEntry.viewEntryPG(
-			entryContent = "Blogs Entry Content",
-			entryTitle = "Blogs Entry Title");
-
-		BlogsEntry.viewInlineImage(uploadFileName = '''Document_2+%281%29.jpg''');
-
-		ScrollWebElementIntoView(locator1 = "Button#SUBSCRIBE");
-
-		SikuliAssertElementPresent(locator1 = "BlogsEntry#CONTENT_INLINE_IMAGE_PREVIEW");
 	}
 
 	@description = "This test covers LPS-119709. It ensures that the blog images can not filter by the everywhere and the current site."
@@ -732,7 +650,7 @@ definition {
 
 		ManagementBar.setFilterAndOrder(filterBy = "Current Asset Library");
 
-		AssertElementPresent(
+		AssertElementNotPresent(
 			key_filterScope = "Scope: Current Asset Library",
 			locator1 = "ManagementBar#FILTER_RESULTS_SCOPE");
 

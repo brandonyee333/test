@@ -63,10 +63,9 @@ definition {
 			structureDescription = "Structure Description",
 			structureName = "Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "Structure Name");
 
@@ -257,10 +256,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -431,6 +429,19 @@ definition {
 		Staging.activateStagingCP(siteName = "Site B Name");
 	}
 
+	@priority = "5"
+	test ImportLarFrom70ToCurrent {
+		property portal.acceptance = "true";
+
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
+
+		LAR.importPortlet(
+			importSchemaVersionMismatching = "true",
+			larFileName = "7.0.10.14_webcontent.lar",
+			portletName = "Web Content",
+			uploadFrom = "dependencies");
+	}
+
 	@priority = "3"
 	test ModifyInitalPageVariationSetup {
 		Staging.openStagingAdmin(siteURLKey = "site-name");
@@ -492,10 +503,9 @@ definition {
 			structureDescription = "Structure Description",
 			structureName = "Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "Structure Name");
 
@@ -1436,10 +1446,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		DynamicDataMapping.editFieldPredefinedValue(
 			field = "Text",
@@ -2415,12 +2424,7 @@ definition {
 			structureDescription = "Structure Description",
 			structureName = "Structure Name");
 
-		for (var structureFieldName : list "Text,Text Box") {
-			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
-		}
+		DataEngine.addFields(fieldTypeList = "Text,Rich Text");
 
 		WebContentStructures.saveCP(structureName = "Structure Name");
 
@@ -2431,7 +2435,7 @@ definition {
 		WebContentTemplates.addCP(
 			structureName = "Structure Name",
 			templateDescription = "Template Description",
-			templateFieldNames = "Text,Text Box",
+			templateFieldNames = "Text,Rich Text",
 			templateName = "Template Name");
 
 		Navigator.openURL();
@@ -2443,8 +2447,8 @@ definition {
 		WebContent.addWithStructureCP(
 			structureName = "Structure Name",
 			templateName = "Template Name",
+			webContentRichText = "Staging Web Content Body",
 			webContentText = "Staging Web Content Text",
-			webContentTextBox = "Staging Web Content Body",
 			webContentTitle = "Web Content Title");
 
 		PortletEntry.publish();
@@ -3740,10 +3744,9 @@ definition {
 			structureDescription = "Structure Description",
 			structureName = "Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Documents and Media",
+		DataEngine.addField(
 			fieldFieldLabel = "Documents and Media",
-			fieldName = "DocumentsandMedia");
+			fieldType = "Documents and Media");
 
 		WebContentStructures.saveCP(structureName = "Structure Name");
 
@@ -3832,10 +3835,9 @@ definition {
 			structureDescription = "Structure Description",
 			structureName = "Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Image",
+		DataEngine.addField(
 			fieldFieldLabel = "Image",
-			fieldName = StringUtil.replace("Image", " ", ""));
+			fieldType = "Image");
 
 		DynamicDataMapping.selectDynamicDataMappingFrame();
 

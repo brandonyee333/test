@@ -14,6 +14,7 @@
 
 package com.liferay.dispatch.web.internal.display.context;
 
+import com.liferay.dispatch.constants.DispatchConstants;
 import com.liferay.dispatch.model.DispatchLog;
 import com.liferay.dispatch.model.DispatchTrigger;
 import com.liferay.dispatch.service.DispatchLogService;
@@ -89,7 +90,7 @@ public class DispatchLogDisplayContext {
 			SearchContainer.DEFAULT_ORDER_BY_TYPE_PARAM, "desc");
 	}
 
-	public PortletURL getPortletURL() throws PortalException {
+	public PortletURL getPortletURL() {
 		LiferayPortletResponse liferayPortletResponse =
 			_dispatchRequestHelper.getLiferayPortletResponse();
 
@@ -108,6 +109,27 @@ public class DispatchLogDisplayContext {
 		if (Validator.isNotNull(deltaEntry)) {
 			portletURL.setParameter("deltaEntry", deltaEntry);
 		}
+
+		String dispatchTriggerId = ParamUtil.getString(
+			_dispatchRequestHelper.getRequest(), "dispatchTriggerId");
+
+		if (Validator.isNotNull(dispatchTriggerId)) {
+			portletURL.setParameter("dispatchTriggerId", dispatchTriggerId);
+		}
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/dispatch/edit_dispatch_trigger");
+
+		String redirect = ParamUtil.getString(
+			_dispatchRequestHelper.getRequest(), "redirect");
+
+		if (Validator.isNotNull(redirect)) {
+			portletURL.setParameter("redirect", redirect);
+		}
+
+		portletURL.setParameter(
+			"screenNavigationCategoryKey",
+			DispatchConstants.CATEGORY_KEY_DISPATCH_LOGS);
 
 		return portletURL;
 	}

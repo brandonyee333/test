@@ -29,6 +29,7 @@ create table DispatchTrigger (
 	overlapAllowed BOOLEAN,
 	startDate DATE null,
 	system_ BOOLEAN,
+	taskClusterMode INTEGER,
 	taskExecutorType VARCHAR(75) null,
 	taskSettings TEXT null
 );

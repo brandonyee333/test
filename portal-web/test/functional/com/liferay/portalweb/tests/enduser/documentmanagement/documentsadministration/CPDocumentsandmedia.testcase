@@ -294,6 +294,26 @@ definition {
 		AssertTextNotPresent(value1 = "The requested resource could not be found.");
 	}
 
+	@description = "This ensures that the document file name will be applied to the downloaded file name."
+	@priority = "5"
+	test DownloadDocumentWithCustomFileName {
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		DMDocument.addCP(
+			dmDocumentDescription = "DM Document Description",
+			dmDocumentFile = "Document_1.txt",
+			dmDocumentFileName = "document_1_Edit.jpg",
+			dmDocumentTitle = "DM Document Title");
+
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		DMDocument.downloadCP(dmDocumentTitle = "DM Document Title");
+
+		AssertTextNotPresent(value1 = "The requested resource could not be found.");
+
+		DMDocument.assertFileNameFromTempFolder(downloadedFileName = "document_1_Edit.jpg");
+	}
+
 	@description = "This test edits the title and description of a document. It asserts minor version increment because only its metadata was updated."
 	@priority = "5"
 	test EditDocument {
@@ -312,18 +332,22 @@ definition {
 		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
 
 		DMDocument.viewCP(
+			dmDocumentFileName = "Document_1.txt",
 			dmDocumentSize = "259 B",
 			dmDocumentTitle = "DM Document Title");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
 		DMDocument.editCP(
-			dmDocumentDescription = "DM Document Description1",
+			dmDocumentDescription = "DM Document Description",
 			dmDocumentDescriptionEdit = "DM Document Description Edit",
+			dmDocumentFileName = "Document_1.txt",
+			dmDocumentFileNameEdit = "Document_1_Edit.txt",
 			dmDocumentTitle = "DM Document Title",
 			dmDocumentTitleEdit = "DM Document Title Edit");
 
 		DMDocument.viewEditCP(
+			dmDocumentFileName = "Document_1_Edit.txt",
 			dmDocumentTitleEdit = "DM Document Title Edit",
 			dmDocumentVersionNumber = "1.1");
 	}
@@ -784,6 +808,37 @@ definition {
 		Alert.viewSuccessMessage();
 
 		DMDocument.viewDefaultCP();
+	}
+
+	@description = "This ensures that the document title can be displayed correctly in the different views."
+	@priority = "5"
+	test ViewDocumentInDifferentViews {
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		DMDocument.addCP(
+			dmDocumentDescription = "DM Document Description",
+			dmDocumentFile = "Document_1.txt",
+			useCurrentTitle = "true");
+
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		LexiconEntry.changeDisplayStyle(displayStyle = "cards");
+
+		LexiconCard.viewCardTitle(card = "Document_1");
+
+		LexiconEntry.changeDisplayStyle(displayStyle = "table");
+
+		LexiconTable.viewTableEntryTitle(tableEntry = "Document_1");
+
+		LexiconEntry.changeDisplayStyle(displayStyle = "list");
+
+		LexiconList.viewListEntryTitleLink(listEntry = "Document_1");
+
+		DMNavigator.gotoDocumentCP(dmDocumentTitle = "Document_1");
+
+		DMDocument.viewCP(
+			dmDocumentFileName = "Document_1.txt",
+			dmDocumentTitle = "Document_1");
 	}
 
 }

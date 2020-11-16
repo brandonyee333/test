@@ -28,7 +28,7 @@ Date startDate = dispatchLog.getStartDate();
 long timeMillis = endDate.getTime() - startDate.getTime();
 %>
 
-<portlet:actionURL name="editDispatchLog" var="editDispatchLogActionURL" />
+<portlet:actionURL name="/dispatch/edit_dispatch_log" var="editDispatchLogActionURL" />
 
 <div class="container-fluid-1280 sheet">
 	<aui:form action="<%= editDispatchLogActionURL %>" cssClass="container-fluid-1280" method="post" name="fm">
@@ -40,7 +40,11 @@ long timeMillis = endDate.getTime() - startDate.getTime();
 			<aui:fieldset>
 				<aui:input disabled="<%= true %>" label="start-date" name="startDate" value="<%= dispatchLogDisplayContext.getDateString(dispatchLog.getStartDate()) %>" />
 
-				<aui:input disabled="<%= true %>" name="status" value="<%= LanguageUtil.get(request, BackgroundTaskConstants.getStatusLabel(dispatchLog.getStatus())) %>" />
+				<%
+				DispatchTaskStatus dispatchTaskStatus = DispatchTaskStatus.valueOf(dispatchLog.getStatus());
+				%>
+
+				<aui:input disabled="<%= true %>" name="status" value="<%= LanguageUtil.get(request, dispatchTaskStatus.getLabel()) %>" />
 
 				<aui:input disabled="<%= true %>" label="runtime" name="runTime" value='<%= timeMillis + " ms" %>' />
 

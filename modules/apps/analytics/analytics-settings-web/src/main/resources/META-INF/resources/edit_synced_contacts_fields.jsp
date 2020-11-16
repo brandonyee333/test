@@ -21,7 +21,7 @@ String cmd = ParamUtil.getString(request, Constants.CMD);
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
-portletURL.setParameter("mvcRenderCommandName", "/view_configuration_screen");
+portletURL.setParameter("mvcRenderCommandName", "/configuration_admin/view_configuration_screen");
 portletURL.setParameter("configurationScreenKey", "2-synced-contact-data");
 
 String redirect = ParamUtil.getString(request, "redirect", portletURL.toString());
@@ -101,7 +101,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(resourceBundle, "
 				FieldDisplayContext fieldDisplayContext = new FieldDisplayContext("/analytics_settings/edit_synced_contacts_fields", renderRequest, renderResponse);
 				%>
 
-				<clay:management-toolbar
+				<clay:management-toolbar-v2
 					displayContext="<%= new FieldManagementToolbarDisplayContext(fieldDisplayContext, request, liferayPortletRequest, liferayPortletResponse) %>"
 				/>
 
@@ -149,7 +149,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(resourceBundle, "
 				FieldDisplayContext fieldDisplayContext = new FieldDisplayContext("/analytics_settings/edit_synced_users_fields", renderRequest, renderResponse);
 				%>
 
-				<clay:management-toolbar
+				<clay:management-toolbar-v2
 					displayContext="<%= new FieldManagementToolbarDisplayContext(fieldDisplayContext, request, liferayPortletRequest, liferayPortletResponse) %>"
 				/>
 

@@ -31,6 +31,8 @@ import com.liferay.headless.delivery.dto.v1_0.FragmentFieldHTML;
 import com.liferay.headless.delivery.dto.v1_0.FragmentFieldImage;
 import com.liferay.headless.delivery.dto.v1_0.FragmentFieldText;
 import com.liferay.headless.delivery.dto.v1_0.FragmentImage;
+import com.liferay.headless.delivery.dto.v1_0.FragmentImageClassPKReference;
+import com.liferay.headless.delivery.dto.v1_0.FragmentImageConfiguration;
 import com.liferay.headless.delivery.dto.v1_0.FragmentInlineValue;
 import com.liferay.headless.delivery.dto.v1_0.FragmentLink;
 import com.liferay.headless.delivery.dto.v1_0.FragmentMappedValue;
@@ -53,6 +55,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -156,14 +159,15 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 			JSONObject imageJSONObject = jsonObject.getJSONObject(
 				backgroundImageId);
 
-			Map<String, String> localeMap = _toLocaleMap(imageJSONObject);
+			Map<String, String> localizedValues = _toLocalizedValues(
+				imageJSONObject);
 
 			fragmentFields.add(
 				new FragmentField() {
 					{
 						id = backgroundImageId;
 						value = _toFragmentFieldBackgroundImage(
-							imageJSONObject, localeMap, saveMapping);
+							imageJSONObject, localizedValues, saveMapping);
 					}
 				});
 		}
@@ -361,6 +365,29 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 		return false;
 	}
 
+	private Map<String, ClassPKReference> _toClassPKReferences(
+		Map<String, JSONObject> localizedJSONObjects) {
+
+		Map<String, ClassPKReference> classPKReferences = new HashMap<>();
+
+		for (Map.Entry<String, JSONObject> entry :
+				localizedJSONObjects.entrySet()) {
+
+			JSONObject jsonObject = entry.getValue();
+
+			classPKReferences.put(
+				entry.getKey(),
+				new ClassPKReference() {
+					{
+						className = FileEntry.class.getName();
+						classPK = jsonObject.getLong("fileEntryId");
+					}
+				});
+		}
+
+		return classPKReferences;
+	}
+
 	private FragmentInlineValue _toDefaultMappingValue(
 		JSONObject jsonObject, Function<Object, String> transformerFunction) {
 
@@ -503,7 +530,7 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 	}
 
 	private FragmentFieldBackgroundImage _toFragmentFieldBackgroundImage(
-		JSONObject jsonObject, Map<String, String> localeMap,
+		JSONObject jsonObject, Map<String, String> localizedValues,
 		boolean saveMapping) {
 
 		return new FragmentFieldBackgroundImage() {
@@ -511,7 +538,7 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 				backgroundFragmentImage = new FragmentImage() {
 					{
 						title = _toTitleFragmentInlineValue(
-							jsonObject, localeMap);
+							jsonObject, localizedValues);
 
 						setUrl(
 							() -> {
@@ -527,7 +554,7 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 
 								return new FragmentInlineValue() {
 									{
-										value_i18n = localeMap;
+										value_i18n = localizedValues;
 									}
 								};
 							});
@@ -554,7 +581,7 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 
 						return new FragmentInlineValue() {
 							{
-								value_i18n = _toLocaleMap(jsonObject);
+								value_i18n = _toLocalizedValues(jsonObject);
 							}
 						};
 					});
@@ -565,7 +592,9 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 	private FragmentFieldImage _toFragmentFieldImage(
 		JSONObject jsonObject, boolean saveMapping) {
 
-		Map<String, String> localeMap = _toLocaleMap(jsonObject);
+		Map<String, JSONObject> localizedJSONObjects =
+			_toLocalizedValueJSONObjects(jsonObject);
+		Map<String, String> localizedValues = _toLocalizedValues(jsonObject);
 
 		return new FragmentFieldImage() {
 			{
@@ -574,10 +603,24 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 						description = _toDescriptionFragmentInlineValue(
 							jsonObject);
 						title = _toTitleFragmentInlineValue(
-							jsonObject, localeMap);
+							jsonObject, localizedValues);
 
+						setFragmentImageClassPKReference(
+							() -> {
+								if (MapUtil.isEmpty(localizedJSONObjects)) {
+									return null;
+								}
+
+								return _toFragmentImageClassPKReference(
+									jsonObject.getJSONObject("config"),
+									localizedJSONObjects);
+							});
 						setUrl(
 							() -> {
+								if (MapUtil.isNotEmpty(localizedJSONObjects)) {
+									return null;
+								}
+
 								if (_isSaveFragmentMappedValue(
 										jsonObject, saveMapping)) {
 
@@ -590,7 +633,7 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 
 								return new FragmentInlineValue() {
 									{
-										value_i18n = localeMap;
+										value_i18n = localizedValues;
 									}
 								};
 							});
@@ -618,19 +661,44 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 								jsonObject);
 						}
 
-						Map<String, String> localeMap = _toLocaleMap(
-							jsonObject);
+						Map<String, String> localizedValues =
+							_toLocalizedValues(jsonObject);
 
-						if (MapUtil.isEmpty(localeMap)) {
+						if (MapUtil.isEmpty(localizedValues)) {
 							return null;
 						}
 
 						return new FragmentInlineValue() {
 							{
-								value_i18n = localeMap;
+								value_i18n = localizedValues;
 							}
 						};
 					});
+			}
+		};
+	}
+
+	private FragmentImageClassPKReference _toFragmentImageClassPKReference(
+		JSONObject configJSONObject,
+		Map<String, JSONObject> localizedJSONObjects) {
+
+		JSONObject imageConfigurationJSONObject =
+			configJSONObject.getJSONObject("imageConfiguration");
+
+		return new FragmentImageClassPKReference() {
+			{
+				classPKReferences = _toClassPKReferences(localizedJSONObjects);
+				fragmentImageConfiguration = new FragmentImageConfiguration() {
+					{
+						landscapeMobile =
+							imageConfigurationJSONObject.getString(
+								"landscapeMobile", "auto");
+						portraitMobile = imageConfigurationJSONObject.getString(
+							"portraitMobile", "auto");
+						tablet = imageConfigurationJSONObject.getString(
+							"tablet", "auto");
+					}
+				};
 			}
 		};
 	}
@@ -835,7 +903,33 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 		};
 	}
 
-	private Map<String, String> _toLocaleMap(JSONObject jsonObject) {
+	private Map<String, JSONObject> _toLocalizedValueJSONObjects(
+		JSONObject jsonObject) {
+
+		return new HashMap<String, JSONObject>() {
+			{
+				List<String> availableLanguageIds = _getAvailableLanguageIds();
+
+				Set<String> keys = jsonObject.keySet();
+
+				Iterator<String> iterator = keys.iterator();
+
+				while (iterator.hasNext()) {
+					String key = iterator.next();
+
+					JSONObject valueJSONObject = jsonObject.getJSONObject(key);
+
+					if (availableLanguageIds.contains(key) &&
+						(valueJSONObject != null)) {
+
+						put(key, valueJSONObject);
+					}
+				}
+			}
+		};
+	}
+
+	private Map<String, String> _toLocalizedValues(JSONObject jsonObject) {
 		return new HashMap<String, String>() {
 			{
 				List<String> availableLanguageIds = _getAvailableLanguageIds();
@@ -856,7 +950,7 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 	}
 
 	private FragmentInlineValue _toTitleFragmentInlineValue(
-		JSONObject jsonObject, Map<String, String> map) {
+		JSONObject jsonObject, Map<String, String> localizedValues) {
 
 		JSONObject configJSONObject = jsonObject.getJSONObject("config");
 
@@ -866,7 +960,9 @@ public class PageFragmentInstanceDefinitionDTOConverter {
 
 		String imageTitle = configJSONObject.getString("imageTitle");
 
-		if (Validator.isNull(imageTitle) || map.containsValue(imageTitle)) {
+		if (Validator.isNull(imageTitle) ||
+			localizedValues.containsValue(imageTitle)) {
+
 			return null;
 		}
 

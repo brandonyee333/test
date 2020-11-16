@@ -18,6 +18,7 @@ import com.liferay.dispatch.executor.BaseDispatchTaskExecutor;
 import com.liferay.dispatch.executor.DispatchTaskExecutor;
 import com.liferay.dispatch.executor.DispatchTaskExecutorOutput;
 import com.liferay.dispatch.model.DispatchTrigger;
+import com.liferay.dispatch.repository.DispatchFileRepository;
 import com.liferay.dispatch.service.DispatchTriggerLocalService;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
@@ -65,7 +66,7 @@ public class TalendDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			DispatchTaskExecutorOutput dispatchTaskExecutorOutput)
 		throws IOException, PortalException {
 
-		FileEntry fileEntry = _talendDispatchTaskExecutorHelper.getFileEntry(
+		FileEntry fileEntry = _dispatchFileRepository.fetchFileEntry(
 			dispatchTrigger.getDispatchTriggerId());
 
 		InputStream inputStream = fileEntry.getContentStream();
@@ -129,8 +130,9 @@ public class TalendDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 	}
 
 	private List<String> _getArguments(
-		DispatchTrigger dispatchTrigger, String rootDirectoryName,
-		String shFileName) {
+			DispatchTrigger dispatchTrigger, String rootDirectoryName,
+			String shFileName)
+		throws PortalException {
 
 		List<String> arguments = new ArrayList<>();
 
@@ -182,10 +184,10 @@ public class TalendDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 	}
 
 	@Reference
-	private DispatchTriggerLocalService _dispatchTriggerLocalService;
+	private DispatchFileRepository _dispatchFileRepository;
 
 	@Reference
-	private TalendDispatchTaskExecutorHelper _talendDispatchTaskExecutorHelper;
+	private DispatchTriggerLocalService _dispatchTriggerLocalService;
 
 	private class DispatchTalendCollectorOutputProcessor
 		extends CollectorOutputProcessor {

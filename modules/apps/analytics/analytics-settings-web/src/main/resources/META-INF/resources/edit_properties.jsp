@@ -53,7 +53,7 @@ String keywords = ParamUtil.getString(request, "keywords");
 
 				<div class="mt-4">
 					<liferay-portlet:renderURL varImpl="selectSitesURL">
-						<portlet:param name="mvcRenderCommandName" value="/view_configuration_screen" />
+						<portlet:param name="mvcRenderCommandName" value="/configuration_admin/view_configuration_screen" />
 						<portlet:param name="configurationScreenKey" value="1-synced-sites" />
 					</liferay-portlet:renderURL>
 
@@ -88,7 +88,7 @@ String keywords = ParamUtil.getString(request, "keywords");
 			</div>
 		</c:when>
 		<c:otherwise>
-			<clay:management-toolbar
+			<clay:management-toolbar-v2
 				displayContext="<%= new ChannelManagementToolbarDisplayContext(channelDisplayContext, request, liferayPortletRequest, liferayPortletResponse) %>"
 				elementClasses="custom-management-toolbar"
 			/>

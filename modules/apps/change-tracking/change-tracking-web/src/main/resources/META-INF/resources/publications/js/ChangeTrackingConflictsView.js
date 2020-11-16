@@ -14,14 +14,233 @@
 
 import ClayAlert from '@clayui/alert';
 import {ClayButtonWithIcon} from '@clayui/button';
+import ClayDatePicker from '@clayui/date-picker';
 import {Align, ClayDropDownWithItems} from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import ClayList from '@clayui/list';
 import ClayModal, {useModal} from '@clayui/modal';
 import {ClayPaginationBarWithBasicItems} from '@clayui/pagination-bar';
+import ClayPanel from '@clayui/panel';
+import ClayTimePicker from '@clayui/time-picker';
 import React, {useState} from 'react';
 
-const ChangeTrackingConflictsView = ({conflicts, spritemap}) => {
+import ChangeTrackingBaseScheduleView from './ChangeTrackingBaseScheduleView';
+
+class ChangeTrackingConflictsView extends ChangeTrackingBaseScheduleView {
+	constructor(props) {
+		super(props);
+
+		const {
+			publishURL,
+			redirect,
+			resolvedConflicts,
+			schedule,
+			scheduleURL,
+			spritemap,
+			timeZone,
+			unresolvedConflicts,
+		} = props;
+
+		this.publishURL = publishURL;
+		this.redirect = redirect;
+		this.resolvedConflicts = resolvedConflicts;
+		this.schedule = schedule;
+		this.scheduleURL = scheduleURL;
+		this.spritemap = spritemap;
+		this.timeZone = timeZone;
+		this.unresolvedConflicts = unresolvedConflicts;
+
+		this.state = {
+			date: null,
+			dateError: '',
+			formError: null,
+			time: {
+				hours: '--',
+				minutes: '--',
+			},
+			timeError: '',
+			validationError: null,
+		};
+	}
+
+	handleSubmit() {
+		if (!this.schedule) {
+			submitForm(document.hrefFm, this.publishURL);
+
+			return;
+		}
+
+		this.doSchedule(this.scheduleURL);
+	}
+
+	render() {
+		return (
+			<div className="sheet sheet-lg">
+				<div className="sheet-header">
+					<h2 className="sheet-title">
+						{Liferay.Language.get('conflicting-changes')}
+					</h2>
+
+					{this.unresolvedConflicts.length > 0 && (
+						<ClayAlert
+							displayType="warning"
+							spritemap={this.spritemap}
+							title={Liferay.Language.get(
+								'this-publication-contains-conflicting-changes-that-must-be-manually-resolved-before-publishing'
+							)}
+						/>
+					)}
+
+					{this.unresolvedConflicts.length == 0 && (
+						<ClayAlert
+							displayType="success"
+							spritemap={this.spritemap}
+							title={Liferay.Language.get(
+								'no-unresolved-conflicts-ready-to-publish'
+							)}
+						/>
+					)}
+				</div>
+
+				<div className="sheet-section">
+					{this.unresolvedConflicts.length > 0 && (
+						<ClayPanel
+							collapsable
+							defaultExpanded
+							displayTitle={
+								Liferay.Language.get(
+									'needs-manual-resolution'
+								) +
+								' (' +
+								this.unresolvedConflicts.length +
+								')'
+							}
+							showCollapseIcon={true}
+							spritemap={this.spritemap}
+						>
+							<ClayPanel.Body>
+								<ConflictsTable
+									conflicts={this.unresolvedConflicts}
+									spritemap={this.spritemap}
+								/>
+							</ClayPanel.Body>
+						</ClayPanel>
+					)}
+				</div>
+				<div className="sheet-section">
+					{this.resolvedConflicts.length > 0 && (
+						<ClayPanel
+							collapsable
+							displayTitle={
+								Liferay.Language.get('automatically-resolved') +
+								' (' +
+								this.resolvedConflicts.length +
+								')'
+							}
+							showCollapseIcon={true}
+							spritemap={this.spritemap}
+						>
+							<ClayPanel.Body>
+								<ConflictsTable
+									conflicts={this.resolvedConflicts}
+									spritemap={this.spritemap}
+								/>
+							</ClayPanel.Body>
+						</ClayPanel>
+					)}
+				</div>
+
+				{this.schedule && (
+					<div className="sheet-section">
+						<div className="sheet-subtitle">
+							{Liferay.Language.get('schedule')}
+						</div>
+
+						<label>{Liferay.Language.get('date-and-time')}</label>
+						<div className="input-group">
+							<div className={this.getDateClassName()}>
+								<div>
+									<ClayDatePicker
+										disabled={
+											this.unresolvedConflicts.length > 0
+										}
+										onValueChange={this.handleDateChange}
+										placeholder="YYYY-MM-DD"
+										spritemap={this.spritemap}
+										timezone={this.timeZone}
+										value={this.state.date}
+										years={{
+											end: new Date().getFullYear() + 1,
+											start: new Date().getFullYear() - 1,
+										}}
+									/>
+
+									{this.getDateHelpText()}
+								</div>
+							</div>
+							<div className={this.getTimeClassName()}>
+								<div>
+									<ClayTimePicker
+										disabled={
+											this.unresolvedConflicts.length > 0
+										}
+										onInputChange={this.handleTimeChange}
+										spritemap={this.spritemap}
+										timezone={this.timeZone}
+										values={this.state.time}
+									/>
+
+									{this.getTimeHelpText()}
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{this.state.formError && (
+					<ClayAlert
+						displayType="danger"
+						spritemap={this.spritemap}
+						title={this.state.formError}
+					/>
+				)}
+
+				<div className="sheet-footer sheet-footer-btn-block-sm-down">
+					<div className="btn-group">
+						<div className="btn-group-item">
+							<button
+								className={
+									this.unresolvedConflicts.length > 0
+										? 'btn btn-primary disabled'
+										: 'btn btn-primary'
+								}
+								onClick={() => this.handleSubmit()}
+								type="button"
+							>
+								{this.schedule
+									? Liferay.Language.get('schedule')
+									: Liferay.Language.get('publish')}
+							</button>
+						</div>
+						<div className="btn-group-item">
+							<button
+								className="btn btn-secondary"
+								onClick={() =>
+									Liferay.Util.navigate(this.redirect)
+								}
+								type="button"
+							>
+								{Liferay.Language.get('cancel')}
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+}
+
+const ConflictsTable = ({conflicts, spritemap}) => {
 	const [delta, setDelta] = useState(20);
 	const [page, setPage] = useState(1);
 	const [viewConflict, setViewConflict] = useState(null);

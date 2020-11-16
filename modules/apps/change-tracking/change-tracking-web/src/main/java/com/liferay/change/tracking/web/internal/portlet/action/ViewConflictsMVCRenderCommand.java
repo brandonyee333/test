@@ -50,7 +50,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + CTPortletKeys.PUBLICATIONS,
-		"mvc.command.name=/publications/view_conflicts"
+		"mvc.command.name=/change_tracking/view_conflicts"
 	},
 	service = MVCRenderCommand.class
 )
@@ -87,7 +87,7 @@ public class ViewConflictsMVCRenderCommand implements MVCRenderCommand {
 			renderRequest.setAttribute(
 				CTWebKeys.VIEW_CONFLICTS_DISPLAY_CONTEXT,
 				new ViewConflictsDisplayContext(
-					activeCtCollectionId, ctCollection, conflictInfoMap,
+					activeCtCollectionId, conflictInfoMap, ctCollection,
 					_ctDisplayRendererRegistry, _ctEntryLocalService, _language,
 					_portal, renderRequest, renderResponse));
 

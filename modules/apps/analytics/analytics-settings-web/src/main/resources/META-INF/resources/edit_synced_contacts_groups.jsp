@@ -19,7 +19,7 @@
 <%
 PortletURL portletURL = renderResponse.createRenderURL();
 
-portletURL.setParameter("mvcRenderCommandName", "/view_configuration_screen");
+portletURL.setParameter("mvcRenderCommandName", "/configuration_admin/view_configuration_screen");
 
 boolean includeSyncContactsFields = ParamUtil.getBoolean(request, "includeSyncContactsFields");
 
@@ -84,7 +84,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(resourceBundle, "
 	UserGroupDisplayContext userGroupDisplayContext = new UserGroupDisplayContext(renderRequest, renderResponse);
 	%>
 
-	<clay:management-toolbar
+	<clay:management-toolbar-v2
 		displayContext="<%= new UserGroupManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, userGroupDisplayContext) %>"
 	/>
 

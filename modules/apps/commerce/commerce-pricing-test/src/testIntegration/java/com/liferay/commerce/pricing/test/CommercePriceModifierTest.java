@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
@@ -69,6 +70,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Riccardo Alberti
  */
+@DataGuard(scope = DataGuard.Scope.METHOD)
 @RunWith(Arquillian.class)
 public class CommercePriceModifierTest {
 
@@ -149,12 +151,12 @@ public class CommercePriceModifierTest {
 		BigDecimal amount = BigDecimal.valueOf(10);
 
 		CommercePriceEntry commercePriceEntry1 = _addCommercePriceEntry(
-			cpDefinition1.getCProductId(), cpInstance1.getCPInstanceUuid(),
-			commercePriceList.getCommercePriceListId(), "", price1);
+			"", cpDefinition1.getCProductId(), cpInstance1.getCPInstanceUuid(),
+			commercePriceList.getCommercePriceListId(), price1);
 
 		CommercePriceEntry commercePriceEntry2 = _addCommercePriceEntry(
-			cpDefinition2.getCProductId(), cpInstance2.getCPInstanceUuid(),
-			commercePriceList.getCommercePriceListId(), "", price2);
+			"", cpDefinition2.getCProductId(), cpInstance2.getCPInstanceUuid(),
+			commercePriceList.getCommercePriceListId(), price2);
 
 		CommercePriceModifier commercePriceModifier =
 			CommercePriceModifierTestUtil.addCommercePriceModifier(
@@ -256,12 +258,12 @@ public class CommercePriceModifierTest {
 		BigDecimal price2 = BigDecimal.valueOf(RandomTestUtil.randomDouble());
 
 		CommercePriceEntry commercePriceEntry1 = _addCommercePriceEntry(
-			cpDefinition1.getCProductId(), cpInstance1.getCPInstanceUuid(),
-			commercePriceList.getCommercePriceListId(), "", price1);
+			"", cpDefinition1.getCProductId(), cpInstance1.getCPInstanceUuid(),
+			commercePriceList.getCommercePriceListId(), price1);
 
 		CommercePriceEntry commercePriceEntry2 = _addCommercePriceEntry(
-			cpDefinition2.getCProductId(), cpInstance2.getCPInstanceUuid(),
-			commercePriceList.getCommercePriceListId(), "", price2);
+			"", cpDefinition2.getCProductId(), cpInstance2.getCPInstanceUuid(),
+			commercePriceList.getCommercePriceListId(), price2);
 
 		BigDecimal amount1 = BigDecimal.valueOf(-10);
 
@@ -366,8 +368,8 @@ public class CommercePriceModifierTest {
 		BigDecimal amount = BigDecimal.valueOf(RandomTestUtil.randomDouble());
 
 		CommercePriceEntry commercePriceEntry = _addCommercePriceEntry(
-			cpDefinition.getCProductId(), cpInstance.getCPInstanceUuid(),
-			commercePriceList.getCommercePriceListId(), "", price);
+			"", cpDefinition.getCProductId(), cpInstance.getCPInstanceUuid(),
+			commercePriceList.getCommercePriceListId(), price);
 
 		CommercePriceModifier commercePriceModifier =
 			CommercePriceModifierTestUtil.addCommercePriceModifier(
@@ -407,8 +409,8 @@ public class CommercePriceModifierTest {
 	public FrutillaRule frutillaRule = new FrutillaRule();
 
 	private CommercePriceEntry _addCommercePriceEntry(
-			long cpProductId, String cpInstanceUuid, long commercePriceListId,
-			String externalReferenceCode, BigDecimal price)
+			String externalReferenceCode, long cpProductId,
+			String cpInstanceUuid, long commercePriceListId, BigDecimal price)
 		throws Exception {
 
 		CommercePriceList commercePriceList =
@@ -420,8 +422,8 @@ public class CommercePriceModifierTest {
 				commercePriceList.getGroupId());
 
 		return CommercePriceEntryLocalServiceUtil.addCommercePriceEntry(
-			cpProductId, cpInstanceUuid, commercePriceListId,
-			externalReferenceCode, price, BigDecimal.ZERO, serviceContext);
+			externalReferenceCode, cpProductId, cpInstanceUuid,
+			commercePriceListId, price, BigDecimal.ZERO, serviceContext);
 	}
 
 	@Inject

@@ -20,7 +20,7 @@
 AssetDisplayPagesItemSelectorViewDisplayContext assetDisplayPagesItemSelectorViewDisplayContext = (AssetDisplayPagesItemSelectorViewDisplayContext)request.getAttribute(AssetDisplayPageItemSelectorWebKeys.ASSET_DISPLAY_PAGES_ITEM_SELECTOR_VIEW_DISPLAY_CONTEXT);
 %>
 
-<clay:management-toolbar
+<clay:management-toolbar-v2
 	displayContext="<%= new AssetDisplayPagesItemSelectorViewManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, assetDisplayPagesItemSelectorViewDisplayContext) %>"
 />
 
@@ -59,14 +59,19 @@ AssetDisplayPagesItemSelectorViewDisplayContext assetDisplayPagesItemSelectorVie
 		'click',
 		'.layout-page-template-entry',
 		function (event) {
-			dom.removeClasses(
-				document.querySelectorAll('.form-check-card.active'),
-				'active'
-			);
-			dom.addClasses(
-				dom.closest(event.delegateTarget, '.form-check-card'),
-				'active'
-			);
+			var activeCards = document.querySelectorAll('.form-check-card.active');
+
+			if (activeCards.length) {
+				activeCards.forEach(function (card) {
+					card.classList.remove('active');
+				});
+			}
+
+			var newSelectedCard = event.delegateTarget.closest('.form-check-card');
+
+			if (newSelectedCard) {
+				newSelectedCard.classList.add('active');
+			}
 
 			Liferay.Util.getOpener().Liferay.fire(
 				'<%= assetDisplayPagesItemSelectorViewDisplayContext.getItemSelectedEventName() %>',

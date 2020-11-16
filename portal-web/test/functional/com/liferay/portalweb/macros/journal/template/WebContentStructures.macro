@@ -3,19 +3,23 @@ definition {
 	macro addCP {
 		LexiconEntry.gotoAdd();
 
-		AssertVisible(locator1 = "DDMEditStructure#FORM_BUILDER");
+		AssertVisible(locator1 = "Sidebar#FORM_BUILDER");
 
 		WebContentStructures.addName(structureName = "${structureName}");
 
 		if (isSet(structureKey)) {
+			if (IsElementNotPresent(locator1 = "Sidebar#ACTIVE_TAB", key_tabName = "Properties")) {
+				Navigator.gotoSidebarTab(tabName = "Properties");
+			}
 			PortletEntry.inputStructureKeyTextInput(structureKey = "${structureKey}");
 		}
 
 		if (isSet(structureDescription)) {
+			if (IsElementNotPresent(locator1 = "Sidebar#ACTIVE_TAB", key_tabName = "Properties")) {
+				Navigator.gotoSidebarTab(tabName = "Properties");
+			}
 			PortletEntry.inputDescriptionTextInput(description = "${structureDescription}");
 		}
-
-		SelectFrame(value1 = "relative=top");
 	}
 
 	macro addFavoriteStructure {
@@ -78,6 +82,30 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
+	macro copyCP {
+		var key_ddlDataDefinitionName = "${structureName}";
+
+		Click(locator1 = "DDMSelectStructure#DDM_STRUCTURE_ELLIPSIS");
+
+		MenuItem.click(menuItem = "Copy");
+
+		if (isSet(structureCopyName)) {
+			PortletEntry.inputName(name = "${structureCopyName}");
+		}
+
+		if ("${copyTemplates}" == "true") {
+			Check(
+				checkboxName = "Copy Templates",
+				locator1 = "Checkbox#ANY_CHECKBOX");
+		}
+
+		AssertClick(
+			locator1 = "Button#COPY",
+			value1 = "Copy");
+
+		VerifyElementPresent(locator1 = "Message#SUCCESS");
+	}
+
 	macro deleteCP {
 		Navigator.gotoNavItem(navItem = "Structures");
 
@@ -98,6 +126,38 @@ definition {
 		}
 		else {
 			Alert.viewSuccessMessage();
+		}
+	}
+
+	macro editStructureDefaultValuesCP {
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit Default Values",
+			rowEntry = "${structureName}");
+
+		for (var structureFieldName : list "${editStructureFieldNames}") {
+			var key_fieldDefaultValue = "${editStructureFieldNames}";
+			var key_fieldName = "${structureFieldName}";
+			Type(
+				locator1 = "TextInput#DE_DDM",
+				value1 = "${fieldPredefinedValue}");
+		}
+
+		Button.clickSave();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Web Content");
+
+		Navigator.gotoNavItem(navItem = "Structures");
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit Default Values",
+			rowEntry = "${structureName}");
+
+		for (var structureFieldName : list "${editStructureFieldNames}") {
+			AssertTextEquals(
+				locator1 = "TextInput#DE_DDM",
+				value1 = "${fieldPredefinedValue}");
 		}
 	}
 

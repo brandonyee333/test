@@ -51,6 +51,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -82,6 +83,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Luca Pellizzon
  */
+@DataGuard(scope = DataGuard.Scope.METHOD)
 @RunWith(Arquillian.class)
 public class CommerceOrderDiscountTargetGrossV2Test {
 
@@ -185,9 +187,9 @@ public class CommerceOrderDiscountTargetGrossV2Test {
 				catalog.getGroupId());
 
 		CommercePriceEntryTestUtil.addCommercePriceEntry(
-			cpDefinition.getCProductId(),
+			"", cpDefinition.getCProductId(),
 			cpInstanceDiscount.getCPInstanceUuid(),
-			commercePriceList.getCommercePriceListId(), "",
+			commercePriceList.getCommercePriceListId(),
 			BigDecimal.valueOf(0.9));
 
 		CommerceInventoryWarehouse commerceInventoryWarehouse =
@@ -310,16 +312,16 @@ public class CommerceOrderDiscountTargetGrossV2Test {
 
 		CommercePriceEntry commercePriceEntryDiscount =
 			CommercePriceEntryTestUtil.addCommercePriceEntry(
-				cpDefinition.getCProductId(),
+				"", cpDefinition.getCProductId(),
 				cpInstanceDiscount.getCPInstanceUuid(),
-				commercePriceList.getCommercePriceListId(), "",
+				commercePriceList.getCommercePriceListId(),
 				BigDecimal.valueOf(25));
 
 		CommercePriceEntry commercePriceEntryPlain =
 			CommercePriceEntryTestUtil.addCommercePriceEntry(
-				cpDefinitionPlan.getCProductId(),
+				"", cpDefinitionPlan.getCProductId(),
 				cpInstancePlain.getCPInstanceUuid(),
-				commercePriceList.getCommercePriceListId(), "",
+				commercePriceList.getCommercePriceListId(),
 				BigDecimal.valueOf(10));
 
 		CommerceInventoryWarehouse commerceInventoryWarehouse =
@@ -481,16 +483,16 @@ public class CommerceOrderDiscountTargetGrossV2Test {
 
 		CommercePriceEntry commercePriceEntryDiscount =
 			CommercePriceEntryTestUtil.addCommercePriceEntry(
-				cpDefinition.getCProductId(),
+				"", cpDefinition.getCProductId(),
 				cpInstanceDiscount.getCPInstanceUuid(),
-				commercePriceList.getCommercePriceListId(), "",
+				commercePriceList.getCommercePriceListId(),
 				BigDecimal.valueOf(25));
 
 		CommercePriceEntry commercePriceEntryPlain =
 			CommercePriceEntryTestUtil.addCommercePriceEntry(
-				cpDefinitionPlan.getCProductId(),
+				"", cpDefinitionPlan.getCProductId(),
 				cpInstancePlain.getCPInstanceUuid(),
-				commercePriceList.getCommercePriceListId(), "",
+				commercePriceList.getCommercePriceListId(),
 				BigDecimal.valueOf(10));
 
 		CommerceInventoryWarehouse commerceInventoryWarehouse =

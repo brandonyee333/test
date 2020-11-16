@@ -67,6 +67,19 @@ const fieldWithOptions = (fieldType) => {
 	);
 };
 
+const getFieldOptions = (fieldName, pages) => {
+	let options = [];
+	const visitor = new PagesVisitor(pages);
+
+	const field = visitor.findField((field) => {
+		return field.fieldName === fieldName;
+	});
+
+	options = field ? field.options : [];
+
+	return options;
+};
+
 const getFieldType = (fieldName, pages) => {
 	return getFieldProperty(pages, fieldName, 'type');
 };
@@ -309,17 +322,20 @@ const findInvalidRule = (rule) => {
 	return findRuleByFieldName('', [rule]);
 };
 
-const getFieldOptions = (fieldName, pages) => {
-	let options = [];
-	const visitor = new PagesVisitor(pages);
+const replaceFieldNameByFieldLabel = (expression, fields) => {
+	const operands = expression.match(DEFAULT_FIELD_NAMES_REGEX_FOR_EXPRESSION);
 
-	const field = visitor.findField((field) => {
-		return field.fieldName === fieldName;
+	let newExpression = expression;
+
+	operands.map((operand) => {
+		return fields.forEach((field) => {
+			if (field.fieldName === operand) {
+				newExpression = newExpression.replace(operand, field.label);
+			}
+		});
 	});
 
-	options = field ? field.options : [];
-
-	return options;
+	return newExpression;
 };
 
 export default {
@@ -333,5 +349,6 @@ export default {
 	formatRules,
 	getFieldOptions,
 	getFieldType,
+	replaceFieldNameByFieldLabel,
 	syncActions,
 };

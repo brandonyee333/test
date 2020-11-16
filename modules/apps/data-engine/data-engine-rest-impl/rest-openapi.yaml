@@ -266,6 +266,9 @@ components:
                 id:
                     format: int64
                     type: integer
+                status:
+                    readOnly: true
+                    type: integer
         DataRecordCollection:
             description:
                 https://www.schema.org/DataRecordCollection

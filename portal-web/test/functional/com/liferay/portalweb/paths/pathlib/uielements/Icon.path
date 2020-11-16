@@ -49,6 +49,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>AVAILABLE_TRANSLATION</td>
+	<td>//*[contains(@class,'translation-manager')]//span[contains(@locale,'${key_localizedLanguage}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>AVAILABLE_TRANSLATION_DELETE</td>
+	<td>//span[contains(@locale,'${key_localizedLanguage}')]/span[contains(@class,'delete')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>BACK</td>
 	<td>//a[span//*[name()='svg'][contains(@class,'icon-angle-left')]] | //a[contains(@class,'icon-circle-arrow-left') and contains(@class,'previous-level')] | //span[contains(@class,'icon-angle-left')]</td>
 	<td></td>
@@ -300,6 +310,11 @@
 </tr>
 <!--ELLIPSIS-->
 <tr>
+	<td>ANY_VERTICAL_ELLIPSIS</td>
+	<td>//*[contains(.,'${key_text}')]//*[*[name()='svg'][contains(@class,'icon-ellipsis')]]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>VERTICAL_ELLIPSIS_BUTTON</td>
 	<td>//div[contains(@class,'dropdown-action')]//button[contains(@class,'dropdown-toggle')]</td>
 	<td></td>
@@ -412,6 +427,11 @@
 <tr>
 	<td>TABLE_VERTICAL_ELLIPSIS</td>
 	<td>//tr[contains(.,'${key_rowEntry}')]//a[span/*[name()='svg'][contains(@class,'icon-ellipsis')]]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SVG_ELLIPSIS</td>
+	<td>//*[name()='svg'][contains(@class,'icon-ellipsis')]</td>
 	<td></td>
 </tr>
 <tr>

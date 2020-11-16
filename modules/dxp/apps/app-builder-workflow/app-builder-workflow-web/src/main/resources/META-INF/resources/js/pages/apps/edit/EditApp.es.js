@@ -12,7 +12,7 @@
 import {AppContext} from 'app-builder-web/js/AppContext.es';
 import ControlMenu from 'app-builder-web/js/components/control-menu/ControlMenu.es';
 import {Loading} from 'app-builder-web/js/components/loading/Loading.es';
-import {getDataObjects} from 'app-builder-web/js/pages/apps/SelectObjectsDropDown.es';
+import {getDataObjects} from 'app-builder-web/js/components/select-objects/SelectObjects.es';
 import EditAppContext, {
 	UPDATE_APP,
 	reducer,
@@ -264,7 +264,7 @@ export default ({
 
 		fetch(
 			createResourceURL(baseResourceURL, {
-				p_p_resource_id: `/app_builder/${resource}_workflow_app`,
+				p_p_resource_id: `/app_builder_workflow/${resource}_app_builder_app`,
 			}),
 			{
 				body: new URLSearchParams(Liferay.Util.ns(namespace, params)),

@@ -966,6 +966,119 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 		</sequential>
 	</macrodef>
 
+	<macrodef name="get-test-case-properties-content">
+		<attribute default="batch-jdk8" name="test.batch.name" />
+
+		<sequential>
+			<var name="test.case.properties.content" unset="true" />
+
+			<local name="test.batch.name" />
+
+			<property name="test.batch.name" value="@{test.batch.name}" />
+
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.Job;
+					import com.liferay.jenkins.results.parser.JobFactory;
+					import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
+					import com.liferay.jenkins.results.parser.test.clazz.group.SegmentTestClassGroup;
+					import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
+
+					public BatchTestClassGroup.BuildProfile getBatchBuildProfile() {
+						String buildProfile = project.getProperty("build.profile");
+
+						if ((buildProfile != null) && buildProfile.equals("dxp")) {
+							return BatchTestClassGroup.BuildProfile.DXP;
+						}
+
+						return BatchTestClassGroup.BuildProfile.PORTAL;
+					}
+
+					public String getBranchName() {
+						String branchName = project.getProperty("env.TEST_PORTAL_BRANCH_NAME");
+
+						if ((branchName == null) || branchName.isEmpty()) {
+							branchName = project.getProperty("liferay.portal.branch");
+						}
+
+						return branchName;
+					}
+
+					public Job.BuildProfile getJobBuildProfile() {
+						String buildProfile = project.getProperty("build.profile");
+
+						if ((buildProfile != null) && buildProfile.equals("dxp")) {
+							return Job.BuildProfile.DXP;
+						}
+
+						return Job.BuildProfile.PORTAL;
+					}
+
+					public String getRepositoryName() {
+						String repositoryName = project.getProperty("env.REPOSITORY_NAME");
+
+						if ((repositoryName != null) && !repositoryName.isEmpty()) {
+							return repositoryName;
+						}
+
+						String branchName = getBranchName();
+
+						if (branchName.equals("master")) {
+							return "liferay-portal";
+						}
+
+						return "liferay-portal-ee";
+					}
+
+					public int getSegmentID() {
+						String jobVariant = project.getProperty("env.JOB_VARIANT");
+
+						String jobVariantRegex = "[^/]+/(\\d+)";
+
+						if ((jobVariant == null) || (!jobVariant.matches(jobVariantRegex))) {
+							return 0;
+						}
+
+						return Integer.valueOf(jobVariant.replaceAll(jobVariantRegex, "$1"));
+					}
+
+					public String getTestSuite() {
+						String testSuite = project.getProperty("env.CI_TEST_SUITE");
+
+						if ((testSuite == null) || testSuite.isEmpty()) {
+							testSuite = "default";
+						}
+
+						return testSuite;
+					}
+
+					public String getTopLevelJobName() {
+						String topLevelJobName = project.getProperty("env.TOP_LEVEL_JOB_NAME");
+
+						if ((topLevelJobName == null) || topLevelJobName.isEmpty()) {
+							topLevelJobName = "default";
+						}
+
+						return topLevelJobName;
+					}
+
+					Job job = JobFactory.newJob(getTopLevelJobName(), getTestSuite(), getBranchName(), getRepositoryName(), getJobBuildProfile());
+
+					BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), getBatchBuildProfile(), job);
+
+					if (job.isSegmentEnabled()) {
+						SegmentTestClassGroup segmentTestClassGroup = batchTestClassGroup.getSegmentTestClassGroup(getSegmentID());
+
+						project.setProperty("test.case.properties.content", segmentTestClassGroup.getTestCasePropertiesContent());
+					}
+					else {
+						project.setProperty("test.case.properties.content", batchTestClassGroup.getTestCasePropertiesContent());
+					}
+				]]>
+			</beanshell>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="get-test-class">
 		<sequential>
 			<fail message="Please set the property ${test.class}." unless="test.class" />
@@ -1678,7 +1791,7 @@ war.path=${app.server.portal.dir}/</echo>
 		<sequential>
 			<var name="blacklistBundleSymbolicNames" value="[&quot;com.liferay.portal.mobile.device.detection.fiftyonedegrees.api&quot;,&quot;com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise&quot;,&quot;com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise.test.data&quot;,&quot;com.liferay.portal.mobile.device.detection.fiftyonedegrees&quot;]" />
 
-			<echo file="${liferay.home}/osgi/configs/com.liferay.portal.bundle.blacklist.internal.BundleBlacklistConfiguration.config">blacklistBundleSymbolicNames=${blacklistBundleSymbolicNames}</echo>
+			<echo file="${liferay.home}/osgi/configs/com.liferay.portal.bundle.blacklist.internal.configuration.BundleBlacklistConfiguration.config">blacklistBundleSymbolicNames=${blacklistBundleSymbolicNames}</echo>
 		</sequential>
 	</macrodef>
 
@@ -2395,7 +2508,7 @@ jdbc.default.password=${database.password}</echo>
 
 	<macrodef name="prepare-portal-search-osgi-configuration">
 		<sequential>
-			<echo file="${liferay.home}/osgi/configs/com.liferay.portal.search.internal.index.IndexStatusManagerInternalConfiguration.config">suppressIndexReadOnly=B"true"</echo>
+			<echo file="${liferay.home}/osgi/configs/com.liferay.portal.search.internal.index.configuration.IndexStatusManagerInternalConfiguration.config">suppressIndexReadOnly=B"true"</echo>
 		</sequential>
 	</macrodef>
 
@@ -3031,79 +3144,9 @@ ${tomcat-gc-log}
 		<sequential>
 			<fail message="Please set the property ${test.batch.name}." unless="test.batch.name" />
 
-			<local name="portal.branch.name" />
+			<get-test-case-properties-content test.batch.name="${test.batch.name}" />
 
-			<condition else="${git.working.branch.name}" property="portal.branch.name" value="${env.TEST_PORTAL_BRANCH_NAME}">
-				<isset property="env.TEST_PORTAL_BRANCH_NAME" />
-			</condition>
-
-			<local name="top.level.job.name" />
-
-			<condition else="default" property="top.level.job.name" value="${env.TOP_LEVEL_JOB_NAME}">
-				<isset property="env.TOP_LEVEL_JOB_NAME" />
-			</condition>
-
-			<beanshell>
-				<![CDATA[
-					import com.liferay.jenkins.results.parser.Job;
-					import com.liferay.jenkins.results.parser.JobFactory;
-					import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
-					import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
-					import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
-
-					Job job = JobFactory.newJob(project.getProperty("top.level.job.name"), project.getProperty("env.CI_TEST_SUITE"), project.getProperty("portal.branch.name"), project.getProperty("env.REPOSITORY_NAME"));
-
-					BatchTestClassGroup.BuildProfile buildProfile = BatchTestClassGroup.BuildProfile.PORTAL;
-
-					String testPortalBuildProfile = project.getProperty("build.profile");
-
-					if ((testPortalBuildProfile != null) && testPortalBuildProfile.equals("dxp")) {
-						buildProfile = BatchTestClassGroup.BuildProfile.DXP;
-					}
-
-					BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), buildProfile, job);
-
-					int axisCount = batchTestClassGroup.getAxisCount();
-
-					StringBuilder sb = new StringBuilder();
-
-					for (i = 0; i < axisCount; i++) {
-						AxisTestClassGroup axisTestClassGroup = batchTestClassGroup.getAxisTestClassGroup(i);
-
-						List testClassGroup = axisTestClassGroup.getTestClassFiles();
-
-						sb.append("TEST_CLASS_GROUP_");
-						sb.append(i);
-						sb.append("=");
-
-						for (File testClass : testClassGroup) {
-							sb.append(testClass.toPath());
-							sb.append(",");
-						}
-
-						if (!testClassGroup.isEmpty()) {
-							sb.setLength(sb.length() - 1);
-						}
-
-						sb.append("\n\n");
-					}
-
-					sb.append("TEST_CLASS_GROUPS=");
-
-					for (int i = 0; i < axisCount; i++) {
-						sb.append(i);
-						sb.append(" ");
-					}
-
-					if (axisCount > 0) {
-						sb.setLength(sb.length() - 1);
-					}
-
-					project.setProperty("test.class.file.names.properties.content", sb.toString());
-				]]>
-			</beanshell>
-
-			<echo file="test.class.file.names.properties">${test.class.file.names.properties.content}</echo>
+			<echo file="test.class.file.names.properties">${test.case.properties.content}</echo>
 
 			<print-file file.name="test.class.file.names.properties" />
 		</sequential>
@@ -3866,6 +3909,7 @@ go</echo>
 						<equals arg1="@{liferay.portal.bundle}" arg2="7.0.10.12" />
 						<equals arg1="@{liferay.portal.bundle}" arg2="7.0.10.13" />
 						<equals arg1="@{liferay.portal.bundle}" arg2="7.0.10.14" />
+						<equals arg1="@{liferay.portal.bundle}" arg2="7.0.10.15" />
 					</or>
 					<then>
 						<var name="app.server.tomcat.version" value="8.0.53" />
@@ -3918,6 +3962,12 @@ go</echo>
 					</or>
 					<then>
 						<var name="app.server.tomcat.version" value="9.0.33" />
+					</then>
+				</elseif>
+				<elseif>
+					<equals arg1="@{liferay.portal.bundle}" arg2="7.3.10" />
+					<then>
+						<var name="app.server.tomcat.version" value="9.0.37" />
 					</then>
 				</elseif>
 			</if>
@@ -4276,6 +4326,15 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						</or>
 						<then>
 							<echo file="${test.app.server.deploy.dir}/ROOT.war.dodeploy"></echo>
+						</then>
+					</if>
+
+					<get-testcase-property property.name="commerce.enabled" />
+
+					<if>
+						<equals arg1="${commerce.enabled}" arg2="false" />
+						<then>
+							<delete failonerror="false" file="${test.app.server.dir}/deploy/portal-commerce-license.xml" />
 						</then>
 					</if>
 
@@ -5438,9 +5497,14 @@ war.path=${app.server.portal.dir}/</echo>
 
 			<echo>${app.server.waiting.url} has loaded</echo>
 
+			<get-testcase-property property.name="commerce.enabled" />
+
 			<if>
 				<and>
 					<equals arg1="${build.profile}" arg2="dxp" />
+					<not>
+						<equals arg1="${commerce.enabled}" arg2="false" />
+					</not>
 					<or>
 						<equals arg1="${env.CI_TEST_SUITE}" arg2="portal-fixpack-release" />
 						<equals arg1="${env.CI_TEST_SUITE}" arg2="portal-hotfix-release" />
@@ -8558,7 +8622,7 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 
 		<if>
 			<not>
-				<available file="${liferay.home}/osgi/configs/com.liferay.portal.bundle.blacklist.internal.BundleBlacklistConfiguration.config" />
+				<available file="${liferay.home}/osgi/configs/com.liferay.portal.bundle.blacklist.internal.configuration.BundleBlacklistConfiguration.config" />
 			</not>
 			<then>
 				<prepare-blacklist-configuration />
@@ -9099,6 +9163,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		<get-ip-address />
 
 		<echo append="true" file="${test.ext.properties.file}">
+			app.server.type=${app.server.type}
 			component.names=${component.names}
 			get.location.max.retries=${test.get.location.max.retries}
 			get.location.timeout=${test.get.location.timeout}
@@ -9120,8 +9185,6 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			test.retry.command.wait.time=${test.retry.command.wait.time}
 		</echo>
 
-		<propertycopy from="browser.firefox.bin.file[${browser.firefox.version}]" name="browser.firefox.bin.file" silent="true" />
-
 		<if>
 			<isset property="browser.chrome.bin.args" />
 			<then>
@@ -9131,6 +9194,8 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			</then>
 		</if>
 
+		<propertycopy from="browser.chrome.bin.file[${browser.chrome.version}]" name="browser.chrome.bin.file" silent="true" />
+
 		<if>
 			<isset property="browser.chrome.bin.file" />
 			<then>
@@ -9139,6 +9204,8 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 				</echo>
 			</then>
 		</if>
+
+		<propertycopy from="browser.firefox.bin.file[${browser.firefox.version}]" name="browser.firefox.bin.file" silent="true" />
 
 		<if>
 			<isset property="browser.firefox.bin.file" />
@@ -9167,7 +9234,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			</then>
 			<else>
 				<echo append="true" file="${test.ext.properties.file}">
-					test.base.dir.name=test/
+					test.base.dir.name=${basedir.unix}/portal-web/test/functional/com/liferay/portalweb/
 				</echo>
 			</else>
 		</if>
@@ -10910,7 +10977,10 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 				<delete file="liferay-portal-tools.zip" />
 
 				<if>
-					<equals arg1="${app.server.type}" arg2="jboss" />
+					<or>
+						<equals arg1="${app.server.type}" arg2="jboss" />
+						<equals arg1="${app.server.type}" arg2="wildfly" />
+					</or>
 					<then>
 						<prepare-jboss-module-configuration />
 					</then>
@@ -12284,79 +12354,9 @@ if (ppstate.equals("normal")) {
 			<isset property="test.batch.name" />
 		</condition>
 
-		<local name="portal.branch.name" />
+		<get-test-case-properties-content test.batch.name="${test.batch.name}" />
 
-		<condition else="${git.working.branch.name}" property="portal.branch.name" value="${env.TEST_PORTAL_BRANCH_NAME}">
-			<isset property="env.TEST_PORTAL_BRANCH_NAME" />
-		</condition>
-
-		<local name="top.level.job.name" />
-
-		<condition else="default" property="top.level.job.name" value="${env.TOP_LEVEL_JOB_NAME}">
-			<isset property="env.TOP_LEVEL_JOB_NAME" />
-		</condition>
-
-		<beanshell>
-			<![CDATA[
-				import com.liferay.jenkins.results.parser.Job;
-				import com.liferay.jenkins.results.parser.JobFactory;
-				import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
-				import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
-				import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
-
-				Job job = JobFactory.newJob(project.getProperty("top.level.job.name"), project.getProperty("env.CI_TEST_SUITE"), project.getProperty("portal.branch.name"));
-
-				BatchTestClassGroup.BuildProfile buildProfile = BatchTestClassGroup.BuildProfile.PORTAL;
-
-				String testPortalBuildProfile = project.getProperty("build.profile");
-
-				if ((testPortalBuildProfile != null) && testPortalBuildProfile.equals("dxp")) {
-					buildProfile = BatchTestClassGroup.BuildProfile.DXP;
-				}
-
-				BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), buildProfile, job);
-
-				int axisCount = batchTestClassGroup.getAxisCount();
-
-				StringBuilder sb = new StringBuilder();
-
-				for (i = 0; i < axisCount; i++) {
-					AxisTestClassGroup axisTestClassGroup = batchTestClassGroup.getAxisTestClassGroup(i);
-
-					List testClassGroup = axisTestClassGroup.getTestClassFiles();
-
-					sb.append("TEST_PLUGIN_GROUP_");
-					sb.append(i);
-					sb.append("=");
-
-					for (File testClass : testClassGroup) {
-						sb.append(testClass.getName());
-						sb.append(",");
-					}
-
-					if (!testClassGroup.isEmpty()) {
-						sb.setLength(sb.length() - 1);
-					}
-
-					sb.append("\n\n");
-				}
-
-				sb.append("TEST_PLUGIN_GROUPS=");
-
-				for (int i = 0; i < axisCount; i++) {
-					sb.append(i);
-					sb.append(" ");
-				}
-
-				if (axisCount > 0) {
-					sb.setLength(sb.length() - 1);
-				}
-
-				project.setProperty("test.plugin.names.properties.content", sb.toString());
-			]]>
-		</beanshell>
-
-		<echo file="test.plugin.names.properties">${test.plugin.names.properties.content}</echo>
+		<echo file="test.plugin.names.properties">${test.case.properties.content}</echo>
 
 		<print-file file.name="test.plugin.names.properties" />
 	</target>

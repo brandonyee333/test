@@ -96,26 +96,70 @@ export function ImagePropertiesPanel({item}) {
 		(imageUrl === editableValue.defaultValue ? '' : imageUrl);
 
 	useEffect(() => {
-		if (editableElement != null) {
+		if (editableElement !== null) {
+			const {maxWidth, minWidth} = config.availableViewportSizes[
+				selectedViewportSize
+			];
+
 			const setSize = () => {
-				if (editableElement.naturalWidth) {
-					setImageSize({
+				if (
+					(!imageConfigurations.length ||
+						selectedViewportSize === VIEWPORT_SIZES.desktop) &&
+					editableElement.naturalWidth
+				) {
+					const autoImageConfiguration = {
+						...(imageConfigurations.find(
+							(imageConfiguration) =>
+								imageConfiguration.value === 'auto'
+						) || {}),
+
 						width: editableElement.naturalWidth,
+					};
+
+					setImageSize({
+						width: autoImageConfiguration.width,
 					});
+
+					if (autoImageConfiguration.size) {
+						setImageFileSize(autoImageConfiguration.size);
+					}
+				}
+				else {
+					const viewportImageConfiguration = imageConfigurations.find(
+						(imageConfiguration) =>
+							imageConfiguration.width &&
+							((imageConfiguration.width <= maxWidth &&
+								imageConfiguration.width > minWidth) ||
+								imageConfiguration.width ===
+									editableElement.naturalWidth)
+					) || {width: editableElement.naturalWidth};
+
+					setImageSize({
+						width: viewportImageConfiguration.width,
+					});
+
+					if (viewportImageConfiguration.size) {
+						setImageFileSize(viewportImageConfiguration.size);
+					}
 				}
 			};
 
-			if (editableElement.complete) {
+			if (editableElement && editableElement.complete) {
 				setSize();
 			}
-			else {
+			else if (editableElement && !editableElement.complete) {
 				editableElement.addEventListener('load', setSize);
 
 				return () =>
 					editableElement.removeEventListener('load', setSize);
 			}
 		}
-	}, [editableConfig.naturalHeight, editableElement, selectedViewportSize]);
+	}, [
+		editableConfig.naturalHeight,
+		editableElement,
+		imageConfigurations,
+		selectedViewportSize,
+	]);
 
 	useEffect(() => {
 		const fileEntryId = editableContent?.fileEntryId;
@@ -151,12 +195,11 @@ export function ImagePropertiesPanel({item}) {
 
 			return imageDescription;
 		});
-
-		setImageFileSize(selectedImageConfiguration?.size);
 	}, [
 		editableConfig.alt,
 		editableConfig.imageConfiguration,
 		editableValue,
+		imageFileSize,
 		imageConfigurations,
 		selectedViewportSize,
 		state.languageId,
@@ -265,7 +308,7 @@ export function ImagePropertiesPanel({item}) {
 			)}
 
 			{config.adaptiveMediaEnabled && imageConfigurations?.length > 0 && (
-				<ClayForm.Group>
+				<ClayForm.Group className="mb-2">
 					<label htmlFor={imageConfigurationId}>
 						{Liferay.Language.get('resolution')}
 					</label>
@@ -296,16 +339,16 @@ export function ImagePropertiesPanel({item}) {
 			)}
 
 			{config.adaptiveMediaEnabled && imageTitle && imageSize && (
-				<div className="mb-2 small">
+				<div className="page-editor__image-properties-panel__resolution-label">
 					<b>{Liferay.Language.get('width')}:</b>
-					<span className="ml-2">{imageSize.width}px</span>
+					<span className="ml-1">{imageSize.width}px</span>
 				</div>
 			)}
 
 			{config.adaptiveMediaEnabled && imageTitle && imageFileSize && (
-				<div className="mb-2 small">
+				<div className="mb-3 page-editor__image-properties-panel__resolution-label">
 					<b>{Liferay.Language.get('file-size')}:</b>
-					<span className="ml-2">
+					<span className="ml-1">
 						{Number(imageFileSize).toFixed(2)}kB
 					</span>
 				</div>

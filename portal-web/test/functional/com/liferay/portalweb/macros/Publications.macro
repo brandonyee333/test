@@ -82,7 +82,11 @@ definition {
 	}
 
 	macro deletePublication {
-		Click.waitForMenuToggleJSClick(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
+		LexiconEntry.changeDisplayStyle(displayStyle = "list");
+
+		Click(
+			key_publicationsName = "${publicationsName}",
+			locator1 = "Publications#LIST_PUBLICATION_ELLIPSIS");
 
 		ClickNoError(
 			key_menuItem = "Delete",
@@ -116,8 +120,9 @@ definition {
 		if ("${conflictingPublications}" == "true") {
 			Click(
 				key_entryTitle = "${entryTitle}",
-				locator1 = "Publications#CONFICTING_CHANGES_DISCARD_BUTTON",
-				value1 = "Discard");
+				locator1 = "Publications#CONFLICTING_CHANGES_DISCARD_ELLIPSIS");
+
+			MenuItem.click(menuItem = "Discard Change");
 		}
 		else {
 			var key_publicationsCategory = "${publicationsCategory}";
@@ -205,18 +210,17 @@ definition {
 	macro gotoViewDiffInConflictingPublications {
 		Click(
 			key_entryTitle = "${entryTitle}",
-			locator1 = "Publications#CONFICTING_PUBLICATIONS_VIEW_BUTTON",
-			value1 = "View");
+			locator1 = "Publications#CONFLICTING_CHANGES_CONTENT_LINK");
 
-		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+		Pause(locator1 = "1000");
 
 		SelectFrameTop(value1 = "relative=top");
 
 		AssertElementPresent(
 			key_iframeTitle = "${entryTitle}",
-			locator1 = "IFrame#IFRAME_TITLE");
+			locator1 = "Publications#CONFLICTING_CHANGES_DIFF_IFRAME_TITLE");
 
-		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+		SelectFrame.selectFrameNoLoading(locator1 = "Publications#CONFLICTING_CHANGES_DIFF_IFRAME");
 	}
 
 	macro publishPublication {
@@ -297,15 +301,11 @@ definition {
 				locator1 = "Publications#LIST_PUBLICATION_ELLIPSIS");
 
 			MenuItem.click(menuItem = "Schedule");
-
-			Click(locator1 = "Publications#NEXT_BUTTON");
 		}
 		else if ("${gotoReviewPublications}" == "true") {
 			Publications.gotoReviewPublications();
 
-			Click(locator1 = "Publications#SCHEDULE_BUTTON");
-
-			Click(locator1 = "Publications#NEXT_BUTTON");
+			Click(locator1 = "Publications#SCHEDULE_NAV_BAR");
 		}
 		else if ("${reschedule}" == "true") {
 			Publications.gotoScheduledPublications();
@@ -322,27 +322,51 @@ definition {
 			Click(locator1 = "Publications#PUBLICATIONS_INDICATOR_BUTTON");
 
 			MenuItem.click(menuItem = "Schedule");
-
-			Click(locator1 = "Publications#NEXT_BUTTON");
 		}
 
-		var utcHours = Time.getUTCHours();
-		var utcMinutes = Time.getUTCMinutes();
-
-		if ("${utcMinutes}" == "59") {
-			utcHours = MathUtil.sum("${utcHours}", "1");
-
-			utcMinutes = "00";
-		}
-		else {
-			utcMinutes = MathUtil.sum("${utcMinutes}", "1");
-		}
+		var publishDateDay = Time.getUTCDay();
+		var publishDateMonth = DateUtil.getCurrentMonth();
+		var publishDateYear = DateUtil.getCurrentYear();
+		var publishDate = "${publishDateYear}-${publishDateMonth}-${publishDateDay}";
 
 		Type(
-			locator1 = "Publications#PUBLISH_TIME",
-			value1 = "${utcHours}:${utcMinutes}");
+			locator1 = "Publications#PUBLISH_DATE",
+			value1 = "${publishDate}");
 
-		Click(locator1 = "Publications#SCHEDULE_BUTTON");
+		var publishTimeHours = Time.getUTCHours();
+		var publishTimeMinutes = Time.getUTCMinutes();
+
+		if ("${utcMinutes}" == "59") {
+			publishTimeHours = MathUtil.sum("${publishTimeHours}", "1");
+
+			publishTimeMinutes = "00";
+		}
+		else {
+			publishTimeMinutes = MathUtil.sum("${publishTimeMinutes}", "1");
+		}
+
+		Click(locator1 = "Publications#PUBLISH_TIME_HOURS");
+
+		DoubleClick.javaScriptDoubleClick(locator1 = "Publications#PUBLISH_TIME_HOURS");
+
+		Type.sendKeys(
+			locator1 = "Publications#PUBLISH_TIME_HOURS",
+			value1 = "${publishTimeHours}");
+
+		Click(locator1 = "Publications#PUBLISH_TIME_MINUTES");
+
+		DoubleClick.javaScriptDoubleClick(locator1 = "Publications#PUBLISH_TIME_MINUTES");
+
+		Type.sendKeys(
+			locator1 = "Publications#PUBLISH_TIME_MINUTES",
+			value1 = "${publishTimeMinutes}");
+
+		if ("${reschedule}" == "true") {
+			Click(locator1 = "Publications#RESCHEDULE_BUTTON");
+		}
+		else {
+			Click(locator1 = "Publications#SCHEDULE_BUTTON");
+		}
 	}
 
 	macro search {
@@ -391,7 +415,7 @@ definition {
 		AssertElementPresent(
 			key_entryTitle = "${entryTitle}",
 			key_successMessage = "${successMessage}",
-			locator1 = "Publications#CONFICTING_PUBLICATIONS_SUCCESS_CONTENT");
+			locator1 = "Publications#CONFLICTING_CHANGES_SUCCESS_CONTENT");
 	}
 
 	macro viewNeedsManualResolution {
@@ -400,7 +424,7 @@ definition {
 		AssertElementPresent(
 			key_entryTitle = "${entryTitle}",
 			key_warningMessage = "${warningMessage}",
-			locator1 = "Publications#CONFICTING_PUBLICATIONS_WARNING_CONTENT");
+			locator1 = "Publications#CONFLICTING_CHANGES_WARNING_CONTENT");
 
 		AssertVisible(locator1 = "Publications#DISABLED_PUBLISH_BUTTON");
 	}

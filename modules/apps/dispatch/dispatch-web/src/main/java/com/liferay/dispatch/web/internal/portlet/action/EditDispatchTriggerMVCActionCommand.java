@@ -16,6 +16,7 @@ package com.liferay.dispatch.web.internal.portlet.action;
 
 import com.liferay.dispatch.constants.DispatchConstants;
 import com.liferay.dispatch.constants.DispatchPortletKeys;
+import com.liferay.dispatch.executor.DispatchTaskClusterMode;
 import com.liferay.dispatch.model.DispatchTrigger;
 import com.liferay.dispatch.service.DispatchTriggerService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -56,7 +57,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"javax.portlet.name=" + DispatchPortletKeys.DISPATCH,
-		"mvc.command.name=editDispatchTrigger"
+		"mvc.command.name=/dispatch/edit_dispatch_trigger"
 	},
 	service = MVCActionCommand.class
 )
@@ -192,11 +193,15 @@ public class EditDispatchTriggerMVCActionCommand extends BaseMVCActionCommand {
 			startDateHour += 12;
 		}
 
+		DispatchTaskClusterMode dispatchTaskClusterMode =
+			DispatchTaskClusterMode.valueOf(
+				ParamUtil.getInteger(actionRequest, "taskClusterMode"));
+
 		_dispatchTriggerService.updateDispatchTrigger(
 			dispatchTriggerId, active, cronExpression, endDateMonth, endDateDay,
 			endDateYear, endDateHour, endDateMinute, neverEnd, overlapAllowed,
 			startDateMonth, startDateDay, startDateYear, startDateHour,
-			startDateMinute);
+			startDateMinute, dispatchTaskClusterMode);
 	}
 
 	protected DispatchTrigger updateDispatchTrigger(

@@ -70,6 +70,10 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 		return axisTestClassGroups.get(axisId);
 	}
 
+	public List<AxisTestClassGroup> getAxisTestClassGroups() {
+		return axisTestClassGroups;
+	}
+
 	public String getBatchName() {
 		return batchName;
 	}
@@ -106,6 +110,14 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 
 	public SegmentTestClassGroup getSegmentTestClassGroup(int segmentId) {
 		return _segmentTestClassGroups.get(segmentId);
+	}
+
+	public List<SegmentTestClassGroup> getSegmentTestClassGroups() {
+		return _segmentTestClassGroups;
+	}
+
+	public String getTestCasePropertiesContent() {
+		return null;
 	}
 
 	public static class BatchTestClass extends BaseTestClass {
@@ -468,10 +480,6 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 	}
 
 	protected void setSegmentTestClassGroups() {
-		if (!_isSegmentEnabled()) {
-			return;
-		}
-
 		if (!_segmentTestClassGroups.isEmpty()) {
 			return;
 		}
@@ -636,17 +644,6 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 		}
 
 		return Lists.newArrayList(requiredModuleDirs);
-	}
-
-	private boolean _isSegmentEnabled() {
-		String segmentEnabled = getFirstPropertyValue(
-			"test.batch.segment.enabled");
-
-		if ((segmentEnabled != null) && segmentEnabled.equals("true")) {
-			return true;
-		}
-
-		return false;
 	}
 
 	private void _setIncludeStableTestSuite() {

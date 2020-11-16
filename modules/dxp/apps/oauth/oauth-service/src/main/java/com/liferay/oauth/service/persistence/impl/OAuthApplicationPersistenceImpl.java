@@ -40,8 +40,9 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -51,7 +52,6 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -77,7 +77,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  * @generated
  */
-@Component(service = OAuthApplicationPersistence.class)
+@Component(service = {OAuthApplicationPersistence.class, BasePersistence.class})
 public class OAuthApplicationPersistenceImpl
 	extends BasePersistenceImpl<OAuthApplication>
 	implements OAuthApplicationPersistence {
@@ -197,7 +197,7 @@ public class OAuthApplicationPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<OAuthApplication>)finderCache.getResult(
-				finderPath, finderArgs, this);
+				finderPath, finderArgs);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (OAuthApplication oAuthApplication : list) {
@@ -895,7 +895,7 @@ public class OAuthApplicationPersistenceImpl
 
 		Object[] finderArgs = new Object[] {companyId};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -1078,7 +1078,7 @@ public class OAuthApplicationPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<OAuthApplication>)finderCache.getResult(
-				finderPath, finderArgs, this);
+				finderPath, finderArgs);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (OAuthApplication oAuthApplication : list) {
@@ -1774,7 +1774,7 @@ public class OAuthApplicationPersistenceImpl
 
 		Object[] finderArgs = new Object[] {userId};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -1932,7 +1932,7 @@ public class OAuthApplicationPersistenceImpl
 
 		if (useFinderCache) {
 			result = finderCache.getResult(
-				_finderPathFetchByConsumerKey, finderArgs, this);
+				_finderPathFetchByConsumerKey, finderArgs);
 		}
 
 		if (result instanceof OAuthApplication) {
@@ -2037,7 +2037,7 @@ public class OAuthApplicationPersistenceImpl
 
 		Object[] finderArgs = new Object[] {consumerKey};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -2184,7 +2184,7 @@ public class OAuthApplicationPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<OAuthApplication>)finderCache.getResult(
-				finderPath, finderArgs, this);
+				finderPath, finderArgs);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (OAuthApplication oAuthApplication : list) {
@@ -2978,7 +2978,7 @@ public class OAuthApplicationPersistenceImpl
 
 		Object[] finderArgs = new Object[] {companyId, name};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -3196,7 +3196,7 @@ public class OAuthApplicationPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<OAuthApplication>)finderCache.getResult(
-				finderPath, finderArgs, this);
+				finderPath, finderArgs);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (OAuthApplication oAuthApplication : list) {
@@ -3989,7 +3989,7 @@ public class OAuthApplicationPersistenceImpl
 
 		Object[] finderArgs = new Object[] {userId, name};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -4209,10 +4209,9 @@ public class OAuthApplicationPersistenceImpl
 		};
 
 		finderCache.putResult(
-			_finderPathCountByConsumerKey, args, Long.valueOf(1), false);
+			_finderPathCountByConsumerKey, args, Long.valueOf(1));
 		finderCache.putResult(
-			_finderPathFetchByConsumerKey, args, oAuthApplicationModelImpl,
-			false);
+			_finderPathFetchByConsumerKey, args, oAuthApplicationModelImpl);
 	}
 
 	/**
@@ -4537,7 +4536,7 @@ public class OAuthApplicationPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<OAuthApplication>)finderCache.getResult(
-				finderPath, finderArgs, this);
+				finderPath, finderArgs);
 		}
 
 		if (list == null) {
@@ -4607,7 +4606,7 @@ public class OAuthApplicationPersistenceImpl
 	@Override
 	public int countAll() {
 		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+			_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 		if (count == null) {
 			Session session = null;
@@ -4663,22 +4662,21 @@ public class OAuthApplicationPersistenceImpl
 		_argumentsResolverServiceRegistration = _bundleContext.registerService(
 			ArgumentsResolver.class,
 			new OAuthApplicationModelArgumentsResolver(),
-			MapUtil.singletonDictionary(
-				"model.class.name", OAuthApplication.class.getName()));
+			new HashMapDictionary<>());
 
-		_finderPathWithPaginationFindAll = _createFinderPath(
+		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
 			new String[0], true);
 
-		_finderPathWithoutPaginationFindAll = _createFinderPath(
+		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
 			new String[0], true);
 
-		_finderPathCountAll = _createFinderPath(
+		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
-		_finderPathWithPaginationFindByCompanyId = _createFinderPath(
+		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
@@ -4686,17 +4684,17 @@ public class OAuthApplicationPersistenceImpl
 			},
 			new String[] {"companyId"}, true);
 
-		_finderPathWithoutPaginationFindByCompanyId = _createFinderPath(
+		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
 			true);
 
-		_finderPathCountByCompanyId = _createFinderPath(
+		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
 			false);
 
-		_finderPathWithPaginationFindByUserId = _createFinderPath(
+		_finderPathWithPaginationFindByUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId",
 			new String[] {
 				Long.class.getName(), Integer.class.getName(),
@@ -4704,26 +4702,26 @@ public class OAuthApplicationPersistenceImpl
 			},
 			new String[] {"userId"}, true);
 
-		_finderPathWithoutPaginationFindByUserId = _createFinderPath(
+		_finderPathWithoutPaginationFindByUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
 			new String[] {Long.class.getName()}, new String[] {"userId"}, true);
 
-		_finderPathCountByUserId = _createFinderPath(
+		_finderPathCountByUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
 			new String[] {Long.class.getName()}, new String[] {"userId"},
 			false);
 
-		_finderPathFetchByConsumerKey = _createFinderPath(
+		_finderPathFetchByConsumerKey = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByConsumerKey",
 			new String[] {String.class.getName()}, new String[] {"consumerKey"},
 			true);
 
-		_finderPathCountByConsumerKey = _createFinderPath(
+		_finderPathCountByConsumerKey = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByConsumerKey",
 			new String[] {String.class.getName()}, new String[] {"consumerKey"},
 			false);
 
-		_finderPathWithPaginationFindByC_N = _createFinderPath(
+		_finderPathWithPaginationFindByC_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_N",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
@@ -4732,12 +4730,12 @@ public class OAuthApplicationPersistenceImpl
 			},
 			new String[] {"companyId", "name"}, true);
 
-		_finderPathWithPaginationCountByC_N = _createFinderPath(
+		_finderPathWithPaginationCountByC_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_N",
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "name"}, false);
 
-		_finderPathWithPaginationFindByU_N = _createFinderPath(
+		_finderPathWithPaginationFindByU_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_N",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
@@ -4746,7 +4744,7 @@ public class OAuthApplicationPersistenceImpl
 			},
 			new String[] {"userId", "name"}, true);
 
-		_finderPathWithPaginationCountByU_N = _createFinderPath(
+		_finderPathWithPaginationCountByU_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByU_N",
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"userId", "name"}, false);
@@ -4757,12 +4755,6 @@ public class OAuthApplicationPersistenceImpl
 		entityCache.removeCache(OAuthApplicationImpl.class.getName());
 
 		_argumentsResolverServiceRegistration.unregister();
-
-		for (ServiceRegistration<FinderPath> serviceRegistration :
-				_serviceRegistrations) {
-
-			serviceRegistration.unregister();
-		}
 	}
 
 	@Override
@@ -4855,27 +4847,13 @@ public class OAuthApplicationPersistenceImpl
 		}
 	}
 
-	private FinderPath _createFinderPath(
-		String cacheName, String methodName, String[] params,
-		String[] columnNames, boolean baseModelResult) {
-
-		FinderPath finderPath = new FinderPath(
-			cacheName, methodName, params, columnNames, baseModelResult);
-
-		if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
-			_serviceRegistrations.add(
-				_bundleContext.registerService(
-					FinderPath.class, finderPath,
-					MapUtil.singletonDictionary("cache.name", cacheName)));
-		}
-
-		return finderPath;
+	@Override
+	protected FinderCache getFinderCache() {
+		return finderCache;
 	}
 
 	private ServiceRegistration<ArgumentsResolver>
 		_argumentsResolverServiceRegistration;
-	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
-		new HashSet<>();
 
 	private static class OAuthApplicationModelArgumentsResolver
 		implements ArgumentsResolver {
@@ -4926,6 +4904,16 @@ public class OAuthApplicationPersistenceImpl
 			}
 
 			return null;
+		}
+
+		@Override
+		public String getClassName() {
+			return OAuthApplicationImpl.class.getName();
+		}
+
+		@Override
+		public String getTableName() {
+			return OAuthApplicationTable.INSTANCE.getTableName();
 		}
 
 		private Object[] _getValue(

@@ -78,7 +78,7 @@ public class DispatchTriggerCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -108,6 +108,8 @@ public class DispatchTriggerCacheModel
 		sb.append(startDate);
 		sb.append(", system=");
 		sb.append(system);
+		sb.append(", taskClusterMode=");
+		sb.append(taskClusterMode);
 		sb.append(", taskExecutorType=");
 		sb.append(taskExecutorType);
 		sb.append(", taskSettings=");
@@ -180,6 +182,7 @@ public class DispatchTriggerCacheModel
 		}
 
 		dispatchTriggerImpl.setSystem(system);
+		dispatchTriggerImpl.setTaskClusterMode(taskClusterMode);
 
 		if (taskExecutorType == null) {
 			dispatchTriggerImpl.setTaskExecutorType("");
@@ -224,6 +227,8 @@ public class DispatchTriggerCacheModel
 		startDate = objectInput.readLong();
 
 		system = objectInput.readBoolean();
+
+		taskClusterMode = objectInput.readInt();
 		taskExecutorType = objectInput.readUTF();
 		taskSettings = (String)objectInput.readObject();
 	}
@@ -271,6 +276,8 @@ public class DispatchTriggerCacheModel
 
 		objectOutput.writeBoolean(system);
 
+		objectOutput.writeInt(taskClusterMode);
+
 		if (taskExecutorType == null) {
 			objectOutput.writeUTF("");
 		}
@@ -300,6 +307,7 @@ public class DispatchTriggerCacheModel
 	public boolean overlapAllowed;
 	public long startDate;
 	public boolean system;
+	public int taskClusterMode;
 	public String taskExecutorType;
 	public String taskSettings;
 

@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
+import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
@@ -32,7 +33,6 @@ import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.CountryTable;
 import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -47,7 +47,6 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -150,7 +149,7 @@ public class CountryPersistenceImpl
 
 		if (useFinderCache) {
 			result = FinderCacheUtil.getResult(
-				_finderPathFetchByName, finderArgs, this);
+				_finderPathFetchByName, finderArgs);
 		}
 
 		if (result instanceof Country) {
@@ -251,8 +250,7 @@ public class CountryPersistenceImpl
 
 		Object[] finderArgs = new Object[] {name};
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -371,7 +369,7 @@ public class CountryPersistenceImpl
 
 		if (useFinderCache) {
 			result = FinderCacheUtil.getResult(
-				_finderPathFetchByA2, finderArgs, this);
+				_finderPathFetchByA2, finderArgs);
 		}
 
 		if (result instanceof Country) {
@@ -472,8 +470,7 @@ public class CountryPersistenceImpl
 
 		Object[] finderArgs = new Object[] {a2};
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -592,7 +589,7 @@ public class CountryPersistenceImpl
 
 		if (useFinderCache) {
 			result = FinderCacheUtil.getResult(
-				_finderPathFetchByA3, finderArgs, this);
+				_finderPathFetchByA3, finderArgs);
 		}
 
 		if (result instanceof Country) {
@@ -693,8 +690,7 @@ public class CountryPersistenceImpl
 
 		Object[] finderArgs = new Object[] {a3};
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -839,7 +835,7 @@ public class CountryPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<Country>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+				finderPath, finderArgs);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Country country : list) {
@@ -1194,8 +1190,7 @@ public class CountryPersistenceImpl
 
 		Object[] finderArgs = new Object[] {active};
 
-		Long count = (Long)FinderCacheUtil.getResult(
-			finderPath, finderArgs, this);
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -1292,7 +1287,7 @@ public class CountryPersistenceImpl
 	 * Clears the cache for all countries.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1306,7 +1301,7 @@ public class CountryPersistenceImpl
 	 * Clears the cache for the country.
 	 *
 	 * <p>
-	 * The <code>EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1334,23 +1329,19 @@ public class CountryPersistenceImpl
 		Object[] args = new Object[] {countryModelImpl.getName()};
 
 		FinderCacheUtil.putResult(
-			_finderPathCountByName, args, Long.valueOf(1), false);
+			_finderPathCountByName, args, Long.valueOf(1));
 		FinderCacheUtil.putResult(
-			_finderPathFetchByName, args, countryModelImpl, false);
+			_finderPathFetchByName, args, countryModelImpl);
 
 		args = new Object[] {countryModelImpl.getA2()};
 
-		FinderCacheUtil.putResult(
-			_finderPathCountByA2, args, Long.valueOf(1), false);
-		FinderCacheUtil.putResult(
-			_finderPathFetchByA2, args, countryModelImpl, false);
+		FinderCacheUtil.putResult(_finderPathCountByA2, args, Long.valueOf(1));
+		FinderCacheUtil.putResult(_finderPathFetchByA2, args, countryModelImpl);
 
 		args = new Object[] {countryModelImpl.getA3()};
 
-		FinderCacheUtil.putResult(
-			_finderPathCountByA3, args, Long.valueOf(1), false);
-		FinderCacheUtil.putResult(
-			_finderPathFetchByA3, args, countryModelImpl, false);
+		FinderCacheUtil.putResult(_finderPathCountByA3, args, Long.valueOf(1));
+		FinderCacheUtil.putResult(_finderPathFetchByA3, args, countryModelImpl);
 	}
 
 	/**
@@ -1640,7 +1631,7 @@ public class CountryPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<Country>)FinderCacheUtil.getResult(
-				finderPath, finderArgs, this);
+				finderPath, finderArgs);
 		}
 
 		if (list == null) {
@@ -1710,7 +1701,7 @@ public class CountryPersistenceImpl
 	@Override
 	public int countAll() {
 		Long count = (Long)FinderCacheUtil.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+			_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 		if (count == null) {
 			Session session = null;
@@ -1768,49 +1759,46 @@ public class CountryPersistenceImpl
 		Registry registry = RegistryUtil.getRegistry();
 
 		_argumentsResolverServiceRegistration = registry.registerService(
-			ArgumentsResolver.class, new CountryModelArgumentsResolver(),
-			HashMapBuilder.<String, Object>put(
-				"model.class.name", Country.class.getName()
-			).build());
+			ArgumentsResolver.class, new CountryModelArgumentsResolver());
 
-		_finderPathWithPaginationFindAll = _createFinderPath(
+		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
 			new String[0], true);
 
-		_finderPathWithoutPaginationFindAll = _createFinderPath(
+		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
 			new String[0], true);
 
-		_finderPathCountAll = _createFinderPath(
+		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
-		_finderPathFetchByName = _createFinderPath(
+		_finderPathFetchByName = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByName",
 			new String[] {String.class.getName()}, new String[] {"name"}, true);
 
-		_finderPathCountByName = _createFinderPath(
+		_finderPathCountByName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
 			new String[] {String.class.getName()}, new String[] {"name"},
 			false);
 
-		_finderPathFetchByA2 = _createFinderPath(
+		_finderPathFetchByA2 = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByA2",
 			new String[] {String.class.getName()}, new String[] {"a2"}, true);
 
-		_finderPathCountByA2 = _createFinderPath(
+		_finderPathCountByA2 = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA2",
 			new String[] {String.class.getName()}, new String[] {"a2"}, false);
 
-		_finderPathFetchByA3 = _createFinderPath(
+		_finderPathFetchByA3 = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByA3",
 			new String[] {String.class.getName()}, new String[] {"a3"}, true);
 
-		_finderPathCountByA3 = _createFinderPath(
+		_finderPathCountByA3 = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA3",
 			new String[] {String.class.getName()}, new String[] {"a3"}, false);
 
-		_finderPathWithPaginationFindByActive = _createFinderPath(
+		_finderPathWithPaginationFindByActive = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByActive",
 			new String[] {
 				Boolean.class.getName(), Integer.class.getName(),
@@ -1818,12 +1806,12 @@ public class CountryPersistenceImpl
 			},
 			new String[] {"active_"}, true);
 
-		_finderPathWithoutPaginationFindByActive = _createFinderPath(
+		_finderPathWithoutPaginationFindByActive = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByActive",
 			new String[] {Boolean.class.getName()}, new String[] {"active_"},
 			true);
 
-		_finderPathCountByActive = _createFinderPath(
+		_finderPathCountByActive = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByActive",
 			new String[] {Boolean.class.getName()}, new String[] {"active_"},
 			false);
@@ -1833,12 +1821,6 @@ public class CountryPersistenceImpl
 		EntityCacheUtil.removeCache(CountryImpl.class.getName());
 
 		_argumentsResolverServiceRegistration.unregister();
-
-		for (ServiceRegistration<FinderPath> serviceRegistration :
-				_serviceRegistrations) {
-
-			serviceRegistration.unregister();
-		}
 	}
 
 	private static final String _SQL_SELECT_COUNTRY =
@@ -1867,31 +1849,13 @@ public class CountryPersistenceImpl
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(
 		new String[] {"number", "idd", "active"});
 
-	private FinderPath _createFinderPath(
-		String cacheName, String methodName, String[] params,
-		String[] columnNames, boolean baseModelResult) {
-
-		FinderPath finderPath = new FinderPath(
-			cacheName, methodName, params, columnNames, baseModelResult);
-
-		if (!cacheName.equals(FINDER_CLASS_NAME_LIST_WITH_PAGINATION)) {
-			Registry registry = RegistryUtil.getRegistry();
-
-			_serviceRegistrations.add(
-				registry.registerService(
-					FinderPath.class, finderPath,
-					HashMapBuilder.<String, Object>put(
-						"cache.name", cacheName
-					).build()));
-		}
-
-		return finderPath;
+	@Override
+	protected FinderCache getFinderCache() {
+		return FinderCacheUtil.getFinderCache();
 	}
 
 	private ServiceRegistration<ArgumentsResolver>
 		_argumentsResolverServiceRegistration;
-	private Set<ServiceRegistration<FinderPath>> _serviceRegistrations =
-		new HashSet<>();
 
 	private static class CountryModelArgumentsResolver
 		implements ArgumentsResolver {
@@ -1939,6 +1903,16 @@ public class CountryPersistenceImpl
 			}
 
 			return null;
+		}
+
+		@Override
+		public String getClassName() {
+			return CountryImpl.class.getName();
+		}
+
+		@Override
+		public String getTableName() {
+			return CountryTable.INSTANCE.getTableName();
 		}
 
 		private Object[] _getValue(

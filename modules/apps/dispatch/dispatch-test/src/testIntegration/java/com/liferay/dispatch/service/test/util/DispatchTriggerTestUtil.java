@@ -174,6 +174,11 @@ public class DispatchTriggerTestUtil {
 			}
 
 			@Override
+			public int getTaskClusterMode() {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
 			public String getTaskExecutorType() {
 				return _taskExecutorType;
 			}
@@ -354,6 +359,11 @@ public class DispatchTriggerTestUtil {
 
 			@Override
 			public void setSystem(boolean system) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public void setTaskClusterMode(int taskClusterMode) {
 				throw new UnsupportedOperationException();
 			}
 

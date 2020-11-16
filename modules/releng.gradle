@@ -629,7 +629,7 @@ prepareMajorIncrement {
 			"com.liferay.portal.osgi.web.wab.generator": ":apps:static:portal-osgi-web:portal-osgi-web-wab-generator-api",
 			"com.liferay.portal.profile": ":apps:static:portal:portal-profile-api",
 			"com.liferay.portal.template.soy": ":apps:portal-template:portal-template-soy-api",
-			"com.liferay.portal.upgrade": ":apps:portal:portal-upgrade-api"
+			"com.liferay.portal.upgrade": ":apps:static:portal:portal-upgrade-api"
 		]
 
 		projectDir.traverse(
@@ -1567,6 +1567,32 @@ private List<Dependency> _getPortalArtifactsDependencies(List<File> relengProper
 		dependencies.add(dependencyHandler.create(files(dir)))
 
 		logger.lifecycle "Added {}", jarFile.name
+	}
+
+	portalArtifactsDir.eachFile {
+		File portalArtifactDir ->
+
+		File servicesDir = new File(portalArtifactDir, "META-INF/services")
+
+		if (servicesDir.exists()) {
+			servicesDir.eachFile {
+				File servicesFile ->
+
+				servicesFile.getText("UTF-8").eachLine {
+					String line ->
+
+					if (Validator.isNotNull(line)) {
+						File file = new File(portalArtifactDir, line.replace('.' as char, '/' as char) + ".class")
+
+						if (!file.exists()) {
+							delete servicesFile
+
+							return
+						}
+					}
+				}
+			}
+		}
 	}
 
 	return dependencies

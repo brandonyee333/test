@@ -2,7 +2,6 @@
 definition {
 
 	property custom.properties = "default.layout.template.id=1_column";
-
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "App Builder";
@@ -113,8 +112,8 @@ definition {
 	@description = "This is a use case for LPS-104569."
 	@priority = "5"
 	test AddMultipleFormViewsToTheSameObject {
-		property test.name.skip.portal.instance = "AppBuilder#AddMultipleFormViewsToTheSameObject";
 		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "AppBuilder#AddMultipleFormViewsToTheSameObject";
 
 		AppBuilderAdmin.addCustomObject(
 			customObjectName = "my custom object 1",
@@ -164,8 +163,8 @@ definition {
 	@description = "This is a use case for LPS-95964"
 	@priority = "5"
 	test AddRulesViaFormView {
-		property test.name.skip.portal.instance = "AppBuilder#AddRulesViaFormView";
 		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "AppBuilder#AddRulesViaFormView";
 
 		var myFormViewName = "My Registration form";
 		var myTableViewName = "My display table";
@@ -303,8 +302,8 @@ definition {
 	@description = "Add a Form View with a Select From List field"
 	@priority = "5"
 	test AddSimpleFormViewWithSelectFromListField {
-		property test.name.skip.portal.instance = "AppBuilder#AddSimpleFormViewWithSelectFromListField";
 		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "AppBuilder#AddSimpleFormViewWithSelectFromListField";
 
 		AppBuilderAdmin.addCustomObject(
 			customObjectName = "my custom object",
@@ -645,6 +644,139 @@ definition {
 		AppBuilderAdmin.gotoBack();
 
 		AppBuilderAdmin.deleteEntry(itemName = "my custom object");
+	}
+
+	@description = "Delete fieldsets used in a form view and when it is not used"
+	@priority = "5"
+	test DeleteFieldSet {
+		property portal.acceptance = "true";
+
+		AppBuilderAdmin.addCustomObject(
+			customObjectName = "my custom object one",
+			isCreatingFormView = "true",
+			isCreatingViaPlusIcon = "true");
+
+		FormViewBuilder.setUpTwoFieldSets(
+			fieldSetName = "Field Sets",
+			fieldType1 = "Text",
+			fieldType2 = "Numeric");
+
+		FormViewBuilder.goToFieldsetsTab();
+
+		FormViewBuilder.deleteFieldSetEntry(
+			rowNumber = "1",
+			selectAction = "Delete");
+
+		FormViewBuilder.setUpTwoFieldSets(
+			fieldSetName = "Field Sets",
+			fieldType1 = "Text",
+			fieldType2 = "Numeric");
+
+		FormViewBuilder.addFieldByDoubleClick(fieldType = "Field Sets");
+
+		FormViewBuilder.setName(formViewName = "Form One");
+
+		FormViewBuilder.validateFieldLabel(fieldLabel = "Field Sets");
+
+		FormViewBuilder.confirmDeleteFromObject(
+			fieldLabel = "Field Sets",
+			selectAction = "Delete from Object");
+
+		FormViewBuilder.goToFieldsetsTab();
+
+		FormViewBuilder.deleteFieldSetEntry(
+			rowNumber = "1",
+			selectAction = "Delete");
+
+		FormViewBuilder.setUpTwoFieldSets(
+			fieldSetName = "Field Sets",
+			fieldType1 = "Text",
+			fieldType2 = "Numeric");
+
+		FormViewBuilder.addFieldByDoubleClick(fieldType = "Field Sets");
+
+		FormViewBuilder.save();
+
+		AppBuilderAdmin.add();
+
+		FormViewBuilder.goToFieldsetsTab();
+
+		FormViewBuilder.deleteDisabledFieldSetEntry(
+			rowNumber = "1",
+			selectAction = "Delete");
+
+		FormViewBuilder.setUpTwoFieldSets(
+			fieldSetName = "Field Sets",
+			fieldType1 = "Text",
+			fieldType2 = "Numeric");
+
+		FormViewBuilder.addFieldByDoubleClick(fieldType = "Field Sets");
+
+		FormViewBuilder.setName(formViewName = "Form Two");
+
+		FormViewBuilder.save();
+
+		ApplicationsMenu.gotoPortlet(
+			category = "App Builder",
+			panel = "Applications",
+			portlet = "Objects");
+
+		AppBuilderAdmin.addCustomObject(
+			customObjectName = "my custom object two",
+			isCreatingFormView = "true",
+			isCreatingViaPlusIcon = "true");
+
+		FormViewBuilder.goToFieldsetsTab();
+
+		FormViewBuilder.deleteFieldSetEntry(
+			rowNumber = "1",
+			selectAction = "Delete");
+
+		FormViewBuilder.setUpTwoFieldSets(
+			fieldSetName = "Field Sets",
+			fieldType1 = "Text",
+			fieldType2 = "Numeric");
+
+		FormViewBuilder.addFieldByDoubleClick(fieldType = "Field Sets");
+
+		FormViewBuilder.setName(formViewName = "Form One");
+
+		FormViewBuilder.save();
+
+		AppBuilderAdmin.switchTab(tabName = "Table Views");
+
+		AppBuilderAdmin.add();
+
+		TableViewBuilder.addColumnByDoubleClick(fieldType = "Text");
+		TableViewBuilder.addColumnByDoubleClick(fieldType = "Numeric");
+
+		TableViewBuilder.setName(tableViewName = "Table One");
+
+		TableViewBuilder.save();
+
+		AppBuilderAdmin.validateItemNameOnTable(itemName = "Table One");
+
+		App.add(
+			appTitle = "App One",
+			deployOption = "Product Menu",
+			formViewName = "Form One",
+			tableViewName = "Table One");
+
+		AppBuilderAdmin.switchTab(tabName = "Form Views");
+
+		AppBuilderAdmin.openItem(itemName = "Form One");
+
+		FormViewBuilder.goToFieldsetsTab();
+
+		FormViewBuilder.deleteDisabledFieldSetEntry(
+			rowNumber = "1",
+			selectAction = "Delete");
+
+		FormViewBuilder.save();
+
+		AppBuilderAdmin.gotoCustomAppApplicationsMenuApplications(portlet = "App One");
+
+		AppBuilderAdmin.validateProductMenuApp(appName = "App One");
 	}
 
 	@description = "Delete an existing Form View with no active publishing through the kebab/action menu"
@@ -1874,8 +2006,8 @@ definition {
 	@description = "Search for a column(field) in the columns list in Table View Builder"
 	@priority = "5"
 	test SearchColumnListInTableViewBuilder {
-		property test.name.skip.portal.instance = "AppBuilder#SearchColumnListInTableViewBuilder";
 		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "AppBuilder#SearchColumnListInTableViewBuilder";
 
 		AppBuilderAdmin.addCustomObject(
 			customObjectName = "Custom Object Title",
@@ -2118,7 +2250,7 @@ definition {
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
-			panel = "Applications",
+			panel = "Control Panel",
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
@@ -3026,6 +3158,64 @@ definition {
 		DetailsView.validateEntry(entry = "Bester");
 
 		DetailsView.deleteEntry(itemName = "Changed");
+	}
+
+	@description = "This is a use case for LPS-95964"
+	@priority = "5"
+	test ViewFieldSetsInTableView {
+		property portal.acceptance = "true";
+
+		var myFormViewName = "My Registration form";
+		var myTableViewName = "My display table";
+		var myAppName = "My Registration app";
+
+		AppBuilderAdmin.addCustomObject(
+			customObjectName = "my custom object",
+			isCreatingFormView = "true",
+			isCreatingViaPlusIcon = "true");
+
+		FormViewBuilder.setUpTwoFieldSets(
+			fieldSetName = "Field Sets",
+			fieldType1 = "Text",
+			fieldType2 = "Numeric");
+
+		FormViewBuilder.goToFieldsetsTab();
+
+		FormViewBuilder.addFieldByDoubleClick(fieldType = "Field Sets");
+
+		FormViewBuilder.setName(formViewName = "Fields from Fieldsets");
+
+		FormViewBuilder.save();
+
+		AppBuilderAdmin.switchTab(tabName = "Table Views");
+
+		AppBuilderAdmin.add();
+
+		TableViewBuilder.validateColumnLabelAtSidebar(columnLabel = "Text");
+
+		TableViewBuilder.validateColumnLabelAtSidebar(columnLabel = "Numeric");
+
+		TableViewBuilder.addColumnByDragAndDrop(fieldType = "Text");
+
+		TableViewBuilder.validateColumnLabel(columnLabel = "Text");
+
+		TableViewBuilder.addColumnByDoubleClick(fieldType = "Numeric");
+
+		TableViewBuilder.validateColumnLabel(columnLabel = "Numeric");
+
+		TableViewBuilder.validateDisabledField(fieldType = "Text");
+
+		TableViewBuilder.validateDisabledField(fieldType = "Numeric");
+
+		TableViewBuilder.setName(tableViewName = "Table View");
+
+		TableViewBuilder.save();
+
+		AppBuilderAdmin.openItem(itemName = "Table View");
+
+		TableViewBuilder.deleteSelectedColumnByName(columnLabel = "Text");
+
+		TableViewBuilder.save();
 	}
 
 	@description = "Saved form view rules run during new entry submissions"

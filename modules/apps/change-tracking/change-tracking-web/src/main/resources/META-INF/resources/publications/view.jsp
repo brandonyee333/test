@@ -24,7 +24,7 @@ SearchContainer<CTCollection> searchContainer = publicationsDisplayContext.getSe
 	navigationItems="<%= publicationsDisplayContext.getViewNavigationItems() %>"
 />
 
-<clay:management-toolbar
+<clay:management-toolbar-v2
 	displayContext="<%= new PublicationsManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, publicationsDisplayContext, searchContainer) %>"
 />
 
@@ -113,9 +113,22 @@ SearchContainer<CTCollection> searchContainer = publicationsDisplayContext.getSe
 				</c:otherwise>
 			</c:choose>
 
-			<liferay-ui:search-container-column-jsp
-				path="/publications/ct_collection_action.jsp"
-			/>
+			<liferay-ui:search-container-column-text>
+				<div>
+					<div class="dropdown">
+						<button class="btn btn-monospaced btn-sm btn-unstyled dropdown-toggle hidden" type="button">
+							<svg class="lexicon-icon lexicon-icon-ellipsis-v publications-hidden" role="presentation">
+								<use xlink:href="<%= themeDisplay.getPathThemeImages() %>/clay/icons.svg#ellipsis-v" />
+							</svg>
+						</button>
+					</div>
+
+					<react:component
+						module="publications/js/DropdownMenu"
+						props="<%= publicationsDisplayContext.getDropdownReactData(ctCollection, permissionChecker) %>"
+					/>
+				</div>
+			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator

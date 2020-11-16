@@ -222,18 +222,25 @@ String redirect = ParamUtil.getString(request, "redirect");
 	</div>
 </div>
 
-<aui:script require='<%= npmResolvedPackageName + "/message_boards/js/MBPortlet.es as MBPortlet" %>'>
-	new MBPortlet.default({
-		constants: {
-			ACTION_PUBLISH: '<%= WorkflowConstants.ACTION_PUBLISH %>',
-			CMD: '<%= Constants.CMD %>',
-		},
-		currentAction: '<%= Constants.ADD %>',
-		namespace: '<portlet:namespace />',
-		replyToMessageId: '<%= parentMessageId %>',
-		rootNode: '#<portlet:namespace />addQuickReply<%= parentMessageId %>',
-	});
-</aui:script>
+<liferay-frontend:component
+	context='<%=
+		HashMapBuilder.<String, Object>put(
+			"constants",
+			HashMapBuilder.<String, Object>put(
+				"ACTION_PUBLISH", WorkflowConstants.ACTION_PUBLISH
+			).put(
+				"CMD", Constants.CMD
+			).build()
+		).put(
+			"currentAction", Constants.ADD
+		).put(
+			"replyToMessageId", parentMessageId
+		).put(
+			"rootNodeId", liferayPortletResponse.getNamespace() + "addQuickReply" + parentMessageId
+		).build()
+	%>'
+	module="message_boards/js/MBPortlet.es"
+/>
 
 <aui:script>
 	window[

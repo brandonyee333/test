@@ -38,6 +38,13 @@ public interface FinderCache {
 
 	public void clearLocalCache();
 
+	public Object getResult(FinderPath finderPath, Object[] args);
+
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 * 			#getResult(FinderPath, Object[])}
+	 */
+	@Deprecated
 	public Object getResult(
 		FinderPath finderPath, Object[] args,
 		BasePersistenceImpl<? extends BaseModel<?>> basePersistenceImpl);
@@ -46,6 +53,11 @@ public interface FinderCache {
 
 	public void putResult(FinderPath finderPath, Object[] args, Object result);
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 * 			#putResult(FinderPath, Object[], Object)}
+	 */
+	@Deprecated
 	public void putResult(
 		FinderPath finderPath, Object[] args, Object result, boolean quiet);
 

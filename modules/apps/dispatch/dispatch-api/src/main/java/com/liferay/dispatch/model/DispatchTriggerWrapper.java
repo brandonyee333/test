@@ -56,6 +56,7 @@ public class DispatchTriggerWrapper
 		attributes.put("overlapAllowed", isOverlapAllowed());
 		attributes.put("startDate", getStartDate());
 		attributes.put("system", isSystem());
+		attributes.put("taskClusterMode", getTaskClusterMode());
 		attributes.put("taskExecutorType", getTaskExecutorType());
 		attributes.put("taskSettings", getTaskSettings());
 
@@ -146,6 +147,12 @@ public class DispatchTriggerWrapper
 
 		if (system != null) {
 			setSystem(system);
+		}
+
+		Integer taskClusterMode = (Integer)attributes.get("taskClusterMode");
+
+		if (taskClusterMode != null) {
+			setTaskClusterMode(taskClusterMode);
 		}
 
 		String taskExecutorType = (String)attributes.get("taskExecutorType");
@@ -289,6 +296,16 @@ public class DispatchTriggerWrapper
 	@Override
 	public boolean getSystem() {
 		return model.getSystem();
+	}
+
+	/**
+	 * Returns the task cluster mode of this dispatch trigger.
+	 *
+	 * @return the task cluster mode of this dispatch trigger
+	 */
+	@Override
+	public int getTaskClusterMode() {
+		return model.getTaskClusterMode();
 	}
 
 	/**
@@ -511,6 +528,16 @@ public class DispatchTriggerWrapper
 	@Override
 	public void setSystem(boolean system) {
 		model.setSystem(system);
+	}
+
+	/**
+	 * Sets the task cluster mode of this dispatch trigger.
+	 *
+	 * @param taskClusterMode the task cluster mode of this dispatch trigger
+	 */
+	@Override
+	public void setTaskClusterMode(int taskClusterMode) {
+		model.setTaskClusterMode(taskClusterMode);
 	}
 
 	/**

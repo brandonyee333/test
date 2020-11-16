@@ -233,7 +233,7 @@ td.lfr-name-column {
 		position: sticky;
 		top: 56px;
 		width: 100%;
-		z-index: 10;
+		z-index: 51;
 	}
 
 	.icon-asterisk {
@@ -418,19 +418,6 @@ td.lfr-name-column {
 				color: #fff;
 			}
 		}
-	}
-}
-
-.portlet-forms-ie {
-	.forms-navigation-bar,
-	.navigation-bar-secondary,
-	.management-bar {
-		position: inherit !important;
-		top: 0 !important;
-	}
-
-	.sidebar-container {
-		top: 56px !important;
 	}
 }
 

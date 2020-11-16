@@ -84,6 +84,39 @@ public class FragmentImage implements Serializable {
 
 	@Schema
 	@Valid
+	public FragmentImageClassPKReference getFragmentImageClassPKReference() {
+		return fragmentImageClassPKReference;
+	}
+
+	public void setFragmentImageClassPKReference(
+		FragmentImageClassPKReference fragmentImageClassPKReference) {
+
+		this.fragmentImageClassPKReference = fragmentImageClassPKReference;
+	}
+
+	@JsonIgnore
+	public void setFragmentImageClassPKReference(
+		UnsafeSupplier<FragmentImageClassPKReference, Exception>
+			fragmentImageClassPKReferenceUnsafeSupplier) {
+
+		try {
+			fragmentImageClassPKReference =
+				fragmentImageClassPKReferenceUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected FragmentImageClassPKReference fragmentImageClassPKReference;
+
+	@Schema
+	@Valid
 	public Object getTitle() {
 		return title;
 	}
@@ -173,6 +206,16 @@ public class FragmentImage implements Serializable {
 			sb.append("\"description\": ");
 
 			sb.append(String.valueOf(description));
+		}
+
+		if (fragmentImageClassPKReference != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"fragmentImageClassPKReference\": ");
+
+			sb.append(String.valueOf(fragmentImageClassPKReference));
 		}
 
 		if (title != null) {

@@ -583,8 +583,8 @@ definition {
 	@description = "This is a use case for LPS-91440."
 	@priority = "3"
 	test ExportImportGlobalPagesViaInstances {
-		property test.name.skip.portal.instance = "ExportImport#ExportImportGlobalPagesViaInstances";
 		property portal.release = "false";
+		property test.name.skip.portal.instance = "ExportImport#ExportImportGlobalPagesViaInstances";
 
 		LAR.openExportAdmin(siteScopeName = "Global");
 
@@ -660,10 +660,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Link to Page",
+		DataEngine.addField(
 			fieldFieldLabel = "Link to Page",
-			fieldName = "LinkToPage");
+			fieldType = "Link to Page");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -969,10 +968,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		DynamicDataMapping.addFieldNested(
 			field = "Documents and Media",
@@ -1129,6 +1127,8 @@ definition {
 			siteName = "Site Name");
 
 		AssertConsoleTextNotPresent(value1 = "java.lang.StringIndexOutOfBoundsException");
+
+		AssertConsoleTextNotPresent(value1 = "java.lang.NullPointerException");
 	}
 
 	@priority = "4"
@@ -1316,10 +1316,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Web Content",
+		DataEngine.addField(
 			fieldFieldLabel = "Web Content",
-			fieldName = "WebContent");
+			fieldType = "Web Content");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -1428,10 +1427,9 @@ definition {
 			structureDescription = "Exported Structure Description",
 			structureName = "Exported Structure");
 
-		DynamicDataMapping.addField(
-			field = "Separator",
+		DataEngine.addField(
 			fieldFieldLabel = "SeparatorField",
-			fieldName = "Separator");
+			fieldType = "Separator");
 
 		DynamicDataMapping.editFieldRepeatable(fieldFieldLabel = "SeparatorField");
 
@@ -1617,12 +1615,7 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		for (var structureFieldName : list "Documents and Media,Link to Page,Image") {
-			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
-		}
+		DataEngine.addFields(fieldTypeList = "Documents and Media,Link to Page,Image");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -1828,10 +1821,9 @@ definition {
 			structureDescription = "Structure Description A",
 			structureName = "Structure Name A");
 
-		DynamicDataMapping.addField(
-			field = "Link to Page",
+		DataEngine.addField(
 			fieldFieldLabel = "Link to Page",
-			fieldName = "LinkToPage");
+			fieldType = "Link to Page");
 
 		WebContentStructures.saveCP(structureName = "Structure Name A");
 
@@ -1853,10 +1845,9 @@ definition {
 			structureDescription = "Structure Description B",
 			structureName = "Structure Name B");
 
-		DynamicDataMapping.addField(
-			field = "Web Content",
+		DataEngine.addField(
 			fieldFieldLabel = "Web Content",
-			fieldName = "WebContent");
+			fieldType = "Web Content");
 
 		WebContentStructures.saveCP(structureName = "Structure Name B");
 

@@ -48,6 +48,15 @@ public class FinderCacheUtil {
 		return _finderCache;
 	}
 
+	public static Object getResult(FinderPath finderPath, Object[] args) {
+		return _finderCache.getResult(finderPath, args);
+	}
+
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 * 			#getResult(FinderPath, Object[])}
+	 */
+	@Deprecated
 	public static Object getResult(
 		FinderPath finderPath, Object[] args,
 		BasePersistenceImpl<? extends BaseModel<?>> basePersistenceImpl) {
@@ -65,6 +74,11 @@ public class FinderCacheUtil {
 		_finderCache.putResult(finderPath, args, result);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 * 			#putResult(FinderPath, Object[], Object)}
+	 */
+	@Deprecated
 	public static void putResult(
 		FinderPath finderPath, Object[] args, Object result, boolean quiet) {
 

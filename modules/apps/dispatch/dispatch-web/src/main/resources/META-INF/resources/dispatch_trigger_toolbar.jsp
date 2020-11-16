@@ -33,7 +33,7 @@ DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDi
 
 		<liferay-portlet:renderURL var="addDispatchTriggerURL">
 			<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" />
-			<portlet:param name="mvcRenderCommandName" value="editDispatchTrigger" />
+			<portlet:param name="mvcRenderCommandName" value="/dispatch/edit_dispatch_trigger" />
 			<portlet:param name="redirect" value="<%= currentURL %>" />
 		</liferay-portlet:renderURL>
 
@@ -42,18 +42,18 @@ DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDi
 		>
 
 			<%
-			for (String scheduledTaskExecutorServiceType : dispatchTriggerDisplayContext.getScheduledTaskExecutorServiceTypes()) {
+			for (String taskExecutorType : dispatchTriggerDisplayContext.getTaskExecutorTypes()) {
 			%>
 
 				<liferay-portlet:renderURL var="addDispatchTriggerURL">
 					<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD %>" />
-					<portlet:param name="mvcRenderCommandName" value="editDispatchTrigger" />
+					<portlet:param name="mvcRenderCommandName" value="/dispatch/edit_dispatch_trigger" />
 					<portlet:param name="backURL" value="<%= currentURL %>" />
-					<portlet:param name="taskType" value="<%= scheduledTaskExecutorServiceType %>" />
+					<portlet:param name="taskExecutorType" value="<%= taskExecutorType %>" />
 				</liferay-portlet:renderURL>
 
 				<liferay-frontend:add-menu-item
-					title="<%= scheduledTaskExecutorServiceType %>"
+					title="<%= taskExecutorType %>"
 					url="<%= addDispatchTriggerURL %>"
 				/>
 
@@ -96,7 +96,10 @@ DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDi
 				'<portlet:namespace />allRowIds'
 			);
 
-			submitForm(form, '<portlet:actionURL name="editDispatchTrigger" />');
+			submitForm(
+				form,
+				'<portlet:actionURL name="/dispatch/edit_dispatch_trigger" />'
+			);
 		}
 	}
 </aui:script>

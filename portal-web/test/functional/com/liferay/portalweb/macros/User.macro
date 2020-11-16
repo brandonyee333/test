@@ -363,17 +363,6 @@ definition {
 		WaitForLiferayEvent.initializeLiferayEventLog();
 	}
 
-	macro addCreateAccountPG {
-		User.createAccount(
-			newPassword = "${newPassword}",
-			userEmailAddress = "${userEmailAddress}",
-			userFirstName = "${userFirstName}",
-			userLastName = "${userLastName}",
-			userScreenName = "${userScreenName}");
-
-		VerifyElementPresent(locator1 = "Message#SUCCESS");
-	}
-
 	macro addMultipleCP {
 		for (var userEmail : list "${usersEmailsList}") {
 			var userEmailAddress = "${userEmail}";
@@ -1162,6 +1151,8 @@ definition {
 			value1 = "${newPassword}");
 
 		Button.clickSave();
+
+		Alert.viewSuccessMessageText(successMessage = "Thank you for creating an account. Use your password to log in.");
 	}
 
 	@description = "Create a new Portal user named ${userFirstName} that is associated with the OpenID ${openIDURL}."

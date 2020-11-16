@@ -24,7 +24,7 @@ String eventName = liferayPortletResponse.getNamespace() + "assignSiteRoles";
 request.setAttribute("view.jsp-eventName", eventName);
 %>
 
-<clay:management-toolbar
+<clay:management-toolbar-v2
 	actionDropdownItems="<%= segmentsDisplayContext.getActionDropdownItems() %>"
 	clearResultsURL="<%= segmentsDisplayContext.getClearResultsURL() %>"
 	componentId="segmentsEntriesManagementToolbar"
@@ -41,7 +41,7 @@ request.setAttribute("view.jsp-eventName", eventName);
 	sortingURL="<%= segmentsDisplayContext.getSortingURL() %>"
 />
 
-<portlet:actionURL name="deleteSegmentsEntry" var="deleteSegmentsEntryURL">
+<portlet:actionURL name="/segments/delete_segments_entry" var="deleteSegmentsEntryURL">
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 </portlet:actionURL>
 
@@ -162,7 +162,7 @@ request.setAttribute("view.jsp-eventName", eventName);
 	});
 </aui:script>
 
-<portlet:actionURL name="updateSegmentsEntrySiteRoles" var="updateSegmentsEntrySiteRolesURL">
+<portlet:actionURL name="/segments/update_segments_entry_site_roles" var="updateSegmentsEntrySiteRolesURL">
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 </portlet:actionURL>
 
@@ -177,7 +177,7 @@ request.setAttribute("view.jsp-eventName", eventName);
 	);
 
 	dom.delegate(document, 'click', '.assign-site-roles-link', function (event) {
-		var link = dom.closest(event.target, '.assign-site-roles-link');
+		var link = event.target.closest('.assign-site-roles-link');
 
 		var itemSelectorURL = link.dataset.itemselectorurl;
 		var segmentsEntryId = link.dataset.segmentsentryid;

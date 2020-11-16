@@ -260,6 +260,10 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
+	macro flipAxesButtonClick {
+		Click(locator1 = "ContentDashboard#FLIP_AXES_BUTTON");
+	}
+
 	macro openInfoPanelByDropdownMenu {
 		Click(locator1 = "ContentDashboard#WEB_CONTENT_MENU_DROPDOWN_BUTTON");
 
@@ -300,6 +304,26 @@ definition {
 		KeyPress(
 			locator1 = "ContentDashboard#SEARCH_FIELD",
 			value1 = "\ENTER");
+	}
+
+	macro tearDown {
+		Category.openCategoriesAdmin(siteURLKey = "global");
+
+		Navigator.gotoNavNested(navNested = "Audience");
+
+		var key_categoryName = "Audience 1";
+
+		if (IsElementPresent(locator1 = "Categories#VOCABULARY_CATEGORY")) {
+			Category.deleteCategoriesCP(vocabularyName = "Audience");
+		}
+
+		Navigator.gotoNavNested(navNested = "Stage");
+
+		var key_categoryName = "Stage 1";
+
+		if (IsElementPresent(locator1 = "Categories#VOCABULARY_CATEGORY")) {
+			Category.deleteCategoriesCP(vocabularyName = "Stage");
+		}
 	}
 
 	macro uncheckCheckbox {

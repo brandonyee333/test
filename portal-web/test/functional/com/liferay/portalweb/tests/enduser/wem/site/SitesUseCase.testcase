@@ -307,7 +307,7 @@ definition {
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
-		Organization.addMemberCP(
+		Organization.assignUser(
 			orgName = "Site Organization Name",
 			userFirstName = "Test",
 			userLastName = "Test",
@@ -589,7 +589,7 @@ definition {
 
 		Click(locator1 = "Gmail#EMAIL_ADDRESS_VERIFICATION_URL");
 
-		SelectWindow(locator1 = "title=Verify Email Address - ${siteName}");
+		SelectWindow(locator1 = "title=Verify Email Address - Site Name - ${siteName}");
 
 		AssertLocation(value1 = "${emailAddressVerificationURL}");
 
@@ -602,6 +602,7 @@ definition {
 	test SiteFriendlyURLLayoutImporter {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property testray.component.names = "Site Administration";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		UserGroup.openUserGroupsAdmin();
@@ -1075,6 +1076,7 @@ definition {
 	@priority = "4"
 	test ViewSiteLogo {
 		property portal.upstream = "true";
+
 		JSONGroup.addGroup(groupName = "Site Name");
 
 		JSONLayout.addPublicLayout(

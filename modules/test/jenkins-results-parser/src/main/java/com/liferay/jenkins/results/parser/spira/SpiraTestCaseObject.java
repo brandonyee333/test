@@ -177,6 +177,26 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 		return _parentSpiraTestCaseFolder;
 	}
 
+	public SpiraTestCaseRun getSpiraTestCaseRunByID(int testCaseRunID) {
+		List<SpiraTestCaseRun> spiraTestCaseRuns =
+			SpiraTestCaseRun.getSpiraTestCaseRuns(
+				getSpiraProject(), this,
+				new SearchQuery.SearchParameter(
+					SpiraTestCaseRun.KEY_ID, testCaseRunID));
+
+		if (spiraTestCaseRuns.size() > 1) {
+			throw new RuntimeException(
+				"Duplicate test case run ID " + testCaseRunID);
+		}
+
+		if (spiraTestCaseRuns.isEmpty()) {
+			throw new RuntimeException(
+				"Missing test case run ID " + testCaseRunID);
+		}
+
+		return spiraTestCaseRuns.get(0);
+	}
+
 	public List<SpiraTestCaseRun> getSpiraTestCaseRuns() {
 		return SpiraTestCaseRun.getSpiraTestCaseRuns(getSpiraProject(), this);
 	}
@@ -284,12 +304,12 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 			}
 
 			if ((testCaseFilePath != null) && !testCaseFilePath.isEmpty()) {
-				SpiraCustomProperty.Value spiraCustomValue =
-					SpiraCustomProperty.createSpiraCustomPropertyValue(
+				SpiraCustomPropertyValue spiraCustomPropertyValue =
+					SpiraCustomPropertyValue.createSpiraCustomPropertyValue(
 						filePathSpiraCustomProperty, testCaseFilePath);
 
 				searchParameterList.add(
-					new SearchQuery.SearchParameter(spiraCustomValue));
+					new SearchQuery.SearchParameter(spiraCustomPropertyValue));
 			}
 
 			List<SpiraTestCaseObject> spiraTestCaseObjects =
@@ -350,8 +370,8 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 			"PropertyNumber",
 			executionTypeSpiraCustomProperty.getPropertyNumber());
 
-		SpiraCustomProperty.Value spiraCustomPropertyValue =
-			SpiraCustomProperty.createSpiraCustomPropertyValue(
+		SpiraCustomPropertyValue spiraCustomPropertyValue =
+			SpiraCustomPropertyValue.createSpiraCustomPropertyValue(
 				executionTypeSpiraCustomProperty, "Automatic");
 
 		executionTypeJSONObject.put(
@@ -390,7 +410,17 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 
 		JSONArray requestJSONArray = new JSONArray();
 
+		List<String> searchParameterNames = new ArrayList<>();
+
 		for (SearchQuery.SearchParameter searchParameter : searchParameters) {
+			String searchParameterName = searchParameter.getName();
+
+			if (searchParameterNames.contains(searchParameterName)) {
+				continue;
+			}
+
+			searchParameterNames.add(searchParameterName);
+
 			requestJSONArray.put(searchParameter.toFilterJSONObject());
 		}
 

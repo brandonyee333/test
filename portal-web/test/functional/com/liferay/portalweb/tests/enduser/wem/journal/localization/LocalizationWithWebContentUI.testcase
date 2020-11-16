@@ -28,6 +28,9 @@ definition {
 		}
 	}
 
+	// Ignore for LPS-123122
+
+	@ignore = "true"
 	@priority = "5"
 	test AddLocalizedWebContentViaSourceEditor {
 		property portal.acceptance = "true";
@@ -54,6 +57,10 @@ definition {
 ''');
 
 		Button.clickPublish();
+
+		WaitForElementNotPresent(
+			key_text = "Publish",
+			locator1 = "Button#ANY");
 
 		Navigator.gotoSitePage(
 			pageName = "Test Page Name",
@@ -120,6 +127,9 @@ definition {
 			value1 = "Space Program 大学生涯教育 地球から、宇宙の果てへ");
 	}
 
+	// Ignore for LPS-123076
+
+	@ignore = "true"
 	@priority = "5"
 	test AddWCWithTranslation {
 		property portal.acceptance = "true";
@@ -200,6 +210,8 @@ definition {
 
 		WebContentStructures.addName(structureName = "WC Structure Name");
 
+		Navigator.gotoSidebarTab(tabName = "Properties");
+
 		PortletEntry.inputDescriptionTextInput(description = "WC Structure Description");
 
 		WebContentStructures.addLocalization(
@@ -208,10 +220,9 @@ definition {
 			localization1Name = "nom de la structure de wc",
 			localization2Name = "wc 结构名称");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 

@@ -102,6 +102,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SETTINGS_TEXT</td>
+	<td>//*[contains(.,'${key_fieldFieldLabel}')]//following-sibling::span[contains(@class,'form-text')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SETTINGS_TIP</td>
 	<td>//td[contains(@class,'table-col-name') and contains(.,'Tip')]//following-sibling::td[contains(@class,'table-col-value')]</td>
 	<td></td>
@@ -148,6 +153,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>FORM_FIELD_CONTAINER</td>
+	<td>//div[contains(@class,'ddm-field-container')]//*[.='${key_fieldFieldLabel}']/../../div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FORM_FIELD_CONTAINER_LABEL</td>
+	<td>//div[contains(@class,'ddm-field')]//label[.='${key_fieldFieldLabel}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>FORM_FIELD_1_NO_LABEL</td>
 	<td>xpath=(//div[contains(@class,'component form-builder-field')]/div)[1]</td>
 	<td></td>
@@ -175,6 +190,11 @@
 <tr>
 	<td>FORM_FIELD_NESTED</td>
 	<td>//div[contains(@class,'form-builder-drop-zone')]//div/label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FORM_FIELD_NESTED_ANY</td>
+	<td>//div[contains(@class,'form-builder-drop-zone')]//div/label[.='${key_nestedFieldLabel}']/../../../div[contains(@class,'dd-draggable')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -234,6 +254,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SETTINGS_CELL_EDITOR_SELECT_BUTTON</td>
+	<td>//div[contains(@class,'component btn-toolbar')]//button[contains(.,'Select')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SETTINGS_CELL_EDITOR_SELECT_FIELD</td>
+	<td>//div[contains(@class,'celleditor-focused')]//select</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SETTINGS_CELL_EDITOR_OPTIONS_NAME_1</td>
 	<td>//div[contains(@class,'celleditor-edit-option-row')][1]//input[contains(@class,'celleditor-edit-input-name')]</td>
 	<td></td>
@@ -261,6 +291,11 @@
 <tr>
 	<td>SETTINGS_CELL_EDITOR_OPTIONS_VALUE_3</td>
 	<td>xPath=(//div[contains(@class,'celleditor-edit-option-row')])[3]//input[contains(@class,'celleditor-edit-input-value')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SETTINGS_CELL_EDITOR_WEB_CONTENT_ARTICLE_CONTENT</td>
+	<td>//form[contains(@class,'journal-article-cell-editor-content')]/span</td>
 	<td></td>
 </tr>
 <tr>

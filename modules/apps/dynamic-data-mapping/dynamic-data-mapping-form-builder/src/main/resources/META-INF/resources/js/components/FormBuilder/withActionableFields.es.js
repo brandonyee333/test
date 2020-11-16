@@ -13,7 +13,6 @@
  */
 
 import {FormSupport} from 'dynamic-data-mapping-form-renderer';
-import dom from 'metal-dom';
 import {EventHandler} from 'metal-events';
 import Component from 'metal-jsx';
 import {Config} from 'metal-state';
@@ -66,7 +65,7 @@ const withActionableFields = (ChildComponent) => {
 			this._eventHandler.removeAllListeners();
 
 			if (this._actionableFieldsContainer) {
-				dom.exitDocument(this._actionableFieldsContainer);
+				this._actionableFieldsContainer.remove();
 			}
 		}
 
@@ -167,7 +166,7 @@ const withActionableFields = (ChildComponent) => {
 		}
 
 		_getClosestParent(node) {
-			return dom.closest(node.parentElement, `.ddm-field-container`);
+			return node.parentElement.closest('.ddm-field-container');
 		}
 
 		_getHoveredNode() {
@@ -177,14 +176,13 @@ const withActionableFields = (ChildComponent) => {
 		}
 
 		_handleMouseEnterField(event) {
-			const {pages} = this.props;
+			const {contentType, pages} = this.props;
 			const {delegateTarget} = event;
 			const {dispatch} = this.context;
 			const {fieldName} = delegateTarget.dataset;
 			const {hoveredFieldActions, selectedFieldActions} = this.refs;
 			const activePage = parseInt(
-				dom.closest(event.delegateTarget, '[data-ddm-page]').dataset
-					.ddmPage,
+				event.delegateTarget.closest('[data-ddm-page]').dataset.ddmPage,
 				10
 			);
 			this.setState({activePage});
@@ -198,7 +196,11 @@ const withActionableFields = (ChildComponent) => {
 				return;
 			}
 
-			if (fieldName !== selectedFieldActions.state.fieldName) {
+			if (
+				contentType &&
+				contentType === 'app-builder' &&
+				fieldName !== selectedFieldActions.state.fieldName
+			) {
 				selectedFieldActions.close();
 			}
 
@@ -294,9 +296,11 @@ const withActionableFields = (ChildComponent) => {
 		}
 
 		_hasLeftField(relatedTarget) {
-			return !dom.closest(
-				relatedTarget,
-				'.dropdown-menu,.ddm-field-actions-container'
+			return (
+				relatedTarget &&
+				!relatedTarget.closest(
+					'.dropdown-menu,.ddm-field-actions-container'
+				)
 			);
 		}
 	}

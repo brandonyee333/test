@@ -18,16 +18,20 @@ import {addItem, updateItem} from './client.es';
  * Normalize field
  * @param {Array} availableLanguageIds
  * @param {Object} field
+ * @param {String?} defaultLanguageId
  * @description some fields are translated with the language of
  * themeDisplay.getDefaultLanguageId() which is not necessarily the language of dataDefinition,
  * so we need to normalize all fields so that they receive themeDisplay.getDefaultLanguageId()
  */
-const normalizeField = (availableLanguageIds, field) => {
-	const defaultLanguageId = themeDisplay.getDefaultLanguageId();
-
+const normalizeField = (
+	availableLanguageIds,
+	field,
+	defaultLanguageId = themeDisplay.getDefaultLanguageId()
+) => {
 	const toArray = (value) =>
 		availableLanguageIds.reduce((accumulator, currentValue) => {
-			accumulator[currentValue] = value[currentValue] || '';
+			accumulator[currentValue] =
+				value[currentValue] || value[defaultLanguageId] || '';
 
 			return accumulator;
 		}, {});
@@ -71,21 +75,60 @@ const normalizeField = (availableLanguageIds, field) => {
 		nestedDataDefinitionFields: field.nestedDataDefinitionFields.length
 			? field.nestedDataDefinitionFields.map((nestedField) => ({
 					...nestedField,
-					...normalizeField(availableLanguageIds, nestedField),
+					...normalizeField(
+						availableLanguageIds,
+						nestedField,
+						defaultLanguageId
+					),
 			  }))
 			: [],
 	};
 };
 
-export default ({
-	dataDefinition,
-	dataDefinitionId,
-	dataLayout,
-	dataLayoutId,
-}) => {
-	const defaultLanguageId = themeDisplay.getDefaultLanguageId();
+/**
+ * Normalize Data Definition
+ * @param {Object} dataDefinition
+ * @param {String?} defaultLanguageId
+ */
 
-	const normalizedDataLayout = {
+export const normalizeDataDefinition = (
+	dataDefinition,
+	defaultLanguageId = themeDisplay.getDefaultLanguageId()
+) => {
+	return {
+		...dataDefinition,
+		dataDefinitionFields: dataDefinition.dataDefinitionFields.map((field) =>
+			normalizeField(
+				dataDefinition.availableLanguageIds,
+				field,
+				defaultLanguageId
+			)
+		),
+		name: dataDefinition.availableLanguageIds.reduce(
+			(accumulator, currentValue) => {
+				accumulator[currentValue] =
+					dataDefinition.name[currentValue] ||
+					dataDefinition.name[defaultLanguageId] ||
+					'';
+
+				return accumulator;
+			},
+			{}
+		),
+	};
+};
+
+/**
+ * Normalize Data Layout
+ * @param {Object} dataLayout
+ * @param {String?} defaultLanguageId
+ */
+
+export const normalizeDataLayout = (
+	dataLayout,
+	defaultLanguageId = themeDisplay.getDefaultLanguageId()
+) => {
+	return {
 		...dataLayout,
 		dataLayoutPages: dataLayout.dataLayoutPages.map((dataLayoutPage) => ({
 			...dataLayoutPage,
@@ -117,17 +160,16 @@ export default ({
 			return rule;
 		}),
 	};
+};
 
-	const normalizedDataDefinition = {
-		...dataDefinition,
-		dataDefinitionFields: dataDefinition.dataDefinitionFields.map((field) =>
-			normalizeField(dataDefinition.availableLanguageIds, field)
-		),
-		name: {
-			...dataDefinition.name,
-			[defaultLanguageId]: dataDefinition.name[defaultLanguageId] || '',
-		},
-	};
+export default ({
+	dataDefinition,
+	dataDefinitionId,
+	dataLayout,
+	dataLayoutId,
+}) => {
+	const normalizedDataDefinition = normalizeDataDefinition(dataDefinition);
+	const normalizedDataLayout = normalizeDataLayout(dataLayout);
 
 	const updateDefinition = () =>
 		updateItem(

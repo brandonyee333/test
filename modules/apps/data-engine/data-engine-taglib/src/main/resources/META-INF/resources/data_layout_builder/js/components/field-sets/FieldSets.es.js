@@ -38,7 +38,7 @@ export default function FieldSets({keywords}) {
 		isVisible: false,
 	});
 
-	let defaultLanguageId = themeDisplay.getDefaultLanguageId();
+	let defaultLanguageId = dataDefinition.defaultLanguageId;
 
 	const toggleFieldSet = (fieldSet, editingDataDefinition) => {
 		let childrenAppProps = {
@@ -52,10 +52,11 @@ export default function FieldSets({keywords}) {
 		if (fieldSet) {
 			const {context} = appProps;
 			const {defaultDataLayout, id: dataDefinitionId} = fieldSet;
-			const ddmForm = dataLayoutBuilder.getDDMForm(
+			const ddmForm = dataLayoutBuilder.getFieldSetDDMForm(
 				fieldSet,
-				defaultDataLayout
+				dataDefinition
 			);
+
 			const [{rows}] = ddmForm.pages;
 
 			delete ddmForm.pages;
@@ -206,23 +207,16 @@ export default function FieldSets({keywords}) {
 								},
 							];
 
-							const disabled =
-								dataDefinition.name[defaultLanguageId] ===
-								fieldSetName;
-
 							return (
 								<FieldType
 									actions={dropDownActions}
 									description={`${
 										fieldSet.dataDefinitionFields.length
 									} ${Liferay.Language.get('fields')}`}
-									disabled={
-										disabled ||
-										containsFieldSet(
-											dataDefinition,
-											fieldSet.id
-										)
-									}
+									disabled={containsFieldSet(
+										dataDefinition,
+										fieldSet.id
+									)}
 									dragType={DRAG_FIELDSET}
 									fieldSet={fieldSet}
 									icon="forms"

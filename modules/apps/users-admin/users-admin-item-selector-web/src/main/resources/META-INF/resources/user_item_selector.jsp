@@ -22,7 +22,7 @@ UserItemSelectorViewDisplayContext userItemSelectorViewDisplayContext = (UserIte
 String displayStyle = userItemSelectorViewDisplayContext.getDisplayStyle();
 %>
 
-<clay:management-toolbar
+<clay:management-toolbar-v2
 	displayContext="<%= new UserItemSelectorViewManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, userItemSelectorViewDisplayContext) %>"
 />
 
@@ -74,7 +74,7 @@ String displayStyle = userItemSelectorViewDisplayContext.getDisplayStyle();
 					%>
 
 					<liferay-ui:search-container-column-text>
-						<clay:user-card-v2
+						<clay:user-card
 							userCard="<%= new SelectUserUserCard(user, renderRequest, searchContainer.getRowChecker()) %>"
 						/>
 					</liferay-ui:search-container-column-text>

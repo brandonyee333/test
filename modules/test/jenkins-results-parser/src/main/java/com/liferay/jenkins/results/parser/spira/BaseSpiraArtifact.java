@@ -22,6 +22,7 @@ import java.io.ObjectOutputStream;
 
 import java.lang.reflect.Field;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -87,6 +89,42 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 	@Override
 	public String getName() {
 		return jsonObject.getString("Name");
+	}
+
+	@Override
+	public List<SpiraCustomProperty> getSpiraCustomProperties() {
+		return SpiraCustomProperty.getSpiraCustomProperties(
+			getSpiraProject(), getClass());
+	}
+
+	@Override
+	public List<SpiraCustomPropertyValue> getSpiraCustomPropertyValues() {
+		List<SpiraCustomPropertyValue> spiraCustomPropertyValues =
+			new ArrayList<>();
+
+		if (!jsonObject.has("CustomProperties")) {
+			return spiraCustomPropertyValues;
+		}
+
+		JSONArray customPropertiesJSONArray = jsonObject.getJSONArray(
+			"CustomProperties");
+
+		for (int i = 0; i < customPropertiesJSONArray.length(); i++) {
+			JSONObject customPropertyJSONObject =
+				customPropertiesJSONArray.getJSONObject(i);
+
+			List<SpiraCustomProperty> spiraCustomProperties =
+				getSpiraCustomProperties();
+
+			SpiraCustomProperty spiraCustomProperty = spiraCustomProperties.get(
+				customPropertyJSONObject.getInt("PropertyNumber") - 1);
+
+			spiraCustomPropertyValues.add(
+				SpiraCustomPropertyValue.getSpiraCustomPropertyValue(
+					spiraCustomProperty, customPropertyJSONObject));
+		}
+
+		return spiraCustomPropertyValues;
 	}
 
 	@Override
@@ -325,19 +363,35 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 	private static Object _getClassField(
 		Class<? extends SpiraArtifact> spiraArtifactClass, String fieldName) {
 
-		try {
-			Field field = spiraArtifactClass.getDeclaredField(fieldName);
+		Class<?> clazz = spiraArtifactClass;
 
-			return field.get(fieldName);
-		}
-		catch (IllegalAccessException | IllegalArgumentException |
-			   NoSuchFieldException exception) {
+		RuntimeException runtimeException = null;
 
-			throw new RuntimeException(
-				"Missing field " + fieldName + " in " +
-					spiraArtifactClass.getName(),
-				exception);
+		while (true) {
+			try {
+				Field field = clazz.getDeclaredField(fieldName);
+
+				return field.get(fieldName);
+			}
+			catch (IllegalAccessException | IllegalArgumentException |
+				   NoSuchFieldException exception) {
+
+				if (runtimeException == null) {
+					runtimeException = new RuntimeException(
+						"Missing field " + fieldName + " in " +
+							spiraArtifactClass.getName(),
+						exception);
+				}
+			}
+
+			if (clazz == Object.class) {
+				break;
+			}
+
+			clazz = clazz.getSuperclass();
 		}
+
+		throw runtimeException;
 	}
 
 	private static Map<Integer, SpiraArtifact> _getIDSpiraArtifactsMap(

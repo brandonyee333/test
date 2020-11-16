@@ -4,6 +4,7 @@ definition {
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Web Content Display";
+
 	var pageName = "Web Content Display Page";
 	var portletName = "Web Content Display";
 
@@ -40,10 +41,14 @@ definition {
 		}
 	}
 
+	// Ignore for LPS-123072
+
+	@ignore = "true"
 	@priority = "5"
 	test AddAudioViaWebContent {
 		property custom.properties = "xuggler.enabled=true";
 		property dummy.socket.proxy.disabled = "true";
+		property environment.acceptance = "true";
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "WebContentDisplay#AddAudioViaWebContent";
 		property testray.component.names = "Training,Web Content Administration";
@@ -79,7 +84,7 @@ definition {
 
 		WebContentNavigator.gotoAddCP();
 
-		WebContent.addViaCKEditor(
+		WebContent.addCP(
 			webContentContent = "WC WebContent Content",
 			webContentTitle = "WC WebContent Title");
 
@@ -111,6 +116,8 @@ definition {
 		WebContent.addDraftPGViaWCD(
 			webContentContent = "WC WebContent Content",
 			webContentTitle = "WC WebContent Title");
+
+		VerifyElementPresent(locator1 = "Message#SUCCESS");
 
 		Navigator.gotoSitePage(
 			pageName = "Web Content Display Page",
@@ -166,6 +173,9 @@ definition {
 			webContentTitle = "Web Content Title");
 	}
 
+	// Ignore for LPS-123072
+
+	@ignore = "true"
 	@priority = "5"
 	test AddImageToWebContentViaItemSelector {
 		property portal.acceptance = "true";
@@ -240,10 +250,14 @@ definition {
 			locator1 = "ControlMenuAddPanel#ASSET_ENTRY");
 	}
 
+	// Ignore for LPS-123072
+
+	@ignore = "true"
 	@priority = "4"
 	test AddVideoViaWebContent {
 		property custom.properties = "xuggler.enabled=true";
 		property dummy.socket.proxy.disabled = "true";
+		property environment.acceptance = "true";
 		property test.name.skip.portal.instance = "WebContentDisplay#AddVideoViaWebContent";
 		property testray.component.names = "Web Content Administration";
 
@@ -413,6 +427,10 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-70386."
+
+	// Ignore for LPS-123122
+
+	@ignore = "true"
 	@priority = "5"
 	test AddWebContentWithPortletURL {
 		property portal.acceptance = "true";
@@ -456,6 +474,10 @@ definition {
 	}
 
 	@description = "Add a web content article with a custom DDM structure and template and display it in the web content display widget."
+
+	// Ignore for LPS-123181
+
+	@ignore = "true"
 	@priority = "5"
 	test AddWithStructure {
 		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
@@ -470,15 +492,14 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
-		DynamicDataMapping.addField(
-			field = "Text Box",
-			fieldFieldLabel = "Text Box",
-			fieldName = "TextBox");
+		DataEngine.addField(
+			fieldFieldLabel = "Rich Text",
+			fieldType = "Rich Text",
+			rowNum = "1");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -499,9 +520,9 @@ definition {
 			structureFieldName = "Text",
 			structureName = "WC Structure Name",
 			templateName = "WC Template Name",
-			textBoxFieldName = "TextBox",
+			textBoxFieldName = "Rich Text",
+			webContentRichText = "WC WebContent TextBox",
 			webContentText = "WC WebContent Text",
-			webContentTextBox = "WC WebContent TextBox",
 			webContentTitle = "WC WebContent Title");
 
 		AssertElementPresent(locator1 = "//div[contains(@class,journal-content-article)]//h1[contains(@class,'text')][contains(.,'WC WebContent Text')]");

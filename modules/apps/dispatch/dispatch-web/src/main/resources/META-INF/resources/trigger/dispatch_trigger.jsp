@@ -48,7 +48,7 @@ if ((dispatchTrigger != null) && (dispatchTrigger.getEndDate() != null)) {
 }
 %>
 
-<portlet:actionURL name="editDispatchTrigger" var="editDispatchTriggerActionURL" />
+<portlet:actionURL name="/dispatch/edit_dispatch_trigger" var="editDispatchTriggerActionURL" />
 
 <aui:form action="<%= editDispatchTriggerActionURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
@@ -62,6 +62,32 @@ if ((dispatchTrigger != null) && (dispatchTrigger.getEndDate() != null)) {
 			<div class="lfr-form-content">
 				<aui:fieldset>
 					<aui:input name="active" />
+
+					<c:choose>
+						<c:when test="<%= ClusterExecutorUtil.isEnabled() %>">
+							<aui:select label="task-execution-cluster-mode" name="taskClusterMode">
+
+								<%
+								for (DispatchTaskClusterMode dispatchTaskClusterMode : DispatchTaskClusterMode.values()) {
+									if (dispatchTaskClusterMode == DispatchTaskClusterMode.NOT_APPLICABLE) {
+										continue;
+									}
+								%>
+
+									<aui:option label="<%= dispatchTaskClusterMode.getLabel() %>" selected="<%= dispatchTrigger.getTaskClusterMode() == dispatchTaskClusterMode.getMode() %>" value="<%= dispatchTaskClusterMode.getMode() %>" />
+
+								<%
+								}
+								%>
+
+							</aui:select>
+						</c:when>
+						<c:otherwise>
+							<aui:select disabled="<%= true %>" helpMessage="this-option-is-enabled-only-in-a-clustered-environment" label="task-execution-cluster-mode" name="taskClusterMode">
+								<aui:option label="<%= DispatchTaskClusterMode.NOT_APPLICABLE.getLabel() %>" />
+							</aui:select>
+						</c:otherwise>
+					</c:choose>
 
 					<aui:input name="overlapAllowed" />
 

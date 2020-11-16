@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"javax.portlet.name=" + DispatchPortletKeys.DISPATCH,
-		"mvc.command.name=editDispatchTrigger"
+		"mvc.command.name=/dispatch/edit_dispatch_trigger"
 	},
 	service = MVCRenderCommand.class
 )
@@ -48,8 +48,8 @@ public class EditDispatchTriggerMVCRenderCommand implements MVCRenderCommand {
 
 		DispatchTriggerDisplayContext dispatchTriggerDisplayContext =
 			new DispatchTriggerDisplayContext(
-				Collections.emptySet(), _dispatchTriggerLocalService,
-				renderRequest);
+				_dispatchTriggerLocalService, renderRequest,
+				Collections.emptySet());
 
 		renderRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT, dispatchTriggerDisplayContext);

@@ -51,13 +51,19 @@ portletDisplay.setShowBackIcon(true);
 						<c:if test="<%= PropsValues.SCHEDULER_ENABLED %>">
 							<li class="tbar-item">
 								<liferay-portlet:renderURL var="scheduleURL">
-									<portlet:param name="mvcRenderCommandName" value="/publications/view_conflicts" />
+									<portlet:param name="mvcRenderCommandName" value="/change_tracking/view_conflicts" />
 									<portlet:param name="redirect" value="<%= currentURL %>" />
 									<portlet:param name="ctCollectionId" value="<%= String.valueOf(ctCollection.getCtCollectionId()) %>" />
 									<portlet:param name="schedule" value="<%= Boolean.TRUE.toString() %>" />
 								</liferay-portlet:renderURL>
 
 								<a class="btn btn-secondary btn-sm <%= viewChangesDisplayContext.hasChanges() ? StringPool.BLANK : "disabled" %>" href="<%= scheduleURL %>" type="button">
+									<span class="inline-item inline-item-before">
+										<clay:icon
+											symbol="calendar"
+										/>
+									</span>
+
 									<liferay-ui:message key="schedule" />
 								</a>
 							</li>
@@ -65,59 +71,36 @@ portletDisplay.setShowBackIcon(true);
 
 						<li class="tbar-item">
 							<liferay-portlet:renderURL var="publishURL">
-								<portlet:param name="mvcRenderCommandName" value="/publications/view_conflicts" />
+								<portlet:param name="mvcRenderCommandName" value="/change_tracking/view_conflicts" />
 								<portlet:param name="redirect" value="<%= currentURL %>" />
 								<portlet:param name="ctCollectionId" value="<%= String.valueOf(ctCollection.getCtCollectionId()) %>" />
 							</liferay-portlet:renderURL>
 
-							<a class="btn btn-primary btn-sm <%= viewChangesDisplayContext.hasChanges() ? StringPool.BLANK : "disabled" %>" href="<%= publishURL %>" type="button">
+							<a class="btn btn-secondary btn-sm <%= viewChangesDisplayContext.hasChanges() ? StringPool.BLANK : "disabled" %>" href="<%= publishURL %>" type="button">
+								<span class="inline-item inline-item-before">
+									<clay:icon
+										symbol="change"
+									/>
+								</span>
+
 								<liferay-ui:message key="publish" />
 							</a>
 						</li>
 					</c:if>
 
 					<li class="tbar-item">
-						<liferay-ui:icon-menu
-							direction="left-side"
-							icon="ellipsis-v"
-							markupView="lexicon"
-						>
-							<c:if test="<%= ctCollection.getCtCollectionId() != publicationsDisplayContext.getCtCollectionId() %>">
-								<liferay-portlet:actionURL name="/publications/checkout_ct_collection" var="checkoutURL">
-									<portlet:param name="redirect" value="<%= currentURL %>" />
-									<portlet:param name="ctCollectionId" value="<%= String.valueOf(ctCollection.getCtCollectionId()) %>" />
-								</liferay-portlet:actionURL>
+						<div class="dropdown">
+							<button class="btn btn-monospaced btn-sm btn-unstyled dropdown-toggle hidden" type="button">
+								<svg class="lexicon-icon lexicon-icon-ellipsis-v publications-hidden" role="presentation">
+									<use xlink:href="<%= themeDisplay.getPathThemeImages() %>/clay/icons.svg#ellipsis-v" />
+								</svg>
+							</button>
+						</div>
 
-								<liferay-ui:icon
-									message="work-on-publication"
-									url="<%= checkoutURL %>"
-								/>
-							</c:if>
-
-							<liferay-portlet:renderURL var="editURL">
-								<portlet:param name="mvcRenderCommandName" value="/publications/edit_ct_collection" />
-								<portlet:param name="redirect" value="<%= currentURL %>" />
-								<portlet:param name="ctCollectionId" value="<%= String.valueOf(ctCollection.getCtCollectionId()) %>" />
-							</liferay-portlet:renderURL>
-
-							<liferay-ui:icon
-								message="edit"
-								url="<%= editURL %>"
-							/>
-
-							<li aria-hidden="true" class="dropdown-divider" role="presentation"></li>
-
-							<liferay-portlet:actionURL name="/publications/delete_ct_collection" var="deleteURL">
-								<portlet:param name="redirect" value="<%= viewChangesDisplayContext.getBackURL() %>" />
-								<portlet:param name="ctCollectionId" value="<%= String.valueOf(ctCollection.getCtCollectionId()) %>" />
-							</liferay-portlet:actionURL>
-
-							<liferay-ui:icon-delete
-								confirmation="are-you-sure-you-want-to-delete-this-publication"
-								message="delete"
-								url="<%= deleteURL %>"
-							/>
-						</liferay-ui:icon-menu>
+						<react:component
+							module="publications/js/DropdownMenu"
+							props="<%= viewChangesDisplayContext.getDropdownReactData(permissionChecker) %>"
+						/>
 					</li>
 				</c:when>
 				<c:when test="<%= ctCollection.getStatus() == WorkflowConstants.STATUS_SCHEDULED %>">
@@ -136,23 +119,35 @@ portletDisplay.setShowBackIcon(true);
 
 					<c:if test="<%= CTCollectionPermission.contains(permissionChecker, ctCollection, CTActionKeys.PUBLISH) && PropsValues.SCHEDULER_ENABLED %>">
 						<li class="tbar-item">
-							<liferay-portlet:actionURL name="/publications/unschedule_publication" var="unscheduleURL">
+							<liferay-portlet:actionURL name="/change_tracking/unschedule_publication" var="unscheduleURL">
 								<portlet:param name="redirect" value="<%= currentURL %>" />
 								<portlet:param name="ctCollectionId" value="<%= String.valueOf(ctCollection.getCtCollectionId()) %>" />
 							</liferay-portlet:actionURL>
 
 							<a class="btn btn-secondary btn-sm" href="<%= unscheduleURL %>" type="button">
+								<span class="inline-item inline-item-before">
+									<clay:icon
+										symbol="times-circle"
+									/>
+								</span>
+
 								<liferay-ui:message key="unschedule" />
 							</a>
 						</li>
 						<li class="tbar-item">
 							<liferay-portlet:renderURL var="rescheduleURL">
-								<portlet:param name="mvcRenderCommandName" value="/publications/schedule_publication" />
+								<portlet:param name="mvcRenderCommandName" value="/change_tracking/reschedule_publication" />
 								<portlet:param name="redirect" value="<%= currentURL %>" />
 								<portlet:param name="ctCollectionId" value="<%= String.valueOf(ctCollection.getCtCollectionId()) %>" />
 							</liferay-portlet:renderURL>
 
 							<a class="btn btn-primary btn-sm" href="<%= rescheduleURL %>" type="button">
+								<span class="inline-item inline-item-before">
+									<clay:icon
+										symbol="calendar"
+									/>
+								</span>
+
 								<liferay-ui:message key="reschedule" />
 							</a>
 						</li>
@@ -181,7 +176,7 @@ portletDisplay.setShowBackIcon(true);
 					</li>
 					<li class="tbar-item">
 						<liferay-portlet:renderURL var="revertURL">
-							<portlet:param name="mvcRenderCommandName" value="/publications/undo_ct_collection" />
+							<portlet:param name="mvcRenderCommandName" value="/change_tracking/undo_ct_collection" />
 							<portlet:param name="redirect" value="<%= currentURL %>" />
 							<portlet:param name="ctCollectionId" value="<%= String.valueOf(ctCollection.getCtCollectionId()) %>" />
 							<portlet:param name="revert" value="true" />

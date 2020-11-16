@@ -55,13 +55,11 @@ import java.net.URL;
 
 import java.nio.file.Files;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -83,7 +81,10 @@ import org.gradle.api.file.RelativePath;
 import org.gradle.api.initialization.Settings;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.plugins.ExtensionAware;
+import org.gradle.api.provider.ListProperty;
+import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
+import org.gradle.api.provider.SetProperty;
 import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.Copy;
 import org.gradle.api.tasks.TaskContainer;
@@ -173,6 +174,8 @@ public class RootProjectConfigurator implements Plugin<Project> {
 	public void apply(Project project) {
 		final WorkspaceExtension workspaceExtension = GradleUtil.getExtension(
 			(ExtensionAware)project.getGradle(), WorkspaceExtension.class);
+
+		_configureWorkspaceExtension(project, workspaceExtension);
 
 		GradleUtil.applyPlugin(project, DockerRemoteApiPlugin.class);
 		GradleUtil.applyPlugin(project, LifecycleBasePlugin.class);
@@ -324,7 +327,11 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			"Builds a child docker image from Liferay base image with all " +
 				"configs deployed.");
 		dockerBuildImage.setGroup(DOCKER_GROUP);
-		dockerBuildImage.setInputDir(workspaceExtension.getDockerDir());
+
+		DirectoryProperty inputDirectoryProperty =
+			dockerBuildImage.getInputDir();
+
+		inputDirectoryProperty.set(workspaceExtension.getDockerDir());
 
 		DockerRemoveImage dockerRemoveImage = GradleUtil.addTask(
 			project, CLEAN_DOCKER_IMAGE_TASK_NAME, DockerRemoveImage.class);
@@ -332,13 +339,16 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		dockerRemoveImage.dependsOn(REMOVE_DOCKER_CONTAINER_TASK_NAME);
 
 		dockerRemoveImage.setDescription("Removes the Docker image.");
-		dockerRemoveImage.setForce(true);
 
-		dockerRemoveImage.setOnError(
-			new Closure<Void>(project) {
+		Property<Boolean> forceProperty = dockerRemoveImage.getForce();
 
-				@SuppressWarnings("unused")
-				public void doCall(Exception exception) {
+		forceProperty.set(true);
+
+		dockerRemoveImage.onError(
+			new Action<Throwable>() {
+
+				@Override
+				public void execute(Throwable throwable) {
 					Logger logger = project.getLogger();
 
 					if (logger.isWarnEnabled()) {
@@ -359,8 +369,14 @@ public class RootProjectConfigurator implements Plugin<Project> {
 				public void execute(Project p) {
 					String dockerImageId = _getDockerImageId(project);
 
-					dockerBuildImage.setTag(dockerImageId);
-					dockerRemoveImage.setImageId(dockerImageId);
+					SetProperty<String> setProperty =
+						dockerBuildImage.getImages();
+
+					setProperty.add(dockerImageId);
+
+					Property<String> property = dockerRemoveImage.getImageId();
+
+					property.set(dockerImageId);
 				}
 
 			});
@@ -474,24 +490,23 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			workPath = workPath.replace('\\', '/');
 		}
 
-		Map<String, String> binds = new HashMap<>();
+		DockerCreateContainer.HostConfig hostConfig =
+			dockerCreateContainer.getHostConfig();
+
+		MapProperty<String, String> binds = hostConfig.getBinds();
 
 		binds.put(deployDir.getAbsolutePath(), "/mnt/liferay/deploy");
 		binds.put(workPath, "/opt/liferay/work");
-
-		dockerCreateContainer.setBinds(binds);
 
 		dockerCreateContainer.setDescription(
 			"Creates a Docker container from your built image and mounts " +
 				dockerPath + " to /mnt/liferay.");
 
-		List<String> portBindings = new ArrayList<>();
+		ListProperty<String> portBindings = hostConfig.getPortBindings();
 
 		portBindings.add("8000:8000");
 		portBindings.add("8080:8080");
 		portBindings.add("11311:11311");
-
-		dockerCreateContainer.setPortBindings(portBindings);
 
 		dockerCreateContainer.targetImageId(
 			new Callable<String>() {
@@ -512,18 +527,10 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			"LIFERAY_WORKSPACE_ENVIRONMENT",
 			workspaceExtension.getEnvironment());
 
-		Project rootProject = project.getRootProject();
+		Property<String> containerNameProperty =
+			dockerCreateContainer.getContainerName();
 
-		rootProject.afterEvaluate(
-			new Action<Project>() {
-
-				@Override
-				public void execute(Project p) {
-					dockerCreateContainer.setContainerName(
-						_getDockerContainerId(project));
-				}
-
-			});
+		containerNameProperty.set(_getDockerContainerId(project));
 
 		Task cleanTask = GradleUtil.getTask(
 			project, LifecycleBasePlugin.CLEAN_TASK_NAME);
@@ -561,6 +568,12 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			"COPY --chown=liferay:liferay " + _LIFERAY_IMAGE_SETUP_SCRIPT +
 				" /usr/local/liferay/scripts/pre-configure/" +
 					_LIFERAY_IMAGE_SETUP_SCRIPT);
+
+		File file = project.file("Dockerfile.ext");
+
+		if (file.exists()) {
+			dockerfile.instructionsFromTemplate(file);
+		}
 
 		dockerfile.setDescription(
 			"Creates a Dockerfile to build the Liferay Workspace Docker " +
@@ -974,8 +987,14 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			DockerLogsContainer.class);
 
 		dockerLogsContainer.setDescription("Logs the Docker container.");
-		dockerLogsContainer.setFollow(true);
-		dockerLogsContainer.setTailAll(true);
+
+		Property<Boolean> followProperty = dockerLogsContainer.getFollow();
+
+		followProperty.set(true);
+
+		Property<Boolean> tailAllProperty = dockerLogsContainer.getTailAll();
+
+		tailAllProperty.set(true);
 
 		dockerLogsContainer.targetContainerId(
 			new Callable<String>() {
@@ -998,12 +1017,9 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 		dockerPullImage.setDescription("Pull the Docker image.");
 
-		String dockerImageLiferay = workspaceExtension.getDockerImageLiferay();
+		Property<String> property = dockerPullImage.getImage();
 
-		int index = dockerImageLiferay.indexOf(":");
-
-		dockerPullImage.setRepository(dockerImageLiferay.substring(0, index));
-		dockerPullImage.setTag(dockerImageLiferay.substring(index + 1));
+		property.set(workspaceExtension.getDockerImageLiferay());
 
 		return dockerPullImage;
 	}
@@ -1017,8 +1033,15 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			DockerRemoveContainer.class);
 
 		dockerRemoveContainer.setDescription("Removes the Docker container.");
-		dockerRemoveContainer.setForce(true);
-		dockerRemoveContainer.setRemoveVolumes(true);
+
+		Property<Boolean> forceProperty = dockerRemoveContainer.getForce();
+
+		forceProperty.set(true);
+
+		Property<Boolean> removeVolumesProperty =
+			dockerRemoveContainer.getRemoveVolumes();
+
+		removeVolumesProperty.set(true);
 
 		dockerRemoveContainer.targetContainerId(
 			new Callable<String>() {
@@ -1032,11 +1055,11 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 		dockerRemoveContainer.dependsOn(stopDockerContainer);
 
-		dockerRemoveContainer.setOnError(
-			new Closure<Void>(project) {
+		dockerRemoveContainer.onError(
+			new Action<Throwable>() {
 
-				@SuppressWarnings("unused")
-				public void doCall(Exception exception) {
+				@Override
+				public void execute(Throwable throwable) {
 					Logger logger = project.getLogger();
 
 					if (logger.isWarnEnabled()) {
@@ -1093,11 +1116,11 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 			});
 
-		dockerStopContainer.setOnError(
-			new Closure<Void>(project) {
+		dockerStopContainer.onError(
+			new Action<Throwable>() {
 
-				@SuppressWarnings("unused")
-				public void doCall(Exception exception) {
+				@Override
+				public void execute(Throwable throwable) {
 					Logger logger = project.getLogger();
 
 					if (logger.isWarnEnabled()) {
@@ -1300,6 +1323,29 @@ public class RootProjectConfigurator implements Plugin<Project> {
 				}
 
 			});
+	}
+
+	private void _configureWorkspaceExtension(
+		Project project, WorkspaceExtension workspaceExtension) {
+
+		workspaceExtension.setDockerContainerId(project.getName() + "-liferay");
+
+		Object version = project.getVersion();
+
+		if (Objects.equals(version, "unspecified")) {
+			String dockerImageLiferay =
+				workspaceExtension.getDockerImageLiferay();
+
+			int index = dockerImageLiferay.indexOf(":");
+
+			version = dockerImageLiferay.substring(index + 1);
+		}
+		else {
+			version = project.getVersion();
+		}
+
+		workspaceExtension.setDockerImageId(
+			String.format("%s-liferay:%s", project.getName(), version));
 	}
 
 	private void _createTouchFile(File dir) throws IOException {

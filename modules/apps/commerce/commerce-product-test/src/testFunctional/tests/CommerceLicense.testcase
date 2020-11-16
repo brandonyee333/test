@@ -21,6 +21,9 @@ definition {
 
 	@priority = "5"
 	test ViewCommerceDisabled {
+		property commerce.enabled = "false";
+		property portal.release = "true";
+
 		ApplicationsMenuHelper.openApplicationsMenu();
 
 		var key_panel = "Applications";

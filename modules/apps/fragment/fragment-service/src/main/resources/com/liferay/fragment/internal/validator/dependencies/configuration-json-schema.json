@@ -46,6 +46,18 @@
 					"if": {
 						"properties": {
 							"type": {
+								"const": "colorPicker"
+							}
+						}
+					},
+					"then": {
+						"$ref": "#/definitions/fieldColorPicker"
+					}
+				},
+				{
+					"if": {
+						"properties": {
+							"type": {
 								"const": "collectionSelector"
 							}
 						}
@@ -118,8 +130,10 @@
 					"enum": [
 						"checkbox",
 						"colorPalette",
+						"colorPicker",
 						"collectionSelector",
 						"itemSelector",
+						"navigationMenuSelector",
 						"select",
 						"text"
 					],
@@ -210,6 +224,14 @@
 							"title": "The DefaultValue Schema"
 						}
 					]
+				}
+			}
+		},
+		"fieldColorPicker": {
+			"properties": {
+				"defaultValue": {
+					"title": "The defaultValue schema",
+					"type": "string"
 				}
 			}
 		},

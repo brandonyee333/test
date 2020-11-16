@@ -22,7 +22,7 @@ KBTemplatesManagementToolbarDisplayContext kbTemplatesManagementToolbarDisplayCo
 
 <liferay-util:include page="/admin/common/top_tabs.jsp" servletContext="<%= application %>" />
 
-<clay:management-toolbar
+<clay:management-toolbar-v2
 	actionDropdownItems="<%= kbTemplatesManagementToolbarDisplayContext.getActionDropdownItems() %>"
 	clearResultsURL="<%= String.valueOf(kbTemplatesManagementToolbarDisplayContext.getSearchURL()) %>"
 	componentId="kbTemplatesManagementToolbar"
@@ -111,7 +111,7 @@ KBTemplatesManagementToolbarDisplayContext kbTemplatesManagementToolbarDisplayCo
 	</aui:form>
 </clay:container-fluid>
 
-<aui:script>
+<script>
 	var deleteKBTemplates = function () {
 		if (
 			confirm(
@@ -153,4 +153,4 @@ KBTemplatesManagementToolbarDisplayContext kbTemplatesManagementToolbarDisplayCo
 			}
 		});
 	});
-</aui:script>
+</script>

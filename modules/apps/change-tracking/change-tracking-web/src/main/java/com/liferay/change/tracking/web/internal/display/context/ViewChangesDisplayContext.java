@@ -28,6 +28,8 @@ import com.liferay.change.tracking.web.internal.display.CTClosureUtil;
 import com.liferay.change.tracking.web.internal.display.CTDisplayRendererRegistry;
 import com.liferay.change.tracking.web.internal.scheduler.PublishScheduler;
 import com.liferay.change.tracking.web.internal.scheduler.ScheduledPublishInfo;
+import com.liferay.change.tracking.web.internal.security.permission.resource.CTCollectionPermission;
+import com.liferay.change.tracking.web.internal.util.PublicationsPortletURLUtil;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -45,6 +47,8 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -73,6 +77,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.PortletSession;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
@@ -143,6 +148,14 @@ public class ViewChangesDisplayContext {
 
 	public CTCollection getCtCollection() {
 		return _ctCollection;
+	}
+
+	public Map<String, Object> getDropdownReactData(
+			PermissionChecker permissionChecker)
+		throws Exception {
+
+		return Collections.singletonMap(
+			"dropdownItems", _getDropdownItemsJSONArray(permissionChecker));
 	}
 
 	public Map<String, Object> getReactData() throws PortalException {
@@ -276,7 +289,7 @@ public class ViewChangesDisplayContext {
 				RenderURL discardURL = _renderResponse.createRenderURL();
 
 				discardURL.setParameter(
-					"mvcRenderCommandName", "/publications/view_discard");
+					"mvcRenderCommandName", "/change_tracking/view_discard");
 
 				PortletURL redirect = PortletURLUtil.getCurrent(
 					_renderRequest, _renderResponse);
@@ -309,7 +322,8 @@ public class ViewChangesDisplayContext {
 				ResourceURL renderCTEntryURL =
 					_renderResponse.createResourceURL();
 
-				renderCTEntryURL.setResourceID("/publications/render_ct_entry");
+				renderCTEntryURL.setResourceID(
+					"/change_tracking/render_ct_entry");
 
 				renderCTEntryURL.setParameter(
 					"ctCollectionId",
@@ -322,7 +336,7 @@ public class ViewChangesDisplayContext {
 			() -> {
 				ResourceURL renderDiffURL = _renderResponse.createResourceURL();
 
-				renderDiffURL.setResourceID("/publications/render_diff");
+				renderDiffURL.setResourceID("/change_tracking/render_diff");
 
 				return renderDiffURL.toString();
 			}
@@ -349,7 +363,7 @@ public class ViewChangesDisplayContext {
 					_renderResponse.createResourceURL();
 
 				saveSessionStateURL.setResourceID(
-					"/publications/save_session_state");
+					"/change_tracking/save_session_state");
 
 				return saveSessionStateURL.toString();
 			}
@@ -561,6 +575,88 @@ public class ViewChangesDisplayContext {
 		return contextViewJSONObject;
 	}
 
+	private JSONArray _getDropdownItemsJSONArray(
+			PermissionChecker permissionChecker)
+		throws Exception {
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		if (CTCollectionPermission.contains(
+				permissionChecker, _ctCollection, ActionKeys.UPDATE)) {
+
+			if (_ctCollection.getCtCollectionId() != _activeCTCollectionId) {
+				jsonArray.put(
+					JSONUtil.put(
+						"href",
+						PublicationsPortletURLUtil.getHref(
+							_renderResponse.createActionURL(),
+							ActionRequest.ACTION_NAME,
+							"/change_tracking/checkout_ct_collection",
+							"redirect", _themeDisplay.getURLCurrent(),
+							"ctCollectionId",
+							String.valueOf(_ctCollection.getCtCollectionId()))
+					).put(
+						"label",
+						_language.get(
+							_httpServletRequest, "work-on-publication")
+					).put(
+						"symbolLeft", "radio-button"
+					));
+			}
+
+			jsonArray.put(
+				JSONUtil.put(
+					"href",
+					PublicationsPortletURLUtil.getHref(
+						_renderResponse.createRenderURL(),
+						"mvcRenderCommandName",
+						"/change_tracking/edit_ct_collection", "redirect",
+						_themeDisplay.getURLCurrent(), "ctCollectionId",
+						String.valueOf(_ctCollection.getCtCollectionId()))
+				).put(
+					"label", _language.get(_httpServletRequest, "edit")
+				).put(
+					"symbolLeft", "pencil"
+				));
+		}
+
+		if (CTCollectionPermission.contains(
+				permissionChecker, _ctCollection, ActionKeys.PERMISSIONS)) {
+
+			jsonArray.put(
+				JSONUtil.put(
+					"href",
+					PublicationsPortletURLUtil.getPermissionsHref(
+						_httpServletRequest, _ctCollection, _language)
+				).put(
+					"label", _language.get(_httpServletRequest, "permissions")
+				).put(
+					"symbolLeft", "password-policies"
+				));
+		}
+
+		if (CTCollectionPermission.contains(
+				permissionChecker, _ctCollection, ActionKeys.DELETE)) {
+
+			jsonArray.put(
+				JSONUtil.put("type", "divider")
+			).put(
+				JSONUtil.put(
+					"href",
+					PublicationsPortletURLUtil.getDeleteHref(
+						_httpServletRequest, _renderResponse, getBackURL(),
+						_ctCollection.getCtCollectionId(), _language)
+				).put(
+					"label", _language.get(_httpServletRequest, "delete")
+				).put(
+					"symbolLeft", "times-circle"
+				)
+			);
+		}
+
+		return jsonArray;
+	}
+
 	private Set<Long> _getRootClassNameIds(CTClosure ctClosure) {
 		if (ctClosure == null) {
 			return Collections.emptySet();
@@ -743,7 +839,10 @@ public class ViewChangesDisplayContext {
 									"href", editURL
 								).put(
 									"label",
-									_language.get(_httpServletRequest, "edit")
+									_language.get(
+										_httpServletRequest, "edit-item")
+								).put(
+									"symbolLeft", "pencil"
 								));
 						}
 					}

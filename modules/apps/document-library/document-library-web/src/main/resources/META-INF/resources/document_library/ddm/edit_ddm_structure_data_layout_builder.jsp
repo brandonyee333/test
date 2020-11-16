@@ -39,12 +39,12 @@ portletDisplay.setURLBack(redirect);
 renderResponse.setTitle(title);
 %>
 
-<portlet:actionURL name="/document_library/ddm/add_data_definition" var="addDataDefinitionURL">
-	<portlet:param name="mvcRenderCommandName" value="/document_library/ddm/edit_ddm_structure" />
+<portlet:actionURL name="/document_library/add_data_definition" var="addDataDefinitionURL">
+	<portlet:param name="mvcRenderCommandName" value="/document_library/edit_ddm_structure" />
 </portlet:actionURL>
 
-<portlet:actionURL name="/document_library/ddm/update_data_definition" var="updateDataDefinitionURL">
-	<portlet:param name="mvcRenderCommandName" value="/document_library/ddm/edit_ddm_structure" />
+<portlet:actionURL name="/document_library/update_data_definition" var="updateDataDefinitionURL">
+	<portlet:param name="mvcRenderCommandName" value="/document_library/edit_ddm_structure" />
 </portlet:actionURL>
 
 <aui:form action="<%= (ddmStructure == null) ? addDataDefinitionURL : updateDataDefinitionURL %>" cssClass="edit-metadata-type-form" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "saveDDMStructure();" %>'>
@@ -53,6 +53,7 @@ renderResponse.setTitle(title);
 	<aui:input name="groupId" type="hidden" value="<%= groupId %>" />
 	<aui:input name="dataDefinition" type="hidden" />
 	<aui:input name="dataLayout" type="hidden" />
+	<aui:input name="languageId" type="hidden" value="<%= dlEditDDMStructureDisplayContext.getSelectedLanguageId() %>" />
 	<aui:input name="status" type="hidden" />
 
 	<aui:model-context bean="<%= ddmStructure %>" model="<%= com.liferay.dynamic.data.mapping.model.DDMStructure.class %>" />
@@ -103,6 +104,13 @@ renderResponse.setTitle(title);
 		</clay:container-fluid>
 	</div>
 </aui:form>
+
+<liferay-frontend:component
+	componentId='<%= liferayPortletResponse.getNamespace() + "LocaleChangedHandlerComponent" %>'
+	context="<%= dlEditDDMStructureDisplayContext.getComponentContext() %>"
+	module="document_library/js/LocaleChangedHandler.es"
+	servletContext="<%= application %>"
+/>
 
 <aui:script>
 	function <portlet:namespace />getInputLocalizedValues(field) {

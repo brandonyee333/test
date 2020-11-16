@@ -47,6 +47,7 @@ public class DispatchTriggerSoap implements Serializable {
 		soapModel.setOverlapAllowed(model.isOverlapAllowed());
 		soapModel.setStartDate(model.getStartDate());
 		soapModel.setSystem(model.isSystem());
+		soapModel.setTaskClusterMode(model.getTaskClusterMode());
 		soapModel.setTaskExecutorType(model.getTaskExecutorType());
 		soapModel.setTaskSettings(model.getTaskSettings());
 
@@ -232,6 +233,14 @@ public class DispatchTriggerSoap implements Serializable {
 		_system = system;
 	}
 
+	public int getTaskClusterMode() {
+		return _taskClusterMode;
+	}
+
+	public void setTaskClusterMode(int taskClusterMode) {
+		_taskClusterMode = taskClusterMode;
+	}
+
 	public String getTaskExecutorType() {
 		return _taskExecutorType;
 	}
@@ -262,6 +271,7 @@ public class DispatchTriggerSoap implements Serializable {
 	private boolean _overlapAllowed;
 	private Date _startDate;
 	private boolean _system;
+	private int _taskClusterMode;
 	private String _taskExecutorType;
 	private String _taskSettings;
 

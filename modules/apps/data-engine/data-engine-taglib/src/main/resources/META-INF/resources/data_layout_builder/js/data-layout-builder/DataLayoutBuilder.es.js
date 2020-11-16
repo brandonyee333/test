@@ -28,6 +28,10 @@ import {
 } from '../drag-and-drop/dragTypes.es';
 import {getDataDefinitionField} from '../utils/dataDefinition.es';
 import generateDataDefinitionFieldName from '../utils/generateDataDefinitionFieldName.es';
+import {
+	normalizeDataDefinition,
+	normalizeDataLayout,
+} from '../utils/saveDataDefinition.es';
 import EventEmitter from './EventEmitter.es';
 import saveDefinitionAndLayout from './saveDefinitionAndLayout.es';
 
@@ -257,12 +261,14 @@ class DataLayoutBuilder extends React.Component {
 				}
 
 				if (localizable) {
-					availableLanguageIds.forEach((languageId) => {
-						if (!localizedValue[languageId]) {
-							localizedValue[languageId] =
-								localizedValue[defaultLanguageId] || '';
-						}
-					});
+					if (this.props.contentType !== 'app-builder') {
+						availableLanguageIds.forEach((languageId) => {
+							if (!localizedValue[languageId]) {
+								localizedValue[languageId] =
+									localizedValue[defaultLanguageId] || '';
+							}
+						});
+					}
 
 					if (this._isCustomProperty(fieldName)) {
 						fieldConfig.customProperties[
@@ -462,6 +468,29 @@ class DataLayoutBuilder extends React.Component {
 				},
 			],
 		};
+	}
+
+	getFieldSetDDMForm(fieldSet, dataDefinition) {
+		const {defaultDataLayout, defaultLanguageId} = fieldSet;
+		const fieldSetNormalized = normalizeDataDefinition(
+			{
+				...fieldSet,
+				availableLanguageIds: [
+					...new Set([
+						...dataDefinition.availableLanguageIds,
+						...fieldSet.availableLanguageIds,
+						themeDisplay.getDefaultLanguageId(),
+					]),
+				],
+			},
+			defaultLanguageId
+		);
+		const fieldSetDataLayout = normalizeDataLayout(
+			defaultDataLayout,
+			defaultLanguageId
+		);
+
+		return this.getDDMForm(fieldSetNormalized, fieldSetDataLayout);
 	}
 
 	getFieldTypes() {

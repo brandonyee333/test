@@ -20,7 +20,7 @@ DLFilePicker dlFilePicker = dlEditFileEntryDisplayContext.getDLFilePicker("onFil
 
 <c:choose>
 	<c:when test="<%= dlFilePicker == null %>">
-		<aui:input autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) || windowState.equals(LiferayWindowState.POP_UP) %>" name="file" onChange='<%= liferayPortletResponse.getNamespace() + "updateTitle();" %>' type="file">
+		<aui:input autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) || windowState.equals(LiferayWindowState.POP_UP) %>" name="file" onChange='<%= liferayPortletResponse.getNamespace() + "updateFileNameAndTitle();" %>' type="file">
 			<aui:validator name="acceptFiles">
 				'<%= StringUtil.merge(dlConfiguration.fileExtensions()) %>'
 			</aui:validator>
@@ -32,9 +32,9 @@ DLFilePicker dlFilePicker = dlEditFileEntryDisplayContext.getDLFilePicker("onFil
 		<aui:field-wrapper label="file">
 			<aui:button cssClass="customized-file-button disabled" disabled="<%= true %>" name="file" value="select-file" />
 
-			<img id="<portlet:namespace />pickButtonIcon" />
+			<img class="pick-button-icon" id="<portlet:namespace />pickButtonIcon" src="<%= GetterUtil.getString(dlFilePicker.getCurrentIconURL()) %>" />
 
-			<span id="<portlet:namespace />pickButtonTitle"></span>
+			<span id="<portlet:namespace />pickButtonTitle"><%= GetterUtil.getString(dlFilePicker.getCurrentTitle()) %></span>
 		</aui:field-wrapper>
 
 		<aui:script sandbox="<%= true %>">
@@ -56,7 +56,7 @@ DLFilePicker dlFilePicker = dlEditFileEntryDisplayContext.getDLFilePicker("onFil
 				);
 
 				if (pickButtonTitleElement) {
-					pickButtonTitleElement.innerHTML = documentTitle;
+					pickButtonTitleElement.innerHTML = documentTitle || fields['URL'];
 				}
 
 				var titleElement = document.getElementById('<portlet:namespace />title');
@@ -69,7 +69,7 @@ DLFilePicker dlFilePicker = dlEditFileEntryDisplayContext.getDLFilePicker("onFil
 					fields['<%= dlFilePicker.getDescriptionFieldName() %>'];
 
 				var documentDescriptionElement = document.getElementById(
-					'<portlet:namespace />documentDescription'
+					'<portlet:namespace />description'
 				);
 
 				if (documentDescriptionElement) {

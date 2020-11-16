@@ -109,6 +109,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DEPOT_ID</td>
+	<td>//input[contains(@id,'assetLibraryId')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DEPOT_UNNAMED_DEFAULT_TITLE</td>
 	<td>//input[contains(@value,'${key_unnamedTitle}')]</td>
 	<td></td>
@@ -161,6 +166,16 @@
 <tr>
 	<td>DDM</td>
 	<td>//div[@data-fieldname='${key_fieldName}']//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ANY_DE_DDM</td>
+	<td>xpath=(//label[contains(.,'${key_fieldName}')]/..//input[not(contains(@type,'hidden'))])[${key_index}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DE_DDM</td>
+	<td>//label[contains(.,'${key_fieldName}')]/..//input[not(contains(@type,'hidden'))]</td>
 	<td></td>
 </tr>
 <tr>
@@ -271,11 +286,6 @@
 <tr>
 	<td>IMAGE_ID</td>
 	<td>//input[contains(@id,'newUuid')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>IMAGE_INPUT</td>
-	<td>//input[contains(@id,'image')][contains(@readonly,'readonly')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -496,6 +506,11 @@
 <tr>
 	<td>SAML_NAME_FIELD</td>
 	<td>//input[contains(@id,'SamlAdminPortlet_name')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SELECTOR_INPUT</td>
+	<td>//input[contains(@id,'${key_fieldName}')][contains(@readonly,'readonly')]</td>
 	<td></td>
 </tr>
 <tr>

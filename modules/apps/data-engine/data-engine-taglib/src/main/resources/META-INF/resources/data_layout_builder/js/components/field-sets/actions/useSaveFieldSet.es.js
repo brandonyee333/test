@@ -23,6 +23,10 @@ import {
 	containsField,
 	normalizeDataLayoutRows,
 } from '../../../utils/dataLayoutVisitor.es';
+import {
+	normalizeDataDefinition,
+	normalizeDataLayout,
+} from '../../../utils/saveDataDefinition.es';
 import {errorToast, successToast} from '../../../utils/toast.es';
 
 export default ({availableLanguageIds, childrenContext, fieldSet}) => {
@@ -37,15 +41,19 @@ export default ({availableLanguageIds, childrenContext, fieldSet}) => {
 			dataLayout: {dataLayoutPages},
 		} = childrenState;
 
-		const normalizedFieldSet = {
+		const normalizedDataDefinition = normalizeDataDefinition({
 			...fieldSet,
 			availableLanguageIds,
 			dataDefinitionFields,
-			defaultDataLayout: {
+			name,
+		});
+
+		const normalizedFieldSet = {
+			...normalizedDataDefinition,
+			defaultDataLayout: normalizeDataLayout({
 				...fieldSet.defaultDataLayout,
 				dataLayoutPages,
-			},
-			name,
+			}),
 		};
 
 		return updateItem(
@@ -57,22 +65,6 @@ export default ({availableLanguageIds, childrenContext, fieldSet}) => {
 					dataDefinition.dataDefinitionFields,
 					fieldSet.id
 				);
-
-				const normalizedDataDefinitionFields = () =>
-					dataDefinition.dataDefinitionFields.map((field) => {
-						const {
-							customProperties: {ddmStructureId},
-						} = field;
-
-						if (ddmStructureId == fieldSet.id) {
-							return {
-								...field,
-								nestedDataDefinitionFields: dataDefinitionFields,
-							};
-						}
-
-						return field;
-					});
 
 				if (dataDefinitionFieldSet) {
 					const fieldName = dataDefinitionFieldSet.name;
@@ -105,7 +97,24 @@ export default ({availableLanguageIds, childrenContext, fieldSet}) => {
 							payload: {
 								dataDefinition: {
 									...dataDefinition,
-									dataDefinitionFields: normalizedDataDefinitionFields(),
+									dataDefinitionFields: dataDefinition.dataDefinitionFields.map(
+										(field) => {
+											const {
+												customProperties: {
+													ddmStructureId,
+												},
+											} = field;
+
+											if (ddmStructureId == fieldSet.id) {
+												return {
+													...field,
+													nestedDataDefinitionFields: dataDefinitionFields,
+												};
+											}
+
+											return field;
+										}
+									),
 								},
 							},
 							type: UPDATE_DATA_DEFINITION,

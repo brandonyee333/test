@@ -371,10 +371,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Image",
+		DataEngine.addField(
 			fieldFieldLabel = "Image",
-			fieldName = "Image");
+			fieldType = "Image");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -458,10 +457,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Image",
+		DataEngine.addField(
 			fieldFieldLabel = "Image",
-			fieldName = "Image");
+			fieldType = "Image");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -780,10 +778,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text Box",
+		DataEngine.addField(
 			fieldFieldLabel = "Content",
-			fieldName = "Content");
+			fieldType = "Rich Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -844,7 +841,7 @@ definition {
 
 		WebContent.addWithStructureCP(
 			fieldName = "Content",
-			webContentTextBox = "Webcontent Content",
+			webContentRichText = "Webcontent Content",
 			webContentTitle = "Webcontent Title");
 
 		WebContent.addWithTagCP(tagNameList = "tag1,tag2,tag3");

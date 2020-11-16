@@ -43,10 +43,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -99,10 +98,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Separator",
+		DataEngine.addField(
 			fieldFieldLabel = "Separator",
-			fieldName = "Separator");
+			fieldType = "Separator");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -145,15 +143,14 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
-		DynamicDataMapping.addFieldNested(
-			field = "Integer",
-			fieldFieldLabel = "Integer",
-			fieldName = "Integer");
+		DataEngine.addFieldNested(
+			fieldFieldLabel = "Numeric",
+			fieldName = "Text",
+			fieldType = "Numeric");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -173,7 +170,7 @@ definition {
 		WebContent.addWithStructureCP(
 			structureName = "WC Structure Name",
 			templateName = "WC Template Name",
-			webContentInteger = "123",
+			webContentNumber = "123",
 			webContentText = "Text",
 			webContentTitle = "WC WebContent Title");
 
@@ -185,9 +182,9 @@ definition {
 			webContentText = "Text",
 			webContentTitle = "WC WebContent Title");
 
-		WebContent.viewNestedField(
+		DataEngine.viewNestedField(
 			fieldName = "Text",
-			nestedField = "Integer",
+			nestedField = "Numeric",
 			nestedFieldData = "123");
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
@@ -200,8 +197,8 @@ definition {
 
 		LexiconEntry.gotoEntry(rowEntry = "WC Structure Name");
 
-		for (var structureFieldName : list "Text,Integer") {
-			DynamicDataMapping.viewField(
+		for (var structureFieldName : list "Text,Numeric") {
+			DataEngine.viewField(
 				fieldFieldLabel = "${structureFieldName}",
 				fieldName = "${structureFieldName}");
 		}
@@ -219,12 +216,7 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		for (var structureFieldName : list "Text,Text Box") {
-			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
-		}
+		DataEngine.addFields(fieldTypeList = "Text,Rich Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -234,7 +226,7 @@ definition {
 
 		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
 
-		for (var structureFieldName : list "Text Box") {
+		for (var structureFieldName : list "Text,Rich Text") {
 			DynamicDataMapping.editFieldLocalizable(fieldFieldLabel = "${structureFieldName}");
 		}
 
@@ -247,7 +239,7 @@ definition {
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
 			templateDescription = "WC Template Description",
-			templateFieldNames = "Text,Text Box",
+			templateFieldNames = "Text,Rich Text",
 			templateName = "WC Template Name");
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
@@ -257,8 +249,8 @@ definition {
 		WebContent.addWithStructureCP(
 			structureName = "WC Structure Name",
 			templateName = "WC Template Name",
+			webContentRichText = "Rich Text",
 			webContentText = "Text",
-			webContentTextBox = "Text Box",
 			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
@@ -275,9 +267,9 @@ definition {
 			fieldName = "Text",
 			fieldValue = "Text");
 
-		FormFields.viewTextMultilineValue(
-			fieldName = "TextBox",
-			fieldValue = "Text Box");
+		FormFields.viewRichTextValue(
+			fieldName = "Rich Text",
+			fieldValue = "Rich Text");
 
 		PortletEntry.changeLocale(locale = "es-ES");
 
@@ -289,23 +281,27 @@ definition {
 
 		Type(
 			key_fieldName = "Text",
-			locator1 = "TextInput#DDM",
+			locator1 = "TextInput#DE_DDM",
 			value1 = "Text Spanish");
 
 		FormFields.viewTextValue(
 			fieldName = "Text",
 			fieldValue = "Text Spanish");
 
-		FormFields.viewTextMultilineValue(
-			fieldName = "TextBox",
-			fieldValue = "Text Box");
+		FormFields.viewRichTextValue(
+			fieldName = "Rich Text",
+			fieldValue = "Rich Text");
 
-		AssertNotEditable(
-			key_fieldName = "TextBox",
-			locator1 = "DDMField#TEXT_BOX");
+		AssertEditable(
+			key_fieldName = "Rich Text",
+			locator1 = "DDMField#RICH_TEXT");
 	}
 
 	@description = "This is a use case for LPS-69560."
+
+	// Ignore for LPS-123091
+
+	@ignore = "true"
 	@priority = "5"
 	test AddStructureWithWebContentAndGeolocationFields {
 		property portal.acceptance = "true";
@@ -324,15 +320,14 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Web Content",
+		DataEngine.addField(
 			fieldFieldLabel = "Web Content",
-			fieldName = "WebContent");
+			fieldType = "Web Content");
 
-		DynamicDataMapping.addField(
-			field = "Geolocation",
+		DataEngine.addField(
 			fieldFieldLabel = "Geolocation",
-			fieldName = "Geolocation");
+			fieldType = "Geolocation",
+			rowNum = "1");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -370,8 +365,877 @@ definition {
 		WebContent.viewCPWithoutContentField(
 			field = "Geolocation",
 			fieldFieldLabel = "Geolocation",
-			fieldName = "Geolocation",
 			webContentTitle = "WC WebContent 2 Title");
+	}
+
+	@description = "This is a use case for LRQA-61632."
+	@priority = "3"
+	test AddWCWithFirstComplexStructure {
+		task ("Add a widget page and WCD to widget page") {
+			JSONLayout.addPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "Web Content Display Page");
+
+			JSONLayout.addWidgetToPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "Web Content Display Page",
+				widgetName = "Web Content Display");
+		}
+
+		task ("Set Default Portal Language to Portuguese") {
+			Site.openSiteSettingsAdmin(siteURLKey = "test-site-name");
+
+			Site.configureCurrentLanguagesCP(defaultSiteLanguage = "Portuguese (Brazil)");
+		}
+
+		task ("Import the first complex structure") {
+			LAR.importSiteCP(
+				larFileName = "site-with-complex-structures-1.lar",
+				siteName = "test-site-name",
+				uploadFrom = "dependencies");
+		}
+
+		task ("Select WC Template Name as template and save") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			WebContent.selectTemplateCP(
+				confirm = "false",
+				structureName = "WC Structure Name",
+				templateName = "WC Template Name");
+
+			PortletEntry.publish();
+		}
+
+		task ("Assert Images added in one field is not available in the next image field before article is submitted") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
+
+			WebContent.addWithStructureCP(
+				description = "Web Content Description",
+				structureName = "WC Structure Name",
+				templateName = "WC Template Name",
+				webContentTitle = "Web Content Complex Title 2");
+
+			Click(
+				key_filedName = "ImagemAba01",
+				locator1 = "WCEditWebContent#SELECT_ANY");
+
+			ItemSelector.uploadFile(
+				navTab = "Web Content Images",
+				uploadFileName = "Document_3.png");
+
+			Click(
+				key_filedName = "Logo",
+				locator1 = "WCEditWebContent#SELECT_ANY");
+
+			LexiconCard.viewCardNotPresent(card = "Document_3.png");
+
+			IFrame.closeFrame();
+
+			PortletEntry.publish();
+		}
+
+		task ("Duplicate all fields that can be duplicated, 1-4 times") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			for (var fieldName : list "Logo,Beneficio,Companhia,JeitoIdentificar,DescricaoOpPar") {
+				DDLRecord.addRepeatableField(fieldName = "${fieldName}");
+			}
+
+			Click(locator1 = "//label[contains(.,'Companhia Operadora')]/../../a[contains(@class,'ddm-repeatable-add-button')]");
+
+			for (var fieldName : list "Logo,Beneficio,Companhia,JeitoIdentificar,CompanhiaOperadora,DescricaoOpPar") {
+				WebContent.viewRepeatedField(fieldName = "${fieldName}");
+			}
+		}
+		task ("Duplicate fields and then remove duplicates") {
+			for (var fieldName : list "Logo,Beneficio,Companhia,JeitoIdentificar,DescricaoOpPar") {
+				DDLRecord.deleteRepeatableField(
+					fieldName = "${fieldName}",
+					fieldNumber = "2");
+
+				AssertElementNotPresent(locator1 = "xpath=(//div[@data-fieldname='${fieldName}'][2]//a[contains(@class,'ddm-repeatable-add-button')]/../div//input)");
+			}
+
+			Click(locator1 = "xpath=(//label[contains(.,'Companhia Operadora')]/../../a[contains(@class,'ddm-repeatable-delete-button')])[2]");
+
+			AssertElementNotPresent(locator1 = "//div[@data-fieldname='CompanhiaOperadora'][2]//a[contains(@class,'ddm-repeatable-add-button')]/../div//input");
+		}
+
+		task ("Disable 'Searchable'") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			DynamicDataMapping.editFieldIndexable(fieldFieldLabel = "PaginaOrigem");
+
+			WebContentStructures.saveCP();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			Search.searchCP(searchTerm = "text1");
+
+			Search.viewNoResultAssetTitle(searchAssetTitle = "Web Content Complex Title 1");
+		}
+
+		task ("Preview fields entered") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoPreviewEntryCP(webContentTitle = "Web Content Complex Title 1");
+
+			SelectFrame(locator1 = "IFrame#MODAL_BODY");
+
+			var i = "1";
+
+			while (!("${i}" == "31")) {
+				AssertTextEquals.assertPartialText(
+					locator1 = "//div[@class='portlet-body']/div[contains(@class,'mt-2')]",
+					value1 = "text${i}");
+
+				var i = ${i} + 1;
+			}
+
+			for (var fieldValue : list "Link Pagina Origem,Link Pagina Atual") {
+				AssertTextEquals.assertPartialText(
+					locator1 = "//div[@class='portlet-body']/div[contains(@class,'mt-2')]",
+					value1 = "${fieldValue}");
+			}
+
+			for (var i : list "1,2,3,4") {
+				AssertElementPresent(locator1 = "xpath=(//img[contains(@src,'Document_1.jpeg')])[${i}]");
+			}
+
+			takeScreenshot();
+		}
+
+		task ("Display in Web Content Display widget") {
+			Navigator.gotoSitePage(
+				pageName = "Web Content Display Page",
+				siteName = "Test Site Name");
+
+			WebContentDisplayPortlet.selectWebContent(webContentTitle = "Web Content Complex Title 1");
+
+			IFrame.closeFrame();
+
+			var i = "1";
+
+			while (!("${i}" == "31")) {
+				WebContent.viewPGViaWCD(webContentContent = "text${i}");
+
+				var i = ${i} + 1;
+			}
+
+			for (var contentText : list "Link Pagina Origem,Link Pagina Atual") {
+				AssertElementPresent(
+					key_contentText = "${contentText}",
+					locator1 = "WCD#WEB_CONTENT_TEXT_LINK_URL");
+			}
+
+			for (var i : list "1,2,3,4") {
+				AssertElementPresent(locator1 = "xpath=(//img[contains(@src,'Document_1.jpeg')])[${i}]");
+			}
+
+			takeScreenshot();
+		}
+
+		task ("Copy successfully") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentStructures.copyCP(
+				structureCopyName = "WC Structure Copy Name",
+				structureName = "WC Structure Name");
+		}
+
+		task ("Duplicate the last field group with many nested fields, 10 times, and save") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			DoubleClick(
+				key_fieldFieldLabel = "Companhia Operadora",
+				locator1 = "DDMEditStructure#FORM_FIELD");
+
+			MouseOver(
+				key_fieldFieldLabel = "Companhia Operadora",
+				locator1 = "DDMEditStructure#FORM_FIELD");
+
+			for (var i : list "1,2,3,4,5,6,7,8,9,10") {
+				Click.clickNoWaitForVisible(
+					locator1 = "//div/label[contains(.,'Companhia Operadora')]/../../div/div/button[*[name()='svg'][contains(@class,'plus')]]",
+					siteURLKey = "test-site-name");
+			}
+
+			WebContentStructures.saveCP();
+		}
+
+		task ("Move nested field to non-nested") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			for (var nestedFieldLabel : list "Imagem Aba 01,Descricao Aba 01,Logo") {
+				DynamicDataMapping.moveNestedField(
+					fieldFieldLabel = "Breadcrumb",
+					nestedFieldLabel = "${nestedFieldLabel}");
+			}
+
+			for (var key_nestedFieldLabel : list "Imagem Aba 01,Descricao Aba 01,Logo") {
+				AssertElementNotPresent(
+					locator1 = "DDMEditStructure#FORM_FIELD_NESTED_ANY",
+					siteURLKey = "test-site-name");
+			}
+
+			WebContentStructures.saveCP();
+		}
+
+		task ("Translate labels") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			Click.clickNoMouseOver(
+				key_localizedLanguage = "en_US",
+				locator1 = "Icon#AVAILABLE_TRANSLATION");
+
+			DoubleClick(
+				key_fieldFieldLabel = "PaginaOrigem",
+				locator1 = "DDMEditStructure#FORM_FIELD");
+
+			DynamicDataMapping.editFieldLabel(
+				field = "PaginaOrigem",
+				fieldFieldLabel = "HomePage",
+				fieldName = "PaginaOrigem");
+
+			DoubleClick(
+				key_fieldFieldLabel = "Link Pagina Origem",
+				locator1 = "DDMEditStructure#FORM_FIELD");
+
+			DynamicDataMapping.editFieldLabel(
+				field = "Link Pagina Origem",
+				fieldFieldLabel = "Link Home Page",
+				fieldName = "LinkPaginaOrigem");
+
+			WebContentStructures.saveCP();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			Click.clickNoMouseOver(
+				key_localizedLanguage = "en_US",
+				locator1 = "Icon#AVAILABLE_TRANSLATION");
+
+			DynamicDataMapping.viewField(
+				field = "PaginaOrigem",
+				fieldFieldLabel = "HomePage",
+				fieldName = "PaginaOrigem");
+
+			DynamicDataMapping.viewField(
+				field = "Link Pagina Origem",
+				fieldFieldLabel = "Link Home Page",
+				fieldName = "LinkPaginaOrigem");
+		}
+
+		task ("Add new translation") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			Form.addTranslation(localizedLanguage = "Chinese (China)");
+
+			WebContentStructures.saveCP();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			AssertVisible(
+				key_localizedLanguage = "zh_CN",
+				locator1 = "Icon#AVAILABLE_TRANSLATION");
+		}
+
+		task ("Remove translation") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			ClickNoError(
+				key_localizedLanguage = "zh_CN",
+				locator1 = "Icon#AVAILABLE_TRANSLATION_DELETE");
+
+			AssertConfirm(value1 = "Are you sure you want to deactivate this language?");
+
+			WebContentStructures.saveCP();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			AssertElementNotPresent(
+				key_localizedLanguage = "zh_CN",
+				locator1 = "Icon#AVAILABLE_TRANSLATION");
+		}
+
+		task ("View Translation while Editing article") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			PortletEntry.changeLocale(locale = "en-US");
+
+			AssertVisible(
+				key_fieldFieldLabel = "HomePage",
+				key_fieldName = "PaginaOrigem",
+				locator1 = "DDMField#WEB_CONTENT");
+
+			AssertVisible(
+				key_fieldFieldLabel = "Link Home Page",
+				key_fieldName = "LinkPaginaOrigem",
+				locator1 = "DDMField#WEB_CONTENT");
+		}
+
+		task ("Enable Staging,Publish to live site, assert value entered persists,including images and links") {
+			ProductMenu.gotoPortlet(
+				category = "Publishing",
+				portlet = "Staging");
+
+			Staging.activateStagingCP(siteName = "Test Site Name");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name-staging");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			AssertTextEquals(
+				key_fieldName = "PaginaOrigem",
+				locator1 = "TextInput#DDM",
+				value1 = "text1");
+
+			AssertTextEquals(
+				key_fieldName = "PaginaAtual",
+				locator1 = "TextInput#DDM",
+				value1 = "text2");
+
+			AssertTextEquals(
+				key_fieldName = "LinkPaginaOrigem",
+				locator1 = "TextInput#DDM",
+				value1 = "widgetpage1");
+
+			AssertTextEquals(
+				key_fieldName = "LinkPaginaAtual",
+				locator1 = "TextInput#DDM",
+				value1 = "widgetpage2");
+
+			AssertTextEquals(
+				key_fieldName = "Logo",
+				locator1 = "TextInput#DDM",
+				value1 = "Document_1.jpeg");
+
+			AssertTextEquals(
+				key_fieldName = "ImagemAba01",
+				locator1 = "TextInput#DDM",
+				value1 = "Document_1.jpeg");
+
+			takeScreenshot();
+		}
+	}
+
+	@description = "This is a use case for LRQA-61632."
+	@priority = "3"
+	test AddWCWithSecondComplexStructure {
+		task ("Add a widget page and WCD to widget page") {
+			JSONLayout.addPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "Web Content Display Page");
+
+			JSONLayout.addWidgetToPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "Web Content Display Page",
+				widgetName = "Web Content Display");
+		}
+
+		task ("Set Default Portal Language to Portuguese") {
+			Site.openSiteSettingsAdmin(siteURLKey = "test-site-name");
+
+			Site.configureCurrentLanguagesCP(defaultSiteLanguage = "Portuguese (Brazil)");
+		}
+
+		task ("Import the second complex structure") {
+			LAR.importSiteCP(
+				larFileName = "site-with-complex-structures-2.lar",
+				siteName = "test-site-name",
+				uploadFrom = "dependencies");
+		}
+
+		task ("Select WC Template Name as template, save as draft and publish") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			WebContent.selectTemplateCP(
+				confirm = "false",
+				structureName = "WC Structure Name",
+				templateName = "WC Template Name");
+
+			Button.clickSaveAsDraft();
+
+			PortletEntry.publish();
+		}
+
+		task ("Save as Draft, and then preview other versions") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			Button.clickSaveAsDraft();
+
+			Click(locator1 = "Icon#ANGLE_LEFT_BACK");
+
+			WebContentNavigator.gotoEntryMenuItem(
+				entry = "Web Content Complex Title 1",
+				menuItem = "View History");
+
+			LexiconTable.viewTableEntryPartialText(
+				tableEntry = "Web Content Complex Title 1",
+				tableEntryPartialText = "1.0");
+
+			LexiconTable.viewTableEntryPartialText(
+				tableEntry = "Web Content Complex Title 1",
+				tableEntryPartialText = "1.1");
+		}
+
+		task ("Edit article and save") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			PortletEntry.publish();
+		}
+
+		task ("Duplicate all fields that can be duplicated, 1-4 times") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			for (var fieldName : list "ItemUFComunicado,ListaDDI,Item,Estado") {
+				DDLRecord.addRepeatableField(fieldName = "${fieldName}");
+			}
+
+			Click(locator1 = "//div[contains(@data-fieldname,'ItemDoParagrafoBanner')]/a[contains(@class,'ddm-repeatable-add-button')]");
+
+			Click(locator1 = "//div[contains(@data-fieldname,'ItemPais')]/a[contains(@class,'ddm-repeatable-add-button')]");
+
+			for (var fieldName : list "ItemUFComunicado,ItemDoParagrafoBanner,ListaDDI,Item,Estado") {
+				WebContent.viewRepeatedField(fieldName = "${fieldName}");
+			}
+
+			AssertElementPresent(locator1 = "xpath=(//div[@data-fieldname='ItemPais'][2]/a[contains(@class,'ddm-repeatable-add-button')]/../div/label[contains(.,'País')])");
+
+			PortletEntry.publish();
+		}
+		task ("Remove duplicates") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			for (var fieldName : list "ItemUFComunicado,ItemDoParagrafoBanner,ListaDDI,Item,Estado") {
+				DDLRecord.deleteRepeatableField(
+					fieldName = "${fieldName}",
+					fieldNumber = "2");
+
+				AssertElementNotPresent(locator1 = "//div[@data-fieldname='${fieldName}'][2]//a[contains(@class,'ddm-repeatable-add-button')]/../div//input");
+			}
+
+			Click(locator1 = "//div[contains(@data-fieldname,'ItemPais')]/a[contains(@class,'ddm-repeatable-delete-button') and not(contains(@hidden,'hidden'))]");
+
+			AssertElementNotPresent(locator1 = "xpath=(//div[@data-fieldname='ItemPais'][2]/a[contains(@class,'ddm-repeatable-add-button')]/../div/label[contains(.,'País')])");
+
+			PortletEntry.publish();
+		}
+
+		task ("Disable 'Searchable'") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			DynamicDataMapping.editFieldIndexable(fieldFieldLabel = "Label UF Comunicado");
+
+			WebContentStructures.saveCP();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			Search.searchCP(searchTerm = "text1");
+
+			Search.viewNoResultAssetTitle(searchAssetTitle = "Web Content Complex Title 1");
+		}
+
+		task ("Preview fields entered") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoPreviewEntryCP(webContentTitle = "Web Content Complex Title 1");
+
+			SelectFrame(locator1 = "IFrame#MODAL_BODY");
+
+			var i = "1";
+
+			while (!("${i}" == "121")) {
+				AssertTextEquals.assertPartialText(
+					locator1 = "//div[@class='portlet-body']/div[contains(@class,'mt-2')]",
+					value1 = "text${i}");
+
+				var i = ${i} + 1;
+			}
+
+			AssertElementPresent(locator1 = "//img[contains(@src,'Document_1.png')]");
+
+			takeScreenshot();
+		}
+
+		task ("Display in Web Content Display widget") {
+			Navigator.gotoSitePage(
+				pageName = "Web Content Display Page",
+				siteName = "Test Site Name");
+
+			WebContentDisplayPortlet.selectWebContent(webContentTitle = "Web Content Complex Title 1");
+
+			IFrame.closeFrame();
+
+			var i = "1";
+
+			while (!("${i}" == "121")) {
+				WebContent.viewPGViaWCD(webContentContent = "text${i}");
+
+				var i = ${i} + 1;
+			}
+
+			AssertElementPresent(locator1 = "//img[contains(@src,'Document_1.png')]");
+
+			takeScreenshot();
+		}
+
+		task ("Copy Article successfully") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContent.copyCP(webContentTitle = "Web Content Complex Title 1");
+		}
+
+		task ("Copy Structure successfully") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentStructures.copyCP(
+				structureCopyName = "WC Structure Copy Name",
+				structureName = "WC Structure Name");
+		}
+
+		task ("Duplicate the last field group with many nested fields, 10 times, and save") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			DoubleClick(
+				key_fieldFieldLabel = "Lista de Países",
+				locator1 = "DDMEditStructure#FORM_FIELD");
+
+			MouseOver(
+				key_fieldFieldLabel = "Lista de Países",
+				locator1 = "DDMEditStructure#FORM_FIELD");
+
+			for (var i : list "1,2,3,4,5,6,7,8,9,10") {
+				Click.clickNoMouseOverNoWaitForVisible(
+					locator1 = "//div[contains(@class,'form-builder-field-hover')]//button[*[name()='svg'][contains(@class,'plus')]]",
+					siteURLKey = "test-site-name");
+			}
+
+			WebContentStructures.saveCP();
+		}
+
+		task ("Move quad nested field to non-nested and save") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			/*comment out, will apply this in data engine
+
+			for (var nestedFieldLabel : list "Item UF Comunicado,Mensagem de erro de máscara,Mensagem de campo obrigatório,Mensagem de e-mail de confirmação divergente") {
+				DynamicDataMapping.moveNestedField(
+					fieldFieldLabel = "Label UF Comunicado",
+					nestedFieldLabel = "${nestedFieldLabel}");
+			}
+
+			for (var key_nestedFieldLabel : list "Item UF Comunicado,Mensagem de erro de máscara,Mensagem de campo obrigatório,Mensagem de e-mail de confirmação divergente") {
+				AssertElementNotPresent(
+					locator1 = "DDMEditStructure#FORM_FIELD_NESTED_ANY",
+					siteURLKey = "test-site-name");
+			}
+			*/
+
+			WebContentStructures.saveCP();
+		}
+
+		task ("Add translation labels") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			Click.clickNoMouseOver(
+				key_localizedLanguage = "en_US",
+				locator1 = "Icon#AVAILABLE_TRANSLATION");
+
+			DoubleClick(
+				key_fieldFieldLabel = "Label UF Comunicado",
+				locator1 = "DDMEditStructure#FORM_FIELD");
+
+			DynamicDataMapping.editFieldLabel(
+				field = "Label UF Comunicado",
+				fieldFieldLabel = "Label UF Release",
+				fieldName = "LabelUFComunicado");
+
+			DoubleClick(
+				key_fieldFieldLabel = "Url imagem do banner",
+				locator1 = "DDMEditStructure#FORM_FIELD");
+
+			DynamicDataMapping.editFieldLabel(
+				field = "Url imagem do banner",
+				fieldFieldLabel = "Url banner image",
+				fieldName = "UrlImagemBanner");
+
+			WebContentStructures.saveCP();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			Click.clickNoMouseOver(
+				key_localizedLanguage = "en_US",
+				locator1 = "Icon#AVAILABLE_TRANSLATION");
+
+			DynamicDataMapping.viewField(
+				field = "Label UF Comunicado",
+				fieldFieldLabel = "Label UF Release",
+				fieldName = "LabelUFComunicado");
+
+			DynamicDataMapping.viewField(
+				field = "Url imagem do banner",
+				fieldFieldLabel = "Url banner image",
+				fieldName = "UrlImagemBanner");
+		}
+
+		task ("Add new translation") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			Form.addTranslation(localizedLanguage = "Chinese (China)");
+
+			WebContentStructures.saveCP();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			AssertVisible(
+				key_localizedLanguage = "zh_CN",
+				locator1 = "Icon#AVAILABLE_TRANSLATION");
+		}
+
+		task ("Remove translation") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			ClickNoError(
+				key_localizedLanguage = "zh_CN",
+				locator1 = "Icon#AVAILABLE_TRANSLATION_DELETE");
+
+			AssertConfirm(value1 = "Are you sure you want to deactivate this language?");
+
+			WebContentStructures.saveCP();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+			AssertElementNotPresent(
+				key_localizedLanguage = "zh_CN",
+				locator1 = "Icon#AVAILABLE_TRANSLATION");
+		}
+
+		task ("View Translation while Editing article") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			PortletEntry.changeLocale(locale = "en-US");
+
+			AssertVisible(
+				key_fieldFieldLabel = "Label UF Release",
+				key_fieldName = "LabelUFComunicado",
+				locator1 = "DDMField#WEB_CONTENT");
+
+			AssertVisible(
+				key_fieldFieldLabel = "Url banner image",
+				key_fieldName = "UrlImagemBanner",
+				locator1 = "DDMField#WEB_CONTENT");
+		}
+
+		task ("Add Default values to structure") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "Edit Default Values",
+				rowEntry = "WC Structure Name");
+
+			Type(
+				key_fieldDefaultValue = "LabelUFComunicado",
+				locator1 = "DDMField#DDM_INPUT",
+				value1 = "Edited LabelUFComunicado Field");
+
+			Type(
+				key_fieldDefaultValue = "ListaUFComunidado",
+				locator1 = "DDMField#DDM_INPUT",
+				value1 = "Edited ListaUFComunidado Field");
+
+			Button.clickSave();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "Edit Default Values",
+				rowEntry = "WC Structure Name");
+
+			AssertTextEquals(
+				key_fieldDefaultValue = "LabelUFComunicado",
+				locator1 = "DDMField#DDM_INPUT",
+				value1 = "Edited LabelUFComunicado Field");
+
+			AssertTextEquals(
+				key_fieldDefaultValue = "ListaUFComunidado",
+				locator1 = "DDMField#DDM_INPUT",
+				value1 = "Edited ListaUFComunidado Field");
+		}
+
+		task ("Move to another folder") {
+			JSONWebcontent.addFolder(
+				folderDescription = "WC Folder Description",
+				folderName = "WC Folder Name",
+				groupName = "Test Site Name");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			Search.searchCP(searchTerm = "Web Content Complex Title 1");
+
+			WebContent.moveToFolderCP(
+				folderName = "WC Folder Name",
+				webContentTitle = "Web Content Complex Title 1");
+		}
+
+		task ("Set all fields to Required and check submission") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentNavigator.gotoEditStructure(structureName = "WC Structure Copy Name");
+
+			for (var fieldName : list "Label UF Comunicado,Lista UF Comunicado,Mensagem de erro de timeout,Titulo Mobile,Titulo,Informe Titulo,Informativo Formulario Cadastro,Titulo Programa Milhas,Texo Box Programa Amigo,Informe Programa Milhas,Footer Cadastro,Botao Cadastrar,Footer Cadastro Mobile,Botao Cadastrar Mobile,Informe Programa Amigo,Botao Quero Participar,Botao Quero Participar Mobile,Nacionalidade,Rotulo - Primeiro Nome,Título do banner,Rótulo - Nome do meio,Rótulo - Sobrenome,Rótulo - Email,Rótulo - Confirmação Email,Rótulo - Senha,Rótulo - Confirmação Senha,Rótulo - Box programa amiga,DDI,CPF,Passaporte,Celular,Data de Nascimento,Gênero,País de residência,UF,CEP,Cidade,Bairro,Endereço,Número,Complemento,Texto Box Amigo,País") {
+				DynamicDataMapping.editFieldSettings(fieldFieldLabel = "${fieldName}");
+
+				DynamicDataMapping.editFieldRequired(fieldFieldLabel = "${fieldName}");
+			}
+
+			WebContentStructures.saveCP();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Copy Name");
+
+			WebContent.addWithStructureCP(
+				structureName = "WC Structure Copy Name",
+				webContentTitle = "Web Content Complex Title 2");
+
+			PortletEntry.publish();
+
+			for (var fieldName : list "LabelUFComunicado,ListaUFComunidado,msgTimeOut,TituloMobile,Titulo,InformativoFormularioCadastro,TituloProgramaMilhas,TexoBoxProgramaAmigo,InformeProgramaMilhas,FooterCadastro,BotaoCadastrar,FooterCadastroMobile,BotaoCadastrarMobile,InformeProgramaAmigo,BotaoQueroParticipar,BotaoQueroParticiparMobile,Nacionalidade,PrimeiroNome,TituloBanner,NomeDoMeio,Sobrenome,Email,EmailConfirma,Senha,ConfirmaSenha,CheckBox,DDI,CPF,passaporte,Celular,DataDeNascimento,Genero,paisDeResidencia,UF,CEP,Cidade,Bairro,Endereco,NumeroEndereco,Complemento,TextoBoxAmigo,ItemPais") {
+				AssertTextEquals.assertPartialText(
+					key_fieldName = "${fieldName}",
+					locator1 = "TextInput#SPECIFIC_FIELD_REQUIRED_ALERT",
+					value1 = "This field is required.");
+			}
+		}
+
+		task ("Enable Staging,Publish to live site, assert value entered persists,including images and links") {
+			ProductMenu.gotoPortlet(
+				category = "Publishing",
+				portlet = "Staging");
+
+			Staging.activateStagingCP(siteName = "Test Site Name");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name-staging");
+
+			Search.searchCP(searchTerm = "Web Content Complex Title 1");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Complex Title 1");
+
+			AssertTextEquals(
+				key_fieldDefaultValue = "LabelUFComunicado",
+				locator1 = "DDMField#DDM_INPUT",
+				value1 = "text1");
+
+			AssertTextEquals(
+				key_fieldDefaultValue = "ListaUFComunidado",
+				locator1 = "DDMField#DDM_INPUT",
+				value1 = "text2");
+
+			AssertTextEquals(
+				key_fieldName = "UrlImagemBanner",
+				locator1 = "TextInput#DDM",
+				value1 = "Document_1.png");
+
+			takeScreenshot();
+		}
 	}
 
 	@priority = "4"
@@ -386,10 +1250,9 @@ definition {
 			structureDescription = "Global WC Structure Description",
 			structureName = "Global WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "Global WC Structure Name");
 
@@ -436,10 +1299,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Color",
+		DataEngine.addField(
 			fieldFieldLabel = "Color",
-			fieldName = "Color");
+			fieldType = "Color");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -477,7 +1339,7 @@ definition {
 
 		Content.addPG(assetTitle = "WC WebContent Title");
 
-		WebContent.viewPGViaWCD(webContentContent = "#FFFFFF");
+		WebContent.viewPGViaWCD(webContentContent = "FFFFFF");
 	}
 
 	@priority = "3"
@@ -493,10 +1355,9 @@ definition {
 			structureDescription = "Structure Description",
 			structureName = "Global Structure");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(
 			addRoleViewPermissions = "Power User",
@@ -575,10 +1436,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Image",
+		DataEngine.addField(
 			fieldFieldLabel = "Image",
-			fieldName = "Image");
+			fieldType = "Image");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -640,10 +1500,9 @@ definition {
 				structureDescription = "WC Structure Description",
 				structureName = "WC Structure Name");
 
-			DynamicDataMapping.addField(
-				field = "Text",
+			DataEngine.addField(
 				fieldFieldLabel = "Text",
-				fieldName = "Text");
+				fieldType = "Text");
 
 			WebContentStructures.saveCP(structureName = "WC Structure Name");
 		}
@@ -699,8 +1558,14 @@ definition {
 	}
 
 	@description = "This is a use case for LRQA-61632. Add web content with repeatable HTML field."
+
+	// Ignore for LPS-123072
+
+	@ignore = "true"
 	@priority = "4"
 	test AddWebContentWithRepeatableHTMLField {
+		property environment.acceptance = "true";
+
 		task ("Add a web content structure with a repeatable HTML field") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -708,12 +1573,11 @@ definition {
 
 			WebContentStructures.addCP(structureName = "WC Structure Name");
 
-			DynamicDataMapping.addField(
-				field = "HTML",
+			DataEngine.addField(
 				fieldFieldLabel = "HTML",
-				fieldName = "HTML");
+				fieldType = "Text");
 
-			DynamicDataMapping.editFieldRepeatable(fieldFieldLabel = "HTML");
+			DataEngine.editFieldRepeatable(fieldFieldLabel = "HTML");
 
 			WebContentStructures.saveCP(structureName = "WC Structure Name");
 		}
@@ -729,21 +1593,21 @@ definition {
 
 			PortletEntry.inputTitle(title = "Web Content Title");
 
-			DDLRecord.addRepeatableField(fieldName = "HTML");
+			DataEngine.addRepeatableField(fieldName = "HTML");
 		}
 
 		task ("Type content to the first HTML field") {
-			Type.typeCKEditorWaitForCKEditor(
-				key_fieldLabel = "HTML",
-				locator1 = "CKEditor#BODY_FIELD_WEB_CONTENT_ARTICLE",
+			Type(
+				key_fieldName = "HTML",
+				locator1 = "TextInput#DE_DDM",
 				value1 = "This is the first HTML field");
 		}
 
 		task ("Type content to the second HTML field") {
-			Type.typeCKEditorWaitForCKEditor(
-				index = "2",
-				key_fieldLabel = "HTML",
-				locator1 = "CKEditor#ANY_BODY_FIELD_WEB_CONTENT_ARTICLE",
+			Type(
+				key_fieldName = "HTML",
+				key_index = "2",
+				locator1 = "TextInput#ANY_DE_DDM",
 				value1 = "This is the second HTML field");
 
 			PortletEntry.publish();
@@ -865,10 +1729,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -909,10 +1772,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -973,10 +1835,9 @@ definition {
 			structureDescription = "Global WC Structure Description",
 			structureName = "Global WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "Global WC Structure Name");
 
@@ -1039,12 +1900,7 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		for (var structureFieldName : list "Boolean,Date,Decimal,Documents and Media,HTML,Image,Integer,Link to Page,Number,Radio,Select,Text,Text Box") {
-			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
-		}
+		DataEngine.addFields(fieldTypeList = "Date,Numeric,Upload,Image,Link to Page,Numeric,Single Selection,Multiple Selection,Grid,Select from List,Text,Rich Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -1055,7 +1911,7 @@ definition {
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
 			templateDescription = "WC Template Description",
-			templateFieldNames = "Boolean,Date,Decimal,Documents and Media,HTML,Image,Integer,Link to Page,Number,Radio,Select,Text,Text Box",
+			templateFieldNames = "Date,Numeric,Upload,Image,Link to Page,Numeric,Single Selection,Multiple Selection,Grid,Select from List,Text,Rich Text",
 			templateName = "WC Template Name");
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
@@ -1092,10 +1948,9 @@ definition {
 			structureDescription = "Global WC Structure Description",
 			structureName = "Global WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "Global WC Structure Name");
 
@@ -1161,10 +2016,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -1237,10 +2091,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		DynamicDataMapping.editFieldPredefinedValue(
 			field = "Text",
@@ -1326,11 +2179,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "HTML",
-			fieldFieldLabel = "HTML",
-			fieldName = "HTML",
-			structureFieldName = "HTML");
+		DataEngine.addField(
+			fieldFieldLabel = "Text",
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -1379,6 +2230,233 @@ definition {
 		WebContent.viewTitle(webContentTitle = "WC WebContent Title");
 	}
 
+	@description = "This is a use case for LRQA-61632. View structure field with predefined value."
+	@priority = "4"
+	test ViewFieldWithPredefinedValue {
+		task ("Add a web content article based on Basic Web Content") {
+			JSONWebcontent.addWebContent(
+				content = "Web Content Content",
+				groupName = "Test Site Name",
+				title = "Web Content Title");
+		}
+
+		task ("Add a new structure") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			NavItem.gotoStructures();
+
+			WebContentStructures.addCP(structureName = "WC Structure Name");
+		}
+
+		task ("Add a Boolean field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Boolean",
+				fieldFieldLabel = "Boolean",
+				fieldName = "Boolean");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Boolean",
+				fieldFieldLabel = "Boolean",
+				fieldName = "Boolean",
+				fieldPredefinedValue = "Yes");
+		}
+
+		task ("Add a Color field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Color",
+				fieldFieldLabel = "Color",
+				fieldName = "Color");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Color",
+				fieldFieldLabel = "Color",
+				fieldName = "Color",
+				fieldPredefinedValue = "#FF0000");
+		}
+
+		task ("Add a Date field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Date",
+				fieldFieldLabel = "Date",
+				fieldName = "Date");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Date",
+				fieldFieldLabel = "Date",
+				fieldName = "Date",
+				fieldPredefinedValue = "10/10/2020",
+				fieldPredefinedValueDay = "10",
+				fieldPredefinedValueMonth = "October",
+				fieldPredefinedValueYear = "2020");
+		}
+
+		task ("Add a Decimal field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Decimal",
+				fieldFieldLabel = "Decimal",
+				fieldName = "Decimal");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Decimal",
+				fieldFieldLabel = "Decimal",
+				fieldName = "Decimal",
+				fieldPredefinedValue = "0.5");
+		}
+
+		task ("Add a Documents and Media field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Documents and Media",
+				fieldFieldLabel = "Documents and Media",
+				fieldName = "DocumentsAndMedia");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Documents and Media",
+				fieldFieldLabel = "Documents and Media",
+				fieldName = "DocumentsAndMedia",
+				fieldPredefinedValue = "Document_1.jpg",
+				uploadFileName = "Document_1.jpg");
+		}
+
+		task ("Add a HTML field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "HTML",
+				fieldFieldLabel = "HTML",
+				fieldName = "HTML");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "HTML",
+				fieldFieldLabel = "HTML",
+				fieldName = "HTML",
+				fieldPredefinedValue = "This is a HTML field");
+		}
+
+		task ("Add an Integer field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Integer",
+				fieldFieldLabel = "Integer",
+				fieldName = "Integer");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Integer",
+				fieldFieldLabel = "Integer",
+				fieldName = "Integer",
+				fieldPredefinedValue = "9");
+		}
+
+		task ("Add a Number field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Number",
+				fieldFieldLabel = "Number",
+				fieldName = "Number");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Number",
+				fieldFieldLabel = "Number",
+				fieldName = "Number",
+				fieldPredefinedValue = "-1");
+		}
+
+		task ("Add a Radio field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Radio",
+				fieldFieldLabel = "Radio",
+				fieldName = "Radio");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Radio",
+				fieldFieldLabel = "Radio",
+				fieldName = "Radio",
+				fieldPredefinedValue = "option 1");
+		}
+
+		task ("Add a Select field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Select",
+				fieldFieldLabel = "Select",
+				fieldName = "Select");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Select",
+				fieldFieldLabel = "Select",
+				fieldName = "Select",
+				fieldPredefinedValue = "option 2");
+		}
+
+		task ("Add a Text field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Text",
+				fieldFieldLabel = "Text",
+				fieldName = "Text");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Text",
+				fieldFieldLabel = "Text",
+				fieldName = "Text",
+				fieldPredefinedValue = "This is a Text field");
+		}
+
+		task ("Add a Text Box field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Text Box",
+				fieldFieldLabel = "Text Box",
+				fieldName = "TextBox");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Text Box",
+				fieldFieldLabel = "Text Box",
+				fieldName = "TextBox",
+				fieldPredefinedValue = "This is a Text Box field");
+		}
+
+		task ("Add a Web Content field with predefined value") {
+			DynamicDataMapping.addField(
+				field = "Web Content",
+				fieldFieldLabel = "Web Content",
+				fieldName = "WebContent");
+
+			DynamicDataMapping.editFieldPredefinedValue(
+				field = "Web Content",
+				fieldFieldLabel = "Web Content",
+				fieldName = "WebContent",
+				fieldPredefinedValue = "Web Content Title",
+				groupName = "Test Site Name");
+		}
+
+		task ("Save the new structure") {
+			WebContentStructures.saveCP(structureName = "WC Structure Name");
+		}
+
+		task ("Add a web content article based on new structure") {
+			NavItem.click(navItem = "Web Content");
+
+			WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
+		}
+
+		task ("Assert the predefined value are shown in each field") {
+			AssertVisible(locator1 = "WCEditWebContent#SIDEBAR");
+
+			PortletEntry.inputTitle(title = "Web Content With Predefined Value");
+
+			WebContent.viewWithStructureCP(
+				predefinedValue = "true",
+				webContentBoolean = "true",
+				webContentColor = "background-color: rgb(255, 0, 0);",
+				webContentDate = "10/10/2020",
+				webContentDecimal = "0.5",
+				webContentDocumentsAndMedia = "Document_1.jpg",
+				webContentDocumentsAndMediaFieldName = "DocumentsAndMedia",
+				webContentHTML = "This is a HTML field",
+				webContentInteger = "9",
+				webContentNumber = "-1",
+				webContentRadio = "option 1",
+				webContentSelect = "option 2",
+				webContentText = "This is a Text field",
+				webContentTextBox = "This is a Text Box field",
+				webContentWebContent = "Web Content Title",
+				webContentWebContentFieldName = "WebContent");
+		}
+	}
+
 	@priority = "3"
 	test ViewGlobalStructureViaAddMenuInLiferaySite {
 		property testray.component.names = "Web Content Administration";
@@ -1391,10 +2469,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -1415,15 +2492,14 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
-		DynamicDataMapping.addField(
-			field = "Image",
+		DataEngine.addField(
 			fieldFieldLabel = "Image",
-			fieldName = "image");
+			fieldType = "Image",
+			rowNum = "1");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 

@@ -369,7 +369,7 @@ definition {
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
-		Organization.addMemberCP(
+		Organization.assignUser(
 			orgName = "Sub-organization1",
 			userFirstName = "user2",
 			userLastName = "user2",
@@ -523,10 +523,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -2094,10 +2093,7 @@ definition {
 				key_fragmentName = "card",
 				locator1 = "Fragment#FRAGMENT_CONFIGURATION_BORDER_RADIUS_IN_VIEW_MODE");
 
-			AssertElementPresent(
-				key_boxShadow = "rgba(0, 0, 0, 0.176) 0px 1rem 3rem",
-				key_fragmentName = "card",
-				locator1 = "Fragment#FRAGMENT_CONFIGURATION_BOX_SHADOW_IN_VIEW_MODE");
+			AssertElementPresent(locator1 = "//div[contains(@class,'page-editor__topper__bar') and contains(.,'Card')]/parent::div[contains(@style,'box-shadow: rgba(0, 0, 0, 0.176) 0px 1rem 3rem')]");
 		}
 
 		task ("Assert styles of Heading in edit mode") {
@@ -3204,6 +3200,59 @@ definition {
 		SignOut.signOut();
 
 		SignIn.signIn();
+	}
+
+	macro viewWebContentWithAllFields {
+		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Web Content",
+			site = "${siteName}");
+
+		WebContentAdmin.viewEntryWorkflowStatus(
+			entry = "Web Content Title",
+			workflowStatus = "Approved");
+
+		WebContent.viewWithStructureCP(
+			webContentBoolean = "true",
+			webContentDate = "10/10/2020",
+			webContentDecimal = "0.5",
+			webContentDocumentsAndMedia = "Document Title",
+			webContentDocumentsAndMediaFieldName = "Documents_and_Media",
+			webContentHTML = "This is a HTML field",
+			webContentImage = "Document_1.jpg",
+			webContentInteger = "9",
+			webContentLinkToPage = "Welcome",
+			webContentLinkToPageFieldName = "Link_to_Page",
+			webContentNumber = "-1",
+			webContentRadio = "option 1",
+			webContentSelect = "option 2",
+			webContentSeparator = "true",
+			webContentText = "This is a Text field",
+			webContentTextBox = "This is a Text Box field",
+			webContentTextBoxFieldName = "Text_Box",
+			webContentTitle = "Web Content Title");
+	}
+
+	macro viewWebContentWithPredefinedValueInWebContentField {
+		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Web Content",
+			site = "${siteName}");
+
+		for (var webContentTitle : list "Web Content Title,Web Content With Predefined Value") {
+			WebContentAdmin.viewEntryWorkflowStatus(
+				entry = "${webContentTitle}",
+				workflowStatus = "Approved");
+		}
+
+		WebContent.viewWithStructureCP(
+			webContentTitle = "Web Content With Predefined Value",
+			webContentWebContent = "Web Content Title",
+			webContentWebContentFieldName = "WebContent");
 	}
 
 	macro viewWebContextsCORS {

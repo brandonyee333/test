@@ -19,6 +19,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ACCOUNT_SELECTOR_ACCOUNT_LIST_ITEM</td>
+	<td>//span[contains(@class,'commerce-account-list__item')]//span[text()='${key_accountName}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ACCOUNT_SELECTOR_DROPDOWN</td>
 	<td>//button[@data-onclick='toggleAccountSelector']</td>
 	<td></td>
@@ -26,6 +31,11 @@
 <tr>
 	<td>ACCOUNT_SELECTOR_SELECTED_ACCOUNT</td>
 	<td>//div[contains(@class,'commerce-account-switcher__section--header')]/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_SWITCHER_BACK_BUTTON</td>
+	<td>//button[@class='commerce-account-switcher__back']</td>
 	<td></td>
 </tr>
 <tr>
@@ -81,6 +91,11 @@
 <tr>
 	<td>PORTLET_LOADED</td>
 	<td>//div[contains(@class,'portlet-title-default') and contains(.,'${key_portletName}')]/../../../div[@data-qa-id='app-loaded']/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PRODUCT_DETAILS_PRICE_VALUE</td>
+	<td>//h2[contains(@class,'commerce-price')]//span[contains(@class,'price-value')]</td>
 	<td></td>
 </tr>
 <tr>

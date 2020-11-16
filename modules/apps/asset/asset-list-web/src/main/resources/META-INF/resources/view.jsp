@@ -25,11 +25,11 @@ AssetListManagementToolbarDisplayContext assetListManagementToolbarDisplayContex
 	navigationItems='<%= assetListDisplayContext.getNavigationItems("collections") %>'
 />
 
-<clay:management-toolbar
+<clay:management-toolbar-v2
 	displayContext="<%= assetListManagementToolbarDisplayContext %>"
 />
 
-<portlet:actionURL name="/asset_list/delete_asset_list_entry" var="deleteAssetListEntryURL">
+<portlet:actionURL name="/asset_list/delete_asset_list_entries" var="deleteAssetListEntryURL">
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 </portlet:actionURL>
 

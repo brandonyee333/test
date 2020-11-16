@@ -397,20 +397,27 @@ if (portletTitleBasedNavigation) {
 	</aui:form>
 </div>
 
-<aui:script require='<%= npmResolvedPackageName + "/wiki/js/WikiPortlet.es as WikiPortletJs" %>'>
-	new WikiPortletJs.default({
-		constants: {
-			ACTION_PUBLISH: '<%= WorkflowConstants.ACTION_PUBLISH %>',
-			ACTION_SAVE_DRAFT: '<%= WorkflowConstants.ACTION_SAVE_DRAFT %>',
-			CMD: '<%= Constants.CMD %>',
-		},
-		currentAction:
-			'<%= ((wikiPage == null) || wikiPage.isNew()) ? Constants.ADD : Constants.UPDATE %>',
-		namespace: '<portlet:namespace />',
-		renderUrl: '<%= editPageRenderURL %>',
-		rootNode: '#<portlet:namespace />wikiEditPageContainer',
-	});
-</aui:script>
+<liferay-frontend:component
+	context='<%=
+		HashMapBuilder.<String, Object>put(
+			"constants",
+			HashMapBuilder.<String, Object>put(
+				"ACTION_PUBLISH", WorkflowConstants.ACTION_PUBLISH
+			).put(
+				"ACTION_SAVE_DRAFT", WorkflowConstants.ACTION_SAVE_DRAFT
+			).put(
+				"CMD", Constants.CMD
+			).build()
+		).put(
+			"currentAction", (wikiPage == null) || wikiPage.isNew() ? Constants.ADD : Constants.UPDATE
+		).put(
+			"renderUrl", editPageRenderURL
+		).put(
+			"rootNodeId", liferayPortletResponse.getNamespace() + "wikiEditPageContainer"
+		).build()
+	%>'
+	module="wiki/js/WikiPortlet.es"
+/>
 
 <%
 if ((wikiPage != null) && !wikiPage.isNew()) {

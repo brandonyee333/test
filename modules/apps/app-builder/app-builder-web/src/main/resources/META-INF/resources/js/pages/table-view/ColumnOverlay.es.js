@@ -14,7 +14,6 @@
 
 import classNames from 'classnames';
 import {useEventListener} from 'frontend-js-react-web';
-import dom from 'metal-dom';
 import React, {useContext, useLayoutEffect, useState} from 'react';
 
 import Button from '../../components/button/Button.es';
@@ -25,12 +24,18 @@ import EditTableViewContext, {
 } from './EditTableViewContext.es';
 import {getColumnIndex, getColumnNode, getFieldTypeLabel} from './utils.es';
 
+const getTableResponsiveNode = (container) => {
+	return container.querySelector('.table-responsive');
+};
+
 const getStyle = (container, index) => {
 	const columnNode = getColumnNode(container, index);
 
 	return {
 		height: container.offsetHeight,
-		left: columnNode.offsetLeft,
+		left:
+			columnNode.offsetLeft -
+			getTableResponsiveNode(container).scrollLeft,
 		position: 'absolute',
 		top: container.offsetTop,
 		width: columnNode.offsetWidth,
@@ -57,6 +62,15 @@ const Overlay = ({
 		},
 		true,
 		window
+	);
+
+	useEventListener(
+		'scroll',
+		() => {
+			setStyle(getStyle(container, index));
+		},
+		true,
+		getTableResponsiveNode(container)
 	);
 
 	useLayoutEffect(() => {
@@ -129,10 +143,7 @@ export default ({container, fields, onRemoveFieldName}) => {
 		'mouseleave',
 		({relatedTarget}) => {
 			const columnIndex = getColumnIndex(relatedTarget);
-			const outsideOverlay = !dom.closest(
-				relatedTarget,
-				'.column-overlay'
-			);
+			const outsideOverlay = !relatedTarget.closest('.column-overlay');
 
 			if (columnIndex === -1 && outsideOverlay) {
 				setHoveredFieldName(null);

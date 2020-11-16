@@ -4,6 +4,7 @@ definition {
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Web Content Display";
+
 	var pageName = "Web Content Display Page";
 	var portletName = "Web Content Display";
 
@@ -133,10 +134,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Image",
+		DataEngine.addField(
 			fieldFieldLabel = "Image",
-			fieldName = "Image");
+			fieldType = "Image");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -192,9 +192,11 @@ definition {
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
 
-		FormFields.editTextAlt(
-			fieldName = "Image",
-			fieldValue = "Web Content Image Description");
+		Type(
+			key_fieldName = "Image",
+			key_index = "2",
+			locator1 = "TextInput#ANY_DE_DDM",
+			value1 = "Web Content Image Description");
 
 		PortletEntry.publish();
 

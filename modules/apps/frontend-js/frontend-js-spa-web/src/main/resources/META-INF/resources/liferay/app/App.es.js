@@ -15,8 +15,8 @@
 import {openToast} from 'frontend-js-web';
 import core from 'metal';
 import dom from 'metal-dom';
-import {App} from 'senna';
 
+import {App} from '../../senna/senna';
 import LiferaySurface from '../surface/Surface.es';
 import Utils from '../util/Utils.es';
 
@@ -154,7 +154,7 @@ class LiferayApp extends App {
 
 			return Array.prototype.slice
 				.call(portlets)
-				.some((portlet) => dom.contains(portlet, element));
+				.some((portlet) => portlet.contains(element));
 		});
 	}
 
