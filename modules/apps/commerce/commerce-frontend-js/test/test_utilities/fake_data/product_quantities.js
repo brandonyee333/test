@@ -25,16 +25,16 @@ export const testAllowedQuantities = [
 	113,
 ];
 
- export const settingsAllowedQuantities = {
+export const settingsAllowedQuantities = {
 	allowedQuantity: testAllowedQuantities,
 	maxQuantity: 99,
 	minQuantity: 1,
 	multipleQuantity: 5,
- }
+};
 
 export const settingsMultipleQuantity = {
 	allowedQuantity: [-1],
 	maxQuantity: 99,
 	minQuantity: 1,
 	multipleQuantity: 5,
-}
+};

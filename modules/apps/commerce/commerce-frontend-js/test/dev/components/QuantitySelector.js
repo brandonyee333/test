@@ -17,7 +17,6 @@ import launcher from '../../../src/main/resources/META-INF/resources/components/
 import '../../../src/main/resources/META-INF/resources/styles/main.scss';
 
 launcher('quantity-selector', 'quantity-selector', {
-
 	inputName: 'test-name',
 	orderQuantity: 1,
 	settings: {

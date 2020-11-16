@@ -12,17 +12,22 @@
  * details.
  */
 
-export const generateOptions = (allowed = [], max = 1, min = 1, multiple = 1) => {
-    if (allowed.length > 0) {
-        return allowed
-    }
-    else {
-        const [MIN, MAX] = [max, min].sort()
-        const quantitiesList = []
-        for (let i = MIN; i <= MAX; i++) {
-            quantitiesList.push(i * multiple);
-        }
+export const generateOptions = (
+	allowed = [],
+	max = 1,
+	min = 1,
+	multiple = 1
+) => {
+	if (allowed.length > 0) {
+		return allowed;
+	}
+	else {
+		const [MIN, MAX] = [max, min].sort();
+		const quantitiesList = [];
+		for (let i = MIN; i <= MAX; i++) {
+			quantitiesList.push(i * multiple);
+		}
 
-        return quantitiesList
-    }
+		return quantitiesList;
+	}
 };

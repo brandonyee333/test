@@ -12,48 +12,41 @@
  * details.
  */
 
-import * as Utils from '../../../src/main/resources/META-INF/resources/components/quantity_selector/utils/index'
+import * as Utils from '../../../src/main/resources/META-INF/resources/components/quantity_selector/utils/index';
 
 describe('generateOption`s working', () => {
-    
-    // it('should return allowed values if length > 0', () => {
-        
-    // })
 
-    it('if allowedQuantities.length > 0 should return allowed values', () => {
-        const allowed = [
-            2,
-            4,
-            65,
-            33,
-            913,
-            267,
-            323,
-            122,
-            90,
-            113,
-        ];
-        expect(Utils.generateOptions(allowed)).toEqual(allowed);
+	// it('should return allowed values if length > 0', () => {
 
-    })
+	// })
 
-    it('if allowedQuantities.length === 0', () => {
-        expect(Utils.generateOptions([], 5,2)).toEqual([2,3,4,5])
-    })
+	it('if allowedQuantities.length > 0 should return allowed values', () => {
+		const allowed = [2, 4, 65, 33, 913, 267, 323, 122, 90, 113];
+		expect(Utils.generateOptions(allowed)).toEqual(allowed);
+	});
 
-    it('if allowed is not empty and max and min are setted, should return allowed', () => {
-        expect(Utils.generateOptions([3,5,7,9], 1, 9, 2)).toEqual([3,5,7,9])
-    })
+	it('if allowedQuantities.length === 0', () => {
+		expect(Utils.generateOptions([], 5, 2)).toEqual([2, 3, 4, 5]);
+	});
 
-    it('if max < min swap the correct sorted values', () => {
-        expect(Utils.generateOptions([], 1, 4, 2)).toEqual([2, 4, 6, 8])
-    })
+	it('if allowed is not empty and max and min are setted, should return allowed', () => {
+		expect(Utils.generateOptions([3, 5, 7, 9], 1, 9, 2)).toEqual([
+			3,
+			5,
+			7,
+			9,
+		]);
+	});
 
-    it('if multiple > 1 all values should be * multiple', () => {
-        expect(Utils.generateOptions([], 4, 1, 2)).toEqual([2,4,6,8])
-    })
+	it('if max < min swap the correct sorted values', () => {
+		expect(Utils.generateOptions([], 1, 4, 2)).toEqual([2, 4, 6, 8]);
+	});
 
-    it('if allowed is not set and max, min and muliple are not set', () => {
-        expect(Utils.generateOptions()).toEqual([1])
-    })
-})
+	it('if multiple > 1 all values should be * multiple', () => {
+		expect(Utils.generateOptions([], 4, 1, 2)).toEqual([2, 4, 6, 8]);
+	});
+
+	it('if allowed is not set and max, min and muliple are not set', () => {
+		expect(Utils.generateOptions()).toEqual([1]);
+	});
+});

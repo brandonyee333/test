@@ -19,7 +19,7 @@ import PropTypes from 'prop-types';
 import React, {createRef, useEffect, useState} from 'react';
 
 import Datalist from '../datalist/Datalist';
-import {generateOptions} from './utils/index'
+import {generateOptions} from './utils/index';
 
 function QuantitySelector(props) {
 	const [selectedQuantity, setSelectedQuantity] = useState(props.quantity);
@@ -169,7 +169,6 @@ QuantitySelector.defaultProps = {
 	disabled: false,
 	inputSize: 'limited',
 	settings: {
-
 		allowedQuantity: [],
 		maxQuantity: 99,
 		minQuantity: 1,
