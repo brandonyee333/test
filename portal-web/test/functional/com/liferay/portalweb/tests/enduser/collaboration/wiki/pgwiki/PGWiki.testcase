@@ -13,6 +13,12 @@ definition {
 
 		Page.add(pageName = "Wiki Test Page");
 
+		SitePageNavigator.gotoEditPage(page = "Wiki Test Page");
+
+		Page.editPageLayoutColumn(columnName = "1 Column");
+
+		Navigator.gotoPage(pageName = "Wiki Test Page");
+
 		Portlet.addPG(portletName = "Wiki");
 	}
 
