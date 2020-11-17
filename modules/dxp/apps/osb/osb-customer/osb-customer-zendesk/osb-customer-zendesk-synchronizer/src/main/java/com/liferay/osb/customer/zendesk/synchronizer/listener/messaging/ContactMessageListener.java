@@ -196,11 +196,12 @@ public class ContactMessageListener extends BaseMessageListener {
 						curContactRole.getName())) {
 
 					_customerSynchronizer.update(user);
-				}
-				else {
-					_customerSynchronizer.remove(user, accountEntry);
+
+					return;
 				}
 			}
+
+			_customerSynchronizer.remove(user, accountEntry);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
