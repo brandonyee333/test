@@ -20,6 +20,8 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.search.filter.FilterVisitor;
 import com.liferay.portal.search.solr.filter.BooleanFilterTranslator;
 
+import java.util.List;
+
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 
@@ -41,6 +43,10 @@ public class BooleanFilterTranslatorImpl implements BooleanFilterTranslator {
 				booleanFilter.getMustBooleanClauses()) {
 
 			Query luceneQuery = translate(booleanClause, filterVisitor);
+
+			if (_isBooleanQueryClausesEmpty(luceneQuery)) {
+				continue;
+			}
 
 			booleanQuery.add(
 				luceneQuery, org.apache.lucene.search.BooleanClause.Occur.MUST);
@@ -76,6 +82,17 @@ public class BooleanFilterTranslatorImpl implements BooleanFilterTranslator {
 		Filter filter = booleanClause.getClause();
 
 		return filter.accept(filterVisitor);
+	}
+
+	private static boolean _isBooleanQueryClausesEmpty(Query luceneQuery) {
+		if (luceneQuery instanceof BooleanQuery) {
+			List<org.apache.lucene.search.BooleanClause> clauses =
+				((BooleanQuery)luceneQuery).clauses();
+
+			return clauses.isEmpty();
+		}
+
+		return false;
 	}
 
 }
