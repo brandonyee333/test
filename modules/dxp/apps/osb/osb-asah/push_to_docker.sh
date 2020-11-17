@@ -134,7 +134,7 @@ function generate_wedeploy_profile {
 	then
 		sed "s@\"id\"@\"image\": \"$(get_docker_image_tag ${file_name})\", \"id\"@" .wedeploy_profiles/${dir_name}/${file_name}/LCP.json
 
-		python -m json.tool .wedeploy_profiles/${dir_name}/${file_name}/LCP.json > .wedeploy_profiles/${dir_name}/${file_name}/LCP.json.formatted
+		python -m json.tool --sort-keys .wedeploy_profiles/${dir_name}/${file_name}/LCP.json > .wedeploy_profiles/${dir_name}/${file_name}/LCP.json.formatted
 
 		mv .wedeploy_profiles/${dir_name}/${file_name}/LCP.json.formatted .wedeploy_profiles/${dir_name}/${file_name}/LCP.json
 
