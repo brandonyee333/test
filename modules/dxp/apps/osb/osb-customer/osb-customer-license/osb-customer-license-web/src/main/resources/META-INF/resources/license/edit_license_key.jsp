@@ -378,11 +378,16 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 
 							Calendar expirationDateCal = Calendar.getInstance(timeZone, locale);
 
-							if ((productPurchaseDisplay == null) || (productPurchaseDisplay.getEndDate() == null)) {
-								expirationDateCal.add(Calendar.YEAR, 1);
+							String licenseEntryType = licenseEntry.getType();
+
+							if (licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) && (productPurchaseDisplay != null) && (productPurchaseDisplay.getEndDate() != null)) {
+								expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
+							}
+							else if (productPurchaseDisplay != null) {
+								expirationDateCal.add(Calendar.YEAR, 100);
 							}
 							else {
-								expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
+								expirationDateCal.add(Calendar.YEAR, 1);
 							}
 
 							String rowHREF = null;
