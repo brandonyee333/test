@@ -256,14 +256,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 			return publisher;
 		}
 
-		boolean enableOrdering = false;
-
-		if (channel == Channel.DXP_ENTITIES_MESSAGE) {
-			enableOrdering = true;
-		}
-
 		publisher = _pubSubClientFactory.createPublisher(
-			enableOrdering, getProjectTopicName(channel));
+			channel.isOrderingEnabled(), getProjectTopicName(channel));
 
 		_channels.put(channel, publisher);
 

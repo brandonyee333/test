@@ -123,14 +123,8 @@ public class MessageBusTestHelper {
 		PubSubClientFactory pubSubClientFactory =
 			_pubSubMessageBusImpl.getPubSubclientFactory();
 
-		boolean enableOrdering = false;
-
-		if (channel == Channel.DXP_ENTITIES_MESSAGE) {
-			enableOrdering = true;
-		}
-
 		return pubSubClientFactory.createPublisher(
-			enableOrdering, projectTopicName);
+			channel.isOrderingEnabled(), projectTopicName);
 	}
 
 	private void _pullAllSubscriptionMessages(Subscription subscription) {
