@@ -56,20 +56,16 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -433,29 +429,16 @@ public class AccountEntryViewDisplayContext {
 		List<ProductPurchase> productPurchases =
 			_productPurchaseWebService.search(sb.toString(), 1, 1000);
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)_portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		Locale locale = themeDisplay.getLocale();
+		List<ProductPurchaseDisplay> productPurchaseDisplays =
+			new ArrayList<>();
 
 		for (ProductPurchase productPurchase : productPurchases) {
-			Product product = productPurchase.getProduct();
-
-			String name = product.getName();
-
-			if (name.equals(ProductConstants.NAME_GOLD) &&
-				locale.equals(LocaleUtil.JAPAN)) {
-
-				product.setName(ProductConstants.NAME_LIGHT);
-			}
-			else if (name.equals(ProductConstants.NAME_PLATINUM) &&
-					 locale.equals(LocaleUtil.JAPAN)) {
-
-				product.setName(ProductConstants.NAME_STANDARD);
-			}
+			productPurchaseDisplays.add(
+				new ProductPurchaseDisplay(_request, productPurchase));
 		}
 
-		searchContainer.setResults(productPurchases);
+		searchContainer.setResults(productPurchaseDisplays);
+
 		searchContainer.setTotal(productPurchases.size());
 
 		return searchContainer;

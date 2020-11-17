@@ -45,7 +45,6 @@ page import="com.liferay.osb.customer.admin.service.permission.AccountEnvironmen
 page import="com.liferay.osb.customer.constants.OSBActionKeys" %><%@
 page import="com.liferay.osb.customer.github.configuration.GitHubConfigurationValues" %><%@
 page import="com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants" %><%@
-page import="com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants" %><%@
 page import="com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepository" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryManager" %><%@
@@ -56,7 +55,6 @@ page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account" %><%
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.AuditEntry" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole" %><%@
-page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product" %><%@
 page import="com.liferay.portal.kernel.exception.NoSuchUserException" %><%@
 page import="com.liferay.portal.kernel.json.JSONArray" %><%@
 page import="com.liferay.portal.kernel.json.JSONFactoryUtil" %><%@
@@ -78,8 +76,7 @@ page import="com.liferay.portal.kernel.util.Validator" %>
 <%@ page import="java.text.DateFormat" %><%@
 page import="java.text.Format" %>
 
-<%@ page import="java.util.List" %><%@
-page import="java.util.Map" %>
+<%@ page import="java.util.List" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
 

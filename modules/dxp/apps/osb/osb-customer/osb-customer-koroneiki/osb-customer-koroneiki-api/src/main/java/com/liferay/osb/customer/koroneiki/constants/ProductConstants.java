@@ -24,8 +24,6 @@ public class ProductConstants {
 
 	public static final String NAME_GOLD = "Gold Subscription";
 
-	public static final String NAME_LIGHT = "Light Subscription";
-
 	public static final String NAME_LIMITED = "Limited Subscription";
 
 	public static final String NAME_PLATINUM = "Platinum Subscription";
@@ -37,8 +35,6 @@ public class ProductConstants {
 	public static final String NAME_SERVICE_PARTNERSHIP = "Service Partnership";
 
 	public static final String NAME_SILVER = "Silver Subscription";
-
-	public static final String NAME_STANDARD = "Standard Subscription";
 
 	public static final String NAME_TRAINING_PARTNERSHIP =
 		"Training Partnership";
