@@ -12,22 +12,42 @@
  * details.
  */
 
-export const generateOptions = (
-	allowed = [],
-	max = 1,
-	min = 1,
-	multiple = 1
-) => {
-	if (allowed.length > 0) {
-		return allowed;
+import {BLOCK, DEFAULT, INPUT_STYLE} from './constants';
+
+export const generateOptions = ({
+	allowedQuantity = [],
+	maxQuantity = 1,
+	minQuantity = 1,
+	multipleQuantity = 1,
+}) => {
+	if (allowedQuantity.length > 0) {
+		return allowedQuantity;
 	}
 	else {
-		const [MIN, MAX] = [max, min].sort();
 		const quantitiesList = [];
-		for (let i = MIN; i <= MAX; i++) {
-			quantitiesList.push(i * multiple);
+		for (let i = minQuantity; i <= maxQuantity; i++) {
+			quantitiesList.push(i * multipleQuantity);
 		}
 
 		return quantitiesList;
+	}
+};
+
+export const getInputStyle = (inputSize) => {
+	switch (inputSize) {
+		case BLOCK:
+			return INPUT_STYLE.BLOCK;
+		case DEFAULT:
+			return INPUT_STYLE.DEFAULT;
+		default:
+			// eslint-disable-next-line no-case-declarations
+			const n = parseInt(inputSize, 10);
+			// eslint-disable-next-line no-case-declarations
+			const width = n + 'px';
+
+			return {
+				display: BLOCK,
+				width,
+			};
 	}
 };

@@ -21,7 +21,6 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
 import QuantitySelector from '../../src/main/resources/META-INF/resources/components/quantity_selector/QuantitySelector';
-
 import * as Utils from '../../src/main/resources/META-INF/resources/components/quantity_selector/utils/index';
 
 describe('Quantity Selector', () => {
@@ -49,13 +48,16 @@ describe('Quantity Selector', () => {
 			];
 
 			Utils.generateOptions.mockReturnValue(ALLOWED_QUANTITIES);
-			const settingsAllowedQuantities = {
-				allowedQuantity: [1, 2, 3, 4],
-			};
+
+			// const settingsAllowedQuantities = {
+			// 	allowedQuantity: [1, 2, 3, 4],
+			// };
 
 			const {getByText} = render(
 				<QuantitySelector
-					settings={settingsAllowedQuantities}
+
+					// settings={settingsAllowedQuantities}
+
 					spritemap="./assets/icons.svg"
 				/>
 			);
@@ -69,49 +71,54 @@ describe('Quantity Selector', () => {
 			});
 		});
 
-		it('if allowedQuantity is [] the component should display the options from min to max"', () => {
-			const a = Utils.generateOptions.mockReturnValue([], 4, 1);
-			const settings = {
-				allowedQuantity: [],
-				max: 4,
-				min: 1,
-			};
+		it('if allowedQuantity is [] the component should display the options from min to max', () => {
+			Utils.generateOptions.mockReturnValue([1, 2, 3, 4]);
 
 			const {getByTestId, getByText} = render(
 				<QuantitySelector
-					settings={settings}
+
+					// settings={settingss}
+
 					spritemap="./assets/icons.svg"
 				/>
 			);
-			expect(getByText).toBeInTheDocument();
+
+			const oo = getByText('1');
+
+			expect(oo).toBeInTheDocument();
 		});
 
-		// it('if multipleQuantity is >= 2, all options should be element * 2', () => {
-		//     const { getAllByTestId, getByTestId } = render(
+		it('check correctness of inputSize attribute', () => {
+            Utils.generateOptions.mockReturnValue([1, 2, 3, 4]);
+
+            const { container } = render(
+				<QuantitySelector
+                    inputSize={2000}
+					spritemap="./assets/icons.svg"
+				/>
+            );
+
+            // const containerClass = QSinput().type.styledComponentId
+			// const quantityRoot = document.getElementsByClassName(
+			// 	containerClass
+			// );
+			// const style = window.getComputedStyle(quantityRoot[0]);
+            // expect(style.width).toBe(2000);
+
+            expect(container.getClassName('quantity-selector')).toHaveAttribute('width','2000px');
+		});
+
+        // it('if is disabled the input should be disabled', () => {
+        //     Utils.generateOptions.mockReturnValue([]);
+
+        //     const { container, getByTestId } = render(
 		//         <QuantitySelector
+        //             disabled={true}
 		//             spritemap="./assets/icons.svg"
-		//             {...mocked.settingsMultipleQuantity}
 		//         />
 		//     );
-		//     const options = getAllByTestId('quantity-selector-input')
-		//     expect(options)
-		// });
+        //     expect(getByTestId('datalist')).toBeDisabled()
 
-		// it('check correctness of inputSize attribute', () => {
-		//     expect(
-		//         renderedComponent.getByText('select-account-and-order')
-		//     ).toBeInTheDocument();
-		// });
-
-		// it('if is disabled the input should be disabled', () => {
-		//     const { getAllByTestId, getByTestId } = render(
-		//         <QuantitySelector
-		//             spritemap="./assets/icons.svg"
-		//             {...mocked.settingsAllowedQuantities}
-		//         />
-		//     );
-		//     const options = getAllByTestId('quantity-selector-input')
-		//     expect(options).toHaveAttribute('disabled')
 		// });
 
 	});

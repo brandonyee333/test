@@ -19,17 +19,12 @@ import PropTypes from 'prop-types';
 import React, {createRef, useEffect, useState} from 'react';
 
 import Datalist from '../datalist/Datalist';
-import {generateOptions} from './utils/index';
+import {generateOptions, getInputStyle} from './utils/index';
 
 function QuantitySelector(props) {
 	const [selectedQuantity, setSelectedQuantity] = useState(props.quantity);
 
-	const quantitiesList = generateOptions(
-		props.settings.allowedQuantity,
-		props.settings.maxQuantity,
-		props.settings.minQuantity,
-		props.settings.multipleQuantity
-	);
+	const quantitiesList = generateOptions(props.settings);
 
 	const updateQuantity = (q) => {
 		if (q !== null) {
@@ -44,27 +39,7 @@ function QuantitySelector(props) {
 		}
 	};
 
-	let inputStyle;
-	if (props.inputSize === 'block') {
-		inputStyle = {
-			display: 'block',
-			width: '100%',
-		};
-	}
-	else if (props.inputSize === 'limited') {
-		inputStyle = {
-			display: 'block',
-			width: '176px',
-		};
-	}
-	else {
-		const n = parseInt(props.inputSize, 10);
-		const wid = n + 'px';
-		inputStyle = {
-			display: 'block',
-			width: wid,
-		};
-	}
+	const inputStyle = getInputStyle(props.inputSize);
 
 	useEffect(() => {
 		// eslint-disable-next-line no-unused-expressions
@@ -167,7 +142,7 @@ function QuantitySelector(props) {
 
 QuantitySelector.defaultProps = {
 	disabled: false,
-	inputSize: 'limited',
+	inputSize: 'default',
 	settings: {
 		allowedQuantity: [],
 		maxQuantity: 99,
