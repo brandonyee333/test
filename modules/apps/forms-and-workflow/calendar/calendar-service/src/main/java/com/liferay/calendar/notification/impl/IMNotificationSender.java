@@ -36,7 +36,7 @@ public class IMNotificationSender implements NotificationSender {
 	public void sendNotification(
 		String fromAddress, String fromName,
 		NotificationRecipient notificationRecipient, String subject,
-		String notificationMessage) {
+		String notificationMessage, String calendarBookingString) {
 	}
 
 }
