@@ -23,6 +23,20 @@ public enum Channel {
 	ANALYTICS_EVENTS_CUSTOM_ASSET, ANALYTICS_EVENTS_DOCUMENT,
 	ANALYTICS_EVENTS_FORM, ANALYTICS_EVENTS_JOURNAL, ANALYTICS_EVENTS_MESSAGE,
 	ANALYTICS_EVENTS_PAGE, ANALYTICS_EVENTS_SESSION, DATAPROC,
-	DXP_ENTITIES_MESSAGE, IDENTITY_MESSAGE, SEARCH_QUERY_STRINGS
+	DXP_ENTITIES_MESSAGE(true), IDENTITY_MESSAGE, SEARCH_QUERY_STRINGS;
+
+	public boolean isOrderingEnabled() {
+		return _orderingEnabled;
+	}
+
+	private Channel() {
+		_orderingEnabled = false;
+	}
+
+	private Channel(boolean orderingEnabled) {
+		_orderingEnabled = orderingEnabled;
+	}
+
+	private final boolean _orderingEnabled;
 
 }
