@@ -33,7 +33,8 @@ definition {
 	@priority = "5"
 	test StagingDemoDocumentsAndMedia {
 		property custom.properties = "default.layout.template.id=1_column";
-		property portal.acceptance = "true";
+		property portal.acceptance = "quarantine";
+		property portal.upstream = "quarantine";
 		property test.name.skip.portal.instance = "Staging#StagingDemoDocumentsAndMedia";
 		property testray.component.names = "Training";
 
@@ -81,15 +82,9 @@ definition {
 
 		DMNavigator.gotoMetadataSets();
 
-		DMMetadataSet.add(
-			dmMetadataSetFieldNames = "Text,Number",
-			metadataSetName = "DM Metadata Set Name");
+		DMMetadataSet.addTitle(metadataSetName = "DM Metadata Set Name");
 
-		DDLDataDefinition.save();
-
-		Navigator.gotoSitePage(
-			pageName = "Staging DM Page",
-			siteName = "Site Name");
+		DMMetadataSet.addMultipleFields(fieldType = "Numeric,Text");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -99,7 +94,7 @@ definition {
 
 		DMDocumentType.add(
 			dmDocumentTypeDescription = "DM Document Type Description",
-			dmDocumentTypeFieldNames = "Boolean",
+			dmDocumentTypeFieldNames = "Date",
 			dmDocumentTypeName = "DM Document Type Name",
 			metadataSetName = "DM Metadata Set Name");
 
@@ -126,11 +121,12 @@ definition {
 		DMNavigator.gotoFolder(dmFolderName = "DM Folder Name");
 
 		DMDocument.addDocumentTypePG(
-			booleanField = "Boolean Field",
+			dateField = "Date",
 			dmDocumentDescription = "DM Document Description",
 			dmDocumentFile = "Document_1.mp3",
 			dmDocumentTitle = "DM Document Title",
 			dmDocumentTypeName = "DM Document Type Name",
+			fieldValue = "01/01/2022",
 			numberField = "1234",
 			textField = "Text");
 
@@ -156,7 +152,7 @@ definition {
 
 		DMNavigator.gotoDocumentPG(dmDocumentTitle = "DM Document Title");
 
-		DMDocument.viewDocumentTypePG(booleanValue = "Yes");
+		DMDocument.viewDocumentTypePG(dateValue = "01/01/2022");
 
 		DMDocument.viewDocumentTypePG(numberValue = "1234");
 

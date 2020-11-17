@@ -194,11 +194,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>COLOR_SELECT</td>
-	<td>//button[@aria-label='Select a color']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>COMMENT</td>
 	<td>//button/span[contains(.,'Comment')]</td>
 	<td></td>
@@ -656,6 +651,11 @@
 <tr>
 	<td>SELECT_CONTENT</td>
 	<td>//div[@data-fieldname='${key_fieldName}']//button[contains(.,'Select')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SELECT_FIELD_LAST</td>
+	<td>xpath=(//*[contains(@class,'btn btn-secondary') and contains(text(),'Select')])[last()]</td>
 	<td></td>
 </tr>
 <tr>

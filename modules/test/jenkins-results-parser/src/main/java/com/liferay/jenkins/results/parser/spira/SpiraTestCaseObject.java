@@ -131,24 +131,11 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 	}
 
 	public String getFilePath() {
-		SpiraCustomProperty spiraCustomProperty =
-			SpiraCustomProperty.createSpiraCustomProperty(
-				getSpiraProject(), SpiraTestCaseObject.class,
-				_CUSTOM_FIELD_FILE_PATH_KEY, SpiraCustomProperty.Type.TEXT);
+		SpiraCustomPropertyValue spiraCustomPropertyValue =
+			getSpiraCustomPropertyValue(_CUSTOM_FIELD_FILE_PATH_KEY);
 
-		JSONArray customPropertiesJSONArray = jsonObject.getJSONArray(
-			"CustomProperties");
-
-		for (int i = 0; i < customPropertiesJSONArray.length(); i++) {
-			JSONObject customPropertyJSONObject =
-				customPropertiesJSONArray.getJSONObject(i);
-
-			int propertyNumber = customPropertyJSONObject.getInt(
-				"PropertyNumber");
-
-			if (propertyNumber == spiraCustomProperty.getPropertyNumber()) {
-				return customPropertyJSONObject.optString("StringValue");
-			}
+		if (spiraCustomPropertyValue != null) {
+			return spiraCustomPropertyValue.getValueString();
 		}
 
 		return null;
@@ -175,6 +162,29 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 			(Integer)testCaseFolderID);
 
 		return _parentSpiraTestCaseFolder;
+	}
+
+	public SpiraTestCaseProductVersion getSpiraTestCaseProductVersion() {
+		if (_spiraTestCaseProductVersion != null) {
+			return _spiraTestCaseProductVersion;
+		}
+
+		SpiraCustomPropertyValue spiraCustomPropertyValue =
+			getSpiraCustomPropertyValue(
+				SpiraTestCaseProductVersion.CUSTOM_PROPERTY_NAME);
+
+		if (spiraCustomPropertyValue == null) {
+			return null;
+		}
+
+		if (spiraCustomPropertyValue instanceof SpiraTestCaseProductVersion) {
+			_spiraTestCaseProductVersion =
+				(SpiraTestCaseProductVersion)spiraCustomPropertyValue;
+
+			return _spiraTestCaseProductVersion;
+		}
+
+		return null;
 	}
 
 	public SpiraTestCaseRun getSpiraTestCaseRunByID(int testCaseRunID) {
@@ -455,5 +465,6 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 	private static final String _CUSTOM_FIELD_FILE_PATH_KEY = "File Path";
 
 	private SpiraTestCaseFolder _parentSpiraTestCaseFolder;
+	private SpiraTestCaseProductVersion _spiraTestCaseProductVersion;
 
 }

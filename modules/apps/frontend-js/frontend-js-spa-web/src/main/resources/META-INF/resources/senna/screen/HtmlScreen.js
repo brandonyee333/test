@@ -12,17 +12,14 @@
  * details.
  */
 
-'use strict';
-
-import {getUid} from 'metal';
-import {buildFragment, globalEval, globalEvalStyles, match} from 'metal-dom';
+import {runScriptsInElement} from 'frontend-js-web';
+import {buildFragment, globalEvalStyles, match} from 'metal-dom';
 import CancellablePromise from 'metal-promise';
 import Uri from 'metal-uri';
-import UA from 'metal-useragent';
 
 import globals from '../globals/globals';
 import Surface from '../surface/Surface';
-import utils from '../utils/utils';
+import {clearNodeAttributes, copyNodeAttributes, getUid} from '../utils/utils';
 import RequestScreen from './RequestScreen';
 
 class HtmlScreen extends RequestScreen {
@@ -125,21 +122,14 @@ class HtmlScreen extends RequestScreen {
 	copyNodeAttributesFromContent_(content, node) {
 		content = content.replace(/[<]\s*html/gi, '<senna');
 		content = content.replace(/\/html\s*>/gi, '/senna>');
-		let placeholder;
-		if (UA.isIe) {
-			const tempNode = globals.document
-				.createRange()
-				.createContextualFragment(content);
-			placeholder = tempNode.querySelector('senna');
-		}
-		else {
-			node.innerHTML = content;
-			placeholder = node.querySelector('senna');
-		}
+
+		node.innerHTML = content;
+
+		const placeholder = node.querySelector('senna');
 
 		if (placeholder) {
-			utils.clearNodeAttributes(node);
-			utils.copyNodeAttributes(placeholder, node);
+			clearNodeAttributes(node);
+			copyNodeAttributes(placeholder, node);
 		}
 	}
 
@@ -156,7 +146,7 @@ class HtmlScreen extends RequestScreen {
 	 */
 	disposePendingStyles() {
 		if (this.pendingStyles) {
-			utils.removeElementsFromDocument(this.pendingStyles);
+			this.pendingStyles.forEach((element) => element.remove());
 		}
 	}
 
@@ -165,7 +155,7 @@ class HtmlScreen extends RequestScreen {
 	 */
 	evaluateScripts(surfaces) {
 		var evaluateTrackedScripts = this.evaluateTrackedResources_(
-			globalEval.runScriptsInElement,
+			runScriptsInElement,
 			HtmlScreen.selectors.scripts,
 			HtmlScreen.selectors.scriptsTemporary,
 			HtmlScreen.selectors.scriptsPermanent
@@ -205,7 +195,7 @@ class HtmlScreen extends RequestScreen {
 		);
 
 		return new CancellablePromise((resolve) => {
-			utils.removeElementsFromDocument(resourcesInDocument);
+			resourcesInDocument.forEach((element) => element.remove());
 			this.runFaviconInElement_(resourcesInVirtual).then(() => resolve());
 		});
 	}
@@ -266,7 +256,7 @@ class HtmlScreen extends RequestScreen {
 			evaluatorFn(
 				frag,
 				() => {
-					utils.removeElementsFromDocument(temporariesInDoc);
+					temporariesInDoc.forEach((element) => element.remove());
 					resolve();
 				},
 				opt_appendResourceFn
@@ -279,8 +269,8 @@ class HtmlScreen extends RequestScreen {
 	 */
 	flip(surfaces) {
 		return super.flip(surfaces).then(() => {
-			utils.clearNodeAttributes(globals.document.documentElement);
-			utils.copyNodeAttributes(
+			clearNodeAttributes(globals.document.documentElement);
+			copyNodeAttributes(
 				this.virtualDocument,
 				globals.document.documentElement
 			);
@@ -293,7 +283,7 @@ class HtmlScreen extends RequestScreen {
 		const currentMetaNodes = this.querySelectorAll_('meta');
 		const metasFromVirtualDocument = this.metas;
 		if (currentMetaNodes) {
-			utils.removeElementsFromDocument(currentMetaNodes);
+			currentMetaNodes.forEach((element) => element.remove());
 			if (metasFromVirtualDocument) {
 				metasFromVirtualDocument.forEach((meta) =>
 					globals.document.head.appendChild(meta)
@@ -346,26 +336,9 @@ class HtmlScreen extends RequestScreen {
 			this.resolveTitleFromVirtualDocument();
 			this.resolveMetaTagsFromVirtualDocument();
 			this.assertSameBodyIdInVirtualDocument();
-			if (UA.isIe) {
-				this.makeTemporaryStylesHrefsUnique_();
-			}
 
 			return content;
 		});
-	}
-
-	/**
-	 * Queries temporary styles from virtual document, and makes them unique.
-	 * This is necessary for caching and load event firing issues specific to
-	 * IE11. https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/7940171/
-	 */
-	makeTemporaryStylesHrefsUnique_() {
-		var temporariesInDoc = this.virtualQuerySelectorAll_(
-			HtmlScreen.selectors.stylesTemporary
-		);
-		temporariesInDoc.forEach((style) =>
-			this.replaceStyleAndMakeUnique_(style)
-		);
 	}
 
 	/**
@@ -376,7 +349,7 @@ class HtmlScreen extends RequestScreen {
 		if (style.href) {
 			var newStyle = globals.document.createElement(style.tagName);
 			style.href = new Uri(style.href).makeUnique().toString();
-			utils.copyNodeAttributes(style, newStyle);
+			copyNodeAttributes(style, newStyle);
 			style.parentNode.replaceChild(newStyle, style);
 			style.disabled = true;
 		}
@@ -390,11 +363,11 @@ class HtmlScreen extends RequestScreen {
 	 */
 	runFaviconInElement_(elements) {
 		return new CancellablePromise((resolve) => {
-			elements.forEach((element) =>
-				document.head.appendChild(
-					UA.isIe ? element : utils.setElementWithRandomHref(element)
-				)
-			);
+			elements.forEach((element) => {
+				element.href = element.href + '?q=' + Math.random();
+
+				document.head.appendChild(element);
+			});
 			resolve();
 		});
 	}

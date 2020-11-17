@@ -40,7 +40,7 @@ definition {
 
 			DMDocumentType.add(
 				dmDocumentTypeDescription = "DM Document Type Description",
-				dmDocumentTypeFieldNames = "Text Box",
+				dmDocumentTypeFieldNames = "Text",
 				dmDocumentTypeName = "DM Document Type Name ${i}");
 		}
 
@@ -357,10 +357,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -409,7 +408,7 @@ definition {
 
 		DMDocumentType.add(
 			dmDocumentTypeDescription = "DM Document Type Description",
-			dmDocumentTypeFieldNames = "Text Box",
+			dmDocumentTypeFieldNames = "Text",
 			dmDocumentTypeName = "DM Document Type Name");
 
 		DepotNavigator.openDepotAdmin();
@@ -1024,10 +1023,9 @@ definition {
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
 
-		DynamicDataMapping.addField(
-			field = "Text",
+		DataEngine.addField(
 			fieldFieldLabel = "Text",
-			fieldName = "Text");
+			fieldType = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 

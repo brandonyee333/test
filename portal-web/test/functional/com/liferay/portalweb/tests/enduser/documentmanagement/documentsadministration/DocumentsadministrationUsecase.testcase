@@ -43,9 +43,9 @@ definition {
 
 		DMNavigator.gotoMetadataSets();
 
-		DMMetadataSet.add(
-			dmMetadataSetFieldNames = "Text Box",
-			metadataSetName = "DM Metadata Set Name");
+		DMMetadataSet.addTitle(metadataSetName = "DM Metadata Set Name");
+
+		DMMetadataSet.addField(fieldType = "Text");
 
 		DDLDataDefinition.save();
 
@@ -55,7 +55,7 @@ definition {
 
 		DMDocumentType.add(
 			dmDocumentTypeDescription = "DM Document Type Description",
-			dmDocumentTypeFieldNames = "Text Box",
+			dmDocumentTypeFieldNames = "Text",
 			dmDocumentTypeName = "DM Document Type Name",
 			metadataSetName = "DM Metadata Set Name");
 
@@ -147,16 +147,17 @@ definition {
 
 	@priority = "5"
 	test AddDocumentTypeAndMetadata {
-		property portal.acceptance = "true";
+		property portal.acceptance = "quarantine";
+		property portal.upstream = "quarantine";
 		property testray.component.names = "Training";
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
 		DMNavigator.gotoMetadataSets();
 
-		DMMetadataSet.add(
-			dmMetadataSetFieldNames = "Boolean",
-			metadataSetName = "Document Metadata Set Name");
+		DMMetadataSet.addTitle(metadataSetName = "Document Metadata Set Name");
+
+		DMMetadataSet.addField(fieldType = "Numeric");
 
 		DDLDataDefinition.save();
 
@@ -188,7 +189,10 @@ definition {
 			dmDocumentDescription = "DM Document Type Contract Description",
 			dmDocumentFile = "Document_1.doc",
 			dmDocumentTitle = "DM Document Type Contract Title",
-			dmDocumentTypeName = "DM Document Type Name");
+			dmDocumentTypeName = "DM Document Type Name",
+			fieldName = "Date",
+			fieldValue = "01/01/2022",
+			numberField = "123");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -1016,7 +1020,7 @@ definition {
 
 		DMDocumentType.add(
 			dmDocumentTypeDescription = "Images",
-			dmDocumentTypeFieldNames = "Text Box,Date",
+			dmDocumentTypeFieldNames = "Text,Date",
 			dmDocumentTypeName = "Photos");
 
 		ApplicationsMenu.gotoPortlet(
@@ -1174,7 +1178,8 @@ definition {
 
 		DMDocumentType.edit(
 			dmDocumentTypeFieldNames = "Radio",
-			dmDocumentTypeName = "Photos");
+			dmDocumentTypeName = "Photos",
+			rowNum = "2");
 
 		User.logoutPG();
 

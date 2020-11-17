@@ -14,13 +14,12 @@
 
 package com.liferay.dispatch.service.impl;
 
-import com.liferay.dispatch.constants.DispatchConstants;
 import com.liferay.dispatch.exception.DispatchTriggerEndDateException;
 import com.liferay.dispatch.exception.DispatchTriggerNameException;
-import com.liferay.dispatch.exception.DispatchTriggerSchedulerException;
 import com.liferay.dispatch.exception.DispatchTriggerStartDateException;
 import com.liferay.dispatch.exception.DuplicateDispatchTriggerException;
 import com.liferay.dispatch.executor.DispatchTaskClusterMode;
+import com.liferay.dispatch.internal.helper.DispatchTriggerHelper;
 import com.liferay.dispatch.model.DispatchTrigger;
 import com.liferay.dispatch.service.base.DispatchTriggerLocalServiceBaseImpl;
 import com.liferay.petra.string.StringBundler;
@@ -31,11 +30,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.SchedulerException;
-import com.liferay.portal.kernel.scheduler.StorageType;
-import com.liferay.portal.kernel.scheduler.Trigger;
-import com.liferay.portal.kernel.scheduler.TriggerFactory;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -112,7 +107,7 @@ public class DispatchTriggerLocalServiceImpl
 			DispatchTaskClusterMode.valueOf(
 				dispatchTrigger.getTaskClusterMode());
 
-		_deleteSchedulerJob(
+		_dispatchTriggerHelper.deleteSchedulerJob(
 			dispatchTrigger.getDispatchTriggerId(),
 			dispatchTaskClusterMode.getStorageType());
 
@@ -133,10 +128,55 @@ public class DispatchTriggerLocalServiceImpl
 	}
 
 	@Override
+	public Date fetchPreviousFireDate(long dispatchTriggerId) {
+		DispatchTrigger dispatchTrigger =
+			dispatchTriggerPersistence.fetchByPrimaryKey(dispatchTriggerId);
+
+		if (dispatchTrigger == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to fetch dispatch trigger ID " + dispatchTriggerId);
+			}
+
+			return null;
+		}
+
+		DispatchTaskClusterMode dispatchTaskClusterMode =
+			DispatchTaskClusterMode.valueOf(
+				dispatchTrigger.getTaskClusterMode());
+
+		try {
+			return _dispatchTriggerHelper.getPreviousFireDate(
+				dispatchTriggerId, dispatchTaskClusterMode.getStorageType());
+		}
+		catch (SchedulerException schedulerException) {
+			if (_log.isWarnEnabled()) {
+				StringBundler sb = new StringBundler(3);
+
+				sb.append("Unable to fetch previous fire date for dispatch ");
+				sb.append("trigger ID ");
+				sb.append(dispatchTriggerId);
+
+				_log.warn(sb.toString(), schedulerException);
+			}
+		}
+
+		return null;
+	}
+
+	@Override
 	public DispatchTrigger getDispatchTrigger(long dispatchTriggerId)
 		throws PortalException {
 
 		return dispatchTriggerPersistence.findByPrimaryKey(dispatchTriggerId);
+	}
+
+	@Override
+	public List<DispatchTrigger> getDispatchTriggers(
+		boolean active, DispatchTaskClusterMode dispatchTaskClusterMode) {
+
+		return dispatchTriggerPersistence.findByA_TCM(
+			active, dispatchTaskClusterMode.getMode());
 	}
 
 	@Override
@@ -162,10 +202,8 @@ public class DispatchTriggerLocalServiceImpl
 				dispatchTrigger.getTaskClusterMode());
 
 		try {
-			return _schedulerEngineHelper.getNextFireTime(
-				_getJobName(dispatchTriggerId),
-				_getGroupName(dispatchTriggerId),
-				dispatchTaskClusterMode.getStorageType());
+			return _dispatchTriggerHelper.getNextFireDate(
+				dispatchTriggerId, dispatchTaskClusterMode.getStorageType());
 		}
 		catch (SchedulerException schedulerException) {
 			_log.error(schedulerException, schedulerException);
@@ -185,17 +223,8 @@ public class DispatchTriggerLocalServiceImpl
 			DispatchTaskClusterMode.valueOf(
 				dispatchTrigger.getTaskClusterMode());
 
-		try {
-			return _schedulerEngineHelper.getPreviousFireTime(
-				_getJobName(dispatchTriggerId),
-				_getGroupName(dispatchTriggerId),
-				dispatchTaskClusterMode.getStorageType());
-		}
-		catch (SchedulerException schedulerException) {
-			_log.error(schedulerException, schedulerException);
-		}
-
-		return null;
+		return _dispatchTriggerHelper.getPreviousFireDate(
+			dispatchTriggerId, dispatchTaskClusterMode.getStorageType());
 	}
 
 	@Override
@@ -248,11 +277,11 @@ public class DispatchTriggerLocalServiceImpl
 
 		dispatchTrigger = dispatchTriggerPersistence.update(dispatchTrigger);
 
-		_deleteSchedulerJob(
+		_dispatchTriggerHelper.deleteSchedulerJob(
 			dispatchTriggerId, dispatchTaskClusterMode.getStorageType());
 
 		if (active) {
-			_addSchedulerJob(
+			_dispatchTriggerHelper.addSchedulerJob(
 				dispatchTriggerId, cronExpression,
 				dispatchTrigger.getStartDate(), dispatchTrigger.getEndDate(),
 				dispatchTaskClusterMode.getStorageType());
@@ -306,73 +335,13 @@ public class DispatchTriggerLocalServiceImpl
 				"\" already exists for company ID ", companyId));
 	}
 
-	private void _addSchedulerJob(
-			long dispatchTriggerId, String cronExpression, Date startDate,
-			Date endDate, StorageType storageType)
-		throws PortalException {
-
-		Trigger trigger = _triggerFactory.createTrigger(
-			_getJobName(dispatchTriggerId), _getGroupName(dispatchTriggerId),
-			startDate, endDate, cronExpression);
-
-		try {
-			_schedulerEngineHelper.schedule(
-				trigger, storageType, null,
-				DispatchConstants.EXECUTOR_DESTINATION_NAME,
-				_getPayload(dispatchTriggerId), 1000);
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Scheduler entry created for dispatch trigger " +
-						dispatchTriggerId);
-			}
-		}
-		catch (SchedulerException schedulerException) {
-			throw new DispatchTriggerSchedulerException(
-				"Unable to create scheduler entry for dispatch trigger " +
-					dispatchTriggerId,
-				schedulerException);
-		}
-	}
-
-	private void _deleteSchedulerJob(
-		long dispatchTriggerId, StorageType storageType) {
-
-		try {
-			_schedulerEngineHelper.delete(
-				_getJobName(dispatchTriggerId),
-				_getGroupName(dispatchTriggerId), storageType);
-		}
-		catch (SchedulerException schedulerException) {
-			_log.error(
-				"Unable to delete scheduler entry for dispatch trigger " +
-					dispatchTriggerId,
-				schedulerException);
-		}
-	}
-
-	private String _getGroupName(long dispatchTriggerId) {
-		return String.format("DISPATCH_GROUP_%07d", dispatchTriggerId);
-	}
-
-	private String _getJobName(long dispatchTriggerId) {
-		return String.format("DISPATCH_JOB_%07d", dispatchTriggerId);
-	}
-
-	private String _getPayload(long dispatchTriggerId) {
-		return String.format("{\"dispatchTriggerId\": %d}", dispatchTriggerId);
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		DispatchTriggerLocalServiceImpl.class);
 
 	@Reference
+	private DispatchTriggerHelper _dispatchTriggerHelper;
+
+	@Reference
 	private Portal _portal;
-
-	@Reference
-	private SchedulerEngineHelper _schedulerEngineHelper;
-
-	@Reference
-	private TriggerFactory _triggerFactory;
 
 }

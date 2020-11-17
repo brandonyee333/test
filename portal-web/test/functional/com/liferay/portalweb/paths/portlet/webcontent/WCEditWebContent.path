@@ -9,6 +9,11 @@
 </thead>
 <tbody>
 <tr>
+	<td>ANY_TEXT_INPUT</td>
+	<td>xpath=(//label[normalize-space(text())='${key_fieldFieldLabel}']//following-sibling::input)[${index}]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ARTICLE_ID</td>
 	<td>//table[contains(@data-searchcontainerid,'articleVersions')]//td[contains(@class,'lfr-id-column')]</td>
 	<td></td>
@@ -24,8 +29,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>COLOR_PICKER</td>
+	<td>//label[normalize-space(text())='${key_fieldFieldLabel}']/following-sibling::div[contains(@class,'color-picker')]//button[contains(@class,'clay-color-btn')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CONTENT_CONTAINER</td>
 	<td>//div[contains(@class,'container-view')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>IMAGE_PICKER_PREVIEW</td>
+	<td>//label[normalize-space(text())='${key_fieldFieldLabel}']//following-sibling::div[contains(@class,'image-picker-preview')]//img[contains(@src,'${key_image}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -49,8 +64,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>SELECT_ANY</td>
-	<td>//button[contains(@id,'${key_filedName}')]/span[contains(.,'Select')]</td>
+	<td>IMAGE_DESCRPTION</td>
+	<td>//label[normalize-space(text())='${key_fieldFieldLabel}']/following-sibling::div[contains(@class,'form-group')]//input[contains(@name,'description')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SELECT_BUTTON</td>
+	<td>//label[normalize-space(text())='${key_fieldFieldLabel}']//following-sibling::div[contains(@class,'form-group')]//button[normalize-space(text())='Select']</td>
 	<td></td>
 </tr>
 <tr>
@@ -84,8 +104,18 @@
 	<td></td>
 </tr>
 <tr>
-	<td>TEXT_INPUT_FIELD</td>
-	<td>//div[label[normalize-space(text())='${key_fieldLabel}']]//input[@type='text']</td>
+	<td>SELECTION_OPTION</td>
+	<td>//legend[normalize-space(text())='${key_fieldFieldLabel}']//following-sibling::div//input//following-sibling::span[normalize-space()='${key_optionValue}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SOURCE_BUTTON</td>
+	<td>//label[normalize-space(text())='${key_fieldFieldLabel}']//following-sibling::div//a[contains(@class,'cke_button') and contains(@class,'source')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TEXT_INPUT</td>
+	<td>//label[normalize-space(text())='${key_fieldFieldLabel}']//following-sibling::input</td>
 	<td></td>
 </tr>
 <tr>

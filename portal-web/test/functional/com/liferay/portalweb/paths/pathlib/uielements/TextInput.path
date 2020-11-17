@@ -169,16 +169,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>ANY_DE_DDM</td>
-	<td>xpath=(//label[contains(.,'${key_fieldName}')]/..//input[not(contains(@type,'hidden'))])[${key_index}]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>DE_DDM</td>
-	<td>//label[contains(.,'${key_fieldName}')]/..//input[not(contains(@type,'hidden'))]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>EMAIL</td>
 	<td>//div[label[contains(.,'Email')]]/input[@type='text']</td>
 	<td></td>
@@ -399,6 +389,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>NUMERIC</td>
+	<td>//div[@data-field-name='Numeric']//input</td>
+	<td></td>
+</tr>
+<tr>
 	<td>OPEN_GRAPH_CUSTOM_TITLE</td>
 	<td>//div[input[contains(@id,'openGraphTitle')]]//input[@type='text']</td>
 	<td></td>
@@ -510,7 +505,7 @@
 </tr>
 <tr>
 	<td>SELECTOR_INPUT</td>
-	<td>//input[contains(@id,'${key_fieldName}')][contains(@readonly,'readonly')]</td>
+	<td>//label[normalize-space(text())='${key_fieldFieldLabel}']/following-sibling::div//div[contains(@class,'input-group')]//input[contains(@type,'text')]</td>
 	<td></td>
 </tr>
 <tr>

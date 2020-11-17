@@ -75,6 +75,12 @@ definition {
 			PortletEntry.inputDescription(description = "${dmDocumentDescription}");
 		}
 
+		if ("${fieldName}" == "Date") {
+			FormFields.editDate(
+				fieldName = "${fieldName}",
+				fieldValue = "${fieldValue}");
+		}
+
 		if (isSet(dmDocumentFileName)) {
 			PortletEntry.inputText(
 				fieldLabel = "File Name",
@@ -105,10 +111,10 @@ definition {
 		}
 
 		if (isSet(numberField)) {
-			var key_fieldName = "Number";
+			var key_fieldName = "Numeric";
 
 			Type(
-				locator1 = "TextInput#DDM",
+				locator1 = "TextInput#NUMERIC",
 				value1 = "${numberField}");
 		}
 
@@ -336,7 +342,8 @@ definition {
 		DMDocument.editDocument(
 			dmDocumentDescription = "${dmDocumentDescription}",
 			dmDocumentFile = "${dmDocumentFile}",
-			dmDocumentTitle = "${dmDocumentTitle}");
+			dmDocumentTitle = "${dmDocumentTitle}",
+			useCurrentTitle = "${useCurrentTitle}");
 
 		if (isSet(categoryName)) {
 			var key_categoryName = "${categoryName}";
@@ -899,6 +906,28 @@ definition {
 			Type(
 				locator1 = "TextInput#TITLE",
 				value1 = "${dmDocumentTitleEdit}");
+
+			if (isSet(checkFileNameText)) {
+				var fileNameText = selenium.getElementValue("//div[label[contains(.,'File Name')]]//input[@type='text']");
+
+				if ("${dmDocumentTitleEdit}" == "${fileNameText}") {
+					fail("FAIL!");
+				}
+			}
+		}
+
+		if (!(contains("${dmDocumentFileNameEdit}", "{dmDocumentFileNameEdit}"))) {
+			PortletEntry.inputText(
+				fieldLabel = "File Name",
+				text = "${dmDocumentFileNameEdit}");
+
+			if (isSet(checkTitleText)) {
+				var titleText = selenium.getElementValue("TextInput#TITLE");
+
+				if ("${dmDocumentFileNameEdit}" == "${titleText}") {
+					fail("FAIL!");
+				}
+			}
 		}
 
 		if (!(contains("${dmDocumentDescriptionEdit}", "{dmDocumentDescriptionEdit}"))) {
@@ -990,7 +1019,12 @@ definition {
 			locator1 = "TextInput#FILE",
 			value1 = "${dmDocumentFile}");
 
-		PortletEntry.inputTitle(title = "${dmDocumentTitle}");
+		if (isSet(useCurrentTitle)) {
+			echo("Use the title automatically added after uploading a file.");
+		}
+		else {
+			PortletEntry.inputTitle(title = "${dmDocumentTitle}");
+		}
 
 		if (isSet(dmDocumentDescription)) {
 			PortletEntry.inputDescription(description = "${dmDocumentDescription}");
@@ -2141,6 +2175,12 @@ definition {
 
 		if (isSet(locationFieldName)) {
 			DMDocument.viewLocation(dmFolderName = "${dmFolderName}");
+		}
+
+		if (isSet(dmDocumentFileName)) {
+			AssertTextEquals(
+				locator1 = "DocumentsAndMediaDocument#DOCUMENT_INFO_FILE_NAME",
+				value1 = "${dmDocumentFileName}");
 		}
 	}
 

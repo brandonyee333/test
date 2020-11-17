@@ -13,13 +13,14 @@
  */
 
 import {openToast} from 'frontend-js-web';
-import core from 'metal';
 import dom from 'metal-dom';
 
 import {App} from '../../senna/senna';
+import {getUid} from '../../senna/utils/utils';
 import LiferaySurface from '../surface/Surface.es';
-import Utils from '../util/Utils.es';
+import {getPortletBoundaryId, resetAllPortlets} from '../util/Utils.es';
 
+const MAX_TIMEOUT = Math.pow(2, 31) - 1;
 const PROPAGATED_PARAMS = ['bodyCssClass'];
 
 /**
@@ -51,8 +52,7 @@ class LiferayApp extends App {
 
 		this.setShouldUseFacade(true);
 
-		this.timeout =
-			Math.max(Liferay.SPA.requestTimeout, 0) || Utils.getMaxTimeout();
+		this.timeout = Math.max(Liferay.SPA.requestTimeout, 0) || MAX_TIMEOUT;
 		this.timeoutAlert = null;
 
 		const exceptionsSelector = Liferay.SPA.navigationExceptionSelectors;
@@ -66,14 +66,14 @@ class LiferayApp extends App {
 		this.on('navigationError', this.onNavigationError);
 		this.on('startNavigate', this.onStartNavigate);
 
-		Liferay.on('beforeScreenFlip', Utils.resetAllPortlets);
+		Liferay.on('beforeScreenFlip', resetAllPortlets);
 		Liferay.on('beforeScreenFlip', Liferay.destroyUnfulfilledPromises);
 		Liferay.on('io:complete', this.onLiferayIOComplete, this);
 
 		const body = document.body;
 
 		if (!body.id) {
-			body.id = 'senna_surface' + core.getUid();
+			body.id = 'senna_surface' + getUid();
 		}
 
 		this.addSurfaces(new LiferaySurface(body.id));
@@ -94,7 +94,7 @@ class LiferayApp extends App {
 			const uri = new URL(path, window.location.origin);
 
 			if (uri.searchParams.get('p_p_lifecycle') === '1') {
-				this.activePath = this.activePath + `__${core.getUid()}`;
+				this.activePath = this.activePath + `__${getUid()}`;
 
 				this.screens[this.activePath] = this.screens[path];
 
@@ -146,7 +146,7 @@ class LiferayApp extends App {
 
 	isInPortletBlacklist(element) {
 		return Object.keys(this.portletsBlacklist).some((portletId) => {
-			const boundaryId = Utils.getPortletBoundaryId(portletId);
+			const boundaryId = getPortletBoundaryId(portletId);
 
 			const portlets = document.querySelectorAll(
 				'[id^="' + boundaryId + '"]'
@@ -216,6 +216,12 @@ class LiferayApp extends App {
 		if (Liferay.Layout) {
 			Liferay.Layout.init(Liferay.Data.layoutConfig);
 		}
+		else {
+			this.dataLayoutConfigReadyHandle_ = Liferay.once(
+				'dataLayoutConfigReady',
+				this.onDataLayoutConfigReady_
+			);
+		}
 	}
 
 	/**
@@ -273,10 +279,7 @@ class LiferayApp extends App {
 		}
 
 		if (!event.error) {
-			this.dataLayoutConfigReadyHandle_ = Liferay.once(
-				'dataLayoutConfigReady',
-				this.onDataLayoutConfigReady_
-			);
+			this.onDataLayoutConfigReady_();
 		}
 
 		AUI().Get._insertCache = {};

@@ -12,14 +12,11 @@
  * details.
  */
 
-'use strict';
-
-import {Disposable, getUid, isDefAndNotNull, isElement, object} from 'metal';
-
+import Disposable from '../Disposable';
 import globals from '../globals/globals';
 import Route from '../route/Route';
 import HtmlScreen from '../screen/HtmlScreen';
-import utils from '../utils/utils';
+import {getUid, log} from '../utils/utils';
 import App from './App';
 import dataAttributes from './dataAttributes';
 
@@ -52,7 +49,12 @@ class AppDataAttributeHandler extends Disposable {
 	 * Inits application based on information scanned from document.
 	 */
 	handle() {
-		if (!isElement(this.baseElement)) {
+		if (
+			!(
+				this.baseElement &&
+				this.baseElement.nodeType === Node.ELEMENT_NODE
+			)
+		) {
 			throw new Error(
 				'Senna data attribute handler base element ' +
 					'not set or invalid, try setting a valid element that ' +
@@ -61,7 +63,7 @@ class AppDataAttributeHandler extends Disposable {
 		}
 
 		if (!this.baseElement.hasAttribute(dataAttributes.senna)) {
-			utils.log(
+			log(
 				'Senna was not initialized from data attributes. ' +
 					'In order to enable its usage from data attributes try setting ' +
 					'in the base element, e.g. `<body data-senna>`.'
@@ -74,7 +76,7 @@ class AppDataAttributeHandler extends Disposable {
 			throw new Error('Senna app was already initialized.');
 		}
 
-		utils.log('Senna initialized from data attribute.');
+		log('Senna initialized from data attribute.');
 
 		this.app = new App();
 		this.maybeAddRoutes_();
@@ -122,7 +124,7 @@ class AppDataAttributeHandler extends Disposable {
 		);
 		if (!this.app.hasRoutes()) {
 			this.app.addRoutes(new Route(/.*/, HtmlScreen));
-			utils.log("Senna can't find route elements, adding default.");
+			log("Senna can't find route elements, adding default.");
 		}
 	}
 
@@ -159,7 +161,7 @@ class AppDataAttributeHandler extends Disposable {
 			this.maybeParseLinkRouteHandler_(link)
 		);
 		this.app.addRoutes(route);
-		utils.log('Senna scanned route ' + route.getPath());
+		log('Senna scanned route ' + route.getPath());
 	}
 
 	/**
@@ -169,8 +171,10 @@ class AppDataAttributeHandler extends Disposable {
 	 */
 	maybeParseLinkRouteHandler_(link) {
 		var handler = link.getAttribute('type');
-		if (isDefAndNotNull(handler)) {
-			handler = object.getObjectByName(handler);
+		if (handler) {
+			handler = handler
+				.split('.')
+				.reduce((part, key) => part[key], window);
 		}
 
 		return handler;
@@ -183,7 +187,7 @@ class AppDataAttributeHandler extends Disposable {
 	 */
 	maybeParseLinkRoutePath_(link) {
 		var path = link.getAttribute('href');
-		if (isDefAndNotNull(path)) {
+		if (path) {
 			if (path.indexOf('regex:') === 0) {
 				path = new RegExp(path.substring(6));
 			}
@@ -197,9 +201,9 @@ class AppDataAttributeHandler extends Disposable {
 	 */
 	maybeSetBasePath_() {
 		var basePath = this.baseElement.getAttribute(dataAttributes.basePath);
-		if (isDefAndNotNull(basePath)) {
+		if (basePath) {
 			this.app.setBasePath(basePath);
-			utils.log('Senna scanned base path ' + basePath);
+			log('Senna scanned base path ' + basePath);
 		}
 	}
 
@@ -211,9 +215,9 @@ class AppDataAttributeHandler extends Disposable {
 		var linkSelector = this.baseElement.getAttribute(
 			dataAttributes.linkSelector
 		);
-		if (isDefAndNotNull(linkSelector)) {
+		if (linkSelector) {
 			this.app.setLinkSelector(linkSelector);
-			utils.log('Senna scanned link selector ' + linkSelector);
+			log('Senna scanned link selector ' + linkSelector);
 		}
 	}
 
@@ -225,9 +229,9 @@ class AppDataAttributeHandler extends Disposable {
 		var loadingCssClass = this.baseElement.getAttribute(
 			dataAttributes.loadingCssClass
 		);
-		if (isDefAndNotNull(loadingCssClass)) {
+		if (loadingCssClass) {
 			this.app.setLoadingCssClass(loadingCssClass);
-			utils.log('Senna scanned loading css class ' + loadingCssClass);
+			log('Senna scanned loading css class ' + loadingCssClass);
 		}
 	}
 
@@ -239,16 +243,14 @@ class AppDataAttributeHandler extends Disposable {
 		var updateScrollPosition = this.baseElement.getAttribute(
 			dataAttributes.updateScrollPosition
 		);
-		if (isDefAndNotNull(updateScrollPosition)) {
+		if (updateScrollPosition) {
 			if (updateScrollPosition === 'false') {
 				this.app.setUpdateScrollPosition(false);
 			}
 			else {
 				this.app.setUpdateScrollPosition(true);
 			}
-			utils.log(
-				'Senna scanned update scroll position ' + updateScrollPosition
-			);
+			log('Senna scanned update scroll position ' + updateScrollPosition);
 		}
 	}
 
