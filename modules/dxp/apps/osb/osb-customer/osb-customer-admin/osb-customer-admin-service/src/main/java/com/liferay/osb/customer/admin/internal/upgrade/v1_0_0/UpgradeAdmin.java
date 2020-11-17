@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.admin.internal.upgrade.v1_0_0;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
@@ -37,12 +38,19 @@ public class UpgradeAdmin extends UpgradeProcess {
 	}
 
 	protected void upgradeClassNameId() throws Exception {
-		long classNameId = _classNameLocalService.getClassNameId(
+		long accountEntryClassNameId = _classNameLocalService.getClassNameId(
 			AccountEntry.class);
 
 		runSQL(
-			"update OSB_ExternalIdMapper set classNameId = " + classNameId +
-				" where classNameId = 1400963");
+			"update OSB_ExternalIdMapper set classNameId = " +
+				accountEntryClassNameId + " where classNameId = 1400963");
+
+		long productEntryClassNameId = _classNameLocalService.getClassNameId(
+			ProductEntry.class);
+
+		runSQL(
+			"update OSB_ExternalIdMapper set classNameId = " +
+				productEntryClassNameId + " where classNameId = 1400970");
 	}
 
 	protected void upgradeListTypes() throws Exception {

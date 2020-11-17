@@ -63,7 +63,6 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
@@ -598,11 +597,8 @@ public class AccountSynchronizer {
 		Date now = new Date();
 
 		for (ProductPurchase productPurchase : productPurchases) {
-			Map<String, String> properties = productPurchase.getProperties();
-
-			if ((!productPurchase.getPerpetual() &&
-				 now.after(productPurchase.getEndDate())) ||
-				((properties != null) && (properties.get("Tickets") == null))) {
+			if (!productPurchase.getPerpetual() &&
+				now.after(productPurchase.getEndDate())) {
 
 				continue;
 			}

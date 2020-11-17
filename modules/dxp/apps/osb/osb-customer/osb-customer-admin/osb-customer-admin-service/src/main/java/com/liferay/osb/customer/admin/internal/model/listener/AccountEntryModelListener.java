@@ -117,11 +117,11 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 		StringBundler sb = new StringBundler(5);
 
-		sb.append("accountKeysContactRoleKeys eq '");
+		sb.append("accountKeysContactRoleKeys/any(s:s eq '");
 		sb.append(accountKey);
 		sb.append("_");
 		sb.append(contactRole.getKey());
-		sb.append("'");
+		sb.append("')");
 
 		List<Contact> contacts = _contactWebService.search(
 			sb.toString(), 1, 1000);
