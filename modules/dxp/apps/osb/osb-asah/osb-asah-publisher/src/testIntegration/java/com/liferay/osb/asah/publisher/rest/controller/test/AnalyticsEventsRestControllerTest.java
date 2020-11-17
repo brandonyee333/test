@@ -105,7 +105,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), Mockito.anyString()
+			Mockito.any(), argumentCaptor.capture()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(
@@ -298,7 +298,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), Mockito.anyString()
+			Mockito.any(), argumentCaptor.capture()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(
