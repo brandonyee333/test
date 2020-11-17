@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.admin.constants;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
@@ -93,6 +94,27 @@ public class AccountEntryConstants {
 			return listType.getName();
 		}
 		catch (Exception e) {
+			return StringPool.BLANK;
+		}
+	}
+
+	public static String getLanguageId(Account.Language language) {
+		if (language.equals(Account.Language.CHINESE)) {
+			return "zh_CN";
+		}
+		else if (language.equals(Account.Language.ENGLISH)) {
+			return "en_US";
+		}
+		else if (language.equals(Account.Language.JAPANESE)) {
+			return "ja_JP";
+		}
+		else if (language.equals(Account.Language.PORTUGUESE)) {
+			return "pt_BR";
+		}
+		else if (language.equals(Account.Language.SPANISH)) {
+			return "es_ES";
+		}
+		else {
 			return StringPool.BLANK;
 		}
 	}

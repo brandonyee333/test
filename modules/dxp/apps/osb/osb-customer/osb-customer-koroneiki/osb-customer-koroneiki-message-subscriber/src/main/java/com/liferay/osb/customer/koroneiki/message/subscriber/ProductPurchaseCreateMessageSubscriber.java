@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.koroneiki.message.subscriber;
 
+import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.subscription.util.DXPCloudStatusPageSubscriptionUtil;
@@ -71,7 +72,10 @@ public class ProductPurchaseCreateMessageSubscriber
 				account.getCode(), null,
 				accountReader.getSupportEndDate(productPurchases),
 				accountReader.getTicketSupportEndDate(productPurchases),
-				accountReader.getStatus(account), new String[0]);
+				accountReader.getStatus(account),
+				new String[] {
+					AccountEntryConstants.getLanguageId(account.getLanguage())
+				});
 		}
 		else {
 			accountEntryLocalService.updateAccountEntry(
