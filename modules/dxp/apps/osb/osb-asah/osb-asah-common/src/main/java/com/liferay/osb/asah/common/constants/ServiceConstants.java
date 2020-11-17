@@ -46,8 +46,6 @@ public class ServiceConstants {
 
 	public static final String URL_PUBSUB_EMULATOR;
 
-	public static final String URL_QUEUE;
-
 	public static final String URL_REDIS;
 
 	public static final String URL_SALESFORCE_EXTRACTOR;
@@ -210,7 +208,6 @@ public class ServiceConstants {
 		URL_FRONTEND = System.getenv("OSB_FARO_FRONTEND_URL");
 		URL_PUBLISHER = _getURL("PUBLISHER", "8080", true);
 		URL_PUBSUB_EMULATOR = _getURL("PUBSUB_EMULATOR", "8095", false);
-		URL_QUEUE = _getURL("QUEUE", "3000", false);
 		URL_REDIS = _getURL("REDIS", "6379", false);
 		URL_SALESFORCE_EXTRACTOR = _getURL(
 			"SALESFORCE_EXTRACTOR", "8080", false);
