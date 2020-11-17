@@ -5541,6 +5541,11 @@ public class JournalArticleLocalServiceImpl
 			article.setArticleId(articleId);
 			article.setVersion(version);
 			article.setSmallImageId(latestArticle.getSmallImageId());
+
+			article.setModifiedDate(serviceContext.getModifiedDate(now));
+			article.setStatusByUserId(user.getUserId());
+			article.setStatusByUserName(user.getFullName());
+			article.setStatusDate(serviceContext.getModifiedDate(now));
 		}
 
 		Locale locale = getArticleDefaultLocale(content);
