@@ -66,7 +66,14 @@ Account koroneikiAccount = accountEntryViewDisplayContext.getAccount();
 						<liferay-ui:message key="support-region" />
 					</td>
 					<td>
-						<%= HtmlUtil.escape(koroneikiAccount.getRegionAsString()) %>
+						<c:choose>
+							<c:when test="<%= koroneikiAccount.getRegion() != null %>">
+								<%= HtmlUtil.escape(koroneikiAccount.getRegionAsString()) %>
+							</c:when>
+							<c:otherwise>
+								-
+							</c:otherwise>
+						</c:choose>
 					</td>
 				</tr>
 				<tr>

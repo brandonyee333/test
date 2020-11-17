@@ -64,7 +64,7 @@ public class AccountEntryPermission {
 
 	public static boolean contains(
 			PermissionChecker permissionChecker, AccountEntry accountEntry,
-			String actionId)
+			String koroneikiAccountKey, String actionId)
 		throws PortalException {
 
 		if (_roleLocalService.hasUserRole(
@@ -88,14 +88,16 @@ public class AccountEntryPermission {
 				return true;
 			}
 
-			String name = accountEntry.getName();
+			if (accountEntry != null) {
+				String name = accountEntry.getName();
 
-			if (name.equals("Liferay, Inc.") &&
-				_organizationLocalService.hasUserOrganization(
-					permissionChecker.getUserId(),
-					OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+				if (name.equals("Liferay, Inc.") &&
+					_organizationLocalService.hasUserOrganization(
+						permissionChecker.getUserId(),
+						OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
-				return true;
+					return true;
+				}
 			}
 
 			return false;
@@ -116,16 +118,13 @@ public class AccountEntryPermission {
 
 			List<ContactRole> contactRoles =
 				_contactRoleWebService.getAccountContactRoles(
-					accountEntry.getKoroneikiAccountKey(), user.getUuid(), 1,
-					1);
+					koroneikiAccountKey, user.getUuid(), 1, 1);
 
 			if (!contactRoles.isEmpty()) {
 				return true;
 			}
 
-			if (isPartner(
-					accountEntry.getKoroneikiAccountKey(), user.getUuid())) {
-
+			if (isPartner(koroneikiAccountKey, user.getUuid())) {
 				return true;
 			}
 		}
@@ -144,7 +143,9 @@ public class AccountEntryPermission {
 		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
 			accountEntryId);
 
-		return contains(permissionChecker, accountEntry, actionId);
+		return contains(
+			permissionChecker, accountEntry,
+			accountEntry.getKoroneikiAccountKey(), actionId);
 	}
 
 	public static boolean contains(
@@ -153,10 +154,11 @@ public class AccountEntryPermission {
 		throws PortalException {
 
 		AccountEntry accountEntry =
-			_accountEntryLocalService.getKoroneikiAccountEntry(
+			_accountEntryLocalService.fetchKoroneikiAccountEntry(
 				koroneikiAccountKey);
 
-		return contains(permissionChecker, accountEntry, actionId);
+		return contains(
+			permissionChecker, accountEntry, koroneikiAccountKey, actionId);
 	}
 
 	protected static boolean isPartner(
