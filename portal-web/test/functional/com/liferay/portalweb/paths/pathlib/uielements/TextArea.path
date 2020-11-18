@@ -59,6 +59,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SITE_TEMPLATE_DESCRIPTION</td>
+	<td>//input[contains(@id,'description')][1]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>URL</td>
 	<td>//textarea[contains(@id,'url')]</td>
 	<td></td>
