@@ -28,6 +28,7 @@ else {
 	KBTemplateSearchDisplay kbTemplateSearchDisplay = KBTemplateServiceUtil.getKBTemplateSearchDisplay(scopeGroupId, keywords, keywords, null, null, false, new int[0], searchContainer.getCur(), searchContainer.getDelta(), searchContainer.getOrderByComparator());
 
 	results = kbTemplateSearchDisplay.getResults();
+
 	total = kbTemplateSearchDisplay.getTotal();
 
 	searchContainer.setTotal(total);

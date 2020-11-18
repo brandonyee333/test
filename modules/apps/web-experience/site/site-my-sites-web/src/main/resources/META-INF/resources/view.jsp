@@ -51,6 +51,7 @@ else {
 	types.add(Integer.valueOf(GroupConstants.TYPE_SITE_RESTRICTED));
 
 	groupParams.put("types", types);
+
 	groupParams.put("active", Boolean.TRUE);
 }
 

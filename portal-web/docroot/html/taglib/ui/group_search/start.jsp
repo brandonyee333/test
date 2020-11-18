@@ -38,6 +38,7 @@ searchContainer.setTotal(total);
 List<Group> results = GroupLocalServiceUtil.search(company.getCompanyId(), searchTerms.getKeywords(), groupParams, searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator());
 
 searchContainer.setResults(results);
+
 searchContainer.setTotal(total);
 %>
 

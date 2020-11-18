@@ -32,6 +32,7 @@ String curPortletId = StringPool.BLANK;
 
 if (Validator.isNotNull(curPortletResource)) {
 	curPortlet = PortletLocalServiceUtil.getPortletById(themeDisplay.getCompanyId(), curPortletResource);
+
 	curPortletId = curPortlet.getPortletId();
 }
 

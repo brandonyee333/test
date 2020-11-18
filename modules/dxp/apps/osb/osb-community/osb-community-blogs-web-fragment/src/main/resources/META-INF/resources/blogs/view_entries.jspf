@@ -46,6 +46,7 @@ contextObjects.put("blogsPortletInstanceSettingsHelper", blogsPortletInstanceSet
 				}
 				else {
 					entry = (BlogsEntry)result;
+
 					assetEntry = AssetEntryLocalServiceUtil.getEntry(BlogsEntry.class.getName(), entry.getPrimaryKey());
 				}
 

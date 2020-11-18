@@ -18,6 +18,7 @@
 
 <%
 JournalArticle journalArticle = (JournalArticle)renderRequest.getAttribute(DownloadsDisplayWebKeys.JOURNAL_ARTICLE);
+
 AssetCategory productAssetCategory = (AssetCategory)renderRequest.getAttribute(DownloadsDisplayWebKeys.ASSET_CATEGORY_PRODUCT);
 
 String logo = downloadsAssetCategoryUtil.getPropertyValue(productAssetCategory.getCategoryId(), DownloadsAssetCategoryConstants.PROPERTY_LOGO);

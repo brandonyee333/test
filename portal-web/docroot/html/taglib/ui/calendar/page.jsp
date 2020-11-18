@@ -38,7 +38,9 @@ int selYear = selCal.get(Calendar.YEAR);
 int maxDayOfMonth = selCal.getActualMaximum(Calendar.DATE);
 
 selCal.set(Calendar.DATE, 1);
+
 int dayOfWeek = selCal.get(Calendar.DAY_OF_WEEK);
+
 selCal.set(Calendar.DATE, selDay);
 
 if (day == 0) {
@@ -50,6 +52,7 @@ Calendar prevCal = (Calendar)selCal.clone();
 prevCal.add(Calendar.MONTH, -1);
 
 int maxDayOfPrevMonth = prevCal.getActualMaximum(Calendar.DATE);
+
 int weekNumber = 1;
 %>
 

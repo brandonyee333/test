@@ -20,6 +20,7 @@
 String[] installedPatches = PatcherUtil.getInstalledPatches();
 
 long uptimeDiff = System.currentTimeMillis() - PortalUtil.getUptime().getTime();
+
 long days = uptimeDiff / Time.DAY;
 long hours = (uptimeDiff / Time.HOUR) % 24;
 long minutes = (uptimeDiff / Time.MINUTE) % 60;
@@ -30,6 +31,7 @@ Runtime runtime = Runtime.getRuntime();
 numberFormat = NumberFormat.getInstance(locale);
 
 long totalMemory = runtime.totalMemory();
+
 long usedMemory = totalMemory - runtime.freeMemory();
 %>
 
@@ -200,6 +202,7 @@ long usedMemory = totalMemory - runtime.freeMemory();
 		Map<String, BackgroundTaskDisplay> classNameToBackgroundTaskDisplayMap = new HashMap<>();
 
 		List<BackgroundTask> reindexPortalBackgroundTasks = BackgroundTaskManagerUtil.getBackgroundTasks(CompanyConstants.SYSTEM, "com.liferay.portal.search.internal.background.task.ReindexPortalBackgroundTaskExecutor", BackgroundTaskConstants.STATUS_IN_PROGRESS);
+
 		List<BackgroundTask> reindexSingleBackgroundTasks = BackgroundTaskManagerUtil.getBackgroundTasks(CompanyConstants.SYSTEM, "com.liferay.portal.search.internal.background.task.ReindexSingleIndexerBackgroundTaskExecutor", BackgroundTaskConstants.STATUS_IN_PROGRESS);
 
 		if (!reindexSingleBackgroundTasks.isEmpty()) {

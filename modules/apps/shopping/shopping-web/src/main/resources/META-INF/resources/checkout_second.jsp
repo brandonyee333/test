@@ -24,6 +24,7 @@ Map<ShoppingCartItem, Integer> items = cart.getItems();
 ShoppingCoupon coupon = cart.getCoupon();
 
 int altShipping = cart.getAltShipping();
+
 String altShippingName = shoppingGroupServiceOverriddenConfiguration.getAlternativeShippingName(altShipping);
 
 ShoppingOrder order = ShoppingOrderLocalServiceUtil.getLatestOrder(user.getUserId(), themeDisplay.getScopeGroupId());

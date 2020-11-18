@@ -52,6 +52,7 @@ renderResponse.setTitle(passwordPolicy.getName());
 
 String[] orderColumns = {"first-name", "screen-name"};
 RowChecker rowChecker = new DeleteUserPasswordPolicyChecker(renderResponse, passwordPolicy);
+
 PortletURL searchURL = PortletURLUtil.clone(portletURL, renderResponse);
 
 SearchContainer searchContainer = new UserSearch(renderRequest, searchURL);
@@ -67,6 +68,7 @@ PortletURL homeURL = renderResponse.createRenderURL();
 homeURL.setParameter("mvcPath", "/view.jsp");
 
 PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "password-policies"), homeURL.toString());
+
 PortalUtil.addPortletBreadcrumbEntry(request, passwordPolicy.getName(), null);
 %>
 

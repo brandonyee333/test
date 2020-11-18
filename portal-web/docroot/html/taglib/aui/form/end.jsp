@@ -38,6 +38,7 @@
 
 					for (Map.Entry<String, List<ValidatorTag>> entry : validatorTagsMap.entrySet()) {
 						String fieldName = entry.getKey();
+
 						List<ValidatorTag> validatorTags = entry.getValue();
 
 						for (ValidatorTag validatorTag : validatorTags) {

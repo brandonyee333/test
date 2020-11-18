@@ -77,6 +77,7 @@ if (wikiPage.getAttachmentsFolderId() != DLFolderConstants.DEFAULT_PARENT_FOLDER
 		OrderByComparator<FileEntry> orderByComparator = DLUtil.getRepositoryModelOrderByComparator(orderByCol, orderByType);
 
 		portletFileEntries = wikiPage.getAttachmentsFileEntries(start, end, orderByComparator);
+
 		portletFileEntriesCount = wikiPage.getAttachmentsFileEntriesCount();
 	}
 }

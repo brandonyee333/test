@@ -37,6 +37,7 @@ String fieldsCountParam = request.getParameter("fieldsCount");
 if ((fieldsCountParam == null) || fieldsCountParam.equals(StringPool.NULL)) {
 	if (item != null) {
 		itemFields = (ShoppingItemField[])ShoppingItemFieldLocalServiceUtil.getItemFields(itemId).toArray(new ShoppingItemField[0]);
+
 		fieldsCount = itemFields.length;
 	}
 	else {
@@ -65,6 +66,7 @@ String pricesCountParam = request.getParameter("pricesCount");
 if ((pricesCountParam == null) || pricesCountParam.equals(StringPool.NULL)) {
 	if (item != null) {
 		itemPrices = (ShoppingItemPrice[])ShoppingItemPriceLocalServiceUtil.getItemPrices(itemId).toArray(new ShoppingItemPrice[0]);
+
 		pricesCount = itemPrices.length;
 	}
 	else {

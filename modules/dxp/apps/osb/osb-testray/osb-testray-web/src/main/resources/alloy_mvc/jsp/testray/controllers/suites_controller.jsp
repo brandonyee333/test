@@ -182,6 +182,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		TestrayCaseLocalServiceUtil.deleteTestraySuiteTestrayCase(testraySuite.getTestraySuiteId(), testrayCaseId);
 
 		indexModel(TestrayCaseLocalServiceUtil.getTestrayCase(testrayCaseId));
+
 		indexModel(testraySuite);
 
 		if (isRespondingTo("json")) {

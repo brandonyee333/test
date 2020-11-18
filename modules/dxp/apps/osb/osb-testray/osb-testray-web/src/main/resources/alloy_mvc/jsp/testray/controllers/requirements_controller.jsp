@@ -348,6 +348,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		TestrayCaseLocalServiceUtil.deleteTestrayRequirementTestrayCase(testrayRequirement.getTestrayRequirementId(), testrayCaseId);
 
 		indexModel(TestrayCaseLocalServiceUtil.getTestrayCase(testrayCaseId));
+
 		indexModel(testrayRequirement);
 
 		if (isRespondingTo("json")) {

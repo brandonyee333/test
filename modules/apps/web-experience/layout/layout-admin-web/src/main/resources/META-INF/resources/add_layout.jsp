@@ -24,6 +24,7 @@ String portletResource = ParamUtil.getString(request, "portletResource");
 Layout selLayout = layoutsAdminDisplayContext.getSelLayout();
 
 Long groupId = layoutsAdminDisplayContext.getGroupId();
+
 boolean privateLayout = layoutsAdminDisplayContext.isPrivateLayout();
 long parentPlid = LayoutConstants.DEFAULT_PLID;
 long parentLayoutId = LayoutConstants.DEFAULT_PARENT_LAYOUT_ID;
@@ -41,6 +42,7 @@ else {
 	selLayout = layout;
 
 	privateLayout = selLayout.isPrivateLayout();
+
 	parentPlid = layout.getParentPlid();
 	parentLayoutId = layout.getParentLayoutId();
 }

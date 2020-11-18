@@ -43,6 +43,7 @@ for (long userId : userIds) {
 		User user2 = UserLocalServiceUtil.getUser(userId);
 
 		sb.append(user2.getFullName());
+
 		sb.append(CharPool.SPACE);
 		sb.append(CharPool.LESS_THAN);
 		sb.append(user2.getScreenName());

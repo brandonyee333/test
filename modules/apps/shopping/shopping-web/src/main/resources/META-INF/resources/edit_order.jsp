@@ -212,6 +212,7 @@ long orderId = BeanParamUtil.getLong(order, request, "orderId");
 	headerNames.add("total");
 
 	searchContainer.setHeaderNames(headerNames);
+
 	searchContainer.setHover(false);
 
 	List<ShoppingOrderItem> results = ShoppingOrderItemLocalServiceUtil.getOrderItems(order.getOrderId());

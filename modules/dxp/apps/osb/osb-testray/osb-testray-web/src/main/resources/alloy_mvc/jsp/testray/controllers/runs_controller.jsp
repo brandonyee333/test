@@ -202,6 +202,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 			TestrayRun testrayRunA = TestrayRunLocalServiceUtil.getTestrayRun(testrayRunIdA);
 			TestrayRun testrayRunB = TestrayRunLocalServiceUtil.getTestrayRun(testrayRunIdB);
+
 			List<TestrayComponent> testrayComponentsA = TestrayComponentUtil.getTestrayComponents(0, "testrayRunId", testrayRunA.getTestrayRunId());
 			List<TestrayComponent> testrayComponentsB = TestrayComponentUtil.getTestrayComponents(0, "testrayRunId", testrayRunB.getTestrayRunId());
 

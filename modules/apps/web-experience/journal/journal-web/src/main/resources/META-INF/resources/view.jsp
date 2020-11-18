@@ -113,6 +113,7 @@ data.put("qa-id", "navigation");
 								String tabName = StringUtil.appendParentheticalSuffix(LanguageUtil.get(request, "web-content"), journalDisplayContext.getTotal());
 
 								tabsNames = ArrayUtil.append(tabsNames, tabName);
+
 								tabsValues = ArrayUtil.append(tabsValues, "web-content");
 							}
 
@@ -120,6 +121,7 @@ data.put("qa-id", "navigation");
 								String tabName = StringUtil.appendParentheticalSuffix(LanguageUtil.get(request, "versions"), journalDisplayContext.getVersionsTotal());
 
 								tabsNames = ArrayUtil.append(tabsNames, tabName);
+
 								tabsValues = ArrayUtil.append(tabsValues, "versions");
 							}
 
@@ -127,6 +129,7 @@ data.put("qa-id", "navigation");
 								String tabName = StringUtil.appendParentheticalSuffix(LanguageUtil.get(request, "comments"), journalDisplayContext.getCommentsTotal());
 
 								tabsNames = ArrayUtil.append(tabsNames, tabName);
+
 								tabsValues = ArrayUtil.append(tabsValues, "comments");
 							}
 							%>

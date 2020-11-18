@@ -70,6 +70,7 @@ PortletURL homeURL = renderResponse.createRenderURL();
 homeURL.setParameter("mvcPath", "/view.jsp");
 
 PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "user-groups"), homeURL.toString());
+
 PortalUtil.addPortletBreadcrumbEntry(request, userGroup.getName(), null);
 %>
 

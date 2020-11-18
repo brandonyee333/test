@@ -256,6 +256,7 @@ String displayStyle = journalDisplayContext.getDisplayStyle();
 				rowData.put("title", HtmlUtil.escape(curFolder.getName()));
 
 				row.setData(rowData);
+
 				row.setPrimaryKey(String.valueOf(curFolder.getPrimaryKey()));
 
 				PortletURL rowURL = liferayPortletResponse.createRenderURL();

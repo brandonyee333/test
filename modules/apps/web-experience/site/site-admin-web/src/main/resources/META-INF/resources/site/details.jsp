@@ -115,6 +115,7 @@ else if (group != null) {
 
 	<%
 	boolean disabled = false;
+
 	boolean value = false;
 
 	if (group != null) {

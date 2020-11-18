@@ -35,6 +35,7 @@ int environment = BeanParamUtil.getInteger(productEntry, request, "environment")
 boolean accountEnvironments = BeanParamUtil.getBoolean(productEntry, request, "accountEnvironments");
 boolean licenses = BeanParamUtil.getBoolean(productEntry, request, "licenses");
 String versionsListType = BeanParamUtil.getString(productEntry, request, "versionsListType");
+
 String zendeskTag = ParamUtil.getString(request, "zendeskTag");
 
 if ((productEntry != null) && Validator.isNull(zendeskTag)) {

@@ -27,6 +27,7 @@ groups.addAll((List<Group>)request.getAttribute("user.inheritedSites"));
 List<Organization> organizations = (List<Organization>)request.getAttribute("user.organizations");
 
 Long[] organizationIds = UsersAdminUtil.getOrganizationIds(organizations);
+
 List<Role> roles = (List<Role>)request.getAttribute("user.roles");
 List<UserGroupRole> organizationRoles = (List<UserGroupRole>)request.getAttribute("user.organizationRoles");
 List<UserGroupRole> siteRoles = (List<UserGroupRole>)request.getAttribute("user.siteRoles");

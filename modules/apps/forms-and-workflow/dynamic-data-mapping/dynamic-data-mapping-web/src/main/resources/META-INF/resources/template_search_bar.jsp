@@ -27,6 +27,7 @@ long groupId = ParamUtil.getLong(request, "groupId", themeDisplay.getSiteGroupId
 long classNameId = ParamUtil.getLong(request, "classNameId");
 long classPK = ParamUtil.getLong(request, "classPK");
 String eventName = ParamUtil.getString(request, "eventName", "selectTemplate");
+
 long resourceClassNameId = ParamUtil.getLong(request, "resourceClassNameId");
 
 if (resourceClassNameId == 0) {

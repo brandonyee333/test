@@ -63,6 +63,7 @@ if (modelResource.equals(Layout.class.getName())) {
 	selLayout = LayoutLocalServiceUtil.getLayout(GetterUtil.getLong(resourcePrimKey));
 
 	group = selLayout.getGroup();
+
 	groupId = group.getGroupId();
 }
 

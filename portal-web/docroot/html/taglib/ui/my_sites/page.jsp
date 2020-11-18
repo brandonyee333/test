@@ -19,6 +19,7 @@
 <%
 String[] classNames = (String[])request.getAttribute("liferay-ui:my_sites:classNames");
 String cssClass = GetterUtil.getString((String)request.getAttribute("liferay-ui:my_sites:cssClass"));
+
 int max = GetterUtil.getInteger((String)request.getAttribute("liferay-ui:my_sites:max"));
 
 if (max <= 0) {

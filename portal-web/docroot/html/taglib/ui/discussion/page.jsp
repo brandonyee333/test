@@ -85,6 +85,7 @@ CommentSectionDisplayContext commentSectionDisplayContext = CommentDisplayContex
 						Group siteGroup = themeDisplay.getSiteGroup();
 
 						boolean canSubscribe = themeDisplay.isSignedIn() && discussionPermission.hasSubscribePermission(company.getCompanyId(), siteGroup.getGroupId(), discussionTaglibHelper.getClassName(), discussionTaglibHelper.getClassPK());
+
 						boolean subscribed = SubscriptionLocalServiceUtil.isSubscribed(company.getCompanyId(), user.getUserId(), discussionTaglibHelper.getClassName(), discussionTaglibHelper.getClassPK());
 
 						String subscriptionURL = "javascript:" + randomNamespace + "subscribeToComments(" + !subscribed + ");";

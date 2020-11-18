@@ -20,6 +20,7 @@
 ShoppingOrder order = ShoppingOrderLocalServiceUtil.getLatestOrder(user.getUserId(), themeDisplay.getScopeGroupId());
 
 String billingState = BeanParamUtil.getString(order, request, "billingState");
+
 String billingStateSel = ParamUtil.getString(request, "billingStateSel");
 
 if (StateUtil.isStateId(billingState)) {

@@ -49,6 +49,7 @@ if (Validator.isNotNull(defaultLanguageId)) {
 }
 else {
 	defaultLocale = LocaleUtil.getSiteDefault();
+
 	defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 }
 

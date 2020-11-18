@@ -29,6 +29,7 @@ long assetEntryId = ParamUtil.getLong(request, "assetEntryId");
 String type = ParamUtil.getString(request, "type");
 long groupId = ParamUtil.getLong(request, "groupId", scopeGroupId);
 long companyId = ParamUtil.getLong(request, "companyId");
+
 String urlTitle = ParamUtil.getString(request, "urlTitle");
 
 for (char c : urlTitle.toCharArray()) {

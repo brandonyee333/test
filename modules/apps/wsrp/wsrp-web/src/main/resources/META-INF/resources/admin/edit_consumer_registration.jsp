@@ -89,6 +89,7 @@ renderResponse.setTitle((wsrpConsumer == null) ? LanguageUtil.get(request, "new-
 					headerNames.add("description");
 
 					searchContainer.setHeaderNames(headerNames);
+
 					searchContainer.setEmptyResultsMessage("there-are-no-registration-properties");
 
 					List resultRows = searchContainer.getResultRows();

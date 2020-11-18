@@ -139,6 +139,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		booleanQuery.addTerm(nameType, district);
 
 		BooleanClause<Query> districtClause = BooleanClauseFactoryUtil.create(booleanQuery, BooleanClauseOccur.MUST.getName());
+
 		BooleanClause<Query> parentWatsonListTypeIdClause = BooleanClauseFactoryUtil.create("parentWatsonListTypeId", parentWatsonListTypeId, BooleanClauseOccur.MUST.getName());
 		BooleanClause<Query> typeClause = BooleanClauseFactoryUtil.create("type", "com.liferay.watson.model.WatsonAddress.district", BooleanClauseOccur.MUST.getName());
 
@@ -157,6 +158,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		booleanQuery.addTerm(nameType, province);
 
 		BooleanClause<Query> provinceClause = BooleanClauseFactoryUtil.create(booleanQuery, BooleanClauseOccur.MUST.getName());
+
 		BooleanClause<Query> typeClause = BooleanClauseFactoryUtil.create("type", "com.liferay.watson.model.WatsonAddress.province", BooleanClauseOccur.MUST.getName());
 
 		searchContext.setBooleanClauses(new BooleanClause[] {provinceClause, typeClause});
@@ -176,6 +178,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		booleanQuery.addTerm(nameType, subdistrict);
 
 		BooleanClause<Query> subdistrictClause = BooleanClauseFactoryUtil.create(booleanQuery, BooleanClauseOccur.MUST.getName());
+
 		BooleanClause<Query> typeClause = BooleanClauseFactoryUtil.create("type", "com.liferay.watson.model.WatsonAddress.subDistrict", BooleanClauseOccur.MUST.getName());
 
 		searchContext.setBooleanClauses(new BooleanClause[] {parentWatsonListTypeIdClause, subdistrictClause, typeClause});
