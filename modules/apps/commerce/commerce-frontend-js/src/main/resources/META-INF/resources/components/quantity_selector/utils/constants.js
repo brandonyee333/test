@@ -13,15 +13,15 @@
  */
 
 export const DEFAULT = 'default';
-export const BLOCK  = 'block';
+export const BLOCK = 'block';
 
 export const INPUT_STYLE = {
-    [BLOCK]: {
-        display: BLOCK,
-        width: '100%',
-    },
-    [DEFAULT]: {
-        display: BLOCK,
-        width: '176px',
-    }
+	[BLOCK]: {
+		display: BLOCK,
+		width: '100%',
+	},
+	[DEFAULT]: {
+		display: BLOCK,
+		width: '176px',
+	},
 };

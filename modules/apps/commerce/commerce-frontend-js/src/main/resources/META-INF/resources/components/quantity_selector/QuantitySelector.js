@@ -52,6 +52,7 @@ function QuantitySelector(props) {
 	const content = (
 		<div
 			className="input-group input-group-sm quantity-selector simple"
+			data-testid="quantity-selector"
 			style={inputStyle}
 		>
 			{(props.prependedIcon || props.prependedText) && (
@@ -97,6 +98,7 @@ function QuantitySelector(props) {
 							props.size === 'small' && 'form-control-sm',
 							props.size === 'large' && 'form-control-lg'
 						)}
+						data-testid="select"
 						disabled={props.disabled}
 						id="quantitySelect"
 						onChange={(e) => {
@@ -142,7 +144,8 @@ function QuantitySelector(props) {
 
 QuantitySelector.defaultProps = {
 	disabled: false,
-	inputSize: 'default',
+	inputSize: '1555',
+	quantity: 1,
 	settings: {
 		allowedQuantity: [],
 		maxQuantity: 99,

@@ -1,3 +1,4 @@
+/* eslint-disable @liferay/liferay/imports-first */
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -88,38 +89,53 @@ describe('Quantity Selector', () => {
 			expect(oo).toBeInTheDocument();
 		});
 
-		it('check correctness of inputSize attribute', () => {
-            Utils.generateOptions.mockReturnValue([1, 2, 3, 4]);
-
-            const { container } = render(
-				<QuantitySelector
-                    inputSize={2000}
-					spritemap="./assets/icons.svg"
-				/>
-            );
-
-            // const containerClass = QSinput().type.styledComponentId
-			// const quantityRoot = document.getElementsByClassName(
-			// 	containerClass
-			// );
-			// const style = window.getComputedStyle(quantityRoot[0]);
-            // expect(style.width).toBe(2000);
-
-            expect(container.getClassName('quantity-selector')).toHaveAttribute('width','2000px');
-		});
-
-        // it('if is disabled the input should be disabled', () => {
-        //     Utils.generateOptions.mockReturnValue([]);
-
-        //     const { container, getByTestId } = render(
-		//         <QuantitySelector
-        //             disabled={true}
-		//             spritemap="./assets/icons.svg"
-		//         />
-		//     );
-        //     expect(getByTestId('datalist')).toBeDisabled()
-
+		// it('check correctness of inputSize attribute', () => {
+		//     Utils.generateOptions.mockReturnValue([1, 2, 3, 4]);
+		// 	const { container, getByTestId } = render(
+		// 		<QuantitySelector
+		// 			inputSize={'2000'}
+		// 			quantity={1}
+		// 			spritemap="./assets/icons.svg"
+		// 		/>
+		// 	);
+		// 	// const containerClass = container.type.styledComponentId
+		// 	// const quantityRoot = document.getElementsByClassName(
+		// 	// 	containerClass
+		// 	// );
+		// 	// console.log("quantityRoot", quantityRoot)
+		// 	// const style = window.getComputedStyle(quantityRoot[0]);
+		// 	// console.log("style", style)
+		//     // expect(style.width).toBe(2000);
+		// 	// const com = getByTestId('quantity-selector')
+		// 	expect(container.firstChild).toHaveAttribute("width", "2000px");
 		// });
 
+		it('if SELECT is disabled the input should be disabled', () => {
+			Utils.generateOptions.mockReturnValue([]);
+			const {container, getByTestId} = render(
+				<QuantitySelector
+					disabled={true}
+					inputSize={'2000'}
+					spritemap="./assets/icons.svg"
+					style="select"
+				/>
+			);
+			expect(getByTestId('select')).toBeDisabled();
+
+			// expect(getByTestId('quantity-selector')).toHaveStyle('width: 2000px')
+
+		});
+
+		it('if DATALIST is disabled the input should be disabled', () => {
+			Utils.generateOptions.mockReturnValue([]);
+			const {container, getByTestId} = render(
+				<QuantitySelector
+					disabled={true}
+					spritemap="./assets/icons.svg"
+					style="datalist"
+				/>
+			);
+			expect(getByTestId('datalist')).toBeDisabled();
+		});
 	});
 });

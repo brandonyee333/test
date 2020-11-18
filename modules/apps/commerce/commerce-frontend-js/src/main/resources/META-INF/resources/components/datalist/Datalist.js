@@ -44,7 +44,8 @@ const Datalist = (props) => {
 					props.size === 'small' && 'form-control-sm',
 					props.size === 'large' && 'form-control-lg'
 				)}
-				disabled={props.disabledProp}
+				data-testid="datalist"
+				disabled={props.disabled}
 				id={listId + 'choice'}
 				list={listId}
 				onChange={(e) => {
@@ -65,6 +66,7 @@ Datalist.defaultProps = {
 };
 
 Datalist.propTypes = {
+	disabled: PropTypes.bool,
 	items: PropTypes.arrayOf(
 		PropTypes.shape({
 			name: PropTypes.string,
