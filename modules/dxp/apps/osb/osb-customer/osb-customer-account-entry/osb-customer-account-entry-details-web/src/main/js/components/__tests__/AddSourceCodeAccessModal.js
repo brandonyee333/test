@@ -1,7 +1,6 @@
 import {
 	fireEvent,
 	getByLabelText,
-	queryAllByText,
 	render
 } from 'react-testing-library';
 import React from 'react';
