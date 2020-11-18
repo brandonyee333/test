@@ -109,11 +109,22 @@ GroupSearch groupSearch = siteItemSelectorViewDisplayContext.getGroupSearch();
 						colspan="<%= 2 %>"
 					>
 						<h5>
-							<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
-								<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
-							</aui:a>
+							<c:choose>
+								<c:when test="<%= group.isActive() %>">
+									<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
+										<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
+									</aui:a>
+								</c:when>
+								<c:otherwise>
+									<span class="disabled selector-button text-muted">
+										<liferay-ui:message arguments="<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>" key="x-inactive" />
+									</span>
+								</c:otherwise>
+							</c:choose>
 
-							<aui:a href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+							<c:if test="<%= group.isActive() %>">
+								<aui:a href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+							</c:if>
 						</h5>
 
 						<h6 class="text-default">
@@ -151,12 +162,23 @@ GroupSearch groupSearch = siteItemSelectorViewDisplayContext.getGroupSearch();
 									<liferay-frontend:vertical-card-header>
 										<div class="flex-container">
 											<h5 class="flex-item-expand truncate-text">
-												<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
-													<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
-												</aui:a>
+												<c:choose>
+													<c:when test="<%= group.isActive() %>">
+														<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
+															<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
+														</aui:a>
+													</c:when>
+													<c:otherwise>
+														<span class="disabled selector-button text-muted">
+															<liferay-ui:message arguments="<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>" key="x-inactive" />
+														</span>
+													</c:otherwise>
+												</c:choose>
 											</h5>
 
-											<aui:a cssClass="flex-item-center" href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+											<c:if test="<%= group.isActive() %>">
+												<aui:a cssClass="col-auto" href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+											</c:if>
 										</div>
 									</liferay-frontend:vertical-card-header>
 
@@ -179,12 +201,23 @@ GroupSearch groupSearch = siteItemSelectorViewDisplayContext.getGroupSearch();
 									<liferay-frontend:vertical-card-header>
 										<div class="flex-container">
 											<h5 class="flex-item-expand truncate-text">
-												<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
-													<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
-												</aui:a>
+												<c:choose>
+													<c:when test="<%= group.isActive() %>">
+														<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
+															<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
+														</aui:a>
+													</c:when>
+													<c:otherwise>
+														<span class="disabled selector-button text-muted">
+															<liferay-ui:message arguments="<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>" key="x-inactive" />
+														</span>
+													</c:otherwise>
+												</c:choose>
 											</h5>
 
-											<aui:a cssClass="flex-item-center" href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+											<c:if test="<%= group.isActive() %>">
+												<aui:a cssClass="col-auto" href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+											</c:if>
 										</div>
 									</liferay-frontend:vertical-card-header>
 
@@ -205,11 +238,22 @@ GroupSearch groupSearch = siteItemSelectorViewDisplayContext.getGroupSearch();
 						name="name"
 						truncate="<%= true %>"
 					>
-						<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
-							<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
-						</aui:a>
+						<c:choose>
+							<c:when test="<%= group.isActive() %>">
+								<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
+									<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
+								</aui:a>
+							</c:when>
+							<c:otherwise>
+								<span class="disabled selector-button text-muted">
+									<liferay-ui:message arguments="<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>" key="x-inactive" />
+								</span>
+							</c:otherwise>
+						</c:choose>
 
-						<aui:a href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+						<c:if test="<%= group.isActive() %>">
+							<aui:a href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+						</c:if>
 					</liferay-ui:search-container-column-text>
 
 					<c:if test="<%= siteItemSelectorViewDisplayContext.isShowChildSitesLink() %>">
