@@ -333,6 +333,15 @@ JournalArticle article = journalDisplayContext.getArticle();
 					}
 				);
 			</c:if>
+
+			<c:if test="<%= portletDisplay.isStatePopUp() %>">
+
+				<%
+				Portlet selPortlet = PortletLocalServiceUtil.getPortletById(company.getCompanyId(), ParamUtil.getString(renderRequest, "referringPortletResource"));
+				%>
+
+				Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= HtmlUtil.escapeJS(selPortlet.getPortletId()) %>_');
+			</c:if>
 		</aui:script>
 	</c:otherwise>
 </c:choose>
