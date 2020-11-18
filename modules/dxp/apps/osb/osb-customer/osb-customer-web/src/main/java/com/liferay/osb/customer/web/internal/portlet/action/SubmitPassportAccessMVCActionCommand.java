@@ -160,16 +160,16 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 				}
 
 				for (PostalAddress postalAddress : postalAddresses) {
-					if (ArrayUtil.contains(
+					if (!ArrayUtil.contains(
 							_NO_ACCESS_COUNTRIES,
 							postalAddress.getAddressCountry())) {
 
-						return false;
+						return true;
 					}
 				}
 			}
 
-			return true;
+			return false;
 		}
 
 		String domain = endUserEmailAddress.substring(

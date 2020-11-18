@@ -19,7 +19,7 @@ package com.liferay.osb.customer.admin.constants;
  */
 public class EntitlementConstants {
 
-	public static final String NAME_PARTNER = "Partner ";
+	public static final String NAME_PARTNER = "Partner";
 
 	public static final String ORGANIZATION_NAME_PREFIX = "Koroneiki ";
 
