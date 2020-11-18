@@ -99,6 +99,10 @@ public class AccountEntryConstants {
 	}
 
 	public static String getLanguageId(Account.Language language) {
+		if (language == null) {
+			return StringPool.BLANK;
+		}
+
 		if (language.equals(Account.Language.CHINESE)) {
 			return "zh_CN";
 		}
