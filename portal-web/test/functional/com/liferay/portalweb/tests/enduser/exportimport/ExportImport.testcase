@@ -251,6 +251,8 @@ definition {
 	@description = "This is a use case for LPS-82752."
 	@priority = "5"
 	test ExportContentThenPublish {
+		property portal.acceptance = "true";
+
 		JSONGroup.addGroup(groupName = "Site Name");
 
 		Staging.openStagingAdmin(siteURLKey = "site-name");
@@ -971,8 +973,9 @@ definition {
 			fieldName = "Text");
 
 		DataEngine.addFieldNested(
-			fieldFieldLabel = "Text",
-			fieldName = "Upload");
+			fieldFieldLabel = "Upload",
+			fieldName = "Upload",
+			targetFieldLabel = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -983,7 +986,7 @@ definition {
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
 			templateDescription = "WC Template Description",
-			templateFieldNames = "Text,Documents and Media",
+			templateFieldNames = "Text,Upload",
 			templateName = "WC Template Name");
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-a");
@@ -1020,12 +1023,10 @@ definition {
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-b");
 
-		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
-
-		WebContent.viewCP(
-			webContentDocumentsAndMedia = "DM Document Title",
+		WebContent.viewWithStructureCP(
 			webContentText = "Web Content Text",
-			webContentTitle = "Web Content Title");
+			webContentTitle = "Web Content Title",
+			webContentUpload = "DM Document Title");
 
 		AssertConsoleTextNotPresent(value1 = "com.liferay.portal.kernel.repository.InvalidRepositoryIdException");
 	}
@@ -1381,6 +1382,8 @@ definition {
 	@description = "This is a use case for LPS-83326."
 	@priority = "5"
 	test ExportImportWebContentFolderWithWorkflow {
+		property portal.acceptance = "true";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
 
 		WebContentFolder.addCP(
@@ -1429,8 +1432,9 @@ definition {
 		DataEngine.editFieldRepeatable(fieldFieldLabel = "Separator");
 
 		DataEngine.addFieldNested(
-			fieldFieldLabel = "Separator",
-			fieldName = "Text");
+			fieldFieldLabel = "Text",
+			fieldName = "Text",
+			targetFieldLabel = "Separator");
 
 		WebContentStructures.saveCP(structureName = "Exported Structure");
 
@@ -1488,12 +1492,12 @@ definition {
 
 		WebContent.viewWithStructureCP(webContentTitle = "Exported Article");
 
-		AssertTextEquals(
+		AssertTextEquals.assertValue(
 			key_fieldFieldLabel = "Text",
 			locator1 = "WCEditWebContent#TEXT_INPUT",
 			value1 = "Liferay");
 
-		AssertTextEquals(
+		AssertTextEquals.assertValue(
 			index = "2",
 			key_fieldFieldLabel = "Text",
 			locator1 = "WCEditWebContent#ANY_TEXT_INPUT",
@@ -1563,6 +1567,7 @@ definition {
 	@description = "This is a use case for LPS-88498."
 	@priority = "5"
 	test ExportViaGuest {
+		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "ExportImport#ExportViaGuest";
 
 		JSONUser.addUser(
