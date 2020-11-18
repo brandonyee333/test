@@ -40,6 +40,14 @@ definition {
 		}
 	}
 
+	macro inputSiteTemplateDescription {
+		Click(locator1 = "TextArea#SITE_TEMPLATE_DESCRIPTION");
+
+		Type(
+			locator1 = "TextArea#SITE_TEMPLATE_DESCRIPTION",
+			value1 = "${description}");
+	}
+
 	macro inputTitle {
 		Click(locator1 = "TextInput#TITLE");
 
