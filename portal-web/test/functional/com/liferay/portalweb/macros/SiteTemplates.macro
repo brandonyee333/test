@@ -23,7 +23,7 @@ definition {
 
 		PortletEntry.inputName(name = "${siteTemplateName}");
 
-		PortletEntry.inputDescription(description = "This is a site template description");
+		PortletEntry.inputSiteTemplateDescription(description = "This is a site template description");
 
 		if ("${siteTemplateActive}" == "No") {
 			Uncheck.uncheckHiddenToggleSwitch(locator1 = "ToggleSwitch#ACTIVE");
@@ -139,7 +139,7 @@ definition {
 		PortletEntry.inputName(name = "${siteTemplateName} Edit");
 
 		if (isSet(siteTemplateDescription)) {
-			PortletEntry.inputDescription(description = "${siteTemplateDescription}");
+			PortletEntry.inputSiteTemplateDescription(description = "${siteTemplateDescription}");
 		}
 
 		Button.clickSave();
