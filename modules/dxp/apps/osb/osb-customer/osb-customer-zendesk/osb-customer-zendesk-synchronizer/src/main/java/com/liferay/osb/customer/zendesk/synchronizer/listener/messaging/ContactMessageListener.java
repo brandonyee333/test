@@ -201,6 +201,9 @@ public class ContactMessageListener extends BaseMessageListener {
 				}
 			}
 
+			_accountSynchronizer.reassignTickets(
+				account.getKey(), accountEntry, user);
+
 			_customerSynchronizer.remove(user, accountEntry);
 		}
 		catch (Exception e) {
