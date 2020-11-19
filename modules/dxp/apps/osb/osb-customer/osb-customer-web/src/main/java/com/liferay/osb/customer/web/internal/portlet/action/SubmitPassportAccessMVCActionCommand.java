@@ -155,8 +155,8 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 			for (Account account : accounts) {
 				PostalAddress[] postalAddresses = account.getPostalAddresses();
 
-				if (postalAddresses == null) {
-					continue;
+				if (ArrayUtil.isEmpty(postalAddresses)) {
+					return true;
 				}
 
 				for (PostalAddress postalAddress : postalAddresses) {
@@ -207,21 +207,21 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 
 			PostalAddress[] postalAddresses = account.getPostalAddresses();
 
-			if (postalAddresses != null) {
-				boolean noAccessCountry = false;
+			if (!ArrayUtil.isEmpty(postalAddresses)) {
+				boolean hasAccessCountry = false;
 
 				for (PostalAddress postalAddress : postalAddresses) {
-					if (ArrayUtil.contains(
+					if (!ArrayUtil.contains(
 							_NO_ACCESS_COUNTRIES,
 							postalAddress.getAddressCountry())) {
 
-						noAccessCountry = true;
+						hasAccessCountry = true;
 
 						break;
 					}
 				}
 
-				if (noAccessCountry) {
+				if (!hasAccessCountry) {
 					continue;
 				}
 			}
