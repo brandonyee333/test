@@ -474,6 +474,16 @@ definition {
 		Click(locator1 = "FormViewBuilder#FIELD_SET_SAVE_BUTTON");
 	}
 
+	macro switchLocalization {
+		Click(
+			key_symbolName = "${symbolName}",
+			locator1 = "FormViewBuilder#BUTTON_LOCALIZATION");
+
+		Click(
+			key_localizationList = "${localizationName}",
+			locator1 = "FormViewBuilder#LOCALIZATION_LIST");
+	}
+
 	macro switchToAdvancedTab {
 		Click(locator1 = "FormViewBuilder#SIDEBAR_ADVANCED_TAB");
 	}
@@ -522,6 +532,12 @@ definition {
 		AssertTextEquals(
 			locator1 = "FormViewBuilder#FIELD_LABEL_MULTIPLE_SELECTION",
 			value1 = "${fieldLabel}");
+	}
+
+	macro validateLocalization {
+		AssertElementPresent(
+			key_symbolName = "${symbolName}",
+			locator1 = "FormViewBuilder#BUTTON_LOCALIZATION");
 	}
 
 	macro validateNoFieldLabel {

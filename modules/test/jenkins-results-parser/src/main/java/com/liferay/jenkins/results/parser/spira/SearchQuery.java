@@ -29,6 +29,35 @@ import org.json.JSONObject;
  */
 public class SearchQuery<T extends SpiraArtifact> {
 
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof SearchQuery)) {
+			return false;
+		}
+
+		SearchQuery searchQuery = (SearchQuery)object;
+
+		return matches(searchQuery.getSearchParameters());
+	}
+
+	public SearchParameter[] getSearchParameters() {
+		return _searchParameters;
+	}
+
+	public boolean matches(SearchParameter[] searchParameters) {
+		JSONArray jsonArray = new JSONArray();
+
+		for (SearchParameter searchParameter : searchParameters) {
+			jsonArray.put(searchParameter.toJSONObject());
+		}
+
+		if (jsonArray.similar(toJSONArray())) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public static class SearchParameter {
 
 		public SearchParameter(
@@ -49,19 +78,19 @@ public class SearchQuery<T extends SpiraArtifact> {
 
 		@Override
 		public boolean equals(Object object) {
-			if (object instanceof SearchParameter) {
-				SearchParameter otherSearchParameter = (SearchParameter)object;
-
-				if (_name.equals(otherSearchParameter.getName()) &&
-					_value.equals(otherSearchParameter.getValue())) {
-
-					return true;
-				}
-
+			if (!(object instanceof SearchParameter)) {
 				return false;
 			}
 
-			return super.equals(object);
+			SearchParameter searchParameter = (SearchParameter)object;
+
+			JSONObject jsonObject = searchParameter.toJSONObject();
+
+			if (jsonObject.similar(toJSONObject())) {
+				return true;
+			}
+
+			return false;
 		}
 
 		public String getName() {
@@ -118,15 +147,34 @@ public class SearchQuery<T extends SpiraArtifact> {
 		}
 
 		public JSONObject toFilterJSONObject() {
-			if (_value instanceof Integer) {
-				Integer intValue = (Integer)_value;
+			if ((_value instanceof String) && _name.equals("Path")) {
+				String stringValue = (String)_value;
+
+				stringValue = stringValue.replaceAll("\\[", "[[]");
+
+				stringValue = stringValue.replaceAll(".*/([^/]+)", "$1");
 
 				JSONObject filterJSONObject = new JSONObject();
 
-				filterJSONObject.put("IntValue", intValue);
-				filterJSONObject.put("PropertyName", _name);
+				filterJSONObject.put("PropertyName", "Name");
+				filterJSONObject.put("StringValue", stringValue);
 
 				return filterJSONObject;
+			}
+
+			return toJSONObject();
+		}
+
+		public JSONObject toJSONObject() {
+			if (_value instanceof Integer) {
+				Integer intValue = (Integer)_value;
+
+				JSONObject jsonObject = new JSONObject();
+
+				jsonObject.put("IntValue", intValue);
+				jsonObject.put("PropertyName", _name);
+
+				return jsonObject;
 			}
 
 			if (_value instanceof SpiraCustomPropertyValue) {
@@ -137,16 +185,16 @@ public class SearchQuery<T extends SpiraArtifact> {
 			}
 
 			if (_value instanceof String) {
-				JSONObject filterJSONObject = new JSONObject();
+				JSONObject jsonObject = new JSONObject();
 
 				String stringValue = (String)_value;
 
 				stringValue = stringValue.replaceAll("\\[", "[[]");
 
-				filterJSONObject.put("PropertyName", _name);
-				filterJSONObject.put("StringValue", stringValue);
+				jsonObject.put("PropertyName", _name);
+				jsonObject.put("StringValue", stringValue);
 
-				return filterJSONObject;
+				return jsonObject;
 			}
 
 			throw new RuntimeException("Invalid value type");
@@ -181,15 +229,7 @@ public class SearchQuery<T extends SpiraArtifact> {
 
 		synchronized (cachedSearchQueries) {
 			for (SearchQuery<?> cachedSearchQuery : cachedSearchQueries) {
-				JSONArray filterJSONArray = new JSONArray();
-
-				for (SearchParameter searchParameter : searchParameters) {
-					filterJSONArray.put(searchParameter.toFilterJSONObject());
-				}
-
-				if (filterJSONArray.similar(
-						cachedSearchQuery.toFilterJSONArray())) {
-
+				if (cachedSearchQuery.matches(searchParameters)) {
 					return cachedSearchQuery;
 				}
 			}
@@ -268,6 +308,16 @@ public class SearchQuery<T extends SpiraArtifact> {
 		}
 
 		return filterJSONArray;
+	}
+
+	protected JSONArray toJSONArray() {
+		JSONArray jsonArray = new JSONArray();
+
+		for (SearchParameter searchParameter : _searchParameters) {
+			jsonArray.put(searchParameter.toJSONObject());
+		}
+
+		return jsonArray;
 	}
 
 	private static List<SearchQuery<?>> _getCachedSearchQueries(
