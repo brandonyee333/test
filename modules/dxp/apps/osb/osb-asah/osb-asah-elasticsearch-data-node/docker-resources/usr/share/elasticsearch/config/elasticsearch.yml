@@ -14,4 +14,16 @@ node:
     master: false
     max_local_storage_nodes: 1
     name: "${HOSTNAME}"
-xpack.security.enabled: false
+xpack:
+    security:
+        enabled: true
+        http:
+            ssl:
+                enabled: false
+        transport:
+            ssl:
+                certificate: /usr/share/elasticsearch/config/certificates/${HOSTNAME}/${HOSTNAME}.crt
+                certificate_authorities: /usr/share/elasticsearch/config/certificates/ca/ca.crt
+                enabled: true
+                key: /usr/share/elasticsearch/config/certificates/${HOSTNAME}/${HOSTNAME}.key
+                verification_mode: certificate
