@@ -31,7 +31,6 @@ import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 import java.util.Collections;
 import java.util.List;
@@ -294,7 +293,7 @@ public class VisitorHistogramDog {
 		Instant instant = Instant.ofEpochMilli(Long.parseLong(timestamp));
 
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(
-			instant, ZoneOffset.UTC);
+			instant, _timeZoneDog.getZoneId());
 
 		localDateTime = localDateTime.withMinute(0);
 		localDateTime = localDateTime.withNano(0);
