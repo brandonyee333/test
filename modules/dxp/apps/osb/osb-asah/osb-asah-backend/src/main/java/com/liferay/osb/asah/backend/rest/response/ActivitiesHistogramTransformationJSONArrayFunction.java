@@ -61,7 +61,8 @@ public class ActivitiesHistogramTransformationJSONArrayFunction
 				).extendedBounds(
 					extendedBounds
 				).field(
-					supportedFieldName
+					_getDateHistogramField(
+						computeFunctionString, supportedFieldName)
 				).minDocCount(
 					0
 				);
@@ -97,6 +98,16 @@ public class ActivitiesHistogramTransformationJSONArrayFunction
 		}
 
 		return jsonArray;
+	}
+
+	private String _getDateHistogramField(
+		String computeFunctionString, String supportedFieldName) {
+
+		if (computeFunctionString.equals("hour")) {
+			return "startTimeLocal";
+		}
+
+		return supportedFieldName;
 	}
 
 }
