@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Leslie Wong
  */
-@Profile("prod")
+@Profile({"prod", "test"})
 @RestController
 public class ErrorRestController extends AbstractErrorController {
 
