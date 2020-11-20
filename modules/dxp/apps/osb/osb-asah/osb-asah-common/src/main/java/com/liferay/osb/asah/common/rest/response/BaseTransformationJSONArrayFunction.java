@@ -76,16 +76,12 @@ public abstract class BaseTransformationJSONArrayFunction
 				supportedFieldName
 			).lte(
 				endDayDateString
-			).timeZone(
-				TimeZoneDogUtil.getTimeZoneId()
 			)
 		).filter(
 			QueryBuilders.rangeQuery(
 				supportedFieldName
 			).gte(
 				startDayDateString
-			).timeZone(
-				TimeZoneDogUtil.getTimeZoneId()
 			)
 		);
 
