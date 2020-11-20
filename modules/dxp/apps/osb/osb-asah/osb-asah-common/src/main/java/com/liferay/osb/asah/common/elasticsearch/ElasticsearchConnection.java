@@ -40,7 +40,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.elasticsearch.xpack.client.PreBuiltXPackTransportClient;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -95,6 +95,32 @@ public class ElasticsearchConnection {
 					ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP);
 		}
 
+		if (!StringUtils.isBlank(ServiceConstants.ELASTICSEARCH_CERTS_DIR) &&
+			!StringUtils.isBlank(ServiceConstants.ELASTICSEARCH_PASSWORD) &&
+			!StringUtils.isBlank(ServiceConstants.ELASTICSEARCH_USER)) {
+
+			builder.put(
+				"xpack.security.user",
+				ServiceConstants.ELASTICSEARCH_USER + ":" +
+					ServiceConstants.ELASTICSEARCH_PASSWORD);
+
+			builder.put("xpack.security.transport.ssl.enabled", true);
+			builder.put(
+				"xpack.security.transport.ssl.certificate",
+				ServiceConstants.ELASTICSEARCH_CERTS_DIR +
+					"/client/client.crt");
+			builder.put(
+				"xpack.security.transport.ssl.certificate_authorities",
+				ServiceConstants.ELASTICSEARCH_CERTS_DIR + "/ca/ca.crt");
+			builder.put(
+				"xpack.security.transport.ssl.key",
+				ServiceConstants.ELASTICSEARCH_CERTS_DIR +
+					"/client/client.key");
+			builder.put(
+				"xpack.security.transport.ssl.verification_mode",
+				"certificate");
+		}
+
 		Settings settings = builder.build();
 
 		TransportAddress transportAddress = ClientUtil.getTransportAddress();
@@ -113,7 +139,8 @@ public class ElasticsearchConnection {
 	private Client _createTransportClient(
 		Settings settings, TransportAddress transportAddress) {
 
-		TransportClient transportClient = new PreBuiltTransportClient(settings);
+		TransportClient transportClient = new PreBuiltXPackTransportClient(
+			settings);
 
 		transportClient.addTransportAddress(transportAddress);
 
