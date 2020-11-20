@@ -16,6 +16,7 @@ package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_9_0.ActivitiesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_9_0.AnalyticsEventsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_9_0.DXPRawUsersUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_9_0.OSBAsahTasksUpgradeStep;
@@ -40,12 +41,16 @@ public class UpgradeProcessConfiguration {
 			"0.0.0", ReleaseInfo.getVersion(), _snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.8.0", "2.9.0", _analyticsEventsUpgradeStep,
-			_dxpRawUsersUpgradeStep, _osbAsahTasksUpgradeStep,
-			_pageReferrersUpgradeStep, _preferencesUpgradeStep);
+			"2.8.0", "2.9.0", _activitiesUpgradeStep,
+			_analyticsEventsUpgradeStep, _dxpRawUsersUpgradeStep,
+			_osbAsahTasksUpgradeStep, _pageReferrersUpgradeStep,
+			_preferencesUpgradeStep);
 
 		return upgradeProcess;
 	}
+
+	@Autowired
+	private ActivitiesUpgradeStep _activitiesUpgradeStep;
 
 	@Autowired
 	private AnalyticsEventsUpgradeStep _analyticsEventsUpgradeStep;

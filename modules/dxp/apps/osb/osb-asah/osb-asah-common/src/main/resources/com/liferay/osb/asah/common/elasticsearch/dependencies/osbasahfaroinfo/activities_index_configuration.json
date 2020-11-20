@@ -35,6 +35,9 @@
 				"endTime": {
 					"type": "date"
 				},
+				"endTimeLocal": {
+					"type": "date"
+				},
 				"eventContext": {
 					"type": "object"
 				},
@@ -84,6 +87,9 @@
 					"type": "keyword"
 				},
 				"startTime": {
+					"type": "date"
+				},
+				"startTimeLocal": {
 					"type": "date"
 				},
 				"userId": {

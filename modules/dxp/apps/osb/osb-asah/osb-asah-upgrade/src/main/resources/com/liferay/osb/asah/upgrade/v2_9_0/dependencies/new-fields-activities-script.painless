@@ -1,0 +1,7 @@
+if (ctx._source.containsKey("endTime")) {
+	ctx._source.endTimeLocal = ctx._source.endTime.replace("Z", "");
+}
+
+if (ctx._source.containsKey("startTime")) {
+	ctx._source.startTimeLocal = ctx._source.startTime.replace("Z", "");
+}
