@@ -68,6 +68,33 @@ function build_docker_image {
 		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
 	fi
 
+	if [ ${file_name} == osb-asah-elasticsearch-data-node ] ||
+	   [ ${file_name} == osb-asah-elasticsearch-master-node ]
+	then
+		cp ~/.asah/bundle.zip ${file_name}/build/client.zip
+
+		echo "" >> ${file_name}/Dockerfile
+		echo "COPY --chown=elasticsearch:root bundle.zip /certs/" >> ${file_name}/Dockerfile
+		echo "RUN mkdir /usr/share/elasticsearch/config/certificates && unzip /certs/bundle.zip -d /usr/share/elasticsearch/config/certificates" >> ${file_name}/Dockerfile
+	fi
+
+	if [ ${file_name} == osb-asah-backend ] ||
+	   [ ${file_name} == osb-asah-batch-curator ] ||
+	   [ ${file_name} == osb-asah-dxp-extractor ] ||
+	   [ ${file_name} == osb-asah-extractor ] ||
+	   [ ${file_name} == osb-asah-monolith ] ||
+	   [ ${file_name} == osb-asah-publisher ] ||
+	   [ ${file_name} == osb-asah-salesforce-extractor ] ||
+	   [ ${file_name} == osb-asah-stream-curator ] ||
+	   [ ${file_name} == osb-asah-upgrade ]
+	then
+		cp ~/.asah/client.zip ${file_name}/build/client.zip
+
+		echo "" >> ${file_name}/Dockerfile
+		echo "COPY ./build/client.zip client.zip" >> ${file_name}/Dockerfile
+		echo "RUN unzip client.zip" >> ${file_name}/Dockerfile
+	fi
+
 	docker build \
 		--build-arg LABEL_BUILD_DATE=$(date "${CURRENT_DATE}" +'%Y-%m-%dT%H:%M:%SZ') \
 		--build-arg LABEL_VCS_REF=$(git rev-parse HEAD) \
@@ -82,6 +109,20 @@ function check_repository {
 	if [ ! -f ~/.asah/gcp_credentials.json ]
 	then
 		echo "${HOME}/.asah/gcp_credentials.json does not exist.";
+
+		exit
+	fi
+
+	if [ ! -f ~/.asah/bundle.zip ]
+	then
+		echo "${HOME}/.asah/bundle.zip does not exist.";
+
+		exit
+	fi
+
+	if [ ! -f ~/.asah/client.zip ]
+	then
+		echo "${HOME}/.asah/client.zip does not exist.";
 
 		exit
 	fi
