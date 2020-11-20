@@ -172,7 +172,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			).filter(
 				QueryBuilders.termQuery("dataSourceId", dataSourceId)
 			).filter(
-				QueryBuilders.termQuery("day", eventLocalDate)
+				QueryBuilders.termQuery("day", eventLocalDate.toString())
 			).filter(
 				QueryBuilders.termQuery("userId", userId)
 			));
