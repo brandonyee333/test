@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.nlp.NLPUtil;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
@@ -28,6 +29,9 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -150,10 +154,14 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 		String channelId = analyticsEvent.getChannelId();
 		String dataSourceId = analyticsEvent.getDataSourceId();
-		String dateString = DateUtil.toUTCString(analyticsEvent.getEventDate());
+		String eventDateString = DateUtil.toUTCString(
+			analyticsEvent.getEventDate());
 		String userId = analyticsEvent.getUserId();
 
-		String dayDateString = DateUtil.newDayDateString(dateString);
+		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
+			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
+
+		LocalDate eventLocalDate = eventLocalDateTime.toLocalDate();
 
 		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"activity-groups",
@@ -164,7 +172,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			).filter(
 				QueryBuilders.termQuery("dataSourceId", dataSourceId)
 			).filter(
-				QueryBuilders.termQuery("day", dayDateString)
+				QueryBuilders.termQuery("day", eventLocalDate)
 			).filter(
 				QueryBuilders.termQuery("userId", userId)
 			));
@@ -172,7 +180,11 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		if (activityGroupJSONObject != null) {
 			faroInfoElasticsearchInvoker.update(
 				"activity-groups", activityGroupJSONObject.getString("id"),
-				JSONUtil.put("endTime", dateString));
+				JSONUtil.put(
+					"endTime", eventDateString
+				).put(
+					"endTimeLocal", eventLocalDateTime
+				));
 
 			return activityGroupJSONObject;
 		}
@@ -186,13 +198,17 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			).put(
 				"dataSourceId", dataSourceId
 			).put(
-				"day", dayDateString
+				"day", eventLocalDate
 			).put(
-				"endTime", dateString
+				"endTime", eventDateString
+			).put(
+				"endTimeLocal", eventLocalDateTime
 			).put(
 				"ownerId", _getOwnerId(analyticsEvent)
 			).put(
-				"startTime", dateString
+				"startTime", eventDateString
+			).put(
+				"startTimeLocal", eventLocalDateTime
 			).put(
 				"userId", userId
 			));
@@ -260,6 +276,11 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			analyticsEvent.getEventDate());
 		String ownerId = activityGroupJSONObject.getString("ownerId");
 
+		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
+			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
+
+		LocalDate eventLocalDate = eventLocalDateTime.toLocalDate();
+
 		JSONObject activityJSONObject = JSONUtil.put(
 			"activityKey", applicationId + "#" + eventId + "#" + assetId
 		).put(
@@ -271,9 +292,11 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		).put(
 			"dataSourceId", analyticsEvent.getDataSourceId()
 		).put(
-			"day", DateUtil.newDayDateString(eventDateString)
+			"day", eventLocalDate
 		).put(
 			"endTime", eventDateString
+		).put(
+			"endTimeLocal", eventLocalDateTime
 		).put(
 			"eventContext", new JSONObject(analyticsEvent.getContext())
 		).put(
@@ -288,6 +311,8 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			"ownerId", ownerId
 		).put(
 			"startTime", eventDateString
+		).put(
+			"startTimeLocal", eventLocalDateTime
 		).put(
 			"userId", analyticsEvent.getUserId()
 		);
@@ -685,5 +710,8 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_ACTIVITY)
 	private MessageSubscriber _messageSubscriber;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

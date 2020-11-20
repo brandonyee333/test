@@ -324,6 +324,14 @@ public class DateUtil {
 		return toUTCString(new Date());
 	}
 
+	public static LocalDate toLocalDate(long date, ZoneId zoneId) {
+		Instant instant = Instant.ofEpochMilli(date);
+
+		ZonedDateTime zonedDateTime = instant.atZone(zoneId);
+
+		return zonedDateTime.toLocalDate();
+	}
+
 	public static LocalDateTime toLocalDateTime(Date date, ZoneId zoneId) {
 		Instant instant = date.toInstant();
 
