@@ -75,7 +75,9 @@ public class ActivitiesRestControllerTest {
 		_elasticsearchInvoker.add(
 			"activities",
 			JSONUtil.put(
-				"day", DateUtil.newDateString()
+				"day", DateUtil.newDayDateString()
+			).put(
+				"startTimeLocal", DateUtil.newDateString()
 			).put(
 				"userId", "311355742999294554"
 			));
@@ -102,7 +104,9 @@ public class ActivitiesRestControllerTest {
 		_elasticsearchInvoker.add(
 			"activities",
 			JSONUtil.put(
-				"day", DateUtil.newDateString()
+				"day", DateUtil.newDayDateString()
+			).put(
+				"startTimeLocal", DateUtil.newDateString()
 			).put(
 				"userId", "311355742999294554"
 			));
