@@ -14,11 +14,14 @@
 
 package com.liferay.osb.asah.common.rest.controller;
 
-import javax.servlet.RequestDispatcher;
+import com.liferay.osb.asah.common.json.JSONUtil;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.boot.autoconfigure.web.ErrorController;
+import org.springframework.boot.autoconfigure.web.AbstractErrorController;
+import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,23 +30,29 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Profile("prod")
 @RestController
-public class ErrorRestController implements ErrorController {
+public class ErrorRestController extends AbstractErrorController {
+
+	public ErrorRestController(ErrorAttributes errorAttributes) {
+		super(errorAttributes);
+	}
 
 	@Override
 	public String getErrorPath() {
-		return null;
+		return "/error";
 	}
 
-	@RequestMapping("/error")
+	@RequestMapping(produces = "application/json", value = "/error")
 	public String handleError(HttpServletRequest httpServletRequest) {
-		Object status = httpServletRequest.getAttribute(
-			RequestDispatcher.ERROR_STATUS_CODE);
+		HttpStatus httpStatus = getStatus(httpServletRequest);
 
-		if (status != null) {
-			return "Encountered error with status code " + status.toString();
-		}
-
-		return "Encountered error";
+		return JSONUtil.put(
+			"error", httpStatus.getReasonPhrase()
+		).put(
+			"message",
+			"Encountered error with status code " + httpStatus.value()
+		).put(
+			"status", httpStatus.value()
+		).toString();
 	}
 
 }
