@@ -41,7 +41,7 @@ export default class CompareVersionFilters extends Component {
 		toProductVersion: this.determineVersion(this.props.toProductVersion)
 	};
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(_, prevState) {
 		const validVersionRange = this.validateVersionRange();
 		const validVersions = this.validateVersions();
 		const versionChanged = this.validateVersionChange(prevState);

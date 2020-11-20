@@ -22,7 +22,6 @@ import TableResults from './TableResults';
 
 export default class ModuleChanges extends Component {
 	moduleChangesTextInputRef = React.createRef();
-
 	moduleChangesToggleRef = React.createRef();
 
 	static defaultProps = {
