@@ -125,14 +125,13 @@ public class TeamAccountRoleMessageListener extends BaseMessageListener {
 				_accountEntryLocalService.fetchKoroneikiAccountEntry(
 					account.getKey());
 
-			if (accountEntry == null) {
+			if ((accountEntry == null) || !accountEntry.isActiveSupport()) {
 				return;
 			}
 
 			_accountSynchronizer.update(account, accountEntry);
 
-			_accountSynchronizer.addFirstLineSupport(
-				account, accountEntry, team);
+			_accountSynchronizer.addFirstLineSupport(accountEntry, team);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -147,7 +146,7 @@ public class TeamAccountRoleMessageListener extends BaseMessageListener {
 				_accountEntryLocalService.fetchKoroneikiAccountEntry(
 					account.getKey());
 
-			if (accountEntry == null) {
+			if ((accountEntry == null) || !accountEntry.isActiveSupport()) {
 				return;
 			}
 

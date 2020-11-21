@@ -27,6 +27,7 @@ import com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
@@ -60,6 +61,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -105,8 +107,29 @@ public class AccountSynchronizer {
 		}
 	}
 
-	public void addFirstLineSupport(
-			Account account, AccountEntry accountEntry, Team team)
+	public void addFirstLineSupport(Account account, AccountEntry accountEntry)
+		throws Exception {
+
+		if (account.getAssignedTeams() == null) {
+			return;
+		}
+
+		for (Team team : account.getAssignedTeams()) {
+			if (team.getTeamRoles() == null) {
+				continue;
+			}
+
+			for (TeamRole teamRole : team.getTeamRoles()) {
+				String name = teamRole.getName();
+
+				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
+					addFirstLineSupport(accountEntry, team);
+				}
+			}
+		}
+	}
+
+	public void addFirstLineSupport(AccountEntry accountEntry, Team team)
 		throws Exception {
 
 		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
@@ -135,8 +158,7 @@ public class AccountSynchronizer {
 		}
 	}
 
-	public void closeZendeskTickets(
-			Account account, AccountEntry accountEntry, User user)
+	public void closeZendeskTickets(AccountEntry accountEntry, User user)
 		throws PortalException {
 
 		if (!ZendeskSynchronizerThreadLocal.isEnabled()) {
@@ -395,7 +417,50 @@ public class AccountSynchronizer {
 				continue;
 			}
 
-			_customerSynchronizer.remove(user, accountEntry);
+			List<ContactRole> contactRoles =
+				_contactRoleWebService.getAccountContactRoles(
+					account.getKey(), user.getUuid(), 1, 1);
+
+			Boolean isSupportClosedWatcher = false;
+
+			for (ContactRole contactRole : contactRoles) {
+				String contactRoleName = contactRole.getName();
+
+				if (contactRoleName.equals(
+						ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
+
+					isSupportClosedWatcher = true;
+
+					break;
+				}
+			}
+
+			if (!isSupportClosedWatcher) {
+				_customerSynchronizer.remove(user, accountEntry);
+			}
+		}
+	}
+
+	public void removeFirstLineSupport(
+			Account account, AccountEntry accountEntry)
+		throws Exception {
+
+		if (account.getAssignedTeams() == null) {
+			return;
+		}
+
+		for (Team team : account.getAssignedTeams()) {
+			if (team.getTeamRoles() == null) {
+				continue;
+			}
+
+			for (TeamRole teamRole : team.getTeamRoles()) {
+				String name = teamRole.getName();
+
+				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
+					removeFirstLineSupport(account, accountEntry, team);
+				}
+			}
 		}
 	}
 
@@ -407,14 +472,52 @@ public class AccountSynchronizer {
 			return;
 		}
 
-		List<Contact> contacts = _contactWebService.getTeamContacts(
+		List<Contact> teamContacts = _contactWebService.getTeamContacts(
 			team.getKey(), 1, 1000);
 
-		for (Contact contact : contacts) {
+		List<Contact> accountCustomerContacts =
+			_contactWebService.getAccountCustomerContacts(
+				account.getKey(), 1, 1000);
+
+		List<String> accountCustomerContactsEmailAddress = new ArrayList<>();
+
+		for (Contact accountCustomerContact : accountCustomerContacts) {
+			accountCustomerContactsEmailAddress.add(
+				accountCustomerContact.getEmailAddress());
+		}
+
+		for (Contact teamContact : teamContacts) {
 			User user = _userIdentityProvider.fetchUserByEmailAddress(
-				contact.getEmailAddress());
+				teamContact.getEmailAddress());
 
 			if (user == null) {
+				continue;
+			}
+
+			Boolean isSupportContact = false;
+
+			if (accountCustomerContactsEmailAddress.contains(
+					teamContact.getEmailAddress())) {
+
+				List<ContactRole> contactRoles =
+					_contactRoleWebService.getAccountContactRoles(
+						account.getKey(), user.getUuid(), 1, 1000);
+
+				if (!contactRoles.isEmpty()) {
+					for (ContactRole curContactRole : contactRoles) {
+						if (ArrayUtil.contains(
+								ContactRoleConstants.SUPPORT_CONTACT_ROLES,
+								curContactRole.getName())) {
+
+							isSupportContact = true;
+
+							break;
+						}
+					}
+				}
+			}
+
+			if (isSupportContact) {
 				continue;
 			}
 
@@ -671,29 +774,6 @@ public class AccountSynchronizer {
 		}
 	}
 
-	protected void removeFirstLineSupport(
-			Account account, AccountEntry accountEntry)
-		throws Exception {
-
-		if (account.getAssignedTeams() == null) {
-			return;
-		}
-
-		for (Team team : account.getAssignedTeams()) {
-			if (team.getTeamRoles() == null) {
-				continue;
-			}
-
-			for (TeamRole teamRole : team.getTeamRoles()) {
-				String name = teamRole.getName();
-
-				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
-					removeFirstLineSupport(account, accountEntry, team);
-				}
-			}
-		}
-	}
-
 	protected void removeOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws Exception {
@@ -723,6 +803,9 @@ public class AccountSynchronizer {
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private ContactRoleWebService _contactRoleWebService;
 
 	@Reference
 	private ContactWebService _contactWebService;

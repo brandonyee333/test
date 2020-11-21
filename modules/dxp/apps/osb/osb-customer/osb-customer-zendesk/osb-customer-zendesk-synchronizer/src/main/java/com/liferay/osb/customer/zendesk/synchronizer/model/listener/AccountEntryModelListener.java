@@ -96,8 +96,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			if (oldAccountEntry.isActiveTicketSupport() &&
 				!accountEntry.isActiveTicketSupport()) {
 
-				_accountSynchronizer.closeZendeskTickets(
-					account, accountEntry, null);
+				_accountSynchronizer.closeZendeskTickets(accountEntry, null);
 
 				List<Contact> contacts =
 					_contactWebService.getAccountCustomerContacts(
@@ -119,6 +118,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				!isActiveSupport(accountEntry)) {
 
 				_accountSynchronizer.removeCustomers(account, accountEntry);
+
+				_accountSynchronizer.removeFirstLineSupport(
+					account, accountEntry);
 			}
 
 			if (isActiveSupport(accountEntry) &&
@@ -128,6 +130,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					 accountEntry)))) {
 
 				_accountSynchronizer.addCustomers(account, accountEntry);
+
+				_accountSynchronizer.addFirstLineSupport(account, accountEntry);
 			}
 		}
 		catch (Exception e) {

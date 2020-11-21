@@ -177,7 +177,7 @@ public class UserModelListener extends BaseModelListener<User> {
 				}
 				catch (AccountCustomerRemovalException acre) {
 					_accountSynchronizer.closeZendeskTickets(
-						account, accountEntry, null);
+						accountEntry, null);
 				}
 			}
 
@@ -229,7 +229,7 @@ public class UserModelListener extends BaseModelListener<User> {
 					}
 					catch (PartnerWorkerRemovalException pwre) {
 						_accountSynchronizer.closeZendeskTickets(
-							account, accountEntry, user);
+							accountEntry, user);
 					}
 				}
 			}

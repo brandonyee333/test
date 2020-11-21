@@ -116,7 +116,7 @@ public class TeamSynchronizer {
 				_accountEntryLocalService.fetchKoroneikiAccountEntry(
 					account.getKey());
 
-			if (accountEntry == null) {
+			if ((accountEntry == null) || !accountEntry.isActiveSupport()) {
 				continue;
 			}
 

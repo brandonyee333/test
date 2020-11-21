@@ -21,6 +21,7 @@ import com.liferay.osb.customer.identity.management.provider.UserIdentityProvide
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
@@ -29,6 +30,7 @@ import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactRoleSerDes;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactSerDes;
@@ -133,16 +135,10 @@ public class ContactMessageListener extends BaseMessageListener {
 
 		String topic = message.getString("topic");
 
-		if (topic.equals("koroneiki.account.contact.assigned")) {
+		if (topic.equals("koroneiki.account.contactrole.assigned")) {
 			onContactRoleAssign(account, accountEntry, user, contactRole);
 		}
-		else if (topic.equals("koroneiki.account.contact.unassigned")) {
-			onContactUnassign(account, accountEntry, user);
-		}
-		else if (topic.equals("koroneiki.account.contactrole.assigned")) {
-			onContactRoleAssign(account, accountEntry, user, contactRole);
-		}
-		else {
+		else if (topic.equals("koroneiki.account.contactrole.unassigned")) {
 			onContactRoleUnassign(account, accountEntry, user, contactRole);
 		}
 	}
@@ -190,8 +186,52 @@ public class ContactMessageListener extends BaseMessageListener {
 				_contactRoleWebService.getAccountContactRoles(
 					account.getKey(), user.getUuid(), 1, 1000);
 
+			Team firstLineSupportTeam = _accountReader.getFirstLineSupportTeam(
+				account);
+
+			List<Contact> teamContacts = _contactWebService.getTeamContacts(
+				firstLineSupportTeam.getKey(), 1, 1000);
+
+			for (Contact teamContact : teamContacts) {
+				User teamUser = _userIdentityProvider.fetchUserByEmailAddress(
+					teamContact.getEmailAddress());
+
+				if (teamUser == null) {
+					continue;
+				}
+
+				String teamUserEmailAddress = teamUser.getEmailAddress();
+
+				if (!teamUserEmailAddress.equals(user.getEmailAddress())) {
+					continue;
+				}
+
+				List<ContactRole> teamContactRoles =
+					_contactRoleWebService.getTeamContactRoles(
+						firstLineSupportTeam.getKey(), teamUser.getUuid(), 1,
+						1000);
+
+				for (ContactRole teamContactRole : teamContactRoles) {
+					if (ArrayUtil.contains(
+							ContactRoleConstants.PARTNER_CONTACT_ROLES,
+							teamContactRole.getName())) {
+
+						contactRoles.add(teamContactRole);
+					}
+				}
+			}
+
+			if (contactRoles.isEmpty()) {
+				onContactUnassign(account, accountEntry, user);
+
+				return;
+			}
+
 			for (ContactRole curContactRole : contactRoles) {
 				if (ArrayUtil.contains(
+						ContactRoleConstants.PARTNER_CONTACT_ROLES,
+						curContactRole.getName()) ||
+					ArrayUtil.contains(
 						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 						curContactRole.getName())) {
 
@@ -201,10 +241,7 @@ public class ContactMessageListener extends BaseMessageListener {
 				}
 			}
 
-			_accountSynchronizer.reassignTickets(
-				account.getKey(), accountEntry, user);
-
-			_customerSynchronizer.remove(user, accountEntry);
+			onContactUnassign(account, accountEntry, user);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -245,6 +282,9 @@ public class ContactMessageListener extends BaseMessageListener {
 
 	@Reference
 	private ContactRoleWebService _contactRoleWebService;
+
+	@Reference
+	private ContactWebService _contactWebService;
 
 	@Reference
 	private CustomerSynchronizer _customerSynchronizer;
