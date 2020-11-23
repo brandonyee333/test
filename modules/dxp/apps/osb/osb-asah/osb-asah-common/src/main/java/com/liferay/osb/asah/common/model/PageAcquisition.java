@@ -106,7 +106,7 @@ public class PageAcquisition extends Acquisition {
 
 	private static final String[] _SOCIAL_HOST_NAMES = {
 		"facebook.com", "instagram.com", "linkedin.com", "pinterest.com",
-		"snapchat.com", "tiktok.com", "twitter.com", "youtube.com"
+		"snapchat.com", "t.co", "tiktok.com", "twitter.com", "youtube.com"
 	};
 
 }
