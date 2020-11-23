@@ -15,7 +15,6 @@
 package com.liferay.portal.action.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.action.UpdateLanguageAction;
 import com.liferay.portal.kernel.model.Group;
@@ -31,6 +30,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.test.LayoutTestUtil;
 
 import java.util.Locale;
 
