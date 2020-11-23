@@ -156,12 +156,13 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		String dataSourceId = analyticsEvent.getDataSourceId();
 		String eventDateString = DateUtil.toUTCString(
 			analyticsEvent.getEventDate());
-		String userId = analyticsEvent.getUserId();
 
 		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
 			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
 
 		LocalDate eventLocalDate = eventLocalDateTime.toLocalDate();
+
+		String userId = analyticsEvent.getUserId();
 
 		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"activity-groups",
@@ -274,12 +275,13 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 
 		String eventDateString = DateUtil.toUTCString(
 			analyticsEvent.getEventDate());
-		String ownerId = activityGroupJSONObject.getString("ownerId");
 
 		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
 			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
 
 		LocalDate eventLocalDate = eventLocalDateTime.toLocalDate();
+
+		String ownerId = activityGroupJSONObject.getString("ownerId");
 
 		JSONObject activityJSONObject = JSONUtil.put(
 			"activityKey", applicationId + "#" + eventId + "#" + assetId
