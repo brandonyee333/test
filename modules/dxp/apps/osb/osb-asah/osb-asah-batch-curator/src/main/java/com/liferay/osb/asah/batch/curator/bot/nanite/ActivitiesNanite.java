@@ -30,8 +30,8 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -160,7 +160,8 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
 			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
 
-		LocalDate eventLocalDate = eventLocalDateTime.toLocalDate();
+		String dayUTCString = DateUtil.toUTCString(
+			eventLocalDateTime.with(LocalTime.MIDNIGHT));
 
 		String userId = analyticsEvent.getUserId();
 
@@ -173,7 +174,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			).filter(
 				QueryBuilders.termQuery("dataSourceId", dataSourceId)
 			).filter(
-				QueryBuilders.termQuery("day", eventLocalDate.toString())
+				QueryBuilders.termQuery("day", dayUTCString)
 			).filter(
 				QueryBuilders.termQuery("userId", userId)
 			));
@@ -199,7 +200,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			).put(
 				"dataSourceId", dataSourceId
 			).put(
-				"day", eventLocalDate
+				"day", dayUTCString
 			).put(
 				"endTime", eventDateString
 			).put(
@@ -279,7 +280,8 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
 			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
 
-		LocalDate eventLocalDate = eventLocalDateTime.toLocalDate();
+		String dayUTCString = DateUtil.toUTCString(
+			eventLocalDateTime.with(LocalTime.MIDNIGHT));
 
 		String ownerId = activityGroupJSONObject.getString("ownerId");
 
@@ -294,7 +296,7 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 		).put(
 			"dataSourceId", analyticsEvent.getDataSourceId()
 		).put(
-			"day", eventLocalDate
+			"day", dayUTCString
 		).put(
 			"endTime", eventDateString
 		).put(
