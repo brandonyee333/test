@@ -15,19 +15,14 @@
 import * as Utils from '../../../src/main/resources/META-INF/resources/components/quantity_selector/utils/index';
 
 describe('generateOption`s working', () => {
-
-	// it('should return allowed values if length > 0', () => {
-
-	// })
-
-	it('if allowedQuantities.length > 0 should return allowed values', () => {
+	it('display allowedQuantities as options if this is not empty', () => {
 		const allowed = [2, 4, 65, 33, 913, 267, 323, 122, 90, 113];
 		expect(Utils.generateOptions({allowedQuantity: allowed})).toEqual(
 			allowed
 		);
 	});
 
-	it('if allowedQuantities.length === 0', () => {
+	it('options must be from minQuantity to maxQuantity if allowedQuantities is empty', () => {
 		expect(
 			Utils.generateOptions({
 				allowedQuantity: [],
@@ -37,7 +32,7 @@ describe('generateOption`s working', () => {
 		).toEqual([2, 3, 4, 5]);
 	});
 
-	it('if allowed is not empty and max and min are setted, should return allowed', () => {
+	it('display allowedQuantity as options if it is not empty, even if minQuantity and maxQuantity are setted', () => {
 		expect(
 			Utils.generateOptions({
 				allowedQuantity: [3, 5, 7, 9],
@@ -48,7 +43,7 @@ describe('generateOption`s working', () => {
 		).toEqual([3, 5, 7, 9]);
 	});
 
-	it('if multiple > 1 all values should be * multiple', () => {
+	it('display multiplied quantites if multipleQuantity is more than 1', () => {
 		expect(
 			Utils.generateOptions({
 				allowedQuantity: [],
@@ -59,7 +54,7 @@ describe('generateOption`s working', () => {
 		).toEqual([2, 4, 6, 8]);
 	});
 
-	it('if allowed is not set and max, min and muliple are not set', () => {
+	it('display only one option if allowedQuantity, maxQuantity, minQuantity and multipleQuantity are not set', () => {
 		expect(Utils.generateOptions({})).toEqual([1]);
 	});
 });

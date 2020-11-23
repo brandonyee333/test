@@ -23,32 +23,21 @@ import {generateOptions, getInputStyle} from './utils/index';
 
 function QuantitySelector(props) {
 	const [selectedQuantity, setSelectedQuantity] = useState(props.quantity);
-
 	const quantitiesList = generateOptions(props.settings);
-
-	const updateQuantity = (q) => {
-		if (q !== null) {
-			setSelectedQuantity(q);
+	const onUpdate = (quantity) => {
+		const qty = parseInt(quantity, 10);
+		if (qty) {
+			setSelectedQuantity(qty);
 			try {
-				props.updateQuantity(q);
+				props.updateQuantity('select', qty);
 			}
-			catch (e) {
+			catch (event) {
 				// eslint-disable-next-line no-console
 				console.log('stand alone component');
 			}
 		}
 	};
-
 	const inputStyle = getInputStyle(props.inputSize);
-
-	useEffect(() => {
-		// eslint-disable-next-line no-unused-expressions
-		props.quantity
-			? updateQuantity(props.quantity)
-			: updateQuantity(selectedQuantity);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [props, selectedQuantity, setSelectedQuantity, props.quantity]);
-
 	const content = (
 		<div
 			className="input-group input-group-sm quantity-selector simple"
@@ -59,10 +48,7 @@ function QuantitySelector(props) {
 				<div className="input-group-item input-group-item-shrink input-group-prepend">
 					<span className="input-group-text">
 						{props.prependedIcon ? (
-							<ClayIcon
-								spritemap={props.spritemap}
-								symbol={props.prependedIcon}
-							/>
+							<ClayIcon symbol={props.prependedIcon} />
 						) : (
 							props.prependedText
 						)}
@@ -79,10 +65,11 @@ function QuantitySelector(props) {
 				{props.style === 'datalist' && (
 					<Datalist
 						className="quantity-selector-input"
+						data-testid="select-option"
 						disabled={props.disabled}
 						id="quantitySelect"
 						size={props.size}
-						updateQuantity={updateQuantity}
+						updateQuantity={onUpdate}
 					>
 						{quantitiesList.map((item) => (
 							<option key={item} label={item} value={item} />
@@ -102,7 +89,7 @@ function QuantitySelector(props) {
 						disabled={props.disabled}
 						id="quantitySelect"
 						onChange={(e) => {
-							updateQuantity(e.target.value);
+							onUpdate(e.target.value);
 						}}
 					>
 						{quantitiesList.map((item) => (
@@ -120,10 +107,7 @@ function QuantitySelector(props) {
 				<div className="input-group-append input-group-item input-group-item-shrink">
 					<span className="input-group-text">
 						{props.appendedIcon ? (
-							<ClayIcon
-								spritemap={props.spritemap}
-								symbol={props.appendedIcon}
-							/>
+							<ClayIcon symbol={props.appendedIcon} />
 						) : (
 							props.appendedText
 						)}
@@ -144,8 +128,7 @@ function QuantitySelector(props) {
 
 QuantitySelector.defaultProps = {
 	disabled: false,
-	inputSize: '1555',
-	quantity: 1,
+	inputSize: 'default',
 	settings: {
 		allowedQuantity: [],
 		maxQuantity: 99,

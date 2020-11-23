@@ -24,73 +24,60 @@ import React from 'react';
 import QuantitySelector from '../../src/main/resources/META-INF/resources/components/quantity_selector/QuantitySelector';
 import * as Utils from '../../src/main/resources/META-INF/resources/components/quantity_selector/utils/index';
 
-describe('Quantity Selector', () => {
-	describe('When QuantitySelector is loaded', () => {
-		beforeEach(() => {
-			jest.resetAllMocks();
-		});
+describe('when QuantitySelector is loaded', () => {
+	beforeEach(() => {
+		jest.resetAllMocks();
+	});
 
-		afterEach(() => {
-			cleanup();
-		});
+	afterEach(() => {
+		cleanup();
+	});
 
-		it('if allowedQuantity is different from default [] the options should display the the correct option', () => {
-			const ALLOWED_QUANTITIES = [
-				2,
-				4,
-				65,
-				33,
-				913,
-				267,
-				323,
-				122,
-				90,
-				113,
-			];
-			Utils.generateOptions.mockReturnValue(ALLOWED_QUANTITIES);
-			const {getByText} = render(
-				<QuantitySelector spritemap="./assets/icons.svg" />
-			);
-			expect(Utils.generateOptions).toHaveBeenCalled();
-			ALLOWED_QUANTITIES.forEach((o) => {
-				const option = getByText(o.toString());
-				expect(option.value).toEqual(o.toString());
-				expect(option).toBeInTheDocument();
-			});
+	it('displays the correct option when allowedQuantity is different from the default', () => {
+		const ALLOWED_QUANTITIES = [2, 4, 65, 33, 913, 267, 323, 122, 90, 113];
+		Utils.generateOptions.mockReturnValue(ALLOWED_QUANTITIES);
+		const {getByText} = render(
+			<QuantitySelector spritemap="./assets/icons.svg" />
+		);
+		expect(Utils.generateOptions).toHaveBeenCalled();
+		ALLOWED_QUANTITIES.forEach((o) => {
+			const option = getByText(o.toString());
+			expect(option.value).toEqual(o.toString());
+			expect(option).toBeInTheDocument();
 		});
+	});
 
-		it('if allowedQuantity is [] the component should display the options from min to max', () => {
-			Utils.generateOptions.mockReturnValue([1, 2, 3, 4]);
-			const {getByText} = render(
-				<QuantitySelector spritemap="./assets/icons.svg" />
-			);
-			const oo = getByText('1');
-			expect(oo).toBeInTheDocument();
-		});
+	it('display the correct options from minQuantity to maxQuantity if allowedQuantity is a empty array', () => {
+		Utils.generateOptions.mockReturnValue([1, 2, 3, 4]);
+		const {getByText} = render(
+			<QuantitySelector spritemap="./assets/icons.svg" />
+		);
+		const oo = getByText('1');
+		expect(oo).toBeInTheDocument();
+	});
 
-		it('if SELECT is disabled the input should be disabled', () => {
-			Utils.generateOptions.mockReturnValue([]);
-			const {getByTestId} = render(
-				<QuantitySelector
-					disabled={true}
-					inputSize={'2000'}
-					spritemap="./assets/icons.svg"
-					style="select"
-				/>
-			);
-			expect(getByTestId('select')).toBeDisabled();
-		});
+	it("show the select input as disabled if 'disabled prop' is passed to the component", () => {
+		Utils.generateOptions.mockReturnValue([]);
+		const {getByTestId} = render(
+			<QuantitySelector
+				disabled={true}
+				inputSize={'2000'}
+				spritemap="./assets/icons.svg"
+				style="select"
+			/>
+		);
+		expect(getByTestId('select')).toBeDisabled();
+	});
 
-		it('if DATALIST is disabled the input should be disabled', () => {
-			Utils.generateOptions.mockReturnValue([]);
-			const {getByTestId} = render(
-				<QuantitySelector
-					disabled={true}
-					spritemap="./assets/icons.svg"
-					style="datalist"
-				/>
-			);
-			expect(getByTestId('datalist')).toBeDisabled();
-		});
+	it("show the datalist input as disabled if 'disabled prop' is passed to the component", () => {
+		Utils.generateOptions.mockReturnValue([]);
+		const {getByTestId} = render(
+			<QuantitySelector
+				disabled={true}
+				spritemap="./assets/icons.svg"
+				style="datalist"
+			/>
+		);
+		expect(getByTestId('datalist')).toBeDisabled();
 	});
 });
