@@ -181,6 +181,9 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 				for (ContactRole curContactRole : contactRoles) {
 					if (ArrayUtil.contains(
 							ContactRoleConstants.SUPPORT_CONTACT_ROLES,
+							curContactRole.getName()) ||
+						ArrayUtil.contains(
+							ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
 							curContactRole.getName())) {
 
 						return;

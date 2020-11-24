@@ -63,6 +63,10 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				accountEntry.getKoroneikiAccountKey());
 
 			_accountSynchronizer.update(account, accountEntry);
+
+			_accountSynchronizer.addCustomers(account, accountEntry);
+
+			_accountSynchronizer.addFirstLineSupport(account, accountEntry);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

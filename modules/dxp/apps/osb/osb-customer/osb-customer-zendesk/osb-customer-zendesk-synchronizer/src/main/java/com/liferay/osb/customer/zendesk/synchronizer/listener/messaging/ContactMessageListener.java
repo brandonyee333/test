@@ -162,7 +162,9 @@ public class ContactMessageListener extends BaseMessageListener {
 			}
 
 			if (ArrayUtil.contains(
-					ContactRoleConstants.SUPPORT_CONTACT_ROLES, name)) {
+					ContactRoleConstants.SUPPORT_CONTACT_ROLES, name) ||
+				ArrayUtil.contains(
+					ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES, name)) {
 
 				_customerSynchronizer.add(user, account, accountEntry);
 			}
@@ -181,6 +183,9 @@ public class ContactMessageListener extends BaseMessageListener {
 		try {
 			if (!ArrayUtil.contains(
 					ContactRoleConstants.SUPPORT_CONTACT_ROLES,
+					contactRole.getName()) &&
+				!ArrayUtil.contains(
+					ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
 					contactRole.getName())) {
 
 				return;
@@ -226,10 +231,10 @@ public class ContactMessageListener extends BaseMessageListener {
 
 			for (ContactRole curContactRole : contactRoles) {
 				if (ArrayUtil.contains(
-						ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
+						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 						curContactRole.getName()) ||
 					ArrayUtil.contains(
-						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
+						ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
 						curContactRole.getName())) {
 
 					_customerSynchronizer.update(user);
