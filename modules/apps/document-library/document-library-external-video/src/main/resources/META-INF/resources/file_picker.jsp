@@ -23,39 +23,50 @@ String namespace = (String)request.getAttribute(DLExternalVideoWebKeys.NAMESPACE
 String onFilePickCallback = (String)request.getAttribute(DLExternalVideoWebKeys.ON_FILE_PICK_CALLBACK);
 %>
 
-<aui:input helpMessage="video-url-help" label="video-url" name="externalVideoURL" value="<%= (dlExternalVideo != null) ? dlExternalVideo.getURL() : null %>" />
+<liferay-util:html-top
+	outputKey="document_library_external_video_file_picker_css"
+>
+	<link href="<%= PortalUtil.getStaticResourceURL(request, application.getContextPath() + "/css/file_picker.css") %>" rel="stylesheet" type="text/css" />
+</liferay-util:html-top>
 
-<div id="<portlet:namespace />externalVideoPreview">
-	<c:if test="<%= dlExternalVideo != null %>">
-		<%= dlExternalVideo.getEmbeddableHTML() %>
-	</c:if>
+<aui:input name="contentType" type="hidden" value="<%= DLContentTypes.EXTERNAL_VIDEO %>" />
+
+<div class="form-group">
+	<aui:input label="video-url" name="externalVideoURL" value="<%= (dlExternalVideo != null) ? dlExternalVideo.getURL() : null %>" wrapperCssClass="mb-0" />
+
+	<p class="form-text"><liferay-ui:message key="video-url-help" /></p>
+
+	<div class="file-picker-preview-video">
+		<div class="file-picker-preview-video-aspect-ratio">
+			<c:choose>
+				<c:when test="<%= dlExternalVideo != null %>">
+					<%= dlExternalVideo.getEmbeddableHTML() %>
+				</c:when>
+				<c:otherwise>
+					<div class="file-picker-preview-video-placeholder">
+						<clay:icon
+							symbol="video"
+						/>
+					</div>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
+
+	<react:component
+		module="js/FilePickerVideoPreview"
+		props='<%=
+			HashMapBuilder.<String, Object>put(
+				"externalVideoHTML", (dlExternalVideo != null) ? dlExternalVideo.getEmbeddableHTML() : ""
+			).put(
+				"externalVideoURL", (dlExternalVideo != null) ? dlExternalVideo.getURL() : ""
+			).put(
+				"getDLExternalVideoFieldsURL", getDLExternalVideoFieldsURL
+			).put(
+				"namespace", namespace
+			).put(
+				"onFilePickCallback", onFilePickCallback
+			).build()
+		%>'
+	/>
 </div>
-
-<aui:script sandbox="<%= true %>">
-	var externalVideoURLInput = document.getElementById(
-		'<portlet:namespace />externalVideoURL'
-	);
-	var externalVideoPreview = document.getElementById(
-		'<portlet:namespace />externalVideoPreview'
-	);
-
-	if (externalVideoURLInput) {
-		externalVideoURLInput.addEventListener('input', function () {
-			var url = externalVideoURLInput.value;
-
-			if (url) {
-				fetch(
-					'<%= getDLExternalVideoFieldsURL %>&<%= namespace %>dlExternalVideoURL=' +
-						url
-				)
-					.then(function (res) {
-						return res.json();
-					})
-					.then(function (fields) {
-						externalVideoPreview.innerHTML = fields['HTML'];
-						<%= onFilePickCallback %>(fields);
-					});
-			}
-		});
-	}
-</aui:script>

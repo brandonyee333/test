@@ -84,6 +84,14 @@ public class ClaySampleVerticalCard implements VerticalCard {
 		return "custom-vertical-card-css-class";
 	}
 
+	public Map<String, String> getDynamicAttributes() {
+		return HashMapBuilder.put(
+			"data-id", getId()
+		).put(
+			"data-type", "vertical-card"
+		).build();
+	}
+
 	public String getHref() {
 		if (_href != null) {
 			return _href;
@@ -155,18 +163,6 @@ public class ClaySampleVerticalCard implements VerticalCard {
 				labelItem.setStyle("warning");
 			}
 		).build();
-	}
-
-	public Map<String, String> getLabelStylesMap() {
-		if (_labelStylesMap != null) {
-			return _labelStylesMap;
-		}
-
-		_labelStylesMap = HashMapBuilder.put(
-			"Pending", "info"
-		).build();
-
-		return _labelStylesMap;
 	}
 
 	public String getStickerCssClass() {
@@ -280,10 +276,6 @@ public class ClaySampleVerticalCard implements VerticalCard {
 		_labels = labels;
 	}
 
-	public void setLabelStylesMap(Map<String, String> labelStylesMap) {
-		_labelStylesMap = labelStylesMap;
-	}
-
 	public void setSelectable(boolean selectable) {
 		_selectable = selectable;
 	}
@@ -340,7 +332,6 @@ public class ClaySampleVerticalCard implements VerticalCard {
 	private String _inputName;
 	private String _inputValue;
 	private List<LabelItem> _labels;
-	private Map<String, String> _labelStylesMap;
 	private boolean _selectable = true;
 	private boolean _selected;
 	private String _stickerCssClass;

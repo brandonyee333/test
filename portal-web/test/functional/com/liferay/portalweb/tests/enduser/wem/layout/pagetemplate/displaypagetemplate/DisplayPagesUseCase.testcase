@@ -193,10 +193,9 @@ definition {
 
 			PortletEntry.inputTitle(title = "Webcontent Title Edit");
 
-			Type.typeCKEditorWaitForCKEditor(
-				key_fieldLabel = "content",
-				locator1 = "CKEditor#BODY_FIELD_WEB_CONTENT_ARTICLE",
-				value1 = "Webcontent Content Edit");
+			CKEditor.addContentInWebContent(
+				content = "Webcontent Content Edit",
+				fieldLabel = "content");
 
 			Button.clickPublish();
 		}
@@ -259,7 +258,7 @@ definition {
 			fragmentName = "Container");
 
 		PageEditor.editLayoutContainer(
-			backgroundImage = "Content Mapping",
+			backgroundImage = "Mapping",
 			entryTitle = "Document_1.jpg",
 			fieldName = "File URL",
 			navItem = "Documents and Media",
@@ -278,7 +277,7 @@ definition {
 	@description = "This is a test for LPS-86550. Users should be able to map author name and author profile image to a fragment editable field in a display page."
 	@priority = "5"
 	test MapWebContentAuthor {
-		property portal.acceptance = "true";
+		property portal.acceptance = "quarantine";
 
 		task ("Add a display page with author name and profile fields mapped") {
 			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
@@ -361,7 +360,7 @@ definition {
 	@description = "This case ensures a user can map the editable background image of a fragment to an existing image content."
 	@priority = "5"
 	test MapWebContentImageToFragmentBackground {
-		property portal.acceptance = "false";
+		property portal.acceptance = "true";
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -448,7 +447,7 @@ definition {
 	@description = "This case ensures a user can map the layout of a fragment to an existing image content."
 	@priority = "5"
 	test MapWebContentImageToLayoutSection {
-		property portal.acceptance = "false";
+		property portal.acceptance = "true";
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -501,7 +500,7 @@ definition {
 			fragmentName = "Container");
 
 		PageEditor.editLayoutContainer(
-			backgroundImage = "Content Mapping",
+			backgroundImage = "Mapping",
 			entryTitle = "WC WebContent Title",
 			navItem = "Web Content",
 			panel = "Styles");
@@ -842,8 +841,8 @@ definition {
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
 
 		WebContent.addWithStructureCP(
-			fieldName = "Content",
 			webContentRichText = "Webcontent Content",
+			webContentRichTextFieldLabel = "Content",
 			webContentTitle = "Webcontent Title");
 
 		WebContent.addWithTagCP(tagNameList = "tag1,tag2,tag3");

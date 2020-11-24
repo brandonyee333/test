@@ -31,7 +31,7 @@ definition {
 	@description = "This is a use case for LPS-114438. Only can edit inline content, mapped content and comments of elements when select Content Editing."
 	@priority = "5"
 	test OnlyCanEditContentWhenSelectContentEdition {
-		property portal.acceptance = "true";
+		property portal.acceptance = "quarantine";
 
 		task ("Add a Web Content Article, a Blogs Entry and a Document") {
 			JSONWebcontent.addWebContent(
@@ -239,10 +239,9 @@ definition {
 				if ("${title}" == "Web Content Title") {
 					WebContent.addCP(webContentTitle = "Web Content Title Edit");
 
-					Type.typeCKEditorWaitForCKEditor(
-						key_fieldLabel = "content",
-						locator1 = "CKEditor#BODY_FIELD_WEB_CONTENT_ARTICLE",
-						value1 = "Web Content Content Edit");
+					CKEditor.addContentInWebContent(
+						content = "Web Content Content Edit",
+						fieldLabel = "content");
 
 					PortletEntry.publish();
 				}

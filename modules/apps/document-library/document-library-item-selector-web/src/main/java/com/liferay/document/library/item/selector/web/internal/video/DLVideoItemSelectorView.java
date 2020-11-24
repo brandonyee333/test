@@ -14,14 +14,18 @@
 
 package com.liferay.document.library.item.selector.web.internal.video;
 
+import com.liferay.document.library.constants.DLContentTypes;
 import com.liferay.document.library.item.selector.web.internal.BaseDLItemSelectorView;
 import com.liferay.document.library.item.selector.web.internal.constants.DLItemSelectorViewConstants;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType;
 import com.liferay.item.selector.criteria.URLItemSelectorReturnType;
+import com.liferay.item.selector.criteria.VideoURLItemSelectorReturnType;
 import com.liferay.item.selector.criteria.video.criterion.VideoItemSelectorCriterion;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.xuggler.XugglerUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.Collections;
@@ -49,7 +53,14 @@ public class DLVideoItemSelectorView
 
 	@Override
 	public String[] getMimeTypes() {
-		return PropsValues.DL_FILE_ENTRY_PREVIEW_VIDEO_MIME_TYPES;
+		String[] mimeTypes = {DLContentTypes.EXTERNAL_VIDEO};
+
+		if (XugglerUtil.isEnabled()) {
+			ArrayUtil.append(
+				mimeTypes, PropsValues.DL_FILE_ENTRY_PREVIEW_VIDEO_MIME_TYPES);
+		}
+
+		return mimeTypes;
 	}
 
 	@Override
@@ -61,6 +72,7 @@ public class DLVideoItemSelectorView
 		_supportedItemSelectorReturnTypes = Collections.unmodifiableList(
 			ListUtil.fromArray(
 				new FileEntryItemSelectorReturnType(),
-				new URLItemSelectorReturnType()));
+				new URLItemSelectorReturnType(),
+				new VideoURLItemSelectorReturnType()));
 
 }

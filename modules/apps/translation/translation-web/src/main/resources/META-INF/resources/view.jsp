@@ -51,18 +51,13 @@ ViewDisplayContext viewDisplayContext = (ViewDisplayContext)request.getAttribute
 				/>
 
 				<liferay-ui:search-container-column-text
-					cssClass="table-cell-expand"
-					name="type"
-					value="<%= viewDisplayContext.getModelName(translationEntry) %>"
-				/>
-
-				<liferay-ui:search-container-column-text
 					name="language"
 				>
 					<clay:icon
-						symbol='<%= StringUtil.replace(StringUtil.toLowerCase(translationEntry.getLanguageId()), "_", "-") %>'
+						symbol="<%= viewDisplayContext.getLanguageIcon(translationEntry) %>"
 					/>
-					<%= translationEntry.getLanguageId() %>
+
+					<%= viewDisplayContext.getLanguageLabel(translationEntry) %>
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-status

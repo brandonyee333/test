@@ -19,6 +19,7 @@ import getDataAttributes from './get_data_attributes';
 
 export default function VerticalCard({
 	actions = [],
+	additionalProps: _additionalProps,
 	componentId: _componentId,
 	cssClass,
 	description,
@@ -32,7 +33,6 @@ export default function VerticalCard({
 	inputName = '',
 	inputValue = '',
 	labels = [],
-	labelStylesMap: _labelStylesMap,
 	locale: _locale,
 	portletId: _portletId,
 	portletNamespace: _portletNamespace,

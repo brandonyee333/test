@@ -19,7 +19,9 @@ import React, {useCallback, useEffect, useState} from 'react';
 
 import setFragmentEditables from '../../actions/setFragmentEditables';
 import selectCanConfigureWidgets from '../../selectors/selectCanConfigureWidgets';
+import selectLanguageId from '../../selectors/selectLanguageId';
 import selectSegmentsExperienceId from '../../selectors/selectSegmentsExperienceId';
+import FragmentService from '../../services/FragmentService';
 import {useDispatch, useSelector, useSelectorCallback} from '../../store/index';
 import {getFrontendTokenValue} from '../../utils/getFrontendTokenValue';
 import {getResponsiveConfig} from '../../utils/getResponsiveConfig';
@@ -84,7 +86,7 @@ const FragmentContent = ({
 		[fragmentEntryLinkId]
 	);
 
-	const languageId = useSelector((state) => state.languageId);
+	const languageId = useSelector(selectLanguageId);
 	const segmentsExperienceId = useSelector(selectSegmentsExperienceId);
 	const selectedViewportSize = useSelector(
 		(state) => state.selectedViewportSize
@@ -124,29 +126,55 @@ const FragmentContent = ({
 		if (!isProcessorEnabled()) {
 			fragmentElement.innerHTML = defaultContent;
 
-			Promise.all(
-				getAllEditables(fragmentElement).map((editable) =>
-					resolveEditableValue(
-						editableValues,
-						editable.editableId,
-						editable.editableValueNamespace,
-						languageId,
-						getFieldValue
-					).then(([value, editableConfig]) => {
-						editable.processor.render(
-							editable.element,
-							value,
-							editableConfig
-						);
+			const hasLocalizable =
+				fragmentEntryLink.configuration?.fieldSets?.some((fieldSet) =>
+					fieldSet.fields.some((field) => field.localizable)
+				) ?? false;
 
-						editable.element.classList.add('page-editor__editable');
-					})
-				)
-			).then(() => {
-				if (isMounted() && fragmentElement) {
-					setContent(fragmentElement.innerHTML);
-				}
-			});
+			const processEditables = () => {
+				Promise.all(
+					getAllEditables(fragmentElement).map((editable) =>
+						resolveEditableValue(
+							editableValues,
+							editable.editableId,
+							editable.editableValueNamespace,
+							languageId,
+							getFieldValue
+						).then(([value, editableConfig]) => {
+							editable.processor.render(
+								editable.element,
+								value,
+								editableConfig
+							);
+
+							editable.element.classList.add(
+								'page-editor__editable'
+							);
+						})
+					)
+				).then(() => {
+					if (isMounted() && fragmentElement) {
+						setContent(fragmentElement.innerHTML);
+					}
+				});
+			};
+
+			if (hasLocalizable) {
+				FragmentService.renderFragmentEntryLinkContent({
+					fragmentEntryLinkId: fragmentEntryLink.fragmentEntryLinkId,
+					languageId,
+					onNetworkStatus: dispatch,
+					segmentsExperienceId,
+				}).then(({content}) => {
+					if (isMounted()) {
+						fragmentElement.innerHTML = content;
+						processEditables();
+					}
+				});
+			}
+			else {
+				processEditables();
+			}
 		}
 
 		return () => {
@@ -154,12 +182,15 @@ const FragmentContent = ({
 		};
 	}, [
 		defaultContent,
+		dispatch,
 		editableValues,
+		fragmentEntryLink,
 		fragmentEntryLinkId,
 		getFieldValue,
 		isMounted,
 		isProcessorEnabled,
 		languageId,
+		segmentsExperienceId,
 	]);
 
 	const responsiveConfig = getResponsiveConfig(

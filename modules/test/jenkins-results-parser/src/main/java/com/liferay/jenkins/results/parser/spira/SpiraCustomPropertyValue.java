@@ -110,6 +110,38 @@ public abstract class SpiraCustomPropertyValue<T> extends BaseSpiraArtifact {
 		return null;
 	}
 
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof SpiraCustomPropertyValue)) {
+			return false;
+		}
+
+		SpiraCustomPropertyValue spiraCustomPropertyValue =
+			(SpiraCustomPropertyValue)object;
+
+		SpiraCustomProperty spiraCustomProperty =
+			spiraCustomPropertyValue.getSpiraCustomProperty();
+
+		if (!spiraCustomProperty.equals(getSpiraCustomProperty())) {
+			return false;
+		}
+
+		String valueString = spiraCustomPropertyValue.getValueString();
+
+		if (!valueString.equals(getValueString())) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public String getName() {
+		SpiraCustomProperty spiraCustomProperty = getSpiraCustomProperty();
+
+		return spiraCustomProperty.getName();
+	}
+
 	public int getPropertyNumber() {
 		SpiraCustomProperty spiraCustomProperty = getSpiraCustomProperty();
 
@@ -142,6 +174,17 @@ public abstract class SpiraCustomPropertyValue<T> extends BaseSpiraArtifact {
 
 	public String getValueString() {
 		return String.valueOf(getValue());
+	}
+
+	@Override
+	public int hashCode() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(getSpiraCustomProperty());
+		sb.append("_");
+		sb.append(getValueString());
+
+		return sb.hashCode();
 	}
 
 	protected SpiraCustomPropertyValue(

@@ -20,6 +20,7 @@
 Folder folder = (Folder)request.getAttribute(WebKeys.DOCUMENT_LIBRARY_FOLDER);
 
 long folderId = BeanParamUtil.getLong(folder, request, "folderId", DLFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+long selectedFolderId = ParamUtil.getLong(request, "selectedFolderId", folderId);
 
 long repositoryId = scopeGroupId;
 String folderName = LanguageUtil.get(request, "home");
@@ -69,6 +70,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 						"foldername", folderName
 					).build()
 				%>'
+				disabled="<%= folderId == selectedFolderId %>"
 				value="select-this-folder"
 			/>
 		</aui:button-row>
@@ -79,6 +81,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 		portletURL.setParameter("mvcRenderCommandName", "/document_library/select_folder");
 		portletURL.setParameter("folderId", String.valueOf(folderId));
 		portletURL.setParameter("ignoreRootFolder", Boolean.TRUE.toString());
+		portletURL.setParameter("selectedFolderId", String.valueOf(selectedFolderId));
 		portletURL.setParameter("showMountFolder", String.valueOf(dlVisualizationHelper.isMountFolderVisible()));
 		%>
 
@@ -100,6 +103,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 					<portlet:param name="mvcRenderCommandName" value="/document_library/select_folder" />
 					<portlet:param name="folderId" value="<%= String.valueOf(curFolder.getFolderId()) %>" />
 					<portlet:param name="ignoreRootFolder" value="<%= Boolean.TRUE.toString() %>" />
+					<portlet:param name="selectedFolderId" value="<%= String.valueOf(selectedFolderId) %>" />
 					<portlet:param name="showMountFolder" value="<%= String.valueOf(dlVisualizationHelper.isMountFolderVisible()) %>" />
 				</liferay-portlet:renderURL>
 
@@ -166,6 +170,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 									"foldername", curFolder.getName()
 								).build()
 							%>'
+							disabled="<%= curFolder.getFolderId() == selectedFolderId %>"
 							value="select"
 						/>
 					</c:if>

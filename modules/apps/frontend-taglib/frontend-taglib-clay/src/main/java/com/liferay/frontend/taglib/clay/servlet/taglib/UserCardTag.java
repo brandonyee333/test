@@ -15,7 +15,7 @@
 package com.liferay.frontend.taglib.clay.servlet.taglib;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.soy.UserCard;
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -75,16 +75,6 @@ public class UserCardTag extends BaseCardTag {
 		return _imageSrc;
 	}
 
-	public List<LabelItem> getLabels() {
-		UserCard userCard = getUserCard();
-
-		if ((_labels == null) && (userCard != null)) {
-			return userCard.getLabels();
-		}
-
-		return _labels;
-	}
-
 	public String getName() {
 		UserCard userCard = getUserCard();
 
@@ -127,10 +117,6 @@ public class UserCardTag extends BaseCardTag {
 		_imageSrc = imageSrc;
 	}
 
-	public void setLabels(List<LabelItem> labels) {
-		_labels = labels;
-	}
-
 	public void setName(String name) {
 		_name = name;
 	}
@@ -153,7 +139,6 @@ public class UserCardTag extends BaseCardTag {
 
 		_imageAlt = null;
 		_imageSrc = null;
-		_labels = null;
 		_name = null;
 		_subtitle = null;
 		_userColorClass = null;
@@ -167,7 +152,6 @@ public class UserCardTag extends BaseCardTag {
 	@Override
 	protected Map<String, Object> prepareProps(Map<String, Object> props) {
 		props.put("description", getSubtitle());
-		props.put("labels", getLabels());
 		props.put("name", getName());
 		props.put("userDisplayType", getUserColorClass());
 		props.put("userImageAlt", getImageAlt());
@@ -298,52 +282,20 @@ public class UserCardTag extends BaseCardTag {
 		jspWriter.write("text-truncate-inline\"><span class=\"text-truncate\"");
 		jspWriter.write(">");
 		jspWriter.write(getSubtitle());
-		jspWriter.write("</span></span></p>");
+		jspWriter.write("</span></span></p></div>");
 
-		List<LabelItem> labels = getLabels();
+		List<DropdownItem> actionDropdownItems = getActionDropdownItems();
 
-		if (!ListUtil.isEmpty(labels)) {
-			jspWriter.write("<div class=\"card-detail\">");
+		if (!ListUtil.isEmpty(actionDropdownItems)) {
+			jspWriter.write("<div class=\"autofit-col\">");
 
-			for (LabelItem labelItem : labels) {
-				LabelTag labelTag = new LabelTag();
+			DropdownActionsTag dropdownActionsTag = new DropdownActionsTag();
 
-				if ((boolean)labelItem.get("dismissible")) {
-					labelTag.setDismissible(true);
-				}
+			dropdownActionsTag.setDropdownItems(actionDropdownItems);
 
-				String displayType = (String)labelItem.get("displayType");
-
-				if (Validator.isNotNull(displayType)) {
-					labelTag.setDisplayType(displayType);
-				}
-
-				labelTag.setLabel((String)labelItem.get("label"));
-
-				if ((boolean)labelItem.get("large")) {
-					labelTag.setLarge(true);
-				}
-
-				labelTag.doTag(pageContext);
-			}
+			dropdownActionsTag.doTag(pageContext);
 
 			jspWriter.write("</div>");
-		}
-
-		jspWriter.write("</div>");
-
-		if (!ListUtil.isEmpty(getActionDropdownItems())) {
-			jspWriter.write("<div class=\"autofit-col\"><div class=\"dropdown");
-			jspWriter.write("\"><div class=\"component-action dropdown-toggle");
-			jspWriter.write("\">");
-
-			IconTag iconTag = new IconTag();
-
-			iconTag.setSymbol("ellipsis-v");
-
-			iconTag.doTag(pageContext);
-
-			jspWriter.write("</div></div></div>");
 		}
 
 		jspWriter.write("</div></div></div>");
@@ -355,7 +307,6 @@ public class UserCardTag extends BaseCardTag {
 
 	private String _imageAlt;
 	private String _imageSrc;
-	private List<LabelItem> _labels;
 	private String _name;
 	private String _subtitle;
 	private String _userColorClass;

@@ -22,7 +22,6 @@ import com.liferay.change.tracking.model.CTEntry;
 import com.liferay.change.tracking.model.CTEntryTable;
 import com.liferay.change.tracking.service.CTEntryLocalService;
 import com.liferay.change.tracking.web.internal.configuration.CTConfiguration;
-import com.liferay.change.tracking.web.internal.constants.CTWebKeys;
 import com.liferay.change.tracking.web.internal.display.BasePersistenceRegistry;
 import com.liferay.change.tracking.web.internal.display.CTClosureUtil;
 import com.liferay.change.tracking.web.internal.display.CTDisplayRendererRegistry;
@@ -46,7 +45,6 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -78,7 +76,6 @@ import java.util.Queue;
 import java.util.Set;
 
 import javax.portlet.ActionRequest;
-import javax.portlet.PortletSession;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -135,13 +132,18 @@ public class ViewChangesDisplayContext {
 	}
 
 	public String getBackURL() {
-		String backURL = ParamUtil.getString(_renderRequest, "backURL");
-
-		if (Validator.isNotNull(backURL)) {
-			return backURL;
-		}
-
 		PortletURL portletURL = _renderResponse.createRenderURL();
+
+		if (_ctCollection.getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			portletURL.setParameter(
+				"mvcRenderCommandName", "/change_tracking/view_history");
+		}
+		else if (_ctCollection.getStatus() ==
+					WorkflowConstants.STATUS_SCHEDULED) {
+
+			portletURL.setParameter(
+				"mvcRenderCommandName", "/change_tracking/view_scheduled");
+		}
 
 		return portletURL.toString();
 	}
@@ -290,12 +292,8 @@ public class ViewChangesDisplayContext {
 
 				discardURL.setParameter(
 					"mvcRenderCommandName", "/change_tracking/view_discard");
-
-				PortletURL redirect = PortletURLUtil.getCurrent(
-					_renderRequest, _renderResponse);
-
-				discardURL.setParameter("redirect", redirect.toString());
-
+				discardURL.setParameter(
+					"redirect", _themeDisplay.getURLCurrent());
 				discardURL.setParameter(
 					"ctCollectionId",
 					String.valueOf(_ctCollection.getCtCollectionId()));
@@ -318,6 +316,10 @@ public class ViewChangesDisplayContext {
 
 				return modelsJSONObject;
 			}
+		).put(
+			"namespace", _renderResponse.getNamespace()
+		).put(
+			"pathParam", ParamUtil.getString(_renderRequest, "path")
 		).put(
 			"renderCTEntryURL",
 			() -> {
@@ -359,31 +361,8 @@ public class ViewChangesDisplayContext {
 				return rootDisplayClassesJSONArray;
 			}
 		).put(
-			"saveSessionStateURL",
-			() -> {
-				ResourceURL saveSessionStateURL =
-					_renderResponse.createResourceURL();
-
-				saveSessionStateURL.setResourceID(
-					"/change_tracking/save_session_state");
-
-				return saveSessionStateURL.toString();
-			}
-		).put(
-			"sessionState",
-			() -> {
-				PortletSession portletSession =
-					_renderRequest.getPortletSession();
-
-				String sessionState = (String)portletSession.getAttribute(
-					CTWebKeys.VIEW_CHANGES_SESSION_STATE);
-
-				if (sessionState == null) {
-					return null;
-				}
-
-				return JSONFactoryUtil.createJSONObject(sessionState);
-			}
+			"showHideableParam",
+			ParamUtil.getBoolean(_renderRequest, "showHideable")
 		).put(
 			"siteNames",
 			() -> {

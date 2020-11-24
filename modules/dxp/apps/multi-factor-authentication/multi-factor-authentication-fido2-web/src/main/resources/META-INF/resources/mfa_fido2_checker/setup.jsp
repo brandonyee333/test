@@ -31,7 +31,7 @@ List<MFAFIDO2CredentialEntry> mfaIDO2CredentialEntries = MFAFIDO2CredentialEntry
 						"pkccOptions", request.getAttribute(MFAFIDO2WebKeys.MFA_FIDO2_PKCC_OPTIONS)
 					).build()
 				%>'
-				class="btn btn-primary"
+				displayType="primary"
 				label="register-a-fido2-authenticator"
 				propsTransformer="js/RegistrationTransformer"
 			/>
@@ -44,7 +44,7 @@ List<MFAFIDO2CredentialEntry> mfaIDO2CredentialEntries = MFAFIDO2CredentialEntry
 
 		<aui:button-row>
 			<clay:button
-				class="btn btn-danger"
+				displayType="danger"
 				label="remove-all-registered-fido2-authenticators"
 				type="submit"
 			/>
@@ -79,7 +79,7 @@ List<MFAFIDO2CredentialEntry> mfaIDO2CredentialEntries = MFAFIDO2CredentialEntry
 		/>
 
 		<liferay-ui:search-container-column-text>
-			<portlet:actionURL name="/multi-factor-authentication-fido2/remove_mfa_fido2_credential_entry" var="removeMFAFIDO2CredentialEntryURL">
+			<portlet:actionURL name="/multi_factor_authentication_fido2/remove_mfa_fido2_credential_entry" var="removeMFAFIDO2CredentialEntryURL">
 				<portlet:param name="redirect" value="<%= currentURL %>" />
 				<portlet:param name="mfaFIDO2CredentialEntryId" value="<%= String.valueOf(mfaFIDO2CredentialEntry.getPrimaryKey()) %>" />
 				<portlet:param name="setupMFACheckerServiceId" value="<%= String.valueOf(request.getAttribute(MFAFIDO2WebKeys.SETUP_MFA_CHECKER_SERVICE_ID)) %>" />

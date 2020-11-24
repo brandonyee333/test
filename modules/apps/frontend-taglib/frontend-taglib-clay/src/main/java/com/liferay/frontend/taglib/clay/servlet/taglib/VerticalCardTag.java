@@ -15,6 +15,7 @@
 package com.liferay.frontend.taglib.clay.servlet.taglib;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.soy.VerticalCard;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -89,6 +90,10 @@ public class VerticalCardTag extends BaseCardTag {
 		return _labels;
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+	 */
+	@Deprecated
 	public Map<String, String> getLabelStylesMap() {
 		VerticalCard verticalCard = getVerticalCard();
 
@@ -245,6 +250,10 @@ public class VerticalCardTag extends BaseCardTag {
 		_labels = labels;
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+	 */
+	@Deprecated
 	public void setLabelStylesMap(Map<String, String> labelStylesMap) {
 		_labelStylesMap = labelStylesMap;
 	}
@@ -324,7 +333,6 @@ public class VerticalCardTag extends BaseCardTag {
 		props.put("imageAlt", getImageAlt());
 		props.put("imageSrc", getImageSrc());
 		props.put("labels", getLabels());
-		props.put("labelStylesMap", getLabelStylesMap());
 		props.put("stickerCssClass", getStickerCssClass());
 		props.put("stickerIcon", getStickerIcon());
 		props.put("stickerImageAlt", getStickerImageAlt());
@@ -442,6 +450,7 @@ public class VerticalCardTag extends BaseCardTag {
 			IconTag icon = new IconTag();
 
 			icon.setSymbol(getIcon());
+
 			icon.doTag(pageContext);
 
 			jspWriter.write("</div>");
@@ -516,6 +525,7 @@ public class VerticalCardTag extends BaseCardTag {
 			linkTag.setCssClass("text-truncate");
 			linkTag.setHref(href);
 			linkTag.setLabel(title);
+
 			linkTag.doTag(pageContext);
 		}
 		else {
@@ -578,17 +588,18 @@ public class VerticalCardTag extends BaseCardTag {
 
 		jspWriter.write("</div>");
 
-		if (!ListUtil.isEmpty(getActionDropdownItems())) {
-			jspWriter.write(
-				"<div class=\"autofit-col\"><div class=\"dropdown\">");
-			jspWriter.write("<div class=\"component-action dropdown-toggle\">");
+		List<DropdownItem> actionDropdownItems = getActionDropdownItems();
 
-			IconTag iconTag = new IconTag();
+		if (!ListUtil.isEmpty(actionDropdownItems)) {
+			jspWriter.write("<div class=\"autofit-col\">");
 
-			iconTag.setSymbol("ellipsis-v");
-			iconTag.doTag(pageContext);
+			DropdownActionsTag dropdownActionsTag = new DropdownActionsTag();
 
-			jspWriter.write("</div></div></div>");
+			dropdownActionsTag.setDropdownItems(actionDropdownItems);
+
+			dropdownActionsTag.doTag(pageContext);
+
+			jspWriter.write("</div>");
 		}
 
 		jspWriter.write("</div></div>");
