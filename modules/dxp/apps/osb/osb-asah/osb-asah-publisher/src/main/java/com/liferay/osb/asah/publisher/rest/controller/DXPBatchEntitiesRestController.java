@@ -69,7 +69,7 @@ public class DXPBatchEntitiesRestController {
 		}
 
 		Storage storage = _storageFactory.getStorage(
-			_getStorageConfiguration(dataSourceId, resourceName));
+			_getStorageConfiguration(dataSourceId));
 
 		File file = storage.readSparkJobResult(
 			resourceLastModifiedDate, resourceName);
@@ -110,14 +110,20 @@ public class DXPBatchEntitiesRestController {
 
 		Storage storage = _storageFactory.getStorage(
 			_getStorageConfiguration(
-				dataSourceId, multipartFile.getOriginalFilename()));
+				String.format(
+					"%s/%s", dataSourceId,
+					multipartFile.getOriginalFilename())));
 
 		ZipInputStream zipInputStream = new ZipInputStream(
 			multipartFile.getInputStream());
 
 		zipInputStream.getNextEntry();
 
-		if (!storage.write(zipInputStream)) {
+		boolean success = storage.write(zipInputStream);
+
+		storage.close();
+
+		if (!success) {
 			return new ResponseEntity(
 				Collections.emptyList(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -126,13 +132,15 @@ public class DXPBatchEntitiesRestController {
 	}
 
 	private StorageConfiguration _getStorageConfiguration(
-		String dataSourceId, String resourceName) {
+		String googleBucketfolder) {
 
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			_dxpBatchEntitiesStoragePath + "/" + resourceName);
+			String.format(
+				"%s/batch-%d", _dxpBatchEntitiesStoragePath,
+				System.currentTimeMillis()));
 
 		builder.googleBucket(_dxpBatchEntitiesBucket);
-		builder.googleBucketFolder(dataSourceId);
+		builder.googleBucketFolder(googleBucketfolder);
 
 		return builder.build();
 	}
