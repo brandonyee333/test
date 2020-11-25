@@ -18,11 +18,6 @@ import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.PreDestroy;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,32 +29,14 @@ public class StorageFactoryImpl implements StorageFactory {
 
 	@Override
 	public Storage getStorage(StorageConfiguration storageConfiguration) {
-		Storage storage = _storageInstances.get(storageConfiguration);
-
-		if (storage != null) {
-			return storage;
-		}
-
 		LocalStorage localStorage = new LocalStorage(storageConfiguration);
 
 		localStorage.setGoogleStorageArchiver(_googleStorageArchiver);
 
-		_storageInstances.put(storageConfiguration, localStorage);
-
 		return localStorage;
-	}
-
-	@PreDestroy
-	private void _destroy() {
-		for (Storage storage : _storageInstances.values()) {
-			storage.close();
-		}
 	}
 
 	@Autowired(required = false)
 	private GoogleStorageArchiver _googleStorageArchiver;
-
-	private final Map<StorageConfiguration, Storage> _storageInstances =
-		new HashMap<>();
 
 }
