@@ -126,6 +126,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 
 	@priority = "4"
 	test ValidateCannotStealAdminAccount {
+		property custom.properties = "json.service.serialize.throwable=true";
 		property test.name.skip.portal.instance = "SecurityTestingUsecase#ValidateCannotStealAdminAccount";
 		var portalURL = PropsUtil.get("portal.url");
 
