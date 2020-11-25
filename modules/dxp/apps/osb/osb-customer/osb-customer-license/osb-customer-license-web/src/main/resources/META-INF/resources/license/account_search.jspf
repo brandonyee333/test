@@ -26,7 +26,7 @@
 					<tr>
 						<td>
 							<div id="<portlet:namespace />nameContainer">
-								<aui:input label="project-name" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= displayTerms.getName() %>" />
+								<aui:input label="name" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= displayTerms.getName() %>" />
 							</div>
 						</td>
 						<td>

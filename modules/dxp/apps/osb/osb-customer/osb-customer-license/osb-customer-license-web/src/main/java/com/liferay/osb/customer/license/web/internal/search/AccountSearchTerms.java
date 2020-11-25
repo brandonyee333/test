@@ -37,9 +37,9 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 		StringBundler sb = new StringBundler(15);
 
 		if (Validator.isNotNull(code)) {
-			sb.append("code eq '");
+			sb.append("contains(code, '");
 			sb.append(code);
-			sb.append("'");
+			sb.append("')");
 		}
 
 		if (Validator.isNotNull(dossieraAccountKey)) {
@@ -67,9 +67,9 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 				sb.append(" and ");
 			}
 
-			sb.append("name eq '");
+			sb.append("contains(name, '");
 			sb.append(name);
-			sb.append("'");
+			sb.append("')");
 		}
 
 		return sb.toString();
