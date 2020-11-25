@@ -115,14 +115,16 @@ public class LocalStorage implements Storage {
 					status = false;
 				}
 			}
+
+			flush();
+
+			_archiveSuccessFile();
 		}
 		catch (IOException ioe) {
 			_log.error(ioe, ioe);
 
 			status = false;
 		}
-
-		flush();
 
 		return status;
 	}
@@ -154,6 +156,19 @@ public class LocalStorage implements Storage {
 			_storageConfiguration.getGoogleBucket(),
 			_storageConfiguration.getGoogleBucketFolder(), file,
 			_getArchiveFileName(file.getName()));
+	}
+
+	private void _archiveSuccessFile() throws IOException {
+		File successFile = new File(
+			_storageConfiguration.getPath() + "._SUCCESS");
+
+		if (successFile.createNewFile() && _log.isDebugEnabled()) {
+			_log.debug("Local _SUCCESS created successfully");
+		}
+
+		_archiveFile(successFile);
+
+		_deleteFile(successFile);
 	}
 
 	private void _deleteFile(File file) throws IOException {
