@@ -33,11 +33,15 @@ public class AnalyticsEventsMessageCacheImplTest {
 	@Test
 	public void testCache() {
 		_analyticsEventsMessageCache.add(null);
+
 		_analyticsEventsMessageCache.add("analytics");
+
 		_analyticsEventsMessageCache.add("liferay");
 
 		Assert.assertFalse(_analyticsEventsMessageCache.has(null));
+
 		Assert.assertFalse(_analyticsEventsMessageCache.has("cloud"));
+
 		Assert.assertTrue(_analyticsEventsMessageCache.has("liferay"));
 	}
 
