@@ -61,7 +61,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -421,7 +420,7 @@ public class AccountSynchronizer {
 				_contactRoleWebService.getAccountContactRoles(
 					account.getKey(), user.getUuid(), 1, 1);
 
-			Boolean isSupportClosedWatcher = false;
+			boolean isSupportClosedWatcher = false;
 
 			for (ContactRole contactRole : contactRoles) {
 				String contactRoleName = contactRole.getName();
@@ -475,17 +474,6 @@ public class AccountSynchronizer {
 		List<Contact> teamContacts = _contactWebService.getTeamContacts(
 			team.getKey(), 1, 1000);
 
-		List<Contact> accountCustomerContacts =
-			_contactWebService.getAccountCustomerContacts(
-				account.getKey(), 1, 1000);
-
-		List<String> accountCustomerContactsEmailAddress = new ArrayList<>();
-
-		for (Contact accountCustomerContact : accountCustomerContacts) {
-			accountCustomerContactsEmailAddress.add(
-				accountCustomerContact.getEmailAddress());
-		}
-
 		for (Contact teamContact : teamContacts) {
 			User user = _userIdentityProvider.fetchUserByEmailAddress(
 				teamContact.getEmailAddress());
@@ -494,25 +482,21 @@ public class AccountSynchronizer {
 				continue;
 			}
 
-			Boolean isSupportContact = false;
+			boolean isSupportContact = false;
 
-			if (accountCustomerContactsEmailAddress.contains(
-					teamContact.getEmailAddress())) {
+			List<ContactRole> contactRoles =
+				_contactRoleWebService.getAccountContactRoles(
+					account.getKey(), user.getUuid(), 1, 1000);
 
-				List<ContactRole> contactRoles =
-					_contactRoleWebService.getAccountContactRoles(
-						account.getKey(), user.getUuid(), 1, 1000);
+			if (!contactRoles.isEmpty()) {
+				for (ContactRole curContactRole : contactRoles) {
+					if (ArrayUtil.contains(
+							ContactRoleConstants.SUPPORT_CONTACT_ROLES,
+							curContactRole.getName())) {
 
-				if (!contactRoles.isEmpty()) {
-					for (ContactRole curContactRole : contactRoles) {
-						if (ArrayUtil.contains(
-								ContactRoleConstants.SUPPORT_CONTACT_ROLES,
-								curContactRole.getName())) {
+						isSupportContact = true;
 
-							isSupportContact = true;
-
-							break;
-						}
+						break;
 					}
 				}
 			}

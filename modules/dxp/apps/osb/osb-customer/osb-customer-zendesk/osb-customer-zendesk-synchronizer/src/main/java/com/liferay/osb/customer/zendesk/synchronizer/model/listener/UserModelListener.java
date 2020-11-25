@@ -193,7 +193,7 @@ public class UserModelListener extends BaseModelListener<User> {
 
 			sb.append("contactEmailAddresses/any(s:s eq '");
 			sb.append(user.getEmailAddress());
-			sb.append("') and accountKeysTeamRoleKeys/any(s:contains(s, '");
+			sb.append("') and accountKeyTeamRoleKeys/any(s:contains(s, '");
 			sb.append(teamRole.getKey());
 			sb.append("'))");
 

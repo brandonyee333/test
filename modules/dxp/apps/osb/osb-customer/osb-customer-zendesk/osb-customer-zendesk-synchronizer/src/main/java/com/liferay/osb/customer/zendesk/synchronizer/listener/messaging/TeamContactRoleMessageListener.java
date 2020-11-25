@@ -126,7 +126,7 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 		if (topic.equals("koroneiki.team.contactrole.assigned")) {
 			for (ContactRole contactRole : contactRoles) {
 				if (ArrayUtil.contains(
-						ContactRoleConstants.PARTNER_CONTACT_ROLES,
+						ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
 						contactRole.getName())) {
 
 					_teamSynchronizer.add(team, user);

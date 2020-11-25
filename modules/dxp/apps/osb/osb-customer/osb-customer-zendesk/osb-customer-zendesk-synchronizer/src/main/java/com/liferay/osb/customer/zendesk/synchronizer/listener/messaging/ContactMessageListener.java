@@ -19,9 +19,12 @@ import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
@@ -31,6 +34,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactRoleSerDes;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactSerDes;
@@ -186,37 +190,30 @@ public class ContactMessageListener extends BaseMessageListener {
 				_contactRoleWebService.getAccountContactRoles(
 					account.getKey(), user.getUuid(), 1, 1000);
 
-			Team firstLineSupportTeam = _accountReader.getFirstLineSupportTeam(
-				account);
+			TeamRole teamRole = _teamRoleWebService.fetchTeamRole(
+				TeamRole.Type.ACCOUNT.toString(),
+				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
 
-			List<Contact> teamContacts = _contactWebService.getTeamContacts(
-				firstLineSupportTeam.getKey(), 1, 1000);
+			if (teamRole != null) {
+				Team firstLineSupportTeam =
+					_accountReader.getFirstLineSupportTeam(account);
 
-			for (Contact teamContact : teamContacts) {
-				User teamUser = _userIdentityProvider.fetchUserByEmailAddress(
-					teamContact.getEmailAddress());
+				if (firstLineSupportTeam != null) {
+					List<ContactRole> firstLineSupportContactRoles =
+						_contactRoleWebService.getTeamContactRoles(
+							firstLineSupportTeam.getKey(), user.getUuid(), 1,
+							1000);
 
-				if (teamUser == null) {
-					continue;
-				}
+					for (ContactRole firstLineSupportContactRole :
+							firstLineSupportContactRoles) {
 
-				String teamUserEmailAddress = teamUser.getEmailAddress();
+						if (ArrayUtil.contains(
+								ContactRoleConstants.
+									ZENDESK_PARTNER_CONTACT_ROLES,
+								firstLineSupportContactRole.getName())) {
 
-				if (!teamUserEmailAddress.equals(user.getEmailAddress())) {
-					continue;
-				}
-
-				List<ContactRole> teamContactRoles =
-					_contactRoleWebService.getTeamContactRoles(
-						firstLineSupportTeam.getKey(), teamUser.getUuid(), 1,
-						1000);
-
-				for (ContactRole teamContactRole : teamContactRoles) {
-					if (ArrayUtil.contains(
-							ContactRoleConstants.PARTNER_CONTACT_ROLES,
-							teamContactRole.getName())) {
-
-						contactRoles.add(teamContactRole);
+							contactRoles.add(firstLineSupportContactRole);
+						}
 					}
 				}
 			}
@@ -229,7 +226,7 @@ public class ContactMessageListener extends BaseMessageListener {
 
 			for (ContactRole curContactRole : contactRoles) {
 				if (ArrayUtil.contains(
-						ContactRoleConstants.PARTNER_CONTACT_ROLES,
+						ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
 						curContactRole.getName()) ||
 					ArrayUtil.contains(
 						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
@@ -296,6 +293,12 @@ public class ContactMessageListener extends BaseMessageListener {
 	private JSONFactory _jsonFactory;
 
 	private ServiceRegistration<Destination> _serviceRegistration;
+
+	@Reference
+	private TeamRoleWebService _teamRoleWebService;
+
+	@Reference
+	private TeamWebService _teamWebService;
 
 	@Reference(target = "(provider=web)")
 	private UserIdentityProvider _userIdentityProvider;
