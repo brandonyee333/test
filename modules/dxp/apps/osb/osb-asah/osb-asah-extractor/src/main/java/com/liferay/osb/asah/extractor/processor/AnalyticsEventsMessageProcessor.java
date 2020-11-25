@@ -50,6 +50,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import org.apache.avro.Schema;
 import org.apache.commons.lang3.StringUtils;
@@ -118,6 +119,11 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		return individualJSONObject;
+	}
+
+	@PreDestroy
+	private void _destroy() {
+		_storage.close();
 	}
 
 	private JSONObject _getAnalyticsDataJSONObject(
