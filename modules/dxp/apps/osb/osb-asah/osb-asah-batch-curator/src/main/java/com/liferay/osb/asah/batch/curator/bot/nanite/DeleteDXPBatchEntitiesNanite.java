@@ -16,7 +16,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
@@ -49,7 +48,7 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		_cleanUp(ServiceConstants.LCP_PROJECT_ID + "/");
+		_scanDirectory(ServiceConstants.LCP_PROJECT_ID + "/");
 	}
 
 	@Override
@@ -57,40 +56,35 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		return _log;
 	}
 
-	private void _cleanUp(String directoryPrefix) {
-		if (_isDirectorySkipped(directoryPrefix)) {
+	private void _cleanup(String directoryPrefix) {
+		String latestUploadFolderName = _getLatestUploadFolderName(
+			directoryPrefix);
+
+		if (latestUploadFolderName == null) {
 			return;
 		}
 
-		Blob latestBlob = null;
+		for (Blob blob :
+				_listBucket(Storage.BlobListOption.prefix(directoryPrefix))) {
 
-		for (Blob blob : _listBucket(directoryPrefix)) {
-			if (Objects.equals(blob.getName(), directoryPrefix)) {
+			String blobName = blob.getName();
+
+			if (Objects.equals(blobName, directoryPrefix)) {
 				continue;
 			}
 
-			if (blob.isDirectory()) {
-				_cleanUp(blob.getName());
+			if (blobName.contains(latestUploadFolderName)) {
+				continue;
 			}
-			else {
-				if (latestBlob == null) {
-					latestBlob = blob;
-				}
-				else {
-					if (latestBlob.getCreateTime() > blob.getCreateTime()) {
-						_deleteBlob(blob);
-					}
-					else {
-						_deleteBlob(latestBlob);
 
-						latestBlob = blob;
-					}
-				}
-			}
+			_deleteBlob(blob);
 		}
 
-		if (_log.isDebugEnabled() && (latestBlob != null)) {
-			_log.debug("Most recent blob: " + latestBlob.getName());
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"%s latest upload in folder: %s", directoryPrefix,
+					latestUploadFolderName));
 		}
 	}
 
@@ -102,6 +96,43 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		blob.delete();
 	}
 
+	private String _getLatestUploadFolderName(String directoryPrefix) {
+		Blob latestBlob = null;
+
+		for (Blob blob :
+				_listBucket(Storage.BlobListOption.prefix(directoryPrefix))) {
+
+			if (Objects.equals(blob.getName(), directoryPrefix)) {
+				continue;
+			}
+
+			String blobName = blob.getName();
+
+			if (blobName.endsWith("_SUCCESS")) {
+				if (latestBlob == null) {
+					latestBlob = blob;
+				}
+				else {
+					if (blob.getCreateTime() > latestBlob.getCreateTime()) {
+						_deleteBlob(latestBlob);
+
+						latestBlob = blob;
+					}
+				}
+			}
+		}
+
+		if (latestBlob == null) {
+			return null;
+		}
+
+		String latestBlobName = latestBlob.getName();
+
+		String[] parts = latestBlobName.split("/");
+
+		return parts[parts.length - 2];
+	}
+
 	@PostConstruct
 	private void _init() {
 		StorageOptions storageOptions = StorageOptions.getDefaultInstance();
@@ -109,12 +140,12 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		_storage = storageOptions.getService();
 	}
 
-	private boolean _isDirectorySkipped(String directoryPrefix) {
+	private boolean _isBatchUploadDirectory(String directoryPrefix) {
 		String directoryName = directoryPrefix.substring(
 			0, directoryPrefix.length() - 1);
 
-		for (String skipDirectoryName : _SKIP_DIRECTORY_NAMES) {
-			if (directoryName.endsWith(skipDirectoryName)) {
+		for (String batchUploadDirectoryName : _BATCH_UPLOAD_DIRECTORY_NAMES) {
+			if (directoryName.endsWith(batchUploadDirectoryName)) {
 				return true;
 			}
 		}
@@ -122,23 +153,40 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		return false;
 	}
 
-	private Iterable<Blob> _listBucket(String directoryPrefix) {
-		Bucket bucket = _storage.get(_dxpBatchEntitiesBucket);
+	private Iterable<Blob> _listBucket(
+		Storage.BlobListOption... blobListOptions) {
 
-		Page<Blob> blobs = bucket.list(
-			Storage.BlobListOption.prefix(directoryPrefix),
-			Storage.BlobListOption.currentDirectory());
+		Page<Blob> blobs = _storage.list(
+			_dxpBatchEntitiesBucket, blobListOptions);
 
 		return blobs.iterateAll();
 	}
 
-	private static final String[] _SKIP_DIRECTORY_NAMES = {
-		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
-			"ProductContentRecommendation",
-		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
-			"ProductInteractionRecommendation",
-		"com.liferay.headless.commerce.machine.learning.dto.v1_0." +
-			"UserRecommendation"
+	private void _scanDirectory(String directoryPrefix) {
+		for (Blob blob :
+				_listBucket(
+					Storage.BlobListOption.prefix(directoryPrefix),
+					Storage.BlobListOption.currentDirectory())) {
+
+			String blobName = blob.getName();
+
+			if (Objects.equals(blobName, directoryPrefix)) {
+				continue;
+			}
+
+			if (blob.isDirectory()) {
+				if (_isBatchUploadDirectory(blobName)) {
+					_cleanup(blobName);
+				}
+
+				_scanDirectory(blobName);
+			}
+		}
+	}
+
+	private static final String[] _BATCH_UPLOAD_DIRECTORY_NAMES = {
+		"com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product",
+		"com.liferay.headless.commerce.admin.order.dto.v1_0.Order"
 	};
 
 	private static final Log _log = LogFactory.getLog(
