@@ -110,6 +110,14 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 
 		Contact contact = ContactSerDes.toDTO(jsonObject.getString("contact"));
 
+		AccountEntry accountEntry =
+			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+				team.getAccountKey());
+
+		if (accountEntry == null) {
+			return;
+		}
+
 		User user = _userIdentityProvider.fetchUserByEmailAddress(
 			contact.getEmailAddress());
 
