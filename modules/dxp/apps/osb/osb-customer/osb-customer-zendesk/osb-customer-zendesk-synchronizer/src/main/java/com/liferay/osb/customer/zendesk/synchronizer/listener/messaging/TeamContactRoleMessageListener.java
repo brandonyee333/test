@@ -108,8 +108,6 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 
 		Team team = TeamSerDes.toDTO(jsonObject.getString("team"));
 
-		Contact contact = ContactSerDes.toDTO(jsonObject.getString("contact"));
-
 		AccountEntry accountEntry =
 			_accountEntryLocalService.fetchKoroneikiAccountEntry(
 				team.getAccountKey());
@@ -117,6 +115,8 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 		if (accountEntry == null) {
 			return;
 		}
+
+		Contact contact = ContactSerDes.toDTO(jsonObject.getString("contact"));
 
 		User user = _userIdentityProvider.fetchUserByEmailAddress(
 			contact.getEmailAddress());
