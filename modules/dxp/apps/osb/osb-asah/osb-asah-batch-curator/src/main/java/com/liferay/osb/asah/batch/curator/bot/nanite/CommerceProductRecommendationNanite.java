@@ -151,6 +151,13 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 					"COMMERCE_PRODUCT_RECOMMENDATION_USER_INTERACTION",
 					"liferay.commerce.recommend." +
 						"UserInteractionRecommendationApplication");
+				put(
+					"COMMERCE_REVENUE_FORECAST_ACCOUNT",
+					"liferay.commerce.forecast.AccountForecastApplication");
+				put(
+					"COMMERCE_REVENUE_FORECAST_ACCOUNT_CATEGORY",
+					"liferay.commerce.forecast." +
+						"AccountCategoryForecastApplication");
 			}
 		};
 
