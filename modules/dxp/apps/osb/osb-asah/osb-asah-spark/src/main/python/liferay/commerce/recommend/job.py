@@ -73,8 +73,10 @@ class BaseDataFrameReaderSparkJob(BaseSparkJob):
 			    spark_context._jsc.hadoopConfiguration()
 			)
 
-			file_status_list = file_system_instance.listStatus(
-			    jvm.org.apache.hadoop.fs.Path(bucket_path)
+			file_status_list = file_system_instance.globStatus(
+			    jvm.org.apache.hadoop.fs.Path(
+			        '{}*/_SUCCESS'.format(bucket_path)
+			    )
 			)
 
 			file_status_list_sorted = sorted(
@@ -82,6 +84,8 @@ class BaseDataFrameReaderSparkJob(BaseSparkJob):
 			)
 
 			bucket_path = str(file_status_list_sorted[-1].getPath())
+
+			bucket_path = bucket_path[:-len('_SUCCESS')]
 
 		self.spark_application.log.info(
 		    "Loading data from: {}".format(bucket_path)
