@@ -556,6 +556,12 @@ public class JobDog {
 					JobType.COMMERCE_PRODUCT_RECOMMENDATION_USER_INTERACTION,
 					"CommerceProductRecommendationNanite");
 				put(
+					JobType.COMMERCE_REVENUE_FORECAST_ACCOUNT,
+					"CommerceProductRecommendationNanite");
+				put(
+					JobType.COMMERCE_REVENUE_FORECAST_ACCOUNT_CATEGORY,
+					"CommerceProductRecommendationNanite");
+				put(
 					JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
 					"ContentRecommendationDataPreparationNanite");
 			}
