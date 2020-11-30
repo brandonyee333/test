@@ -184,6 +184,7 @@ public class UpdateLanguageAction extends Action {
 		if (Validator.isNotNull(queryString)) {
 			redirect = redirect + queryString;
 		}
+
 		return redirect;
 	}
 
