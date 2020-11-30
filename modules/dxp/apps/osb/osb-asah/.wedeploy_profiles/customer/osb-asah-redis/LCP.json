@@ -1,7 +1,7 @@
 {
-	"cpu": 2,
+	"cpu": 1,
 	"id": "osbasahredis",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-redis-20200914-3106e95",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-redis-20201130-7f50071",
 	"memory": 2048,
 	"ports": [
 		{
@@ -10,8 +10,5 @@
 			"protocol": "TCP",
 			"targetPort": 6379
 		}
-	],
-	"volumes": {
-		"osbasahredisdata": "/data"
-	}
+	]
 }
