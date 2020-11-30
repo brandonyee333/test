@@ -41,9 +41,7 @@ public class CustomerSynchronizer {
 
 		_userSynchronizer.update(user, account.getName());
 
-		if (accountEntry.isActiveTicketSupport()) {
-			addOrganizationSubscription(account, accountEntry, user);
-		}
+		addOrganizationSubscription(account, accountEntry, user);
 	}
 
 	public void remove(User user, AccountEntry accountEntry) throws Exception {
