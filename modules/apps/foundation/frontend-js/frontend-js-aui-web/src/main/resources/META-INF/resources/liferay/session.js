@@ -600,7 +600,7 @@ AUI.add(
 									duration: 500,
 									message: instance._warningText,
 									on: {
-										click(event) {
+										click: function(event) {
 											if (
 												event.domEvent.target.test(
 													'.alert-link'
@@ -616,7 +616,7 @@ AUI.add(
 												instance._alertClosed = true;
 											}
 										},
-										focus(event) {
+										focus: function(event) {
 											if (instance._alert) {
 												var notificationContainer = A.one(
 													'.lfr-notification-container'
@@ -690,9 +690,7 @@ AUI.add(
 						remainingTime = instance._formatTime(remainingTime);
 
 						if (!instance._alertClosed) {
-							var alert = counterTextNode.closest(
-								'div[role="alert"]'
-							);
+							var alert = $(counterTextNode).parents('div[role="alert"]')[0];
 	
 							// Prevent screen reader from rereading alert
 	
