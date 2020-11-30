@@ -1157,8 +1157,6 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 
 			ParseContext parseContext = new ParseContext();
 
-			parseContext.set(Parser.class, parser);
-
 			parseContext.set(
 				EmbeddedDocumentExtractor.class,
 				new ParsingEmbeddedDocumentExtractor(parseContext) {
@@ -1180,6 +1178,7 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 					}
 
 				});
+			parseContext.set(Parser.class, parser);
 
 			parser.parse(
 				tikaInputStream, new BodyContentHandler(writeOutContentHandler),
