@@ -127,25 +127,14 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 
 		String topic = message.getString("topic");
 
-		List<ContactRole> contactRoles =
-			_contactRoleWebService.getTeamContactRoles(
-				team.getKey(), user.getUuid(), 1, 1000);
-
 		if (topic.equals("koroneiki.team.contactrole.assigned")) {
-			for (ContactRole contactRole : contactRoles) {
-				if (ArrayUtil.contains(
-						ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
-						contactRole.getName())) {
-
-					_teamSynchronizer.add(team, user);
-
-					return;
-				}
-			}
-
-			removeTeamUser(team, user);
+			_teamSynchronizer.add(team, user);
 		}
 		else if (topic.equals("koroneiki.team.contactrole.unassigned")) {
+			List<ContactRole> contactRoles =
+				_contactRoleWebService.getTeamContactRoles(
+					team.getKey(), user.getUuid(), 1, 1000);
+
 			if (contactRoles.isEmpty()) {
 				removeTeamUser(team, user);
 			}
