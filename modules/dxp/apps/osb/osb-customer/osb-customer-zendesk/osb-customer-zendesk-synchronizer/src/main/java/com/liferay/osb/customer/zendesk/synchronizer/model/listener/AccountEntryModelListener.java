@@ -122,9 +122,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				!isActiveSupport(accountEntry)) {
 
 				_accountSynchronizer.removeCustomers(account, accountEntry);
-
-				_accountSynchronizer.removeFirstLineSupport(
-					account, accountEntry);
 			}
 
 			if (isActiveSupport(accountEntry) &&
