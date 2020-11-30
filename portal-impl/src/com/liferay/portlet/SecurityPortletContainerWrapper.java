@@ -367,8 +367,8 @@ public class SecurityPortletContainerWrapper implements PortletContainer {
 				String.format(
 					"User %s is not allowed to access URL %s and portlet %s: " +
 						"%s",
-					PortalUtil.getUserId(request), url,
-					portlet.getPortletId(), pe.getMessage()));
+					PortalUtil.getUserId(request), url, portlet.getPortletId(),
+					pe.getMessage()));
 		}
 
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -423,8 +423,8 @@ public class SecurityPortletContainerWrapper implements PortletContainer {
 			_log.warn(
 				String.format(
 					"User %s is not allowed to serve resource for %s on %s: %s",
-					PortalUtil.getUserId(request), url,
-					portlet.getPortletId(), pe.getMessage()));
+					PortalUtil.getUserId(request), url, portlet.getPortletId(),
+					pe.getMessage()));
 		}
 	}
 
