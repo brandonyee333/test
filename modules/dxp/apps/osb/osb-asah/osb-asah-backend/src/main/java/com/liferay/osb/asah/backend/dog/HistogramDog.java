@@ -156,8 +156,8 @@ public class HistogramDog {
 
 		HistogramMetricBag histogramMetricBag =
 			_metricHelper.createHistogramMetricBag(
-				Clock.system(_timeZoneDog.getZoneId()), interval, metricType,
-				timeRange);
+				Clock.system(_timeZoneDog.getZoneId()), includePrevious,
+				interval, metricType, timeRange);
 
 		Map<String, Metric> metrics = _getHistogramMetricBuckets(
 			histogramMetricBag);

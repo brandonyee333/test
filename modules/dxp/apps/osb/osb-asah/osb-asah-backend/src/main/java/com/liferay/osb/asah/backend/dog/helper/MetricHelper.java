@@ -49,8 +49,8 @@ import org.springframework.stereotype.Component;
 public class MetricHelper {
 
 	public HistogramMetricBag createHistogramMetricBag(
-		Clock clock, Interval interval, MetricType metricType,
-		TimeRange timeRange) {
+		Clock clock, boolean includePrevious, Interval interval,
+		MetricType metricType, TimeRange timeRange) {
 
 		Map<String, Metric> metrics = new LinkedHashMap<>();
 
@@ -87,7 +87,9 @@ public class MetricHelper {
 			}
 		}
 		else {
-			_addMetric(interval, localDateTime, metricType, metrics, timeRange);
+			_addMetric(
+				includePrevious, interval, localDateTime, metricType, metrics,
+				timeRange);
 		}
 
 		Set<Map.Entry<String, Metric>> entries = metrics.entrySet();
@@ -170,18 +172,18 @@ public class MetricHelper {
 	}
 
 	private void _addMetric(
-		Interval interval, LocalDateTime localDateTime, MetricType metricType,
-		Map<String, Metric> metrics, TimeRange timeRange) {
+		boolean includePrevious, Interval interval, LocalDateTime localDateTime,
+		MetricType metricType, Map<String, Metric> metrics,
+		TimeRange timeRange) {
 
-		long deltaDays = timeRange.getDeltaDays();
+		int metricsCount = _getMetricsCount(
+			includePrevious, interval, timeRange);
 
 		if (Interval.WEEK.equals(interval)) {
 			if (localDateTime.getDayOfWeek() != DayOfWeek.SUNDAY) {
 				localDateTime = localDateTime.minusWeeks(1);
 				localDateTime = localDateTime.with(DayOfWeek.SUNDAY);
 			}
-
-			int metricsCount = _getMetricsCount(interval, timeRange);
 
 			for (int i = metricsCount - 1; i >= 0; i--) {
 				LocalDateTime periodLocalDateTime = localDateTime.minusWeeks(i);
@@ -197,8 +199,6 @@ public class MetricHelper {
 			if (localDateTime.getDayOfMonth() != 1) {
 				localDateTime = localDateTime.withDayOfMonth(1);
 			}
-
-			int metricsCount = _getMetricsCount(interval, timeRange);
 
 			for (int i = metricsCount - 1; i >= 0; i--) {
 				LocalDateTime periodLocalDateTime = localDateTime.minusMonths(
@@ -217,6 +217,8 @@ public class MetricHelper {
 			LocalDateTime periodLocalDateTime = periodLocalDate.atStartOfDay();
 
 			LocalDateTime endLocalDateTime = timeRange.getEndLocalDateTime();
+
+			long deltaDays = timeRange.getDeltaDays();
 
 			while (!periodLocalDateTime.isAfter(endLocalDateTime)) {
 				metrics.put(
@@ -261,22 +263,32 @@ public class MetricHelper {
 		return metric;
 	}
 
-	private int _getMetricsCount(Interval interval, TimeRange timeRange) {
+	private int _getMetricsCount(
+		boolean includePrevious, Interval interval, TimeRange timeRange) {
+
 		int deltaDays = timeRange.getDeltaDays();
 
 		if (Interval.WEEK.equals(interval)) {
-			LocalDate startLocalDate = timeRange.getStartLocalDate();
+			if (includePrevious) {
+				LocalDate startLocalDate = timeRange.getStartLocalDate();
 
-			return Integer.max(
-				_countWeeks(deltaDays, timeRange.getEndLocalDate()),
-				_countWeeks(deltaDays, startLocalDate.minusDays(1)));
+				return Integer.max(
+					_countWeeks(deltaDays, timeRange.getEndLocalDate()),
+					_countWeeks(deltaDays, startLocalDate.minusDays(1)));
+			}
+
+			return _countWeeks(deltaDays, timeRange.getEndLocalDate());
 		}
 		else if (Interval.MONTH.equals(interval)) {
-			LocalDate startLocalDate = timeRange.getStartLocalDate();
+			if (includePrevious) {
+				LocalDate startLocalDate = timeRange.getStartLocalDate();
 
-			return Integer.max(
-				_countMonths(deltaDays, timeRange.getEndLocalDate()),
-				_countMonths(deltaDays, startLocalDate.minusDays(1)));
+				return Integer.max(
+					_countMonths(deltaDays, timeRange.getEndLocalDate()),
+					_countMonths(deltaDays, startLocalDate.minusDays(1)));
+			}
+
+			return _countMonths(deltaDays, timeRange.getEndLocalDate());
 		}
 
 		return deltaDays;

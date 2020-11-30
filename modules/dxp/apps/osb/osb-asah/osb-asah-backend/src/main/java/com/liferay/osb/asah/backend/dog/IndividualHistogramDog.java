@@ -42,6 +42,7 @@ public class IndividualHistogramDog {
 		HistogramMetricBag histogramMetricBag =
 			_metricHelper.createHistogramMetricBag(
 				Clock.system(_timeZoneDog.getZoneId()),
+				searchQueryContext.isIncludePrevious(),
 				searchQueryContext.getInterval(), metricType,
 				searchQueryContext.getTimeRange());
 
