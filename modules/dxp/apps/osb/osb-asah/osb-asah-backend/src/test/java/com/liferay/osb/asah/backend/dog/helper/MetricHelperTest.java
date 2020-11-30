@@ -95,6 +95,34 @@ public class MetricHelperTest {
 	}
 
 	@Test
+	public void testCreateHistogramMetricBagExcludePrevious() {
+		Clock clock = _createFixedClock(LocalDateTime.of(2018, 4, 1, 10, 30));
+
+		TimeRange timeRange = TimeRange.of(
+			LocalDate.parse("2020-11-20"), LocalDate.parse("2020-11-02"));
+
+		HistogramMetricBag histogramMetricBag =
+			_metricHelper.createHistogramMetricBag(
+				clock, false, Interval.WEEK, _metricType,
+				timeRange.withClock(clock));
+
+		List<HistogramMetric> histogramMetrics =
+			histogramMetricBag.getMetrics();
+
+		Assert.assertEquals(
+			histogramMetrics.toString(), 3, histogramMetrics.size());
+
+		histogramMetricBag = _metricHelper.createHistogramMetricBag(
+			clock, false, Interval.MONTH, _metricType,
+			timeRange.withClock(clock));
+
+		histogramMetrics = histogramMetricBag.getMetrics();
+
+		Assert.assertEquals(
+			histogramMetrics.toString(), 1, histogramMetrics.size());
+	}
+
+	@Test
 	public void testCreateHistogramMetricBagLast7Days() {
 		List<String> expectedKeys = Arrays.asList(
 			"2018-03-25T00:00", "2018-03-26T00:00", "2018-03-27T00:00",
