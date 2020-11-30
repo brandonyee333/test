@@ -56,22 +56,24 @@ public class MetricHelperTest {
 
 		HistogramMetricBag histogramMetricBag =
 			_metricHelper.createHistogramMetricBag(
-				clock, Interval.WEEK, _metricType, timeRange.withClock(clock));
+				clock, true, Interval.WEEK, _metricType,
+				timeRange.withClock(clock));
 
 		Assert.assertTrue(histogramMetricBag.isAsymmetricComparison());
 
 		histogramMetricBag = _metricHelper.createHistogramMetricBag(
-			clock, Interval.MONTH, _metricType, timeRange.withClock(clock));
+			clock, true, Interval.MONTH, _metricType,
+			timeRange.withClock(clock));
 
 		Assert.assertTrue(histogramMetricBag.isAsymmetricComparison());
 
 		histogramMetricBag = _metricHelper.createHistogramMetricBag(
-			clock, Interval.DAY, _metricType, timeRange.withClock(clock));
+			clock, true, Interval.DAY, _metricType, timeRange.withClock(clock));
 
 		Assert.assertFalse(histogramMetricBag.isAsymmetricComparison());
 
 		histogramMetricBag = _metricHelper.createHistogramMetricBag(
-			clock, Interval.DAY, _metricType, TimeRange.LAST_24_HOURS);
+			clock, true, Interval.DAY, _metricType, TimeRange.LAST_24_HOURS);
 
 		Assert.assertFalse(histogramMetricBag.isAsymmetricComparison());
 	}
@@ -435,7 +437,7 @@ public class MetricHelperTest {
 
 		HistogramMetricBag histogramMetricBag =
 			_metricHelper.createHistogramMetricBag(
-				clock, interval, _metricType, timeRange.withClock(clock));
+				clock, true, interval, _metricType, timeRange.withClock(clock));
 
 		List<HistogramMetric> histogramMetrics =
 			histogramMetricBag.getMetrics();
