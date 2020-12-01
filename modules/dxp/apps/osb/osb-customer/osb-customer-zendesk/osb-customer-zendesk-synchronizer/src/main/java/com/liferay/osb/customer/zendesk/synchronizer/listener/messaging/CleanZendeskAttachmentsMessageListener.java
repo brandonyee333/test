@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.internal.messaging;
+package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
 import com.liferay.osb.customer.zendesk.model.ZendeskAttachment;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
@@ -21,7 +21,6 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskAttachmentWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
@@ -88,7 +87,7 @@ public class CleanZendeskAttachmentsMessageListener
 	}
 
 	protected void deleteZendeskAttachments(List<ZendeskTicket> zendeskTickets)
-		throws PortalException {
+		throws Exception {
 
 		for (ZendeskTicket zendeskTicket : zendeskTickets) {
 			List<ZendeskTicketComment> zendeskTicketComments =
