@@ -18,10 +18,10 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
-import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactAccountViewWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
@@ -36,8 +36,6 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactAccountView;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -341,27 +339,24 @@ public class UserSynchronizer {
 			return false;
 		}
 
-		TeamRole teamRole = _teamRoleWebService.fetchTeamRole(
-			TeamRole.Type.ACCOUNT.toString(),
-			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
+		for (String name : ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES) {
+			ContactRole contactRole = _contactRoleWebService.fetchContactRole(
+				ContactRole.Type.ACCOUNT_CUSTOMER.toString(), name);
 
-		if (teamRole == null) {
-			return false;
-		}
+			StringBundler sb = new StringBundler(5);
 
-		StringBundler sb = new StringBundler(5);
+			sb.append("contactUuidContactRoleKeys/any(s:s eq '");
+			sb.append(user.getUuid());
+			sb.append("_");
+			sb.append(contactRole.getKey());
+			sb.append("')");
 
-		sb.append("contactEmailAddresses/any(s:s eq '");
-		sb.append(user.getEmailAddress());
-		sb.append("') and accountKeyTeamRoleKeys/any(s:contains(s, '");
-		sb.append(teamRole.getKey());
-		sb.append("'))");
+			long accountsCount = _accountWebService.searchCount(
+				StringPool.BLANK, sb.toString());
 
-		List<Team> teams = _teamWebService.search(
-			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
-
-		if (!teams.isEmpty()) {
-			return true;
+			if (accountsCount > 0) {
+				return true;
+			}
 		}
 
 		return false;
@@ -387,6 +382,9 @@ public class UserSynchronizer {
 
 	@Reference
 	private ContactAccountViewWebService _contactAccountViewWebService;
+
+	@Reference
+	private ContactRoleWebService _contactRoleWebService;
 
 	@Reference
 	private OrganizationLocalService _organizationLocalService;
