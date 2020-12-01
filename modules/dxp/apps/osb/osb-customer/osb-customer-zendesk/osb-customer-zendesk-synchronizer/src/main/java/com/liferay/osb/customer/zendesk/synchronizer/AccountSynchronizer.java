@@ -285,8 +285,6 @@ public class AccountSynchronizer {
 			return;
 		}
 
-		long newZendeskUserId = 0;
-
 		Set<String> criteria = new HashSet<>();
 
 		criteria.add("organization:" + zendeskOrganizationId);
@@ -298,6 +296,8 @@ public class AccountSynchronizer {
 
 		if (!zendeskTickets.isEmpty()) {
 			ZendeskUser zendeskUser = null;
+
+			long newZendeskUserId = 0;
 
 			Account account = _accountWebService.getAccountContactsContactRoles(
 				accountKey);
