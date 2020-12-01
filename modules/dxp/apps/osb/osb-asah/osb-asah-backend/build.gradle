@@ -23,7 +23,6 @@ dependencies {
 
 	testCompile group: "junit", name: "junit", version: "4.12"
 	testCompile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-test-util"
-	testCompile group: "nl.jqno.equalsverifier", name: "equalsverifier", version: "2.5.1"
 
 	testIntegrationCompile group: "com.esotericsoftware.yamlbeans", name: "yamlbeans", version: "1.12"
 	testIntegrationCompile group: "io.rest-assured", name: "json-schema-validator", version: "3.2.0"
