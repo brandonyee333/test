@@ -28,6 +28,10 @@ public class ServiceConstants {
 
 	public static final String LCP_ENGINE_ELASTICSEARCH_SERVER_IP;
 
+	/**
+	 * @deprecated As of 2.10.0, replaced by {@link ProjectThreadLocal#getProjectId()}}
+	 */
+	@Deprecated
 	public static final String LCP_PROJECT_ID = System.getenv("LCP_PROJECT_ID");
 
 	public static final String URL_BACKEND;
