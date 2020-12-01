@@ -62,16 +62,12 @@ PortletURL portletURL = renderResponse.createRenderURL();
 %>
 
 <c:if test='<%= SessionErrors.contains(renderRequest, "unableToNotifyAnalyticsCloud") %>'>
-	<aui:script>
-		Liferay.Util.openToast({
-			message: '<liferay-ui:message key="unable-to-notify-analytics-cloud" />',
-			title: Liferay.Language.get('warning'),
-			toastProps: {
-				autoClose: 5000,
-			},
-			type: 'warning',
-		});
-	</aui:script>
+	<liferay-ui:alert
+		icon="exclamation-full"
+		message='<%= LanguageUtil.get(resourceBundle, "unable-to-notify-analytics-cloud") %>'
+		timeout="<%= 5000 %>"
+		type="danger"
+	/>
 </c:if>
 
 <portlet:actionURL name="/analytics_settings/edit_workspace_connection" var="editWorkspaceConnectionURL" />
