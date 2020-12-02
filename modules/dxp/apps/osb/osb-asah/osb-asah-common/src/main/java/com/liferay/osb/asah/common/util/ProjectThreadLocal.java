@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.util;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 
+import java.util.Objects;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -29,6 +31,16 @@ public class ProjectThreadLocal {
 
 		if (projectId == null) {
 			projectId = ServiceConstants.LCP_PROJECT_ID;
+		}
+		else {
+			if (!Objects.equals(projectId, ServiceConstants.LCP_PROJECT_ID) &&
+				_log.isWarnEnabled()) {
+
+				_log.warn(
+					String.format(
+						"Mismatched project ids: %s, %s", projectId,
+						ServiceConstants.LCP_PROJECT_ID));
+			}
 		}
 
 		if (_log.isDebugEnabled()) {
