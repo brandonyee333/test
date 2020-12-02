@@ -162,6 +162,7 @@
 	{@param? _handleFirstOperandFieldEdited: any}
 	{@param? _handleLogicalOperationChange: any}
 	{@param? _handleModalButtonClicked: any}
+	{@param? _handleModalClosed: any}
 	{@param? _handleOperatorEdited: any}
 	{@param? _handleRuleCancelled: any}
 	{@param? _handleSecondOperandFieldEdited: any}
@@ -280,6 +281,7 @@
 
 		{call .renderModal}
 			{param _handleModalButtonClicked: $_handleModalButtonClicked /}
+			{param _handleModalClosed: $_handleModalClosed /}
 			{param question kind="text"}
 				{msg desc=""}are-you-sure-you-want-to-delete-this-condition{/msg}
 			{/param}
@@ -292,6 +294,7 @@
 
 		{call .renderModal}
 			{param _handleModalButtonClicked: $_handleModalButtonClicked /}
+			{param _handleModalClosed: $_handleModalClosed /}
 			{param question kind="text"}
 				{msg desc=""}are-you-sure-you-want-to-delete-this-action{/msg}
 			{/param}
@@ -337,6 +340,7 @@
 	{@param title: string}
 	{@param type: string}
 	{@param? _handleModalButtonClicked: any}
+	{@param? _handleModalClosed: any}
 
 	{let $deleteLabel kind="text"}
 		{msg desc=""}delete{/msg}
@@ -350,7 +354,8 @@
 			<h4>{$question}</h4>
 		{/param}
 		{param events: [
-			'clickButton': $_handleModalButtonClicked
+			'clickButton': $_handleModalButtonClicked,
+			'hide': $_handleModalClosed
 		]/}
 
 		{param footerButtons: [
