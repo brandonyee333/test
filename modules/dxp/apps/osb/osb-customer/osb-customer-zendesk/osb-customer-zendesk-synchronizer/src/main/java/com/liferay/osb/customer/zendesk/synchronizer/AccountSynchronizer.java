@@ -32,7 +32,6 @@ import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
-import com.liferay.osb.customer.zendesk.exception.PartnerWorkerRemovalException;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AddressUtil;
@@ -252,12 +251,19 @@ public class AccountSynchronizer {
 			newUser = curUser;
 		}
 
-		if (newUser == null) {
-			throw new PartnerWorkerRemovalException();
-		}
+		long newZendeskUserId = 0;
 
-		long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-			newUser.getUserId());
+		if (newUser != null) {
+			newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				newUser.getUserId());
+		}
+		else {
+			ZendeskUser zendeskUser =
+				_zendeskUserWebService.getZendeskUserByEmail(
+					getDefaultUserEmail(accountEntry.getAccountEntryId()));
+
+			newZendeskUserId = zendeskUser.getZendeskUserId();
+		}
 
 		for (ZendeskTicket zendeskTicket : zendeskTickets) {
 			zendeskTicket.setRequesterId(newZendeskUserId);
