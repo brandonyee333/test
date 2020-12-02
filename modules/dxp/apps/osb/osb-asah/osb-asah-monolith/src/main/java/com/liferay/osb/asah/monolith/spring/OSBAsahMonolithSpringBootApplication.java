@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.monolith.spring;
 
-import com.liferay.osb.asah.common.servlet.filter.ProjectThreadLocalFilter;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.upgrade.UpgradeProcessRunner;
 
@@ -28,13 +27,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.MetricExportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.Ordered;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 /**
@@ -81,17 +78,6 @@ public class OSBAsahMonolithSpringBootApplication {
 				"classpath*:/application.properties"));
 
 		return propertySourcesPlaceholderConfigurer;
-	}
-
-	@Bean
-	public FilterRegistrationBean filterRegistrationBean() {
-		FilterRegistrationBean filterRegistrationBean =
-			new FilterRegistrationBean();
-
-		filterRegistrationBean.setFilter(new ProjectThreadLocalFilter());
-		filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-
-		return filterRegistrationBean;
 	}
 
 	@PostConstruct

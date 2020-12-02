@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.spring;
 
-import com.liferay.osb.asah.common.servlet.filter.ProjectThreadLocalFilter;
 import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
 
 import io.prometheus.client.spring.boot.EnablePrometheusEndpoint;
@@ -24,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.MetricExportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.core.Ordered;
 
 /**
  * @author Eddie Olson
@@ -42,17 +38,6 @@ import org.springframework.core.Ordered;
 	}
 )
 public class OSBAsahSpringBootApplication {
-
-	@Bean
-	public FilterRegistrationBean filterRegistrationBean() {
-		FilterRegistrationBean filterRegistrationBean =
-			new FilterRegistrationBean();
-
-		filterRegistrationBean.setFilter(new ProjectThreadLocalFilter());
-		filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-
-		return filterRegistrationBean;
-	}
 
 	@Autowired(required = false)
 	private UpgradeCheck _upgradeCheck;
