@@ -30,6 +30,16 @@ definition {
 		User.assignRegularRoleCP(
 			roleName = "Administrator",
 			userScreenName = "usersn");
+
+		User.logoutPG();
+
+		User.loginPG(
+			password = "test",
+			userEmailAddress = "userea@liferay.com");
+
+		User.logoutPG();
+
+		User.loginPG();
 	}
 
 	tearDown {
