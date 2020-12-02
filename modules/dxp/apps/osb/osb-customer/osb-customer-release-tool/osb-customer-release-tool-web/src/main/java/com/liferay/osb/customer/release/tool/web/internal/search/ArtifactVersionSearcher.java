@@ -23,6 +23,7 @@ import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCate
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -83,7 +84,8 @@ public class ArtifactVersionSearcher extends BaseSearcher {
 			_releasesAssetCategoryUtil.getFixPackAssetCategory(
 				toProductAssetCategory.getCategoryId(), toFixPackVersion);
 
-		String productName = preferences.getValue("productName", null);
+		String productName = GetterUtil.getString(
+			preferences.getValue("productName", null));
 
 		if (productName.equals(ProductConstants.COMMERCE)) {
 			owners = new int[] {ArtifactVersionConstants.OWNER_COMMERCE};
