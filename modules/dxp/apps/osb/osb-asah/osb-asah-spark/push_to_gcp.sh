@@ -65,10 +65,16 @@ function main {
 
 function push_to_gcp {
 	echo ""
-	echo "Pushing osb-asah-spark.py to ${GCP_BUCKET}."
+	echo "Pushing osb-asah-spark-driver.py to ${GCP_BUCKET}."
 	echo ""
 
-	gsutil -h x-goog-meta-git-hash:${GIT_HASH} cp build/libs/osb-asah-spark.py ${GCP_BUCKET}
+	gsutil -h x-goog-meta-git-hash:${GIT_HASH} cp build/libs/osb-asah-spark-driver.py ${GCP_BUCKET}
+
+	echo ""
+	echo "Pushing osb-asah-spark.zip to ${GCP_BUCKET}."
+	echo ""
+
+	gsutil -h x-goog-meta-git-hash:${GIT_HASH} cp build/libs/osb-asah-spark.zip ${GCP_BUCKET}
 
 	replace_yaml_files_env_variables
 
