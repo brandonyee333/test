@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.util;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -24,6 +26,10 @@ public class ProjectThreadLocal {
 
 	public static String getProjectId() {
 		String projectId = _projectId.get();
+
+		if (projectId == null) {
+			projectId = ServiceConstants.LCP_PROJECT_ID;
+		}
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("getProjectId " + projectId);

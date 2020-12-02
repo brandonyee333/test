@@ -14,7 +14,8 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.util.ProjectThreadLocal;
+import com.liferay.osb.asah.common.util.WorkspaceThreadLocal;
 
 /**
  * @author André Miranda
@@ -39,7 +40,8 @@ public class ElasticsearchIndexUtil {
 
 	public static String getIndexNamespace(String weDeployDataServiceName) {
 		String indexNamespace =
-			ServiceConstants.LCP_PROJECT_ID + "_" + weDeployDataServiceName;
+			ProjectThreadLocal.getProjectId() + "_" +
+				weDeployDataServiceName;
 
 		return indexNamespace.toLowerCase();
 	}
