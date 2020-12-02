@@ -87,11 +87,12 @@ import org.json.JSONObject;
 public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	public ElasticsearchInvokerImpl(
-		Map<String, String> aliases, Client client, String indexNamespace) {
+		Map<String, String> aliases, Client client,
+		String weDeployDataServiceName) {
 
 		_aliases = aliases;
 		_client = client;
-		_indexNamespace = indexNamespace;
+		_weDeployDataServiceName = weDeployDataServiceName;
 	}
 
 	@Override
@@ -218,7 +219,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		createElasticsearchBulkRequestBuilder() {
 
 		return ElasticsearchBulkRequestBuilder.create(
-			_aliases, _client, _indexNamespace);
+			_aliases, _client,
+			ElasticsearchIndexUtil.getIndexNamespace(_weDeployDataServiceName));
 	}
 
 	@Override
@@ -455,7 +457,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	@Override
 	public String getIndexAlias(String collectionName) {
 		String indexName = ElasticsearchIndexUtil.getIndexName(
-			collectionName, _indexNamespace);
+			collectionName,
+			ElasticsearchIndexUtil.getIndexNamespace(_weDeployDataServiceName));
 
 		return _aliases.getOrDefault(indexName, indexName);
 	}
@@ -867,8 +870,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	private final Map<String, String> _aliases;
 	private final Client _client;
-	private final String _indexNamespace;
 	private TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
+	private final String _weDeployDataServiceName;
 
 }

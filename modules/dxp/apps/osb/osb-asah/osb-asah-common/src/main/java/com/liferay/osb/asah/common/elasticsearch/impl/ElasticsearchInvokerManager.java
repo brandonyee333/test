@@ -80,14 +80,12 @@ public class ElasticsearchInvokerManager {
 				new CacheableElasticsearchInvokerImpl(
 					curAliases, _cacheManager,
 					_elasticsearchConnection.getTransportClient(),
-					_elasticsearchIndexManager.getIndexNamespace(
-						weDeployDataService)));
+					weDeployDataService.toString()));
 			_elasticsearchInvokers.put(
 				weDeployDataService.toString(),
 				new ElasticsearchInvokerImpl(
 					curAliases, _elasticsearchConnection.getTransportClient(),
-					_elasticsearchIndexManager.getIndexNamespace(
-						weDeployDataService)));
+					weDeployDataService.toString()));
 		}
 	}
 

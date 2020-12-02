@@ -78,7 +78,7 @@ public class ElasticsearchInvokerTest {
 		_collectionName = RandomTestUtil.randomString();
 
 		_indexName = ElasticsearchIndexUtil.getIndexName(
-			_collectionName, "test");
+			_collectionName, ElasticsearchIndexUtil.getIndexNamespace("test"));
 
 		_elasticsearchIndexManager.create(
 			true, _createIndexConfiguration(), _indexName);

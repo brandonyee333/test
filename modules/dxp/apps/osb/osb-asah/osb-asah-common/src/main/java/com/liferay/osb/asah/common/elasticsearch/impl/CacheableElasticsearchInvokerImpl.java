@@ -31,9 +31,9 @@ public class CacheableElasticsearchInvokerImpl
 
 	public CacheableElasticsearchInvokerImpl(
 		Map<String, String> aliases, CacheManager cacheManager, Client client,
-		String indexNamespace) {
+		String weDeployDataServiceName) {
 
-		super(aliases, client, indexNamespace);
+		super(aliases, client, weDeployDataServiceName);
 
 		_cacheManager = cacheManager;
 	}
