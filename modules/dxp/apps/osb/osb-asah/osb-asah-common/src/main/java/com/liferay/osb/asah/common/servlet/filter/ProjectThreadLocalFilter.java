@@ -14,11 +14,13 @@
 
 package com.liferay.osb.asah.common.servlet.filter;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.servlet.util.ServletRequestUtil;
 import com.liferay.osb.asah.common.util.ProjectThreadLocal;
 
 import java.io.IOException;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +28,9 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -55,6 +60,15 @@ public class ProjectThreadLocalFilter extends OncePerRequestFilter {
 			projectId = matcher.group(1);
 		}
 
+		if (!Objects.equals(projectId, ServiceConstants.LCP_PROJECT_ID) &&
+			_log.isWarnEnabled()) {
+
+			_log.warn(
+				String.format(
+					"Mismatched project ids: %s, %s", projectId,
+					ServiceConstants.LCP_PROJECT_ID));
+		}
+
 		try {
 			ProjectThreadLocal.setProjectId(projectId);
 
@@ -64,6 +78,8 @@ public class ProjectThreadLocalFilter extends OncePerRequestFilter {
 			ProjectThreadLocal.remove();
 		}
 	}
+
+	private static final Log _log = LogFactory.getLog(ProjectThreadLocal.class);
 
 	private static final Pattern _urlPattern = Pattern.compile(
 		"^https://osbasah(?:backend|monolith|publisher)-(\\w+)\\.lfr\\.cloud");
