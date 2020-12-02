@@ -191,7 +191,10 @@ class ShareFormModal extends Component {
 	}
 
 	_handleShareFormModalClosed(event) {
-		this.emit('shareFormModalClosed', event);
+		event.preventDefault();
+		event.stopPropagation();
+		event.target.visible = false;
+		return event;
 	}
 }
 

@@ -174,20 +174,6 @@ FormInstancePermissionCheckerHelper formInstancePermissionCheckerHelper = ddmFor
 		var shareFormModal = new ShareFormModal.default({
 			autocompleteUserURL:
 				'<%= ddmFormAdminDisplayContext.getAutocompleteUserURL() %>',
-			events: {
-				shareFormModalClosed: function (event) {
-					event.preventDefault();
-					event.stopPropagation();
-
-					var overlayElement = document.querySelector('.modal-backdrop');
-
-					if (overlayElement) {
-						overlayElement.remove();
-					}
-
-					shareFormModal.dispose();
-				},
-			},
 			localizedName: data.localizedName,
 			portletNamespace: '<portlet:namespace />',
 			shareFormInstanceURL: data.shareFormInstanceURL,
