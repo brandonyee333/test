@@ -947,6 +947,13 @@ class RuleEditor extends Component {
 		}
 	}
 
+	_handleModalClosed(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		event.target.visible = false;
+		return event;
+	}
+
 	_handleModalButtonClicked(event) {
 		event.stopPropagation();
 
