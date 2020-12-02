@@ -148,8 +148,11 @@ public class DataprocSparkManager {
 				String.format("gs://%s/libs/%s", _bucket, jar));
 		}
 
+		builder.addPythonFileUris(
+			String.format("gs://%s/osb-asah-spark.zip", _bucket));
+
 		builder.setMainPythonFileUri(
-			String.format("gs://%s/osb-asah-spark.py", _bucket));
+			String.format("gs://%s/osb-asah-spark-driver.py", _bucket));
 
 		builder.putAllProperties(properties);
 
