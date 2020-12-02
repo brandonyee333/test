@@ -19,7 +19,7 @@ package com.liferay.osb.customer.koroneiki.constants;
  */
 public class ProductPurchaseConstants {
 
-	public static final String PROPERTY_SIZING = "Sizing";
+	public static final String PROPERTY_SIZING = "sizing";
 
 	public static final String STATE_ACTIVE = "Active";
 
