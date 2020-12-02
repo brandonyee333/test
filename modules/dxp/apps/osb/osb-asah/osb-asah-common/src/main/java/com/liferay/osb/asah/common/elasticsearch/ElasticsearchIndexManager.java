@@ -56,11 +56,6 @@ public interface ElasticsearchIndexManager {
 
 	public String getIndexName(String indexAlias);
 
-	public String getIndexName(
-		String collectionName, WeDeployDataService weDeployDataService);
-
-	public String getIndexNamespace(WeDeployDataService weDeployDataService);
-
 	public String readIndexConfiguration(
 		String collectionName, WeDeployDataService weDeployDataService);
 

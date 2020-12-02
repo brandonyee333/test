@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.elasticsearch.impl;
 
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
 import java.util.Map;
 
 import org.elasticsearch.client.Client;
@@ -31,9 +33,9 @@ public class CacheableElasticsearchInvokerImpl
 
 	public CacheableElasticsearchInvokerImpl(
 		Map<String, String> aliases, CacheManager cacheManager, Client client,
-		String weDeployDataServiceName) {
+		WeDeployDataService weDeployDataService) {
 
-		super(aliases, client, weDeployDataServiceName);
+		super(aliases, client, weDeployDataService);
 
 		_cacheManager = cacheManager;
 	}

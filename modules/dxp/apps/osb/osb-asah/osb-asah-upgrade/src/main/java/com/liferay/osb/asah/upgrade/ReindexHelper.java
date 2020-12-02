@@ -17,8 +17,6 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.elasticsearch.ClientUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
 import java.util.Map;
@@ -116,21 +114,6 @@ public class ReindexHelper {
 				return;
 			}
 		}
-	}
-
-	public String getBaseIndexName(
-		String collectionName, WeDeployDataService weDeployDataService) {
-
-		return _elasticsearchIndexManager.getIndexName(
-			collectionName, weDeployDataService);
-	}
-
-	public String getIndexAlias(
-		String collectionName, WeDeployDataService weDeployDataService) {
-
-		return ElasticsearchIndexUtil.getIndexAlias(
-			collectionName,
-			_elasticsearchIndexManager.getIndexNamespace(weDeployDataService));
 	}
 
 	public String getNewIndexName(String indexName, String version) {

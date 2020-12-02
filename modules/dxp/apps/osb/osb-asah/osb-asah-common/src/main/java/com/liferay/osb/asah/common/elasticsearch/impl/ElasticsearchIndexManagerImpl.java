@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.elasticsearch.impl;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.ClientUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
@@ -343,7 +342,8 @@ public class ElasticsearchIndexManagerImpl
 
 		ClientUtil.waitForConnection(_client);
 
-		String indexName = getIndexName(collectionName, weDeployDataService);
+		String indexName = ElasticsearchIndexUtil.getIndexName(
+			collectionName, weDeployDataService);
 
 		ActionFuture<GetMappingsResponse> actionFuture =
 			indicesAdminClient.getMappings(
@@ -366,6 +366,7 @@ public class ElasticsearchIndexManagerImpl
 		return mappingMetadata.getSourceAsMap();
 	}
 
+	@Override
 	public String getIndexName(String indexAlias) {
 		IndicesAdminClient indicesAdminClient = _adminClient.indices();
 
@@ -402,25 +403,6 @@ public class ElasticsearchIndexManagerImpl
 	}
 
 	@Override
-	public String getIndexName(
-		String collectionName, WeDeployDataService weDeployDataService) {
-
-		return ElasticsearchIndexUtil.getIndexName(
-			collectionName, getIndexNamespace(weDeployDataService));
-	}
-
-	@Override
-	public String getIndexNamespace(WeDeployDataService weDeployDataService) {
-		String lcpProjectId = ServiceConstants.LCP_PROJECT_ID;
-
-		if (_environment.acceptsProfiles("test")) {
-			lcpProjectId = "test";
-		}
-
-		return lcpProjectId + "_" + weDeployDataService.toString();
-	}
-
-	@Override
 	public String readIndexConfiguration(
 		String collectionName, WeDeployDataService weDeployDataService) {
 
@@ -450,10 +432,10 @@ public class ElasticsearchIndexManagerImpl
 		WeDeployDataService weDeployDataService) {
 
 		String indexName = ElasticsearchIndexUtil.getIndexName(
-			collectionName, getIndexNamespace(weDeployDataService));
+			collectionName, weDeployDataService);
 
 		String indexAlias = ElasticsearchIndexUtil.getIndexAlias(
-			collectionName, getIndexNamespace(weDeployDataService));
+			collectionName, weDeployDataService);
 
 		if (aliasExists(indexAlias)) {
 			indexName = getIndexName(indexAlias);
@@ -489,10 +471,10 @@ public class ElasticsearchIndexManagerImpl
 		WeDeployDataService weDeployDataService) {
 
 		String indexName = ElasticsearchIndexUtil.getIndexName(
-			collectionName, getIndexNamespace(weDeployDataService));
+			collectionName, weDeployDataService);
 
 		String indexAlias = ElasticsearchIndexUtil.getIndexAlias(
-			collectionName, getIndexNamespace(weDeployDataService));
+			collectionName, weDeployDataService);
 
 		if (aliasExists(indexAlias)) {
 			indexName = getIndexName(indexAlias);
@@ -599,7 +581,7 @@ public class ElasticsearchIndexManagerImpl
 		WeDeployDataService weDeployDataService, String collectionName) {
 
 		return ElasticsearchIndexUtil.getIndexAlias(
-			collectionName, getIndexNamespace(weDeployDataService));
+			collectionName, weDeployDataService);
 	}
 
 	private List<IndexTemplateMetadata> _getTemplates(

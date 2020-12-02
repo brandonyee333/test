@@ -16,6 +16,7 @@ package com.liferay.osb.asah.test.util.spring;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -64,7 +65,7 @@ public class OSBAsahTestExecutionListener
 			ElasticsearchIndex.class);
 
 		for (ElasticsearchIndex elasticsearchIndex : elasticsearchIndices) {
-			String indexName = _elasticsearchIndexManager.getIndexName(
+			String indexName = ElasticsearchIndexUtil.getIndexName(
 				elasticsearchIndex.name(),
 				elasticsearchIndex.weDeployDataService());
 
@@ -89,7 +90,7 @@ public class OSBAsahTestExecutionListener
 		for (ElasticsearchIndex elasticsearchIndex : elasticsearchIndices) {
 			if (!Objects.equals(elasticsearchIndex.configurationPath(), "")) {
 				_elasticsearchIndexManager.delete(
-					_elasticsearchIndexManager.getIndexName(
+					ElasticsearchIndexUtil.getIndexName(
 						elasticsearchIndex.name(),
 						elasticsearchIndex.weDeployDataService()));
 			}
@@ -171,7 +172,7 @@ public class OSBAsahTestExecutionListener
 			Class<?> clazz, ElasticsearchIndex elasticsearchIndex)
 		throws Exception {
 
-		String indexName = _elasticsearchIndexManager.getIndexName(
+		String indexName = ElasticsearchIndexUtil.getIndexName(
 			elasticsearchIndex.name(),
 			elasticsearchIndex.weDeployDataService());
 

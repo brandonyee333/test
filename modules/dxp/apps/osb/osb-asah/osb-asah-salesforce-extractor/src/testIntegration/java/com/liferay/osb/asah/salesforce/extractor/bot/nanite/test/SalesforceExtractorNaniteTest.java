@@ -168,9 +168,7 @@ public class SalesforceExtractorNaniteTest {
 
 		return stream.map(
 			collectionName -> ElasticsearchIndexUtil.getIndexAlias(
-				collectionName,
-				_elasticsearchIndexManager.getIndexNamespace(
-					WeDeployDataService.OSB_ASAH_SALESFORCE_RAW))
+				collectionName, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 		).toArray(
 			String[]::new
 		);

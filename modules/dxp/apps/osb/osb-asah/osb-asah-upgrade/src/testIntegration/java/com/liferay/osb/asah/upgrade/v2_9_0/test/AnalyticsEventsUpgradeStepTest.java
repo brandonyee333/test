@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade.v2_9_0.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -41,7 +42,7 @@ public class AnalyticsEventsUpgradeStepTest {
 	)
 	@Test
 	public void testUpgrade() {
-		String indexName = _elasticsearchIndexManager.getIndexName(
+		String indexName = ElasticsearchIndexUtil.getIndexName(
 			"analytics-events", WeDeployDataService.OSB_ASAH_CEREBRO_RAW);
 
 		Assert.assertTrue(_elasticsearchIndexManager.exists(indexName));

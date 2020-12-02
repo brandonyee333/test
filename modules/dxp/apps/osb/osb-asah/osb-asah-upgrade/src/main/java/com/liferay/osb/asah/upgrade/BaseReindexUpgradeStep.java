@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Map;
@@ -51,14 +52,14 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 	@Override
 	public void upgrade(String version) throws Exception {
 		for (String collectionName : getCollectionNames()) {
-			String indexAlias = _reindexHelper.getIndexAlias(
+			String indexAlias = ElasticsearchIndexUtil.getIndexAlias(
 				collectionName, getWeDeployDataService());
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Index alias: " + indexAlias);
 			}
 
-			String baseIndexName = _reindexHelper.getBaseIndexName(
+			String baseIndexName = ElasticsearchIndexUtil.getIndexName(
 				collectionName, getWeDeployDataService());
 
 			String newIndexName = _reindexHelper.getNewIndexName(

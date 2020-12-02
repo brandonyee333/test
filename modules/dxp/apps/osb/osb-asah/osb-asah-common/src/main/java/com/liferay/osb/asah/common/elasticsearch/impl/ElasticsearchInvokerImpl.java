@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,11 +89,11 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	public ElasticsearchInvokerImpl(
 		Map<String, String> aliases, Client client,
-		String weDeployDataServiceName) {
+		WeDeployDataService weDeployDataService) {
 
 		_aliases = aliases;
 		_client = client;
-		_weDeployDataServiceName = weDeployDataServiceName;
+		_weDeployDataService = weDeployDataService;
 	}
 
 	@Override
@@ -220,7 +221,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		return ElasticsearchBulkRequestBuilder.create(
 			_aliases, _client,
-			ElasticsearchIndexUtil.getIndexNamespace(_weDeployDataServiceName));
+			ElasticsearchIndexUtil.getIndexNamespace(_weDeployDataService));
 	}
 
 	@Override
@@ -457,8 +458,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	@Override
 	public String getIndexAlias(String collectionName) {
 		String indexName = ElasticsearchIndexUtil.getIndexName(
-			collectionName,
-			ElasticsearchIndexUtil.getIndexNamespace(_weDeployDataServiceName));
+			collectionName, _weDeployDataService);
 
 		return _aliases.getOrDefault(indexName, indexName);
 	}
@@ -872,6 +872,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	private final Client _client;
 	private TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
-	private final String _weDeployDataServiceName;
+	private final WeDeployDataService _weDeployDataService;
 
 }

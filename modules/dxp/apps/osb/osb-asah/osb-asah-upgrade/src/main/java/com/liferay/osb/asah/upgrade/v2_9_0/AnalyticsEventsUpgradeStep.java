@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade.v2_9_0;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.ReindexHelper;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
@@ -30,7 +31,7 @@ public class AnalyticsEventsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
-		String indexAlias = _reindexHelper.getIndexAlias(
+		String indexAlias = ElasticsearchIndexUtil.getIndexAlias(
 			"analytics-events", WeDeployDataService.OSB_ASAH_CEREBRO_RAW);
 
 		_reindexHelper.deleteIndex(

@@ -73,12 +73,13 @@ public class ElasticsearchInvokerTest {
 	public void setUp() {
 		_elasticsearchInvoker = new ElasticsearchInvokerImpl(
 			Collections.emptyMap(),
-			_elasticsearchConnection.getTransportClient(), "test");
+			_elasticsearchConnection.getTransportClient(),
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		_collectionName = RandomTestUtil.randomString();
 
 		_indexName = ElasticsearchIndexUtil.getIndexName(
-			_collectionName, ElasticsearchIndexUtil.getIndexNamespace("test"));
+			_collectionName, WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		_elasticsearchIndexManager.create(
 			true, _createIndexConfiguration(), _indexName);
