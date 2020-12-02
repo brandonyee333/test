@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectThreadLocal;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndices;
 import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
@@ -71,6 +72,8 @@ public class OSBAsahTestExecutionListener
 
 			_elasticsearchIndexManager.clear(indexName);
 		}
+
+		ProjectThreadLocal.remove();
 	}
 
 	@Override
@@ -111,6 +114,8 @@ public class OSBAsahTestExecutionListener
 
 	@Override
 	public void beforeTestClass(TestContext testContext) throws Exception {
+		ProjectThreadLocal.setProjectId("test");
+
 		Class<?> clazz = testContext.getTestClass();
 
 		ElasticsearchIndex[] elasticsearchIndices = clazz.getAnnotationsByType(

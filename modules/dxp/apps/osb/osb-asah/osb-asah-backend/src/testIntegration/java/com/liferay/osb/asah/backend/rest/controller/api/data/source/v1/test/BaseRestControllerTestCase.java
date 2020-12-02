@@ -170,6 +170,7 @@ public abstract class BaseRestControllerTestCase {
 		RequestSpecification requestSpecification = RestAssured.given();
 
 		requestSpecification.body(body);
+		requestSpecification.header("OSB-Asah-Project-Id", "test");
 		requestSpecification.port(_serverPort);
 
 		Response response = requestSpecification.request(method, path);
