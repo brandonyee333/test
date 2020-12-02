@@ -54,21 +54,22 @@ public class ElasticsearchInvokerManager {
 
 	@PostConstruct
 	private void _init() {
+		Map<String, String> aliases = _elasticsearchIndexManager.getAliases();
+
 		for (WeDeployDataService weDeployDataService :
 				WeDeployDataService.values()) {
 
 			_elasticsearchInvokers.put(
 				"cacheable#" + weDeployDataService.toString(),
 				new CacheableElasticsearchInvokerImpl(
-					_elasticsearchIndexManager.getAliases(), _cacheManager,
+					aliases, _cacheManager,
 					_elasticsearchConnection.getTransportClient(),
 					_elasticsearchIndexManager.getIndexNamespace(
 						weDeployDataService)));
 			_elasticsearchInvokers.put(
 				weDeployDataService.toString(),
 				new ElasticsearchInvokerImpl(
-					_elasticsearchIndexManager.getAliases(),
-					_elasticsearchConnection.getTransportClient(),
+					aliases, _elasticsearchConnection.getTransportClient(),
 					_elasticsearchIndexManager.getIndexNamespace(
 						weDeployDataService)));
 		}

@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
@@ -213,30 +212,6 @@ public class ElasticsearchIndexManagerImpl
 		if (_environment.acceptsProfiles("test")) {
 			_setIndexTestTemplate();
 		}
-
-		for (WeDeployDataService weDeployDataService :
-				WeDeployDataService.values()) {
-
-			JSONArray collectionNamesJSONArray =
-				_indicesJSONObject.optJSONArray(weDeployDataService.toString());
-
-			if (collectionNamesJSONArray == null) {
-				continue;
-			}
-
-			for (int i = 0; i < collectionNamesJSONArray.length(); i++) {
-				String collectionName = collectionNamesJSONArray.getString(i);
-
-				String indexAlias = _getIndexAlias(
-					weDeployDataService, collectionName);
-
-				if (aliasExists(indexAlias)) {
-					_aliases.put(
-						getIndexName(collectionName, weDeployDataService),
-						indexAlias);
-				}
-			}
-		}
 	}
 
 	@Override
@@ -319,7 +294,38 @@ public class ElasticsearchIndexManagerImpl
 
 	@Override
 	public Map<String, String> getAliases() {
-		return _aliases;
+		Map<String, String> aliases = new HashMap<>();
+
+		IndicesAdminClient indicesAdminClient = _adminClient.indices();
+
+		ActionFuture<GetAliasesResponse> actionFuture =
+			indicesAdminClient.getAliases(new GetAliasesRequest());
+
+		ClientUtil.waitForConnection(_client);
+
+		GetAliasesResponse getAliasesResponse = actionFuture.actionGet();
+
+		ImmutableOpenMap<String, List<AliasMetadata>> immutableOpenMap =
+			getAliasesResponse.getAliases();
+
+		Iterator<String> iterator = immutableOpenMap.keysIt();
+
+		while (iterator.hasNext()) {
+			String indexName = iterator.next();
+
+			List<AliasMetadata> aliasMetadatas = immutableOpenMap.get(
+				indexName);
+
+			if (aliasMetadatas == null) {
+				continue;
+			}
+
+			for (AliasMetadata aliasMetadata : aliasMetadatas) {
+				aliases.put(indexName, aliasMetadata.alias());
+			}
+		}
+
+		return aliases;
 	}
 
 	@Override
@@ -662,7 +668,6 @@ public class ElasticsearchIndexManagerImpl
 		ElasticsearchIndexManagerImpl.class);
 
 	private AdminClient _adminClient;
-	private final Map<String, String> _aliases = new ConcurrentHashMap<>();
 	private Client _client;
 
 	@Autowired
