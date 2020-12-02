@@ -339,9 +339,15 @@ public class UserSynchronizer {
 			return false;
 		}
 
-		for (String name : ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES) {
+		for (String contactRoleName :
+				ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES) {
+
 			ContactRole contactRole = _contactRoleWebService.fetchContactRole(
-				ContactRole.Type.ACCOUNT_CUSTOMER.toString(), name);
+				ContactRole.Type.ACCOUNT_CUSTOMER.toString(), contactRoleName);
+
+			if (contactRole == null) {
+				continue;
+			}
 
 			StringBundler sb = new StringBundler(5);
 
