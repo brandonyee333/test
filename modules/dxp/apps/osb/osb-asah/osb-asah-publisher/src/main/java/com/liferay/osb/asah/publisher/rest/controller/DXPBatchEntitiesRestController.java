@@ -132,7 +132,7 @@ public class DXPBatchEntitiesRestController {
 	}
 
 	private StorageConfiguration _getStorageConfiguration(
-		String googleBucketfolder) {
+		String googleBucketFolder) {
 
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
 			String.format(
@@ -140,7 +140,7 @@ public class DXPBatchEntitiesRestController {
 				System.currentTimeMillis()));
 
 		builder.googleBucket(_dxpBatchEntitiesBucket);
-		builder.googleBucketFolder(googleBucketfolder);
+		builder.googleBucketFolder(googleBucketFolder);
 
 		return builder.build();
 	}
