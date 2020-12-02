@@ -14,9 +14,13 @@
 
 package com.liferay.osb.asah.common.servlet.filter;
 
+import com.liferay.osb.asah.common.servlet.util.ServletRequestUtil;
 import com.liferay.osb.asah.common.util.ProjectThreadLocal;
 
 import java.io.IOException;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -38,6 +42,19 @@ public class ProjectThreadLocalFilter extends OncePerRequestFilter {
 
 		String projectId = httpServletRequest.getHeader("OSB-Asah-Project-Id");
 
+		if (projectId == null) {
+			Matcher matcher = _urlPattern.matcher(
+				ServletRequestUtil.getOriginalURL(httpServletRequest));
+
+			if (!matcher.find()) {
+				filterChain.doFilter(httpServletRequest, httpServletResponse);
+
+				return;
+			}
+
+			projectId = matcher.group(1);
+		}
+
 		try {
 			ProjectThreadLocal.setProjectId(projectId);
 
@@ -47,5 +64,8 @@ public class ProjectThreadLocalFilter extends OncePerRequestFilter {
 			ProjectThreadLocal.remove();
 		}
 	}
+
+	private static final Pattern _urlPattern = Pattern.compile(
+		"^https://osbasah(?:backend|publisher)-(\\w+).lfr.cloud");
 
 }
