@@ -230,6 +230,15 @@ public class ContactMessageListener extends BaseMessageListener {
 			}
 
 			for (ContactRole curContactRole : contactRoles) {
+				String name = curContactRole.getName();
+
+				if (!accountEntry.isActiveSupport() &&
+					!name.equals(
+						ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
+
+					continue;
+				}
+
 				if (ArrayUtil.contains(
 						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 						curContactRole.getName()) ||
