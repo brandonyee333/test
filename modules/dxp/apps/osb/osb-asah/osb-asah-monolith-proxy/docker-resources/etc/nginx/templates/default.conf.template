@@ -1,0 +1,45 @@
+upstream ROOT_GET {
+    server ${OSB_ASAH_BACKEND_HOST};
+}
+
+upstream ROOT_POST {
+    server ${OSB_ASAH_PUBLISHER_HOST};
+}
+
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://${OSB_ASAH_BACKEND_HOST};
+    }
+
+    location = / {
+        proxy_pass http://ROOT_$request_method;
+    }
+
+    location = /status {
+        access_log off;
+        allow 10.0.0.0/8;
+        allow 127.0.0.1;
+        deny all;
+        fastcgi_read_timeout 60s;
+        proxy_connect_timeout 60s;
+        proxy_read_timeout 60s;
+        proxy_send_timeout 60s;
+        stub_status on;
+        uwsgi_read_timeout 60s;
+        uwsgi_send_timeout 60s;
+    }
+
+    location ~ ^/(dxp-batch-entities|dxp-entities|identity)(/.*)?$ {
+        proxy_pass http://${OSB_ASAH_PUBLISHER_HOST};
+    }
+
+    proxy_pass_request_headers on;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Real-IP $remote_addr;
+}
+
+server_tokens off;

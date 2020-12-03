@@ -1,0 +1,34 @@
+{
+	"cpu": 2,
+	"dependencies": [
+		"osbasahbackend",
+		"osbasahpublisher"
+	],
+	"id": "osbasahmonolith",
+	"livenessProbe": {
+		"failureThreshold": 20,
+		"httpGet": {
+			"path": "/status",
+			"port": 80
+		},
+		"initialDelaySeconds": 60,
+		"timeoutSeconds": 10
+	},
+	"loadBalancer": {
+		"cdn": true,
+		"targetPort": 80
+	},
+	"memory": 512,
+	"readinessProbe": {
+		"failureThreshold": 20,
+		"httpGet": {
+			"path": "/status",
+			"port": 80
+		},
+		"initialDelaySeconds": 30,
+		"timeoutSeconds": 10
+	},
+	"strategy": {
+		"type": "RollingUpdate"
+	}
+}
