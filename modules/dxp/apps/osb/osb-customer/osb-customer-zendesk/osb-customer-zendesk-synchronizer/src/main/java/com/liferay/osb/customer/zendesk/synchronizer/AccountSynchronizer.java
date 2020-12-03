@@ -300,61 +300,69 @@ public class AccountSynchronizer {
 		List<ZendeskTicket> zendeskTickets =
 			_zendeskTicketWebService.getZendeskTickets(criteria);
 
-		if (!zendeskTickets.isEmpty()) {
-			ZendeskUser zendeskUser = null;
+		if (zendeskTickets.isEmpty()) {
+			return;
+		}
 
-			long newZendeskUserId = 0;
+		long newZendeskUserId = 0;
 
-			Account account = _accountWebService.getAccountContactsContactRoles(
-				accountKey);
+		Account account = _accountWebService.getAccountContactsContactRoles(
+			accountKey);
 
-			Contact[] contacts = account.getCustomerContacts();
+		Contact[] contacts = account.getCustomerContacts();
 
-			if (!ArrayUtil.isEmpty(contacts)) {
-				for (Contact contact : contacts) {
-					String emailAddress = contact.getEmailAddress();
+		if (!ArrayUtil.isEmpty(contacts)) {
+			for (Contact contact : contacts) {
+				String emailAddress = contact.getEmailAddress();
 
-					if (emailAddress.equals(user.getEmailAddress())) {
-						continue;
-					}
+				if (emailAddress.equals(user.getEmailAddress())) {
+					continue;
+				}
 
-					ContactRole[] contactRoles = contact.getContactRoles();
+				ContactRole[] contactRoles = contact.getContactRoles();
 
-					if (ArrayUtil.isEmpty(contactRoles)) {
-						continue;
-					}
+				if (ArrayUtil.isEmpty(contactRoles)) {
+					continue;
+				}
 
-					for (ContactRole contactRole : contactRoles) {
-						String name = contactRole.getName();
+				for (ContactRole contactRole : contactRoles) {
+					String name = contactRole.getName();
 
-						if (name.equals(
-								ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
+					if (name.equals(
+							ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
 
-							User curUser =
-								_userIdentityProvider.fetchUserByEmailAddress(
-									contact.getEmailAddress());
+						User curUser =
+							_userIdentityProvider.fetchUserByEmailAddress(
+								contact.getEmailAddress());
 
+						if (curUser != null) {
 							newZendeskUserId =
 								_zendeskMapperUtil.fetchZendeskUserId(
 									curUser.getUserId());
 						}
 					}
 				}
+
+				if (newZendeskUserId > 0) {
+					break;
+				}
 			}
-			else {
-				zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
+		}
+
+		if (newZendeskUserId <= 0) {
+			ZendeskUser zendeskUser =
+				_zendeskUserWebService.getZendeskUserByEmail(
 					getDefaultUserEmail(accountEntry.getAccountEntryId()));
 
-				newZendeskUserId = zendeskUser.getZendeskUserId();
-			}
-
-			for (ZendeskTicket zendeskTicket : zendeskTickets) {
-				zendeskTicket.setRequesterId(newZendeskUserId);
-				zendeskTicket.setZendeskOrganizationId(zendeskOrganizationId);
-			}
-
-			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
+			newZendeskUserId = zendeskUser.getZendeskUserId();
 		}
+
+		for (ZendeskTicket zendeskTicket : zendeskTickets) {
+			zendeskTicket.setRequesterId(newZendeskUserId);
+			zendeskTicket.setZendeskOrganizationId(zendeskOrganizationId);
+		}
+
+		_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
 	}
 
 	public void remove(Account account, AccountEntry accountEntry)
