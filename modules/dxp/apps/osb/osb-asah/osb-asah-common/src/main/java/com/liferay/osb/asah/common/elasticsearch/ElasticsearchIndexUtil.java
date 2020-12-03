@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
-import com.liferay.osb.asah.common.util.ProjectThreadLocal;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 /**
@@ -53,7 +53,7 @@ public class ElasticsearchIndexUtil {
 		WeDeployDataService weDeployDataService) {
 
 		String indexNamespace =
-			ProjectThreadLocal.getProjectId() + "_" + weDeployDataService;
+			ProjectIdThreadLocal.getProjectId() + "_" + weDeployDataService;
 
 		return indexNamespace.toLowerCase();
 	}

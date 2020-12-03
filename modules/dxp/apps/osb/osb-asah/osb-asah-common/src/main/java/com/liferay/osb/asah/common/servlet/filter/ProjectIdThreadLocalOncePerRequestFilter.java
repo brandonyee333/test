@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.servlet.filter;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.servlet.util.ServletRequestUtil;
-import com.liferay.osb.asah.common.util.ProjectThreadLocal;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.IOException;
 
@@ -37,7 +37,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 /**
  * @author Shinn Lok
  */
-public class ProjectThreadLocalFilter extends OncePerRequestFilter {
+public class ProjectIdThreadLocalOncePerRequestFilter
+	extends OncePerRequestFilter {
 
 	@Override
 	public void doFilterInternal(
@@ -70,16 +71,17 @@ public class ProjectThreadLocalFilter extends OncePerRequestFilter {
 		}
 
 		try {
-			ProjectThreadLocal.setProjectId(projectId);
+			ProjectIdThreadLocal.setProjectId(projectId);
 
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
 		}
 		finally {
-			ProjectThreadLocal.remove();
+			ProjectIdThreadLocal.remove();
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(ProjectThreadLocal.class);
+	private static final Log _log = LogFactory.getLog(
+		ProjectIdThreadLocal.class);
 
 	private static final Pattern _urlPattern = Pattern.compile(
 		"^https://osbasah(?:backend|monolith|publisher)-(\\w+)\\.lfr\\.cloud");

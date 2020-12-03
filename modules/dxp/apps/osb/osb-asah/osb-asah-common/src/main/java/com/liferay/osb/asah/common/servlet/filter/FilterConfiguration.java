@@ -30,7 +30,8 @@ public class FilterConfiguration {
 		FilterRegistrationBean filterRegistrationBean =
 			new FilterRegistrationBean();
 
-		filterRegistrationBean.setFilter(new ProjectThreadLocalFilter());
+		filterRegistrationBean.setFilter(
+			new ProjectIdThreadLocalOncePerRequestFilter());
 		filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
 		return filterRegistrationBean;

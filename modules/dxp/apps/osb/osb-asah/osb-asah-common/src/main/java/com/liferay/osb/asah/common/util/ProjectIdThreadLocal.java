@@ -22,7 +22,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Shinn Lok
  */
-public class ProjectThreadLocal {
+public class ProjectIdThreadLocal {
 
 	public static String getProjectId() {
 		String projectId = _projectId.get();
@@ -50,7 +50,8 @@ public class ProjectThreadLocal {
 		_projectId.set(projectId);
 	}
 
-	private static final Log _log = LogFactory.getLog(ProjectThreadLocal.class);
+	private static final Log _log = LogFactory.getLog(
+		ProjectIdThreadLocal.class);
 
 	private static final ThreadLocal<String> _projectId = new ThreadLocal<>();
 
