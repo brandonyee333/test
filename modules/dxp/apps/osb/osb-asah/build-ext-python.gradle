@@ -23,10 +23,13 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 	task formatSourcePython()
 	task installBootstrapEnvDependencies()
 	task installProjectEnvDependencies()
+	task installTestEnvDependencies()
 	task packagePython()
+	task testPython()
 
 	def bootstrapEnvName = "Miniconda3"
 	def pythonSource = "src/main/python"
+	def pythonTestSource = "src/test/python"
 
 	envs {
 		bootstrapDirectory = new File(projectDir, '.bootstrap')
@@ -42,6 +45,7 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 		doLast {
 			exec {
 				commandLine _executablePath(bootstrapEnvDir, "python"), "-m", "yapf", "-i", "--recursive", pythonSource
+				commandLine _executablePath(bootstrapEnvDir, "python"), "-m", "yapf", "-i", "--recursive", pythonTestSource
 			}
 		}
 	}
@@ -76,6 +80,23 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 
 			exec {
 				commandLine _executablePath(projectEnvDir, "pip"), "install", "-r", "$projectDir/$pythonSource/requirements.txt"
+			}
+		}
+	}
+
+	installTestEnvDependencies {
+		def projectEnvDir = "$project.envs.envsDirectory/$project.name"
+
+		doLast {
+			if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+				copy {
+					from file("$projectEnvDir/Library/bin/libcrypto-1_1-x64.dll"), file("$projectEnvDir/Library/bin/libssl-1_1-x64.dll")
+					into file("$projectEnvDir/DLLs")
+				}
+			}
+
+			exec {
+				commandLine _executablePath(projectEnvDir, "pip"), "install", "-r", "$projectDir/$pythonTestSource/requirements.txt"
 			}
 		}
 	}
@@ -121,6 +142,7 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 
 		formatSourcePython {
 			dependsOn installProjectEnvDependencies
+			dependsOn installTestEnvDependencies
 		}
 
 		installBootstrapEnvDependencies {
@@ -136,6 +158,22 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 			dependsOn installProjectEnvDependencies
 
 			installProjectEnvDependencies.mustRunAfter(installBootstrapEnvDependencies)
+		}
+
+		test {
+			dependsOn installProjectEnvDependencies
+			dependsOn installTestEnvDependencies
+			dependsOn testPython
+		}
+	}
+
+	testPython {
+		def projectEnvDir = "$project.envs.envsDirectory/$project.name"
+
+		doLast {
+			exec {
+				commandLine _executablePath(projectEnvDir, "pytest"), "$projectDir/$pythonTestSource/", "--disable-warnings", "--suppress-no-test-exit-code"
+			}
 		}
 	}
 }
