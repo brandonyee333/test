@@ -39,7 +39,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 /**
  * @author Vishal Reddy
  */
-public abstract class BaseSecurityFilter extends OncePerRequestFilter {
+public abstract class BaseSecurityOncePerRequestFilter
+	extends OncePerRequestFilter {
 
 	@Override
 	public void destroy() {
@@ -146,7 +147,8 @@ public abstract class BaseSecurityFilter extends OncePerRequestFilter {
 		return false;
 	}
 
-	private static final Log _log = LogFactory.getLog(BaseSecurityFilter.class);
+	private static final Log _log = LogFactory.getLog(
+		BaseSecurityOncePerRequestFilter.class);
 
 	@Autowired
 	private Environment _environment;

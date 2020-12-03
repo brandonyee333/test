@@ -47,7 +47,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @ConditionalOnProperty("osb.asah.remote.address.filter.enabled")
 @MonolithExclude
-public class RemoteAddressFilter extends OncePerRequestFilter {
+public class RemoteAddressOncePerRequestFilter extends OncePerRequestFilter {
 
 	@Override
 	public void doFilterInternal(
@@ -136,7 +136,7 @@ public class RemoteAddressFilter extends OncePerRequestFilter {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		RemoteAddressFilter.class);
+		RemoteAddressOncePerRequestFilter.class);
 
 	@Value("${osb.asah.remote.address.filter.hosts.allowed:127.0.0.1}")
 	private String[] _hostsAllowed;

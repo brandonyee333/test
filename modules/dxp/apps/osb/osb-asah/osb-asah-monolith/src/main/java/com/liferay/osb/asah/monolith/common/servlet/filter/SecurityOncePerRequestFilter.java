@@ -12,18 +12,18 @@
  *
  */
 
-package com.liferay.osb.asah.publisher.servlet.filter;
+package com.liferay.osb.asah.monolith.common.servlet.filter;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.servlet.filter.BaseSecurityFilter;
-import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
+import com.liferay.osb.asah.common.servlet.filter.BaseSecurityOncePerRequestFilter;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +32,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConditionalOnProperty("osb.asah.security.enabled")
-@MonolithExclude
-public class SecurityFilter extends BaseSecurityFilter {
+public class SecurityOncePerRequestFilter
+	extends BaseSecurityOncePerRequestFilter {
 
 	@Override
 	protected boolean isInvalidRequest(HttpServletRequest httpServletRequest) {
@@ -46,18 +46,36 @@ public class SecurityFilter extends BaseSecurityFilter {
 			return true;
 		}
 
-		if (!_elasticsearchInvoker.exists(
-				"data-sources",
-				QueryBuilders.termQuery(
-					"faroBackendSecuritySignature",
-					faroBackendSecuritySignature))) {
+		if (StringUtils.startsWith(
+				httpServletRequest.getRequestURI(), "/api/recommendations") ||
+			StringUtils.startsWith(
+				httpServletRequest.getRequestURI(), "/api/reports")) {
 
-			logInvalidRequest(faroBackendSecuritySignature, httpServletRequest);
-
-			return true;
+			return super.isInvalidRequest(httpServletRequest);
 		}
 
-		return false;
+		if (StringUtils.contains(httpServletRequest.getRequestURI(), "/api/") ||
+			StringUtils.contains(
+				httpServletRequest.getRequestURI(), "/dxp-batch-entities") ||
+			StringUtils.equals(
+				httpServletRequest.getRequestURI(), "/dxp-entities")) {
+
+			if (!_elasticsearchInvoker.exists(
+					"data-sources",
+					QueryBuilders.termQuery(
+						"faroBackendSecuritySignature",
+						faroBackendSecuritySignature))) {
+
+				logInvalidRequest(
+					faroBackendSecuritySignature, httpServletRequest);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		return super.isInvalidRequest(httpServletRequest);
 	}
 
 	@Override

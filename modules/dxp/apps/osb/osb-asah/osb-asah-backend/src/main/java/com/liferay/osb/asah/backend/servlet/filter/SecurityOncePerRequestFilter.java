@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.servlet.filter;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.servlet.filter.BaseSecurityFilter;
+import com.liferay.osb.asah.common.servlet.filter.BaseSecurityOncePerRequestFilter;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -25,7 +25,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +34,8 @@ import org.springframework.stereotype.Component;
 @Component
 @ConditionalOnProperty("osb.asah.security.enabled")
 @MonolithExclude
-public class SecurityFilter extends BaseSecurityFilter {
+public class SecurityOncePerRequestFilter
+	extends BaseSecurityOncePerRequestFilter {
 
 	@Override
 	protected boolean isInvalidRequest(HttpServletRequest httpServletRequest) {

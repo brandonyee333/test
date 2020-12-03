@@ -51,7 +51,7 @@ import org.springframework.test.web.servlet.result.StatusResultMatchers;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @TestPropertySource(properties = "osb.asah.security.enabled=true")
 @WebMvcTest(secure = false)
-public class SecurityFilterTest {
+public class SecurityOncePerRequestFilterTest {
 
 	@Test
 	public void testGet() throws Exception {
