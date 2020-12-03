@@ -32,8 +32,8 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 		bootstrapDirectory = new File(projectDir, '.bootstrap')
 		envsDirectory = new File(buildDir, '.envs')
 
-		conda bootstrapEnvName, "Miniconda3-py38_4.8.2", "64"
-		condaenv project.name, "3.8", "Miniconda3"
+		conda bootstrapEnvName, "Miniconda3-py37_4.9.2", "64"
+		condaenv project.name, "3.7", "Miniconda3"
 	}
 
 	formatSourcePython {
