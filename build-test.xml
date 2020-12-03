@@ -2027,7 +2027,12 @@ jdbc.default.password=${database.password}</echo>
 
 			<echo file="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-ext.properties">
 liferay.home=${liferay.home}
-module.framework.properties.osgi.console=localhost:11311</echo>
+module.framework.properties.osgi.console=localhost:11311
+organizations.types=organization
+organizations.rootable[organization]=true
+organizations.children.types[organization]=organization
+organizations.country.enabled[organization]=true
+organizations.country.required[organization]=false</echo>
 		</sequential>
 	</macrodef>
 
