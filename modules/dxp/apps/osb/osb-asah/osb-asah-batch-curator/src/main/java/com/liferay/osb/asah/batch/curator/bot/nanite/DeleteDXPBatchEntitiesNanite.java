@@ -56,7 +56,7 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 		return _log;
 	}
 
-	private void _cleanup(String directoryPrefix) {
+	private void _cleanUp(String directoryPrefix) {
 		String latestUploadFolderName = _getLatestUploadFolderName(
 			directoryPrefix);
 
@@ -176,7 +176,7 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 
 			if (blob.isDirectory()) {
 				if (_isBatchUploadDirectory(blobName)) {
-					_cleanup(blobName);
+					_cleanUp(blobName);
 				}
 
 				_scanDirectory(blobName);
