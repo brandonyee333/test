@@ -49,9 +49,11 @@ public class TeamSynchronizer {
 
 		long[] zendeskOrganizationIds = getZendeskOrganizationIds(team);
 
-		long zendeskUserId = _userSynchronizer.update(user, null);
+		if (!ArrayUtil.isEmpty(zendeskOrganizationIds)) {
+			long zendeskUserId = _userSynchronizer.update(user, null);
 
-		addOrganizationMemberships(zendeskUserId, zendeskOrganizationIds);
+			addOrganizationMemberships(zendeskUserId, zendeskOrganizationIds);
+		}
 	}
 
 	public void remove(Team team, User user) throws Exception {
@@ -63,12 +65,12 @@ public class TeamSynchronizer {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
 
-		if (zendeskUserId > 0) {
+		if (!ArrayUtil.isEmpty(zendeskOrganizationIds) && (zendeskUserId > 0)) {
 			removeOrganizationMemberships(
 				zendeskUserId, zendeskOrganizationIds);
-		}
 
-		_userSynchronizer.update(user, null);
+			_userSynchronizer.update(user, null);
+		}
 	}
 
 	protected void addOrganizationMemberships(
