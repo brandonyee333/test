@@ -1,0 +1,5 @@
+workspace_user:
+  cluster: [ 'manage_index_templates', 'monitor', 'transport_client' ]
+  indices:
+    - names: [ '*' ]
+      privileges: [ 'auto_configure', 'create_index', 'delete_index', 'manage', 'read', 'write' ]
