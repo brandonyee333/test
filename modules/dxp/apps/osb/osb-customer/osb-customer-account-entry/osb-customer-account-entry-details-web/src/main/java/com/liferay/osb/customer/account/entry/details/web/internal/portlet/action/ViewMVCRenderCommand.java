@@ -17,6 +17,7 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntrySearchDisplayContext;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext;
+import com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalService;
 import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
@@ -80,9 +81,9 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 			AccountEntryViewDisplayContext accountEntryViewDisplayContext =
 				new AccountEntryViewDisplayContext(
 					renderRequest, renderResponse, account,
-					_auditEntryWebService, _contactRoleWebService,
-					_contactWebService, _productPurchaseWebService,
-					_teamWebService);
+					_accountEntryLanguageLocalService, _auditEntryWebService,
+					_contactRoleWebService, _contactWebService,
+					_productPurchaseWebService, _teamWebService);
 
 			renderRequest.setAttribute(
 				AccountEntryViewDisplayContext.class.getName(),
@@ -119,6 +120,9 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 
 		return null;
 	}
+
+	@Reference
+	private AccountEntryLanguageLocalService _accountEntryLanguageLocalService;
 
 	@Reference
 	private AccountWebService _accountWebService;

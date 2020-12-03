@@ -63,6 +63,14 @@ Account koroneikiAccount = accountEntryViewDisplayContext.getAccount();
 				</tr>
 				<tr>
 					<td>
+						<liferay-ui:message key="support-language" />
+					</td>
+					<td>
+						<%= HtmlUtil.escape(accountEntryViewDisplayContext.getSupportLanguage()) %>
+					</td>
+				</tr>
+				<tr>
+					<td>
 						<liferay-ui:message key="support-region" />
 					</td>
 					<td>

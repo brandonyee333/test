@@ -15,13 +15,16 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.display.context;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.util.AccountEntryDetailsRequestHelper;
+import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
 import com.liferay.osb.customer.admin.constants.AccountEnvironmentAttachmentConstants;
 import com.liferay.osb.customer.admin.constants.AccountEnvironmentConstants;
 import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.AccountEntryLanguage;
 import com.liferay.osb.customer.admin.model.AccountEnvironment;
 import com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment;
 import com.liferay.osb.customer.admin.model.ProductEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalService;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.AccountEnvironmentLocalServiceUtil;
@@ -86,7 +89,9 @@ public class AccountEntryViewDisplayContext {
 
 	public AccountEntryViewDisplayContext(
 			PortletRequest portletRequest, MimeResponse mimeResponse,
-			Account account, AuditEntryWebService auditEntryWebService,
+			Account account,
+			AccountEntryLanguageLocalService accountEntryLanguageLocalService,
+			AuditEntryWebService auditEntryWebService,
 			ContactRoleWebService contactRoleWebService,
 			ContactWebService contactWebService,
 			ProductPurchaseWebService productPurchaseWebService,
@@ -96,6 +101,7 @@ public class AccountEntryViewDisplayContext {
 		_portletRequest = portletRequest;
 		_mimeResponse = mimeResponse;
 		_account = account;
+		_accountEntryLanguageLocalService = accountEntryLanguageLocalService;
 		_auditEntryWebService = auditEntryWebService;
 		_contactRoleWebService = contactRoleWebService;
 		_contactWebService = contactWebService;
@@ -442,6 +448,30 @@ public class AccountEntryViewDisplayContext {
 		searchContainer.setTotal(productPurchases.size());
 
 		return searchContainer;
+	}
+
+	public String getSupportLanguage() {
+		if (_accountEntry == null) {
+			return StringPool.DASH;
+		}
+
+		List<AccountEntryLanguage> accountEntryLanguages =
+			_accountEntryLanguageLocalService.getAccountEntryLanguages(
+				_accountEntry.getAccountEntryId());
+
+		if ((accountEntryLanguages == null) ||
+			accountEntryLanguages.isEmpty()) {
+
+			return StringPool.DASH;
+		}
+
+		AccountEntryLanguage accountEntryLanguage = accountEntryLanguages.get(
+			0);
+
+		String supportLanguage = AccountEntryConstants.getLanguageLabel(
+			accountEntryLanguage.getLanguageId());
+
+		return LanguageUtil.get(_request, supportLanguage);
 	}
 
 	public String getSupportLevel() throws Exception {
@@ -882,6 +912,8 @@ public class AccountEntryViewDisplayContext {
 	private final AccountEntry _accountEntry;
 	private final AccountEntryDetailsRequestHelper
 		_accountEntryDetailsRequestHelper;
+	private final AccountEntryLanguageLocalService
+		_accountEntryLanguageLocalService;
 	private final AuditEntryWebService _auditEntryWebService;
 	private final ContactRoleWebService _contactRoleWebService;
 	private final ContactWebService _contactWebService;
