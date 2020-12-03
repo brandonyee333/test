@@ -133,11 +133,8 @@ public class DataprocSparkManager {
 		PySparkJob.Builder builder = PySparkJob.newBuilder();
 
 		builder.addArgs(name);
-
 		builder.addArgs("--configuration");
-
 		builder.addArgs(configuration);
-
 		builder.addAllArgs(arguments);
 
 		builder.addFileUris(
@@ -150,11 +147,9 @@ public class DataprocSparkManager {
 
 		builder.addPythonFileUris(
 			String.format("gs://%s/osb-asah-spark.zip", _bucket));
-
+		builder.putAllProperties(properties);
 		builder.setMainPythonFileUri(
 			String.format("gs://%s/osb-asah-spark-driver.py", _bucket));
-
-		builder.putAllProperties(properties);
 
 		_putPySparkJobBuilderEnvironmentVariables(builder, properties);
 
