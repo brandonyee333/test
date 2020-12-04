@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.messaging;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageListener;
@@ -69,7 +70,11 @@ public class DataprocMessageListener implements MessageListener {
 
 	@PostConstruct
 	private void _init() {
-		_messageBus.registerMessageListener(Channel.DATAPROC, this);
+
+		// FIXME: we will need to have one instance per workspace
+
+		_messageBus.registerMessageListener(
+			Channel.DATAPROC, this, ServiceConstants.LCP_PROJECT_ID);
 
 		if (_messageProcessors != null) {
 			Stream<DataprocMessageProcessor> stream =

@@ -325,8 +325,9 @@ public class PubSubMessageBusImpl implements MessageBus {
 		Channel channel, String name, String projectId) {
 
 		return ProjectSubscriptionName.of(
-			_getTopicId(channel) + "_" + StringUtils.replace(name, "$", "_"));
 			_gcpProjectId,
+			_getTopicId(channel, projectId) + "_" +
+				StringUtils.replace(name, "$", "_"));
 	}
 
 	private String _getTopicId(Channel channel, String projectId) {
@@ -336,7 +337,13 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 	@PostConstruct
 	private void _init() throws Exception {
-		_createTopics("");
+
+		// FIXME: get projectIds from "projects" index
+		// We will also need to monitor for newly created workspaces.
+		// Maybe faro can call an endpoint to register a new workspace in a
+		// region, at that moment its topics can be created.
+
+		_createTopics(ServiceConstants.LCP_PROJECT_ID);
 	}
 
 	private static final Log _log = LogFactory.getLog(

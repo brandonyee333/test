@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -48,7 +49,8 @@ public class MessageBusImpl implements MessageBus {
 
 		Set<MessageListener> messageListeners =
 			_messageListeners.computeIfAbsent(
-				channel, key -> new CopyOnWriteArraySet<>());
+				_getTopicId(channel, projectId),
+				key -> new CopyOnWriteArraySet<>());
 
 		messageListeners.add(messageListener);
 	}
@@ -59,7 +61,8 @@ public class MessageBusImpl implements MessageBus {
 
 		Set<MessageSubscriber> messageSubscribers =
 			_messageSubscribers.computeIfAbsent(
-				channel, key -> new CopyOnWriteArraySet<>());
+				_getTopicId(channel, projectId),
+				key -> new CopyOnWriteArraySet<>());
 
 		MessageSubscriber messageSubscriber = new MessageSubscriberImpl(
 			channel, messageSubscriberName);
@@ -75,7 +78,8 @@ public class MessageBusImpl implements MessageBus {
 			throw new IllegalArgumentException("Message is null");
 		}
 
-		Set<MessageListener> messageListeners = _messageListeners.get(channel);
+		Set<MessageListener> messageListeners = _messageListeners.get(
+			_getTopicId(channel, projectId));
 
 		if (messageListeners != null) {
 			for (MessageListener messageListener : messageListeners) {
@@ -84,7 +88,7 @@ public class MessageBusImpl implements MessageBus {
 		}
 
 		Set<MessageSubscriber> messageSubscribers = _messageSubscribers.get(
-			channel);
+			_getTopicId(channel, projectId));
 
 		if (messageSubscribers != null) {
 			for (MessageSubscriber messageSubscriber : messageSubscribers) {
@@ -139,12 +143,17 @@ public class MessageBusImpl implements MessageBus {
 			});
 	}
 
+	private String _getTopicId(Channel channel, String projectId) {
+		return StringUtils.lowerCase(
+			String.format("%s_%s", projectId, channel.toString()));
+	}
+
 	private static final Log _log = LogFactory.getLog(MessageBusImpl.class);
 
 	private ExecutorService _executorService;
-	private final Map<Channel, Set<MessageListener>> _messageListeners =
+	private final Map<String, Set<MessageListener>> _messageListeners =
 		new ConcurrentHashMap<>();
-	private final Map<Channel, Set<MessageSubscriber>> _messageSubscribers =
+	private final Map<String, Set<MessageSubscriber>> _messageSubscribers =
 		new ConcurrentHashMap<>();
 
 }
