@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.messaging.impl;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 
@@ -83,9 +84,15 @@ public class MessageSubscriberAutowiredAnnotationBeanPostProcessor
 
 			Class<?> beanClass = _bean.getClass();
 
+			// FIXME: We will also need one instance per workspace here.
+			// I thought about some kind of context object passed to
+			// nanites (also one instance per workspace/thread) that contains
+			// a subscriber.
+
 			MessageSubscriber messageSubscriber =
 				_messageBus.registerMessageSubscriber(
-					messageSubscriberAutowired.channel(), beanClass.getName());
+					messageSubscriberAutowired.channel(), beanClass.getName(),
+					ServiceConstants.LCP_PROJECT_ID);
 
 			ReflectionUtils.makeAccessible(field);
 

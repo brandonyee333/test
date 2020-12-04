@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
@@ -111,7 +112,8 @@ public class DXPEntitiesRestController {
 				);
 
 				_messageBus.sendMessage(
-					Channel.DXP_ENTITIES_MESSAGE, messageJSONObject.toString());
+					Channel.DXP_ENTITIES_MESSAGE, messageJSONObject.toString(),
+					ProjectIdThreadLocal.getProjectId());
 			}
 
 			return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);

@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
@@ -67,7 +68,8 @@ public class IdentityRestController {
 							identityJSONObject.getString("email")))
 				).put(
 					"userId", jsonObject.getString("userId")
-				).toString());
+				).toString(),
+				ProjectIdThreadLocal.getProjectId());
 		}
 		finally {
 			_identityRequestsHistogram.observe(simpleTimer.elapsedSeconds());

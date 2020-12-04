@@ -17,6 +17,7 @@ package com.liferay.osb.asah.extractor.processor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
@@ -237,7 +238,10 @@ public class AnalyticsEventsMessageProcessor {
 				for (Channel channel :
 						_analyticsEventsChannels.getChannels(analyticsEvent)) {
 
-					_messageBus.sendMessage(channel, analyticsEvent.toJSON());
+					_messageBus.sendMessage(
+						channel, analyticsEvent.toJSON(),
+						// FIXME
+						ServiceConstants.LCP_PROJECT_ID);
 				}
 
 				_storage.write(analyticsEvent.toJSON());

@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
 
 import io.prometheus.client.Histogram;
@@ -150,7 +151,8 @@ public class AnalyticsEventsRestController {
 
 				_messageBus.sendMessage(
 					Channel.ANALYTICS_EVENTS_MESSAGE,
-					analyticsEventsMessage.toJSON());
+					analyticsEventsMessage.toJSON(),
+					ProjectIdThreadLocal.getProjectId());
 
 				_analyticsEventsMessageCache.add(
 					analyticsEventsMessage.getId());
