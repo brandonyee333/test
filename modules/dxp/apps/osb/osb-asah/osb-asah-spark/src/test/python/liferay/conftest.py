@@ -10,6 +10,7 @@
 #
 
 from pyspark.sql import SparkSession
+
 import os
 import pytest
 import sys
@@ -19,4 +20,9 @@ os.environ['PYSPARK_PYTHON'] = sys.executable
 
 @pytest.fixture(scope='session')
 def spark():
-	return SparkSession.builder.master("local").appName("test").getOrCreate()
+	spark_session_builder = SparkSession.builder()
+
+	spark_session_builder.appName("test")
+	spark_session_builder.master("local")
+
+	return spark_session_builder.getOrCreate()
