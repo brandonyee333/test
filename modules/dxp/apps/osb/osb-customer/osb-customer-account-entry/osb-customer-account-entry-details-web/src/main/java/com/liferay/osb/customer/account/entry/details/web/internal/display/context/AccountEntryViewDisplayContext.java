@@ -29,7 +29,6 @@ import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.AccountEnvironmentLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil;
-import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.admin.service.permission.AccountEnvironmentPermission;
 import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
@@ -51,7 +50,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -161,28 +159,6 @@ public class AccountEntryViewDisplayContext {
 
 	public AccountEntry getAccountEntry() {
 		return _accountEntry;
-	}
-
-	public String getAccountEntryInstructionsEditURL() throws PortalException {
-		if (!AccountEntryPermission.contains(
-				_accountEntryDetailsRequestHelper.getPermissionChecker(),
-				_accountEntry.getAccountEntryId(),
-				OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS)) {
-
-			return null;
-		}
-
-		PortletURL portletURL = _mimeResponse.createActionURL();
-
-		portletURL.setParameter(
-			ActionRequest.ACTION_NAME, "editAccountEntryInstructions");
-		portletURL.setParameter(
-			"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
-		portletURL.setParameter(
-			"accountEntryId",
-			String.valueOf(_accountEntry.getAccountEntryId()));
-
-		return portletURL.toString();
 	}
 
 	public String getAccountEnvironmentAddURL(AccountEntry accountEntry)

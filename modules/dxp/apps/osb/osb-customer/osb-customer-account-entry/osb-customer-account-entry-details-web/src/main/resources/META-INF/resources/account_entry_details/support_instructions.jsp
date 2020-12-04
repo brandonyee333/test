@@ -19,13 +19,9 @@
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
-long accountEntryId = 0;
-String editInstructionsURL = StringPool.BLANK;
 String instructions = StringPool.BLANK;
 
 if (accountEntry != null) {
-	accountEntryId = accountEntry.getAccountEntryId();
-	editInstructionsURL = accountEntryViewDisplayContext.getAccountEntryInstructionsEditURL();
 	instructions = HtmlUtil.escapeJS(accountEntry.getInstructions());
 }
 %>
@@ -36,8 +32,6 @@ if (accountEntry != null) {
 	AccountDetails.render(
 		AccountDetails.SupportInstructions,
 		{
-			accountEntryId: '<%= String.valueOf(accountEntryId) %>',
-			editInstructionsURL: '<%= editInstructionsURL %>',
 			instructions: '<%= instructions %>'
 		},
 		document.getElementById('<portlet:namespace />supportInstructions')
