@@ -22,9 +22,11 @@ import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
 import com.liferay.osb.customer.ticket.service.base.TicketAttachmentLocalServiceBaseImpl;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
+import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskOrganizationException;
 import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -86,14 +88,22 @@ public class TicketAttachmentLocalServiceImpl
 			fileRepositoryId, zendeskTicketId, fileName,
 			ticketAttachment.getFilePath());
 
-		long zendeskUserId = _zendeskMapperUtil.getZendeskUserId(
-			user.getUserId());
-
 		String zendeskTicketCommentBody = buildZendeskTicketCommentBody(
 			ticketAttachment, serviceContext);
 
-		_zendeskTicketCommentWebService.addZendeskTicketComment(
-			zendeskTicketId, zendeskUserId, zendeskTicketCommentBody);
+		ZendeskUser zendeskUser =
+			_zendeskUserWebService.getZendeskUserByExternalId(user.getUuid());
+
+		if (zendeskUser.isEndUser()) {
+			_zendeskTicketCommentWebService.addEndUserZendeskTicketComment(
+				zendeskTicketId, user.getEmailAddress(),
+				zendeskTicketCommentBody);
+		}
+		else {
+			_zendeskTicketCommentWebService.addAgentZendeskTicketComment(
+				zendeskTicketId, zendeskUser.getZendeskUserId(),
+				zendeskTicketCommentBody);
+		}
 
 		return ticketAttachment;
 	}
@@ -227,5 +237,8 @@ public class TicketAttachmentLocalServiceImpl
 
 	@ServiceReference(type = ZendeskTicketWebService.class)
 	private ZendeskTicketWebService _zendeskTicketWebService;
+
+	@ServiceReference(type = ZendeskUserWebService.class)
+	private ZendeskUserWebService _zendeskUserWebService;
 
 }

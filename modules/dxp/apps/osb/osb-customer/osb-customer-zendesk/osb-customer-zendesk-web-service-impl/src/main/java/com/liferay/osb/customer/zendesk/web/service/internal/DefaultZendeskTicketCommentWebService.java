@@ -45,11 +45,11 @@ import org.osgi.service.component.annotations.Reference;
 public class DefaultZendeskTicketCommentWebService
 	implements ZendeskTicketCommentWebService {
 
-	public ZendeskTicketComment addZendeskTicketComment(
+	public ZendeskTicketComment addAgentZendeskTicketComment(
 			long zendeskTicketId, long zendeskUserId, String htmlBody)
 		throws PortalException {
 
-		JSONObject jsonObject = getZendeskTicketCommentJSONObject(
+		JSONObject jsonObject = getAgentTicketCommentJSONObject(
 			zendeskUserId, htmlBody);
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.put(
@@ -73,6 +73,20 @@ public class DefaultZendeskTicketCommentWebService
 		}
 
 		return null;
+	}
+
+	public void addEndUserZendeskTicketComment(
+			long zendeskTicketId, String endUserEmailAddress, String htmlBody)
+		throws PortalException {
+
+		JSONObject jsonObject = getRequestCommentJSONObject(htmlBody);
+
+		_zendeskBaseWebService.put(
+			endUserEmailAddress,
+			StringBundler.concat(
+				ZendeskRESTEndpoints.URL_API_V2, "requests/",
+				String.valueOf(zendeskTicketId), ".json"),
+			jsonObject.toString());
 	}
 
 	public List<ZendeskTicketComment> getZendeskTicketComments(
@@ -99,7 +113,7 @@ public class DefaultZendeskTicketCommentWebService
 		return zendeskTicketComments;
 	}
 
-	protected JSONObject getZendeskTicketCommentJSONObject(
+	protected JSONObject getAgentTicketCommentJSONObject(
 		long zendeskUserId, String htmlBody) {
 
 		JSONObject commentJSONObject = JSONFactoryUtil.createJSONObject();
@@ -114,6 +128,22 @@ public class DefaultZendeskTicketCommentWebService
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("ticket", ticketJSONObject);
+
+		return jsonObject;
+	}
+
+	protected JSONObject getRequestCommentJSONObject(String htmlBody) {
+		JSONObject commentJSONObject = JSONFactoryUtil.createJSONObject();
+
+		commentJSONObject.put("html_body", htmlBody);
+
+		JSONObject ticketJSONObject = JSONFactoryUtil.createJSONObject();
+
+		ticketJSONObject.put("comment", commentJSONObject);
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("request", ticketJSONObject);
 
 		return jsonObject;
 	}

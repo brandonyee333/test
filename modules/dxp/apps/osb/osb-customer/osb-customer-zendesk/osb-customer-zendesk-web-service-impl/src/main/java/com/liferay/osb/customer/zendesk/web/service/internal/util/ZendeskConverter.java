@@ -391,6 +391,7 @@ public class ZendeskConverter {
 		zendeskUser.setExternalId(jsonObject.getString("external_id"));
 		zendeskUser.setLocale(jsonObject.getString("locale"));
 		zendeskUser.setName(jsonObject.getString("name"));
+		zendeskUser.setRole(jsonObject.getString("role"));
 
 		JSONArray jsonArray = jsonObject.getJSONArray("tags");
 

@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StackTraceUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.nio.charset.StandardCharsets;
@@ -325,12 +324,19 @@ public class ZendeskBaseWebServiceImpl
 	}
 
 	public JSONObject put(String endpoint, String json) throws PortalException {
+		return put(endpoint, json, _headers);
+	}
+
+	public JSONObject put(
+			String endpoint, String json, Map<String, String> headers)
+		throws PortalException {
+
 		String response = null;
 
 		try {
 			HttpPut httpPut = new HttpPut(endpoint);
 
-			addHeaders(httpPut, _headers);
+			addHeaders(httpPut, headers);
 
 			StringEntity stringEntity = getStringEntity(endpoint, json);
 
@@ -359,6 +365,20 @@ public class ZendeskBaseWebServiceImpl
 		catch (Exception e) {
 			throw processedException(e, endpoint, json, response);
 		}
+	}
+
+	public JSONObject put(
+			String endUserEmailAddress, String endpoint, String json)
+		throws PortalException {
+
+		Map<String, String> headers = new HashMap<String, String>() {
+			{
+				put("Authorization", _getCredentials(endUserEmailAddress));
+				put("Content-Type", "application/json");
+			}
+		};
+
+		return put(endpoint, json, headers);
 	}
 
 	public JSONObject send(ZendeskRequest zendeskRequest)
@@ -478,16 +498,16 @@ public class ZendeskBaseWebServiceImpl
 	protected void signRequest(HttpRequestBase httpRequestBase) {
 	}
 
-	private static String _getCredentials() {
+	private static String _getCredentials(String emailAddress) {
 		String zendeskCredentials = StringBundler.concat(
-			ZendeskConnectorConfigurationValues.ZENDESK_EMAIL_ADDRESS,
-			StringPool.SLASH, "token", StringPool.COLON,
+			emailAddress, "/token:",
 			ZendeskConnectorConfigurationValues.ZENDESK_API_TOKEN);
 
 		return "Basic " + Base64.encode(zendeskCredentials.getBytes());
 	}
 
-	private static final String _CREDENTIALS = _getCredentials();
+	private static final String _CREDENTIALS = _getCredentials(
+		ZendeskConnectorConfigurationValues.ZENDESK_EMAIL_ADDRESS);
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ZendeskBaseWebServiceImpl.class);

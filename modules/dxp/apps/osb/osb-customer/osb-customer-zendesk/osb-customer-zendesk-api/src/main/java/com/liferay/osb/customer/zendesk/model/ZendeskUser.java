@@ -50,6 +50,14 @@ public class ZendeskUser {
 		return _zendeskUserId;
 	}
 
+	public boolean isEndUser() {
+		if (_role.equals("end-user")) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public void setEmail(String email) {
 		_email = email;
 	}
@@ -66,6 +74,10 @@ public class ZendeskUser {
 		_name = name;
 	}
 
+	public void setRole(String role) {
+		_role = role;
+	}
+
 	public void setTags(Set<String> tags) {
 		_tags = tags;
 	}
@@ -78,6 +90,7 @@ public class ZendeskUser {
 	private String _externalId;
 	private String _locale;
 	private String _name;
+	private String _role;
 	private Set<String> _tags = new HashSet<>();
 	private long _zendeskUserId;
 

@@ -44,6 +44,14 @@ public interface ZendeskBaseWebService {
 
 	public JSONObject put(String endpoint, String json) throws PortalException;
 
+	public JSONObject put(
+			String endpoint, String json, Map<String, String> headers)
+		throws PortalException;
+
+	public JSONObject put(
+			String endUserEmailAddress, String endpoint, String json)
+		throws PortalException;
+
 	public JSONObject send(ZendeskRequest zendeskRequest)
 		throws PortalException;
 

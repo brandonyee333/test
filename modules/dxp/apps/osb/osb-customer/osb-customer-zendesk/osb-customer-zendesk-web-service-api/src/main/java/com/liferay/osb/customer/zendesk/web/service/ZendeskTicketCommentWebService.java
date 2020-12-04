@@ -27,8 +27,12 @@ import java.util.List;
 @ProviderType
 public interface ZendeskTicketCommentWebService {
 
-	public ZendeskTicketComment addZendeskTicketComment(
+	public ZendeskTicketComment addAgentZendeskTicketComment(
 			long zendeskTicketId, long zendeskUserId, String body)
+		throws PortalException;
+
+	public void addEndUserZendeskTicketComment(
+			long zendeskTicketId, String endUserEmailAddress, String body)
 		throws PortalException;
 
 	public List<ZendeskTicketComment> getZendeskTicketComments(
