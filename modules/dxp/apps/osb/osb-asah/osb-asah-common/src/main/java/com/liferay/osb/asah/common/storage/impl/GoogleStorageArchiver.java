@@ -22,8 +22,8 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -205,7 +205,7 @@ public class GoogleStorageArchiver {
 	private String _getBlobName(String bucketFolder, String fileName) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(ServiceConstants.LCP_PROJECT_ID);
+		sb.append(ProjectIdThreadLocal.getProjectId());
 
 		if (bucketFolder != null) {
 			sb.append("/");
