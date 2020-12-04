@@ -1,0 +1,6 @@
+google:
+    project:
+        id: liferaycloud-customer-ac-uat
+    storage:
+        path:
+            analytics-events: gs://analytics-cloud-analytics-events-uat
