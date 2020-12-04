@@ -44,7 +44,7 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public void registerMessageListener(
-		Channel channel, MessageListener messageListener) {
+		Channel channel, MessageListener messageListener, String projectId) {
 
 		Set<MessageListener> messageListeners =
 			_messageListeners.computeIfAbsent(
@@ -55,7 +55,7 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public MessageSubscriber registerMessageSubscriber(
-		Channel channel, String messageSubscriberName) {
+		Channel channel, String messageSubscriberName, String projectId) {
 
 		Set<MessageSubscriber> messageSubscribers =
 			_messageSubscribers.computeIfAbsent(
@@ -70,7 +70,7 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 	@Override
-	public void sendMessage(Channel channel, String message) {
+	public void sendMessage(Channel channel, String message, String projectId) {
 		if (message == null) {
 			throw new IllegalArgumentException("Message is null");
 		}

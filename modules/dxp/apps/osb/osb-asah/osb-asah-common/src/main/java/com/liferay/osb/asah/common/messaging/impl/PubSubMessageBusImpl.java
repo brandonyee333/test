@@ -82,8 +82,11 @@ public class PubSubMessageBusImpl implements MessageBus {
 		return ProjectName.of(_gcpProjectId);
 	}
 
-	public ProjectTopicName getProjectTopicName(Channel channel) {
-		return ProjectTopicName.of(_gcpProjectId, _getTopicId(channel));
+	public ProjectTopicName getProjectTopicName(
+		Channel channel, String projectId) {
+
+		return ProjectTopicName.of(
+			_gcpProjectId, _getTopicId(channel, projectId));
 	}
 
 	public PubSubClientFactory getPubSubclientFactory() {
@@ -92,10 +95,11 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 	@Override
 	public void registerMessageListener(
-		Channel channel, MessageListener messageListener) {
+		Channel channel, MessageListener messageListener, String projectId) {
 
 		try {
-			Subscriber subscriber = _createSubscriber(channel, messageListener);
+			Subscriber subscriber = _createSubscriber(
+				channel, messageListener, projectId);
 
 			_messageListeners.put(messageListener, subscriber);
 
@@ -108,12 +112,13 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 	@Override
 	public MessageSubscriber registerMessageSubscriber(
-		Channel channel, String messageSubscriberName) {
+		Channel channel, String messageSubscriberName, String projectId) {
 
 		try {
 			Subscription subscription = _getOrCreateSubscription(
-				channel,
-				_getProjectSubscriptionName(channel, messageSubscriberName));
+				channel, projectId,
+				_getProjectSubscriptionName(
+					channel, messageSubscriberName, projectId));
 
 			return new MessageSubscriberImpl(
 				_pubSubClientFactory, subscription);
@@ -126,13 +131,13 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	@Override
-	public void sendMessage(Channel channel, String message) {
+	public void sendMessage(Channel channel, String message, String projectId) {
 		if (StringUtils.isBlank(message)) {
 			throw new IllegalArgumentException("Message is blank");
 		}
 
 		try {
-			Publisher publisher = _getOrCreatePublisher(channel);
+			Publisher publisher = _getOrCreatePublisher(channel, projectId);
 
 			if (channel == Channel.DXP_ENTITIES_MESSAGE) {
 				publisher.publish(
@@ -177,12 +182,13 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	private Subscriber _createSubscriber(
-			Channel channel, MessageListener messageListener)
+			Channel channel, MessageListener messageListener, String projectId)
 		throws Exception {
 
 		Subscription subscription = _getOrCreateSubscription(
-			channel,
-			_getProjectSubscriptionName(channel, messageListener.getClass()));
+			channel, projectId,
+			_getProjectSubscriptionName(
+				channel, messageListener.getClass(), projectId));
 
 		return _pubSubClientFactory.createSubscriber(
 			subscription.getName(), _createMessageReceiver(messageListener));
@@ -206,7 +212,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 		}
 	}
 
-	private void _createTopics() throws Exception {
+	private void _createTopics(String projectId) throws Exception {
 		try (PubSubClient<TopicAdminClient> pubSubClient =
 				_pubSubClientFactory.createTopicAdminClient()) {
 
@@ -216,7 +222,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 			for (Channel channel : Channel.values()) {
 				ProjectTopicName projectTopicName = getProjectTopicName(
-					channel);
+					channel, projectId);
 
 				if (!topicNames.contains(projectTopicName.toString())) {
 					_createTopic(projectTopicName, topicAdminClient);
@@ -249,7 +255,9 @@ public class PubSubMessageBusImpl implements MessageBus {
 		return topicNames;
 	}
 
-	private Publisher _getOrCreatePublisher(Channel channel) throws Exception {
+	private Publisher _getOrCreatePublisher(Channel channel, String projectId)
+		throws Exception {
+
 		Publisher publisher = _channels.get(channel);
 
 		if (publisher != null) {
@@ -257,7 +265,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 		}
 
 		publisher = _pubSubClientFactory.createPublisher(
-			channel.isOrderingEnabled(), getProjectTopicName(channel));
+			channel.isOrderingEnabled(),
+			getProjectTopicName(channel, projectId));
 
 		_channels.put(channel, publisher);
 
@@ -265,7 +274,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	private Subscription _getOrCreateSubscription(
-			Channel channel, ProjectSubscriptionName projectSubscriptionName)
+			Channel channel, String projectId,
+			ProjectSubscriptionName projectSubscriptionName)
 		throws Exception {
 
 		PubSubClient<SubscriptionAdminClient> pubSubClient =
@@ -284,7 +294,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 						projectSubscriptionName.toString());
 			}
 
-			ProjectTopicName projectTopicName = getProjectTopicName(channel);
+			ProjectTopicName projectTopicName = getProjectTopicName(
+				channel, projectId);
 
 			Subscription.Builder builder = Subscription.newBuilder();
 
@@ -305,39 +316,39 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	private ProjectSubscriptionName _getProjectSubscriptionName(
-		Channel channel, Class<?> clazz) {
+		Channel channel, Class<?> clazz, String projectId) {
 
-		return _getProjectSubscriptionName(channel, clazz.getName());
+		return _getProjectSubscriptionName(channel, clazz.getName(), projectId);
 	}
 
 	private ProjectSubscriptionName _getProjectSubscriptionName(
-		Channel channel, String name) {
+		Channel channel, String name, String projectId) {
 
 		return ProjectSubscriptionName.of(
 			_getTopicId(channel) + "_" + StringUtils.replace(name, "$", "_"));
 			_gcpProjectId,
 	}
 
-	private String _getTopicId(Channel channel) {
+	private String _getTopicId(Channel channel, String projectId) {
 		return StringUtils.lowerCase(
-			String.format(
-				"%s_%s", ServiceConstants.LCP_PROJECT_ID, channel.toString()));
+			String.format("%s_%s", projectId, channel.toString()));
 	}
 
 	@PostConstruct
 	private void _init() throws Exception {
-		_createTopics();
+		_createTopics("");
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		PubSubMessageBusImpl.class);
 
 	private final Map<Channel, Publisher> _channels = new ConcurrentHashMap<>();
-	private final Map<MessageListener, Subscriber> _messageListeners =
-		new ConcurrentHashMap<>();
 
 	@Value("${osb.asah.message.bus.gcloud.project.id:liferaycloud-customer-ac}")
 	private String _gcpProjectId;
+
+	private final Map<MessageListener, Subscriber> _messageListeners =
+		new ConcurrentHashMap<>();
 
 	@Autowired
 	private PubSubClientFactory _pubSubClientFactory;
