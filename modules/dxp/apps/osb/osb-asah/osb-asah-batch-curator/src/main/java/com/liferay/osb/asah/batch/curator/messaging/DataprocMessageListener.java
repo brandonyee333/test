@@ -70,9 +70,6 @@ public class DataprocMessageListener implements MessageListener {
 
 	@PostConstruct
 	private void _init() {
-
-		// FIXME: we will need to have one instance per workspace
-
 		_messageBus.registerMessageListener(
 			Channel.DATAPROC, this, ServiceConstants.LCP_PROJECT_ID);
 

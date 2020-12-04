@@ -82,7 +82,6 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 				).put(
 					"ownerId", ownerId
 				).toString(),
-				// FIXME
 				ServiceConstants.LCP_PROJECT_ID);
 		}
 	}

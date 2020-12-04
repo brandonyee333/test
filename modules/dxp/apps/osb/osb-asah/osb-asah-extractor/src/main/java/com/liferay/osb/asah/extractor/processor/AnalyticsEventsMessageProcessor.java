@@ -240,7 +240,6 @@ public class AnalyticsEventsMessageProcessor {
 
 					_messageBus.sendMessage(
 						channel, analyticsEvent.toJSON(),
-						// FIXME
 						ServiceConstants.LCP_PROJECT_ID);
 				}
 

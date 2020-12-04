@@ -84,11 +84,6 @@ public class MessageSubscriberAutowiredAnnotationBeanPostProcessor
 
 			Class<?> beanClass = _bean.getClass();
 
-			// FIXME: We will also need one instance per workspace here.
-			// I thought about some kind of context object passed to
-			// nanites (also one instance per workspace/thread) that contains
-			// a subscriber.
-
 			MessageSubscriber messageSubscriber =
 				_messageBus.registerMessageSubscriber(
 					messageSubscriberAutowired.channel(), beanClass.getName(),
