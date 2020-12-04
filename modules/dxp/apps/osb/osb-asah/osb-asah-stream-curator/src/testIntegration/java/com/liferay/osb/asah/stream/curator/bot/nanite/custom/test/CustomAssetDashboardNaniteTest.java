@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.custom.test;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -76,7 +77,8 @@ public class CustomAssetDashboardNaniteTest {
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies" +
 					"/analytics_events_custom_asset_channel_empty_title.json",
-				this));
+				this),
+			ServiceConstants.LCP_PROJECT_ID);
 
 		_customAssetDashboardNanite.run();
 
@@ -100,7 +102,8 @@ public class CustomAssetDashboardNaniteTest {
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies" +
 					"/analytics_events_custom_asset_channel_update_1.json",
-				this));
+				this),
+			ServiceConstants.LCP_PROJECT_ID);
 
 		_customAssetDashboardNanite.run();
 
@@ -109,7 +112,8 @@ public class CustomAssetDashboardNaniteTest {
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies" +
 					"/analytics_events_custom_asset_channel_update_2.json",
-				this));
+				this),
+			ServiceConstants.LCP_PROJECT_ID);
 
 		_customAssetDashboardNanite.run();
 

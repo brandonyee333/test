@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.ActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -71,7 +72,8 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 		messageBusTestHelper.prepareMessageBusChannel(
 			Channel.ANALYTICS_EVENTS_ACTIVITY,
 			ResourceUtil.readResourceToJSONArray(
-				"dependencies/analytics_events_1.json", this));
+				"dependencies/analytics_events_1.json", this),
+			ServiceConstants.LCP_PROJECT_ID);
 
 		_activitiesNanite.run();
 
@@ -103,7 +105,8 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 		messageBusTestHelper.prepareMessageBusChannel(
 			Channel.ANALYTICS_EVENTS_ACTIVITY,
 			ResourceUtil.readResourceToJSONArray(
-				"dependencies/analytics_events_1.json", this));
+				"dependencies/analytics_events_1.json", this),
+			ServiceConstants.LCP_PROJECT_ID);
 
 		_activitiesNanite.run();
 
@@ -146,7 +149,8 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 		messageBusTestHelper.prepareMessageBusChannel(
 			Channel.ANALYTICS_EVENTS_ACTIVITY,
 			ResourceUtil.readResourceToJSONArray(
-				"dependencies/analytics_events_3.json", this));
+				"dependencies/analytics_events_3.json", this),
+			ServiceConstants.LCP_PROJECT_ID);
 
 		_activitiesNanite.run();
 
@@ -177,7 +181,8 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 		messageBusTestHelper.prepareMessageBusChannel(
 			Channel.ANALYTICS_EVENTS_ACTIVITY,
 			ResourceUtil.readResourceToJSONArray(
-				"dependencies/analytics_events_1.json", this));
+				"dependencies/analytics_events_1.json", this),
+			ServiceConstants.LCP_PROJECT_ID);
 
 		_activitiesNanite.run();
 

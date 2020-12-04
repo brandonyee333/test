@@ -20,6 +20,7 @@ processResources {
 
 testIntegration {
 	doFirst {
+		environment "LCP_PROJECT_ID", "test"
 		environment "OSB_ASAH_PUBSUB_EMULATOR_URL", "http://127.0.0.1:8095"
 	}
 }

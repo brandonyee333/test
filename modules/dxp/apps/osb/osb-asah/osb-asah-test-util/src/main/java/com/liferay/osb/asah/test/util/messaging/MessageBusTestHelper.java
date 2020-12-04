@@ -87,10 +87,10 @@ public class MessageBusTestHelper {
 	}
 
 	public void prepareMessageBusChannel(
-			Channel channel, JSONArray messagesJSONArray)
+			Channel channel, JSONArray messagesJSONArray, String projectId)
 		throws Exception {
 
-		Publisher publisher = _createPublisher(channel);
+		Publisher publisher = _createPublisher(channel, projectId);
 
 		for (int i = 0; i < messagesJSONArray.length(); i++) {
 			JSONObject jsonObject = messagesJSONArray.getJSONObject(i);
@@ -104,7 +104,8 @@ public class MessageBusTestHelper {
 	}
 
 	public void prepareMessageBusChannel(
-			Class<?> clazz, MessageBusChannel messageBusChannel)
+			Class<?> clazz, MessageBusChannel messageBusChannel,
+			String projectId)
 		throws Exception {
 
 		JSONArray jsonArray = new JSONArray(
@@ -113,12 +114,15 @@ public class MessageBusTestHelper {
 					"dependencies/" + messageBusChannel.resourcePath(),
 					clazz)));
 
-		prepareMessageBusChannel(messageBusChannel.channel(), jsonArray);
+		prepareMessageBusChannel(
+			messageBusChannel.channel(), jsonArray, projectId);
 	}
 
-	private Publisher _createPublisher(Channel channel) throws Exception {
+	private Publisher _createPublisher(Channel channel, String projectId)
+		throws Exception {
+
 		ProjectTopicName projectTopicName =
-			_pubSubMessageBusImpl.getProjectTopicName(channel);
+			_pubSubMessageBusImpl.getProjectTopicName(channel, projectId);
 
 		PubSubClientFactory pubSubClientFactory =
 			_pubSubMessageBusImpl.getPubSubclientFactory();

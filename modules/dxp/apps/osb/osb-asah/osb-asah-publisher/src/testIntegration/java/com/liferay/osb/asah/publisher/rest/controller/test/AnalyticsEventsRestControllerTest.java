@@ -105,7 +105,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), argumentCaptor.capture()
+			Mockito.any(), argumentCaptor.capture(), Mockito.anyString()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(
@@ -139,7 +139,7 @@ public class AnalyticsEventsRestControllerTest {
 		).when(
 			_messageBus
 		).sendMessage(
-			Mockito.any(), Mockito.anyString()
+			Mockito.any(), Mockito.anyString(), Mockito.anyString()
 		);
 
 		ResponseEntity<String> responseEntity = _exchange(
@@ -172,7 +172,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), argumentCaptor.capture()
+			Mockito.any(), argumentCaptor.capture(), Mockito.anyString()
 		);
 
 		JSONAssert.assertEquals(body, argumentCaptor.getValue(), false);
@@ -217,7 +217,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), argumentCaptor.capture()
+			Mockito.any(), argumentCaptor.capture(), Mockito.anyString()
 		);
 
 		JSONAssert.assertEquals(
@@ -298,7 +298,7 @@ public class AnalyticsEventsRestControllerTest {
 		Mockito.verify(
 			_messageBus, Mockito.times(1)
 		).sendMessage(
-			Mockito.any(), argumentCaptor.capture()
+			Mockito.any(), argumentCaptor.capture(), Mockito.anyString()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(
