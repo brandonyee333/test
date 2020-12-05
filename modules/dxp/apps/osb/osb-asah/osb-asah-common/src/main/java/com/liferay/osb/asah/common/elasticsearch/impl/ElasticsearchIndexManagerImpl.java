@@ -32,6 +32,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
@@ -307,20 +309,27 @@ public class ElasticsearchIndexManagerImpl
 		ImmutableOpenMap<String, List<AliasMetadata>> immutableOpenMap =
 			getAliasesResponse.getAliases();
 
-		Iterator<String> iterator = immutableOpenMap.keysIt();
+		Iterator<List<AliasMetadata>> iterator = immutableOpenMap.valuesIt();
 
 		while (iterator.hasNext()) {
-			String indexName = iterator.next();
-
-			List<AliasMetadata> aliasMetadatas = immutableOpenMap.get(
-				indexName);
-
-			if (aliasMetadatas == null) {
-				continue;
-			}
+			List<AliasMetadata> aliasMetadatas = iterator.next();
 
 			for (AliasMetadata aliasMetadata : aliasMetadatas) {
-				aliases.put(indexName, aliasMetadata.alias());
+				String alias = aliasMetadata.alias();
+
+				Matcher matcher = _pattern.matcher(alias);
+
+				if (!matcher.matches()) {
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Found alias not matching expected pattern: " +
+								alias);
+					}
+
+					continue;
+				}
+
+				aliases.put(matcher.group("baseIndexName"), alias);
 			}
 		}
 
@@ -648,6 +657,9 @@ public class ElasticsearchIndexManagerImpl
 
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchIndexManagerImpl.class);
+
+	private static final Pattern _pattern = Pattern.compile(
+		"(?<baseIndexName>(asah[a-z0-9]+|test)_osbasah[a-z]+_[a-z]+)_alias");
 
 	private AdminClient _adminClient;
 	private Client _client;
