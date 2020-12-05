@@ -33,8 +33,6 @@ for (String languageId : languageIds) {
 }
 %>
 
-<aui:input name="languageIds" type="hidden" value="<%= languageIdsValue %>" />
-
 <div class="account details tab-view">
 	<ul class="lfr-nav nav nav-tabs">
 		<li class="tab" data-content="<portlet:namespace />supportLanguagesContent" id="<portlet:namespace />supportLanguages">
@@ -44,18 +42,6 @@ for (String languageId : languageIds) {
 
 	<div class="tab-content">
 		<div class="hide tab-content-tab" id="<portlet:namespace />supportLanguagesContent">
-			<portlet:renderURL var="selectSupportLanguageURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-				<portlet:param name="mvcPath" value="/admin/select_language.jsp" />
-			</portlet:renderURL>
-
-			<%
-			String taglibSelectSupportLanguage = "var supportLanguageWindow = window.open('" + selectSupportLanguageURL + "', 'support-language', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); supportLanguageWindow.focus();";
-			%>
-
-			<aui:button onClick="<%= taglibSelectSupportLanguage %>" value="add-support-language" />
-
-			<br />
-
 			<liferay-ui:search-container
 				headerNames="language"
 				id="language"
@@ -72,10 +58,6 @@ for (String languageId : languageIds) {
 						name="language"
 					>
 						<%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(languageId)) %>
-					</liferay-ui:search-container-column-text>
-
-					<liferay-ui:search-container-column-text>
-						<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('languageIds', '" + languageId + "', '" + renderResponse.getNamespace() + "languageSearchContainer', this);" %>' value="remove" />
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 

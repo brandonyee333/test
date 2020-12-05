@@ -103,18 +103,14 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					<%= HtmlUtil.escape(accountEntry.getCode()) %>
 				</td>
 			</tr>
-		</c:if>
-
-		<tr>
-			<td>
-				<strong><liferay-ui:message key="special-instructions" /></strong>
-			</td>
-			<td>
-				<aui:input label="" name="instructions" />
-			</td>
-		</tr>
-
-		<c:if test="<%= accountEntry != null %>">
+			<tr>
+				<td>
+					<strong><liferay-ui:message key="special-instructions" /></strong>
+				</td>
+				<td>
+					<%= HtmlUtil.escape(accountEntry.getInstructions()) %>
+				</td>
+			</tr>
 			<tr>
 				<td>
 					<strong><liferay-ui:message key="oem-instructions" /></strong>
@@ -137,19 +133,13 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					%>
 
 						<div id="<portlet:namespace />accountAttachment">
-							<aui:input name="accountAttachmentId" type="hidden" value="<%= accountAttachment.getAccountAttachmentId() %>" />
-							<aui:input name="deleteAccountAttachment" type="hidden" />
-
 							<aui:a href="<%= accountAttachmentURL.toString() %>" label="<%= accountAttachment.getFileName() %>" target="_blank" />
-
-							<aui:button onClick='<%= renderResponse.getNamespace() + "removeAccountAttachment();" %>' value="remove" />
 						</div>
 
 					<%
 					}
 					%>
 
-					<aui:input id="accountAttachmentField" inputCssClass='<%= (accountAttachment != null) ? "hide" : "" %>' label="" name="accountAttachment" type="file" />
 				</td>
 			</tr>
 		</c:if>
@@ -199,6 +189,16 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			</td>
 			<td>
 				<%= HtmlUtil.escape(firstLineSupport) %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong><liferay-ui:message key="support-region" /></strong>
+			</td>
+			<td>
+				<c:if test="<%= (koroneikiAccount != null) && Validator.isNotNull(koroneikiAccount.getRegion()) %>">
+					<%= koroneikiAccount.getRegion() %>
+				</c:if>
 			</td>
 		</tr>
 		<tr>
@@ -311,58 +311,3 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 	<liferay-util:include page="/admin/edit_account_entry/details_tabs.jsp" servletContext="<%= application %>" />
 </aui:form>
-
-<aui:script>
-	function <portlet:namespace />addColumn(row, html) {
-		var cell = row.insertCell(-1);
-
-		cell.innerHTML = html;
-	}
-
-	function <portlet:namespace />removeAccountAttachment() {
-		var A = AUI();
-
-		document.<portlet:namespace />fm.<portlet:namespace />deleteAccountAttachment.value = true;
-
-		A.one('#<portlet:namespace />accountAttachment').hide();
-		A.one('#<portlet:namespace />accountAttachmentField').show();
-	}
-
-	function <portlet:namespace />removeRow(inputName, value, tableId, row) {
-		var values = document.<portlet:namespace />fm['<portlet:namespace />' + inputName].value;
-
-		values = values.replace(value + ',', '');
-
-		document.<portlet:namespace />fm['<portlet:namespace />' + inputName].value = values;
-
-		var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
-
-		table.removeChild(row.parentNode.parentNode);
-	}
-
-	function <portlet:namespace />selectRow(inputName, value, tableId, columnValues) {
-		var values = document.<portlet:namespace />fm['<portlet:namespace />' + inputName].value;
-
-		if (values.indexOf(value + ',') == -1) {
-			values += value + ',';
-
-			document.<portlet:namespace />fm['<portlet:namespace />' + inputName].value = values;
-
-			var table = document.getElementById(tableId);
-
-			table.parentNode.parentNode.className = 'lfr-search-container';
-
-			var tBody = table.getElementsByTagName('tbody')[0];
-
-			var row = tBody.insertRow(-1);
-
-			row.className = 'results-row';
-
-			for (var i = 0; i < columnValues.length; i++) {
-				<portlet:namespace />addColumn(row, columnValues[i]);
-			}
-
-			<portlet:namespace />addColumn(row, '<input class="btn btn-default" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" type="button" value="<liferay-ui:message key="remove" />" />');
-		}
-	}
-</aui:script>
