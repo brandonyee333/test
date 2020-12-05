@@ -79,6 +79,17 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 
 				continue;
 			}
+			else if (!_elasticsearchIndexManager.aliasExists(indexAlias) &&
+					 !_elasticsearchIndexManager.exists(baseIndexName)) {
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Skipped reindexing as alias " + indexAlias +
+							"and index " + baseIndexName + " do not exist");
+				}
+
+				continue;
+			}
 
 			newIndexName = _reindexHelper.createIndex(
 				indexAlias,
