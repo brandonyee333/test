@@ -93,8 +93,6 @@ FileRepositoryWebService fileRepositoryWebService = (FileRepositoryWebService)li
 
 Format fullDateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(DateFormat.FULL, DateFormat.FULL, locale, timeZone);
 
-Format longDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.LONG, locale, timeZone);
-
 Format shortDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.SHORT, locale, timeZone);
 
 Format shortDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.SHORT, locale, timeZone);

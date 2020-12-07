@@ -35,6 +35,7 @@ definition {
 	@priority = "4"
 	test MarkAsNotSpamWikiPage {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		ProductMenu.gotoPortlet(
