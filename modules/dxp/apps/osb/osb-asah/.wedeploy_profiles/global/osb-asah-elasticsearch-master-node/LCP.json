@@ -4,7 +4,7 @@
 		"ES_JAVA_OPTS": "-Xms8g -Xmx8g"
 	},
 	"id": "esmaster",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-elasticsearch-master-node-20201202-bba9a96",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-elasticsearch-master-node-20201207-b388015",
 	"kind": "StatefulSet",
 	"livenessProbe": {
 		"failureThreshold": 15,
