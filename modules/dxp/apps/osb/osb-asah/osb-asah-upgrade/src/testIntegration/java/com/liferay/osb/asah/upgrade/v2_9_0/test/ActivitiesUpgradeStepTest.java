@@ -44,7 +44,7 @@ public class ActivitiesUpgradeStepTest {
 	)
 	@Test
 	public void testUpgrade() throws Exception {
-		_elasticsearchIndexManager.checkIndices();
+		_elasticsearchInvoker.refreshAliases();
 
 		_activitiesUpgradeStep.upgrade("");
 

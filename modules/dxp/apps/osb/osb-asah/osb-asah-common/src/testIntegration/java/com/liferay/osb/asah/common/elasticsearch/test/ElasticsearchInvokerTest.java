@@ -72,9 +72,8 @@ public class ElasticsearchInvokerTest {
 	@Before
 	public void setUp() {
 		_elasticsearchInvoker = new ElasticsearchInvokerImpl(
-			Collections.emptyMap(),
 			_elasticsearchConnection.getTransportClient(),
-			WeDeployDataService.OSB_ASAH_FARO_INFO);
+			_elasticsearchIndexManager, WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		_collectionName = RandomTestUtil.randomString();
 

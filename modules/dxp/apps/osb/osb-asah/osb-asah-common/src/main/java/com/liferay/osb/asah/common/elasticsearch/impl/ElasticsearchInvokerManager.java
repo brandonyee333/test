@@ -21,9 +21,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -57,35 +54,20 @@ public class ElasticsearchInvokerManager {
 
 	@PostConstruct
 	private void _init() {
-		Map<String, String> aliases = _elasticsearchIndexManager.getAliases();
-
 		for (WeDeployDataService weDeployDataService :
 				WeDeployDataService.values()) {
-
-			Set<Map.Entry<String, String>> entries = aliases.entrySet();
-
-			Stream<Map.Entry<String, String>> stream = entries.stream();
-
-			Map<String, String> curAliases = stream.filter(
-				map -> map.getKey(
-				).contains(
-					"_" + weDeployDataService + "_"
-				)
-			).collect(
-				Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
-			);
 
 			_elasticsearchInvokers.put(
 				"cacheable#" + weDeployDataService.toString(),
 				new CacheableElasticsearchInvokerImpl(
-					curAliases, _cacheManager,
+					_cacheManager,
 					_elasticsearchConnection.getTransportClient(),
-					weDeployDataService));
+					_elasticsearchIndexManager, weDeployDataService));
 			_elasticsearchInvokers.put(
 				weDeployDataService.toString(),
 				new ElasticsearchInvokerImpl(
-					curAliases, _elasticsearchConnection.getTransportClient(),
-					weDeployDataService));
+					_elasticsearchConnection.getTransportClient(),
+					_elasticsearchIndexManager, weDeployDataService));
 		}
 	}
 

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.elasticsearch.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.ClientUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -88,12 +90,14 @@ import org.json.JSONObject;
 public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	public ElasticsearchInvokerImpl(
-		Map<String, String> aliases, Client client,
+		Client client, ElasticsearchIndexManager elasticsearchIndexManager,
 		WeDeployDataService weDeployDataService) {
 
-		_aliases = aliases;
 		_client = client;
+		_elasticsearchIndexManager = elasticsearchIndexManager;
 		_weDeployDataService = weDeployDataService;
+
+		refreshAliases();
 	}
 
 	@Override
@@ -494,6 +498,12 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
+	public void refreshAliases() {
+		_aliases.putAll(
+			_elasticsearchIndexManager.getAliases(_weDeployDataService));
+	}
+
+	@Override
 	public JSONObject replace(String collectionName, JSONObject jsonObject) {
 		IndexRequestBuilder indexRequestBuilder = _client.prepareIndex(
 			getIndexAlias(collectionName), collectionName,
@@ -868,8 +878,9 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchInvokerImpl.class);
 
-	private final Map<String, String> _aliases;
+	private final Map<String, String> _aliases = new ConcurrentHashMap<>();
 	private final Client _client;
+	private final ElasticsearchIndexManager _elasticsearchIndexManager;
 	private TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
 	private final WeDeployDataService _weDeployDataService;

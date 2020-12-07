@@ -32,8 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
@@ -294,7 +292,9 @@ public class ElasticsearchIndexManagerImpl
 	}
 
 	@Override
-	public Map<String, String> getAliases() {
+	public Map<String, String> getAliases(
+		WeDeployDataService weDeployDataService) {
+
 		Map<String, String> aliases = new HashMap<>();
 
 		IndicesAdminClient indicesAdminClient = _adminClient.indices();
@@ -311,15 +311,16 @@ public class ElasticsearchIndexManagerImpl
 
 		Iterator<List<AliasMetadata>> iterator = immutableOpenMap.valuesIt();
 
+		String regex =
+			"[^_]+_" + weDeployDataService + "_[a-z]+_alias";
+
 		while (iterator.hasNext()) {
 			List<AliasMetadata> aliasMetadatas = iterator.next();
 
 			for (AliasMetadata aliasMetadata : aliasMetadatas) {
 				String alias = aliasMetadata.alias();
 
-				Matcher matcher = _pattern.matcher(alias);
-
-				if (!matcher.matches()) {
+				if (!alias.matches(regex)) {
 					if (_log.isInfoEnabled()) {
 						_log.info(
 							"Found alias not matching expected pattern: " +
@@ -329,7 +330,9 @@ public class ElasticsearchIndexManagerImpl
 					continue;
 				}
 
-				aliases.put(matcher.group("baseIndexName"), alias);
+				int x = alias.indexOf("_alias");
+
+				aliases.put(alias.substring(0, x), alias);
 			}
 		}
 
@@ -657,9 +660,6 @@ public class ElasticsearchIndexManagerImpl
 
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchIndexManagerImpl.class);
-
-	private static final Pattern _pattern = Pattern.compile(
-		"(?<baseIndexName>(asah[a-z0-9]+|test)_osbasah[a-z]+_[a-z]+)_alias");
 
 	private AdminClient _adminClient;
 	private Client _client;

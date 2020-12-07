@@ -14,9 +14,8 @@
 
 package com.liferay.osb.asah.common.elasticsearch.impl;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-
-import java.util.Map;
 
 import org.elasticsearch.client.Client;
 
@@ -32,10 +31,11 @@ public class CacheableElasticsearchInvokerImpl
 	extends ElasticsearchInvokerImpl {
 
 	public CacheableElasticsearchInvokerImpl(
-		Map<String, String> aliases, CacheManager cacheManager, Client client,
+		CacheManager cacheManager, Client client,
+		ElasticsearchIndexManager elasticsearchIndexManager,
 		WeDeployDataService weDeployDataService) {
 
-		super(aliases, client, weDeployDataService);
+		super(client, elasticsearchIndexManager, weDeployDataService);
 
 		_cacheManager = cacheManager;
 	}

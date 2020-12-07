@@ -46,7 +46,8 @@ public interface ElasticsearchIndexManager {
 
 	public boolean exists(String indexName);
 
-	public Map<String, String> getAliases();
+	public Map<String, String> getAliases(
+		WeDeployDataService weDeployDataService);
 
 	public JSONArray getCollectionsJSONArray(
 		WeDeployDataService weDeployDataService);
