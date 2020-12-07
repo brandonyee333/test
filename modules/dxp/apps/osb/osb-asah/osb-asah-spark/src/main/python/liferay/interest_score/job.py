@@ -70,8 +70,6 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 	def run(self):
 		data_frame_reader = self.spark_session.read
 
-		print(self._get_analytics_events_paths_filtered())
-
 		analytics_events_data_frame = data_frame_reader.json(
 		    self._get_analytics_events_paths_filtered()
 		)
