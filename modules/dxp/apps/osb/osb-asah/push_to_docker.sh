@@ -61,6 +61,13 @@ function build_docker_image {
 		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
 	fi
 
+	if [ ${file_name} == osb-asah-monolith ]
+	then
+		echo "" >> ${file_name}/Dockerfile
+		echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
+		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
+	fi
+
 	docker build \
 		--build-arg LABEL_BUILD_DATE=$(date "${CURRENT_DATE}" +'%Y-%m-%dT%H:%M:%SZ') \
 		--build-arg LABEL_VCS_REF=$(git rev-parse HEAD) \
