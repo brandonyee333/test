@@ -11,6 +11,7 @@
 
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
 from liferay.interest_score.job import ReadAnalyticsEventsSparkJob
+from liferay.interest_score.udf import NormalizeURLFunction
 
 from pyspark import SparkConf
 
@@ -20,6 +21,13 @@ import sys
 class InterestScoreApplication(BaseSparkApplication):
 	def __init__(self):
 		super(InterestScoreApplication, self).__init__()
+
+		NormalizeURLFunction(
+			self.spark_session,
+			self.configuration.get(
+				'interest.score.url-ignored-parameters'
+			)
+		)
 
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(
