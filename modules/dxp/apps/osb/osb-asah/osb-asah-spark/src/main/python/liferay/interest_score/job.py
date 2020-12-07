@@ -101,12 +101,12 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.withColumn(
-			'normalized_url', expr('normalize_url(context.url)')
+			'normalized_canonical_url',
+			expr('normalize_url(context.canonicalUrl)')
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.withColumn(
-			'normalized_canonical_url',
-			expr('normalize_url(context.canonicalUrl)')
+			'normalized_url', expr('normalize_url(context.url)')
 		)
 
 		analytics_events_data_frame.createOrReplaceTempView('analytics_events')
