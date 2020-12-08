@@ -154,6 +154,10 @@ public class CleanZendeskAttachmentsMessageListener
 			return true;
 		}
 
+		if (fileName.startsWith("liferay-inc-") && fileName.endsWith(".json")) {
+			return true;
+		}
+
 		if (fileName.endsWith(".groovy")) {
 			return true;
 		}
