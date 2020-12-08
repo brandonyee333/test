@@ -17,6 +17,10 @@ dependencies {
 	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-stream-curator"
 	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-upgrade"
 
+	compile (group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.10") {
+		force = true
+	}
+
 	testCompile group: "junit", name: "junit", version: "4.12"
 	testCompile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-test-util"
 }
