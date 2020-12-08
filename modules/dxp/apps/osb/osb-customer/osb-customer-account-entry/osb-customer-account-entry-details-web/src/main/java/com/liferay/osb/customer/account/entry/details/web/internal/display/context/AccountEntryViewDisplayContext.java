@@ -435,9 +435,7 @@ public class AccountEntryViewDisplayContext {
 			_accountEntryLanguageLocalService.getAccountEntryLanguages(
 				_accountEntry.getAccountEntryId());
 
-		if ((accountEntryLanguages == null) ||
-			accountEntryLanguages.isEmpty()) {
-
+		if (accountEntryLanguages.isEmpty()) {
 			return StringPool.DASH;
 		}
 
