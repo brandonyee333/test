@@ -1,6 +1,7 @@
 [tool.black]
 exclude = '''
 (
-    portal-impl/src/com/liferay/portal/deploy/dependencies/wsadmin.py
+    modules/dxp/apps/osb/osb-asah
+  | portal-impl/src/com/liferay/portal/deploy/dependencies/wsadmin.py
 )
 '''
