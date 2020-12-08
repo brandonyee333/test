@@ -191,24 +191,25 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 		if (account != null) {
 			AccountEntry accountEntry =
-				accountEntryLocalService.getKoroneikiAccountEntry(
+				accountEntryLocalService.fetchKoroneikiAccountEntry(
 					koroneikiAccountKey);
 
-			List<ProductPurchase> productPurchases =
-				_accountReader.getProductPurchases(account.getKey());
+			if (accountEntry != null) {
+				List<ProductPurchase> productPurchases =
+					_accountReader.getProductPurchases(account.getKey());
 
-			accountEntryLocalService.updateAccountEntry(
-				accountEntry.getAccountEntryId(),
-				_accountReader.getSupportEndDate(productPurchases),
-				_accountReader.getTicketSupportEndDate(productPurchases),
-				_accountReader.getStatus(account));
+				accountEntryLocalService.updateAccountEntry(
+					accountEntry.getAccountEntryId(),
+					_accountReader.getSupportEndDate(productPurchases),
+					_accountReader.getTicketSupportEndDate(productPurchases),
+					_accountReader.getStatus(account));
+			}
 
 			Message message = new Message();
 
-			message.put("accountEntryId", accountEntry.getAccountEntryId());
+			message.put("koroneikiAccountKey", koroneikiAccountKey);
 
-			MessageBusUtil.sendMessage(
-				"liferay/zendesk_account_entry_sync", message);
+			MessageBusUtil.sendMessage("liferay/zendesk_account_sync", message);
 		}
 	}
 

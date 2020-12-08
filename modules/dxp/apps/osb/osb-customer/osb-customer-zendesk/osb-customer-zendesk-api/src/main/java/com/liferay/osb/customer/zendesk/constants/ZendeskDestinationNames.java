@@ -23,8 +23,8 @@ public class ZendeskDestinationNames {
 	public static final String ACCOUNT_CONTACT_SYNC =
 		"liferay/zendesk_account_contact_sync";
 
-	public static final String ACCOUNT_ENTRY_SYNC =
-		"liferay/zendesk_account_entry_sync";
+	public static final String ACCOUNT_ENTITLEMENT_SYNC =
+		"liferay/zendesk_account_entitlement_sync";
 
 	public static final String ACCOUNT_SYNC = "liferay/zendesk_account_sync";
 

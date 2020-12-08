@@ -17,6 +17,7 @@ package com.liferay.osb.customer.koroneiki.message.subscriber;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.zendesk.constants.ZendeskDestinationNames;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -37,6 +38,10 @@ public class EntitlementDeleteMessageSubscriber
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
+		sendMessage(
+			ZendeskDestinationNames.ACCOUNT_ENTITLEMENT_SYNC,
+			message.getDestinationName(), (String)message.getPayload());
+
 		JSONObject jsonObject = jsonFactory.createJSONObject(
 			(String)message.getPayload());
 

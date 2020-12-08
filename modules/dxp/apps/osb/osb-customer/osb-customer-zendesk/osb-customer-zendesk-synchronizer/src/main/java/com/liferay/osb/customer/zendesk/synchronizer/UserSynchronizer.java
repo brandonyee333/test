@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer;
 
+import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
@@ -340,7 +341,7 @@ public class UserSynchronizer {
 		}
 
 		for (String contactRoleName :
-				ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES) {
+				ContactRoleConstants.PARTNER_CONTACT_ROLES) {
 
 			ContactRole contactRole = _contactRoleWebService.fetchContactRole(
 				ContactRole.Type.ACCOUNT_CUSTOMER.toString(), contactRoleName);
@@ -349,12 +350,14 @@ public class UserSynchronizer {
 				continue;
 			}
 
-			StringBundler sb = new StringBundler(5);
+			StringBundler sb = new StringBundler(7);
 
 			sb.append("contactUuidContactRoleKeys/any(s:s eq '");
 			sb.append(user.getUuid());
 			sb.append("_");
 			sb.append(contactRole.getKey());
+			sb.append("') and entitlements/any(s:s eq '");
+			sb.append(EntitlementConstants.NAME_PARTNER);
 			sb.append("')");
 
 			long accountsCount = _accountWebService.searchCount(

@@ -97,7 +97,7 @@ public class AccountSynchronizer {
 						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 						contactRole.getName()) ||
 					ArrayUtil.contains(
-						ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
+						ContactRoleConstants.PARTNER_CONTACT_ROLES,
 						contactRole.getName())) {
 
 					_customerSynchronizer.add(user, account, accountEntry);

@@ -172,7 +172,7 @@ public class TeamContactRoleMessageListener extends BaseMessageListener {
 							ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 							curContactRole.getName()) ||
 						ArrayUtil.contains(
-							ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
+							ContactRoleConstants.PARTNER_CONTACT_ROLES,
 							curContactRole.getName())) {
 
 						return;

@@ -98,10 +98,10 @@ public class AutoSynchronizeAccountEntriesMessageListener
 			Message synchronizeMessage = new Message();
 
 			synchronizeMessage.put(
-				"accountEntryId", accountEntry.getAccountEntryId());
+				"koroneikiAccountKey", accountEntry.getKoroneikiAccountKey());
 
 			MessageBusUtil.sendMessage(
-				ZendeskDestinationNames.ACCOUNT_ENTRY_SYNC, synchronizeMessage);
+				ZendeskDestinationNames.ACCOUNT_SYNC, synchronizeMessage);
 		}
 	}
 

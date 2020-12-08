@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
+import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
@@ -37,6 +38,7 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -70,11 +72,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = "destination.name=" + ZendeskDestinationNames.ACCOUNT_ENTRY_SYNC,
+	property = "destination.name=" + ZendeskDestinationNames.ACCOUNT_SYNC,
 	service = MessageListener.class
 )
-public class SynchronizeAccountEntryMessageListener
-	extends BaseMessageListener {
+public class SynchronizeAccountMessageListener extends BaseMessageListener {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
@@ -83,7 +84,7 @@ public class SynchronizeAccountEntryMessageListener
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				ZendeskDestinationNames.ACCOUNT_ENTRY_SYNC);
+				ZendeskDestinationNames.ACCOUNT_SYNC);
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);
@@ -112,36 +113,50 @@ public class SynchronizeAccountEntryMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		long accountEntryId = (Long)message.get("accountEntryId");
+		String koroneikiAccountKey = (String)message.get("koroneikiAccountKey");
 
-		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
-			accountEntryId);
+		Account account = _accountWebService.fetchAccount(koroneikiAccountKey);
 
-		Account account = _accountWebService.fetchAccount(
-			accountEntry.getKoroneikiAccountKey());
+		AccountEntry accountEntry =
+			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+				koroneikiAccountKey);
 
-		if ((account == null) ||
-			(!hasZendeskOrganization(accountEntry) &&
-			 !accountEntry.isActiveSupport()) ||
-			(accountEntry.getAccountEntryId() ==
-				OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
+		if (account == null) {
+			if ((accountEntry != null) &&
+				((!hasZendeskOrganization(accountEntry) &&
+				  !accountEntry.isActiveSupport()) ||
+				 (accountEntry.getAccountEntryId() ==
+					 OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID))) {
 
-			_accountEntryLocalService.updateLastZendeskAuditDate(
-				OSBCustomerConstants.USER_DEFAULT_USER_ID, accountEntryId,
-				StringPool.BLANK, StringPool.BLANK);
+				_accountEntryLocalService.updateLastZendeskAuditDate(
+					OSBCustomerConstants.USER_DEFAULT_USER_ID,
+					accountEntry.getAccountEntryId(), StringPool.BLANK,
+					StringPool.BLANK);
+			}
 
 			return;
 		}
 
 		try {
-			synchronize(account, accountEntry);
+			List<Contact> contacts =
+				_contactWebService.getAccountCustomerContacts(
+					account.getKey(), 1, 1000);
+
+			if (accountEntry != null) {
+				synchronizeCustomers(account, contacts, accountEntry);
+			}
+
+			synchronizePartners(account, contacts);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
 
-			_accountEntryLocalService.updateLastZendeskAuditDate(
-				OSBCustomerConstants.USER_DEFAULT_USER_ID, accountEntryId,
-				StringPool.BLANK, StringPool.BLANK);
+			if (accountEntry != null) {
+				_accountEntryLocalService.updateLastZendeskAuditDate(
+					OSBCustomerConstants.USER_DEFAULT_USER_ID,
+					accountEntry.getAccountEntryId(), StringPool.BLANK,
+					StringPool.BLANK);
+			}
 		}
 	}
 
@@ -190,13 +205,11 @@ public class SynchronizeAccountEntryMessageListener
 		_destinationFactory = destinationFactory;
 	}
 
-	protected void synchronize(Account account, AccountEntry accountEntry)
+	protected void synchronizeCustomers(
+			Account account, List<Contact> contacts, AccountEntry accountEntry)
 		throws Exception {
 
 		Map<String, User> customerUsersMap = new HashMap<>();
-
-		List<Contact> contacts = _contactWebService.getAccountCustomerContacts(
-			accountEntry.getKoroneikiAccountKey(), 1, 1000);
 
 		for (Contact contact : contacts) {
 			User user = _userIdentityProvider.fetchUserByEmailAddress(
@@ -288,8 +301,52 @@ public class SynchronizeAccountEntryMessageListener
 			StringPool.BLANK);
 	}
 
+	protected void synchronizePartners(Account account, List<Contact> contacts)
+		throws Exception {
+
+		boolean partner = false;
+
+		Entitlement[] entitlements = account.getEntitlements();
+
+		if (entitlements != null) {
+			for (Entitlement entitlement : entitlements) {
+				String name = entitlement.getName();
+
+				if (name.equals(EntitlementConstants.NAME_PARTNER)) {
+					partner = true;
+				}
+			}
+		}
+
+		if (!partner) {
+			return;
+		}
+
+		for (Contact contact : contacts) {
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				contact.getEmailAddress());
+
+			if (user == null) {
+				continue;
+			}
+
+			ContactRole[] contactRoles = contact.getContactRoles();
+
+			for (ContactRole contactRole : contactRoles) {
+				if (ArrayUtil.contains(
+						ContactRoleConstants.PARTNER_CONTACT_ROLES,
+						contactRole.getName())) {
+
+					_userSynchronizer.update(user, null);
+
+					break;
+				}
+			}
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
-		SynchronizeAccountEntryMessageListener.class);
+		SynchronizeAccountMessageListener.class);
 
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;

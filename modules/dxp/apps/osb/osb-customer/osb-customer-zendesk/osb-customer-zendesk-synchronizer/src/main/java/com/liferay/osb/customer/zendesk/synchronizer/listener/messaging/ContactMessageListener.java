@@ -14,12 +14,12 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
+import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
-import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
@@ -33,8 +33,8 @@ import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactRoleSerDes;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactSerDes;
@@ -120,12 +120,13 @@ public class ContactMessageListener extends BaseMessageListener {
 			_accountEntryLocalService.fetchKoroneikiAccountEntry(
 				account.getKey());
 
-		if (accountEntry == null) {
+		if ((accountEntry == null) && !isPartner(account)) {
 			return;
 		}
 
-		if (accountEntry.getAccountEntryId() ==
-				OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID) {
+		if ((accountEntry != null) &&
+			(accountEntry.getAccountEntryId() ==
+				OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
 
 			return;
 		}
@@ -147,6 +148,22 @@ public class ContactMessageListener extends BaseMessageListener {
 		}
 	}
 
+	protected boolean isPartner(Account account) {
+		Entitlement[] entitlements = account.getEntitlements();
+
+		if (entitlements != null) {
+			for (Entitlement entitlement : entitlements) {
+				String name = entitlement.getName();
+
+				if (name.equals(EntitlementConstants.NAME_PARTNER)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	protected void onContactRoleAssign(
 		Account account, AccountEntry accountEntry, User user,
 		ContactRole contactRole) {
@@ -154,7 +171,7 @@ public class ContactMessageListener extends BaseMessageListener {
 		try {
 			String name = contactRole.getName();
 
-			if (!accountEntry.isActiveSupport() &&
+			if ((accountEntry != null) && !accountEntry.isActiveSupport() &&
 				!name.equals(
 					ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
 
@@ -164,7 +181,7 @@ public class ContactMessageListener extends BaseMessageListener {
 			if (ArrayUtil.contains(
 					ContactRoleConstants.SUPPORT_CONTACT_ROLES, name) ||
 				ArrayUtil.contains(
-					ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES, name)) {
+					ContactRoleConstants.PARTNER_CONTACT_ROLES, name)) {
 
 				_customerSynchronizer.add(user, account, accountEntry);
 			}
@@ -185,7 +202,7 @@ public class ContactMessageListener extends BaseMessageListener {
 					ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 					contactRole.getName()) &&
 				!ArrayUtil.contains(
-					ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
+					ContactRoleConstants.PARTNER_CONTACT_ROLES,
 					contactRole.getName())) {
 
 				return;
@@ -195,35 +212,22 @@ public class ContactMessageListener extends BaseMessageListener {
 				_contactRoleWebService.getAccountContactRoles(
 					account.getKey(), user.getUuid(), 1, 1000);
 
-			TeamRole teamRole = _teamRoleWebService.fetchTeamRole(
-				TeamRole.Type.ACCOUNT.toString(),
-				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
+			boolean flsPartner = false;
 
-			if (teamRole != null) {
-				Team firstLineSupportTeam =
-					_accountReader.getFirstLineSupportTeam(account);
+			Team firstLineSupportTeam = _accountReader.getFirstLineSupportTeam(
+				account);
 
-				if (firstLineSupportTeam != null) {
-					List<ContactRole> firstLineSupportContactRoles =
-						_contactRoleWebService.getTeamContactRoles(
-							firstLineSupportTeam.getKey(), user.getUuid(), 1,
-							1000);
+			if (firstLineSupportTeam != null) {
+				List<ContactRole> firstLineSupportContactRoles =
+					_contactRoleWebService.getTeamContactRoles(
+						firstLineSupportTeam.getKey(), user.getUuid(), 1, 1000);
 
-					for (ContactRole firstLineSupportContactRole :
-							firstLineSupportContactRoles) {
-
-						if (ArrayUtil.contains(
-								ContactRoleConstants.
-									ZENDESK_PARTNER_CONTACT_ROLES,
-								firstLineSupportContactRole.getName())) {
-
-							contactRoles.add(firstLineSupportContactRole);
-						}
-					}
+				if (!firstLineSupportContactRoles.isEmpty()) {
+					flsPartner = true;
 				}
 			}
 
-			if (contactRoles.isEmpty()) {
+			if (contactRoles.isEmpty() && !flsPartner) {
 				onContactUnassign(account, accountEntry, user);
 
 				return;
@@ -232,7 +236,7 @@ public class ContactMessageListener extends BaseMessageListener {
 			for (ContactRole curContactRole : contactRoles) {
 				String name = curContactRole.getName();
 
-				if (!accountEntry.isActiveSupport() &&
+				if ((accountEntry != null) && !accountEntry.isActiveSupport() &&
 					!name.equals(
 						ContactRoleConstants.NAME_SUPPORT_CLOSED_WATCHER)) {
 
@@ -243,7 +247,7 @@ public class ContactMessageListener extends BaseMessageListener {
 						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 						curContactRole.getName()) ||
 					ArrayUtil.contains(
-						ContactRoleConstants.ZENDESK_PARTNER_CONTACT_ROLES,
+						ContactRoleConstants.PARTNER_CONTACT_ROLES,
 						curContactRole.getName())) {
 
 					_customerSynchronizer.update(user);
@@ -265,8 +269,10 @@ public class ContactMessageListener extends BaseMessageListener {
 		Account account, AccountEntry accountEntry, User user) {
 
 		try {
-			_accountSynchronizer.reassignTickets(
-				account.getKey(), accountEntry, user);
+			if (accountEntry != null) {
+				_accountSynchronizer.reassignTickets(
+					account.getKey(), accountEntry, user);
+			}
 
 			_customerSynchronizer.remove(user, accountEntry);
 		}

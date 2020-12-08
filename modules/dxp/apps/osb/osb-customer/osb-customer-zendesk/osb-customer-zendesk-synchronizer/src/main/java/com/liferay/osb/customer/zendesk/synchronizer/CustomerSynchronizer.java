@@ -39,9 +39,14 @@ public class CustomerSynchronizer {
 			return;
 		}
 
-		_userSynchronizer.update(user, account.getName());
+		if (accountEntry != null) {
+			_userSynchronizer.update(user, account.getName());
 
-		addOrganizationSubscription(account, accountEntry, user);
+			addOrganizationSubscription(account, accountEntry, user);
+		}
+		else {
+			_userSynchronizer.update(user, null);
+		}
 	}
 
 	public void remove(User user, AccountEntry accountEntry) throws Exception {
@@ -49,19 +54,26 @@ public class CustomerSynchronizer {
 			return;
 		}
 
-		long zendeskOrganizationId =
-			_zendeskMapperUtil.fetchZendeskOrganizationId(
-				accountEntry.getAccountEntryId());
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
 
-		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
-			_zendeskOrganizationMembershipWebService.
-				deleteOrganizationMemberships(
-					zendeskUserId, new long[] {zendeskOrganizationId});
-
-			_userSynchronizer.updateTags(user);
+		if (zendeskUserId <= 0) {
+			return;
 		}
+
+		if (accountEntry != null) {
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(
+					accountEntry.getAccountEntryId());
+
+			if (zendeskOrganizationId > 0) {
+				_zendeskOrganizationMembershipWebService.
+					deleteOrganizationMemberships(
+						zendeskUserId, new long[] {zendeskOrganizationId});
+			}
+		}
+
+		_userSynchronizer.update(user, null);
 	}
 
 	public void update(User user) throws Exception {
