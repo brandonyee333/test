@@ -14,14 +14,12 @@
 
 package com.liferay.osb.customer.identity.management.internal.provider;
 
-import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailService;
 import com.liferay.osb.customer.identity.management.internal.configuration.WebUserIdentityConfiguration;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
-import com.liferay.petra.string.CharPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
@@ -35,19 +33,11 @@ import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.StackTraceUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -199,12 +189,12 @@ public class WebUserIdentityProvider
 				return null;
 			}
 
-			_sendEmail(jsonwsie, parameters);
+			_log.error(jsonwsie, jsonwsie);
 
 			throw jsonwsie;
 		}
 		catch (Exception e) {
-			_sendEmail(e, parameters);
+			_log.error(e, e);
 
 			throw e;
 		}
@@ -266,43 +256,6 @@ public class WebUserIdentityProvider
 			jsonObject.getString("lastName"), 0, 0, false, 0, 1, 1970,
 			StringPool.BLANK, new long[0], new long[0], new long[0],
 			new long[0], false, serviceContext);
-	}
-
-	private void _sendEmail(Exception e, Map<String, String> parameters) {
-		if (Validator.isNull(
-				_webUserIdentityConfiguration.errorEmailAddress())) {
-
-			return;
-		}
-
-		StringBundler sb = new StringBundler(5);
-
-		if (parameters != null) {
-			sb.append("<strong>Parameters: </strong><br />");
-			sb.append(MapUtil.toString(parameters));
-			sb.append("<br /><br />");
-		}
-
-		sb.append("<strong>Stack Trace:</strong><br />");
-
-		sb.append(
-			StringUtil.replace(
-				StackTraceUtil.getStackTrace(e), CharPool.NEW_LINE, "<br />"));
-
-		try {
-			InternetAddress from = new InternetAddress("noreply@liferay.com");
-			InternetAddress to = new InternetAddress(
-				_webUserIdentityConfiguration.errorEmailAddress());
-
-			MailMessage mailMessage = new MailMessage(
-				from, to, "Auto Generated Web API Error Message", sb.toString(),
-				true);
-
-			_mailService.sendEmail(mailMessage);
-		}
-		catch (AddressException ae) {
-			_log.error(ae, ae);
-		}
 	}
 
 	private static final String _URL_API_REST_ORGANIZATIONS =

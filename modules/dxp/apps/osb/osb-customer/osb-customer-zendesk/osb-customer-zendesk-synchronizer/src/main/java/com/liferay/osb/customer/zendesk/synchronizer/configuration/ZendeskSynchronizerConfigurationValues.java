@@ -31,12 +31,4 @@ public class ZendeskSynchronizerConfigurationValues {
 			ZendeskSynchronizerConfigurationUtil.get(
 				"zendesk.account.entry.sync.interval"));
 
-	public static final String ZENDESK_ADMIN_EMAIL_ADDRESS =
-		GetterUtil.getString(
-			ZendeskSynchronizerConfigurationUtil.get(
-				"zendesk.admin.email.address"));
-
-	public static final String ZENDESK_USER_URL = GetterUtil.getString(
-		ZendeskSynchronizerConfigurationUtil.get("zendesk.user.url"));
-
 }
