@@ -311,28 +311,17 @@ public class ElasticsearchIndexManagerImpl
 
 		Iterator<List<AliasMetadata>> iterator = immutableOpenMap.valuesIt();
 
-		String regex =
-			"[^_]+_" + weDeployDataService + "_[a-z]+_alias";
-
 		while (iterator.hasNext()) {
 			List<AliasMetadata> aliasMetadatas = iterator.next();
 
 			for (AliasMetadata aliasMetadata : aliasMetadatas) {
 				String alias = aliasMetadata.alias();
 
-				if (!alias.matches(regex)) {
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Found alias not matching expected pattern: " +
-								alias);
-					}
-
+				if (!alias.contains("_" + weDeployDataService + "_")) {
 					continue;
 				}
 
-				int x = alias.indexOf("_alias");
-
-				aliases.put(alias.substring(0, x), alias);
+				aliases.put(alias.replace("_alias", ""), alias);
 			}
 		}
 
