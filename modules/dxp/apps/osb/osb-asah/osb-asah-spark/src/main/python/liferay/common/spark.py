@@ -16,50 +16,53 @@ from liferay.common.configuration import Configuration
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
 
+
 class BaseSparkApplication(object):
-	__metaclass__ = ABCMeta
+    __metaclass__ = ABCMeta
 
-	def __init__(self):
-		argument_parser = self._create_argument_parser()
+    def __init__(self):
+        argument_parser = self._create_argument_parser()
 
-		self.args = argument_parser.parse_args()
+        self.args = argument_parser.parse_args()
 
-		self.configuration = Configuration(self.args.configuration)
-		self.spark_session = self._build_spark_session()
+        self.configuration = Configuration(self.args.configuration)
+        self.spark_session = self._build_spark_session()
 
-	def _build_spark_session(self):
-		spark_session_builder = SparkSession.Builder()
+    def _build_spark_session(self):
+        spark_session_builder = SparkSession.Builder()
 
-		spark_session_builder.config(conf=self._create_spark_conf())
+        spark_session_builder.config(conf=self._create_spark_conf())
 
-		return spark_session_builder.getOrCreate()
+        return spark_session_builder.getOrCreate()
 
-	@abstractmethod
-	def _create_argument_parser(self):
-		return
+    @abstractmethod
+    def _create_argument_parser(self):
+        return
 
-	def _create_spark_conf(self):
-		return SparkConf()
+    def _create_spark_conf(self):
+        return SparkConf()
 
-	@abstractmethod
-	def start(self):
-		pass
+    @abstractmethod
+    def start(self):
+        pass
+
 
 class BaseSparkJob(object, metaclass=ABCMeta):
-	def __init__(self, spark_application):
-		self.spark_application = spark_application
-		self.spark_application_args = spark_application.args
-		self.spark_application_configuration = spark_application.configuration
-		self.spark_session = spark_application.spark_session
+    def __init__(self, spark_application):
+        self.spark_application = spark_application
+        self.spark_application_args = spark_application.args
+        self.spark_application_configuration = spark_application.configuration
+        self.spark_session = spark_application.spark_session
 
-	@abstractmethod
-	def run(self):
-		pass
+    @abstractmethod
+    def run(self):
+        pass
+
 
 class SparkJobPipeline:
-	def __init__(self, jobs):
-		self.jobs = jobs
+    def __init__(self, jobs):
+        self.jobs = jobs
 
-	def run(self):
-		for job in self.jobs:
-			job.run()
+    def run(self):
+        for job in self.jobs:
+            job.run()

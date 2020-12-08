@@ -11,7 +11,8 @@
 
 from datetime import datetime
 
-def new_utc_date_string():
-	utc_now = datetime.utcnow()
 
-	return utc_now.strftime('%Y-%m-%dT%H:%M:%S.000Z')
+def new_utc_date_string():
+    utc_now = datetime.utcnow()
+
+    return utc_now.strftime("%Y-%m-%dT%H:%M:%S.000Z")
