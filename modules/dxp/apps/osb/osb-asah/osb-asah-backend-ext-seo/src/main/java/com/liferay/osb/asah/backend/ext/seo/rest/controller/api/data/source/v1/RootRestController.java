@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.ext.seo.model.CountrySearchKeywords;
 import com.liferay.osb.asah.backend.ext.seo.model.SearchKeyword;
 import com.liferay.osb.asah.backend.ext.seo.model.TrafficSource;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -58,7 +59,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -97,7 +97,7 @@ public class RootRestController {
 		}
 	}
 
-	@Cacheable("getTrafficSources")
+	@Cacheable
 	@GetMapping("/traffic-sources")
 	public List<TrafficSource> getTrafficSources(@RequestParam String url) {
 		if (StringUtils.isEmpty(url)) {
