@@ -15,7 +15,12 @@
 package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.graphql.GraphQLRestController;
+import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+
+import graphql.ExecutionInput;
+import graphql.GraphQL;
 
 import java.time.LocalDate;
 
@@ -23,18 +28,29 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.mockito.Mockito;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Leslie Wong
+ * @author Shinn Lok
  */
+@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
+@EnableCaching
+@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class GraphQLRestControllerTest {
 
 	@Test
 	public void testSkipCacheWithCustomRange1() throws Exception {
 		String query = ResourceUtil.readResourceToString(
-			"cacheable_query.graphql", this);
+			"dependencies/cacheable_query.graphql", this);
 
 		LocalDate rangeEndLocalDate = LocalDate.now();
 
@@ -42,18 +58,19 @@ public class GraphQLRestControllerTest {
 
 		Map<String, Object> variables = new HashMap<String, Object>() {
 			{
+				put("interval", "D");
 				put("rangeEnd", rangeEndLocalDate.toString());
 				put("rangeStart", rangeStartLocalDate.toString());
 			}
 		};
 
-		Assert.assertTrue(GraphQLRestController.skipCache(query, variables));
+		_verify(true, "SiteMetrics", query, variables);
 	}
 
 	@Test
 	public void testSkipCacheWithCustomRange2() throws Exception {
 		String query = ResourceUtil.readResourceToString(
-			"cacheable_query.graphql", this);
+			"dependencies/cacheable_query.graphql", this);
 
 		LocalDate localDate = LocalDate.now();
 
@@ -63,51 +80,79 @@ public class GraphQLRestControllerTest {
 
 		Map<String, Object> variables = new HashMap<String, Object>() {
 			{
+				put("interval", "D");
 				put("rangeEnd", rangeEndLocalDate.toString());
 				put("rangeStart", rangeStartLocalDate.toString());
 			}
 		};
 
-		Assert.assertFalse(GraphQLRestController.skipCache(query, variables));
+		_verify(false, "SiteMetrics", query, variables);
 	}
 
 	@Test
 	public void testSkipCacheWithNoncacheableQuery() throws Exception {
 		String query = ResourceUtil.readResourceToString(
-			"noncacheable_query.graphql", this);
+			"dependencies/noncacheable_query.graphql", this);
 
-		Assert.assertTrue(GraphQLRestController.skipCache(query, null));
+		_verify(true, "IndividualMetrics", query, Collections.emptyMap());
 	}
 
 	@Test
 	public void testSkipCacheWithRangeKey() throws Exception {
 		String query = ResourceUtil.readResourceToString(
-			"cacheable_query.graphql", this);
+			"dependencies/cacheable_query.graphql", this);
 
-		Assert.assertTrue(
-			GraphQLRestController.skipCache(
-				query, Collections.singletonMap("rangeKey", 0)));
-		Assert.assertFalse(
-			GraphQLRestController.skipCache(
-				query, Collections.singletonMap("rangeKey", 1)));
-		Assert.assertFalse(
-			GraphQLRestController.skipCache(
-				query, Collections.singletonMap("rangeKey", 7)));
-		Assert.assertFalse(
-			GraphQLRestController.skipCache(
-				query, Collections.singletonMap("rangeKey", 28)));
-		Assert.assertFalse(
-			GraphQLRestController.skipCache(
-				query, Collections.singletonMap("rangeKey", 30)));
-		Assert.assertFalse(
-			GraphQLRestController.skipCache(
-				query, Collections.singletonMap("rangeKey", 90)));
-		Assert.assertFalse(
-			GraphQLRestController.skipCache(
-				query, Collections.singletonMap("rangeKey", 180)));
-		Assert.assertFalse(
-			GraphQLRestController.skipCache(
-				query, Collections.singletonMap("rangeKey", 365)));
+		_verify(true, "SiteMetrics", query, _getVariables(0));
+		_verify(false, "SiteMetrics", query, _getVariables(1));
+		_verify(false, "SiteMetrics", query, _getVariables(7));
+		_verify(false, "SiteMetrics", query, _getVariables(28));
+		_verify(false, "SiteMetrics", query, _getVariables(30));
+		_verify(false, "SiteMetrics", query, _getVariables(90));
+		_verify(false, "SiteMetrics", query, _getVariables(180));
+		_verify(false, "SiteMetrics", query, _getVariables(365));
 	}
+
+	private Map<String, Object> _getVariables(int rangeKey) {
+		Map<String, Object> variables = new HashMap<>();
+
+		variables.put("interval", "D");
+		variables.put("rangeKey", rangeKey);
+
+		return variables;
+	}
+
+	private void _verify(
+			boolean expectedSkipCache, String operationName, String query,
+			Map<String, Object> variables)
+		throws Exception {
+
+		for (int i = 0; i < 3; i++) {
+			_graphQLRestController.getGraphQLExecutionResult(
+				operationName, query, variables);
+		}
+
+		if (expectedSkipCache) {
+			Mockito.verify(
+				_qraphQL, Mockito.times(3)
+			).execute(
+				Mockito.any(ExecutionInput.class)
+			);
+		}
+		else {
+			Mockito.verify(
+				_qraphQL, Mockito.times(1)
+			).execute(
+				Mockito.any(ExecutionInput.class)
+			);
+		}
+
+		Mockito.reset(_qraphQL);
+	}
+
+	@Autowired
+	private GraphQLRestController _graphQLRestController;
+
+	@SpyBean
+	private GraphQL _qraphQL;
 
 }
