@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.spring.aspect;
 
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import java.lang.reflect.Method;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.CodeSignature;
@@ -80,6 +82,36 @@ public class CacheProcessorAspect {
 		return resultObject;
 	}
 
+	@AfterReturning(
+		"@annotation(com.liferay.osb.asah.common.spring.annotation.CacheEvict)"
+	)
+	public void processCacheEvict(JoinPoint joinPoint) {
+		if (_cacheManager == null) {
+			return;
+		}
+
+		MethodSignature methodSignature =
+			(MethodSignature)joinPoint.getSignature();
+
+		Method method = methodSignature.getMethod();
+
+		CacheEvict cacheEvict = method.getAnnotation(CacheEvict.class);
+
+		for (String cacheName : cacheEvict.value()) {
+			_clear(cacheName);
+		}
+	}
+
+	private void _clear(String cacheName) {
+		Cache cache = _cacheManager.getCache(cacheName);
+
+		if (cache == null) {
+			return;
+		}
+
+		cache.clear();
+	}
+
 	private Cache.ValueWrapper _get(String cacheName, Object key) {
 		Cache cache = _cacheManager.getCache(cacheName);
 
@@ -96,6 +128,7 @@ public class CacheProcessorAspect {
 		CodeSignature signature = (CodeSignature)joinPoint.getSignature();
 
 		String[] parameterNames = signature.getParameterNames();
+
 		Object[] arguments = joinPoint.getArgs();
 
 		for (int i = 0; i < parameterNames.length; i++) {
