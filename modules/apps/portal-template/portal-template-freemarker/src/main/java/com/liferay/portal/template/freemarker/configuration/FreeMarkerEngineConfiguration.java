@@ -53,6 +53,11 @@ public interface FreeMarkerEngineConfiguration {
 	public String[] restrictedMethods();
 
 	@Meta.AD(
+		deflt = "false", name = "modify-database-enabled", required = false
+	)
+	public boolean modifyDatabaseEnabled();
+
+	@Meta.AD(
 		deflt = "httpUtilUnsafe|objectUtil|serviceLocator|staticFieldGetter|staticUtil|utilLocator",
 		name = "restricted-variables", required = false
 	)
