@@ -17,13 +17,13 @@ package com.liferay.osb.asah.common.faro.info.dog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,8 +33,7 @@ import org.springframework.stereotype.Component;
 public class FaroInfoEngagementDog extends BaseFaroInfoDog {
 
 	@CacheEvict(
-		allEntries = true,
-		value = {
+		{
 			"getEngagements", "getEngagementTransformations",
 			"getSegmentEngagements"
 		}

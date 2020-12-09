@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
@@ -38,8 +39,6 @@ import org.elasticsearch.script.Script;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -55,17 +54,14 @@ import org.springframework.stereotype.Component;
 @Profile("!test")
 public class OSBAsahBatchCuratorBot {
 
+	@CacheEvict(
+		{
+			"getActivityTransformations", "getGraphQLExecutionResult",
+			"getMembershipChangeTransformations"
+		}
+	)
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void clearCache() {
-		for (String cacheName : _CACHE_NAMES) {
-			Cache cache = _cacheManager.getCache(cacheName);
-
-			cache.clear();
-
-			if (_log.isInfoEnabled()) {
-				_log.info("Cache cleared: " + cacheName);
-			}
-		}
 	}
 
 	@Scheduled(fixedDelay = DateUtil.HOUR * 6)
@@ -229,16 +225,8 @@ public class OSBAsahBatchCuratorBot {
 			"StaleDynamicIndividualSegments");
 	}
 
-	private static final String[] _CACHE_NAMES = {
-		"getActivityTransformations", "getGraphQLExecutionResult",
-		"getMembershipChangeTransformations"
-	};
-
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahBatchCuratorBot.class);
-
-	@Autowired(required = false)
-	private CacheManager _cacheManager;
 
 	@Autowired(required = false)
 	@Qualifier("contentRecommendationDataSolutionNaniteRunnable")

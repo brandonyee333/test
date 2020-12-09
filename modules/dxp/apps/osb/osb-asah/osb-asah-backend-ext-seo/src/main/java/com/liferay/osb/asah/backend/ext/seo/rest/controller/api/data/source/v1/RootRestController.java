@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.ext.seo.model.CountrySearchKeywords;
 import com.liferay.osb.asah.backend.ext.seo.model.SearchKeyword;
 import com.liferay.osb.asah.backend.ext.seo.model.TrafficSource;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -57,8 +58,6 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -85,13 +84,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 )
 public class RootRestController {
 
+	@CacheEvict("getTrafficSources")
 	@DeleteMapping("/cache")
 	@Scheduled(cron = "0 0 2 ? * MON")
 	public void clearCache() {
-		Cache cache = _cacheManager.getCache("getTrafficSources");
-
-		cache.clear();
-
 		if (_log.isInfoEnabled()) {
 			_log.info("Cache cleared: getTrafficSources");
 		}
@@ -463,9 +459,6 @@ public class RootRestController {
 				put("Zimbabwe", "zw");
 			}
 		};
-
-	@Autowired(required = false)
-	private CacheManager _cacheManager;
 
 	@Value("${osb.asah.seo.semrush.databases.limit:5}")
 	private int _databasesLimit;

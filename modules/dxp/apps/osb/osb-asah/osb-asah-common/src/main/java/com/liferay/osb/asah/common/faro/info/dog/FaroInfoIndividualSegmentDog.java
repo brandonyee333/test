@@ -22,6 +22,8 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
+import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -49,10 +51,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -62,12 +60,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 
-	@CacheEvict(allEntries = true, value = "getReferencedAssetIds")
 	public JSONObject addIndividualSegment(
 			JSONObject individualSegmentJSONObject)
 		throws Exception {
 
-		_setReferencedFields(individualSegmentJSONObject);
+		_faroInfoIndividualSegmentDog.setReferencedFields(
+			individualSegmentJSONObject);
 
 		individualSegmentJSONObject = elasticsearchInvoker.add(
 			"individual-segments", _setState(individualSegmentJSONObject));
@@ -101,7 +99,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		_updateMemberships(channelId, individualSegmentJSONObject);
 	}
 
-	@CacheEvict(allEntries = true, value = "getReferencedAssetIds")
+	@CacheEvict("getReferencedAssetIds")
 	public void deleteIndividualSegment(String individualSegmentId) {
 		elasticsearchInvoker.delete("individual-segments", individualSegmentId);
 
@@ -186,21 +184,34 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				"individual-segments", individualSegmentJSONObject);
 		}
 		else {
-			_setReferencedFields(individualSegmentJSONObject);
+			_faroInfoIndividualSegmentDog.setReferencedFields(
+				individualSegmentJSONObject);
 
 			elasticsearchInvoker.replace(
 				"individual-segments", _setState(individualSegmentJSONObject));
 
 			_addOSBAsahTask(individualSegmentJSONObject);
-
-			if (_cacheManager != null) {
-				Cache cache = _cacheManager.getCache("getReferencedAssetIds");
-
-				cache.clear();
-			}
 		}
 
 		return individualSegmentJSONObject;
+	}
+
+	@CacheEvict("getReferencedAssetIds")
+	public void setReferencedFields(JSONObject individualSegmentJSONObject)
+		throws Exception {
+
+		JSONObject referencedObjectIdsJSONObject =
+			_getReferencedObjectIdsJSONObject(
+				individualSegmentJSONObject.optString("filter", null), null);
+
+		for (String referencedObjectType :
+				referencedObjectIdsJSONObject.keySet()) {
+
+			individualSegmentJSONObject.put(
+				referencedObjectType,
+				referencedObjectIdsJSONObject.getJSONArray(
+					referencedObjectType));
+		}
 	}
 
 	public JSONObject updateIndividualSegment(
@@ -226,19 +237,14 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				partialIndividualSegmentJSONObject);
 		}
 		else {
-			_setReferencedFields(partialIndividualSegmentJSONObject);
+			_faroInfoIndividualSegmentDog.setReferencedFields(
+				partialIndividualSegmentJSONObject);
 
 			individualSegmentJSONObject = elasticsearchInvoker.update(
 				"individual-segments", individualSegmentId,
 				_setState(partialIndividualSegmentJSONObject));
 
 			_addOSBAsahTask(individualSegmentJSONObject);
-
-			if (_cacheManager != null) {
-				Cache cache = _cacheManager.getCache("getReferencedAssetIds");
-
-				cache.clear();
-			}
 		}
 
 		return individualSegmentJSONObject;
@@ -771,23 +777,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		_faroInfoAccountDog.replaceAccount(accountJSONObject);
 	}
 
-	private void _setReferencedFields(JSONObject individualSegmentJSONObject)
-		throws Exception {
-
-		JSONObject referencedObjectIdsJSONObject =
-			_getReferencedObjectIdsJSONObject(
-				individualSegmentJSONObject.optString("filter", null), null);
-
-		for (String referencedObjectType :
-				referencedObjectIdsJSONObject.keySet()) {
-
-			individualSegmentJSONObject.put(
-				referencedObjectType,
-				referencedObjectIdsJSONObject.getJSONArray(
-					referencedObjectType));
-		}
-	}
-
 	private JSONObject _setState(JSONObject individualSegmentJSONObject) {
 		String segmentType = individualSegmentJSONObject.optString(
 			"segmentType", null);
@@ -906,9 +895,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		"individualCount", "lastActivityDate"
 	};
 
-	@Autowired(required = false)
-	private CacheManager _cacheManager;
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
@@ -917,6 +903,9 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
+
+	@Autowired
+	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
 	@Autowired
 	private FaroInfoMembershipDog _faroInfoMembershipDog;
