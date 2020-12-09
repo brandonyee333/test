@@ -17,13 +17,12 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,6 +32,7 @@ import org.springframework.stereotype.Component;
 @GraphQLTypeWiring(fieldName = "timeZone", typeName = "MutationType")
 public class TimeZoneMutationDataFetcher implements DataFetcher<String> {
 
+	@CacheEvict(evictAll = true)
 	@Override
 	public String get(DataFetchingEnvironment dataFetchingEnvironment) {
 		String value = dataFetchingEnvironment.getArgument("value");
@@ -41,19 +41,8 @@ public class TimeZoneMutationDataFetcher implements DataFetcher<String> {
 
 		_nanitesHttp.rescheduleNanites();
 
-		if (_cacheManager != null) {
-			for (String cacheName : _cacheManager.getCacheNames()) {
-				Cache cache = _cacheManager.getCache(cacheName);
-
-				cache.clear();
-			}
-		}
-
 		return value;
 	}
-
-	@Autowired(required = false)
-	private CacheManager _cacheManager;
 
 	@Autowired
 	private FaroInfoPreferenceDog _faroInfoPreferenceDog;

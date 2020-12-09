@@ -127,15 +127,19 @@ public class CacheProcessorAspect {
 
 		CacheEvict cacheEvict = method.getAnnotation(CacheEvict.class);
 
-		if (!ArrayUtils.isEmpty(cacheEvict.value())) {
+		if (cacheEvict.evictAll()) {
+			_evictAll();
+
+			return;
+		}
+		else if (!ArrayUtils.isEmpty(cacheEvict.value())) {
 			for (String cacheName : cacheEvict.value()) {
 				_clear(cacheName);
 			}
 
 			return;
 		}
-
-		if ((returnObject == null) || !(boolean)returnObject) {
+		else if ((returnObject == null) || !(boolean)returnObject) {
 			return;
 		}
 
@@ -204,6 +208,14 @@ public class CacheProcessorAspect {
 		}
 
 		cache.evict(key);
+	}
+
+	private void _evictAll() {
+		for (String cacheName : _cacheManager.getCacheNames()) {
+			Cache cache = _cacheManager.getCache(cacheName);
+
+			cache.clear();
+		}
 	}
 
 	private Cache.ValueWrapper _get(String cacheName, Object cacheKey) {

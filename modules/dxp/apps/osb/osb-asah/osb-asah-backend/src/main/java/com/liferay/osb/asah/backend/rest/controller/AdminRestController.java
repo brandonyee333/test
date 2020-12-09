@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
@@ -52,8 +53,6 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -75,15 +74,9 @@ import org.springframework.web.bind.annotation.RestController;
 )
 public class AdminRestController extends BaseRestController {
 
+	@CacheEvict(evictAll = true)
 	@DeleteMapping("/cache")
 	public void clearCache() {
-		if (_cacheManager != null) {
-			for (String cacheName : _cacheManager.getCacheNames()) {
-				Cache cache = _cacheManager.getCache(cacheName);
-
-				cache.clear();
-			}
-		}
 	}
 
 	@DeleteMapping("/data/{weDeployDataServiceName}/{collectionName}")
@@ -251,9 +244,6 @@ public class AdminRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		AdminRestController.class);
-
-	@Autowired(required = false)
-	private CacheManager _cacheManager;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
