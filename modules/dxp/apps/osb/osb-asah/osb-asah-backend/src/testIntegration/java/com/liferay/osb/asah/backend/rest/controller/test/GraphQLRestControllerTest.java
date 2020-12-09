@@ -12,8 +12,9 @@
  *
  */
 
-package com.liferay.osb.asah.backend.graphql;
+package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.backend.graphql.GraphQLRestController;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 
 import java.time.LocalDate;
