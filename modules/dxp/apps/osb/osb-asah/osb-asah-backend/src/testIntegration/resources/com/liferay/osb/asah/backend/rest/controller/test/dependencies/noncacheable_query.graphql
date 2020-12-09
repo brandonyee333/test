@@ -18,10 +18,19 @@ query IndividualMetrics($channelId: String!, $interval: String!, $rangeKey: Int!
 
 fragment trendFragment on Metric {
     histogram {
-        key
-        valueKey
-        value
-        __typename
+        asymmetricComparison
+        metrics {
+            key
+            previousValue
+            previousValueKey
+            value
+            valueKey
+            trend {
+                percentage
+                trendClassification
+            }
+        }
+        total
     }
     value
     trend {

@@ -34,17 +34,19 @@ query SiteMetrics($channelId: String, $interval: String!, $rangeEnd: String, $ra
 
 fragment metricFragment on Metric {
     histogram {
-        key
-        previousValue
-        previousValueKey
-        value
-        valueKey
-        trend {
-            percentage
-            trendClassification
-            __typename
+        asymmetricComparison
+        metrics {
+            key
+            previousValue
+            previousValueKey
+            value
+            valueKey
+            trend {
+                percentage
+                trendClassification
+            }
         }
-        __typename
+        total
     }
     previousValue
     trend {
