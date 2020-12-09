@@ -15,14 +15,14 @@
 package com.liferay.osb.asah.common.elasticsearch.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
+import com.liferay.osb.asah.common.spring.annotation.CachePut;
+import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.elasticsearch.client.Client;
 
 import org.json.JSONObject;
-
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 
 /**
  * @author Shinn Lok
@@ -31,85 +31,36 @@ public class CacheableElasticsearchInvokerImpl
 	extends ElasticsearchInvokerImpl {
 
 	public CacheableElasticsearchInvokerImpl(
-		CacheManager cacheManager, Client client,
-		ElasticsearchIndexManager elasticsearchIndexManager,
+		Client client, ElasticsearchIndexManager elasticsearchIndexManager,
 		WeDeployDataService weDeployDataService) {
 
 		super(client, elasticsearchIndexManager, weDeployDataService);
-
-		_cacheManager = cacheManager;
 	}
 
+	@CachePut
 	@Override
 	public JSONObject add(String collectionName, JSONObject jsonObject) {
-		jsonObject = super.add(collectionName, jsonObject);
-
-		Cache cache = _getCache(collectionName);
-
-		if (cache != null) {
-			cache.put(jsonObject.get("id"), jsonObject.toString());
-		}
-
-		return jsonObject;
+		return super.add(collectionName, jsonObject);
 	}
 
+	@CacheEvict
 	@Override
 	public boolean delete(String collectionName, String id) {
-		boolean deleted = super.delete(collectionName, id);
-
-		Cache cache = _getCache(collectionName);
-
-		if (deleted && (cache != null)) {
-			cache.evict(id);
-		}
-
-		return deleted;
+		return super.delete(collectionName, id);
 	}
 
+	@Cacheable
 	@Override
 	public JSONObject fetch(String collectionName, String id) {
-		Cache cache = _getCache(collectionName);
-
-		if (cache != null) {
-			Cache.ValueWrapper valueWrapper = cache.get(id);
-
-			if (valueWrapper != null) {
-				return new JSONObject((String)valueWrapper.get());
-			}
-		}
-
-		JSONObject jsonObject = super.fetch(collectionName, id);
-
-		if ((cache != null) && (jsonObject != null)) {
-			cache.put(id, jsonObject.toString());
-		}
-
-		return jsonObject;
+		return super.fetch(collectionName, id);
 	}
 
+	@CachePut
 	@Override
 	public JSONObject update(
 		String collectionName, String id, JSONObject jsonObject) {
 
-		jsonObject = super.update(collectionName, id, jsonObject);
-
-		Cache cache = _getCache(collectionName);
-
-		if (cache != null) {
-			cache.put(id, jsonObject.toString());
-		}
-
-		return jsonObject;
+		return super.update(collectionName, id, jsonObject);
 	}
-
-	private Cache _getCache(String collectionName) {
-		if (_cacheManager != null) {
-			return _cacheManager.getCache(collectionName);
-		}
-
-		return null;
-	}
-
-	private final CacheManager _cacheManager;
 
 }

@@ -25,7 +25,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 /**
@@ -60,7 +59,6 @@ public class ElasticsearchInvokerManager {
 			_elasticsearchInvokers.put(
 				"cacheable#" + weDeployDataService.toString(),
 				new CacheableElasticsearchInvokerImpl(
-					_cacheManager,
 					_elasticsearchConnection.getTransportClient(),
 					_elasticsearchIndexManager, weDeployDataService));
 			_elasticsearchInvokers.put(
@@ -70,9 +68,6 @@ public class ElasticsearchInvokerManager {
 					_elasticsearchIndexManager, weDeployDataService));
 		}
 	}
-
-	@Autowired(required = false)
-	private CacheManager _cacheManager;
 
 	@Autowired
 	private ElasticsearchConnection _elasticsearchConnection;

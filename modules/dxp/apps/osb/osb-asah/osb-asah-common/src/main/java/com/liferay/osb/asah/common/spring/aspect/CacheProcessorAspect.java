@@ -24,6 +24,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -53,39 +55,67 @@ public class CacheProcessorAspect {
 	public Object processCacheable(ProceedingJoinPoint proceedingJoinPoint)
 		throws Throwable {
 
-		if ((_cacheManager == null) || _skipCache(proceedingJoinPoint)) {
+		if (_cacheManager == null) {
 			return proceedingJoinPoint.proceed();
 		}
+
+		Object returnObject = null;
 
 		MethodSignature methodSignature =
 			(MethodSignature)proceedingJoinPoint.getSignature();
 
 		Method method = methodSignature.getMethod();
 
-		Cacheable cacheable = method.getAnnotation(Cacheable.class);
+		Map<String, Object> parameters = _getParameters(proceedingJoinPoint);
 
-		Object[] arguments = proceedingJoinPoint.getArgs();
+		if (method.getReturnType() == JSONObject.class) {
+			String cacheName = _getCacheName(parameters);
 
-		Object key = _keyGenerator.generate(
-			proceedingJoinPoint.getTarget(), method, arguments);
+			Object key = _getKey(parameters);
 
-		Cache.ValueWrapper cacheValue = _get(cacheable.cacheName(), key);
+			Cache.ValueWrapper valueWrapper = _get(cacheName, key);
 
-		if (cacheValue != null) {
-			return cacheValue.get();
+			if (valueWrapper != null) {
+				return new JSONObject((String)valueWrapper.get());
+			}
+
+			returnObject = proceedingJoinPoint.proceed();
+
+			if (returnObject != null) {
+				_put(cacheName, key, returnObject.toString());
+			}
+		}
+		else {
+			if (_skipCache(parameters)) {
+				return proceedingJoinPoint.proceed();
+			}
+
+			Cacheable cacheable = method.getAnnotation(Cacheable.class);
+
+			Object[] arguments = proceedingJoinPoint.getArgs();
+
+			Object key = _keyGenerator.generate(
+				proceedingJoinPoint.getTarget(), method, arguments);
+
+			Cache.ValueWrapper valueWrapper = _get(cacheable.cacheName(), key);
+
+			if (valueWrapper != null) {
+				return valueWrapper.get();
+			}
+
+			returnObject = proceedingJoinPoint.proceed();
+
+			_put(cacheable.cacheName(), key, returnObject);
 		}
 
-		Object resultObject = proceedingJoinPoint.proceed();
-
-		_put(cacheable.cacheName(), key, resultObject);
-
-		return resultObject;
+		return returnObject;
 	}
 
 	@AfterReturning(
-		"@annotation(com.liferay.osb.asah.common.spring.annotation.CacheEvict)"
+		returning = "returnObject",
+		value = "@annotation(com.liferay.osb.asah.common.spring.annotation.CacheEvict)"
 	)
-	public void processCacheEvict(JoinPoint joinPoint) {
+	public void processCacheEvict(JoinPoint joinPoint, Object returnObject) {
 		if (_cacheManager == null) {
 			return;
 		}
@@ -97,9 +127,63 @@ public class CacheProcessorAspect {
 
 		CacheEvict cacheEvict = method.getAnnotation(CacheEvict.class);
 
-		for (String cacheName : cacheEvict.value()) {
-			_clear(cacheName);
+		if (!ArrayUtils.isEmpty(cacheEvict.value())) {
+			for (String cacheName : cacheEvict.value()) {
+				_clear(cacheName);
+			}
+
+			return;
 		}
+
+		if ((returnObject == null) || !(boolean)returnObject) {
+			return;
+		}
+
+		Map<String, Object> parameters = _getParameters(joinPoint);
+
+		String cacheName = _getCacheName(parameters);
+
+		if (cacheName == null) {
+			return;
+		}
+
+		Object key = _getKey(parameters);
+
+		if (key == null) {
+			return;
+		}
+
+		_evict(cacheName, key);
+	}
+
+	@AfterReturning(
+		returning = "returnObject",
+		value = "@annotation(com.liferay.osb.asah.common.spring.annotation.CachePut)"
+	)
+	public void processCachePut(JoinPoint joinPoint, Object returnObject) {
+		if (_cacheManager == null) {
+			return;
+		}
+
+		if (!(returnObject instanceof JSONObject)) {
+			return;
+		}
+
+		Map<String, Object> parameters = _getParameters(joinPoint);
+
+		String cacheName = _getCacheName(parameters);
+
+		if (cacheName == null) {
+			return;
+		}
+
+		Object key = _getKey(parameters);
+
+		if (key == null) {
+			return;
+		}
+
+		_put(cacheName, key, String.valueOf(returnObject));
 	}
 
 	private void _clear(String cacheName) {
@@ -112,22 +196,58 @@ public class CacheProcessorAspect {
 		cache.clear();
 	}
 
-	private Cache.ValueWrapper _get(String cacheName, Object key) {
+	private void _evict(String cacheName, Object key) {
+		Cache cache = _cacheManager.getCache(cacheName);
+
+		if (cache == null) {
+			return;
+		}
+
+		cache.evict(key);
+	}
+
+	private Cache.ValueWrapper _get(String cacheName, Object cacheKey) {
 		Cache cache = _cacheManager.getCache(cacheName);
 
 		if (cache == null) {
 			return null;
 		}
 
-		return cache.get(key);
+		return cache.get(cacheKey);
+	}
+
+	private String _getCacheName(Map<String, Object> parameters) {
+		String cacheName = (String)parameters.get("collectionName");
+
+		if (cacheName == null) {
+			return null;
+		}
+
+		return cacheName;
+	}
+
+	private Object _getKey(Map<String, Object> parameters) {
+		String key = (String)parameters.get("id");
+
+		if (key == null) {
+			JSONObject jsonObject = (JSONObject)parameters.get("jsonObject");
+
+			if (jsonObject == null) {
+				return null;
+			}
+
+			key = jsonObject.getString("id");
+		}
+
+		return key;
 	}
 
 	private Map<String, Object> _getParameters(JoinPoint joinPoint) {
 		Map<String, Object> parameters = new HashMap<>();
 
-		CodeSignature signature = (CodeSignature)joinPoint.getSignature();
+		CodeSignature codeSignature = (CodeSignature)joinPoint.getSignature();
 
-		String[] parameterNames = signature.getParameterNames();
+		String[] parameterNames = codeSignature.getParameterNames();
 
 		Object[] arguments = joinPoint.getArgs();
 
@@ -148,9 +268,7 @@ public class CacheProcessorAspect {
 		cache.put(key, value);
 	}
 
-	private boolean _skipCache(JoinPoint joinPoint) {
-		Map<String, Object> parameters = _getParameters(joinPoint);
-
+	private boolean _skipCache(Map<String, Object> parameters) {
 		Boolean includeToday = (Boolean)parameters.get("includeToday");
 
 		if ((includeToday != null) && includeToday) {
