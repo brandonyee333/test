@@ -42,10 +42,4 @@ public interface WebUserIdentityConfiguration {
 	@Meta.AD(deflt = "test", name = "api-token", required = false)
 	public String apiToken();
 
-	@Meta.AD(
-		deflt = "is-lrsd-uat@liferay.com", name = "error-email-address",
-		required = false
-	)
-	public String errorEmailAddress();
-
 }
