@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.spring.aspect;
 
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.lang.reflect.Method;
 
@@ -191,7 +192,7 @@ public class CacheProcessorAspect {
 	}
 
 	private void _clear(String cacheName) {
-		Cache cache = _cacheManager.getCache(cacheName);
+		Cache cache = _getCache(cacheName);
 
 		if (cache == null) {
 			return;
@@ -201,7 +202,7 @@ public class CacheProcessorAspect {
 	}
 
 	private void _evict(String cacheName, Object key) {
-		Cache cache = _cacheManager.getCache(cacheName);
+		Cache cache = _getCache(cacheName);
 
 		if (cache == null) {
 			return;
@@ -212,6 +213,12 @@ public class CacheProcessorAspect {
 
 	private void _evictAll() {
 		for (String cacheName : _cacheManager.getCacheNames()) {
+			if (!cacheName.startsWith(
+					ProjectIdThreadLocal.getProjectId() + "#")) {
+
+				continue;
+			}
+
 			Cache cache = _cacheManager.getCache(cacheName);
 
 			cache.clear();
@@ -219,13 +226,18 @@ public class CacheProcessorAspect {
 	}
 
 	private Cache.ValueWrapper _get(String cacheName, Object cacheKey) {
-		Cache cache = _cacheManager.getCache(cacheName);
+		Cache cache = _getCache(cacheName);
 
 		if (cache == null) {
 			return null;
 		}
 
 		return cache.get(cacheKey);
+	}
+
+	private Cache _getCache(String cacheName) {
+		return _cacheManager.getCache(
+			ProjectIdThreadLocal.getProjectId() + "#" + cacheName);
 	}
 
 	private String _getCacheName(Map<String, Object> parameters) {
@@ -271,7 +283,7 @@ public class CacheProcessorAspect {
 	}
 
 	private void _put(String cacheName, Object key, Object value) {
-		Cache cache = _cacheManager.getCache(cacheName);
+		Cache cache = _getCache(cacheName);
 
 		if (cache == null) {
 			return;
