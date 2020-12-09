@@ -23,8 +23,6 @@ import com.liferay.osb.asah.common.util.StringUtil;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.lucene.search.join.ScoreMode;
-
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -126,11 +124,8 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				return QueryBuilders.termQuery(fieldName, value);
 			}
 
-			return QueryBuilders.nestedQuery(
-				"interactions",
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.existsQuery(fieldName)),
-				ScoreMode.None);
+			return BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.existsQuery(fieldName));
 		}
 		else if (operator.equalsIgnoreCase("gt")) {
 			return QueryBuilders.rangeQuery(
