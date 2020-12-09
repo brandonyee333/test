@@ -24,12 +24,14 @@ import org.springframework.boot.actuate.autoconfigure.MetricExportAutoConfigurat
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * @author Eddie Olson
  * @author Rachael Koestartyo
  */
 @ComponentScan("com.liferay.osb.asah.common")
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnablePrometheusEndpoint
 @EnableSpringBootMetricsCollector
 @SpringBootApplication(
