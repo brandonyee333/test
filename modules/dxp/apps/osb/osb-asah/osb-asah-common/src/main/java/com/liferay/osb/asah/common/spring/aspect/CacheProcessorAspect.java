@@ -18,16 +18,19 @@ import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import java.lang.reflect.Method;
 
+import java.time.LocalDate;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.CodeSignature;
 import org.aspectj.lang.reflect.MethodSignature;
+
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -121,7 +124,38 @@ public class CacheProcessorAspect {
 			return true;
 		}
 
-		return false;
+		String query = (String)parameters.get("query");
+
+		if (query == null) {
+			return false;
+		}
+
+		Map<String, Object> variables = (Map<String, Object>)parameters.get(
+			"variables");
+
+		if (variables == null) {
+			return true;
+		}
+
+		if (!query.startsWith("{pagesCount") &&
+			!query.startsWith("query CustomAssetsList") &&
+			!query.startsWith("query IndividualMetrics")) {
+
+			JSONObject variablesJSONObject = new JSONObject(variables);
+
+			if (variablesJSONObject.has("rangeEnd")) {
+				LocalDate currentLocalDate = LocalDate.now();
+				LocalDate rangeEndLocalDate = LocalDate.parse(
+					variablesJSONObject.getString("rangeEnd"));
+
+				return currentLocalDate.isEqual(rangeEndLocalDate);
+			}
+			else if (variablesJSONObject.optInt("rangeKey") > 0) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Autowired(required = false)

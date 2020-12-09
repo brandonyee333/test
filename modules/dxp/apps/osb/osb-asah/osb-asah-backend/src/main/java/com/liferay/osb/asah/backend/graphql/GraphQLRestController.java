@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.graphql;
 
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
@@ -25,8 +26,6 @@ import io.prometheus.client.SimpleTimer;
 
 import java.nio.charset.Charset;
 
-import java.time.LocalDate;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,11 +35,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,28 +50,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GraphQLRestController {
 
-	public static boolean skipCache(
-		String query, Map<String, Object> variables) {
+	@Cacheable
+	public String getGraphQLExecutionResult(
+			String operationName, String query, Map<String, Object> variables)
+		throws Exception {
 
-		if (!query.startsWith("{pagesCount") &&
-			!query.startsWith("query CustomAssetsList") &&
-			!query.startsWith("query IndividualMetrics")) {
+		ExecutionInput.Builder builder = ExecutionInput.newExecutionInput();
 
-			JSONObject variablesJSONObject = new JSONObject(variables);
+		ExecutionInput executionInput = builder.context(
+			new HashMap<String, Object>()
+		).operationName(
+			operationName
+		).query(
+			query
+		).variables(
+			variables
+		).build();
 
-			if (variablesJSONObject.has("rangeEnd")) {
-				LocalDate currentLocalDate = LocalDate.now();
-				LocalDate rangeEndLocalDate = LocalDate.parse(
-					variablesJSONObject.getString("rangeEnd"));
+		ExecutionResult executionResult = _graphQL.execute(executionInput);
 
-				return currentLocalDate.isEqual(rangeEndLocalDate);
-			}
-			else if (variablesJSONObject.optInt("rangeKey") > 0) {
-				return false;
-			}
-		}
-
-		return true;
+		return _graphQLSerializer.toString(executionResult);
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "")
@@ -88,62 +81,18 @@ public class GraphQLRestController {
 			_log.debug("Post body: " + body);
 		}
 
-		return _getGraphQLExecutionResult(_graphQLSerializer.fromString(body));
-	}
-
-	private String _getGraphQLExecutionResult(GraphQLRequest graphQLRequest)
-		throws Exception {
-
-		String query = graphQLRequest.getQuery();
-		Map<String, Object> variables = graphQLRequest.getVariables();
-
-		boolean skipCache = skipCache(query, variables);
-
-		String cacheKey = query + "#" + variables;
-
-		if ((_cacheManager != null) && !skipCache) {
-			if (_cache == null) {
-				_cache = _cacheManager.getCache("getGraphQLExecutionResult");
-			}
-
-			if (_cache != null) {
-				Cache.ValueWrapper cacheValueWrapper = _cache.get(cacheKey);
-
-				if (cacheValueWrapper != null) {
-					return String.valueOf(cacheValueWrapper.get());
-				}
-			}
-		}
+		GraphQLRequest graphQLRequest = _graphQLSerializer.fromString(body);
 
 		SimpleTimer simpleTimer = new SimpleTimer();
 
 		String operationName = null;
 
 		try {
-			ExecutionInput.Builder builder = ExecutionInput.newExecutionInput();
-
 			operationName = graphQLRequest.getOperationName();
 
-			ExecutionInput executionInput = builder.context(
-				new HashMap<String, Object>()
-			).operationName(
-				operationName
-			).query(
-				graphQLRequest.getQuery()
-			).variables(
-				graphQLRequest.getVariables()
-			).build();
-
-			ExecutionResult executionResult = _graphQL.execute(executionInput);
-
-			String executionResultString = _graphQLSerializer.toString(
-				executionResult);
-
-			if ((_cache != null) && !skipCache) {
-				_cache.put(cacheKey, executionResultString);
-			}
-
-			return executionResultString;
+			return _graphQLRestController.getGraphQLExecutionResult(
+				operationName, graphQLRequest.getQuery(),
+				graphQLRequest.getVariables());
 		}
 		finally {
 			if (operationName == null) {
@@ -166,13 +115,11 @@ public class GraphQLRestController {
 			"The number of seconds taken to process the GraphQL requests",
 			"operation");
 
-	private Cache _cache;
-
-	@Autowired(required = false)
-	private CacheManager _cacheManager;
-
 	@Autowired
 	private GraphQL _graphQL;
+
+	@Autowired
+	private GraphQLRestController _graphQLRestController;
 
 	@Autowired
 	private GraphQLSerializer _graphQLSerializer;
