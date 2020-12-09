@@ -98,8 +98,6 @@ public class SessionFinalizerNanite implements Nanite {
 					lastSuccessfulSessionFinalizerDate
 				)
 			)
-		).setSourceExcludes(
-			"interactions"
 		).iterate();
 
 		while (true) {
@@ -108,7 +106,6 @@ public class SessionFinalizerNanite implements Nanite {
 			String userSessionsJSON = _cerebroInfoElasticsearchInvoker.get(
 				"user-sessions",
 				searchSourceBuilder -> {
-					searchSourceBuilder.fetchSource(null, "interactions");
 					searchSourceBuilder.query(_getQueryBuilder(force));
 					searchSourceBuilder.size(50);
 				});

@@ -255,8 +255,7 @@ public class SessionNanite implements Nanite {
 						)
 					)
 				)
-			),
-			"interactions", null);
+			));
 	}
 
 	private boolean _isSessionBounced(AnalyticsEvents analyticsEvents) {
@@ -480,8 +479,7 @@ public class SessionNanite implements Nanite {
 		userSessionJSONObject = _cerebroInfoElasticsearchInvoker.fetch(
 			"user-sessions",
 			QueryBuilders.termQuery(
-				"id", userSessionJSONObject.getString("id")),
-			"interactions", null);
+				"id", userSessionJSONObject.getString("id")));
 
 		if (userSessionJSONObject.optBoolean("completed", false)) {
 			try {
