@@ -21,6 +21,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.TeamResource;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,6 +65,19 @@ public class TeamWebServiceImpl implements TeamWebService {
 		}
 
 		return Collections.emptyList();
+	}
+
+	public long searchCount(String search, String filterString)
+		throws Exception {
+
+		Page<Team> teamsPage = _teamResource.getTeamsPage(
+			search, filterString, Pagination.of(1, 1), StringPool.BLANK);
+
+		if (teamsPage != null) {
+			return teamsPage.getTotalCount();
+		}
+
+		return 0;
 	}
 
 	@Activate

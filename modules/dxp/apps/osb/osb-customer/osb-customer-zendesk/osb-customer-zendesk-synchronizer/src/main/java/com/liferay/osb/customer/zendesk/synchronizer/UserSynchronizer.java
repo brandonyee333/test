@@ -19,6 +19,7 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactAccountViewWebService;
@@ -37,6 +38,7 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactAccountView;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -326,7 +328,27 @@ public class UserSynchronizer {
 
 		if (hasPartnerWorker(user)) {
 			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-			tags.add(ZendeskTagConstants.OSB_PARTNER);
+
+			TeamRole flsTeamRole = _teamRoleWebService.fetchTeamRole(
+				TeamRole.Type.ACCOUNT.toString(),
+				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
+
+			if (flsTeamRole != null) {
+				StringBundler sb = new StringBundler(5);
+
+				sb.append("accountKeyTeamRoleKeys/any(s:contains(s, '_");
+				sb.append(flsTeamRole.getKey());
+				sb.append("')) and contactUuids/any(s:s eq '");
+				sb.append(user.getUuid());
+				sb.append("')");
+
+				long teamsCount = _teamWebService.searchCount(
+					StringPool.BLANK, sb.toString());
+
+				if (teamsCount > 0) {
+					tags.add(ZendeskTagConstants.OSB_PARTNER);
+				}
+			}
 		}
 
 		return tags;

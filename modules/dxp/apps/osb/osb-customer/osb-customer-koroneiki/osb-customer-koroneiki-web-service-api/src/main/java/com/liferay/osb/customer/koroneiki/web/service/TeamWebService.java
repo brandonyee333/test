@@ -30,4 +30,7 @@ public interface TeamWebService {
 			String sortString)
 		throws Exception;
 
+	public long searchCount(String search, String filterString)
+		throws Exception;
+
 }
