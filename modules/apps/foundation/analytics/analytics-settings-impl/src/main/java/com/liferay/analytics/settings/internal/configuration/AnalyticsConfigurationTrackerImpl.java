@@ -913,8 +913,6 @@ public class AnalyticsConfigurationTrackerImpl
 		).put(
 			"employeeStatusId", "Text"
 		).put(
-			"externalReferenceCode", "Text"
-		).put(
 			"facebookId", "Integer"
 		).put(
 			"facebookSn", "Text"
