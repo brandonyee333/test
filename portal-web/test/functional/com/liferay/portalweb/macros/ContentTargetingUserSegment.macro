@@ -426,6 +426,32 @@ definition {
 		}
 	}
 
+	macro tearDownCP {
+		if ("${siteScopeName}" =="Global") {
+			Navigator.openSiteLanding(siteURLKey = "Global");
+		}
+		else {
+			Navigator.openURL();
+		}
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Site Administration",
+			portlet = "Audience Targeting");
+
+		if (IsElementNotPresent(locator1 = "Message#EMPTY_INFO")) {
+			Check.checkAll(locator1 = "Checkbox#SELECT_ALL");
+
+			ClickNoError(locator1 = "Icon#DELETE");
+
+			Confirm(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
+
+			Alert.viewSuccessMessage();
+		}
+
+		AssertElementPresent(locator1 = "Message#EMPTY_INFO");
+	}
+
 	macro viewContentVisitedRuleEmpty {
 		LexiconEntry.gotoEntry(rowEntry = "${userSegmentName}");
 
