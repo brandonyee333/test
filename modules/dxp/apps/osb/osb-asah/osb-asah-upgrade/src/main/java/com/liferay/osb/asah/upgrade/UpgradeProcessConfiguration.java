@@ -17,12 +17,6 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_10_0.UserSessionsInteractionsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_9_0.ActivitiesUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_9_0.AnalyticsEventsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_9_0.DXPRawUsersUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_9_0.OSBAsahTasksUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_9_0.PageReferrersUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_9_0.PreferencesUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,34 +36,10 @@ public class UpgradeProcessConfiguration {
 			"0.0.0", ReleaseInfo.getVersion(), _snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.8.0", "2.9.0", _activitiesUpgradeStep,
-			_analyticsEventsUpgradeStep, _dxpRawUsersUpgradeStep,
-			_osbAsahTasksUpgradeStep, _pageReferrersUpgradeStep,
-			_preferencesUpgradeStep);
-
-		upgradeProcess.addUpgradeSteps(
 			"2.9.0", "2.10.0", _userSessionsInteractionsUpgradeStep);
 
 		return upgradeProcess;
 	}
-
-	@Autowired
-	private ActivitiesUpgradeStep _activitiesUpgradeStep;
-
-	@Autowired
-	private AnalyticsEventsUpgradeStep _analyticsEventsUpgradeStep;
-
-	@Autowired
-	private DXPRawUsersUpgradeStep _dxpRawUsersUpgradeStep;
-
-	@Autowired
-	private OSBAsahTasksUpgradeStep _osbAsahTasksUpgradeStep;
-
-	@Autowired
-	private PageReferrersUpgradeStep _pageReferrersUpgradeStep;
-
-	@Autowired
-	private PreferencesUpgradeStep _preferencesUpgradeStep;
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
