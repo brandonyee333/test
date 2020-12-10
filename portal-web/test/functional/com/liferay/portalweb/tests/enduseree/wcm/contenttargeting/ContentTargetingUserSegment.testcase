@@ -46,6 +46,14 @@ definition {
 				userLoginEmailAddress = "test@liferay.com",
 				userLoginFullName = "Test Test");
 
+			CustomFields.tearDownCP();
+
+			ContentTargetingUserSegment.tearDownCP(siteScopeName = "Global");
+
+			Organization.tearDownCP();
+
+			UserGroup.tearDownCP();
+
 			Site.tearDownCP();
 		}
 	}
@@ -1513,8 +1521,6 @@ definition {
 		ContentTargetingUserSegment.viewRulesCP(
 			organizationName = "Organization Name",
 			viewUserSegmentRuleList = "Organization Member");
-
-		Organization.tearDownCP();
 	}
 
 	@priority = "5"
@@ -1563,8 +1569,6 @@ definition {
 			organizationName = "Organization Name",
 			organizationRole = "Organization Owner",
 			viewUserSegmentRuleList = "Organization Role");
-
-		Organization.tearDownCP();
 	}
 
 	@priority = "5"
