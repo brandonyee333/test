@@ -42,6 +42,7 @@ import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -481,7 +482,7 @@ public class RootRestControllerTest {
 	@Mock
 	private Environment _environment;
 
-	@Mock
+	@MockBean
 	private Http _http;
 
 	@Autowired
