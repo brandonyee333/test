@@ -20,7 +20,6 @@ package com.liferay.osb.asah.common.wedeploy.data;
 public enum WeDeployDataService {
 
 	OSB_ASAH_CEREBRO_INFO("osbasahcerebroinfo"),
-	OSB_ASAH_CEREBRO_RAW("osbasahcerebroraw"),
 	OSB_ASAH_DXP_RAW("osbasahdxpraw"), OSB_ASAH_FARO_INFO("osbasahfaroinfo"),
 	OSB_ASAH_SALESFORCE_RAW("osbasahsalesforceraw");
 

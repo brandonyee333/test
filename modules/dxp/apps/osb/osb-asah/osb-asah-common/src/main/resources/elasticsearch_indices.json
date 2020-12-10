@@ -15,9 +15,6 @@
 		"pages",
 		"user-sessions"
 	],
-	"osbasahcerebroraw": [
-		"analytics-events"
-	],
 	"osbasahdxpraw": [
 		"audit-events",
 		"faro-audit-events",
