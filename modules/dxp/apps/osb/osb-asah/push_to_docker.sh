@@ -50,6 +50,12 @@ function build_docker_image {
 	   [ ${file_name} == osb-asah-stream-curator ] ||
 	   [ ${file_name} == osb-asah-upgrade ]
 	then
+		cp ~/.asah/client.zip ${file_name}/build/client.zip
+
+		echo "" >> ${file_name}/Dockerfile
+		echo "COPY ./build/client.zip client.zip" >> ${file_name}/Dockerfile
+		echo "RUN unzip client.zip" >> ${file_name}/Dockerfile
+
 		cp ~/.asah/gcp_credentials.json ${file_name}/build/gcp_credentials.json
 
 		echo "" >> ${file_name}/Dockerfile
@@ -63,6 +69,12 @@ function build_docker_image {
 
 	if [ ${file_name} == osb-asah-monolith ]
 	then
+		cp ~/.asah/client.zip ${file_name}/build/client.zip
+
+		echo "" >> ${file_name}/Dockerfile
+		echo "COPY ./build/client.zip client.zip" >> ${file_name}/Dockerfile
+		echo "RUN unzip client.zip" >> ${file_name}/Dockerfile
+
 		echo "" >> ${file_name}/Dockerfile
 		echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
 		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
@@ -76,23 +88,6 @@ function build_docker_image {
 		echo "" >> ${file_name}/Dockerfile
 		echo "COPY --chown=elasticsearch:root bundle.zip /certs/" >> ${file_name}/Dockerfile
 		echo "RUN mkdir /usr/share/elasticsearch/config/certificates && unzip /certs/bundle.zip -d /usr/share/elasticsearch/config/certificates" >> ${file_name}/Dockerfile
-	fi
-
-	if [ ${file_name} == osb-asah-backend ] ||
-	   [ ${file_name} == osb-asah-batch-curator ] ||
-	   [ ${file_name} == osb-asah-dxp-extractor ] ||
-	   [ ${file_name} == osb-asah-extractor ] ||
-	   [ ${file_name} == osb-asah-monolith ] ||
-	   [ ${file_name} == osb-asah-publisher ] ||
-	   [ ${file_name} == osb-asah-salesforce-extractor ] ||
-	   [ ${file_name} == osb-asah-stream-curator ] ||
-	   [ ${file_name} == osb-asah-upgrade ]
-	then
-		cp ~/.asah/client.zip ${file_name}/build/client.zip
-
-		echo "" >> ${file_name}/Dockerfile
-		echo "COPY ./build/client.zip client.zip" >> ${file_name}/Dockerfile
-		echo "RUN unzip client.zip" >> ${file_name}/Dockerfile
 	fi
 
 	docker build \
