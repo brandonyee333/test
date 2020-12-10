@@ -65,9 +65,15 @@ function build_docker_image {
 		echo "" >> ${file_name}/Dockerfile
 		echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
 		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
-	fi
+	elif [ ${file_name} == osb-asah-elasticsearch-data-node ] ||
+		   [ ${file_name} == osb-asah-elasticsearch-master-node ]
+	then
+		cp ~/.asah/bundle.zip ${file_name}/build/client.zip
 
-	if [ ${file_name} == osb-asah-monolith ]
+		echo "" >> ${file_name}/Dockerfile
+		echo "COPY --chown=elasticsearch:root bundle.zip /certs/" >> ${file_name}/Dockerfile
+		echo "RUN mkdir /usr/share/elasticsearch/config/certificates && unzip /certs/bundle.zip -d /usr/share/elasticsearch/config/certificates" >> ${file_name}/Dockerfile
+	elif [ ${file_name} == osb-asah-monolith ]
 	then
 		cp ~/.asah/client.zip ${file_name}/build/client.zip
 
@@ -78,16 +84,6 @@ function build_docker_image {
 		echo "" >> ${file_name}/Dockerfile
 		echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
 		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
-	fi
-
-	if [ ${file_name} == osb-asah-elasticsearch-data-node ] ||
-	   [ ${file_name} == osb-asah-elasticsearch-master-node ]
-	then
-		cp ~/.asah/bundle.zip ${file_name}/build/client.zip
-
-		echo "" >> ${file_name}/Dockerfile
-		echo "COPY --chown=elasticsearch:root bundle.zip /certs/" >> ${file_name}/Dockerfile
-		echo "RUN mkdir /usr/share/elasticsearch/config/certificates && unzip /certs/bundle.zip -d /usr/share/elasticsearch/config/certificates" >> ${file_name}/Dockerfile
 	fi
 
 	docker build \
