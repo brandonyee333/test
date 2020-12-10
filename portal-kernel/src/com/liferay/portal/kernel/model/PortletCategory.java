@@ -41,8 +41,9 @@ public class PortletCategory implements Serializable {
 	}
 
 	public PortletCategory(String name, Set<String> portletIds) {
-		_portletCategories = new HashMap<>();
 		_portletIds = portletIds;
+
+		_portletCategories = new HashMap<>();
 
 		if (name.contains(_DELIMITER)) {
 			int index = name.lastIndexOf(_DELIMITER);
@@ -58,6 +59,7 @@ public class PortletCategory implements Serializable {
 		}
 		else {
 			_name = name;
+
 			_parentPortletCategory = null;
 			_path = name;
 		}

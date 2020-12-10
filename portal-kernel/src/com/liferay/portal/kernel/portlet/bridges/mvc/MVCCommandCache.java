@@ -56,6 +56,7 @@ public class MVCCommandCache {
 		String mvcCommandPostFix) {
 
 		_emptyMVCCommand = emptyMVCCommand;
+
 		_mvcComandPostFix = mvcCommandPostFix;
 
 		if (Validator.isNotNull(packagePrefix) &&

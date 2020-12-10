@@ -31,8 +31,9 @@ import org.apache.solr.common.util.NamedList;
 public class ReadWriteSolrClient extends SolrClient {
 
 	public ReadWriteSolrClient(SolrClient writeSolrClient) {
-		_readSolrClient = null;
 		_writeSolrClient = writeSolrClient;
+
+		_readSolrClient = null;
 	}
 
 	public ReadWriteSolrClient(

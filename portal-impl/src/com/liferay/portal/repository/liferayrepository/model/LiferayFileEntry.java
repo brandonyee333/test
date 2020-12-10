@@ -59,8 +59,9 @@ public class LiferayFileEntry extends LiferayModel implements FileEntry {
 	}
 
 	public LiferayFileEntry(DLFileEntry fileEntry, boolean escapedModel) {
-		_dlFileEntry = fileEntry;
 		_escapedModel = escapedModel;
+
+		_dlFileEntry = fileEntry;
 	}
 
 	@Override

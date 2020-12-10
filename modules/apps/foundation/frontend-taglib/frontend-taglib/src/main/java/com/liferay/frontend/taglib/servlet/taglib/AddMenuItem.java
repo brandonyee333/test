@@ -35,8 +35,9 @@ public class AddMenuItem extends MenuItem {
 	}
 
 	public AddMenuItem(String label, String url) {
-		_id = StringPool.BLANK;
 		_url = url;
+
+		_id = StringPool.BLANK;
 
 		_anchorData = null;
 

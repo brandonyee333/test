@@ -51,8 +51,9 @@ public class AssetEntrySetComposite extends BaseLoopComposite {
 		super(themeDisplay);
 
 		_assetEntrySet = assetEntrySet;
-		_curLoopPerson = LoopPersonUtil.getLoopPerson(themeDisplay.getUserId());
 		_untruncatedAssetEntrySetId = untruncatedAssetEntrySetId;
+
+		_curLoopPerson = LoopPersonUtil.getLoopPerson(themeDisplay.getUserId());
 	}
 
 	public long getAssetEntryId() {

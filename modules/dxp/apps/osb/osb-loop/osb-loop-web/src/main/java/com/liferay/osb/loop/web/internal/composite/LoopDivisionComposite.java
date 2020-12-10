@@ -80,6 +80,7 @@ public class LoopDivisionComposite
 		this(themeDisplay);
 
 		_loopDivision = loopDivision;
+
 		_organization = OrganizationLocalServiceUtil.getOrganization(
 			loopDivision.getOrganizationId());
 	}

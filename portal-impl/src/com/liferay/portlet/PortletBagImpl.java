@@ -117,12 +117,13 @@ public class PortletBagImpl implements PortletBag {
 		_xmlRpcMethodInstances = xmlRpcMethodInstances;
 		_controlPanelEntryInstances = controlPanelEntryInstances;
 		_assetRendererFactoryInstances = assetRendererFactoryInstances;
-		_atomCollectionAdapterInstances = atomCollectionAdapters;
 		_customAttributesDisplayInstances = customAttributesDisplayInstances;
 		_permissionPropagatorInstances = permissionPropagatorInstances;
 		_trashHandlerInstances = trashHandlerInstances;
 		_workflowHandlerInstances = workflowHandlerInstances;
 		_preferencesValidatorInstances = preferencesValidatorInstances;
+
+		_atomCollectionAdapterInstances = atomCollectionAdapters;
 	}
 
 	@Override

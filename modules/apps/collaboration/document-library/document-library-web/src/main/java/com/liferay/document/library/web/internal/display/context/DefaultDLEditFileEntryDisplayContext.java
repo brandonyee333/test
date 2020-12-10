@@ -235,9 +235,10 @@ public class DefaultDLEditFileEntryDisplayContext
 		FileEntry fileEntry, StorageEngine storageEngine) {
 
 		try {
-			_dlRequestHelper = new DLRequestHelper(request);
 			_fileEntry = fileEntry;
 			_storageEngine = storageEngine;
+
+			_dlRequestHelper = new DLRequestHelper(request);
 
 			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 				WebKeys.THEME_DISPLAY);

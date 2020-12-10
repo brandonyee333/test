@@ -64,9 +64,10 @@ public class AssetBrowserDisplayContext {
 	public AssetBrowserDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse) {
 
-		_request = PortalUtil.getHttpServletRequest(renderRequest);
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+
+		_request = PortalUtil.getHttpServletRequest(renderRequest);
 	}
 
 	public String getAddButtonLabel() {

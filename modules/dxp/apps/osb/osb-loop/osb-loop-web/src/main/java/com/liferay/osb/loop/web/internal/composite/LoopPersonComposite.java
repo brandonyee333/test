@@ -92,9 +92,10 @@ public class LoopPersonComposite
 
 		_contact = user.getContact();
 
+		_loopPerson = loopPerson;
+
 		_loopJobTitle = LoopJobTitleLocalServiceUtil.fetchLoopJobTitle(
 			loopPerson.getLoopJobTitleId());
-		_loopPerson = loopPerson;
 		_user = user;
 	}
 

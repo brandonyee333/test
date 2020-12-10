@@ -274,6 +274,7 @@ public class FreeMarkerTemplate extends AbstractSingleResourceTemplate {
 
 			_map = map;
 			_objectWrapper = objectWrapper;
+
 			_wrappedValueMap = new HashMap<>();
 		}
 

@@ -57,6 +57,7 @@ public abstract class Watcher implements Runnable {
 
 	public Watcher(long syncAccountId, Path filePath) {
 		_syncAccountId = syncAccountId;
+
 		_baseFilePath = filePath;
 
 		init();

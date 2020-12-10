@@ -125,9 +125,10 @@ public class IntrabandProxyInstallationUtil {
 			ClassLoader classLoader, Class<?> clazz,
 			TargetLocator targetLocator) {
 
+			_targetLocator = targetLocator;
+
 			_servletContextName = ClassLoaderPool.getContextName(classLoader);
 			_skeletonId = clazz.getName();
-			_targetLocator = targetLocator;
 		}
 
 		private static final long serialVersionUID = 1L;

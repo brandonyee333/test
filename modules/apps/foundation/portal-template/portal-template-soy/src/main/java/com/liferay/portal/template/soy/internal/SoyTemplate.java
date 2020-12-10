@@ -77,9 +77,9 @@ public class SoyTemplate extends AbstractMultiResourceTemplate {
 
 		_templateContextHelper = templateContextHelper;
 		_privileged = privileged;
+		_soyTofuCacheHandler = soyTofuCacheHandler;
 
 		_soyTemplateRecord = new SoyTemplateRecord();
-		_soyTofuCacheHandler = soyTofuCacheHandler;
 	}
 
 	@Override

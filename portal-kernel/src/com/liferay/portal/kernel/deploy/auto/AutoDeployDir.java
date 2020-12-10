@@ -145,6 +145,7 @@ public class AutoDeployDir {
 		_interval = interval;
 
 		_autoDeployListeners = new CopyOnWriteArrayList<>(autoDeployListeners);
+
 		_blacklistFileTimestamps = new HashMap<>();
 	}
 

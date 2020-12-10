@@ -1289,6 +1289,7 @@ public class PortletURLImpl
 		_portletRequest = portletRequest;
 		_layout = layout;
 		_lifecycle = lifecycle;
+
 		_parametersIncludedInPath = Collections.emptySet();
 		_params = new LinkedHashMap<>();
 		_removePublicRenderParameters = new LinkedHashSet<>();

@@ -126,6 +126,7 @@ public class HttpTunnelExtender extends AbstractExtender {
 				authVerifierFilterServiceRegistration;
 			_servletContextHelperServiceRegistration =
 				servletContextHelperServiceRegistration;
+
 			_tunnelServletServiceRegistration = tunneServletServiceRegistration;
 		}
 
