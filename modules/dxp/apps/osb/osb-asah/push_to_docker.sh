@@ -68,7 +68,7 @@ function build_docker_image {
 	elif [ ${file_name} == osb-asah-elasticsearch-data-node ] ||
 		   [ ${file_name} == osb-asah-elasticsearch-master-node ]
 	then
-		cp ~/.asah/bundle.zip ${file_name}/build/client.zip
+		cp ~/.asah/bundle.zip ${file_name}/build/bundle.zip
 
 		echo "" >> ${file_name}/Dockerfile
 		echo "COPY --chown=elasticsearch:root bundle.zip /certs/" >> ${file_name}/Dockerfile
