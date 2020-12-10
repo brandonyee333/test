@@ -95,8 +95,7 @@ public class ElasticsearchConnection {
 					ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP);
 		}
 
-		if (!StringUtils.isBlank(ServiceConstants.ELASTICSEARCH_CERTS_DIR) &&
-			!StringUtils.isBlank(ServiceConstants.ELASTICSEARCH_PASSWORD) &&
+		if (!StringUtils.isBlank(ServiceConstants.ELASTICSEARCH_PASSWORD) &&
 			!StringUtils.isBlank(ServiceConstants.ELASTICSEARCH_USER)) {
 
 			builder.put(
@@ -107,15 +106,12 @@ public class ElasticsearchConnection {
 			builder.put("xpack.security.transport.ssl.enabled", true);
 			builder.put(
 				"xpack.security.transport.ssl.certificate",
-				ServiceConstants.ELASTICSEARCH_CERTS_DIR +
-					"/client/client.crt");
+				"/root/client/client.crt");
 			builder.put(
 				"xpack.security.transport.ssl.certificate_authorities",
-				ServiceConstants.ELASTICSEARCH_CERTS_DIR + "/ca/ca.crt");
+				"/root/ca/ca.crt");
 			builder.put(
-				"xpack.security.transport.ssl.key",
-				ServiceConstants.ELASTICSEARCH_CERTS_DIR +
-					"/client/client.key");
+				"xpack.security.transport.ssl.key", "/root/client/client.key");
 			builder.put(
 				"xpack.security.transport.ssl.verification_mode",
 				"certificate");

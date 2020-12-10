@@ -26,9 +26,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ServiceConstants {
 
-	public static final String ELASTICSEARCH_CERTS_DIR = System.getenv(
-		"ELASTICSEARCH_CERTS_DIR");
-
 	public static final String ELASTICSEARCH_PASSWORD = System.getenv(
 		"ELASTICSEARCH_PASSWORD");
 
