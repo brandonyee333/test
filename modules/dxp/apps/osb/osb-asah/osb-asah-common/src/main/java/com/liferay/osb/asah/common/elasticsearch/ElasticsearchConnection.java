@@ -99,19 +99,19 @@ public class ElasticsearchConnection {
 		String user = System.getenv("ELASTICSEARCH_USER");
 
 		if (!StringUtils.isBlank(password) && !StringUtils.isBlank(user)) {
-			builder.put("xpack.security.user", user + ":" + password);
-			builder.put("xpack.security.transport.ssl.enabled", true);
-			builder.put(
-				"xpack.security.transport.ssl.certificate",
-				"/root/client/client.crt");
 			builder.put(
 				"xpack.security.transport.ssl.certificate_authorities",
 				"/root/ca/ca.crt");
+			builder.put(
+				"xpack.security.transport.ssl.certificate",
+				"/root/client/client.crt");
+			builder.put("xpack.security.transport.ssl.enabled", true);
 			builder.put(
 				"xpack.security.transport.ssl.key", "/root/client/client.key");
 			builder.put(
 				"xpack.security.transport.ssl.verification_mode",
 				"certificate");
+			builder.put("xpack.security.user", user + ":" + password);
 		}
 
 		Settings settings = builder.build();
