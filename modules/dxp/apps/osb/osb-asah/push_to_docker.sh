@@ -68,11 +68,11 @@ function build_docker_image {
 	elif [ ${file_name} == osb-asah-elasticsearch-data-node ] ||
 		   [ ${file_name} == osb-asah-elasticsearch-master-node ]
 	then
-		cp ~/.asah/bundle.zip ${file_name}/build/bundle.zip
+		cp ~/.asah/server.zip ${file_name}/build/server.zip
 
 		echo "" >> ${file_name}/Dockerfile
-		echo "COPY --chown=elasticsearch:root bundle.zip /certs/" >> ${file_name}/Dockerfile
-		echo "RUN mkdir /usr/share/elasticsearch/config/certificates && unzip /certs/bundle.zip -d /usr/share/elasticsearch/config/certificates" >> ${file_name}/Dockerfile
+		echo "COPY --chown=elasticsearch:root server.zip /certs/" >> ${file_name}/Dockerfile
+		echo "RUN mkdir /usr/share/elasticsearch/config/certificates && unzip /certs/server.zip -d /usr/share/elasticsearch/config/certificates" >> ${file_name}/Dockerfile
 	elif [ ${file_name} == osb-asah-monolith ]
 	then
 		cp ~/.asah/client.zip ${file_name}/build/client.zip
@@ -97,6 +97,13 @@ function build_docker_image {
 }
 
 function check_repository {
+	if [ ! -f ~/.asah/client.zip ]
+	then
+		echo "${HOME}/.asah/client.zip does not exist.";
+
+		exit
+	fi
+
 	if [ ! -f ~/.asah/gcp_credentials.json ]
 	then
 		echo "${HOME}/.asah/gcp_credentials.json does not exist.";
@@ -104,16 +111,9 @@ function check_repository {
 		exit
 	fi
 
-	if [ ! -f ~/.asah/bundle.zip ]
+	if [ ! -f ~/.asah/server.zip ]
 	then
-		echo "${HOME}/.asah/bundle.zip does not exist.";
-
-		exit
-	fi
-
-	if [ ! -f ~/.asah/client.zip ]
-	then
-		echo "${HOME}/.asah/client.zip does not exist.";
+		echo "${HOME}/.asah/server.zip does not exist.";
 
 		exit
 	fi
