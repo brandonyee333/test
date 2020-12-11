@@ -10,7 +10,7 @@
 #
 
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
-from liferay.interest_score.job import ReadAnalyticsEventsSparkJob
+from liferay.interest_score.job import KeywordsExtractionSparkJob, ReadAnalyticsEventsSparkJob
 from liferay.interest_score.udf import NormalizeURLFunction
 
 from pyspark import SparkConf
@@ -53,6 +53,7 @@ class InterestScoreApplication(BaseSparkApplication):
 		jobs = []
 
 		jobs.append(ReadAnalyticsEventsSparkJob(self))
+		jobs.append(KeywordsExtractionSparkJob(self))
 
 		return SparkJobPipeline(jobs)
 
