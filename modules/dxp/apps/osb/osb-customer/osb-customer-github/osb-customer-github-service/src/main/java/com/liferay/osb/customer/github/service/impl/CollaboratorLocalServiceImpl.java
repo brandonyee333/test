@@ -26,6 +26,9 @@ import com.liferay.osb.customer.github.exception.DuplicateCollaboratorException;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.base.CollaboratorLocalServiceBaseImpl;
 import com.liferay.osb.customer.github.web.service.GitHubWebService;
+import com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
@@ -64,18 +67,32 @@ public class CollaboratorLocalServiceImpl
 		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
 			accountEntryId);
 
-		if (accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) {
-			_gitHubWebService.getUser(gitHubUserName);
+		try {
+			List<ProductPurchase> productPurchases =
+				_accountReader.getProductPurchases(
+					accountEntry.getKoroneikiAccountKey());
 
-			collaborator.setStatus(WorkflowConstants.STATUS_CLOSED);
-		}
-		else {
-			JSONObject jsonObject = _gitHubWebService.addCollaborator(
-				gitHubUserName);
+			String state = _accountReader.getSubscriptionState(
+				productPurchases);
 
-			if (jsonObject != null) {
-				collaborator.setStatus(WorkflowConstants.STATUS_APPROVED);
+			if ((accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) ||
+				!state.equals(ProductPurchaseConstants.STATE_ACTIVE)) {
+
+				_gitHubWebService.getUser(gitHubUserName);
+
+				collaborator.setStatus(WorkflowConstants.STATUS_CLOSED);
 			}
+			else {
+				JSONObject jsonObject = _gitHubWebService.addCollaborator(
+					gitHubUserName);
+
+				if (jsonObject != null) {
+					collaborator.setStatus(WorkflowConstants.STATUS_APPROVED);
+				}
+			}
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
 		}
 
 		return collaboratorPersistence.update(collaborator);
@@ -88,7 +105,9 @@ public class CollaboratorLocalServiceImpl
 		List<Collaborator> collaborators = getCollaborators(
 			collaborator.getGitHubUserName(), GitHubConstants.STATUSES_ACTIVE);
 
-		if (collaborators.size() == 1) {
+		if ((collaborators.size() == 1) &&
+			collaborators.contains(collaborator)) {
+
 			_gitHubWebService.deleteCollaborator(
 				collaborator.getGitHubUserName());
 		}
@@ -154,6 +173,9 @@ public class CollaboratorLocalServiceImpl
 
 	@ServiceReference(type = AccountEntryLocalService.class)
 	private AccountEntryLocalService _accountEntryLocalService;
+
+	@ServiceReference(type = AccountReader.class)
+	private AccountReader _accountReader;
 
 	@ServiceReference(type = GitHubWebService.class)
 	private GitHubWebService _gitHubWebService;

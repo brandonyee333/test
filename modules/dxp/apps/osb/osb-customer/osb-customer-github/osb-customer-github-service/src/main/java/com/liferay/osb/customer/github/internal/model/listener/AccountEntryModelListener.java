@@ -16,12 +16,13 @@ package com.liferay.osb.customer.github.internal.model.listener;
 
 import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.github.constants.GitHubConstants;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalService;
 import com.liferay.osb.customer.github.web.service.GitHubWebService;
-import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -65,13 +66,17 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			AccountEntry oldAccountEntry = _oldAccountEntry.get();
+			List<ProductPurchase> productPurchases =
+				_accountReader.getProductPurchases(
+					accountEntry.getKoroneikiAccountKey());
 
-			if (oldAccountEntry.getStatus() == accountEntry.getStatus()) {
-				return;
-			}
+			String state = _accountReader.getSubscriptionState(
+				productPurchases);
 
-			if (accountEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			if ((accountEntry.getStatus() ==
+					WorkflowConstants.STATUS_APPROVED) &&
+				state.equals(ProductPurchaseConstants.STATE_ACTIVE)) {
+
 				List<Collaborator> collaborators =
 					_collaboratorLocalService.getCollaborators(
 						accountEntry.getAccountEntryId());
@@ -99,12 +104,11 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 						_collaboratorLocalService.deleteCollaborator(
 							collaborator);
 					}
-
-					_collaboratorLocalService.updateCollaborator(collaborator);
 				}
 			}
-			else if (accountEntry.getStatus() ==
-						WorkflowConstants.STATUS_CLOSED) {
+			else if ((accountEntry.getStatus() ==
+						WorkflowConstants.STATUS_CLOSED) ||
+					 !state.equals(ProductPurchaseConstants.STATE_ACTIVE)) {
 
 				List<Collaborator> collaborators =
 					_collaboratorLocalService.getCollaborators(
@@ -116,7 +120,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 							collaborator.getGitHubUserName(),
 							GitHubConstants.STATUSES_ACTIVE);
 
-					if (userCollaborators.size() == 1) {
+					if ((userCollaborators.size() == 1) &&
+						userCollaborators.contains(collaborator)) {
+
 						_gitHubWebService.deleteCollaborator(
 							collaborator.getGitHubUserName());
 					}
@@ -134,33 +140,11 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		}
 	}
 
-	@Override
-	public void onBeforeUpdate(AccountEntry accountEntry)
-		throws ModelListenerException {
-
-		try {
-			AccountEntry oldAccountEntry =
-				_accountEntryLocalService.getAccountEntry(
-					accountEntry.getAccountEntryId());
-
-			_oldAccountEntry.set(oldAccountEntry);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new ModelListenerException(e);
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountEntryModelListener.class);
 
-	private static final ThreadLocal<AccountEntry> _oldAccountEntry =
-		new CentralizedThreadLocal<>(
-			AccountEntryModelListener.class + "._oldAccountEntry");
-
 	@Reference
-	private AccountEntryLocalService _accountEntryLocalService;
+	private AccountReader _accountReader;
 
 	@Reference
 	private CollaboratorLocalService _collaboratorLocalService;
