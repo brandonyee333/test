@@ -11,10 +11,11 @@
 
 
 from polyglot.detect import Detector
-from pyspark.ml import Pipeline, Transformer
-from pyspark.sql.functions import udf, col
-from pyspark.sql.types import StructField, StringType, DoubleType, IntegerType, MapType, FloatType, ArrayType, StructType, Row
 
+from pyspark.ml import Pipeline, Transformer
+
+from pyspark.sql.functions import col, udf
+from pyspark.sql.types import ArrayType, DoubleType, FloatType, IntegerType, MapType, Row, StringType, StructField, StructType
 
 class LanguageDetectorPolyglotWrapper(Transformer):
     def __init__(self):
