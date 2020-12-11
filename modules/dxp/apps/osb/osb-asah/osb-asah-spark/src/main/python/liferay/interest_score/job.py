@@ -12,9 +12,208 @@
 from datetime import datetime, timedelta
 
 from liferay.common.spark import BaseSparkJob
+from liferay.interest_score.nlp import LanguageDetectorPolyglotWrapper
 
 from pyspark.sql import Window
-from pyspark.sql.functions import col, count, current_date, datediff, expr
+from pyspark.sql.functions import array, array_contains, array_distinct, array_remove, col, concat, count, current_date, datediff, desc, expr, flatten, lit, row_number, split
+
+from sparknlp.base import DocumentAssembler, Finisher, RecursivePipeline
+from sparknlp.annotator import Chunker, Normalizer, PerceptronModel, SentenceDetector, Tokenizer
+
+class KeywordsExtractionSparkJob(BaseSparkJob):
+	def __init__(self, spark_application):
+		super(KeywordsExtractionSparkJob, self).__init__(spark_application)
+
+	def _create_chunker_stage(self, column_name):
+		chunker = Chunker()
+
+		chunker.setInputCols([f'{column_name}_sentence', f'{column_name}_normalized', f'{column_name}_pos'])
+		chunker.setOutputCol(f'{column_name}_chunk')
+		chunker.setRegexParsers([
+			"<NNP>+",
+			"<JJ>*<NN>+",
+			"<JJ>*<NNS>+",
+			"<JJ>*<NNS><NNP>",
+			"<JJ>*<NNP>+",
+			"<JJ>*<NN>*<NNS>+",
+			"<JJ>*<NN>*<NNP>+"
+		])
+
+		return chunker
+
+	def _create_document_assembler_stage(self, column_name):
+		document_assembler = DocumentAssembler()
+
+		document_assembler.setInputCol(column_name)
+		document_assembler.setOutputCol(f'{column_name}_document')
+
+		return document_assembler
+
+	def _create_finisher_stage(self, column_name, include_language_detector_step):
+		finisher = Finisher()
+
+		input_cols = [f'{column_name}_chunk']
+
+		if include_language_detector_step:
+			input_cols.append(f'{column_name}_language')
+
+		finisher.setInputCols(input_cols)
+		finisher.setCleanAnnotations(False)
+
+		return finisher
+
+	def _create_language_detector_stage(
+		self, column_name, include_language_detector_step):
+
+		if not include_language_detector_step:
+			return None
+
+		language_detector = LanguageDetectorPolyglotWrapper()
+
+		language_detector.setInputCol(f'{column_name}_document')
+		language_detector.setOutputCol(f'{column_name}_language')
+
+		return language_detector
+
+	def _create_normalizer_stage(self, column_name):
+		normalizer = Normalizer()
+
+		normalizer.setInputCols([f'{column_name}_token'])
+		normalizer.setOutputCol(f'{column_name}_normalized')
+		normalizer.setCleanupPatterns(["[^\w\d\s]"])
+
+		return normalizer
+
+	def _create_pos_tagger_stage(self, column_name):
+		pos_tagger = PerceptronModel.pretrained()
+
+		pos_tagger.setInputCols([f'{column_name}_normalized', f'{column_name}_sentence'])
+		pos_tagger.setOutputCol(f'{column_name}_pos')
+
+		return pos_tagger
+
+	def _create_sentence_detector_stage(self, column_name):
+		sentence_detector = SentenceDetector()
+
+		sentence_detector.setInputCols([f'{column_name}_document'])
+		sentence_detector.setOutputCol(f'{column_name}_sentence')
+
+		return sentence_detector
+
+	def _create_tokenizer_stage(self, column_name):
+		tokenizer = Tokenizer()
+
+		tokenizer.setInputCols([f'{column_name}_sentence'])
+		tokenizer.setOutputCol(f'{column_name}_token')
+		tokenizer.setSplitChars(['|'])
+
+		return tokenizer
+
+	def _generate_nlp_pipeline(self, column_name, include_language_detector_step=False):
+		recursive_pipeline_stages = list(filter(
+			lambda stage: stage is not None,
+			[
+				self._create_document_assembler_stage(column_name),
+				self._create_language_detector_stage(
+					column_name, include_language_detector_step
+				),
+				self._create_sentence_detector_stage(column_name),
+				self._create_tokenizer_stage(column_name),
+				self._create_normalizer_stage(column_name),
+				self._create_pos_tagger_stage(column_name),
+				self._create_chunker_stage(column_name),
+				self._create_finisher_stage(
+					column_name, include_language_detector_step
+				)
+			]
+		))
+
+		return RecursivePipeline(stages=recursive_pipeline_stages)
+
+	def _get_sample_analytics_event_by_canonical_url(self, analytics_events_data_frame):
+		window = Window.partitionBy('normalized_canonical_url')
+
+		sample_data_frame = analytics_events_data_frame.withColumn(
+			'window_count', count('*').over(window)
+		)
+
+		sample_data_frame = sample_data_frame.withColumn(
+			'row_number',
+			row_number().over(window.orderBy(desc('window_count')))
+		)
+
+		return sample_data_frame.filter('row_number = 1')
+
+	def run(self):
+		analytics_events_data_frame = self.spark_session.table(
+			'analytics_events'
+		)
+
+		nlp_data_frame = self._get_sample_analytics_event_by_canonical_url(
+			analytics_events_data_frame
+		)
+
+		nlp_data_frame = nlp_data_frame.withColumn(
+			'title', col('context.title')
+		).fillna('')
+
+		nlp_data_frame = nlp_data_frame.withColumn(
+			'description', col('context.description')
+		).fillna('')
+
+		nlp_data_frame = nlp_data_frame.withColumn(
+			'title_and_description',
+			concat(col('title'), lit('. '), col('description'), lit('. '))
+		).fillna('')
+
+		nlp_data_frame = nlp_data_frame.withColumn(
+			'keywords', split(col('context.keywords'), ',\s*')
+		)
+
+		title_and_description_pipeline = self._generate_nlp_pipeline(
+			'title_and_description', include_language_detector_step=True
+		)
+
+		nlp_data_frame = title_and_description_pipeline.fit(
+			nlp_data_frame
+		).transform(
+			nlp_data_frame
+		)
+
+		title_nlp_pipeline = self._generate_nlp_pipeline('title')
+
+		nlp_data_frame = title_nlp_pipeline.fit(
+			nlp_data_frame
+		).transform(
+			nlp_data_frame
+		)
+
+		description_nlp_pipeline = self._generate_nlp_pipeline('description')
+
+		nlp_data_frame = description_nlp_pipeline.fit(
+			nlp_data_frame
+		).transform(
+			nlp_data_frame
+		)
+
+		keywords_data_frame = nlp_data_frame.filter(
+			array_contains(col('finished_title_and_description_language'), 'en'))
+
+		keywords_data_frame = keywords_data_frame.withColumn(
+			'extracted_keywords', array(
+				col('finished_title_chunk'), col('finished_description_chunk'),
+				col('keywords')))
+
+		keywords_data_frame = keywords_data_frame.withColumn(
+			'extracted_keywords', flatten(col('extracted_keywords')))
+
+		keywords_data_frame = keywords_data_frame.withColumn(
+			'extracted_keywords', array_distinct('extracted_keywords'))
+
+		keywords_data_frame = keywords_data_frame.withColumn(
+			'extracted_keywords', array_remove('extracted_keywords', ''))
+
+		keywords_data_frame.createOrReplaceTempView('extracted_keywords')
 
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
