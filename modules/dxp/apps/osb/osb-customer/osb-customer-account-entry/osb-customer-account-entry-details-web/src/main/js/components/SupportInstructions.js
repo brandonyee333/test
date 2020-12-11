@@ -6,12 +6,8 @@ export default class SupportInstructions extends React.Component {
 		instructions: PropTypes.string.isRequired
 	};
 
-	state = {
-		instructions: this.props.instructions,
-	};
-
 	render() {
-		const {instructions} = this.state;
+		const {instructions} = this.props;
 
 		return (
 			<React.Fragment>
@@ -20,9 +16,7 @@ export default class SupportInstructions extends React.Component {
 				</div>
 
 				{instructions ? (
-					<div className="card-body">
-						<div dangerouslySetInnerHTML={{__html: instructions}} />
-					</div>
+					<div className="card-body">{instructions}</div>
 				) : (
 					<div className="no-results">
 						{Liferay.Language.get('no-support-instructions')}

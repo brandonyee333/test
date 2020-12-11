@@ -1,10 +1,4 @@
-import {
-	fireEvent,
-	queryByLabelText,
-	queryByRole,
-	queryByText,
-	render
-} from 'react-testing-library';
+import {queryByText, render} from 'react-testing-library';
 import React from 'react';
 
 import SupportInstructions from '../SupportInstructions';
@@ -12,11 +6,7 @@ import SupportInstructions from '../SupportInstructions';
 describe('SupportInstructions', () => {
 	it('renders correctly', () => {
 		const {container} = render(
-			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
-			/>
+			<SupportInstructions instructions="instructions" />
 		);
 
 		expect(container).toMatchSnapshot();
@@ -35,137 +25,5 @@ describe('SupportInstructions', () => {
 
 		expect(noResultsMsgs).toBeTruthy();
 		expect(container).toMatchSnapshot();
-	});
-
-	it('renders add button when there is no existing instruction', () => {
-		const {container} = render(
-			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions=""
-			/>
-		);
-
-		const addButton = queryByLabelText(container, 'add');
-
-		expect(addButton).toBeTruthy();
-	});
-
-	it('renders edit button when there is an existing instruction', () => {
-		const {container} = render(
-			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
-			/>
-		);
-
-		const editButton = queryByText(container, 'edit');
-
-		expect(editButton).toBeTruthy();
-	});
-
-	it('renders modal when edit button is clicked', () => {
-		const {container} = render(
-			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
-			/>
-		);
-
-		const editButton = queryByText(container, 'edit');
-
-		fireEvent.click(editButton);
-
-		const modal = queryByRole(container, 'dialog');
-
-		expect(modal).toBeDefined();
-	});
-
-	it('renders cancel button in modal when editor is activated', () => {
-		const {container} = render(
-			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
-			/>
-		);
-
-		const editButton = queryByText(container, 'edit');
-
-		fireEvent.click(editButton);
-
-		const cancelButton = queryByText(container, 'cancel');
-
-		expect(cancelButton).toBeDefined();
-	});
-
-	it('renders save button in modal when editor is activated', () => {
-		const {container} = render(
-			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
-			/>
-		);
-
-		const editButton = queryByText(container, 'edit');
-
-		fireEvent.click(editButton);
-
-		const saveButton = queryByText(container, 'save');
-
-		expect(saveButton).toBeDefined();
-	});
-
-	it('closes modal when cancel button is clicked', () => {
-		const {container} = render(
-			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
-			/>
-		);
-
-		const editButton = queryByText(container, 'edit');
-
-		fireEvent.click(editButton);
-
-		const cancelButton = queryByText(container, 'cancel');
-		let modal = queryByRole(container, 'dialog');
-
-		expect(modal).toBeDefined();
-
-		fireEvent.click(cancelButton);
-
-		modal = queryByRole(container, 'dialog');
-
-		expect(modal).toBeNull();
-	});
-
-	it('closes modal when x on modal header is clicked', () => {
-		const {container} = render(
-			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
-			/>
-		);
-
-		const editButton = queryByText(container, 'edit');
-
-		fireEvent.click(editButton);
-
-		const closeButton = queryByLabelText(container, 'Close');
-		let modal = queryByRole(container, 'dialog');
-
-		expect(modal).toBeDefined();
-
-		fireEvent.click(closeButton);
-
-		modal = queryByRole(container, 'dialog');
-
-		expect(modal).toBeNull();
 	});
 });
