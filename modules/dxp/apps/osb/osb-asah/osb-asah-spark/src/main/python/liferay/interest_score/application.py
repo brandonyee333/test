@@ -53,6 +53,7 @@ class InterestScoreApplication(BaseSparkApplication):
 		jobs = []
 
 		jobs.append(ReadAnalyticsEventsSparkJob(self))
+
 		jobs.append(KeywordsExtractionSparkJob(self))
 
 		return SparkJobPipeline(jobs)
