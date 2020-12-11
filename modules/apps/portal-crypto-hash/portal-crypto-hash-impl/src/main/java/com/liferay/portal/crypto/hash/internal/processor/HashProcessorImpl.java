@@ -26,6 +26,7 @@ import com.liferay.portal.crypto.hash.generator.spi.salt.VariableSizeSaltGenerat
 import com.liferay.portal.crypto.hash.internal.flavor.HashFlavorImpl;
 import com.liferay.portal.crypto.hash.internal.generation.context.HashGenerationContextImpl;
 import com.liferay.portal.crypto.hash.internal.generation.response.HashGenerationResponseImpl;
+import com.liferay.portal.crypto.hash.internal.pepper.storage.DummyHashPepperStorage;
 import com.liferay.portal.crypto.hash.internal.verification.context.HashVerificationContextImpl;
 import com.liferay.portal.crypto.hash.pepper.storage.spi.HashPepperStorage;
 import com.liferay.portal.crypto.hash.processor.HashProcessor;
@@ -48,7 +49,11 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
  * @author Arthur Chan
  * @author Carlos Sierra Andrés
  */
-@Component(service = HashProcessor.class)
+@Component(
+	configurationPid = "com.liferay.portal.crypto.hash.configuration.HashProcessorConfiguration",
+	configurationPolicy = ConfigurationPolicy.REQUIRE,
+	service = HashProcessor.class
+)
 public class HashProcessorImpl implements HashProcessor {
 
 	@Override
@@ -87,7 +92,7 @@ public class HashProcessorImpl implements HashProcessor {
 
 		String pepperId = null;
 
-		if (_hashPepperStorage != null) {
+		if (!(_hashPepperStorage instanceof DummyHashPepperStorage)) {
 			pepperId = _hashPepperStorage.getCurrentPepperId();
 
 			hashGenerator.setPepper(_hashPepperStorage.getPepper(pepperId));
@@ -127,7 +132,7 @@ public class HashProcessorImpl implements HashProcessor {
 
 			// process pepper
 
-			if (_hashPepperStorage != null) {
+			if (!(_hashPepperStorage instanceof DummyHashPepperStorage)) {
 				Optional<String> optionalPepperId = hashFlavor.getPepperId();
 
 				optionalPepperId.map(
@@ -241,7 +246,11 @@ public class HashProcessorImpl implements HashProcessor {
 	private ServiceTrackerMap<String, HashGeneratorFactory>
 		_hashGeneratorFactories;
 
-	@Reference(cardinality = ReferenceCardinality.OPTIONAL)
+	@Reference(
+		cardinality = ReferenceCardinality.MANDATORY,
+		name = "HashPepperStorage",
+		target = "(component.name=com.liferay.portal.crypto.hash.internal.pepper.storage.DummyHashPepperStorage)"
+	)
 	private HashPepperStorage _hashPepperStorage;
 
 }
