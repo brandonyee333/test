@@ -196,24 +196,31 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 			nlp_data_frame
 		)
 
-		keywords_data_frame = nlp_data_frame.filter(
+		extracted_keywords_data_frame = nlp_data_frame.filter(
 			array_contains(col('finished_title_and_description_language'), 'en'))
 
-		keywords_data_frame = keywords_data_frame.withColumn(
-			'extracted_keywords', array(
-				col('finished_title_chunk'), col('finished_description_chunk'),
-				col('keywords')))
+		extracted_keywords_data_frame = \
+			extracted_keywords_data_frame.withColumn(
+				'extracted_keywords',
+				array(
+					col('finished_title_chunk'),
+					col('finished_description_chunk'), col('keywords')))
 
-		keywords_data_frame = keywords_data_frame.withColumn(
-			'extracted_keywords', flatten(col('extracted_keywords')))
+		extracted_keywords_data_frame = \
+			extracted_keywords_data_frame.withColumn(
+				'extracted_keywords', flatten(col('extracted_keywords')))
 
-		keywords_data_frame = keywords_data_frame.withColumn(
-			'extracted_keywords', array_distinct('extracted_keywords'))
+		extracted_keywords_data_frame = \
+			extracted_keywords_data_frame.withColumn(
+				'extracted_keywords', array_distinct('extracted_keywords'))
 
-		keywords_data_frame = keywords_data_frame.withColumn(
-			'extracted_keywords', array_remove('extracted_keywords', ''))
+		extracted_keywords_data_frame = \
+			extracted_keywords_data_frame.withColumn(
+				'extracted_keywords', array_remove('extracted_keywords', ''))
 
-		keywords_data_frame.createOrReplaceTempView('extracted_keywords')
+		extracted_keywords_data_frame.createOrReplaceTempView(
+			'extracted_keywords'
+		)
 
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
