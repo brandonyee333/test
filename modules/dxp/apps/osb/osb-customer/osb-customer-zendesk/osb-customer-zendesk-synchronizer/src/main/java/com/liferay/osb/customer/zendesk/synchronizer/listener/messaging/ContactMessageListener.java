@@ -252,6 +252,15 @@ public class ContactMessageListener extends BaseMessageListener {
 
 					_customerSynchronizer.update(user);
 
+					String contactRoleName = contactRole.getName();
+
+					if (contactRoleName.equals(
+							ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
+
+						_accountSynchronizer.reassignTickets(
+							account.getKey(), accountEntry, user);
+					}
+
 					return;
 				}
 			}
