@@ -12,29 +12,17 @@
 from abc import ABCMeta, abstractmethod
 
 from liferay.commerce.configuration import CommerceConfiguration
-from liferay.commerce.recommend.job import (
-    ContextUserInteractionRecommendationDataFrameWriterSparkJob,
-    FrequentPatternOrderDataFrameReaderSparkJob,
-    FrequentPatternRecommendationSparkJob,
-    FrequentPatternPostProcessRecommendationSparkJob,
-    FrequentPatternRecommendationDataFrameWriterSparkJob,
-    OrderInteractionDataFrameReaderSparkJob,
-    ProductContentDataFrameReaderSparkJob,
-    ProductContentPipelineSparkJob,
-    ProductContentRecommendationDataFrameWriter,
-    ProductContentRecommendationSparkJob,
-    ProductInteractionDataFrameReaderSparkJob,
-    ProductInteractionRecommendationDataFrameWriterSparkJob,
-    ProductInteractionRecommendationSparkJob,
-    UserInteractionCollaborativeFilteringSparkJob,
-    UserInteractionDataPreparationSparkJob,
-    FrequentPatternProductDataFrameReaderSparkJob,
-    FrequentPatternDataPreparationSparkJob,
-)
-from liferay.commerce.udf import (
-    TanimotoCoefficientUDFFunction,
-    ToDenseVectorUDFFunction,
-)
+from liferay.commerce.recommend.job import ContextUserInteractionRecommendationDataFrameWriterSparkJob, \
+ FrequentPatternOrderDataFrameReaderSparkJob, FrequentPatternRecommendationSparkJob, \
+ FrequentPatternPostProcessRecommendationSparkJob, FrequentPatternRecommendationDataFrameWriterSparkJob, \
+ OrderInteractionDataFrameReaderSparkJob, ProductContentDataFrameReaderSparkJob, \
+ ProductContentPipelineSparkJob, ProductContentRecommendationDataFrameWriter, \
+ ProductContentRecommendationSparkJob, ProductInteractionDataFrameReaderSparkJob, \
+ ProductInteractionRecommendationDataFrameWriterSparkJob, \
+ ProductInteractionRecommendationSparkJob, UserInteractionCollaborativeFilteringSparkJob, \
+ UserInteractionDataPreparationSparkJob, FrequentPatternProductDataFrameReaderSparkJob, \
+ FrequentPatternDataPreparationSparkJob
+from liferay.commerce.udf import TanimotoCoefficientUDFFunction, ToDenseVectorUDFFunction
 from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
 
 import argparse
@@ -42,117 +30,117 @@ import logging
 import os
 import sys
 
-
 class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
-    def __init__(self):
-        super(BaseCommerceSparkApplication, self).__init__()
+	def __init__(self):
+		super(BaseCommerceSparkApplication, self).__init__()
 
-        self.configuration = CommerceConfiguration(self.args.configuration)
+		self.configuration = CommerceConfiguration(self.args.configuration)
 
-        self.log = self._initialize_logging()
+		self.log = self._initialize_logging()
 
-        spark_context = self.spark_session.sparkContext
+		spark_context = self.spark_session.sparkContext
 
-        spark_conf = spark_context.getConf()
+		spark_conf = spark_context.getConf()
 
-        for key, value in spark_conf.getAll():
-            if key.startswith("spark.yarn.appMasterEnv."):
-                env_key = key[len("spark.yarn.appMasterEnv.") :]
+		for key, value in spark_conf.getAll():
+			if key.startswith('spark.yarn.appMasterEnv.'):
+				env_key = key[len('spark.yarn.appMasterEnv.'):]
 
-                os.environ[env_key] = value
+				os.environ[env_key] = value
 
-    def start(self):
-        spark_job_pipeline = self._create_spark_job_pipeline()
+	def start(self):
+		spark_job_pipeline = self._create_spark_job_pipeline()
 
-        try:
-            spark_job_pipeline.run()
-        except Exception as e:
-            self.log.error(e)
+		try:
+			spark_job_pipeline.run()
+		except Exception as e:
+			self.log.error(e)
 
-            raise e
+			raise e
 
-    def _create_argument_parser(self):
-        argument_parser = argparse.ArgumentParser(
-            usage="{} liferay.commerce.recommend.<ApplicationName> "
-            "--configuration <Configuration Path> "
-            "--lcp-project-id <LCP Project ID>".format(sys.argv[0])
-        )
+	def _create_argument_parser(self):
+		argument_parser = argparse.ArgumentParser(
+		    usage='{} liferay.commerce.recommend.<ApplicationName> '
+		    '--configuration <Configuration Path> '
+		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
+		)
 
-        argument_parser.add_argument("application")
-        argument_parser.add_argument("--configuration", required=True)
-        argument_parser.add_argument("--lcp-project-id", required=True)
+		argument_parser.add_argument('application')
+		argument_parser.add_argument('--configuration', required=True)
+		argument_parser.add_argument('--lcp-project-id', required=True)
 
-        return argument_parser
+		return argument_parser
 
-    def _initialize_logging(self):
-        logging.basicConfig(
-            format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
-            level=logging.INFO,
-        )
+	def _initialize_logging(self):
+		logging.basicConfig(
+		    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+		    level=logging.INFO
+		)
 
-        return logging.getLogger(self.__class__.__name__)
+		return logging.getLogger(self.__class__.__name__)
 
-    @abstractmethod
-    def _create_spark_job_pipeline(self):
-        pass
-
+	@abstractmethod
+	def _create_spark_job_pipeline(self):
+		pass
 
 class FrequentPatternRecommendationApplication(BaseCommerceSparkApplication):
-    def __init__(self):
-        super(FrequentPatternRecommendationApplication, self).__init__()
+	def __init__(self):
+		super(FrequentPatternRecommendationApplication, self).__init__()
 
-    def _create_spark_job_pipeline(self):
-        jobs = list()
+	def _create_spark_job_pipeline(self):
+		jobs = list()
 
-        jobs.append(FrequentPatternOrderDataFrameReaderSparkJob(self))
-        jobs.append(FrequentPatternProductDataFrameReaderSparkJob(self))
-        jobs.append(FrequentPatternDataPreparationSparkJob(self))
-        jobs.append(FrequentPatternRecommendationSparkJob(self))
-        jobs.append(FrequentPatternPostProcessRecommendationSparkJob(self))
-        jobs.append(FrequentPatternRecommendationDataFrameWriterSparkJob(self))
+		jobs.append(FrequentPatternOrderDataFrameReaderSparkJob(self))
+		jobs.append(FrequentPatternProductDataFrameReaderSparkJob(self))
+		jobs.append(FrequentPatternDataPreparationSparkJob(self))
+		jobs.append(FrequentPatternRecommendationSparkJob(self))
+		jobs.append(FrequentPatternPostProcessRecommendationSparkJob(self))
+		jobs.append(FrequentPatternRecommendationDataFrameWriterSparkJob(self))
 
-        return SparkJobPipeline(jobs)
-
+		return SparkJobPipeline(jobs)
 
 class ProductContentRecommendationApplication(BaseCommerceSparkApplication):
-    def __init__(self):
-        super(ProductContentRecommendationApplication, self).__init__()
+	def __init__(self):
+		super(ProductContentRecommendationApplication, self).__init__()
 
-        TanimotoCoefficientUDFFunction(self.spark_session)
+		TanimotoCoefficientUDFFunction(self.spark_session)
 
-    def _create_spark_job_pipeline(self):
-        jobs = list()
+	def _create_spark_job_pipeline(self):
+		jobs = list()
 
-        jobs.append(ProductContentDataFrameReaderSparkJob(self))
-        jobs.append(ProductContentPipelineSparkJob(self))
-        jobs.append(ProductContentRecommendationSparkJob(self))
-        jobs.append(ProductContentRecommendationDataFrameWriter(self))
+		jobs.append(ProductContentDataFrameReaderSparkJob(self))
+		jobs.append(ProductContentPipelineSparkJob(self))
+		jobs.append(ProductContentRecommendationSparkJob(self))
+		jobs.append(ProductContentRecommendationDataFrameWriter(self))
 
-        return SparkJobPipeline(jobs)
-
+		return SparkJobPipeline(jobs)
 
 class UserInteractionRecommendationApplication(BaseCommerceSparkApplication):
-    def __init__(self):
-        super(UserInteractionRecommendationApplication, self).__init__()
+	def __init__(self):
+		super(UserInteractionRecommendationApplication, self).__init__()
 
-        TanimotoCoefficientUDFFunction(self.spark_session)
-        ToDenseVectorUDFFunction(self.spark_session)
+		TanimotoCoefficientUDFFunction(self.spark_session)
+		ToDenseVectorUDFFunction(self.spark_session)
 
-    def _create_spark_job_pipeline(self):
-        jobs = list()
+	def _create_spark_job_pipeline(self):
+		jobs = list()
 
-        jobs.append(ProductInteractionDataFrameReaderSparkJob(self))
-        jobs.append(OrderInteractionDataFrameReaderSparkJob(self))
-        jobs.append(UserInteractionDataPreparationSparkJob(self))
-        jobs.append(UserInteractionCollaborativeFilteringSparkJob(self))
-        jobs.append(ContextUserInteractionRecommendationDataFrameWriterSparkJob(self))
+		jobs.append(ProductInteractionDataFrameReaderSparkJob(self))
+		jobs.append(OrderInteractionDataFrameReaderSparkJob(self))
+		jobs.append(UserInteractionDataPreparationSparkJob(self))
+		jobs.append(UserInteractionCollaborativeFilteringSparkJob(self))
+		jobs.append(
+		    ContextUserInteractionRecommendationDataFrameWriterSparkJob(self)
+		)
 
-        product_interaction_recommendation_enable = self.configuration.get(
-            "product.interaction.recommendation.enable"
-        )
+		product_interaction_recommendation_enable = self.configuration.get(
+		    'product.interaction.recommendation.enable'
+		)
 
-        if product_interaction_recommendation_enable:
-            jobs.append(ProductInteractionRecommendationSparkJob(self))
-            jobs.append(ProductInteractionRecommendationDataFrameWriterSparkJob(self))
+		if product_interaction_recommendation_enable:
+			jobs.append(ProductInteractionRecommendationSparkJob(self))
+			jobs.append(
+			    ProductInteractionRecommendationDataFrameWriterSparkJob(self)
+			)
 
-        return SparkJobPipeline(jobs)
+		return SparkJobPipeline(jobs)

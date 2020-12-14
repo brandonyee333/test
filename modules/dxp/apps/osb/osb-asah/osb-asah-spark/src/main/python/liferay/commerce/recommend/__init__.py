@@ -9,8 +9,4 @@
 # distribution rights of the Software.
 #
 
-from liferay.commerce.recommend.application import (
-    FrequentPatternRecommendationApplication,
-    ProductContentRecommendationApplication,
-    UserInteractionRecommendationApplication,
-)
+from liferay.commerce.recommend.application import FrequentPatternRecommendationApplication, ProductContentRecommendationApplication, UserInteractionRecommendationApplication

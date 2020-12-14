@@ -17,66 +17,64 @@ from pyspark.sql.types import DoubleType
 
 import numpy as np
 
-
 class BaseUDFFunction(object, metaclass=ABCMeta):
-    def __init__(self, spark_session):
-        udf_function = udf(self.udf_function, self.get_return_type())
+	def __init__(self, spark_session):
+		udf_function = udf(self.udf_function, self.get_return_type())
 
-        spark_session.udf.register(self.get_function_name(), udf_function)
+		spark_session.udf.register(self.get_function_name(), udf_function)
 
-    @staticmethod
-    @abstractmethod
-    def get_function_name():
-        raise NotImplementedError()
+	@staticmethod
+	@abstractmethod
+	def get_function_name():
+		raise NotImplementedError()
 
-    @staticmethod
-    @abstractmethod
-    def get_return_type():
-        raise NotImplementedError()
+	@staticmethod
+	@abstractmethod
+	def get_return_type():
+		raise NotImplementedError()
 
-    @staticmethod
-    @abstractmethod
-    def udf_function(*args, **kwargs):
-        raise NotImplementedError()
-
+	@staticmethod
+	@abstractmethod
+	def udf_function(*args, **kwargs):
+		raise NotImplementedError()
 
 class TanimotoCoefficientUDFFunction(BaseUDFFunction):
-    def __init__(self, spark_session):
-        super().__init__(spark_session)
+	def __init__(self, spark_session):
+		super().__init__(spark_session)
 
-    @staticmethod
-    def get_function_name():
-        return "tanimoto_coefficient"
+	@staticmethod
+	def get_function_name():
+		return 'tanimoto_coefficient'
 
-    @staticmethod
-    def get_return_type():
-        return DoubleType()
+	@staticmethod
+	def get_return_type():
+		return DoubleType()
 
-    @staticmethod
-    def udf_function(col1, col2):
-        dot_product = np.dot(col1, col2)
+	@staticmethod
+	def udf_function(col1, col2):
+		dot_product = np.dot(col1, col2)
 
-        norm1 = np.linalg.norm(col1, 2)
-        norm2 = np.linalg.norm(col2, 2)
+		norm1 = np.linalg.norm(col1, 2)
+		norm2 = np.linalg.norm(col2, 2)
 
-        norm1_squared = norm1 ** 2
-        norm2_squared = norm2 ** 2
+		norm1_squared = norm1**2
+		norm2_squared = norm2**2
 
-        return (dot_product / (norm1_squared + norm2_squared - dot_product)).item()
-
+		return (dot_product /
+		        (norm1_squared + norm2_squared - dot_product)).item()
 
 class ToDenseVectorUDFFunction(BaseUDFFunction):
-    def __init__(self, spark_session):
-        super().__init__(spark_session)
+	def __init__(self, spark_session):
+		super().__init__(spark_session)
 
-    @staticmethod
-    def get_function_name():
-        return "toDenseVector"
+	@staticmethod
+	def get_function_name():
+		return 'toDenseVector'
 
-    @staticmethod
-    def get_return_type():
-        return VectorUDT()
+	@staticmethod
+	def get_return_type():
+		return VectorUDT()
 
-    @staticmethod
-    def udf_function(vector):
-        return DenseVector(list(vector))
+	@staticmethod
+	def udf_function(vector):
+		return DenseVector(list(vector))
