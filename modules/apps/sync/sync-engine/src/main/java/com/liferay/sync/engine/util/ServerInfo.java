@@ -28,32 +28,27 @@ import java.util.Map;
 public class ServerInfo {
 
 	public static boolean isCompatible(SyncContext syncContext) {
-		return isCompatible(
-			syncContext.getPluginVersion(), "1.0.0", "2.0.0", "3.0.0", "4.0.0",
-			"6.2.0.4");
+		return isCompatible(syncContext.getPluginVersion(), "6.2.0.4");
 	}
 
 	public static boolean supportsDeviceRegistration(long syncAccountId) {
-		return isCompatible(
-			syncAccountId, "1.0.0", "2.0.0", "3.0.0", "4.0.0", "6.2.0.7");
+		return isCompatible(syncAccountId, "6.2.0.7");
 	}
 
 	public static boolean supportsModuleFramework(long syncAccountId) {
-		return isCompatible(syncAccountId, "1.0.0", "2.0.0", "3.0.0", "4.0.0");
+		return isCompatible(syncAccountId);
 	}
 
 	public static boolean supportsModuleFramework(String pluginVersion) {
-		return isCompatible(pluginVersion, "1.0.0", "2.0.0", "3.0.0", "4.0.0");
+		return isCompatible(pluginVersion);
 	}
 
 	public static boolean supportsPartialDownloads(long syncAccountId) {
-		return isCompatible(
-			syncAccountId, "1.0.0", "2.0.0", "3.0.0", "4.0.0", "6.2.0.5");
+		return isCompatible(syncAccountId, "6.2.0.5");
 	}
 
 	public static boolean supportsRetrieveFromCache(long syncAccountId) {
-		return isCompatible(
-			syncAccountId, "1.0.0", "2.0.0", "3.0.0", "4.0.0", "6.2.0.5");
+		return isCompatible(syncAccountId, "6.2.0.5");
 	}
 
 	protected static int getPluginMajorVersion(String pluginVersion) {
@@ -101,6 +96,12 @@ public class ServerInfo {
 
 		if (pluginVersion == null) {
 			return false;
+		}
+
+		String[] pluginVersionParts = pluginVersion.split("\\.");
+
+		if (pluginVersionParts.length == 3) {
+			return true;
 		}
 
 		String key = pluginVersion + Arrays.toString(pluginMinimumVersions);
