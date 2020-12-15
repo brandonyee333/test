@@ -226,6 +226,10 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 			extracted_keywords_data_frame.withColumn(
 				'extracted_keywords', array_remove('extracted_keywords', ''))
 
+		extracted_keywords_data_frame = extracted_keywords_data_frame.select(
+			'normalized_canonical_url', 'extracted_keywords'
+		)
+
 		extracted_keywords_data_frame.createOrReplaceTempView(
 			'extracted_keywords'
 		)
