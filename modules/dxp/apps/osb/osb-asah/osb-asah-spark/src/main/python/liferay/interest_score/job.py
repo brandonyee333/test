@@ -14,8 +14,8 @@ from datetime import datetime, timedelta
 from liferay.common.spark import BaseSparkJob
 from liferay.interest_score.nlp import LanguageDetectorPolyglotWrapper
 
+from pyspark.sql import functions as F
 from pyspark.sql import Window
-from pyspark.sql.functions import array, array_contains, array_distinct, array_remove, col, concat, count, current_date, datediff, desc, expr, explode, flatten, lit, log10, row_number, split, when
 
 from sparknlp.base import DocumentAssembler, Finisher, RecursivePipeline
 from sparknlp.annotator import Chunker, Normalizer, PerceptronModel, SentenceDetector, Tokenizer
@@ -29,7 +29,10 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 	def _create_chunker_stage(self, column_name):
 		chunker = Chunker()
 
-		chunker.setInputCols([f'{column_name}_sentence', f'{column_name}_normalized', f'{column_name}_pos'])
+		chunker.setInputCols([
+			f'{column_name}_sentence', f'{column_name}_normalized',
+			f'{column_name}_pos'
+		])
 		chunker.setOutputCol(f'{column_name}_chunk')
 		chunker.setRegexParsers([
 			"<NNP>+",
@@ -89,7 +92,9 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 	def _create_pos_tagger_stage(self, column_name):
 		pos_tagger = PerceptronModel.pretrained()
 
-		pos_tagger.setInputCols([f'{column_name}_normalized', f'{column_name}_sentence'])
+		pos_tagger.setInputCols([
+			f'{column_name}_normalized', f'{column_name}_sentence'
+		])
 		pos_tagger.setOutputCol(f'{column_name}_pos')
 
 		return pos_tagger
@@ -142,12 +147,12 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 		window = Window.partitionBy('normalized_canonical_url')
 
 		sample_data_frame = analytics_events_data_frame.withColumn(
-			'window_count', count('*').over(window)
+			'window_count', F.count('*').over(window)
 		)
 
 		sample_data_frame = sample_data_frame.withColumn(
 			'row_number',
-			row_number().over(window.orderBy(desc('window_count')))
+			F.row_number().over(window.orderBy(F.desc('window_count')))
 		)
 
 		return sample_data_frame.filter('row_number = 1')
@@ -162,20 +167,21 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 		)
 
 		nlp_data_frame = nlp_data_frame.withColumn(
-			'title', col('context.title')
+			'title', F.col('context.title')
 		).fillna('')
 
 		nlp_data_frame = nlp_data_frame.withColumn(
-			'description', col('context.description')
+			'description', F.col('context.description')
 		).fillna('')
 
 		nlp_data_frame = nlp_data_frame.withColumn(
 			'title_and_description',
-			concat(col('title'), lit('. '), col('description'), lit('. '))
+			F.concat(
+				F.col('title'), F.lit('. '), F.col('description'), F.lit('. '))
 		).fillna('')
 
 		nlp_data_frame = nlp_data_frame.withColumn(
-			'keywords', split(col('context.keywords'), ',\s*')
+			'keywords', F.split(F.col('context.keywords'), ',\s*')
 		)
 
 		title_and_description_pipeline = self._generate_nlp_pipeline(
@@ -205,26 +211,27 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 		)
 
 		extracted_keywords_data_frame = nlp_data_frame.filter(
-			array_contains(col('finished_title_and_description_language'), 'en'))
+			F.array_contains(
+				F.col('finished_title_and_description_language'), 'en'))
 
 		extracted_keywords_data_frame = \
 			extracted_keywords_data_frame.withColumn(
 				'extracted_keywords',
-				array(
-					col('finished_title_chunk'),
-					col('finished_description_chunk'), col('keywords')))
+				F.array(
+					F.col('finished_title_chunk'),
+					F.col('finished_description_chunk'), F.col('keywords')))
 
 		extracted_keywords_data_frame = \
 			extracted_keywords_data_frame.withColumn(
-				'extracted_keywords', flatten(col('extracted_keywords')))
+				'extracted_keywords', F.flatten(F.col('extracted_keywords')))
 
 		extracted_keywords_data_frame = \
 			extracted_keywords_data_frame.withColumn(
-				'extracted_keywords', array_distinct('extracted_keywords'))
+				'extracted_keywords', F.array_distinct('extracted_keywords'))
 
 		extracted_keywords_data_frame = \
 			extracted_keywords_data_frame.withColumn(
-				'extracted_keywords', array_remove('extracted_keywords', ''))
+				'extracted_keywords', F.array_remove('extracted_keywords', ''))
 
 		extracted_keywords_data_frame = extracted_keywords_data_frame.select(
 			'normalized_canonical_url', 'extracted_keywords'
@@ -256,7 +263,7 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 
 		keyword_count_data_frame = \
 			analytics_events_with_keywords_data_frame.withColumn(
-				'keyword', explode(col('extracted_keywords'))
+				'keyword', F.explode(F.col('extracted_keywords'))
 			).groupby(
 				'event_date', 'keyword'
 			).count(
@@ -281,7 +288,7 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 
 		user_keyword_count_data_frame = \
 			analytics_events_with_keywords_data_frame.withColumn(
-				'keyword', explode(col('extracted_keywords'))
+				'keyword', F.explode(F.col('extracted_keywords'))
 			).groupBy(
 				'userId', 'event_date', 'keyword'
 			).count(
@@ -316,8 +323,8 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 		analytics_events_with_keywords_data_frame = \
 			analytics_events_data_frame.join(
 				extracted_keywords_data_frame,
-				col('analytics_events.normalized_canonical_url') ==
-				col('extracted_keywords.normalized_canonical_url'),
+				F.col('analytics_events.normalized_canonical_url') ==
+				F.col('extracted_keywords.normalized_canonical_url'),
 				how='inner'
 			)
 
@@ -340,11 +347,11 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 
 		daily_logscores_data_frame = daily_logscores_data_frame.withColumn(
 			'logscore',
-			log10(
-				(self._global_keyword_weight * col('total_keywords_count') +
-				 self._user_keyword_weight * col('user_total_keyword_count')) /
-				(self._global_keyword_weight * col('keyword_count') +
-				 self._user_keyword_weight * col('user_keyword_count'))
+			F.log10(
+				(self._global_keyword_weight * F.col('total_keywords_count') +
+				 self._user_keyword_weight * F.col('user_total_keyword_count')) /
+				(self._global_keyword_weight * F.col('keyword_count') +
+				 self._user_keyword_weight * F.col('user_keyword_count'))
 			)
 		)
 
@@ -354,12 +361,12 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 				self._get_job_parameter('startDate'),
 				self._get_job_parameter('endDate'))
 		).withColumn(
-			"event_date", explode(col("event_date"))
+			"event_date", F.explode(F.col("event_date"))
 		)
 
 		distinct_user_id_keyword_data_frame = \
 			daily_logscores_data_frame.select(
-				col('userId'), col('keyword')
+				F.col('userId'), F.col('keyword')
 			).distinct()
 
 		date_user_id_keyword_data_frame = date_range_data_frame.crossJoin(
@@ -378,20 +385,21 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 			).fillna(
 				{'logscore': 0}
 			).withColumn(
-				'running_logscore', col('logscore')
+				'running_logscore', F.col('logscore')
 			).orderBy(
 				'event_date', asc=True
 			)
 
 		running_logscore_data_frame = running_logscore_data_frame.withColumn(
 			'running_logscore',
-			when(
-				col('running_logscore') < self._minimum_logscore_threshold, 0
+			F.when(
+				F.col('running_logscore') < self._minimum_logscore_threshold, 0
 			).otherwise(
-				col('running_logscore')
+				F.col('running_logscore')
 			)
 		)
 
+		running_logscore_data_frame.show()
 		running_logscore_data_frame.createOrReplaceTempView(
 			'running_logscore_data_frame'
 		)
@@ -455,40 +463,40 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    col('eventId') == 'pageUnloaded'
+		    F.col('eventId') == 'pageUnloaded'
 		).withColumn(
-			'event_date', expr('to_date(eventDate)')
+			'event_date', F.expr('to_date(eventDate)')
 		).withColumn(
-		    'days_delta', datediff(current_date(), col('event_date'))
+		    'days_delta', F.datediff(F.current_date(), F.col('event_date'))
 		).withColumn(
 		    'interactions',
-		    count('userId').over(Window.partitionBy('userId'))
+		    F.count('userId').over(Window.partitionBy('userId'))
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    col('context.contentLanguageId') == 'en'
+		    F.col('context.contentLanguageId') == 'en'
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    col('days_delta') <= self._max_days_delta
+		    F.col('days_delta') <= self._max_days_delta
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    col('eventProperties.viewDuration') >=
+		    F.col('eventProperties.viewDuration') >=
 		    self._minimum_view_duration_threshold
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    col('interactions') >= self._minimum_interactions_threshold
+		    F.col('interactions') >= self._minimum_interactions_threshold
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.withColumn(
 			'normalized_canonical_url',
-			expr('normalize_url(context.canonicalUrl)')
+			F.expr('normalize_url(context.canonicalUrl)')
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.withColumn(
-			'normalized_url', expr('normalize_url(context.url)')
+			'normalized_url', F.expr('normalize_url(context.url)')
 		)
 
 		analytics_events_data_frame.createOrReplaceTempView('analytics_events')
