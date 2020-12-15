@@ -111,7 +111,10 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 
 		return tokenizer
 
-	def _generate_nlp_pipeline(self, column_name, include_language_detector_step=False):
+	def _generate_nlp_pipeline(
+		self, column_name, include_language_detector_step=False
+	):
+
 		recursive_pipeline_stages = list(filter(
 			lambda stage: stage is not None,
 			[
@@ -132,7 +135,10 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 
 		return RecursivePipeline(stages=recursive_pipeline_stages)
 
-	def _get_sample_analytics_event_by_canonical_url(self, analytics_events_data_frame):
+	def _get_sample_analytics_event_by_canonical_url(
+		self, analytics_events_data_frame
+	):
+
 		window = Window.partitionBy('normalized_canonical_url')
 
 		sample_data_frame = analytics_events_data_frame.withColumn(
