@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.http.impl;
 
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.spring.http.Http;
@@ -48,7 +49,7 @@ public class ChannelHttpImpl implements ChannelHttp {
 		return new HttpHeaders() {
 			{
 				set(
-					"OSB-Asah-Faro-Backend-Security-Signature",
+					HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE,
 					DigestUtils.sha256Hex(
 						_osbAsahSecurityToken.concat(
 							ServiceConstants.URL_FRONTEND)));

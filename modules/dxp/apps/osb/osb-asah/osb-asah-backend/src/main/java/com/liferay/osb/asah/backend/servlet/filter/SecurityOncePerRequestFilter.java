@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.servlet.filter;
 
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.servlet.filter.BaseSecurityOncePerRequestFilter;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
@@ -40,7 +41,7 @@ public class SecurityOncePerRequestFilter
 	@Override
 	protected boolean isInvalidRequest(HttpServletRequest httpServletRequest) {
 		String faroBackendSecuritySignature = httpServletRequest.getHeader(
-			"OSB-Asah-Faro-Backend-Security-Signature");
+			HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE);
 
 		if (faroBackendSecuritySignature == null) {
 			logInvalidRequest(null, httpServletRequest);

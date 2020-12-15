@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.servlet.filter;
 
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.servlet.util.ServletRequestUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -46,7 +47,8 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 			HttpServletResponse httpServletResponse, FilterChain filterChain)
 		throws IOException, ServletException {
 
-		String projectId = httpServletRequest.getHeader("OSB-Asah-Project-Id");
+		String projectId = httpServletRequest.getHeader(
+			HeaderConstants.PROJECT_ID);
 
 		if (projectId == null) {
 			Matcher matcher = _urlPattern.matcher(

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.servlet.filter;
 
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.servlet.util.ServletRequestUtil;
 
@@ -55,7 +56,8 @@ public abstract class BaseSecurityOncePerRequestFilter
 		try {
 			if (isInvalidRequest(httpServletRequest)) {
 				if (httpServletRequest.getHeader(
-						"OSB-Asah-Faro-Backend-Security-Signature") != null) {
+						HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE) !=
+							null) {
 
 					httpServletResponse.sendError(
 						HttpServletResponse.SC_FORBIDDEN, "INVALID_TOKEN");
@@ -83,7 +85,7 @@ public abstract class BaseSecurityOncePerRequestFilter
 
 	protected boolean isInvalidRequest(HttpServletRequest httpServletRequest) {
 		String faroBackendSecuritySignature = httpServletRequest.getHeader(
-			"OSB-Asah-Faro-Backend-Security-Signature");
+			HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE);
 
 		if (faroBackendSecuritySignature == null) {
 			logInvalidRequest(null, httpServletRequest);

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
@@ -55,7 +56,9 @@ public class DXPBatchEntitiesRestController {
 
 	@GetMapping(produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<Resource> get(
-			@RequestHeader(required = false, value = "OSB-Asah-Data-Source-ID")
+			@RequestHeader(
+				required = false, value = HeaderConstants.DATA_SOURCE_ID
+			)
 				String dataSourceId,
 			@RequestParam("resourceName") String resourceName,
 			@DateTimeFormat(pattern = "EEE, dd MMM yyyy HH:mm:ss zzz")
@@ -97,7 +100,9 @@ public class DXPBatchEntitiesRestController {
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> post(
-			@RequestHeader(required = false, value = "OSB-Asah-Data-Source-ID")
+			@RequestHeader(
+				required = false, value = HeaderConstants.DATA_SOURCE_ID
+			)
 				String dataSourceId,
 			@RequestParam("file") MultipartFile multipartFile)
 		throws Exception {

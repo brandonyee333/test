@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -95,14 +96,14 @@ public class SecurityOncePerRequestFilterTest {
 		MockHttpServletRequestBuilder mockHttpServletRequestBuilder1 = get(url);
 
 		mockHttpServletRequestBuilder1.header(
-			"OSB-Asah-Faro-Backend-Security-Signature", securitySignature);
+			HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE, securitySignature);
 
 		_expectStatusOK(_mockMvc.perform(mockHttpServletRequestBuilder1));
 
 		MockHttpServletRequestBuilder mockHttpServletRequestBuilder2 = get(url);
 
 		mockHttpServletRequestBuilder2.header(
-			"OSB-Asah-Faro-Backend-Security-Signature",
+			HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE,
 			RandomTestUtil.randomUUID());
 
 		_expectStatusForbidden(

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DXPIndividualsNanite;
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -170,7 +171,7 @@ public abstract class BaseRestControllerTestCase {
 		RequestSpecification requestSpecification = RestAssured.given();
 
 		requestSpecification.body(body);
-		requestSpecification.header("OSB-Asah-Project-Id", "test");
+		requestSpecification.header(HeaderConstants.PROJECT_ID, "test");
 		requestSpecification.port(_serverPort);
 
 		Response response = requestSpecification.request(method, path);

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorUserDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -50,7 +51,7 @@ public class DXPEntitiesRestController {
 
 	@PostMapping
 	public ResponseEntity<?> post(
-		@RequestHeader(required = false, value = "OSB-Asah-Data-Source-ID")
+		@RequestHeader(required = false, value = HeaderConstants.DATA_SOURCE_ID)
 			String dataSourceId,
 		@RequestBody String json) {
 
