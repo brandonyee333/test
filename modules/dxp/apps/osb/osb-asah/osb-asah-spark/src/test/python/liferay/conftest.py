@@ -9,7 +9,7 @@
 # distribution rights of the Software.
 #
 
-from pyspark.sql import SparkSession
+from pyspark import SparkConf
 
 import os
 import pytest
@@ -24,10 +24,22 @@ sys.path.insert(
 )
 
 @pytest.fixture(scope='session')
-def spark():
-	spark_session_builder = SparkSession.builder()
+def spark_application():
+	from liferay.common.configuration import Configuration
+	from liferay.common.spark import BaseSparkApplication
 
-	spark_session_builder.appName("test")
-	spark_session_builder.master("local")
+	class BaseSparkApplicationTest(BaseSparkApplication):
+		def __init__(self):
+			self.args = ''
+			self.configuration = Configuration()
+			self.spark_session = self._build_spark_session()
 
-	return spark_session_builder.getOrCreate()
+		def _create_spark_conf(self):
+			spark_conf = SparkConf()
+
+			spark_conf.setAppName("test")
+			spark_conf.setMaster("local")
+
+			return spark_conf
+
+	return BaseSparkApplicationTest()
