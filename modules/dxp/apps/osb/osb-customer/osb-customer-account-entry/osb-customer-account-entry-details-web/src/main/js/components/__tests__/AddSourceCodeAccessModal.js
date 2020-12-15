@@ -1,8 +1,4 @@
-import {
-	fireEvent,
-	getByLabelText,
-	render
-} from 'react-testing-library';
+import {fireEvent, getByLabelText, render} from 'react-testing-library';
 import React from 'react';
 
 import AddSourceCodeAccessModal from '../AddSourceCodeAccessModal';
@@ -76,6 +72,151 @@ describe('AddSourceCodeAccessModal', () => {
 		getByText('first-and-last-name-are-both-required');
 	});
 
+	it('allows the user to enter a name with an apostrophe', () => {
+		const {
+			container,
+			getByText,
+			queryByText
+		} = renderAddSourceCodeAccessModal();
+
+		fireEvent.change(getByLabelText(container, 'name'), {
+			target: {value: "Conan O'Brien"}
+		});
+
+		fireEvent.change(getByLabelText(container, 'email-address'), {
+			target: {value: 'test@liferay.com'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'github-username'), {
+			target: {value: 'test'}
+		});
+
+		fireEvent.click(getByText('submit'));
+
+		expect(
+			queryByText('please-correct-the-following-fields name')
+		).toBeFalsy();
+		expect(
+			queryByText('first-and-last-name-are-both-required')
+		).toBeFalsy();
+	});
+
+	it('allows the user to enter a double-barrelled surname', () => {
+		const {
+			container,
+			getByText,
+			queryByText
+		} = renderAddSourceCodeAccessModal();
+
+		fireEvent.change(getByLabelText(container, 'name'), {
+			target: {value: 'Andrew Lloyd Webber'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'email-address'), {
+			target: {value: 'test@liferay.com'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'github-username'), {
+			target: {value: 'test'}
+		});
+
+		fireEvent.click(getByText('submit'));
+
+		expect(
+			queryByText('please-correct-the-following-fields name')
+		).toBeFalsy();
+		expect(
+			queryByText('first-and-last-name-are-both-required')
+		).toBeFalsy();
+	});
+
+	it('allows the user to enter a name with a dash in it', () => {
+		const {
+			container,
+			getByText,
+			queryByText
+		} = renderAddSourceCodeAccessModal();
+
+		fireEvent.change(getByLabelText(container, 'name'), {
+			target: {value: 'Julia Louis-Dreyfus'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'email-address'), {
+			target: {value: 'test@liferay.com'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'github-username'), {
+			target: {value: 'test'}
+		});
+
+		fireEvent.click(getByText('submit'));
+
+		expect(
+			queryByText('please-correct-the-following-fields name')
+		).toBeFalsy();
+		expect(
+			queryByText('first-and-last-name-are-both-required')
+		).toBeFalsy();
+	});
+
+	it('allows the user to enter a full name with a period in it', () => {
+		const {
+			container,
+			getByText,
+			queryByText
+		} = renderAddSourceCodeAccessModal();
+
+		fireEvent.change(getByLabelText(container, 'name'), {
+			target: {value: 'John F. Kennedy'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'email-address'), {
+			target: {value: 'test@liferay.com'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'github-username'), {
+			target: {value: 'test'}
+		});
+
+		fireEvent.click(getByText('submit'));
+
+		expect(
+			queryByText('please-correct-the-following-fields name')
+		).toBeFalsy();
+		expect(
+			queryByText('first-and-last-name-are-both-required')
+		).toBeFalsy();
+	});
+
+	it('allows the user to enter a name with diacritics', () => {
+		const {
+			container,
+			getByText,
+			queryByText
+		} = renderAddSourceCodeAccessModal();
+
+		fireEvent.change(getByLabelText(container, 'name'), {
+			target: {value: 'Léopold Louis-Dreyfus'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'email-address'), {
+			target: {value: 'test@liferay.com'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'github-username'), {
+			target: {value: 'test'}
+		});
+
+		fireEvent.click(getByText('submit'));
+
+		expect(
+			queryByText('please-correct-the-following-fields name')
+		).toBeFalsy();
+		expect(
+			queryByText('first-and-last-name-are-both-required')
+		).toBeFalsy();
+	});
+
 	it('renders error message upon submission when email is invalid', () => {
 		const {container, getByText} = renderAddSourceCodeAccessModal();
 
@@ -93,6 +234,33 @@ describe('AddSourceCodeAccessModal', () => {
 
 		getByText('please-correct-the-following-fields email-address');
 		getByText('invalid-format');
+	});
+
+	it('expects email domain name to be at least two characters long', () => {
+		const {container, queryByText} = renderAddSourceCodeAccessModal();
+
+		fireEvent.change(getByLabelText(container, 'name'), {
+			target: {value: 'Test Test'}
+		});
+		fireEvent.change(getByLabelText(container, 'email-address'), {
+			target: {value: 'test@liferay.d'}
+		});
+		fireEvent.change(getByLabelText(container, 'github-username'), {
+			target: {value: 'test'}
+		});
+
+		fireEvent.click(queryByText('submit'));
+
+		expect(
+			queryByText('please-correct-the-following-fields email-address')
+		).toBeTruthy();
+		expect(queryByText('invalid-format')).toBeTruthy();
+
+		fireEvent.change(getByLabelText(container, 'email-address'), {
+			target: {value: 'test@liferay.digital'}
+		});
+
+		expect(queryByText('invalid-format')).toBeFalsy();
 	});
 
 	it('renders error message upon submission when github username is incorrect', () => {

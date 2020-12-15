@@ -17,7 +17,17 @@ const ERROR_VALIDATION = {
 const GITHUB_URL = 'https://github.com/';
 
 const isValid = field => {
-	return field.value.match(ERROR_VALIDATION[field.name]);
+	const rule = ERROR_VALIDATION[field.name];
+
+	if (field.name === 'fullName') {
+		const normalizedForDiacritics = field.value
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '');
+
+		return normalizedForDiacritics.match(rule);
+	}
+
+	return field.value.match(rule);
 };
 
 AddSourceCodeAccessModal.propTypes = {
@@ -81,7 +91,9 @@ export default function AddSourceCodeAccessModal({
 	function validateAllFields() {
 		// Object.values() not supported on IE11 or with the `gradle packageRunTest` task on 7.0.x
 
-		return Object.keys(fields).map(key => fields[key]).every(field => isValid(field));
+		return Object.keys(fields)
+			.map(key => fields[key])
+			.every(field => isValid(field));
 	}
 
 	function handleUpdate(event) {
@@ -180,7 +192,9 @@ export default function AddSourceCodeAccessModal({
 						response.data.errorMessage.match(
 							/add-user-as-a-collaborator/
 						) ||
-						response.data.errorMessage.match(/add-a-repository-collaborator/)
+						response.data.errorMessage.match(
+							/add-a-repository-collaborator/
+						)
 					) {
 						setCustomError(
 							Liferay.Language.get(
