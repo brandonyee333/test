@@ -246,6 +246,8 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 		super(IndividualInterestScoreSparkJob, self).__init__(spark_application)
 
 		self._global_keyword_weight = 1.0
+		self._interest_score_decay_rate = 0.9
+		self._max_days_delta = 60
 		self._minimum_logscore_threshold = 0.01
 		self._user_keyword_weight = 2.0
 
@@ -310,6 +312,15 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 			how='inner'
 		)
 
+	def _weighted_average(self, column, offsets, weights, window):
+		values = list()
+
+		for i, weight in zip(offsets, weights):
+			values.append(
+				F.coalesce(F.lag(column, i).over(window) * weight, F.lit(0))
+			)
+
+		return sum(values, F.lit(0))
 
 	def run(self):
 		analytics_events_data_frame = self.spark_session.table(
@@ -379,30 +390,32 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 				how='left'
 			)
 
-		running_logscore_data_frame = \
-			expanded_dates_logscore_data_frame.select(
-				'userId', 'keyword', 'event_date', 'logscore'
-			).fillna(
-				{'logscore': 0}
-			).withColumn(
-				'running_logscore', F.col('logscore')
-			).orderBy(
-				'event_date', asc=True
-			)
+		offsets = [i for i in range(0, self._max_days_delta)]
+		weights = [
+			self._interest_score_decay_rate ** i
+			for i in range(0, self._max_days_delta)
+		]
 
-		running_logscore_data_frame = running_logscore_data_frame.withColumn(
-			'running_logscore',
+		interest_score_data_frame = expanded_dates_logscore_data_frame.select(
+			'event_date', 'userId', 'keyword', 'logscore'
+		).fillna(
+			{'logscore': 0}
+		).withColumn(
+			'interest_score',
+			self._weighted_average(
+				F.col('logscore'), offsets, weights,
+				Window.partitionBy('userId', 'keyword').orderBy('event_date')
+			)
+		).withColumn(
+			'interest_score',
 			F.when(
-				F.col('running_logscore') < self._minimum_logscore_threshold, 0
+				F.col('interest_score') < self._minimum_logscore_threshold, 0
 			).otherwise(
-				F.col('running_logscore')
+				F.col('interest_score')
 			)
 		)
 
-		running_logscore_data_frame.show()
-		running_logscore_data_frame.createOrReplaceTempView(
-			'running_logscore_data_frame'
-		)
+		interest_score_data_frame.createOrReplaceTempView('interest_score')
 
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
