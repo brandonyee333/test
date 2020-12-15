@@ -9,10 +9,9 @@
  * distribution rights of the Software.
  */
 
-import ClayButton from '@clayui/button';
+import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
+import {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import ClayLayout from '@clayui/layout';
-import ClayLink from '@clayui/link';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import classNames from 'classnames';
 import {useEventListener} from 'frontend-js-react-web';
@@ -126,64 +125,75 @@ function ClickGoalPicker({allowEdit = true, onSelectClickGoalTarget, target}) {
 					/>
 				</h4>
 
-				{state.selectedTarget && (
-					<ClayLayout.ContentRow containerElement="dl">
-						<ClayLayout.ContentCol containerElement="dt">
-							{Liferay.Language.get('element')}:
-						</ClayLayout.ContentCol>
+				<div className="c-mb-2 text-secondary">
+					{Liferay.Language.get('click-goal-description')}
+				</div>
 
-						<ClayLayout.ContentCol
-							className="mb-0 ml-2 text-truncate-inline"
-							containerElement="dd"
-							expand
-						>
-							<ClayLink
-								className="text-truncate"
-								href={state.selectedTarget}
-								onClick={scrollIntoView}
-								title={state.selectedTarget}
-							>
-								{state.selectedTarget}
-							</ClayLink>
-						</ClayLayout.ContentCol>
-					</ClayLayout.ContentRow>
-				)}
-
-				{!state.selectedTarget && (
-					<dl>
-						<dt className="d-inline">
-							{Liferay.Language.get('element')}:
-						</dt>
-						<dd className="d-inline ml-2 text-secondary">
-							{Liferay.Language.get(
-								'a-clickable-element-on-the-page-must-be-selected-to-be-measured'
-							)}
-							{errors.clickTargetError && (
-								<div className="font-weight-bold mt-2 text-danger">
-									<ClayIcon
-										className="mr-2"
-										symbol="exclamation-full"
-									/>
-									{Liferay.Language.get(
-										'an-element-needs-to-be-set'
-									)}
-								</div>
-							)}
-						</dd>
-					</dl>
+				{errors.clickTargetError && (
+					<div className="c-mb-2 c-mt-2 font-weight-bold text-danger">
+						<ClayIcon
+							className="c-mr-2"
+							symbol="exclamation-full"
+						/>
+						{Liferay.Language.get(
+							'an-element-needs-to-be-selected'
+						)}
+					</div>
 				)}
 
 				{allowEdit && (
 					<ClayButton
+						className="c-mb-2"
 						displayType="secondary"
 						onClick={() => dispatch({type: 'activate'})}
 						small
 					>
 						{state.selectedTarget
-							? Liferay.Language.get('edit-element')
-							: Liferay.Language.get('set-element')}
+							? Liferay.Language.get('change-clickable-element')
+							: Liferay.Language.get('select-clickable-element')}
 					</ClayButton>
 				)}
+
+				<ClayInput.Group>
+					<ClayInput.GroupItem>
+						<label htmlFor="clickableElement">
+							{Liferay.Language.get('element-id')}
+							<ClayTooltipProvider>
+								<ClayIcon
+									className="c-ml-1 text-secondary"
+									data-tooltip-align="top"
+									small="true"
+									symbol="question-circle"
+									title={Liferay.Language.get(
+										'element-id-help'
+									)}
+								/>
+							</ClayTooltipProvider>
+						</label>
+						<ClayTooltipProvider>
+							<ClayInput
+								data-tooltip-align="top"
+								disabled
+								id="clickableElement"
+								title={state.selectedTarget}
+								type="text"
+								value={state.selectedTarget}
+							/>
+						</ClayTooltipProvider>
+					</ClayInput.GroupItem>
+					<ClayInput.GroupItem className="align-self-end" shrink>
+						<ClayTooltipProvider>
+							<ClayButtonWithIcon
+								data-tooltip-align="bottom-right"
+								disabled={!state.selectedTarget}
+								displayType="secondary"
+								onClick={scrollIntoView}
+								symbol="view"
+								title={Liferay.Language.get('show-element')}
+							/>
+						</ClayTooltipProvider>
+					</ClayInput.GroupItem>
+				</ClayInput.Group>
 
 				{state.mode === 'active' ? (
 					<ClickGoalPicker.OverlayContainer
