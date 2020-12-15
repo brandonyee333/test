@@ -98,7 +98,7 @@ function ClickGoalPicker({allowEdit = true, onSelectClickGoalTarget, target}) {
 	}
 
 	const scrollIntoView = (event) => {
-		const target = document.querySelector(state.selectedTarget);
+		const target = document.querySelector(`#${state.selectedTarget}`);
 
 		if (target) {
 			target.scrollIntoView();
@@ -355,14 +355,14 @@ function Overlay({allowEdit, root, targetableElements}) {
 					if (allowEdit === true) {
 						return true;
 					}
-					if ('#' + element.id === selectedTarget) {
+					if (element.id === selectedTarget) {
 						return true;
 					}
 
 					return false;
 				})
 				.map((element) => {
-					const selector = `#${element.id}`;
+					const selector = element.id;
 
 					const mode =
 						editingTarget === selector && allowEdit
@@ -546,7 +546,7 @@ function TargetTopper({allowEdit, geometry, isEditing, selector}) {
 			}}
 		>
 			<span className="mr-2 text-truncate">
-				{isEditing ? selector : Liferay.Language.get('target')}
+				{isEditing ? `#${selector}` : Liferay.Language.get('target')}
 			</span>
 			{allowEdit && (
 				<ClayButton
@@ -604,8 +604,11 @@ function TargetPopover({selector}) {
 			onClick={stopImmediatePropagation}
 			style={{maxWidth}}
 		>
-			<div className="mb-2 text-secondary text-truncate" title={selector}>
-				{selector}
+			<div
+				className="mb-2 text-secondary text-truncate"
+				title={`#${selector}`}
+			>
+				{`#${selector}`}
 			</div>
 			<ClayButton onClick={handleClick} ref={buttonRef}>
 				{Liferay.Language.get('set-element-as-click-target')}

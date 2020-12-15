@@ -68,6 +68,8 @@ function SegmentsExperiments({
 		: selectedExperienceId;
 	const noExperimentIllustration = `${assetsPath}${NO_EXPERIMENT_ILLUSTRATION_FILE_NAME}`;
 	const winnerVariant = variants.find((variant) => variant.winner === true);
+	const goalTarget =
+		experiment?.goal?.target && experiment.goal.target.substring(1);
 
 	return (
 		<>
@@ -223,7 +225,7 @@ function SegmentsExperiments({
 									onSelectClickGoalTarget={(selector) => {
 										onTargetChange(selector);
 									}}
-									target={experiment.goal.target}
+									target={goalTarget}
 								/>
 							)}
 
