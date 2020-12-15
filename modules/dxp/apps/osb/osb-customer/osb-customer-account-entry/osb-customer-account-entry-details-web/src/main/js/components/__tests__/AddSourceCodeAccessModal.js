@@ -51,11 +51,11 @@ describe('AddSourceCodeAccessModal', () => {
 		expect(queryAllByText('this-field-is-required').length).toBe(3);
 	});
 
-	it('renders error message upon submission when last name is missing', () => {
+	it('renders error message upon submission when Name field contains only white space characters', () => {
 		const {container, getByText} = renderAddSourceCodeAccessModal();
 
 		fireEvent.change(getByLabelText(container, 'name'), {
-			target: {value: 'Test'}
+			target: {value: '	 '}
 		});
 
 		fireEvent.change(getByLabelText(container, 'email-address'), {
@@ -69,7 +69,7 @@ describe('AddSourceCodeAccessModal', () => {
 		fireEvent.click(getByText('submit'));
 
 		getByText('please-correct-the-following-fields name');
-		getByText('first-and-last-name-are-both-required');
+		getByText('name-is-required');
 	});
 
 	it('allows the user to enter a name with an apostrophe', () => {
@@ -97,7 +97,7 @@ describe('AddSourceCodeAccessModal', () => {
 			queryByText('please-correct-the-following-fields name')
 		).toBeFalsy();
 		expect(
-			queryByText('first-and-last-name-are-both-required')
+			queryByText('name-is-required')
 		).toBeFalsy();
 	});
 
@@ -126,7 +126,7 @@ describe('AddSourceCodeAccessModal', () => {
 			queryByText('please-correct-the-following-fields name')
 		).toBeFalsy();
 		expect(
-			queryByText('first-and-last-name-are-both-required')
+			queryByText('name-is-required')
 		).toBeFalsy();
 	});
 
@@ -155,7 +155,7 @@ describe('AddSourceCodeAccessModal', () => {
 			queryByText('please-correct-the-following-fields name')
 		).toBeFalsy();
 		expect(
-			queryByText('first-and-last-name-are-both-required')
+			queryByText('name-is-required')
 		).toBeFalsy();
 	});
 
@@ -184,7 +184,7 @@ describe('AddSourceCodeAccessModal', () => {
 			queryByText('please-correct-the-following-fields name')
 		).toBeFalsy();
 		expect(
-			queryByText('first-and-last-name-are-both-required')
+			queryByText('name-is-required')
 		).toBeFalsy();
 	});
 
@@ -213,7 +213,36 @@ describe('AddSourceCodeAccessModal', () => {
 			queryByText('please-correct-the-following-fields name')
 		).toBeFalsy();
 		expect(
-			queryByText('first-and-last-name-are-both-required')
+			queryByText('name-is-required')
+		).toBeFalsy();
+	});
+
+	it('allows the user to enter a name in a foreign language', () => {
+		const {
+			container,
+			getByText,
+			queryByText
+		} = renderAddSourceCodeAccessModal();
+
+		fireEvent.change(getByLabelText(container, 'name'), {
+			target: {value: '田中太郎'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'email-address'), {
+			target: {value: 'test@liferay.com'}
+		});
+
+		fireEvent.change(getByLabelText(container, 'github-username'), {
+			target: {value: 'test'}
+		});
+
+		fireEvent.click(getByText('submit'));
+
+		expect(
+			queryByText('please-correct-the-following-fields name')
+		).toBeFalsy();
+		expect(
+			queryByText('name-is-required')
 		).toBeFalsy();
 	});
 

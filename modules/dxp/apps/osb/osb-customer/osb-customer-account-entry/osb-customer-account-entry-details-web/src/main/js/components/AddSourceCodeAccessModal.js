@@ -11,23 +11,16 @@ import {CollaboratorsRecord} from '../store/sourceCodeAccessCollaborator';
 
 const ERROR_VALIDATION = {
 	emailAddress: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/i,
-	fullName: /^[a-z,.'-]+\s[a-z\s,.'-]+$/i,
 	gitHubUserName: /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i
 };
 const GITHUB_URL = 'https://github.com/';
 
 const isValid = field => {
-	const rule = ERROR_VALIDATION[field.name];
-
 	if (field.name === 'fullName') {
-		const normalizedForDiacritics = field.value
-			.normalize('NFD')
-			.replace(/[\u0300-\u036f]/g, '');
-
-		return normalizedForDiacritics.match(rule);
+		return !!field.value.trim();
 	}
 
-	return field.value.match(rule);
+	return field.value.match(ERROR_VALIDATION[field.name]);
 };
 
 AddSourceCodeAccessModal.propTypes = {
@@ -57,9 +50,7 @@ export default function AddSourceCodeAccessModal({
 		},
 		fullName: {
 			error: false,
-			errorMessage: Liferay.Language.get(
-				'first-and-last-name-are-both-required'
-			),
+			errorMessage: Liferay.Language.get('name-is-required'),
 			label: Liferay.Language.get('name'),
 			name: 'fullName',
 			subtext: Liferay.Language.get('first-and-last-name'),
