@@ -15,10 +15,12 @@ from liferay.common.spark import BaseSparkJob
 from liferay.interest_score.nlp import LanguageDetectorPolyglotWrapper
 
 from pyspark.sql import Window
-from pyspark.sql.functions import array, array_contains, array_distinct, array_remove, col, concat, count, current_date, datediff, desc, expr, flatten, lit, row_number, split
+from pyspark.sql.functions import array, array_contains, array_distinct, array_remove, col, concat, count, current_date, datediff, desc, expr, explode, flatten, lit, log10, row_number, split, when
 
 from sparknlp.base import DocumentAssembler, Finisher, RecursivePipeline
 from sparknlp.annotator import Chunker, Normalizer, PerceptronModel, SentenceDetector, Tokenizer
+
+import json
 
 class KeywordsExtractionSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
@@ -220,6 +222,168 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 
 		extracted_keywords_data_frame.createOrReplaceTempView(
 			'extracted_keywords'
+		)
+
+class IndividualInterestScoreSparkJob(BaseSparkJob):
+	def __init__(self, spark_application):
+		super(IndividualInterestScoreSparkJob, self).__init__(spark_application)
+
+		self._global_keyword_weight = 1.0
+		self._minimum_logscore_threshold = 0.01
+		self._user_keyword_weight = 2.0
+
+	def _get_job_parameter(self, parameter_name, default_value=None):
+		job_parameters = json.loads(self.spark_application_args.job_parameters)
+
+		for job_parameter in job_parameters:
+			if job_parameter.get('name') == parameter_name:
+				return job_parameter.get('value')
+
+		return default_value
+
+	def _get_keyword_count_with_totals_data_frame(
+		self, analytics_events_with_keywords_data_frame):
+
+		keyword_count_data_frame = \
+			analytics_events_with_keywords_data_frame.withColumn(
+				'keyword', explode(col('extracted_keywords'))
+			).groupby(
+				'event_date', 'keyword'
+			).count(
+			).withColumnRenamed('count', 'keyword_count')
+
+		total_keywords_count_data_frame = \
+			keyword_count_data_frame.groupby(
+				'event_date'
+			).sum(
+			).withColumnRenamed(
+				'sum(keyword_count)', 'total_keywords_count'
+			)
+
+		return keyword_count_data_frame.join(
+			total_keywords_count_data_frame,
+			on=['event_date'],
+			how='left'
+		)
+
+	def _get_user_keyword_count_with_totals_data_frame(
+		self, analytics_events_with_keywords_data_frame):
+
+		user_keyword_count_data_frame = \
+			analytics_events_with_keywords_data_frame.withColumn(
+				'keyword', explode(col('extracted_keywords'))
+			).groupBy(
+				'userId', 'event_date', 'keyword'
+			).count(
+			).withColumnRenamed(
+				'count', 'user_keyword_count'
+			)
+
+		user_total_keyword_count_data_frame = \
+			user_keyword_count_data_frame.groupby(
+				'userId', 'event_date'
+			).sum(
+			).withColumnRenamed(
+				'sum(user_keyword_count)', 'user_total_keyword_count'
+			)
+
+		return user_keyword_count_data_frame.join(
+			user_total_keyword_count_data_frame,
+			on=['userId', 'event_date'],
+			how='inner'
+		)
+
+
+	def run(self):
+		analytics_events_data_frame = self.spark_session.table(
+			'analytics_events'
+		)
+
+		extracted_keywords_data_frame = self.spark_session.table(
+			'extracted_keywords'
+		)
+
+		analytics_events_with_keywords_data_frame = \
+			analytics_events_data_frame.join(
+				extracted_keywords_data_frame,
+				col('analytics_events.normalized_canonical_url') ==
+				col('extracted_keywords.normalized_canonical_url'),
+				how='inner'
+			)
+
+		keyword_count_with_totals_data_frame = \
+			self._get_keyword_count_with_totals_data_frame(
+				analytics_events_with_keywords_data_frame
+			)
+
+		user_keyword_counts_with_totals_data_frame = \
+			self._get_user_keyword_count_with_totals_data_frame(
+				analytics_events_with_keywords_data_frame
+			)
+
+		daily_logscores_data_frame = \
+			user_keyword_counts_with_totals_data_frame.join(
+				keyword_count_with_totals_data_frame,
+				on=['event_date', 'keyword'],
+				how='left'
+			)
+
+		daily_logscores_data_frame = daily_logscores_data_frame.withColumn(
+			'logscore',
+			log10(
+				(self._global_keyword_weight * col('total_keywords_count') +
+				 self._user_keyword_weight * col('user_total_keyword_count')) /
+				(self._global_keyword_weight * col('keyword_count') +
+				 self._user_keyword_weight * col('user_keyword_count'))
+			)
+		)
+
+		date_range_data_frame = self.spark_session.sql(
+			"SELECT sequence(to_date('{}'), to_date('{}'), interval 1 day) "
+			"as event_date".format(
+				self._get_job_parameter('startDate'),
+				self._get_job_parameter('endDate'))
+		).withColumn(
+			"event_date", explode(col("event_date"))
+		)
+
+		distinct_user_id_keyword_data_frame = \
+			daily_logscores_data_frame.select(
+				col('userId'), col('keyword')
+			).distinct()
+
+		date_user_id_keyword_data_frame = date_range_data_frame.crossJoin(
+			distinct_user_id_keyword_data_frame)
+
+		expanded_dates_logscore_data_frame = \
+			date_user_id_keyword_data_frame.join(
+				daily_logscores_data_frame,
+				['event_date', 'userId', 'keyword'],
+				how='left'
+			)
+
+		running_logscore_data_frame = \
+			expanded_dates_logscore_data_frame.select(
+				'userId', 'keyword', 'event_date', 'logscore'
+			).fillna(
+				{'logscore': 0}
+			).withColumn(
+				'running_logscore', col('logscore')
+			).orderBy(
+				'event_date', asc=True
+			)
+
+		running_logscore_data_frame = running_logscore_data_frame.withColumn(
+			'running_logscore',
+			when(
+				col('running_logscore') < self._minimum_logscore_threshold, 0
+			).otherwise(
+				col('running_logscore')
+			)
+		)
+
+		running_logscore_data_frame.createOrReplaceTempView(
+			'running_logscore_data_frame'
 		)
 
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
