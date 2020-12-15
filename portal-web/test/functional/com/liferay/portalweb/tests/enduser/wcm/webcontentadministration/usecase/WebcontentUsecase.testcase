@@ -2926,6 +2926,8 @@ definition {
 	test WebContentAdministrationLocalization {
 		property test.name.skip.portal.instance = "WebcontentUsecase#WebContentAdministrationLocalization";
 
+		Open(locator1 = "/en/web/guest/home");
+
 		Page.add(pageName = "Web Content Display Page");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
