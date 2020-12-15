@@ -408,7 +408,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
 		super(ReadAnalyticsEventsSparkJob, self).__init__(spark_application)
 
-		self._max_days_delta = 30
+		self._max_days_delta = 60
 		self._minimum_interactions_threshold = 5
 		self._minimum_view_duration_threshold = 5000
 
