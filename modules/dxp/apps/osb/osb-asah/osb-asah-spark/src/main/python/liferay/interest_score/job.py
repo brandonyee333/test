@@ -283,7 +283,9 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		analytics_events_data_frame = analytics_events_data_frame.filter(
 		    col('eventId') == 'pageUnloaded'
 		).withColumn(
-		    'days_delta', datediff(current_date(), expr("to_date(eventDate)"))
+			'event_date', expr('to_date(eventDate)')
+		).withColumn(
+		    'days_delta', datediff(current_date(), col('event_date'))
 		).withColumn(
 		    'interactions',
 		    count('userId').over(Window.partitionBy('userId'))
