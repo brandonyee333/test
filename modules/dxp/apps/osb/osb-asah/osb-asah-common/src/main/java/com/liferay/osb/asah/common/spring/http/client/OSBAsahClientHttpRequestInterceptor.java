@@ -42,15 +42,13 @@ public class OSBAsahClientHttpRequestInterceptor
 
 		HttpHeaders httpHeaders = httpRequest.getHeaders();
 
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-
 		httpHeaders.putIfAbsent(
 			HeaderConstants.PROJECT_ID,
 			Collections.singletonList(ProjectIdThreadLocal.getProjectId()));
-
 		httpHeaders.putIfAbsent(
 			HttpHeaders.USER_AGENT,
 			Collections.singletonList("LiferayAnalyticsCloud"));
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
 		return clientHttpRequestExecution.execute(httpRequest, body);
 	}
