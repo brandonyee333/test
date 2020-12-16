@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.publisher.cache.impl;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class AnalyticsEventsMessageCacheImpl
 		}
 
 		try (Jedis jedis = _jedisPool.getResource()) {
-			jedis.set(id, "", "nx", "px", DateUtil.WEEK);
+			jedis.hset(ProjectIdThreadLocal.getProjectId(), id, "");
 		}
 	}
 
@@ -50,7 +50,7 @@ public class AnalyticsEventsMessageCacheImpl
 		}
 
 		try (Jedis jedis = _jedisPool.getResource()) {
-			return jedis.exists(id);
+			return jedis.hexists(ProjectIdThreadLocal.getProjectId(), id);
 		}
 	}
 
