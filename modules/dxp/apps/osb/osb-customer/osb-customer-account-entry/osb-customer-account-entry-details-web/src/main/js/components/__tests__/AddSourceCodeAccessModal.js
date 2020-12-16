@@ -58,17 +58,8 @@ describe('AddSourceCodeAccessModal', () => {
 			target: {value: '	 '}
 		});
 
-		fireEvent.change(getByLabelText(container, 'email-address'), {
-			target: {value: 'test@liferay.com'}
-		});
-
-		fireEvent.change(getByLabelText(container, 'github-username'), {
-			target: {value: 'test'}
-		});
-
 		fireEvent.click(getByText('submit'));
 
-		getByText('please-correct-the-following-fields name');
 		getByText('name-is-required');
 	});
 
@@ -83,22 +74,9 @@ describe('AddSourceCodeAccessModal', () => {
 			target: {value: "Conan O'Brien"}
 		});
 
-		fireEvent.change(getByLabelText(container, 'email-address'), {
-			target: {value: 'test@liferay.com'}
-		});
-
-		fireEvent.change(getByLabelText(container, 'github-username'), {
-			target: {value: 'test'}
-		});
-
 		fireEvent.click(getByText('submit'));
 
-		expect(
-			queryByText('please-correct-the-following-fields name')
-		).toBeFalsy();
-		expect(
-			queryByText('name-is-required')
-		).toBeFalsy();
+		expect(queryByText('name-is-required')).toBeFalsy();
 	});
 
 	it('allows the user to enter a double-barrelled surname', () => {
@@ -112,22 +90,9 @@ describe('AddSourceCodeAccessModal', () => {
 			target: {value: 'Andrew Lloyd Webber'}
 		});
 
-		fireEvent.change(getByLabelText(container, 'email-address'), {
-			target: {value: 'test@liferay.com'}
-		});
-
-		fireEvent.change(getByLabelText(container, 'github-username'), {
-			target: {value: 'test'}
-		});
-
 		fireEvent.click(getByText('submit'));
 
-		expect(
-			queryByText('please-correct-the-following-fields name')
-		).toBeFalsy();
-		expect(
-			queryByText('name-is-required')
-		).toBeFalsy();
+		expect(queryByText('name-is-required')).toBeFalsy();
 	});
 
 	it('allows the user to enter a name with a dash in it', () => {
@@ -141,22 +106,9 @@ describe('AddSourceCodeAccessModal', () => {
 			target: {value: 'Julia Louis-Dreyfus'}
 		});
 
-		fireEvent.change(getByLabelText(container, 'email-address'), {
-			target: {value: 'test@liferay.com'}
-		});
-
-		fireEvent.change(getByLabelText(container, 'github-username'), {
-			target: {value: 'test'}
-		});
-
 		fireEvent.click(getByText('submit'));
 
-		expect(
-			queryByText('please-correct-the-following-fields name')
-		).toBeFalsy();
-		expect(
-			queryByText('name-is-required')
-		).toBeFalsy();
+		expect(queryByText('name-is-required')).toBeFalsy();
 	});
 
 	it('allows the user to enter a full name with a period in it', () => {
@@ -170,22 +122,9 @@ describe('AddSourceCodeAccessModal', () => {
 			target: {value: 'John F. Kennedy'}
 		});
 
-		fireEvent.change(getByLabelText(container, 'email-address'), {
-			target: {value: 'test@liferay.com'}
-		});
-
-		fireEvent.change(getByLabelText(container, 'github-username'), {
-			target: {value: 'test'}
-		});
-
 		fireEvent.click(getByText('submit'));
 
-		expect(
-			queryByText('please-correct-the-following-fields name')
-		).toBeFalsy();
-		expect(
-			queryByText('name-is-required')
-		).toBeFalsy();
+		expect(queryByText('name-is-required')).toBeFalsy();
 	});
 
 	it('allows the user to enter a name with diacritics', () => {
@@ -199,22 +138,9 @@ describe('AddSourceCodeAccessModal', () => {
 			target: {value: 'Léopold Louis-Dreyfus'}
 		});
 
-		fireEvent.change(getByLabelText(container, 'email-address'), {
-			target: {value: 'test@liferay.com'}
-		});
-
-		fireEvent.change(getByLabelText(container, 'github-username'), {
-			target: {value: 'test'}
-		});
-
 		fireEvent.click(getByText('submit'));
 
-		expect(
-			queryByText('please-correct-the-following-fields name')
-		).toBeFalsy();
-		expect(
-			queryByText('name-is-required')
-		).toBeFalsy();
+		expect(queryByText('name-is-required')).toBeFalsy();
 	});
 
 	it('allows the user to enter a name in a foreign language', () => {
@@ -228,22 +154,9 @@ describe('AddSourceCodeAccessModal', () => {
 			target: {value: '田中太郎'}
 		});
 
-		fireEvent.change(getByLabelText(container, 'email-address'), {
-			target: {value: 'test@liferay.com'}
-		});
-
-		fireEvent.change(getByLabelText(container, 'github-username'), {
-			target: {value: 'test'}
-		});
-
 		fireEvent.click(getByText('submit'));
 
-		expect(
-			queryByText('please-correct-the-following-fields name')
-		).toBeFalsy();
-		expect(
-			queryByText('name-is-required')
-		).toBeFalsy();
+		expect(queryByText('name-is-required')).toBeFalsy();
 	});
 
 	it('renders error message upon submission when email is invalid', () => {
