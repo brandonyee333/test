@@ -4,6 +4,8 @@ google:
     storage:
         path:
             analytics-events: gs://analytics-cloud-analytics-events-uat
+            individual-segments: gs://analytics-cloud-individual-segments-uat
+            individuals: gs://analytics-cloud-individuals-uat
 interest:
     score:
         url-ignored-parameters:

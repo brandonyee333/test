@@ -513,3 +513,79 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		)
 
 		analytics_events_data_frame.createOrReplaceTempView('analytics_events')
+
+class SegmentInterestScoreSparkJob(BaseSparkJob):
+	def __init__(self, spark_application):
+		super(SegmentInterestScoreSparkJob, self).__init__(spark_application)
+
+	def run(self):
+		data_frame_reader = self.spark_session.read
+
+		individuals_data_frame = data_frame_reader.json(
+			'{}/{}/individuals.json'.format(
+				self.spark_application_configuration.get(
+					'google.storage.path.individuals'
+				),
+				self.spark_application_args.lcp_project_id
+			)
+		)
+
+		individual_with_segments_data_frame = individuals_data_frame.filter(
+			F.size(F.array_distinct(F.col('individualSegmentIds'))) >= 1
+		).withColumn(
+			'dataSourceId',
+			F.explode(F.col('dataSourceIndividualPKs.dataSourceId'))
+		).withColumn(
+			'userId',
+			F.explode(F.col('dataSourceIndividualPKs.individualPKs'))
+		).withColumn(
+			'userId', F.explode(F.col('userId'))
+		).withColumn(
+			'individualSegmentId', F.explode(F.col('individualSegmentIds'))
+		).select(
+			'dataSourceId', 'userId', 'individualSegmentId'
+		).alias(
+			'segmented_individuals'
+		)
+
+		individual_segments_data_frame = data_frame_reader.json(
+			'{}/{}/individual_segments.json'.format(
+				self.spark_application_configuration.get(
+					'google.storage.path.individual-segments'
+				),
+				self.spark_application_args.lcp_project_id
+			)
+		).select(
+			'id', 'name'
+		).alias(
+			'individual_segments'
+		)
+
+		interest_score_data_frame = self.spark_session.table('interest_score')
+
+		segment_interest_score_data_frame = \
+			individual_with_segments_data_frame.join(
+				interest_score_data_frame,
+				F.col('segmented_individuals.userId') ==
+				F.col('interest_score.userId'),
+				how='inner'
+			).join(
+				individual_segments_data_frame,
+				F.col('segmented_individuals.individualSegmentId') ==
+				F.col('individual_segments.id'),
+				how='inner'
+			).select(
+				'event_date', 'individualSegmentId', 'interest_score',
+				'keyword', 'name', 'segmented_individuals.userId'
+			).groupby(
+				'event_date', 'individualSegmentId', 'keyword', 'name'
+			).avg(
+				'interest_score'
+			).withColumnRenamed(
+				'avg(interest_score)',
+				'segment_interest_score'
+			)
+
+		segment_interest_score_data_frame.createOrReplaceTempView(
+			'segment_interest_score'
+		)
