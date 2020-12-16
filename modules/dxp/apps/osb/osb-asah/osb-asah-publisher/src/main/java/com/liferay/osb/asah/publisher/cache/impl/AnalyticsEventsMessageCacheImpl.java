@@ -39,7 +39,7 @@ public class AnalyticsEventsMessageCacheImpl
 		}
 
 		try (Jedis jedis = _jedisPool.getResource()) {
-			if (jedis.hset(ProjectIdThreadLocal.getProjectId(), id, "") == 0) {
+			if (jedis.sadd(ProjectIdThreadLocal.getProjectId(), id) == 0) {
 				return false;
 			}
 
@@ -54,7 +54,7 @@ public class AnalyticsEventsMessageCacheImpl
 		}
 
 		try (Jedis jedis = _jedisPool.getResource()) {
-			jedis.hdel(ProjectIdThreadLocal.getProjectId(), id);
+			jedis.srem(ProjectIdThreadLocal.getProjectId(), id);
 		}
 	}
 
