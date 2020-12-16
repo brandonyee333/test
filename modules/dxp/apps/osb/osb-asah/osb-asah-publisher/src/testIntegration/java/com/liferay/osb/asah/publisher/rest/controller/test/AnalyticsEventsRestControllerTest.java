@@ -260,8 +260,8 @@ public class AnalyticsEventsRestControllerTest {
 	private <T> ResponseEntity<String> _exchange(String url, T body) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 
-		httpHeaders.add(HttpHeaders.COOKIE, "ANONYMOUS_USER_ID=111111");
 		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
+		httpHeaders.add(HttpHeaders.COOKIE, "ANONYMOUS_USER_ID=111111");
 		httpHeaders.add(HttpHeaders.USER_AGENT, "Google Chrome");
 		httpHeaders.add("X-Forwarded-For", "localhost");
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
