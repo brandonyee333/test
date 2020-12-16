@@ -49,6 +49,12 @@ public class AnalyticsEventsMessageCacheImpl
 		return true;
 	}
 
+	public boolean contains(String id) {
+		Queue<String> queue = _getQueue();
+
+		return queue.contains(id);
+	}
+
 	@Override
 	public void remove(String id) {
 		if (id == null) {

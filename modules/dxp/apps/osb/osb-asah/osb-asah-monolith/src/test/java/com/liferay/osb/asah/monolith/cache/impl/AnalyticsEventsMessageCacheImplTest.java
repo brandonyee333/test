@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.monolith.cache.impl;
 
-import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,20 +27,63 @@ public class AnalyticsEventsMessageCacheImplTest {
 
 	@Before
 	public void setUp() {
-		_analyticsEventsMessageCache = new AnalyticsEventsMessageCacheImpl();
+		_analyticsEventsMessageCacheImpl =
+			new AnalyticsEventsMessageCacheImpl();
 	}
 
 	@Test
-	public void testCache() {
-		_analyticsEventsMessageCache.add(null);
-		_analyticsEventsMessageCache.add("analytics");
-		_analyticsEventsMessageCache.add("liferay");
+	public void testAdd() {
+		try {
+			ProjectIdThreadLocal.setProjectId("test1");
 
-		Assert.assertFalse(_analyticsEventsMessageCache.has(null));
-		Assert.assertFalse(_analyticsEventsMessageCache.has("cloud"));
-		Assert.assertTrue(_analyticsEventsMessageCache.has("liferay"));
+			_analyticsEventsMessageCacheImpl.add(null);
+			_analyticsEventsMessageCacheImpl.add("analytics");
+			_analyticsEventsMessageCacheImpl.add("liferay");
+
+			Assert.assertFalse(_analyticsEventsMessageCacheImpl.add(null));
+			Assert.assertTrue(_analyticsEventsMessageCacheImpl.add("cloud"));
+			Assert.assertFalse(_analyticsEventsMessageCacheImpl.add("liferay"));
+
+			ProjectIdThreadLocal.setProjectId("test2");
+
+			Assert.assertTrue(_analyticsEventsMessageCacheImpl.add("liferay"));
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
 	}
 
-	private AnalyticsEventsMessageCache _analyticsEventsMessageCache;
+	@Test
+	public void testRemove() {
+		try {
+			ProjectIdThreadLocal.setProjectId("test1");
+
+			_analyticsEventsMessageCacheImpl.add("analytics");
+			_analyticsEventsMessageCacheImpl.add("liferay");
+
+			_analyticsEventsMessageCacheImpl.remove("liferay");
+
+			Assert.assertTrue(
+				_analyticsEventsMessageCacheImpl.contains("analytics"));
+			Assert.assertFalse(
+				_analyticsEventsMessageCacheImpl.contains("liferay"));
+
+			ProjectIdThreadLocal.setProjectId("test2");
+
+			_analyticsEventsMessageCacheImpl.add("analytics");
+
+			_analyticsEventsMessageCacheImpl.remove("analytics");
+
+			ProjectIdThreadLocal.setProjectId("test1");
+
+			Assert.assertTrue(
+				_analyticsEventsMessageCacheImpl.contains("analytics"));
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
+	}
+
+	private AnalyticsEventsMessageCacheImpl _analyticsEventsMessageCacheImpl;
 
 }
