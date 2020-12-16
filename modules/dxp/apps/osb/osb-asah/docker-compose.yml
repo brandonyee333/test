@@ -146,7 +146,7 @@ services:
             - "5008:5005"
             - "8084:8080"
     osbasahpubsubemulator:
-        build: ./osb-asah-pubsub-emulator
+        build: ./devtools/pubsub-emulator
         container_name: osbasahpubsubemulator
         ports:
             - "8095:8095"
