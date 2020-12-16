@@ -541,7 +541,18 @@ AUI.add(
 						var fields = [];
 
 						if (definition && definition.fields) {
-							instance.getFields(definition.fields, fields);
+							definition.fields.forEach(
+								function (field, indexField) {
+									fields.push(field);
+									if (field.nestedFields) {
+										field.nestedFields.forEach(
+											function (nestedField, indexNestedfield) {
+												fields.push(nestedField);
+											}
+										);
+									}
+								}
+							);
 						}
 
 						return AArray.find(
@@ -562,15 +573,6 @@ AUI.add(
 						var name = instance.get('name');
 
 						return instance.getFieldInfo(definition, 'name', name);
-					},
-
-					getFields: function (definitionFields, fields) {
-						definitionFields.forEach((field) => {
-							fields.push(field);
-							if (field.nestedFields) {
-								this.getFields(field.nestedFields, fields);
-							}
-						});
 					},
 
 					getFirstFieldByName: function(name) {
