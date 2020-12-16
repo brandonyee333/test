@@ -35,7 +35,7 @@ public class AnalyticsEventsMessageCacheImpl
 	@Override
 	public boolean add(String id) {
 		if (id == null) {
-			return false;
+			return true;
 		}
 
 		try (Jedis jedis = _jedisPool.getResource()) {

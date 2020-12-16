@@ -16,6 +16,7 @@ package com.liferay.osb.asah.publisher.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -260,6 +261,7 @@ public class AnalyticsEventsRestControllerTest {
 		HttpHeaders httpHeaders = new HttpHeaders();
 
 		httpHeaders.add(HttpHeaders.COOKIE, "ANONYMOUS_USER_ID=111111");
+		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
 		httpHeaders.add(HttpHeaders.USER_AGENT, "Google Chrome");
 		httpHeaders.add("X-Forwarded-For", "localhost");
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);

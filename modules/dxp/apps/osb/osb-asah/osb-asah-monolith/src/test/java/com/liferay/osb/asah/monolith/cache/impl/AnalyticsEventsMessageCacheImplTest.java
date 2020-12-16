@@ -40,7 +40,7 @@ public class AnalyticsEventsMessageCacheImplTest {
 			_analyticsEventsMessageCacheImpl.add("analytics");
 			_analyticsEventsMessageCacheImpl.add("liferay");
 
-			Assert.assertFalse(_analyticsEventsMessageCacheImpl.add(null));
+			Assert.assertTrue(_analyticsEventsMessageCacheImpl.add(null));
 			Assert.assertTrue(_analyticsEventsMessageCacheImpl.add("cloud"));
 			Assert.assertFalse(_analyticsEventsMessageCacheImpl.add("liferay"));
 

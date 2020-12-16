@@ -108,6 +108,9 @@ public class AnalyticsEventsRestController {
 				if (StringUtils.isEmpty(
 						analyticsEventsMessage.getDataSourceId())) {
 
+					_analyticsEventsMessageCache.remove(
+						analyticsEventsMessage.getId());
+
 					return new ResponseEntity<>(
 						errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 				}
