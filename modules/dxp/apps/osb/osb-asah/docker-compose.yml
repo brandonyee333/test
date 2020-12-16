@@ -1,5 +1,5 @@
 services:
-    dxpcloudmock:
+    dxpcloudemulator:
         build: ./devtools/dxp-cloud-emulator
         container_name: dxpcloudemulator
         healthcheck:
@@ -90,8 +90,8 @@ services:
         container_name: osbasahextractor
         depends_on:
             - osbasahpublisher
-            - osbasahpubsubemulator
             - osbasahupgrade
+            - pubsubemulator
         env_file:
             - common.env
             - local.env
@@ -130,8 +130,8 @@ services:
             context: ./osb-asah-publisher
         container_name: osbasahpublisher
         depends_on:
-            - osbasahpubsubemulator
             - osbasahupgrade
+            - pubsubemulator
         env_file:
             - common.env
             - local.env
@@ -145,11 +145,6 @@ services:
         ports:
             - "5008:5005"
             - "8084:8080"
-    osbasahpubsubemulator:
-        build: ./devtools/pubsub-emulator
-        container_name: osbasahpubsubemulator
-        ports:
-            - "8095:8095"
     osbasahredis:
         build: ./osb-asah-redis
         container_name: osbasahredis
@@ -185,8 +180,8 @@ services:
             context: ./osb-asah-stream-curator
         container_name: osbasahstreamcurator
         depends_on:
-            - osbasahpubsubemulator
             - osbasahupgrade
+            - pubsubemulator
         env_file:
             - common.env
             - local.env
@@ -228,6 +223,11 @@ services:
             - "8080:8080"
         volumes:
             - faro:/opt/liferay/data
+    pubsubemulator:
+        build: ./devtools/pubsub-emulator
+        container_name: pubsubemulator
+        ports:
+            - "8095:8095"
     wedeploy-elasticsearch:
         container_name: wedeploy-elasticsearch
         env_file:

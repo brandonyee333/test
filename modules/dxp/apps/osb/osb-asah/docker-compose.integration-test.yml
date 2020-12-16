@@ -15,9 +15,9 @@ services:
             - 9200:9200
             - 9300:9300
         restart: always
-    test_osbasahpubsubemulator:
+    test_pubsubemulator:
         build: ./devtools/pubsub-emulator
-        container_name: test_osbasahpubsubemulator
+        container_name: test_pubsubemulator
         mem_limit: 1g
         ports:
             - "8095:8095"
