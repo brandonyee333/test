@@ -33,25 +33,31 @@ public class AnalyticsEventsMessageCacheImpl
 	implements AnalyticsEventsMessageCache {
 
 	@Override
-	public void add(String id) {
-		if (id == null) {
-			return;
-		}
-
-		Queue<String> queue = _getQueue();
-
-		queue.add(id);
-	}
-
-	@Override
-	public boolean has(String id) {
+	public boolean add(String id) {
 		if (id == null) {
 			return false;
 		}
 
 		Queue<String> queue = _getQueue();
 
-		return queue.contains(id);
+		if (queue.contains(id)) {
+			return false;
+		}
+
+		queue.add(id);
+
+		return true;
+	}
+
+	@Override
+	public void remove(String id) {
+		if (id == null) {
+			return;
+		}
+
+		Queue<String> queue = _getQueue();
+
+		queue.remove(id);
 	}
 
 	private Queue<String> _getQueue() {

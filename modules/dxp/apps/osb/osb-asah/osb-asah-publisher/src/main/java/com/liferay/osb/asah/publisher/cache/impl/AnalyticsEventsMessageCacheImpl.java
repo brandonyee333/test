@@ -33,24 +33,28 @@ public class AnalyticsEventsMessageCacheImpl
 	implements AnalyticsEventsMessageCache {
 
 	@Override
-	public void add(String id) {
-		if (id == null) {
-			return;
-		}
-
-		try (Jedis jedis = _jedisPool.getResource()) {
-			jedis.hset(ProjectIdThreadLocal.getProjectId(), id, "");
-		}
-	}
-
-	@Override
-	public boolean has(String id) {
+	public boolean add(String id) {
 		if (id == null) {
 			return false;
 		}
 
 		try (Jedis jedis = _jedisPool.getResource()) {
-			return jedis.hexists(ProjectIdThreadLocal.getProjectId(), id);
+			if (jedis.hset(ProjectIdThreadLocal.getProjectId(), id, "") == 0) {
+				return false;
+			}
+
+			return true;
+		}
+	}
+
+	@Override
+	public void remove(String id) {
+		if (id == null) {
+			return;
+		}
+
+		try (Jedis jedis = _jedisPool.getResource()) {
+			jedis.hdel(ProjectIdThreadLocal.getProjectId(), id);
 		}
 	}
 

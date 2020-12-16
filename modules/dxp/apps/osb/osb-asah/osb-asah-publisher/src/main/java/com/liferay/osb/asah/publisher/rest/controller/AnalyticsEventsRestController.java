@@ -72,7 +72,7 @@ public class AnalyticsEventsRestController {
 		SimpleTimer simpleTimer = new SimpleTimer();
 
 		try {
-			if (_analyticsEventsMessageCache.has(
+			if (!_analyticsEventsMessageCache.add(
 					analyticsEventsMessage.getId())) {
 
 				if (_log.isInfoEnabled()) {
@@ -153,8 +153,9 @@ public class AnalyticsEventsRestController {
 					Channel.ANALYTICS_EVENTS_MESSAGE,
 					analyticsEventsMessage.toJSON(),
 					ProjectIdThreadLocal.getProjectId());
-
-				_analyticsEventsMessageCache.add(
+			}
+			else {
+				_analyticsEventsMessageCache.remove(
 					analyticsEventsMessage.getId());
 			}
 
