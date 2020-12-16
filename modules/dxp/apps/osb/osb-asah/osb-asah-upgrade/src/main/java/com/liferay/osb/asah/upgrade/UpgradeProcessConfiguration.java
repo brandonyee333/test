@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.util.ReleaseInfo;
+import com.liferay.osb.asah.upgrade.v0_0_0.ProjectsIndexUpgradeStep;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_10_0.DeleteActivityNaniteOSBAsahTasksUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_10_0.UserSessionsInteractionsUpgradeStep;
@@ -34,7 +35,8 @@ public class UpgradeProcessConfiguration {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
 		upgradeProcess.addUpgradeSteps(
-			"0.0.0", ReleaseInfo.getVersion(), _snapshotsUpgradeStep);
+			"0.0.0", ReleaseInfo.getVersion(), _projectsIndexUpgradeStep,
+			_snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"2.9.0", "2.10.0", _deleteActivityNaniteOSBAsahTasksUpgradeStep,
@@ -46,6 +48,9 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private DeleteActivityNaniteOSBAsahTasksUpgradeStep
 		_deleteActivityNaniteOSBAsahTasksUpgradeStep;
+
+	@Autowired
+	private ProjectsIndexUpgradeStep _projectsIndexUpgradeStep;
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
