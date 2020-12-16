@@ -8,4 +8,4 @@ RUN npm install
 
 COPY app.js /app/
 
-CMD ["npm","start"]
+CMD ["npm", "start"]
