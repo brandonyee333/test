@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.batch.curator.bot;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
+import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskScheduler;
 import com.liferay.osb.asah.common.date.DateUtil;
@@ -72,6 +73,9 @@ public class OSBAsahBatchCuratorBot {
 	@EventListener(ApplicationReadyEvent.class)
 	public void onStartup() {
 		BaseActivitiesNanite.setAnalyticsConfigured(
+			_faroInfoDataSourceDog.isAnalyticsConfigured());
+
+		_individualSegmentActivityFieldsNanite.setAnalyticsConfigured(
 			_faroInfoDataSourceDog.isAnalyticsConfigured());
 
 		_elasticsearchInvoker.updateByQueryWithRetry(
@@ -245,6 +249,10 @@ public class OSBAsahBatchCuratorBot {
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+
+	@Autowired
+	private IndividualSegmentActivityFieldsNanite
+		_individualSegmentActivityFieldsNanite;
 
 	@Autowired
 	private OSBAsahTaskManager _osbAsahTaskManager;

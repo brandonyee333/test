@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
@@ -48,8 +49,11 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class IndividualSegmentActivityFieldsNanite
-	extends BaseActivitiesNanite {
+public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
+
+	public long getInterval() {
+		return DateUtil.MINUTE;
+	}
 
 	@Override
 	public void run() throws Exception {
@@ -68,6 +72,42 @@ public class IndividualSegmentActivityFieldsNanite
 		).setMonitoringConsumers(
 			this::monitorProcessedCount, this::monitorQueueSize
 		).iterate();
+	}
+
+	@Override
+	public void run(JSONObject contextJSONObject) throws Exception {
+		while (true) {
+			synchronized (this) {
+				if (isActive()) {
+					return;
+				}
+
+				setActive(true);
+			}
+
+			while (_analyticsConfigured) {
+				try {
+					run();
+				}
+				catch (Exception e) {
+					_log.error(e, e);
+				}
+
+				Thread.sleep(getInterval());
+			}
+
+			cleanUp();
+
+			setActive(false);
+
+			if (!_analyticsConfigured) {
+				break;
+			}
+		}
+	}
+
+	public void setAnalyticsConfigured(boolean analyticsConfigured) {
+		_analyticsConfigured = analyticsConfigured;
 	}
 
 	@Override
@@ -289,6 +329,7 @@ public class IndividualSegmentActivityFieldsNanite
 		IndividualSegmentActivityFieldsNanite.class);
 
 	private boolean _active;
+	private boolean _analyticsConfigured;
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
