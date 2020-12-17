@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.common.multitenancy;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
+import com.liferay.osb.asah.common.multitenancy.impl.SingleTenantProjectDogImpl;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +32,11 @@ public class ProjectDogConfiguration {
 	public ProjectDog projectDog(
 		ElasticsearchInvokerManager elasticsearchInvokerManager) {
 
-		return new MultiTenantProjectDogImpl(elasticsearchInvokerManager);
+		if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
+			return new MultiTenantProjectDogImpl(elasticsearchInvokerManager);
+		}
+
+		return new SingleTenantProjectDogImpl();
 	}
 
 }

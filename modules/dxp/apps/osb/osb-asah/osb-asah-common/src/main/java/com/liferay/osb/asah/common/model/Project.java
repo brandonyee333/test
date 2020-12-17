@@ -21,6 +21,13 @@ import java.util.Objects;
  */
 public class Project {
 
+	public Project() {
+	}
+
+	public Project(String id) {
+		_id = id;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
