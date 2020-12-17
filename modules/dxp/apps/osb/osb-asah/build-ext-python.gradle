@@ -172,7 +172,7 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 
 		doLast {
 			exec {
-				commandLine _executablePath(projectEnvDir, "pytest"), "$projectDir/$pythonTestSource/", "--disable-warnings", "--suppress-no-test-exit-code", "-s"
+				commandLine _executablePath(projectEnvDir, "pytest"), "$projectDir/$pythonTestSource/", "--capture=no", "--disable-warnings", "--suppress-no-test-exit-code"
 			}
 		}
 	}
