@@ -26,6 +26,7 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 	task installTestEnvDependencies()
 	task packagePython()
 	task testPython()
+	task test()
 
 	def bootstrapEnvName = "Miniconda3"
 	def pythonSource = "src/main/python"
