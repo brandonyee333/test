@@ -14,19 +14,23 @@
 
 package com.liferay.osb.asah.common.multitenancy;
 
-import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
+import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
 
-import java.util.List;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author André Miranda
  */
-public interface ProjectDog {
+@Configuration
+public class ProjectDogConfiguration {
 
-	public void addProject(Project project);
+	@Bean
+	public ProjectDog projectDog(
+		ElasticsearchInvokerManager elasticsearchInvokerManager) {
 
-	public boolean deleteProject(String projectId);
-
-	public List<Project> getProjects() throws Exception;
+		return new MultiTenantProjectDogImpl(elasticsearchInvokerManager);
+	}
 
 }
