@@ -15,7 +15,6 @@
 package com.liferay.comment.upgrade;
 
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
-import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.message.boards.model.MBDiscussion;
 import com.liferay.petra.function.UnsafeBiFunction;
 import com.liferay.petra.string.StringBundler;
@@ -35,6 +34,10 @@ import java.sql.Connection;
  */
 public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x)
+	 */
+	@Deprecated
 	public UpgradeDiscussionSubscriptionClassName(
 		AssetEntryLocalService assetEntryLocalService,
 		ClassNameLocalService classNameLocalService,
@@ -42,9 +45,8 @@ public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 		String oldSubscriptionClassName, DeletionMode deletionMode) {
 
 		this(
-			assetEntryLocalService, classNameLocalService,
-			subscriptionLocalService, oldSubscriptionClassName, deletionMode,
-			null);
+			classNameLocalService, subscriptionLocalService,
+			oldSubscriptionClassName, deletionMode);
 	}
 
 	public UpgradeDiscussionSubscriptionClassName(
@@ -56,9 +58,8 @@ public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 			unsafeBiFunction) {
 
 		this(
-			assetEntryLocalService, classNameLocalService,
-			subscriptionLocalService, oldSubscriptionClassName, null,
-			unsafeBiFunction);
+			classNameLocalService, subscriptionLocalService,
+			oldSubscriptionClassName, null, unsafeBiFunction);
 	}
 
 	/**
@@ -71,8 +72,8 @@ public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 		String oldSubscriptionClassName, DeletionMode deletionMode) {
 
 		this(
-			AssetEntryLocalServiceUtil.getService(), classNameLocalService,
-			subscriptionLocalService, oldSubscriptionClassName, deletionMode);
+			classNameLocalService, subscriptionLocalService,
+			oldSubscriptionClassName, deletionMode, null);
 	}
 
 	/**
@@ -84,7 +85,6 @@ public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 		String oldSubscriptionClassName, DeletionMode deletionMode) {
 
 		this(
-			AssetEntryLocalServiceUtil.getService(),
 			ClassNameLocalServiceUtil.getService(), subscriptionLocalService,
 			oldSubscriptionClassName, deletionMode);
 	}
@@ -112,14 +112,12 @@ public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 	}
 
 	private UpgradeDiscussionSubscriptionClassName(
-		AssetEntryLocalService assetEntryLocalService,
 		ClassNameLocalService classNameLocalService,
 		SubscriptionLocalService subscriptionLocalService,
 		String oldSubscriptionClassName, DeletionMode deletionMode,
 		UnsafeBiFunction<String, Connection, Boolean, Exception>
 			unsafeBiFunction) {
 
-		_assetEntryLocalService = assetEntryLocalService;
 		_classNameLocalService = classNameLocalService;
 		_subscriptionLocalService = subscriptionLocalService;
 		_oldSubscriptionClassName = oldSubscriptionClassName;
@@ -183,7 +181,6 @@ public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 					_oldSubscriptionClassName)));
 	}
 
-	private final AssetEntryLocalService _assetEntryLocalService;
 	private final ClassNameLocalService _classNameLocalService;
 	private final DeletionMode _deletionMode;
 	private final String _oldSubscriptionClassName;
