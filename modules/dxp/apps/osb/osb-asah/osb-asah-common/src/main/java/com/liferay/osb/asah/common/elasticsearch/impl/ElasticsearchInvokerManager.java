@@ -51,6 +51,10 @@ public class ElasticsearchInvokerManager {
 		return _elasticsearchInvokers.get(weDeployServiceName);
 	}
 
+	public ElasticsearchInvoker getGlobalElasticsearchInvoker() {
+		return _globalElasticsearchInvoker;
+	}
+
 	@PostConstruct
 	private void _init() {
 		for (WeDeployDataService weDeployDataService :
@@ -67,6 +71,10 @@ public class ElasticsearchInvokerManager {
 					_elasticsearchConnection.getTransportClient(),
 					_elasticsearchIndexManager, weDeployDataService));
 		}
+
+		_globalElasticsearchInvoker = new GlobalElasticsearchInvokerImpl(
+			_elasticsearchConnection.getTransportClient(),
+			_elasticsearchIndexManager);
 	}
 
 	@Autowired
@@ -77,5 +85,6 @@ public class ElasticsearchInvokerManager {
 
 	private final Map<String, ElasticsearchInvoker> _elasticsearchInvokers =
 		new HashMap<>();
+	private ElasticsearchInvoker _globalElasticsearchInvoker;
 
 }
