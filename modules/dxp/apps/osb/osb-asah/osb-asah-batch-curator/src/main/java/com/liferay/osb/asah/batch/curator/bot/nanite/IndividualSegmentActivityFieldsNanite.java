@@ -51,11 +51,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 
-	public long getInterval() {
-		return DateUtil.MINUTE;
-	}
-
-	@Override
 	public void run() throws Exception {
 		JSONArrayIterator.of(
 			"individual-segments", faroInfoElasticsearchInvoker,
@@ -78,11 +73,11 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	public void run(JSONObject contextJSONObject) throws Exception {
 		while (true) {
 			synchronized (this) {
-				if (isActive()) {
+				if (_active) {
 					return;
 				}
 
-				setActive(true);
+				_active = true;
 			}
 
 			while (_analyticsConfigured) {
@@ -93,12 +88,12 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 					_log.error(e, e);
 				}
 
-				Thread.sleep(getInterval());
+				Thread.sleep(DateUtil.MINUTE);
 			}
 
-			cleanUp();
+			_cleanUp();
 
-			setActive(false);
+			_active = false;
 
 			if (!_analyticsConfigured) {
 				break;
@@ -111,23 +106,8 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	}
 
 	@Override
-	protected void cleanUp() {
-		faroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.matchAllQuery(), true,
-			new Script(
-				"ctx._source.remove('lastActivityDate');" +
-					"ctx._source.activitiesCount = 0"),
-			"individual-segments");
-	}
-
-	@Override
 	protected Log getLog() {
 		return _log;
-	}
-
-	@Override
-	protected boolean isActive() {
-		return _active;
 	}
 
 	protected void process(JSONObject individualSegmentJSONObject)
@@ -181,9 +161,13 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 			));
 	}
 
-	@Override
-	protected void setActive(boolean active) {
-		_active = active;
+	private void _cleanUp() {
+		faroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			QueryBuilders.matchAllQuery(), true,
+			new Script(
+				"ctx._source.remove('lastActivityDate');" +
+					"ctx._source.activitiesCount = 0"),
+			"individual-segments");
 	}
 
 	private long _getActivitiesCount(
