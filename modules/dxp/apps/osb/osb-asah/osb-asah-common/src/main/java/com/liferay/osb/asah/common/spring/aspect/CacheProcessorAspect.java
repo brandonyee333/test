@@ -221,7 +221,9 @@ public class CacheProcessorAspect {
 
 			Cache cache = _cacheManager.getCache(cacheName);
 
-			cache.clear();
+			if (cache != null) {
+				cache.clear();
+			}
 		}
 	}
 

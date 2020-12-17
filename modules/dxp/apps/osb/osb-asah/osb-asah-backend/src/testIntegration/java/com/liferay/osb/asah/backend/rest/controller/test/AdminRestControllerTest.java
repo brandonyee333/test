@@ -64,9 +64,13 @@ public class AdminRestControllerTest {
 		Cache cache1 = _cacheManager.getCache(
 			ProjectIdThreadLocal.getProjectId() + "#test");
 
+		Assert.assertNotNull(cache1);
+
 		cache1.put("foo", "bar");
 
 		Cache cache2 = _cacheManager.getCache("test2#test");
+
+		Assert.assertNotNull(cache2);
 
 		cache2.put("foo", "bar");
 

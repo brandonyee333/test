@@ -243,10 +243,12 @@ public class RootRestController {
 			throw new HttpClientErrorException(responseEntity.getStatusCode());
 		}
 
-		return _readFirstCell(
+		return Optional.of(
 			responseEntity.getBody()
 		).map(
-			Long::valueOf
+			this::_readFirstCell
+		).map(
+			Long::parseLong
 		).orElse(
 			0L
 		);
@@ -295,7 +297,7 @@ public class RootRestController {
 		).sum();
 	}
 
-	private Optional<String> _readFirstCell(String body) {
+	private String _readFirstCell(String body) {
 		CsvParserSettings csvParserSettings = new CsvParserSettings();
 
 		csvParserSettings.setHeaderExtractionEnabled(true);
@@ -310,6 +312,8 @@ public class RootRestController {
 		return stream.findFirst(
 		).map(
 			row -> row[0]
+		).orElse(
+			"0"
 		);
 	}
 
@@ -327,10 +331,13 @@ public class RootRestController {
 
 		csvParserSettings.setProcessor(beanListProcessor);
 
-		CsvParser csvParser = new CsvParser(csvParserSettings);
+		if (body != null) {
+			CsvParser csvParser = new CsvParser(csvParserSettings);
 
-		csvParser.parse(
-			new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
+			csvParser.parse(
+				new ByteArrayInputStream(
+					body.getBytes(StandardCharsets.UTF_8)));
+		}
 
 		return beanListProcessor.getBeans();
 	}

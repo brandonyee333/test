@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.dxp.extractor.configuration.DXPExtractorConfiguration;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -74,7 +75,13 @@ public class ExtractorDXPClient extends BaseDXPClient {
 			dxpExtractorConfiguration, path, httpMethod, body);
 
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
-			return Integer.parseInt(responseEntity.getBody());
+			return Optional.of(
+				responseEntity.getBody()
+			).map(
+				Integer::parseInt
+			).orElse(
+				0
+			);
 		}
 
 		throw new HttpClientErrorException(responseEntity.getStatusCode());

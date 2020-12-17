@@ -282,15 +282,17 @@ public class GraphQLConfiguration {
 			GraphQLType graphQLType = AnnotationUtils.getAnnotation(
 				graphQLTypesClass, GraphQLType.class);
 
-			String typeName = graphQLType.value();
+			if (graphQLType != null) {
+				String typeName = graphQLType.value();
 
-			if (StringUtils.isBlank(typeName)) {
-				typeName = StringUtils.substringAfterLast(
-					graphQLTypesClass.getName(), ".");
+				if (StringUtils.isBlank(typeName)) {
+					typeName = StringUtils.substringAfterLast(
+						graphQLTypesClass.getName(), ".");
+				}
+
+				_wireGraphQLTypeProperties(
+					builder, graphQLTypesClass.getMethods(), typeName);
 			}
-
-			_wireGraphQLTypeProperties(
-				builder, graphQLTypesClass.getMethods(), typeName);
 		}
 	}
 

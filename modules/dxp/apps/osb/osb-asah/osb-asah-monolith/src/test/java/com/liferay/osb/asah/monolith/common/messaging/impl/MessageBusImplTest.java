@@ -100,6 +100,8 @@ public class MessageBusImplTest {
 			(ExecutorService)ReflectionTestUtils.getField(
 				_messageBusImpl, "_executorService");
 
+		Assert.assertNotNull(executorService);
+
 		executorService.shutdown();
 
 		executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
@@ -139,9 +141,13 @@ public class MessageBusImplTest {
 	private Set<MessageListener> _getMessageBusMessageListeners(
 		Channel channel) {
 
+		Object messageListenersObject = ReflectionTestUtils.getField(
+			_messageBusImpl, "_messageListeners");
+
+		Assert.assertNotNull(messageListenersObject);
+
 		Map<String, Set<MessageListener>> messageListeners =
-			(Map<String, Set<MessageListener>>)ReflectionTestUtils.getField(
-				_messageBusImpl, "_messageListeners");
+			(Map<String, Set<MessageListener>>)messageListenersObject;
 
 		return messageListeners.get(
 			StringUtils.lowerCase(

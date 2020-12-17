@@ -174,7 +174,7 @@ public class DXPExtractorConfigurationManagerImpl
 
 		String response = responseEntity.getBody();
 
-		if (!response.startsWith("7")) {
+		if ((response == null) || !response.startsWith("7")) {
 			_dxpOAuth2Client.removeAccessToken(
 				credentialsJSONObject.optString("oAuthClientId", null));
 
@@ -230,7 +230,7 @@ public class DXPExtractorConfigurationManagerImpl
 
 		String response = responseEntity.getBody();
 
-		if (!response.startsWith("7")) {
+		if ((response == null) || !response.startsWith("7")) {
 			return false;
 		}
 
