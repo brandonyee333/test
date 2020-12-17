@@ -1,20 +1,72 @@
 commerce:
-  ml:
-    locale: en_US
+    ml:
+        locale: en_US
+forecast:
+    ahead: 1
+    data:
+        history:
+            length: 8
+        minimum:
+            length: 30
+    force:
+        parallelism:
+    model:
+        max:
+            order: 10
+        order:
+            d:
+            p:
+                - 0
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+            q:
+                - 0
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+        period:
+        prediction:
+            dynamic:
+                flag:
+        seasonal:
+            d:
+            p:
+                - 0
+                - 1
+                - 2
+            q:
+                - 0
+                - 1
+                - 2
+        selection:
+            criterion: 'error'
+        trend:
+            - "n"
+            - "c"
+            - "t"
+            - "ct"
+    test:
+        sample:
+            count: 4
 frequent:
-  pattern:
-    recommendation:
-      itemset:
-        items:
-          max:
-            count: 5
-      min:
-        confidence: 0.50
-        support:
-          factor: 0.4
+    pattern:
+        recommendation:
+            itemset:
+                items:
+                    max:
+                        count: 5
+            min:
+                confidence: 0.50
+                support:
+                    factor: 0.4
 google:
-  storage:
-    bucket: gs://analytics-cloud-dxp-batch-entities-uat
+    storage:
+        bucket: gs://analytics-cloud-dxp-batch-entities-uat
 product:
     content:
         recommendation:
