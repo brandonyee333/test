@@ -697,8 +697,6 @@ public class ActivitiesNanite implements Nanite {
 			}
 		};
 
-	private boolean _active;
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
