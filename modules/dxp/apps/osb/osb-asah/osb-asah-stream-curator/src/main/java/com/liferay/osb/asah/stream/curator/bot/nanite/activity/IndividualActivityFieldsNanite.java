@@ -17,22 +17,21 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
-
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -60,7 +59,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 	}
 
 	@Override
-	public void run() throws Exception {
+	public void run() {
 		while (true) {
 			List<String> messages = _messageSubscriber.pullMessages(100);
 
@@ -81,7 +80,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 			);
 
 			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-				faroInfoElasticsearchInvoker.
+				_faroInfoElasticsearchInvoker.
 					createElasticsearchBulkRequestBuilder();
 
 			for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
@@ -90,7 +89,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 				String ownerId = ownerIdEntry.getKey();
 
 				JSONObject individualJSONObject =
-					faroInfoElasticsearchInvoker.fetch("individuals", ownerId);
+					_faroInfoElasticsearchInvoker.fetch("individuals", ownerId);
 
 				if (individualJSONObject == null) {
 					continue;
@@ -117,43 +116,25 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 	}
 
-	@Override
 	protected void cleanUp() throws Exception {
 		try {
 			JSONArrayIterator.of(
-				"individuals", faroInfoElasticsearchInvoker,
+				"individuals", _faroInfoElasticsearchInvoker,
 				individualJSONObject -> {
 					individualJSONObject.remove("lastActivityDates");
 
-					faroInfoElasticsearchInvoker.update(
+					_faroInfoElasticsearchInvoker.update(
 						"individuals", individualJSONObject.getString("id"),
 						JSONUtil.put(
 							"activitiesCounts", Collections.emptyList()));
 
 					return null;
 				}
-			).setMonitoringConsumers(
-				this::monitorProcessedCount, this::monitorQueueSize
 			).iterate();
 		}
 		finally {
 			_active = false;
 		}
-	}
-
-	@Override
-	protected Log getLog() {
-		return LogFactory.getLog(IndividualActivityFieldsNanite.class);
-	}
-
-	@Override
-	protected boolean isActive() {
-		return _active;
-	}
-
-	@Override
-	protected void setActive(boolean active) {
-		_active = active;
 	}
 
 	private JSONArray _getActivitiesCountsJSONArray(
@@ -201,7 +182,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 		for (String channelId : channelIdsCounts.keySet()) {
 			JSONArray activitiesJSONArray = new JSONArray(
-				faroInfoElasticsearchInvoker.get(
+				_faroInfoElasticsearchInvoker.get(
 					"activities",
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
@@ -246,6 +227,9 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@MessageSubscriber.Autowired(channel = Channel.ACTIVE_INDIVIDUAL_IDS)
 	private MessageSubscriber _messageSubscriber;

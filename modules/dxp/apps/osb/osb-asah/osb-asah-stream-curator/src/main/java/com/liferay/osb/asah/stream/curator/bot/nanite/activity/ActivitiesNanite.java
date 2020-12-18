@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 
-import com.liferay.osb.asah.batch.curator.nlp.NLPUtil;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
@@ -30,8 +29,9 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
+import com.liferay.osb.asah.stream.curator.nlp.NLPUtil;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -98,15 +98,21 @@ public class ActivitiesNanite implements Nanite {
 	}
 
 	@Override
-	public void run() throws Exception {
+	public void run() {
 		while (true) {
 			long start = System.currentTimeMillis();
 
-			List<AnalyticsEvent> analyticsEvents =
-				_messageSubscriber.pullMessages(
-					50, AnalyticsEvent::toAnalyticsEvent);
+			List<AnalyticsEvent> analyticsEvents = null;
 
-			if (analyticsEvents.isEmpty()) {
+			try {
+				analyticsEvents = _messageSubscriber.pullMessages(
+					50, AnalyticsEvent::toAnalyticsEvent);
+			}
+			catch (Exception e) {
+				_log.error(e, e);
+			}
+
+			if ((analyticsEvents == null) || analyticsEvents.isEmpty()) {
 				break;
 			}
 
@@ -126,20 +132,6 @@ public class ActivitiesNanite implements Nanite {
 		}
 	}
 
-	@Override
-	protected void cleanUp() {
-	}
-
-	@Override
-	protected Log getLog() {
-		return LogFactory.getLog(ActivitiesNanite.class);
-	}
-
-	@Override
-	protected boolean isActive() {
-		return _active;
-	}
-
 	protected void process(AnalyticsEvent analyticsEvent) {
 		try {
 			String applicationId = analyticsEvent.getApplicationId();
@@ -156,14 +148,11 @@ public class ActivitiesNanite implements Nanite {
 		}
 	}
 
-	@Override
-	protected void setActive(boolean active) {
-		_active = active;
-	}
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
 	private JSONObject _addActivityGroupJSONObject(
-			AnalyticsEvent analyticsEvent)
-		throws Exception {
+		AnalyticsEvent analyticsEvent) {
 
 		String channelId = analyticsEvent.getChannelId();
 		String dataSourceId = analyticsEvent.getDataSourceId();
