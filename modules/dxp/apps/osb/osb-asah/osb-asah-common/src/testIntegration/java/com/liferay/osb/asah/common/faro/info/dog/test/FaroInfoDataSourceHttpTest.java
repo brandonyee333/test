@@ -48,7 +48,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -786,7 +785,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
-	@Mock
+	@MockBean
 	private SalesforceExtractorConfigurationDog
 		_salesforceExtractorConfigurationDog;
 
