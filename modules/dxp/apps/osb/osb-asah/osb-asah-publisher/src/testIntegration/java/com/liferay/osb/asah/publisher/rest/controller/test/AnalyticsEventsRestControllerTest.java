@@ -136,7 +136,7 @@ public class AnalyticsEventsRestControllerTest {
 	@Test
 	public void testGetStatusCode500() throws Exception {
 		Mockito.doThrow(
-			Exception.class
+			RuntimeException.class
 		).when(
 			_messageBus
 		).sendMessage(
