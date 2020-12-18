@@ -109,9 +109,6 @@ public class PortalDog {
 				_getLiferayAnalyticsGroupIds(analyticsConfigurationJSONObject)
 			);
 
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask("ActivitiesNanite", null);
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
-				"IndividualActivityFieldsNanite", null);
 			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 				"IndividualSegmentActivityFieldsNanite", null);
 		}

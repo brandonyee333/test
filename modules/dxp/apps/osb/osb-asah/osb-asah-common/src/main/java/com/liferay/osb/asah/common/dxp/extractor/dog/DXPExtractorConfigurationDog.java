@@ -108,9 +108,6 @@ public class DXPExtractorConfigurationDog extends BaseConfigurationDog {
 		if (Objects.equals(state, "DUMMY_CREDENTIALS")) {
 			_nanitesHttp.refreshAnalytics();
 
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask("ActivitiesNanite", null);
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
-				"IndividualActivityFieldsNanite", null);
 			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 				"IndividualSegmentActivityFieldsNanite", null);
 

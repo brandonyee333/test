@@ -354,9 +354,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 			_nanitesHttp.refreshAnalytics();
 
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask("ActivitiesNanite", null);
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
-				"IndividualActivityFieldsNanite", null);
 			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 				"IndividualSegmentActivityFieldsNanite", null);
 		}
