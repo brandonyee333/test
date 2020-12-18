@@ -69,11 +69,12 @@ public class NaniteTestConfiguration {
 						"Unable to find nanite with class name " + className);
 				}
 
-				if (nanite instanceof BaseActivitiesNanite) {
-					BaseActivitiesNanite baseActivitiesNanite =
-						(BaseActivitiesNanite)nanite;
+				if (nanite instanceof IndividualSegmentActivityFieldsNanite) {
+					IndividualSegmentActivityFieldsNanite
+						individualSegmentActivityFieldsNanite =
+							(IndividualSegmentActivityFieldsNanite)nanite;
 
-					baseActivitiesNanite.run();
+					individualSegmentActivityFieldsNanite.run();
 				}
 				else {
 					nanite.run(contextJSONObject);

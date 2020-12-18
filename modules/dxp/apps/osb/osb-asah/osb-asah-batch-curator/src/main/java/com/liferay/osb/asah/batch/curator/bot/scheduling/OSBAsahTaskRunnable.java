@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.scheduling;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
+import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
 
 import org.apache.commons.logging.Log;
@@ -73,7 +73,8 @@ public class OSBAsahTaskRunnable implements Runnable {
 				continue;
 			}
 
-			if (((!_force && (nanite instanceof BaseActivitiesNanite)) ||
+			if (((!_force &&
+				  (nanite instanceof IndividualSegmentActivityFieldsNanite)) ||
 				 nanite.isLogRunEnabled()) &&
 				_osbAsahTaskManager.checkNanite(naniteClassName)) {
 

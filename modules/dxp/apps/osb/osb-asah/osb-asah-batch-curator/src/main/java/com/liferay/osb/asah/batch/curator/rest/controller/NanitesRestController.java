@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.batch.curator.rest.controller;
 
 import com.liferay.osb.asah.batch.curator.bot.OSBAsahBatchCuratorBot;
-import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -49,9 +48,6 @@ public class NanitesRestController {
 
 	@PostMapping("/analytics")
 	public void refreshAnalytics() {
-		BaseActivitiesNanite.setAnalyticsConfigured(
-			_faroInfoDataSourceDog.isAnalyticsConfigured());
-
 		_individualSegmentActivityFieldsNanite.setAnalyticsConfigured(
 			_faroInfoDataSourceDog.isAnalyticsConfigured());
 	}
