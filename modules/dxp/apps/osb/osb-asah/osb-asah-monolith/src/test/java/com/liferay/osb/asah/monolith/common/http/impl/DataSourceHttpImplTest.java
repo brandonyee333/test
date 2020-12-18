@@ -127,8 +127,7 @@ public class DataSourceHttpImplTest {
 	@Test
 	public void testGetDXPUsersTotalException() throws Exception {
 		Mockito.when(
-			_dxpUsersRestController.getTotal(
-				Mockito.anyString(), Mockito.anyString())
+			_dxpUsersRestController.getTotal(Mockito.any(), Mockito.any())
 		).thenThrow(
 			new Exception()
 		);
@@ -159,7 +158,7 @@ public class DataSourceHttpImplTest {
 	@Test
 	public void testGetSalesforceOwnerException() throws Exception {
 		Mockito.when(
-			_salesforceUsersRestController.get(Mockito.anyString())
+			_salesforceUsersRestController.get(Mockito.any())
 		).thenThrow(
 			new Exception()
 		);

@@ -84,8 +84,8 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getDXPGroups(
-			Mockito.anyString(), Mockito.anyInt(), Mockito.anyString(),
-			Mockito.anyLong(), Mockito.anyBoolean(), Mockito.anyInt()
+			Mockito.any(), Mockito.anyInt(), Mockito.any(), Mockito.anyLong(),
+			Mockito.anyBoolean(), Mockito.anyInt()
 		);
 
 		Mockito.doAnswer(
@@ -133,7 +133,7 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getDXPGroups(
-			Mockito.anyString(), Mockito.anyString()
+			Mockito.any(), Mockito.any()
 		);
 
 		Mockito.doAnswer(
@@ -187,7 +187,7 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getDXPOrganizations(
-			Mockito.anyString(), Mockito.anyString()
+			Mockito.any(), Mockito.any()
 		);
 
 		Mockito.doAnswer(
@@ -241,50 +241,7 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getDXPOrganizations(
-			Mockito.anyString(), Mockito.anyInt(), Mockito.anyString(),
-			Mockito.anyLong(), Mockito.anyInt()
-		);
-
-		Mockito.doAnswer(
-			invocation -> {
-				JSONObject jsonObject = JSONUtil.put(
-					"_embedded",
-					JSONUtil.put(
-						"userGroups",
-						JSONUtil.put(
-							JSONUtil.put(
-								"companyId", "20099"
-							).put(
-								"name", "User Group 1"
-							).put(
-								"parentUserGroupId", "0"
-							).put(
-								"userGroupId", "33213"
-							).put(
-								"userId", "20139"
-							).put(
-								"userName", "Test Test"
-							).put(
-								"uuid", "57f45b2f-116d-4f80-2c93-15ee3e4acd46"
-							)))
-				).put(
-					"page",
-					JSONUtil.put(
-						"end", 1
-					).put(
-						"start", 0
-					).put(
-						"totalElements", 1
-					)
-				);
-
-				return new ResponseEntity<>(
-					jsonObject.toString(), HttpStatus.OK);
-			}
-		).when(
-			dataSourceHttp
-		).getDXPUserGroups(
-			Mockito.anyString(), Mockito.anyInt(), Mockito.anyString(),
+			Mockito.any(), Mockito.anyInt(), Mockito.any(), Mockito.anyLong(),
 			Mockito.anyInt()
 		);
 
@@ -327,7 +284,49 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getDXPUserGroups(
-			Mockito.anyString(), Mockito.anyString()
+			Mockito.any(), Mockito.anyInt(), Mockito.any(), Mockito.anyInt()
+		);
+
+		Mockito.doAnswer(
+			invocation -> {
+				JSONObject jsonObject = JSONUtil.put(
+					"_embedded",
+					JSONUtil.put(
+						"userGroups",
+						JSONUtil.put(
+							JSONUtil.put(
+								"companyId", "20099"
+							).put(
+								"name", "User Group 1"
+							).put(
+								"parentUserGroupId", "0"
+							).put(
+								"userGroupId", "33213"
+							).put(
+								"userId", "20139"
+							).put(
+								"userName", "Test Test"
+							).put(
+								"uuid", "57f45b2f-116d-4f80-2c93-15ee3e4acd46"
+							)))
+				).put(
+					"page",
+					JSONUtil.put(
+						"end", 1
+					).put(
+						"start", 0
+					).put(
+						"totalElements", 1
+					)
+				);
+
+				return new ResponseEntity<>(
+					jsonObject.toString(), HttpStatus.OK);
+			}
+		).when(
+			dataSourceHttp
+		).getDXPUserGroups(
+			Mockito.any(), Mockito.any()
 		);
 
 		Mockito.doAnswer(
@@ -355,7 +354,7 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getDXPUsersFields(
-			Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt()
+			Mockito.any(), Mockito.anyInt(), Mockito.anyInt()
 		);
 
 		Mockito.doAnswer(
@@ -363,7 +362,7 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getDXPUsersTotal(
-			Mockito.anyString(), Mockito.anyString()
+			Mockito.any(), Mockito.any()
 		);
 
 		Mockito.doAnswer(
@@ -391,7 +390,7 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getSalesforceAccountsFields(
-			Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt()
+			Mockito.any(), Mockito.anyInt(), Mockito.anyInt()
 		);
 
 		Mockito.doAnswer(
@@ -419,7 +418,7 @@ public class DataSourceHttpTestConfiguration {
 		).when(
 			dataSourceHttp
 		).getSalesforceUsersFields(
-			Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt()
+			Mockito.any(), Mockito.anyInt(), Mockito.anyInt()
 		);
 
 		return dataSourceHttp;

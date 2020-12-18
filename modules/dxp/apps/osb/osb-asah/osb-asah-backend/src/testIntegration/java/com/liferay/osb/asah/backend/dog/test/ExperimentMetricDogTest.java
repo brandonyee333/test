@@ -104,8 +104,8 @@ public class ExperimentMetricDogTest {
 
 		Mockito.when(
 			_experimentDataDog.fetchDichotomousDataPoint(
-				Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
-				Mockito.any(MetricType.class), Mockito.anyString(),
+				Mockito.any(), Mockito.any(), Mockito.any(),
+				Mockito.any(MetricType.class), Mockito.any(),
 				Mockito.any(TimeRange.class), Mockito.eq(dxpVariantId))
 		).thenReturn(
 			new ExperimentDataPoint<>(trials, value)
