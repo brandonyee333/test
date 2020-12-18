@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.nlp;
+package com.liferay.osb.asah.stream.curator.nlp;
 
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 
