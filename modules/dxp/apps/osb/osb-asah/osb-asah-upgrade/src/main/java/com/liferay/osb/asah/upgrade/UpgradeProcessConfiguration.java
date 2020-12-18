@@ -16,6 +16,7 @@ package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_10_0.DeleteActivityNaniteOSBAsahTasksUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_10_0.UserSessionsInteractionsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +37,15 @@ public class UpgradeProcessConfiguration {
 			"0.0.0", ReleaseInfo.getVersion(), _snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.9.0", "2.10.0", _userSessionsInteractionsUpgradeStep);
+			"2.9.0", "2.10.0", _deleteActivityNaniteOSBAsahTasksUpgradeStep,
+			_userSessionsInteractionsUpgradeStep);
 
 		return upgradeProcess;
 	}
+
+	@Autowired
+	private DeleteActivityNaniteOSBAsahTasksUpgradeStep
+		_deleteActivityNaniteOSBAsahTasksUpgradeStep;
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
