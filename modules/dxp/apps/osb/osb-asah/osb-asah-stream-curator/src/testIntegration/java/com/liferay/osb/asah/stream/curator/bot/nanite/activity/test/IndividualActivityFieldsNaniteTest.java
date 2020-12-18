@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite.test;
+package com.liferay.osb.asah.stream.curator.bot.nanite.activity.test;
 
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;

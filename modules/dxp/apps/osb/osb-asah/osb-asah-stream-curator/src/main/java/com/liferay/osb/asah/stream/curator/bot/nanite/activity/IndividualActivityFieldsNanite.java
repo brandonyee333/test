@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite;
+package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;

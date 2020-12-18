@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.batch.curator.bot.nanite;
+package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 
 import com.liferay.osb.asah.batch.curator.nlp.NLPUtil;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
