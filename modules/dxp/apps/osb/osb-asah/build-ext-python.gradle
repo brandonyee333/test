@@ -1,111 +1,49 @@
-import com.jetbrains.python.envs.PythonEnvsPlugin
-
 import com.liferay.gradle.util.FileUtil
 
-import org.apache.tools.ant.taskdefs.condition.Os
-
-buildscript {
-	dependencies {
-		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.defaults", version: "latest.release"
-		classpath group: "gradle.plugin.com.jetbrains.python", name: "gradle-python-envs", version: "0.0.30"
-	}
-
-	repositories {
-		maven {
-			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
-		}
-	}
-}
+import com.pswidersk.gradle.python.PythonPlugin
+import com.pswidersk.gradle.python.VenvTask
 
 configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
-	apply plugin: PythonEnvsPlugin
+	apply plugin: PythonPlugin
 
-	task formatSourcePython()
-	task installBootstrapEnvDependencies()
-	task installProjectEnvDependencies()
-	task installTestEnvDependencies()
-	task packagePython()
-	task testPython()
-	task test()
+	pythonPlugin {
+		minicondaVersion.set("py37_4.9.2")
+		pythonVersion.set("3.7.9")
+	}
 
-	def bootstrapEnvName = "Miniconda3"
+	task installPackageDependencies(type: VenvTask)
+	task installProjectEnvDependencies(type: VenvTask)
+	task installTestEnvDependencies(type: VenvTask)
+	task packagePython(type: VenvTask)
+	task testPython(type: VenvTask)
+	task zipPython(type: VenvTask)
+
 	def pythonSource = "src/main/python"
+	def pythonTempDir = "$buildDir/python-temp"
 	def pythonTestSource = "src/test/python"
 
-	envs {
-		bootstrapDirectory = new File(projectDir, '.bootstrap')
-		envsDirectory = new File(buildDir, '.envs')
-
-		conda bootstrapEnvName, "Miniconda3-py37_4.9.2", "64"
-		condaenv project.name, "3.7", "Miniconda3"
-	}
-
-	formatSourcePython {
-		def bootstrapEnvDir = "$project.envs.bootstrapDirectory/$bootstrapEnvName"
-
-		doLast {
-			exec {
-				commandLine _executablePath(bootstrapEnvDir, "python"), "-m", "yapf", "-i", "--recursive", pythonSource
-				commandLine _executablePath(bootstrapEnvDir, "python"), "-m", "yapf", "-i", "--recursive", pythonTestSource
-			}
-		}
-	}
-
-	installBootstrapEnvDependencies {
-		def bootstrapEnvDir = "$project.envs.bootstrapDirectory/$bootstrapEnvName"
-
-		doLast {
-			if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-				copy {
-					from file("$bootstrapEnvDir/Library/bin/libcrypto-1_1-x64.dll"), file("$bootstrapEnvDir/Library/bin/libssl-1_1-x64.dll")
-					into file("$bootstrapEnvDir/DLLs")
-				}
-			}
-
-			exec {
-				commandLine _executablePath(bootstrapEnvDir, "pip"), "install", "yapf"
-			}
-		}
+	installPackageDependencies {
+		venvExec = "pip"
+		args = ["install", "--isolated", "-r", "$projectDir/$pythonSource/requirements-package.txt", "--target", pythonTempDir]
 	}
 
 	installProjectEnvDependencies {
-		def projectEnvDir = "$project.envs.envsDirectory/$project.name"
-
-		doLast {
-			if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-				copy {
-					from file("$projectEnvDir/Library/bin/libcrypto-1_1-x64.dll"), file("$projectEnvDir/Library/bin/libssl-1_1-x64.dll")
-					into file("$projectEnvDir/DLLs")
-				}
-			}
-
-			exec {
-				commandLine _executablePath(projectEnvDir, "pip"), "install", "-r", "$projectDir/$pythonSource/requirements.txt"
-			}
-		}
+		venvExec = "pip"
+		args = ["install", "--isolated", "-r", "$projectDir/$pythonSource/requirements.txt"]
 	}
 
 	installTestEnvDependencies {
-		def projectEnvDir = "$project.envs.envsDirectory/$project.name"
-
-		doLast {
-			if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-				copy {
-					from file("$projectEnvDir/Library/bin/libcrypto-1_1-x64.dll"), file("$projectEnvDir/Library/bin/libssl-1_1-x64.dll")
-					into file("$projectEnvDir/DLLs")
-				}
-			}
-
-			exec {
-				commandLine _executablePath(projectEnvDir, "pip"), "install", "-r", "$projectDir/$pythonTestSource/requirements.txt"
-			}
-		}
+		venvExec = "pip"
+		args = ["install", "--isolated", "-r", "$projectDir/$pythonTestSource/requirements.txt"]
 	}
 
 	packagePython {
+		dependsOn installPackageDependencies
+		dependsOn installProjectEnvDependencies
+
+		finalizedBy zipPython
+
 		def buildLibs = new File("$buildDir/libs")
-		def pythonEnvDir = "$buildDir/.envs/$project.name"
-		def pythonTempDir = "$buildDir/python-temp"
 
 		doLast {
 			copy {
@@ -117,15 +55,24 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 			if (!buildLibs.exists()) {
 				buildLibs.mkdirs()
 			}
+		}
+	}
 
-			exec {
-				commandLine _executablePath(pythonEnvDir, "pip"), "install", "-r", "$projectDir/$pythonSource/requirements-package.txt", "--target", pythonTempDir
-			}
+	testPython {
+		dependsOn installProjectEnvDependencies
+		dependsOn installTestEnvDependencies
 
-			exec {
-				commandLine _executablePath(pythonEnvDir, "python"), "-m", "zipapp", pythonTempDir, "-o", "$buildDir/libs/${project.name}.zip"
-			}
+		venvExec = "pytest"
+		workingDir = file("src/test")
+		environment = ["PYTHONPATH": file("src/main")]
+		args = ["$projectDir/$pythonTestSource/", "--capture=no", "--disable-warnings", "--suppress-no-test-exit-code"]
+	}
 
+	zipPython {
+		venvExec = "python"
+		args = ["-m", "zipapp", pythonTempDir, "-o", "$buildDir/libs/${project.name}.zip"]
+
+		doLast {
 			copy {
 				from pythonSource + "/__main__.py"
 				into "$buildDir/libs"
@@ -140,55 +87,7 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 		dependsOn packagePython
 	}
 
-	project.afterEvaluate {
-		formatSourcePython {
-			dependsOn installProjectEnvDependencies
-			dependsOn installTestEnvDependencies
-		}
-
-		installBootstrapEnvDependencies {
-			dependsOn build_condas
-		}
-
-		installProjectEnvDependencies {
-			dependsOn build_conda_envs
-		}
-
-		packagePython {
-			dependsOn installBootstrapEnvDependencies
-			dependsOn installProjectEnvDependencies
-
-			installProjectEnvDependencies.mustRunAfter(installBootstrapEnvDependencies)
-		}
-
-		test {
-			dependsOn installProjectEnvDependencies
-			dependsOn installTestEnvDependencies
-			dependsOn testPython
-		}
-	}
-
-	testPython {
-		def projectEnvDir = "$project.envs.envsDirectory/$project.name"
-
-		doLast {
-			exec {
-				commandLine _executablePath(projectEnvDir, "pytest"), "$projectDir/$pythonTestSource/", "--capture=no", "--disable-warnings", "--suppress-no-test-exit-code"
-			}
-		}
-	}
-}
-
-private String _executablePath(String pythonEnvDir, String executable) {
-	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-		if (Objects.equals(executable, "python")) {
-			return "$pythonEnvDir/$executable"
-		}
-		else {
-			return "$pythonEnvDir/Scripts/$executable"
-		}
-	}
-	else {
-		return "$pythonEnvDir/bin/$executable"
+	task test {
+		dependsOn testPython
 	}
 }
