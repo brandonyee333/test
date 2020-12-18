@@ -20,14 +20,12 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -116,27 +114,6 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 	}
 
-	protected void cleanUp() throws Exception {
-		try {
-			JSONArrayIterator.of(
-				"individuals", _faroInfoElasticsearchInvoker,
-				individualJSONObject -> {
-					individualJSONObject.remove("lastActivityDates");
-
-					_faroInfoElasticsearchInvoker.update(
-						"individuals", individualJSONObject.getString("id"),
-						JSONUtil.put(
-							"activitiesCounts", Collections.emptyList()));
-
-					return null;
-				}
-			).iterate();
-		}
-		finally {
-			_active = false;
-		}
-	}
-
 	private JSONArray _getActivitiesCountsJSONArray(
 		Map<String, Long> channelIdsCounts, JSONObject individualJSONObject) {
 
@@ -222,8 +199,6 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 		return lastActivityDatesJSONArray;
 	}
-
-	private boolean _active;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
