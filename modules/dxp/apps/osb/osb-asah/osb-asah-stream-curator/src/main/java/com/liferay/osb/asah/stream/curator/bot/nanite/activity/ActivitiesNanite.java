@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -65,7 +66,7 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class ActivitiesNanite extends BaseActivitiesNanite {
+public class ActivitiesNanite implements Nanite {
 
 	public void addActivityJSONObject(
 			JSONObject activityJSONObject, String applicationId, String eventId,
@@ -84,6 +85,16 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 				).toString(),
 				ServiceConstants.LCP_PROJECT_ID);
 		}
+	}
+
+	@Override
+	public String getCollectionName() {
+		return "activities";
+	}
+
+	@Override
+	public long getInterval() {
+		return DateUtil.MINUTE;
 	}
 
 	@Override

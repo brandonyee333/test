@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,12 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class IndividualActivityFieldsNanite extends BaseActivitiesNanite {
+public class IndividualActivityFieldsNanite implements Nanite {
+
+	@Override
+	public String getCollectionName() {
+		return "individuals";
+	}
 
 	@Override
 	public long getInterval() {
