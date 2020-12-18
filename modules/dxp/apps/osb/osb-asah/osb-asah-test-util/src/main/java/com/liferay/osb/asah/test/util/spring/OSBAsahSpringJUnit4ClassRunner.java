@@ -40,6 +40,8 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 				RedisAutoConfiguration.class.getName(),
 				RedisRepositoriesAutoConfiguration.class.getName(),
 				SecurityAutoConfiguration.class.getName()));
+		System.setProperty(
+			"spring.main.allow-bean-definition-overriding", "true");
 		System.setProperty("spring.profiles.active", "test");
 
 		_registerOSBAsahTestExecutionListener();
