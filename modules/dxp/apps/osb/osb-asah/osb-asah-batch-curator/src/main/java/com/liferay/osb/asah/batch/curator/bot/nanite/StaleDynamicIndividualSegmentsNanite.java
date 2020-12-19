@@ -60,7 +60,7 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 			String filterString = _FILTER_STRINGS[i];
 
 			sb.append("contains(filter, '");
-			sb.append(_escape(filterString));
+			sb.append(filterString);
 			sb.append("')");
 
 			if (i < (_FILTER_STRINGS.length - 1)) {
@@ -87,15 +87,12 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 		return LogFactory.getLog(StaleDynamicIndividualSegmentsNanite.class);
 	}
 
-	private String _escape(String filterString) {
-		return filterString.replaceAll("'", "''");
-	}
-
 	private static final String[] _FILTER_STRINGS = {
 		"activities/last30Days eq", "activities/last7Days eq",
-		"activities/lastYear eq", "activities/today eq", "gt ''last24Hours''",
-		"gt ''last28Days''", "gt ''last30Days''", "gt ''last7Days''",
-		"gt ''last90Days''", "gt ''yesterday''"
+		"activities/lastYear eq", "activities/today eq",
+		"gt ''''last24Hours''''", "gt ''''last28Days''''",
+		"gt ''''last30Days''''", "gt ''''last7Days''''",
+		"gt ''''last90Days''''", "gt ''''yesterday''''"
 	};
 
 	@Autowired
