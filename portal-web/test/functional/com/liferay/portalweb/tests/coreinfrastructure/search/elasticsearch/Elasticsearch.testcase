@@ -66,37 +66,6 @@ definition {
 		);
 	}
 
-	@ignore = "true"
-	@priority = "5"
-	test AssertSystemSettingsPropogateToModule {
-		property test.name.skip.portal.instance = "Elasticsearch#AssertSystemSettingsPropogateToModule";
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "System Settings"
-		);
-
-		SystemSettings.gotoCategory(category = "Foundation");
-
-		SystemSettings.viewConfiguration(configurationName = "Elasticsearch");
-
-		SystemSettings.editTextAreaSetting(
-			settingName = "clusterName",
-			settingValue = "LiferayElasticsearchCluster1"
-		);
-
-		SystemSettings.saveConfiguration();
-
-		Navigator.openSpecificURL(url = "http://localhost:9200");
-
-		// LRQA-28998
-
-		/* <execute macro="Elasticsearch#viewClusterStatus">
-			<var name="clusterStatus" value="&quot;cluster_name&quot; : &quot;LiferayElasticsearchCluster1&quot;" />
-		</execute> */
-	}
-
 	@priority = "5"
 	test ElasticsearchRemoteClusterSmokeTest {
 		property remote.elasticsearch.cluster.size = "2";
