@@ -60,7 +60,7 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 			String filterString = _FILTER_STRINGS[i];
 
 			sb.append("contains(filter, '");
-			sb.append(filterString);
+			sb.append(_escape(filterString));
 			sb.append("')");
 
 			if (i < (_FILTER_STRINGS.length - 1)) {
@@ -85,6 +85,10 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 	@Override
 	protected Log getLog() {
 		return LogFactory.getLog(StaleDynamicIndividualSegmentsNanite.class);
+	}
+
+	private String _escape(String filterString) {
+		return filterString.replaceAll("'", "''");
 	}
 
 	private static final String[] _FILTER_STRINGS = {
