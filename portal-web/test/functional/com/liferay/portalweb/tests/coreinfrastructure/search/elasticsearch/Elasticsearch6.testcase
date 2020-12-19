@@ -29,72 +29,6 @@ definition {
 		}
 	}
 
-	@description = "This is a use case for LPS-57894."
-	@priority = "3"
-	test UpdateSystemSettingsWithoutPortalRestart {
-		property remote.elasticsearch6.enabled = "true";
-		property test.name.skip.portal.instance = "Elasticsearch6#UpdateSystemSettingsWithoutPortalRestart";
-
-		var elasticsearchVersion = Elasticsearch.getRemoteServerVersion();
-
-		var liferayHome = PropsUtil.get("liferay.home.dir.name");
-
-		var elasticsearchYML = "${liferayHome}/elasticsearch-${elasticsearchVersion}-1/config/elasticsearch.yml";
-
-		AntCommand.antCommand(
-			locator1 = "build-test-elasticsearch6.xml",
-			value1 = "stop-elasticsearch");
-
-		var fileContent = FileUtil.read("${elasticsearchYML}");
-
-		var updatedContent = StringUtil.replace("${fileContent}", "LiferayElasticsearchCluster", "LiferayElasticsearchCluster1");
-
-		FileUtil.write("${elasticsearchYML}","${updatedContent}");
-
-		AntCommand.antCommand(
-			locator1 = "build-test-elasticsearch6.xml",
-			value1 = "start-elasticsearch-node -Delasticsearch.dir=${liferayHome}/elasticsearch-${elasticsearchVersion} -Dremote.elasticsearch.cluster.size=1");
-
-		Pause(locator1 = "30000");
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "System Settings");
-
-		SystemSettings.gotoCategory(category = "Foundation");
-
-		SystemSettings.viewConfiguration(configurationName = "Elasticsearch 6");
-
-		FormFields.editTextMultiline(
-			fieldName = "clusterName",
-			fieldValue = "LiferayElasticsearchCluster1");
-
-		SystemSettings.saveConfiguration();
-
-		ProductMenu.gotoPortlet(
-			category = "Content",
-			panel = "Site Administration",
-			portlet = "Web Content");
-
-		WebContentNavigator.gotoAddCP();
-
-		WebContent.addCP(
-			webContentContent = "WC Content",
-			webContentTitle = "apple");
-
-		PortletEntry.publish();
-
-		Navigator.openURL();
-
-		Search.searchPG(searchTerm = "apple");
-
-		Search.viewSearchResultPG(
-			searchAssetSummary = "WC Content",
-			searchAssetTitle = "apple",
-			searchAssetType = "Web Content Article");
-	}
-
 	@priority = "5"
 	test ElasticsearchRemoteClusterSmokeTest {
 		property environment.acceptance = "false";
@@ -168,5 +102,71 @@ definition {
 		Elasticsearch.viewClusterStatus(
 			clusterStatus = "&quot;cluster_name&quot; : &quot;LiferayElasticsearchCluster1&quot;"
 		);
+	}
+
+	@description = "This is a use case for LPS-57894."
+	@priority = "3"
+	test UpdateSystemSettingsWithoutPortalRestart {
+		property remote.elasticsearch6.enabled = "true";
+		property test.name.skip.portal.instance = "Elasticsearch6#UpdateSystemSettingsWithoutPortalRestart";
+
+		var elasticsearchVersion = Elasticsearch.getRemoteServerVersion();
+
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
+		var elasticsearchYML = "${liferayHome}/elasticsearch-${elasticsearchVersion}-1/config/elasticsearch.yml";
+
+		AntCommand.antCommand(
+			locator1 = "build-test-elasticsearch6.xml",
+			value1 = "stop-elasticsearch");
+
+		var fileContent = FileUtil.read("${elasticsearchYML}");
+
+		var updatedContent = StringUtil.replace("${fileContent}", "LiferayElasticsearchCluster", "LiferayElasticsearchCluster1");
+
+		FileUtil.write("${elasticsearchYML}","${updatedContent}");
+
+		AntCommand.antCommand(
+			locator1 = "build-test-elasticsearch6.xml",
+			value1 = "start-elasticsearch-node -Delasticsearch.dir=${liferayHome}/elasticsearch-${elasticsearchVersion} -Dremote.elasticsearch.cluster.size=1");
+
+		Pause(locator1 = "30000");
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "System Settings");
+
+		SystemSettings.gotoCategory(category = "Foundation");
+
+		SystemSettings.viewConfiguration(configurationName = "Elasticsearch 6");
+
+		FormFields.editTextMultiline(
+			fieldName = "clusterName",
+			fieldValue = "LiferayElasticsearchCluster1");
+
+		SystemSettings.saveConfiguration();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Web Content");
+
+		WebContentNavigator.gotoAddCP();
+
+		WebContent.addCP(
+			webContentContent = "WC Content",
+			webContentTitle = "apple");
+
+		PortletEntry.publish();
+
+		Navigator.openURL();
+
+		Search.searchPG(searchTerm = "apple");
+
+		Search.viewSearchResultPG(
+			searchAssetSummary = "WC Content",
+			searchAssetTitle = "apple",
+			searchAssetType = "Web Content Article");
 	}
 }
