@@ -22,6 +22,9 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
  */
 public abstract class BaseNaniteTestCase {
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	protected ElasticsearchInvoker cerebroInfoElasticsearchInvoker;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	protected ElasticsearchInvoker dxpRawElasticsearchInvoker;
 
