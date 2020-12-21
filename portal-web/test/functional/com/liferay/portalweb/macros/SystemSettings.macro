@@ -36,14 +36,6 @@ definition {
 		SikuliAssertElementPresent(locator1 = "SystemSettings#SECURITY_CREDENTIAL_HIDDEN_IMAGE");
 	}
 
-	macro editTextAreaSetting {
-		var key_fieldName = "${settingName}";
-
-		Type(
-			locator1 = "DDMField#TEXT_BOX",
-			value1 = "${settingValue}");
-	}
-
 	macro enableSetting {
 		if ("${enableSetting}" == "false") {
 			Uncheck(locator1 = "SystemSettings#${checkboxSetting}");
