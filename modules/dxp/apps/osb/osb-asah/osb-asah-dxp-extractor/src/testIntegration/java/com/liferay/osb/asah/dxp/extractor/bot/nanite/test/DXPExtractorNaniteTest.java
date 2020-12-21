@@ -48,13 +48,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -558,11 +557,10 @@ public class DXPExtractorNaniteTest {
 	private static DXPExtractorRuntimeConfigurationImpl
 		_dxpExtractorRuntimeConfigurationImpl;
 
-	@Mock
+	@MockBean
 	private AuditEventDog _auditEventDog;
 
 	@Autowired
-	@InjectMocks
 	private DXPExtractorNanite _dxpExtractorNanite;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
@@ -574,16 +572,16 @@ public class DXPExtractorNaniteTest {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
-	@Mock
+	@MockBean
 	private GroupDog _groupDog;
 
-	@Mock
+	@MockBean
 	private OrganizationDog _organizationDog;
 
-	@Mock
+	@MockBean
 	private UserDog _userDog;
 
-	@Mock
+	@MockBean
 	private UserGroupDog _userGroupDog;
 
 }
