@@ -1,0 +1,38 @@
+[
+	{
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "1",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"07061c40-830b-11e8-b113-594c830c2d34",
+					"34209dc0-a1b7-11e8-bf1b-f987e25a7caa",
+					"347780e0-7a66-11e8-a0fc-8356dd2944fd",
+					"5316d060-aa80-11e8-8a1b-cf876f35456d",
+					"8ad20780-7741-11e8-a0fc-8356dd2944fd",
+					"9e8969b0-6095-11e9-aee3-41f382b269b6",
+					"AWEtVApIdfQksSyQc9zq",
+					"AWPen_4BK3S7moZQAAvm",
+					"dc994f00-8241-11e8-a0fc-8356dd2944fd"
+				]
+			}
+		],
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "345085929068798696",
+					"dataSourceName": "LIFERAY-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "2019-03-20T03:16:41.495Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "345085958344987904",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "john.doe@liferay.com"
+				}
+			]
+		},
+		"id": "345085958344987904"
+	}
+]

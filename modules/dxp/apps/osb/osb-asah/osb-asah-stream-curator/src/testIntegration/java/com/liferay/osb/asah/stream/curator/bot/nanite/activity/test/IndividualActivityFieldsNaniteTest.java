@@ -14,9 +14,14 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.activity.test;
 
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.activity.ActivitiesNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.activity.IndividualActivityFieldsNanite;
+import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -27,18 +32,26 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Michael Bowerman
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-public class IndividualActivityFieldsNaniteTest
-	extends BaseActivityFieldsNaniteTestCase {
+@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
+public class IndividualActivityFieldsNaniteTest {
+
+	@Before
+	public void setUp() throws Exception {
+		_dataSourceJSONObject = _faroInfoElasticsearchInvoker.add(
+			"data-sources",
+			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
+	}
 
 	@Test
 	public void testBlogClickedActivitiesExcluded() throws Exception {
@@ -89,33 +102,33 @@ public class IndividualActivityFieldsNaniteTest
 	public void testMixtureOfVariousActivities() throws Exception {
 		String channelId = RandomTestUtil.randomId();
 		String dateString = DateUtil.addDays(DateUtil.newDateString(), -1);
-		JSONObject individualJSONObject = faroInfoIndividualDog.addIndividual(
+		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividualJSONObject(
-				channelId, dataSourceJSONObject),
+				channelId, _dataSourceJSONObject),
 			false);
 
-		addActivities(
+		_addActivities(
 			1, "Form", channelId, dateString, "fieldBlurred",
 			individualJSONObject);
-		addActivities(
+		_addActivities(
 			2, "Form", channelId, DateUtil.addDays(dateString, -8),
 			"formSubmitted", individualJSONObject);
-		addActivities(
+		_addActivities(
 			4, "Page", channelId, DateUtil.addDays(dateString, -16),
 			"pageLoaded", individualJSONObject);
-		addActivities(
+		_addActivities(
 			8, "Page", channelId, DateUtil.addDays(dateString, -24),
 			"pageViewed", individualJSONObject);
-		addActivities(
+		_addActivities(
 			16, "Blog", channelId, DateUtil.addDays(dateString, -32),
 			"blogViewed", individualJSONObject);
-		addActivities(
+		_addActivities(
 			32, "Document", channelId, DateUtil.addDays(dateString, -40),
 			"documentPreviewed", individualJSONObject);
 
-		individualActivityFieldsNanite.run();
+		_individualActivityFieldsNanite.run();
 
-		individualJSONObject = faroInfoElasticsearchInvoker.get(
+		individualJSONObject = _faroInfoElasticsearchInvoker.get(
 			"individuals", individualJSONObject.getString("id"));
 
 		JSONObject activitiesCountJSONObject = JSONUtil.find(
@@ -166,11 +179,56 @@ public class IndividualActivityFieldsNaniteTest
 		_testSingleTypeOfActivityExcluded("WebContent", "webContentViewed");
 	}
 
+	private void _addActivities(
+			int activitiesCount, String applicationId, String channelId,
+			String dateString, String eventId, JSONObject individualJSONObject)
+		throws Exception {
+
+		String dataSourceId = _dataSourceJSONObject.getString("id");
+
+		JSONObject activityGroupJSONObject = _faroInfoElasticsearchInvoker.add(
+			"activity-groups",
+			FaroInfoTestUtil.buildActivityGroupJSONObject(
+				dataSourceId, dateString, individualJSONObject));
+
+		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.add(
+			"assets",
+			FaroInfoTestUtil.buildAssetJSONObject(applicationId, dataSourceId));
+
+		for (int i = 0; i < activitiesCount; i++) {
+			_activitiesNanite.addActivityJSONObject(
+				FaroInfoTestUtil.buildActivityJSONObject(
+					activityGroupJSONObject, assetJSONObject, channelId,
+					eventId, new String[0]),
+				applicationId, eventId, individualJSONObject.getString("id"));
+		}
+	}
+
+	private JSONObject _addIndividualWithActivities(
+			int activitiesCount, String applicationId, String channelId,
+			String dateString, String eventId)
+		throws Exception {
+
+		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
+			FaroInfoTestUtil.buildIndividualJSONObject(
+				channelId, _dataSourceJSONObject),
+			false);
+
+		_addActivities(
+			activitiesCount, applicationId, channelId, dateString, eventId,
+			individualJSONObject);
+
+		_individualActivityFieldsNanite.run();
+
+		return _faroInfoElasticsearchInvoker.get(
+			"individuals", individualJSONObject.getString("id"));
+	}
+
 	private void _testSingleTypeOfActivityExcluded(
 			String applicationId, String eventId)
 		throws Exception {
 
-		JSONObject individualJSONObject = addIndividualWithActivities(
+		JSONObject individualJSONObject = _addIndividualWithActivities(
 			RandomUtils.nextInt(5, 25), applicationId,
 			RandomTestUtil.randomId(), DateUtil.newDateString(), eventId);
 
@@ -189,7 +247,7 @@ public class IndividualActivityFieldsNaniteTest
 		String channelId = RandomTestUtil.randomId();
 		String dateString = DateUtil.newDateString();
 
-		JSONObject individualJSONObject = addIndividualWithActivities(
+		JSONObject individualJSONObject = _addIndividualWithActivities(
 			activitiesCount, applicationId, channelId, dateString, eventId);
 
 		JSONObject activitiesCountJSONObject = JSONUtil.find(
@@ -210,5 +268,19 @@ public class IndividualActivityFieldsNaniteTest
 			dateString,
 			lastActivityDateJSONObject.getString("lastActivityDate"));
 	}
+
+	@Autowired
+	private ActivitiesNanite _activitiesNanite;
+
+	private JSONObject _dataSourceJSONObject;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoIndividualDog _faroInfoIndividualDog;
+
+	@Autowired
+	private IndividualActivityFieldsNanite _individualActivityFieldsNanite;
 
 }

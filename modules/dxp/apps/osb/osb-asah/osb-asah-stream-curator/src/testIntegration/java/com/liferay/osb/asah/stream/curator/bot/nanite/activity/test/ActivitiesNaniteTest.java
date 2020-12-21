@@ -14,15 +14,16 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.activity.test;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.ActivitiesNanite;
-import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.activity.ActivitiesNanite;
+import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
@@ -48,15 +49,15 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Leslie Wong
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-public class ActivitiesNaniteTest extends BaseNaniteTestCase {
+@SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
+public class ActivitiesNaniteTest {
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		JSONObject dataSourceJSONObject =
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 
-		faroInfoElasticsearchInvoker.add(
+		_faroInfoElasticsearchInvoker.add(
 			"data-sources", dataSourceJSONObject.put("id", "1"));
 	}
 
@@ -79,7 +80,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 		Assert.assertEquals(
 			1,
-			faroInfoElasticsearchInvoker.count(
+			_faroInfoElasticsearchInvoker.count(
 				"activities",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("eventId", "pageViewed")
@@ -110,11 +111,11 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 		_activitiesNanite.run();
 
-		JSONArray assetsJSONArray = faroInfoElasticsearchInvoker.get("assets");
+		JSONArray assetsJSONArray = _faroInfoElasticsearchInvoker.get("assets");
 
 		Assert.assertEquals(28, assetsJSONArray.length());
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.fetch(
+		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			"assets",
 			QueryBuilders.termQuery(
 				"name",
@@ -128,7 +129,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 			assetJSONObject.getString("dataSourceAssetPK"));
 
 		Assert.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
+			_faroInfoElasticsearchInvoker.exists(
 				"activities",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery("applicationId", "Blog")
@@ -154,7 +155,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 		_activitiesNanite.run();
 
-		JSONObject activityJSONObject = faroInfoElasticsearchInvoker.fetch(
+		JSONObject activityJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			"activities",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("eventId", "formSubmitted")));
@@ -186,7 +187,7 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 		_activitiesNanite.run();
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.fetch(
+		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			"assets",
 			QueryBuilders.termQuery(
 				"name",
@@ -208,6 +209,9 @@ public class ActivitiesNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private ActivitiesNanite _activitiesNanite;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private MessageBus _messageBus;
