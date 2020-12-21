@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Objects;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,15 +72,13 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		while (true) {
-			synchronized (this) {
-				if (_active) {
-					return;
-				}
+		boolean locked = _lock.tryLock();
 
-				_active = true;
-			}
+		if (!locked) {
+			return;
+		}
 
+		try {
 			while (_analyticsConfigured) {
 				try {
 					run();
@@ -92,12 +91,9 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 			}
 
 			_cleanUp();
-
-			_active = false;
-
-			if (!_analyticsConfigured) {
-				break;
-			}
+		}
+		finally {
+			_lock.unlock();
 		}
 	}
 
@@ -312,10 +308,11 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	private static final Log _log = LogFactory.getLog(
 		IndividualSegmentActivityFieldsNanite.class);
 
-	private boolean _active;
 	private boolean _analyticsConfigured;
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+
+	private final ReentrantLock _lock = new ReentrantLock();
 
 }
