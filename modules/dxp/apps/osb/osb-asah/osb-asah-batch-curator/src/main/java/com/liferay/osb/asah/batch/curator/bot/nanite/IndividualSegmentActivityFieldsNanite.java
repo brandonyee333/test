@@ -67,6 +67,8 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 			}
 		).setMonitoringConsumers(
 			this::monitorProcessedCount, this::monitorQueueSize
+		).setStopOnExceptions(
+			false
 		).iterate();
 	}
 
@@ -80,12 +82,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 
 		try {
 			while (_analyticsConfigured) {
-				try {
-					run();
-				}
-				catch (Exception e) {
-					_log.error(e, e);
-				}
+				run();
 
 				Thread.sleep(DateUtil.MINUTE);
 			}
