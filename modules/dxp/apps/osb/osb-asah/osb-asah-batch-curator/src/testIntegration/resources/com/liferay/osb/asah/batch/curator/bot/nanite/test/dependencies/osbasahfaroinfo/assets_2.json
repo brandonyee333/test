@@ -1,0 +1,576 @@
+[
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://customer.liferay.com/documentation/7.0/develop/tutorials",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://customer.liferay.com/documentation/7.0/develop/tutorials",
+		"dataSourceId": "1",
+		"description": "",
+		"id": "461023813631686496",
+		"keywords": [
+			{
+				"keyword": "portal",
+				"type": "title"
+			},
+			{
+				"keyword": "upgrading data schemas",
+				"type": "title"
+			},
+			{
+				"keyword": "knowledge",
+				"type": "title"
+			},
+			{
+				"keyword": "tutorials",
+				"type": "title"
+			},
+			{
+				"keyword": "development",
+				"type": "title"
+			}
+		],
+		"name": "Upgrading Data Schemas in Development - tutorials - Knowledge | \"Liferay",
+		"url": "https://customer.liferay.com/en/documentation/7.0/develop/tutorials/-/official_documentation/tutorials/upgrading-data-schemas-in-development?redirect=https%3A%2F%2Fcustomer.liferay.com%2Fen%2Fdocumentation%2Fsearch%3Fp_p_id%3D1_WAR_osbknowledgebaseportlet%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26_1_WAR_osbknowledgebaseportlet_cur%3D2%26_1_WAR_osbknowledgebaseportlet_mvcPath%3D%252Fsearch%252Fview.jsp%26_1_WAR_osbknowledgebaseportlet_keywords%3Dliferay_home%26_1_WAR_osbknowledgebaseportlet_delta%3D75%26_1_WAR_osbknowledgebaseportlet_resetCur%3Dfalse"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"dataSourceId": "1",
+		"description": "What you can do to make the most of your company's omnichannel strategy.",
+		"id": "461023828790184954",
+		"keywords": [
+			{
+				"keyword": "company",
+				"type": "description"
+			},
+			{
+				"keyword": "digital strategy",
+				"type": "title"
+			},
+			{
+				"keyword": "best",
+				"type": "title"
+			},
+			{
+				"keyword": "omnichannel strategy",
+				"type": "title"
+			},
+			{
+				"keyword": "most",
+				"type": "description"
+			},
+			{
+				"keyword": "best practices",
+				"type": "title"
+			},
+			{
+				"keyword": "company's omnichannel strategy",
+				"type": "description"
+			},
+			{
+				"keyword": "liferay blogs",
+				"type": "title"
+			}
+		],
+		"name": "8 Best Practices for Your Omnichannel Strategy | Digital Strategy | Liferay Blogs",
+		"url": "https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://customer.liferay.com/documentation/7.1/deploy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://customer.liferay.com/documentation/7.1/deploy",
+		"dataSourceId": "1",
+		"description": "",
+		"id": "461023819124511967",
+		"keywords": [
+			{
+				"keyword": "portal",
+				"type": "title"
+			},
+			{
+				"keyword": "knowledge",
+				"type": "title"
+			},
+			{
+				"keyword": "deployment",
+				"type": "title"
+			},
+			{
+				"keyword": "saml service provider",
+				"type": "title"
+			},
+			{
+				"keyword": "liferay dxp",
+				"type": "title"
+			}
+		],
+		"name": "Setting up Liferay DXP as a SAML Service Provider - deployment - Knowledge | \"Liferay",
+		"url": "https://customer.liferay.com/documentation/7.1/deploy/-/official_documentation/deployment/setting-up-liferay-as-a-saml-service-provider?_ga=2.2597744.114294707.1536084187-376508236.1531466449#checkpoint-1"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "232001430",
+		"dataSourceId": "1",
+		"description": "What you can do to make the most of your company's omnichannel strategy.",
+		"id": "461023830922537024",
+		"name": "Navigation Content - Partner Resources Basic (for launch)",
+		"url": "https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+	},
+	{
+		"assetType": "Form",
+		"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "872a3ca0-324d-438a-9d82-e4cad68c3a20",
+		"dataSourceId": "1",
+		"description": "What you can do to make the most of your company's omnichannel strategy.",
+		"id": "461023829519562909",
+		"name": "Opt-in: Liferay Blog Subscription",
+		"url": "https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+	},
+	{
+		"assetType": "Form",
+		"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "32cf039a-7a47-4461-82c5-e694d9f29057",
+		"dataSourceId": "1",
+		"description": "What you can do to make the most of your company's omnichannel strategy.",
+		"id": "461023829798656084",
+		"name": "GL Contact: Sales - MKTG FRM KK",
+		"url": "https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+	},
+	{
+		"assetType": "Blog",
+		"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "94151895",
+		"dataSourceId": "1",
+		"description": "What you can do to make the most of your company's omnichannel strategy.",
+		"id": "461023829037390930",
+		"name": "8 Best Practices for Your Omnichannel Strategy",
+		"url": "https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "232001075",
+		"dataSourceId": "1",
+		"description": "What you can do to make the most of your company's omnichannel strategy.",
+		"id": "461023830077684153",
+		"name": "Navigation Content - Get a Demo",
+		"url": "https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "231464780",
+		"dataSourceId": "1",
+		"description": "What you can do to make the most of your company's omnichannel strategy.",
+		"id": "461023831219018726",
+		"name": "Marketing Blogs",
+		"url": "https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://www.liferay.com/products/dxp/30-day-trial",
+		"dataSourceId": "1",
+		"description": "Explore the possibilities of Liferay DXP free for 30 days. Get started on your free trial today.",
+		"id": "461023846455015674",
+		"keywords": [
+			{
+				"keyword": "free trial",
+				"type": "description"
+			},
+			{
+				"keyword": "liferay digital experience platform 30 day free trial",
+				"type": "title"
+			},
+			{
+				"keyword": "experience platform 30 day",
+				"type": "title"
+			},
+			{
+				"keyword": "dxp",
+				"type": "title"
+			},
+			{
+				"keyword": "day",
+				"type": "title"
+			},
+			{
+				"keyword": "experience platform",
+				"type": "title"
+			},
+			{
+				"keyword": "free trial",
+				"type": "title"
+			},
+			{
+				"keyword": "possibilities",
+				"type": "description"
+			},
+			{
+				"keyword": "liferay digital",
+				"type": "title"
+			}
+		],
+		"name": "Liferay Digital Experience Platform (DXP) 30 Day Free Trial",
+		"url": "https://www.liferay.com/products/dxp/30-day-trial"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "231781462",
+		"dataSourceId": "1",
+		"description": "What you can do to make the most of your company's omnichannel strategy.",
+		"id": "461023832124207539",
+		"name": "Contact Sales Button and Popup",
+		"url": "https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "231781479",
+		"dataSourceId": "1",
+		"description": "What you can do to make the most of your company's omnichannel strategy.",
+		"id": "461023832397758174",
+		"name": "Contact Sales Hubspot Form",
+		"url": "https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/blog?regionCategoryName=en-us&blogCategoryName=digital-strategy&title=8-best-practices-for-your-omnichannel-strategy",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "231391390",
+		"dataSourceId": "1",
+		"description": "What you can do to make the most of your company's omnichannel strategy.",
+		"id": "461023831543345610",
+		"name": "Social Icons - Default",
+		"url": "https://www.liferay.com/de/blog/en-us/digital-strategy/8-best-practices-for-your-omnichannel-strategy"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "231965915",
+		"dataSourceId": "1",
+		"description": "Explore the possibilities of Liferay DXP free for 30 days. Get started on your free trial today.",
+		"id": "461023849014836337",
+		"name": "Take the next step in digital transformation - /dxp/trial",
+		"url": "https://www.liferay.com/products/dxp/30-day-trial"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "231966124",
+		"dataSourceId": "1",
+		"description": "Explore the possibilities of Liferay DXP free for 30 days. Get started on your free trial today.",
+		"id": "461023848438812966",
+		"name": "DXP Trial LP Banner Bento - /dxp/trial",
+		"url": "https://www.liferay.com/products/dxp/30-day-trial"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "232001237",
+		"dataSourceId": "1",
+		"description": "Explore the possibilities of Liferay DXP free for 30 days. Get started on your free trial today.",
+		"id": "461023847654038925",
+		"name": "Navigation Content - Community",
+		"url": "https://www.liferay.com/products/dxp/30-day-trial"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/products/dxp/30-day-trial",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "231969608",
+		"dataSourceId": "1",
+		"description": "Explore the possibilities of Liferay DXP free for 30 days. Get started on your free trial today.",
+		"id": "461023849309046198",
+		"name": "Downloads CTA - dxp/trial",
+		"url": "https://www.liferay.com/products/dxp/30-day-trial"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://customer.liferay.com/documentation/7.1/develop/reference",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://customer.liferay.com/documentation/7.1/develop/reference",
+		"dataSourceId": "1",
+		"description": "",
+		"id": "461023865415303407",
+		"keywords": [
+			{
+				"keyword": "portal",
+				"type": "title"
+			},
+			{
+				"keyword": "knowledge",
+				"type": "title"
+			},
+			{
+				"keyword": "felix gogo shell",
+				"type": "title"
+			},
+			{
+				"keyword": "reference",
+				"type": "title"
+			}
+		],
+		"name": "Felix Gogo Shell - reference - Knowledge | \"Liferay",
+		"url": "https://customer.liferay.com/documentation/7.1/develop/reference/-/official_documentation/reference/using-the-felix-gogo-shell?redirect=https%3A%2F%2Fcustomer.liferay.com%2Fdocumentation%2Fsearch%3Fp_p_id%3D1_WAR_osbknowledgebaseportlet%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26_1_WAR_osbknowledgebaseportlet_keywords%3Dgogo"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://customer.liferay.com/documentation/6.1/admin",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://customer.liferay.com/documentation/6.1/admin",
+		"dataSourceId": "1",
+		"description": "",
+		"id": "461023868042955051",
+		"keywords": [
+			{
+				"keyword": "portal",
+				"type": "title"
+			},
+			{
+				"keyword": "knowledge",
+				"type": "title"
+			},
+			{
+				"keyword": "server administration",
+				"type": "title"
+			}
+		],
+		"name": "Server Administration - portal - Knowledge | \"Liferay",
+		"url": "https://customer.liferay.com/documentation/6.1/admin/-/official_documentation/portal/server-administration?redirect=https%3A%2F%2Fcustomer.liferay.com%2Fdocumentation%2Fsearch%3Fp_p_id%3D1_WAR_osbknowledgebaseportlet%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26_1_WAR_osbknowledgebaseportlet_keywords%3Dopenoffice"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
+		"dataSourceId": "1",
+		"description": "",
+		"id": "461023853844461519",
+		"keywords": [
+			{
+				"keyword": "liferay names xtivia",
+				"type": "title"
+			},
+			{
+				"keyword": "liferay names xtivia a platinum partner",
+				"type": "title"
+			},
+			{
+				"keyword": "partner",
+				"type": "title"
+			},
+			{
+				"keyword": "liferay",
+				"type": "title"
+			},
+			{
+				"keyword": "platinum",
+				"type": "title"
+			}
+		],
+		"name": "Liferay Names Xtivia a Platinum Partner | Liferay",
+		"url": "https://www.liferay.com/fr/press-release?title=liferay-names-xtivia-a-platinum-partner"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://www.liferay.com/blog?blogCategoryName=lsna&regionCategoryName=events&topicCategoryName=2018",
+		"dataSourceId": "1",
+		"description": "",
+		"id": "461023870072188383",
+		"keywords": [
+			{
+				"keyword": "lsna",
+				"type": "title"
+			},
+			{
+				"keyword": "liferay blogs",
+				"type": "title"
+			}
+		],
+		"name": "2018 | LSNA | Liferay Blogs",
+		"url": "https://www.liferay.com/de/blog?regionCategoryName=events&blogCategoryName=lsna&topicCategoryName=2018"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://customer.liferay.com/documentation/7.0/admin",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://customer.liferay.com/documentation/7.0/admin",
+		"dataSourceId": "1",
+		"description": "",
+		"id": "461023862678484953",
+		"keywords": [
+			{
+				"keyword": "portal",
+				"type": "title"
+			},
+			{
+				"keyword": "knowledge",
+				"type": "title"
+			},
+			{
+				"keyword": "liferay",
+				"type": "title"
+			}
+		],
+		"name": "What is Liferay? - portal - Knowledge | \"Liferay",
+		"url": "https://customer.liferay.com/documentation/7.0/admin"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "2382894",
+		"dataSourceId": "1",
+		"description": "",
+		"id": "461023854574275798",
+		"name": "Press Release /press-release",
+		"url": "https://www.liferay.com/fr/press-release?title=liferay-names-xtivia-a-platinum-partner"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/press-release?title=liferay-names-xtivia-a-platinum-partner",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "3774443",
+		"dataSourceId": "1",
+		"description": "",
+		"id": "461023854828258147",
+		"name": "About Liferay",
+		"url": "https://www.liferay.com/fr/press-release?title=liferay-names-xtivia-a-platinum-partner"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.liferay.com/home?_3_assetTagNames=&_3_cur=2&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894&_3_entryClassName=&_3_folderId=&_3_formDate=1530100422264&_3_format=&_3_groupId=0&_3_keywords=tagsEntries%3Ausing+liferay&_3_modified=&_3_modifieddayFrom=12&_3_modifieddayTo=13&_3_modifiedfrom=20%2F05%2F2018&_3_modifiedmonthFrom=4&_3_modifiedmonthTo=4&_3_modifiedselection=0&_3_modifiedto=21%2F05%2F2018&_3_modifiedyearFrom=2018&_3_modifiedyearTo=2018&_3_struts_action=%2Fsearch%2Fsearch&_3_userName=&p_p_id=3&p_p_lifecycle=0&p_p_mode=view&p_p_state=maximized",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://www.liferay.com/home?_3_assetTagNames=&_3_cur=2&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894&_3_entryClassName=&_3_folderId=&_3_formDate=1530100422264&_3_format=&_3_groupId=0&_3_keywords=tagsEntries%3Ausing+liferay&_3_modified=&_3_modifieddayFrom=12&_3_modifieddayTo=13&_3_modifiedfrom=20%2F05%2F2018&_3_modifiedmonthFrom=4&_3_modifiedmonthTo=4&_3_modifiedselection=0&_3_modifiedto=21%2F05%2F2018&_3_modifiedyearFrom=2018&_3_modifiedyearTo=2018&_3_struts_action=%2Fsearch%2Fsearch&_3_userName=&p_p_id=3&p_p_lifecycle=0&p_p_mode=view&p_p_state=maximized",
+		"dataSourceId": "1",
+		"description": "在最灵活的平台上构建现代化的内网、网站、门户和连接体验。",
+		"id": "461023807221388854",
+		"keywords": [
+			{
+				"keyword": "tagsentries:using liferay",
+				"type": "keyword"
+			}
+		],
+		"name": "Liferay: 数字化体验软件可根据您的需求量身定制",
+		"url": "https://www.liferay.com/zh/home?_3_formDate=1530100422264&p_p_id=3&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_3_struts_action=%2Fsearch%2Fsearch&_3_cur=2&_3_format=&_3_keywords=tagsEntries%3Ausing+liferay&_3_groupId=0&_3_entryClassName=&_3_assetTagNames=&_3_folderId=&_3_userName=&_3_modified=&_3_modifiedselection=0&_3_modifiedfrom=20%2F05%2F2018&_3_modifieddayFrom=12&_3_modifiedmonthFrom=4&_3_modifiedyearFrom=2018&_3_modifiedto=21%2F05%2F2018&_3_modifieddayTo=13&_3_modifiedmonthTo=4&_3_modifiedyearTo=2018&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/home?_3_assetTagNames=&_3_cur=2&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894&_3_entryClassName=&_3_folderId=&_3_formDate=1530100422264&_3_format=&_3_groupId=0&_3_keywords=tagsEntries%3Ausing+liferay&_3_modified=&_3_modifieddayFrom=12&_3_modifieddayTo=13&_3_modifiedfrom=20%2F05%2F2018&_3_modifiedmonthFrom=4&_3_modifiedmonthTo=4&_3_modifiedselection=0&_3_modifiedto=21%2F05%2F2018&_3_modifiedyearFrom=2018&_3_modifiedyearTo=2018&_3_struts_action=%2Fsearch%2Fsearch&_3_userName=&p_p_id=3&p_p_lifecycle=0&p_p_mode=view&p_p_state=maximized",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "231976097",
+		"dataSourceId": "1",
+		"description": "在最灵活的平台上构建现代化的内网、网站、门户和连接体验。",
+		"id": "461023806904677357",
+		"name": "Component Styles",
+		"url": "https://www.liferay.com/zh/home?_3_formDate=1530100422264&p_p_id=3&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_3_struts_action=%2Fsearch%2Fsearch&_3_cur=2&_3_format=&_3_keywords=tagsEntries%3Ausing+liferay&_3_groupId=0&_3_entryClassName=&_3_assetTagNames=&_3_folderId=&_3_userName=&_3_modified=&_3_modifiedselection=0&_3_modifiedfrom=20%2F05%2F2018&_3_modifieddayFrom=12&_3_modifiedmonthFrom=4&_3_modifiedyearFrom=2018&_3_modifiedto=21%2F05%2F2018&_3_modifieddayTo=13&_3_modifiedmonthTo=4&_3_modifiedyearTo=2018&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://customer.liferay.com/documentation/search",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "https://customer.liferay.com/documentation/search",
+		"dataSourceId": "1",
+		"description": "",
+		"id": "461023809055887990",
+		"keywords": [
+			{
+				"keyword": "portal",
+				"type": "title"
+			},
+			{
+				"keyword": "knowledge",
+				"type": "title"
+			}
+		],
+		"name": "Search - Knowledge | \"Liferay",
+		"url": "https://customer.liferay.com/ja/documentation/search?p_p_id=1_WAR_osbknowledgebaseportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_1_WAR_osbknowledgebaseportlet_mvcPath=%2Fsearch%2Fview.jsp&_1_WAR_osbknowledgebaseportlet_delta=20&_1_WAR_osbknowledgebaseportlet_keywords=liferay_home&_1_WAR_osbknowledgebaseportlet_resetCur=false&_1_WAR_osbknowledgebaseportlet_cur=2"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "https://www.liferay.com/home?_3_assetTagNames=&_3_cur=2&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894&_3_entryClassName=&_3_folderId=&_3_formDate=1530100422264&_3_format=&_3_groupId=0&_3_keywords=tagsEntries%3Ausing+liferay&_3_modified=&_3_modifieddayFrom=12&_3_modifieddayTo=13&_3_modifiedfrom=20%2F05%2F2018&_3_modifiedmonthFrom=4&_3_modifiedmonthTo=4&_3_modifiedselection=0&_3_modifiedto=21%2F05%2F2018&_3_modifiedyearFrom=2018&_3_modifiedyearTo=2018&_3_struts_action=%2Fsearch%2Fsearch&_3_userName=&p_p_id=3&p_p_lifecycle=0&p_p_mode=view&p_p_state=maximized",
+		"channelIds": [
+			"1"
+		],
+		"dataSourceAssetPK": "223156009",
+		"dataSourceId": "1",
+		"description": "在最灵活的平台上构建现代化的内网、网站、门户和连接体验。",
+		"id": "461023806604452304",
+		"name": "Footer Contact Us",
+		"url": "https://www.liferay.com/zh/home?_3_formDate=1530100422264&p_p_id=3&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_3_struts_action=%2Fsearch%2Fsearch&_3_cur=2&_3_format=&_3_keywords=tagsEntries%3Ausing+liferay&_3_groupId=0&_3_entryClassName=&_3_assetTagNames=&_3_folderId=&_3_userName=&_3_modified=&_3_modifiedselection=0&_3_modifiedfrom=20%2F05%2F2018&_3_modifieddayFrom=12&_3_modifiedmonthFrom=4&_3_modifiedyearFrom=2018&_3_modifiedto=21%2F05%2F2018&_3_modifieddayTo=13&_3_modifiedmonthTo=4&_3_modifiedyearTo=2018&_3_documentsSearchContainerPrimaryKeys=20_PORTLET_1648796%2C20_PORTLET_8289363%2C20_PORTLET_231885435%2C15_PORTLET_1945044%2C15_PORTLET_231496957%2C20_PORTLET_172586547%2C20_PORTLET_231852894%2C20_PORTLET_229317896%2C20_PORTLET_231909778%2C20_PORTLET_231588683%2C20_PORTLET_231563905%2C20_PORTLET_231396034%2C15_PORTLET_1843094%2C15_PORTLET_170393334%2C20_PORTLET_4433611%2C20_PORTLET_190765105%2C20_PORTLET_1695437%2C20_PORTLET_231596354%2C20_PORTLET_25807447%2C20_PORTLET_164378894"
+	}
+]

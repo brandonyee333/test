@@ -14,22 +14,16 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.ActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.AssetEngagementScoresNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
-import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.messaging.MessageBusTestHelper;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -59,28 +53,19 @@ import org.springframework.context.annotation.Primary;
 public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(
+		name = "activities", resourcePath = "activities.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "assets", resourcePath = "assets_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "individuals", resourcePath = "individuals_2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
 	public void test() throws Exception {
-		JSONObject dataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
-
-		_faroInfoDataSourceDog.addDataSource(
-			dataSourceJSONObject.put("id", "1"));
-
-		MessageBusTestHelper messageBusTestHelper = new MessageBusTestHelper(
-			_messageBus);
-
-		messageBusTestHelper.prepareMessageBusChannel(
-			Channel.ANALYTICS_EVENTS_ACTIVITY,
-			ResourceUtil.readResourceToJSONArray(
-				"dependencies/analytics_events_1.json", this),
-			ServiceConstants.LCP_PROJECT_ID);
-
-		_activitiesNanite.run();
-
 		String activityStartDayDateString = "2018-09-10T00:00:00.000Z";
 
 		String dayBeforeDayDateString = DateUtil.addDays(
@@ -169,9 +154,6 @@ public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 					upperBound + "], but was " + score,
 			(score >= lowerBound) && (score <= upperBound));
 	}
-
-	@Autowired
-	private ActivitiesNanite _activitiesNanite;
 
 	@Autowired
 	private AssetEngagementScoresNanite _assetEngagementScoresNanite;

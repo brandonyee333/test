@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualInterestScoresNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.NaniteTestConfiguration;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
@@ -75,8 +74,6 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			"assets", FaroInfoTestUtil.buildPageAssetJSONObject(_dataSourceId));
 
 		_addActivities(DateUtil.addDays(DateUtil.newDayDateString(), -1));
-
-		_individualActivityFieldsNanite.run();
 	}
 
 	@Test
@@ -402,9 +399,6 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private FaroInfoMembershipDog _faroInfoMembershipDog;
-
-	@Autowired
-	private IndividualActivityFieldsNanite _individualActivityFieldsNanite;
 
 	@Autowired
 	private IndividualInterestScoresNanite _individualInterestScoresNanite;
