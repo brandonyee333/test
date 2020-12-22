@@ -256,7 +256,6 @@ public class AccountEntryLocalServiceImpl
 			int status, String[] languageIds)
 		throws PortalException {
 
-		Date now = new Date();
 		User user = userLocalService.getUser(userId);
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
@@ -276,29 +275,6 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
 		accountEntry.setInstructions(instructions);
-
-		Date supportEndDate = accountEntry.getSupportEndDate();
-
-		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(supportEndDate != null) && supportEndDate.after(now)) {
-
-			accountEntry.setActiveSupport(true);
-		}
-		else {
-			accountEntry.setActiveSupport(false);
-		}
-
-		Date ticketSupportEndDate = accountEntry.getTicketSupportEndDate();
-
-		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(ticketSupportEndDate != null) && ticketSupportEndDate.after(now)) {
-
-			accountEntry.setActiveTicketSupport(true);
-		}
-		else {
-			accountEntry.setActiveTicketSupport(false);
-		}
-
 		accountEntry.setStatus(status);
 
 		if (!ArrayUtil.isEmpty(languageIds)) {
