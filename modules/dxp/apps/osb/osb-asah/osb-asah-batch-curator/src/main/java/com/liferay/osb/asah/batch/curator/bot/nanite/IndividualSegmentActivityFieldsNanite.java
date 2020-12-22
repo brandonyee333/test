@@ -74,7 +74,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		boolean locked = _lock.tryLock();
+		boolean locked = _reentrantLock.tryLock();
 
 		if (!locked) {
 			return;
@@ -90,7 +90,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 			_cleanUp();
 		}
 		finally {
-			_lock.unlock();
+			_reentrantLock.unlock();
 		}
 	}
 
@@ -310,6 +310,6 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
-	private final ReentrantLock _lock = new ReentrantLock();
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
 
 }
