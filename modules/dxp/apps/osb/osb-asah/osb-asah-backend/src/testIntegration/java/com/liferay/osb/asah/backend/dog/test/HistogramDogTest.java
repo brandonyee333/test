@@ -68,9 +68,8 @@ public class HistogramDogTest {
 			Interval.DAY,
 			TimeRange.of(localDate.minusDays(85), localDate.minusDays(105)));
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -88,9 +87,8 @@ public class HistogramDogTest {
 
 		double[] expectedValues = {6, 6, 5, 4, 3, 2, 1};
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -111,9 +109,8 @@ public class HistogramDogTest {
 			0
 		};
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -134,9 +131,8 @@ public class HistogramDogTest {
 			11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 		};
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -152,9 +148,8 @@ public class HistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			Interval.WEEK, TimeRange.LAST_90_DAYS);
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -211,9 +206,8 @@ public class HistogramDogTest {
 			2
 		};
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	private void _assertHistogramMetric(

@@ -87,9 +87,7 @@ public class TitleDog {
 
 			Aggregations bucketAggregations = termsBucket.getAggregations();
 
-			String title = _getTitle(bucketAggregations.get("title"));
-
-			resultMap.put(assetId, title);
+			resultMap.put(assetId, _getTitle(bucketAggregations.get("title")));
 		}
 
 		return resultMap;

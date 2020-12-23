@@ -98,9 +98,8 @@ public class SiteVisitorHeatMapDogTest {
 
 		double[] expectedValues = new double[heatMapMetrics.size()];
 
-		double[] actualValues = _getActualValues(heatMapMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -127,9 +126,8 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		double[] actualValues = _getActualValues(heatMapMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -349,9 +347,8 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		double[] actualValues = _getActualValues(heatMapMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
 	private double[] _getActualValues(List<HeatMapMetric> heatMapMetrics) {

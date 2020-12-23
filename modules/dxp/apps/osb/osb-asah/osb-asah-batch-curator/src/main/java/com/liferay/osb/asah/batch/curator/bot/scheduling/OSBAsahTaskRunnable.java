@@ -33,15 +33,17 @@ public class OSBAsahTaskRunnable implements Runnable {
 		boolean force, JSONObject osbAsahTaskJSONObject,
 		OSBAsahTaskManager osbAsahTaskManager) {
 
-		_contextJSONObject = osbAsahTaskJSONObject.optJSONObject("context");
 		_force = force;
+
+		_contextJSONObject = osbAsahTaskJSONObject.optJSONObject("context");
 
 		_naniteClassNames = new String[] {
 			osbAsahTaskJSONObject.getString("className")
 		};
 
-		_osbAsahTaskId = osbAsahTaskJSONObject.optString("id");
 		_osbAsahTaskManager = osbAsahTaskManager;
+
+		_osbAsahTaskId = osbAsahTaskJSONObject.optString("id");
 	}
 
 	public OSBAsahTaskRunnable(
@@ -54,10 +56,11 @@ public class OSBAsahTaskRunnable implements Runnable {
 	public OSBAsahTaskRunnable(
 		OSBAsahTaskManager osbAsahTaskManager, String... naniteClassNames) {
 
-		_contextJSONObject = null;
-		_force = false;
 		_osbAsahTaskManager = osbAsahTaskManager;
 		_naniteClassNames = naniteClassNames;
+
+		_contextJSONObject = null;
+		_force = false;
 		_osbAsahTaskId = null;
 	}
 

@@ -66,9 +66,8 @@ public class VisitorHistogramDogTest {
 			0
 		};
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -86,9 +85,8 @@ public class VisitorHistogramDogTest {
 
 		double[] expectedValues = {0, 0, 1, 0, 0, 0, 1};
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -108,9 +106,8 @@ public class VisitorHistogramDogTest {
 
 		Arrays.fill(expectedValues, 1);
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
@@ -126,9 +123,8 @@ public class VisitorHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			Interval.WEEK, TimeRange.LAST_90_DAYS);
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 
 		HistogramMetric histogramMetric = histogramMetrics.get(0);
 

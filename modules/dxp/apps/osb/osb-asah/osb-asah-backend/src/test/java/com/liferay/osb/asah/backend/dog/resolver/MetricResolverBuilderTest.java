@@ -172,10 +172,11 @@ public class MetricResolverBuilderTest
 		private TestMetricType(
 			String fieldName, String name, TrendClassification.Order order) {
 
-			_aggregationName = fieldName;
 			_fieldName = fieldName;
 			_name = name;
 			_order = order;
+
+			_aggregationName = fieldName;
 		}
 
 		private final String _aggregationName;

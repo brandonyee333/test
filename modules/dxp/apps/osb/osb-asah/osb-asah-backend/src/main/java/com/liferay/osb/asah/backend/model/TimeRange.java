@@ -271,20 +271,22 @@ public class TimeRange {
 	}
 
 	private TimeRange(boolean includeToday, String key, int rangeKey) {
-		_deltaDays = rangeKey;
 		_includeToday = includeToday;
 		_key = key;
 		_rangeKey = rangeKey;
+
+		_deltaDays = rangeKey;
 	}
 
 	private TimeRange(
 		Clock clock, boolean includeToday, String key, int rangeKey) {
 
 		_clock = clock;
-		_deltaDays = rangeKey;
 		_includeToday = includeToday;
 		_key = key;
 		_rangeKey = rangeKey;
+
+		_deltaDays = rangeKey;
 	}
 
 	private static final Map<Integer, TimeRange> _timeRanges =
