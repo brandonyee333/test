@@ -89,8 +89,8 @@ definition {
 		if (isSet(source)) {
 			Click(locator1 = "CKEditor#TOOLBAR_SOURCE_BUTTON");
 
-			Type(
-				locator1 = "CKEditor#BODY_FIELD_SOURCE_ON",
+			Type.typeCodeMirrorEditorNoError(
+				locator1 = "CKEditor#BODY_FIELD_SOURCE_ON_3",
 				value1 = "${threadBody}");
 
 			Click(locator1 = "CKEditor#TOOLBAR_SOURCE_BUTTON");
