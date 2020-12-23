@@ -16,7 +16,9 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext;
+import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalService;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
@@ -29,6 +31,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.RenderRequest;
@@ -60,6 +63,16 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 		String koroneikiAccountKey = ParamUtil.getString(
 			renderRequest, "koroneikiAccountKey");
 
+		if (Validator.isNull(koroneikiAccountKey)) {
+			Long accountEntryId = ParamUtil.getLong(
+				renderRequest, "accountEntryId");
+
+			AccountEntry accountEntry =
+				_accountEntryLocalService.getAccountEntry(accountEntryId);
+
+			koroneikiAccountKey = accountEntry.getKoroneikiAccountKey();
+		}
+
 		AccountEntryPermission.check(
 			themeDisplay.getPermissionChecker(), koroneikiAccountKey,
 			ActionKeys.VIEW);
@@ -88,6 +101,9 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 
 	@Reference
 	private AccountEntryLanguageLocalService _accountEntryLanguageLocalService;
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private AccountWebService _accountWebService;
