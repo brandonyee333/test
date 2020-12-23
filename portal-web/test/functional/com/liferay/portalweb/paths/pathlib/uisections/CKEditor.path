@@ -34,6 +34,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>BODY_FIELD_SOURCE_ON_3</td>
+	<td>//div[contains(@class,'cke_contents')]/div[contains(@class,'CodeMirror cm-s-default')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CONTENT_AUDIO_LINK_IMAGE</td>
 	<td>//img[contains(@class,'audio')]</td>
 	<td></td>
