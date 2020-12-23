@@ -95,7 +95,7 @@
 </tr>
 <tr>
 	<td>TAG_AUTOCOMPLETE_CONTAINER</td>
-	<td>//li[contains(@class,'autocomplete-list-item') and not(contains(@class,'hidden'))]</td>
+	<td>//li[contains(@class,'autocomplete-results') and not(contains(@class,'hidden'))]</td>
 	<td></td>
 </tr>
 <tr>
