@@ -327,3 +327,7 @@ private String _getPortalToolSuffix(String name) {
 
 	return StringUtil.capitalize(suffix)
 }
+
+formatPython {
+	enabled = false
+}
