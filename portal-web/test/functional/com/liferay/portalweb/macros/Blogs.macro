@@ -32,8 +32,10 @@ definition {
 			entrySubtitle = "${entrySubtitle}",
 			entryTitle = "${entryTitle}",
 			navTab = "${navTab}",
+			viewInternalVideoPreview = "${viewInternalVideoPreview}",
 			videoName = "${videoName}",
 			videoService = "${videoService}",
+			videoShortcutPreview = "${videoShortcutPreview}",
 			videoShortcutTitle = "${videoShortcutTitle}");
 
 		if (isSet(readingTime)) {
