@@ -61,7 +61,7 @@ class TanimotoCoefficientUDFFunction(BaseUDFFunction):
 		norm2_squared = norm2**2
 
 		return (dot_product /
-		        (norm1_squared + norm2_squared - dot_product)).item()
+				(norm1_squared + norm2_squared - dot_product)).item()
 
 class ToDenseVectorUDFFunction(BaseUDFFunction):
 	def __init__(self, spark_session):

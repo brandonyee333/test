@@ -432,21 +432,21 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		file_system = jvm.org.apache.hadoop.fs.FileSystem
 
 		bucket_path = '{}/{}/analytics_events.json'.format(
-		    self.spark_application_configuration.
-		    get('google.storage.path.analytics-events'),
-		    self.spark_application_args.lcp_project_id
+			self.spark_application_configuration.
+			get('google.storage.path.analytics-events'),
+			self.spark_application_args.lcp_project_id
 		)
 
 		file_system_instance = file_system.get(
-		    jvm.java.net.URI(bucket_path),
-		    spark_context._jsc.hadoopConfiguration()
+			jvm.java.net.URI(bucket_path),
+			spark_context._jsc.hadoopConfiguration()
 		)
 
 		analytics_events_paths_map = map(
-		    lambda f: str(f.getPath()),
-		    file_system_instance.listStatus(
-		        jvm.org.apache.hadoop.fs.Path(bucket_path)
-		    )
+			lambda f: str(f.getPath()),
+			file_system_instance.listStatus(
+				jvm.org.apache.hadoop.fs.Path(bucket_path)
+			)
 		)
 
 		return sorted(list(analytics_events_paths_map), reverse=True)
@@ -472,35 +472,35 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		data_frame_reader = self.spark_session.read
 
 		analytics_events_data_frame = data_frame_reader.json(
-		    self._get_analytics_events_paths_filtered()
+			self._get_analytics_events_paths_filtered()
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    F.col('eventId') == 'pageUnloaded'
+			F.col('eventId') == 'pageUnloaded'
 		).withColumn(
 			'event_date', F.expr('to_date(eventDate)')
 		).withColumn(
-		    'days_delta', F.datediff(F.current_date(), F.col('event_date'))
+			'days_delta', F.datediff(F.current_date(), F.col('event_date'))
 		).withColumn(
-		    'interactions',
-		    F.count('userId').over(Window.partitionBy('userId'))
+			'interactions',
+			F.count('userId').over(Window.partitionBy('userId'))
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    F.col('context.contentLanguageId') == 'en'
+			F.col('context.contentLanguageId') == 'en'
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    F.col('days_delta') <= self._max_days_delta
+			F.col('days_delta') <= self._max_days_delta
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    F.col('eventProperties.viewDuration') >=
-		    self._minimum_view_duration_threshold
+			F.col('eventProperties.viewDuration') >=
+			self._minimum_view_duration_threshold
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    F.col('interactions') >= self._minimum_interactions_threshold
+			F.col('interactions') >= self._minimum_interactions_threshold
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.withColumn(

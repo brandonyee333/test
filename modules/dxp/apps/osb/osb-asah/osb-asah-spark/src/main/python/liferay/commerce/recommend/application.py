@@ -48,6 +48,31 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 
 				os.environ[env_key] = value
 
+	def _create_argument_parser(self):
+		argument_parser = argparse.ArgumentParser(
+			usage='{} liferay.commerce.recommend.<ApplicationName> '
+			'--configuration <Configuration Path> '
+			'--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
+		)
+
+		argument_parser.add_argument('application')
+		argument_parser.add_argument('--configuration', required=True)
+		argument_parser.add_argument('--lcp-project-id', required=True)
+
+		return argument_parser
+
+	@abstractmethod
+	def _create_spark_job_pipeline(self):
+		pass
+
+	def _initialize_logging(self):
+		logging.basicConfig(
+			format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+			level=logging.INFO
+		)
+
+		return logging.getLogger(self.__class__.__name__)
+
 	def start(self):
 		spark_job_pipeline = self._create_spark_job_pipeline()
 
@@ -57,31 +82,6 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 			self.log.error(e)
 
 			raise e
-
-	def _create_argument_parser(self):
-		argument_parser = argparse.ArgumentParser(
-		    usage='{} liferay.commerce.recommend.<ApplicationName> '
-		    '--configuration <Configuration Path> '
-		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
-		)
-
-		argument_parser.add_argument('application')
-		argument_parser.add_argument('--configuration', required=True)
-		argument_parser.add_argument('--lcp-project-id', required=True)
-
-		return argument_parser
-
-	def _initialize_logging(self):
-		logging.basicConfig(
-		    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-		    level=logging.INFO
-		)
-
-		return logging.getLogger(self.__class__.__name__)
-
-	@abstractmethod
-	def _create_spark_job_pipeline(self):
-		pass
 
 class FrequentPatternRecommendationApplication(BaseCommerceSparkApplication):
 	def __init__(self):
@@ -130,17 +130,17 @@ class UserInteractionRecommendationApplication(BaseCommerceSparkApplication):
 		jobs.append(UserInteractionDataPreparationSparkJob(self))
 		jobs.append(UserInteractionCollaborativeFilteringSparkJob(self))
 		jobs.append(
-		    ContextUserInteractionRecommendationDataFrameWriterSparkJob(self)
+			ContextUserInteractionRecommendationDataFrameWriterSparkJob(self)
 		)
 
 		product_interaction_recommendation_enable = self.configuration.get(
-		    'product.interaction.recommendation.enable'
+			'product.interaction.recommendation.enable'
 		)
 
 		if product_interaction_recommendation_enable:
 			jobs.append(ProductInteractionRecommendationSparkJob(self))
 			jobs.append(
-			    ProductInteractionRecommendationDataFrameWriterSparkJob(self)
+				ProductInteractionRecommendationDataFrameWriterSparkJob(self)
 			)
 
 		return SparkJobPipeline(jobs)

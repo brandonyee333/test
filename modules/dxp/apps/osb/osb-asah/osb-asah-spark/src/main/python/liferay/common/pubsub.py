@@ -18,15 +18,15 @@ class PubSubBridge:
 		self.publisher_client = pubsub_v1.PublisherClient()
 
 		self.topic_path = self.publisher_client.topic_path(
-		    spark_application.configuration.get('google.project.id'),
-		    '{}_dataproc'.format(spark_application.args.lcp_project_id)
+			spark_application.configuration.get('google.project.id'),
+			'{}_dataproc'.format(spark_application.args.lcp_project_id)
 		)
 
 	def send(self, pub_sub_message):
 		message_str = str(pub_sub_message)
 
 		self.publisher_client.publish(
-		    self.topic_path, message_str.encode('UTF-8')
+			self.topic_path, message_str.encode('UTF-8')
 		)
 
 class PubSubMessage:
@@ -36,8 +36,8 @@ class PubSubMessage:
 
 	def __str__(self):
 		return json.dumps(
-		    {
-		        'applicationId': self.application_id,
-		        'message': self.message
-		    }
+			{
+				'applicationId': self.application_id,
+				'message': self.message
+			}
 		)

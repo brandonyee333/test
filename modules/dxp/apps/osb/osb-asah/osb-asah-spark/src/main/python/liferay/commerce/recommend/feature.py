@@ -23,6 +23,56 @@ class CommerceFeatureExtractor(object):
 
 		self._log = logging.getLogger(self.__class__.__name__)
 
+	def _extract_features(self, column_name):
+		if column_name in self._categorical_column_names:
+			return self.categorical_encoder(column_name)
+		elif column_name in self._count_vectorizer_column_names:
+			return self.count_vectorizer_encoder(column_name)
+		elif column_name in self._text_column_names:
+			return self.text_encoder(column_name)
+		elif column_name.startswith('SPECIFICATION_'):
+			return self.categorical_encoder(column_name, handle_invalid='keep')
+		else:
+			self._log.warn(
+				"Unable to find feature extractor for: " + column_name
+			)
+
+		return None
+
+	@staticmethod
+	def categorical_encoder(column_name, handle_invalid='skip'):
+		feature_column_name = column_name + 'Feature'
+
+		stages = [
+			StringIndexer(
+				inputCol=column_name,
+				outputCol=column_name + 'Index',
+				handleInvalid=handle_invalid
+			)
+		]
+
+		stages += [
+			OneHotEncoder(
+				dropLast=False,
+				inputCol=column_name + 'Index',
+				outputCol=feature_column_name
+			)
+		]
+
+		return {'feature_column': feature_column_name, 'stages': stages}
+
+	@staticmethod
+	def count_vectorizer_encoder(column_name):
+		feature_column_name = column_name + 'Feature'
+
+		stages = [
+			CountVectorizer(
+				inputCol=column_name, outputCol=feature_column_name
+			)
+		]
+
+		return {'feature_column': feature_column_name, 'stages': stages}
+
 	def extract_features(self, feature_column_names):
 		columns = []
 		stages = []
@@ -38,91 +88,41 @@ class CommerceFeatureExtractor(object):
 
 		return {'feature_column': 'features', 'stages': stages}
 
-	def _extract_features(self, column_name):
-		if column_name in self._categorical_column_names:
-			return self.categorical_encoder(column_name)
-		elif column_name in self._count_vectorizer_column_names:
-			return self.count_vectorizer_encoder(column_name)
-		elif column_name in self._text_column_names:
-			return self.text_encoder(column_name)
-		elif column_name.startswith('SPECIFICATION_'):
-			return self.categorical_encoder(column_name, handle_invalid='keep')
-		else:
-			self._log.warn(
-			    "Unable to find feature extractor for: " + column_name
-			)
-
-		return None
-
-	@staticmethod
-	def categorical_encoder(column_name, handle_invalid='skip'):
-		feature_column_name = column_name + 'Feature'
-
-		stages = [
-		    StringIndexer(
-		        inputCol=column_name,
-		        outputCol=column_name + 'Index',
-		        handleInvalid=handle_invalid
-		    )
-		]
-
-		stages += [
-		    OneHotEncoder(
-		        dropLast=False,
-		        inputCol=column_name + 'Index',
-		        outputCol=feature_column_name
-		    )
-		]
-
-		return {'feature_column': feature_column_name, 'stages': stages}
-
-	@staticmethod
-	def count_vectorizer_encoder(column_name):
-		feature_column_name = column_name + 'Feature'
-
-		stages = [
-		    CountVectorizer(
-		        inputCol=column_name, outputCol=feature_column_name
-		    )
-		]
-
-		return {'feature_column': feature_column_name, 'stages': stages}
-
 	@staticmethod
 	def text_encoder(column_name):
 		feature_column_name = column_name + 'Feature'
 
 		stages = [
-		    Tokenizer(inputCol=column_name, outputCol=column_name + 'Token')
+			Tokenizer(inputCol=column_name, outputCol=column_name + 'Token')
 		]
 
 		stages += [
-		    StopWordsRemover(
-		        inputCol=column_name + 'Token',
-		        outputCol=column_name + 'TokenFiltered'
-		    )
+			StopWordsRemover(
+				inputCol=column_name + 'Token',
+				outputCol=column_name + 'TokenFiltered'
+			)
 		]
 
 		stages += [
-		    CountVectorizer(
-		        inputCol=column_name + 'TokenFiltered',
-		        outputCol=column_name + 'Count'
-		    )
+			CountVectorizer(
+				inputCol=column_name + 'TokenFiltered',
+				outputCol=column_name + 'Count'
+			)
 		]
 
 		stages += [
-		    IDF(inputCol=column_name + 'Count', outputCol=feature_column_name)
+			IDF(inputCol=column_name + 'Count', outputCol=feature_column_name)
 		]
 
 		return {'feature_column': feature_column_name, 'stages': stages}
 
 class MAPEvaluator(Evaluator):
 	def __init__(
-	    self,
-	    label_column_name,
-	    prediction_column_name,
-	    query_column_name,
-	    threshold=0.5
+		self,
+		label_column_name,
+		prediction_column_name,
+		query_column_name,
+		threshold=0.5
 	):
 		super(MAPEvaluator, self).__init__()
 
@@ -133,23 +133,23 @@ class MAPEvaluator(Evaluator):
 
 	def _evaluate(self, data_frame):
 		binary_expression = self._get_binary_expression(
-		    self._prediction_column_name, self._threshold
+			self._prediction_column_name, self._threshold
 		)
 
 		data_frame = data_frame.withColumn(
-		    'binary', binary_expression.cast('double')
+			'binary', binary_expression.cast('double')
 		)
 
 		data_frame = data_frame.withColumn(
-		    self._prediction_column_name,
-		    col(self._prediction_column_name).cast('double')
+			self._prediction_column_name,
+			col(self._prediction_column_name).cast('double')
 		)
 
 		data_frame = data_frame.groupBy(self._query_column_name)
 
 		data_frame = data_frame.agg(
-		    collect_list(self._label_column_name).alias('gt'),
-		    collect_list('binary').alias('pred')
+			collect_list(self._label_column_name).alias('gt'),
+			collect_list('binary').alias('pred')
 		)
 
 		rdd = data_frame.rdd

@@ -33,14 +33,14 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(
-		    usage='{} liferay.hello_world.ContentRecommendationApplication '
-		    '--configuration <Configuration Path> '
-		    '--job-id <Job ID> '
-		    '--job-parameters <Job Parameters> '
-		    '--job-run-data-period <Job Run Data Period> '
-		    '--job-run-id <Job Run ID> '
-		    '--job-run-step <Job Run Step> '
-		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
+			usage='{} liferay.hello_world.ContentRecommendationApplication '
+			'--configuration <Configuration Path> '
+			'--job-id <Job ID> '
+			'--job-parameters <Job Parameters> '
+			'--job-run-data-period <Job Run Data Period> '
+			'--job-run-id <Job Run ID> '
+			'--job-run-step <Job Run Step> '
+			'--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
 		)
 
 		argument_parser.add_argument('application')
@@ -59,15 +59,15 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		spark_conf.setAppName('Content Recommendation')
 		spark_conf.set(
-		    'fs.s3a.access.key', self.configuration.get('aws.access.key.id')
+			'fs.s3a.access.key', self.configuration.get('aws.access.key.id')
 		)
 		spark_conf.set(
-		    'fs.s3a.secret.key',
-		    self.configuration.get('aws.secret.access.key')
+			'fs.s3a.secret.key',
+			self.configuration.get('aws.secret.access.key')
 		)
 		spark_conf.set(
-		    'spark.jars.packages',
-		    self.configuration.get('spark.jars.packages')
+			'spark.jars.packages',
+			self.configuration.get('spark.jars.packages')
 		)
 
 		return spark_conf

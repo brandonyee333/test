@@ -18,67 +18,67 @@ from pyspark.sql.functions import col, udf
 from pyspark.sql.types import ArrayType, DoubleType, FloatType, IntegerType, MapType, Row, StringType, StructField, StructType
 
 class LanguageDetectorPolyglotWrapper(Transformer):
-    def __init__(self):
-        super(LanguageDetectorPolyglotWrapper, self).__init__()
+	def __init__(self):
+		super(LanguageDetectorPolyglotWrapper, self).__init__()
 
-        self._input_col = None
-        self._output_col = None
+		self._input_col = None
+		self._output_col = None
 
-    def _get_language_and_confidence(self, row):
-        text = row[0]['result']
+	def _get_language_and_confidence(self, row):
+		text = row[0]['result']
 
-        detector = Detector(text, quiet=True)
+		detector = Detector(text, quiet=True)
 
-        highest_confidence = -1
-        highest_confidence_language_code = 'un'
-        languages_and_confidences = {}
+		highest_confidence = -1
+		highest_confidence_language_code = 'un'
+		languages_and_confidences = {}
 
-        for language in detector.languages:
-            languages_and_confidences[language.code] = str(language.confidence)
+		for language in detector.languages:
+			languages_and_confidences[language.code] = str(language.confidence)
 
-            if language.confidence > highest_confidence:
-                highest_confidence_language_code = language.code,
-                highest_confidence = language.confidence
+			if language.confidence > highest_confidence:
+				highest_confidence_language_code = language.code,
+				highest_confidence = language.confidence
 
-        result = [
-            Row(annotatorType='document',
-                begin=row[0]['begin'],
-                end=row[0]['end'],
-                result=highest_confidence_language_code[0],
-                metadata=languages_and_confidences,
-                embeddings=row[0]['embeddings']
-          )]
+		result = [
+			Row(annotatorType='document',
+				begin=row[0]['begin'],
+				end=row[0]['end'],
+				result=highest_confidence_language_code[0],
+				metadata=languages_and_confidences,
+				embeddings=row[0]['embeddings']
+		  )]
 
-        return result
+		return result
 
-    def _transform(self, data_frame):
-        schema = ArrayType(StructType([
-            StructField("annotatorType", StringType(), False),
-            StructField("begin", IntegerType(), False),
-            StructField('end', IntegerType(), False),
-            StructField('result', StringType(), False),
-            StructField(
-                'metadata', MapType(StringType(), StringType(), True), True),
-            StructField('embeddings', ArrayType(FloatType(), False), True)
-        ]))
+	def _transform(self, data_frame):
+		schema = ArrayType(StructType([
+			StructField("annotatorType", StringType(), False),
+			StructField("begin", IntegerType(), False),
+			StructField('end', IntegerType(), False),
+			StructField('result', StringType(), False),
+			StructField(
+				'metadata', MapType(StringType(), StringType(), True), True),
+			StructField('embeddings', ArrayType(FloatType(), False), True)
+		]))
 
-        language_and_confidence_udf = udf(
-            lambda row: self._get_language_and_confidence(row),
-            schema)
+		language_and_confidence_udf = udf(
+			lambda row: self._get_language_and_confidence(row),
+			schema)
 
-        data_frame = data_frame.withColumn(
-            self._output_col,
-            language_and_confidence_udf(self._input_col)
-        )
+		data_frame = data_frame.withColumn(
+			self._output_col,
+			language_and_confidence_udf(self._input_col)
+		)
 
-        return data_frame
+		return data_frame
 
-    def setInputCol(self, inputCol):
-        self._input_col = inputCol
+	def setInputCol(self, inputCol):
+		self._input_col = inputCol
 
-        return self
+		return self
 
-    def setOutputCol(self, outputCol):
-        self._output_col = outputCol
+	def setOutputCol(self, outputCol):
+		self._output_col = outputCol
 
-        return self
+		return self

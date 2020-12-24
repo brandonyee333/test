@@ -24,25 +24,25 @@ class GenerateItemsSparkJob(BaseSparkJob):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
 		pub_sub_bridge.send(
-		    PubSubMessage(
-		        'content_recommendation', {
-		            'operation': 'UpdateJobRun',
-		            'jobRunId': self.spark_application.job_run_id,
-		            'body':
-		                {
-		                    'context':
-		                        {
-		                            'itemsDatasetCount':
-		                                items_data_frame.count()
-		                        }
-		                }
-		        }
-		    )
+			PubSubMessage(
+				'content_recommendation', {
+					'operation': 'UpdateJobRun',
+					'jobRunId': self.spark_application.job_run_id,
+					'body':
+						{
+							'context':
+								{
+									'itemsDatasetCount':
+										items_data_frame.count()
+								}
+						}
+				}
+			)
 		)
 
 	def run(self):
 		items_data_frame = self.spark_session.table(
-		    'user_item_interactions'
+			'user_item_interactions'
 		).select(col('ITEM_ID').alias("itemId")).distinct()
 
 		self._update_job_run_items_dataset_count(items_data_frame)
@@ -51,48 +51,48 @@ class GenerateItemsSparkJob(BaseSparkJob):
 
 class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
 	def _update_job_run_user_item_interactions_dataset_count(
-	    self, user_item_interactions_data_frame
+		self, user_item_interactions_data_frame
 	):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
 		pub_sub_bridge.send(
-		    PubSubMessage(
-		        'content_recommendation', {
-		            'operation': 'UpdateJobRun',
-		            'jobRunId': self.spark_application.job_run_id,
-		            'body':
-		                {
-		                    'context':
-		                        {
-		                            'userItemInteractionsDatasetCount':
-		                                user_item_interactions_data_frame.count(
-		                                )
-		                        }
-		                }
-		        }
-		    )
+			PubSubMessage(
+				'content_recommendation', {
+					'operation': 'UpdateJobRun',
+					'jobRunId': self.spark_application.job_run_id,
+					'body':
+						{
+							'context':
+								{
+									'userItemInteractionsDatasetCount':
+										user_item_interactions_data_frame.count(
+										)
+								}
+						}
+				}
+			)
 		)
 
 	def run(self):
 		user_item_interactions_data_frame = self.spark_session.table(
-		    'analytics_events'
+			'analytics_events'
 		).withColumn(
-		    'event_timestamp',
-		    unix_timestamp(col('eventDate').cast('timestamp'))
+			'event_timestamp',
+			unix_timestamp(col('eventDate').cast('timestamp'))
 		).select(
-		    col('userId').alias('USER_ID'),
-		    col('context.canonicalUrl').alias('ITEM_ID'),
-		    col('event_timestamp').alias('TIMESTAMP'),
-		    col('eventId').alias('EVENT_TYPE'),
-		    col('eventProperties.viewDuration').alias('EVENT_VALUE')
+			col('userId').alias('USER_ID'),
+			col('context.canonicalUrl').alias('ITEM_ID'),
+			col('event_timestamp').alias('TIMESTAMP'),
+			col('eventId').alias('EVENT_TYPE'),
+			col('eventProperties.viewDuration').alias('EVENT_VALUE')
 		)
 
 		self._update_job_run_user_item_interactions_dataset_count(
-		    user_item_interactions_data_frame
+			user_item_interactions_data_frame
 		)
 
 		user_item_interactions_data_frame.createOrReplaceTempView(
-		    'user_item_interactions'
+			'user_item_interactions'
 		)
 
 class PublishJobRunSparkJob(BaseSparkJob):
@@ -100,13 +100,13 @@ class PublishJobRunSparkJob(BaseSparkJob):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
 		pub_sub_bridge.send(
-		    PubSubMessage(
-		        'content_recommendation', {
-		            'operation': 'PublishJobRun',
-		            'jobId': self.spark_application.job_id,
-		            'jobRunId': self.spark_application.job_run_id,
-		        }
-		    )
+			PubSubMessage(
+				'content_recommendation', {
+					'operation': 'PublishJobRun',
+					'jobId': self.spark_application.job_id,
+					'jobRunId': self.spark_application.job_run_id,
+				}
+			)
 		)
 
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
@@ -116,10 +116,10 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		self._minimum_interactions_threshold = 3
 		self._minimum_view_duration_threshold = 5000
 		self._run_data_periods_days_delta = {
-		    'LAST_7_DAYS': 7,
-		    'LAST_30_DAYS': 30,
-		    'LAST_180_DAYS': 180,
-		    'LAST_365_DAYS': 365
+			'LAST_7_DAYS': 7,
+			'LAST_30_DAYS': 30,
+			'LAST_180_DAYS': 180,
+			'LAST_365_DAYS': 365
 		}
 
 	def _get_analytics_events_paths(self):
@@ -129,21 +129,21 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		file_system = jvm.org.apache.hadoop.fs.FileSystem
 
 		bucket_path = '{}/{}/analytics_events.json'.format(
-		    self.spark_application_configuration.
-		    get('google.storage.path.analytics-events'),
-		    self.spark_application_args.lcp_project_id
+			self.spark_application_configuration.
+			get('google.storage.path.analytics-events'),
+			self.spark_application_args.lcp_project_id
 		)
 
 		file_system_instance = file_system.get(
-		    jvm.java.net.URI(bucket_path),
-		    spark_context._jsc.hadoopConfiguration()
+			jvm.java.net.URI(bucket_path),
+			spark_context._jsc.hadoopConfiguration()
 		)
 
 		analytics_events_paths_map = map(
-		    lambda f: str(f.getPath()),
-		    file_system_instance.listStatus(
-		        jvm.org.apache.hadoop.fs.Path(bucket_path)
-		    )
+			lambda f: str(f.getPath()),
+			file_system_instance.listStatus(
+				jvm.org.apache.hadoop.fs.Path(bucket_path)
+			)
 		)
 
 		return sorted(list(analytics_events_paths_map), reverse=True)
@@ -152,7 +152,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		analytics_events_paths_filtered = []
 
 		delta = datetime.utcnow() - timedelta(
-		    days=self._get_maximum_days_delta()
+			days=self._get_maximum_days_delta()
 		)
 
 		minimum_chunk_timestamp = int(delta.timestamp() * 1000)
@@ -172,11 +172,11 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		if tokens[1] == '=':
 			expression = '(lower(context.`{}`) = "{}")'.format(
-			    tokens[0], tokens[2].lower()
+				tokens[0], tokens[2].lower()
 			)
 		else:
 			expression = '(rlike(context.`{}`, "(?i){}"))'.format(
-			    tokens[0], tokens[2]
+				tokens[0], tokens[2]
 			)
 
 		if negate:
@@ -192,47 +192,47 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		for parameter in job_parameters:
 			if parameter.get('name') == 'excludeFilter':
 				expressions.append(
-				    self._get_expression(parameter.get('value'), True)
+					self._get_expression(parameter.get('value'), True)
 				)
 			elif parameter.get('name') == 'includeFilter':
 				expressions.append(
-				    self._get_expression(parameter.get('value'), False)
+					self._get_expression(parameter.get('value'), False)
 				)
 
 		return " AND ".join(expressions)
 
 	def _get_maximum_days_delta(self):
 		return self._run_data_periods_days_delta.get(
-		    self.spark_application_args.job_run_data_period
+			self.spark_application_args.job_run_data_period
 		)
 
 	def run(self):
 		data_frame_reader = self.spark_session.read
 
 		analytics_events_data_frame = data_frame_reader.json(
-		    self._get_analytics_events_paths_filtered()
+			self._get_analytics_events_paths_filtered()
 		).withColumn(
-		    'days_delta', datediff(current_date(), expr("to_date(eventDate)"))
+			'days_delta', datediff(current_date(), expr("to_date(eventDate)"))
 		).withColumn(
-		    'interactions',
-		    count('userId').over(Window.partitionBy('userId'))
+			'interactions',
+			count('userId').over(Window.partitionBy('userId'))
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    self._get_filter_expresssions()
+			self._get_filter_expresssions()
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    col('days_delta') <= self._get_maximum_days_delta()
+			col('days_delta') <= self._get_maximum_days_delta()
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    col('eventProperties.viewDuration') >=
-		    self._minimum_view_duration_threshold
+			col('eventProperties.viewDuration') >=
+			self._minimum_view_duration_threshold
 		)
 
 		analytics_events_data_frame = analytics_events_data_frame.filter(
-		    col('interactions') >= self._minimum_interactions_threshold
+			col('interactions') >= self._minimum_interactions_threshold
 		)
 
 		analytics_events_data_frame.createOrReplaceTempView('analytics_events')
@@ -242,20 +242,20 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 		data_frame_reader = self.spark_session.read
 
 		recommended_items_data_frame = data_frame_reader.json(
-		    '{}/{}/{}/inference_result/*.json.out'.format(
-		        self.spark_application_configuration.get('aws.storage.path'),
-		        self.spark_application_args.lcp_project_id,
-		        self.spark_application.job_id
-		    )
+			'{}/{}/{}/inference_result/*.json.out'.format(
+				self.spark_application_configuration.get('aws.storage.path'),
+				self.spark_application_args.lcp_project_id,
+				self.spark_application.job_id
+			)
 		).filter('error is null').withColumn(
-		    'jobId', lit(self.spark_application.job_id)
+			'jobId', lit(self.spark_application.job_id)
 		).selectExpr(
-		    'sha1(concat(jobId, input.itemId)) as id', 'input.itemId as itemId',
-		    'jobId', 'output.recommendedItems as recommendedItemIds'
+			'sha1(concat(jobId, input.itemId)) as id', 'input.itemId as itemId',
+			'jobId', 'output.recommendedItems as recommendedItemIds'
 		)
 
 		recommended_items_data_frame.createOrReplaceTempView(
-		    'recommended_items'
+			'recommended_items'
 		)
 
 class UpdateJobRunStepSparkJob(BaseSparkJob):
@@ -263,15 +263,15 @@ class UpdateJobRunStepSparkJob(BaseSparkJob):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
 		pub_sub_bridge.send(
-		    PubSubMessage(
-		        'content_recommendation', {
-		            'operation': 'UpdateJobRun',
-		            'jobRunId': self.spark_application.job_run_id,
-		            'body': {
-		                'step': 'DATA_SOLUTION'
-		            }
-		        }
-		    )
+			PubSubMessage(
+				'content_recommendation', {
+					'operation': 'UpdateJobRun',
+					'jobRunId': self.spark_application.job_run_id,
+					'body': {
+						'step': 'DATA_SOLUTION'
+					}
+				}
+			)
 		)
 
 class WriteDataframeSparkJob(BaseSparkJob):
@@ -287,24 +287,24 @@ class WriteDataframeSparkJob(BaseSparkJob):
 		data_frame_writer = data_frame.write
 
 		data_frame_writer.format(
-		    self._output_format
+			self._output_format
 		).mode('overwrite').option("header", "True").save(
-		    '{}/{}/{}/{}'.format(
-		        self.spark_application_configuration.get('aws.storage.path'),
-		        self.spark_application_args.lcp_project_id,
-		        self.spark_application.job_id, self._data_frame_name
-		    )
+			'{}/{}/{}/{}'.format(
+				self.spark_application_configuration.get('aws.storage.path'),
+				self.spark_application_args.lcp_project_id,
+				self.spark_application.job_id, self._data_frame_name
+			)
 		)
 
 class WriteItemsSparkJob(WriteDataframeSparkJob):
 	def __init__(self, spark_application):
 		super(WriteItemsSparkJob,
-		      self).__init__('items', 'json', spark_application)
+			  self).__init__('items', 'json', spark_application)
 
 class WriteUserItemInteractionsSparkJob(WriteDataframeSparkJob):
 	def __init__(self, spark_application):
 		super(WriteUserItemInteractionsSparkJob, self).__init__(
-		    'user_item_interactions', 'csv', spark_application
+			'user_item_interactions', 'csv', spark_application
 		)
 
 class WriteRecommendedItemsSparkJob(BaseSparkJob):
@@ -314,10 +314,10 @@ class WriteRecommendedItemsSparkJob(BaseSparkJob):
 		data_frame_writer = data_frame.write
 
 		data_frame_writer.json(
-		    '{}/{}/{}/{}'.format(
-		        self.spark_application_configuration.
-		        get('google.storage.path.content-recommendations'),
-		        self.spark_application_args.lcp_project_id,
-		        self.spark_application.job_id, self.spark_application.job_run_id
-		    )
+			'{}/{}/{}/{}'.format(
+				self.spark_application_configuration.
+				get('google.storage.path.content-recommendations'),
+				self.spark_application_args.lcp_project_id,
+				self.spark_application.job_id, self.spark_application.job_run_id
+			)
 		)
