@@ -26,18 +26,18 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 	formatPython.enabled = false
 
 	installPackageDependencies {
-		venvExec = "pip"
 		args = ["install", "--isolated", "-r", "$projectDir/$pythonSource/requirements-package.txt", "--target", pythonTempDir]
+		venvExec = "pip"
 	}
 
 	installProjectEnvDependencies {
-		venvExec = "pip"
 		args = ["install", "--isolated", "-r", "$projectDir/$pythonSource/requirements.txt"]
+		venvExec = "pip"
 	}
 
 	installTestEnvDependencies {
-		venvExec = "pip"
 		args = ["install", "--isolated", "-r", "$projectDir/$pythonTestSource/requirements.txt"]
+		venvExec = "pip"
 	}
 
 	packagePython {
@@ -46,14 +46,14 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 
 		finalizedBy zipPython
 
-		def buildLibs = new File("$buildDir/libs")
-
 		doLast {
 			copy {
+				exclude "requirements-package.txt"
 				from pythonSource
 				into pythonTempDir
-				exclude "requirements-package.txt"
 			}
+
+			def buildLibs = new File("$buildDir/libs")
 
 			if (!buildLibs.exists()) {
 				buildLibs.mkdirs()
@@ -65,15 +65,15 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 		dependsOn installProjectEnvDependencies
 		dependsOn installTestEnvDependencies
 
+		args = ["$projectDir/$pythonTestSource/", "--capture=no", "--disable-warnings", "--suppress-no-test-exit-code"]
+		environment = ["PYTHONPATH": file("src/main")]
 		venvExec = "pytest"
 		workingDir = file("src/test")
-		environment = ["PYTHONPATH": file("src/main")]
-		args = ["$projectDir/$pythonTestSource/", "--capture=no", "--disable-warnings", "--suppress-no-test-exit-code"]
 	}
 
 	zipPython {
-		venvExec = "python"
 		args = ["-m", "zipapp", pythonTempDir, "-o", "$buildDir/libs/${project.name}.zip"]
+		venvExec = "python"
 
 		doLast {
 			copy {
