@@ -111,7 +111,6 @@ public class HeadlessDiscoveryAPIApplication extends Application {
 
 			html = StringUtil.replace(
 				html, "href=\"main.css\"", "href=\"/o/api/main.css\"");
-
 			html = StringUtil.replace(
 				html, "src=\"headless-discovery-web-min.js\"",
 				"src=\"/o/api/headless-discovery-web-min.js\"");
