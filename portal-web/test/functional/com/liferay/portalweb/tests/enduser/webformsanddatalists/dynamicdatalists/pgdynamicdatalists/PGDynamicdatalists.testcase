@@ -1287,7 +1287,7 @@ definition {
 
 		PortletEntry.publish();
 
-		var shortYear = StringUtil.extractLast("${currentDateYear}", "0");
+		var shortYear = StringUtil.replaceFirst("${currentDateYear}", "20", "");
 
 		DDLRecord.viewViaDDLDisplayPG(
 			ddlListName = "List Name",
