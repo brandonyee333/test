@@ -296,8 +296,6 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributor
 			ddmUserPersonalFolderItemSelectorCriterion,
 			fileItemSelectorCriterion);
 
-		itemSelectorURL.setParameter("folderId", String.valueOf(folderId));
-
 		return itemSelectorURL.toString();
 	}
 
