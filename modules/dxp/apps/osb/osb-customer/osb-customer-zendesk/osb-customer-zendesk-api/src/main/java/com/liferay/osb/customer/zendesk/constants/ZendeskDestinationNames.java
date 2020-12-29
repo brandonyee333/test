@@ -26,6 +26,9 @@ public class ZendeskDestinationNames {
 	public static final String ACCOUNT_ENTITLEMENT_SYNC =
 		"liferay/zendesk_account_entitlement_sync";
 
+	public static final String ACCOUNT_LANGUAGE_SYNC =
+		"liferay/zendesk_account_language_sync";
+
 	public static final String ACCOUNT_SYNC = "liferay/zendesk_account_sync";
 
 	public static final String ACCOUNT_TEAMROLE_SYNC =

@@ -254,6 +254,13 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 		accountEntryLanguageLocalService.setAccountEntryLanguageIds(
 			accountEntry.getAccountEntryId(), new String[] {languageId});
 
+		Message message = new Message();
+
+		message.put("koroneikiAccountKey", koroneikiAccountKey);
+
+		MessageBusUtil.sendMessage(
+			"liferay/zendesk_account_language_sync", message);
+
 		return accountEntry;
 	}
 
