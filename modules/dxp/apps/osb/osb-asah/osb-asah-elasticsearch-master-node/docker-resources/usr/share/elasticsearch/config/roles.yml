@@ -1,3 +1,5 @@
+healthcheck_user:
+    cluster: [ 'monitor' ]
 workspace_user:
     cluster: [ 'manage_index_templates', 'monitor', 'transport_client' ]
     indices:
