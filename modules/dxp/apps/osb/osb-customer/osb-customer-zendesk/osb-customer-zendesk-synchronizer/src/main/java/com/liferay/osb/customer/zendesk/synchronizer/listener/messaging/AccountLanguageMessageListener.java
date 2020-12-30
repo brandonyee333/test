@@ -86,13 +86,14 @@ public class AccountLanguageMessageListener extends BaseMessageListener {
 	protected void doReceive(Message message) throws Exception {
 		String koroneikiAccountKey = (String)message.get("koroneikiAccountKey");
 
-		Account account = _accountWebService.fetchAccount(koroneikiAccountKey);
-
 		AccountEntry accountEntry =
 			_accountEntryLocalService.fetchKoroneikiAccountEntry(
 				koroneikiAccountKey);
 
 		if ((accountEntry != null) && isActiveSupport(accountEntry)) {
+			Account account = _accountWebService.fetchAccount(
+				koroneikiAccountKey);
+
 			_accountSynchronizer.update(account, accountEntry);
 		}
 	}
