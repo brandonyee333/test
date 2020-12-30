@@ -1,11 +1,7 @@
 FROM google/cloud-sdk:280.0.0-alpine
 
-CMD ["gcloud", "beta", "emulators", "pubsub", "start", "--data-dir=/var/pubsub", "--host-port=0.0.0.0:8095", "--log-http", "--project=liferaycloud-customer-ac" , "--user-output-enabled", "--verbosity=debug"]
-
-EXPOSE 8095
-
 RUN apk --update add openjdk8-jre
 RUN gcloud components install --quiet beta pubsub-emulator
-RUN mkdir -p /var/pubsub
+RUN echo ".level=WARN" > /logging.properties
 
-VOLUME /var/pubsub
+CMD ["java", "-Djava.util.logging.config.file=/logging.properties", "-jar", "/google-cloud-sdk/platform/pubsub-emulator/lib/cloud-pubsub-emulator-0.1-SNAPSHOT-all.jar", "--host=0.0.0.0", "--port=8095", "--projects=liferaycloud-customer-ac"]
