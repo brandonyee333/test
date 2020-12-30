@@ -34,15 +34,12 @@ public class OSBAsahTaskRunnable implements Runnable {
 		OSBAsahTaskManager osbAsahTaskManager) {
 
 		_force = force;
+		_osbAsahTaskManager = osbAsahTaskManager;
 
 		_contextJSONObject = osbAsahTaskJSONObject.optJSONObject("context");
-
 		_naniteClassNames = new String[] {
 			osbAsahTaskJSONObject.getString("className")
 		};
-
-		_osbAsahTaskManager = osbAsahTaskManager;
-
 		_osbAsahTaskId = osbAsahTaskJSONObject.optString("id");
 	}
 
