@@ -48,7 +48,7 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 	@Override
 	public String getCollectionName() {
-		return "individuals";
+		return "individual-activity-fields";
 	}
 
 	@Override
