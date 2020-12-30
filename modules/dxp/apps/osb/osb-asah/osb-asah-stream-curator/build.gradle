@@ -12,7 +12,7 @@ configurations.all {
 	exclude group: "org.apache.geronimo.bundles", module: "json"
 }
 
-File langDetectProfileDir = file("src/main/resources/com/liferay/osb/asah/batch/curator/nlp/profile")
+File langDetectProfileDir = file("src/main/resources/com/liferay/osb/asah/stream/curator/nlp/profile")
 
 dependencies {
 	compile classifier: "models", group: "edu.stanford.nlp", name: "stanford-corenlp", version: "3.9.2"
