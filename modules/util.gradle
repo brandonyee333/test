@@ -13,7 +13,6 @@ buildscript {
 	apply from: file("build-buildscript.gradle"), to: buildscript
 }
 
-apply plugin: "com.liferay.python"
 apply plugin: "com.liferay.source.formatter"
 apply plugin: "com.liferay.source.formatter.defaults"
 
@@ -326,8 +325,4 @@ private String _getPortalToolSuffix(String name) {
 	}
 
 	return StringUtil.capitalize(suffix)
-}
-
-formatPython {
-	enabled = false
 }
