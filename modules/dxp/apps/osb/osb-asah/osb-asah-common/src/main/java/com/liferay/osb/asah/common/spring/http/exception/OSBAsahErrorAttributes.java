@@ -34,7 +34,7 @@ public class OSBAsahErrorAttributes extends DefaultErrorAttributes {
 
 	@Override
 	public Map<String, Object> getErrorAttributes(
-		WebRequest webRequest, ErrorAttributeOptions options) {
+		WebRequest webRequest, ErrorAttributeOptions errorAttributeOptions) {
 
 		_log.error("Unable to process request", getError(webRequest));
 
@@ -42,7 +42,7 @@ public class OSBAsahErrorAttributes extends DefaultErrorAttributes {
 			_environment.getActiveProfiles());
 
 		osbAsahError.setErrorAttributes(
-			super.getErrorAttributes(webRequest, options));
+			super.getErrorAttributes(webRequest, errorAttributeOptions));
 
 		return osbAsahError.getErrorAttributes();
 	}
