@@ -16,6 +16,10 @@ node:
     name: "${HOSTNAME}"
 xpack:
     security:
+        authc:
+            anonymous:
+                roles: healthcheck_user
+                username: anonymous_user
         enabled: true
         http:
             ssl:
