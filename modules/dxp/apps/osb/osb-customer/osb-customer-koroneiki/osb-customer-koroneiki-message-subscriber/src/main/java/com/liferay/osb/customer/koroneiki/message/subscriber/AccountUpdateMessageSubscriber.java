@@ -52,11 +52,12 @@ public class AccountUpdateMessageSubscriber
 		accountEntryLocalService.updateAccountEntry(
 			OSBCustomerConstants.USER_DEFAULT_USER_ID,
 			accountEntry.getAccountEntryId(), account.getKey(),
-			getDossieraAccountKey(account.getExternalLinks()),
-			getCorpProjectUuid(account.getExternalLinks()),
-			getCorpProjectId(account.getExternalLinks()), account.getName(),
-			account.getCode(), accountEntry.getInstructions(),
-			accountReader.getStatus(account), accountEntry.getLanguageIds());
+			accountReader.getDossieraAccountKey(account.getExternalLinks()),
+			accountReader.getCorpProjectUuid(account.getExternalLinks()),
+			accountReader.getCorpProjectId(account.getExternalLinks()),
+			account.getName(), account.getCode(),
+			accountEntry.getInstructions(), accountReader.getStatus(account),
+			accountEntry.getLanguageIds());
 	}
 
 }

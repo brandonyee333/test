@@ -60,16 +60,16 @@ public class ProductPurchaseCreateMessageSubscriber
 				productPurchase.getAccountKey());
 
 		if (accountEntry == null) {
-			if (!isSyncAccount(productPurchases)) {
+			if (!accountReader.isSyncAccount(productPurchases)) {
 				return;
 			}
 
 			accountEntryLocalService.addAccountEntry(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, account.getKey(),
-				getDossieraAccountKey(account.getExternalLinks()),
-				getCorpProjectUuid(account.getExternalLinks()),
-				getCorpProjectId(account.getExternalLinks()), account.getName(),
-				account.getCode(), null,
+				accountReader.getDossieraAccountKey(account.getExternalLinks()),
+				accountReader.getCorpProjectUuid(account.getExternalLinks()),
+				accountReader.getCorpProjectId(account.getExternalLinks()),
+				account.getName(), account.getCode(), null,
 				accountReader.getSupportEndDate(productPurchases),
 				accountReader.getTicketSupportEndDate(productPurchases),
 				accountReader.getStatus(account),

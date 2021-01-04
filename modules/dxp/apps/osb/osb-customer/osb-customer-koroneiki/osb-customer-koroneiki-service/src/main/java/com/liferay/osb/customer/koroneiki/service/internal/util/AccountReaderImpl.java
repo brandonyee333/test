@@ -21,7 +21,10 @@ import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
@@ -41,6 +44,66 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = AccountReader.class)
 public class AccountReaderImpl implements AccountReader {
+
+	public long getCorpProjectId(ExternalLink[] externalLinks) {
+		if (externalLinks != null) {
+			for (ExternalLink externalLink : externalLinks) {
+				String domain = externalLink.getDomain();
+
+				if (domain.equals(ExternalLinkDomain.LCS)) {
+					String entityName = externalLink.getEntityName();
+
+					if (entityName.equals(
+							ExternalLinkEntityName.LCS_CORP_PROJECT)) {
+
+						return Long.valueOf(externalLink.getEntityId());
+					}
+				}
+			}
+		}
+
+		return 0;
+	}
+
+	public String getCorpProjectUuid(ExternalLink[] externalLinks) {
+		if (externalLinks != null) {
+			for (ExternalLink externalLink : externalLinks) {
+				String domain = externalLink.getDomain();
+
+				if (domain.equals(ExternalLinkDomain.WEB)) {
+					String entityName = externalLink.getEntityName();
+
+					if (entityName.equals(
+							ExternalLinkEntityName.WEB_CORP_PROJECT)) {
+
+						return externalLink.getEntityId();
+					}
+				}
+			}
+		}
+
+		return StringPool.BLANK;
+	}
+
+	public String getDossieraAccountKey(ExternalLink[] externalLinks) {
+		if (externalLinks != null) {
+			for (ExternalLink externalLink : externalLinks) {
+				String domain = externalLink.getDomain();
+
+				if (domain.equals(ExternalLinkDomain.DOSSIERA)) {
+					String entityName = externalLink.getEntityName();
+
+					if (entityName.equals(
+							ExternalLinkEntityName.DOSSIERA_ACCOUNT)) {
+
+						return externalLink.getEntityId();
+					}
+				}
+			}
+		}
+
+		return StringPool.BLANK;
+	}
 
 	public Team getFirstLineSupportTeam(Account account) throws Exception {
 		Team[] assignedTeams = account.getAssignedTeams();
@@ -194,6 +257,30 @@ public class AccountReaderImpl implements AccountReader {
 		return ticketSupportEndDate;
 	}
 
+	public boolean isSyncAccount(List<ProductPurchase> productPurchases)
+		throws Exception {
+
+		Date now = new Date();
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			Product product = productPurchase.getProduct();
+
+			if (_isSyncProduct(product)) {
+				if (productPurchase.getPerpetual()) {
+					return true;
+				}
+
+				Date endDate = productPurchase.getEndDate();
+
+				if (now.before(endDate)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	private String _getProductPurchaseState(ProductPurchase productPurchase) {
 		if (productPurchase.getStatus() == ProductPurchase.Status.CANCELLED) {
 			return ProductPurchaseConstants.STATE_CANCELLED;
@@ -316,6 +403,30 @@ public class AccountReaderImpl implements AccountReader {
 
 	private boolean _isHigherState(String curState, String newState) {
 		if (_getStateRank(newState) > _getStateRank(curState)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isSyncProduct(Product product) {
+		String name = product.getName();
+
+		if (name.equals(ProductConstants.NAME_GOLD) ||
+			name.equals(ProductConstants.NAME_LIMITED) ||
+			name.equals(ProductConstants.NAME_PLATINUM) ||
+			name.equals(ProductConstants.NAME_SILVER)) {
+
+			return true;
+		}
+
+		if (name.startsWith("DXP") || name.startsWith("Commerce") ||
+			name.startsWith("Portal")) {
+
+			return true;
+		}
+
+		if (name.contains("DXP Cloud")) {
 			return true;
 		}
 

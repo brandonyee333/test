@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.koroneiki.util;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 
@@ -25,6 +26,12 @@ import java.util.List;
  * @author Amos Fong
  */
 public interface AccountReader {
+
+	public long getCorpProjectId(ExternalLink[] externalLinks);
+
+	public String getCorpProjectUuid(ExternalLink[] externalLinks);
+
+	public String getDossieraAccountKey(ExternalLink[] externalLinks);
 
 	public Team getFirstLineSupportTeam(Account account) throws Exception;
 
@@ -41,5 +48,8 @@ public interface AccountReader {
 	public Date getSupportEndDate(List<ProductPurchase> productPurchases);
 
 	public Date getTicketSupportEndDate(List<ProductPurchase> productPurchases);
+
+	public boolean isSyncAccount(List<ProductPurchase> productPurchases)
+		throws Exception;
 
 }
