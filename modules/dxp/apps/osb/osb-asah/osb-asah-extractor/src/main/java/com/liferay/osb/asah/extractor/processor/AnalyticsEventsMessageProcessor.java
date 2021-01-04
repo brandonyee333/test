@@ -380,7 +380,7 @@ public class AnalyticsEventsMessageProcessor {
 				individualJSONObject.getString("id"));
 			analyticsEvent.setKnownIndividual(knownIndividual);
 			analyticsEvent.setSegmentNames(segmentNames);
-			analyticsEvent.setProjectId(ProjectIdThreadLocal.getProjectId());
+			analyticsEvent.setProjectId(analyticsEventsMessage.getProjectId());
 			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
 			for (Channel channel :
