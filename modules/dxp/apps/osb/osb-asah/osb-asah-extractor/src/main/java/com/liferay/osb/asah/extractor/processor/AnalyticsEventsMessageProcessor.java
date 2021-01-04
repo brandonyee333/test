@@ -88,7 +88,15 @@ public class AnalyticsEventsMessageProcessor {
 			for (AnalyticsEventsMessage analyticsEventsMessage :
 					analyticsEventsMessages) {
 
-				_processMessage(analyticsEventsMessage);
+				try {
+					ProjectIdThreadLocal.setProjectId(
+						analyticsEventsMessage.getProjectId());
+
+					_processMessage(analyticsEventsMessage);
+				}
+				finally {
+					ProjectIdThreadLocal.remove();
+				}
 			}
 		}
 	}

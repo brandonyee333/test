@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import io.prometheus.client.Counter;
@@ -70,7 +71,17 @@ public class DXPEntitiesMessageProcessor {
 			}
 
 			for (String message : messages) {
-				_processMessage(new JSONObject(message));
+				JSONObject jsonObject = new JSONObject(message);
+
+				try {
+					ProjectIdThreadLocal.setProjectId(
+						jsonObject.getString("projectId"));
+
+					_processMessage(jsonObject);
+				}
+				finally {
+					ProjectIdThreadLocal.remove();
+				}
 			}
 
 			_dxpEntitiesCounter.inc(messages.size());
