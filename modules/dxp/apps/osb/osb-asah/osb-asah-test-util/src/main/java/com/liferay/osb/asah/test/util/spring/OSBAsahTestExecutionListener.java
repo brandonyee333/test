@@ -153,8 +153,7 @@ public class OSBAsahTestExecutionListener
 				new MessageBusTestHelper(_messageBus);
 
 			pubSubMessageBusTestHelper.prepareMessageBusChannel(
-				testContext.getTestClass(), messageBusChannel,
-				ServiceConstants.LCP_PROJECT_ID);
+				testContext.getTestClass(), messageBusChannel);
 		}
 	}
 

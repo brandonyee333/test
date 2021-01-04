@@ -57,12 +57,10 @@ public class MessageBusImplTest {
 	public void testRegisterMessageListener() {
 		_messageBusImpl.registerMessageListener(
 			Channel.ANALYTICS_EVENTS_ACTIVITY,
-			Mockito.mock(MessageListener.class),
-			ServiceConstants.LCP_PROJECT_ID);
+			Mockito.mock(MessageListener.class));
 		_messageBusImpl.registerMessageListener(
 			Channel.ANALYTICS_EVENTS_ACTIVITY,
-			Mockito.mock(MessageListener.class),
-			ServiceConstants.LCP_PROJECT_ID);
+			Mockito.mock(MessageListener.class));
 
 		Set<MessageListener> messageListeners = _getMessageBusMessageListeners(
 			Channel.ANALYTICS_EVENTS_ACTIVITY);
@@ -77,24 +75,20 @@ public class MessageBusImplTest {
 			MessageListener.class);
 
 		_messageBusImpl.registerMessageListener(
-			Channel.ANALYTICS_EVENTS_ACTIVITY, dataSourcesMessageListener1,
-			ServiceConstants.LCP_PROJECT_ID);
+			Channel.ANALYTICS_EVENTS_ACTIVITY, dataSourcesMessageListener1);
 
 		MessageListener dataSourcesMessageListener2 = Mockito.mock(
 			MessageListener.class);
 
 		_messageBusImpl.registerMessageListener(
-			Channel.ANALYTICS_EVENTS_ACTIVITY, dataSourcesMessageListener2,
-			ServiceConstants.LCP_PROJECT_ID);
+			Channel.ANALYTICS_EVENTS_ACTIVITY, dataSourcesMessageListener2);
 
 		MessageListener upgradeCheckMessageListener = Mockito.mock(
 			MessageListener.class);
 
 		String message = RandomTestUtil.randomString();
 
-		_messageBusImpl.sendMessage(
-			Channel.ANALYTICS_EVENTS_ACTIVITY, message,
-			ServiceConstants.LCP_PROJECT_ID);
+		_messageBusImpl.sendMessage(Channel.ANALYTICS_EVENTS_ACTIVITY, message);
 
 		ExecutorService executorService =
 			(ExecutorService)ReflectionTestUtils.getField(
@@ -126,8 +120,7 @@ public class MessageBusImplTest {
 		MessageListener messageListener = Mockito.mock(MessageListener.class);
 
 		_messageBusImpl.registerMessageListener(
-			Channel.ANALYTICS_EVENTS_ACTIVITY, messageListener,
-			ServiceConstants.LCP_PROJECT_ID);
+			Channel.ANALYTICS_EVENTS_ACTIVITY, messageListener);
 
 		_messageBusImpl.unregisterMessageListener(messageListener);
 

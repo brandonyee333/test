@@ -20,12 +20,12 @@ package com.liferay.osb.asah.common.messaging;
 public interface MessageBus {
 
 	public void registerMessageListener(
-		Channel channel, MessageListener messageListener, String projectId);
+		Channel channel, MessageListener messageListener);
 
 	public MessageSubscriber registerMessageSubscriber(
-		Channel channel, String messageSubscriberName, String projectId);
+		Channel channel, String messageSubscriberName);
 
-	public void sendMessage(Channel channel, String message, String projectId);
+	public void sendMessage(Channel channel, String message);
 
 	public void unregisterMessageListener(MessageListener messageListener);
 

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.messaging.impl;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 
@@ -86,8 +85,7 @@ public class MessageSubscriberAutowiredAnnotationBeanPostProcessor
 
 			MessageSubscriber messageSubscriber =
 				_messageBus.registerMessageSubscriber(
-					messageSubscriberAutowired.channel(), beanClass.getName(),
-					ServiceConstants.LCP_PROJECT_ID);
+					messageSubscriberAutowired.channel(), beanClass.getName());
 
 			ReflectionUtils.makeAccessible(field);
 

@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -45,24 +44,22 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public void registerMessageListener(
-		Channel channel, MessageListener messageListener, String projectId) {
+		Channel channel, MessageListener messageListener) {
 
 		Set<MessageListener> messageListeners =
 			_messageListeners.computeIfAbsent(
-				_getTopicId(channel, projectId),
-				key -> new CopyOnWriteArraySet<>());
+				channel, key -> new CopyOnWriteArraySet<>());
 
 		messageListeners.add(messageListener);
 	}
 
 	@Override
 	public MessageSubscriber registerMessageSubscriber(
-		Channel channel, String messageSubscriberName, String projectId) {
+		Channel channel, String messageSubscriberName) {
 
 		Set<MessageSubscriber> messageSubscribers =
 			_messageSubscribers.computeIfAbsent(
-				_getTopicId(channel, projectId),
-				key -> new CopyOnWriteArraySet<>());
+				channel, key -> new CopyOnWriteArraySet<>());
 
 		MessageSubscriber messageSubscriber = new MessageSubscriberImpl(
 			channel, messageSubscriberName);
@@ -73,13 +70,12 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 	@Override
-	public void sendMessage(Channel channel, String message, String projectId) {
+	public void sendMessage(Channel channel, String message) {
 		if (message == null) {
 			throw new IllegalArgumentException("Message is null");
 		}
 
-		Set<MessageListener> messageListeners = _messageListeners.get(
-			_getTopicId(channel, projectId));
+		Set<MessageListener> messageListeners = _messageListeners.get(channel);
 
 		if (messageListeners != null) {
 			for (MessageListener messageListener : messageListeners) {
@@ -88,7 +84,7 @@ public class MessageBusImpl implements MessageBus {
 		}
 
 		Set<MessageSubscriber> messageSubscribers = _messageSubscribers.get(
-			_getTopicId(channel, projectId));
+			channel);
 
 		if (messageSubscribers != null) {
 			for (MessageSubscriber messageSubscriber : messageSubscribers) {
@@ -143,17 +139,12 @@ public class MessageBusImpl implements MessageBus {
 			});
 	}
 
-	private String _getTopicId(Channel channel, String projectId) {
-		return StringUtils.lowerCase(
-			String.format("%s_%s", projectId, channel.toString()));
-	}
-
 	private static final Log _log = LogFactory.getLog(MessageBusImpl.class);
 
 	private ExecutorService _executorService;
-	private final Map<String, Set<MessageListener>> _messageListeners =
+	private final Map<Channel, Set<MessageListener>> _messageListeners =
 		new ConcurrentHashMap<>();
-	private final Map<String, Set<MessageSubscriber>> _messageSubscribers =
+	private final Map<Channel, Set<MessageSubscriber>> _messageSubscribers =
 		new ConcurrentHashMap<>();
 
 }

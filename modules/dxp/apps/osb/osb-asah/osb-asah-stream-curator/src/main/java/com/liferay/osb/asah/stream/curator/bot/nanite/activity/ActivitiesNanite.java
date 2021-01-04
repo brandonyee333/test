@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -82,8 +81,7 @@ public class ActivitiesNanite implements Nanite {
 					"channelId", activityJSONObject.get("channelId")
 				).put(
 					"ownerId", ownerId
-				).toString(),
-				ServiceConstants.LCP_PROJECT_ID);
+				).toString());
 		}
 	}
 

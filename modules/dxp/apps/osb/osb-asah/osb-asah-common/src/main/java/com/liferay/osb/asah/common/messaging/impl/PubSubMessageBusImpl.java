@@ -82,11 +82,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 		return ProjectName.of(_gcpProjectId);
 	}
 
-	public ProjectTopicName getProjectTopicName(
-		Channel channel, String projectId) {
-
-		return ProjectTopicName.of(
-			_gcpProjectId, _getTopicId(channel, projectId));
+	public ProjectTopicName getProjectTopicName(Channel channel) {
+		return ProjectTopicName.of(_gcpProjectId, _getTopicId(channel));
 	}
 
 	public PubSubClientFactory getPubSubclientFactory() {
@@ -95,11 +92,10 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 	@Override
 	public void registerMessageListener(
-		Channel channel, MessageListener messageListener, String projectId) {
+		Channel channel, MessageListener messageListener) {
 
 		try {
-			Subscriber subscriber = _createSubscriber(
-				channel, messageListener, projectId);
+			Subscriber subscriber = _createSubscriber(channel, messageListener);
 
 			_messageListeners.put(messageListener, subscriber);
 
@@ -112,13 +108,12 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 	@Override
 	public MessageSubscriber registerMessageSubscriber(
-		Channel channel, String messageSubscriberName, String projectId) {
+		Channel channel, String messageSubscriberName) {
 
 		try {
 			Subscription subscription = _getOrCreateSubscription(
-				channel, projectId,
-				_getProjectSubscriptionName(
-					channel, messageSubscriberName, projectId));
+				channel,
+				_getProjectSubscriptionName(channel, messageSubscriberName));
 
 			return new MessageSubscriberImpl(
 				_pubSubClientFactory, subscription);
@@ -131,13 +126,13 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	@Override
-	public void sendMessage(Channel channel, String message, String projectId) {
+	public void sendMessage(Channel channel, String message) {
 		if (StringUtils.isBlank(message)) {
 			throw new IllegalArgumentException("Message is blank");
 		}
 
 		try {
-			Publisher publisher = _getOrCreatePublisher(channel, projectId);
+			Publisher publisher = _getOrCreatePublisher(channel);
 
 			if (channel == Channel.DXP_ENTITIES_MESSAGE) {
 				publisher.publish(
@@ -182,13 +177,12 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	private Subscriber _createSubscriber(
-			Channel channel, MessageListener messageListener, String projectId)
+			Channel channel, MessageListener messageListener)
 		throws Exception {
 
 		Subscription subscription = _getOrCreateSubscription(
-			channel, projectId,
-			_getProjectSubscriptionName(
-				channel, messageListener.getClass(), projectId));
+			channel,
+			_getProjectSubscriptionName(channel, messageListener.getClass()));
 
 		return _pubSubClientFactory.createSubscriber(
 			subscription.getName(), _createMessageReceiver(messageListener));
@@ -212,7 +206,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 		}
 	}
 
-	private void _createTopics(String projectId) throws Exception {
+	private void _createTopics() throws Exception {
 		try (PubSubClient<TopicAdminClient> pubSubClient =
 				_pubSubClientFactory.createTopicAdminClient()) {
 
@@ -222,7 +216,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 			for (Channel channel : Channel.values()) {
 				ProjectTopicName projectTopicName = getProjectTopicName(
-					channel, projectId);
+					channel);
 
 				if (!topicNames.contains(projectTopicName.toString())) {
 					_createTopic(projectTopicName, topicAdminClient);
@@ -255,9 +249,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 		return topicNames;
 	}
 
-	private Publisher _getOrCreatePublisher(Channel channel, String projectId)
-		throws Exception {
-
+	private Publisher _getOrCreatePublisher(Channel channel) throws Exception {
 		Publisher publisher = _channels.get(channel);
 
 		if (publisher != null) {
@@ -265,8 +257,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 		}
 
 		publisher = _pubSubClientFactory.createPublisher(
-			channel.isOrderingEnabled(),
-			getProjectTopicName(channel, projectId));
+			channel.isOrderingEnabled(), getProjectTopicName(channel));
 
 		_channels.put(channel, publisher);
 
@@ -274,8 +265,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	private Subscription _getOrCreateSubscription(
-			Channel channel, String projectId,
-			ProjectSubscriptionName projectSubscriptionName)
+			Channel channel, ProjectSubscriptionName projectSubscriptionName)
 		throws Exception {
 
 		PubSubClient<SubscriptionAdminClient> pubSubClient =
@@ -294,8 +284,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 						projectSubscriptionName.toString());
 			}
 
-			ProjectTopicName projectTopicName = getProjectTopicName(
-				channel, projectId);
+			ProjectTopicName projectTopicName = getProjectTopicName(channel);
 
 			Subscription.Builder builder = Subscription.newBuilder();
 
@@ -316,28 +305,28 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	private ProjectSubscriptionName _getProjectSubscriptionName(
-		Channel channel, Class<?> clazz, String projectId) {
+		Channel channel, Class<?> clazz) {
 
-		return _getProjectSubscriptionName(channel, clazz.getName(), projectId);
+		return _getProjectSubscriptionName(channel, clazz.getName());
 	}
 
 	private ProjectSubscriptionName _getProjectSubscriptionName(
-		Channel channel, String name, String projectId) {
+		Channel channel, String name) {
 
 		return ProjectSubscriptionName.of(
 			_gcpProjectId,
-			_getTopicId(channel, projectId) + "_" +
-				StringUtils.replace(name, "$", "_"));
+			_getTopicId(channel) + "_" + StringUtils.replace(name, "$", "_"));
 	}
 
-	private String _getTopicId(Channel channel, String projectId) {
+	private String _getTopicId(Channel channel) {
 		return StringUtils.lowerCase(
-			String.format("%s_%s", projectId, channel.toString()));
+			String.format(
+				"%s_%s", ServiceConstants.LCP_PROJECT_ID, channel.toString()));
 	}
 
 	@PostConstruct
 	private void _init() throws Exception {
-		_createTopics(ServiceConstants.LCP_PROJECT_ID);
+		_createTopics();
 	}
 
 	private static final Log _log = LogFactory.getLog(
