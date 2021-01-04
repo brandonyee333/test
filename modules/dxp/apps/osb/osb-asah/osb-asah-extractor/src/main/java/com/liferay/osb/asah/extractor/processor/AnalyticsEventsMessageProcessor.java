@@ -85,10 +85,11 @@ public class AnalyticsEventsMessageProcessor {
 				break;
 			}
 
-			JSONArray analyticsEventJSONArray = _getAnalyticsEventJSONArray(
-				analyticsEventsMessages);
+			for (AnalyticsEventsMessage analyticsEventsMessage :
+					analyticsEventsMessages) {
 
-			_analyticsEventsCounter.inc(analyticsEventJSONArray.length());
+				_processMessage(analyticsEventsMessage);
+			}
 		}
 	}
 
@@ -143,114 +144,6 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		return analyticsDataJSONObject;
-	}
-
-	private JSONArray _getAnalyticsEventJSONArray(
-		List<AnalyticsEventsMessage> analyticsEventsMessages) {
-
-		JSONArray analyticsEventJSONArray = new JSONArray();
-
-		for (AnalyticsEventsMessage analyticsEventsMessage :
-				analyticsEventsMessages) {
-
-			if (!_isDataSourceActive(analyticsEventsMessage)) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Discarding message because data source is not " +
-							"active: " + analyticsEventsMessage.toJSON());
-				}
-
-				continue;
-			}
-
-			Map<String, String> context = _getContext(analyticsEventsMessage);
-
-			if (_isCrawler(context)) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Discarding message from crawler: " +
-							analyticsEventsMessage.toJSON());
-				}
-
-				continue;
-			}
-
-			if (!_isValidURL(context)) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Discarding message from invalid host: " +
-							analyticsEventsMessage.toJSON());
-				}
-
-				continue;
-			}
-
-			String channelId = analyticsEventsMessage.getChannelId();
-			String dataSourceId = analyticsEventsMessage.getDataSourceId();
-
-			if (StringUtil.isNull(channelId) ||
-				StringUtils.isBlank(channelId)) {
-
-				channelId = _faroInfoDataSourceDog.getChannelId(dataSourceId);
-
-				if (StringUtils.isBlank(channelId)) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Discarding message because channel ID is " +
-								"invalid: " + analyticsEventsMessage.toJSON());
-					}
-
-					continue;
-				}
-			}
-
-			JSONObject individualJSONObject = _addIndividual(
-				analyticsEventsMessage, channelId, dataSourceId);
-
-			boolean knownIndividual = _isKnownIndividual(individualJSONObject);
-			Set<String> segmentNames = _getSegmentNames(
-				channelId, individualJSONObject);
-
-			List<AnalyticsEventsMessage.Event> events =
-				analyticsEventsMessage.getEvents();
-
-			for (AnalyticsEventsMessage.Event event : events) {
-				AnalyticsEvent analyticsEvent = new AnalyticsEvent();
-
-				analyticsEvent.setApplicationId(event.getApplicationId());
-				analyticsEvent.setChannelId(channelId);
-				analyticsEvent.setClientIP(
-					analyticsEventsMessage.getClientIP());
-				analyticsEvent.setContext(context);
-				analyticsEvent.setCreateDate(
-					analyticsEventsMessage.getCreateDate());
-				analyticsEvent.setDataSourceId(dataSourceId);
-				analyticsEvent.setEventDate(event.getEventDate());
-				analyticsEvent.setEventId(event.getEventId());
-				analyticsEvent.setEventProperties(event.getProperties());
-				analyticsEvent.setId(String.valueOf(UUID.randomUUID()));
-				analyticsEvent.setIndividualId(
-					individualJSONObject.getString("id"));
-				analyticsEvent.setKnownIndividual(knownIndividual);
-				analyticsEvent.setSegmentNames(segmentNames);
-				analyticsEvent.setProjectId(
-					ProjectIdThreadLocal.getProjectId());
-				analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
-
-				for (Channel channel :
-						_analyticsEventsChannels.getChannels(analyticsEvent)) {
-
-					_messageBus.sendMessage(channel, analyticsEvent.toJSON());
-				}
-
-				_storage.write(analyticsEvent.toJSON());
-
-				analyticsEventJSONArray.put(
-					new JSONObject(analyticsEvent.toJSON()));
-			}
-		}
-
-		return analyticsEventJSONArray;
 	}
 
 	private Map<String, String> _getContext(
@@ -405,6 +298,101 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		return true;
+	}
+
+	private void _processMessage(
+		AnalyticsEventsMessage analyticsEventsMessage) {
+
+		if (!_isDataSourceActive(analyticsEventsMessage)) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Discarding message because data source is not active: " +
+						analyticsEventsMessage.toJSON());
+			}
+
+			return;
+		}
+
+		Map<String, String> context = _getContext(analyticsEventsMessage);
+
+		if (_isCrawler(context)) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Discarding message from crawler: " +
+						analyticsEventsMessage.toJSON());
+			}
+
+			return;
+		}
+
+		if (!_isValidURL(context)) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Discarding message from invalid host: " +
+						analyticsEventsMessage.toJSON());
+			}
+
+			return;
+		}
+
+		String channelId = analyticsEventsMessage.getChannelId();
+		String dataSourceId = analyticsEventsMessage.getDataSourceId();
+
+		if (StringUtil.isNull(channelId) || StringUtils.isBlank(channelId)) {
+			channelId = _faroInfoDataSourceDog.getChannelId(dataSourceId);
+
+			if (StringUtils.isBlank(channelId)) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Discarding message because channel ID is invalid: " +
+							analyticsEventsMessage.toJSON());
+				}
+
+				return;
+			}
+		}
+
+		JSONObject individualJSONObject = _addIndividual(
+			analyticsEventsMessage, channelId, dataSourceId);
+
+		boolean knownIndividual = _isKnownIndividual(individualJSONObject);
+		Set<String> segmentNames = _getSegmentNames(
+			channelId, individualJSONObject);
+
+		List<AnalyticsEventsMessage.Event> events =
+			analyticsEventsMessage.getEvents();
+
+		for (AnalyticsEventsMessage.Event event : events) {
+			AnalyticsEvent analyticsEvent = new AnalyticsEvent();
+
+			analyticsEvent.setApplicationId(event.getApplicationId());
+			analyticsEvent.setChannelId(channelId);
+			analyticsEvent.setClientIP(analyticsEventsMessage.getClientIP());
+			analyticsEvent.setContext(context);
+			analyticsEvent.setCreateDate(
+				analyticsEventsMessage.getCreateDate());
+			analyticsEvent.setDataSourceId(dataSourceId);
+			analyticsEvent.setEventDate(event.getEventDate());
+			analyticsEvent.setEventId(event.getEventId());
+			analyticsEvent.setEventProperties(event.getProperties());
+			analyticsEvent.setId(String.valueOf(UUID.randomUUID()));
+			analyticsEvent.setIndividualId(
+				individualJSONObject.getString("id"));
+			analyticsEvent.setKnownIndividual(knownIndividual);
+			analyticsEvent.setSegmentNames(segmentNames);
+			analyticsEvent.setProjectId(ProjectIdThreadLocal.getProjectId());
+			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
+
+			for (Channel channel :
+					_analyticsEventsChannels.getChannels(analyticsEvent)) {
+
+				_messageBus.sendMessage(channel, analyticsEvent.toJSON());
+			}
+
+			_storage.write(analyticsEvent.toJSON());
+		}
+
+		_analyticsEventsCounter.inc(events.size());
 	}
 
 	private static final String[]
