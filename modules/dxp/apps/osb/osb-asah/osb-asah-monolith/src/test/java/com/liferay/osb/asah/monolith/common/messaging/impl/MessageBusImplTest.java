@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.monolith.common.messaging.impl;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageListener;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -23,8 +22,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -139,14 +136,10 @@ public class MessageBusImplTest {
 
 		Assert.assertNotNull(messageListenersObject);
 
-		Map<String, Set<MessageListener>> messageListeners =
-			(Map<String, Set<MessageListener>>)messageListenersObject;
+		Map<Channel, Set<MessageListener>> messageListeners =
+			(Map<Channel, Set<MessageListener>>)messageListenersObject;
 
-		return messageListeners.get(
-			StringUtils.lowerCase(
-				String.format(
-					"%s_%s", ServiceConstants.LCP_PROJECT_ID,
-					channel.toString())));
+		return messageListeners.get(channel);
 	}
 
 	private MessageBusImpl _messageBusImpl;
