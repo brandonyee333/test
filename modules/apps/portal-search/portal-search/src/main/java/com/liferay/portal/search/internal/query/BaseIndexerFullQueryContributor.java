@@ -12,16 +12,17 @@
  * details.
  */
 
-package com.liferay.portal.search.internal.expando;
+package com.liferay.portal.search.internal.query;
 
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.ExpandoQueryContributor;
+import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.search.internal.indexer.KeywordQueryContributorsHolder;
-import com.liferay.portal.search.spi.model.query.contributor.KeywordQueryContributor;
-import com.liferay.portal.search.spi.model.query.contributor.helper.KeywordQueryContributorHelper;
+import com.liferay.portal.kernel.search.filter.BooleanFilter;
+import com.liferay.portal.search.internal.indexer.FullQueryContributorHelper;
 
-import java.util.stream.Stream;
+import java.util.Collection;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -30,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author André de Oliveira
  */
 @Component(immediate = true, service = ExpandoQueryContributor.class)
-public class BaseIndexerExpandoQueryContributor
+public class BaseIndexerFullQueryContributor
 	implements ExpandoQueryContributor {
 
 	@Override
@@ -38,33 +39,19 @@ public class BaseIndexerExpandoQueryContributor
 		String keywords, BooleanQuery booleanQuery, String[] classNames,
 		SearchContext searchContext) {
 
-		Stream<KeywordQueryContributor> stream =
-			keywordQueryContributorsHolder.getAll();
+		BooleanFilter booleanFilter =
+			((List<BooleanFilter>)searchContext.getAttribute(
+				"search.full.query.boolean.filter")).get(0);
 
-		stream.forEach(
-			keywordQueryContributor -> keywordQueryContributor.contribute(
-				searchContext.getKeywords(), booleanQuery,
-				new KeywordQueryContributorHelper() {
+		Collection<Indexer<?>> indexers =
+			(Collection<Indexer<?>>)searchContext.getAttribute(
+				"search.full.query.post.process.indexers");
 
-					@Override
-					public String getClassName() {
-						return null;
-					}
-
-					@Override
-					public Stream<String> getSearchClassNamesStream() {
-						return Stream.of(classNames);
-					}
-
-					@Override
-					public SearchContext getSearchContext() {
-						return searchContext;
-					}
-
-				}));
+		fullQueryContributorHelper.contribute(
+			booleanQuery, booleanFilter, classNames, indexers, searchContext);
 	}
 
 	@Reference
-	protected KeywordQueryContributorsHolder keywordQueryContributorsHolder;
+	protected FullQueryContributorHelper fullQueryContributorHelper;
 
 }
