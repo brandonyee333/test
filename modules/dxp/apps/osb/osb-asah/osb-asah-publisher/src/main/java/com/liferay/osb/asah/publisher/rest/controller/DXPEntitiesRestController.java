@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
@@ -109,6 +110,8 @@ public class DXPEntitiesRestController {
 					)
 				).put(
 					"object", objectJSONObject
+				).put(
+					"projectId", ProjectIdThreadLocal.getProjectId()
 				);
 
 				_messageBus.sendMessage(

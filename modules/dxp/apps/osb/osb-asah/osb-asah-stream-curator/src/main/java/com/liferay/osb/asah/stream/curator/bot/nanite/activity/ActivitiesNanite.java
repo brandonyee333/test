@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.nlp.NLPUtil;
@@ -81,6 +82,8 @@ public class ActivitiesNanite implements Nanite {
 					"channelId", activityJSONObject.get("channelId")
 				).put(
 					"ownerId", ownerId
+				).put(
+					"projectId", ProjectIdThreadLocal.getProjectId()
 				).toString());
 		}
 	}

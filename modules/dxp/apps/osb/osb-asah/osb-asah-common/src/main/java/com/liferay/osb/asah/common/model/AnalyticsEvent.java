@@ -88,6 +88,7 @@ public class AnalyticsEvent implements Serializable {
 			Objects.equals(_eventId, analyticsEvent._eventId) &&
 			Objects.equals(_eventProperties, analyticsEvent._eventProperties) &&
 			Objects.equals(_id, analyticsEvent._id) &&
+			Objects.equals(_projectId, analyticsEvent._projectId) &&
 			Objects.equals(_userId, analyticsEvent._userId)) {
 
 			return true;
@@ -168,6 +169,10 @@ public class AnalyticsEvent implements Serializable {
 		return eventCalendar.getTime();
 	}
 
+	public String getProjectId() {
+		return _projectId;
+	}
+
 	public Set<String> getSegmentNames() {
 		return _segmentNames;
 	}
@@ -180,7 +185,8 @@ public class AnalyticsEvent implements Serializable {
 	public int hashCode() {
 		return Objects.hash(
 			_applicationId, _channelId, _clientIP, _id, _context, _createDate,
-			_dataSourceId, _eventDate, _eventId, _eventProperties, _userId);
+			_dataSourceId, _eventDate, _eventId, _eventProperties, _projectId,
+			_userId);
 	}
 
 	public boolean isKnownIndividual() {
@@ -241,6 +247,10 @@ public class AnalyticsEvent implements Serializable {
 		_knownIndividual = knownIndividual;
 	}
 
+	public void setProjectId(String projectId) {
+		_projectId = projectId;
+	}
+
 	public void setSegmentNames(Set<String> segmentNames) {
 		_segmentNames = segmentNames;
 	}
@@ -283,6 +293,7 @@ public class AnalyticsEvent implements Serializable {
 	private String _id;
 	private String _individualId;
 	private boolean _knownIndividual;
+	private String _projectId;
 	private Set<String> _segmentNames = new HashSet<>();
 	private String _userId;
 

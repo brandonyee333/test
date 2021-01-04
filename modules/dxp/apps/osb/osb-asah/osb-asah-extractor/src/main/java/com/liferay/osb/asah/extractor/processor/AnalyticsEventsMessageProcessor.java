@@ -33,6 +33,7 @@ import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
 import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.extractor.fiftyonedegrees.FiftyOneDegreesDevice;
@@ -232,6 +233,8 @@ public class AnalyticsEventsMessageProcessor {
 					individualJSONObject.getString("id"));
 				analyticsEvent.setKnownIndividual(knownIndividual);
 				analyticsEvent.setSegmentNames(segmentNames);
+				analyticsEvent.setProjectId(
+					ProjectIdThreadLocal.getProjectId());
 				analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
 				for (Channel channel :
