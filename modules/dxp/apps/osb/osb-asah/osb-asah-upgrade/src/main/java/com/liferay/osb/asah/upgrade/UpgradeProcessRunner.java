@@ -16,7 +16,10 @@ package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.upgrade.UpgradeState;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
@@ -36,6 +39,44 @@ import org.springframework.stereotype.Component;
 public class UpgradeProcessRunner {
 
 	public void run() throws Exception {
+		List<Project> projects = _projectDog.getProjects();
+
+		for (Project project : projects) {
+			try {
+				ProjectIdThreadLocal.setProjectId(project.getId());
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Checking upgrades for project: " + project.getId());
+				}
+
+				_run();
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Finished upgrades for project: " + project.getId());
+				}
+			}
+			finally {
+				ProjectIdThreadLocal.remove();
+			}
+		}
+
+		_upgradeState.complete();
+	}
+
+	private String _getCurrentVersion() {
+		JSONObject jsonObject = _faroInfoElasticsearchInvoker.fetch(
+			"OSBAsahMarkers", "Upgrade");
+
+		if (jsonObject == null) {
+			return null;
+		}
+
+		return jsonObject.getString("version");
+	}
+
+	private void _run() throws Exception {
 		String currentVersion = _getCurrentVersion();
 
 		List<UpgradeStep> upgradeSteps = _upgradeProcess.getUpgradeSteps(
@@ -51,19 +92,6 @@ public class UpgradeProcessRunner {
 
 			upgradeSteps = _upgradeProcess.getUpgradeSteps(currentVersion);
 		}
-
-		_upgradeState.complete();
-	}
-
-	private String _getCurrentVersion() {
-		JSONObject jsonObject = _faroInfoElasticsearchInvoker.fetch(
-			"OSBAsahMarkers", "Upgrade");
-
-		if (jsonObject == null) {
-			return null;
-		}
-
-		return jsonObject.getString("version");
 	}
 
 	private void _run(List<UpgradeStep> upgradeSteps, String version)
@@ -102,6 +130,9 @@ public class UpgradeProcessRunner {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private UpgradeProcess _upgradeProcess;
