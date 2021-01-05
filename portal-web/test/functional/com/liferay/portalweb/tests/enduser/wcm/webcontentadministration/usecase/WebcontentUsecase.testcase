@@ -2533,6 +2533,135 @@ definition {
 		);
 	}
 
+	@description = "This is a use case for LPS-101289."
+	@priority = "4"
+	test ViewCommentAfterEditingViaStage {
+		ProductMenu.gotoPortlet(
+			category = "Sites",
+			panel = "Control Panel",
+			portlet = "Sites");
+
+		Site.addBlankCP(siteName = "Site Name");
+
+		ProductMenu.gotoPortlet(
+			category = "Sites",
+			panel = "Control Panel",
+			portlet = "Sites");
+
+		Page.add(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
+
+		Navigator.openSiteURL(siteName = "Site Name");
+
+		ProductMenu.gotoPortlet(
+			category = "Publishing",
+			panel = "Site Administration",
+			portlet = "Staging");
+
+		Staging.activateStagingCP(siteName = "Site Name");
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Web Content");
+
+		WebContentNavigator.gotoAddCP();
+
+		WebContent.addCP(
+			webContentContent = "WC WebContent Content",
+			webContentTitle = "WC WebContent Title");
+
+		PortletEntry.publish();
+
+		Navigator.openSiteLanding(siteURLKey = "site-name-staging");
+
+		Page.add(pageName = "Web Content Page");
+
+		SitePageNavigator.gotoEditPage(page = "Web Content Page");
+
+		Page.editPageLayoutColumn(columnName = "1 Column");
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Web Content Page",
+			siteName = "Site Name");
+
+		Portlet.addPG(portletName = "Web Content Display");
+
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC WebContent Title");
+
+		WebContentDisplayPortlet.configureSetupPG(
+			enableViewCountIncrement = "true",
+			metadataNameList = "Comments");
+
+		WebContentDisplayPortlet.saveConfiguration();
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Web Content Page",
+			siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.publishToLive();
+
+		Navigator.gotoSitePage(
+			pageName = "Web Content Page",
+			siteName = "Site Name");
+
+		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
+
+		Comments.addPG(entryComment = "WC WebContent Content Comment");
+
+		Comments.viewPG(
+			entryComment = "WC WebContent Content Comment",
+			userFullName = "Test Test");
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Web Content");
+
+		WebContent.moveToRecycleBinViaDeleteIconCP();
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Web Content Page",
+			siteName = "Site Name");
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Web Content");
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
+
+		WebContent.editCP(
+			webContentContentEdit = "WC WebContent Content Edit",
+			webContentTitle = "WC WebContent Title",
+			webContentTitleEdit = "WC WebContent Title Edit");
+
+		WebContent.viewTitle(webContentTitle = "WC WebContent Title Edit");
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Web Content Page",
+			siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.publishToLive();
+
+		Navigator.gotoSitePage(
+			pageName = "Web Content Page",
+			siteName = "Site Name");
+
+		Comments.viewPG(
+			entryComment = "WC WebContent Content Comment",
+			userFullName = "Test Test");
+	}
+
 	@priority = "3"
 	test ViewGlobalStructureViaAddMenuInLiferaySite {
 		Navigator.openSiteLanding(siteURLKey = "Global");
