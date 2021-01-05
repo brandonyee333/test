@@ -12,6 +12,24 @@ buildscript {
 
 apply plugin: "com.liferay.settings.plugin"
 
+String deployOnlyProfile = System.getProperty("deploy.only.profile")
+
+if (deployOnlyProfile && deployOnlyProfile.equals("ci")) {
+	FileTree lfrbuildCIFileTree = fileTree(dir: rootDir, excludes: ["**/build/", "**/classes/", "**/node_modules/", "**/node_modules_cache/"], includes: ["**/.lfrbuild-ci"])
+
+	lfrbuildCIFileTree.each {
+		lfrBuildCIFile ->
+
+		String modulePath = relativePath(lfrBuildCIFile.parentFile)
+
+		include ":" + modulePath.replace(File.separatorChar, ':' as char)
+
+		ProjectDescriptor projectDescriptor = project(":" + modulePath.replace(File.separatorChar, ':' as char))
+
+		projectDescriptor.projectDir = lfrBuildCIFile.parentFile
+	}
+}
+
 File buildProfileDXPPropertiesFile = new File(rootDir, "../build.profile-dxp.properties")
 
 if ((System.getProperty("build.profile") == null) && buildProfileDXPPropertiesFile.exists()) {
