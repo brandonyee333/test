@@ -147,9 +147,11 @@ definition {
 
 		Pause(locator1 = "1000");
 
-		AssertTextEquals(
-			locator1 = "Comments#ENTRY_COUNT_PANEL",
-			value1 = "${commentCount} Comments");
+		if (isSet(commentCount)) {
+			AssertTextEquals(
+				locator1 = "Comments#ENTRY_COUNT_PANEL",
+				value1 = "${commentCount} Comments");
+		}
 
 		var key_userFullName = "${userFullName}";
 
