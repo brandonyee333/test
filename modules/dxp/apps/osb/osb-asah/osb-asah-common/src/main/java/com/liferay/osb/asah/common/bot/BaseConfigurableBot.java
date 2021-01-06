@@ -77,23 +77,6 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 		_monitorThreadPool();
 	}
 
-	protected void runNanite(Configuration configuration, Nanite nanite)
-		throws Exception {
-
-		_autowireCapableBeanFactory.autowireBeanProperties(
-			configuration, AutowireCapableBeanFactory.AUTOWIRE_NO, false);
-
-		_autowireCapableBeanFactory.autowireBeanProperties(
-			nanite, AutowireCapableBeanFactory.AUTOWIRE_NO, false);
-
-		Class<?> clazz = nanite.getClass();
-
-		_autowireCapableBeanFactory.initializeBean(
-			nanite, clazz.getName() + "#" + configuration.getDataSourceId());
-
-		nanite.run();
-	}
-
 	public void stop() {
 		stop(null, null);
 	}
@@ -118,6 +101,23 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 	protected abstract Configuration refreshConfiguration(
 			Configuration configuration)
 		throws Exception;
+
+	protected void runNanite(Configuration configuration, Nanite nanite)
+		throws Exception {
+
+		_autowireCapableBeanFactory.autowireBeanProperties(
+			configuration, AutowireCapableBeanFactory.AUTOWIRE_NO, false);
+
+		_autowireCapableBeanFactory.autowireBeanProperties(
+			nanite, AutowireCapableBeanFactory.AUTOWIRE_NO, false);
+
+		Class<?> clazz = nanite.getClass();
+
+		_autowireCapableBeanFactory.initializeBean(
+			nanite, clazz.getName() + "#" + configuration.getDataSourceId());
+
+		nanite.run();
+	}
 
 	private void _monitorThreadPool() {
 		Gauge.Child child = _threadPoolActiveGauge.labels(
