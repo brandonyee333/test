@@ -21,7 +21,10 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
+import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+
+import io.prometheus.client.Gauge;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,6 +37,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -69,6 +73,8 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 			CollectionUtils.subtract(_scheduledProjects.keySet(), projects));
 
 		_resizeThreadPoolSize();
+
+		_monitorThreadPool();
 	}
 
 	protected void runNanite(Configuration configuration, Nanite nanite)
@@ -113,6 +119,18 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 			Configuration configuration)
 		throws Exception;
 
+	private void _monitorThreadPool() {
+		Gauge.Child child = _threadPoolActiveGauge.labels(
+			ClassUtils.getSimpleName(getClass()));
+
+		child.set(_threadPoolExecutor.getActiveCount());
+
+		child = _threadPoolSizeGauge.labels(
+			ClassUtils.getSimpleName(getClass()));
+
+		child.set(_threadPoolExecutor.getPoolSize());
+	}
+
 	private void _resizeThreadPoolSize() {
 		Collection<ScheduledFuture<?>> scheduledFutures =
 			_scheduledProjects.values();
@@ -156,6 +174,13 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 
 	private static final Log _log = LogFactory.getLog(
 		BaseConfigurableBot.class);
+
+	private static final Gauge _threadPoolActiveGauge = PrometheusUtil.gauge(
+		"extractor_thread_pool_active",
+		"The number of active threads in extractor's thread pool", "bot");
+	private static final Gauge _threadPoolSizeGauge = PrometheusUtil.gauge(
+		"extractor_thread_pool_size",
+		"The number of threads in extractor's thread pool", "bot");
 
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
