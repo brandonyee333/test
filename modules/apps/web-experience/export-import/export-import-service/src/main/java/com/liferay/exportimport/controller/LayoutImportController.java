@@ -994,21 +994,16 @@ public class LayoutImportController implements ImportController {
 			UnicodeProperties settingsProperties =
 				layoutSet.getSettingsProperties();
 
-			String mergeFailFriendlyURLLayouts = settingsProperties.getProperty(
-				Sites.MERGE_FAIL_FRIENDLY_URL_LAYOUTS);
+			settingsProperties.setProperty(
+				Sites.LAST_MERGE_TIME, String.valueOf(lastMergeTime));
 
-			if (Validator.isNull(mergeFailFriendlyURLLayouts)) {
-				settingsProperties.setProperty(
-					Sites.LAST_MERGE_TIME, String.valueOf(lastMergeTime));
+			long lastMergeVersion = MapUtil.getLong(
+				portletDataContext.getParameterMap(), "lastMergeVersion");
 
-				long lastMergeVersion = MapUtil.getLong(
-					portletDataContext.getParameterMap(), "lastMergeVersion");
+			settingsProperties.setProperty(
+				Sites.LAST_MERGE_VERSION, String.valueOf(lastMergeVersion));
 
-				settingsProperties.setProperty(
-					Sites.LAST_MERGE_VERSION, String.valueOf(lastMergeVersion));
-
-				_layoutSetLocalService.updateLayoutSet(layoutSet);
-			}
+			_layoutSetLocalService.updateLayoutSet(layoutSet);
 		}
 
 		if (_log.isInfoEnabled()) {
