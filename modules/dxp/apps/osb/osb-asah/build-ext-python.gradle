@@ -22,9 +22,6 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 	def pythonTempDir = "$buildDir/python-temp"
 	def pythonTestSource = "src/test/python"
 
-	checkPythonFormatting.enabled = false
-	formatPython.enabled = false
-
 	installPackageDependencies {
 		args = ["install", "--isolated", "-r", "$projectDir/$pythonSource/requirements-package.txt", "--target", pythonTempDir]
 		venvExec = "pip"
