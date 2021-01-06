@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Primary;
  * @author André Miranda
  */
 @TestConfiguration
-public class UpgradeStateTestConfiguration {
+public class UpgradeTestConfiguration {
 
 	@Bean
 	@Primary
