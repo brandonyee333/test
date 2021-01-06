@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Leslie Wong
  */
-@Profile({"prod", "test"})
 @RestController
 public class ErrorRestController extends AbstractErrorController {
 
