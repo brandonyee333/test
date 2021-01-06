@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -66,6 +67,8 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 
 		_unscheduleProjects(
 			CollectionUtils.subtract(_scheduledProjects.keySet(), projects));
+
+		_resizeThreadPoolSize();
 	}
 
 	protected void runNanite(Configuration configuration, Nanite nanite)
@@ -109,6 +112,15 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 	protected abstract Configuration refreshConfiguration(
 			Configuration configuration)
 		throws Exception;
+
+	private void _resizeThreadPoolSize() {
+		Collection<ScheduledFuture<?>> scheduledFutures =
+			_scheduledProjects.values();
+
+		if (_threadPoolExecutor.getCorePoolSize() != scheduledFutures.size()) {
+			_threadPoolExecutor.setCorePoolSize(scheduledFutures.size());
+		}
+	}
 
 	private void _scheduleProjects(Collection<Project> projects) {
 		for (Project project : projects) {
@@ -157,5 +169,7 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 		Executors.newScheduledThreadPool(1);
 	private final Map<Project, ScheduledFuture<?>> _scheduledProjects =
 		new HashMap<>();
+	private final ThreadPoolExecutor _threadPoolExecutor =
+		(ThreadPoolExecutor)_scheduledExecutorService;
 
 }
