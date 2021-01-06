@@ -4,6 +4,7 @@ import com.pswidersk.gradle.python.PythonPlugin
 import com.pswidersk.gradle.python.VenvTask
 
 configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
+	apply plugin: "com.liferay.root.defaults.plugin"
 	apply plugin: PythonPlugin
 
 	pythonPlugin {
