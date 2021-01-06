@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.upgrade.configuration;
 
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
+import com.liferay.osb.asah.common.multitenancy.impl.SingleTenantProjectDogImpl;
 import com.liferay.osb.asah.common.upgrade.UpgradeState;
 
 import org.springframework.boot.test.context.TestConfiguration;
@@ -25,6 +27,11 @@ import org.springframework.context.annotation.Primary;
  */
 @TestConfiguration
 public class UpgradeTestConfiguration {
+
+	@Bean
+	public ProjectDog projectDog() {
+		return new SingleTenantProjectDogImpl();
+	}
 
 	@Bean
 	@Primary
