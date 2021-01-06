@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +41,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SalesforceExtractorConfigurableBot extends BaseConfigurableBot {
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-	}
 
 	public void setTableNames(String[] tableNames) {
 		if (tableNames != null) {
