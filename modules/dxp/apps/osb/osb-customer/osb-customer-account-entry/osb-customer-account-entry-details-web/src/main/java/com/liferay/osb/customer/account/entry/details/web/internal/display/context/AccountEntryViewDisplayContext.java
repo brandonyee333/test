@@ -36,9 +36,11 @@ import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalServiceUtil;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -47,6 +49,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -87,11 +90,12 @@ public class AccountEntryViewDisplayContext {
 
 	public AccountEntryViewDisplayContext(
 			PortletRequest portletRequest, MimeResponse mimeResponse,
-			Account account,
+			Account account, AccountReader accountReader,
 			AccountEntryLanguageLocalService accountEntryLanguageLocalService,
 			AuditEntryWebService auditEntryWebService,
 			ContactRoleWebService contactRoleWebService,
 			ContactWebService contactWebService,
+			ProductPurchaseViewWebService productPurchaseViewWebService,
 			ProductPurchaseWebService productPurchaseWebService,
 			TeamWebService teamWebService)
 		throws Exception {
@@ -99,10 +103,12 @@ public class AccountEntryViewDisplayContext {
 		_portletRequest = portletRequest;
 		_mimeResponse = mimeResponse;
 		_account = account;
+		_accountReader = accountReader;
 		_accountEntryLanguageLocalService = accountEntryLanguageLocalService;
 		_auditEntryWebService = auditEntryWebService;
 		_contactRoleWebService = contactRoleWebService;
 		_contactWebService = contactWebService;
+		_productPurchaseViewWebService = productPurchaseViewWebService;
 		_productPurchaseWebService = productPurchaseWebService;
 		_teamWebService = teamWebService;
 
@@ -389,7 +395,7 @@ public class AccountEntryViewDisplayContext {
 		return _partnerName;
 	}
 
-	public SearchContainer getProductPurchasesSearchContainer()
+	public SearchContainer getProductPurchaseViewsSearchContainer()
 		throws Exception {
 
 		SearchContainer searchContainer = new SearchContainer(
@@ -408,22 +414,36 @@ public class AccountEntryViewDisplayContext {
 			sb.append(" and state eq 'active'");
 		}
 
+		List<ProductPurchaseView> productPurchaseViews =
+			_productPurchaseViewWebService.getProductPurchaseViews(
+				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+		List<ProductPurchaseViewDisplay> productPurchaseViewDisplays =
+			new ArrayList<>();
+
+		for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
+			productPurchaseViewDisplays.add(
+				new ProductPurchaseViewDisplay(_request, productPurchaseView));
+		}
+
+		searchContainer.setResults(productPurchaseViewDisplays);
+
+		searchContainer.setTotal(productPurchaseViewDisplays.size());
+
+		return searchContainer;
+	}
+
+	public String getState() throws Exception {
+		StringBundler sb = new StringBundler();
+
+		sb.append("accountKey eq '");
+		sb.append(_account.getKey());
+		sb.append("'");
+
 		List<ProductPurchase> productPurchases =
 			_productPurchaseWebService.search(sb.toString(), 1, 1000);
 
-		List<ProductPurchaseDisplay> productPurchaseDisplays =
-			new ArrayList<>();
-
-		for (ProductPurchase productPurchase : productPurchases) {
-			productPurchaseDisplays.add(
-				new ProductPurchaseDisplay(_request, productPurchase));
-		}
-
-		searchContainer.setResults(productPurchaseDisplays);
-
-		searchContainer.setTotal(productPurchases.size());
-
-		return searchContainer;
+		return _accountReader.getSubscriptionState(productPurchases);
 	}
 
 	public String getSupportLanguage() {
@@ -888,6 +908,7 @@ public class AccountEntryViewDisplayContext {
 		_accountEntryDetailsRequestHelper;
 	private final AccountEntryLanguageLocalService
 		_accountEntryLanguageLocalService;
+	private final AccountReader _accountReader;
 	private final AuditEntryWebService _auditEntryWebService;
 	private final ContactRoleWebService _contactRoleWebService;
 	private final ContactWebService _contactWebService;
@@ -896,6 +917,7 @@ public class AccountEntryViewDisplayContext {
 	private final String _partnerManagedSupportName;
 	private final String _partnerName;
 	private final PortletRequest _portletRequest;
+	private final ProductPurchaseViewWebService _productPurchaseViewWebService;
 	private final ProductPurchaseWebService _productPurchaseWebService;
 	private final HttpServletRequest _request;
 	private final TeamWebService _teamWebService;

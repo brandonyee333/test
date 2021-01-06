@@ -40,10 +40,10 @@ Account koroneikiAccount = accountEntryViewDisplayContext.getAccount();
 				</tr>
 				<tr>
 					<td>
-						<liferay-ui:message key="status" />
+						<liferay-ui:message key="state" />
 					</td>
 					<td>
-						<span class="label label-<%= koroneikiAccount.getStatus() %>"><%= koroneikiAccount.getStatus() %></span>
+						<span class="label"><%= accountEntryViewDisplayContext.getState() %></span>
 					</td>
 				</tr>
 				<tr>

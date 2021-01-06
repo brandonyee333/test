@@ -16,10 +16,13 @@ package com.liferay.osb.customer.account.entry.details.web.internal.display.cont
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -44,15 +47,19 @@ public class AccountEntrySearchDisplayContext {
 
 	public AccountEntrySearchDisplayContext(
 			PortletRequest portletRequest, MimeResponse mimeResponse,
-			ThemeDisplay themeDisplay, AccountWebService accountWebService,
-			ProductWebService productWebService)
+			ThemeDisplay themeDisplay, AccountReader accountReader,
+			AccountWebService accountWebService,
+			ProductWebService productWebService,
+			ProductPurchaseWebService productPurchaseWebService)
 		throws PortalException {
 
 		_portletRequest = portletRequest;
 		_mimeResponse = mimeResponse;
 		_themeDisplay = themeDisplay;
+		_accountReader = accountReader;
 		_accountWebService = accountWebService;
 		_productWebService = productWebService;
+		_productPurchaseWebService = productPurchaseWebService;
 	}
 
 	public SearchContainer getAccountsSearchContainer() throws Exception {
@@ -118,6 +125,19 @@ public class AccountEntrySearchDisplayContext {
 		_searchContainer = searchContainer;
 
 		return searchContainer;
+	}
+
+	public String getState(String accountKey) throws Exception {
+		StringBundler sb = new StringBundler();
+
+		sb.append("accountKey eq '");
+		sb.append(accountKey);
+		sb.append("'");
+
+		List<ProductPurchase> productPurchases =
+			_productPurchaseWebService.search(sb.toString(), 1, 1000);
+
+		return _accountReader.getSubscriptionState(productPurchases);
 	}
 
 	public boolean isLiferayContractorOrg() {
@@ -189,9 +209,11 @@ public class AccountEntrySearchDisplayContext {
 		return sb.toString();
 	}
 
+	private final AccountReader _accountReader;
 	private final AccountWebService _accountWebService;
 	private final MimeResponse _mimeResponse;
 	private final PortletRequest _portletRequest;
+	private final ProductPurchaseWebService _productPurchaseWebService;
 	private final ProductWebService _productWebService;
 	private SearchContainer _searchContainer;
 	private final ThemeDisplay _themeDisplay;

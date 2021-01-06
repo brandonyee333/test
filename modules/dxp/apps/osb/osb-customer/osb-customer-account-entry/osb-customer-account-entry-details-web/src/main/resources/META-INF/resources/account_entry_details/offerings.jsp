@@ -17,42 +17,42 @@
 <%@ include file="/account_entry_details/init.jsp" %>
 
 <liferay-ui:search-container
-	searchContainer="<%= accountEntryViewDisplayContext.getProductPurchasesSearchContainer() %>"
+	searchContainer="<%= accountEntryViewDisplayContext.getProductPurchaseViewsSearchContainer() %>"
 >
 	<liferay-ui:search-container-row
-		className="com.liferay.osb.customer.account.entry.details.web.internal.display.context.ProductPurchaseDisplay"
-		modelVar="productPurchaseDisplay"
+		className="com.liferay.osb.customer.account.entry.details.web.internal.display.context.ProductPurchaseViewDisplay"
+		modelVar="productPurchaseViewDisplay"
 	>
 		<liferay-ui:search-container-column-text
 			name="product"
-			value="<%= productPurchaseDisplay.getProductName() %>"
+			value="<%= productPurchaseViewDisplay.getName() %>"
 		/>
 
 		<liferay-ui:search-container-column-text
 			name="start-date"
-			value="<%= productPurchaseDisplay.getStartDate() %>"
+			value="<%= productPurchaseViewDisplay.getStartDate() %>"
 		/>
 
 		<liferay-ui:search-container-column-text
 			name="support-end-date"
-			value="<%= productPurchaseDisplay.getEndDate() %>"
+			value="<%= productPurchaseViewDisplay.getEndDate() %>"
 		/>
 
 		<liferay-ui:search-container-column-text
 			name="instance-size"
-			value="<%= productPurchaseDisplay.getSizing() %>"
+			value="<%= productPurchaseViewDisplay.getSizing() %>"
 		/>
 
 		<liferay-ui:search-container-column-text
 			name="quantity"
-			value="<%= productPurchaseDisplay.getQuantity() %>"
+			value="<%= productPurchaseViewDisplay.getQuantity() %>"
 		/>
 
 		<c:if test="<%= accountEntryViewDisplayContext.isLiferayContractorOrg() || accountEntryViewDisplayContext.isLiferayIncOrg() || accountEntryViewDisplayContext.isPartnerManagedSupportWorker() %>">
 			<liferay-ui:search-container-column-text
-				name="status"
+				name="state"
 			>
-				<span class="label label-sm label-<%= productPurchaseDisplay.getStatus() %>"><%= productPurchaseDisplay.getStatus() %></span>
+				<span class="label label-sm"><%= productPurchaseViewDisplay.getState() %></span>
 			</liferay-ui:search-container-column-text>
 		</c:if>
 	</liferay-ui:search-container-row>

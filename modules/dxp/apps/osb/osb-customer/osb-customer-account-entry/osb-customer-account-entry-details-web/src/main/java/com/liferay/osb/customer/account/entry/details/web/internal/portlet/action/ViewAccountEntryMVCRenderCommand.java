@@ -20,10 +20,12 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalService;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -81,10 +83,11 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 
 		AccountEntryViewDisplayContext accountEntryViewDisplayContext =
 			new AccountEntryViewDisplayContext(
-				renderRequest, renderResponse, account,
+				renderRequest, renderResponse, account, _accountReader,
 				_accountEntryLanguageLocalService, _auditEntryWebService,
 				_contactRoleWebService, _contactWebService,
-				_productPurchaseWebService, _teamWebService);
+				_productPurchaseViewWebService, _productPurchaseWebService,
+				_teamWebService);
 
 		renderRequest.setAttribute(
 			AccountEntryViewDisplayContext.class.getName(),
@@ -106,6 +109,9 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
+	private AccountReader _accountReader;
+
+	@Reference
 	private AccountWebService _accountWebService;
 
 	@Reference
@@ -116,6 +122,9 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 
 	@Reference
 	private ContactWebService _contactWebService;
+
+	@Reference
+	private ProductPurchaseViewWebService _productPurchaseViewWebService;
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;

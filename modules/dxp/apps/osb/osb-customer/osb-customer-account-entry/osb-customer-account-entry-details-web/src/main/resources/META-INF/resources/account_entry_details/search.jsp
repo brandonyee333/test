@@ -55,9 +55,9 @@ PortletURL portletURL = renderResponse.createRenderURL();
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
-				name="status"
+				name="state"
 			>
-				<span class="label label-sm label-<%= koroneikiAccount.getStatus() %>"><%= koroneikiAccount.getStatus() %></span>
+				<span class="label label-sm"><%= accountEntrySearchDisplayContext.getState(koroneikiAccount.getKey()) %></span>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

@@ -19,10 +19,12 @@ import com.liferay.osb.customer.account.entry.details.web.internal.display.conte
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext;
 import com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalService;
 import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
+import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
@@ -64,8 +66,9 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 
 		AccountEntrySearchDisplayContext accountEntrySearchDisplayContext =
 			new AccountEntrySearchDisplayContext(
-				renderRequest, renderResponse, themeDisplay, _accountWebService,
-				_productWebService);
+				renderRequest, renderResponse, themeDisplay, _accountReader,
+				_accountWebService, _productWebService,
+				_productPurchaseWebService);
 
 		renderRequest.setAttribute(
 			AccountEntrySearchDisplayContext.class.getName(),
@@ -80,10 +83,11 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 
 			AccountEntryViewDisplayContext accountEntryViewDisplayContext =
 				new AccountEntryViewDisplayContext(
-					renderRequest, renderResponse, account,
+					renderRequest, renderResponse, account, _accountReader,
 					_accountEntryLanguageLocalService, _auditEntryWebService,
 					_contactRoleWebService, _contactWebService,
-					_productPurchaseWebService, _teamWebService);
+					_productPurchaseViewWebService, _productPurchaseWebService,
+					_teamWebService);
 
 			renderRequest.setAttribute(
 				AccountEntryViewDisplayContext.class.getName(),
@@ -125,6 +129,9 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 	private AccountEntryLanguageLocalService _accountEntryLanguageLocalService;
 
 	@Reference
+	private AccountReader _accountReader;
+
+	@Reference
 	private AccountWebService _accountWebService;
 
 	@Reference
@@ -135,6 +142,9 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 
 	@Reference
 	private ContactWebService _contactWebService;
+
+	@Reference
+	private ProductPurchaseViewWebService _productPurchaseViewWebService;
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
