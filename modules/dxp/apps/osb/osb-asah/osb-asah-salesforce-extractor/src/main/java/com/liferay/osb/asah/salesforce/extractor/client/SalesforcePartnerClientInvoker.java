@@ -16,7 +16,7 @@ package com.liferay.osb.asah.salesforce.extractor.client;
 
 import com.liferay.osb.asah.common.array.ArrayUtil;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
-import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorRuntimeConfigurationImpl;
+import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationImpl;
 import com.liferay.osb.asah.salesforce.extractor.oauth2.SalesforceOAuth2Client;
 import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClient;
 import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClientImpl;
@@ -224,7 +224,7 @@ public class SalesforcePartnerClientInvoker
 		}
 		catch (ConnectionException ce) {
 			_salesforceOAuth2Client.refreshOAuthToken(
-				(SalesforceExtractorRuntimeConfigurationImpl)
+				(SalesforceExtractorConfigurationImpl)
 					salesforceExtractorConfiguration);
 
 			return (SalesforcePartnerClient)getSalesforceClient(

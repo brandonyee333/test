@@ -21,7 +21,7 @@ import java.util.Objects;
 /**
  * @author Brian Wing Shun Chan
  */
-public abstract class BaseRuntimeConfigurationImpl
+public abstract class BaseConfigurationImpl
 	implements Configuration {
 
 	@Override
@@ -30,21 +30,21 @@ public abstract class BaseRuntimeConfigurationImpl
 			return true;
 		}
 
-		if (!(obj instanceof BaseRuntimeConfigurationImpl)) {
+		if (!(obj instanceof BaseConfigurationImpl)) {
 			return false;
 		}
 
-		BaseRuntimeConfigurationImpl baseRuntimeConfigurationImpl =
-			(BaseRuntimeConfigurationImpl)obj;
+		BaseConfigurationImpl baseConfigurationImpl =
+			(BaseConfigurationImpl)obj;
 
 		if (Objects.equals(
-				_dataSourceId, baseRuntimeConfigurationImpl._dataSourceId) &&
+				_dataSourceId, baseConfigurationImpl._dataSourceId) &&
 			Objects.equals(
 				_dataSourceState,
-				baseRuntimeConfigurationImpl._dataSourceState) &&
+				baseConfigurationImpl._dataSourceState) &&
 			Objects.equals(
 				_dataSourceStatus,
-				baseRuntimeConfigurationImpl._dataSourceStatus)) {
+				baseConfigurationImpl._dataSourceStatus)) {
 
 			return true;
 		}

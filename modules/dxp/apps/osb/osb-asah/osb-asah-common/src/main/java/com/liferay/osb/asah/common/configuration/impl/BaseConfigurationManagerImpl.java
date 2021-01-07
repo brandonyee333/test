@@ -49,11 +49,11 @@ public abstract class BaseConfigurationManagerImpl
 	implements ConfigurationManager {
 
 	@Override
-	public boolean addRuntimeConfiguration(String json) {
-		Configuration runtimeConfiguration = null;
+	public boolean addConfiguration(String json) {
+		Configuration configuration = null;
 
 		try {
-			runtimeConfiguration = _toRuntimeConfiguration(json);
+			configuration = _toConfiguration(json);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -61,22 +61,22 @@ public abstract class BaseConfigurationManagerImpl
 			return false;
 		}
 
-		if (_runtimeConfigurations.containsKey(
-				runtimeConfiguration.getDataSourceId())) {
+		if (_configurations.containsKey(
+				configuration.getDataSourceId())) {
 
 			_log.error(
 				"Duplicate configuration for data source " +
-					runtimeConfiguration.getDataSourceId());
+					configuration.getDataSourceId());
 
 			return false;
 		}
 
-		_runtimeConfigurations.put(
-			runtimeConfiguration.getDataSourceId(), runtimeConfiguration);
+		_configurations.put(
+			configuration.getDataSourceId(), configuration);
 
 		ConfigurableBot configurableBot = getConfigurableBot();
 
-		configurableBot.stop(runtimeConfiguration.getDataSourceId(), null);
+		configurableBot.stop(configuration.getDataSourceId(), null);
 
 		return true;
 	}
@@ -98,15 +98,15 @@ public abstract class BaseConfigurationManagerImpl
 	}
 
 	@Override
-	public boolean deleteRuntimeConfiguration(String json) {
+	public boolean deleteConfiguration(String json) {
 		JSONObject jsonObject = new JSONObject(json);
 
 		String dataSourceId = jsonObject.getString("dataSourceId");
 
-		Configuration runtimeConfiguration =
-			_runtimeConfigurations.remove(dataSourceId);
+		Configuration configuration =
+			_configurations.remove(dataSourceId);
 
-		if (runtimeConfiguration == null) {
+		if (configuration == null) {
 			return false;
 		}
 
@@ -119,13 +119,13 @@ public abstract class BaseConfigurationManagerImpl
 
 	@Override
 	public Configuration getConfiguration(String dataSourceId) {
-		return _runtimeConfigurations.get(dataSourceId);
+		return _configurations.get(dataSourceId);
 	}
 
 	@Override
 	public Configuration[] getConfigurations() {
 		Set<Map.Entry<String, Configuration>> set =
-			_runtimeConfigurations.entrySet();
+			_configurations.entrySet();
 
 		Stream<Map.Entry<String, Configuration>> stream = set.stream();
 
@@ -154,26 +154,26 @@ public abstract class BaseConfigurationManagerImpl
 				String dataSourceId = configurationsJSONObject.getString(
 					"dataSourceId");
 
-				Configuration runtimeConfiguration =
-					getInitializedRuntimeConfiguration(dataSourceId);
+				Configuration configuration =
+					getInitializedConfiguration(dataSourceId);
 
-				runtimeConfiguration.setDataSourceId(dataSourceId);
-				runtimeConfiguration.setDataSourceState(
+				configuration.setDataSourceId(dataSourceId);
+				configuration.setDataSourceState(
 					dataSourceJSONObject.getString("state"));
-				runtimeConfiguration.setDataSourceStatus(
+				configuration.setDataSourceStatus(
 					dataSourceJSONObject.getString("status"));
 
-				setRuntimeConfigurationAttributes(
-					configurationsJSONObject, runtimeConfiguration);
+				setConfigurationAttributes(
+					configurationsJSONObject, configuration);
 
-				_runtimeConfigurations.put(
-					runtimeConfiguration.getDataSourceId(),
-					runtimeConfiguration);
+				_configurations.put(
+					configuration.getDataSourceId(),
+					configuration);
 			}
 			catch (Exception e) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
-						"Unable to add runtime configuration for data source " +
+						"Unable to add configuration for data source " +
 							dataSourceJSONObject.getString("id"),
 						e);
 				}
@@ -192,13 +192,13 @@ public abstract class BaseConfigurationManagerImpl
 	}
 
 	@Override
-	public Configuration updateRuntimeConfiguration(String json)
+	public Configuration updateConfiguration(String json)
 		throws Exception {
 
-		Configuration runtimeConfiguration = _toRuntimeConfiguration(
+		Configuration configuration = _toConfiguration(
 			json);
 
-		String dataSourceId = runtimeConfiguration.getDataSourceId();
+		String dataSourceId = configuration.getDataSourceId();
 
 		JSONObject jsonObject = new JSONObject(json);
 
@@ -206,10 +206,10 @@ public abstract class BaseConfigurationManagerImpl
 			"existingDataSourceId");
 
 		if (dataSourceId.equals(existingDataSourceId)) {
-			Configuration existingRuntimeConfigurationImpl =
-				_runtimeConfigurations.get(existingDataSourceId);
+			Configuration existingConfigurationImpl =
+				_configurations.get(existingDataSourceId);
 
-			if (existingRuntimeConfigurationImpl == null) {
+			if (existingConfigurationImpl == null) {
 				_log.error(
 					"Missing configuration for data source " +
 						existingDataSourceId);
@@ -217,28 +217,28 @@ public abstract class BaseConfigurationManagerImpl
 				return null;
 			}
 
-			if (runtimeConfiguration.equals(existingRuntimeConfigurationImpl)) {
+			if (configuration.equals(existingConfigurationImpl)) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						"Skip identical configuration for data source " +
 							dataSourceId);
 				}
 
-				return runtimeConfiguration;
+				return configuration;
 			}
 		}
 		else {
-			if (_runtimeConfigurations.containsKey(dataSourceId)) {
+			if (_configurations.containsKey(dataSourceId)) {
 				_log.error(
 					"Duplicate configuration for data source " + dataSourceId);
 
-				return runtimeConfiguration;
+				return configuration;
 			}
 
-			Configuration existingRuntimeConfigurationImpl =
-				_runtimeConfigurations.remove(existingDataSourceId);
+			Configuration existingConfigurationImpl =
+				_configurations.remove(existingDataSourceId);
 
-			if (existingRuntimeConfigurationImpl == null) {
+			if (existingConfigurationImpl == null) {
 				_log.error(
 					"Missing configuration for data source: " +
 						existingDataSourceId);
@@ -248,10 +248,10 @@ public abstract class BaseConfigurationManagerImpl
 		}
 
 		onBeforeUpdate(
-			runtimeConfiguration,
-			_runtimeConfigurations.get(existingDataSourceId));
+			configuration,
+			_configurations.get(existingDataSourceId));
 
-		_runtimeConfigurations.put(dataSourceId, runtimeConfiguration);
+		_configurations.put(dataSourceId, configuration);
 
 		ConfigurableBot configurableBot = getConfigurableBot();
 
@@ -262,27 +262,27 @@ public abstract class BaseConfigurationManagerImpl
 			configurableBot.stop(existingDataSourceId, dataSourceId);
 		}
 
-		return runtimeConfiguration;
+		return configuration;
 	}
 
-	protected abstract Configuration buildRuntimeConfiguration();
+	protected abstract Configuration buildConfiguration();
 
 	protected abstract ConfigurableBot getConfigurableBot();
 
-	protected Configuration getInitializedRuntimeConfiguration(
+	protected Configuration getInitializedConfiguration(
 		String dataSourceId) {
 
-		Configuration runtimeConfiguration = buildRuntimeConfiguration();
+		Configuration configuration = buildConfiguration();
 
 		_autowireCapableBeanFactory.autowireBeanProperties(
-			runtimeConfiguration, AutowireCapableBeanFactory.AUTOWIRE_NO,
+			configuration, AutowireCapableBeanFactory.AUTOWIRE_NO,
 			false);
 
 		_autowireCapableBeanFactory.initializeBean(
-			runtimeConfiguration,
+			configuration,
 			Configuration.class.getName() + "#" + dataSourceId);
 
-		return runtimeConfiguration;
+		return configuration;
 	}
 
 	protected abstract String getProviderType();
@@ -292,34 +292,34 @@ public abstract class BaseConfigurationManagerImpl
 	}
 
 	protected void onBeforeUpdate(
-		Configuration runtimeConfiguration,
-		Configuration exitingRuntimeConfiguration) {
+		Configuration configuration,
+		Configuration exitingConfiguration) {
 	}
 
-	protected abstract void setRuntimeConfigurationAttributes(
+	protected abstract void setConfigurationAttributes(
 			JSONObject configurationsJSONObject,
-			Configuration runtimeConfiguration)
+			Configuration configuration)
 		throws Exception;
 
-	private Configuration _toRuntimeConfiguration(String json)
+	private Configuration _toConfiguration(String json)
 		throws Exception {
 
 		JSONObject jsonObject = new JSONObject(json);
 
 		String dataSourceId = jsonObject.getString("dataSourceId");
 
-		Configuration runtimeConfiguration =
-			getInitializedRuntimeConfiguration(dataSourceId);
+		Configuration configuration =
+			getInitializedConfiguration(dataSourceId);
 
-		runtimeConfiguration.setDataSourceId(dataSourceId);
-		runtimeConfiguration.setDataSourceState(
+		configuration.setDataSourceId(dataSourceId);
+		configuration.setDataSourceState(
 			jsonObject.getString("dataSourceState"));
-		runtimeConfiguration.setDataSourceStatus(
+		configuration.setDataSourceStatus(
 			jsonObject.getString("dataSourceStatus"));
 
-		setRuntimeConfigurationAttributes(jsonObject, runtimeConfiguration);
+		setConfigurationAttributes(jsonObject, configuration);
 
-		return runtimeConfiguration;
+		return configuration;
 	}
 
 	private static final Log _log = LogFactory.getLog(
@@ -331,7 +331,7 @@ public abstract class BaseConfigurationManagerImpl
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
-	private final Map<String, Configuration> _runtimeConfigurations =
+	private final Map<String, Configuration> _configurations =
 		new ConcurrentHashMap<>();
 
 }

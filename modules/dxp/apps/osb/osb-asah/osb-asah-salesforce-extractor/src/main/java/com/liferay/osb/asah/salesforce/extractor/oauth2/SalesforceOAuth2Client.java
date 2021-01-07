@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.salesforce.extractor.oauth2;
 
 import com.liferay.osb.asah.common.oauth2.BaseOAuth2Client;
-import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorRuntimeConfigurationImpl;
+import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationImpl;
 
 import java.util.Objects;
 
@@ -56,18 +56,18 @@ public class SalesforceOAuth2Client extends BaseOAuth2Client {
 	}
 
 	public void refreshOAuthToken(
-			SalesforceExtractorRuntimeConfigurationImpl
-				salesforceExtractorRuntimeConfigurationImpl)
+			SalesforceExtractorConfigurationImpl
+				salesforceExtractorConfigurationImpl)
 		throws Exception {
 
 		String responseJSON = post(
-			salesforceExtractorRuntimeConfigurationImpl.
+			salesforceExtractorConfigurationImpl.
 				getSalesforceOAuthClientId(),
-			salesforceExtractorRuntimeConfigurationImpl.
+			salesforceExtractorConfigurationImpl.
 				getSalesforceOAuthClientSecret(),
-			salesforceExtractorRuntimeConfigurationImpl.
+			salesforceExtractorConfigurationImpl.
 				getSalesforceOAuthRefreshToken(),
-			salesforceExtractorRuntimeConfigurationImpl.getSalesforceURL());
+			salesforceExtractorConfigurationImpl.getSalesforceURL());
 
 		if (StringUtils.isEmpty(responseJSON)) {
 			if (_log.isWarnEnabled()) {
@@ -81,12 +81,12 @@ public class SalesforceOAuth2Client extends BaseOAuth2Client {
 
 		OAuth2Response oAuth2Response = toResponse(responseJSONObject);
 
-		salesforceExtractorRuntimeConfigurationImpl.setSalesforceAuthEndpoint(
+		salesforceExtractorConfigurationImpl.setSalesforceAuthEndpoint(
 			oAuth2Response.getAuthEndpoint());
-		salesforceExtractorRuntimeConfigurationImpl.
+		salesforceExtractorConfigurationImpl.
 			setSalesforceServiceEndpoint(oAuth2Response.getServiceEndpoint());
 
-		salesforceExtractorRuntimeConfigurationImpl.
+		salesforceExtractorConfigurationImpl.
 			setSalesforceOAuthAccessToken(
 				responseJSONObject.getString("access_token"));
 	}

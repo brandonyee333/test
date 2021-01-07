@@ -36,7 +36,7 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		configurationManager.addRuntimeConfiguration(jsonObject.toString());
+		configurationManager.addConfiguration(jsonObject.toString());
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		configurationManager.deleteRuntimeConfiguration(jsonObject.toString());
+		configurationManager.deleteConfiguration(jsonObject.toString());
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		configurationManager.updateRuntimeConfiguration(jsonObject.toString());
+		configurationManager.updateConfiguration(jsonObject.toString());
 	}
 
 	private ConfigurationManager _getConfigurationManager(String providerType) {

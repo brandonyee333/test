@@ -56,7 +56,7 @@ public class ConfigurationHttpImplTest {
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
-		).addRuntimeConfiguration(
+		).addConfiguration(
 			salesforceDataSourceJSONObject.toString()
 		);
 	}
@@ -76,7 +76,7 @@ public class ConfigurationHttpImplTest {
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
-		).deleteRuntimeConfiguration(
+		).deleteConfiguration(
 			salesforceDataSourceJSONObject.toString()
 		);
 	}
@@ -129,7 +129,7 @@ public class ConfigurationHttpImplTest {
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
-		).updateRuntimeConfiguration(
+		).updateConfiguration(
 			salesforceDataSourceJSONObject.toString()
 		);
 	}

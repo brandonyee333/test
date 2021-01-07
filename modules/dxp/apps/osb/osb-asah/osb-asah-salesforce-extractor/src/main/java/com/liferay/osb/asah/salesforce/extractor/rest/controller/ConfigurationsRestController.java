@@ -38,7 +38,7 @@ public class ConfigurationsRestController {
 
 	@DeleteMapping
 	public void deleteConfiguration(@RequestBody String json) {
-		_configurationManager.deleteRuntimeConfiguration(json);
+		_configurationManager.deleteConfiguration(json);
 	}
 
 	@GetMapping
@@ -56,12 +56,12 @@ public class ConfigurationsRestController {
 
 	@PostMapping
 	public void postConfiguration(@RequestBody String json) {
-		_configurationManager.addRuntimeConfiguration(json);
+		_configurationManager.addConfiguration(json);
 	}
 
 	@PutMapping
 	public void putConfiguration(@RequestBody String json) throws Exception {
-		_configurationManager.updateRuntimeConfiguration(json);
+		_configurationManager.updateConfiguration(json);
 	}
 
 	@PostMapping("/refresh")

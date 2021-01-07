@@ -20,9 +20,9 @@ package com.liferay.osb.asah.common.configuration;
  */
 public interface ConfigurationManager {
 
-	public boolean addRuntimeConfiguration(String json);
+	public boolean addConfiguration(String json);
 
-	public boolean deleteRuntimeConfiguration(String json);
+	public boolean deleteConfiguration(String json);
 
 	public Configuration getConfiguration(String dataSourceId);
 
@@ -32,7 +32,7 @@ public interface ConfigurationManager {
 
 	public String refresh(String json);
 
-	public Configuration updateRuntimeConfiguration(String json)
+	public Configuration updateConfiguration(String json)
 		throws Exception;
 
 	public boolean validate(String json);

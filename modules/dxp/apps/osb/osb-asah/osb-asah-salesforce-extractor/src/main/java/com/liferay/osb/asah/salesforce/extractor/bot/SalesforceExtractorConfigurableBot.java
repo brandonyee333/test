@@ -114,7 +114,7 @@ public class SalesforceExtractorConfigurableBot extends BaseConfigurableBot {
 			salesforceExtractorConfiguration.getDataSourceId());
 
 		return _salesforceExtractorConfigurationManagerImpl.
-			updateRuntimeConfiguration(configurationsJSONObject.toString());
+			updateConfiguration(configurationsJSONObject.toString());
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)

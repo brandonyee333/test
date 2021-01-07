@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.salesforce.extractor.configuration.impl;
 
-import com.liferay.osb.asah.common.configuration.impl.BaseRuntimeConfigurationImpl;
+import com.liferay.osb.asah.common.configuration.impl.BaseConfigurationImpl;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 
 import java.util.Arrays;
@@ -25,8 +25,8 @@ import org.json.JSONObject;
 /**
  * @author Rachael Koestartyo
  */
-public class SalesforceExtractorRuntimeConfigurationImpl
-	extends BaseRuntimeConfigurationImpl
+public class SalesforceExtractorConfigurationImpl
+	extends BaseConfigurationImpl
 	implements SalesforceExtractorConfiguration {
 
 	@Override
@@ -35,53 +35,53 @@ public class SalesforceExtractorRuntimeConfigurationImpl
 			return true;
 		}
 
-		if (!(obj instanceof SalesforceExtractorRuntimeConfigurationImpl)) {
+		if (!(obj instanceof SalesforceExtractorConfigurationImpl)) {
 			return false;
 		}
 
-		SalesforceExtractorRuntimeConfigurationImpl
-			salesforceExtractorRuntimeConfigurationImpl =
-				(SalesforceExtractorRuntimeConfigurationImpl)obj;
+		SalesforceExtractorConfigurationImpl
+			salesforceExtractorConfigurationImpl =
+				(SalesforceExtractorConfigurationImpl)obj;
 
-		if (super.equals(salesforceExtractorRuntimeConfigurationImpl) &&
+		if (super.equals(salesforceExtractorConfigurationImpl) &&
 			Objects.equals(
 				_salesforceAuthEndpoint,
-				salesforceExtractorRuntimeConfigurationImpl.
+				salesforceExtractorConfigurationImpl.
 					_salesforceAuthEndpoint) &&
 			Objects.equals(
 				_salesforceOAuthAccessToken,
-				salesforceExtractorRuntimeConfigurationImpl.
+				salesforceExtractorConfigurationImpl.
 					_salesforceOAuthAccessToken) &&
 			Objects.equals(
 				_salesforceOAuthClientId,
-				salesforceExtractorRuntimeConfigurationImpl.
+				salesforceExtractorConfigurationImpl.
 					_salesforceOAuthClientId) &&
 			Objects.equals(
 				_salesforceOAuthClientSecret,
-				salesforceExtractorRuntimeConfigurationImpl.
+				salesforceExtractorConfigurationImpl.
 					_salesforceOAuthClientSecret) &&
 			Objects.equals(
 				_salesforceOAuthRefreshToken,
-				salesforceExtractorRuntimeConfigurationImpl.
+				salesforceExtractorConfigurationImpl.
 					_salesforceOAuthRefreshToken) &&
 			Objects.equals(
 				_salesforcePassword,
-				salesforceExtractorRuntimeConfigurationImpl.
+				salesforceExtractorConfigurationImpl.
 					_salesforcePassword) &&
 			Objects.equals(
 				_salesforceServiceEndpoint,
-				salesforceExtractorRuntimeConfigurationImpl.
+				salesforceExtractorConfigurationImpl.
 					_salesforceServiceEndpoint) &&
 			Objects.equals(
 				_salesforceURL,
-				salesforceExtractorRuntimeConfigurationImpl._salesforceURL) &&
+				salesforceExtractorConfigurationImpl._salesforceURL) &&
 			Objects.equals(
 				_salesforceUserName,
-				salesforceExtractorRuntimeConfigurationImpl.
+				salesforceExtractorConfigurationImpl.
 					_salesforceUserName) &&
 			Arrays.equals(
 				_tableNames,
-				salesforceExtractorRuntimeConfigurationImpl.getTableNames())) {
+				salesforceExtractorConfigurationImpl.getTableNames())) {
 
 			return true;
 		}
