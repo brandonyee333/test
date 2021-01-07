@@ -69,8 +69,8 @@ public class SalesforceExtractorConfigurableBot extends BaseConfigurableBot {
 	}
 
 	@Override
-	protected ConfigurationManager getConfigurationManager() {
-		return _salesforceExtractorConfigurationManagerImpl;
+	protected Configuration[] getConfigurations() {
+		return _salesforceExtractorConfigurationManagerImpl.getConfigurations();
 	}
 
 	@Override

@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.bot;
 import com.liferay.osb.asah.common.bot.exception.InterruptBotException;
 import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.configuration.Configuration;
-import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -52,11 +51,8 @@ public class BotRunnable implements Runnable {
 			ProjectIdThreadLocal.setProjectId(_project.getId());
 
 			if (_delay == 0) {
-				ConfigurationManager configurationManager =
-					_baseConfigurableBot.getConfigurationManager();
-
 				Configuration[] configurations =
-					configurationManager.getConfigurations();
+					_baseConfigurableBot.getConfigurations();
 
 				for (Configuration configuration : configurations) {
 					try {
