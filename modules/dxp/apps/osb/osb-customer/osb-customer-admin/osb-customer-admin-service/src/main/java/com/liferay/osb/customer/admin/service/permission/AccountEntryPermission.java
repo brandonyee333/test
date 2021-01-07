@@ -91,7 +91,7 @@ public class AccountEntryPermission {
 			if (accountEntry != null) {
 				String name = accountEntry.getName();
 
-				if (name.equals("Liferay, Inc.") &&
+				if (name.equals("Liferay.com") &&
 					_organizationLocalService.hasUserOrganization(
 						permissionChecker.getUserId(),
 						OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {

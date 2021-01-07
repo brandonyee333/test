@@ -424,6 +424,10 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 									</c:when>
 									<c:otherwise>
 										<%= longDateFormatDate.format(startDateCal.getTime()) %>
+
+										<aui:input name='<%= productPurchaseKey + "startDateDay" %>' type="hidden" value="<%= startDateCal.get(Calendar.DAY_OF_MONTH) %>" />
+										<aui:input name='<%= productPurchaseKey + "startDateMonth" %>' type="hidden" value="<%= startDateCal.get(Calendar.MONTH) %>" />
+										<aui:input name='<%= productPurchaseKey + "startDateYear" %>' type="hidden" value="<%= startDateCal.get(Calendar.YEAR) %>" />
 									</c:otherwise>
 								</c:choose>
 							</liferay-ui:search-container-column-text>
@@ -447,6 +451,10 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 									</c:when>
 									<c:otherwise>
 										<%= longDateFormatDate.format(expirationDateCal.getTime()) %>
+
+										<aui:input name='<%= productPurchaseKey + "expirationDateDay" %>' type="hidden" value="<%= expirationDateCal.get(Calendar.DAY_OF_MONTH) %>" />
+										<aui:input name='<%= productPurchaseKey + "expirationDateMonth" %>' type="hidden" value="<%= expirationDateCal.get(Calendar.MONTH) %>" />
+										<aui:input name='<%= productPurchaseKey + "expirationDateYear" %>' type="hidden" value="<%= expirationDateCal.get(Calendar.YEAR) %>" />
 									</c:otherwise>
 								</c:choose>
 							</liferay-ui:search-container-column-text>

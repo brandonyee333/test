@@ -166,15 +166,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			throw new PrincipalException();
 		}
 
-		if ((startDate != null) &&
-			!_roleLocalService.hasUserRole(
-				getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) &&
-			!_roleLocalService.hasUserRole(
-				getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-
-			throw new PrincipalException();
-		}
-
 		return licenseKeyLocalService.addLicenseKey(
 			userId, licenseKeySetId, name, licenseEntryId, productEntryId,
 			koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
