@@ -34,6 +34,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -47,6 +48,10 @@ public class ElasticsearchSnapshotManagerImpl
 	@Override
 	public void createSnapshotLifecyclePolicy(String projectId)
 		throws Exception {
+
+		if (!_environment.acceptsProfiles("prod")) {
+			return;
+		}
 
 		_createRepository(projectId);
 		_createSnapshotLifecyclePolicy(projectId);
@@ -121,6 +126,9 @@ public class ElasticsearchSnapshotManagerImpl
 
 	@Autowired
 	private ElasticsearchConnection _elasticsearchConnection;
+
+	@Autowired
+	private Environment _environment;
 
 	private IndexLifecycleClient _indexLifecycleClient;
 	private SnapshotClient _snapshotClient;
