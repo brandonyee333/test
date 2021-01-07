@@ -114,6 +114,7 @@ public abstract class BaseAnalyticsClientImpl {
 			"liferayAnalyticsFaroBackendSecuritySignature", "");
 		unicodeProperties.setProperty("liferayAnalyticsFaroBackendURL", "");
 		unicodeProperties.setProperty("liferayAnalyticsGroupIds", "");
+		unicodeProperties.setProperty("liferayAnalyticsProjectId", "");
 		unicodeProperties.setProperty("liferayAnalyticsURL", "");
 
 		try {
