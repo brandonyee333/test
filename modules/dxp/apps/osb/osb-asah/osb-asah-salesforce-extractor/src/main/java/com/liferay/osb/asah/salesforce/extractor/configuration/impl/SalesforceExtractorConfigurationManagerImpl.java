@@ -15,8 +15,6 @@
 package com.liferay.osb.asah.salesforce.extractor.configuration.impl;
 
 import com.liferay.osb.asah.common.bot.ConfigurableBot;
-import com.liferay.osb.asah.common.configuration.Configuration;
-import com.liferay.osb.asah.common.configuration.FileConfiguration;
 import com.liferay.osb.asah.common.configuration.RuntimeConfiguration;
 import com.liferay.osb.asah.common.configuration.impl.BaseConfigurationManagerImpl;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -26,8 +24,6 @@ import com.liferay.osb.asah.salesforce.extractor.oauth2.OAuth2Response;
 import com.liferay.osb.asah.salesforce.extractor.oauth2.SalesforceOAuth2Client;
 import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClient;
 import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClientImpl;
-
-import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -175,11 +171,6 @@ public class SalesforceExtractorConfigurationManagerImpl
 		}
 
 		return true;
-	}
-
-	@Override
-	protected FileConfiguration buildFileConfiguration() {
-		return new SalesforceExtractorFileConfigurationImpl();
 	}
 
 	@Override

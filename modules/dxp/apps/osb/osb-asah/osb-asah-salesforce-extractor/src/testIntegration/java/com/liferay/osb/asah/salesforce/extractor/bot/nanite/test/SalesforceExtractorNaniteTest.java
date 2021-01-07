@@ -22,10 +22,10 @@ import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceExtractorConfigurableBot;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorNanite;
+import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.SalesforceExtractorTestUtil;
 import com.liferay.osb.asah.salesforce.extractor.client.SalesforceBulkClientInvoker;
 import com.liferay.osb.asah.salesforce.extractor.client.SalesforcePartnerClientInvoker;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
-import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorFileConfigurationImpl;
 import com.liferay.osb.asah.salesforce.extractor.oauth2.SalesforceOAuth2Client;
 import com.liferay.osb.asah.salesforce.extractor.spring.OSBAsahSalesforceExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -469,7 +469,7 @@ public class SalesforceExtractorNaniteTest {
 
 	private static final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration =
-			new SalesforceExtractorFileConfigurationImpl();
+			SalesforceExtractorTestUtil.getSalesforceExtractorConfiguration();
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;

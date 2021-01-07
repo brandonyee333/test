@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.configuration.impl;
 import com.liferay.osb.asah.common.bot.ConfigurableBot;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
-import com.liferay.osb.asah.common.configuration.FileConfiguration;
 import com.liferay.osb.asah.common.configuration.RuntimeConfiguration;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -32,7 +31,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -122,21 +120,11 @@ public abstract class BaseConfigurationManagerImpl
 
 	@Override
 	public Configuration getConfiguration(String dataSourceId) {
-		if (Objects.equals(dataSourceId, "0")) {
-			return _fileConfiguration;
-		}
-
 		return _runtimeConfigurations.get(dataSourceId);
 	}
 
 	@Override
 	public Configuration[] getConfigurations() {
-		if ((_fileConfiguration != null) &&
-			StringUtils.isNotEmpty(_fileConfiguration.getDataSourceId())) {
-
-			return new Configuration[] {_fileConfiguration};
-		}
-
 		Set<Map.Entry<String, RuntimeConfiguration>> set =
 			_runtimeConfigurations.entrySet();
 
@@ -153,12 +141,6 @@ public abstract class BaseConfigurationManagerImpl
 
 	@PostConstruct
 	public void init() {
-		if ((_fileConfiguration != null) &&
-			StringUtils.isNotEmpty(_fileConfiguration.getDataSourceId())) {
-
-			return;
-		}
-
 		JSONArray dataSourcesJSONArray = _elasticsearchInvoker.get(
 			"data-sources", getQueryBuilder());
 
@@ -284,8 +266,6 @@ public abstract class BaseConfigurationManagerImpl
 		return runtimeConfiguration;
 	}
 
-	protected abstract FileConfiguration buildFileConfiguration();
-
 	protected abstract RuntimeConfiguration buildRuntimeConfiguration();
 
 	protected abstract ConfigurableBot getConfigurableBot();
@@ -349,13 +329,9 @@ public abstract class BaseConfigurationManagerImpl
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
 
-	// TODO ASAH-526
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
-	private final FileConfiguration _fileConfiguration =
-		buildFileConfiguration();
 	private final Map<String, RuntimeConfiguration> _runtimeConfigurations =
 		new ConcurrentHashMap<>();
 

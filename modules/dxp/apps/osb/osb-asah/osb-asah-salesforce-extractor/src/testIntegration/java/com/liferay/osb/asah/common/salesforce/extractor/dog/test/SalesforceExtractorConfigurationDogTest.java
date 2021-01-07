@@ -16,8 +16,8 @@ package com.liferay.osb.asah.common.salesforce.extractor.dog.test;
 
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
+import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.SalesforceExtractorTestUtil;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
-import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorFileConfigurationImpl;
 import com.liferay.osb.asah.salesforce.extractor.spring.OSBAsahSalesforceExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -88,7 +88,7 @@ public class SalesforceExtractorConfigurationDogTest {
 
 	private static final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration =
-			new SalesforceExtractorFileConfigurationImpl();
+			SalesforceExtractorTestUtil.getSalesforceExtractorConfiguration();
 
 	@Autowired
 	private SalesforceExtractorConfigurationDog

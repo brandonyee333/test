@@ -19,7 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorIndividualsNanite;
-import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorFileConfigurationImpl;
+import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.SalesforceExtractorTestUtil;
 import com.liferay.osb.asah.salesforce.extractor.spring.OSBAsahSalesforceExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -212,7 +212,8 @@ public class SalesforceExtractorIndividualsNaniteTest {
 			salesforceExtractorIndividualsNanite() {
 
 			return new SalesforceExtractorIndividualsNanite(
-				new SalesforceExtractorFileConfigurationImpl());
+				SalesforceExtractorTestUtil.
+					getSalesforceExtractorConfiguration());
 		}
 
 	}
