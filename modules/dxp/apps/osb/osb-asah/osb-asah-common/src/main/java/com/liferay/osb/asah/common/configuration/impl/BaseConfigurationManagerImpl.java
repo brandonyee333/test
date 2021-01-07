@@ -61,9 +61,7 @@ public abstract class BaseConfigurationManagerImpl
 			return false;
 		}
 
-		if (_configurations.containsKey(
-				configuration.getDataSourceId())) {
-
+		if (_configurations.containsKey(configuration.getDataSourceId())) {
 			_log.error(
 				"Duplicate configuration for data source " +
 					configuration.getDataSourceId());
@@ -71,8 +69,7 @@ public abstract class BaseConfigurationManagerImpl
 			return false;
 		}
 
-		_configurations.put(
-			configuration.getDataSourceId(), configuration);
+		_configurations.put(configuration.getDataSourceId(), configuration);
 
 		ConfigurableBot configurableBot = getConfigurableBot();
 
@@ -103,8 +100,7 @@ public abstract class BaseConfigurationManagerImpl
 
 		String dataSourceId = jsonObject.getString("dataSourceId");
 
-		Configuration configuration =
-			_configurations.remove(dataSourceId);
+		Configuration configuration = _configurations.remove(dataSourceId);
 
 		if (configuration == null) {
 			return false;
@@ -124,8 +120,7 @@ public abstract class BaseConfigurationManagerImpl
 
 	@Override
 	public Configuration[] getConfigurations() {
-		Set<Map.Entry<String, Configuration>> set =
-			_configurations.entrySet();
+		Set<Map.Entry<String, Configuration>> set = _configurations.entrySet();
 
 		Stream<Map.Entry<String, Configuration>> stream = set.stream();
 
@@ -154,8 +149,8 @@ public abstract class BaseConfigurationManagerImpl
 				String dataSourceId = configurationsJSONObject.getString(
 					"dataSourceId");
 
-				Configuration configuration =
-					getInitializedConfiguration(dataSourceId);
+				Configuration configuration = getInitializedConfiguration(
+					dataSourceId);
 
 				configuration.setDataSourceId(dataSourceId);
 				configuration.setDataSourceState(
@@ -167,8 +162,7 @@ public abstract class BaseConfigurationManagerImpl
 					configurationsJSONObject, configuration);
 
 				_configurations.put(
-					configuration.getDataSourceId(),
-					configuration);
+					configuration.getDataSourceId(), configuration);
 			}
 			catch (Exception e) {
 				if (_log.isWarnEnabled()) {
@@ -192,11 +186,8 @@ public abstract class BaseConfigurationManagerImpl
 	}
 
 	@Override
-	public Configuration updateConfiguration(String json)
-		throws Exception {
-
-		Configuration configuration = _toConfiguration(
-			json);
+	public Configuration updateConfiguration(String json) throws Exception {
+		Configuration configuration = _toConfiguration(json);
 
 		String dataSourceId = configuration.getDataSourceId();
 
@@ -206,8 +197,8 @@ public abstract class BaseConfigurationManagerImpl
 			"existingDataSourceId");
 
 		if (dataSourceId.equals(existingDataSourceId)) {
-			Configuration existingConfigurationImpl =
-				_configurations.get(existingDataSourceId);
+			Configuration existingConfigurationImpl = _configurations.get(
+				existingDataSourceId);
 
 			if (existingConfigurationImpl == null) {
 				_log.error(
@@ -235,8 +226,8 @@ public abstract class BaseConfigurationManagerImpl
 				return configuration;
 			}
 
-			Configuration existingConfigurationImpl =
-				_configurations.remove(existingDataSourceId);
+			Configuration existingConfigurationImpl = _configurations.remove(
+				existingDataSourceId);
 
 			if (existingConfigurationImpl == null) {
 				_log.error(
@@ -248,8 +239,7 @@ public abstract class BaseConfigurationManagerImpl
 		}
 
 		onBeforeUpdate(
-			configuration,
-			_configurations.get(existingDataSourceId));
+			configuration, _configurations.get(existingDataSourceId));
 
 		_configurations.put(dataSourceId, configuration);
 
@@ -269,18 +259,14 @@ public abstract class BaseConfigurationManagerImpl
 
 	protected abstract ConfigurableBot getConfigurableBot();
 
-	protected Configuration getInitializedConfiguration(
-		String dataSourceId) {
-
+	protected Configuration getInitializedConfiguration(String dataSourceId) {
 		Configuration configuration = buildConfiguration();
 
 		_autowireCapableBeanFactory.autowireBeanProperties(
-			configuration, AutowireCapableBeanFactory.AUTOWIRE_NO,
-			false);
+			configuration, AutowireCapableBeanFactory.AUTOWIRE_NO, false);
 
 		_autowireCapableBeanFactory.initializeBean(
-			configuration,
-			Configuration.class.getName() + "#" + dataSourceId);
+			configuration, Configuration.class.getName() + "#" + dataSourceId);
 
 		return configuration;
 	}
@@ -292,24 +278,19 @@ public abstract class BaseConfigurationManagerImpl
 	}
 
 	protected void onBeforeUpdate(
-		Configuration configuration,
-		Configuration exitingConfiguration) {
+		Configuration configuration, Configuration exitingConfiguration) {
 	}
 
 	protected abstract void setConfigurationAttributes(
-			JSONObject configurationsJSONObject,
-			Configuration configuration)
+			JSONObject configurationsJSONObject, Configuration configuration)
 		throws Exception;
 
-	private Configuration _toConfiguration(String json)
-		throws Exception {
-
+	private Configuration _toConfiguration(String json) throws Exception {
 		JSONObject jsonObject = new JSONObject(json);
 
 		String dataSourceId = jsonObject.getString("dataSourceId");
 
-		Configuration configuration =
-			getInitializedConfiguration(dataSourceId);
+		Configuration configuration = getInitializedConfiguration(dataSourceId);
 
 		configuration.setDataSourceId(dataSourceId);
 		configuration.setDataSourceState(
@@ -328,10 +309,10 @@ public abstract class BaseConfigurationManagerImpl
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
-
 	private final Map<String, Configuration> _configurations =
 		new ConcurrentHashMap<>();
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 }

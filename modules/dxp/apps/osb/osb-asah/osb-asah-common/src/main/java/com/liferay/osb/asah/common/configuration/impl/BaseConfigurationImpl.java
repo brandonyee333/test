@@ -21,8 +21,7 @@ import java.util.Objects;
 /**
  * @author Brian Wing Shun Chan
  */
-public abstract class BaseConfigurationImpl
-	implements Configuration {
+public abstract class BaseConfigurationImpl implements Configuration {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -40,11 +39,9 @@ public abstract class BaseConfigurationImpl
 		if (Objects.equals(
 				_dataSourceId, baseConfigurationImpl._dataSourceId) &&
 			Objects.equals(
-				_dataSourceState,
-				baseConfigurationImpl._dataSourceState) &&
+				_dataSourceState, baseConfigurationImpl._dataSourceState) &&
 			Objects.equals(
-				_dataSourceStatus,
-				baseConfigurationImpl._dataSourceStatus)) {
+				_dataSourceStatus, baseConfigurationImpl._dataSourceStatus)) {
 
 			return true;
 		}

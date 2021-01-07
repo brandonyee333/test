@@ -32,8 +32,7 @@ public interface ConfigurationManager {
 
 	public String refresh(String json);
 
-	public Configuration updateConfiguration(String json)
-		throws Exception;
+	public Configuration updateConfiguration(String json) throws Exception;
 
 	public boolean validate(String json);
 

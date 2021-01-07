@@ -70,7 +70,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 				dataSourceId);
 
 		if (salesforceExtractorConfiguration instanceof
-			SalesforceExtractorConfigurationImpl) {
+				SalesforceExtractorConfigurationImpl) {
 
 			try {
 				_salesforceOAuth2Client.refreshOAuthToken(
@@ -190,13 +190,11 @@ public class SalesforceExtractorConfigurationManagerImpl
 
 	@Override
 	protected void setConfigurationAttributes(
-		JSONObject configurationsJSONObject,
-		Configuration configuration) {
+		JSONObject configurationsJSONObject, Configuration configuration) {
 
 		SalesforceExtractorConfigurationImpl
 			salesforceExtractorConfigurationImpl =
-				(SalesforceExtractorConfigurationImpl)
-					configuration;
+				(SalesforceExtractorConfigurationImpl)configuration;
 
 		JSONObject accountsConfigurationJSONObject =
 			configurationsJSONObject.optJSONObject("accountsConfiguration");
@@ -234,15 +232,12 @@ public class SalesforceExtractorConfigurationManagerImpl
 				credentialsJSONObject.getString("login"));
 		}
 		else if (type.equals("OAuth 2 Authentication")) {
-			salesforceExtractorConfigurationImpl.
-				setSalesforceOAuthClientId(
-					credentialsJSONObject.getString("oAuthClientId"));
-			salesforceExtractorConfigurationImpl.
-				setSalesforceOAuthClientSecret(
-					credentialsJSONObject.getString("oAuthClientSecret"));
-			salesforceExtractorConfigurationImpl.
-				setSalesforceOAuthRefreshToken(
-					credentialsJSONObject.getString("oAuthRefreshToken"));
+			salesforceExtractorConfigurationImpl.setSalesforceOAuthClientId(
+				credentialsJSONObject.getString("oAuthClientId"));
+			salesforceExtractorConfigurationImpl.setSalesforceOAuthClientSecret(
+				credentialsJSONObject.getString("oAuthClientSecret"));
+			salesforceExtractorConfigurationImpl.setSalesforceOAuthRefreshToken(
+				credentialsJSONObject.getString("oAuthRefreshToken"));
 
 			try {
 				_salesforceOAuth2Client.refreshOAuthToken(

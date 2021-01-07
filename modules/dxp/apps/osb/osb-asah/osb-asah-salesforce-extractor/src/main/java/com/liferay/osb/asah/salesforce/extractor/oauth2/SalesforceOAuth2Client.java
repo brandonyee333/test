@@ -61,8 +61,7 @@ public class SalesforceOAuth2Client extends BaseOAuth2Client {
 		throws Exception {
 
 		String responseJSON = post(
-			salesforceExtractorConfigurationImpl.
-				getSalesforceOAuthClientId(),
+			salesforceExtractorConfigurationImpl.getSalesforceOAuthClientId(),
 			salesforceExtractorConfigurationImpl.
 				getSalesforceOAuthClientSecret(),
 			salesforceExtractorConfigurationImpl.
@@ -83,12 +82,11 @@ public class SalesforceOAuth2Client extends BaseOAuth2Client {
 
 		salesforceExtractorConfigurationImpl.setSalesforceAuthEndpoint(
 			oAuth2Response.getAuthEndpoint());
-		salesforceExtractorConfigurationImpl.
-			setSalesforceServiceEndpoint(oAuth2Response.getServiceEndpoint());
+		salesforceExtractorConfigurationImpl.setSalesforceServiceEndpoint(
+			oAuth2Response.getServiceEndpoint());
 
-		salesforceExtractorConfigurationImpl.
-			setSalesforceOAuthAccessToken(
-				responseJSONObject.getString("access_token"));
+		salesforceExtractorConfigurationImpl.setSalesforceOAuthAccessToken(
+			responseJSONObject.getString("access_token"));
 	}
 
 	public OAuth2Response toResponse(JSONObject responseJSONObject) {

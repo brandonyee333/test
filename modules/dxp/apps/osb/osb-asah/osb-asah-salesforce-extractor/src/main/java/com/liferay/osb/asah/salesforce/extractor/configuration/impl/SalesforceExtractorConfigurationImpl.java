@@ -26,8 +26,7 @@ import org.json.JSONObject;
  * @author Rachael Koestartyo
  */
 public class SalesforceExtractorConfigurationImpl
-	extends BaseConfigurationImpl
-	implements SalesforceExtractorConfiguration {
+	extends BaseConfigurationImpl implements SalesforceExtractorConfiguration {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -46,8 +45,7 @@ public class SalesforceExtractorConfigurationImpl
 		if (super.equals(salesforceExtractorConfigurationImpl) &&
 			Objects.equals(
 				_salesforceAuthEndpoint,
-				salesforceExtractorConfigurationImpl.
-					_salesforceAuthEndpoint) &&
+				salesforceExtractorConfigurationImpl._salesforceAuthEndpoint) &&
 			Objects.equals(
 				_salesforceOAuthAccessToken,
 				salesforceExtractorConfigurationImpl.
@@ -66,8 +64,7 @@ public class SalesforceExtractorConfigurationImpl
 					_salesforceOAuthRefreshToken) &&
 			Objects.equals(
 				_salesforcePassword,
-				salesforceExtractorConfigurationImpl.
-					_salesforcePassword) &&
+				salesforceExtractorConfigurationImpl._salesforcePassword) &&
 			Objects.equals(
 				_salesforceServiceEndpoint,
 				salesforceExtractorConfigurationImpl.
@@ -77,8 +74,7 @@ public class SalesforceExtractorConfigurationImpl
 				salesforceExtractorConfigurationImpl._salesforceURL) &&
 			Objects.equals(
 				_salesforceUserName,
-				salesforceExtractorConfigurationImpl.
-					_salesforceUserName) &&
+				salesforceExtractorConfigurationImpl._salesforceUserName) &&
 			Arrays.equals(
 				_tableNames,
 				salesforceExtractorConfigurationImpl.getTableNames())) {
