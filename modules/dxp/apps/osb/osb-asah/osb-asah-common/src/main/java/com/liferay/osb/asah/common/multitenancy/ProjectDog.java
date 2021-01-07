@@ -23,7 +23,7 @@ import java.util.List;
  */
 public interface ProjectDog {
 
-	public void addProject(Project project);
+	public void addProject(Project project) throws Exception;
 
 	public boolean deleteProject(String projectId);
 

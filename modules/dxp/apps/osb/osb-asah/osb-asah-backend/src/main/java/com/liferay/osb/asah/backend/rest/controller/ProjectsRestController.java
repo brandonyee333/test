@@ -48,7 +48,7 @@ public class ProjectsRestController extends BaseRestController {
 	}
 
 	@PostMapping
-	public void postProject(@RequestBody Project project) {
+	public void postProject(@RequestBody Project project) throws Exception {
 		_projectDog.addProject(project);
 	}
 

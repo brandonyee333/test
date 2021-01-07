@@ -22,6 +22,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
@@ -30,6 +31,8 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author André Miranda
@@ -44,9 +47,12 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 	}
 
 	@Override
-	public void addProject(Project project) {
+	public void addProject(Project project) throws Exception {
 		_elasticsearchInvoker.add(
 			"projects", _objectMapper.convertValue(project, JSONObject.class));
+
+		_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
+			project.getId());
 	}
 
 	@Override
@@ -66,6 +72,9 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 	}
 
 	private final ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;
 
 	private final ObjectMapper _objectMapper = new ObjectMapper() {
 		{
