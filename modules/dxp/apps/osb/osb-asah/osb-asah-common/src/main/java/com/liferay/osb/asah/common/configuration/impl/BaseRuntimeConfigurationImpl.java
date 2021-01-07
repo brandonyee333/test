@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.configuration.impl;
 
-import com.liferay.osb.asah.common.configuration.RuntimeConfiguration;
+import com.liferay.osb.asah.common.configuration.Configuration;
 
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ import java.util.Objects;
  * @author Brian Wing Shun Chan
  */
 public abstract class BaseRuntimeConfigurationImpl
-	implements RuntimeConfiguration {
+	implements Configuration {
 
 	@Override
 	public boolean equals(Object obj) {

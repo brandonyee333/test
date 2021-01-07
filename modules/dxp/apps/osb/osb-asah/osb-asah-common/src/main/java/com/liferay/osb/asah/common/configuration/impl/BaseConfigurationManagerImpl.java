@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.configuration.impl;
 import com.liferay.osb.asah.common.bot.ConfigurableBot;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
-import com.liferay.osb.asah.common.configuration.RuntimeConfiguration;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -51,7 +50,7 @@ public abstract class BaseConfigurationManagerImpl
 
 	@Override
 	public boolean addRuntimeConfiguration(String json) {
-		RuntimeConfiguration runtimeConfiguration = null;
+		Configuration runtimeConfiguration = null;
 
 		try {
 			runtimeConfiguration = _toRuntimeConfiguration(json);
@@ -104,7 +103,7 @@ public abstract class BaseConfigurationManagerImpl
 
 		String dataSourceId = jsonObject.getString("dataSourceId");
 
-		RuntimeConfiguration runtimeConfiguration =
+		Configuration runtimeConfiguration =
 			_runtimeConfigurations.remove(dataSourceId);
 
 		if (runtimeConfiguration == null) {
@@ -125,10 +124,10 @@ public abstract class BaseConfigurationManagerImpl
 
 	@Override
 	public Configuration[] getConfigurations() {
-		Set<Map.Entry<String, RuntimeConfiguration>> set =
+		Set<Map.Entry<String, Configuration>> set =
 			_runtimeConfigurations.entrySet();
 
-		Stream<Map.Entry<String, RuntimeConfiguration>> stream = set.stream();
+		Stream<Map.Entry<String, Configuration>> stream = set.stream();
 
 		return stream.map(
 			entry -> entry.getValue()
@@ -155,7 +154,7 @@ public abstract class BaseConfigurationManagerImpl
 				String dataSourceId = configurationsJSONObject.getString(
 					"dataSourceId");
 
-				RuntimeConfiguration runtimeConfiguration =
+				Configuration runtimeConfiguration =
 					getInitializedRuntimeConfiguration(dataSourceId);
 
 				runtimeConfiguration.setDataSourceId(dataSourceId);
@@ -196,7 +195,7 @@ public abstract class BaseConfigurationManagerImpl
 	public Configuration updateRuntimeConfiguration(String json)
 		throws Exception {
 
-		RuntimeConfiguration runtimeConfiguration = _toRuntimeConfiguration(
+		Configuration runtimeConfiguration = _toRuntimeConfiguration(
 			json);
 
 		String dataSourceId = runtimeConfiguration.getDataSourceId();
@@ -207,7 +206,7 @@ public abstract class BaseConfigurationManagerImpl
 			"existingDataSourceId");
 
 		if (dataSourceId.equals(existingDataSourceId)) {
-			RuntimeConfiguration existingRuntimeConfigurationImpl =
+			Configuration existingRuntimeConfigurationImpl =
 				_runtimeConfigurations.get(existingDataSourceId);
 
 			if (existingRuntimeConfigurationImpl == null) {
@@ -236,7 +235,7 @@ public abstract class BaseConfigurationManagerImpl
 				return runtimeConfiguration;
 			}
 
-			RuntimeConfiguration existingRuntimeConfigurationImpl =
+			Configuration existingRuntimeConfigurationImpl =
 				_runtimeConfigurations.remove(existingDataSourceId);
 
 			if (existingRuntimeConfigurationImpl == null) {
@@ -266,14 +265,14 @@ public abstract class BaseConfigurationManagerImpl
 		return runtimeConfiguration;
 	}
 
-	protected abstract RuntimeConfiguration buildRuntimeConfiguration();
+	protected abstract Configuration buildRuntimeConfiguration();
 
 	protected abstract ConfigurableBot getConfigurableBot();
 
-	protected RuntimeConfiguration getInitializedRuntimeConfiguration(
+	protected Configuration getInitializedRuntimeConfiguration(
 		String dataSourceId) {
 
-		RuntimeConfiguration runtimeConfiguration = buildRuntimeConfiguration();
+		Configuration runtimeConfiguration = buildRuntimeConfiguration();
 
 		_autowireCapableBeanFactory.autowireBeanProperties(
 			runtimeConfiguration, AutowireCapableBeanFactory.AUTOWIRE_NO,
@@ -293,23 +292,23 @@ public abstract class BaseConfigurationManagerImpl
 	}
 
 	protected void onBeforeUpdate(
-		RuntimeConfiguration runtimeConfiguration,
-		RuntimeConfiguration exitingRuntimeConfiguration) {
+		Configuration runtimeConfiguration,
+		Configuration exitingRuntimeConfiguration) {
 	}
 
 	protected abstract void setRuntimeConfigurationAttributes(
 			JSONObject configurationsJSONObject,
-			RuntimeConfiguration runtimeConfiguration)
+			Configuration runtimeConfiguration)
 		throws Exception;
 
-	private RuntimeConfiguration _toRuntimeConfiguration(String json)
+	private Configuration _toRuntimeConfiguration(String json)
 		throws Exception {
 
 		JSONObject jsonObject = new JSONObject(json);
 
 		String dataSourceId = jsonObject.getString("dataSourceId");
 
-		RuntimeConfiguration runtimeConfiguration =
+		Configuration runtimeConfiguration =
 			getInitializedRuntimeConfiguration(dataSourceId);
 
 		runtimeConfiguration.setDataSourceId(dataSourceId);
@@ -332,7 +331,7 @@ public abstract class BaseConfigurationManagerImpl
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
-	private final Map<String, RuntimeConfiguration> _runtimeConfigurations =
+	private final Map<String, Configuration> _runtimeConfigurations =
 		new ConcurrentHashMap<>();
 
 }

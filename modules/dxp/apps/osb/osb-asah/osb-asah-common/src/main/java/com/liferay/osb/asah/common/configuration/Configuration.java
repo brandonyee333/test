@@ -25,4 +25,10 @@ public interface Configuration {
 
 	public String getDataSourceStatus();
 
+	public void setDataSourceId(String dataSourceId);
+
+	public void setDataSourceState(String dataSourceState);
+
+	public void setDataSourceStatus(String dataSourceStatus);
+
 }

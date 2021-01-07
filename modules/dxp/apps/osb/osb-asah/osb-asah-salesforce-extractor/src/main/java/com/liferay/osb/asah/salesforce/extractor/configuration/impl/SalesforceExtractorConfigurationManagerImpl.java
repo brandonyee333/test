@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.salesforce.extractor.configuration.impl;
 
 import com.liferay.osb.asah.common.bot.ConfigurableBot;
-import com.liferay.osb.asah.common.configuration.RuntimeConfiguration;
+import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.impl.BaseConfigurationManagerImpl;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceExtractorConfigurableBot;
@@ -174,7 +174,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	@Override
-	protected RuntimeConfiguration buildRuntimeConfiguration() {
+	protected Configuration buildRuntimeConfiguration() {
 		return new SalesforceExtractorRuntimeConfigurationImpl();
 	}
 
@@ -191,7 +191,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 	@Override
 	protected void setRuntimeConfigurationAttributes(
 		JSONObject configurationsJSONObject,
-		RuntimeConfiguration runtimeConfiguration) {
+		Configuration runtimeConfiguration) {
 
 		SalesforceExtractorRuntimeConfigurationImpl
 			salesforceExtractorRuntimeConfigurationImpl =
