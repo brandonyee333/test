@@ -94,15 +94,6 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	@Override
-	public SalesforceExtractorConfiguration[] getConfigurations() {
-		Configuration[] configurations = super.getConfigurations();
-
-		return Arrays.copyOf(
-			configurations, configurations.length,
-			SalesforceExtractorConfiguration[].class);
-	}
-
-	@Override
 	public String getState(String dataSourceJSON) {
 		JSONObject dataSourceJSONObject = new JSONObject(dataSourceJSON);
 
