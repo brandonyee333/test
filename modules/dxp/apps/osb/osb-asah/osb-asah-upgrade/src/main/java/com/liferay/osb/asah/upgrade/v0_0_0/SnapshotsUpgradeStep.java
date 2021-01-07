@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.v0_0_0;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
@@ -34,7 +35,8 @@ public class SnapshotsUpgradeStep implements UpgradeStep {
 			return;
 		}
 
-		_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy();
+		_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
+			ServiceConstants.LCP_PROJECT_ID);
 	}
 
 	@Autowired

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.elasticsearch.impl;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 
@@ -46,20 +45,22 @@ public class ElasticsearchSnapshotManagerImpl
 	implements ElasticsearchSnapshotManager {
 
 	@Override
-	public void createSnapshotLifecyclePolicy() throws Exception {
-		_createRepository();
-		_createSnapshotLifecyclePolicy();
+	public void createSnapshotLifecyclePolicy(String projectId)
+		throws Exception {
+
+		_createRepository(projectId);
+		_createSnapshotLifecyclePolicy(projectId);
 	}
 
-	private void _createRepository() throws Exception {
+	private void _createRepository(String projectId) throws Exception {
 		PutRepositoryRequest putRepositoryRequest = new PutRepositoryRequest(
-			ServiceConstants.LCP_PROJECT_ID);
+			projectId);
 
 		Settings.Builder builder = Settings.builder();
 
 		putRepositoryRequest.settings(
 			builder.put(
-				"base_path", "workspaces/" + ServiceConstants.LCP_PROJECT_ID
+				"base_path", "workspaces/" + projectId
 			).put(
 				"bucket", "asah"
 			).put(
@@ -80,10 +81,10 @@ public class ElasticsearchSnapshotManagerImpl
 			putRepositoryRequest, RequestOptions.DEFAULT);
 	}
 
-	private void _createSnapshotLifecyclePolicy() throws Exception {
-		String lcpProjectId = ServiceConstants.LCP_PROJECT_ID;
+	private void _createSnapshotLifecyclePolicy(String projectId)
+		throws Exception {
 
-		IntStream intStream = lcpProjectId.chars();
+		IntStream intStream = projectId.chars();
 
 		int minute = intStream.filter(
 			Character::isDigit
@@ -97,12 +98,11 @@ public class ElasticsearchSnapshotManagerImpl
 		PutSnapshotLifecyclePolicyRequest putSnapshotLifecyclePolicyRequest =
 			new PutSnapshotLifecyclePolicyRequest(
 				new SnapshotLifecyclePolicy(
-					lcpProjectId + "-hourly-snapshots",
-					"<" + lcpProjectId + "-snapshot-{now{YYYY.MM.dd.HH|UTC}}>",
-					schedule, lcpProjectId,
+					projectId + "-hourly-snapshots",
+					"<" + projectId + "-snapshot-{now{YYYY.MM.dd.HH|UTC}}>",
+					schedule, projectId,
 					Collections.singletonMap(
-						"indices",
-						Collections.singletonList(lcpProjectId + "_*")),
+						"indices", Collections.singletonList(projectId + "_*")),
 					new SnapshotRetentionConfiguration(
 						TimeValue.timeValueDays(30), 1, 720)));
 

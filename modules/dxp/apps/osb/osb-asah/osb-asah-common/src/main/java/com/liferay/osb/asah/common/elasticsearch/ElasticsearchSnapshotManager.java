@@ -19,6 +19,7 @@ package com.liferay.osb.asah.common.elasticsearch;
  */
 public interface ElasticsearchSnapshotManager {
 
-	public void createSnapshotLifecyclePolicy() throws Exception;
+	public void createSnapshotLifecyclePolicy(String projectId)
+		throws Exception;
 
 }
