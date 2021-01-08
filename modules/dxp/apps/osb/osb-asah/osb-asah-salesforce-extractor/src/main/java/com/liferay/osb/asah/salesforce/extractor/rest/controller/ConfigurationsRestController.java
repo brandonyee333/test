@@ -69,11 +69,6 @@ public class ConfigurationsRestController {
 		return _configurationManager.refresh(json);
 	}
 
-	@PostMapping("/validate")
-	public boolean validate(@RequestBody String json) {
-		return _configurationManager.validate(json);
-	}
-
 	@Autowired
 	private ConfigurationManager _configurationManager;
 

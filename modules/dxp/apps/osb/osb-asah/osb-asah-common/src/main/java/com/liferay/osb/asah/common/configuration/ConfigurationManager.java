@@ -34,6 +34,4 @@ public interface ConfigurationManager {
 
 	public Configuration updateConfiguration(String json) throws Exception;
 
-	public boolean validate(String json);
-
 }

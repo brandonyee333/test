@@ -116,15 +116,14 @@ public class SalesforceExtractorConfigurationManagerImpl
 			"url", dataSourceJSONObject.getString("url")
 		);
 
-		if (!validate(jsonObject.toString())) {
+		if (!_validate(jsonObject.toString())) {
 			return "CREDENTIALS_INVALID";
 		}
 
 		return "CREDENTIALS_VALID";
 	}
 
-	@Override
-	public boolean validate(String json) {
+	private boolean _validate(String json) {
 		JSONObject configurationsJSONObject = new JSONObject(json);
 
 		JSONObject credentialsJSONObject =
