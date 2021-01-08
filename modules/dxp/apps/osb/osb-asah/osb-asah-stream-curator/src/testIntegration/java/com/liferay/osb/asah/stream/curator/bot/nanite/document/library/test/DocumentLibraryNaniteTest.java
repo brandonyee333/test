@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.document.library.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
 import com.liferay.osb.asah.stream.curator.bot.nanite.document.library.DocumentLibraryNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -29,7 +29,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,12 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
-
-	@Before
-	public void setUp() {
-		setUp(_documentLibraryNanite);
-	}
+public class DocumentLibraryNaniteTest {
 
 	@ElasticsearchIndex(
 		name = "document-libraries",
@@ -63,10 +57,13 @@ public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
 	public void testDocumentLibraryMetrics() throws Exception {
 		_documentLibraryNanite.run();
 
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_document_library_info.json", this),
-			_cerebroInfoElasticsearchInvoker.get("document-libraries"), false);
+			elasticsearchInvoker.get("document-libraries"), false);
 	}
 
 	@MessageBusChannel(
@@ -77,8 +74,10 @@ public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
 	public void testDocumentLibraryRatingsMetric() {
 		_documentLibraryNanite.run();
 
-		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
-			"document-libraries");
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
+		JSONArray jsonArray = elasticsearchInvoker.get("document-libraries");
 
 		Assert.assertEquals(1, jsonArray.length());
 
@@ -88,10 +87,10 @@ public class DocumentLibraryNaniteTest extends BaseNaniteTestCase {
 		Assert.assertEquals(0.6, jsonObject.getDouble("ratingsScore"), 0);
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
 	@Autowired
 	private DocumentLibraryNanite _documentLibraryNanite;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

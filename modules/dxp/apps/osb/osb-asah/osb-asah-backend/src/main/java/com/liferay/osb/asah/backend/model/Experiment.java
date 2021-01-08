@@ -18,8 +18,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
-import com.liferay.osb.asah.backend.graphql.GraphQLType;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 
@@ -39,7 +37,6 @@ import org.hibernate.validator.constraints.URL;
 /**
  * @author André Miranda
  */
-@GraphQLType
 public final class Experiment {
 
 	@Override
@@ -110,7 +107,6 @@ public final class Experiment {
 		return new Date(_createDate.getTime());
 	}
 
-	@GraphQLProperty("createDate")
 	@JsonIgnore
 	public String getCreateDateISO() {
 		if (_createDate == null) {
@@ -135,7 +131,6 @@ public final class Experiment {
 		return _dxpExperienceId;
 	}
 
-	@GraphQLProperty("dxpExperienceName")
 	@JsonProperty("dxpExperienceName")
 	@NotBlank
 	public String getDXPExperienceName() {
@@ -159,27 +154,23 @@ public final class Experiment {
 		return _dxpSegmentId;
 	}
 
-	@GraphQLProperty("dxpSegmentName")
 	@JsonProperty("dxpSegmentName")
 	@NotBlank
 	public String getDXPSegmentName() {
 		return _dxpSegmentName;
 	}
 
-	@GraphQLProperty("dxpVariants")
 	@JsonProperty("dxpVariants")
 	@Valid
 	public List<DXPVariant> getDXPVariants() {
 		return _dxpVariants;
 	}
 
-	@GraphQLProperty("status")
 	@JsonProperty("status")
 	public ExperimentStatus getExperimentStatus() {
 		return _experimentStatus;
 	}
 
-	@GraphQLProperty("type")
 	@JsonProperty("type")
 	public ExperimentType getExperimentType() {
 		return _experimentType;
@@ -197,7 +188,6 @@ public final class Experiment {
 		return new Date(_finishedDate.getTime());
 	}
 
-	@GraphQLProperty("finishedDate")
 	@JsonIgnore
 	public String getFinishedDateISO() {
 		if (_finishedDate == null) {
@@ -228,7 +218,6 @@ public final class Experiment {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@GraphQLProperty("modifiedDate")
 	@JsonIgnore
 	public String getModifiedDateISO() {
 		if (_modifiedDate == null) {
@@ -286,7 +275,6 @@ public final class Experiment {
 		return new Date(_startedDate.getTime());
 	}
 
-	@GraphQLProperty("startedDate")
 	@JsonIgnore
 	public String getStartedDateISO() {
 		if (_startedDate == null) {

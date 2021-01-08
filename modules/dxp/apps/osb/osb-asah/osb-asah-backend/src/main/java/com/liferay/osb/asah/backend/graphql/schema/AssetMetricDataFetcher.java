@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 
 import graphql.schema.DataFetchingEnvironment;
+import graphql.schema.DataFetchingFieldSelectionSet;
 
 import java.util.Map;
 import java.util.Set;
@@ -45,10 +46,13 @@ public class AssetMetricDataFetcher extends BaseDataFetcher<AssetMetric> {
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
+		DataFetchingFieldSelectionSet dataFetchingFieldSelectionSet =
+			dataFetchingEnvironment.getSelectionSet();
 		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
 		return _metricDog.getAssetMetric(
-			searchQueryContext, (Set<String>)context.get("selectedMetrics"));
+			dataFetchingFieldSelectionSet.get(), searchQueryContext,
+			(Set<String>)context.get("selectedMetrics"));
 	}
 
 	@Autowired

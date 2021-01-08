@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.avg.AvgAggregationBuilder;
 
 import org.springframework.context.annotation.Configuration;
 
@@ -61,10 +61,6 @@ public class BlogDogConfiguration extends BaseDogConfiguration {
 	public Set<MetricResolver> getMetricResolvers(Set<String> selectedMetrics) {
 		Set<MetricResolver> metricResolvers = new HashSet<>();
 
-		if (selectedMetrics.contains(BlogMetricType.CLICKS.getName())) {
-			metricResolvers.add(_buildClicksMetricResolver());
-		}
-
 		if (selectedMetrics.contains(BlogMetricType.COMMENTS.getName())) {
 			metricResolvers.add(_buildCommentsMetricResolver());
 		}
@@ -93,15 +89,6 @@ public class BlogDogConfiguration extends BaseDogConfiguration {
 	@Override
 	public Function<String, MetricType> getMetricTypeResolverFunction() {
 		return BlogMetricType::of;
-	}
-
-	private MetricResolver _buildClicksMetricResolver() {
-		MetricResolver.Builder builder = MetricResolver.builder(
-			BlogMetricType.CLICKS);
-
-		builder.setterBiConsumer(BlogMetric::setClicksMetric);
-
-		return builder.build();
 	}
 
 	private MetricResolver _buildCommentsMetricResolver() {

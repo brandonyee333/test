@@ -16,14 +16,15 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.DashboardDog;
 import com.liferay.osb.asah.backend.model.Dashboard;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
+
+import org.elasticsearch.search.sort.SortBuilders;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -41,17 +42,19 @@ public class DashboardDogTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "custom_asset_dashboards_info.json",
+		resourcePath = "custom-asset-dashboards-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testDashboardNotFound() {
-		Assert.assertNull(_dashboardDog.getDashboard("0"));
+		Dashboard dashboard = _dashboardDog.getDashboard("0");
+
+		Assert.assertNull(dashboard);
 	}
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "custom_asset_dashboards_info.json",
+		resourcePath = "custom-asset-dashboards-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -65,13 +68,13 @@ public class DashboardDogTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "custom_asset_dashboards_info.json",
+		resourcePath = "custom-asset-dashboards-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testGetDashboardBagAll() {
 		ResultBag<Dashboard> resultBag = _dashboardDog.getDashboardResultBag(
-			"1", null, 10, Sort.asc("assetTitle"), 0);
+			"1", SortBuilders.fieldSort("assetTitle"), null, 10, 0);
 
 		Assert.assertNotNull(resultBag);
 		Assert.assertEquals(3, resultBag.getTotal());
@@ -83,13 +86,13 @@ public class DashboardDogTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "custom_asset_dashboards_info.json",
+		resourcePath = "custom-asset-dashboards-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testGetDashboardBagPaginated() {
 		ResultBag<Dashboard> resultBag = _dashboardDog.getDashboardResultBag(
-			"1", null, 1, Sort.asc("assetTitle"), 1);
+			"1", SortBuilders.fieldSort("assetTitle"), null, 1, 1);
 
 		Assert.assertNotNull(resultBag);
 		Assert.assertEquals(3, resultBag.getTotal());
@@ -105,7 +108,7 @@ public class DashboardDogTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "custom_asset_dashboards_info.json",
+		resourcePath = "custom-asset-dashboards-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

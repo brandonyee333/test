@@ -91,9 +91,6 @@
 					"type": "custom"
 				}
 			}
-		},
-		"index": {
-			"max_ngram_diff": 2
 		}
 	}
 }

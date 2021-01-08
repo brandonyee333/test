@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.backend.rest.response.embedded.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.Faro
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -40,7 +41,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.TopHits;
+import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -222,14 +223,14 @@ public class ActivityGroupsRestController extends BaseRestController {
 
 				Stream<SearchHit> stream = Arrays.stream(searchHits.getHits());
 
+				List<JSONObject> jsonObjects = stream.map(
+					hit -> new JSONObject(hit.getSourceAsString())
+				).collect(
+					Collectors.toList()
+				);
+
 				embeddedJSONObject.put(
-					topHits.getName(),
-					new JSONArray(
-						stream.map(
-							hit -> new JSONObject(hit.getSourceAsString())
-						).collect(
-							Collectors.toList()
-						)));
+					topHits.getName(), new JSONArray(jsonObjects));
 			}
 
 			if (expandActivitiesCount) {

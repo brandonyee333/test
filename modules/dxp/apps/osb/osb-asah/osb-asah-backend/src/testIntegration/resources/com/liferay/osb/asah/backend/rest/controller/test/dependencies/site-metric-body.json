@@ -1,0 +1,8 @@
+{
+	"operationName": "SiteMetric",
+	"variables": {
+		"assetId": "1",
+		"channelId": "1",
+		"rangeKey": 30
+	}
+}

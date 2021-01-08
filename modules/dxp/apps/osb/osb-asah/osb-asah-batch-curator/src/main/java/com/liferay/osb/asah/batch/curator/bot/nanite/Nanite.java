@@ -21,17 +21,6 @@ import org.json.JSONObject;
  */
 public interface Nanite {
 
-	public boolean isLogRunEnabled();
-
-	public void logCompleted(
-		JSONObject contextJSONObject, long duration, String osbAsahTaskId);
-
-	public void logFailed(
-		JSONObject contextJSONObject, long duration, String osbAsahTaskId,
-		Throwable throwable);
-
-	public void logStart(JSONObject contextJSONObject);
-
 	public void run(JSONObject contextJSONObject) throws Exception;
 
 }

@@ -17,10 +17,10 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,14 +40,18 @@ import org.springframework.stereotype.Component;
 public class SalesforceAccountsNanite extends BaseNanite {
 
 	@Override
-	public void run(JSONObject contextJSONObject) throws Exception {
-		processDataSourceAuditEvents(
-			contextJSONObject.getString("dataSourceId"));
+	@PostConstruct
+	public void init() {
+		super.init();
+
+		_salesforceRawElasticsearchInvoker =
+			elasticsearchInvokerFactory.forSalesforceRaw();
 	}
 
 	@Override
-	protected Log getLog() {
-		return _log;
+	public void run(JSONObject contextJSONObject) throws Exception {
+		processDataSourceAuditEvents(
+			contextJSONObject.getString("dataSourceId"));
 	}
 
 	protected void processAuditEventJSONObject(JSONObject auditEventJSONObject)
@@ -154,8 +158,8 @@ public class SalesforceAccountsNanite extends BaseNanite {
 		String osbAsahDataSourceId = salesforceAccountJSONObject.getString(
 			"osbAsahDataSourceId");
 
-		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(osbAsahDataSourceId);
+		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.fetch(
+			"data-sources", osbAsahDataSourceId);
 
 		if (dataSourceJSONObject == null) {
 			if (_log.isWarnEnabled()) {
@@ -193,12 +197,8 @@ public class SalesforceAccountsNanite extends BaseNanite {
 	private FaroInfoAccountDog _faroInfoAccountDog;
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
-
-	@Autowired
 	private RunLogger _runLogger;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

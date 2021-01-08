@@ -1,9 +1,7 @@
 [
 	{
 		"access": 5,
-		"acquisitionChannel": null,
 		"browserName": "IE",
-		"canonicalUrl": "http://liferay.com/home",
 		"channelId": "1",
 		"country": "USA",
 		"dataSourceId": "liferay.com",

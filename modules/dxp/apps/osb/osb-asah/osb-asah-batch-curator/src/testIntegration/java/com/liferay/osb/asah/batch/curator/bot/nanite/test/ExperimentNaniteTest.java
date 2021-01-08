@@ -22,7 +22,9 @@ import com.liferay.osb.asah.common.http.ExperimentHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 
 import org.json.JSONObject;
 
@@ -34,18 +36,28 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author André Miranda
  */
+@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
+@Import(
+	{
+		CerebroQueueHttpTestConfiguration.class,
+		OSBAsahRedisDisabledTestConfiguration.class
+	}
+)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
 	@Before
+	@Override
 	public void setUp() throws Exception {
+		super.setUp();
+
 		faroInfoElasticsearchInvoker.add(
 			"experiments",
 			FaroInfoTestUtil.buildExperimentJSONObject(

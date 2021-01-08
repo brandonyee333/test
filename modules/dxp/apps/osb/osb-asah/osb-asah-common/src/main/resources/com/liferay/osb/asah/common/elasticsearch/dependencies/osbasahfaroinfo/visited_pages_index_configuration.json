@@ -2,10 +2,6 @@
 	"mappings": {
 		"visited-pages": {
 			"properties": {
-				"canonicalUrl": {
-					"normalizer": "case_insensitive_sort",
-					"type": "keyword"
-				},
 				"day": {
 					"type": "date"
 				},

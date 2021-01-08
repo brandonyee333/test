@@ -29,7 +29,6 @@ import java.math.BigDecimal;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,8 +42,8 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.Sum;
-import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.sum.Sum;
+import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,32 +54,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PageReferrerDog {
-
-	public Map<String, Double> getAcquisitionChannels(
-		SearchQueryContext searchQueryContext) {
-
-		Aggregations aggregations = _dataDog.queryAggregations(
-			"page-referrers",
-			_buildAcquisitionChannelSearchSourceBuilder(searchQueryContext));
-
-		if (DogUtil.isEmpty(aggregations)) {
-			return Collections.emptyMap();
-		}
-
-		Terms terms = aggregations.get("acquisition");
-
-		if (terms == null) {
-			return Collections.emptyMap();
-		}
-
-		Map<String, Double> acquisitions = new HashMap<>();
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			acquisitions.put(bucket.getKeyAsString(), _getAccessValue(bucket));
-		}
-
-		return acquisitions;
-	}
 
 	public List<PageReferrerMetric> getPageReferrerMetrics(
 		SearchQueryContext searchQueryContext) {
@@ -102,11 +75,11 @@ public class PageReferrerDog {
 
 		BigDecimal partial = BigDecimal.ZERO;
 
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			Metric accessMetric = _getAccessMetric(bucket);
+		for (Terms.Bucket termsBucket : terms.getBuckets()) {
+			Metric accessMetric = _getAccessMetric(termsBucket);
 
 			PageReferrerMetric pageReferrerMetric = _createPageReferrerMetric(
-				accessMetric, bucket);
+				accessMetric, termsBucket);
 
 			partial = partial.add(BigDecimal.valueOf(accessMetric.getValue()));
 
@@ -117,30 +90,6 @@ public class PageReferrerDog {
 			_getOthersPageReferrerMetrics(partial, searchQueryContext));
 
 		return pageReferrerMetrics;
-	}
-
-	private SearchSourceBuilder _buildAcquisitionChannelSearchSourceBuilder(
-		SearchQueryContext searchQueryContext) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.aggregation(
-			AggregationBuilders.terms(
-				"acquisition"
-			).field(
-				"acquisitionChannel"
-			).size(
-				Integer.MAX_VALUE
-			).subAggregation(
-				_createAccessesAggregationBuilder()
-			));
-		searchSourceBuilder.query(
-			_searchQueryHelper.createFilterBoolQueryBuilder(
-				Optional.empty(), searchQueryContext));
-		searchSourceBuilder.size(0);
-
-		return searchSourceBuilder;
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(

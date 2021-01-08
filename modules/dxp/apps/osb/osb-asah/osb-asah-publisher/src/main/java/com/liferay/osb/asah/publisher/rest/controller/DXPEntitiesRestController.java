@@ -14,19 +14,18 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
-import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorUserDog;
+import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
 
 import java.util.Collections;
+
+import javax.annotation.PostConstruct;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,9 +48,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DXPEntitiesRestController {
 
+	@PostConstruct
+	public void init() {
+		_queueHttp.initializeQueue();
+	}
+
 	@PostMapping
 	public ResponseEntity<?> post(
-		@RequestHeader(required = false, value = HeaderConstants.DATA_SOURCE_ID)
+		@RequestHeader(required = false, value = "OSB-Asah-Data-Source-ID")
 			String dataSourceId,
 		@RequestBody String json) {
 
@@ -110,12 +114,11 @@ public class DXPEntitiesRestController {
 					)
 				).put(
 					"object", objectJSONObject
-				).put(
-					"projectId", ProjectIdThreadLocal.getProjectId()
 				);
 
-				_messageBus.sendMessage(
-					Channel.DXP_ENTITIES_MESSAGE, messageJSONObject.toString());
+				_queueHttp.pushMessage(
+					messageJSONObject.toString(),
+					QueueHttp.QUEUE_NAME_DXP_ENTITIES);
 			}
 
 			return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
@@ -134,6 +137,6 @@ public class DXPEntitiesRestController {
 	private DXPExtractorUserDog _dxpExtractorUserDog;
 
 	@Autowired
-	private MessageBus _messageBus;
+	private QueueHttp _queueHttp;
 
 }

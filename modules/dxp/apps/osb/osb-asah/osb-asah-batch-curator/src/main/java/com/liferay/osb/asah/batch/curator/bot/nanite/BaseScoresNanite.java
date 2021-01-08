@@ -109,6 +109,8 @@ public abstract class BaseScoresNanite extends BaseNanite {
 		String lastSuccessfulDayDateString) {
 	}
 
+	protected abstract Log getLog();
+
 	protected boolean isInterrupted() {
 		return false;
 	}

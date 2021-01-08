@@ -22,7 +22,6 @@ import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -87,16 +86,6 @@ public class DateUtil {
 		calendar.add(Calendar.MONTH, months);
 
 		return toUTCString(calendar.getTime());
-	}
-
-	public static LocalDate fromUTC(
-		LocalDateTime localDateTime, ZoneId zoneId) {
-
-		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
-
-		zonedDateTime = zonedDateTime.withZoneSameInstant(zoneId);
-
-		return zonedDateTime.toLocalDate();
 	}
 
 	public static int getDeltaDays(Date date1, Date date2) {
@@ -172,14 +161,6 @@ public class DateUtil {
 		return deltaWeeks;
 	}
 
-	public static String minusMinutes(
-		LocalDateTime localDateTime, int minutes) {
-
-		LocalDateTime newLocalDateTime = localDateTime.minusMinutes(minutes);
-
-		return newLocalDateTime.toString();
-	}
-
 	public static String newDateString() {
 		return toUTCString(new Date());
 	}
@@ -220,24 +201,6 @@ public class DateUtil {
 		return toUTCString(newDayDate(dateString));
 	}
 
-	public static LocalDateTime newDayLocalDateTime(ZoneId zoneId) {
-		return LocalDateTime.of(LocalDate.now(zoneId), LocalTime.MIDNIGHT);
-	}
-
-	public static String newDayLocalDateTimeString(
-		LocalDateTime localDateTime) {
-
-		LocalDateTime newLocalDateTime = localDateTime.with(LocalTime.MIDNIGHT);
-
-		return newLocalDateTime.toString();
-	}
-
-	public static String newDayLocalDateTimeString(ZoneId zoneId) {
-		LocalDateTime newDayLocalDateTime = newDayLocalDateTime(zoneId);
-
-		return newDayLocalDateTime.toString();
-	}
-
 	public static Date newEndOfDayDate(Date date) {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
@@ -259,18 +222,6 @@ public class DateUtil {
 		throws Exception {
 
 		return toUTCString(newEndOfDayDate(dateString));
-	}
-
-	public static String newEndOfDayLocalDateTimeString(
-			String dateString, ZoneId zoneId)
-		throws ParseException {
-
-		LocalDateTime localDateTime = toLocalDateTime(
-			toUTCDate(dateString), zoneId);
-
-		localDateTime = localDateTime.with(LocalTime.MAX);
-
-		return localDateTime.toString();
 	}
 
 	public static Date newEndOfMonthDate(String dateString) throws Exception {
@@ -324,14 +275,6 @@ public class DateUtil {
 		return toUTCString(new Date());
 	}
 
-	public static LocalDate toLocalDate(long date, ZoneId zoneId) {
-		Instant instant = Instant.ofEpochMilli(date);
-
-		ZonedDateTime zonedDateTime = instant.atZone(zoneId);
-
-		return zonedDateTime.toLocalDate();
-	}
-
 	public static LocalDateTime toLocalDateTime(Date date, ZoneId zoneId) {
 		Instant instant = date.toInstant();
 
@@ -344,14 +287,6 @@ public class DateUtil {
 		DateFormat dateFormat = _newSimpleDateFormat();
 
 		return dateFormat.format(date);
-	}
-
-	public static String toString(String dateString) {
-		DateFormat dateFormat = _newSimpleDateFormat();
-
-		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-		return dateFormat.format(new Date(Long.parseLong(dateString)));
 	}
 
 	public static Date toUTCDate(String dateString) throws ParseException {

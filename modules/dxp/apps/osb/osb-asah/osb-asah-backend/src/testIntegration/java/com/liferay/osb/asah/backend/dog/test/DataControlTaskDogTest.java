@@ -16,12 +16,12 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.DataControlTaskDog;
 import com.liferay.osb.asah.backend.model.DataControlTask;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
-import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -35,7 +35,9 @@ import java.nio.file.Paths;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,7 +62,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Matthew Kong
  */
 @ElasticsearchIndex(
-	name = "data-control-tasks", resourcePath = "data_control_tasks.json",
+	name = "data-control-tasks", resourcePath = "data-control-tasks.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
@@ -69,6 +71,8 @@ public class DataControlTaskDogTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
+
 		_tempPath = Files.createTempDirectory("temp");
 	}
 
@@ -152,7 +156,8 @@ public class DataControlTaskDogTest {
 	public void testGetDataControlTaskResultBagBatch() {
 		ResultBag<DataControlTask> resultBag =
 			_dataControlTaskDog.getDataControlTaskResultBag(
-				"102", null, null, 10, Sort.desc("createDate"), 0, null, null);
+				"102", null, null, 10, _getSort("createDate", "DESC"), 0, null,
+				null);
 
 		_checkResults(
 			2, Arrays.asList("jane.doe@liferay.com", "test@liferay.com"),
@@ -163,7 +168,7 @@ public class DataControlTaskDogTest {
 	public void testGetDataControlTaskResultBagCombination() {
 		ResultBag<DataControlTask> resultBag =
 			_dataControlTaskDog.getDataControlTaskResultBag(
-				"101", "liferay", 30, 10, Sort.desc("createDate"), 0,
+				"101", "liferay", 30, 10, _getSort("createDate", "DESC"), 0,
 				Collections.singletonList(
 					DataControlTaskStatus.COMPLETED.toString()),
 				Collections.singletonList(
@@ -177,7 +182,8 @@ public class DataControlTaskDogTest {
 	public void testGetDataControlTaskResultBagPagination() {
 		ResultBag<DataControlTask> resultBag =
 			_dataControlTaskDog.getDataControlTaskResultBag(
-				null, null, null, 1, Sort.desc("createDate"), 1, null, null);
+				null, null, null, 1, _getSort("createDate", "DESC"), 1, null,
+				null);
 
 		_checkResults(
 			4, Collections.singletonList("test@liferay.com"), resultBag);
@@ -187,7 +193,8 @@ public class DataControlTaskDogTest {
 	public void testGetDataControlTaskResultBagRange() {
 		ResultBag<DataControlTask> resultBag =
 			_dataControlTaskDog.getDataControlTaskResultBag(
-				null, null, 30, 10, Sort.desc("createDate"), 0, null, null);
+				null, null, 30, 10, _getSort("createDate", "DESC"), 0, null,
+				null);
 
 		_checkResults(
 			3,
@@ -201,7 +208,8 @@ public class DataControlTaskDogTest {
 	public void testGetDataControlTaskResultBagSearch() {
 		ResultBag<DataControlTask> resultBag =
 			_dataControlTaskDog.getDataControlTaskResultBag(
-				null, "doe", null, 10, Sort.desc("createDate"), 0, null, null);
+				null, "doe", null, 10, _getSort("createDate", "DESC"), 0, null,
+				null);
 
 		_checkResults(
 			2, Arrays.asList("jane.doe@liferay.com", "john.doe@liferay.com"),
@@ -212,7 +220,7 @@ public class DataControlTaskDogTest {
 	public void testGetDataControlTaskResultBagStatus() {
 		ResultBag<DataControlTask> resultBag =
 			_dataControlTaskDog.getDataControlTaskResultBag(
-				null, null, null, 10, Sort.desc("createDate"), 0,
+				null, null, null, 10, _getSort("createDate", "DESC"), 0,
 				Collections.singletonList(
 					DataControlTaskStatus.PENDING.toString()),
 				null);
@@ -225,7 +233,7 @@ public class DataControlTaskDogTest {
 	public void testGetDataControlTaskResultBagTypes() {
 		ResultBag<DataControlTask> resultBag =
 			_dataControlTaskDog.getDataControlTaskResultBag(
-				null, null, null, 10, Sort.desc("createDate"), 0, null,
+				null, null, null, 10, _getSort("createDate", "DESC"), 0, null,
 				Collections.singletonList(
 					DataControlTaskType.UNSUPPRESS.toString()));
 
@@ -252,14 +260,25 @@ public class DataControlTaskDogTest {
 			));
 	}
 
+	private Map<String, String> _getSort(String column, String type) {
+		Map<String, String> sort = new HashMap<>();
+
+		sort.put("column", column);
+		sort.put("type", type);
+
+		return sort;
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		DataControlTaskDogTest.class);
 
 	@Autowired
 	private DataControlTaskDog _dataControlTaskDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	private Path _tempPath;
 

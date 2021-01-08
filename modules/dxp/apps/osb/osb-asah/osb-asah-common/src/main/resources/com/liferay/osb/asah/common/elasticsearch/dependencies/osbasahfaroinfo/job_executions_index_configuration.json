@@ -1,0 +1,46 @@
+{
+	"mappings": {
+		"job-executions": {
+			"properties": {
+				"completedDate": {
+					"type": "date"
+				},
+				"context": {
+					"type": "object"
+				},
+				"createdDate": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"job": {
+					"properties": {
+						"id": {
+							"type": "keyword"
+						},
+						"name": {
+							"type": "keyword"
+						},
+						"parameters": {
+							"type": "object"
+						},
+						"type": {
+							"type": "keyword"
+						}
+					},
+					"type": "keyword"
+				},
+				"lastUpdatedDate": {
+					"type": "date"
+				},
+				"status": {
+					"type": "keyword"
+				},
+				"step": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

@@ -27,7 +27,6 @@ import cc.mallet.types.InstanceList;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,9 +39,6 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -64,11 +60,6 @@ import org.springframework.stereotype.Component;
 public class InterestTopicsNanite extends BaseNanite {
 
 	@Override
-	public boolean isLogRunEnabled() {
-		return true;
-	}
-
-	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		ParallelTopicModel parallelTopicModel = new ParallelTopicModel(
 			_ldaTopicsCount, _ldaAlphaSum, _ldaBeta);
@@ -80,11 +71,6 @@ public class InterestTopicsNanite extends BaseNanite {
 		parallelTopicModel.estimate();
 
 		_saveModel(parallelTopicModel);
-	}
-
-	@Override
-	protected Log getLog() {
-		return LogFactory.getLog(InterestTopicsNanite.class);
 	}
 
 	private List<Pipe> _createPreprocessPipes() {
@@ -145,7 +131,7 @@ public class InterestTopicsNanite extends BaseNanite {
 			new SerialPipes(_createPreprocessPipes()));
 
 		Iterator<Instance> instanceIterator = new InstanceIterator(
-			_faroInfoElasticsearchInvoker);
+			elasticsearchInvokerFactory.forFaroInfo());
 
 		instanceList.addThruPipe(instanceIterator);
 
@@ -153,17 +139,17 @@ public class InterestTopicsNanite extends BaseNanite {
 	}
 
 	private void _saveModel(ParallelTopicModel parallelTopicModel) {
-		_faroInfoElasticsearchInvoker.delete(
+		ElasticsearchInvoker elasticsearchInvoker =
+			elasticsearchInvokerFactory.forFaroInfo();
+
+		elasticsearchInvoker.delete(
 			"interest-topics", QueryBuilders.matchAllQuery());
 
-		_faroInfoElasticsearchInvoker.add(
+		elasticsearchInvoker.add(
 			"interest-topics", _createTopicsJSONArray(parallelTopicModel));
 	}
 
 	private static final String _SEPARATOR = "_SEPARATOR_";
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Value("${lda.alpha.sum:1.0}")
 	private double _ldaAlphaSum;

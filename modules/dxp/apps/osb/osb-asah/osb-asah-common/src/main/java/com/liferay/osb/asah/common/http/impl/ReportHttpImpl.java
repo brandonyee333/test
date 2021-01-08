@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.http.impl;
 
-import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.http.ReportHttp;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
@@ -59,7 +58,7 @@ public class ReportHttpImpl implements ReportHttp {
 		return new HttpHeaders() {
 			{
 				set(
-					HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE,
+					"OSB-Asah-Faro-Backend-Security-Signature",
 					DigestUtils.sha256Hex(_osbAsahSecurityToken.concat(url)));
 			}
 		};

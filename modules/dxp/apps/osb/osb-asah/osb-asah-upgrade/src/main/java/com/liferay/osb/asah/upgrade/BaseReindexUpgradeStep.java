@@ -15,16 +15,12 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,31 +31,19 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 
 	public abstract String[] getCollectionNames();
 
-	public Map<String, Object> getParams() {
-		return null;
-	}
-
-	public QueryBuilder getQueryBuilder() {
-		return null;
-	}
-
-	public String getScript() {
-		return null;
-	}
-
 	public abstract WeDeployDataService getWeDeployDataService();
 
 	@Override
 	public void upgrade(String version) throws Exception {
 		for (String collectionName : getCollectionNames()) {
-			String indexAlias = ElasticsearchIndexUtil.getIndexAlias(
+			String indexAlias = _reindexHelper.getIndexAlias(
 				collectionName, getWeDeployDataService());
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Index alias: " + indexAlias);
 			}
 
-			String baseIndexName = ElasticsearchIndexUtil.getIndexName(
+			String baseIndexName = _reindexHelper.getBaseIndexName(
 				collectionName, getWeDeployDataService());
 
 			String newIndexName = _reindexHelper.getNewIndexName(
@@ -75,17 +59,6 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 					_log.info(
 						"Skipped reindexing as " + newIndexName +
 							" exists and has the expected alias");
-				}
-
-				continue;
-			}
-			else if (!_elasticsearchIndexManager.aliasExists(indexAlias) &&
-					 !_elasticsearchIndexManager.exists(baseIndexName)) {
-
-				if (_log.isInfoEnabled()) {
-					_log.info(
-						"Skipped reindexing as alias " + indexAlias +
-							"and index " + baseIndexName + " do not exist");
 				}
 
 				continue;
@@ -131,9 +104,7 @@ public abstract class BaseReindexUpgradeStep implements UpgradeStep {
 	protected void doUpgrade(String newIndexName, String oldIndexName)
 		throws Exception {
 
-		_reindexHelper.reindex(
-			newIndexName, getParams(), getQueryBuilder(), getScript(),
-			oldIndexName);
+		_reindexHelper.reindex(newIndexName, oldIndexName);
 	}
 
 	private static final Log _log = LogFactory.getLog(

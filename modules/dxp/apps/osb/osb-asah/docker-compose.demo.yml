@@ -7,11 +7,11 @@ services:
             - JAVA_OPTS=-Xms2048m -Xmx2048m -XX:MaxMetaspaceSize=512m # increase Xmx in case of out of memory
             - LCP_ENGINE_ELASTICSEARCH_SERVER_IP=analytics-elasticsearch
             - LCP_PROJECT_ID=local
-            - OSB_ASAH_BACKEND_URL=http://localhost:8082
-            - OSB_ASAH_PUBLISHER_URL=http://localhost:8082
-            - OSB_FARO_FRONTEND_URL=http://analytics-frontend:8080
-            - SPRING_PROFILES_ACTIVE=dev
-        image: liferay/com-liferay-osb-asah:latest-demo
+            - OSB_ASAH_BACKEND_ADMIN_REST_CONTROLLER_ENABLED=true
+            - OSB_ASAH_BACKEND_URL=http://localhost:8082 # replace 'localhost' with your ip
+            - OSB_ASAH_PUBLISHER_URL=http://localhost:8082 # replace 'localhost' with your ip
+            - OSB_FARO_FRONTEND_URL=http://localhost:8081 # replace 'localhost' with your ip
+        image: liferay/com-liferay-osb-asah:monolith-20200508
         ports:
             - "8082:8080"
         volumes:
@@ -21,7 +21,6 @@ services:
         container_name: analytics-elasticsearch
         environment:
             - ES_JAVA_OPTS=-Xms512m -Xmx512m
-            - discovery.type=single-node
             - http.cors.allow-origin=*
             - http.cors.enabled=true
         healthcheck:
@@ -30,28 +29,25 @@ services:
             start_period: 5s
             test: ["CMD", "curl", "-f", "http://localhost:9200"]
             timeout: 10s
-        image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.9.2
+        image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.1
         ports:
             - "9200:9200"
         volumes:
-            - analytics-data1:/usr/share/elasticsearch/data
+            - analytics-data:/usr/share/elasticsearch/data
     analytics-frontend:
         container_name: analytics-frontend
         environment:
             - FARO_DEFAULT_WE_DEPLOY_KEY=local.lfr.cloud
-            - FARO_URL=http://localhost:8081
             - OSB_ASAH_BACKEND_URL=http://analytics-backend:8080
             - OSB_ASAH_PUBLISHER_URL=http://analytics-backend:8080
-        image: liferay/com-liferay-osb-faro:latest-demo
+        image: liferay/com-liferay-osb-faro:20200508
         ports:
             - "8081:8080"
-        volumes:
-            - analytics-data2:/opt/liferay/data
 version: "2.4"
 volumes:
-    analytics-data1:
+    analytics-data:
         driver: local
-    analytics-data2:
+    backup:
         driver: local
     export:
         driver: local

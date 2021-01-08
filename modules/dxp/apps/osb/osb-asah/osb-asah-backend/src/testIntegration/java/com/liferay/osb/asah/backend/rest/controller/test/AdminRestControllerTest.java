@@ -17,67 +17,136 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.liferay.osb.asah.backend.rest.controller.AdminRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.elasticsearch.index.query.QueryBuilders;
-
-import org.everit.json.schema.ValidationException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 /**
  * @author Vishal Reddy
  */
-@ActiveProfiles("AdminRestControllerTest")
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @EnableCaching
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@TestPropertySource(
+	properties = "osb.asah.backend.admin.rest.controller.enabled=true"
+)
 public class AdminRestControllerTest {
+
+	@Before
+	public void setUp() {
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
+	}
 
 	@Test
 	public void testClearCache() {
-		Cache cache1 = _cacheManager.getCache(
-			ProjectIdThreadLocal.getProjectId() + "#test");
+		Mockito.doAnswer(
+			invocationOnMock -> _cacheMap.get(
+				invocationOnMock.getArgumentAt(0, String.class))
+		).when(
+			_cacheManager
+		).getCache(
+			Mockito.anyString()
+		);
 
-		Assert.assertNotNull(cache1);
+		Mockito.doAnswer(
+			invocationOnMock -> _cacheMap.keySet()
+		).when(
+			_cacheManager
+		).getCacheNames();
 
-		cache1.put("foo", "bar");
+		Cache cache = new Cache() {
 
-		Cache cache2 = _cacheManager.getCache("test2#test");
+			@Override
+			public void clear() {
+				_map.clear();
+			}
 
-		Assert.assertNotNull(cache2);
+			@Override
+			public void evict(Object key) {
+			}
 
-		cache2.put("foo", "bar");
+			@Override
+			public ValueWrapper get(Object key) {
+				return () -> _map.getOrDefault(String.valueOf(key), null);
+			}
+
+			@Override
+			public <T> T get(Object key, Callable<T> valueLoader) {
+				return null;
+			}
+
+			@Override
+			public <T> T get(Object key, Class<T> type) {
+				return null;
+			}
+
+			@Override
+			public String getName() {
+				return null;
+			}
+
+			@Override
+			public Object getNativeCache() {
+				return null;
+			}
+
+			@Override
+			public void put(Object key, Object value) {
+				_map.put(String.valueOf(key), value);
+			}
+
+			@Override
+			public ValueWrapper putIfAbsent(Object key, Object value) {
+				return null;
+			}
+
+			private final Map<String, Object> _map = new HashMap<>();
+
+		};
+
+		cache.put("foo", "bar");
+
+		_cacheMap.put("test", cache);
+
+		Cache.ValueWrapper valueWrapper = cache.get("foo");
+
+		Assert.assertNotNull(valueWrapper.get());
 
 		_adminRestController.clearCache();
 
-		Assert.assertNull(cache1.get("foo"));
-		Assert.assertNotNull(cache2.get("foo"));
+		valueWrapper = cache.get("foo");
+
+		Assert.assertNull(valueWrapper.get());
 	}
 
 	@ElasticsearchIndex(
@@ -155,36 +224,17 @@ public class AdminRestControllerTest {
 			0, _elasticsearchInvoker.count("OSBAsahMarkers", null));
 	}
 
-	@Test(expected = ValidationException.class)
-	public void testRunWithInvalidSchema() {
-		JSONArray jsonArray = new JSONArray();
-
-		jsonArray.put(
-			JSONUtil.put(
-				RandomTestUtil.randomString(), RandomTestUtil.randomString()));
-
-		_adminRestController.run(jsonArray.toString());
-	}
-
-	@Profile("AdminRestControllerTest")
-	@TestConfiguration
-	public static class AdminRestControllerTestConfiguration {
-
-		@Bean
-		@Primary
-		public CacheManager cacheManager() {
-			return new ConcurrentMapCacheManager("test#test", "test2#test");
-		}
-
-	}
-
 	@Autowired
+	@InjectMocks
 	private AdminRestController _adminRestController;
 
-	@Autowired
+	@Mock
 	private CacheManager _cacheManager;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private final Map<String, Cache> _cacheMap = new HashMap<>();
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

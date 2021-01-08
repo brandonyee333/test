@@ -14,11 +14,9 @@
 
 package com.liferay.osb.asah.common.http.impl;
 
-import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.spring.http.Http;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -41,7 +39,7 @@ public class ChannelHttpImpl implements ChannelHttp {
 		_http.exchangeResponseEntity(
 			ServiceConstants.URL_FRONTEND,
 			String.format(
-				"/o/faro/asah/%s/channel", ProjectIdThreadLocal.getProjectId()),
+				"/o/faro/asah/%s/channel", ServiceConstants.LCP_PROJECT_ID),
 			HttpMethod.POST, jsonObject.toString(), _getHttpHeaders());
 	}
 
@@ -49,7 +47,7 @@ public class ChannelHttpImpl implements ChannelHttp {
 		return new HttpHeaders() {
 			{
 				set(
-					HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE,
+					"OSB-Asah-Faro-Backend-Security-Signature",
 					DigestUtils.sha256Hex(
 						_osbAsahSecurityToken.concat(
 							ServiceConstants.URL_FRONTEND)));

@@ -49,13 +49,10 @@ import org.springframework.stereotype.Component;
 @MonolithExclude
 public class PubSubClientFactory {
 
-	public Publisher createPublisher(
-			boolean enableOrdering, ProjectTopicName projectTopicName)
+	public Publisher createPublisher(ProjectTopicName projectTopicName)
 		throws Exception {
 
 		Publisher.Builder builder = Publisher.newBuilder(projectTopicName);
-
-		builder.setEnableMessageOrdering(enableOrdering);
 
 		ManagedChannel managedChannel = _managedChannelSupplier.get();
 

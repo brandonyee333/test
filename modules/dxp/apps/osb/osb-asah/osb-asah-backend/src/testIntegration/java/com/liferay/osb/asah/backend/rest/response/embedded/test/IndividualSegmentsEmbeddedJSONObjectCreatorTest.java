@@ -16,10 +16,10 @@ package com.liferay.osb.asah.backend.rest.response.embedded.test;
 
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualSegmentsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -28,6 +28,7 @@ import org.hamcrest.Matchers;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,6 +41,13 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class IndividualSegmentsEmbeddedJSONObjectCreatorTest {
+
+	@Before
+	public void setUp() {
+		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+	}
 
 	@Test
 	public void testExpandReferencedObjects() throws Exception {
@@ -154,10 +162,11 @@ public class IndividualSegmentsEmbeddedJSONObjectCreatorTest {
 			referencedObjectsJSONObject.getJSONArray(key), "id");
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

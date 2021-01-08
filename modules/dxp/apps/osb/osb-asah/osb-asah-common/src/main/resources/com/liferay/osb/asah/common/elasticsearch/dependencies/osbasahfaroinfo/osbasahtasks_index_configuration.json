@@ -29,14 +29,5 @@
 				}
 			}
 		}
-	},
-	"settings": {
-		"index": {
-			"mapping": {
-				"total_fields": {
-					"limit": 5000
-				}
-			}
-		}
 	}
 }

@@ -1,5 +1,5 @@
 {
-	"cpu": 1,
+	"cpu": 2,
 	"id": "osbasahredis",
 	"memory": 2048,
 	"ports": [
@@ -9,5 +9,8 @@
 			"protocol": "TCP",
 			"targetPort": 6379
 		}
-	]
+	],
+	"volumes": {
+		"osbasahredisdata": "/data"
+	}
 }

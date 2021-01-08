@@ -1,0 +1,17 @@
+{
+	"data": {
+		"journals": {
+			"assetMetrics": [
+				{
+					"assetId": "1",
+					"assetTitle": "",
+					"urls": null,
+					"viewsMetric": {
+						"value": 1.0
+					}
+				}
+			],
+			"total": 1
+		}
+	}
+}

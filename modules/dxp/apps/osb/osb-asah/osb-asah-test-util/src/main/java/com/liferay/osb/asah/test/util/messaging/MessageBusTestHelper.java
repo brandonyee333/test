@@ -123,8 +123,7 @@ public class MessageBusTestHelper {
 		PubSubClientFactory pubSubClientFactory =
 			_pubSubMessageBusImpl.getPubSubclientFactory();
 
-		return pubSubClientFactory.createPublisher(
-			channel.isOrderingEnabled(), projectTopicName);
+		return pubSubClientFactory.createPublisher(projectTopicName);
 	}
 
 	private void _pullAllSubscriptionMessages(Subscription subscription) {

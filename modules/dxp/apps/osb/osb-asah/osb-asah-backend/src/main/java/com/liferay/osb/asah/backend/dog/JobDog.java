@@ -14,62 +14,40 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
-import com.liferay.osb.asah.backend.model.JobRun;
-import com.liferay.osb.asah.backend.model.JobRunDataPeriod;
-import com.liferay.osb.asah.backend.model.JobRunFrequency;
-import com.liferay.osb.asah.backend.model.JobRunStatus;
-import com.liferay.osb.asah.backend.model.JobRunsMonthlyStatistics;
-import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobType;
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
-import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.util.ObjectMapperUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.io.IOException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.TimeZone;
-import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.action.bulk.BulkItemResponse;
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.elasticsearch.index.reindex.BulkByScrollResponse;
-import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Component;
 
 /**
@@ -79,495 +57,112 @@ import org.springframework.stereotype.Component;
 public class JobDog {
 
 	public Job addJob(
-		List<JobParameter> jobParameters, JobRunDataPeriod jobRunDataPeriod,
-		JobRunFrequency jobRunFrequency, JobType jobType, String name,
-		boolean runNow) {
+		boolean active, String cronExpression, List<JobParameter> jobParameters,
+		JobType jobType, String name) {
 
-		Job job = new Job();
+		JSONObject jsonObject = new JSONObject();
 
-		Date date = new Date();
+		jsonObject.put("active", active);
+		jsonObject.put("cronExpression", cronExpression);
+		jsonObject.put("name", name);
+		jsonObject.put(
+			"parameters",
+			_objectMapper.convertValue(jobParameters, JSONArray.class));
+		jsonObject.put("type", jobType.toString());
 
-		job.setCreatedDate(date);
-		job.setLastUpdatedDate(date);
+		jsonObject = _faroInfoElasticsearchInvoker.add("jobs", jsonObject);
 
-		job.setName(name);
-		job.setJobParameters(jobParameters);
-		job.setJobRunDataPeriod(jobRunDataPeriod);
-		job.setJobRunFrequency(jobRunFrequency);
-		job.setJobType(jobType);
+		_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
+			_jobTypeNaniteMap.get(jobType), jsonObject, cronExpression);
 
-		job = _jobElasticsearchRepository.add(job);
-
-		_scheduleOSBAsahTask(job);
-
-		if (runNow) {
-			runJob(job.getId(), jobRunDataPeriod);
+		try {
+			return _objectMapper.readValue(jsonObject.toString(), Job.class);
 		}
-
-		return job;
+		catch (IOException ioe) {
+			throw new RuntimeException("Unable to process update request", ioe);
+		}
 	}
 
-	public List<Boolean> deleteJobs(List<String> ids) {
-		List<Boolean> statuses = new ArrayList<>();
-
-		for (String id : ids) {
-			statuses.add(_deleteJob(id));
-		}
-
-		return statuses;
-	}
-
-	public Job fetchJob(String name) {
-		return _jobElasticsearchRepository.fetchFirst(
-			searchSourceBuilder -> searchSourceBuilder.query(
-				QueryBuilders.termQuery("name", name)));
+	public boolean deleteJob(String id) {
+		return _faroInfoElasticsearchInvoker.delete("jobs", id);
 	}
 
 	public Job getJob(String id) {
-		return _jobElasticsearchRepository.get(id);
-	}
+		SearchHits searchHits = _dataDog.querySearchHits(
+			"jobs", _faroInfoElasticsearchInvoker,
+			_buildJobSearchSourceBuilder(id));
 
-	public String getJobNextRunDateString(String id) {
-		Job job = getJob(id);
-
-		JobRunFrequency jobRunFrequency = job.getJobRunFrequency();
-
-		if (jobRunFrequency == JobRunFrequency.MANUAL) {
-			return null;
-		}
-
-		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
-			searchSourceBuilder -> {
-				searchSourceBuilder.query(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("job.id", id)
-					).filter(
-						QueryBuilders.termQuery("trigger", "SCHEDULE")
-					));
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
-			});
-
-		Date startDate = job.getLastUpdatedDate();
-
-		if (jobRun != null) {
-			startDate = jobRun.getCreatedDate();
-		}
-
-		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
-			jobRunFrequency.getCronExpression(), TimeZone.getTimeZone("UTC"));
-
-		return DateUtil.toUTCString(cronSequenceGenerator.next(startDate));
-	}
-
-	public ResultBag<Job> getJobResultBag(
-		String keywords, int size, Sort sort, int start) {
-
-		return _jobElasticsearchRepository.search(
-			_buildKeywordsQueryBuilder(keywords), size, sort, start);
-	}
-
-	public String getJobRunDateString(String id) {
-		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
-			searchSourceBuilder -> {
-				searchSourceBuilder.query(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("job.id", id)
-					).filter(
-						QueryBuilders.termQuery("status", "PUBLISHED")
-					));
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
-			});
-
-		if (jobRun == null) {
-			return null;
-		}
-
-		return jobRun.getCompletedDateISO();
-	}
-
-	public ResultBag<JobRun> getJobRunResultBag(
-		String jobId, int size, Sort sort, int start) {
-
-		return _jobRunElasticsearchRepository.search(
-			QueryBuilders.termQuery("job.id", jobId), size, sort, start);
-	}
-
-	public JobRunsMonthlyStatistics getJobRunsMonthlyStatistics(String id) {
-		ResultBag<JobRun> jobRunResultBag = _getCurrentMonthJobRunResultBag(
-			id, 20, Sort.desc("id"), 0);
-
-		List<JobRun> jobRuns = jobRunResultBag.getResults();
-
-		return new JobRunsMonthlyStatistics() {
-			{
-				setCompletedJobRuns(
-					_countJobRunsByStatus(jobRuns, JobRunStatus.COMPLETED));
-				setFailedJobRuns(
-					_countJobRunsByStatus(jobRuns, JobRunStatus.FAILED));
-				setMaxJobRuns(_maxMonthlyJobRuns);
-				setPublishedJobRuns(
-					_countJobRunsByStatus(jobRuns, JobRunStatus.PUBLISHED));
-				setRunningJobRuns(
-					_countJobRunsByStatus(jobRuns, JobRunStatus.RUNNING));
-				setScheduledJobRuns(
-					_countCurrentMonthScheduledJobRuns(jobRuns, getJob(id)));
-			}
-		};
-	}
-
-	public JobStatus getJobStatus(String id) {
-		if (_hasJobRunPublished(id)) {
-			return JobStatus.READY;
-		}
-
-		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
-			searchSourceBuilder -> {
-				searchSourceBuilder.query(
-					QueryBuilders.termQuery("job.id", id));
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
-			});
-
-		if (jobRun != null) {
-			if (jobRun.getJobRunStatus() == JobRunStatus.FAILED) {
-				return JobStatus.FAILED;
-			}
-			else if ((jobRun.getJobRunStatus() == JobRunStatus.RUNNING) ||
-					 (jobRun.getJobRunStatus() == JobRunStatus.UNKNOWN)) {
-
-				return JobStatus.RUNNING;
-			}
-		}
-
-		Job job = getJob(id);
-
-		if (job.getJobRunFrequency() == JobRunFrequency.MANUAL) {
-			return JobStatus.PENDING;
-		}
-
-		return JobStatus.SCHEDULED;
-	}
-
-	public Job runJob(String id, JobRunDataPeriod jobRunDataPeriod) {
-		JobRun jobRun = _fetchLatestJobRun(id);
-
-		if ((jobRun != null) &&
-			(jobRun.getJobRunStatus() == JobRunStatus.RUNNING)) {
-
-			throw new IllegalStateException(
-				String.format(
-					"Unable to run job ID %s because it is already running",
-					id));
-		}
-
-		JobRunsMonthlyStatistics jobRunsMonthlyStatistics =
-			getJobRunsMonthlyStatistics(id);
-
-		if (jobRunsMonthlyStatistics.getAvailableJobRuns() == 0) {
-			throw new IllegalStateException(
-				String.format(
-					"Unable to run job ID %s because this run surpasses the " +
-						"maximum allowed monthly runs threshold",
-					id));
-		}
-
-		Job job = getJob(id);
-
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
-			_jobTypeNaniteMap.get(job.getJobType()),
-			JSONUtil.put(
-				"job", ObjectMapperUtil.convertValue(job, JSONObject.class)
-			).put(
-				"runDataPeriod", jobRunDataPeriod.toString()
-			).put(
-				"trigger", "MANUAL"
-			));
-
-		return job;
-	}
-
-	public Job updateJob(
-		String id, List<JobParameter> jobParameters,
-		JobRunDataPeriod jobRunDataPeriod, JobRunFrequency jobRunFrequency,
-		String name, boolean runNow) {
-
-		Job job = _jobElasticsearchRepository.get(id);
-
-		JobRunFrequency oldJobRunFrequency = job.getJobRunFrequency();
-
-		job.setLastUpdatedDate(new Date());
-		job.setName(name);
-		job.setJobParameters(jobParameters);
-		job.setJobRunFrequency(jobRunFrequency);
-		job.setJobRunDataPeriod(jobRunDataPeriod);
-
-		_rescheduleOSBAsahTask(job, oldJobRunFrequency);
-
-		job = _jobElasticsearchRepository.update(id, job);
-
-		if (runNow) {
-			runJob(id, jobRunDataPeriod);
-		}
-
-		return job;
-	}
-
-	private QueryBuilder _buildKeywordsQueryBuilder(String keywords) {
-		if (StringUtils.isBlank(keywords)) {
-			return QueryBuilders.matchAllQuery();
-		}
-
-		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-
-		boolQueryBuilder.filter(
-			BoolQueryBuilderUtil.should(
-				QueryBuilders.queryStringQuery(
+		if (searchHits.getTotalHits() != 1) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
 					String.format(
-						"name.search:*%1$s*",
-						QueryUtil.escapeKeywords(keywords)))
-			).should(
-				QueryBuilders.matchQuery(
-					"name.search", keywords
-				).fuzziness(
-					Fuzziness.AUTO
-				)
-			));
-
-		return boolQueryBuilder;
-	}
-
-	private int _countCurrentMonthScheduledJobRuns(
-		JobRunFrequency jobRunFrequency, Date startDate) {
-
-		int count = 0;
-
-		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneId.of("UTC"));
-
-		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
-			jobRunFrequency.getCronExpression(), TimeZone.getTimeZone("UTC"));
-
-		while (true) {
-			startDate = cronSequenceGenerator.next(startDate);
-
-			LocalDateTime nextJobRunLocalDateTime = DateUtil.toLocalDateTime(
-				startDate, ZoneId.of("UTC"));
-
-			if ((nextJobRunLocalDateTime.getMonthValue() >
-					nowLocalDateTime.getMonthValue()) ||
-				(nextJobRunLocalDateTime.getYear() >
-					nowLocalDateTime.getYear())) {
-
-				break;
+						"Unable to retrieve the job definition for the job " +
+							"ID %s. Returned %d total hits.",
+						id, searchHits.getTotalHits()));
 			}
 
-			if (nextJobRunLocalDateTime.getMonthValue() ==
-					nowLocalDateTime.getMonthValue()) {
-
-				count++;
-			}
-		}
-
-		return count;
-	}
-
-	private int _countCurrentMonthScheduledJobRuns(
-		List<JobRun> currentMonthJobRuns, Job job) {
-
-		if (job.getJobRunFrequency() == JobRunFrequency.MANUAL) {
-			return 0;
-		}
-
-		Date startDate = job.getLastUpdatedDate();
-
-		JobRun lastScheduledJobRun = _fetchLastScheduledJobRun(
-			currentMonthJobRuns);
-
-		if (lastScheduledJobRun != null) {
-			startDate = lastScheduledJobRun.getCreatedDate();
-		}
-
-		return _countCurrentMonthScheduledJobRuns(
-			job.getJobRunFrequency(), startDate);
-	}
-
-	private long _countJobRunsByStatus(
-		List<JobRun> jobRuns, JobRunStatus jobRunStatus) {
-
-		Stream<JobRun> stream = jobRuns.stream();
-
-		return stream.filter(
-			jobRun -> jobRun.getJobRunStatus() == jobRunStatus
-		).count();
-	}
-
-	private boolean _deleteJob(String id) {
-		Job job = _jobElasticsearchRepository.get(id);
-
-		_unscheduleOSBAsahTask(job);
-
-		BulkByScrollResponse bulkByScrollResponse =
-			_jobRunElasticsearchRepository.deleteByQuery(
-				QueryBuilders.termQuery("job.id", job.getId()));
-
-		List<BulkItemResponse.Failure> bulkFailures =
-			bulkByScrollResponse.getBulkFailures();
-
-		if (!bulkFailures.isEmpty()) {
-			return false;
-		}
-
-		boolean success = _recommendationDog.deleteItemRecommendationsByJobId(
-			id);
-
-		if (!success) {
-			return false;
-		}
-
-		return _jobElasticsearchRepository.delete(id);
-	}
-
-	private JobRun _fetchLastScheduledJobRun(List<JobRun> jobRuns) {
-		Stream<JobRun> stream = jobRuns.stream();
-
-		Optional<JobRun> lastScheduledJobRunOptional = stream.sorted(
-			Comparator.comparing(JobRun::getId, Collections.reverseOrder())
-		).filter(
-			jobRun -> Objects.equals(jobRun.getTrigger(), "SCHEDULE")
-		).findFirst();
-
-		return lastScheduledJobRunOptional.orElse(null);
-	}
-
-	private JobRun _fetchLatestJobRun(String jobId) {
-		ResultBag<JobRun> resultBag = getJobRunResultBag(
-			jobId, 1, Sort.desc("id"), 0);
-
-		if (resultBag.getTotal() == 0) {
 			return null;
 		}
 
-		List<JobRun> results = resultBag.getResults();
+		SearchHit searchHit = searchHits.getAt(0);
 
-		return results.get(0);
+		String source = searchHit.getSourceAsString();
+
+		try {
+			return _objectMapper.readValue(source, Job.class);
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException("Unable to process search request", ioe);
+		}
 	}
 
-	private ResultBag<JobRun> _getCurrentMonthJobRunResultBag(
-		String jobId, int size, Sort sort, int start) {
+	private SearchSourceBuilder _buildJobSearchSourceBuilder(String jobId) {
+		SearchSourceBuilder searchSourceBuilder =
+			SearchSourceBuilder.searchSource();
 
-		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
-			"createdDate");
+		searchSourceBuilder.query(QueryBuilders.termQuery("id", jobId));
+		searchSourceBuilder.size(1);
 
-		rangeQueryBuilder.timeZone(_timeZoneDog.getTimeZoneId());
-
-		rangeQueryBuilder.gte("now/M");
-		rangeQueryBuilder.lt("now");
-
-		return _jobRunElasticsearchRepository.search(
-			BoolQueryBuilderUtil.filter(
-				rangeQueryBuilder
-			).filter(
-				QueryBuilders.termQuery("job.id", jobId)
-			),
-			size, sort, start);
-	}
-
-	private boolean _hasJobRunPublished(String id) {
-		return _jobRunElasticsearchRepository.exists(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("job.id", id)
-			).filter(
-				QueryBuilders.termsQuery("status", "PUBLISHED")
-			));
+		return searchSourceBuilder;
 	}
 
 	@PostConstruct
 	private void _init() {
-		_jobElasticsearchRepository = new ElasticsearchRepository<>(
-			"jobs", _faroInfoElasticsearchInvoker, Job.class);
-
-		_jobRunElasticsearchRepository = new ElasticsearchRepository<>(
-			"job-runs", _faroInfoElasticsearchInvoker, JobRun.class);
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
-	private void _rescheduleOSBAsahTask(
-		Job job, JobRunFrequency oldJobRunFrequency) {
+	private static final Log _log = LogFactory.getLog(JobDog.class);
 
-		JobRunFrequency newJobRunFrequency = job.getJobRunFrequency();
+	@Autowired
+	private DataDog _dataDog;
 
-		if (newJobRunFrequency == oldJobRunFrequency) {
-			return;
-		}
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
-		_unscheduleOSBAsahTask(job);
-
-		_scheduleOSBAsahTask(job);
-	}
-
-	private void _scheduleOSBAsahTask(Job job) {
-		JobRunFrequency jobRunFrequency = job.getJobRunFrequency();
-
-		if (jobRunFrequency == JobRunFrequency.MANUAL) {
-			return;
-		}
-
-		JSONObject osbAsahTaskJSONObject =
-			_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
-				_jobTypeNaniteMap.get(job.getJobType()),
-				JSONUtil.put(
-					"job",
-					ObjectMapperUtil.convertValue(job, JSONObject.class)),
-				jobRunFrequency.getCronExpression());
-
-		job.setOSBAsahTaskId(osbAsahTaskJSONObject.getString("id"));
-	}
-
-	private void _unscheduleOSBAsahTask(Job job) {
-		String osbAsahTaskId = job.getOSBAsahTaskId();
-
-		if (StringUtils.isBlank(osbAsahTaskId)) {
-			return;
-		}
-
-		_faroInfoOSBAsahTaskDog.unscheduleOSBAsahTask(osbAsahTaskId);
-
-		job.setOSBAsahTaskId("");
-	}
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
-	private ElasticsearchRepository<Job> _jobElasticsearchRepository;
-	private ElasticsearchRepository<JobRun> _jobRunElasticsearchRepository;
 	private final Map<JobType, String> _jobTypeNaniteMap =
 		new HashMap<JobType, String>() {
 			{
-				put(
-					JobType.COMMERCE_PRODUCT_RECOMMENDATION_FREQUENT_PATTERN,
-					"CommerceProductRecommendationNanite");
-				put(
-					JobType.COMMERCE_PRODUCT_RECOMMENDATION_PRODUCT_CONTENT,
-					"CommerceProductRecommendationNanite");
-				put(
-					JobType.COMMERCE_PRODUCT_RECOMMENDATION_USER_INTERACTION,
-					"CommerceProductRecommendationNanite");
 				put(
 					JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
 					"ContentRecommendationDataPreparationNanite");
 			}
 		};
 
-	@Value("${osb.asah.content.recommendation.max.monthly.job.runs:10}")
-	private int _maxMonthlyJobRuns;
+	private final ObjectMapper _objectMapper = new ObjectMapper() {
+		{
+			disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
-	@Autowired
-	private RecommendationDog _recommendationDog;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
+			registerModule(new JavaTimeModule());
+			registerModule(new Jdk8Module());
+			registerModule(new JsonOrgModule());
+		}
+	};
 
 }

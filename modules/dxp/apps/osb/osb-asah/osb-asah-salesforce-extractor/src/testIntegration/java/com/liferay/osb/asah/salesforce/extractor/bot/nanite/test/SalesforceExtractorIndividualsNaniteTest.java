@@ -14,10 +14,11 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorIndividualsNanite;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorFileConfigurationImpl;
 import com.liferay.osb.asah.salesforce.extractor.spring.OSBAsahSalesforceExtractorSpringBootApplication;
@@ -40,19 +41,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Pedro Queiroz
  * @author Rachael Koestartyo
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = {
-		OSBAsahSalesforceExtractorSpringBootApplication.class,
-		SalesforceExtractorIndividualsNaniteTest.
-			SalesforceExtractorIndividualsNaniteTestConfiguration.class
-	}
+@Import(
+	SalesforceExtractorIndividualsNaniteTest.
+		SalesforceExtractorIndividualsNaniteTestConfiguration.class
 )
+@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = OSBAsahSalesforceExtractorSpringBootApplication.class)
 public class SalesforceExtractorIndividualsNaniteTest {
 
 	@Before
@@ -60,6 +60,8 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		_elasticsearchIndexManager.clearIndices();
 
 		_elasticsearchIndexManager.checkIndices();
+
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forSalesforceRaw();
 
 		JSONObject accountJSONObject = JSONUtil.put(
 			"id", "1"
@@ -80,7 +82,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		JSONObject contactJSONObject = JSONUtil.put(
 			"AccountId", "1"
 		).put(
-			"Birthdate", "-1176968214861"
+			"Birthdate", DateUtil.newDateString()
 		).put(
 			"Department", "IT"
 		).put(
@@ -309,8 +311,10 @@ public class SalesforceExtractorIndividualsNaniteTest {
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private SalesforceExtractorIndividualsNanite

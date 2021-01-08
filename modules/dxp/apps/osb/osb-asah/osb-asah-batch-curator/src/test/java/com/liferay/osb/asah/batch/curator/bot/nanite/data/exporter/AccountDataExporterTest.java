@@ -40,13 +40,13 @@ public class AccountDataExporterTest {
 		Mockito.when(
 			reportHttp.getAccountsJSONObject(Matchers.eq("0"))
 		).thenReturn(
-			ResourceUtil.readResourceToJSONObject("accounts_report.json", this)
+			ResourceUtil.readResourceToJSONObject("accounts-report.json", this)
 		);
 
 		Mockito.when(
 			reportHttp.getAccountsJSONObject(Matchers.eq("388160510048870753"))
 		).thenReturn(
-			ResourceUtil.readResourceToJSONObject("empty_report.json", this)
+			ResourceUtil.readResourceToJSONObject("empty-report.json", this)
 		);
 
 		ByteArrayOutputStream byteArrayOutputStream =
@@ -59,7 +59,7 @@ public class AccountDataExporterTest {
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToString(
-				"expected_accounts_export.json", this),
+				"expected-accounts-export.json", this),
 			byteArrayOutputStream.toString("UTF-8"), false);
 
 		byteArrayOutputStream.close();

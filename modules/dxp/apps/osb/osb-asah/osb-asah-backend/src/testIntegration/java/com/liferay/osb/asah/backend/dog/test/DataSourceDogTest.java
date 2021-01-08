@@ -17,12 +17,14 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.dog.DataSourceDog;
 import com.liferay.osb.asah.backend.model.DataSource;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
+
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,16 +41,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class DataSourceDogTest {
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@Test
-	public void testDataSourceNotFound() {
-		Assert.assertNull(_dataSourceDog.getDataSource("0"));
-	}
-
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources_info.json",
+		name = "data-sources", resourcePath = "data-sources-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -60,26 +53,15 @@ public class DataSourceDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@Test
-	public void testGetDataSource() {
-		DataSource dataSource = _dataSourceDog.getDataSource("200");
-
-		Assert.assertNotNull(dataSource);
-		Assert.assertEquals("Liferay 1", dataSource.getName());
-		Assert.assertEquals("http://portal:8081", dataSource.getURL());
-	}
-
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources_info.json",
+		name = "data-sources", resourcePath = "data-sources-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
 	public void testGetFilteredDataSources() {
 		List<DataSource> dataSources = _dataSourceDog.getDataSources(
-			"Token Authentication", 1, Sort.desc("dateModified"), "LIFERAY");
+			"Token Authentication",
+			SortBuilderUtil.fieldSort("dateModified", SortOrder.DESC), 1,
+			"LIFERAY");
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
@@ -87,7 +69,7 @@ public class DataSourceDogTest {
 
 		Assert.assertEquals("400", dataSource.getId());
 		Assert.assertEquals("Liferay 3", dataSource.getName());
-		Assert.assertEquals("http://portal:8083", dataSource.getURL());
+		Assert.assertEquals("http://portal:8083", dataSource.getUrl());
 	}
 
 	@Autowired

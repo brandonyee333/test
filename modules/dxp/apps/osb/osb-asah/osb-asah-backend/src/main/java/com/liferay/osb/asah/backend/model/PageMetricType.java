@@ -110,11 +110,10 @@ public enum PageMetricType implements MetricType {
 	private PageMetricType(
 		String fieldName, String name, TrendClassification.Order order) {
 
+		_aggregationName = fieldName;
 		_fieldName = fieldName;
 		_name = name;
 		_order = order;
-
-		_aggregationName = fieldName;
 	}
 
 	private static Map<String, PageMetricType> _pageMetricTypes =

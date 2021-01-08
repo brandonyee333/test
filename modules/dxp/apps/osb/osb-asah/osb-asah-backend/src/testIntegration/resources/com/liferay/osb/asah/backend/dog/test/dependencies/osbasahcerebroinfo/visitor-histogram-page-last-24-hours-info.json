@@ -1,0 +1,58 @@
+[
+	{
+		"eventDate": "${now-1h}",
+		"individualId": null,
+		"primaryKey": "1",
+		"sessionId": "1",
+		"url": "http://liferay.com",
+		"userId": "1"
+	},
+	{
+		"eventDate": "${now-10h}",
+		"individualId": null,
+		"primaryKey": "2",
+		"sessionId": "1",
+		"url": "http://liferay.com",
+		"userId": "1"
+	},
+	{
+		"eventDate": "${now-7h}",
+		"individualId": null,
+		"primaryKey": "3",
+		"sessionId": "2",
+		"url": "http://liferay.com",
+		"userId": "2"
+	},
+	{
+		"eventDate": "${now-1h}",
+		"individualId": null,
+		"primaryKey": "4",
+		"sessionId": "2",
+		"url": "http://liferay.com",
+		"userId": "2"
+	},
+	{
+		"eventDate": "${now-10h}",
+		"individualId": null,
+		"primaryKey": "5",
+		"sessionId": "3",
+		"url": "http://liferay.com",
+		"userId": "3"
+	},
+	{
+		"eventDate": "${now-8h}",
+		"individualId": null,
+		"primaryKey": "6",
+		"sessionId": "4",
+		"url": "http://liferay.com",
+		"userId": "4"
+	},
+	{
+		"eventDate": "${now-8h}",
+		"individualId": null,
+		"primaryKey": "7",
+		"sessionId": "5",
+		"url": "http://liferay.com",
+		"userId": "5"
+	}
+]

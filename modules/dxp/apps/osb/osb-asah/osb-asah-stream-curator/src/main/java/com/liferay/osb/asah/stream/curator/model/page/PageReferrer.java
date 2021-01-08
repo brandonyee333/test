@@ -55,10 +55,6 @@ public class PageReferrer extends BasePageModel {
 		return _accessDates;
 	}
 
-	public String getAcquisitionChannel() {
-		return _acquisitionChannel;
-	}
-
 	public String getReferrer() {
 		return _referrer;
 	}
@@ -71,17 +67,12 @@ public class PageReferrer extends BasePageModel {
 		_accessDates = accessDates;
 	}
 
-	public void setAcquisitionChannel(String acquisitionChannel) {
-		_acquisitionChannel = acquisitionChannel;
-	}
-
 	public void setReferrer(String referrer) {
 		_referrer = referrer;
 	}
 
 	private long _access;
 	private NavigableSet<Date> _accessDates = new TreeSet<>();
-	private String _acquisitionChannel;
 	private String _referrer;
 
 }

@@ -1,0 +1,43 @@
+{
+	"data": {
+		"blogs": {
+			"assetMetrics": [
+				{
+					"assetId": "1",
+					"assetTitle": "null",
+					"commentsMetric": {
+						"value": 0.0
+					},
+					"ratingsMetric": {
+						"value": 0.0
+					},
+					"readingTimeMetric": {
+						"value": 0.0
+					},
+					"urls": null,
+					"viewsMetric": {
+						"value": 0.0
+					}
+				},
+				{
+					"assetId": "3",
+					"assetTitle": "null",
+					"commentsMetric": {
+						"value": 0.0
+					},
+					"ratingsMetric": {
+						"value": 0.0
+					},
+					"readingTimeMetric": {
+						"value": 0.0
+					},
+					"urls": null,
+					"viewsMetric": {
+						"value": 0.0
+					}
+				}
+			],
+			"total": 2
+		}
+	}
+}

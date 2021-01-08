@@ -1,0 +1,22 @@
+[
+	{
+		"dataSourceId": "342837044336786766",
+		"dateLogged": "2019-03-24T20:33:03.869Z",
+		"id": "342837067126629884",
+		"initialAccountRun": true,
+		"initialContactRun": false,
+		"initialLeadRun": false,
+		"naniteClassName": "SalesforceExtractorNanite",
+		"status": "STARTED",
+		"totalAccountOperations": 2,
+		"totalContactOperations": 0,
+		"totalLeadOperations": 0
+	},
+	{
+		"dataSourceId": "342837044336786766",
+		"dateLogged": "2019-03-24T20:33:05.552Z",
+		"id": "342837207032090213",
+		"naniteClassName": "SalesforceExtractorNanite",
+		"status": "COMPLETED"
+	}
+]

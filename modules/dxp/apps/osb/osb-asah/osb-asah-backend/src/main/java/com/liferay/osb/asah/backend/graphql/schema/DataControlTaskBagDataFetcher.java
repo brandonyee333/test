@@ -17,8 +17,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.DataControlTaskDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.DataControlTask;
-import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.backend.model.ResultBag;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -43,7 +42,7 @@ public class DataControlTaskBagDataFetcher
 			dataFetchingEnvironment.getArgument("keywords"),
 			dataFetchingEnvironment.getArgument("rangeKey"),
 			dataFetchingEnvironment.getArgument("size"),
-			Sort.of(dataFetchingEnvironment.getArgument("sort")),
+			dataFetchingEnvironment.getArgument("sort"),
 			dataFetchingEnvironment.getArgument("start"),
 			dataFetchingEnvironment.getArgument("statuses"),
 			dataFetchingEnvironment.getArgument("types"));

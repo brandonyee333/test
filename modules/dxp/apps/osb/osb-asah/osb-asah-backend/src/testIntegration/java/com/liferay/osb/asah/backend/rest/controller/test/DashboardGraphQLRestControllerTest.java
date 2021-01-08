@@ -36,21 +36,24 @@ public class DashboardGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "dashboard_body.json";
+		return "dashboard-body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "dashboard_expected_result.json";
+		return "dashboard-expected-result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "dashboard_query.graphql";
+		return "dashboard-query.graphql";
 	}
 
 	@Before
+	@Override
 	public void setUp() {
+		super.setUp();
+
 		ReflectionTestUtils.setField(
 			_dashboardDog, "_cerebroInfoElasticsearchInvoker",
 			elasticsearchInvoker);

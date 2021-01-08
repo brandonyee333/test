@@ -49,8 +49,8 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.InternalTopHits;
-import org.elasticsearch.search.aggregations.metrics.TopHitsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.tophits.InternalTopHits;
+import org.elasticsearch.search.aggregations.metrics.tophits.TopHitsAggregationBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -159,7 +159,7 @@ public class InterestsRestController extends BaseRestController {
 			@RequestParam(defaultValue = "0.01") double termWeightThreshold)
 		throws Exception {
 
-		if (((page * size) + size) > 100) {
+		if ((page * size + size) > 100) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"page * size + size must not exceed 100");

@@ -25,18 +25,14 @@ import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetId;
-import com.liferay.osb.asah.backend.model.PropertyFilter;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.model.ResultBag;
 
 import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -46,9 +42,7 @@ import org.apache.commons.logging.Log;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.ShardSearchFailure;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregation;
@@ -56,34 +50,16 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.Cardinality;
 import org.elasticsearch.search.aggregations.metrics.NumericMetricsAggregation;
+import org.elasticsearch.search.aggregations.metrics.cardinality.Cardinality;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
-
-import org.json.JSONObject;
 
 /**
  * @author Marcellus Tavares
  */
 public class DogUtil {
-
-	public static void addBoolQueryBuilderPropertyFilters(
-		BoolQueryBuilder boolQueryBuilder,
-		List<PropertyFilter> propertyFilters) {
-
-		if ((propertyFilters == null) || propertyFilters.isEmpty()) {
-			return;
-		}
-
-		for (PropertyFilter propertyFilter : propertyFilters) {
-			QueryBuilder propertyQueryBuilder = buildPropertyQueryBuilder(
-				propertyFilter);
-
-			boolQueryBuilder.filter(propertyQueryBuilder);
-		}
-	}
 
 	public static void addTermsAggregationBuilderOrder(
 		MetricResolver metricResolver,
@@ -114,33 +90,6 @@ public class DogUtil {
 
 		pipelineAggregationBuilders.forEach(
 			termsAggregationBuilder::subAggregation);
-	}
-
-	public static QueryBuilder buildPropertyQueryBuilder(
-		PropertyFilter propertyFilter) {
-
-		QueryBuilder queryBuilder = _buildPropertyQueryBuilder(
-			propertyFilter.getOperator(), propertyFilter.getPropertyName(),
-			propertyFilter.getPropertyValue());
-
-		if (propertyFilter.isNegate()) {
-			queryBuilder = BoolQueryBuilderUtil.mustNot(queryBuilder);
-		}
-
-		List<PropertyFilter> propertyFilters =
-			propertyFilter.getPropertyFilters();
-
-		if (propertyFilters.isEmpty()) {
-			return queryBuilder;
-		}
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			queryBuilder);
-
-		addBoolQueryBuilderPropertyFilters(
-			boolQueryBuilder, propertyFilter.getPropertyFilters());
-
-		return boolQueryBuilder;
 	}
 
 	public static SearchSourceBuilder buildSearchSourceBuilder(
@@ -204,10 +153,6 @@ public class DogUtil {
 		return searchSourceBuilder;
 	}
 
-	public static <T> T convert(JSONObject jsonObject, Class<T> modelClass) {
-		return _objectMapper.convertValue(jsonObject, modelClass);
-	}
-
 	public static <T> ResultBag<T> createResultBag(
 		Class<T> modelClass, SearchHits searchHits) {
 
@@ -228,7 +173,7 @@ public class DogUtil {
 		}
 
 		resultBag.setResults(models);
-		resultBag.setTotal(HitsUtil.getTotalHitsCount(searchHits));
+		resultBag.setTotal(searchHits.getTotalHits());
 
 		return resultBag;
 	}
@@ -289,16 +234,6 @@ public class DogUtil {
 
 			log.error(shardSearchFailure.getCause());
 		}
-	}
-
-	private static QueryBuilder _buildPropertyQueryBuilder(
-		String operator, String propertyName, String propertyValue) {
-
-		if (Objects.equals(operator, "~")) {
-			return QueryBuilders.regexpQuery(propertyName, propertyValue);
-		}
-
-		return QueryBuilders.termQuery(propertyName, propertyValue);
 	}
 
 	private static <T> Function<SearchHit, T>

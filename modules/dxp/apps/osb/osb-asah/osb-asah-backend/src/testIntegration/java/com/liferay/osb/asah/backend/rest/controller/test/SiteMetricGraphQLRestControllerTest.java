@@ -29,17 +29,17 @@ public class SiteMetricGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "site_metric_body.json";
+		return "site-metric-body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "site_metric_expected_result.json";
+		return "site-metric-expected-result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "site_metric_query.graphql";
+		return "site-metric-query.graphql";
 	}
 
 }

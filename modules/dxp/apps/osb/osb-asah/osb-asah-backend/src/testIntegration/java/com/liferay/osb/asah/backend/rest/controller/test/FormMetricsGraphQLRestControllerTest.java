@@ -29,17 +29,17 @@ public class FormMetricsGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "form_metrics_body.json";
+		return "form-metrics-body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "form_metrics_expected_result.json";
+		return "form-metrics-expected-result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "form_metrics_query.graphql";
+		return "form-metrics-query.graphql";
 	}
 
 }

@@ -18,12 +18,11 @@ import com.liferay.osb.asah.backend.dog.ExperimentDog;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
 import com.liferay.osb.asah.backend.model.Experiment;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.model.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
-import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.VariantMetrics;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -36,6 +35,8 @@ import java.time.LocalTime;
 import java.time.ZoneOffset;
 
 import java.util.List;
+
+import org.elasticsearch.search.sort.SortBuilders;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,7 +56,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class ExperimentDogTest {
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
+		name = "experiments", resourcePath = "experiments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -79,7 +80,7 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
+		name = "experiments", resourcePath = "experiments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test(expected = OSBAsahException.class)
@@ -95,7 +96,7 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
+		name = "experiments", resourcePath = "experiments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -106,7 +107,7 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
+		name = "experiments", resourcePath = "experiments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test(expected = OSBAsahException.class)
@@ -115,7 +116,7 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
+		name = "experiments", resourcePath = "experiment-metrics-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -139,7 +140,7 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
+		name = "experiments", resourcePath = "experiments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -150,7 +151,7 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
+		name = "experiments", resourcePath = "experiment-metrics-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test(expected = OSBAsahException.class)
@@ -159,7 +160,7 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
+		name = "experiments", resourcePath = "experiment-metrics-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -186,13 +187,13 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
+		name = "experiments", resourcePath = "experiments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
 	public void testGetExperimentsAll() {
 		ResultBag<Experiment> resultBag = _experimentDog.getExperimentResultBag(
-			"1", null, 10, Sort.asc("name.raw"), 0);
+			"1", SortBuilders.fieldSort("name.raw"), null, 10, 0);
 
 		Assert.assertNotNull(resultBag);
 		Assert.assertEquals(3, resultBag.getTotal());
@@ -203,11 +204,11 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
+		name = "experiments", resourcePath = "experiments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
+		name = "pages", resourcePath = "experiment-pages-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -234,13 +235,13 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
+		name = "experiments", resourcePath = "experiments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
 	public void testGetExperimentsPaginated() {
 		ResultBag<Experiment> resultBag = _experimentDog.getExperimentResultBag(
-			"1", null, 1, Sort.asc("name.raw"), 1);
+			"1", SortBuilders.fieldSort("name.raw"), null, 1, 1);
 
 		Assert.assertNotNull(resultBag);
 		Assert.assertEquals(3, resultBag.getTotal());
@@ -255,11 +256,11 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
+		name = "experiments", resourcePath = "experiments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
+		name = "pages", resourcePath = "experiment-pages-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -286,11 +287,11 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiments_info.json",
+		name = "experiments", resourcePath = "experiments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
+		name = "pages", resourcePath = "experiment-pages-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -317,7 +318,7 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
+		name = "pages", resourcePath = "experiment-pages-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -329,7 +330,7 @@ public class ExperimentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "experiment_pages_info.json",
+		name = "pages", resourcePath = "experiment-pages-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

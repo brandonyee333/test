@@ -1,23 +1,11 @@
+apply plugin: "com.liferay.dependency.local.copy"
 apply plugin: "com.liferay.spring.boot.defaults"
-apply plugin: "io.spring.dependency-management"
-
-bootJar {
-	classifier = "application"
-}
 
 dependencies {
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
-
-	compile (group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.10") {
-		force = true
-	}
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-common"
 
 	testCompile group: "junit", name: "junit", version: "4.12"
-	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
-}
-
-jar {
-	enabled = true
+	testCompile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-test-util"
 }
 
 testIntegration {

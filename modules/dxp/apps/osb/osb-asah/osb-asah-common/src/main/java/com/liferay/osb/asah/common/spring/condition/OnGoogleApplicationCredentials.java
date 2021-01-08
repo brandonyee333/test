@@ -62,17 +62,11 @@ public class OnGoogleApplicationCredentials extends SpringBootCondition {
 	private <T> T _getConditionalOnGoogleCredentialsAnnotationAttribute(
 		AnnotatedTypeMetadata annotatedTypeMetadata, String attributeName) {
 
-		if (annotatedTypeMetadata != null) {
-			Map<String, Object> annotationAttributes =
-				annotatedTypeMetadata.getAnnotationAttributes(
-					ConditionalOnGoogleApplicationCredentials.class.getName());
+		Map<String, Object> annotationAttributes =
+			annotatedTypeMetadata.getAnnotationAttributes(
+				ConditionalOnGoogleApplicationCredentials.class.getName());
 
-			if (annotationAttributes != null) {
-				return (T)annotationAttributes.get(attributeName);
-			}
-		}
-
-		return null;
+		return (T)annotationAttributes.get(attributeName);
 	}
 
 }

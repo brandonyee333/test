@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.response.embedded.test;
 
 import com.liferay.osb.asah.backend.rest.response.embedded.InterestsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -27,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,6 +41,11 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class InterestsEmbeddedJSONObjectCreatorTest {
+
+	@Before
+	public void setUp() {
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
+	}
 
 	@ElasticsearchIndex(
 		name = "interests", resourcePath = "interests.json",
@@ -117,7 +124,9 @@ public class InterestsEmbeddedJSONObjectCreatorTest {
 			1, interestsAggregationJSONObject2.getInt("viewsSum"));
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

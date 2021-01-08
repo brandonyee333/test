@@ -1,0 +1,18 @@
+[
+	{
+		"active": false,
+		"cronExpression": "0 0 */6 * * ?",
+		"id": "1",
+		"name": "Related Content Job",
+		"parameters": [
+			{
+				"name": "parameter1",
+				"value": "value1"
+			},
+			{
+				"name": "parameter2",
+				"value": "value2"
+			}
+		]
+	}
+]

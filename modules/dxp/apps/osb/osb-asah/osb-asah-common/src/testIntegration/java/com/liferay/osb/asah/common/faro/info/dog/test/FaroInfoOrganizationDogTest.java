@@ -42,20 +42,23 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
+	@Override
 	public void setUp() throws Exception {
+		super.setUp();
+
 		_liferayDataSourceJSONObject =
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 
 		_liferayDataSourceJSONObject.put("id", RandomTestUtil.randomId());
 
-		faroInfoElasticsearchInvoker.add(
+		elasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildFieldMappingJSONObject(
 				null, "custom",
 				JSONUtil.put(
 					_liferayDataSourceJSONObject.getString("id"), "address"),
 				"address", "Text", "organization"));
-		faroInfoElasticsearchInvoker.add(
+		elasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildFieldMappingJSONObject(
 				null, "custom",
@@ -116,11 +119,11 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			0,
-			faroInfoElasticsearchInvoker.count(
+			elasticsearchInvoker.count(
 				"organizations", QueryBuilders.matchAllQuery()));
 		Assert.assertEquals(
 			1,
-			faroInfoElasticsearchInvoker.count(
+			elasticsearchInvoker.count(
 				"OSBAsahTasks",
 				QueryBuilders.termQuery(
 					"className", "UpdateDynamicMembershipsNanite")));
@@ -159,7 +162,7 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			1,
-			faroInfoElasticsearchInvoker.count(
+			elasticsearchInvoker.count(
 				"OSBAsahTasks",
 				QueryBuilders.termQuery(
 					"className", "UpdateDynamicMembershipsNanite")));

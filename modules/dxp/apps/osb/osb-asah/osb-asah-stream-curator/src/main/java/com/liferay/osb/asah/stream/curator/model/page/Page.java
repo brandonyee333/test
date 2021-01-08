@@ -76,10 +76,6 @@ public class Page extends BasePageModel {
 		_pageScrolls.addAll(pageScrolls);
 	}
 
-	public void addReads(long read) {
-		_reads += read;
-	}
-
 	public long getBounce() {
 		return _bounce;
 	}
@@ -153,10 +149,6 @@ public class Page extends BasePageModel {
 		return _pageScrolls;
 	}
 
-	public long getReads() {
-		return _reads;
-	}
-
 	public String getSearchTerm() {
 		return _searchTerm;
 	}
@@ -223,10 +215,6 @@ public class Page extends BasePageModel {
 		_pageScrolls = pageScrolls;
 	}
 
-	public void setReads(long reads) {
-		_reads = reads;
-	}
-
 	public void setSearchTerm(String searchTerm) {
 		_searchTerm = searchTerm;
 	}
@@ -252,7 +240,6 @@ public class Page extends BasePageModel {
 	private NavigableSet<Date> _indirectAccessDates = new TreeSet<>();
 	private NavigableSet<Date> _interactionDates = new TreeSet<>();
 	private Set<PageScroll> _pageScrolls = new TreeSet<>();
-	private long _reads;
 	private String _searchTerm;
 	private long _timeOnPage;
 	private long _views;

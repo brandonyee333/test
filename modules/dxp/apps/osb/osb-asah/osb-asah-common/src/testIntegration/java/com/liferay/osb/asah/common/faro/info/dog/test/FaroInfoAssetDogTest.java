@@ -39,7 +39,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoAssetDogTest extends BaseFaroInfoDogTestCase {
 
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets_duplicate_keywords.json",
+		name = "assets", resourcePath = "assets-duplicate-keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -53,7 +53,7 @@ public class FaroInfoAssetDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets_form_keywords.json",
+		name = "assets", resourcePath = "assets-form-keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

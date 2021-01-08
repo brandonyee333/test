@@ -17,8 +17,10 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.InterestTopicsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Objects;
@@ -33,13 +35,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Victor Oliveira
  */
+@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
+@Import(CerebroQueueHttpTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(
@@ -50,7 +54,10 @@ public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 	public void test() throws Exception {
 		_interestTopicsNanite.run(null);
 
-		JSONArray interestTopics = _elasticsearchInvoker.get("interest-topics");
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+
+		JSONArray interestTopics = elasticsearchInvoker.get("interest-topics");
 
 		Assert.assertTrue(interestTopics.length() > 0);
 
@@ -62,7 +69,7 @@ public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
+		name = "blocked-keywords", resourcePath = "blocked-keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -73,7 +80,10 @@ public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 	public void testBlockedKeywords() throws Exception {
 		_interestTopicsNanite.run(null);
 
-		JSONArray interestTopics = _elasticsearchInvoker.get("interest-topics");
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+
+		JSONArray interestTopics = elasticsearchInvoker.get("interest-topics");
 
 		Assert.assertFalse(_matchAny(interestTopics, "java"));
 		Assert.assertFalse(_matchAny(interestTopics, "jquery"));
@@ -92,8 +102,8 @@ public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 		return false;
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private InterestTopicsNanite _interestTopicsNanite;

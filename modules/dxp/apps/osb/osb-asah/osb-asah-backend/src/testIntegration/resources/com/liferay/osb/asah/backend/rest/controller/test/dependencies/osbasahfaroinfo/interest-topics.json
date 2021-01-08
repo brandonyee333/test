@@ -1,0 +1,709 @@
+[
+	{
+		"term": "net",
+		"termType": "keyword",
+		"termWeight": 0.11552346570397112,
+		"topic": 0,
+		"topicWeight": 0.06627132626152235
+	},
+	{
+		"term": "asp.net",
+		"termType": "keyword",
+		"termWeight": 0.07220216606498195,
+		"topic": 0,
+		"topicWeight": 0.06627132626152235
+	},
+	{
+		"term": "entity-framework",
+		"termType": "keyword",
+		"termWeight": 0.04693140794223827,
+		"topic": 0,
+		"topicWeight": 0.06627132626152235
+	},
+	{
+		"term": "visual-studio",
+		"termType": "keyword",
+		"termWeight": 0.039711191335740074,
+		"topic": 0,
+		"topicWeight": 0.06627132626152235
+	},
+	{
+		"term": "asp.net-mvc",
+		"termType": "keyword",
+		"termWeight": 0.036101083032490974,
+		"topic": 0,
+		"topicWeight": 0.06627132626152235
+	},
+	{
+		"term": "vb.net",
+		"termType": "keyword",
+		"termWeight": 0.02527075812274368,
+		"topic": 0,
+		"topicWeight": 0.06627132626152235
+	},
+	{
+		"term": "linq",
+		"termType": "keyword",
+		"termWeight": 0.02527075812274368,
+		"topic": 0,
+		"topicWeight": 0.06627132626152235
+	},
+	{
+		"term": "wpf",
+		"termType": "keyword",
+		"termWeight": 0.02527075812274368,
+		"topic": 0,
+		"topicWeight": 0.06627132626152235
+	},
+	{
+		"term": "linq-to-entities",
+		"termType": "keyword",
+		"termWeight": 0.018050541516245487,
+		"topic": 0,
+		"topicWeight": 0.06627132626152235
+	},
+	{
+		"term": "javascript",
+		"termType": "keyword",
+		"termWeight": 0.01444043321299639,
+		"topic": 0,
+		"topicWeight": 0.06627132626152235
+	},
+	{
+		"term": "php",
+		"termType": "keyword",
+		"termWeight": 0.1322314049586777,
+		"topic": 1,
+		"topicWeight": 0.08027610626914822
+	},
+	{
+		"term": "sql",
+		"termType": "keyword",
+		"termWeight": 0.06060606060606061,
+		"topic": 1,
+		"topicWeight": 0.08027610626914822
+	},
+	{
+		"term": "mysql",
+		"termType": "keyword",
+		"termWeight": 0.05509641873278237,
+		"topic": 1,
+		"topicWeight": 0.08027610626914822
+	},
+	{
+		"term": "sql-server",
+		"termType": "keyword",
+		"termWeight": 0.046831955922865015,
+		"topic": 1,
+		"topicWeight": 0.08027610626914822
+	},
+	{
+		"term": "python",
+		"termType": "keyword",
+		"termWeight": 0.027548209366391185,
+		"topic": 1,
+		"topicWeight": 0.08027610626914822
+	},
+	{
+		"term": "database",
+		"termType": "keyword",
+		"termWeight": 0.027548209366391185,
+		"topic": 1,
+		"topicWeight": 0.08027610626914822
+	},
+	{
+		"term": "arrays",
+		"termType": "keyword",
+		"termWeight": 0.01652892561983471,
+		"topic": 1,
+		"topicWeight": 0.08027610626914822
+	},
+	{
+		"term": "query",
+		"termType": "keyword",
+		"termWeight": 0.01652892561983471,
+		"topic": 1,
+		"topicWeight": 0.08027610626914822
+	},
+	{
+		"term": "django",
+		"termType": "keyword",
+		"termWeight": 0.013774104683195593,
+		"topic": 1,
+		"topicWeight": 0.08027610626914822
+	},
+	{
+		"term": "image",
+		"termType": "keyword",
+		"termWeight": 0.011019283746556474,
+		"topic": 1,
+		"topicWeight": 0.08027610626914822
+	},
+	{
+		"term": "windows",
+		"termType": "keyword",
+		"termWeight": 0.09523809523809523,
+		"topic": 2,
+		"topicWeight": 0.025771720404385627
+	},
+	{
+		"term": "ruby",
+		"termType": "keyword",
+		"termWeight": 0.0380952380952381,
+		"topic": 2,
+		"topicWeight": 0.025771720404385627
+	},
+	{
+		"term": "networking",
+		"termType": "keyword",
+		"termWeight": 0.0380952380952381,
+		"topic": 2,
+		"topicWeight": 0.025771720404385627
+	},
+	{
+		"term": "winforms",
+		"termType": "keyword",
+		"termWeight": 0.02857142857142857,
+		"topic": 2,
+		"topicWeight": 0.025771720404385627
+	},
+	{
+		"term": "git",
+		"termType": "keyword",
+		"termWeight": 0.01904761904761905,
+		"topic": 2,
+		"topicWeight": 0.025771720404385627
+	},
+	{
+		"term": "tortoisegit",
+		"termType": "keyword",
+		"termWeight": 0.009523809523809525,
+		"topic": 2,
+		"topicWeight": 0.025771720404385627
+	},
+	{
+		"term": "hotlinking",
+		"termType": "keyword",
+		"termWeight": 0.009523809523809525,
+		"topic": 2,
+		"topicWeight": 0.025771720404385627
+	},
+	{
+		"term": "visual-c#-express",
+		"termType": "keyword",
+		"termWeight": 0.009523809523809525,
+		"topic": 2,
+		"topicWeight": 0.025771720404385627
+	},
+	{
+		"term": "registry",
+		"termType": "keyword",
+		"termWeight": 0.009523809523809525,
+		"topic": 2,
+		"topicWeight": 0.025771720404385627
+	},
+	{
+		"term": "comma",
+		"termType": "keyword",
+		"termWeight": 0.009523809523809525,
+		"topic": 2,
+		"topicWeight": 0.025771720404385627
+	},
+	{
+		"term": "linux",
+		"termType": "keyword",
+		"termWeight": 0.04861111111111111,
+		"topic": 3,
+		"topicWeight": 0.031797523817157676
+	},
+	{
+		"term": "visual-studio",
+		"termType": "keyword",
+		"termWeight": 0.034722222222222224,
+		"topic": 3,
+		"topicWeight": 0.031797523817157676
+	},
+	{
+		"term": "centos",
+		"termType": "keyword",
+		"termWeight": 0.027777777777777776,
+		"topic": 3,
+		"topicWeight": 0.031797523817157676
+	},
+	{
+		"term": "backup",
+		"termType": "keyword",
+		"termWeight": 0.020833333333333332,
+		"topic": 3,
+		"topicWeight": 0.031797523817157676
+	},
+	{
+		"term": "mvc",
+		"termType": "keyword",
+		"termWeight": 0.020833333333333332,
+		"topic": 3,
+		"topicWeight": 0.031797523817157676
+	},
+	{
+		"term": "jquery-mobile",
+		"termType": "keyword",
+		"termWeight": 0.013888888888888888,
+		"topic": 3,
+		"topicWeight": 0.031797523817157676
+	},
+	{
+		"term": "shell",
+		"termType": "keyword",
+		"termWeight": 0.013888888888888888,
+		"topic": 3,
+		"topicWeight": 0.031797523817157676
+	},
+	{
+		"term": "cloud",
+		"termType": "keyword",
+		"termWeight": 0.013888888888888888,
+		"topic": 3,
+		"topicWeight": 0.031797523817157676
+	},
+	{
+		"term": "customization",
+		"termType": "keyword",
+		"termWeight": 0.013888888888888888,
+		"topic": 3,
+		"topicWeight": 0.031797523817157676
+	},
+	{
+		"term": "frameworks",
+		"termType": "keyword",
+		"termWeight": 0.013888888888888888,
+		"topic": 3,
+		"topicWeight": 0.031797523817157676
+	},
+	{
+		"term": "calculus",
+		"termType": "keyword",
+		"termWeight": 0.06474820143884892,
+		"topic": 4,
+		"topicWeight": 0.0346620347331999
+	},
+	{
+		"term": "flex",
+		"termType": "keyword",
+		"termWeight": 0.05755395683453238,
+		"topic": 4,
+		"topicWeight": 0.0346620347331999
+	},
+	{
+		"term": "real-analysis",
+		"termType": "keyword",
+		"termWeight": 0.050359712230215826,
+		"topic": 4,
+		"topicWeight": 0.0346620347331999
+	},
+	{
+		"term": "actionscript",
+		"termType": "keyword",
+		"termWeight": 0.03597122302158273,
+		"topic": 4,
+		"topicWeight": 0.0346620347331999
+	},
+	{
+		"term": "algorithm",
+		"termType": "keyword",
+		"termWeight": 0.03597122302158273,
+		"topic": 4,
+		"topicWeight": 0.0346620347331999
+	},
+	{
+		"term": "homework",
+		"termType": "keyword",
+		"termWeight": 0.02158273381294964,
+		"topic": 4,
+		"topicWeight": 0.0346620347331999
+	},
+	{
+		"term": "iis",
+		"termType": "keyword",
+		"termWeight": 0.02158273381294964,
+		"topic": 4,
+		"topicWeight": 0.0346620347331999
+	},
+	{
+		"term": "batch-file",
+		"termType": "keyword",
+		"termWeight": 0.014388489208633094,
+		"topic": 4,
+		"topicWeight": 0.0346620347331999
+	},
+	{
+		"term": "batch",
+		"termType": "keyword",
+		"termWeight": 0.014388489208633094,
+		"topic": 4,
+		"topicWeight": 0.0346620347331999
+	},
+	{
+		"term": "adobe",
+		"termType": "keyword",
+		"termWeight": 0.014388489208633094,
+		"topic": 4,
+		"topicWeight": 0.0346620347331999
+	},
+	{
+		"term": "facebook-graph-api",
+		"termType": "keyword",
+		"termWeight": 0.05128205128205128,
+		"topic": 5,
+		"topicWeight": 0.030949565333448784
+	},
+	{
+		"term": "facebook",
+		"termType": "keyword",
+		"termWeight": 0.05128205128205128,
+		"topic": 5,
+		"topicWeight": 0.030949565333448784
+	},
+	{
+		"term": "tfs",
+		"termType": "keyword",
+		"termWeight": 0.042735042735042736,
+		"topic": 5,
+		"topicWeight": 0.030949565333448784
+	},
+	{
+		"term": "ruby-on-rails",
+		"termType": "keyword",
+		"termWeight": 0.03418803418803419,
+		"topic": 5,
+		"topicWeight": 0.030949565333448784
+	},
+	{
+		"term": "postgresql",
+		"termType": "keyword",
+		"termWeight": 0.02564102564102564,
+		"topic": 5,
+		"topicWeight": 0.030949565333448784
+	},
+	{
+		"term": "sublimetext",
+		"termType": "keyword",
+		"termWeight": 0.02564102564102564,
+		"topic": 5,
+		"topicWeight": 0.030949565333448784
+	},
+	{
+		"term": "google-app-engine",
+		"termType": "keyword",
+		"termWeight": 0.017094017094017096,
+		"topic": 5,
+		"topicWeight": 0.030949565333448784
+	},
+	{
+		"term": "event-handling",
+		"termType": "keyword",
+		"termWeight": 0.017094017094017096,
+		"topic": 5,
+		"topicWeight": 0.030949565333448784
+	},
+	{
+		"term": "facebook-fql",
+		"termType": "keyword",
+		"termWeight": 0.017094017094017096,
+		"topic": 5,
+		"topicWeight": 0.030949565333448784
+	},
+	{
+		"term": "svn",
+		"termType": "keyword",
+		"termWeight": 0.017094017094017096,
+		"topic": 5,
+		"topicWeight": 0.030949565333448784
+	},
+	{
+		"term": "probability",
+		"termType": "keyword",
+		"termWeight": 0.046511627906976744,
+		"topic": 6,
+		"topicWeight": 0.026484889392191065
+	},
+	{
+		"term": "category-theory",
+		"termType": "keyword",
+		"termWeight": 0.023255813953488372,
+		"topic": 6,
+		"topicWeight": 0.026484889392191065
+	},
+	{
+		"term": "testing",
+		"termType": "keyword",
+		"termWeight": 0.023255813953488372,
+		"topic": 6,
+		"topicWeight": 0.026484889392191065
+	},
+	{
+		"term": "statistics",
+		"termType": "keyword",
+		"termWeight": 0.023255813953488372,
+		"topic": 6,
+		"topicWeight": 0.026484889392191065
+	},
+	{
+		"term": "date",
+		"termType": "keyword",
+		"termWeight": 0.023255813953488372,
+		"topic": 6,
+		"topicWeight": 0.026484889392191065
+	},
+	{
+		"term": "overlap",
+		"termType": "keyword",
+		"termWeight": 0.011627906976744186,
+		"topic": 6,
+		"topicWeight": 0.026484889392191065
+	},
+	{
+		"term": "particle-filter",
+		"termType": "keyword",
+		"termWeight": 0.011627906976744186,
+		"topic": 6,
+		"topicWeight": 0.026484889392191065
+	},
+	{
+		"term": "constructor",
+		"termType": "keyword",
+		"termWeight": 0.011627906976744186,
+		"topic": 6,
+		"topicWeight": 0.026484889392191065
+	},
+	{
+		"term": "probability-theory",
+		"termType": "keyword",
+		"termWeight": 0.011627906976744186,
+		"topic": 6,
+		"topicWeight": 0.026484889392191065
+	},
+	{
+		"term": "virtual",
+		"termType": "keyword",
+		"termWeight": 0.011627906976744186,
+		"topic": 6,
+		"topicWeight": 0.026484889392191065
+	},
+	{
+		"term": "javascript",
+		"termType": "keyword",
+		"termWeight": 0.0945945945945946,
+		"topic": 7,
+		"topicWeight": 0.08653350323695352
+	},
+	{
+		"term": "jquery",
+		"termType": "keyword",
+		"termWeight": 0.08648648648648649,
+		"topic": 7,
+		"topicWeight": 0.08653350323695352
+	},
+	{
+		"term": "html",
+		"termType": "keyword",
+		"termWeight": 0.07027027027027027,
+		"topic": 7,
+		"topicWeight": 0.08653350323695352
+	},
+	{
+		"term": "php",
+		"termType": "keyword",
+		"termWeight": 0.04864864864864865,
+		"topic": 7,
+		"topicWeight": 0.08653350323695352
+	},
+	{
+		"term": "css",
+		"termType": "keyword",
+		"termWeight": 0.02972972972972973,
+		"topic": 7,
+		"topicWeight": 0.08653350323695352
+	},
+	{
+		"term": "canvas",
+		"termType": "keyword",
+		"termWeight": 0.021621621621621623,
+		"topic": 7,
+		"topicWeight": 0.08653350323695352
+	},
+	{
+		"term": "ajax",
+		"termType": "keyword",
+		"termWeight": 0.01891891891891892,
+		"topic": 7,
+		"topicWeight": 0.08653350323695352
+	},
+	{
+		"term": "ruby-on-rails",
+		"termType": "keyword",
+		"termWeight": 0.016216216216216217,
+		"topic": 7,
+		"topicWeight": 0.08653350323695352
+	},
+	{
+		"term": "http",
+		"termType": "keyword",
+		"termWeight": 0.013513513513513514,
+		"topic": 7,
+		"topicWeight": 0.08653350323695352
+	},
+	{
+		"term": "internet-explorer",
+		"termType": "keyword",
+		"termWeight": 0.010810810810810811,
+		"topic": 7,
+		"topicWeight": 0.08653350323695352
+	},
+	{
+		"term": "iphone",
+		"termType": "keyword",
+		"termWeight": 0.11934156378600823,
+		"topic": 8,
+		"topicWeight": 0.050497765526731
+	},
+	{
+		"term": "ios",
+		"termType": "keyword",
+		"termWeight": 0.1111111111111111,
+		"topic": 8,
+		"topicWeight": 0.050497765526731
+	},
+	{
+		"term": "objective-c",
+		"termType": "keyword",
+		"termWeight": 0.07818930041152264,
+		"topic": 8,
+		"topicWeight": 0.050497765526731
+	},
+	{
+		"term": "osx",
+		"termType": "keyword",
+		"termWeight": 0.03292181069958848,
+		"topic": 8,
+		"topicWeight": 0.050497765526731
+	},
+	{
+		"term": "xcode",
+		"termType": "keyword",
+		"termWeight": 0.024691358024691357,
+		"topic": 8,
+		"topicWeight": 0.050497765526731
+	},
+	{
+		"term": "cocoa",
+		"termType": "keyword",
+		"termWeight": 0.024691358024691357,
+		"topic": 8,
+		"topicWeight": 0.050497765526731
+	},
+	{
+		"term": "cocoa-touch",
+		"termType": "keyword",
+		"termWeight": 0.0205761316872428,
+		"topic": 8,
+		"topicWeight": 0.050497765526731
+	},
+	{
+		"term": "ipad",
+		"termType": "keyword",
+		"termWeight": 0.0205761316872428,
+		"topic": 8,
+		"topicWeight": 0.050497765526731
+	},
+	{
+		"term": "ruby-on-rails",
+		"termType": "keyword",
+		"termWeight": 0.0205761316872428,
+		"topic": 8,
+		"topicWeight": 0.050497765526731
+	},
+	{
+		"term": "android",
+		"termType": "keyword",
+		"termWeight": 0.0205761316872428,
+		"topic": 8,
+		"topicWeight": 0.050497765526731
+	},
+	{
+		"term": "java",
+		"termType": "keyword",
+		"termWeight": 0.15204678362573099,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	},
+	{
+		"term": "android",
+		"termType": "keyword",
+		"termWeight": 0.10526315789473684,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	},
+	{
+		"term": "thread issues",
+		"termType": "title",
+		"termWeight": 0.03539181286549708,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	},
+	{
+		"term": "multithreading",
+		"termType": "keyword",
+		"termWeight": 0.023391812865497075,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	},
+	{
+		"term": "performance",
+		"termType": "keyword",
+		"termWeight": 0.017543859649122806,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	},
+	{
+		"term": "xml",
+		"termType": "keyword",
+		"termWeight": 0.017543859649122806,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	},
+	{
+		"term": "python",
+		"termType": "keyword",
+		"termWeight": 0.014619883040935672,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	},
+	{
+		"term": "sharepoint",
+		"termType": "keyword",
+		"termWeight": 0.011695906432748537,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	},
+	{
+		"term": "gcc",
+		"termType": "keyword",
+		"termWeight": 0.011695906432748537,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	},
+	{
+		"term": "eclipse",
+		"termType": "keyword",
+		"termWeight": 0.011695906432748537,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	},
+	{
+		"term": "javascript",
+		"termType": "keyword",
+		"termWeight": 0.011695906432748537,
+		"topic": 9,
+		"topicWeight": 0.07511374008317741
+	}
+]

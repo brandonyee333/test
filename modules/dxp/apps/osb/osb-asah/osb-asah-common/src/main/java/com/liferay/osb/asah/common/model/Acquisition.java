@@ -43,25 +43,24 @@ public class Acquisition implements Serializable {
 
 		UriComponents urlUriComponents = urlUriComponentsBuilder.build();
 
-		queryParams = urlUriComponents.getQueryParams();
+		MultiValueMap<String, String> queryParams =
+			urlUriComponents.getQueryParams();
 
-		_campaign = decode(queryParams.getFirst("utm_campaign"));
-		_content = decode(queryParams.getFirst("utm_content"));
-		_medium = decode(queryParams.getFirst("utm_medium"));
+		_campaign = _decode(queryParams.getFirst("utm_campaign"));
+		_content = _decode(queryParams.getFirst("utm_content"));
+		_medium = _decode(queryParams.getFirst("utm_medium"));
 
 		try {
 			URI uri = new URI(referrer);
 
-			this.referrer = uri.getHost();
+			_referrer = uri.getHost();
 		}
 		catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
 
-		_source = decode(queryParams.getFirst("utm_source"));
-		_term = decode(queryParams.getFirst("utm_term"));
-
-		this.url = url;
+		_source = _decode(queryParams.getFirst("utm_source"));
+		_term = _decode(queryParams.getFirst("utm_term"));
 	}
 
 	@Override
@@ -153,7 +152,7 @@ public class Acquisition implements Serializable {
 			return _medium;
 		}
 
-		if (!StringUtils.isEmpty(referrer)) {
+		if (!StringUtils.isEmpty(_referrer)) {
 			return "referral";
 		}
 
@@ -165,8 +164,8 @@ public class Acquisition implements Serializable {
 			return _source;
 		}
 
-		if (!StringUtils.isEmpty(referrer)) {
-			return referrer;
+		if (!StringUtils.isEmpty(_referrer)) {
+			return _referrer;
 		}
 
 		return null;
@@ -201,7 +200,7 @@ public class Acquisition implements Serializable {
 		_term = term;
 	}
 
-	protected String decode(String value) {
+	private String _decode(String value) {
 		if (Objects.isNull(value)) {
 			return null;
 		}
@@ -214,13 +213,10 @@ public class Acquisition implements Serializable {
 		}
 	}
 
-	protected MultiValueMap<String, String> queryParams;
-	protected String referrer;
-	protected String url;
-
 	private String _campaign;
 	private String _content;
 	private String _medium;
+	private String _referrer;
 	private String _source;
 	private String _term;
 

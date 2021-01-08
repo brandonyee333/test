@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/liferay/com-liferay-osb-asah-private.svg?token=qheGTkbg7SYfhBrP7xPX&branch=7.0.x)](https://travis-ci.com/liferay/com-liferay-osb-asah-private)
-[![Coverage Status](https://coveralls.io/repos/github/liferay/com-liferay-osb-asah-private/badge.svg?branch=7.0.x&t=NFTa2k)](https://coveralls.io/github/liferay/com-liferay-osb-asah-private?branch=7.0.x)
+[![Build Status](https://travis-ci.com/liferay/com-liferay-osb-asah-private.svg?token=qheGTkbg7SYfhBrP7xPX&branch=7.0.x-private)](https://travis-ci.com/liferay/com-liferay-osb-asah-private)
+[![Coverage Status](https://coveralls.io/repos/github/liferay/com-liferay-osb-asah-private/badge.svg?branch=7.0.x-private&t=NFTa2k)](https://coveralls.io/github/liferay/com-liferay-osb-asah-private?branch=7.0.x-private)
 
 # Asah
 
@@ -27,17 +27,13 @@ As another example, these services serve the data of an Analytics Cloud customer
 
 This service exposes endpoints to the [Faro frontend](https://github.com/liferay/com-liferay-osb-faro-private) and Liferay Portal.
 
-### osb-asah-backend-ext-alfa
-
-This template service is used as a reference to create modules that provide additional endpoints.
-
-### osb-asah-backend-ext-seo
-
-This service exposes additional endpoints related to SEO features (integrates with [SEMrush](https://www.semrush.com/)).
-
 ### osb-asah-batch-curator
 
 This service processes raw data into intelligent information using scheduled routines (e.g., once a day).
+
+### osb-asah-demo
+
+This service generates raw demo data.
 
 ### osb-asah-dxp-extractor
 
@@ -82,9 +78,9 @@ Requirements:
 
 This repository should be imported by IntelliJ as a Gradle project. Once this is done, you can spin up a Docker container for Elasticsearch:
 
-`docker-compose -f docker-compose.integration-test.yml up -d`
+`docker-compose -f osb-asah-common/src/testIntegration/resources/elasticsearch-docker-compose.yml up -d`
 
-To start a single service, for example `osb-asah-backend`, open its `*SpringBootApplication` class, right-click it and choose `Run 'Backend'`.
+To start a service, for example `osb-asah-backend`, open its `*SpringBootApplication` class, right-click it and choose `Run 'Backend'`.
 
 ### Microservice Approach
 
@@ -100,7 +96,7 @@ To start up all services via docker, run `docker-compose up`.
 
 Alternatively, the Monolith can also be used for development. It is used for trial purposes, as it simplifies the development setup.
 
-The main difference is that all services are bundled as a single Spring Boot application, and some components have a different implementation (see `com.liferay.osb.asah.monolith.common`).
+The main difference is that all services are bundled as a single Spring Boot application and some components have a different implementation (see `com.liferay.osb.asah.monolith.common`).
 
 You can start in IntelliJ by running `OSBAsahMonolithSpringBootApplication`. If you make any changes, you must rerun the application and try it out.
 
@@ -110,23 +106,6 @@ Note that `docker-compose` YAML includes an Elasticsearch instance, which will c
 
 ### Environment Variables
 
-When executing services with Docker Compose, you generally do not need to worry about environment variables because default values should be sane for local development.
-
-However, if you choose to run services with IntelliJ or `gradle bootRun`, you will need to define the following variables, possibly with values different from the default ones:
+The following is a non-exhaustive list of environment variables relevant for development:
 
 - `LCP_ENGINE_ELASTICSEARCH_SERVER_IP`: Used to point to another Elasticsearch instance (default: `127.0.0.1`).
-- `LCP_PROJECT_ID`: Used to set the project id which will determine the prefix in Elasticsearch indices (default `null`).
-- `OSB_ASAH_PUBSUB_EMULATOR_URL`: Used to point to another Pub/Sub instance (default: `http://osbasahpubsubemulator:8095`).
-- `OSB_ASAH_REDIS_URL`: Used to point to another Redis instance (default: `http://osbasahredis:6379`).
-- `OSB_FARO_FRONTEND_URL`: Used to point to a Faro instance, please set it your local instance (default: `https://analytics.liferay.com`).
-- `SPRING_PROFILES_ACTIVE`: Used set the active profile, 'default' profile is not allowed, use of the possible values: `dev`, `prod`, `test`.
-
-For example, when running `osb-asah-monolith` from IntelliJ, these variables and values have to be used:
-
-- `LCP_PROJECT_ID=osbasah`
-- `OSB_ASAH_BACKEND_URL=http://172.17.0.1:8081` - Use your IP, this url is passed to Faro/DXP, if they are running in containers `localhost` is not accessible.
-- `OSB_ASAH_PUBLISHER_URL=http://172.17.0.1:8081` - Same as above.
-- `OSB_FARO_FRONTEND_URL=http://localhost:8080`
-- `SPRING_PROFILES_ACTIVE=dev` - Alternatively, the profile can be set in Run/Debug Configurations dialog, in "Active profiles".
-
-The following is a nonexhaustive list, see `ServiceConstants.java` for more details.

@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorUserDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
@@ -27,7 +28,6 @@ import com.liferay.osb.asah.common.json.JSONArrayPaginator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.dxp.extractor.bot.DXPExtractorConfigurableBot;
 import com.liferay.osb.asah.dxp.extractor.configuration.DXPExtractorConfiguration;
 import com.liferay.osb.asah.dxp.extractor.configuration.impl.DXPExtractorConfigurationManagerImpl;
@@ -43,6 +43,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
@@ -71,6 +73,13 @@ public class DXPExtractorNanite implements Nanite {
 		_osbAsahDataSourceIdTermQueryBuilder = QueryBuilders.termQuery(
 			"osbAsahDataSourceId",
 			_dxpExtractorConfiguration.getDataSourceId());
+	}
+
+	@PostConstruct
+	public void init() {
+		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	@Override
@@ -936,11 +945,6 @@ public class DXPExtractorNanite implements Nanite {
 				_dxpRawElasticsearchInvoker.add(
 					"audit-events", newAuditEventsJSONArray);
 
-				if (newAuditEventsJSONArray.length() > 0) {
-					_updateOSBAsahMarker(
-						newAuditEventsJSONArray.getJSONObject(0));
-				}
-
 				processedCount += newAuditEventsJSONArray.length();
 
 				if (_log.isInfoEnabled()) {
@@ -958,44 +962,58 @@ public class DXPExtractorNanite implements Nanite {
 			_dxpRawElasticsearchInvoker.count(
 				"audit-events", _osbAsahDataSourceIdTermQueryBuilder));
 
-		// AuditEventDog returned audit events in descending order. We must now
-		// read and process audit events in ascending order.
+		// AuditEventDogUtil returned audit events in descending order. We must
+		// now read and process audit events from WeDeploy in ascending order.
 
 		try {
-			int processedCount = 0;
+			new JSONArrayPaginator() {
 
-			while (true) {
-				_throwNewInterruptBotException();
+				@Override
+				protected JSONArray paginate(int start, int end)
+					throws Exception {
 
-				JSONArray auditEventsJSONArray = new JSONArray(
-					_dxpRawElasticsearchInvoker.get(
-						"audit-events",
-						searchSourceBuilder -> {
-							searchSourceBuilder.query(
-								BoolQueryBuilderUtil.filter(
-									_osbAsahDataSourceIdTermQueryBuilder));
-							searchSourceBuilder.size(500);
-							searchSourceBuilder.sort(
-								SortBuilderUtil.fieldSort("auditEventId"));
-						}));
+					_throwNewInterruptBotException();
 
-				if (auditEventsJSONArray.length() == 0) {
-					break;
+					JSONArray auditEventsJSONArray = new JSONArray(
+						_dxpRawElasticsearchInvoker.get(
+							"audit-events",
+							searchSourceBuilder -> {
+								searchSourceBuilder.from(start);
+
+								searchSourceBuilder.query(
+									BoolQueryBuilderUtil.filter(
+										_osbAsahDataSourceIdTermQueryBuilder
+									).filter(
+										QueryBuilders.rangeQuery(
+											"auditEventId"
+										).gt(
+											lastSuccessfulAuditEventId
+										)
+									));
+
+								searchSourceBuilder.size(end - start);
+								searchSourceBuilder.sort(
+									SortBuilderUtil.fieldSort("auditEventId"));
+							}));
+
+					for (int i = 0; i < auditEventsJSONArray.length(); i++) {
+						JSONObject auditEventsJSONObject =
+							auditEventsJSONArray.getJSONObject(i);
+
+						_syncAuditEvent(auditEventsJSONObject);
+					}
+
+					processedCount += auditEventsJSONArray.length();
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Processed " + processedCount + " audit-events");
+					}
+
+					return auditEventsJSONArray;
 				}
 
-				for (int i = 0; i < auditEventsJSONArray.length(); i++) {
-					JSONObject auditEventsJSONObject =
-						auditEventsJSONArray.getJSONObject(i);
-
-					_syncAuditEvent(auditEventsJSONObject);
-				}
-
-				processedCount += auditEventsJSONArray.length();
-
-				if (_log.isInfoEnabled()) {
-					_log.info("Processed " + processedCount + " audit-events");
-				}
-			}
+			};
 
 			_runLogger.log(
 				_dxpExtractorConfiguration.getDataSourceId(), this, "COMPLETED",
@@ -1056,15 +1074,7 @@ public class DXPExtractorNanite implements Nanite {
 			}
 		}
 
-		_dxpRawElasticsearchInvoker.delete(
-			"audit-events",
-			BoolQueryBuilderUtil.filter(
-				_osbAsahDataSourceIdTermQueryBuilder
-			).filter(
-				QueryBuilders.termQuery(
-					"auditEventId",
-					auditEventJSONObject.getLong("auditEventId"))
-			));
+		_updateOSBAsahMarker(auditEventJSONObject);
 	}
 
 	private void _syncGroups() {
@@ -1157,27 +1167,8 @@ public class DXPExtractorNanite implements Nanite {
 
 		String eventType = auditEventJSONObject.getString("eventType");
 
-		if (eventType.equalsIgnoreCase("ADD") ||
-			eventType.equalsIgnoreCase("UPDATE")) {
-
-			JSONObject organizationJSONObject = _fetchJSONObject(
-				auditEventJSONObject, "organizationId", "organizations");
-
-			if (organizationJSONObject == null) {
-				_addOrganization(auditEventJSONObject);
-
-				return;
-			}
-
-			if (eventType.equalsIgnoreCase("ADD")) {
-				return;
-			}
-
-			_setAuditEventAttributes(
-				auditEventJSONObject, organizationJSONObject);
-
-			_dxpRawElasticsearchInvoker.update(
-				"organizations", organizationJSONObject);
+		if (eventType.equalsIgnoreCase("ADD")) {
+			_addOrganization(auditEventJSONObject);
 		}
 		else if (eventType.equalsIgnoreCase("DELETE")) {
 			long organizationId = auditEventJSONObject.getLong("classPK");
@@ -1193,6 +1184,22 @@ public class DXPExtractorNanite implements Nanite {
 			_updateDataSourceContactsConfiguration(
 				organizationId, "organizations");
 		}
+		else if (eventType.equalsIgnoreCase("UPDATE")) {
+			JSONObject organizationJSONObject = _fetchJSONObject(
+				auditEventJSONObject, "organizationId", "organizations");
+
+			if (organizationJSONObject == null) {
+				_addOrganization(auditEventJSONObject);
+
+				return;
+			}
+
+			_setAuditEventAttributes(
+				auditEventJSONObject, organizationJSONObject);
+
+			_dxpRawElasticsearchInvoker.update(
+				"organizations", organizationJSONObject);
+		}
 		else {
 			if (_log.isInfoEnabled()) {
 				_log.info("Ignoring audit event type " + eventType);
@@ -1203,38 +1210,8 @@ public class DXPExtractorNanite implements Nanite {
 	private void _syncUser(JSONObject auditEventJSONObject) {
 		String eventType = auditEventJSONObject.getString("eventType");
 
-		if (eventType.equalsIgnoreCase("ADD") ||
-			eventType.equalsIgnoreCase("UPDATE")) {
-
-			JSONObject userJSONObject = _fetchJSONObject(
-				auditEventJSONObject, "userId", "users");
-
-			if (userJSONObject == null) {
-				_addUser(auditEventJSONObject);
-
-				return;
-			}
-
-			if (eventType.equalsIgnoreCase("ADD")) {
-				return;
-			}
-
-			if (_faroInfoSuppressedUserDog.isSuppressed(
-					userJSONObject.optString("emailAddress"), null)) {
-
-				return;
-			}
-
-			_setAuditEventAttributes(
-				auditEventJSONObject, userJSONObject.getJSONObject("contact"));
-
-			_setAuditEventAttributes(auditEventJSONObject, userJSONObject);
-
-			_dxpExtractorUserDog.processGenderField(userJSONObject);
-
-			_dxpRawElasticsearchInvoker.update("users", userJSONObject);
-
-			_addFaroAuditEvent(auditEventJSONObject);
+		if (eventType.equalsIgnoreCase("ADD")) {
+			_addUser(auditEventJSONObject);
 		}
 		else if (eventType.equalsIgnoreCase("ASSIGN")) {
 
@@ -1260,6 +1237,33 @@ public class DXPExtractorNanite implements Nanite {
 				_deleteUser(auditEventJSONObject);
 			}
 		}
+		else if (eventType.equalsIgnoreCase("UPDATE")) {
+			JSONObject userJSONObject = _fetchJSONObject(
+				auditEventJSONObject, "userId", "users");
+
+			if (userJSONObject == null) {
+				_addUser(auditEventJSONObject);
+
+				return;
+			}
+
+			if (_faroInfoSuppressedUserDog.isSuppressed(
+					userJSONObject.optString("emailAddress"), null)) {
+
+				return;
+			}
+
+			_setAuditEventAttributes(
+				auditEventJSONObject, userJSONObject.getJSONObject("contact"));
+
+			_setAuditEventAttributes(auditEventJSONObject, userJSONObject);
+
+			_dxpExtractorUserDog.processGenderField(userJSONObject);
+
+			_dxpRawElasticsearchInvoker.update("users", userJSONObject);
+
+			_addFaroAuditEvent(auditEventJSONObject);
+		}
 		else {
 			if (_log.isInfoEnabled()) {
 				_log.info("Ignoring audit event type " + eventType);
@@ -1272,26 +1276,8 @@ public class DXPExtractorNanite implements Nanite {
 
 		String eventType = auditEventJSONObject.getString("eventType");
 
-		if (eventType.equalsIgnoreCase("ADD") ||
-			eventType.equalsIgnoreCase("UPDATE")) {
-
-			JSONObject userGroupJSONObject = _fetchJSONObject(
-				auditEventJSONObject, "userGroupId", "user-groups");
-
-			if (userGroupJSONObject == null) {
-				_addUserGroup(auditEventJSONObject);
-
-				return;
-			}
-
-			if (eventType.equalsIgnoreCase("ADD")) {
-				return;
-			}
-
-			_setAuditEventAttributes(auditEventJSONObject, userGroupJSONObject);
-
-			_dxpRawElasticsearchInvoker.update(
-				"user-groups", userGroupJSONObject);
+		if (eventType.equalsIgnoreCase("ADD")) {
+			_addUserGroup(auditEventJSONObject);
 		}
 		else if (eventType.equalsIgnoreCase("DELETE")) {
 			long userGroupId = auditEventJSONObject.getLong("classPK");
@@ -1305,6 +1291,21 @@ public class DXPExtractorNanite implements Nanite {
 				));
 
 			_updateDataSourceContactsConfiguration(userGroupId, "userGroups");
+		}
+		else if (eventType.equalsIgnoreCase("UPDATE")) {
+			JSONObject userGroupJSONObject = _fetchJSONObject(
+				auditEventJSONObject, "userGroupId", "user-groups");
+
+			if (userGroupJSONObject == null) {
+				_addUserGroup(auditEventJSONObject);
+
+				return;
+			}
+
+			_setAuditEventAttributes(auditEventJSONObject, userGroupJSONObject);
+
+			_dxpRawElasticsearchInvoker.update(
+				"user-groups", userGroupJSONObject);
 		}
 		else {
 			if (_log.isInfoEnabled()) {
@@ -1433,6 +1434,16 @@ public class DXPExtractorNanite implements Nanite {
 
 		_dxpRawElasticsearchInvoker.update(
 			"OSBAsahMarkers", osbAsahMarkerJSONObject);
+
+		_dxpRawElasticsearchInvoker.delete(
+			"audit-events",
+			BoolQueryBuilderUtil.filter(
+				_osbAsahDataSourceIdTermQueryBuilder
+			).filter(
+				QueryBuilders.termQuery(
+					"auditEventId",
+					auditEventJSONObject.getLong("auditEventId"))
+			));
 	}
 
 	private void _updateOSBAsahMarker(long lastSyncTime) {
@@ -1462,10 +1473,11 @@ public class DXPExtractorNanite implements Nanite {
 	@Autowired
 	private DXPExtractorUserDog _dxpExtractorUserDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.dog.VisitorHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
-import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.PageMetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
@@ -50,29 +49,7 @@ public class VisitorHistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "pages",
-		resourcePath = "visitor_histogram_page_last_24_hours_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@Test
-	public void sttestVisitorHistogramMetricsLast24Hours() {
-		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
-			Interval.DAY, TimeRange.LAST_24_HOURS);
-
-		Assert.assertEquals(
-			histogramMetrics.toString(), 24, histogramMetrics.size());
-
-		double[] expectedValues = {
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0,
-			0
-		};
-
-		Assert.assertArrayEquals(
-			expectedValues, _getActualValues(histogramMetrics), 0);
-	}
-
-	@ElasticsearchIndex(
-		name = "pages",
-		resourcePath = "visitor_histogram_page_last_7_days_info.json",
+		resourcePath = "visitor-histogram-page-last-7-days-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -85,13 +62,37 @@ public class VisitorHistogramDogTest {
 
 		double[] expectedValues = {0, 0, 1, 0, 0, 0, 1};
 
-		Assert.assertArrayEquals(
-			expectedValues, _getActualValues(histogramMetrics), 0);
+		double[] actualValues = _getActualValues(histogramMetrics);
+
+		Assert.assertArrayEquals(expectedValues, actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
 		name = "pages",
-		resourcePath = "visitor_histogram_page_last_28_days_info.json",
+		resourcePath = "visitor-histogram-page-last-24-hours-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testVisitorHistogramMetricsLast24Hours() {
+		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
+			Interval.DAY, TimeRange.LAST_24_HOURS);
+
+		Assert.assertEquals(
+			histogramMetrics.toString(), 24, histogramMetrics.size());
+
+		double[] expectedValues = {
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0,
+			0
+		};
+
+		double[] actualValues = _getActualValues(histogramMetrics);
+
+		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages",
+		resourcePath = "visitor-histogram-page-last-28-days-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -106,13 +107,14 @@ public class VisitorHistogramDogTest {
 
 		Arrays.fill(expectedValues, 1);
 
-		Assert.assertArrayEquals(
-			expectedValues, _getActualValues(histogramMetrics), 0);
+		double[] actualValues = _getActualValues(histogramMetrics);
+
+		Assert.assertArrayEquals(expectedValues, actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
 		name = "pages",
-		resourcePath = "visitor_histogram_page_last_90_days_info.json",
+		resourcePath = "visitor-histogram-page-last-90-days-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Ignore
@@ -123,8 +125,9 @@ public class VisitorHistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			Interval.WEEK, TimeRange.LAST_90_DAYS);
 
-		Assert.assertArrayEquals(
-			expectedValues, _getActualValues(histogramMetrics), 0);
+		double[] actualValues = _getActualValues(histogramMetrics);
+
+		Assert.assertArrayEquals(expectedValues, actualValues, 0);
 
 		HistogramMetric histogramMetric = histogramMetrics.get(0);
 
@@ -154,17 +157,14 @@ public class VisitorHistogramDogTest {
 	private List<HistogramMetric> _getHistogramMetrics(
 		Interval interval, TimeRange timeRange) {
 
-		HistogramMetricBag histogramMetricBag =
-			_visitorHistogramDog.getHistogramMetricBag(
-				false, PageMetricType.VISITORS,
-				new SearchQueryContext(AssetType.PAGE) {
-					{
-						setInterval(interval.getKey());
-						setTimeRange(timeRange);
-					}
-				});
-
-		return histogramMetricBag.getMetrics();
+		return _visitorHistogramDog.getHistogramMetrics(
+			false, PageMetricType.VISITORS,
+			new SearchQueryContext(AssetType.PAGE) {
+				{
+					setInterval(interval.getKey());
+					setTimeRange(timeRange);
+				}
+			});
 	}
 
 	@Autowired

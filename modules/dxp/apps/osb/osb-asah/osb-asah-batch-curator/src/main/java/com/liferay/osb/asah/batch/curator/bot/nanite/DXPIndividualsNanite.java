@@ -16,13 +16,11 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.annotation.PostConstruct;
 
 import org.json.JSONObject;
 
@@ -33,6 +31,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DXPIndividualsNanite extends BaseIndividualsNanite {
+
+	@Override
+	@PostConstruct
+	public void init() {
+		super.init();
+
+		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
+	}
 
 	@Override
 	protected String getAuditEventDataIdFieldName() {
@@ -78,11 +84,6 @@ public class DXPIndividualsNanite extends BaseIndividualsNanite {
 	}
 
 	@Override
-	protected Log getLog() {
-		return LogFactory.getLog(DXPIndividualsNanite.class);
-	}
-
-	@Override
 	protected boolean isInterrupted(String dataSourceId) {
 		return _interruptedMap.getOrDefault(dataSourceId, false);
 	}
@@ -112,9 +113,7 @@ public class DXPIndividualsNanite extends BaseIndividualsNanite {
 		_runningMap.put(dataSourceId, running);
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
 	private final Map<String, Boolean> _interruptedMap = new HashMap<>();
 	private final Map<String, Boolean> _runningMap = new HashMap<>();
 

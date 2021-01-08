@@ -130,11 +130,17 @@
 				"facebookId": {
 					"type": "keyword"
 				},
+				"failedLoginAttempts": {
+					"type": "keyword"
+				},
 				"firstName": {
 					"normalizer": "case_insensitive_sort",
 					"type": "keyword"
 				},
 				"googleUserId": {
+					"type": "keyword"
+				},
+				"graceLoginCount": {
 					"type": "keyword"
 				},
 				"greeting": {
@@ -149,11 +155,32 @@
 				"languageId": {
 					"type": "keyword"
 				},
+				"lastFailedLoginDate": {
+					"type": "keyword"
+				},
+				"lastLoginDate": {
+					"type": "keyword"
+				},
+				"lastLoginIP": {
+					"type": "keyword"
+				},
 				"lastName": {
 					"normalizer": "case_insensitive_sort",
 					"type": "keyword"
 				},
 				"ldapServerId": {
+					"type": "keyword"
+				},
+				"lockout": {
+					"type": "keyword"
+				},
+				"lockoutDate": {
+					"type": "keyword"
+				},
+				"loginDate": {
+					"type": "keyword"
+				},
+				"loginIP": {
 					"type": "keyword"
 				},
 				"memberships": {
@@ -165,6 +192,9 @@
 				"modifiedDate": {
 					"type": "keyword"
 				},
+				"mvccVersion": {
+					"type": "keyword"
+				},
 				"openId": {
 					"type": "keyword"
 				},
@@ -172,6 +202,12 @@
 					"type": "keyword"
 				},
 				"portraitId": {
+					"type": "keyword"
+				},
+				"reminderQueryAnswer": {
+					"type": "keyword"
+				},
+				"reminderQueryQuestion": {
 					"type": "keyword"
 				},
 				"screenName": {

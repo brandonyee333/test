@@ -16,13 +16,15 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.util.StringUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -54,6 +56,11 @@ public class FaroInfoActivitiesFilterStringConverterHelper
 
 		return getTimeFrameQueryBuilder(
 			fieldName, operator, "activities", valueString);
+	}
+
+	@PostConstruct
+	public void init() {
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	private QueryBuilder _getAccountIdQueryBuilder(
@@ -107,7 +114,9 @@ public class FaroInfoActivitiesFilterStringConverterHelper
 		return false;
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

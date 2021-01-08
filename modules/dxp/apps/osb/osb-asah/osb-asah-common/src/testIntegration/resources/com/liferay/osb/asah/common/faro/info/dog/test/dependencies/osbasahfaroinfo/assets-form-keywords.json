@@ -1,0 +1,65 @@
+[
+	{
+		"assetType": "Page",
+		"keywords": [
+			{
+				"keyword": "foo",
+				"type": "keyword"
+			},
+			{
+				"keyword": "bar",
+				"type": "title"
+			},
+			{
+				"keyword": "glue",
+				"type": "description"
+			},
+			{
+				"keyword": "jar",
+				"type": "keyword"
+			}
+		]
+	},
+	{
+		"assetType": "Page",
+		"keywords": [
+			{
+				"keyword": "floo",
+				"type": "keyword"
+			},
+			{
+				"keyword": "blar",
+				"type": "keyword"
+			},
+			{
+				"keyword": "gllue",
+				"type": "description"
+			},
+			{
+				"keyword": "jlar",
+				"type": "keyword"
+			}
+		]
+	},
+	{
+		"assetType": "Form",
+		"keywords": [
+			{
+				"keyword": "fboo",
+				"type": "keyword"
+			},
+			{
+				"keyword": "bbar",
+				"type": "keyword"
+			},
+			{
+				"keyword": "gblue",
+				"type": "description"
+			},
+			{
+				"keyword": "jbar",
+				"type": "keyword"
+			}
+		]
+	}
+]

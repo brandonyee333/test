@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.response;
 
-import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -66,7 +65,7 @@ public class MembershipChangesHistogramTransformationJSONArrayFunction
 		JSONArray jsonArray = new JSONArray();
 
 		computeEndDayDateString();
-		computeStartDayDateString(size);
+		computeStartDayDateString(computeFunctionString, size);
 
 		ExtendedBounds extendedBounds = new ExtendedBounds(
 			startDayDateString, endDayDateString);
@@ -78,16 +77,12 @@ public class MembershipChangesHistogramTransformationJSONArrayFunction
 				supportedFieldName
 			).lte(
 				endDayDateString
-			).timeZone(
-				TimeZoneDogUtil.getTimeZoneId()
 			)
 		).filter(
 			QueryBuilders.rangeQuery(
 				supportedFieldName
 			).gte(
 				startDayDateString
-			).timeZone(
-				TimeZoneDogUtil.getTimeZoneId()
 			)
 		);
 
@@ -151,8 +146,6 @@ public class MembershipChangesHistogramTransformationJSONArrayFunction
 								"dateChanged"
 							).lt(
 								startDayDateString
-							).timeZone(
-								TimeZoneDogUtil.getTimeZoneId()
 							)
 						));
 					searchSourceBuilder.size(1);

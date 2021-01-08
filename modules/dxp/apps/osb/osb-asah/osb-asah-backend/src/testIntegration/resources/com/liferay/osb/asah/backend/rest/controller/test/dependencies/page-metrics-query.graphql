@@ -1,0 +1,32 @@
+query PageMetrics($channelId: String, $keywords: String, $rangeKey: Int!, $size: Int!, $start: Int!, $sort: Sort!) {
+	pages(channelId: $channelId, keywords: $keywords, rangeKey: $rangeKey, size: $size, start: $start, sort: $sort) {
+		assetMetrics {
+			... on PageMetric {
+				assetTitle
+				assetId
+				avgTimeOnPageMetric {
+					value
+				}
+				bounceRateMetric {
+					value
+				}
+				engagementMetric {
+					value
+				}
+				entrancesMetric {
+					value
+				}
+				exitRateMetric {
+					value
+				}
+				visitorsMetric {
+					value
+				}
+				viewsMetric {
+					value
+				}
+			}
+		}
+		total
+	}
+}

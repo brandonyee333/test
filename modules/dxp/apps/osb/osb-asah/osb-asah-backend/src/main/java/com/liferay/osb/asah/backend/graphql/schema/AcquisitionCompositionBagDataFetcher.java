@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.AcquisitionCompositionDog;
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 
+import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,21 +30,19 @@ import org.springframework.stereotype.Component;
 @Component
 @GraphQLTypeWiring(fieldName = "acquisitions", typeName = "QueryType")
 public class AcquisitionCompositionBagDataFetcher
-	extends BaseDataFetcher<CompositionResultBag> {
+	implements DataFetcher<CompositionResultBag> {
 
 	@Override
 	public CompositionResultBag get(
-		DataFetchingEnvironment dataFetchingEnvironment,
-		SearchQueryContext searchQueryContext) {
+		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		return _acquisitionCompositionDog.getCompositionResultBag(
 			dataFetchingEnvironment.getArgument("acquisitionType"),
-			searchQueryContext.getChannelId(),
-			searchQueryContext.getDataSourceId(),
+			dataFetchingEnvironment.getArgument("channelId"),
+			dataFetchingEnvironment.getArgument("dataSourceId"),
+			dataFetchingEnvironment.getArgument("rangeKey"),
 			dataFetchingEnvironment.getArgument("size"),
-			dataFetchingEnvironment.getArgument("start"),
-			searchQueryContext.getTimeRange(),
-			searchQueryContext.getTimeZoneId());
+			dataFetchingEnvironment.getArgument("start"));
 	}
 
 	@Autowired

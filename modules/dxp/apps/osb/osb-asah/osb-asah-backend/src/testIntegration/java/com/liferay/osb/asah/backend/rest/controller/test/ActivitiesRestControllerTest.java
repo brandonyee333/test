@@ -18,16 +18,17 @@ import com.liferay.osb.asah.backend.rest.controller.ActivitiesRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,6 +43,11 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class ActivitiesRestControllerTest {
+
+	@Before
+	public void setUp() {
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
+	}
 
 	@ElasticsearchIndex(
 		name = "activities", resourcePath = "activities.json",
@@ -72,49 +78,41 @@ public class ActivitiesRestControllerTest {
 
 	@Test
 	public void testGetActivityTransformations1() throws Exception {
-		_elasticsearchInvoker.add(
-			"activities",
-			JSONUtil.put(
-				"day", DateUtil.newDayDateString()
-			).put(
-				"startTimeLocal", DateUtil.newDateString()
-			).put(
-				"userId", "311355742999294554"
-			));
+		JSONObject jsonObject = JSONUtil.put(
+			"day", DateUtil.newDateString()
+		).put(
+			"userId", "311355742999294554"
+		);
+
+		_elasticsearchInvoker.add("activities", jsonObject);
 
 		JSONObject activityTransformationsJSONObject = new JSONObject(
 			_activitiesRestController.getActivityTransformations(
 				"compute(day(day) as temp)/groupby((temp))",
-				"userId eq '311355742999294554'", true, 0, null, null, 0));
+				"userId eq '311355742999294554'", true, 0, 1));
 
-		JSONArray jsonArray = (JSONArray)JSONUtil.getValue(
-			activityTransformationsJSONObject, "JSONObject/_embedded",
-			"JSONArray/activity-transformations");
-
-		Assert.assertEquals(48, jsonArray.length());
 		Assert.assertEquals(
 			1,
 			JSONUtil.getValue(
-				jsonArray.getJSONObject(jsonArray.length() - 1),
+				activityTransformationsJSONObject, "JSONObject/_embedded",
+				"JSONArray/activity-transformations", "Object/0",
 				"Object/totalElements"));
 	}
 
 	@Test
 	public void testGetActivityTransformations2() throws Exception {
-		_elasticsearchInvoker.add(
-			"activities",
-			JSONUtil.put(
-				"day", DateUtil.newDayDateString()
-			).put(
-				"startTimeLocal", DateUtil.newDateString()
-			).put(
-				"userId", "311355742999294554"
-			));
+		JSONObject jsonObject = JSONUtil.put(
+			"day", DateUtil.newDateString()
+		).put(
+			"userId", "311355742999294554"
+		);
+
+		_elasticsearchInvoker.add("activities", jsonObject);
 
 		JSONObject activityTransformationsJSONObject = new JSONObject(
 			_activitiesRestController.getActivityTransformations(
 				"compute(day(day) as temp)/groupby((temp))", "userId eq 'abc'",
-				true, 0, null, null, 1));
+				true, 0, 1));
 
 		Assert.assertEquals(
 			0,
@@ -181,7 +179,9 @@ public class ActivitiesRestControllerTest {
 	@Autowired
 	private ActivitiesRestController _activitiesRestController;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

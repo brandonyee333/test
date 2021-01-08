@@ -39,6 +39,8 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
+
 		_individual1PK = generateIndividualPK();
 		_individual2PK = generateIndividualPK();
 	}

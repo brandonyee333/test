@@ -42,9 +42,6 @@ public class DXPEntityType {
 	public static final String CLASS_NAME_USER =
 		"com.liferay.portal.kernel.model.User";
 
-	public static final String CLASS_NAME_USER_FIELD =
-		"com.liferay.portal.kernel.model.User.field";
-
 	public static final String CLASS_NAME_USER_GROUP =
 		"com.liferay.portal.kernel.model.UserGroup";
 
@@ -73,9 +70,6 @@ public class DXPEntityType {
 		else if (className.equals(CLASS_NAME_USER)) {
 			return new DXPEntityType(
 				className, "users", "userId", "userId", "referencedUserIds");
-		}
-		else if (className.equals(CLASS_NAME_USER_FIELD)) {
-			return new DXPEntityType(className, null, null, null, null);
 		}
 		else if (className.equals(CLASS_NAME_USER_GROUP)) {
 			return new DXPEntityType(
@@ -177,16 +171,6 @@ public class DXPEntityType {
 
 	public boolean isUser() {
 		if (StringUtils.equals(_className, DXPEntityType.CLASS_NAME_USER)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean isUserField() {
-		if (StringUtils.equals(
-				_className, DXPEntityType.CLASS_NAME_USER_FIELD)) {
-
 			return true;
 		}
 

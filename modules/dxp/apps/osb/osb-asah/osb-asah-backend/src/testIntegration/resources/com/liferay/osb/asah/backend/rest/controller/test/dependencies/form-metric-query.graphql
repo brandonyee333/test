@@ -1,0 +1,106 @@
+fragment browserFragment on Metric {
+	browser {
+		metrics {
+			value
+			valueKey
+		}
+		value
+		valueKey
+	}
+}
+
+fragment deviceFragment on Metric {
+	device {
+		metrics {
+			value
+			valueKey
+		}
+		value
+		valueKey
+	}
+}
+
+fragment geolocationFragment on Metric {
+	geolocation {
+		metrics {
+			value
+			valueKey
+		}
+		value
+		valueKey
+	}
+}
+
+fragment metricFragment on Metric {
+	previousValue
+	trend {
+		percentage
+		trendClassification
+	}
+	value
+}
+
+fragment segmentFragment on Metric {
+	anonymousUsersCount
+	knownUsersCount
+	nonsegmentedKnownUsersCount
+	segment {
+		metrics {
+			value
+			valueKey
+		}
+		total
+	}
+	segmentedKnownUsersCount
+}
+
+query FormMetric($assetId: String!, $channelId: String, $location: String, $devices: String, $title: String, $url: String!, $rangeKey: Int!) {
+	form(assetId: $assetId, channelId: $channelId, country: $location, deviceType: $devices, url: $url, rangeKey: $rangeKey, title: $title) {
+		abandonmentsMetric {
+			...metricFragment
+		}
+		assetId
+		assetTitle
+		completionTimeMetric {
+			...metricFragment
+		}
+		formPageMetrics {
+			formFieldMetrics {
+				fieldAbandonmentsMetric {
+					value
+				}
+				fieldEmptyMetric {
+					value
+				}
+				fieldInteractionDurationMetric {
+					value
+				}
+				fieldInteractionsMetric {
+					value
+				}
+				fieldName
+				fieldRefilledMetric {
+					value
+				}
+			}
+			pageAbandonmentsMetric {
+				value
+			}
+			pageIndex
+			pageViewsMetric {
+				value
+			}
+		}
+		submissionsMetric {
+			...browserFragment
+			...deviceFragment
+			...geolocationFragment
+			...metricFragment
+		}
+		urls
+		viewsMetric {
+			...metricFragment
+			...segmentFragment
+		}
+	}
+}

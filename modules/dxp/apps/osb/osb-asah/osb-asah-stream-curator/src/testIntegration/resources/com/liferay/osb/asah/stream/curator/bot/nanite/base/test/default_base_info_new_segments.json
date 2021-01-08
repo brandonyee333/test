@@ -1,7 +1,6 @@
 [
 	{
 		"browserName": "Firefox",
-		"channelId": "1",
 		"city": "Recife",
 		"country": "Brazil",
 		"dataSourceId": "www.liferay.com",
@@ -23,7 +22,6 @@
 	},
 	{
 		"browserName": "Chrome",
-		"channelId": "1",
 		"city": "Recife",
 		"country": "Brazil",
 		"dataSourceId": "www.liferay.com",

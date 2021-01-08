@@ -24,6 +24,8 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.hamcrest.CoreMatchers;
 
+import org.json.JSONObject;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,15 +41,17 @@ import org.springframework.test.context.ContextConfiguration;
 public class FieldMappingsRestControllerTest {
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test(expected = Exception.class)
 	public void testDuplicateFieldMappingFieldName() throws Exception {
-		String fieldMappingJSON = String.valueOf(
+		JSONObject fieldMappingJSONObject =
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				JSONUtil.put("351238757269547424", "givenName"), "givenName",
-				"Text"));
+				"Text");
+
+		String fieldMappingJSON = fieldMappingJSONObject.toString();
 
 		_fieldMappingsRestController.postFieldMapping(fieldMappingJSON);
 

@@ -42,11 +42,14 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
+	@Override
 	public void setUp() throws Exception {
+		super.setUp();
+
 		_salesforceDataSourceJSONObject =
 			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
 
-		faroInfoElasticsearchInvoker.add(
+		elasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildAccountFieldMappingJSONObject(
 				_salesforceDataSourceJSONObject.getString("id"), "country",
@@ -85,17 +88,17 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		_assertOSBAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
-		faroInfoElasticsearchInvoker.delete(
+		elasticsearchInvoker.delete(
 			"OSBAsahTasks", QueryBuilders.matchAllQuery());
 
 		_faroInfoAccountDog.deleteAccount(accountJSONObject);
 
-		JSONArray individualSegmentsJSONArray =
-			faroInfoElasticsearchInvoker.get("individual-segments");
+		JSONArray individualSegmentsJSONArray = elasticsearchInvoker.get(
+			"individual-segments");
 
 		Assert.assertEquals(0, individualSegmentsJSONArray.length());
 
-		JSONArray osbAsahTasksJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray osbAsahTasksJSONArray = elasticsearchInvoker.get(
 			"OSBAsahTasks",
 			QueryBuilders.termQuery(
 				"className", "DeleteIndividualSegmentTasksNanite"));
@@ -112,7 +115,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			contextJSONObject.getString("individualSegmentId"));
 
 		Assert.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
+			elasticsearchInvoker.exists(
 				"accounts", accountJSONObject.getString("id")));
 
 		_assertOSBTasksContextAfterUpdate(
@@ -128,7 +131,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		_assertOSBAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
-		faroInfoElasticsearchInvoker.delete(
+		elasticsearchInvoker.delete(
 			"OSBAsahTasks", QueryBuilders.matchAllQuery());
 
 		_faroInfoAccountDog.replaceAccount(
@@ -152,7 +155,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		_assertOSBAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
-		faroInfoElasticsearchInvoker.delete(
+		elasticsearchInvoker.delete(
 			"OSBAsahTasks", QueryBuilders.matchAllQuery());
 
 		_faroInfoAccountDog.updateAccount(
@@ -177,7 +180,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		_assertOSBAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
-		faroInfoElasticsearchInvoker.delete(
+		elasticsearchInvoker.delete(
 			"OSBAsahTasks", QueryBuilders.matchAllQuery());
 
 		_faroInfoAccountDog.updateAccount(
@@ -197,8 +200,8 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	private void _assertAccountIndividualSegment() {
-		JSONArray individualSegmentsJSONArray =
-			faroInfoElasticsearchInvoker.get("individual-segments");
+		JSONArray individualSegmentsJSONArray = elasticsearchInvoker.get(
+			"individual-segments");
 
 		Assert.assertEquals(1, individualSegmentsJSONArray.length());
 
@@ -211,7 +214,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	private void _assertIndividualSegmentJSONObject(
 		JSONObject individualSegmentJSONObject) {
 
-		JSONArray accountsJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray accountsJSONArray = elasticsearchInvoker.get(
 			"accounts", QueryBuilders.termQuery("accountPK", "123"));
 
 		JSONObject accountJSONObject = accountsJSONArray.getJSONObject(0);
@@ -237,7 +240,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	private void _assertOSBAsahTaskIndividualSegmentContext() {
-		JSONArray osbAsahTasksJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray osbAsahTasksJSONArray = elasticsearchInvoker.get(
 			"OSBAsahTasks");
 
 		for (int i = 0; i < osbAsahTasksJSONArray.length(); i++) {
@@ -258,7 +261,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	private void _assertOSBTasksContextAfterUpdate(String addFilter) {
-		JSONArray osbAsahTasksJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray osbAsahTasksJSONArray = elasticsearchInvoker.get(
 			"OSBAsahTasks",
 			QueryBuilders.termQuery(
 				"className", "UpdateDynamicMembershipsNanite"));

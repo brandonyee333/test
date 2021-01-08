@@ -95,15 +95,12 @@ public class TestExecutionListenerUtil {
 				localDateTime = _clampDay(startLocalDateTime, localDateTime);
 			}
 
-			if (matcher.group(5) != null) {
-				matcher.appendReplacement(
-					sb,
-					localDateTime.toLocalDate() + matcher.group(4) +
-						matcher.group(5));
-			}
-			else if (matcher.group(4) != null) {
-				matcher.appendReplacement(
-					sb, localDateTime.toLocalDate() + matcher.group(4));
+			String timeGroup = matcher.group(4);
+
+			if (timeGroup != null) {
+				LocalDate localDate = localDateTime.toLocalDate();
+
+				matcher.appendReplacement(sb, localDate.toString() + timeGroup);
 			}
 			else {
 				matcher.appendReplacement(
@@ -137,7 +134,7 @@ public class TestExecutionListenerUtil {
 	}
 
 	private static final Pattern _timeExpressionPattern = Pattern.compile(
-		"\\$\\{(now!?|today)([-+][0-9]+)([Mhdmy])(T\\d{2}:\\d{2})?(:\\d{2}\\." +
-			"\\d{3}Z)?}");
+		"\\$\\{(now!?|today)([-+][0-9]+)([Mhdmy])(T\\d{2}:\\d{2}:\\d{2}\\." +
+			"\\d{3}Z)?\\}");
 
 }

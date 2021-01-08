@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.spring.http.client;
 
-import com.liferay.osb.asah.common.constants.HeaderConstants;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-
 import java.io.IOException;
 
 import java.util.Collections;
@@ -42,13 +39,11 @@ public class OSBAsahClientHttpRequestInterceptor
 
 		HttpHeaders httpHeaders = httpRequest.getHeaders();
 
-		httpHeaders.putIfAbsent(
-			HeaderConstants.PROJECT_ID,
-			Collections.singletonList(ProjectIdThreadLocal.getProjectId()));
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
 		httpHeaders.putIfAbsent(
 			HttpHeaders.USER_AGENT,
 			Collections.singletonList("LiferayAnalyticsCloud"));
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
 		return clientHttpRequestExecution.execute(httpRequest, body);
 	}

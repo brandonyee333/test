@@ -18,10 +18,11 @@ import com.fasterxml.jackson.core.JsonFactory;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExporter;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.io.ByteArrayOutputStream;
@@ -36,17 +37,20 @@ import org.junit.runner.RunWith;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Marcellus Tavares
  */
+@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
+@Import(CerebroQueueHttpTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class PageDataExporterTest {
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
+		name = "pages", resourcePath = "pages-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -55,7 +59,8 @@ public class PageDataExporterTest {
 			new ByteArrayOutputStream();
 
 		PageDataExporter pageDataExporter = new PageDataExporter(
-			new JsonFactory(), byteArrayOutputStream, _elasticsearchInvoker);
+			new JsonFactory(), byteArrayOutputStream,
+			_elasticsearchInvokerFactory.forCerebroInfo());
 
 		pageDataExporter.export();
 
@@ -65,7 +70,7 @@ public class PageDataExporterTest {
 		byteArrayOutputStream.close();
 
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
-			"dependencies/expected_pages_export.json", this);
+			"dependencies/expected-pages-export.json", this);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONAssert.assertEquals(
@@ -74,7 +79,7 @@ public class PageDataExporterTest {
 		}
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

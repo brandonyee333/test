@@ -48,7 +48,7 @@ public class OSBAsahBackendSpringBootApplication
 
 		propertySourcesPlaceholderConfigurer.setLocations(
 			pathMatchingResourcePatternResolver.getResources(
-				"classpath*:/application.properties"));
+				"classpath:/application*.properties"));
 
 		return propertySourcesPlaceholderConfigurer;
 	}

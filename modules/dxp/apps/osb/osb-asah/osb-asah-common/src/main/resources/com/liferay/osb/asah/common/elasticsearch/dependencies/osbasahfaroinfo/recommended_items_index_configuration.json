@@ -2,16 +2,10 @@
 	"mappings": {
 		"recommended-items": {
 			"properties": {
-				"id": {
+				"item": {
 					"type": "keyword"
 				},
-				"itemId": {
-					"type": "keyword"
-				},
-				"jobId": {
-					"type": "keyword"
-				},
-				"recommendedItemIds": {
+				"recommendedItems": {
 					"type": "keyword"
 				}
 			}

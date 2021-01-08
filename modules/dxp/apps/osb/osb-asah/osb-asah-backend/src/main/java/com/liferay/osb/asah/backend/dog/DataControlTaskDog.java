@@ -15,19 +15,17 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.DataControlTask;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
-import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
@@ -37,10 +35,14 @@ import java.io.File;
 import java.nio.file.Path;
 
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -111,8 +113,9 @@ public class DataControlTaskDog {
 	}
 
 	public ResultBag<DataControlTask> getDataControlTaskResultBag(
-		String batchId, String keywords, Integer rangeKey, int size, Sort sort,
-		int start, List<String> statuses, List<String> types) {
+		String batchId, String keywords, Integer rangeKey, int size,
+		Map<String, String> sort, int start, List<String> statuses,
+		List<String> types) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -138,7 +141,7 @@ public class DataControlTaskDog {
 		}
 
 		if (rangeKey != null) {
-			LocalDate localDate = LocalDate.now(_timeZoneDog.getZoneId());
+			LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
 
 			localDate = localDate.minusDays(rangeKey);
 
@@ -147,8 +150,6 @@ public class DataControlTaskDog {
 					"createDate"
 				).gte(
 					localDate.toString()
-				).timeZone(
-					_timeZoneDog.getTimeZoneId()
 				));
 		}
 
@@ -183,7 +184,8 @@ public class DataControlTaskDog {
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(
-		QueryBuilder queryBuilder, int size, Sort sort, int start) {
+		QueryBuilder queryBuilder, int size, Map<String, String> sort,
+		int start) {
 
 		FieldSortBuilder fieldSortBuilder = SortBuilderUtil.fieldSort(sort);
 
@@ -199,6 +201,12 @@ public class DataControlTaskDog {
 
 		return searchSourceBuilder.sort(
 			SortBuilderUtil.fieldSort("id", sortOrder));
+	}
+
+	@PostConstruct
+	private void _init() {
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	private List<String> _readFile(File file) {
@@ -242,13 +250,11 @@ public class DataControlTaskDog {
 	@Autowired
 	private DataDog _dataDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }

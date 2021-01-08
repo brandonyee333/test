@@ -19,6 +19,7 @@ import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootAp
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -30,33 +31,35 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Michael Bowerman
  */
+@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
+@Import(CerebroQueueHttpTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class SalesforceAccountsNaniteTest extends BaseNaniteTestCase {
 
 	@ElasticsearchIndex(
-		name = "Account", resourcePath = "account.json",
+		name = "Account", resourcePath = "Account.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_SALESFORCE_RAW
 	)
 	@ElasticsearchIndex(
-		name = "audit-events", resourcePath = "audit_events.json",
+		name = "audit-events", resourcePath = "audit-events.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_SALESFORCE_RAW
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings.json",
+		name = "field-mappings", resourcePath = "field-mappings.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "run-logs", resourcePath = "run_logs.json",
+		name = "run-logs", resourcePath = "run-logs.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_SALESFORCE_RAW
 	)
 	@Test

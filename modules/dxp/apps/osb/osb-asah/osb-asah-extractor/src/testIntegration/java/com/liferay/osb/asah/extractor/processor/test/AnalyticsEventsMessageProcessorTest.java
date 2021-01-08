@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.extractor.processor.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageSubscriber;
-import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.extractor.processor.AnalyticsEventsMessageProcessor;
 import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplication;
@@ -26,10 +26,10 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import org.elasticsearch.index.query.QueryBuilders;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,6 +37,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Marcellus Tavares
@@ -46,15 +47,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class AnalyticsEventsMessageProcessorTest {
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual_segments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@MessageBusChannel(
@@ -63,30 +56,36 @@ public class AnalyticsEventsMessageProcessorTest {
 	)
 	@Test
 	public void testProcessQueuedMessages() throws Exception {
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
+
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroRaw();
 
-		Assert.assertNotEquals(0, analyticsEvents.size());
+		JSONArray analyticsEventsJSONArray = elasticsearchInvoker.get(
+			"analytics-events");
 
-		AnalyticsEvent analyticsEvent = analyticsEvents.get(0);
+		Assert.assertNotEquals(0, analyticsEventsJSONArray.length());
 
-		Assert.assertEquals("Page", analyticsEvent.getApplicationId());
-		Assert.assertEquals("pageViewed", analyticsEvent.getEventId());
+		JSONObject analyticsEvent = analyticsEventsJSONArray.getJSONObject(0);
+
+		Assert.assertEquals("Page", analyticsEvent.getString("applicationId"));
+		Assert.assertEquals("pageViewed", analyticsEvent.getString("eventId"));
+
+		JSONObject contextJSONObject = analyticsEvent.getJSONObject("context");
+
 		Assert.assertEquals(
-			analyticsEvent.getSegmentNames(),
-			new HashSet<>(Arrays.asList("Developer", "Support")));
-
-		Map<String, String> context = analyticsEvent.getContext();
-
-		Assert.assertEquals("Chrome", context.get("browserName"));
-		Assert.assertEquals("Desktop", context.get("deviceType"));
-		Assert.assertEquals("macOS", context.get("platformName"));
+			"Chrome", contextJSONObject.getString("browserName"));
+		Assert.assertEquals(
+			"Desktop", contextJSONObject.getString("deviceType"));
+		Assert.assertEquals(
+			"macOS", contextJSONObject.getString("platformName"));
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@MessageBusChannel(
@@ -97,16 +96,24 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesAssignMissingChannelId()
 		throws Exception {
 
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheChannelIds");
+
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroRaw();
 
-		Assert.assertNotEquals(0, analyticsEvents.size());
+		Assert.assertNotEquals(
+			0,
+			elasticsearchInvoker.count(
+				"analytics-events", QueryBuilders.matchAllQuery()));
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -121,26 +128,34 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesDataSourceCreatedDynamically()
 		throws Exception {
 
-		_elasticsearchInvoker.add(
-			"data-sources",
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheChannelIds");
+
+		_messageBus.sendMessage(
+			Channel.DATA_SOURCES,
 			JSONUtil.put(
 				"channelId", "999"
 			).put(
-				"id", "990121114030678099"
+				"dataSourceId", "990121114030678099"
 			).put(
-				"provider", JSONUtil.put("type", "LIFERAY")
-			));
+				"event", "add"
+			).toString());
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroRaw();
 
-		Assert.assertNotEquals(0, analyticsEvents.size());
+		Assert.assertNotEquals(
+			0,
+			elasticsearchInvoker.count(
+				"analytics-events", QueryBuilders.matchAllQuery()));
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@MessageBusChannel(
@@ -151,72 +166,29 @@ public class AnalyticsEventsMessageProcessorTest {
 	public void testProcessQueuedMessagesDiscardDueMissingChannelId()
 		throws Exception {
 
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheActiveDataSourceIds");
+		ReflectionTestUtils.invokeMethod(
+			_analyticsEventsMessageProcessor, "_cacheChannelIds");
+
 		_analyticsEventsMessageProcessor.processQueuedMessages();
 
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroRaw();
 
 		Assert.assertEquals(
-			analyticsEvents.toString(), 0, analyticsEvents.size());
-	}
-
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@MessageBusChannel(
-		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
-		resourcePath = "analytics_events_message_canonical_url_1.json"
-	)
-	@Test
-	public void testProcessQueuedMessagesMissingCanonicalUrl()
-		throws Exception {
-
-		_analyticsEventsMessageProcessor.processQueuedMessages();
-
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
-
-		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-			Map<String, String> context = analyticsEvent.getContext();
-
-			Assert.assertEquals(
-				context.get("url"), context.get("canonicalUrl"));
-		}
-	}
-
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@MessageBusChannel(
-		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
-		resourcePath = "analytics_events_message_canonical_url_2.json"
-	)
-	@Test
-	public void testProcessQueuedMessagesNotReplacingCanonicalUrl()
-		throws Exception {
-
-		_analyticsEventsMessageProcessor.processQueuedMessages();
-
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
-
-		for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-			Map<String, String> context = analyticsEvent.getContext();
-
-			Assert.assertNotEquals(
-				context.get("url"), context.get("canonicalUrl"));
-		}
+			0,
+			elasticsearchInvoker.count(
+				"analytics-events", QueryBuilders.matchAllQuery()));
 	}
 
 	@Autowired
 	private AnalyticsEventsMessageProcessor _analyticsEventsMessageProcessor;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
-	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
-	private MessageSubscriber _messageSubscriber;
+	@Autowired
+	private MessageBus _messageBus;
 
 }

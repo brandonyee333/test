@@ -1,0 +1,34 @@
+[
+	{
+		"assetId": "1",
+		"assetTitle": "Personalized Asset",
+		"category": "default",
+		"channelId": "1",
+		"createDate": "${now}",
+		"id": "1"
+	},
+	{
+		"assetId": "2",
+		"assetTitle": "Some random asset",
+		"category": "default",
+		"channelId": "1",
+		"createDate": "${now-1d}",
+		"id": "2"
+	},
+	{
+		"assetId": "3",
+		"assetTitle": "Something else",
+		"category": "default",
+		"channelId": "1",
+		"createDate": "${now-2d}",
+		"id": "3"
+	},
+	{
+		"assetId": "4",
+		"assetTitle": "German aßet",
+		"category": "test",
+		"channelId": "1",
+		"createDate": "${now-3d}",
+		"id": "4"
+	}
+]

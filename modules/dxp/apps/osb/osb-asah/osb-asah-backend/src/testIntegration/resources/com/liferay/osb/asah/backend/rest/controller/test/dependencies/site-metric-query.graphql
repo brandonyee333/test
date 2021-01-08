@@ -1,0 +1,28 @@
+query SiteMetric($assetId: String!, $channelId: String, $country: String, $deviceType: String, $interval: String, $rangeKey: Int!, $timeZoneId: String) {
+	site(assetId: $assetId, channelId: $channelId, country: $country, deviceType: $deviceType, interval: $interval, rangeKey: $rangeKey, timeZoneId: $timeZoneId) {
+		anonymousVisitorsMetric {
+			value
+		}
+		bounceRateMetric {
+			value
+		}
+		engagementMetric {
+			value
+		}
+		knownVisitorsMetric {
+			value
+		}
+		sessionDurationMetric {
+			value
+		}
+		sessionsMetric {
+			value
+		}
+		sessionsPerVisitorMetric {
+			value
+		}
+		visitorsMetric {
+			value
+		}
+	}
+}

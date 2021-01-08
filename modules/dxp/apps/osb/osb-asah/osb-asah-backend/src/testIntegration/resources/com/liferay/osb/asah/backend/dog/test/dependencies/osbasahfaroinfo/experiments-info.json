@@ -1,0 +1,81 @@
+[
+	{
+		"channelId": "1",
+		"createDate": "2019-06-14T16:58:24.000Z",
+		"dataSourceId": "333962835564819755",
+		"description": "An amazing experiment that will solve all of our problems",
+		"dxpExperienceId": "1",
+		"dxpExperienceName": "Amazing Experience",
+		"dxpExperimentId": "1",
+		"dxpSegmentId": "1",
+		"dxpSegmentName": "Amazed People Segment",
+		"dxpVariants": [
+			{
+				"control": true,
+				"dxpVariantId": "1",
+				"dxpVariantName": "DXP Variant 1",
+				"trafficSplit": 50
+			},
+			{
+				"control": false,
+				"dxpVariantId": "2",
+				"dxpVariantName": "DXP Variant 2",
+				"trafficSplit": 50
+			}
+		],
+		"goal": {
+			"metric": "CLICK_RATE",
+			"target": "button-123"
+		},
+		"id": "1",
+		"modifiedDate": "2019-07-17T11:02:08.000Z",
+		"name": "Awesome test",
+		"pageTitle": "Awesome Page",
+		"pageURL": "https://www.example.com/awesome",
+		"startedDate": "${now-2d}",
+		"status": "RUNNING",
+		"type": "AB"
+	},
+	{
+		"channelId": "1",
+		"createDate": "2019-07-02T08:11:32.000Z",
+		"dataSourceId": "333962835564819755",
+		"description": "A regular test that we hope will be useful",
+		"dxpExperienceId": "2",
+		"dxpExperienceName": "Regular Experience",
+		"dxpExperimentId": "2",
+		"dxpSegmentId": "2",
+		"dxpSegmentName": "Regular Users",
+		"goal": {
+			"metric": "TIME_ON_PAGE"
+		},
+		"id": "2",
+		"modifiedDate": "2019-07-02T08:30:42.000Z",
+		"name": "Regular test",
+		"pageTitle": "Enroll to Example",
+		"pageURL": "https://www.example.com/enroll",
+		"status": "DRAFT",
+		"type": "AB"
+	},
+	{
+		"channelId": "1",
+		"createDate": "2019-06-24T13:58:24.000Z",
+		"dataSourceId": "333962835564819755",
+		"description": "A completely insane attempt to overhaul the landing page",
+		"dxpExperienceId": "3",
+		"dxpExperienceName": "Mad Experience",
+		"dxpExperimentId": "3",
+		"dxpSegmentId": "3",
+		"dxpSegmentName": "Brave Visitors",
+		"goal": {
+			"metric": "BOUNCE_RATE"
+		},
+		"id": "3",
+		"modifiedDate": "2019-06-25T23:51:13.000Z",
+		"name": "Crazy test",
+		"pageTitle": "Welcome to Example",
+		"pageURL": "https://www.example.com/",
+		"status": "COMPLETED",
+		"type": "AB"
+	}
+]

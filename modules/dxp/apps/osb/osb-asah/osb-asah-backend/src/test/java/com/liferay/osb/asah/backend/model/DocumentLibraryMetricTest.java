@@ -40,8 +40,7 @@ public class DocumentLibraryMetricTest
 					put(Metric.class, () -> new Metric(null));
 				}
 			},
-			Arrays.asList(
-				"getAssetType", "getAvailableMetrics", "getDefaultMetric"));
+			Arrays.asList("getAssetType", "getDefaultMetric"));
 	}
 
 	@Test

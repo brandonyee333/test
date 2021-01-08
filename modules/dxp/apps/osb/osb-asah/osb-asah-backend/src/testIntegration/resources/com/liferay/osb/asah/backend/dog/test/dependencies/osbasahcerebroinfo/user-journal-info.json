@@ -1,0 +1,51 @@
+[
+	{
+		"assetId": "1",
+		"eventDate": "${now-1d}",
+		"individualId": "10",
+		"knownIndividual": true,
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "1",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-1d}",
+		"individualId": "10",
+		"knownIndividual": true,
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "2",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-1d}",
+		"individualId": "30",
+		"knownIndividual": true,
+		"segmentNames": [
+			"CEO"
+		],
+		"userId": "3",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-1d}",
+		"individualId": "40",
+		"knownIndividual": false,
+		"userId": "4",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-1d}",
+		"individualId": "50",
+		"knownIndividual": true,
+		"userId": "5",
+		"views": 1
+	}
+]

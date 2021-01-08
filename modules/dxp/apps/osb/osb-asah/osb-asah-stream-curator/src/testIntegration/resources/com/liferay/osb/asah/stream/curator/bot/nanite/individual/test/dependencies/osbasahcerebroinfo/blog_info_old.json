@@ -4,7 +4,6 @@
 		"dataSourceId": "1",
 		"id": "1",
 		"individualId": null,
-		"knownIndividual": false,
 		"primaryKey": "1",
 		"segmentNames": [
 		],
@@ -15,7 +14,6 @@
 		"dataSourceId": "1",
 		"id": "2",
 		"individualId": null,
-		"knownIndividual": false,
 		"primaryKey": "2",
 		"segmentNames": [
 		],
@@ -26,7 +24,6 @@
 		"dataSourceId": "1",
 		"id": "3",
 		"individualId": null,
-		"knownIndividual": false,
 		"primaryKey": "3",
 		"segmentNames": [
 		],
@@ -37,10 +34,9 @@
 		"dataSourceId": "2",
 		"id": "4",
 		"individualId": null,
-		"knownIndividual": false,
 		"primaryKey": "4",
 		"segmentNames": [
 		],
-		"userId": "2"
+		"userId": "1"
 	}
 ]

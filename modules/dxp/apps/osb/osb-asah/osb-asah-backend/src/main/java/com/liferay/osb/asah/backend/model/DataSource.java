@@ -14,13 +14,9 @@
 
 package com.liferay.osb.asah.backend.model;
 
-import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
-import com.liferay.osb.asah.backend.graphql.GraphQLType;
-
 /**
  * @author Rachael Koestartyo
  */
-@GraphQLType
 public class DataSource {
 
 	public DataSource(String id, String name, String url) {
@@ -37,8 +33,7 @@ public class DataSource {
 		return _name;
 	}
 
-	@GraphQLProperty("url")
-	public String getURL() {
+	public String getUrl() {
 		return _url;
 	}
 

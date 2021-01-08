@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -46,15 +44,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UpdateDynamicMembershipsNanite extends BaseNanite {
-
-	@Override
-	public void logCompleted(
-		JSONObject contextJSONObject, long duration, String osbAsahTaskId) {
-	}
-
-	@Override
-	public void logStart(JSONObject contextJSONObject) {
-	}
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -120,11 +109,6 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 				dateModified,
 				FilterStringToQueryBuilderConverter.convert(removeFilter));
 		}
-	}
-
-	@Override
-	protected Log getLog() {
-		return LogFactory.getLog(UpdateDynamicMembershipsNanite.class);
 	}
 
 	private void _updateDynamicMembershipsForIndividual(

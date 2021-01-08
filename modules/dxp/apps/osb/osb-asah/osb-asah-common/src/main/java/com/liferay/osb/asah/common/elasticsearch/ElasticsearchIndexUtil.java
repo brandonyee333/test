@@ -14,20 +14,15 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-
 /**
  * @author André Miranda
  */
 public class ElasticsearchIndexUtil {
 
 	public static String getIndexAlias(
-		String collectionName, WeDeployDataService weDeployDataService) {
+		String collectionName, String indexNamespace) {
 
-		String indexName =
-			getIndexNamespace(weDeployDataService) + "_" + collectionName +
-				"_alias";
+		String indexName = indexNamespace + "_" + collectionName + "_alias";
 
 		return indexName.toLowerCase();
 	}
@@ -38,24 +33,6 @@ public class ElasticsearchIndexUtil {
 		String indexName = indexNamespace + "_" + collectionName;
 
 		return indexName.toLowerCase();
-	}
-
-	public static String getIndexName(
-		String collectionName, WeDeployDataService weDeployDataService) {
-
-		String indexName =
-			getIndexNamespace(weDeployDataService) + "_" + collectionName;
-
-		return indexName.toLowerCase();
-	}
-
-	public static String getIndexNamespace(
-		WeDeployDataService weDeployDataService) {
-
-		String indexNamespace =
-			ProjectIdThreadLocal.getProjectId() + "_" + weDeployDataService;
-
-		return indexNamespace.toLowerCase();
 	}
 
 }

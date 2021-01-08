@@ -101,8 +101,9 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 	@Override
 	public ResponseEntity<String> getDXPUsersTotal(String id, String json) {
 		try {
-			return new ResponseEntity<>(
-				_dxpUsersRestController.getTotal(id, json), HttpStatus.OK);
+			String total = _dxpUsersRestController.getTotal(id, json);
+
+			return new ResponseEntity<>(total, HttpStatus.OK);
 		}
 		catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

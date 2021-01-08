@@ -15,10 +15,6 @@
 package com.liferay.osb.asah.test.util.spring;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
@@ -33,21 +29,30 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 	public OSBAsahSpringJUnit4ClassRunner(Class<?> clazz) throws Exception {
 		super(clazz);
 
-		System.setProperty(
-			"spring.autoconfigure.exclude",
-			String.join(
-				",", ManagementWebSecurityAutoConfiguration.class.getName(),
-				RedisAutoConfiguration.class.getName(),
-				RedisRepositoriesAutoConfiguration.class.getName(),
-				SecurityAutoConfiguration.class.getName()));
-		System.setProperty(
-			"spring.main.allow-bean-definition-overriding", "true");
 		System.setProperty("spring.profiles.active", "test");
 
 		_registerOSBAsahTestExecutionListener();
 	}
 
-	private void _registerOSBAsahTestExecutionListener() {
+	private OSBAsahTestExecutionListener _createOSBAsahTestExecutionListener()
+		throws Exception {
+
+		OSBAsahTestExecutionListener osbAsahTestExecutionListener =
+			new OSBAsahTestExecutionListener();
+
+		_setAutowireCapability(osbAsahTestExecutionListener);
+
+		return osbAsahTestExecutionListener;
+	}
+
+	private void _registerOSBAsahTestExecutionListener() throws Exception {
+		TestContextManager testContextManager = getTestContextManager();
+
+		testContextManager.registerTestExecutionListeners(
+			_createOSBAsahTestExecutionListener());
+	}
+
+	private void _setAutowireCapability(Object object) {
 		TestContextManager testContextManager = getTestContextManager();
 
 		TestContext testContext = testContextManager.getTestContext();
@@ -58,9 +63,7 @@ public class OSBAsahSpringJUnit4ClassRunner extends SpringJUnit4ClassRunner {
 		AutowireCapableBeanFactory autowireCapableBeanFactory =
 			applicationContext.getAutowireCapableBeanFactory();
 
-		testContextManager.registerTestExecutionListeners(
-			autowireCapableBeanFactory.createBean(
-				OSBAsahTestExecutionListener.class));
+		autowireCapableBeanFactory.autowireBean(object);
 	}
 
 }

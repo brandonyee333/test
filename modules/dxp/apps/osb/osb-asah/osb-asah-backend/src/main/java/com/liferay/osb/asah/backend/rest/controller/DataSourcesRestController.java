@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.backend.rest.response.embedded.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -100,9 +100,9 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}")
-	public String getDataSource(@PathVariable String id) {
-		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(id);
+	public String getDataSource(@PathVariable String id) throws Exception {
+		JSONObject dataSourceJSONObject = new JSONObject(
+			toItemGetResponse("data-sources", id));
 
 		_setLastSyncTime(dataSourceJSONObject);
 
@@ -253,9 +253,12 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}/progress")
-	public String getProgress(@PathVariable String id) {
+	public String getProgress(@PathVariable String id) throws Exception {
+		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.get(
+			"data-sources", id);
+
 		String type = _faroInfoDataSourceDog.getDataSourceType(
-			_faroInfoDataSourceDog.getDataSourceJSONObject(id));
+			dataSourceJSONObject);
 
 		if (type.equals("CSV")) {
 			return String.valueOf(_getCSVDataSourceProgressJSONObject(id));
@@ -797,7 +800,7 @@ public class DataSourcesRestController extends BaseRestController {
 				"dateRecorded", DateUtil.newDateString()
 			).put(
 				"processedOperations",
-				(totalOperations * 2) -
+				totalOperations * 2 -
 					salesforceRawElasticsearchInvoker.count(
 						"audit-events",
 						BoolQueryBuilderUtil.filter(
@@ -919,10 +922,11 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private JSONObject _getSalesforceDataSourceProgressJSONObject(
-		String dataSourceId) {
+			String dataSourceId)
+		throws Exception {
 
-		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.get(
+			"data-sources", dataSourceId);
 
 		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
 			"provider");

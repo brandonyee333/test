@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualInterestScoresNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.NaniteTestConfiguration;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
@@ -23,6 +24,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
@@ -40,31 +42,32 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Edward Kwok-Yu Wong
  * @author Michael Bowerman
  */
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = {
-		OSBAsahBatchCuratorSpringBootApplication.class,
-		NaniteTestConfiguration.class
-	}
+@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
+@Import(
+	{CerebroQueueHttpTestConfiguration.class, NaniteTestConfiguration.class}
 )
+@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Before
+	@Override
 	public void setUp() throws Exception {
+		super.setUp();
+
 		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
 		_individualJSONObject = faroInfoElasticsearchInvoker.add(
 			"individuals",
-			FaroInfoTestUtil.buildIndividualJSONObject(
-				"1", dataSourceJSONObject));
+			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject));
 
 		_dataSourceId = dataSourceJSONObject.getString("id");
 
@@ -74,6 +77,8 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			"assets", FaroInfoTestUtil.buildPageAssetJSONObject(_dataSourceId));
 
 		_addActivities(DateUtil.addDays(DateUtil.newDayDateString(), -1));
+
+		_individualActivityFieldsNanite.run();
 	}
 
 	@Test
@@ -183,14 +188,12 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			faroInfoElasticsearchInvoker.add(
 				"individual-segments",
 				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-					"1",
 					"interests.filter(filter='(name eq ''" + keyword + "'') " +
 						"and (score eq ''false'')')"));
 		JSONObject individualSegment2JSONObject =
 			faroInfoElasticsearchInvoker.add(
 				"individual-segments",
 				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-					"1",
 					"interests.filter(filter='(name eq ''" + keyword + "'') " +
 						"and (score eq ''true'')')"));
 
@@ -263,22 +266,6 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			previousDayDateString, dayDateString, true);
 	}
 
-	@Test
-	public void testVisitedPagesWithCanonicalUrl() throws Exception {
-		String dayDateString = DateUtil.newDayDateString();
-
-		_addActivities(dayDateString);
-
-		_individualInterestScoresNanite.run(dayDateString);
-
-		Assert.assertEquals(
-			0,
-			faroInfoElasticsearchInvoker.count(
-				"visited-pages",
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.existsQuery("canonicalUrl"))));
-	}
-
 	private void _addActivities(String dateString) throws Exception {
 		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.add(
 			"activity-groups",
@@ -289,13 +276,13 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, _assetJSONObject1, "pageViewed",
-				new String[0]));
+				new String[] {"pageLoadTime", "1000"}));
 
 		faroInfoElasticsearchInvoker.add(
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, _assetJSONObject2, "pageViewed",
-				new String[0]));
+				new String[] {"pageLoadTime", "1000"}));
 	}
 
 	private void _assertInterestScoreDirection(
@@ -399,6 +386,9 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private FaroInfoMembershipDog _faroInfoMembershipDog;
+
+	@Autowired
+	private IndividualActivityFieldsNanite _individualActivityFieldsNanite;
 
 	@Autowired
 	private IndividualInterestScoresNanite _individualInterestScoresNanite;

@@ -1,0 +1,19 @@
+[
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "(((demographics/age/value gt '50')))",
+		"filterMetadata": "32906",
+		"id": "327968823603500655",
+		"individualCount": 434,
+		"name": "d-age-gt-50",
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	}
+]

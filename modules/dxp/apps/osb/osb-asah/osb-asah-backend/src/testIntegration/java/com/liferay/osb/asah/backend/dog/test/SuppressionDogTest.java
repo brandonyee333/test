@@ -15,16 +15,17 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.SuppressionDog;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.Suppression;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,7 +51,7 @@ public class SuppressionDogTest {
 	public void testGetSuppressionResultBag() {
 		ResultBag<Suppression> suppressionResultBag =
 			_suppressionDog.getSuppressionResultBag(
-				null, 10, Sort.desc("createDate"), 0);
+				null, 10, _getSort("createDate", "DESC"), 0);
 
 		Assert.assertEquals(3, suppressionResultBag.getTotal());
 
@@ -72,7 +73,7 @@ public class SuppressionDogTest {
 	public void testGetSuppressionResultBagSearch() {
 		ResultBag<Suppression> suppressionResultBag =
 			_suppressionDog.getSuppressionResultBag(
-				"liferay", 10, Sort.desc("createDate"), 0);
+				"liferay", 10, _getSort("createDate", "DESC"), 0);
 
 		Assert.assertEquals(1, suppressionResultBag.getTotal());
 
@@ -81,6 +82,15 @@ public class SuppressionDogTest {
 		Suppression suppression = suppressions.get(0);
 
 		Assert.assertEquals("test@liferay.com", suppression.getEmailAddress());
+	}
+
+	private Map<String, String> _getSort(String column, String type) {
+		Map<String, String> sort = new HashMap<>();
+
+		sort.put("column", column);
+		sort.put("type", type);
+
+		return sort;
 	}
 
 	@Autowired

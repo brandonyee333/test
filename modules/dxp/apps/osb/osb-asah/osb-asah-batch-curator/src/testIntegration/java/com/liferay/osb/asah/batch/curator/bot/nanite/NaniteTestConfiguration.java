@@ -50,8 +50,8 @@ public class NaniteTestConfiguration {
 
 		Mockito.doAnswer(
 			invocation -> {
-				String className = invocation.getArgument(0, String.class);
-				JSONObject contextJSONObject = invocation.getArgument(
+				String className = invocation.getArgumentAt(0, String.class);
+				JSONObject contextJSONObject = invocation.getArgumentAt(
 					1, JSONObject.class);
 
 				if (_nanitesMap.isEmpty()) {
@@ -69,12 +69,11 @@ public class NaniteTestConfiguration {
 						"Unable to find nanite with class name " + className);
 				}
 
-				if (nanite instanceof IndividualSegmentActivityFieldsNanite) {
-					IndividualSegmentActivityFieldsNanite
-						individualSegmentActivityFieldsNanite =
-							(IndividualSegmentActivityFieldsNanite)nanite;
+				if (nanite instanceof BaseActivitiesNanite) {
+					BaseActivitiesNanite baseActivitiesNanite =
+						(BaseActivitiesNanite)nanite;
 
-					individualSegmentActivityFieldsNanite.run();
+					baseActivitiesNanite.run();
 				}
 				else {
 					nanite.run(contextJSONObject);

@@ -215,28 +215,23 @@ public class FaroInfoMembershipDog extends BaseFaroInfoDog {
 				individualJSONObject, individualSegmentId);
 		}
 
-		long individualCount = 0;
-		long knownIndividualCount = 0;
-
-		JSONObject individualSegmentJSONObject = elasticsearchInvoker.fetch(
+		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
 			"individual-segments", individualSegmentId);
 
-		if (individualSegmentJSONObject != null) {
-			knownIndividualCount = _getKnownIndividualCount(
-				individualSegmentId);
+		long knownIndividualCount = _getKnownIndividualCount(
+			individualSegmentId);
 
-			if (individualSegmentJSONObject.optBoolean(
-					"includeAnonymousUsers")) {
+		long individualCount = 0;
 
-				individualCount = _getIndividualCount(individualSegmentId);
-			}
-			else {
-				individualCount = knownIndividualCount;
-			}
-
-			_updateIndividualSegment(
-				individualCount, individualSegmentId, knownIndividualCount);
+		if (individualSegmentJSONObject.optBoolean("includeAnonymousUsers")) {
+			individualCount = _getIndividualCount(individualSegmentId);
 		}
+		else {
+			individualCount = knownIndividualCount;
+		}
+
+		_updateIndividualSegment(
+			individualCount, individualSegmentId, knownIndividualCount);
 
 		if (individualJSONObject == null) {
 			_addMembershipChangeForDeletedIndividual(

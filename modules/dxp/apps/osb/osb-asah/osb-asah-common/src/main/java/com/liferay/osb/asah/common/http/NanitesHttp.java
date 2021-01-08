@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.http;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -26,12 +25,8 @@ public interface NanitesHttp {
 
 	public void refreshAnalytics();
 
-	public void rescheduleNanites();
-
-	public void run(JSONArray jsonArray);
+	public void run(String json);
 
 	public void scheduleOSBAsahTask(JSONObject jsonObject);
-
-	public void unscheduleOSBAsahTask(JSONObject jsonObject);
 
 }

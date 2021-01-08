@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.impl;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.ClientUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
@@ -32,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
@@ -50,10 +52,7 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequestBuilder;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
-import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest;
-import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequestBuilder;
-import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequestBuilder;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesRequestBuilder;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesResponse;
 import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateRequestBuilder;
@@ -61,9 +60,8 @@ import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.AdminClient;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
-import org.elasticsearch.cluster.metadata.AliasMetadata;
-import org.elasticsearch.cluster.metadata.IndexTemplateMetadata;
-import org.elasticsearch.cluster.metadata.MappingMetadata;
+import org.elasticsearch.cluster.metadata.AliasMetaData;
+import org.elasticsearch.cluster.metadata.IndexTemplateMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -124,9 +122,6 @@ public class ElasticsearchIndexManagerImpl
 
 		Map<String, JSONObject> configurationJSONObjects = new HashMap<>();
 
-		configurationJSONObjects.put(
-			"root", new JSONObject(readIndexConfiguration("root", null)));
-
 		for (WeDeployDataService weDeployDataService :
 				WeDeployDataService.values()) {
 
@@ -146,37 +141,16 @@ public class ElasticsearchIndexManagerImpl
 
 		Set<String> templateNames = configurationJSONObjects.keySet();
 
-		for (IndexTemplateMetadata indexTemplateMetadata :
+		for (IndexTemplateMetaData indexTemplateMetaData :
 				_getTemplates(
 					indicesAdminClient, templateNames.toArray(new String[0]))) {
 
-			Integer version = indexTemplateMetadata.getVersion();
-
-			if ((version != null) &&
-				(version >= ReleaseInfo.getSchemaVersion())) {
+			if (indexTemplateMetaData.getVersion() >=
+					ReleaseInfo.getSchemaVersion()) {
 
 				configurationJSONObjects.remove(
-					indexTemplateMetadata.getName());
+					indexTemplateMetaData.getName());
 			}
-		}
-
-		JSONObject rootConfigurationJSONObject =
-			configurationJSONObjects.remove("root");
-
-		if (rootConfigurationJSONObject != null) {
-			PutIndexTemplateRequestBuilder putIndexTemplateRequestBuilder =
-				indicesAdminClient.preparePutTemplate("root");
-
-			putIndexTemplateRequestBuilder.setPatterns(
-				Collections.singletonList("*"));
-			putIndexTemplateRequestBuilder.setSource(
-				rootConfigurationJSONObject.toMap());
-			putIndexTemplateRequestBuilder.setVersion(
-				ReleaseInfo.getSchemaVersion());
-
-			ClientUtil.waitForConnection(_client);
-
-			putIndexTemplateRequestBuilder.get();
 		}
 
 		for (Map.Entry<String, JSONObject> entry :
@@ -210,6 +184,30 @@ public class ElasticsearchIndexManagerImpl
 	public void checkIndices() {
 		if (_environment.acceptsProfiles("test")) {
 			_setIndexTestTemplate();
+		}
+
+		for (WeDeployDataService weDeployDataService :
+				WeDeployDataService.values()) {
+
+			JSONArray collectionNamesJSONArray =
+				_indicesJSONObject.optJSONArray(weDeployDataService.toString());
+
+			if (collectionNamesJSONArray == null) {
+				continue;
+			}
+
+			for (int i = 0; i < collectionNamesJSONArray.length(); i++) {
+				String collectionName = collectionNamesJSONArray.getString(i);
+
+				String indexAlias = _getIndexAlias(
+					weDeployDataService, collectionName);
+
+				if (aliasExists(indexAlias)) {
+					_aliases.put(
+						getIndexName(collectionName, weDeployDataService),
+						indexAlias);
+				}
+			}
 		}
 	}
 
@@ -292,40 +290,8 @@ public class ElasticsearchIndexManagerImpl
 	}
 
 	@Override
-	public Map<String, String> getAliases(
-		WeDeployDataService weDeployDataService) {
-
-		Map<String, String> aliases = new HashMap<>();
-
-		IndicesAdminClient indicesAdminClient = _adminClient.indices();
-
-		ActionFuture<GetAliasesResponse> actionFuture =
-			indicesAdminClient.getAliases(new GetAliasesRequest());
-
-		ClientUtil.waitForConnection(_client);
-
-		GetAliasesResponse getAliasesResponse = actionFuture.actionGet();
-
-		ImmutableOpenMap<String, List<AliasMetadata>> immutableOpenMap =
-			getAliasesResponse.getAliases();
-
-		Iterator<List<AliasMetadata>> iterator = immutableOpenMap.valuesIt();
-
-		while (iterator.hasNext()) {
-			List<AliasMetadata> aliasMetadatas = iterator.next();
-
-			for (AliasMetadata aliasMetadata : aliasMetadatas) {
-				String alias = aliasMetadata.alias();
-
-				if (!alias.contains("_" + weDeployDataService + "_")) {
-					continue;
-				}
-
-				aliases.put(alias.replace("_alias", ""), alias);
-			}
-		}
-
-		return aliases;
+	public Map<String, String> getAliases() {
+		return _aliases;
 	}
 
 	@Override
@@ -335,39 +301,6 @@ public class ElasticsearchIndexManagerImpl
 		return _indicesJSONObject.optJSONArray(weDeployDataService.toString());
 	}
 
-	@Override
-	public Map<String, Object> getIndexMappings(
-		String collectionName, WeDeployDataService weDeployDataService) {
-
-		IndicesAdminClient indicesAdminClient = _adminClient.indices();
-
-		ClientUtil.waitForConnection(_client);
-
-		String indexName = ElasticsearchIndexUtil.getIndexName(
-			collectionName, weDeployDataService);
-
-		ActionFuture<GetMappingsResponse> actionFuture =
-			indicesAdminClient.getMappings(
-				new GetMappingsRequest() {
-					{
-						indices(indexName);
-					}
-				});
-
-		GetMappingsResponse getMappingsResponse = actionFuture.actionGet();
-
-		ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetadata>>
-			mappings = getMappingsResponse.getMappings();
-
-		ImmutableOpenMap<String, MappingMetadata> immutableOpenMap =
-			mappings.get(indexName);
-
-		MappingMetadata mappingMetadata = immutableOpenMap.get(collectionName);
-
-		return mappingMetadata.getSourceAsMap();
-	}
-
-	@Override
 	public String getIndexName(String indexAlias) {
 		IndicesAdminClient indicesAdminClient = _adminClient.indices();
 
@@ -378,7 +311,7 @@ public class ElasticsearchIndexManagerImpl
 
 		GetAliasesResponse getAliasesResponse = actionFuture.actionGet();
 
-		ImmutableOpenMap<String, List<AliasMetadata>> immutableOpenMap =
+		ImmutableOpenMap<String, List<AliasMetaData>> immutableOpenMap =
 			getAliasesResponse.getAliases();
 
 		Iterator<String> iterator = immutableOpenMap.keysIt();
@@ -386,21 +319,40 @@ public class ElasticsearchIndexManagerImpl
 		while (iterator.hasNext()) {
 			String indexName = iterator.next();
 
-			List<AliasMetadata> aliasMetadatas = immutableOpenMap.get(
+			List<AliasMetaData> aliasMetaDatas = immutableOpenMap.get(
 				indexName);
 
-			if (aliasMetadatas == null) {
+			if (aliasMetaDatas == null) {
 				continue;
 			}
 
-			for (AliasMetadata aliasMetadata : aliasMetadatas) {
-				if (StringUtils.equals(indexAlias, aliasMetadata.alias())) {
+			for (AliasMetaData aliasMetaData : aliasMetaDatas) {
+				if (StringUtils.equals(indexAlias, aliasMetaData.alias())) {
 					return indexName;
 				}
 			}
 		}
 
 		return indexAlias.replace("_alias", "");
+	}
+
+	@Override
+	public String getIndexName(
+		String collectionName, WeDeployDataService weDeployDataService) {
+
+		return ElasticsearchIndexUtil.getIndexName(
+			collectionName, getIndexNamespace(weDeployDataService));
+	}
+
+	@Override
+	public String getIndexNamespace(WeDeployDataService weDeployDataService) {
+		String lcpProjectId = ServiceConstants.LCP_PROJECT_ID;
+
+		if (_environment.acceptsProfiles("test")) {
+			lcpProjectId = "test";
+		}
+
+		return lcpProjectId + "_" + weDeployDataService.toString();
 	}
 
 	@Override
@@ -412,15 +364,9 @@ public class ElasticsearchIndexManagerImpl
 				StringUtils.replace(collectionName.toLowerCase(), "-", "_") +
 					"_index_configuration.json";
 
-			String weDeployDataServiceName = "";
-
-			if (weDeployDataService != null) {
-				weDeployDataServiceName = weDeployDataService.toString() + "/";
-			}
-
 			return ResourceUtil.readResourceToString(
 				"com/liferay/osb/asah/common/elasticsearch/dependencies/" +
-					weDeployDataServiceName + resourceName);
+					weDeployDataService.toString() + "/" + resourceName);
 		}
 		catch (Exception e) {
 			throw new IllegalStateException(e);
@@ -433,10 +379,10 @@ public class ElasticsearchIndexManagerImpl
 		WeDeployDataService weDeployDataService) {
 
 		String indexName = ElasticsearchIndexUtil.getIndexName(
-			collectionName, weDeployDataService);
+			collectionName, getIndexNamespace(weDeployDataService));
 
 		String indexAlias = ElasticsearchIndexUtil.getIndexAlias(
-			collectionName, weDeployDataService);
+			collectionName, getIndexNamespace(weDeployDataService));
 
 		if (aliasExists(indexAlias)) {
 			indexName = getIndexName(indexAlias);
@@ -462,46 +408,6 @@ public class ElasticsearchIndexManagerImpl
 
 		AcknowledgedResponse acknowledgedResponse =
 			putMappingRequestBuilder.get();
-
-		return acknowledgedResponse.isAcknowledged();
-	}
-
-	@Override
-	public boolean updateSettings(
-		String collectionName, String settingsJSON,
-		WeDeployDataService weDeployDataService) {
-
-		String indexName = ElasticsearchIndexUtil.getIndexName(
-			collectionName, weDeployDataService);
-
-		String indexAlias = ElasticsearchIndexUtil.getIndexAlias(
-			collectionName, weDeployDataService);
-
-		if (aliasExists(indexAlias)) {
-			indexName = getIndexName(indexAlias);
-		}
-
-		if (!exists(indexName)) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to find index " + indexName);
-			}
-
-			return false;
-		}
-
-		IndicesAdminClient indicesAdminClient = _adminClient.indices();
-
-		UpdateSettingsRequestBuilder updateSettingsRequestBuilder =
-			indicesAdminClient.prepareUpdateSettings(indexName);
-
-		updateSettingsRequestBuilder.setSettings(
-			settingsJSON, XContentType.JSON);
-		updateSettingsRequestBuilder.setPreserveExisting(true);
-
-		ClientUtil.waitForConnection(_client);
-
-		AcknowledgedResponse acknowledgedResponse =
-			updateSettingsRequestBuilder.get();
 
 		return acknowledgedResponse.isAcknowledged();
 	}
@@ -532,9 +438,10 @@ public class ElasticsearchIndexManagerImpl
 	}
 
 	private void _clearIndex(String indexName) {
+		IndicesAdminClient indicesAdminClient = _adminClient.indices();
+
 		DeleteByQueryRequestBuilder deleteByQueryRequestBuilder =
-			new DeleteByQueryRequestBuilder(
-				_adminClient.indices(), DeleteByQueryAction.INSTANCE);
+			DeleteByQueryAction.INSTANCE.newRequestBuilder(indicesAdminClient);
 
 		deleteByQueryRequestBuilder = deleteByQueryRequestBuilder.filter(
 			QueryBuilders.matchAllQuery());
@@ -582,10 +489,10 @@ public class ElasticsearchIndexManagerImpl
 		WeDeployDataService weDeployDataService, String collectionName) {
 
 		return ElasticsearchIndexUtil.getIndexAlias(
-			collectionName, weDeployDataService);
+			collectionName, getIndexNamespace(weDeployDataService));
 	}
 
-	private List<IndexTemplateMetadata> _getTemplates(
+	private List<IndexTemplateMetaData> _getTemplates(
 		IndicesAdminClient indicesAdminClient, String... templateNames) {
 
 		GetIndexTemplatesRequestBuilder getIndexTemplatesRequestBuilder =
@@ -601,14 +508,11 @@ public class ElasticsearchIndexManagerImpl
 
 	@PostConstruct
 	private void _init() {
-		_client = _elasticsearchConnection.getTransportClient();
+		_client = _elasticsearchConnection.getClient();
 
 		_adminClient = _client.admin();
 
 		_indicesJSONObject = new JSONObject(_readIndices());
-
-		addTemplates();
-		checkIndices();
 	}
 
 	private String _readIndices() {
@@ -651,6 +555,7 @@ public class ElasticsearchIndexManagerImpl
 		ElasticsearchIndexManagerImpl.class);
 
 	private AdminClient _adminClient;
+	private final Map<String, String> _aliases = new ConcurrentHashMap<>();
 	private Client _client;
 
 	@Autowired

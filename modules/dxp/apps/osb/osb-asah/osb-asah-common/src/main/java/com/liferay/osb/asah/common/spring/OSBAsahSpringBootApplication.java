@@ -16,26 +16,25 @@ package com.liferay.osb.asah.common.spring;
 
 import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
 
+import io.prometheus.client.spring.boot.EnablePrometheusEndpoint;
+import io.prometheus.client.spring.boot.EnableSpringBootMetricsCollector;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.MetricExportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * @author Eddie Olson
  * @author Rachael Koestartyo
  */
 @ComponentScan("com.liferay.osb.asah.common")
-@EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnablePrometheusEndpoint
+@EnableSpringBootMetricsCollector
 @SpringBootApplication(
 	exclude = {
-		ManagementWebSecurityAutoConfiguration.class,
-		MetricsAutoConfiguration.class, SecurityAutoConfiguration.class,
-		UserDetailsServiceAutoConfiguration.class
+		MetricExportAutoConfiguration.class, SecurityAutoConfiguration.class
 	}
 )
 public class OSBAsahSpringBootApplication {

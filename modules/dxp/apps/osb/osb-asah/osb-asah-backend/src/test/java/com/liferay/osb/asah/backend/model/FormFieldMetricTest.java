@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.model;
 
 import com.liferay.osb.asah.backend.test.util.BaseBeanTestCase;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.function.Supplier;
@@ -38,7 +37,7 @@ public class FormFieldMetricTest extends BaseBeanTestCase<FormFieldMetric> {
 					put(Metric.class, () -> new Metric(null));
 				}
 			},
-			Arrays.asList("getAvailableMetrics"));
+			null);
 	}
 
 	@Override

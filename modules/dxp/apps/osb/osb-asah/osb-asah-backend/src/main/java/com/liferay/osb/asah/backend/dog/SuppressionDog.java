@@ -14,14 +14,17 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.Suppression;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,7 +42,7 @@ import org.springframework.stereotype.Component;
 public class SuppressionDog {
 
 	public ResultBag<Suppression> getSuppressionResultBag(
-		String keywords, int size, Sort sort, int start) {
+		String keywords, int size, Map<String, String> sort, int start) {
 
 		QueryBuilder queryBuilder = null;
 
@@ -71,10 +74,18 @@ public class SuppressionDog {
 					start)));
 	}
 
+	@PostConstruct
+	private void _init() {
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+	}
+
 	@Autowired
 	private DataDog _dataDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

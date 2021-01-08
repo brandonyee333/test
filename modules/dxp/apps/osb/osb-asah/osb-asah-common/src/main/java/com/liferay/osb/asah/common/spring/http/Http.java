@@ -39,9 +39,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.retry.support.RetryTemplate;
+import org.springframework.security.oauth.common.OAuthCodec;
 import org.springframework.security.oauth.common.signature.CoreOAuthSignatureMethodFactory;
+import org.springframework.security.oauth.common.signature.OAuthSignatureMethod;
 import org.springframework.security.oauth.common.signature.PlainTextSignatureMethod;
+import org.springframework.security.oauth.common.signature.SaltedConsumerSecret;
+import org.springframework.security.oauth.common.signature.SharedConsumerSecret;
 import org.springframework.security.oauth.common.signature.SharedConsumerSecretImpl;
+import org.springframework.security.oauth.common.signature.SignatureSecret;
+import org.springframework.security.oauth.common.signature.UnsupportedSignatureMethodException;
 import org.springframework.security.oauth.consumer.BaseProtectedResourceDetails;
 import org.springframework.security.oauth.consumer.OAuthConsumerToken;
 import org.springframework.security.oauth.consumer.OAuthSecurityContextHolder;
@@ -321,7 +327,7 @@ public class Http {
 			new CoreOAuthConsumerSupport();
 
 		coreOAuthConsumerSupport.setSignatureFactory(
-			new CoreOAuthSignatureMethodFactory());
+			new OSBAsahCoreOAuthSignatureMethodFactory());
 
 		oAuthRestTemplate.setSupport(coreOAuthConsumerSupport);
 
@@ -345,5 +351,75 @@ public class Http {
 
 	@Autowired
 	private RetryTemplate _retryTemplate;
+
+	private static class OSBAsahCoreOAuthSignatureMethodFactory
+		extends CoreOAuthSignatureMethodFactory {
+
+		@Override
+		public OAuthSignatureMethod getSignatureMethod(
+				String methodName, SignatureSecret signatureSecret,
+				String tokenSecret)
+			throws UnsupportedSignatureMethodException {
+
+			if (!isSupportPlainText() ||
+				!PlainTextSignatureMethod.SIGNATURE_NAME.equals(methodName)) {
+
+				return super.getSignatureMethod(
+					methodName, signatureSecret, tokenSecret);
+			}
+
+			if (!(signatureSecret instanceof SharedConsumerSecret)) {
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("Invalid signature secret ");
+
+				if (signatureSecret == null) {
+					sb.append("null");
+				}
+				else {
+					Class<?> clazz = signatureSecret.getClass();
+
+					sb.append(clazz.getName());
+				}
+
+				sb.append(" for signature method ");
+				sb.append(methodName);
+
+				throw new IllegalArgumentException(sb.toString());
+			}
+
+			SharedConsumerSecret sharedConsumerSecret =
+				(SharedConsumerSecret)signatureSecret;
+
+			String consumerSecret = sharedConsumerSecret.getConsumerSecret();
+
+			if (consumerSecret == null) {
+				consumerSecret = "";
+			}
+
+			if (tokenSecret == null) {
+				tokenSecret = "";
+			}
+
+			Object salt = null;
+
+			if (signatureSecret instanceof SaltedConsumerSecret) {
+				SaltedConsumerSecret saltedConsumerSecret =
+					(SaltedConsumerSecret)signatureSecret;
+
+				salt = saltedConsumerSecret.getSalt();
+			}
+
+			return new PlainTextSignatureMethod(
+				OAuthCodec.oauthEncode(consumerSecret) + "&" +
+					OAuthCodec.oauthEncode(tokenSecret),
+				getPlainTextPasswordEncoder(), salt);
+		}
+
+		private OSBAsahCoreOAuthSignatureMethodFactory() {
+			setSupportPlainText(true);
+		}
+
+	}
 
 }

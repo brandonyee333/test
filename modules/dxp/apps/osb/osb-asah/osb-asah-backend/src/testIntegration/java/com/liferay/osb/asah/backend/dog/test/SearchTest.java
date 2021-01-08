@@ -19,13 +19,14 @@ import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Dashboard;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+
+import org.elasticsearch.search.sort.SortBuilders;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,7 +43,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SearchTest {
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "search_blogs_info.json",
+		name = "blogs", resourcePath = "search-blogs-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -61,19 +62,19 @@ public class SearchTest {
 
 	@ElasticsearchIndex(
 		name = "custom-asset-dashboards",
-		resourcePath = "search_custom_asset_dashboards_info.json",
+		resourcePath = "search-custom-asset-dashboards-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testCustomAssetSearch() {
 		ResultBag<Dashboard> resultBag = _dashboardDog.getDashboardResultBag(
-			"1", "ASSET", 10, Sort.asc("assetTitle"), 0);
+			"1", SortBuilders.fieldSort("assetTitle"), "ASSET", 10, 0);
 
 		Assert.assertEquals(3, resultBag.getTotal());
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "search_pages_info.json",
+		name = "pages", resourcePath = "search-pages-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

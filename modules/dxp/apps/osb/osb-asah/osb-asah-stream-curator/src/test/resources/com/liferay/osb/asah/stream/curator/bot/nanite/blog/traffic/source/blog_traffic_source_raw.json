@@ -1,6 +1,6 @@
 [
 	{
-		"applicationId": "Blog",
+		"applicationId": "Blogs",
 		"channelId": "1",
 		"context": {
 			"browserName": "Chrome",
@@ -23,7 +23,7 @@
 		"userId": "1"
 	},
 	{
-		"applicationId": "Blog",
+		"applicationId": "Blogs",
 		"channelId": "1",
 		"context": {
 			"browserName": "Chrome",
@@ -46,7 +46,7 @@
 		"userId": "2"
 	},
 	{
-		"applicationId": "Blog",
+		"applicationId": "Blogs",
 		"channelId": "1",
 		"context": {
 			"browserName": "Chrome",

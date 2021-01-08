@@ -1,0 +1,21 @@
+[
+	{
+		"id": "349978106408647035",
+		"name": "LIFERAY-DATASOURCE-FARO-EXAMPLE",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "READY",
+		"status": "INACTIVE"
+	},
+	{
+		"channelId": "123",
+		"id": "350121114030678021",
+		"name": "192.168.108.90",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "READY",
+		"status": "ACTIVE"
+	}
+]

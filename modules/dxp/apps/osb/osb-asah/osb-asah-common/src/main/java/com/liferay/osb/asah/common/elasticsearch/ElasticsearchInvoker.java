@@ -14,26 +14,15 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import java.util.List;
 import java.util.function.Consumer;
 
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.action.admin.indices.refresh.RefreshResponse;
-import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -74,10 +63,6 @@ public interface ElasticsearchInvoker {
 	public JSONObject fetch(String collectionName, QueryBuilder queryBuilder);
 
 	public JSONObject fetch(
-		String collectionName, QueryBuilder queryBuilder,
-		SortBuilder<?> sortBuilder, String sourceExclude, String sourceInclude);
-
-	public JSONObject fetch(
 		String collectionName, QueryBuilder queryBuilder, String sourceExclude,
 		String sourceInclude);
 
@@ -95,12 +80,7 @@ public interface ElasticsearchInvoker {
 
 	public String getIndexAlias(String collectionName);
 
-	public MultiSearchResponse multiSearch(
-		String collectionName, List<SearchSourceBuilder> searchRequestBuilders);
-
 	public RefreshResponse refresh();
-
-	public void refreshAliases();
 
 	public JSONObject replace(String collectionName, JSONObject jsonObject);
 
@@ -128,16 +108,8 @@ public interface ElasticsearchInvoker {
 	public JSONObject update(String collectionName, String id, Script script);
 
 	public BulkByScrollResponse updateByQuery(
-		int batchSize, QueryBuilder queryBuilder, boolean refresh,
-		Script script, String... collectionNames);
-
-	public BulkByScrollResponse updateByQuery(
 		QueryBuilder queryBuilder, boolean refresh, Script script,
 		String... collectionNames);
-
-	public boolean updateByQueryWithRetry(
-		int batchSize, QueryBuilder queryBuilder, boolean refresh,
-		Script script, String... collectionNames);
 
 	public boolean updateByQueryWithRetry(
 		QueryBuilder queryBuilder, boolean refresh, Script script,
@@ -145,16 +117,5 @@ public interface ElasticsearchInvoker {
 
 	public JSONObject upsert(
 		String collectionName, String id, JSONObject jsonObject, Script script);
-
-	@Documented
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.FIELD)
-	public @interface Autowired {
-
-		public boolean cacheable() default false;
-
-		public WeDeployDataService value();
-
-	}
 
 }

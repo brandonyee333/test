@@ -23,14 +23,17 @@ import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
-import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
+import com.liferay.osb.asah.backend.model.URL;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.petra.string.CharPool;
+
+import graphql.language.Field;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -41,17 +44,18 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
-import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.Cardinality;
-import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
-import org.elasticsearch.search.aggregations.pipeline.BucketSortPipelineAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.cardinality.Cardinality;
+import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
+import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders;
+import org.elasticsearch.search.aggregations.pipeline.bucketsort.BucketSortPipelineAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -72,15 +76,24 @@ public class MetricDog {
 	}
 
 	public <T extends AssetMetric> T getAssetMetric(
+		Map<String, List<Field>> fields,
 		SearchQueryContext searchQueryContext) {
 
-		return getAssetMetric(searchQueryContext, Collections.emptySet());
+		return getAssetMetric(
+			fields, searchQueryContext, Collections.emptySet());
 	}
 
 	public <T extends AssetMetric> T getAssetMetric(
-		SearchQueryContext searchQueryContext, Set<String> selectedMetrics) {
+		Map<String, List<Field>> fields, SearchQueryContext searchQueryContext,
+		Set<String> selectedMetrics) {
 
-		boolean includePrevious = searchQueryContext.isIncludePrevious();
+		boolean includePrevious = false;
+
+		if (fields.containsKey("previousValue") ||
+			fields.containsKey("trend")) {
+
+			includePrevious = true;
+		}
 
 		DogConfiguration dogConfiguration =
 			_dogConfigurationBag.getDogConfiguration(
@@ -108,23 +121,10 @@ public class MetricDog {
 			assetMetric.setAssetId(assetId);
 		}
 
-		String canonicalUrl = searchQueryContext.getCanonicalUrl();
+		URL url = searchQueryContext.getURL();
 
-		if (StringUtils.isNotBlank(canonicalUrl)) {
-			assetMetric.setCanonicalUrls(
-				Collections.singletonList(canonicalUrl));
-		}
-
-		String title = searchQueryContext.getTitle();
-
-		if (StringUtils.isNotBlank(title)) {
-			assetMetric.setAssetTitle(title);
-		}
-
-		String url = searchQueryContext.getURL();
-
-		if (StringUtils.isNotBlank(url)) {
-			assetMetric.setURLs(Collections.singletonList(url));
+		if (!url.equals(URL.any())) {
+			assetMetric.setURLs(Collections.singletonList(url.getURL()));
 		}
 
 		Set<MetricResolver> metricResolvers =
@@ -139,13 +139,7 @@ public class MetricDog {
 			range = aggregations.get("ranges");
 		}
 
-		Aggregations rangeBucketAggregations = _getRangeBucketAggregations(
-			includePrevious, range);
-
-		if (rangeBucketAggregations != null) {
-			_setCanonicalUrls(assetMetric, rangeBucketAggregations);
-			_setURLs(assetMetric, rangeBucketAggregations);
-		}
+		_setURLs(assetMetric, includePrevious, range);
 
 		for (MetricResolver metricResolver : metricResolvers) {
 			Metric metric = _getMetric(
@@ -163,30 +157,33 @@ public class MetricDog {
 	}
 
 	public <T extends AssetMetric> List<T> getAssetMetrics(
-		int count, SearchQueryContext searchQueryContext,
-		Set<String> selectedMetrics, int size, Sort sort, int start) {
-
-		return _getAssetMetrics(
-			Collections.emptySet(), count, searchQueryContext, selectedMetrics,
-			size, sort, start);
-	}
-
-	public <T extends AssetMetric> List<T> getAssetMetrics(
+		FieldSortBuilder fieldSortBuilder,
 		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
-		int size, Sort sort, int start) {
+		int size, int start) {
 
 		return _getAssetMetrics(
 			Collections.emptySet(), getAssetMetricsCount(searchQueryContext),
-			searchQueryContext, selectedMetrics, size, sort, start);
+			fieldSortBuilder, searchQueryContext, selectedMetrics, size, start);
 	}
 
 	public <T extends AssetMetric> List<T> getAssetMetrics(
-		Set<String> assetIds, SearchQueryContext searchQueryContext,
-		Set<String> selectedMetrics, int size, Sort sort, int start) {
+		int count, FieldSortBuilder fieldSortBuilder,
+		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
+		int size, int start) {
 
 		return _getAssetMetrics(
-			assetIds, assetIds.size(), searchQueryContext, selectedMetrics,
-			size, sort, start);
+			Collections.emptySet(), count, fieldSortBuilder, searchQueryContext,
+			selectedMetrics, size, start);
+	}
+
+	public <T extends AssetMetric> List<T> getAssetMetrics(
+		Set<String> assetIds, FieldSortBuilder fieldSortBuilder,
+		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
+		int size, int start) {
+
+		return _getAssetMetrics(
+			assetIds, assetIds.size(), fieldSortBuilder, searchQueryContext,
+			selectedMetrics, size, start);
 	}
 
 	public int getAssetMetricsCount(SearchQueryContext searchQueryContext) {
@@ -236,18 +233,15 @@ public class MetricDog {
 			dogConfiguration.getAssetResolver();
 
 		cardinalityAggregationBuilder.script(
-			ScriptUtil.createScript(
-				getClass(), "primary_key_aggregation_script.painless",
-				Collections.singletonMap(
-					"assetIdFieldName", assetResolver.getAssetIdFieldName())));
+			_createPrimaryKeyAggregationScript(
+				assetResolver.getAssetIdFieldName()));
 
 		cardinalityAggregationBuilder.precisionThreshold(1000);
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			cardinalityAggregationBuilder, Optional.empty(),
 			Collections.emptySet(), assetResolver,
-			dogConfiguration.getQueryBuilder(searchQueryContext),
-			searchQueryContext);
+			dogConfiguration.getQueryBuilder(), searchQueryContext);
 	}
 
 	private SearchSourceBuilder _buildAssetMetricSearchSourceBuilder(
@@ -262,16 +256,6 @@ public class MetricDog {
 
 		Set<AggregationBuilder> aggregationBuilders = _getAggregationBuilders(
 			metricResolvers);
-
-		TermsAggregationBuilder canonicalUrlAggregationBuilder =
-			AggregationBuilders.terms("canonicalUrls");
-
-		canonicalUrlAggregationBuilder.field(
-			_searchQueryHelper.getCanonicalUrlFieldName(
-				searchQueryContext.getAssetType()));
-		canonicalUrlAggregationBuilder.size(Integer.MAX_VALUE);
-
-		aggregationBuilders.add(canonicalUrlAggregationBuilder);
 
 		TermsAggregationBuilder urlAggregationBuilder =
 			AggregationBuilders.terms("urls");
@@ -289,8 +273,7 @@ public class MetricDog {
 				Optional.of(
 					assetResolver.getAssetId(searchQueryContext.getAssetId())),
 				_getPipelineAggregationBuilders(metricResolvers),
-				dogConfiguration.getQueryBuilder(searchQueryContext),
-				searchQueryContext);
+				dogConfiguration.getQueryBuilder(), searchQueryContext);
 		}
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
@@ -298,14 +281,14 @@ public class MetricDog {
 			Optional.of(
 				assetResolver.getAssetId(searchQueryContext.getAssetId())),
 			_getPipelineAggregationBuilders(metricResolvers),
-			dogConfiguration.getQueryBuilder(searchQueryContext),
-			searchQueryContext);
+			dogConfiguration.getQueryBuilder(), searchQueryContext);
 	}
 
 	private SearchSourceBuilder _buildAssetMetricsSearchSourceBuilder(
 		Set<String> assetIds, int count, DogConfiguration dogConfiguration,
+		FieldSortBuilder fieldSortBuilder,
 		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
-		int size, Sort sort, int start) {
+		int size, int start) {
 
 		AssetResolver<AssetMetric> assetResolver =
 			dogConfiguration.getAssetResolver();
@@ -327,25 +310,20 @@ public class MetricDog {
 
 		termsAggregationBuilder.subAggregation(
 			_createBucketSortPipelineAggregationBuilder(
-				size, sort, start, assetResolver.getSupplier()));
+				fieldSortBuilder, size, start, assetResolver.getSupplier()));
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			termsAggregationBuilder, Optional.empty(), assetIds, assetResolver,
-			dogConfiguration.getQueryBuilder(searchQueryContext),
-			searchQueryContext);
+			dogConfiguration.getQueryBuilder(), searchQueryContext);
 	}
 
 	private BucketSortPipelineAggregationBuilder
 		_createBucketSortPipelineAggregationBuilder(
-			int size, Sort sort, int start, Supplier<AssetMetric> supplier) {
+			FieldSortBuilder fieldSortBuilder, int size, int start,
+			Supplier<AssetMetric> supplier) {
 
-		FieldSortBuilder fieldSortBuilder = null;
-
-		if (sort == null) {
+		if (fieldSortBuilder == null) {
 			fieldSortBuilder = _createDefaultFieldSortBuilder(supplier.get());
-		}
-		else {
-			fieldSortBuilder = SortBuilderUtil.fieldSort(sort);
 		}
 
 		BucketSortPipelineAggregationBuilder
@@ -371,6 +349,18 @@ public class MetricDog {
 			metricType.getAggregationName(), SortOrder.DESC);
 	}
 
+	private Script _createPrimaryKeyAggregationScript(String assetIdFieldName) {
+		return new Script(
+			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+			"doc[params.assetIdFieldName].value + '@' + doc['title'].value + " +
+				"'@' + doc['dataSourceId'].value",
+			new HashMap() {
+				{
+					put("assetIdFieldName", assetIdFieldName);
+				}
+			});
+	}
+
 	private TermsAggregationBuilder _createTermsAggregationBuilder(
 		AssetResolver<AssetMetric> assetResolver, int size) {
 
@@ -378,10 +368,8 @@ public class MetricDog {
 			AggregationBuilders.terms("terms");
 
 		termsAggregationBuilder.script(
-			ScriptUtil.createScript(
-				getClass(), "primary_key_aggregation_script.painless",
-				Collections.singletonMap(
-					"assetIdFieldName", assetResolver.getAssetIdFieldName())));
+			_createPrimaryKeyAggregationScript(
+				assetResolver.getAssetIdFieldName()));
 
 		if (size > 0) {
 			termsAggregationBuilder.size(size);
@@ -412,8 +400,9 @@ public class MetricDog {
 	}
 
 	private <T extends AssetMetric> List<T> _getAssetMetrics(
-		Set<String> assetIds, int count, SearchQueryContext searchQueryContext,
-		Set<String> selectedMetrics, int size, Sort sort, int start) {
+		Set<String> assetIds, int count, FieldSortBuilder fieldSortBuilder,
+		SearchQueryContext searchQueryContext, Set<String> selectedMetrics,
+		int size, int start) {
 
 		if (count == 0) {
 			return Collections.emptyList();
@@ -426,8 +415,8 @@ public class MetricDog {
 		Aggregations aggregations = _dataDog.queryAggregations(
 			dogConfiguration.getCollection(),
 			_buildAssetMetricsSearchSourceBuilder(
-				assetIds, count, dogConfiguration, searchQueryContext,
-				selectedMetrics, size, sort, start));
+				assetIds, count, dogConfiguration, fieldSortBuilder,
+				searchQueryContext, selectedMetrics, size, start));
 
 		if (DogUtil.isEmpty(aggregations)) {
 			return Collections.emptyList();
@@ -525,27 +514,6 @@ public class MetricDog {
 		return pipelineAggregationBuilders.stream();
 	}
 
-	private Aggregations _getRangeBucketAggregations(
-		boolean includePrevious, Range range) {
-
-		List<? extends Range.Bucket> rangeBuckets = range.getBuckets();
-
-		if (rangeBuckets.isEmpty()) {
-			return null;
-		}
-
-		Range.Bucket rangeBucket = null;
-
-		if (includePrevious) {
-			rangeBucket = rangeBuckets.get(1);
-		}
-		else {
-			rangeBucket = rangeBuckets.get(0);
-		}
-
-		return rangeBucket.getAggregations();
-	}
-
 	private Terms _getTermsAggregationResult(Aggregations aggregations) {
 		Range range = aggregations.get("ranges");
 
@@ -556,29 +524,6 @@ public class MetricDog {
 		Aggregations bucketAggregations = rangeBucket.getAggregations();
 
 		return bucketAggregations.get("terms");
-	}
-
-	private void _setCanonicalUrls(
-		AssetMetric assetMetric, Aggregations bucketAggregations) {
-
-		Terms terms = bucketAggregations.get("canonicalUrls");
-
-		List<? extends Terms.Bucket> termsBuckets = terms.getBuckets();
-
-		if (termsBuckets.isEmpty()) {
-			assetMetric.setCanonicalUrls(Collections.emptyList());
-
-			return;
-		}
-
-		Stream<? extends Terms.Bucket> stream = termsBuckets.stream();
-
-		assetMetric.setCanonicalUrls(
-			stream.map(
-				Terms.Bucket::getKeyAsString
-			).collect(
-				Collectors.toList()
-			));
 	}
 
 	private void _setModelMetrics(
@@ -602,7 +547,24 @@ public class MetricDog {
 	}
 
 	private void _setURLs(
-		AssetMetric assetMetric, Aggregations bucketAggregations) {
+		AssetMetric assetMetric, boolean includePrevious, Range range) {
+
+		List<? extends Range.Bucket> rangeBuckets = range.getBuckets();
+
+		if (rangeBuckets.isEmpty()) {
+			return;
+		}
+
+		Range.Bucket rangeBucket = null;
+
+		if (includePrevious) {
+			rangeBucket = rangeBuckets.get(1);
+		}
+		else {
+			rangeBucket = rangeBuckets.get(0);
+		}
+
+		Aggregations bucketAggregations = rangeBucket.getAggregations();
 
 		Terms terms = bucketAggregations.get("urls");
 
@@ -616,12 +578,13 @@ public class MetricDog {
 
 		Stream<? extends Terms.Bucket> stream = termsBuckets.stream();
 
-		assetMetric.setURLs(
-			stream.map(
-				Terms.Bucket::getKeyAsString
-			).collect(
-				Collectors.toList()
-			));
+		List<String> urls = stream.map(
+			Terms.Bucket::getKeyAsString
+		).collect(
+			Collectors.toList()
+		);
+
+		assetMetric.setURLs(urls);
 	}
 
 	@Autowired

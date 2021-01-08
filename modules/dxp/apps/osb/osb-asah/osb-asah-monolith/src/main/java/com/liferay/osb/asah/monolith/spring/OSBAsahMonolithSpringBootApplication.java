@@ -17,19 +17,19 @@ package com.liferay.osb.asah.monolith.spring;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.upgrade.UpgradeProcessRunner;
 
+import io.prometheus.client.spring.boot.EnablePrometheusEndpoint;
+import io.prometheus.client.spring.boot.EnableSpringBootMetricsCollector;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.MetricExportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -46,13 +46,12 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 		)
 	}
 )
-@EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableCaching
+@EnablePrometheusEndpoint
+@EnableSpringBootMetricsCollector
 @SpringBootApplication(
 	exclude = {
-		ManagementWebSecurityAutoConfiguration.class,
-		MetricsAutoConfiguration.class, SecurityAutoConfiguration.class,
-		UserDetailsServiceAutoConfiguration.class
+		MetricExportAutoConfiguration.class, SecurityAutoConfiguration.class
 	}
 )
 public class OSBAsahMonolithSpringBootApplication {

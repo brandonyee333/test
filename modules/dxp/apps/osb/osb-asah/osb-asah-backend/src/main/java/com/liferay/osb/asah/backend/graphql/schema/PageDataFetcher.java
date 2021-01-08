@@ -21,6 +21,7 @@ import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 
 import graphql.schema.DataFetchingEnvironment;
+import graphql.schema.DataFetchingFieldSelectionSet;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -43,11 +44,15 @@ public class PageDataFetcher extends BaseDataFetcher<List<AssetMetric>> {
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		AssetMetric assetMetric = _metricDog.getAssetMetric(searchQueryContext);
+		DataFetchingFieldSelectionSet dataFetchingFieldSelectionSet =
+			dataFetchingEnvironment.getSelectionSet();
 
-		List<String> canonicalUrls = assetMetric.getCanonicalUrls();
+		AssetMetric assetMetric = _metricDog.getAssetMetric(
+			dataFetchingFieldSelectionSet.get(), searchQueryContext);
 
-		if (canonicalUrls.isEmpty()) {
+		List<String> urls = assetMetric.getURLs();
+
+		if (urls.isEmpty()) {
 			return Collections.emptyList();
 		}
 
@@ -56,8 +61,8 @@ public class PageDataFetcher extends BaseDataFetcher<List<AssetMetric>> {
 		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
 		return _metricDog.getAssetMetrics(
-			new HashSet<>(canonicalUrls), searchQueryContext,
-			(Set<String>)context.get("selectedMetrics"), 1000, null, 0);
+			new HashSet<>(urls), null, searchQueryContext,
+			(Set<String>)context.get("selectedMetrics"), 10000, 0);
 	}
 
 	@Autowired

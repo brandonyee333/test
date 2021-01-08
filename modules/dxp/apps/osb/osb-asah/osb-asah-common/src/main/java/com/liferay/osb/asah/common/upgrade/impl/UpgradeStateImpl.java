@@ -32,7 +32,7 @@ import redis.clients.jedis.JedisPubSub;
  */
 @Component
 @MonolithExclude
-@Profile({"dev", "prod"})
+@Profile("default")
 public class UpgradeStateImpl implements UpgradeState {
 
 	@Override

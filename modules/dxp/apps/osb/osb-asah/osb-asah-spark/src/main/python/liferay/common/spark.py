@@ -9,9 +9,9 @@
 # distribution rights of the Software.
 #
 
-from abc import ABCMeta, abstractmethod
+from ..common.configuration import Configuration
 
-from liferay.common.configuration import Configuration
+from abc import ABCMeta, abstractmethod
 
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
@@ -45,12 +45,17 @@ class BaseSparkApplication(object):
 	def start(self):
 		pass
 
-class BaseSparkJob(object, metaclass=ABCMeta):
+class BaseSparkJob:
 	def __init__(self, spark_application):
 		self.spark_application = spark_application
-		self.spark_application_args = spark_application.args
-		self.spark_application_configuration = spark_application.configuration
-		self.spark_session = spark_application.spark_session
+
+	def spark_context(self):
+		spark_session = self.spark_session()
+
+		return spark_session.sparkContext
+
+	def spark_session(self):
+		return self.spark_application.spark_session
 
 	@abstractmethod
 	def run(self):

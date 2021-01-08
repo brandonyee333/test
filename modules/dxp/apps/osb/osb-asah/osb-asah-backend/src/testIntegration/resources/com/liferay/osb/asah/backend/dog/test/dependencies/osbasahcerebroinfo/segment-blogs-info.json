@@ -1,0 +1,114 @@
+[
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Rio De Janeiro",
+		"clicks": 0,
+		"comments": 0,
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now-2d}",
+		"id": "323477041478355932",
+		"individualId": "1",
+		"platformName": "macOS",
+		"primaryKey": "6d75e3485b77df20a903aa7910fefd4eaddb2e0787740ab443d6b51616376e9a",
+		"ratings": 0,
+		"ratingsScore": 0,
+		"readPercentile": 0,
+		"readTime": 80275,
+		"region": "Rio de Janeiro",
+		"segmentNames": [
+			"Developer"
+		],
+		"title": "Azul blog title",
+		"urls": [
+			"http://192.168.109.41:8181/web/guest/azul-page?p_p_id=com_liferay_blogs_web_portlet_BlogsPortlet&p_p_lifecycle=0&p_p_state=normal&p_p_state_rcv=1&p_p_auth=xPVE2Yd7"
+		],
+		"userId": "1",
+		"views": 3
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Rio De Janeiro",
+		"clicks": 0,
+		"comments": 0,
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now-1d}",
+		"id": "323477041478355932",
+		"individualId": "1",
+		"platformName": "macOS",
+		"primaryKey": "6d75e3485b77df20a903aa7910fefd4eaddb2e0787740ab443d6b51616376e9a",
+		"ratings": 0,
+		"ratingsScore": 0,
+		"readPercentile": 0,
+		"readTime": 80275,
+		"region": "Rio de Janeiro",
+		"segmentNames": [
+			"Developer"
+		],
+		"title": "Azul blog title",
+		"urls": [
+			"http://192.168.109.41:8181/web/guest/azul-page?p_p_id=com_liferay_blogs_web_portlet_BlogsPortlet&p_p_lifecycle=0&p_p_state=normal&p_p_state_rcv=1&p_p_auth=xPVE2Yd7"
+		],
+		"userId": "1",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Rio De Janeiro",
+		"clicks": 0,
+		"comments": 1,
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now-1d}",
+		"id": "323477385822227433",
+		"individualId": "2",
+		"platformName": "macOS",
+		"primaryKey": "2c8c358b0f341ec29dd7f2f1f8323e2d898afa7598c7ebd63156be243612bcd3",
+		"ratings": 0,
+		"ratingsScore": 0,
+		"readPercentile": 0,
+		"readTime": 0,
+		"region": "Rio de Janeiro",
+		"segmentNames": [
+			"CEO"
+		],
+		"title": null,
+		"urls": [
+			"http://192.168.109.41:8181/web/guest/home/-/blogs/36587/maximized?p_p_auth=74MKbfyi#kijp_message_36681"
+		],
+		"userId": "2",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Rio De Janeiro",
+		"clicks": 0,
+		"comments": 1,
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now-2d}",
+		"id": "323477389185970949",
+		"individualId": "3",
+		"platformName": "macOS",
+		"primaryKey": "fce3b92c8da4f3d718728e5737bff02856d2e7c0fbd2d4d4f6bbf5441c09fe44",
+		"ratings": 0,
+		"ratingsScore": 0,
+		"readPercentile": 0,
+		"readTime": 0,
+		"region": "Rio de Janeiro",
+		"segmentNames": [
+			"Developer"
+		],
+		"title": null,
+		"urls": [
+			"http://192.168.109.41:8181/web/guest/blog-page/-/blogs/36721/maximized?p_p_auth=PIb3koQf#voio_message_36757"
+		],
+		"userId": "3",
+		"views": 1
+	}
+]

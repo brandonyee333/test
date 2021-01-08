@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -34,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -49,6 +51,14 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+
+		_cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+	}
+
 	@ElasticsearchIndex(
 		name = "channels", resourcePath = "channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
@@ -62,15 +72,15 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_delete_channels.json",
+		name = "accounts", resourcePath = "accounts-delete-channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "assets", resourcePath = "assets_delete_channels.json",
+		name = "assets", resourcePath = "assets-delete-channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "blogs_delete_channels.json",
+		name = "blogs", resourcePath = "blogs-delete-channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
@@ -79,11 +89,11 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@ElasticsearchIndex(
 		name = "individual-segments",
-		resourcePath = "individual_segments_delete_channels.json",
+		resourcePath = "individual-segments-delete-channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_delete_channels.json",
+		name = "individuals", resourcePath = "individuals-delete-channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -91,12 +101,11 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 		_faroInfoChannelTest.deleteChannels(
 			Arrays.asList("1", "3"), null, null);
 
-		JSONArray assetsJSONArray = faroInfoElasticsearchInvoker.get("assets");
+		JSONArray assetsJSONArray = elasticsearchInvoker.get("assets");
 
 		Assert.assertEquals(2, assetsJSONArray.length());
 
-		JSONObject assetJSONObject1 = JSONUtil.find(
-			assetsJSONArray, "id", "386700631786606770");
+		JSONObject assetJSONObject1 = assetsJSONArray.getJSONObject(0);
 
 		Assert.assertThat(
 			new String[] {"2"},
@@ -104,8 +113,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 				JSONUtil.toStringArray(
 					assetJSONObject1.getJSONArray("channelIds"))));
 
-		JSONObject assetJSONObject2 = JSONUtil.find(
-			assetsJSONArray, "id", "386700631786606772");
+		JSONObject assetJSONObject2 = assetsJSONArray.getJSONObject(1);
 
 		Assert.assertThat(
 			new String[] {"2", "4"},
@@ -122,8 +130,8 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals("2", blogsJSONObject.getString("channelId"));
 
-		JSONArray individualSegmentsJSONArray =
-			faroInfoElasticsearchInvoker.get("individual-segments");
+		JSONArray individualSegmentsJSONArray = elasticsearchInvoker.get(
+			"individual-segments");
 
 		Assert.assertEquals(1, individualSegmentsJSONArray.length());
 
@@ -133,7 +141,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 		Assert.assertEquals(
 			"2", individualSegmentJSONObject.getString("channelId"));
 
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.get(
+		JSONObject individualJSONObject = elasticsearchInvoker.get(
 			"individuals", "338486037253283140");
 
 		JSONArray individualActivitiesCountsJSONArray =
@@ -151,7 +159,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(0, individualLastActivityDatesJSONArray.length());
 
-		JSONObject accountJSONObject = faroInfoElasticsearchInvoker.get(
+		JSONObject accountJSONObject = elasticsearchInvoker.get(
 			"accounts", "342313458385210529");
 
 		JSONArray accountActivitiesCountsJSONArray =
@@ -170,8 +178,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 		Assert.assertEquals(
 			"2", accountIndividualCountsJSONObject.getString("channelId"));
 
-		JSONArray channelsJSONArray = faroInfoElasticsearchInvoker.get(
-			"channels");
+		JSONArray channelsJSONArray = elasticsearchInvoker.get("channels");
 
 		Assert.assertEquals(1, channelsJSONArray.length());
 
@@ -214,7 +221,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 					JSONUtil.put("id", "456"), JSONUtil.put("id", "789"))
 			));
 
-		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
+		JSONObject channelJSONObject = elasticsearchInvoker.get(
 			"channels", "1");
 
 		JSONArray dataSourcesJSONArray = channelJSONObject.getJSONArray(
@@ -250,7 +257,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 
 		_faroInfoChannelTest.patchChannel("1", JSONUtil.put("name", name));
 
-		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
+		JSONObject channelJSONObject = elasticsearchInvoker.get(
 			"channels", "1");
 
 		Assert.assertEquals(name, channelJSONObject.getString("name"));
@@ -272,7 +279,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 					JSONUtil.put("id", "456"), JSONUtil.put("id", "789"))
 			));
 
-		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
+		JSONObject channelJSONObject = elasticsearchInvoker.get(
 			"channels", "1");
 
 		JSONAssert.assertEquals(
@@ -309,8 +316,10 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 		Assert.assertEquals("channel1 (1)", channelJSONObject.get("name"));
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private FaroInfoChannelDog _faroInfoChannelTest;

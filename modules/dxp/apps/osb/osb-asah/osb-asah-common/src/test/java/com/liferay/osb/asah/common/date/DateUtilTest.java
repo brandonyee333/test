@@ -79,37 +79,6 @@ public class DateUtilTest {
 	}
 
 	@Test
-	public void testGetDeltaDaysForNewDayDate() throws Exception {
-		String newDayDateString = DateUtil.newDayDateString();
-
-		Assert.assertEquals(
-			-1, DateUtil.getDeltaDays(DateUtil.addDays(newDayDateString, 1)));
-		Assert.assertEquals(0, DateUtil.getDeltaDays(newDayDateString));
-		Assert.assertEquals(
-			1, DateUtil.getDeltaDays(DateUtil.addDays(newDayDateString, -1)));
-	}
-
-	@Test
-	public void testGetDeltaDaysString() throws Exception {
-		Assert.assertEquals(
-			-1,
-			DateUtil.getDeltaDays(
-				"2011-06-04T07:17:50.706Z", "2011-06-03T23:59:59.999Z"));
-		Assert.assertEquals(
-			0,
-			DateUtil.getDeltaDays(
-				"2011-06-04T07:17:50.706Z", "2011-06-04T07:17:50.706Z"));
-		Assert.assertEquals(
-			0,
-			DateUtil.getDeltaDays(
-				"2011-06-04T07:17:50.706Z", "2011-06-04T23:59:59.999Z"));
-		Assert.assertEquals(
-			1,
-			DateUtil.getDeltaDays(
-				"2011-06-04T07:17:50.706Z", "2011-06-05T00:00:00.000Z"));
-	}
-
-	@Test
 	public void testGetDeltaMillisecondsForEarlierDate() throws Exception {
 		Assert.assertEquals(
 			-243634878350L,

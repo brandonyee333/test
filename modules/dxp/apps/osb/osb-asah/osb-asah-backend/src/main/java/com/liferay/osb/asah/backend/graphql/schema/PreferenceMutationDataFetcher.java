@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
 import com.liferay.osb.asah.common.model.Preference;
 
@@ -24,9 +23,8 @@ import graphql.schema.DataFetchingEnvironment;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-
-import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -66,26 +64,13 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 						long longValue = Long.parseLong(value);
 
 						if ((longValue <= 0) ||
-							(longValue > (13 * DateUtil.MONTH))) {
+							(longValue > TimeUnit.DAYS.toMillis(30 * 13))) {
 
 							return false;
 						}
 
 						return true;
 					});
-				put(
-					"search-query-strings",
-					value -> {
-						try {
-							new JSONArray(value);
-						}
-						catch (Exception e) {
-							return false;
-						}
-
-						return true;
-					});
-				put("time-zone-id", value -> true);
 			}
 		};
 

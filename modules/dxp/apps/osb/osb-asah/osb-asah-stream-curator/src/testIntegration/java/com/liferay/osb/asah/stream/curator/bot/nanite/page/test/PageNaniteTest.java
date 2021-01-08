@@ -15,17 +15,16 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.page.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
 import com.liferay.osb.asah.stream.curator.bot.nanite.page.PageNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,20 +38,11 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class PageNaniteTest extends BaseNaniteTestCase {
-
-	@Before
-	public void setUp() {
-		setUp(_pageNanite);
-	}
+public class PageNaniteTest {
 
 	@ElasticsearchIndex(
 		name = "pages", resourcePath = "page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "preferences", resourcePath = "preferences_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_PAGE,
@@ -62,14 +52,17 @@ public class PageNaniteTest extends BaseNaniteTestCase {
 	public void testPageMetrics() throws Exception {
 		_pageNanite.run();
 
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_page_info.json", this),
-			_elasticsearchInvoker.get("pages"), false);
+			elasticsearchInvoker.get("pages"), false);
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private PageNanite _pageNanite;

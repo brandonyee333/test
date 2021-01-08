@@ -15,18 +15,21 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
-import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.MapUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
 import com.liferay.osb.asah.stream.curator.model.BaseAssetModel;
 import com.liferay.osb.asah.stream.curator.model.Model;
 import com.liferay.osb.asah.stream.curator.model.ModelMapper;
 import com.liferay.osb.asah.stream.curator.model.page.BasePageModel;
+
+import io.prometheus.client.Counter;
+import io.prometheus.client.Gauge;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -41,11 +45,17 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
+import org.apache.lucene.search.join.ScoreMode;
 
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +63,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Inácio Nery
  * @author Brian Wing Shun Chan
- * @author Marcellus Tavares
  */
 public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	@Override
 	public long getInterval() {
 		return DateUtil.MINUTE;
+	}
+
+	@PostConstruct
+	public void init() {
+		_cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+		_cerebroRawElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroRaw();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	@Override
@@ -79,16 +98,56 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	protected void doRun() throws Exception {
+		JSONObject osbAsahMarkerJSONObject = _getOSBAsahMarkerJSONObject();
+
 		while (true) {
 			long start = System.currentTimeMillis();
 
-			List<AnalyticsEvent> analyticsEvents = pullAnalyticsEvents();
+			String lastSuccessfulAnalyticsEventId =
+				osbAsahMarkerJSONObject.optString(
+					"lastSuccessfulAnalyticsEventId", "0");
+
+			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+				QueryBuilders.rangeQuery(
+					"id"
+				).gt(
+					lastSuccessfulAnalyticsEventId
+				)
+			).filter(
+				getQueryBuilder()
+			);
+
+			_monitorNaniteQueueSize(boolQueryBuilder);
+
+			String analyticsEventsJSON = _cerebroRawElasticsearchInvoker.get(
+				"analytics-events",
+				searchSourceBuilder -> {
+					searchSourceBuilder.query(boolQueryBuilder);
+					searchSourceBuilder.size(50);
+					searchSourceBuilder.sort("id");
+				});
+
+			List<AnalyticsEvent> analyticsEvents =
+				AnalyticsEvent.toAnalyticsEvents(analyticsEventsJSON);
 
 			if (analyticsEvents.isEmpty()) {
 				break;
 			}
 
-			saveModels(getModels(analyticsEvents));
+			_cerebroInfoElasticsearchInvoker.save(
+				getCollectionName(),
+				ModelMapper.toJSONArray(getModels(analyticsEvents)));
+
+			AnalyticsEvent lastAnalyticsEvent = analyticsEvents.get(
+				analyticsEvents.size() - 1);
+
+			osbAsahMarkerJSONObject.put(
+				"lastSuccessfulAnalyticsEventId", lastAnalyticsEvent.getId());
+
+			_cerebroInfoElasticsearchInvoker.update(
+				"OSBAsahMarkers", osbAsahMarkerJSONObject);
+
+			_monitorNaniteProcessedEventsCount(analyticsEvents.size());
 
 			Log log = getLog();
 
@@ -122,8 +181,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	protected abstract Predicate<T> getFilterPredicate();
 
 	protected abstract Log getLog();
-
-	protected abstract MessageSubscriber getMessageSubscriber();
 
 	protected Collection<T> getModels(List<AnalyticsEvent> analyticsEvents) {
 		Stream<AnalyticsEvent> analyticsEventsStream =
@@ -168,6 +225,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	protected abstract Function<T, String> getPrimaryKeyGeneratorFunction();
 
+	protected abstract QueryBuilder getQueryBuilder();
+
 	protected T mergeModels(T oldModel, T newModel) {
 		if (oldModel.getSegmentNames() != null) {
 			oldModel.addSegmentNames(newModel.getSegmentNames());
@@ -204,13 +263,6 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		return oldModel;
 	}
 
-	protected List<AnalyticsEvent> pullAnalyticsEvents() throws Exception {
-		MessageSubscriber messageSubscriber = getMessageSubscriber();
-
-		return messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
-	}
-
 	protected void saveModels(Collection<T> models) {
 		_cerebroInfoElasticsearchInvoker.save(
 			getCollectionName(), ModelMapper.toJSONArray(models));
@@ -224,7 +276,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 		T model = supplier.get();
 
-		Map<String, String> context = analyticsEvent.getContext();
+		Map<String, Object> context = analyticsEvent.getContext();
 
 		model.setChannelId(analyticsEvent.getChannelId());
 
@@ -240,13 +292,67 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		model.setUserId(analyticsEvent.getUserId());
 		model.setVariantId(MapUtil.getString(context, "variantId", ""));
 
-		_setModelIndividualProperties(analyticsEvent, model);
+		Optional<JSONObject> individualJSONObjectOptional =
+			_fetchIndividualJSONObjectOptional(analyticsEvent);
+
+		if (individualJSONObjectOptional.isPresent()) {
+			_setModelIndividualId(individualJSONObjectOptional.get(), model);
+			_setModelKnownIndividual(individualJSONObjectOptional.get(), model);
+		}
+
 		_setModelLocation(analyticsEvent, model);
+
+		if (individualJSONObjectOptional.isPresent()) {
+			_setModelSegmentNames(individualJSONObjectOptional.get(), model);
+		}
+
 		_setModelTechnology(analyticsEvent, model);
 		_setModelTitle(analyticsEvent, model);
 		_setModelURL(analyticsEvent, model);
 
 		return model;
+	}
+
+	private Optional<JSONObject> _fetchIndividualJSONObjectOptional(
+		AnalyticsEvent analyticsEvent) {
+
+		if ((analyticsEvent.getDataSourceId() == null) ||
+			(analyticsEvent.getUserId() == null)) {
+
+			return Optional.ofNullable(null);
+		}
+
+		try {
+			JSONObject individualJSONObject =
+				_faroInfoElasticsearchInvoker.fetch(
+					"individuals",
+					QueryBuilders.nestedQuery(
+						"dataSourceIndividualPKs",
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.termQuery(
+								"dataSourceIndividualPKs.dataSourceId",
+								analyticsEvent.getDataSourceId())
+						).filter(
+							QueryBuilders.termsQuery(
+								"dataSourceIndividualPKs.individualPKs",
+								analyticsEvent.getUserId())
+						),
+						ScoreMode.None));
+
+			return Optional.ofNullable(individualJSONObject);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private List<String> _getIndividualSegmentIds(
+		JSONObject individualJSONObject) {
+
+		JSONArray individualSegmentIds = individualJSONObject.getJSONArray(
+			"individualSegmentIds");
+
+		return JSONUtil.toStringList(individualSegmentIds);
 	}
 
 	private Function<AnalyticsEvent, T> _getMapperFunction() {
@@ -265,6 +371,25 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		};
 	}
 
+	private JSONObject _getOSBAsahMarkerJSONObject() {
+		Class<?> clazz = getClass();
+
+		JSONObject osbAsahMarkerJSONObject =
+			_cerebroInfoElasticsearchInvoker.fetch(
+				"OSBAsahMarkers", clazz.getSimpleName());
+
+		if (osbAsahMarkerJSONObject == null) {
+			osbAsahMarkerJSONObject = new JSONObject();
+
+			osbAsahMarkerJSONObject.put("id", clazz.getSimpleName());
+
+			_cerebroInfoElasticsearchInvoker.add(
+				"OSBAsahMarkers", osbAsahMarkerJSONObject);
+		}
+
+		return osbAsahMarkerJSONObject;
+	}
+
 	private void _mergeURLs(T oldModel, T newModel) {
 		if (oldModel.isAsset() && newModel.isAsset()) {
 			BaseAssetModel oldAssetModel = (BaseAssetModel)oldModel;
@@ -272,6 +397,26 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 			oldAssetModel.addURLs(newAssetModel.getURLs());
 		}
+	}
+
+	private void _monitorNaniteProcessedEventsCount(int total) {
+		Class<?> clazz = getClass();
+
+		Counter.Child child = _analyticsEventsCount.labels(
+			clazz.getSimpleName());
+
+		child.inc(total);
+	}
+
+	private void _monitorNaniteQueueSize(QueryBuilder queryBuilder) {
+		Class<?> clazz = getClass();
+
+		Gauge.Child child = _analyticsEventsQueueSize.labels(
+			clazz.getSimpleName());
+
+		child.set(
+			_cerebroRawElasticsearchInvoker.count(
+				"analytics-events", queryBuilder));
 	}
 
 	private void _setAssetPrimaryKey(T model) {
@@ -288,35 +433,28 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		}
 	}
 
-	private void _setModelIndividualProperties(
-		AnalyticsEvent analyticsEvent, T model) {
+	private void _setModelIndividualId(
+		JSONObject individualJSONObject, T model) {
 
-		if (_faroInfoElasticsearchInvoker.exists(
-				"individuals", analyticsEvent.getIndividualId())) {
+		model.setIndividualId(individualJSONObject.getString("id"));
+	}
 
-			model.setIndividualId(analyticsEvent.getIndividualId());
-			model.setKnownIndividual(analyticsEvent.isKnownIndividual());
-			model.setSegmentNames(analyticsEvent.getSegmentNames());
+	private void _setModelKnownIndividual(
+		JSONObject individualJSONObject, T model) {
 
-			return;
+		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
+			"demographics");
+
+		if (demographicsJSONObject == null) {
+			model.setKnownIndividual(false);
 		}
-
-		JSONObject individualJSONObject =
-			_faroInfoIndividualDog.getIndividualJSONObject(
-				analyticsEvent.getDataSourceId(), analyticsEvent.getUserId());
-
-		if (individualJSONObject != null) {
-			model.setIndividualId(individualJSONObject.getString("id"));
-			model.setKnownIndividual(
-				FaroInfoIndividualUtil.isKnownIndividual(individualJSONObject));
-			model.setSegmentNames(
-				_faroInfoIndividualDog.getIndividualSegmentNames(
-					analyticsEvent.getChannelId(), individualJSONObject));
+		else {
+			model.setKnownIndividual(demographicsJSONObject.has("email"));
 		}
 	}
 
 	private void _setModelLocation(AnalyticsEvent analyticsEvent, T model) {
-		Map<String, String> context = analyticsEvent.getContext();
+		Map<String, Object> context = analyticsEvent.getContext();
 
 		model.setCity(MapUtil.getString(context, "city"));
 		model.setCountry(MapUtil.getString(context, "country"));
@@ -332,8 +470,36 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		model.setPrimaryKey(primaryKey);
 	}
 
+	private void _setModelSegmentNames(
+		JSONObject individualJSONObject, T model) {
+
+		List<String> individualSegmentIds = _getIndividualSegmentIds(
+			individualJSONObject);
+
+		if (individualSegmentIds.isEmpty()) {
+			return;
+		}
+
+		try {
+			BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+				QueryBuilders.termsQuery("id", individualSegmentIds)
+			).filter(
+				QueryBuilders.termQuery("status", "ACTIVE")
+			);
+
+			model.setSegmentNames(
+				JSONUtil.toStringSet(
+					_faroInfoElasticsearchInvoker.get(
+						"individual-segments", boolQueryBuilder),
+					"name"));
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private void _setModelTechnology(AnalyticsEvent analyticsEvent, T model) {
-		Map<String, String> context = analyticsEvent.getContext();
+		Map<String, Object> context = analyticsEvent.getContext();
 
 		model.setBrowserName(MapUtil.getString(context, "browserName"));
 		model.setDeviceType(MapUtil.getString(context, "deviceType"));
@@ -360,31 +526,33 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	private void _setModelURL(AnalyticsEvent analyticsEvent, T model) {
-		String canonicalUrl = MapUtil.getString(
-			analyticsEvent.getContext(), "canonicalUrl");
 		String url = MapUtil.getString(analyticsEvent.getContext(), "url");
 
 		if (model.isAsset()) {
 			BaseAssetModel baseAssetModel = (BaseAssetModel)model;
 
-			baseAssetModel.addCanonicalUrl(canonicalUrl);
 			baseAssetModel.addURL(url);
 		}
 		else {
 			BasePageModel basePageModel = (BasePageModel)model;
 
-			basePageModel.setCanonicalUrl(canonicalUrl);
 			basePageModel.setURL(url);
 		}
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+	private static final Counter _analyticsEventsCount = PrometheusUtil.counter(
+		"curator_analytics_events_count",
+		"The number of analytics events processed", "nanite");
+	private static final Gauge _analyticsEventsQueueSize = PrometheusUtil.gauge(
+		"curator_analytics_events_queue_size",
+		"The number of analytics events queued to be curated", "nanite");
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoIndividualDog _faroInfoIndividualDog;
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

@@ -15,6 +15,9 @@
 		"pages",
 		"user-sessions"
 	],
+	"osbasahcerebroraw": [
+		"analytics-events"
+	],
 	"osbasahdxpraw": [
 		"audit-events",
 		"faro-audit-events",
@@ -47,15 +50,12 @@
 		"individuals",
 		"interest-topics",
 		"interests",
-		"job-runs",
-		"jobs",
 		"membership-changes",
 		"memberships",
 		"organizations",
 		"osbasahmarkers",
 		"osbasahtasks",
 		"preferences",
-		"recommended-items",
 		"run-logs",
 		"suppressions",
 		"visited-pages"

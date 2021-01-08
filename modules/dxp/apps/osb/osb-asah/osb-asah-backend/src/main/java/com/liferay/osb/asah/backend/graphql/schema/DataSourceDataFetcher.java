@@ -17,26 +17,43 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.DataSourceDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.DataSource;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+
+import java.util.List;
+import java.util.Map;
+
+import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
+ * @author Rachael Koestartyo
  * @author André Miranda
  */
 @Component
-@GraphQLTypeWiring(fieldName = "dataSource", typeName = "QueryType")
-public class DataSourceDataFetcher implements DataFetcher<DataSource> {
+@GraphQLTypeWiring(fieldName = "dataSources", typeName = "QueryType")
+public class DataSourceDataFetcher implements DataFetcher<List<DataSource>> {
 
 	@Override
-	public DataSource get(DataFetchingEnvironment dataFetchingEnvironment) {
-		String dataSourceId = dataFetchingEnvironment.getArgument(
-			"dataSourceId");
+	public List<DataSource> get(
+		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		return _dataSourceDog.getDataSource(dataSourceId);
+		FieldSortBuilder fieldSortBuilder = null;
+
+		Map<String, String> sort = dataFetchingEnvironment.getArgument("sort");
+
+		if (sort != null) {
+			fieldSortBuilder = SortBuilderUtil.fieldSort(sort);
+		}
+
+		return _dataSourceDog.getDataSources(
+			dataFetchingEnvironment.getArgument("credentialsType"),
+			fieldSortBuilder, dataFetchingEnvironment.getArgument("size"),
+			dataFetchingEnvironment.getArgument("type"));
 	}
 
 	@Autowired

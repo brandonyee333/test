@@ -55,6 +55,12 @@ public class BoolQueryBuilderUtil {
 		return boolQueryBuilder;
 	}
 
+	public static BoolQueryBuilder must(QueryBuilder queryBuilder) {
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		return boolQueryBuilder.must(queryBuilder);
+	}
+
 	public static BoolQueryBuilder mustNot(QueryBuilder queryBuilder) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 

@@ -1,6 +1,6 @@
 {
 	"mappings": {
-		"Account": {
+		"_default_": {
 			"date_detection": false,
 			"dynamic_templates": [
 				{

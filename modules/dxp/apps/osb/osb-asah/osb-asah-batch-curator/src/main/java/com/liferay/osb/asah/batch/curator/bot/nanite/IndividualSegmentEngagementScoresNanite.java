@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoEngagementDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
@@ -31,7 +30,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.metrics.Sum;
+import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -46,11 +45,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class IndividualSegmentEngagementScoresNanite
 	extends BaseEngagementScoresNanite {
-
-	@Override
-	public boolean isLogRunEnabled() {
-		return true;
-	}
 
 	@Override
 	public void run(String dayDateString) throws Exception {
@@ -178,9 +172,8 @@ public class IndividualSegmentEngagementScoresNanite
 			String dayDateString, String individualSegmentId)
 		throws Exception {
 
-		String endOfDayLocalDateTimeString =
-			DateUtil.newEndOfDayLocalDateTimeString(
-				dayDateString, _timeZoneDog.getZoneId());
+		String endOfDayDateString = DateUtil.newEndOfDayDateString(
+			dayDateString);
 
 		JSONArray membershipChangesJSONArray = new JSONArray(
 			faroInfoElasticsearchInvoker.get(
@@ -191,7 +184,7 @@ public class IndividualSegmentEngagementScoresNanite
 							QueryBuilders.rangeQuery(
 								"dateChanged"
 							).lte(
-								endOfDayLocalDateTimeString
+								endOfDayDateString
 							)
 						).filter(
 							QueryBuilders.termQuery(
@@ -219,8 +212,5 @@ public class IndividualSegmentEngagementScoresNanite
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }

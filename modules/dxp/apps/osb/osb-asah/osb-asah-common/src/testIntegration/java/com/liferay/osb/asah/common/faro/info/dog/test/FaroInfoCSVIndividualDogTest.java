@@ -54,7 +54,7 @@ public class FaroInfoCSVIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		_faroInfoCSVIndividualDog.addCSVIndividuals(jsonArray);
 
-		JSONArray csvIndividualsJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray csvIndividualsJSONArray = elasticsearchInvoker.get(
 			"csv-individuals");
 
 		Assert.assertEquals(2, csvIndividualsJSONArray.length());
@@ -63,7 +63,7 @@ public class FaroInfoCSVIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		_assertIds(csvIndividualsJSONArray);
 
-		JSONArray osbAsahTasksJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray osbAsahTasksJSONArray = elasticsearchInvoker.get(
 			"OSBAsahTasks");
 
 		Assert.assertEquals(1, osbAsahTasksJSONArray.length());

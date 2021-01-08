@@ -21,10 +21,10 @@ import com.liferay.osb.asah.backend.model.BlogMetricType;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.Segment;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -47,7 +47,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SegmentDogTest {
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment_blogs_info.json",
+		name = "blogs", resourcePath = "segment-blogs-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -67,7 +67,7 @@ public class SegmentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "forms", resourcePath = "segment_forms_info.json",
+		name = "forms", resourcePath = "segment-forms-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -89,7 +89,7 @@ public class SegmentDogTest {
 
 	@ElasticsearchIndex(
 		name = "individual-segments",
-		resourcePath = "individual_segments_info.json",
+		resourcePath = "individual-segments-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -104,7 +104,7 @@ public class SegmentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "segment_journal_info.json",
+		name = "journals", resourcePath = "segment-journal-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

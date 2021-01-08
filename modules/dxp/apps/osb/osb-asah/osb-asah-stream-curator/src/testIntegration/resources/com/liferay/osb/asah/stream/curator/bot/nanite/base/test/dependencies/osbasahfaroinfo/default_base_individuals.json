@@ -1,0 +1,31 @@
+[
+	{
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "www.liferay.com",
+				"individualPKs": [
+					"1"
+				]
+			}
+		],
+		"id": "100",
+		"individualSegmentIds": [
+			"10",
+			"11"
+		]
+	},
+	{
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "www.liferay.com",
+				"individualPKs": [
+					"2"
+				]
+			}
+		],
+		"id": "200",
+		"individualSegmentIds": [
+			"20"
+		]
+	}
+]

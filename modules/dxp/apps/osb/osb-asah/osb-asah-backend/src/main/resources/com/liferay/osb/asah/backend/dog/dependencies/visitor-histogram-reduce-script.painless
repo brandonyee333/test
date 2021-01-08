@@ -1,0 +1,19 @@
+def minDateMap = new HashMap();
+
+for (map in states) {
+	if (map == null) {
+		continue;
+	}
+
+	for (entry in map.entrySet()) {
+		minDateMap.merge(entry.key, entry.value, (eventDateMillis1, eventDateMillis2) -> (eventDateMillis1 < eventDateMillis2) ? eventDateMillis1 : eventDateMillis2);
+	}
+}
+
+def histogram = new TreeMap();
+
+for (entry in minDateMap.entrySet()) {
+	histogram.merge(entry.value.toString(), 1, (a, b) -> a + 1);
+}
+
+return histogram;

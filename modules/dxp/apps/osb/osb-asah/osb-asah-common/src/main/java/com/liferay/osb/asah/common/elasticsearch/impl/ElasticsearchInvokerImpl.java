@@ -16,18 +16,14 @@ package com.liferay.osb.asah.common.elasticsearch.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.ClientUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -77,7 +73,6 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -90,14 +85,11 @@ import org.json.JSONObject;
 public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	public ElasticsearchInvokerImpl(
-		Client client, ElasticsearchIndexManager elasticsearchIndexManager,
-		WeDeployDataService weDeployDataService) {
+		Map<String, String> aliases, Client client, String indexNamespace) {
 
+		_aliases = aliases;
 		_client = client;
-		_elasticsearchIndexManager = elasticsearchIndexManager;
-		_weDeployDataService = weDeployDataService;
-
-		refreshAliases();
+		_indexNamespace = indexNamespace;
 	}
 
 	@Override
@@ -210,13 +202,14 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		searchRequestBuilder.setQuery(queryBuilder);
 		searchRequestBuilder.setSize(0);
-		searchRequestBuilder.setTrackTotalHits(true);
 
 		ClientUtil.waitForConnection(_client);
 
 		SearchResponse searchResponse = searchRequestBuilder.get();
 
-		return HitsUtil.getTotalHitsCount(searchResponse.getHits());
+		SearchHits searchHits = searchResponse.getHits();
+
+		return searchHits.getTotalHits();
 	}
 
 	@Override
@@ -224,8 +217,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		createElasticsearchBulkRequestBuilder() {
 
 		return ElasticsearchBulkRequestBuilder.create(
-			_aliases, _client,
-			ElasticsearchIndexUtil.getIndexNamespace(_weDeployDataService));
+			_aliases, _client, _indexNamespace);
 	}
 
 	@Override
@@ -237,8 +229,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	public void delete(String collectionName, QueryBuilder queryBuilder) {
 		try {
 			DeleteByQueryRequestBuilder deleteByQueryRequestBuilder =
-				new DeleteByQueryRequestBuilder(
-					_client, DeleteByQueryAction.INSTANCE);
+				DeleteByQueryAction.INSTANCE.newRequestBuilder(_client);
 
 			deleteByQueryRequestBuilder = deleteByQueryRequestBuilder.filter(
 				queryBuilder);
@@ -284,8 +275,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		QueryBuilder queryBuilder, boolean refresh, String... collectionNames) {
 
 		DeleteByQueryRequestBuilder deleteByQueryRequestBuilder =
-			new DeleteByQueryRequestBuilder(
-				_client, DeleteByQueryAction.INSTANCE);
+			DeleteByQueryAction.INSTANCE.newRequestBuilder(_client);
 
 		deleteByQueryRequestBuilder.abortOnVersionConflict(false);
 		deleteByQueryRequestBuilder.filter(queryBuilder);
@@ -341,21 +331,16 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONObject fetch(String collectionName, QueryBuilder queryBuilder) {
-		return fetch(collectionName, queryBuilder, null, null, null);
+		return fetch(collectionName, queryBuilder, null, null);
 	}
 
 	@Override
 	public JSONObject fetch(
-		String collectionName, QueryBuilder queryBuilder,
-		SortBuilder<?> sortBuilder, String sourceExclude,
+		String collectionName, QueryBuilder queryBuilder, String sourceExclude,
 		String sourceInclude) {
 
 		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
 			getIndexAlias(collectionName));
-
-		if (sortBuilder != null) {
-			searchRequestBuilder.addSort(sortBuilder);
-		}
 
 		searchRequestBuilder.setFetchSource(sourceInclude, sourceExclude);
 		searchRequestBuilder.setQuery(queryBuilder);
@@ -367,22 +352,13 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		if (!HitsUtil.hasHits(searchHits)) {
+		if (searchHits.getTotalHits() < 1) {
 			return null;
 		}
 
 		SearchHit searchHit = searchHits.getAt(0);
 
 		return new JSONObject(searchHit.getSourceAsString());
-	}
-
-	@Override
-	public JSONObject fetch(
-		String collectionName, QueryBuilder queryBuilder, String sourceExclude,
-		String sourceInclude) {
-
-		return fetch(
-			collectionName, queryBuilder, null, sourceExclude, sourceInclude);
 	}
 
 	@Override
@@ -441,7 +417,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 			getIndexAlias(collectionName));
 
 		searchRequestBuilder.setQuery(queryBuilder);
-		searchRequestBuilder.setTrackTotalHits(true);
 
 		return _get(searchRequestBuilder);
 	}
@@ -462,29 +437,9 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	@Override
 	public String getIndexAlias(String collectionName) {
 		String indexName = ElasticsearchIndexUtil.getIndexName(
-			collectionName, _weDeployDataService);
+			collectionName, _indexNamespace);
 
 		return _aliases.getOrDefault(indexName, indexName);
-	}
-
-	@Override
-	public MultiSearchResponse multiSearch(
-		String collectionName,
-		List<SearchSourceBuilder> searchRequestBuilders) {
-
-		MultiSearchRequestBuilder multiSearchRequestBuilder =
-			_client.prepareMultiSearch();
-
-		multiSearchRequestBuilder.setIndicesOptions(
-			IndicesOptions.lenientExpandOpen());
-
-		for (SearchSourceBuilder searchRequestBuilder : searchRequestBuilders) {
-			multiSearchRequestBuilder.add(
-				_createSearchRequestBuilder(
-					collectionName, searchRequestBuilder));
-		}
-
-		return multiSearchRequestBuilder.get();
 	}
 
 	@Override
@@ -495,12 +450,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		ClientUtil.waitForConnection(_client);
 
 		return refreshRequestBuilder.get();
-	}
-
-	@Override
-	public void refreshAliases() {
-		_aliases.putAll(
-			_elasticsearchIndexManager.getAliases(_weDeployDataService));
 	}
 
 	@Override
@@ -635,8 +584,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public BulkByScrollResponse updateByQuery(
-		int batchSize, QueryBuilder queryBuilder, boolean refresh,
-		Script script, String... collectionNames) {
+		QueryBuilder queryBuilder, boolean refresh, Script script,
+		String... collectionNames) {
 
 		List<String> indices = _getExistingIndices(
 			queryBuilder, collectionNames);
@@ -651,8 +600,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		}
 
 		UpdateByQueryRequestBuilder updateByQueryRequestBuilder =
-			new UpdateByQueryRequestBuilder(
-				_client, UpdateByQueryAction.INSTANCE);
+			UpdateByQueryAction.INSTANCE.newRequestBuilder(_client);
 
 		updateByQueryRequestBuilder.abortOnVersionConflict(false);
 		updateByQueryRequestBuilder.filter(queryBuilder);
@@ -663,7 +611,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		UpdateByQueryRequest updateByQueryRequest =
 			updateByQueryRequestBuilder.request();
 
-		updateByQueryRequest.setBatchSize(batchSize);
+		updateByQueryRequest.setBatchSize(_ELASTICSEARCH_MAX_SIZE);
 
 		ClientUtil.waitForConnection(_client);
 
@@ -671,25 +619,15 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	}
 
 	@Override
-	public BulkByScrollResponse updateByQuery(
+	public boolean updateByQueryWithRetry(
 		QueryBuilder queryBuilder, boolean refresh, Script script,
 		String... collectionNames) {
-
-		return updateByQuery(
-			_ELASTICSEARCH_MAX_SIZE, queryBuilder, refresh, script,
-			collectionNames);
-	}
-
-	@Override
-	public boolean updateByQueryWithRetry(
-		int batchSize, QueryBuilder queryBuilder, boolean refresh,
-		Script script, String... collectionNames) {
 
 		int retry = 0;
 
 		while (true) {
 			BulkByScrollResponse bulkByScrollResponse = updateByQuery(
-				batchSize, queryBuilder, refresh, script, collectionNames);
+				queryBuilder, refresh, script, collectionNames);
 
 			List<BulkItemResponse.Failure> bulkFailures =
 				bulkByScrollResponse.getBulkFailures();
@@ -715,16 +653,6 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 				thread.interrupt();
 			}
 		}
-	}
-
-	@Override
-	public boolean updateByQueryWithRetry(
-		QueryBuilder queryBuilder, boolean refresh, Script script,
-		String... collectionNames) {
-
-		return updateByQueryWithRetry(
-			_ELASTICSEARCH_MAX_SIZE, queryBuilder, refresh, script,
-			collectionNames);
 	}
 
 	@Override
@@ -769,14 +697,11 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 			}
 		}
 
-		searchSourceBuilder.trackTotalHits(true);
-
 		return searchRequestBuilder.setSource(searchSourceBuilder);
 	}
 
 	private JSONArray _get(SearchRequestBuilder searchRequestBuilder) {
 		searchRequestBuilder.setSize(_ELASTICSEARCH_MAX_SIZE);
-		searchRequestBuilder.setTrackTotalHits(true);
 
 		ClientUtil.waitForConnection(_client);
 
@@ -784,18 +709,19 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		if (!HitsUtil.hasHits(searchHits)) {
+		if (searchHits.getTotalHits() < 1) {
 			return new JSONArray();
 		}
 
 		Stream<SearchHit> stream = Arrays.stream(searchHits.getHits());
 
-		return new JSONArray(
-			stream.map(
-				searchHit -> new JSONObject(searchHit.getSourceAsString())
-			).collect(
-				Collectors.toList()
-			));
+		List<JSONObject> jsonObjects = stream.map(
+			searchHit -> new JSONObject(searchHit.getSourceAsString())
+		).collect(
+			Collectors.toList()
+		);
+
+		return new JSONArray(jsonObjects);
 	}
 
 	private List<String> _getExistingIndices(
@@ -831,13 +757,9 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 			SearchResponse searchResponse =
 				multiSearchResponseItem.getResponse();
 
-			if (searchResponse == null) {
-				continue;
-			}
-
 			SearchHits searchHits = searchResponse.getHits();
 
-			if (HitsUtil.hasHits(searchHits)) {
+			if (searchHits.getTotalHits() > 0) {
 				indices.add(getIndexAlias(collectionNames[i]));
 			}
 		}
@@ -878,11 +800,10 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchInvokerImpl.class);
 
-	private final Map<String, String> _aliases = new ConcurrentHashMap<>();
+	private final Map<String, String> _aliases;
 	private final Client _client;
-	private final ElasticsearchIndexManager _elasticsearchIndexManager;
+	private final String _indexNamespace;
 	private TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
-	private final WeDeployDataService _weDeployDataService;
 
 }

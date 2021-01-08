@@ -31,7 +31,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -42,12 +41,12 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.InternalCardinality;
-import org.elasticsearch.search.aggregations.metrics.InternalSum;
-import org.elasticsearch.search.aggregations.pipeline.BucketSortPipelineAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
+import org.elasticsearch.search.aggregations.metrics.sum.InternalSum;
+import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders;
+import org.elasticsearch.search.aggregations.pipeline.bucketsort.BucketSortPipelineAggregationBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -183,10 +182,9 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 			_totalElements = internalCardinality.getValue();
 
-			Map<String, JSONObject> assetJSONObjects = new CaseInsensitiveMap(
-				JSONUtil.toJSONObjectMap(
-					elasticsearchInvoker.get("assets", assetQueryBuilder),
-					"canonicalUrl"));
+			Map<String, JSONObject> assetJSONObjects = JSONUtil.toJSONObjectMap(
+				elasticsearchInvoker.get("assets", assetQueryBuilder),
+				"dataSourceAssetPK");
 
 			for (Map.Entry<Pair<String, String>, Double> entry :
 					uniqueVisitsCounts.entrySet()) {
@@ -198,9 +196,6 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 				visitedPagesJSONArray.put(
 					JSONUtil.put(
-						"canonicalUrl",
-						assetJSONObject.getString("canonicalUrl")
-					).put(
 						"dataSourceId",
 						assetJSONObject.getString("dataSourceId")
 					).put(
@@ -215,7 +210,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 			return visitedPagesJSONArray;
 		}
 
-		Set<String> canonicalUrls = new HashSet<>();
+		Set<String> dataSourceAssetPKs = new HashSet<>();
 
 		List<SortBuilder> sortBuilders = new ArrayList<>();
 
@@ -249,9 +244,10 @@ public class VisitedPagesTransformationJSONArrayFunction
 		for (int i = 0; i < assetsJSONArray.length(); i++) {
 			JSONObject assetJSONObject = assetsJSONArray.getJSONObject(i);
 
-			String canonicalUrl = assetJSONObject.getString("canonicalUrl");
+			String dataSourceAssetPK = assetJSONObject.getString(
+				"dataSourceAssetPK");
 
-			if (canonicalUrls.contains(canonicalUrl)) {
+			if (dataSourceAssetPKs.contains(dataSourceAssetPK)) {
 				continue;
 			}
 
@@ -260,7 +256,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 			String assetTitle = assetJSONObject.getString("name");
 
 			Pair<String, String> titleUrlPair = Pair.of(
-				assetTitle.toLowerCase(), canonicalUrl.toLowerCase());
+				assetTitle.toLowerCase(), dataSourceAssetPK.toLowerCase());
 
 			if (uniqueVisitsCounts.containsKey(titleUrlPair)) {
 				uniqueVisitsCount = uniqueVisitsCounts.get(titleUrlPair);
@@ -277,7 +273,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 					"url", assetJSONObject.getString("url")
 				));
 
-			canonicalUrls.add(canonicalUrl);
+			dataSourceAssetPKs.add(dataSourceAssetPK);
 		}
 
 		_totalElements = elasticsearchInvoker.count(
@@ -314,8 +310,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 				TermsAggregationBuilder termsAggregationBuilder =
 					AggregationBuilders.terms("url");
 
-				Script script = new Script(
-					"doc['title'] + ' ' + doc['canonicalUrl']");
+				Script script = new Script("doc['title'] + ' ' + doc['url']");
 
 				termsAggregationBuilder.script(
 					script
@@ -387,12 +382,12 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 		if (_visitedPages) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termsQuery("canonicalUrl", urls));
+				QueryBuilders.termsQuery("dataSourceAssetPK", urls));
 		}
 		else {
 			boolQueryBuilder.filter(
 				QueryBuilders.termsQuery(
-					"canonicalUrl",
+					"dataSourceAssetPK",
 					_getUrls(
 						collectionName, elasticsearchInvoker, queryBuilder,
 						urls)));

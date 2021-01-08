@@ -14,17 +14,16 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
+import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleTimer;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
 
 import org.json.JSONObject;
 
@@ -43,6 +42,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class IdentityRestController {
 
+	@PostConstruct
+	public void init() {
+		_queueHttp.initializeQueue();
+	}
+
 	@PostMapping
 	public void post(@RequestBody String json) {
 		SimpleTimer simpleTimer = new SimpleTimer();
@@ -53,8 +57,7 @@ public class IdentityRestController {
 			JSONObject identityJSONObject = jsonObject.getJSONObject(
 				"identity");
 
-			_messageBus.sendMessage(
-				Channel.IDENTITY_MESSAGE,
+			_queueHttp.pushMessage(
 				JSONUtil.put(
 					"analyticsData", _getAnalyticsDataJSONObject(jsonObject)
 				).put(
@@ -63,14 +66,11 @@ public class IdentityRestController {
 					"dataSourceId", jsonObject.getString("dataSourceId")
 				).put(
 					"emailAddressHashed",
-					DigestUtils.sha256Hex(
-						StringUtils.lowerCase(
-							identityJSONObject.getString("email")))
-				).put(
-					"projectId", ProjectIdThreadLocal.getProjectId()
+					DigestUtils.sha256Hex(identityJSONObject.getString("email"))
 				).put(
 					"userId", jsonObject.getString("userId")
-				).toString());
+				).toString(),
+				QueueHttp.QUEUE_NAME_IDENTITY);
 		}
 		finally {
 			_identityRequestsHistogram.observe(simpleTimer.elapsedSeconds());
@@ -103,6 +103,6 @@ public class IdentityRestController {
 			"The number of seconds taken to process the identity requests");
 
 	@Autowired
-	private MessageBus _messageBus;
+	private QueueHttp _queueHttp;
 
 }

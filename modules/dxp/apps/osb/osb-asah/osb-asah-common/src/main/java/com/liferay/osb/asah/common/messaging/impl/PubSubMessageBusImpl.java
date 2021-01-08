@@ -28,7 +28,6 @@ import com.google.pubsub.v1.ProjectTopicName;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.PushConfig;
 import com.google.pubsub.v1.Subscription;
-import com.google.pubsub.v1.Topic;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -37,9 +36,7 @@ import com.liferay.osb.asah.common.messaging.MessageListener;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
@@ -61,29 +58,19 @@ import org.springframework.stereotype.Component;
 public class PubSubMessageBusImpl implements MessageBus {
 
 	public PubsubMessage createPubsubMessage(String message) {
-		return createPubsubMessage(message, null);
-	}
-
-	public PubsubMessage createPubsubMessage(
-		String message, String orderingKey) {
-
 		PubsubMessage.Builder builder = PubsubMessage.newBuilder();
 
 		builder.setData(ByteString.copyFromUtf8(message));
-
-		if (StringUtils.isNotEmpty(orderingKey)) {
-			builder.setOrderingKey(orderingKey);
-		}
 
 		return builder.build();
 	}
 
 	public ProjectName getProjectName() {
-		return ProjectName.of(_gcpProjectId);
+		return ProjectName.of(_projectId);
 	}
 
 	public ProjectTopicName getProjectTopicName(Channel channel) {
-		return ProjectTopicName.of(_gcpProjectId, _getTopicId(channel));
+		return ProjectTopicName.of(_projectId, _getTopicId(channel));
 	}
 
 	public PubSubClientFactory getPubSubclientFactory() {
@@ -127,21 +114,14 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 	@Override
 	public void sendMessage(Channel channel, String message) {
-		if (StringUtils.isBlank(message)) {
-			throw new IllegalArgumentException("Message is blank");
+		if (message == null) {
+			throw new IllegalArgumentException("Message is null");
 		}
 
 		try {
 			Publisher publisher = _getOrCreatePublisher(channel);
 
-			if (channel == Channel.DXP_ENTITIES_MESSAGE) {
-				publisher.publish(
-					createPubsubMessage(
-						message, Channel.DXP_ENTITIES_MESSAGE.name()));
-			}
-			else {
-				publisher.publish(createPubsubMessage(message));
-			}
+			publisher.publish(createPubsubMessage(message));
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -188,10 +168,14 @@ public class PubSubMessageBusImpl implements MessageBus {
 			subscription.getName(), _createMessageReceiver(messageListener));
 	}
 
-	private void _createTopic(
-		ProjectTopicName projectTopicName, TopicAdminClient topicAdminClient) {
+	private void _createTopic(Channel channel) throws Exception {
+		ProjectTopicName projectTopicName = getProjectTopicName(channel);
 
-		try {
+		try (PubSubClient<TopicAdminClient> pubSubClient =
+				_pubSubClientFactory.createTopicAdminClient()) {
+
+			TopicAdminClient topicAdminClient = pubSubClient.get();
+
 			topicAdminClient.createTopic(projectTopicName);
 
 			if (_log.isInfoEnabled()) {
@@ -207,21 +191,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	private void _createTopics() throws Exception {
-		try (PubSubClient<TopicAdminClient> pubSubClient =
-				_pubSubClientFactory.createTopicAdminClient()) {
-
-			TopicAdminClient topicAdminClient = pubSubClient.get();
-
-			Set<String> topicNames = _fetchTopicNames(topicAdminClient);
-
-			for (Channel channel : Channel.values()) {
-				ProjectTopicName projectTopicName = getProjectTopicName(
-					channel);
-
-				if (!topicNames.contains(projectTopicName.toString())) {
-					_createTopic(projectTopicName, topicAdminClient);
-				}
-			}
+		for (Channel channel : Channel.values()) {
+			_createTopic(channel);
 		}
 	}
 
@@ -236,19 +207,6 @@ public class PubSubMessageBusImpl implements MessageBus {
 		}
 	}
 
-	private Set<String> _fetchTopicNames(TopicAdminClient topicAdminClient) {
-		Set<String> topicNames = new HashSet<>();
-
-		TopicAdminClient.ListTopicsPagedResponse listTopicsPagedResponse =
-			topicAdminClient.listTopics(getProjectName());
-
-		for (Topic topic : listTopicsPagedResponse.iterateAll()) {
-			topicNames.add(topic.getName());
-		}
-
-		return topicNames;
-	}
-
 	private Publisher _getOrCreatePublisher(Channel channel) throws Exception {
 		Publisher publisher = _channels.get(channel);
 
@@ -257,7 +215,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 		}
 
 		publisher = _pubSubClientFactory.createPublisher(
-			channel.isOrderingEnabled(), getProjectTopicName(channel));
+			getProjectTopicName(channel));
 
 		_channels.put(channel, publisher);
 
@@ -284,20 +242,9 @@ public class PubSubMessageBusImpl implements MessageBus {
 						projectSubscriptionName.toString());
 			}
 
-			ProjectTopicName projectTopicName = getProjectTopicName(channel);
-
-			Subscription.Builder builder = Subscription.newBuilder();
-
-			builder.setAckDeadlineSeconds(10);
-			builder.setName(projectSubscriptionName.toString());
-			builder.setPushConfig(PushConfig.getDefaultInstance());
-			builder.setTopic(projectTopicName.toString());
-
-			if (channel == Channel.DXP_ENTITIES_MESSAGE) {
-				builder.setEnableMessageOrdering(true);
-			}
-
-			return subscriptionAdminClient.createSubscription(builder.build());
+			return subscriptionAdminClient.createSubscription(
+				projectSubscriptionName, getProjectTopicName(channel),
+				PushConfig.getDefaultInstance(), 10);
 		}
 		finally {
 			pubSubClient.close();
@@ -314,7 +261,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 		Channel channel, String name) {
 
 		return ProjectSubscriptionName.of(
-			_gcpProjectId,
+			_projectId,
 			_getTopicId(channel) + "_" + StringUtils.replace(name, "$", "_"));
 	}
 
@@ -333,12 +280,11 @@ public class PubSubMessageBusImpl implements MessageBus {
 		PubSubMessageBusImpl.class);
 
 	private final Map<Channel, Publisher> _channels = new ConcurrentHashMap<>();
-
-	@Value("${osb.asah.message.bus.gcloud.project.id:liferaycloud-customer-ac}")
-	private String _gcpProjectId;
-
 	private final Map<MessageListener, Subscriber> _messageListeners =
 		new ConcurrentHashMap<>();
+
+	@Value("${osb.asah.message.bus.gcloud.project.id:liferaycloud-customer-ac}")
+	private String _projectId;
 
 	@Autowired
 	private PubSubClientFactory _pubSubClientFactory;

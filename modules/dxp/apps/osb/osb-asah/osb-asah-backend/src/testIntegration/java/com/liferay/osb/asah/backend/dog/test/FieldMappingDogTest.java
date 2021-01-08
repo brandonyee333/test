@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.FieldMappingDog;
 import com.liferay.osb.asah.backend.model.FieldMapping;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -42,7 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class FieldMappingDogTest {
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings_info.json",
+		name = "field-mappings", resourcePath = "field-mappings-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

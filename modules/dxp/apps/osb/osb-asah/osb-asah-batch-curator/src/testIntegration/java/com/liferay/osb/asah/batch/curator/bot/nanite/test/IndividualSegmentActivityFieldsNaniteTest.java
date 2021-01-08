@@ -16,8 +16,11 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
+import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.json.JSONObject;
@@ -27,38 +30,106 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Michael Bowerman
  */
+@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
+@Import(CerebroQueueHttpTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class IndividualSegmentActivityFieldsNaniteTest
-	extends BaseNaniteTestCase {
+	extends BaseActivityFieldsNaniteTestCase {
 
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_3.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual_segments.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@Test
 	public void test() throws Exception {
+		JSONObject individualSegmentJSONObject =
+			FaroInfoTestUtil.buildStaticIndividualSegmentJSONObject();
+
+		individualSegmentJSONObject =
+			_faroInfoIndividualSegmentDog.addIndividualSegment(
+				individualSegmentJSONObject.put("channelId", "1"));
+
+		String individualSegmentId = individualSegmentJSONObject.getString(
+			"id");
+
+		String dateString = DateUtil.addDays(DateUtil.newDateString(), -15);
+
+		JSONObject individual1JSONObject = addIndividualWithActivities(
+			2, "Page", "1", DateUtil.addDays(dateString, -5), "pageViewed");
+		JSONObject individual2JSONObject = addIndividualWithActivities(
+			4, "Form", "1", dateString, "formSubmitted");
+		JSONObject individual3JSONObject = addIndividualWithActivities(
+			8, "Form", "1", DateUtil.addDays(dateString, 5), "fieldBlurred");
+		addIndividualWithActivities(
+			16, "Page", "1", DateUtil.addDays(dateString, 10), "pageViewed");
+
+		_faroInfoMembershipDog.addMembership(
+			FaroInfoTestUtil.buildMembershipJSONObject(
+				individual1JSONObject.getString("id"), individualSegmentId));
+		_faroInfoMembershipDog.addMembership(
+			FaroInfoTestUtil.buildMembershipJSONObject(
+				individual2JSONObject.getString("id"), individualSegmentId));
+		_faroInfoMembershipDog.addMembership(
+			FaroInfoTestUtil.buildMembershipJSONObject(
+				individual3JSONObject.getString("id"), individualSegmentId));
+
+		addIndividualWithActivities(
+			27, "Page", "1", DateUtil.addDays(dateString, 5), "pageViewed");
+
+		individualActivityFieldsNanite.run();
+
 		_individualSegmentActivityFieldsNanite.run();
 
-		JSONObject individualSegmentJSONObject =
-			faroInfoElasticsearchInvoker.get(
-				"individual-segments", "461522890926789186");
+		individualSegmentJSONObject = faroInfoElasticsearchInvoker.get(
+			"individual-segments", individualSegmentId);
 
 		Assert.assertEquals(
 			6, individualSegmentJSONObject.getInt("activitiesCount"));
 		Assert.assertEquals(
-			"2020-12-06T17:54:23.916Z",
+			dateString,
 			individualSegmentJSONObject.getString("lastActivityDate"));
+
+		_removeMembershipAndAssertActivityFields(
+			6, dateString, individual3JSONObject, individualSegmentId);
+
+		_removeMembershipAndAssertActivityFields(
+			2, DateUtil.addDays(dateString, -5), individual2JSONObject,
+			individualSegmentId);
+
+		_removeMembershipAndAssertActivityFields(
+			0, null, individual1JSONObject, individualSegmentId);
 	}
+
+	private void _removeMembershipAndAssertActivityFields(
+			int expectedActivitiesCount, String expectedLastActivityDate,
+			JSONObject individualJSONObject, String individualSegmentId)
+		throws Exception {
+
+		_faroInfoMembershipDog.deactivateMembership(
+			DateUtil.newDateString(), individualJSONObject.getString("id"),
+			individualSegmentId);
+
+		_individualSegmentActivityFieldsNanite.run();
+
+		JSONObject individualSegmentJSONObject =
+			faroInfoElasticsearchInvoker.get(
+				"individual-segments", individualSegmentId);
+
+		Assert.assertEquals(
+			expectedActivitiesCount,
+			individualSegmentJSONObject.getInt("activitiesCount"));
+		Assert.assertEquals(
+			expectedLastActivityDate,
+			individualSegmentJSONObject.optString("lastActivityDate", null));
+	}
+
+	@Autowired
+	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+
+	@Autowired
+	private FaroInfoMembershipDog _faroInfoMembershipDog;
 
 	@Autowired
 	private IndividualSegmentActivityFieldsNanite

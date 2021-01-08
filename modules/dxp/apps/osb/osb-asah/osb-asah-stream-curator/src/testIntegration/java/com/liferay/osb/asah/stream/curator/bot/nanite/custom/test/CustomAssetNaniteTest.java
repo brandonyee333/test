@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.custom.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -53,19 +54,22 @@ public class CustomAssetNaniteTest {
 		resourcePath = "analytics_events_custom_asset_channel.json"
 	)
 	@Test
-	public void testEvents() throws Exception {
+	public void testViews() throws Exception {
 		_customAssetNanite.run();
+
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_custom_assets_info.json", this),
-			_cerebroInfoElasticsearchInvoker.get("custom-assets"), false);
+			elasticsearchInvoker.get("custom-assets"), false);
 	}
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private CustomAssetNanite _customAssetNanite;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

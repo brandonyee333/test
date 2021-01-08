@@ -23,11 +23,11 @@ buildscript {
 apply plugin: CoverallsPlugin
 
 task jacocoRootReport(type: JacocoReport)
-task jacocoTestCoverageVerification(type: JacocoCoverageVerification)
 
 Set<Project> javaSubprojects = subprojects.findAll {
 	FileUtil.exists(it, "src/main/java") &&
 	it.name != "osb-asah-backend-ext-alfa" &&
+	it.name != "osb-asah-demo" &&
 	it.name != "osb-asah-test-util"
 }
 
@@ -41,7 +41,6 @@ allprojects {
 	}
 
 	pmd {
-		incrementalAnalysis = false
 		toolVersion = "5.8.1"
 	}
 
@@ -73,7 +72,6 @@ configure(javaSubprojects) {
 
 	configurations {
 		testIntegrationCompile.extendsFrom testCompile
-		testIntegrationImplementation.extendsFrom testImplementation
 		testIntegrationRuntime.extendsFrom testRuntime
 	}
 
@@ -123,8 +121,8 @@ coveralls {
 }
 
 jacocoRootReport {
-	additionalSourceDirs.from = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
-	classDirectories.from = files(javaSubprojects.sourceSets.main.output)
+	additionalSourceDirs = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
+	classDirectories = files(javaSubprojects.sourceSets.main.output)
 
 	Set<JacocoTaskExtension> testJacocoTaskExtensions = javaSubprojects.test.jacoco.findAll {
 		it.enabled
@@ -134,17 +132,18 @@ jacocoRootReport {
 		it.enabled
 	}
 
-	executionData.from = files(testJacocoTaskExtensions.destinationFile, testIntegrationJacocoTaskExtensions.destinationFile)
+	executionData = files(testJacocoTaskExtensions.destinationFile, testIntegrationJacocoTaskExtensions.destinationFile)
 
-	sourceDirectories.from = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
+	sourceDirectories = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
 
 	afterEvaluate {
-		classDirectories.from = files(
+		classDirectories = files(
 			classDirectories.files.collect {
 				fileTree(
 					dir: it,
 					exclude: [
 						"**/*Mock*",
+						"**/asah/demo/**",
 						"**/constants/*",
 						"**/exception/*Exception*",
 						"**/test/util/*"
@@ -156,30 +155,6 @@ jacocoRootReport {
 		csv.enabled = false
 		html.enabled = true
 		xml.enabled = true
-	}
-}
-
-jacocoTestCoverageVerification {
-	classDirectories.from = files(javaSubprojects.sourceSets.main.output)
-
-	Set<JacocoTaskExtension> testJacocoTaskExtensions = javaSubprojects.test.jacoco.findAll {
-		it.enabled
-	}
-
-	Set<JacocoTaskExtension> testIntegrationJacocoTaskExtensions = javaSubprojects.testIntegration.jacoco.findAll {
-		it.enabled
-	}
-
-	executionData.from = files(testJacocoTaskExtensions.destinationFile, testIntegrationJacocoTaskExtensions.destinationFile)
-
-	violationRules {
-		rule {
-			limit {
-				counter = 'LINE'
-				value = 'COVEREDRATIO'
-				minimum = 0.6820
-			}
-		}
 	}
 }
 

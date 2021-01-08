@@ -19,9 +19,9 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.BlogMetricType;
 import com.liferay.osb.asah.backend.model.Individual;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -49,11 +49,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class IndividualDogTest {
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings_info.json",
+		name = "field-mappings", resourcePath = "field-mappings-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_info.json",
+		name = "individuals", resourcePath = "individuals-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -73,11 +73,11 @@ public class IndividualDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings_info.json",
+		name = "field-mappings", resourcePath = "field-mappings-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_info.json",
+		name = "individuals", resourcePath = "individuals-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -93,11 +93,11 @@ public class IndividualDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
+		name = "blogs", resourcePath = "segment-individuals-blogs-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "segment_individuals_info_1.json",
+		name = "individuals", resourcePath = "segment-individuals-info-1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -119,20 +119,20 @@ public class IndividualDogTest {
 		Individual individual = individuals.get(0);
 
 		Assert.assertEquals("Test1 Test1", individual.getName());
-		Assert.assertEquals("test1@liferay.com", individual.getEmailAddress());
+		Assert.assertEquals("test1@liferay.com", individual.getEmail());
 
 		individual = individuals.get(1);
 
 		Assert.assertEquals("Test2 Test2", individual.getName());
-		Assert.assertEquals("test2@liferay.com", individual.getEmailAddress());
+		Assert.assertEquals("test2@liferay.com", individual.getEmail());
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
+		name = "blogs", resourcePath = "segment-individuals-blogs-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "segment_individuals_info_1.json",
+		name = "individuals", resourcePath = "segment-individuals-info-1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -154,15 +154,15 @@ public class IndividualDogTest {
 		Individual individual = individuals.get(0);
 
 		Assert.assertEquals("John Doe", individual.getName());
-		Assert.assertEquals("john@acme.com", individual.getEmailAddress());
+		Assert.assertEquals("john@acme.com", individual.getEmail());
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "segment_individuals_blogs_info.json",
+		name = "blogs", resourcePath = "segment-individuals-blogs-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "segment_individuals_info_2.json",
+		name = "individuals", resourcePath = "segment-individuals-info-2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -184,7 +184,7 @@ public class IndividualDogTest {
 		Individual individual = individuals.get(0);
 
 		Assert.assertEquals("1", individual.getId());
-		Assert.assertEquals("john@acme.com", individual.getEmailAddress());
+		Assert.assertEquals("john@acme.com", individual.getEmail());
 	}
 
 	private Set<String> _getIndividualsDemographicsFieldValues(

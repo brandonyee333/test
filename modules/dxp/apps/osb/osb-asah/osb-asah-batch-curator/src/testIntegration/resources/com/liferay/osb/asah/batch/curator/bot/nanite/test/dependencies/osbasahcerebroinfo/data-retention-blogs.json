@@ -1,0 +1,14 @@
+[
+	{
+		"id": "100",
+		"lastEventDate": "${now-400d}"
+	},
+	{
+		"id": "101",
+		"lastEventDate": "${now-200d}"
+	},
+	{
+		"id": "102",
+		"lastEventDate": "${now}"
+	}
+]

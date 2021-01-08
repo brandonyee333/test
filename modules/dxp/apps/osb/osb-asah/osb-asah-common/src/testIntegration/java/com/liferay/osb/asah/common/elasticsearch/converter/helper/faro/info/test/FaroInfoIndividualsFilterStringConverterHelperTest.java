@@ -39,7 +39,7 @@ import org.springframework.test.context.ContextConfiguration;
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @ElasticsearchIndex(
-	name = "user-sessions", resourcePath = "user_sessions.json",
+	name = "user-sessions", resourcePath = "user-sessions.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
@@ -1261,15 +1261,16 @@ public class FaroInfoIndividualsFilterStringConverterHelperTest
 	public void testSessionsFilterReferrerEqEmpty() throws Exception {
 		testFilterString(
 			"individuals", "sessions.filter(filter='context/referrer eq ''''')",
-			"346468603851271125");
+			"346468603851271125", "346468609906122549");
 	}
 
 	@Test
-	public void testSessionsFilterReferrersEqNull() throws Exception {
+	public void testSessionsFilterScreenSize() throws Exception {
 		testFilterString(
 			"individuals",
-			"sessions.filter(filter='(context/referrers eq null)')",
-			"346468609906122549");
+			"sessions.filter(filter='(context/screenHeightSize ge 974) and " +
+				"(context/screenWidthSize ge 1920)')",
+			"346468608880878498");
 	}
 
 	@Test

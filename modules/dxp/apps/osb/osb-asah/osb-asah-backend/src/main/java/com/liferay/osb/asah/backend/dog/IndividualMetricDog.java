@@ -24,15 +24,17 @@ import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 
 import java.util.Set;
 import java.util.function.BiConsumer;
+
+import javax.annotation.PostConstruct;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -81,8 +83,6 @@ public class IndividualMetricDog {
 				metricType.getFieldName()
 			).lte(
 				localDateTime.toString()
-			).timeZone(
-				searchQueryContext.getTimeZoneId()
 			));
 
 		BoolQueryBuilderUtil.filterTerm(
@@ -125,8 +125,7 @@ public class IndividualMetricDog {
 
 		Metric metric = new Metric(metricResolver.getMetricType());
 
-		LocalDate localDate = LocalDate.now(
-			ZoneId.of(searchQueryContext.getTimeZoneId()));
+		LocalDate localDate = LocalDate.now(Clock.systemUTC());
 
 		LocalDate previousLocalDate = _getPreviousLocalDate(
 			localDate, searchQueryContext.getTimeRange());
@@ -150,10 +149,17 @@ public class IndividualMetricDog {
 
 		LocalDate previousLocalDate = LocalDate.from(localDate);
 
-		return previousLocalDate.minusDays(timeRange.getDeltaDays());
+		return previousLocalDate.minusDays(timeRange.getRangeKey());
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	@PostConstruct
+	private void _init() {
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
+	}
+
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

@@ -16,7 +16,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.InterestScoreArm;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAssetDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
@@ -41,11 +40,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class InterestThresholdScoreNanite extends BaseNanite {
-
-	@Override
-	public boolean isLogRunEnabled() {
-		return true;
-	}
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -97,23 +91,11 @@ public class InterestThresholdScoreNanite extends BaseNanite {
 				return null;
 			}
 		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.regexpQuery(
-					"filter",
-					".*interests.filter\\(filter='.*score eq ''true''.*")
-			).filter(
-				QueryBuilders.termQuery("state", "READY")
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			)
+			QueryBuilders.regexpQuery(
+				"filter", ".*interests.filter\\(filter='.*score eq ''true''.*")
 		).iterate();
 
 		_faroInfoInterestDog.clearCache();
-	}
-
-	@Override
-	protected Log getLog() {
-		return _log;
 	}
 
 	private static final Log _log = LogFactory.getLog(

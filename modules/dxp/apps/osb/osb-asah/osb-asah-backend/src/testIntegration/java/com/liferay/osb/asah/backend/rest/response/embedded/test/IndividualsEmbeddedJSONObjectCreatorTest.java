@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.response.embedded.test;
 
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -27,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,12 +42,17 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class IndividualsEmbeddedJSONObjectCreatorTest {
 
+	@Before
+	public void setUp() {
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
+	}
+
 	@ElasticsearchIndex(
 		name = "accounts", resourcePath = "accounts.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -81,7 +88,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -104,7 +111,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -127,7 +134,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual_segments.json",
+		name = "individual-segments", resourcePath = "individual-segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -153,7 +160,9 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		Assert.assertEquals(2, individualSegmentsJSONArray.length());
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

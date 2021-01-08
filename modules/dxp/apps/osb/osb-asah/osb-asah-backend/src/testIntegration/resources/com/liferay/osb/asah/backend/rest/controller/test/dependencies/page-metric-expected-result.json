@@ -1,0 +1,51 @@
+{
+	"data": {
+		"page": {
+			"bounceRateMetric": {
+				"value": 0.0
+			},
+			"directAccessMetric": {
+				"value": 0.0
+			},
+			"engagementMetric": {
+				"value": 0.0
+			},
+			"indirectAccessMetric": {
+				"value": 2.0
+			},
+			"viewsMetric": {
+				"browser": [
+					{
+						"metrics": [
+						],
+						"value": 1.0,
+						"valueKey": "Chrome"
+					},
+					{
+						"metrics": [
+						],
+						"value": 1.0,
+						"valueKey": "Safari"
+					}
+				],
+				"device": [
+					{
+						"metrics": [
+							{
+								"value": 1.0,
+								"valueKey": "Windows"
+							},
+							{
+								"value": 1.0,
+								"valueKey": "macOS"
+							}
+						],
+						"value": 2.0,
+						"valueKey": "Desktop"
+					}
+				],
+				"value": 2.0
+			}
+		}
+	}
+}

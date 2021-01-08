@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.backend.ext.seo.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -27,11 +24,7 @@ public class TrafficSource {
 	public TrafficSource() {
 	}
 
-	public TrafficSource(
-		List<CountrySearchKeywords> countrySearchKeywordsList, String name,
-		long trafficAmount, double trafficShare) {
-
-		_countrySearchKeywordsList = countrySearchKeywordsList;
+	public TrafficSource(String name, int trafficAmount, double trafficShare) {
 		_name = name;
 		_trafficAmount = trafficAmount;
 		_trafficShare = trafficShare;
@@ -49,10 +42,7 @@ public class TrafficSource {
 
 		TrafficSource trafficSource = (TrafficSource)obj;
 
-		if (Objects.equals(
-				_countrySearchKeywordsList,
-				trafficSource._countrySearchKeywordsList) &&
-			Objects.equals(_name, trafficSource._name) &&
+		if (Objects.equals(_name, trafficSource._name) &&
 			Objects.equals(_trafficAmount, trafficSource._trafficAmount) &&
 			Objects.equals(_trafficShare, trafficSource._trafficShare)) {
 
@@ -62,16 +52,11 @@ public class TrafficSource {
 		return false;
 	}
 
-	@JsonProperty("countryKeywords")
-	public List<CountrySearchKeywords> getCountrySearchKeywordsList() {
-		return _countrySearchKeywordsList;
-	}
-
 	public String getName() {
 		return _name;
 	}
 
-	public long getTrafficAmount() {
+	public int getTrafficAmount() {
 		return _trafficAmount;
 	}
 
@@ -81,21 +66,14 @@ public class TrafficSource {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(
-			_countrySearchKeywordsList, _name, _trafficAmount, _trafficShare);
-	}
-
-	public void setCountrySearchKeywordsList(
-		List<CountrySearchKeywords> countrySearchKeywordsList) {
-
-		_countrySearchKeywordsList = countrySearchKeywordsList;
+		return Objects.hash(_name, _trafficAmount, _trafficShare);
 	}
 
 	public void setName(String name) {
 		_name = name;
 	}
 
-	public void setTrafficAmount(long trafficAmount) {
+	public void setTrafficAmount(int trafficAmount) {
 		_trafficAmount = trafficAmount;
 	}
 
@@ -103,9 +81,8 @@ public class TrafficSource {
 		_trafficShare = trafficShare;
 	}
 
-	private List<CountrySearchKeywords> _countrySearchKeywordsList;
 	private String _name;
-	private long _trafficAmount;
+	private int _trafficAmount;
 	private double _trafficShare;
 
 }

@@ -43,11 +43,6 @@ public class AssetEngagementScoresNanite extends BaseEngagementScoresNanite {
 	public static final int DAYS = 10;
 
 	@Override
-	public boolean isLogRunEnabled() {
-		return true;
-	}
-
-	@Override
 	public void run(String dayDateString) throws Exception {
 		run(Collections.emptyMap(), "assets", dayDateString, null);
 	}
@@ -83,7 +78,7 @@ public class AssetEngagementScoresNanite extends BaseEngagementScoresNanite {
 			assetJSONObject, dayDateString);
 		double viewScore = _computeViewScore(assetJSONObject, dayDateString);
 
-		return ((4 * interactionScore) + viewScore) / 5;
+		return (4 * interactionScore + viewScore) / 5;
 	}
 
 	private double _computeInteractionScore(

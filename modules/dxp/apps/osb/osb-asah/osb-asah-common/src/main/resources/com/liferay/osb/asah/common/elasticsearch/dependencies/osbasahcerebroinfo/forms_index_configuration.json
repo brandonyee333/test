@@ -14,9 +14,6 @@
 				"browserName": {
 					"type": "keyword"
 				},
-				"canonicalUrls": {
-					"type": "keyword"
-				},
 				"channelId": {
 					"type": "keyword"
 				},
@@ -126,9 +123,6 @@
 				"submissionsTime": {
 					"type": "long"
 				},
-				"tempUrls": {
-					"type": "keyword"
-				},
 				"title": {
 					"fields": {
 						"search": {
@@ -161,8 +155,8 @@
 			"analyzer": {
 				"folding_analyzer": {
 					"filter": [
-						"asciifolding",
-						"lowercase"
+						"lowercase",
+						"asciifolding"
 					],
 					"tokenizer": "standard",
 					"type": "custom"

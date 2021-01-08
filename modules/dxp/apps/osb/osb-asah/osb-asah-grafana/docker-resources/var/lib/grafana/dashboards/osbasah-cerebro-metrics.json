@@ -1,0 +1,868 @@
+{
+	"__inputs": [
+		{
+			"description": "",
+			"label": "osbasahprometheus",
+			"name": "osbasahprometheus",
+			"pluginId": "prometheus",
+			"pluginName": "Prometheus",
+			"type": "datasource"
+		}
+	],
+	"__requires": [
+		{
+			"id": "grafana",
+			"name": "Grafana",
+			"type": "grafana",
+			"version": "5.3.0"
+		},
+		{
+			"id": "graph",
+			"name": "Graph",
+			"type": "panel",
+			"version": "5.0.0"
+		},
+		{
+			"id": "prometheus",
+			"name": "Prometheus",
+			"type": "datasource",
+			"version": "5.0.0"
+		},
+		{
+			"id": "singlestat",
+			"name": "Singlestat",
+			"type": "panel",
+			"version": "5.0.0"
+		}
+	],
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": "-- Grafana --",
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"gnetId": null,
+	"graphTooltip": 0,
+	"id": null,
+	"links": [
+	],
+	"panels": [
+		{
+			"cacheTimeout": null,
+			"colorBackground": false,
+			"colorValue": false,
+			"colors": [
+				"#299c46",
+				"rgba(237, 129, 40, 0.89)",
+				"#d44a3a"
+			],
+			"datasource": "osbasahprometheus",
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 5,
+				"w": 8,
+				"x": 0,
+				"y": 0
+			},
+			"id": 2,
+			"interval": null,
+			"links": [
+			],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "",
+			"postfixFontSize": "50%",
+			"prefix": "",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "increase(publisher_event_request_seconds_count[5m])",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 1,
+					"legendFormat": "a",
+					"refId": "A"
+				}
+			],
+			"thresholds": "",
+			"title": "publisher - analytics events message (last 5m)",
+			"transparent": false,
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "avg"
+		},
+		{
+			"cacheTimeout": null,
+			"colorBackground": false,
+			"colorValue": false,
+			"colors": [
+				"#299c46",
+				"rgba(237, 129, 40, 0.89)",
+				"#d44a3a"
+			],
+			"datasource": "osbasahprometheus",
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 5,
+				"w": 8,
+				"x": 8,
+				"y": 0
+			},
+			"id": 10,
+			"interval": null,
+			"links": [
+			],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "",
+			"postfixFontSize": "50%",
+			"prefix": "",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "rate(publisher_event_request_seconds_count[5m]) ",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 1,
+					"legendFormat": "a",
+					"refId": "A"
+				}
+			],
+			"thresholds": "",
+			"title": "publisher - analytics events throughput (req /sec last 5m)",
+			"transparent": false,
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "avg"
+		},
+		{
+			"cacheTimeout": null,
+			"colorBackground": false,
+			"colorValue": false,
+			"colors": [
+				"#299c46",
+				"rgba(237, 129, 40, 0.89)",
+				"#d44a3a"
+			],
+			"datasource": "osbasahprometheus",
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 5,
+				"w": 8,
+				"x": 16,
+				"y": 0
+			},
+			"id": 7,
+			"interval": null,
+			"links": [
+			],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "",
+			"postfixFontSize": "50%",
+			"prefix": "",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "extractor_analytics_events_message_queue_size",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 1,
+					"legendFormat": "a",
+					"refId": "A"
+				}
+			],
+			"thresholds": "",
+			"title": "extractor - analytics events message queue",
+			"transparent": false,
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "avg"
+		},
+		{
+			"cacheTimeout": null,
+			"colorBackground": false,
+			"colorValue": false,
+			"colors": [
+				"#299c46",
+				"rgba(237, 129, 40, 0.89)",
+				"#d44a3a"
+			],
+			"datasource": "osbasahprometheus",
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 5,
+				"w": 8,
+				"x": 0,
+				"y": 5
+			},
+			"id": 9,
+			"interval": null,
+			"links": [
+			],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "",
+			"postfixFontSize": "50%",
+			"prefix": "",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "increase(publisher_identity_request_seconds_count[5m])",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 1,
+					"legendFormat": "a",
+					"refId": "A"
+				}
+			],
+			"thresholds": "",
+			"title": "publisher - identity requests (last 5m)",
+			"transparent": false,
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "avg"
+		},
+		{
+			"cacheTimeout": null,
+			"colorBackground": false,
+			"colorValue": false,
+			"colors": [
+				"#299c46",
+				"rgba(237, 129, 40, 0.89)",
+				"#d44a3a"
+			],
+			"datasource": "osbasahprometheus",
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 5,
+				"w": 8,
+				"x": 8,
+				"y": 5
+			},
+			"id": 11,
+			"interval": null,
+			"links": [
+			],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "",
+			"postfixFontSize": "50%",
+			"prefix": "",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "rate(publisher_identity_request_seconds_count[5m]) ",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 1,
+					"legendFormat": "a",
+					"refId": "A"
+				}
+			],
+			"thresholds": "",
+			"title": "publisher - identity throughput (req/sec last 5m)",
+			"transparent": false,
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "avg"
+		},
+		{
+			"cacheTimeout": null,
+			"colorBackground": false,
+			"colorValue": false,
+			"colors": [
+				"#299c46",
+				"rgba(237, 129, 40, 0.89)",
+				"#d44a3a"
+			],
+			"datasource": "osbasahprometheus",
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 5,
+				"w": 8,
+				"x": 16,
+				"y": 5
+			},
+			"id": 12,
+			"interval": null,
+			"links": [
+			],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "",
+			"postfixFontSize": "50%",
+			"prefix": "",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "rate(publisher_identity_request_seconds_count[5m]) ",
+					"format": "time_series",
+					"hide": false,
+					"intervalFactor": 1,
+					"legendFormat": "a",
+					"refId": "A"
+				}
+			],
+			"thresholds": "",
+			"title": "publisher - identity throughput (req/sec last 5m)",
+			"transparent": false,
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "avg"
+		},
+		{
+			"aliasColors": {
+			},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": "osbasahprometheus",
+			"fill": 1,
+			"gridPos": {
+				"h": 12,
+				"w": 12,
+				"x": 0,
+				"y": 10
+			},
+			"id": 6,
+			"legend": {
+				"avg": true,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": true
+			},
+			"lines": true,
+			"linewidth": 1,
+			"links": [
+			],
+			"nullPointMode": "null",
+			"percentage": false,
+			"pointradius": 5,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [
+			],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "curator_analytics_events_queue_size",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 1,
+					"legendFormat": "{{nanite}}",
+					"refId": "A"
+				}
+			],
+			"thresholds": [
+			],
+			"timeFrom": null,
+			"timeShift": null,
+			"title": "Analytics Events Queue Size (Nanites)",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": [
+				]
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"aliasColors": {
+			},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": "osbasahprometheus",
+			"fill": 1,
+			"gridPos": {
+				"h": 12,
+				"w": 12,
+				"x": 12,
+				"y": 10
+			},
+			"id": 4,
+			"legend": {
+				"alignAsTable": false,
+				"avg": true,
+				"current": false,
+				"max": false,
+				"min": false,
+				"rightSide": false,
+				"show": true,
+				"total": false,
+				"values": true
+			},
+			"lines": true,
+			"linewidth": 1,
+			"links": [
+			],
+			"nullPointMode": "null",
+			"percentage": false,
+			"pointradius": 5,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [
+			],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "increase(curator_analytics_events_count[5m])",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 1,
+					"legendFormat": "{{nanite}}",
+					"refId": "A"
+				}
+			],
+			"thresholds": [
+			],
+			"timeFrom": null,
+			"timeShift": null,
+			"title": "Stream Curator Events Processed",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": [
+				]
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"aliasColors": {
+			},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": "osbasahprometheus",
+			"fill": 1,
+			"gridPos": {
+				"h": 9,
+				"w": 12,
+				"x": 6,
+				"y": 22
+			},
+			"id": 14,
+			"legend": {
+				"alignAsTable": false,
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"links": [
+			],
+			"nullPointMode": "null",
+			"percentage": false,
+			"pointradius": 5,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [
+			],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "sum by(operation) (rate(backend_graphql_request_seconds[5m]))",
+					"format": "time_series",
+					"intervalFactor": 1,
+					"legendFormat": "{{operation}}",
+					"refId": "A"
+				}
+			],
+			"thresholds": [
+			],
+			"timeFrom": null,
+			"timeShift": null,
+			"title": "backend (graphql) - throughput (req/sec last 5m)",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": [
+				]
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		}
+	],
+	"refresh": false,
+	"schemaVersion": 16,
+	"style": "dark",
+	"tags": [
+	],
+	"templating": {
+		"list": [
+		]
+	},
+	"time": {
+		"from": "now-1h",
+		"to": "now"
+	},
+	"timepicker": {
+		"refresh_intervals": [
+			"5s"
+		],
+		"time_options": [
+			"5m",
+			"15m",
+			"1h",
+			"6h",
+			"12h",
+			"24h",
+			"2d",
+			"7d",
+			"30d"
+		]
+	},
+	"timezone": "browser",
+	"title": "osbasah-cerebro-metrics",
+	"uid": "uKQpPfPmk",
+	"version": 1
+}

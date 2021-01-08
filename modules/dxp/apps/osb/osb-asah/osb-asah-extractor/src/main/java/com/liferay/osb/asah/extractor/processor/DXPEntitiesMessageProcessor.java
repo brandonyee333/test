@@ -17,29 +17,25 @@ package com.liferay.osb.asah.extractor.processor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOrganizationDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
+import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import io.prometheus.client.Counter;
+import io.prometheus.client.Gauge;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -64,27 +60,24 @@ public class DXPEntitiesMessageProcessor {
 
 	public void processQueuedMessages() {
 		while (true) {
-			List<String> messages = _messageSubscriber.pullMessages(50);
+			int messagesCount = _queueHttp.getMessagesCount(
+				QueueHttp.QUEUE_NAME_DXP_ENTITIES);
 
-			if (messages.isEmpty()) {
+			_dxpEntitiesMessageQueueGauge.set(messagesCount);
+
+			if (messagesCount <= 0) {
 				break;
 			}
 
-			for (String message : messages) {
-				JSONObject jsonObject = new JSONObject(message);
+			JSONObject responseJSONObject = new JSONObject(
+				_queueHttp.getMessages(QueueHttp.QUEUE_NAME_DXP_ENTITIES));
 
-				try {
-					ProjectIdThreadLocal.setProjectId(
-						jsonObject.getString("projectId"));
+			JSONArray messagesJSONArray = responseJSONObject.getJSONArray(
+				"messages");
 
-					_processMessage(jsonObject);
-				}
-				finally {
-					ProjectIdThreadLocal.remove();
-				}
-			}
+			_processMessages(messagesJSONArray);
 
-			_dxpEntitiesCounter.inc(messages.size());
+			_dxpEntitiesCounter.inc(messagesJSONArray.length());
 		}
 	}
 
@@ -175,6 +168,13 @@ public class DXPEntitiesMessageProcessor {
 		}
 
 		return null;
+	}
+
+	@PostConstruct
+	private void _init() {
+		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	private void _processAssociationObject(
@@ -283,25 +283,34 @@ public class DXPEntitiesMessageProcessor {
 			_getOwnerType(objectJSONObject.getString("className")));
 	}
 
-	private void _processMessage(JSONObject messageJSONObject) {
-		JSONObject contextJSONObject = messageJSONObject.getJSONObject(
-			"context");
-		JSONObject objectJSONObject = messageJSONObject.getJSONObject("object");
+	private void _processMessages(JSONArray messagesJSONArray) {
+		for (int i = 0; i < messagesJSONArray.length(); i++) {
+			JSONObject messagesJSONObject = new JSONObject(
+				String.valueOf(messagesJSONArray.get(i)));
 
-		DXPEntityType dxpEntityType = DXPEntityType.of(
-			contextJSONObject.getString("type"));
+			JSONObject messageJSONObject = new JSONObject(
+				String.valueOf(messagesJSONObject.getString("message")));
 
-		if ((dxpEntityType == null) ||
-			(dxpEntityType.isUser() &&
-			 _faroInfoSuppressionDog.isSuppressed(
-				 objectJSONObject.optString("emailAddress"), null))) {
+			JSONObject contextJSONObject = messageJSONObject.getJSONObject(
+				"context");
+			JSONObject objectJSONObject = messageJSONObject.getJSONObject(
+				"object");
 
-			return;
+			DXPEntityType dxpEntityType = DXPEntityType.of(
+				contextJSONObject.getString("type"));
+
+			if ((dxpEntityType == null) ||
+				(dxpEntityType.isUser() &&
+				 _faroInfoSuppressionDog.isSuppressed(
+					 objectJSONObject.optString("emailAddress"), null))) {
+
+				return;
+			}
+
+			_processObject(
+				contextJSONObject.getString("action"), dxpEntityType,
+				objectJSONObject);
 		}
-
-		_processObject(
-			contextJSONObject.getString("action"), dxpEntityType,
-			objectJSONObject);
 	}
 
 	private void _processObject(
@@ -318,12 +327,6 @@ public class DXPEntitiesMessageProcessor {
 
 		if (dxpEntityType.isExpandoColumn()) {
 			_processExpandoColumnObject(action, objectJSONObject);
-
-			return;
-		}
-
-		if (dxpEntityType.isUserField()) {
-			_processUserFieldObject(action, objectJSONObject);
 
 			return;
 		}
@@ -372,15 +375,16 @@ public class DXPEntitiesMessageProcessor {
 			return;
 		}
 
-		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(
-				objectJSONObject.getString("osbAsahDataSourceId"));
+		JSONObject dataSourceJSONObject = _faroInfoElasticsearchInvoker.fetch(
+			"data-sources",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery(
+					"id", objectJSONObject.getString("osbAsahDataSourceId"))
+			).mustNot(
+				QueryBuilders.termQuery("state", "IN_PROGRESS_DELETING")
+			));
 
-		if ((dataSourceJSONObject == null) ||
-			Objects.equals(
-				dataSourceJSONObject.getString("state"),
-				"IN_PROGRESS_DELETING")) {
-
+		if (dataSourceJSONObject == null) {
 			return;
 		}
 
@@ -434,23 +438,6 @@ public class DXPEntitiesMessageProcessor {
 		}
 	}
 
-	private void _processUserFieldObject(
-		String action, JSONObject objectJSONObject) {
-
-		if (!action.equals("add")) {
-			return;
-		}
-
-		String dataType = objectJSONObject.getString("dataType");
-		String name = objectJSONObject.getString("name");
-
-		_faroInfoFieldMappingDog.addFieldMapping(
-			"demographics", name,
-			objectJSONObject.getString("osbAsahDataSourceId"), null,
-			_defaultLiferayFieldMappingMaps.getOrDefault(name, name),
-			_getFieldType(dataType, dataType), "individual");
-	}
-
 	private void _processUserObject(
 		JSONObject dataSourceJSONObject, JSONObject objectJSONObject) {
 
@@ -463,8 +450,7 @@ public class DXPEntitiesMessageProcessor {
 		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			"individuals",
 			QueryBuilders.termQuery(
-				"emailAddressHashed",
-				DigestUtils.sha256Hex(StringUtils.lowerCase(emailAddress))));
+				"emailAddressHashed", DigestUtils.sha256Hex(emailAddress)));
 
 		try {
 			if (individualJSONObject == null) {
@@ -488,28 +474,18 @@ public class DXPEntitiesMessageProcessor {
 	private static final Log _log = LogFactory.getLog(
 		DXPEntitiesMessageProcessor.class);
 
-	private static final Map<String, String> _defaultLiferayFieldMappingMaps =
-		new HashMap<String, String>() {
-			{
-				put("addresses", "address");
-				put("birthday", "birthDate");
-				put("emailAddress", "email");
-				put("firstName", "givenName");
-				put("lastName", "familyName");
-				put("middleName", "additionalName");
-				put("phones", "telephone");
-			}
-		};
 	private static final Counter _dxpEntitiesCounter = PrometheusUtil.counter(
 		"extractor_dxp_entities_count", "The number of extracted DXP entities");
+	private static final Gauge _dxpEntitiesMessageQueueGauge =
+		PrometheusUtil.gauge(
+			"extractor_dxp_entities_message_queue_size",
+			"The number of DXP entities messages queued to be extracted");
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
@@ -530,7 +506,7 @@ public class DXPEntitiesMessageProcessor {
 	@Autowired
 	private FaroInfoSuppressionDog _faroInfoSuppressionDog;
 
-	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_MESSAGE)
-	private MessageSubscriber _messageSubscriber;
+	@Autowired
+	private QueueHttp _queueHttp;
 
 }

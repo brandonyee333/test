@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -35,13 +36,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Leslie Wong
  */
+@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
+@Import(CerebroQueueHttpTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 
 	@Test
@@ -125,7 +128,7 @@ public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 			individualJSONObject.getJSONArray("individualSegmentIds");
 
 		for (int i = 0; i < individualSegmentIdsJSONArray.length(); i++) {
-			Assert.assertNotSame(
+			Assert.assertNotEquals(
 				"Individual segment ID should be removed from individual on " +
 					"individual segment deletion",
 				individualSegmentId,

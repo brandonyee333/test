@@ -39,7 +39,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class UserDogTest {
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "user_journal_info.json",
+		name = "journals", resourcePath = "user-journal-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -47,16 +47,11 @@ public class UserDogTest {
 		long anonymousUsersCount = _userDog.getAnonymousUsersCount(
 			JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(2, anonymousUsersCount);
+		Assert.assertEquals(1, anonymousUsersCount);
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals",
-		resourcePath = "user_journal_individuals_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "journals", resourcePath = "user_journal_info.json",
+		name = "journals", resourcePath = "user-journal-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -64,16 +59,11 @@ public class UserDogTest {
 		long knownUsersCount = _userDog.getKnownUsersCount(
 			JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(4, knownUsersCount);
+		Assert.assertEquals(3, knownUsersCount);
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals",
-		resourcePath = "user_journal_individuals_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "journals", resourcePath = "user_journal_info.json",
+		name = "journals", resourcePath = "user-journal-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -82,16 +72,11 @@ public class UserDogTest {
 			_userDog.getNonsegmentedKnownUsersCount(
 				JournalMetricType.VIEWS, _searchQueryContext);
 
-		Assert.assertEquals(2, nonsegmentedKnownUsersCount);
+		Assert.assertEquals(1, nonsegmentedKnownUsersCount);
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals",
-		resourcePath = "user_journal_individuals_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "journals", resourcePath = "user_journal_info.json",
+		name = "journals", resourcePath = "user-journal-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

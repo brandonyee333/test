@@ -8,6 +8,7 @@
 		"endTime": "2019-04-06T22:20:10.843Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
+			"page": "/web/guest/home",
 			"pageViewActivityId": "abcb521f-b35d-451d-b77f-e402ecb5cabf"
 		},
 		"groupId": "348853726639670821",
@@ -32,6 +33,7 @@
 		"endTime": "2019-03-06T22:20:10.843Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
+			"page": "/web/guest/home",
 			"pageViewActivityId": "htfb521f-87fg-34fe-czsd-wertycb5cfer"
 		},
 		"groupId": "348853726639670821",
@@ -56,6 +58,7 @@
 		"endTime": "2019-04-08T22:20:10.843Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
+			"page": "/web/guest/home",
 			"pageViewActivityId": "arwer521f-b3cx-551w-s45g-e402werrsdf"
 		},
 		"groupId": "348853754664453342",
@@ -80,6 +83,7 @@
 		"endTime": "2019-03-29T06:21:36.170Z",
 		"eventId": "pageViewed",
 		"eventProperties": {
+			"page": "/web/guest/home",
 			"pageViewActivityId": "7c6b7277-fa7c-44d7-b590-3022daee3dc6"
 		},
 		"groupId": "348853881765296149",
@@ -104,6 +108,7 @@
 		"endTime": "${today-1dT01:00:00.000Z}",
 		"eventId": "pageViewed",
 		"eventProperties": {
+			"page": "/web/guest/home",
 			"pageViewActivityId": "250a5ef9-bbf8-4196-bb13-4a773607bd00"
 		},
 		"groupId": "348853726639670800",
@@ -128,6 +133,7 @@
 		"endTime": "${today-1dT00:00:00.000Z}",
 		"eventId": "pageViewed",
 		"eventProperties": {
+			"page": "/web/guest/home",
 			"pageViewActivityId": "250a5ef9-bbf8-4196-bb13-4a773607bd01"
 		},
 		"groupId": "348853726639670801",
@@ -152,6 +158,7 @@
 		"endTime": "${today-10dT00:00:00.000Z}",
 		"eventId": "pageViewed",
 		"eventProperties": {
+			"page": "/web/guest/home",
 			"pageViewActivityId": "250a5ef9-bbf8-4196-bb13-4a773607bd02"
 		},
 		"groupId": "348853726639670802",
@@ -176,6 +183,7 @@
 		"endTime": "${today-29dT00:00:00.000Z}",
 		"eventId": "pageViewed",
 		"eventProperties": {
+			"page": "/web/guest/home",
 			"pageViewActivityId": "250a5ef9-bbf8-4196-bb13-4a773607bd03"
 		},
 		"groupId": "348853726639670803",
@@ -200,6 +208,7 @@
 		"endTime": "${today-40dT00:00:00.000Z}",
 		"eventId": "pageViewed",
 		"eventProperties": {
+			"page": "/web/guest/home",
 			"pageViewActivityId": "250a5ef9-bbf8-4196-bb13-4a773607bd04"
 		},
 		"groupId": "348853726639670804",
@@ -224,6 +233,7 @@
 		"endTime": "2019-04-12T22:05:34.623Z",
 		"eventId": "formSubmitted",
 		"eventProperties": {
+			"formId": "42964",
 			"pageViewActivityId": "c48ac2a5-4016-46aa-9abb-5b5eada3a565"
 		},
 		"groupId": "349395378906863333",

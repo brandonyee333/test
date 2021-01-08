@@ -15,13 +15,9 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.function.UnsafeFunction;
-import com.liferay.osb.asah.common.messaging.MessageSubscriber;
-import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 
-import java.util.Collections;
+import java.util.function.Consumer;
 
 import org.elasticsearch.index.query.QueryBuilder;
 
@@ -76,54 +72,25 @@ public abstract class BaseNaniteTestCase {
 		ReflectionTestUtils.setField(
 			nanite, "_cerebroInfoElasticsearchInvoker", elasticsearchInvoker);
 		ReflectionTestUtils.setField(
+			nanite, "_cerebroRawElasticsearchInvoker", elasticsearchInvoker);
+		ReflectionTestUtils.setField(
 			nanite, "_faroInfoElasticsearchInvoker", elasticsearchInvoker);
+
+		String fileName = getJSONFileName(clazz);
+
+		Mockito.when(
+			elasticsearchInvoker.get(
+				Mockito.eq("analytics-events"), Mockito.any(Consumer.class))
+		).thenReturn(
+			ResourceUtil.readResourceToString(fileName + "raw.json", nanite),
+			"[]"
+		);
 
 		Mockito.when(
 			elasticsearchInvoker.get(
 				Mockito.eq("individuals"), Mockito.any(QueryBuilder.class))
 		).thenReturn(
 			new JSONArray()
-		);
-
-		if (nanite instanceof BaseNanite) {
-			FaroInfoIndividualDog faroInfoIndividualDog = Mockito.mock(
-				FaroInfoIndividualDog.class);
-
-			ReflectionTestUtils.setField(
-				nanite, "_faroInfoIndividualDog",
-				Mockito.mock(FaroInfoIndividualDog.class));
-
-			Mockito.when(
-				elasticsearchInvoker.exists(
-					Mockito.eq("individuals"), Mockito.isNull(String.class))
-			).thenReturn(
-				true
-			);
-
-			Mockito.when(
-				faroInfoIndividualDog.getIndividualJSONObject(
-					Mockito.anyString(), Mockito.anyString())
-			).thenReturn(
-				null
-			);
-		}
-
-		String fileName = getJSONFileName(clazz);
-
-		MessageSubscriber messageSubscriber = Mockito.mock(
-			MessageSubscriber.class);
-
-		ReflectionTestUtils.setField(
-			nanite, "_messageSubscriber", messageSubscriber);
-
-		Mockito.when(
-			messageSubscriber.pullMessages(
-				Mockito.anyInt(), Mockito.any(UnsafeFunction.class))
-		).thenReturn(
-			AnalyticsEvent.toAnalyticsEvents(
-				ResourceUtil.readResourceToString(
-					fileName + "raw.json", nanite)),
-			Collections.emptyList()
 		);
 
 		prepare(elasticsearchInvoker, nanite, fileName);

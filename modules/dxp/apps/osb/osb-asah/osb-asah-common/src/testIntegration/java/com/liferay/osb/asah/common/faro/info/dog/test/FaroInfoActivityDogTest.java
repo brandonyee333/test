@@ -40,22 +40,22 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddActivityTriggersAddsOSBAsahTask() throws Exception {
-		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
+		JSONObject dataSourceJSONObject = elasticsearchInvoker.add(
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
 		String dataSourceId = dataSourceJSONObject.getString("id");
 
-		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.add(
+		JSONObject individualJSONObject = elasticsearchInvoker.add(
 			"individuals",
 			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject));
 
-		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.add(
+		JSONObject activityGroupJSONObject = elasticsearchInvoker.add(
 			"activity-groups",
 			FaroInfoTestUtil.buildActivityGroupJSONObject(
 				dataSourceId, individualJSONObject));
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
+		JSONObject assetJSONObject = elasticsearchInvoker.add(
 			"assets", FaroInfoTestUtil.buildPageAssetJSONObject(dataSourceId));
 
 		String assetId = assetJSONObject.getString("id");
@@ -67,7 +67,7 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 		individualSegmentJSONObject.put(
 			"referencedAssetIds", JSONUtil.put(assetId));
 
-		faroInfoElasticsearchInvoker.add(
+		elasticsearchInvoker.add(
 			"individual-segments",
 			individualSegmentJSONObject.put(
 				"referencedAssetIds", JSONUtil.put(assetId)));
@@ -75,10 +75,10 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, assetJSONObject, "pageViewed",
-				new String[0]));
+				new String[] {"pageLoadTime", "1000"}));
 
 		Assert.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
+			elasticsearchInvoker.exists(
 				"OSBAsahTasks",
 				QueryBuilders.termQuery(
 					"className", "UpdateDynamicMembershipsNanite")));

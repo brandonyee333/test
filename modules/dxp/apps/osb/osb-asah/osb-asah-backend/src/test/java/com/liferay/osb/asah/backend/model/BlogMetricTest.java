@@ -39,8 +39,7 @@ public class BlogMetricTest extends BaseBeanTestCase<BlogMetric> {
 					put(Metric.class, () -> new Metric(null));
 				}
 			},
-			Arrays.asList(
-				"getAssetType", "getAvailableMetrics", "getDefaultMetric"));
+			Arrays.asList("getAssetType", "getDefaultMetric"));
 	}
 
 	@Override

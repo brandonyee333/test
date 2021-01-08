@@ -1,0 +1,40 @@
+[
+	{
+		"about": null,
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"credentials": {
+			"oAuthAuthorizationURL": null,
+			"oAuthClientId": "clientId",
+			"oAuthClientSecret": "clientSecret",
+			"oAuthOwner": {
+				"emailAddress": "test@liferay.com",
+				"name": "Liferay Sales"
+			},
+			"oAuthRefreshToken": "refreshToken",
+			"type": "OAuth 2 Authentication"
+		},
+		"dateCreated": "2019-03-24T20:33:02.869Z",
+		"dateModified": "2019-03-24T20:33:02.869Z",
+		"description": null,
+		"id": "342837044336786766",
+		"lastConfigChange": null,
+		"name": "Salesforce",
+		"provider": {
+			"accountsConfiguration": {
+				"enableAllAccounts": true
+			},
+			"contactsConfiguration": {
+				"enableAllContacts": true,
+				"enableAllLeads": true
+			},
+			"type": "SALESFORCE"
+		},
+		"state": "CREDENTIALS_VALID",
+		"status": "ACTIVE",
+		"subjectOf": null,
+		"url": "https://test.salesforce.com"
+	}
+]

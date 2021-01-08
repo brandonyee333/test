@@ -1,94 +1,149 @@
+import com.jetbrains.python.envs.PythonEnvsPlugin
+
 import com.liferay.gradle.util.FileUtil
 
-import com.pswidersk.gradle.python.PythonPlugin
-import com.pswidersk.gradle.python.VenvTask
+import org.apache.tools.ant.taskdefs.condition.Os
+
+buildscript {
+	dependencies {
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.defaults", version: "latest.release"
+		classpath group: "gradle.plugin.com.jetbrains.python", name: "gradle-python-envs", version: "0.0.30"
+	}
+
+	repositories {
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
+	}
+}
 
 configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
-	apply plugin: "com.liferay.root.defaults.plugin"
-	apply plugin: PythonPlugin
+	apply plugin: PythonEnvsPlugin
 
-	pythonPlugin {
-		minicondaVersion.set("py37_4.9.2")
-		pythonVersion.set("3.7.9")
-	}
+	task formatSourcePython()
+	task installBootstrapEnvDependencies()
+	task installProjectEnvDependencies()
+	task packagePython()
 
-	task installPackageDependencies(type: VenvTask)
-	task installProjectEnvDependencies(type: VenvTask)
-	task installTestEnvDependencies(type: VenvTask)
-	task packagePython(type: VenvTask)
-	task testPython(type: VenvTask)
-	task zipPython(type: VenvTask)
-
+	def bootstrapEnvName = "Miniconda3"
 	def pythonSource = "src/main/python"
-	def pythonTempDir = "$buildDir/python-temp"
-	def pythonTestSource = "src/test/python"
 
-	installPackageDependencies {
-		args = ["install", "--isolated", "-r", "$projectDir/$pythonSource/requirements-package.txt", "--target", pythonTempDir]
-		venvExec = "pip"
+	envs {
+		bootstrapDirectory = new File(projectDir, '.bootstrap')
+		envsDirectory = new File(buildDir, '.envs')
+
+		conda bootstrapEnvName, "Miniconda3-py38_4.8.2", "64"
+		condaenv project.name, "3.8", "Miniconda3"
 	}
 
-	installProjectEnvDependencies {
-		args = ["install", "--isolated", "-r", "$projectDir/$pythonSource/requirements.txt"]
-		venvExec = "pip"
-	}
-
-	installTestEnvDependencies {
-		args = ["install", "--isolated", "-r", "$projectDir/$pythonTestSource/requirements.txt"]
-		venvExec = "pip"
-	}
-
-	packagePython {
-		dependsOn installPackageDependencies
-		dependsOn installProjectEnvDependencies
-
-		finalizedBy zipPython
+	formatSourcePython {
+		def bootstrapEnvDir = "$project.envs.bootstrapDirectory/$bootstrapEnvName"
 
 		doLast {
-			copy {
-				exclude "requirements-package.txt"
-				from pythonSource
-				into pythonTempDir
-			}
-
-			def buildLibs = new File("$buildDir/libs")
-
-			if (!buildLibs.exists()) {
-				buildLibs.mkdirs()
+			exec {
+				commandLine _executablePath(bootstrapEnvDir, "python"), "-m", "yapf", "-i", "--recursive", pythonSource
 			}
 		}
 	}
 
-	testPython {
-		dependsOn installProjectEnvDependencies
-		dependsOn installTestEnvDependencies
+	installBootstrapEnvDependencies {
+		def bootstrapEnvDir = "$project.envs.bootstrapDirectory/$bootstrapEnvName"
 
-		args = ["$projectDir/$pythonTestSource/", "--capture=no", "--disable-warnings", "--suppress-no-test-exit-code"]
-		environment = ["PYTHONPATH": file("src/main")]
-		venvExec = "pytest"
-		workingDir = file("src/test")
+		doLast {
+			if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+				copy {
+					from file("$bootstrapEnvDir/Library/bin/libcrypto-1_1-x64.dll"), file("$bootstrapEnvDir/Library/bin/libssl-1_1-x64.dll")
+					into file("$bootstrapEnvDir/DLLs")
+				}
+			}
+
+			exec {
+				commandLine _executablePath(bootstrapEnvDir, "pip"), "install", "yapf"
+			}
+		}
 	}
 
-	zipPython {
-		args = ["-m", "zipapp", pythonTempDir, "-o", "$buildDir/libs/${project.name}.zip"]
-		venvExec = "python"
+	installProjectEnvDependencies {
+		def projectEnvDir = "$project.envs.envsDirectory/$project.name"
+
+		doLast {
+			if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+				copy {
+					from file("$projectEnvDir/Library/bin/libcrypto-1_1-x64.dll"), file("$projectEnvDir/Library/bin/libssl-1_1-x64.dll")
+					into file("$projectEnvDir/DLLs")
+				}
+			}
+
+			exec {
+				commandLine _executablePath(projectEnvDir, "pip"), "install", "-r", "$projectDir/$pythonSource/requirements.txt"
+			}
+		}
+	}
+
+	packagePython {
+		def buildLibs = new File("$buildDir/libs")
+		def pythonEnvDir = "$buildDir/.envs/$project.name"
+		def pythonTempDir = "$buildDir/python-temp"
 
 		doLast {
 			copy {
-				from pythonSource + "/__main__.py"
-				into "$buildDir/libs"
-				rename '(.*)__main__.py', '$1osb-asah-spark-driver.py'
+				from pythonSource
+				into pythonTempDir
+				exclude "requirements-package.txt"
+			}
+
+			if (!buildLibs.exists()) {
+				buildLibs.mkdirs()
+			}
+
+			exec {
+				commandLine _executablePath(pythonEnvDir, "pip"), "install", "-r", "$projectDir/$pythonSource/requirements-package.txt", "--target", pythonTempDir
+			}
+
+			exec {
+				commandLine _executablePath(pythonEnvDir, "python"), "-m", "zipapp", pythonTempDir, "-o", "$buildDir/libs/${project.name}.py"
 			}
 
 			delete pythonTempDir
 		}
 	}
 
-	task assemble {
-		dependsOn packagePython
-	}
+	project.afterEvaluate {
+		assemble {
+			dependsOn packagePython
+		}
 
-	task test {
-		dependsOn testPython
+		formatSourcePython {
+			dependsOn installProjectEnvDependencies
+		}
+
+		installBootstrapEnvDependencies {
+			dependsOn build_condas
+		}
+
+		installProjectEnvDependencies {
+			dependsOn build_conda_envs
+		}
+
+		packagePython {
+			dependsOn installBootstrapEnvDependencies
+			dependsOn installProjectEnvDependencies
+
+			installProjectEnvDependencies.mustRunAfter(installBootstrapEnvDependencies)
+		}
+	}
+}
+
+private String _executablePath(String pythonEnvDir, String executable) {
+	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+		if (Objects.equals(executable, "python")) {
+			return "$pythonEnvDir/$executable"
+		}
+		else {
+			return "$pythonEnvDir/Scripts/$executable"
+		}
+	}
+	else {
+		return "$pythonEnvDir/bin/$executable"
 	}
 }

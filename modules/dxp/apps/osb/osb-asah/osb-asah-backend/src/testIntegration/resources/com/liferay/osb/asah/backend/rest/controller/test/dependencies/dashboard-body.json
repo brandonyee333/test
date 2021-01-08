@@ -1,0 +1,6 @@
+{
+	"operationName": "Dashboard",
+	"variables": {
+		"dashboardId": "1"
+	}
+}

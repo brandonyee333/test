@@ -14,18 +14,12 @@
 
 package com.liferay.osb.asah.backend.model;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
  * @author Marcellus Tavares
  */
 public class JobParameter {
-
-	public static JobParameter of(Map<String, String> jobParameter) {
-		return new JobParameter(
-			jobParameter.get("name"), jobParameter.get("value"));
-	}
 
 	public JobParameter() {
 	}

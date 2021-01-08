@@ -16,9 +16,9 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.AccountDog;
 import com.liferay.osb.asah.backend.model.Account;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -46,11 +46,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class AccountDogTest {
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings_info.json",
+		name = "field-mappings", resourcePath = "field-mappings-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_info.json",
+		name = "accounts", resourcePath = "accounts-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -71,11 +71,11 @@ public class AccountDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "field-mappings", resourcePath = "field_mappings_info.json",
+		name = "field-mappings", resourcePath = "field-mappings-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "accounts", resourcePath = "accounts_info.json",
+		name = "accounts", resourcePath = "accounts-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

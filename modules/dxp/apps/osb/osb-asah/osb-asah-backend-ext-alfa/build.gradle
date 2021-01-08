@@ -1,14 +1,10 @@
+apply plugin: "com.liferay.dependency.local.copy"
 apply plugin: "com.liferay.spring.boot.defaults"
-apply plugin: "io.spring.dependency-management"
 
-bootJar {
+bootRepackage {
 	enabled = false
 }
 
 dependencies {
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
-}
-
-jar {
-	enabled = true
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-common"
 }

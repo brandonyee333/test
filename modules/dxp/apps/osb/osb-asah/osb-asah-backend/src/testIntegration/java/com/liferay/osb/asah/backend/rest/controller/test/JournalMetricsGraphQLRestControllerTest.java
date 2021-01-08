@@ -29,17 +29,17 @@ public class JournalMetricsGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "journal_metrics_body.json";
+		return "journal-metrics-body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "journal_metrics_expected_result.json";
+		return "journal-metrics-expected-result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "journal_metrics_query.graphql";
+		return "journal-metrics-query.graphql";
 	}
 
 }

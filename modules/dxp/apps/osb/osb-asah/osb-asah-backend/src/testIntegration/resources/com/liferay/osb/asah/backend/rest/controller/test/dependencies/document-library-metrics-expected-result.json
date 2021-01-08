@@ -1,0 +1,43 @@
+{
+	"data": {
+		"documents": {
+			"assetMetrics": [
+				{
+					"assetId": "1",
+					"assetTitle": "null",
+					"commentsMetric": {
+						"value": 3.0
+					},
+					"downloadsMetric": {
+						"value": 2.0
+					},
+					"previewsMetric": {
+						"value": 0.0
+					},
+					"ratingsMetric": {
+						"value": 1.0
+					},
+					"urls": null
+				},
+				{
+					"assetId": "3",
+					"assetTitle": "null",
+					"commentsMetric": {
+						"value": 0.0
+					},
+					"downloadsMetric": {
+						"value": 1.0
+					},
+					"previewsMetric": {
+						"value": 0.0
+					},
+					"ratingsMetric": {
+						"value": 0.0
+					},
+					"urls": null
+				}
+			],
+			"total": 2
+		}
+	}
+}

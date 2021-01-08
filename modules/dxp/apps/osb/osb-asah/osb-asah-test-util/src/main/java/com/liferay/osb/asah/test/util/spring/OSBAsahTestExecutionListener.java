@@ -16,12 +16,10 @@ package com.liferay.osb.asah.test.util.spring;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndices;
 import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
@@ -66,14 +64,12 @@ public class OSBAsahTestExecutionListener
 			ElasticsearchIndex.class);
 
 		for (ElasticsearchIndex elasticsearchIndex : elasticsearchIndices) {
-			String indexName = ElasticsearchIndexUtil.getIndexName(
+			String indexName = _elasticsearchIndexManager.getIndexName(
 				elasticsearchIndex.name(),
 				elasticsearchIndex.weDeployDataService());
 
 			_elasticsearchIndexManager.clear(indexName);
 		}
-
-		ProjectIdThreadLocal.remove();
 	}
 
 	@Override
@@ -93,7 +89,7 @@ public class OSBAsahTestExecutionListener
 		for (ElasticsearchIndex elasticsearchIndex : elasticsearchIndices) {
 			if (!Objects.equals(elasticsearchIndex.configurationPath(), "")) {
 				_elasticsearchIndexManager.delete(
-					ElasticsearchIndexUtil.getIndexName(
+					_elasticsearchIndexManager.getIndexName(
 						elasticsearchIndex.name(),
 						elasticsearchIndex.weDeployDataService()));
 			}
@@ -114,8 +110,6 @@ public class OSBAsahTestExecutionListener
 
 	@Override
 	public void beforeTestClass(TestContext testContext) throws Exception {
-		ProjectIdThreadLocal.setProjectId("test");
-
 		Class<?> clazz = testContext.getTestClass();
 
 		ElasticsearchIndex[] elasticsearchIndices = clazz.getAnnotationsByType(
@@ -177,7 +171,7 @@ public class OSBAsahTestExecutionListener
 			Class<?> clazz, ElasticsearchIndex elasticsearchIndex)
 		throws Exception {
 
-		String indexName = ElasticsearchIndexUtil.getIndexName(
+		String indexName = _elasticsearchIndexManager.getIndexName(
 			elasticsearchIndex.name(),
 			elasticsearchIndex.weDeployDataService());
 
@@ -195,7 +189,7 @@ public class OSBAsahTestExecutionListener
 
 		if (!Objects.equals(elasticsearchIndex.resourcePath(), "")) {
 			ElasticsearchInvoker elasticsearchInvoker =
-				_elasticsearchInvokerManager.forWeDeployDataService(
+				_elasticsearchInvokerFactory.forWeDeployDataService(
 					elasticsearchIndex.weDeployDataService());
 
 			elasticsearchInvoker.add(
@@ -214,7 +208,7 @@ public class OSBAsahTestExecutionListener
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
-	private ElasticsearchInvokerManager _elasticsearchInvokerManager;
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private MessageBus _messageBus;

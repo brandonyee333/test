@@ -1,7 +1,6 @@
 {
 	"mappings": {
-		"Contact": {
-			"date_detection": false,
+		"_default_": {
 			"dynamic_templates": [
 				{
 					"template_string_properties": {

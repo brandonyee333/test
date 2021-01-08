@@ -1,0 +1,49 @@
+{
+	"data": {
+		"journal": {
+			"assetId": "1",
+			"assetTitle": null,
+			"urls": [
+				"http://liferay.com"
+			],
+			"viewsMetric": {
+				"browser": [
+					{
+						"value": 1.0,
+						"valueKey": "Chrome"
+					}
+				],
+				"device": [
+					{
+						"metrics": [
+							{
+								"value": 1.0,
+								"valueKey": "Linux"
+							}
+						],
+						"value": 1.0,
+						"valueKey": "Desktop"
+					}
+				],
+				"geolocation": [
+					{
+						"metrics": [
+						],
+						"value": 1.0,
+						"valueKey": "Brazil"
+					}
+				],
+				"segment": {
+					"metrics": [
+					],
+					"total": 0
+				},
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 1.0
+			}
+		}
+	}
+}

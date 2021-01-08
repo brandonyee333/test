@@ -1,0 +1,102 @@
+[
+	{
+		"activitiesCount": 0,
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"engagementScore": 0,
+		"filter": "((dataSourceAccountPKs/accountPKs eq 'bef7a4a0-7128-4e37-b58d-a3fdff2e4213'))",
+		"id": "346306743994746064",
+		"individualCount": 16,
+		"name": "Account: 346306741766310654",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "INACTIVE"
+	},
+	{
+		"activitiesCount": 0,
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"engagementScore": 0,
+		"filter": "((dataSourceAccountPKs/accountPKs eq '7dc0bc87-2d53-40d5-8137-2db03470adda'))",
+		"id": "346306763618649567",
+		"individualCount": 16,
+		"name": "Account: 346306745597466890",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "INACTIVE"
+	},
+	{
+		"activitiesCount": 0,
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"engagementScore": 0,
+		"filter": "((dataSourceAccountPKs/accountPKs eq 'e15f3b2f-7cad-4772-b844-0d96d2f27528'))",
+		"id": "346308250473619552",
+		"individualCount": 16,
+		"name": "Account: 346306769708391202",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "INACTIVE"
+	},
+	{
+		"activitiesCount": 0,
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"engagementScore": 0,
+		"filter": "((dataSourceAccountPKs/accountPKs eq '5b04444d-99aa-4bf6-bdfd-00f91b5b3037'))",
+		"id": "346308936219234391",
+		"individualCount": 16,
+		"name": "Account: 346308947223203070",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "INACTIVE"
+	},
+	{
+		"activitiesCount": 0,
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"engagementScore": 0,
+		"filter": "((dataSourceAccountPKs/accountPKs eq 'dcfc34f0-fe1c-4a30-8ed6-326e742d5108'))",
+		"id": "346308970527203814",
+		"individualCount": 16,
+		"name": "Account: 346308948940818080",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "INACTIVE"
+	}
+]

@@ -16,9 +16,9 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.backend.rest.response.MembershipChangesHistogramTransformationJSONArrayFunction;
-import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualSegmentsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.backend.rest.response.embedded.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.PostResponse;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
-import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import java.util.Iterator;
 import java.util.Objects;
@@ -44,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -176,7 +176,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			_getMembershipChangesQueryBuilder(filterString, id), size, sorts);
 	}
 
-	@Cacheable
+	@Cacheable(
+		condition = "!#includeToday",
+		value = "getMembershipChangeTransformations"
+	)
 	@GetMapping(params = "apply", value = "/{id}/membership-changes")
 	public String getMembershipChangeTransformations(
 			@PathVariable String id, @RequestParam String apply,
@@ -270,7 +273,14 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 					String individualId = jsonObject.getString("individualId");
 
-					if (_isMember(individualId, id)) {
+					if (_faroInfoMembershipDog.isMember(individualId, id)) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"Not adding membership because individual " +
+									individualId + " is already a member of " +
+										"individual segment " + id);
+						}
+
 						return null;
 					}
 
@@ -293,17 +303,20 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 					String individualId = jsonObject.getString("individualId");
 
-					if (_isMember(individualId, id)) {
+					if (_faroInfoMembershipDog.isMember(individualId, id)) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"Not adding membership because individual " +
+									individualId + " is already a member of " +
+										"individual segment " + id);
+						}
+
 						iterator.remove();
 
 						continue;
 					}
 
 					onBeforeAdd(jsonObject);
-				}
-
-				if (jsonArray.length() == 0) {
-					return null;
 				}
 
 				JSONArray responseJSONArray =
@@ -326,21 +339,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@Override
 			protected void onBeforeReturn(JSONObject responseJSONObject) {
 				responseJSONObject.remove("id");
-			}
-
-			private boolean _isMember(String individualId, String id) {
-				if (_faroInfoMembershipDog.isMember(individualId, id)) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							"Not adding membership because individual " +
-								individualId + " is already a member of " +
-									"individual segment " + id);
-					}
-
-					return true;
-				}
-
-				return false;
 			}
 
 		};

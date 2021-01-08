@@ -16,7 +16,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.InterestScoreArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.URLArm;
-import com.liferay.osb.asah.batch.curator.bot.nanite.model.KeywordInfo;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
@@ -33,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -61,11 +61,6 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	public static final double MINIMUM_INTEREST_SCORE_THRESHOLD = 0.01;
 
 	@Override
-	public boolean isLogRunEnabled() {
-		return true;
-	}
-
-	@Override
 	public void run(String dayDateString) throws Exception {
 		_deleteInterestScores(dayDateString);
 
@@ -75,10 +70,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 		long totalViews = _urlArm.getTotalPageViews(dayDateString);
 
-		Map<String, List<KeywordInfo>> keywordInfosMap = _getKeywordInfosMap();
+		Map<String, List<Pair<String, String>>> keywordURLsMap =
+			_getKeywordURLsMap();
 
 		Map<String, Long> totalKeywordsPageViewsMap = _getKeywordsPageViewsMap(
-			keywordInfosMap, _getURLsPageViewsMap(dayDateString, null, null));
+			keywordURLsMap, _getURLPageViewsMap(dayDateString, null, null));
 
 		Set<String> individualsIds = _getIndividualsIds(dayDateString);
 
@@ -89,7 +85,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 			_process(
 				dayDateString, elasticsearchBulkRequestBuilder, individualId,
-				keywordInfosMap, totalKeywordsPageViewsMap, totalViews);
+				keywordURLsMap, totalKeywordsPageViewsMap, totalViews);
 		}
 
 		JSONArrayIterator.of(
@@ -189,11 +185,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	private void _addVisitedPages(
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
 		String dayDateString, String individualId, String keyword,
-		List<KeywordInfo> keywordInfos, Map<String, Long> urlsPageViewsMap) {
+		Map<String, Long> urlsPageViewsMap,
+		List<Pair<String, String>> urlsPairs) {
 
-		for (KeywordInfo keywordInfo : keywordInfos) {
-			Long pageViews = urlsPageViewsMap.get(
-				keywordInfo.getDataSourceAssetPK());
+		for (Pair<String, String> urlPair : urlsPairs) {
+			Long pageViews = urlsPageViewsMap.get(urlPair.getValue());
 
 			if (pageViews == null) {
 				continue;
@@ -202,8 +198,6 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			elasticsearchBulkRequestBuilder.add(
 				"visited-pages",
 				JSONUtil.put(
-					"canonicalUrl", keywordInfo.getCanonicalUrl()
-				).put(
 					"day", dayDateString
 				).put(
 					"interestName", keyword
@@ -212,11 +206,11 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 				).put(
 					"ownerType", "individual"
 				).put(
-					"title", keywordInfo.getName()
+					"title", urlPair.getKey()
 				).put(
 					"uniqueVisitsCount", pageViews
 				).put(
-					"url", keywordInfo.getDataSourceAssetPK()
+					"url", urlPair.getValue()
 				));
 		}
 	}
@@ -322,8 +316,30 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		return individualIds;
 	}
 
-	private Map<String, List<KeywordInfo>> _getKeywordInfosMap() {
-		Map<String, List<KeywordInfo>> keywordInfosMap = new HashMap<>();
+	private Map<String, Long> _getKeywordsPageViewsMap(
+		Map<String, List<Pair<String, String>>> keywordsURLsMap,
+		Map<String, Long> urlPageViewsMap) {
+
+		Map<String, Long> keywordsPageViewsMap = new HashMap<>();
+
+		for (Map.Entry<String, List<Pair<String, String>>> entry :
+				keywordsURLsMap.entrySet()) {
+
+			String keyword = entry.getKey();
+
+			for (Pair<String, String> pair : entry.getValue()) {
+				keywordsPageViewsMap.merge(
+					keyword, urlPageViewsMap.getOrDefault(pair.getValue(), 0L),
+					Long::sum);
+			}
+		}
+
+		return keywordsPageViewsMap;
+	}
+
+	private Map<String, List<Pair<String, String>>> _getKeywordURLsMap() {
+		Map<String, List<Pair<String, String>>> keywordsURLsMap =
+			new HashMap<>();
 
 		JSONArray assetsJSONArray = faroInfoElasticsearchInvoker.get(
 			"assets",
@@ -338,10 +354,6 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 			String dataSourceAssetPK = assetJSONObject.getString(
 				"dataSourceAssetPK");
-
-			String canonicalUrl = assetJSONObject.optString(
-				"canonicalUrl", dataSourceAssetPK);
-
 			String name = assetJSONObject.getString("name");
 
 			JSONArray keywordsJSONArray = assetJSONObject.getJSONArray(
@@ -353,53 +365,18 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 				String keyword = keywordJSONObject.getString("keyword");
 
-				List<KeywordInfo> keywordInfos =
-					keywordInfosMap.computeIfAbsent(
+				List<Pair<String, String>> urlPairs =
+					keywordsURLsMap.computeIfAbsent(
 						keyword, key -> new ArrayList<>());
 
-				keywordInfos.add(
-					new KeywordInfo(canonicalUrl, dataSourceAssetPK, name));
+				urlPairs.add(Pair.of(name, dataSourceAssetPK));
 			}
 		}
 
-		return keywordInfosMap;
+		return keywordsURLsMap;
 	}
 
-	private Map<String, Long> _getKeywordsPageViewsMap(
-		Map<String, List<KeywordInfo>> keywordInfosMap,
-		Map<String, Long> urlsPageViewsMap) {
-
-		Map<String, Long> keywordsPageViewsMap = new HashMap<>();
-
-		for (Map.Entry<String, List<KeywordInfo>> entry :
-				keywordInfosMap.entrySet()) {
-
-			String keyword = entry.getKey();
-
-			for (KeywordInfo keywordInfo : entry.getValue()) {
-				keywordsPageViewsMap.merge(
-					keyword,
-					urlsPageViewsMap.getOrDefault(
-						keywordInfo.getDataSourceAssetPK(), 0L),
-					Long::sum);
-			}
-		}
-
-		return keywordsPageViewsMap;
-	}
-
-	private Set<Map.Entry<String, Long>> _getURLsPageViewsEntrySet(
-		String dayDateString, String individualId,
-		Map<String, List<KeywordInfo>> keywordInfosMap) {
-
-		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
-			keywordInfosMap,
-			_getURLsPageViewsMap(dayDateString, individualId, null));
-
-		return keywordsPageViewsMap.entrySet();
-	}
-
-	private Map<String, Long> _getURLsPageViewsMap(
+	private Map<String, Long> _getURLPageViewsMap(
 		String endDayDateString, String individualId,
 		String startDayDateString) {
 
@@ -480,25 +457,37 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		return urlsPageViewsMap;
 	}
 
+	private Set<Map.Entry<String, Long>> _getURLsPageViewsEntrySet(
+		String dayDateString, String individualId,
+		Map<String, List<Pair<String, String>>> keywordsURLsMap) {
+
+		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
+			keywordsURLsMap,
+			_getURLPageViewsMap(dayDateString, individualId, null));
+
+		return keywordsPageViewsMap.entrySet();
+	}
+
 	private void _process(
 			String dayDateString,
 			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder,
-			String individualId, Map<String, List<KeywordInfo>> keywordInfosMap,
+			String individualId,
+			Map<String, List<Pair<String, String>>> keywordURLsMap,
 			Map<String, Long> totalKeywordsPageViewsMap, long totalViews)
 		throws Exception {
 
 		long individualPageViews = _getIndividualPageViews(
 			dayDateString, individualId);
 
-		Map<String, Long> urlsPageViewsMap = _getURLsPageViewsMap(
+		Map<String, Long> urlsPageViewsMap = _getURLPageViewsMap(
 			dayDateString, individualId, DateUtil.addDays(dayDateString, -30));
 
 		Map<String, Long> keywordsPageViewsMap = _getKeywordsPageViewsMap(
-			keywordInfosMap, urlsPageViewsMap);
+			keywordURLsMap, urlsPageViewsMap);
 
 		for (Map.Entry<String, Long> entry :
 				_getURLsPageViewsEntrySet(
-					dayDateString, individualId, keywordInfosMap)) {
+					dayDateString, individualId, keywordURLsMap)) {
 
 			String keyword = entry.getKey();
 			long pageViews = entry.getValue();
@@ -550,7 +539,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 			_addVisitedPages(
 				elasticsearchBulkRequestBuilder, dayDateString, individualId,
-				keyword, keywordInfosMap.get(keyword), urlsPageViewsMap);
+				keyword, urlsPageViewsMap, keywordURLsMap.get(keyword));
 		}
 
 		if (elasticsearchBulkRequestBuilder.hasActions()) {

@@ -16,11 +16,11 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.InterestCompositionDog;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import org.junit.Test;
@@ -33,15 +33,15 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Matthew Kong
  */
 @ElasticsearchIndex(
-	name = "individuals", resourcePath = "individuals_info.json",
+	name = "individuals", resourcePath = "individuals-info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @ElasticsearchIndex(
-	name = "interests", resourcePath = "interests_info.json",
+	name = "interests", resourcePath = "interests-info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @ElasticsearchIndex(
-	name = "OSBAsahMarkers", resourcePath = "osbasahmarkers_info.json",
+	name = "OSBAsahMarkers", resourcePath = "osbasahmarkers-info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
@@ -52,7 +52,13 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetActiveIndividualSegmentCompositionResultBag() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				true, "1", "366637689379787789", null, 10, Sort.desc("count"),
+				true, "1", "366637689379787789", null, 10,
+				new HashMap<String, String>() {
+					{
+						put("column", "count");
+						put("type", "DESC");
+					}
+				},
 				0),
 			new LinkedHashMap<String, Long>() {
 				{
@@ -68,7 +74,13 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetInactiveIndividualSegmentCompositionResultBag() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", "366637689379787789", null, 10, Sort.desc("count"),
+				false, "1", "366637689379787789", null, 10,
+				new HashMap<String, String>() {
+					{
+						put("column", "count");
+						put("type", "DESC");
+					}
+				},
 				0),
 			new LinkedHashMap<String, Long>() {
 				{
@@ -84,7 +96,14 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetIndividualCompositionResultBag() {
 		checkResults(
 			_interestCompositionDog.getIndividualCompositionResultBag(
-				"1", null, 10, Sort.desc("count"), 0),
+				"1", null, 10,
+				new HashMap<String, String>() {
+					{
+						put("column", "count");
+						put("type", "DESC");
+					}
+				},
+				0),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("compelling metrics", 4L);
@@ -100,7 +119,13 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
 				false, "1", "366637689379787789", "compel", 10,
-				Sort.desc("count"), 0),
+				new HashMap<String, String>() {
+					{
+						put("column", "count");
+						put("type", "DESC");
+					}
+				},
+				0),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("compelling metrics", 3L);
@@ -113,7 +138,13 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetIndividualSegmentCompositionResultBagWithSortAsc() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", "366637689379787789", null, 10, Sort.asc("count"),
+				false, "1", "366637689379787789", null, 10,
+				new HashMap<String, String>() {
+					{
+						put("column", "count");
+						put("type", "ASC");
+					}
+				},
 				0),
 			new LinkedHashMap<String, Long>() {
 				{
@@ -129,7 +160,13 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetIndividualSegmentCompositionResultBagWithSortName() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", "366637689379787789", null, 10, Sort.asc("name"),
+				false, "1", "366637689379787789", null, 10,
+				new HashMap<String, String>() {
+					{
+						put("column", "name");
+						put("type", "ASC");
+					}
+				},
 				0),
 			new LinkedHashMap<String, Long>() {
 				{

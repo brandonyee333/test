@@ -3,9 +3,6 @@
 		"assetId": "1",
 		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
 		"browserName": "Chrome",
-		"canonicalUrls": [
-			"http://liferay.com"
-		],
 		"channelId": "1",
 		"city": "Recife",
 		"comments": 3,
@@ -29,9 +26,6 @@
 		"assetId": "2",
 		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
 		"browserName": "Chrome",
-		"canonicalUrls": [
-			"http://liferay.com"
-		],
 		"channelId": "2",
 		"city": "Recife",
 		"comments": 1,
@@ -55,9 +49,6 @@
 		"assetId": "3",
 		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
 		"browserName": "Chrome",
-		"canonicalUrls": [
-			"http://liferay.com"
-		],
 		"channelId": "1",
 		"city": "Recife",
 		"comments": 0,
@@ -80,9 +71,6 @@
 		"assetId": "4",
 		"assetPrimaryKey": "6f4b6612125fb3a0daecd2799dfd6c9c299424fd920f9b308110a2c1fbd8f443",
 		"browserName": "Firefox",
-		"canonicalUrls": [
-			"http://liferay.com"
-		],
 		"channelId": "2",
 		"city": "Recife",
 		"comments": 0,

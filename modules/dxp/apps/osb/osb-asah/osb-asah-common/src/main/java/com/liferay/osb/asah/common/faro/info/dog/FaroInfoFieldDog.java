@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.math.BigDecimal;
 
@@ -37,6 +36,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -153,6 +154,16 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 		throw new Exception(
 			"Invalid data source type " + type + " for data source " +
 				dataSourceJSONObject.getString("id"));
+	}
+
+	@Override
+	@PostConstruct
+	public void init() {
+		super.init();
+
+		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
+		_salesforceRawElasticsearchInvoker =
+			elasticsearchInvokerFactory.forSalesforceRaw();
 	}
 
 	public JSONObject updateContextFields(
@@ -413,10 +424,6 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			}
 			else if (fieldType.equals("Date")) {
 				if (NumberUtils.isCreatable(valueString)) {
-					if (Long.parseLong(valueString) < 0) {
-						return DateUtil.toString(valueString);
-					}
-
 					return DateUtil.toUTCString(
 						new Date(Long.parseLong(valueString)));
 				}
@@ -650,8 +657,8 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 				continue;
 			}
 
-			JSONObject dataSourceJSONObject =
-				_faroInfoDataSourceDog.fetchDataSourceJSONObject(dataSourceId);
+			JSONObject dataSourceJSONObject = elasticsearchInvoker.fetch(
+				"data-sources", dataSourceId);
 
 			if (dataSourceJSONObject == null) {
 				if (_log.isWarnEnabled()) {
@@ -1003,7 +1010,6 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 
 	private static final Log _log = LogFactory.getLog(FaroInfoFieldDog.class);
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
@@ -1013,8 +1019,6 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 	private final Parser _parser = new Parser();
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

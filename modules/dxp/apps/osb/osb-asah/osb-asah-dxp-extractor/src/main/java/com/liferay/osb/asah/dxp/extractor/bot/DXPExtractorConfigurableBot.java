@@ -19,9 +19,8 @@ import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.dxp.extractor.bot.nanite.DXPExtractorNanite;
 import com.liferay.osb.asah.dxp.extractor.configuration.DXPExtractorConfiguration;
 import com.liferay.osb.asah.dxp.extractor.configuration.impl.DXPExtractorConfigurationManagerImpl;
@@ -47,6 +46,9 @@ public class DXPExtractorConfigurableBot extends BaseConfigurableBot {
 	@PostConstruct
 	public void init() {
 		super.init();
+
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	@Override
@@ -68,7 +70,7 @@ public class DXPExtractorConfigurableBot extends BaseConfigurableBot {
 
 	@Override
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
-		return _dxpRawElasticsearchInvoker;
+		return _elasticsearchInvokerFactory.forDXPRaw();
 	}
 
 	@Override
@@ -79,8 +81,8 @@ public class DXPExtractorConfigurableBot extends BaseConfigurableBot {
 			(DXPExtractorConfiguration)configuration;
 
 		JSONObject existingDataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(
-				dxpExtractorConfiguration.getDataSourceId());
+			_faroInfoElasticsearchInvoker.get(
+				"data-sources", dxpExtractorConfiguration.getDataSourceId());
 
 		String newDataSourceJSON =
 			_dxpExtractorConfigurationManagerImpl.refresh(
@@ -114,13 +116,9 @@ public class DXPExtractorConfigurableBot extends BaseConfigurableBot {
 	private DXPExtractorConfigurationManagerImpl
 		_dxpExtractorConfigurationManagerImpl;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

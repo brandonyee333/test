@@ -1,0 +1,42 @@
+[
+	{
+		"dateCreated": "${now-400d}",
+		"engagementScore": 0.5,
+		"id": "100"
+	},
+	{
+		"dateCreated": "${now-400d}",
+		"demographics": {
+			"email": [
+				{
+					"value": "jane.doe@liferay.com"
+				}
+			]
+		},
+		"id": "101"
+	},
+	{
+		"dateCreated": "${now-400d}",
+		"id": "102"
+	},
+	{
+		"dateCreated": "${now-400d}",
+		"engagementScore": 0,
+		"id": "103"
+	},
+	{
+		"dateCreated": "${now}",
+		"demographics": {
+			"email": [
+				{
+					"value": "john.doe@liferay.com"
+				}
+			]
+		},
+		"id": "104"
+	},
+	{
+		"dateCreated": "${now}",
+		"id": "105"
+	}
+]

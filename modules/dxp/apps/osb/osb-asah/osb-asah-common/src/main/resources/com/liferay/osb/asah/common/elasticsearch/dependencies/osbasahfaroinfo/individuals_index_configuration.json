@@ -243,8 +243,7 @@
 				"total_fields": {
 					"limit": 5000
 				}
-			},
-			"max_ngram_diff": 2
+			}
 		}
 	}
 }

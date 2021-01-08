@@ -14,9 +14,6 @@
 				"browserName": {
 					"type": "keyword"
 				},
-				"canonicalUrls": {
-					"type": "keyword"
-				},
 				"category": {
 					"type": "keyword"
 				},
@@ -106,9 +103,6 @@
 				},
 				"submissionsTime": {
 					"type": "long"
-				},
-				"tempUrls": {
-					"type": "keyword"
 				},
 				"title": {
 					"type": "keyword"

@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.dog.IndividualHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
-import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
@@ -43,7 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class IndividualHistogramDogTest {
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
+		name = "individuals", resourcePath = "individuals-histogram-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -64,7 +63,7 @@ public class IndividualHistogramDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
+		name = "individuals", resourcePath = "individuals-histogram-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -85,7 +84,7 @@ public class IndividualHistogramDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
+		name = "individuals", resourcePath = "individuals-histogram-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -106,7 +105,7 @@ public class IndividualHistogramDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
+		name = "individuals", resourcePath = "individuals-histogram-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -127,7 +126,7 @@ public class IndividualHistogramDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_histogram_info.json",
+		name = "individuals", resourcePath = "individuals-histogram-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -162,18 +161,15 @@ public class IndividualHistogramDogTest {
 	private List<HistogramMetric> _getHistogramMetrics(
 		Boolean active, MetricType metricType) {
 
-		HistogramMetricBag histogramMetricBag =
-			_individualHistogramDog.getHistogramMetricBag(
-				metricType,
-				new SearchQueryContext(AssetType.INDIVIDUAL_METRIC) {
-					{
-						setActive(active);
-						setInterval("D");
-						setRangeKey(30);
-					}
-				});
-
-		return histogramMetricBag.getMetrics();
+		return _individualHistogramDog.getHistogramMetrics(
+			metricType,
+			new SearchQueryContext(AssetType.INDIVIDUAL_METRIC) {
+				{
+					setActive(active);
+					setInterval("D");
+					setRangeKey(30);
+				}
+			});
 	}
 
 	@Autowired

@@ -44,7 +44,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class ExperimentMetricDogTest {
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
+		name = "experiments", resourcePath = "experiment-metrics-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -63,7 +63,7 @@ public class ExperimentMetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
+		name = "experiments", resourcePath = "experiment-metrics-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -81,7 +81,7 @@ public class ExperimentMetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "experiments", resourcePath = "experiment_metrics_info.json",
+		name = "experiments", resourcePath = "experiment-metrics-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -104,8 +104,8 @@ public class ExperimentMetricDogTest {
 
 		Mockito.when(
 			_experimentDataDog.fetchDichotomousDataPoint(
-				Mockito.any(), Mockito.any(), Mockito.any(),
-				Mockito.any(MetricType.class), Mockito.any(),
+				Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
+				Mockito.any(MetricType.class), Mockito.anyString(),
 				Mockito.any(TimeRange.class), Mockito.eq(dxpVariantId))
 		).thenReturn(
 			new ExperimentDataPoint<>(trials, value)

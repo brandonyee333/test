@@ -1,0 +1,59 @@
+{
+	"data": {
+		"pages": {
+			"assetMetrics": [
+				{
+					"assetId": "https://www.cedric-rodriguez.net?q=International%20Trade%20and%20Development",
+					"assetTitle": "mesh synergistic schemas",
+					"avgTimeOnPageMetric": {
+						"value": 0
+					},
+					"bounceRateMetric": {
+						"value": 0
+					},
+					"engagementMetric": {
+						"value": 0
+					},
+					"entrancesMetric": {
+						"value": 1
+					},
+					"exitRateMetric": {
+						"value": 1
+					},
+					"viewsMetric": {
+						"value": 1
+					},
+					"visitorsMetric": {
+						"value": 1
+					}
+				},
+				{
+					"assetId": "https://www.dino-boyer.com?q=Automotive",
+					"assetTitle": "recontextualize value-added channels",
+					"avgTimeOnPageMetric": {
+						"value": 1.188E8
+					},
+					"bounceRateMetric": {
+						"value": 0
+					},
+					"engagementMetric": {
+						"value": 0
+					},
+					"entrancesMetric": {
+						"value": 0
+					},
+					"exitRateMetric": {
+						"value": 0
+					},
+					"viewsMetric": {
+						"value": 1
+					},
+					"visitorsMetric": {
+						"value": 1
+					}
+				}
+			],
+			"total": 2
+		}
+	}
+}

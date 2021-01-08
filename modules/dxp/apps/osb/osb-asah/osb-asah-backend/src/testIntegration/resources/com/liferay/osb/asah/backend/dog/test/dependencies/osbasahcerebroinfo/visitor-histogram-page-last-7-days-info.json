@@ -1,0 +1,34 @@
+[
+	{
+		"eventDate": "${now-1d}",
+		"individualId": "abc",
+		"primaryKey": "1",
+		"sessionId": "1",
+		"url": "http://liferay.com",
+		"userId": "1"
+	},
+	{
+		"eventDate": "${now-5d}",
+		"individualId": "abc",
+		"primaryKey": "2",
+		"sessionId": "2",
+		"url": "http://liferay.com",
+		"userId": "2"
+	},
+	{
+		"eventDate": "${now-1d}",
+		"individualId": "abc",
+		"primaryKey": "3",
+		"sessionId": "3",
+		"url": "http://liferay.com",
+		"userId": "3"
+	},
+	{
+		"eventDate": "${now-1d}",
+		"individualId": null,
+		"primaryKey": "4",
+		"sessionId": "4",
+		"url": "http://liferay.com",
+		"userId": "4"
+	}
+]

@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.common.rest.response.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
@@ -50,12 +50,14 @@ public class CollectionGetResponseTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
+
 		_elasticsearchInvoker.add(
 			"individuals",
 			new JSONArray(
 				ResourceUtil.readResourceToString(
 					"dependencies/osbasahfaroinfo" +
-						"/collection_get_response_individuals.json",
+						"/collection-get-response-individuals.json",
 					this)));
 	}
 
@@ -159,7 +161,7 @@ public class CollectionGetResponseTest {
 		List<String> expectedValues = _getValues(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/osbasahfaroinfo" +
-					"/collection_get_response_individuals.json",
+					"/collection-get-response-individuals.json",
 				this),
 			path);
 
@@ -250,7 +252,9 @@ public class CollectionGetResponseTest {
 		return values;
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

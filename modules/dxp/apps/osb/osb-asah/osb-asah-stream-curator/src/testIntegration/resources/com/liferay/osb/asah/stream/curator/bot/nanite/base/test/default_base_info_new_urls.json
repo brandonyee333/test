@@ -1,7 +1,6 @@
 [
 	{
 		"browserName": "Firefox",
-		"channelId": "1",
 		"city": "Recife",
 		"country": "Brazil",
 		"deviceType": "Desktop",

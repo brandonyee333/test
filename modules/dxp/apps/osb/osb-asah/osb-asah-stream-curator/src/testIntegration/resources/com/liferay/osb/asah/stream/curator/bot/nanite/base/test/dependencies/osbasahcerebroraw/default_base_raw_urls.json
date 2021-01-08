@@ -1,0 +1,46 @@
+[
+	{
+		"applicationId": "Page",
+		"context": {
+			"browserName": "Firefox",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "www.liferay.com",
+		"eventDate": "2018-04-04T09:30:00.000Z",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"baseId": "1"
+		},
+		"id": "1",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Page",
+		"context": {
+			"browserName": "Firefox",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com/home"
+		},
+		"dataSourceId": "www.liferay.com",
+		"eventDate": "2018-04-04T09:31:00.000Z",
+		"eventId": "pageViewed",
+		"eventProperties": {
+			"baseId": "1"
+		},
+		"id": "2",
+		"userId": "1"
+	}
+]

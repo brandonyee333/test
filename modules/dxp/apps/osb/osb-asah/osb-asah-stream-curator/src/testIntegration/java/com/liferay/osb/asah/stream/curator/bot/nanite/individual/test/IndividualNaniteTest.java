@@ -14,18 +14,18 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.individual.test;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.http.QueueHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.individual.IndividualNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
-import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -36,10 +36,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.Mockito;
+
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 /**
  * @author André Miranda
@@ -53,7 +56,7 @@ public class IndividualNaniteTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -65,15 +68,57 @@ public class IndividualNaniteTest {
 		name = "individuals", resourcePath = "individuals_1_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@MessageBusChannel(
-		channel = Channel.IDENTITY_MESSAGE,
-		resourcePath = "identity_message_1.json"
-	)
 	@Test
 	public void testIndividualResolution() throws Exception {
+		Mockito.when(
+			_queueHttp.getMessagesCount(Mockito.anyString())
+		).thenReturn(
+			1
+		);
+
+		Mockito.when(
+			_queueHttp.getMessages(Mockito.anyString())
+		).thenReturn(
+			JSONUtil.put(
+				"messages",
+				JSONUtil.putAll(
+					JSONUtil.put(
+						"message",
+						JSONUtil.put(
+							"analyticsData", new JSONObject()
+						).put(
+							"channelId", "1"
+						).put(
+							"dataSourceId", "1"
+						).put(
+							"emailAddressHashed",
+							DigestUtils.sha256Hex("john@liferay.com")
+						).put(
+							"userId", "1"
+						).toString()),
+					JSONUtil.put(
+						"message",
+						JSONUtil.put(
+							"analyticsData", new JSONObject()
+						).put(
+							"channelId", "2"
+						).put(
+							"dataSourceId", "2"
+						).put(
+							"emailAddressHashed",
+							DigestUtils.sha256Hex("jane@liferay.com")
+						).put(
+							"userId", "1"
+						).toString()))
+			).toString()
+		);
+
 		_individualNanite.run();
 
-		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
+		JSONArray jsonArray = elasticsearchInvoker.get("blogs");
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
@@ -82,93 +127,7 @@ public class IndividualNaniteTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_2_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "user-sessions", resourcePath = "session_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@MessageBusChannel(
-		channel = Channel.IDENTITY_MESSAGE,
-		resourcePath = "identity_message_2.json"
-	)
-	@Test
-	public void testMergeIndividual() {
-		Assert.assertTrue(
-			_faroInfoElasticsearchInvoker.exists("individuals", "200"));
-
-		_individualNanite.run();
-
-		Assert.assertFalse(
-			_faroInfoElasticsearchInvoker.exists("individuals", "200"));
-
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"individuals",
-			QueryBuilders.termQuery(
-				"demographics.email.value", "john@liferay.com"));
-
-		JSONArray activitiesCounts = individualJSONObject.getJSONArray(
-			"activitiesCounts");
-
-		JSONObject activitiesCount = JSONUtil.find(
-			activitiesCounts, "channelId", "1");
-
-		Assert.assertEquals(2, activitiesCount.get("activitiesCount"));
-
-		activitiesCount = JSONUtil.find(activitiesCounts, "channelId", "2");
-
-		Assert.assertEquals(1, activitiesCount.get("activitiesCount"));
-
-		Assert.assertFalse(
-			_cerebroInfoElasticsearchInvoker.exists(
-				"pages",
-				BoolQueryBuilderUtil.shouldNot(
-					QueryBuilders.termQuery("individualId", "100")
-				).should(
-					QueryBuilders.termQuery("knownIndividual", false)
-				)));
-	}
-
-	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "blog_info_old.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals_3_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@MessageBusChannel(
-		channel = Channel.IDENTITY_MESSAGE,
-		resourcePath = "identity_message_3.json"
-	)
-	@Test
-	public void testSkipUpdatePageAndAsset() {
-		_individualNanite.run();
-
-		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject blogJSONObject = jsonArray.getJSONObject(i);
-
-			Assert.assertFalse(blogJSONObject.getBoolean("knownIndividual"));
-		}
-	}
-
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -183,15 +142,43 @@ public class IndividualNaniteTest {
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@MessageBusChannel(
-		channel = Channel.IDENTITY_MESSAGE,
-		resourcePath = "identity_message_2.json"
-	)
 	@Test
 	public void testSuppressedUserUpdate() {
+		Mockito.when(
+			_queueHttp.getMessagesCount(Mockito.anyString())
+		).thenReturn(
+			1
+		);
+
+		Mockito.when(
+			_queueHttp.getMessages(Mockito.anyString())
+		).thenReturn(
+			JSONUtil.put(
+				"messages",
+				JSONUtil.putAll(
+					JSONUtil.put(
+						"message",
+						JSONUtil.put(
+							"analyticsData", new JSONObject()
+						).put(
+							"channelId", "1"
+						).put(
+							"dataSourceId", "1"
+						).put(
+							"emailAddressHashed",
+							DigestUtils.sha256Hex("john@liferay.com")
+						).put(
+							"userId", "2"
+						).toString()))
+			).toString()
+		);
+
 		_individualNanite.run();
 
-		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
+		ElasticsearchInvoker cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
+		JSONArray jsonArray = cerebroInfoElasticsearchInvoker.get(
 			"user-sessions");
 
 		Assert.assertEquals(1, jsonArray.length());
@@ -201,7 +188,10 @@ public class IndividualNaniteTest {
 		Assert.assertEquals("200", jsonObject.get("individualId"));
 		Assert.assertEquals("2", jsonObject.get("userId"));
 
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
+		ElasticsearchInvoker faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+
+		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals",
 			QueryBuilders.termQuery(
 				"demographics.email.value", "john@liferay.com"));
@@ -210,7 +200,7 @@ public class IndividualNaniteTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
+		name = "data-sources", resourcePath = "data-sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -221,15 +211,43 @@ public class IndividualNaniteTest {
 		name = "user-sessions", resourcePath = "session_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
-	@MessageBusChannel(
-		channel = Channel.IDENTITY_MESSAGE,
-		resourcePath = "identity_message_2.json"
-	)
 	@Test
 	public void testUserSessionUpdate() {
+		Mockito.when(
+			_queueHttp.getMessagesCount(Mockito.anyString())
+		).thenReturn(
+			1
+		);
+
+		Mockito.when(
+			_queueHttp.getMessages(Mockito.anyString())
+		).thenReturn(
+			JSONUtil.put(
+				"messages",
+				JSONUtil.putAll(
+					JSONUtil.put(
+						"message",
+						JSONUtil.put(
+							"analyticsData", new JSONObject()
+						).put(
+							"channelId", "1"
+						).put(
+							"dataSourceId", "1"
+						).put(
+							"emailAddressHashed",
+							DigestUtils.sha256Hex("john@liferay.com")
+						).put(
+							"userId", "2"
+						).toString()))
+			).toString()
+		);
+
 		_individualNanite.run();
 
-		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
+		ElasticsearchInvoker cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
+		JSONArray jsonArray = cerebroInfoElasticsearchInvoker.get(
 			"user-sessions");
 
 		Assert.assertEquals(1, jsonArray.length());
@@ -239,7 +257,10 @@ public class IndividualNaniteTest {
 		Assert.assertEquals("100", jsonObject.get("individualId"));
 		Assert.assertEquals("2", jsonObject.get("userId"));
 
-		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
+		ElasticsearchInvoker faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+
+		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals",
 			QueryBuilders.termQuery(
 				"demographics.email.value", "john@liferay.com"));
@@ -247,16 +268,13 @@ public class IndividualNaniteTest {
 		Assert.assertTrue(individualJSONObject.has("lastEnrichmentDate"));
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private IndividualNanite _individualNanite;
 
-	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
-	private MessageSubscriber _messageSubscriber;
+	@MockBean
+	private QueueHttp _queueHttp;
 
 }

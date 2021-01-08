@@ -14,25 +14,23 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.blog.click;
 
-import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.blog.BlogClick;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 
 /**
  * @author Inácio Nery
@@ -66,11 +64,6 @@ public class BlogClickNanite extends BaseNanite<BlogClick> {
 	}
 
 	@Override
-	protected MessageSubscriber getMessageSubscriber() {
-		return _messageSubscriber;
-	}
-
-	@Override
 	protected Supplier<BlogClick> getModelSupplier() {
 		return BlogClick::new;
 	}
@@ -85,24 +78,11 @@ public class BlogClickNanite extends BaseNanite<BlogClick> {
 	}
 
 	@Override
-	protected List<AnalyticsEvent> pullAnalyticsEvents() throws Exception {
-		List<AnalyticsEvent> analyticsEvents = super.pullAnalyticsEvents();
-
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-		return stream.filter(
-			analyticsEvent -> {
-				if (Objects.equals(analyticsEvent.getApplicationId(), "Blog") &&
-					Objects.equals(
-						analyticsEvent.getEventId(), "blogClicked")) {
-
-					return true;
-				}
-
-				return false;
-			}
-		).collect(
-			Collectors.toList()
+	protected QueryBuilder getQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Blog")
+		).filter(
+			QueryBuilders.termQuery("eventId", "blogClicked")
 		);
 	}
 
@@ -120,8 +100,5 @@ public class BlogClickNanite extends BaseNanite<BlogClick> {
 	}
 
 	private static final Log _log = LogFactory.getLog(BlogClickNanite.class);
-
-	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_BLOG)
-	private MessageSubscriber _messageSubscriber;
 
 }

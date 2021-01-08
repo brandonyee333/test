@@ -14,4 +14,4 @@ USER root
 
 WORKDIR /root
 
-COPY ./build/libs/*application.jar app.jar
+COPY ./build/libs/*.jar app.jar

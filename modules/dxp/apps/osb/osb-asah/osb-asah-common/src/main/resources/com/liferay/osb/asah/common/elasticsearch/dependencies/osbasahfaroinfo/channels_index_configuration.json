@@ -39,8 +39,8 @@
 			"analyzer": {
 				"folding_analyzer": {
 					"filter": [
-						"asciifolding",
-						"lowercase"
+						"lowercase",
+						"asciifolding"
 					],
 					"tokenizer": "standard",
 					"type": "custom"

@@ -19,24 +19,22 @@ import com.liferay.osb.asah.backend.dog.helper.MetricHelper;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
-import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 
 import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,8 +44,8 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
-import org.elasticsearch.search.aggregations.metrics.ScriptedMetric;
-import org.elasticsearch.search.aggregations.metrics.ScriptedMetricAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.scripted.ScriptedMetric;
+import org.elasticsearch.search.aggregations.metrics.scripted.ScriptedMetricAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +62,7 @@ public class VisitorHistogramDog {
 		_dogConfigurationBag = new DogConfigurationBag(dogConfigurations);
 	}
 
-	public HistogramMetricBag getHistogramMetricBag(
+	public List<HistogramMetric> getHistogramMetrics(
 		boolean includePrevious, MetricType metricType,
 		SearchQueryContext searchQueryContext) {
 
@@ -78,7 +76,7 @@ public class VisitorHistogramDog {
 				dogConfiguration, includePrevious, searchQueryContext));
 
 		if (DogUtil.isEmpty(aggregations)) {
-			return new HistogramMetricBag();
+			return Collections.emptyList();
 		}
 
 		String aggregationKey = "ranges";
@@ -87,8 +85,8 @@ public class VisitorHistogramDog {
 			aggregationKey = "period_ranges";
 		}
 
-		return _createHistogramMetricBag(
-			includePrevious, searchQueryContext.getInterval(), metricType,
+		return _createHistogramMetrics(
+			searchQueryContext.getInterval(), includePrevious, metricType,
 			aggregations.get(aggregationKey),
 			searchQueryContext.getTimeRange());
 	}
@@ -113,8 +111,7 @@ public class VisitorHistogramDog {
 				Collections.singleton(scriptedMetricAggregationBuilder),
 				DogUtil.getAssetIdOptional(
 					searchQueryContext.getAssetId(), dogConfiguration),
-				Collections.emptySet(),
-				dogConfiguration.getQueryBuilder(searchQueryContext),
+				Collections.emptySet(), dogConfiguration.getQueryBuilder(),
 				searchQueryContext);
 		}
 
@@ -122,13 +119,12 @@ public class VisitorHistogramDog {
 			Collections.singleton(scriptedMetricAggregationBuilder),
 			DogUtil.getAssetIdOptional(
 				searchQueryContext.getAssetId(), dogConfiguration),
-			Collections.emptySet(),
-			dogConfiguration.getQueryBuilder(searchQueryContext),
+			Collections.emptySet(), dogConfiguration.getQueryBuilder(),
 			searchQueryContext);
 	}
 
-	private HistogramMetricBag _createHistogramMetricBag(
-		boolean includePrevious, Interval interval, MetricType metricType,
+	private List<HistogramMetric> _createHistogramMetrics(
+		Interval interval, boolean includePrevious, MetricType metricType,
 		Range range, TimeRange timeRange) {
 
 		List<? extends Range.Bucket> rangeBuckets = range.getBuckets();
@@ -136,15 +132,11 @@ public class VisitorHistogramDog {
 		if ((includePrevious && (rangeBuckets.size() < 2)) ||
 			rangeBuckets.isEmpty()) {
 
-			return new HistogramMetricBag();
+			return Collections.emptyList();
 		}
 
-		HistogramMetricBag histogramMetricBag =
-			_metricHelper.createHistogramMetricBag(
-				Clock.system(_timeZoneDog.getZoneId()), includePrevious,
-				interval, metricType, timeRange);
-
-		Map<String, Metric> metrics = _getMetrics(histogramMetricBag);
+		Map<String, Metric> metrics = _metricHelper.createMetrics(
+			Clock.systemUTC(), interval, timeRange, metricType);
 
 		List<LocalDateTime> histogramBuckets = _getHistogramBuckets(
 			metrics.keySet());
@@ -207,7 +199,15 @@ public class VisitorHistogramDog {
 			metrics.put(timeKey, metric);
 		}
 
-		return histogramMetricBag;
+		Set<Map.Entry<String, Metric>> entries = metrics.entrySet();
+
+		Stream<Map.Entry<String, Metric>> stream = entries.stream();
+
+		return stream.map(
+			entry -> new HistogramMetric(entry.getKey(), entry.getValue())
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private LocalDateTime _getCurrentLocalDateTime(
@@ -237,19 +237,6 @@ public class VisitorHistogramDog {
 		);
 	}
 
-	private Map<String, Metric> _getMetrics(
-		HistogramMetricBag histogramMetricBag) {
-
-		List<HistogramMetric> histogramMetrics =
-			histogramMetricBag.getMetrics();
-
-		Stream<HistogramMetric> histogramMetricStream =
-			histogramMetrics.stream();
-
-		return histogramMetricStream.collect(
-			Collectors.toMap(HistogramMetric::getKey, Function.identity()));
-	}
-
 	private LocalDateTime _getPreviousLocalDateTime(
 		LocalDateTime localDateTime, TimeRange timeRange) {
 
@@ -276,14 +263,8 @@ public class VisitorHistogramDog {
 
 			return localDateTime.plusWeeks(13);
 		}
-		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
-			return localDateTime.plusWeeks(180);
-		}
-		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
-			return localDateTime.plusYears(1);
-		}
 
-		return localDateTime.plusDays(timeRange.getDeltaDays());
+		return localDateTime;
 	}
 
 	private String _getTimeKey(
@@ -293,7 +274,7 @@ public class VisitorHistogramDog {
 		Instant instant = Instant.ofEpochMilli(Long.parseLong(timestamp));
 
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(
-			instant, _timeZoneDog.getZoneId());
+			instant, ZoneOffset.UTC);
 
 		localDateTime = localDateTime.withMinute(0);
 		localDateTime = localDateTime.withNano(0);
@@ -319,13 +300,13 @@ public class VisitorHistogramDog {
 	@PostConstruct
 	private void _init() {
 		_visitorHistogramCombineScript = ScriptUtil.createScript(
-			getClass(), "visitor_histogram_combine_script.painless");
+			getClass(), "visitor-histogram-combine-script.painless");
 		_visitorHistogramInitScript = ScriptUtil.createScript(
-			getClass(), "visitor_histogram_init_script.painless");
+			getClass(), "visitor-histogram-init-script.painless");
 		_visitorHistogramMapScript = ScriptUtil.createScript(
-			getClass(), "visitor_histogram_map_script.painless");
+			getClass(), "visitor-histogram-map-script.painless");
 		_visitorHistogramReduceScript = ScriptUtil.createScript(
-			getClass(), "visitor_histogram_reduce_script.painless");
+			getClass(), "visitor-histogram-reduce-script.painless");
 	}
 
 	@Autowired
@@ -338,9 +319,6 @@ public class VisitorHistogramDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 	private Script _visitorHistogramCombineScript;
 	private Script _visitorHistogramInitScript;

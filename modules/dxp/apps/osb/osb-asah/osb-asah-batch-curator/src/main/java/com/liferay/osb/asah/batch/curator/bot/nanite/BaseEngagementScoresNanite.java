@@ -58,7 +58,7 @@ public abstract class BaseEngagementScoresNanite extends BaseScoresNanite {
 
 		double maxScrollTime =
 			_AVERAGE_PRESCROLL_PAGE_VIEW_TIME +
-				(_AVERAGE_SCROLL_TIME_PER_DEPTH * depth);
+				_AVERAGE_SCROLL_TIME_PER_DEPTH * depth;
 
 		return Math.min(Math.max(scrollTime / maxScrollTime, 0), 1);
 	}
@@ -165,7 +165,7 @@ public abstract class BaseEngagementScoresNanite extends BaseScoresNanite {
 
 	protected double normalizeScore(double score, double averageScore) {
 		return score /
-			Math.sqrt((3 * averageScore * averageScore) + (score * score));
+			Math.sqrt(3 * averageScore * averageScore + score * score);
 	}
 
 	protected static class ScrollingActivityJSONObjectComparator

@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
 import java.net.URL;
 
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,6 +63,12 @@ public class OSBAsahRedisConfiguration {
 		return new JedisPool(
 			jedisConnectionFactory.getHostName(),
 			jedisConnectionFactory.getPort());
+	}
+
+	@Bean
+	@Profile("!default")
+	public HealthIndicator redisHealthIndicator() {
+		return () -> null;
 	}
 
 	@Bean

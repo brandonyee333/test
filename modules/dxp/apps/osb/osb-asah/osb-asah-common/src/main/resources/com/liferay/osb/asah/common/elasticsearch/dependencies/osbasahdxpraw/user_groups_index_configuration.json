@@ -1,6 +1,6 @@
 {
 	"mappings": {
-		"user-groups": {
+		"_default_": {
 			"date_detection": false,
 			"properties": {
 				"addedByLDAPImport": {

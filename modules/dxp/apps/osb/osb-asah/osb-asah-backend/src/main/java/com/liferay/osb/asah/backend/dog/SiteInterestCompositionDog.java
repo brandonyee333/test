@@ -20,10 +20,9 @@ import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,18 +30,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
+import org.apache.lucene.search.join.ScoreMode;
+
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregation;
-import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.composite.CompositeValuesSourceBuilder;
-import org.elasticsearch.search.aggregations.bucket.composite.TermsValuesSourceBuilder;
-import org.elasticsearch.search.aggregations.metrics.InternalCardinality;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
+import org.elasticsearch.search.aggregations.bucket.nested.ReverseNested;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,17 +54,13 @@ import org.springframework.stereotype.Component;
 public class SiteInterestCompositionDog {
 
 	public CompositionResultBag getCompositionResultBag(
-		String channelId, String dataSourceId, int size, int start,
-		TimeRange timeRange, String timeZoneId) {
-
-		Map<String, Set<String>> keywords = _getKeywords(
-			channelId, dataSourceId, timeRange, timeZoneId);
-
-		if (keywords.isEmpty()) {
-			return new CompositionResultBag();
-		}
+		String channelId, String dataSourceId, int rangeKey, int size,
+		int start) {
 
 		List<Composition> compositions = new ArrayList<>();
+
+		Map<String, Set<String>> keywords = _getKeywords(
+			channelId, dataSourceId, rangeKey);
 
 		for (Map.Entry<String, Set<String>> keyword : keywords.entrySet()) {
 			Set<String> sessionIds = keyword.getValue();
@@ -88,267 +84,218 @@ public class SiteInterestCompositionDog {
 
 		return new CompositionResultBag(
 			compositions.subList(start, end), compositions.size(),
-			_getTotalUsers(channelId, dataSourceId, timeRange, timeZoneId));
+			_getTotalSessions(channelId, dataSourceId, rangeKey));
 	}
 
-	private BoolQueryBuilder _getActivitiesBoolQueryBuilder(
-		String channelId, String dataSourceId, TimeRange timeRange,
-		String timeZoneId) {
+	private void _addTimeRangeFilter(
+		BoolQueryBuilder boolQueryBuilder, TimeRange timeRange) {
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			_searchQueryHelper.createRangeQueryBuilder(
-				"endTime", timeRange, timeZoneId)
-		).filter(
-			QueryBuilders.termQuery("applicationId", "Page")
-		).filter(
-			QueryBuilders.termQuery("eventId", "pageViewed")
-		);
-
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelId", channelId);
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "dataSourceId", dataSourceId);
-
-		return boolQueryBuilder;
+		boolQueryBuilder.filter(
+			QueryBuilders.nestedQuery(
+				"interactions",
+				_searchQueryHelper.createRangeQueryBuilder(
+					"interactions.eventDate", timeRange),
+				ScoreMode.None));
 	}
 
 	private Map<String, Set<String>> _getKeywords(
-		String channelId, String dataSourceId, TimeRange timeRange,
-		String timeZoneId) {
+		String channelId, String dataSourceId, int rangeKey) {
 
 		Map<String, Set<String>> keywords = new HashMap<>();
 
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		TermsValuesSourceBuilder assetIdTermsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("assetIds");
-
-		assetIdTermsValuesSourceBuilder.field("id");
-
-		TermsValuesSourceBuilder keywordTermsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("keywords/keyword");
-
-		keywordTermsValuesSourceBuilder.field("keywords.keyword");
-
-		CompositeAggregationBuilder compositeAggregationBuilder =
-			AggregationBuilders.composite(
-				"composite",
-				new ArrayList<CompositeValuesSourceBuilder<?>>() {
-					{
-						add(assetIdTermsValuesSourceBuilder);
-						add(keywordTermsValuesSourceBuilder);
-					}
-				}
-			).size(
-				10000
-			);
-
-		searchSourceBuilder.aggregation(compositeAggregationBuilder);
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("assetType", "Page")
-		).filter(
-			QueryBuilders.existsQuery("keywords.keyword")
-		);
-
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "channelIds", channelId);
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "dataSourceId", dataSourceId);
-
-		searchSourceBuilder.query(boolQueryBuilder);
-
-		searchSourceBuilder.size(0);
-
-		Map<String, Set<String>> assets = new HashMap<>();
-
-		while (true) {
-			SearchResponse searchResponse =
-				_faroInfoElasticsearchInvoker.search(
-					"assets", searchSourceBuilder);
-
-			Aggregations aggregations = searchResponse.getAggregations();
-
-			if (DogUtil.isEmpty(aggregations)) {
-				return keywords;
-			}
-
-			CompositeAggregation compositeAggregation = aggregations.get(
-				"composite");
-
-			List<? extends CompositeAggregation.Bucket> buckets =
-				compositeAggregation.getBuckets();
-
-			if (buckets.isEmpty()) {
-				break;
-			}
-
-			for (CompositeAggregation.Bucket bucket : buckets) {
-				Map<String, Object> keys = bucket.getKey();
-
-				String keyword = (String)keys.get("keywords/keyword");
-
-				Set<String> assetIds = assets.getOrDefault(
-					keyword, new HashSet<>());
-
-				assetIds.add((String)keys.get("assetIds"));
-
-				assets.put(keyword, assetIds);
-			}
-
-			compositeAggregationBuilder.aggregateAfter(
-				compositeAggregation.afterKey());
-		}
-
-		Map<String, Set<String>> users = _getUsers(
-			channelId, dataSourceId, timeRange, timeZoneId);
-
-		for (Map.Entry<String, Set<String>> entry : assets.entrySet()) {
-			Set<String> userIds = new HashSet<>();
-
-			for (String assetId : entry.getValue()) {
-				if (users.containsKey(assetId)) {
-					userIds.addAll(users.get(assetId));
-				}
-			}
-
-			if (userIds.isEmpty()) {
-				continue;
-			}
-
-			keywords.put(entry.getKey(), userIds);
-		}
-
-		return keywords;
-	}
-
-	private long _getTotalUsers(
-		String channelId, String dataSourceId, TimeRange timeRange,
-		String timeZoneId) {
-
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"activities",
+			"assets",
 			searchSourceBuilder -> {
 				searchSourceBuilder.aggregation(
-					AggregationBuilders.cardinality(
-						"totalUsers"
-					).script(
-						new Script(
-							Script.DEFAULT_SCRIPT_TYPE,
-							Script.DEFAULT_SCRIPT_LANG,
-							"doc['day'] + ' ' + doc['userId'] + ' ' + " +
-								"doc['object.id']",
-							Collections.emptyMap())
+					AggregationBuilders.terms(
+						"canonicalUrls"
+					).field(
+						"canonicalUrl"
+					).size(
+						Integer.MAX_VALUE
+					).subAggregation(
+						AggregationBuilders.terms(
+							"keywords/keyword"
+						).field(
+							"keywords.keyword"
+						).order(
+							BucketOrder.compound(
+								BucketOrder.count(false), BucketOrder.key(true))
+						).size(
+							Integer.MAX_VALUE
+						)
 					));
-				searchSourceBuilder.query(
-					_getActivitiesBoolQueryBuilder(
-						channelId, dataSourceId, timeRange, timeZoneId));
+
+				BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("assetType", "Page")
+				).filter(
+					QueryBuilders.existsQuery("keywords.keyword")
+				);
+
+				BoolQueryBuilderUtil.filterTerm(
+					boolQueryBuilder, "channelIds", channelId);
+				BoolQueryBuilderUtil.filterTerm(
+					boolQueryBuilder, "dataSourceId", dataSourceId);
+
+				searchSourceBuilder.query(boolQueryBuilder);
+
 				searchSourceBuilder.size(0);
 			});
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
 		if (DogUtil.isEmpty(aggregations)) {
-			return 0;
+			return keywords;
 		}
 
-		InternalCardinality internalCardinality = aggregations.get(
-			"totalUsers");
+		Terms terms = aggregations.get("canonicalUrls");
 
-		return internalCardinality.getValue();
-	}
+		Map<String, Set<String>> sessionIds = _getSessionIds(
+			channelId, dataSourceId, rangeKey);
 
-	private Map<String, Set<String>> _getUsers(
-		String channelId, String dataSourceId, TimeRange timeRange,
-		String timeZoneId) {
+		for (Map.Entry<String, Set<String>> entry : sessionIds.entrySet()) {
+			String canonicalUrl = entry.getKey();
 
-		Map<String, Set<String>> users = new HashMap<>();
+			Terms.Bucket bucket = terms.getBucketByKey(canonicalUrl);
 
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
+			if (bucket == null) {
+				continue;
+			}
 
-		TermsValuesSourceBuilder assetIdsTermsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("assetIds");
+			Aggregations bucketAggregations = bucket.getAggregations();
 
-		assetIdsTermsValuesSourceBuilder.field("object.id");
+			Terms bucketTerms = bucketAggregations.get("keywords/keyword");
 
-		TermsValuesSourceBuilder dayTermsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("days");
+			for (Terms.Bucket termsBucket : bucketTerms.getBuckets()) {
+				String keyword = termsBucket.getKeyAsString();
 
-		dayTermsValuesSourceBuilder.field("day");
+				Set<String> curSessionIds = null;
 
-		TermsValuesSourceBuilder userIdTermsValuesSourceBuilder =
-			new TermsValuesSourceBuilder("userIds");
-
-		userIdTermsValuesSourceBuilder.field("userId");
-
-		CompositeAggregationBuilder compositeAggregationBuilder =
-			AggregationBuilders.composite(
-				"composite",
-				new ArrayList<CompositeValuesSourceBuilder<?>>() {
-					{
-						add(assetIdsTermsValuesSourceBuilder);
-						add(dayTermsValuesSourceBuilder);
-						add(userIdTermsValuesSourceBuilder);
-					}
+				if (keywords.containsKey(keyword)) {
+					curSessionIds = keywords.get(keyword);
 				}
-			).size(
-				10000
-			);
+				else {
+					curSessionIds = new HashSet<>();
+				}
 
-		searchSourceBuilder.aggregation(compositeAggregationBuilder);
+				curSessionIds.addAll(sessionIds.get(canonicalUrl));
 
-		searchSourceBuilder.query(
-			_getActivitiesBoolQueryBuilder(
-				channelId, dataSourceId, timeRange, timeZoneId));
-		searchSourceBuilder.size(0);
-
-		while (true) {
-			SearchResponse searchResponse =
-				_faroInfoElasticsearchInvoker.search(
-					"activities", searchSourceBuilder);
-
-			Aggregations aggregations = searchResponse.getAggregations();
-
-			if (DogUtil.isEmpty(aggregations)) {
-				return users;
+				keywords.put(keyword, curSessionIds);
 			}
-
-			CompositeAggregation compositeAggregation = aggregations.get(
-				"composite");
-
-			List<? extends CompositeAggregation.Bucket> buckets =
-				compositeAggregation.getBuckets();
-
-			if (buckets.isEmpty()) {
-				break;
-			}
-
-			for (CompositeAggregation.Bucket bucket : buckets) {
-				Map<String, Object> keys = bucket.getKey();
-
-				String assetId = (String)keys.get("assetIds");
-
-				Set<String> userCount = users.getOrDefault(
-					assetId, new HashSet<>());
-
-				Long days = (Long)keys.get("days");
-				String userIds = (String)keys.get("userIds");
-
-				userCount.add(userIds + days);
-
-				users.put(assetId, userCount);
-			}
-
-			compositeAggregationBuilder.aggregateAfter(
-				compositeAggregation.afterKey());
 		}
 
-		return users;
+		return keywords;
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private Map<String, Set<String>> _getSessionIds(
+		String channelId, String dataSourceId, int rangeKey) {
+
+		Map<String, Set<String>> sessionIds = new HashMap<>();
+
+		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+
+		BoolQueryBuilderUtil.filterTerm(
+			boolQueryBuilder, "channelId", channelId);
+		BoolQueryBuilderUtil.filterTerm(
+			boolQueryBuilder, "dataSourceId", dataSourceId);
+
+		_addTimeRangeFilter(boolQueryBuilder, TimeRange.of(rangeKey));
+
+		SearchResponse searchResponse = _cerebroInfoElasticsearchInvoker.search(
+			"user-sessions",
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.nested(
+						"interactions", "interactions"
+					).subAggregation(
+						AggregationBuilders.terms(
+							"canonicalUrls"
+						).field(
+							"interactions.context.canonicalUrl"
+						).size(
+							Integer.MAX_VALUE
+						).subAggregation(
+							AggregationBuilders.reverseNested(
+								"reverseNested"
+							).subAggregation(
+								AggregationBuilders.terms(
+									"sessionIds"
+								).field(
+									"id"
+								).size(
+									Integer.MAX_VALUE
+								)
+							)
+						)
+					));
+				searchSourceBuilder.query(boolQueryBuilder);
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		if (DogUtil.isEmpty(aggregations)) {
+			return sessionIds;
+		}
+
+		InternalNested internalNested = aggregations.get("interactions");
+
+		Aggregations nestedAggregations = internalNested.getAggregations();
+
+		Terms terms = nestedAggregations.get("canonicalUrls");
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			Aggregations bucketAggregations = bucket.getAggregations();
+
+			ReverseNested reverseNested = bucketAggregations.get(
+				"reverseNested");
+
+			Aggregations reverseNestedAggregations =
+				reverseNested.getAggregations();
+
+			Terms sessionIdsTerms = reverseNestedAggregations.get("sessionIds");
+
+			Set<String> curSessionIds = new HashSet<>();
+
+			for (Terms.Bucket termBucket : sessionIdsTerms.getBuckets()) {
+				curSessionIds.add(termBucket.getKeyAsString());
+			}
+
+			sessionIds.put(bucket.getKeyAsString(), curSessionIds);
+		}
+
+		return sessionIds;
+	}
+
+	private long _getTotalSessions(
+		String channelId, String dataSourceId, int rangeKey) {
+
+		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+
+		BoolQueryBuilderUtil.filterTerm(
+			boolQueryBuilder, "channelId", channelId);
+		BoolQueryBuilderUtil.filterTerm(
+			boolQueryBuilder, "dataSourceId", dataSourceId);
+
+		_addTimeRangeFilter(boolQueryBuilder, TimeRange.of(rangeKey));
+
+		return _cerebroInfoElasticsearchInvoker.count(
+			"user-sessions", boolQueryBuilder);
+	}
+
+	@PostConstruct
+	private void _init() {
+		_cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+	}
+
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

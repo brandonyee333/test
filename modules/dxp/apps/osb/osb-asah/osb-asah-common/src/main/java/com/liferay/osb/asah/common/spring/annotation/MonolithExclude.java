@@ -14,12 +14,8 @@
 
 package com.liferay.osb.asah.common.spring.annotation;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 /**
  * @author André Miranda
  */
-@Retention(RetentionPolicy.RUNTIME)
 public @interface MonolithExclude {
 }

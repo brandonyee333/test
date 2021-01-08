@@ -1,10 +1,6 @@
 [
 	{
 		"activitiesCounts": [
-			{
-				"activitiesCount": 1,
-				"channelId": "1"
-			}
 		],
 		"dataSourceIndividualPKs": [
 			{
@@ -28,14 +24,6 @@
 	},
 	{
 		"activitiesCounts": [
-			{
-				"activitiesCount": 1,
-				"channelId": "1"
-			},
-			{
-				"activitiesCount": 1,
-				"channelId": "2"
-			}
 		],
 		"dataSourceIndividualPKs": [
 			{

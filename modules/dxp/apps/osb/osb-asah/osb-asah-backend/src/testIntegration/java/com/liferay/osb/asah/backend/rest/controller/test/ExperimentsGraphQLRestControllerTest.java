@@ -21,7 +21,7 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
  * @author Geyson Silva
  */
 @ElasticsearchIndex(
-	name = "experiments", resourcePath = "experiments_info.json",
+	name = "experiments", resourcePath = "experiments-info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 public class ExperimentsGraphQLRestControllerTest
@@ -29,17 +29,17 @@ public class ExperimentsGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "experiments_body.json";
+		return "experiments-body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "experiments_expected_result.json";
+		return "experiments-expected-result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "experiments_query.graphql";
+		return "experiments-query.graphql";
 	}
 
 }

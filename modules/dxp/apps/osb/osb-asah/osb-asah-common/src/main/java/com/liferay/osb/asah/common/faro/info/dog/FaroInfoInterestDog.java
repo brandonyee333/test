@@ -16,8 +16,8 @@ package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 
 /**
@@ -36,7 +36,10 @@ public class FaroInfoInterestDog extends BaseFaroInfoDog {
 			));
 	}
 
-	@CacheEvict({"getInterests", "getInterestTransformations"})
+	@CacheEvict(
+		allEntries = true,
+		value = {"getInterests", "getInterestTransformations"}
+	)
 	public void clearCache() {
 	}
 

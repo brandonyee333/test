@@ -1,0 +1,1034 @@
+[
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "birthDate",
+			"346308771486495553": "birthDate"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "birthDate",
+		"fieldType": "Date",
+		"id": "346306694045119940",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "email",
+			"346308771486495553": "email"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "email",
+		"fieldType": "Text",
+		"id": "346306694525704369",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "firstName",
+			"346308771486495553": "firstName"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "givenName",
+		"fieldType": "Text",
+		"id": "346306694795671857",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "title",
+			"346308771486495553": "title"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "jobTitle",
+		"fieldType": "Text",
+		"id": "346306696215483316",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "lastName",
+			"346308771486495553": "lastName"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "familyName",
+		"fieldType": "Text",
+		"id": "346306696480203248",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "middleName",
+			"346308771486495553": "middleName"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "additionalName",
+		"fieldType": "Text",
+		"id": "346306696719062824",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "phone",
+			"346308771486495553": "phone"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "telephone",
+		"fieldType": "Text",
+		"id": "346306696999726586",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "id",
+			"346308771486495553": "id"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "accountId",
+		"fieldType": "Text",
+		"id": "346306707016107520",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "AnnualRevenue",
+			"346308771486495553": "AnnualRevenue"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "annualRevenue",
+		"fieldType": "Number",
+		"id": "346306707459029464",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "BillingCity",
+			"346308771486495553": "BillingCity"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "billingCity",
+		"fieldType": "Text",
+		"id": "346306708291131744",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "BillingCountry",
+			"346308771486495553": "BillingCountry"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "billingCountry",
+		"fieldType": "Text",
+		"id": "346306709675111986",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "BillingPostalCode",
+			"346308771486495553": "BillingPostalCode"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "billingPostalCode",
+		"fieldType": "Text",
+		"id": "346306710200072488",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "BillingState",
+			"346308771486495553": "BillingState"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "billingState",
+		"fieldType": "Text",
+		"id": "346306710872939742",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "BillingStreet",
+			"346308771486495553": "BillingStreet"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "billingStreet",
+		"fieldType": "Text",
+		"id": "346306711422558505",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "CurrencyIsoCode",
+			"346308771486495553": "CurrencyIsoCode"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "currencyIsoCode",
+		"fieldType": "Text",
+		"id": "346306712133547678",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "Description",
+			"346308771486495553": "Description"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "description",
+		"fieldType": "Text",
+		"id": "346306712948736864",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "Fax",
+			"346308771486495553": "Fax"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "fax",
+		"fieldType": "Text",
+		"id": "346306713563142337",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "Industry",
+			"346308771486495553": "Industry"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "industry",
+		"fieldType": "Text",
+		"id": "346306714081231429",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "Name",
+			"346308771486495553": "Name"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "accountName",
+		"fieldType": "Text",
+		"id": "346306714763243455",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "NumberOfEmployees",
+			"346308771486495553": "NumberOfEmployees"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "numberOfEmployees",
+		"fieldType": "Number",
+		"id": "346306715142873250",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "Ownership",
+			"346308771486495553": "Ownership"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "ownership",
+		"fieldType": "Text",
+		"id": "346306715973354308",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "Phone",
+			"346308771486495553": "Phone"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "phone",
+		"fieldType": "Text",
+		"id": "346306717212687885",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "Rating",
+			"346308771486495553": "Rating"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "rating",
+		"fieldType": "Text",
+		"id": "346306717694474887",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "ShippingCity",
+			"346308771486495553": "ShippingCity"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "shippingCity",
+		"fieldType": "Text",
+		"id": "346306718569453564",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "ShippingCountry",
+			"346308771486495553": "ShippingCountry"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "shippingCountry",
+		"fieldType": "Text",
+		"id": "346306719058468741",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "ShippingPostalCode",
+			"346308771486495553": "ShippingPostalCode"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "shippingPostalCode",
+		"fieldType": "Text",
+		"id": "346306719402391726",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "ShippingState",
+			"346308771486495553": "ShippingState"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "shippingState",
+		"fieldType": "Text",
+		"id": "346306719817182340",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "ShippingStreet",
+			"346308771486495553": "ShippingStreet"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "shippingStreet",
+		"fieldType": "Text",
+		"id": "346306720206787519",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "Type",
+			"346308771486495553": "Type"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "accountType",
+		"fieldType": "Text",
+		"id": "346306720486404423",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "Website",
+			"346308771486495553": "Website"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "website",
+		"fieldType": "Text",
+		"id": "346306720914184711",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"346306699042460013": "YearStarted",
+			"346308771486495553": "YearStarted"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "yearStarted",
+		"fieldType": "Number",
+		"id": "346306721213637036",
+		"ownerType": "account",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "city",
+			"346308771486495553": "city"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "city",
+		"fieldType": "Text",
+		"id": "346306724766271678",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "company",
+			"346308771486495553": "company"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "worksFor",
+		"fieldType": "Text",
+		"id": "346306724965681244",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "country",
+			"346308771486495553": "country"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "country",
+		"fieldType": "Text",
+		"id": "346306725454584132",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "department",
+			"346308771486495553": "department"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "department",
+		"fieldType": "Text",
+		"id": "346306725928454629",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "description",
+			"346308771486495553": "description"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "description",
+		"fieldType": "Text",
+		"id": "346306726160574593",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "doNotCall",
+			"346308771486495553": "doNotCall"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "doNotCall",
+		"fieldType": "Boolean",
+		"id": "346306726408375698",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "fax",
+			"346308771486495553": "fax"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "fax",
+		"fieldType": "Text",
+		"id": "346306726640856363",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "fullName",
+			"346308771486495553": "fullName"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "fullName",
+		"fieldType": "Text",
+		"id": "346306727186570473",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "industry",
+			"346308771486495553": "industry"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "industry",
+		"fieldType": "Text",
+		"id": "346306727505063058",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "mobilePhone",
+			"346308771486495553": "mobilePhone"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "mobilePhone",
+		"fieldType": "Text",
+		"id": "346306728252104684",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "postalCode",
+			"346308771486495553": "postalCode"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "postalCode",
+		"fieldType": "Text",
+		"id": "346306729623288777",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "salutation",
+			"346308771486495553": "salutation"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "salutation",
+		"fieldType": "Text",
+		"id": "346306729874767642",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "state",
+			"346308771486495553": "state"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "state",
+		"fieldType": "Text",
+		"id": "346306730174702977",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "street",
+			"346308771486495553": "street"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "street",
+		"fieldType": "Text",
+		"id": "346306730489858985",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"346306699042460013": "suffix",
+			"346308771486495553": "suffix"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "suffix",
+		"fieldType": "Text",
+		"id": "346306730760428530",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"fieldName": "image",
+		"fieldType": "Text",
+		"id": "346306766747009210",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	}
+]

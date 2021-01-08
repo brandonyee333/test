@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.custom.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.custom.CustomAssetDashboardNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.MessageBusChannel;
@@ -52,12 +52,14 @@ public class CustomAssetDashboardNaniteTest {
 	public void testAddDashboard() throws Exception {
 		_customAssetDashboardNanite.run();
 
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_custom_asset_dashboards_info.json",
 				this),
-			_cerebroInfoElasticsearchInvoker.get("custom-asset-dashboards"),
-			false);
+			elasticsearchInvoker.get("custom-asset-dashboards"), false);
 	}
 
 	@MessageBusChannel(
@@ -80,12 +82,14 @@ public class CustomAssetDashboardNaniteTest {
 
 		_customAssetDashboardNanite.run();
 
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_custom_asset_dashboards_info.json",
 				this),
-			_cerebroInfoElasticsearchInvoker.get("custom-asset-dashboards"),
-			false);
+			elasticsearchInvoker.get("custom-asset-dashboards"), false);
 	}
 
 	@Test
@@ -113,7 +117,10 @@ public class CustomAssetDashboardNaniteTest {
 
 		_customAssetDashboardNanite.run();
 
-		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get(
+		ElasticsearchInvoker elasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+
+		JSONArray jsonArray = elasticsearchInvoker.get(
 			"custom-asset-dashboards");
 
 		Assert.assertEquals(1, jsonArray.length());
@@ -124,11 +131,11 @@ public class CustomAssetDashboardNaniteTest {
 			"Asset's Title Update 2", jsonObject.getString("assetTitle"));
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
 	@Autowired
 	private CustomAssetDashboardNanite _customAssetDashboardNanite;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private MessageBus _messageBus;

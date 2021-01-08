@@ -41,7 +41,7 @@ import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.MaxAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.max.MaxAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +87,9 @@ public class TitleDog {
 
 			Aggregations bucketAggregations = termsBucket.getAggregations();
 
-			resultMap.put(assetId, _getTitle(bucketAggregations.get("title")));
+			String title = _getTitle(bucketAggregations.get("title"));
+
+			resultMap.put(assetId, title);
 		}
 
 		return resultMap;

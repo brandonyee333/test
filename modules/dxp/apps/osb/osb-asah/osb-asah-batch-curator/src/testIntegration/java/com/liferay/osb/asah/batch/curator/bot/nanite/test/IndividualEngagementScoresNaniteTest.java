@@ -23,7 +23,9 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
@@ -44,22 +46,32 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Michael Bowerman
  * @author Leslie Wong
  */
+@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
+@Import(
+	{
+		CerebroQueueHttpTestConfiguration.class,
+		OSBAsahRedisDisabledTestConfiguration.class
+	}
+)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class IndividualEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Before
+	@Override
 	public void setUp() throws Exception {
+		super.setUp();
+
 		_dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
@@ -82,6 +94,30 @@ public class IndividualEngagementScoresNaniteTest extends BaseNaniteTestCase {
 		_individualJSONObject = _faroInfoIndividualDog.addIndividual(
 			FaroInfoTestUtil.buildIndividualJSONObject(_dataSourceJSONObject),
 			false);
+	}
+
+	@Test
+	public void testFilterActivitiesWithoutOwnerId() throws Exception {
+		JSONObject activityGroupJSONObject =
+			FaroInfoTestUtil.buildActivityGroupJSONObject(
+				_dataSourceJSONObject.getString("id"),
+				DateUtil.addDays(DateUtil.newDateString(), 0),
+				_individualJSONObject);
+
+		activityGroupJSONObject.remove("ownerId");
+
+		_addPageVisitActivities(
+			faroInfoElasticsearchInvoker.add(
+				"activity-groups", activityGroupJSONObject),
+			_pageAssetsJSONArray.getJSONObject(0), "100",
+			RandomTestUtil.randomUUID());
+
+		Assert.assertEquals(
+			0, _computeInteractionScore(DateUtil.newDayDateString()), _DELTA);
+		Assert.assertEquals(
+			0, _computeLoyaltyScore(DateUtil.newDayDateString()), _DELTA);
+		Assert.assertEquals(
+			0, _computeVarietyScore(DateUtil.newDayDateString()), _DELTA);
 	}
 
 	@Test
@@ -885,7 +921,7 @@ public class IndividualEngagementScoresNaniteTest extends BaseNaniteTestCase {
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, assetJSONObject, "pageViewed",
-				new String[0], pageViewActivityId));
+				new String[] {"pageLoadTime", "1000"}, pageViewActivityId));
 	}
 
 	private void _addPageVisitActivities(

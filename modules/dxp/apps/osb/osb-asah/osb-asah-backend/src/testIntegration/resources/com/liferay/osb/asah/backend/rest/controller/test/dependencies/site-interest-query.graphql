@@ -1,0 +1,11 @@
+query Interests($channelId: String, $rangeKey: Int!, $size: Int!, $start: Int!) {
+	siteInterests(channelId: $channelId, rangeKey: $rangeKey, size: $size, start: $start) {
+		compositions {
+			name
+			count
+		}
+		maxCount
+		total
+		totalCount
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"operationName": "Acquisitions",
+	"variables": {
+		"activeTabId": "CHANNEL",
+		"channelId": "1",
+		"rangeKey": 30,
+		"size": 5,
+		"start": 0
+	}
+}

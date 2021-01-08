@@ -20,7 +20,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
-import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.backend.model.ResultBag;
 
 import graphql.execution.ExecutionTypeInfo;
 

@@ -1,0 +1,11 @@
+query SearchTerms($channelId: String, $rangeKey: Int!, $size: Int!, $start: Int!) {
+	searchTerms(channelId: $channelId, rangeKey: $rangeKey, size: $size, start: $start) {
+		compositions {
+			name
+			count
+		}
+		maxCount
+		total
+		totalCount
+	}
+}

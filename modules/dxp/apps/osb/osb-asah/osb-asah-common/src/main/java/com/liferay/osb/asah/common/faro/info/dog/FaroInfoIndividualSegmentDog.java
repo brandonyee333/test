@@ -22,11 +22,8 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
-import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
-import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.StringUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,12 +44,14 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.Sum;
+import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -60,12 +61,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 
+	@CacheEvict(allEntries = true, value = "getReferencedAssetIds")
 	public JSONObject addIndividualSegment(
 			JSONObject individualSegmentJSONObject)
 		throws Exception {
 
-		_faroInfoIndividualSegmentDog.setReferencedFields(
-			individualSegmentJSONObject);
+		_setReferencedFields(individualSegmentJSONObject);
 
 		individualSegmentJSONObject = elasticsearchInvoker.add(
 			"individual-segments", _setState(individualSegmentJSONObject));
@@ -99,7 +100,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		_updateMemberships(channelId, individualSegmentJSONObject);
 	}
 
-	@CacheEvict("getReferencedAssetIds")
+	@CacheEvict(allEntries = true, value = "getReferencedAssetIds")
 	public void deleteIndividualSegment(String individualSegmentId) {
 		elasticsearchInvoker.delete("individual-segments", individualSegmentId);
 
@@ -165,6 +166,15 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		return referencedAssetIds;
 	}
 
+	@Override
+	@PostConstruct
+	public void init() {
+		super.init();
+
+		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
+	}
+
+	@CacheEvict(allEntries = true, value = "getReferencedAssetIds")
 	public JSONObject replaceIndividualSegment(
 			JSONObject individualSegmentJSONObject)
 		throws Exception {
@@ -184,8 +194,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				"individual-segments", individualSegmentJSONObject);
 		}
 		else {
-			_faroInfoIndividualSegmentDog.setReferencedFields(
-				individualSegmentJSONObject);
+			_setReferencedFields(individualSegmentJSONObject);
 
 			elasticsearchInvoker.replace(
 				"individual-segments", _setState(individualSegmentJSONObject));
@@ -196,24 +205,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		return individualSegmentJSONObject;
 	}
 
-	@CacheEvict("getReferencedAssetIds")
-	public void setReferencedFields(JSONObject individualSegmentJSONObject)
-		throws Exception {
-
-		JSONObject referencedObjectIdsJSONObject =
-			_getReferencedObjectIdsJSONObject(
-				individualSegmentJSONObject.optString("filter", null), null);
-
-		for (String referencedObjectType :
-				referencedObjectIdsJSONObject.keySet()) {
-
-			individualSegmentJSONObject.put(
-				referencedObjectType,
-				referencedObjectIdsJSONObject.getJSONArray(
-					referencedObjectType));
-		}
-	}
-
+	@CacheEvict(allEntries = true, value = "getReferencedAssetIds")
 	public JSONObject updateIndividualSegment(
 			String individualSegmentId,
 			JSONObject partialIndividualSegmentJSONObject)
@@ -237,8 +229,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				partialIndividualSegmentJSONObject);
 		}
 		else {
-			_faroInfoIndividualSegmentDog.setReferencedFields(
-				partialIndividualSegmentJSONObject);
+			_setReferencedFields(partialIndividualSegmentJSONObject);
 
 			individualSegmentJSONObject = elasticsearchInvoker.update(
 				"individual-segments", individualSegmentId,
@@ -777,6 +768,23 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		_faroInfoAccountDog.replaceAccount(accountJSONObject);
 	}
 
+	private void _setReferencedFields(JSONObject individualSegmentJSONObject)
+		throws Exception {
+
+		JSONObject referencedObjectIdsJSONObject =
+			_getReferencedObjectIdsJSONObject(
+				individualSegmentJSONObject.optString("filter", null), null);
+
+		for (String referencedObjectType :
+				referencedObjectIdsJSONObject.keySet()) {
+
+			individualSegmentJSONObject.put(
+				referencedObjectType,
+				referencedObjectIdsJSONObject.getJSONArray(
+					referencedObjectType));
+		}
+	}
+
 	private JSONObject _setState(JSONObject individualSegmentJSONObject) {
 		String segmentType = individualSegmentJSONObject.optString(
 			"segmentType", null);
@@ -895,7 +903,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		"individualCount", "lastActivityDate"
 	};
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
@@ -903,9 +910,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
-
-	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
 	@Autowired
 	private FaroInfoMembershipDog _faroInfoMembershipDog;

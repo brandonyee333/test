@@ -1,0 +1,7 @@
+def visitorId = doc.userId[0].toString();
+
+if (doc.individualId.length > 0) {
+	visitorId = doc.individualId[0].toString();
+}
+
+params._agg.minDateMap.merge(visitorId, doc.eventDate.date.millis, (eventDateMillis1, eventDateMillis2) -> (eventDateMillis1 < eventDateMillis2) ? eventDateMillis1 : eventDateMillis2);

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.backend.model;
 
-import com.liferay.osb.asah.common.model.ResultBag;
-
 import java.util.List;
 import java.util.Objects;
 

@@ -1,0 +1,56 @@
+[
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 3,
+				"channelId": "1"
+			},
+			{
+				"activitiesCount": 3,
+				"channelId": "2"
+			}
+		],
+		"channelIds": [
+			"1",
+			"2"
+		],
+		"id": "1",
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "2020-04-06T13:00:00.000Z"
+			},
+			{
+				"channelId": "2",
+				"lastActivityDate": "2020-04-06T14:00:00.000Z"
+			}
+		]
+	},
+	{
+		"activitiesCounts": [
+			{
+				"activitiesCount": 2,
+				"channelId": "1"
+			},
+			{
+				"activitiesCount": 2,
+				"channelId": "2"
+			}
+		],
+		"channelIds": [
+			"1",
+			"2"
+		],
+		"id": "2",
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "2020-04-07T15:00:00.000Z"
+			},
+			{
+				"channelId": "2",
+				"lastActivityDate": "2020-04-07T16:00:00.000Z"
+			}
+		]
+	}
+]
