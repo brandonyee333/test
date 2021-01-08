@@ -67,8 +67,7 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 		AccountEntrySearchDisplayContext accountEntrySearchDisplayContext =
 			new AccountEntrySearchDisplayContext(
 				renderRequest, renderResponse, themeDisplay, _accountReader,
-				_accountWebService, _productWebService,
-				_productPurchaseWebService);
+				_accountWebService, _productWebService);
 
 		renderRequest.setAttribute(
 			AccountEntrySearchDisplayContext.class.getName(),

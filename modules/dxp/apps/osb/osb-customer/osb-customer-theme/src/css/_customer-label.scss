@@ -15,12 +15,12 @@
 		border: 1px solid $label-success-border;
 		color: $label-success-color;
 	}
-	
+
 	&.label-cancelled {
 		border: 1px solid $label-danger-border;
 		color: $label-danger-color;
 	}
-	
+
 	&.label-closed {
 		border: 1px solid $label-default-border;
 		color: $label-default-color;
@@ -30,17 +30,17 @@
 		border: 1px solid $label-warning-border;
 		color: $label-warning-color;
 	}
-	
+
 	&.label-future {
 		border: 1px solid $label-warning-border;
 		color: $label-warning-color;
-	}	
+	}
 
 	&.label-unactivated {
 		border: 1px solid $label-default-border;
 		color: $label-default-color;
-	}	
-	
+	}
+
 	&.label-on-hold {
 		border: 1px solid $label-warning-border;
 		color: $label-warning-color;

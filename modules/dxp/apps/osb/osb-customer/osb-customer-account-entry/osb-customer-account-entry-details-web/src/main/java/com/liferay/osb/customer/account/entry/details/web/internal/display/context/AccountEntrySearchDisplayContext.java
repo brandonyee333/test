@@ -18,7 +18,6 @@ import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
-import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
@@ -48,8 +47,7 @@ public class AccountEntrySearchDisplayContext {
 			PortletRequest portletRequest, MimeResponse mimeResponse,
 			ThemeDisplay themeDisplay, AccountReader accountReader,
 			AccountWebService accountWebService,
-			ProductWebService productWebService,
-			ProductPurchaseWebService productPurchaseWebService)
+			ProductWebService productWebService)
 		throws PortalException {
 
 		_portletRequest = portletRequest;
@@ -58,7 +56,6 @@ public class AccountEntrySearchDisplayContext {
 		_accountReader = accountReader;
 		_accountWebService = accountWebService;
 		_productWebService = productWebService;
-		_productPurchaseWebService = productPurchaseWebService;
 	}
 
 	public SearchContainer getAccountsSearchContainer() throws Exception {
@@ -203,7 +200,6 @@ public class AccountEntrySearchDisplayContext {
 	private final AccountWebService _accountWebService;
 	private final MimeResponse _mimeResponse;
 	private final PortletRequest _portletRequest;
-	private final ProductPurchaseWebService _productPurchaseWebService;
 	private final ProductWebService _productWebService;
 	private SearchContainer _searchContainer;
 	private final ThemeDisplay _themeDisplay;

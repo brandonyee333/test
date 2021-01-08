@@ -32,7 +32,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -167,6 +166,17 @@ public class AccountReaderImpl implements AccountReader {
 		return slaProductPurchase;
 	}
 
+	public String getState(String accountKey) throws Exception {
+		StringBundler sb = new StringBundler();
+
+		sb.append("accountKey eq '");
+		sb.append(accountKey);
+		sb.append("'");
+
+		return getSubscriptionState(
+			_productPurchaseWebService.search(sb.toString(), 1, 1000));
+	}
+
 	public int getStatus(Account account) {
 		if (account.getStatus() == Account.Status.ACTIVE) {
 			return WorkflowConstants.STATUS_APPROVED;
@@ -197,16 +207,6 @@ public class AccountReaderImpl implements AccountReader {
 		}
 
 		return state;
-	}
-	
-	public String getState(String accountKey) throws Exception {
-		StringBundler sb = new StringBundler();
-
-		sb.append("accountKey eq '");
-		sb.append(accountKey);
-		sb.append("'");
-
-		return getSubscriptionState(_productPurchaseWebService.search(sb.toString(), 1, 1000));
 	}
 
 	public Date getSupportEndDate(List<ProductPurchase> productPurchases) {
