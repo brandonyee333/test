@@ -35,20 +35,22 @@ public class BaseIndexerFullQueryContributor
 	implements ExpandoQueryContributor {
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void contribute(
 		String keywords, BooleanQuery booleanQuery, String[] classNames,
 		SearchContext searchContext) {
 
-		BooleanFilter booleanFilter =
-			((List<BooleanFilter>)searchContext.getAttribute(
-				"search.full.query.boolean.filter")).get(0);
+		List<BooleanFilter> booleanFilters =
+			(List<BooleanFilter>)searchContext.getAttribute(
+				"search.full.query.boolean.filter");
 
 		Collection<Indexer<?>> indexers =
 			(Collection<Indexer<?>>)searchContext.getAttribute(
 				"search.full.query.post.process.indexers");
 
 		fullQueryContributorHelper.contribute(
-			booleanQuery, booleanFilter, classNames, indexers, searchContext);
+			booleanQuery, booleanFilters.get(0), classNames, indexers,
+			searchContext);
 	}
 
 	@Reference

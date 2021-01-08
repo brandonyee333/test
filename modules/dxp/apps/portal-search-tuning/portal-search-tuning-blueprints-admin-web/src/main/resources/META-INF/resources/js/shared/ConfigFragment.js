@@ -59,13 +59,14 @@ function FieldSelectRow({
 						}}
 						value={item.field}
 					>
-						{config.typeOptions.map((option) => (
-							<ClaySelect.Option
-								key={option.value}
-								label={option.label}
-								value={option.value}
-							/>
-						))}
+						{config.typeOptions &&
+							config.typeOptions.map((option) => (
+								<ClaySelect.Option
+									key={option.value}
+									label={option.label}
+									value={option.value}
+								/>
+							))}
 					</ClaySelect>
 				</ClayInput.GroupItem>
 
@@ -137,6 +138,23 @@ function FieldSelectRow({
 				)}
 			</ClayInput.Group>
 		</ClayForm.Group>
+	);
+}
+
+function JSONEditor({defaultValue, disabled, onChange}) {
+	const [value, setValue] = useState(
+		JSON.stringify(defaultValue, null, '\t')
+	);
+
+	return (
+		<div
+			className={`custom-json ${disabled ? 'disabled' : 'enabled'}`}
+			onBlur={() => onChange(value)}
+		>
+			<label>{Liferay.Language.get('json')}</label>
+
+			<CodeMirrorEditor onChange={setValue} value={value} />
+		</div>
 	);
 }
 
@@ -488,30 +506,16 @@ function ConfigFragment({
 				);
 			case INPUT_TYPES.JSON:
 				return (
-					<div
-						className={`custom-json ${
-							disabled ? 'disabled' : 'enabled'
-						}`}
-					>
-						<label>{Liferay.Language.get('json')}</label>
-
-						<CodeMirrorEditor
-							onChange={(value) => {
-								try {
-									_handleChange(
-										config.key,
-										JSON.parse(value)
-									);
-								}
-								catch {}
-							}}
-							value={JSON.stringify(
-								uiConfigurationValues[config.key],
-								null,
-								'\t'
-							)}
-						/>
-					</div>
+					<JSONEditor
+						defaultValue={uiConfigurationValues[config.key]}
+						disabled={disabled}
+						onChange={(value) => {
+							try {
+								_handleChange(config.key, JSON.parse(value));
+							}
+							catch {}
+						}}
+					/>
 				);
 			case INPUT_TYPES.SINGLE_SELECT:
 				return (
@@ -568,7 +572,8 @@ function ConfigFragment({
 					<ClayInput.Group small>
 						<ClayInput.GroupItem
 							className={`${
-								config.unit || config.key.includes('id')
+								config.unit ||
+								(config.key && config.key.includes('id'))
 									? 'arrowless-input'
 									: ''
 							}`}
