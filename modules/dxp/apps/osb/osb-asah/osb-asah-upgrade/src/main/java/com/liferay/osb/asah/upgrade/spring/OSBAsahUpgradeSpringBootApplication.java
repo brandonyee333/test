@@ -33,6 +33,7 @@ import org.springframework.context.annotation.FilterType;
 		"com.liferay.osb.asah.common.faro.info",
 		"com.liferay.osb.asah.common.http",
 		"com.liferay.osb.asah.common.messaging",
+		"com.liferay.osb.asah.common.multitenancy",
 		"com.liferay.osb.asah.common.oauth2",
 		"com.liferay.osb.asah.common.salesforce",
 		"com.liferay.osb.asah.common.security",
