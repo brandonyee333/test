@@ -52,7 +52,12 @@
 			<liferay-ui:search-container-column-text
 				name="state"
 			>
-				<span class="label label-sm"><%= productPurchaseViewDisplay.getState() %></span>
+
+				<%
+				String state = productPurchaseViewDisplay.getState();
+				%>
+
+				<span class="label label-sm label-<%= state.toLowerCase() %>"><%= state %></span>
 			</liferay-ui:search-container-column-text>
 		</c:if>
 	</liferay-ui:search-container-row>

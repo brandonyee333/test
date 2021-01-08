@@ -43,7 +43,12 @@ Account koroneikiAccount = accountEntryViewDisplayContext.getAccount();
 						<liferay-ui:message key="state" />
 					</td>
 					<td>
-						<span class="label"><%= accountEntryViewDisplayContext.getState() %></span>
+
+						<%
+						String state = accountEntryViewDisplayContext.getState();
+						%>
+
+						<span class="label label-<%= state.toLowerCase() %>"><%= state %></span>
 					</td>
 				</tr>
 				<tr>

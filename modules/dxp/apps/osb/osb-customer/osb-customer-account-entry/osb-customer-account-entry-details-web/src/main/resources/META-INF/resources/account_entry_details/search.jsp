@@ -57,7 +57,12 @@ PortletURL portletURL = renderResponse.createRenderURL();
 			<liferay-ui:search-container-column-text
 				name="state"
 			>
-				<span class="label label-sm"><%= accountEntrySearchDisplayContext.getState(koroneikiAccount.getKey()) %></span>
+
+				<%
+				String state = accountEntrySearchDisplayContext.getState(koroneikiAccount.getKey());
+				%>
+
+				<span class="label label-sm label-<%= state.toLowerCase() %>"><%= state %></span>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

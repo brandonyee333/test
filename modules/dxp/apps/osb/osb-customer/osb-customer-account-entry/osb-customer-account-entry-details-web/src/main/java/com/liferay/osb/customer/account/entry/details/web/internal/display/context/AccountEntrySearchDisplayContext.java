@@ -22,7 +22,6 @@ import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -128,16 +127,7 @@ public class AccountEntrySearchDisplayContext {
 	}
 
 	public String getState(String accountKey) throws Exception {
-		StringBundler sb = new StringBundler();
-
-		sb.append("accountKey eq '");
-		sb.append(accountKey);
-		sb.append("'");
-
-		List<ProductPurchase> productPurchases =
-			_productPurchaseWebService.search(sb.toString(), 1, 1000);
-
-		return _accountReader.getSubscriptionState(productPurchases);
+		return _accountReader.getState(accountKey);
 	}
 
 	public boolean isLiferayContractorOrg() {

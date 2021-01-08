@@ -434,16 +434,7 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	public String getState() throws Exception {
-		StringBundler sb = new StringBundler();
-
-		sb.append("accountKey eq '");
-		sb.append(_account.getKey());
-		sb.append("'");
-
-		List<ProductPurchase> productPurchases =
-			_productPurchaseWebService.search(sb.toString(), 1, 1000);
-
-		return _accountReader.getSubscriptionState(productPurchases);
+		return _accountReader.getState(_account.getKey());
 	}
 
 	public String getSupportLanguage() {

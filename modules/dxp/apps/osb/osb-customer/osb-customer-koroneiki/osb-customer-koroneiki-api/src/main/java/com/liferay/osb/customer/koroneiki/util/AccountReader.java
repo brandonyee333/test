@@ -41,6 +41,8 @@ public interface AccountReader {
 	public ProductPurchase getSLAProductPurchase(
 		List<ProductPurchase> productPurchases);
 
+	public String getState(String accountKey) throws Exception;
+
 	public int getStatus(Account account);
 
 	public String getSubscriptionState(List<ProductPurchase> productPurchases);
