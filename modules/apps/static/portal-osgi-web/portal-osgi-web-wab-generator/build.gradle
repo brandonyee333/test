@@ -15,7 +15,6 @@ dependencies {
 	compileOnly group: "org.springframework", name: "spring-core", version: "4.1.9.RELEASE"
 	compileOnly group: "org.springframework", name: "spring-web", version: "4.1.9.RELEASE"
 
-	testCompile group: "com.thoughtworks.xstream", name: "xstream", version: "1.4.7"
 	testCompile group: "commons-beanutils", name: "commons-beanutils", version: "1.9.2"
 	testCompile group: "commons-configuration", name: "commons-configuration", version: "1.10"
 	testCompile group: "commons-digester", name: "commons-digester", version: "1.8.1"
