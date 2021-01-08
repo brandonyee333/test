@@ -48,10 +48,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"api.token=ke8eJgsT2nla73NsRe", "api.token=lakIw83Ha2vbapqz3j",
-		"api.token=lwn8C5iAlUi2bvaqSm", "api.token=sP3Ujen2h1kfMeRWkx",
-		"api.token=vuH6GaVgwkueqmxsR3", "dispatcher=FORWARD",
-		"dispatcher=REQUEST", "servlet-context-name=",
+		"api.token=fK2MakiRmvlaiwJ2b0", "api.token=ke8eJgsT2nla73NsRe",
+		"api.token=lakIw83Ha2vbapqz3j", "api.token=lwn8C5iAlUi2bvaqSm",
+		"api.token=sP3Ujen2h1kfMeRWkx", "api.token=vuH6GaVgwkueqmxsR3",
+		"dispatcher=FORWARD", "dispatcher=REQUEST", "servlet-context-name=",
 		"servlet-filter-name=Secure JSON Filter", "url-pattern=/api/jsonws/*",
 		"url-pattern=/o/account-attachment"
 	},
