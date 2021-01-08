@@ -123,55 +123,6 @@ public class SalesforceExtractorConfigurationManagerImpl
 		return "CREDENTIALS_VALID";
 	}
 
-	private boolean _validate(String json) {
-		JSONObject configurationsJSONObject = new JSONObject(json);
-
-		JSONObject credentialsJSONObject =
-			configurationsJSONObject.optJSONObject("credentials");
-
-		if (credentialsJSONObject == null) {
-			return false;
-		}
-
-		String responseJSON = _salesforceOAuth2Client.post(
-			credentialsJSONObject.getString("oAuthClientId"),
-			credentialsJSONObject.getString("oAuthClientSecret"),
-			credentialsJSONObject.getString("oAuthRefreshToken"),
-			configurationsJSONObject.getString("url"));
-
-		if (StringUtils.isEmpty(responseJSON)) {
-			return false;
-		}
-
-		JSONObject responseJSONObject = new JSONObject(responseJSON);
-
-		if (!responseJSONObject.has("id")) {
-			return false;
-		}
-
-		SalesforcePartnerClient salesforcePartnerClient =
-			new SalesforcePartnerClientImpl();
-
-		OAuth2Response response = _salesforceOAuth2Client.toResponse(
-			responseJSONObject);
-
-		salesforcePartnerClient.setAuthEndpoint(response.getAuthEndpoint());
-		salesforcePartnerClient.setServiceEndpoint(
-			response.getServiceEndpoint());
-
-		salesforcePartnerClient.setSessionId(
-			responseJSONObject.getString("access_token"));
-
-		try {
-			salesforcePartnerClient.describeGlobal(1);
-		}
-		catch (Exception e) {
-			return false;
-		}
-
-		return true;
-	}
-
 	@Override
 	protected Configuration buildConfiguration() {
 		return new SalesforceExtractorConfigurationImpl();
@@ -248,6 +199,55 @@ public class SalesforceExtractorConfigurationManagerImpl
 				}
 			}
 		}
+	}
+
+	private boolean _validate(String json) {
+		JSONObject configurationsJSONObject = new JSONObject(json);
+
+		JSONObject credentialsJSONObject =
+			configurationsJSONObject.optJSONObject("credentials");
+
+		if (credentialsJSONObject == null) {
+			return false;
+		}
+
+		String responseJSON = _salesforceOAuth2Client.post(
+			credentialsJSONObject.getString("oAuthClientId"),
+			credentialsJSONObject.getString("oAuthClientSecret"),
+			credentialsJSONObject.getString("oAuthRefreshToken"),
+			configurationsJSONObject.getString("url"));
+
+		if (StringUtils.isEmpty(responseJSON)) {
+			return false;
+		}
+
+		JSONObject responseJSONObject = new JSONObject(responseJSON);
+
+		if (!responseJSONObject.has("id")) {
+			return false;
+		}
+
+		SalesforcePartnerClient salesforcePartnerClient =
+			new SalesforcePartnerClientImpl();
+
+		OAuth2Response response = _salesforceOAuth2Client.toResponse(
+			responseJSONObject);
+
+		salesforcePartnerClient.setAuthEndpoint(response.getAuthEndpoint());
+		salesforcePartnerClient.setServiceEndpoint(
+			response.getServiceEndpoint());
+
+		salesforcePartnerClient.setSessionId(
+			responseJSONObject.getString("access_token"));
+
+		try {
+			salesforcePartnerClient.describeGlobal(1);
+		}
+		catch (Exception e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private static final Log _log = LogFactory.getLog(
