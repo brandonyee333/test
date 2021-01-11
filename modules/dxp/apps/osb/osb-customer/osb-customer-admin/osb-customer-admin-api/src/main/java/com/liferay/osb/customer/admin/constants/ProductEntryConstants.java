@@ -51,6 +51,8 @@ public class ProductEntryConstants {
 
 	public static final int DIGITAL_ENTERPRISE_MINOR_VERSION_7_3 = 43003;
 
+	public static final int DIGITAL_ENTERPRISE_MINOR_VERSION_7_4 = 43004;
+
 	public static final int DIGITAL_ENTERPRISE_VERSION_7_0_10 = 41000;
 
 	public static final int DIGITAL_ENTERPRISE_VERSION_7_0_20 = 41019;
@@ -60,6 +62,8 @@ public class ProductEntryConstants {
 	public static final int DIGITAL_ENTERPRISE_VERSION_7_2_10 = 41200;
 
 	public static final int DIGITAL_ENTERPRISE_VERSION_7_3_10 = 41300;
+
+	public static final int DIGITAL_ENTERPRISE_VERSION_7_4_10 = 41400;
 
 	public static final int ENVIRONMENT_ANY = 1;
 
@@ -310,7 +314,8 @@ public class ProductEntryConstants {
 		if (isDigitalEnterpriseVersion7_0(productVersion) ||
 			isDigitalEnterpriseVersion7_1(productVersion) ||
 			isDigitalEnterpriseVersion7_2(productVersion) ||
-			isDigitalEnterpriseVersion7_3(productVersion)) {
+			isDigitalEnterpriseVersion7_3(productVersion) ||
+			isDigitalEnterpriseVersion7_4(productVersion)) {
 
 			return DIGITAL_ENTERPRISE_MAJOR_VERSION_7;
 		}
@@ -331,7 +336,10 @@ public class ProductEntryConstants {
 	}
 
 	public static int getMinorVersion(int productVersion) {
-		if (isDigitalEnterpriseVersion7_3(productVersion)) {
+		if (isDigitalEnterpriseVersion7_4(productVersion)) {
+			return DIGITAL_ENTERPRISE_MINOR_VERSION_7_4;
+		}
+		else if (isDigitalEnterpriseVersion7_3(productVersion)) {
 			return DIGITAL_ENTERPRISE_MINOR_VERSION_7_3;
 		}
 		else if (isDigitalEnterpriseVersion7_2(productVersion)) {
@@ -470,6 +478,16 @@ public class ProductEntryConstants {
 		long digitalEnterpriseVersion) {
 
 		if (digitalEnterpriseVersion == DIGITAL_ENTERPRISE_VERSION_7_3_10) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean isDigitalEnterpriseVersion7_4(
+		long digitalEnterpriseVersion) {
+
+		if (digitalEnterpriseVersion == DIGITAL_ENTERPRISE_VERSION_7_4_10) {
 			return true;
 		}
 
