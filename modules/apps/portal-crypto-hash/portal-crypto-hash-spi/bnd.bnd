@@ -3,4 +3,5 @@ Bundle-SymbolicName: com.liferay.portal.crypto.hash.spi
 Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.portal.crypto.hash.spi,\
-	com.liferay.portal.crypto.hash.spi.factory
+	com.liferay.portal.crypto.hash.spi.factory,\
+	com.liferay.portal.crypto.hash.spi.salt
