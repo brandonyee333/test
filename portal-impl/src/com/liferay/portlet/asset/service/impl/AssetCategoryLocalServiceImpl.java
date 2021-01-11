@@ -24,6 +24,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCachable;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ProjectionList;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -917,46 +918,45 @@ public class AssetCategoryLocalServiceImpl
 		}
 	}
 
-	private long _getAssetCategoriesCount(long groupId) {
+	private boolean _hasBrokenTree(long groupId) {
 		DynamicQuery dynamicQuery = assetCategoryLocalService.dynamicQuery();
 
 		Property groupIdProperty = PropertyFactoryUtil.forName("groupId");
 
 		dynamicQuery.add(groupIdProperty.eq(groupId));
 
-		return assetCategoryLocalService.dynamicQueryCount(dynamicQuery);
-	}
+		ProjectionList projectionList = ProjectionFactoryUtil.projectionList();
 
-	private long _getMaxRightCategoryId(long groupId) {
-		DynamicQuery dynamicQuery = assetCategoryLocalService.dynamicQuery();
+		projectionList.add(ProjectionFactoryUtil.count("categoryId"));
 
-		Property groupIdProperty = PropertyFactoryUtil.forName("groupId");
+		projectionList.add(
+			ProjectionFactoryUtil.countDistinct("leftCategoryId"));
 
-		dynamicQuery.add(groupIdProperty.eq(groupId));
+		projectionList.add(
+			ProjectionFactoryUtil.countDistinct("rightCategoryId"));
 
-		dynamicQuery.setProjection(
-			ProjectionFactoryUtil.max("rightCategoryId"));
+		dynamicQuery.setProjection(projectionList);
 
-		List<Long> results = assetCategoryLocalService.dynamicQuery(
+		List<Object> results = assetCategoryLocalService.dynamicQuery(
 			dynamicQuery);
 
-		if (ListUtil.isNotEmpty(results)) {
-			return results.get(0);
+		Object[] counts = (Object[])results.get(0);
+
+		long categoryIdsCount = (Long)counts[0];
+		long uniqueLeftCategoryIdsCount = (Long)counts[1];
+		long uniqueRightCategoryIdsCount = (Long)counts[2];
+
+		if ((uniqueLeftCategoryIdsCount != categoryIdsCount) ||
+			(uniqueRightCategoryIdsCount != categoryIdsCount)) {
+
+			return true;
 		}
 
-		return 0;
+		return false;
 	}
 
 	private synchronized void _rebuildTree(long groupId) {
-		long count = _getAssetCategoriesCount(groupId);
-
-		if (count == 0) {
-			return;
-		}
-
-		long maxRightCategoryId = _getMaxRightCategoryId(groupId);
-
-		if (maxRightCategoryId != (count * 2)) {
+		if (_hasBrokenTree(groupId)) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Rebuilding tree for group " + groupId +
