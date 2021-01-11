@@ -14,8 +14,6 @@
 
 package com.liferay.dynamic.data.mapping.internal.util;
 
-import static com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil.createDDMForm;
-
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
 import com.liferay.dynamic.data.mapping.internal.test.util.DDMFixture;
 import com.liferay.dynamic.data.mapping.io.DDMFormJSONSerializer;
@@ -105,7 +103,8 @@ public class DDMIndexerImplTest {
 
 		Set<Locale> availableLocales = Collections.singleton(defaultLocale);
 
-		DDMForm ddmForm = createDDMForm(availableLocales, defaultLocale);
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm(
+			availableLocales, defaultLocale);
 
 		String fieldName = "text1";
 		String indexType = "text";
@@ -144,7 +143,8 @@ public class DDMIndexerImplTest {
 		Set<Locale> availableLocales = new HashSet<>(
 			Arrays.asList(defaultLocale, translationLocale));
 
-		DDMForm ddmForm = createDDMForm(availableLocales, defaultLocale);
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm(
+			availableLocales, defaultLocale);
 
 		String fieldName = "text1";
 		String indexType = "text";
@@ -183,7 +183,8 @@ public class DDMIndexerImplTest {
 		Set<Locale> availableLocales = new HashSet<>(
 			Arrays.asList(defaultLocale, translationLocale));
 
-		DDMForm ddmForm = createDDMForm(availableLocales, defaultLocale);
+		DDMForm ddmForm = DDMFormTestUtil.createDDMForm(
+			availableLocales, defaultLocale);
 
 		String fieldName = "text1";
 		String indexType = "text";
