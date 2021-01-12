@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
@@ -93,6 +94,9 @@ public class IndividualNanite implements Nanite {
 			try {
 				JSONObject messageJSONObject = new JSONObject(message);
 
+				ProjectIdThreadLocal.setProjectId(
+					messageJSONObject.getString("projectId"));
+
 				if (!_faroInfoSuppressionDog.isSuppressed(
 						null,
 						messageJSONObject.getString("emailAddressHashed"))) {
@@ -120,6 +124,9 @@ public class IndividualNanite implements Nanite {
 			}
 			catch (Exception e) {
 				_log.error(e.getMessage(), e);
+			}
+			finally {
+				ProjectIdThreadLocal.remove();
 			}
 		}
 	}
