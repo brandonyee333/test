@@ -16,6 +16,7 @@ package com.liferay.portal.tools.sample.sql.builder;
 
 import com.liferay.petra.process.ClassPathUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 
 import java.lang.reflect.Method;
 
@@ -30,7 +31,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -64,12 +64,9 @@ public class SampleSQLBuilderLauncher {
 	private static URL[] _getDependencies(ClassLoader classLoader)
 		throws Exception {
 
-		Set<URL> urls = new LinkedHashSet<>();
-
-		URL[] javaClassPathURLs = ClassPathUtil.getClassPathURLs(
-			ClassPathUtil.getJVMClassPath(true));
-
-		Collections.addAll(urls, javaClassPathURLs);
+		Set<URL> urls = SetUtil.fromArray(
+			ClassPathUtil.getClassPathURLs(
+				ClassPathUtil.getJVMClassPath(true)));
 
 		URL url = classLoader.getResource("lib");
 
