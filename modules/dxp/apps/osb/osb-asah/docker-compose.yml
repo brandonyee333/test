@@ -9,6 +9,16 @@ services:
             test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/status" ]
         ports:
             - "3001:3000"
+    osbapiemulator:
+        build: ./devtools/osb-api-emulator
+        container_name: osbapiemulator
+        healthcheck:
+            interval: 10s
+            retries: 10
+            start_period: 10s
+            test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/status" ]
+        ports:
+            - "3002:3000"
     osbasahbackend:
         build:
             args:
@@ -216,6 +226,7 @@ services:
             - FARO_DXP_CLOUD_API_URL=http://dxpcloudemulator:3000/projects/
             - FARO_WEDEPLOY_EMAIL_ADDRESS=test@liferay.com
             - FARO_WEDEPLOY_PASSWORD=test
+            - OSB_API_URL=http://osbapiemulator:3000
         image: liferay/com-liferay-osb-faro:latest
         ports:
             - "11311:11311"

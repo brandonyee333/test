@@ -1,0 +1,11 @@
+{
+	"dependencies": {
+		"express": "^4.17.1",
+		"uuid": "^3.3.3"
+	},
+	"name": "osb-emulator",
+	"scripts": {
+		"start": "node app.js"
+	},
+	"version": "1.0.0"
+}
