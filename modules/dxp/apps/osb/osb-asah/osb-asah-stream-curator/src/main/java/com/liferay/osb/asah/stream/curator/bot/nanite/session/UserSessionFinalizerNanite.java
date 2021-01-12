@@ -27,10 +27,16 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeUserSessionArm;
+
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,11 +68,27 @@ public class UserSessionFinalizerNanite implements Nanite {
 
 	@Override
 	public void run() {
+		List<Project> projects = Collections.emptyList();
+
 		try {
-			run(false);
+			projects = _projectDog.getProjects();
 		}
 		catch (Exception e) {
 			_log.error(e, e);
+		}
+
+		for (Project project : projects) {
+			try {
+				ProjectIdThreadLocal.setProjectId(project.getId());
+
+				run(false);
+			}
+			catch (Exception e) {
+				_log.error(e, e);
+			}
+			finally {
+				ProjectIdThreadLocal.remove();
+			}
 		}
 	}
 
@@ -198,6 +220,9 @@ public class UserSessionFinalizerNanite implements Nanite {
 			registerModule(new JsonOrgModule());
 		}
 	};
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
