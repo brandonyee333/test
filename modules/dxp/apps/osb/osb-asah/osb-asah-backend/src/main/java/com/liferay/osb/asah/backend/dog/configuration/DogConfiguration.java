@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog.configuration;
 
+import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetMetric;
@@ -59,6 +60,6 @@ public interface DogConfiguration {
 
 	public Function<String, MetricType> getMetricTypeResolverFunction();
 
-	public QueryBuilder getQueryBuilder();
+	public QueryBuilder getQueryBuilder(SearchQueryContext searchQueryContext);
 
 }

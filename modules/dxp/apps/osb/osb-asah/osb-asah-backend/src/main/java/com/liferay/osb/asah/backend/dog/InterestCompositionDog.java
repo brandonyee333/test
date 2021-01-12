@@ -18,16 +18,14 @@ import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,9 +37,9 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
-import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders;
+import org.elasticsearch.search.aggregations.metrics.InternalCardinality;
 
 import org.json.JSONObject;
 
@@ -56,7 +54,7 @@ public class InterestCompositionDog {
 
 	public CompositionResultBag getAccountCompositionResultBag(
 		String accountId, boolean active, String channelId, String keywords,
-		int size, Map<String, String> sort, int start) {
+		int size, Sort sort, int start) {
 
 		JSONObject individualSegmentJSONObject =
 			_faroInfoElasticsearchInvoker.fetch(
@@ -73,8 +71,7 @@ public class InterestCompositionDog {
 	}
 
 	public CompositionResultBag getIndividualCompositionResultBag(
-		String channelId, String keywords, int size, Map<String, String> sort,
-		int start) {
+		String channelId, String keywords, int size, Sort sort, int start) {
 
 		List<String> individualIds = _getIndividualIds(false, channelId, null);
 
@@ -85,7 +82,7 @@ public class InterestCompositionDog {
 
 	public CompositionResultBag getIndividualSegmentCompositionResultBag(
 		boolean active, String channelId, String individualSegmentId,
-		String keywords, int size, Map<String, String> sort, int start) {
+		String keywords, int size, Sort sort, int start) {
 
 		List<String> individualIds = _getIndividualIds(
 			active, channelId, individualSegmentId);
@@ -99,9 +96,9 @@ public class InterestCompositionDog {
 			start, individualIds.size());
 	}
 
-	private boolean _calculateMaxCount(Map<String, String> sort, int start) {
-		if (!StringUtils.equals(sort.get("column"), "count") ||
-			StringUtils.equals(sort.get("type"), "ASC") || (start != 0)) {
+	private boolean _calculateMaxCount(Sort sort, int start) {
+		if (!StringUtils.equals(sort.getColumn(), "count") ||
+			StringUtils.equals(sort.getType(), "ASC") || (start != 0)) {
 
 			return true;
 		}
@@ -109,14 +106,14 @@ public class InterestCompositionDog {
 		return false;
 	}
 
-	private BucketOrder _getBucketOrder(Map<String, String> sort) {
+	private BucketOrder _getBucketOrder(Sort sort) {
 		boolean asc = true;
 
-		if (StringUtils.equals(sort.get("type"), "DESC")) {
+		if (StringUtils.equals(sort.getType(), "DESC")) {
 			asc = false;
 		}
 
-		if (StringUtils.equals(sort.get("column"), "count")) {
+		if (StringUtils.equals(sort.getColumn(), "count")) {
 			return BucketOrder.compound(
 				BucketOrder.count(asc), BucketOrder.key(true));
 		}
@@ -126,8 +123,8 @@ public class InterestCompositionDog {
 	}
 
 	private CompositionResultBag _getCompositionResultBag(
-		QueryBuilder queryBuilder, int size, Map<String, String> sort,
-		int start, long totalCount) {
+		QueryBuilder queryBuilder, int size, Sort sort, int start,
+		long totalCount) {
 
 		List<Composition> compositions = new ArrayList<>();
 
@@ -329,15 +326,7 @@ public class InterestCompositionDog {
 		return boolQueryBuilder.filter(queryBuilder);
 	}
 
-	@PostConstruct
-	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

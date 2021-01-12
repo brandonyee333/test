@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
@@ -23,8 +24,9 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -73,12 +75,12 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	}
 
 	protected void delete(
-			String dataSourceId, String deletionDateString, String email)
+			String dataSourceId, String deletionDateString, String emailAddress)
 		throws Exception {
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals",
-			QueryBuilders.termQuery("demographics.email.value", email));
+			QueryBuilders.termQuery("demographics.email.value", emailAddress));
 
 		if (individualJSONObject == null) {
 			return;
@@ -105,7 +107,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 		_faroInfoIndividualDog.updateIndividual(
 			null, getEmptyDataJSONObject(),
-			faroInfoElasticsearchInvoker.get("data-sources", dataSourceId),
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId),
 			individualJSONObject);
 	}
 
@@ -164,6 +166,8 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 		String eventType = auditEventJSONObject.getString("eventType");
 
+		Log log = getLog();
+
 		if (eventType.equals("ADD") || eventType.equals("UPDATE")) {
 			JSONObject dataJSONObject = dataSourceElasticsearchInvoker.fetch(
 				getDataCollectionName(),
@@ -188,8 +192,8 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 				getAuditEventDate(auditEventJSONObject),
 				getAuditEventEmail(auditEventJSONObject));
 		}
-		else if (_log.isWarnEnabled()) {
-			_log.warn(
+		else if (log.isWarnEnabled()) {
+			log.warn(
 				"Unknown event type " + eventType + " for audit event " +
 					auditEventJSONObject.getString("id"));
 		}
@@ -201,11 +205,11 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 	protected void processData(
 			String dataId, String dataSourceId, JSONObject dataJSONObject,
-			String email)
+			String emailAddress)
 		throws Exception {
 
-		if ((email == null) ||
-			_faroInfoSuppressionDog.isSuppressed(email, null)) {
+		if ((emailAddress == null) ||
+			_faroInfoSuppressionDog.isSuppressed(emailAddress, null)) {
 
 			return;
 		}
@@ -219,16 +223,26 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			));
 
 		if (dataSourceJSONObject == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to get data source " + dataSourceId);
+			Log log = getLog();
+
+			if (log.isWarnEnabled()) {
+				log.warn("Unable to get data source " + dataSourceId);
 			}
 
 			return;
 		}
 
+		emailAddress = StringUtils.lowerCase(emailAddress);
+
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals",
-			QueryBuilders.termQuery("demographics.email.value", email));
+			BoolQueryBuilderUtil.should(
+				QueryBuilders.termQuery(
+					"demographics.email.value", emailAddress)
+			).should(
+				QueryBuilders.termQuery(
+					"emailAddressHashed", DigestUtils.sha256Hex(emailAddress))
+			));
 
 		if (individualJSONObject == null) {
 			_faroInfoIndividualDog.addIndividual(
@@ -247,8 +261,10 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	protected void processDataSourceAuditEvents(String dataSourceId)
 		throws Exception {
 
-		if (_log.isInfoEnabled()) {
-			_log.info(
+		Log log = getLog();
+
+		if (log.isInfoEnabled()) {
+			log.info(
 				"Processing audit events for data source ID " + dataSourceId);
 		}
 
@@ -363,8 +379,8 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 	protected abstract void setRunning(String dataSourceId, boolean running);
 
-	private static final Log _log = LogFactory.getLog(
-		BaseIndividualsNanite.class);
+	@Autowired
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;

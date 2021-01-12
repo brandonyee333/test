@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.dog.configuration;
 
 import com.liferay.osb.asah.backend.dog.DogUtil;
+import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetType;
@@ -34,15 +35,16 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
+import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
 import org.elasticsearch.search.aggregations.bucket.SingleBucketAggregation;
 import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
 import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.avg.AvgAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.cardinality.Cardinality;
-import org.elasticsearch.search.aggregations.metrics.sum.InternalSum;
-import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
-import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders;
+import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.Cardinality;
+import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.InternalSum;
+import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 
 import org.springframework.context.annotation.Configuration;
 
@@ -55,9 +57,9 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 	@Override
 	public AssetResolver<PageMetric> getAssetResolver() {
 		AssetResolver.Builder<PageMetric> builder = AssetResolver.builder(
-			"url");
+			"canonicalUrl");
 
-		builder.searchableFieldNames("url", "title");
+		builder.searchableFieldNames("canonicalUrl", "title");
 		builder.supplier(PageMetric::new);
 
 		return builder.build();
@@ -131,6 +133,10 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 			metricResolvers.add(_buildMaxScrollDepthMetricResolver());
 		}
 
+		if (selectedMetrics.contains(PageMetricType.READS.getName())) {
+			metricResolvers.add(_buildReadsMetricResolver());
+		}
+
 		if (selectedMetrics.contains(PageMetricType.SESSIONS.getName())) {
 			metricResolvers.add(_buildSessionsMetricResolver());
 		}
@@ -162,9 +168,27 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 	}
 
 	@Override
-	public QueryBuilder getQueryBuilder() {
+	public QueryBuilder getQueryBuilder(SearchQueryContext searchQueryContext) {
+		if (searchQueryContext.isIncludeActiveSessions()) {
+			return null;
+		}
+
 		return QueryBuilders.existsQuery(
 			PageMetricType.SESSIONS.getFieldName());
+	}
+
+	@Override
+	protected AggregationBuilder createCardinalityAggregationBuilder(
+		String cardinalityName, String fieldName) {
+
+		CardinalityAggregationBuilder cardinalityAggregationBuilder =
+			(CardinalityAggregationBuilder)
+				super.createCardinalityAggregationBuilder(
+					cardinalityName, fieldName);
+
+		cardinalityAggregationBuilder.precisionThreshold(2000);
+
+		return cardinalityAggregationBuilder;
 	}
 
 	private MetricResolver _buildAvgTimeOnPageMetricResolver() {
@@ -314,6 +338,18 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 		builder.aggregate(_createMaxScrollDepthAggregationBuilder());
 		builder.mapperFunction(this::_getMaxScrollDepthAggregationValue);
 		builder.setterBiConsumer(PageMetric::setMaxScrollDepthMetric);
+
+		return builder.build();
+	}
+
+	private MetricResolver _buildReadsMetricResolver() {
+		MetricResolver.Builder builder = MetricResolver.builder(
+			PageMetricType.READS);
+
+		builder.bucketOrderTermsAggregationBuilderConsumer(
+			createBucketOrderTermsAggregationBuilderConsumer(
+				PageMetricType.READS));
+		builder.setterBiConsumer(PageMetric::setReadsMetric);
 
 		return builder.build();
 	}

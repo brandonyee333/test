@@ -18,9 +18,10 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -39,8 +40,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,7 +54,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
+import org.elasticsearch.search.aggregations.metrics.Sum;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -70,14 +69,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FinalizeSessionArm {
 
-	@PostConstruct
-	public void init() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-	}
-
 	public void processSession(UserSession userSession) throws Exception {
-		updateAssets(userSession);
+		updateActivitiesAndAssets(userSession);
 
 		JSONObject partialUserSessionJSONObject = new JSONObject();
 
@@ -95,6 +88,16 @@ public class FinalizeSessionArm {
 
 		_cerebroInfoElasticsearchInvoker.update(
 			"user-sessions", userSession.getId(), partialUserSessionJSONObject);
+
+		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+			"UpdateDynamicMembershipsNanite",
+			JSONUtil.put(
+				"dateModified", DateUtil.newDateString()
+			).put(
+				"individualJSONObject",
+				_faroInfoElasticsearchInvoker.fetch(
+					"individuals", userSession.getIndividualId())
+			));
 	}
 
 	public void reprocessSession(UserSession userSession) throws Exception {
@@ -127,7 +130,11 @@ public class FinalizeSessionArm {
 		processSession(userSession);
 	}
 
-	public void updateAssets(UserSession userSession) throws Exception {
+	public void updateActivitiesAndAssets(UserSession userSession)
+		throws Exception {
+
+		_updateActivities(userSession);
+
 		_updateAssetBuckets(userSession);
 
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
@@ -301,6 +308,34 @@ public class FinalizeSessionArm {
 		).collect(
 			Collectors.toList()
 		);
+	}
+
+	private void _updateActivities(UserSession userSession) {
+		Script script = new Script(
+			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+			"ctx._source.sessionId = params.sessionId",
+			Collections.singletonMap("sessionId", userSession.getId()));
+
+		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			BoolQueryBuilderUtil.filter(
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery(
+						"dataSourceId", userSession.getDataSourceId())
+				).filter(
+					QueryBuilders.rangeQuery(
+						"endTime"
+					).gte(
+						DateUtil.toUTCString(userSession.getFirstEventDate())
+					).lte(
+						DateUtil.toUTCString(userSession.getLastEventDate())
+					)
+				).filter(
+					QueryBuilders.termQuery("userId", userSession.getUserId())
+				)
+			).mustNot(
+				QueryBuilders.existsQuery("sessionId")
+			),
+			true, script, "activities");
 	}
 
 	private void _updateAssetBuckets(UserSession userSession) {
@@ -481,13 +516,13 @@ public class FinalizeSessionArm {
 		for (Map.Entry<Pair<String, Date>, List<Long>> entry :
 				viewDurations.entrySet()) {
 
-			List<Long> values = entry.getValue();
-
-			Stream<Long> valueStream = values.stream();
-
 			Pair<String, Date> pageEventDatePair = entry.getKey();
 
 			if (pageEventDateMap.containsKey(pageEventDatePair)) {
+				List<Long> values = entry.getValue();
+
+				Stream<Long> valueStream = values.stream();
+
 				elasticsearchBulkRequestBuilder.update(
 					"pages",
 					JSONUtil.put(
@@ -620,9 +655,13 @@ public class FinalizeSessionArm {
 	private static final Pattern _pattern = Pattern.compile(
 		"\\[(?<title>[^]]+)] \\[(?<url>[^]]+)]");
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 }

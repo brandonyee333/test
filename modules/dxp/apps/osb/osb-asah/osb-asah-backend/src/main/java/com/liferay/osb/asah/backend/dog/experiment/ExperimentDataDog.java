@@ -20,11 +20,14 @@ import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetric;
 import com.liferay.osb.asah.backend.model.PageMetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 
 import java.time.LocalDate;
@@ -46,8 +49,8 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregation;
 import org.elasticsearch.search.aggregations.bucket.composite.CompositeAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.composite.TermsValuesSourceBuilder;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
-import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.Sum;
+import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +96,7 @@ public class ExperimentDataDog {
 		};
 
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(), searchQueryContext,
+			searchQueryContext,
 			new HashSet<String>() {
 				{
 					add(PageMetricType.BOUNCE.getName());
@@ -117,11 +120,12 @@ public class ExperimentDataDog {
 		String experienceId, MetricType metricType,
 		LocalDateTime startLocalDateTime, String variantId) {
 
-		LocalDate endLocalDate = LocalDate.now(ZoneOffset.UTC);
+		LocalDate endLocalDate = LocalDate.now(_timeZoneDog.getZoneId());
 
 		endLocalDate = endLocalDate.minusDays(1);
 
-		LocalDate startLocalDate = startLocalDateTime.toLocalDate();
+		LocalDate startLocalDate = DateUtil.fromUTC(
+			startLocalDateTime, _timeZoneDog.getZoneId());
 
 		List<ExperimentDataPoint<Double[]>> experimentDataPoints =
 			new ArrayList<>();
@@ -150,9 +154,12 @@ public class ExperimentDataDog {
 		searchQueryContext.setTimeRange(
 			TimeRange.of(endLocalDate, startLocalDateTime.toLocalDate()));
 
-		List<HistogramMetric> sessionHistogramMetrics =
-			_histogramDog.getHistogramMetrics(
+		HistogramMetricBag histogramMetricBag =
+			_histogramDog.getHistogramMetricBag(
 				false, PageMetricType.SESSIONS, searchQueryContext);
+
+		List<HistogramMetric> sessionHistogramMetrics =
+			histogramMetricBag.getMetrics();
 
 		for (int i = 0; i < sessionHistogramMetrics.size(); i++) {
 			ExperimentDataPoint<Double[]> experimentDataPoint =
@@ -197,6 +204,8 @@ public class ExperimentDataDog {
 				localDate + "||/d"
 			).lt(
 				localDate + "||+1d/d"
+			).timeZone(
+				_timeZoneDog.getTimeZoneId()
 			));
 
 		SearchSourceBuilder searchSourceBuilder =
@@ -254,5 +263,8 @@ public class ExperimentDataDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

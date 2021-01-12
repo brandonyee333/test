@@ -6,7 +6,7 @@
 	},
 	"id": "osbasahbatchcurator",
 	"kind": "Deployment",
-	"memory": 8192,
+	"memory": 6144,
 	"ports": [
 		{
 			"external": false,

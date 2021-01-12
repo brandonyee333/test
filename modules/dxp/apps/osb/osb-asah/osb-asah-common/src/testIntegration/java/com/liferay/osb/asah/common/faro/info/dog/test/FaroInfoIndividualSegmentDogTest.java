@@ -16,15 +16,14 @@ package com.liferay.osb.asah.common.faro.info.dog.test;
 
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,31 +38,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Michael Bowerman
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@Import(OSBAsahRedisDisabledTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
-		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
-
 		for (int i = 0; i < 3; i++) {
 			JSONObject liferayDataSourceJSONObject =
 				_faroInfoDataSourceDog.addDataSource(
@@ -77,7 +64,7 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 			JSONArray assetIdsJSONArray = new JSONArray();
 
 			for (int j = 0; j < 3; j++) {
-				JSONObject assetJSONObject = elasticsearchInvoker.add(
+				JSONObject assetJSONObject = faroInfoElasticsearchInvoker.add(
 					"assets",
 					FaroInfoTestUtil.buildPageAssetJSONObject(
 						liferayDataSourceId));
@@ -90,17 +77,18 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 
 			_liferayDataSourceOrganizationIdsJSONObject.put(
 				liferayDataSourceId,
-				elasticsearchInvoker.add(
+				faroInfoElasticsearchInvoker.add(
 					"organizations",
 					FaroInfoTestUtil.buildOrganizationJSONObject(
 						liferayDataSourceId)));
 		}
 
 		for (String fieldName : _FIELD_NAMES) {
-			JSONObject fieldMappingJSONObject = elasticsearchInvoker.add(
-				"field-mappings",
-				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
-					"", null, fieldName, "Text"));
+			JSONObject fieldMappingJSONObject =
+				faroInfoElasticsearchInvoker.add(
+					"field-mappings",
+					FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+						"", null, fieldName, "Text"));
 
 			_fieldMappingNameIds.put(
 				fieldName, fieldMappingJSONObject.getString("id"));
@@ -455,7 +443,7 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
-		JSONObject fieldMappingJSONObject = elasticsearchInvoker.add(
+		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildFieldMappingJSONObject(
 				null, "custom", JSONUtil.put(dataSourceId, "department"),
@@ -475,7 +463,7 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
 			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
 
-		JSONObject fieldMappingJSONObject = elasticsearchInvoker.add(
+		JSONObject fieldMappingJSONObject = faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildFieldMappingJSONObject(
 				null, "custom", JSONUtil.put(dataSourceId, "department"),
@@ -909,17 +897,6 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 			new String[0], updateFilterSB.toString());
 	}
 
-	@TestConfiguration
-	public static class FaroInfoIndividualSegmentDogTestConfiguration {
-
-		@Bean
-		@Primary
-		public DXPExtractorConfigurationDog dxpExtractorConfigurationDog() {
-			return Mockito.mock(DXPExtractorConfigurationDog.class);
-		}
-
-	}
-
 	private void _assertAddSetsReferencedObjectIds(
 			String[] expectedReferencedAssetDataSourceIds,
 			String[] expectedReferencedIds, String filterString, String key)
@@ -1076,10 +1053,11 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 	@MockBean
 	private ChannelHttp _channelHttp;
 
-	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+	@MockBean
+	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
+	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;

@@ -41,6 +41,7 @@ public class Activity {
 
 		if (Objects.equals(_applicationId, activity._applicationId) &&
 			Objects.equals(_eventId, activity._eventId) &&
+			Objects.equals(_eventContext, activity._eventContext) &&
 			Objects.equals(_eventProperties, activity._eventProperties) &&
 			Objects.equals(_ownerId, activity._ownerId) &&
 			Objects.equals(_startTime, activity._startTime)) {
@@ -53,6 +54,10 @@ public class Activity {
 
 	public String getApplicationId() {
 		return _applicationId;
+	}
+
+	public Map<String, String> getEventContext() {
+		return _eventContext;
 	}
 
 	public String getEventId() {
@@ -82,11 +87,16 @@ public class Activity {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_applicationId, _eventId, _eventProperties, _ownerId, _startTime);
+			_applicationId, _eventId, _eventContext, _eventProperties, _ownerId,
+			_startTime);
 	}
 
 	public void setApplicationId(String applicationId) {
 		_applicationId = applicationId;
+	}
+
+	public void setEventContext(Map<String, String> eventContext) {
+		_eventContext = eventContext;
 	}
 
 	public void setEventId(String eventId) {
@@ -108,6 +118,7 @@ public class Activity {
 	}
 
 	private String _applicationId;
+	private Map<String, String> _eventContext;
 	private String _eventId;
 	private Map<String, String> _eventProperties;
 	private String _ownerId;

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.publisher.cache.impl;
 
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,24 +33,28 @@ public class AnalyticsEventsMessageCacheImpl
 	implements AnalyticsEventsMessageCache {
 
 	@Override
-	public void add(String id) {
+	public boolean add(String id) {
+		if (id == null) {
+			return true;
+		}
+
+		try (Jedis jedis = _jedisPool.getResource()) {
+			if (jedis.sadd(ProjectIdThreadLocal.getProjectId(), id) == 0) {
+				return false;
+			}
+
+			return true;
+		}
+	}
+
+	@Override
+	public void remove(String id) {
 		if (id == null) {
 			return;
 		}
 
 		try (Jedis jedis = _jedisPool.getResource()) {
-			jedis.set(id, "", "nx", "ex", 86400);
-		}
-	}
-
-	@Override
-	public boolean has(String id) {
-		if (id == null) {
-			return false;
-		}
-
-		try (Jedis jedis = _jedisPool.getResource()) {
-			return jedis.exists(id);
+			jedis.srem(ProjectIdThreadLocal.getProjectId(), id);
 		}
 	}
 

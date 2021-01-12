@@ -39,7 +39,8 @@ public class JournalMetricTest extends BaseBeanTestCase<JournalMetric> {
 					put(Metric.class, () -> new Metric(null));
 				}
 			},
-			Arrays.asList("getAssetType", "getDefaultMetric"));
+			Arrays.asList(
+				"getAssetType", "getAvailableMetrics", "getDefaultMetric"));
 	}
 
 	@Override

@@ -18,9 +18,7 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.CSVIndividualsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.HashMap;
@@ -32,21 +30,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Vishal Reddy
  * @author Leslie Wong
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-@Import(
-	{
-		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahRedisDisabledTestConfiguration.class
-	}
-)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class CSVIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 
 	@Test

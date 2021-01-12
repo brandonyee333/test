@@ -18,15 +18,13 @@ import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
+import com.liferay.osb.asah.backend.model.JobRunDataPeriod;
+import com.liferay.osb.asah.backend.model.JobRunFrequency;
 import com.liferay.osb.asah.backend.model.JobType;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,26 +39,16 @@ public class CreateJobMutationDataFetcher implements DataFetcher<Job> {
 	@Override
 	public Job get(DataFetchingEnvironment dataFetchingEnvironment) {
 		return _jobDog.addJob(
-			dataFetchingEnvironment.getArgument("active"),
-			dataFetchingEnvironment.getArgument("cronExpression"),
-			_createJobParameters(dataFetchingEnvironment),
+			ListUtil.map(
+				dataFetchingEnvironment.getArgument("parameters"),
+				JobParameter::of),
+			JobRunDataPeriod.valueOf(
+				dataFetchingEnvironment.getArgument("runDataPeriod")),
+			JobRunFrequency.valueOf(
+				dataFetchingEnvironment.getArgument("runFrequency")),
 			JobType.valueOf(dataFetchingEnvironment.getArgument("type")),
-			dataFetchingEnvironment.getArgument("name"));
-	}
-
-	private List<JobParameter> _createJobParameters(
-		DataFetchingEnvironment dataFetchingEnvironment) {
-
-		List<Map<String, String>> parameters =
-			dataFetchingEnvironment.getArgument("parameters");
-
-		Stream<Map<String, String>> stream = parameters.stream();
-
-		return stream.map(
-			map -> new JobParameter(map.get("name"), map.get("value"))
-		).collect(
-			Collectors.toList()
-		);
+			dataFetchingEnvironment.getArgument("name"),
+			dataFetchingEnvironment.getArgument("runNow"));
 	}
 
 	@Autowired

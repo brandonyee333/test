@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetricType;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.petra.string.StringPool;
 
@@ -32,8 +33,8 @@ import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
-import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.Sum;
+import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,41 +54,35 @@ public class PageDog {
 			_createQueryBuilder(searchQueryContext));
 	}
 
+	public long getMetricValue(
+		Optional<String> canonicalUrlOptional,
+		Optional<String> fromDateStringOptional, PageMetricType pageMetricType,
+		Optional<String> toDateStringOptional, Optional<String> urlOptional) {
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			_createRangeQueryBuilder(
+				fromDateStringOptional, toDateStringOptional));
+
+		if (urlOptional.isPresent()) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("url", urlOptional.get()));
+		}
+		else if (canonicalUrlOptional.isPresent()) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery(
+					"canonicalUrl", canonicalUrlOptional.get()));
+		}
+
+		return _getMetricValue(pageMetricType, boolQueryBuilder);
+	}
+
 	public long getViewsMetricValue(
 		Optional<String> fromDateStringOptional,
 		Optional<String> toDateStringOptional, Optional<String> urlOptional) {
 
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.aggregation(
-			_createSumAggregationBuilder(PageMetricType.VIEWS));
-
-		QueryBuilder queryBuilder = _createRangeQueryBuilder(
-			fromDateStringOptional, toDateStringOptional);
-
-		if (urlOptional.isPresent()) {
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				queryBuilder
-			).filter(
-				QueryBuilders.termQuery("url", urlOptional.get())
-			);
-		}
-
-		searchSourceBuilder.query(queryBuilder);
-
-		searchSourceBuilder.size(0);
-
-		Aggregations aggregations = _dataDog.queryAggregations(
-			"pages", searchSourceBuilder);
-
-		if (DogUtil.isEmpty(aggregations)) {
-			return 0;
-		}
-
-		Sum sum = aggregations.get(PageMetricType.VIEWS.getAggregationName());
-
-		return (long)sum.getValue();
+		return getMetricValue(
+			Optional.empty(), fromDateStringOptional, PageMetricType.VIEWS,
+			toDateStringOptional, urlOptional);
 	}
 
 	private QueryBuilder _createQueryBuilder(
@@ -116,6 +111,8 @@ public class PageDog {
 		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
 			"eventDate");
 
+		rangeQueryBuilder.timeZone(_timeZoneDog.getTimeZoneId());
+
 		fromDateStringOptional.map(rangeQueryBuilder::gte);
 		toDateStringOptional.map(rangeQueryBuilder::lte);
 
@@ -134,14 +131,14 @@ public class PageDog {
 	}
 
 	private long _getMetricValue(
-		PageMetricType pageMetricType, QueryBuilder queries) {
+		PageMetricType pageMetricType, QueryBuilder queryBuilder) {
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
 
 		searchSourceBuilder.aggregation(
 			_createSumAggregationBuilder(pageMetricType));
-		searchSourceBuilder.query(queries);
+		searchSourceBuilder.query(queryBuilder);
 		searchSourceBuilder.size(0);
 
 		Aggregations aggregations = _dataDog.queryAggregations(
@@ -161,5 +158,8 @@ public class PageDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

@@ -20,6 +20,9 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
+
+	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -74,11 +82,17 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 			"OSBAsahMarkers", osbAsahMarkerJSONObject);
 	}
 
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(StaleDynamicIndividualSegmentsNanite.class);
+	}
+
 	private static final String[] _FILTER_STRINGS = {
 		"activities/last30Days eq", "activities/last7Days eq",
-		"activities/lastYear eq", "activities/today eq", "gt ''last24Hours''",
-		"gt ''last28Days''", "gt ''last30Days''", "gt ''last7Days''",
-		"gt ''last90Days''", "gt ''yesterday''"
+		"activities/lastYear eq", "activities/today eq",
+		"gt ''''last24Hours''''", "gt ''''last28Days''''",
+		"gt ''''last30Days''''", "gt ''''last7Days''''",
+		"gt ''''last90Days''''", "gt ''''yesterday''''"
 	};
 
 	@Autowired

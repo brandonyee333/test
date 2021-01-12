@@ -14,9 +14,14 @@
 
 package com.liferay.osb.asah.common.rest.response;
 
-import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import java.util.List;
 
@@ -42,6 +47,14 @@ public abstract class BaseTransformationJSONArrayFunction
 		_includeToday = includeToday;
 	}
 
+	public BaseTransformationJSONArrayFunction(
+		boolean includeToday, String rangeEnd, String rangeStart) {
+
+		_includeToday = includeToday;
+		_rangeEnd = rangeEnd;
+		_rangeStart = rangeStart;
+	}
+
 	@Override
 	public JSONArray apply(
 			String collectionName, String computeFunctionString,
@@ -53,7 +66,7 @@ public abstract class BaseTransformationJSONArrayFunction
 		_totalElements = size;
 
 		computeEndDayDateString();
-		computeStartDayDateString(computeFunctionString, size);
+		computeStartDayDateString(size);
 
 		ExtendedBounds extendedBounds = new ExtendedBounds(
 			startDayDateString, endDayDateString);
@@ -85,6 +98,12 @@ public abstract class BaseTransformationJSONArrayFunction
 			finalQueryBuilder = boolQueryBuilder;
 		}
 
+		if (computeFunctionString.equals("day") && (size <= 2) &&
+			(_rangeEnd == null) && (_rangeStart == null)) {
+
+			computeFunctionString = "hour";
+		}
+
 		return apply(
 			collectionName, computeFunctionString, elasticsearchInvoker,
 			extendedBounds, finalQueryBuilder, supportedFieldName);
@@ -104,38 +123,65 @@ public abstract class BaseTransformationJSONArrayFunction
 		return null;
 	}
 
-	protected String computeEndDayDateString() throws Exception {
-		endDayDateString = DateUtil.newEndOfDayDateString(
-			DateUtil.newDayDateString());
+	protected void computeEndDayDateString() {
+		if (_rangeEnd != null) {
+			LocalDateTime endLocalDateTime = LocalDateTime.of(
+				LocalDate.parse(_rangeEnd), LocalTime.MAX);
+
+			endDayDateString = endLocalDateTime.toString();
+
+			return;
+		}
+
+		LocalDateTime nowLocalDateTime = LocalDateTime.now(
+			TimeZoneDogUtil.getZoneId());
+
+		endDayDateString = nowLocalDateTime.toString();
 
 		if (!_includeToday) {
-			endDayDateString = DateUtil.addDays(endDayDateString, -1);
-		}
+			LocalDateTime localDateTime = nowLocalDateTime.minusDays(1);
 
-		return endDayDateString;
+			localDateTime = LocalDateTime.of(
+				localDateTime.toLocalDate(), LocalTime.MAX);
+
+			endDayDateString = localDateTime.toString();
+		}
 	}
 
-	protected String computeStartDayDateString(
-			String computeFunctionString, int size)
-		throws Exception {
+	protected void computeStartDayDateString(int size) {
+		if (_rangeStart != null) {
+			LocalDateTime startLocalDateTime = LocalDateTime.of(
+				LocalDate.parse(_rangeStart), LocalTime.MIDNIGHT);
 
-		String dayDateString = DateUtil.newDayDateString();
+			Duration duration = Duration.between(
+				startLocalDateTime, LocalDateTime.parse(endDayDateString));
 
-		if (computeFunctionString.equals("day")) {
-			startDayDateString = DateUtil.addDays(dayDateString, 1 - size);
+			startLocalDateTime = startLocalDateTime.minusDays(
+				duration.toDays() + 1);
+
+			startDayDateString = startLocalDateTime.toString();
+
+			return;
 		}
-		else if (computeFunctionString.equals("month")) {
-			startDayDateString = DateUtil.addMonths(dayDateString, 1 - size);
-		}
-		else if (computeFunctionString.equals("week")) {
-			startDayDateString = DateUtil.addDays(dayDateString, 7 - 7 * size);
+
+		if (size == 0) {
+			LocalDateTime localDateTime = LocalDateTime.parse(endDayDateString);
+
+			localDateTime = localDateTime.minusHours(47);
+
+			startDayDateString = localDateTime.toString();
 		}
 		else {
-			throw new IllegalArgumentException(
-				"Unsupported compute function: " + computeFunctionString);
-		}
+			LocalDateTime localDateTime = LocalDateTime.now(
+				TimeZoneDogUtil.getZoneId());
 
-		return startDayDateString;
+			localDateTime = LocalDateTime.of(
+				localDateTime.toLocalDate(), LocalTime.MIDNIGHT);
+
+			localDateTime = localDateTime.plusDays(1 - size);
+
+			startDayDateString = localDateTime.toString();
+		}
 	}
 
 	protected double getAggregationValue(
@@ -159,6 +205,9 @@ public abstract class BaseTransformationJSONArrayFunction
 		if (computeFunctionString.equals("day")) {
 			return DateHistogramInterval.DAY;
 		}
+		else if (computeFunctionString.equals("hour")) {
+			return DateHistogramInterval.HOUR;
+		}
 		else if (computeFunctionString.equals("month")) {
 			return DateHistogramInterval.MONTH;
 		}
@@ -175,6 +224,8 @@ public abstract class BaseTransformationJSONArrayFunction
 	protected String startDayDateString;
 
 	private final boolean _includeToday;
+	private String _rangeEnd;
+	private String _rangeStart;
 	private long _totalElements;
 
 }

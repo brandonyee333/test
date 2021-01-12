@@ -18,8 +18,8 @@ import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.page.PageDog;
-import com.liferay.osb.asah.backend.model.HistogramMetric;
-import com.liferay.osb.asah.backend.model.MetricType;
+import com.liferay.osb.asah.backend.dog.page.PageReferrerDog;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.PageMetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
@@ -27,8 +27,11 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.time.LocalDate;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.json.JSONArray;
 
@@ -41,16 +44,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Shinn Lok
+ * @author André Miranda
  */
 @RequestMapping(produces = "application/json", value = "/api/1.0/pages")
 @RestController
 public class PagesRestController extends BaseRestController {
 
-	@GetMapping("/geolocations")
-	public String getGeolocations(@RequestParam String url) {
+	@GetMapping("/acquisition-channels")
+	public Map<String, Double> getAcquisitionChannels(
+		@RequestParam String canonicalURL,
+		@RequestParam(defaultValue = "D") String interval,
+		@RequestParam(defaultValue = "7") int rangeKey) {
+
+		if (StringUtils.isBlank(canonicalURL)) {
+			return Collections.emptyMap();
+		}
+
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
-		searchQueryContext.setURL(url);
+		searchQueryContext.setCanonicalUrl(canonicalURL);
+		searchQueryContext.setInterval(interval);
+		searchQueryContext.setRangeKey(rangeKey);
+
+		return _pageReferrerDog.getAcquisitionChannels(searchQueryContext);
+	}
+
+	@GetMapping("/geolocations")
+	public String getGeolocations(@RequestParam String canonicalURL) {
+		SearchQueryContext searchQueryContext = new SearchQueryContext();
+
+		searchQueryContext.setCanonicalUrl(canonicalURL);
 
 		return String.valueOf(
 			new JSONArray(
@@ -59,90 +82,78 @@ public class PagesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/read-count")
-	public String getReadCount(@RequestParam String url) {
-
-		// TODO LRAC-5157
-
-		long viewsMetricValue = _pageDog.getViewsMetricValue(
-			Optional.empty(), Optional.empty(), Optional.of(url));
-
-		return String.valueOf(viewsMetricValue / 2);
+	public String getReadCount(@RequestParam String canonicalURL) {
+		return String.valueOf(
+			_pageDog.getMetricValue(
+				Optional.of(canonicalURL), Optional.empty(),
+				PageMetricType.READS, Optional.empty(), Optional.empty()));
 	}
 
 	@GetMapping("/read-counts")
 	public String getReadCounts(
+		@RequestParam String canonicalURL,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		@RequestParam(name = "endDate")
 			LocalDate endLocalDate,
 		@RequestParam String interval,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		@RequestParam(name = "startDate")
-			LocalDate startLocalDate,
-		@RequestParam String url) {
+			LocalDate startLocalDate) {
 
 		return _getHistogramMetrics(
-			endLocalDate, interval, PageMetricType.READS, startLocalDate, url);
+			canonicalURL, endLocalDate, interval, PageMetricType.READS,
+			startLocalDate);
 	}
 
 	@GetMapping("/view-count")
-	public String getViewCount(@RequestParam String url) {
+	public String getViewCount(@RequestParam String canonicalURL) {
 		return String.valueOf(
-			_pageDog.getViewsMetricValue(
-				Optional.empty(), Optional.empty(), Optional.of(url)));
+			_pageDog.getMetricValue(
+				Optional.of(canonicalURL), Optional.empty(),
+				PageMetricType.VIEWS, Optional.empty(), Optional.empty()));
 	}
 
 	@GetMapping("/view-counts")
 	public String getViewCounts(
+		@RequestParam String canonicalURL,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		@RequestParam(name = "endDate")
 			LocalDate endLocalDate,
 		@RequestParam String interval,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		@RequestParam(name = "startDate")
-			LocalDate startLocalDate,
-		@RequestParam String url) {
+			LocalDate startLocalDate) {
 
 		return _getHistogramMetrics(
-			endLocalDate, interval, PageMetricType.VIEWS, startLocalDate, url);
+			canonicalURL, endLocalDate, interval, PageMetricType.VIEWS,
+			startLocalDate);
 	}
 
 	private String _getHistogramMetrics(
-		LocalDate endLocalDate, String interval, MetricType metricType,
-		LocalDate startLocalDate, String url) {
+		String canonicalUrl, LocalDate endLocalDate, String interval,
+		PageMetricType pageMetricType, LocalDate startLocalDate) {
 
-		List<HistogramMetric> histogramMetrics =
-			_histogramDog.getHistogramMetrics(
-				true, PageMetricType.VIEWS,
+		HistogramMetricBag histogramMetricBag =
+			_histogramDog.getHistogramMetricBag(
+				true, pageMetricType,
 				new SearchQueryContext() {
 					{
+						setCanonicalUrl(canonicalUrl);
+						setIncludeActiveSessions(true);
 						setInterval(interval);
 						setTimeRange(
 							TimeRange.of(endLocalDate, startLocalDate));
-						setURL(url);
 					}
 				});
 
-		long viewsMetricValue = _pageDog.getViewsMetricValue(
-			Optional.of(startLocalDate.toString()),
-			Optional.of(endLocalDate.toString()), Optional.of(url));
-
-		// TODO LRAC-5157
-
-		if (metricType == PageMetricType.READS) {
-			for (HistogramMetric histogramMetric : histogramMetrics) {
-				histogramMetric.setPreviousValue(
-					Math.ceil(histogramMetric.getPreviousValue() / 2));
-				histogramMetric.setValue(
-					Math.ceil(histogramMetric.getValue() / 2));
-			}
-
-			viewsMetricValue = (long)Math.ceil(viewsMetricValue / 2.0);
-		}
-
 		return JSONUtil.put(
-			"histogram", histogramMetrics
+			"histogram", histogramMetricBag.getMetrics()
 		).put(
-			"value", viewsMetricValue
+			"value",
+			_pageDog.getMetricValue(
+				Optional.of(canonicalUrl),
+				Optional.of(startLocalDate.toString()), pageMetricType,
+				Optional.of(endLocalDate.toString()), Optional.empty())
 		).toString();
 	}
 
@@ -154,5 +165,8 @@ public class PagesRestController extends BaseRestController {
 
 	@Autowired
 	private PageDog _pageDog;
+
+	@Autowired
+	private PageReferrerDog _pageReferrerDog;
 
 }

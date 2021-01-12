@@ -84,10 +84,11 @@ public enum SiteMetricType implements MetricType {
 	private SiteMetricType(
 		String fieldName, String name, TrendClassification.Order order) {
 
-		_aggregationName = fieldName;
 		_fieldName = fieldName;
 		_name = name;
 		_order = order;
+
+		_aggregationName = fieldName;
 	}
 
 	private static Map<String, SiteMetricType> _siteMetricTypes =

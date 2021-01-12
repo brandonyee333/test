@@ -42,7 +42,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddDuplicateWithDifferentTypeFieldMappings() {
-		JSONObject dataSourceJSONObject = elasticsearchInvoker.add(
+		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
@@ -52,7 +52,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 			"custom", name, dataSourceJSONObject.getString("id"), "input-field",
 			name, "Number", "individuals");
 
-		JSONArray fieldMappingsJSONArray = elasticsearchInvoker.get(
+		JSONArray fieldMappingsJSONArray = faroInfoElasticsearchInvoker.get(
 			"field-mappings");
 
 		Assert.assertEquals(1, fieldMappingsJSONArray.length());
@@ -72,10 +72,10 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			2,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"field-mappings", QueryBuilders.matchAllQuery()));
 
-		fieldMappingJSONObject = elasticsearchInvoker.fetch(
+		fieldMappingJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"field-mappings",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("displayName", name)
@@ -91,7 +91,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddEmailFieldMappingCSVDataSource() {
 		_testAddEmailFieldMapping(
-			elasticsearchInvoker.add(
+			faroInfoElasticsearchInvoker.add(
 				"data-sources",
 				FaroInfoTestUtil.buildCSVDataSourceJSONObject()),
 			"email");
@@ -100,7 +100,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddEmailFieldMappingLiferayDataSource() {
 		_testAddEmailFieldMapping(
-			elasticsearchInvoker.add(
+			faroInfoElasticsearchInvoker.add(
 				"data-sources",
 				FaroInfoTestUtil.buildLiferayDataSourceJSONObject()),
 			"emailAddress");
@@ -109,7 +109,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddEmailFieldMappingSalesforceDataSource() {
 		_testAddEmailFieldMapping(
-			elasticsearchInvoker.add(
+			faroInfoElasticsearchInvoker.add(
 				"data-sources",
 				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject()),
 			"email");
@@ -117,7 +117,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddInvalidCharactersFieldMapping() {
-		JSONObject dataSourceJSONObject = elasticsearchInvoker.add(
+		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
@@ -127,7 +127,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 			"custom", name, dataSourceJSONObject.getString("id"), "input-field",
 			name, "Text", "individuals");
 
-		JSONArray fieldMappingsJSONArray = elasticsearchInvoker.get(
+		JSONArray fieldMappingsJSONArray = faroInfoElasticsearchInvoker.get(
 			"field-mappings");
 
 		Assert.assertEquals(1, fieldMappingsJSONArray.length());
@@ -144,7 +144,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddSanitizedDuplicateFieldMappings() {
-		JSONObject dataSourceJSONObject = elasticsearchInvoker.add(
+		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
@@ -154,7 +154,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 			"custom", name, dataSourceJSONObject.getString("id"), "input-field",
 			name, "Number", "individuals");
 
-		JSONArray fieldMappingsJSONArray = elasticsearchInvoker.get(
+		JSONArray fieldMappingsJSONArray = faroInfoElasticsearchInvoker.get(
 			"field-mappings");
 
 		Assert.assertEquals(1, fieldMappingsJSONArray.length());
@@ -176,10 +176,10 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			2,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"field-mappings", QueryBuilders.matchAllQuery()));
 
-		fieldMappingJSONObject = elasticsearchInvoker.fetch(
+		fieldMappingJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"field-mappings", QueryBuilders.termQuery("displayName", name));
 
 		Assert.assertEquals(
@@ -191,7 +191,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteFieldMapping() {
 		Assert.assertTrue(
 			_faroInfoFieldMappingDog.deleteFieldMapping(
-				elasticsearchInvoker.add(
+				faroInfoElasticsearchInvoker.add(
 					"field-mappings",
 					JSONUtil.put(
 						"author",
@@ -203,7 +203,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertFalse(
 			_faroInfoFieldMappingDog.deleteFieldMapping(
-				elasticsearchInvoker.add(
+				faroInfoElasticsearchInvoker.add(
 					"field-mappings",
 					JSONUtil.put(
 						"author",
@@ -213,7 +213,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 							"name", "FARO_SYSTEM"
 						)))));
 
-		JSONArray fieldMappingsJSONArray = elasticsearchInvoker.get(
+		JSONArray fieldMappingsJSONArray = faroInfoElasticsearchInvoker.get(
 			"field-mappings");
 
 		Assert.assertEquals(1, fieldMappingsJSONArray.length());
@@ -221,7 +221,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testFetchFieldMappingJSONObject() {
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			JSONUtil.put(
 				"context", "demographics"
@@ -240,7 +240,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 	public void testRemoveDataSourceFieldName() {
 		JSONObject fieldMappingJSONObject =
 			_faroInfoFieldMappingDog.removeDataSourceFieldName(
-				elasticsearchInvoker.add(
+				faroInfoElasticsearchInvoker.add(
 					"field-mappings",
 					JSONUtil.put(
 						"dataSourceFieldNames",
@@ -261,19 +261,19 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testUpdateEmailFieldMapping() {
 		_testAddEmailFieldMapping(
-			elasticsearchInvoker.add(
+			faroInfoElasticsearchInvoker.add(
 				"data-sources",
 				FaroInfoTestUtil.buildCSVDataSourceJSONObject()),
 			"email");
 
 		_testAddEmailFieldMapping(
-			elasticsearchInvoker.add(
+			faroInfoElasticsearchInvoker.add(
 				"data-sources",
 				FaroInfoTestUtil.buildLiferayDataSourceJSONObject()),
 			"emailAddress");
 
 		_testAddEmailFieldMapping(
-			elasticsearchInvoker.add(
+			faroInfoElasticsearchInvoker.add(
 				"data-sources",
 				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject()),
 			"email");
@@ -285,7 +285,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 		_faroInfoFieldMappingDog.addEmailFieldMapping(
 			dataSourceJSONObject.getString("id"));
 
-		JSONArray fieldMappingsJSONArray = elasticsearchInvoker.get(
+		JSONArray fieldMappingsJSONArray = faroInfoElasticsearchInvoker.get(
 			"field-mappings");
 
 		Assert.assertEquals(1, fieldMappingsJSONArray.length());

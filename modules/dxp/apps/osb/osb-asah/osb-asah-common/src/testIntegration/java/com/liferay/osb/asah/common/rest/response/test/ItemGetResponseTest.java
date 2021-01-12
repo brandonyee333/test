@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.rest.response.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.rest.response.ItemGetResponse;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -25,7 +24,6 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import org.json.JSONObject;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,14 +37,9 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class ItemGetResponseTest {
 
-	@Before
-	public void setUp() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	@ElasticsearchIndex(
 		name = "individuals",
-		resourcePath = "item-get-response-individuals.json",
+		resourcePath = "item_get_response_individuals.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -63,9 +56,7 @@ public class ItemGetResponseTest {
 		Assert.assertFalse(responseJSONObject.isNull("demographics"));
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

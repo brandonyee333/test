@@ -17,7 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.document.library;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseStreamNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.document.library.DocumentLibrary;
 
 import java.util.Map;
@@ -31,14 +31,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Marcellus Tavares
  */
 @Component
-public class DocumentLibraryNanite extends BaseStreamNanite<DocumentLibrary> {
+public class DocumentLibraryNanite extends BaseNanite<DocumentLibrary> {
 
 	@Override
 	public String getCollectionName() {

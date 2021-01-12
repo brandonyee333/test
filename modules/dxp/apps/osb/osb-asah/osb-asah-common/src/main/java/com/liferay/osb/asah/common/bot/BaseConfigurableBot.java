@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
 
@@ -200,7 +201,10 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 
 	private ConfigurationManager _configurationManager;
 	private int _delay;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
 	private String _obsoleteDataSourceId;
 	private boolean _running;
 	private String _staleDataSourceId;

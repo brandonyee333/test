@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.common.zip.ZipFileBuilder;
 
 import java.io.File;
@@ -36,8 +37,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.zip.ZipOutputStream;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -60,20 +59,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DataControlNanite extends BaseNanite {
-
-	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
-
-		_cerebroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroInfo();
-		_cerebroRawElasticsearchInvoker =
-			elasticsearchInvokerFactory.forCerebroRaw();
-		_dxpRawElasticsearchInvoker = elasticsearchInvokerFactory.forDXPRaw();
-		_salesforceRawElasticsearchInvoker =
-			elasticsearchInvokerFactory.forSalesforceRaw();
-	}
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -111,8 +96,15 @@ public class DataControlNanite extends BaseNanite {
 		).iterate();
 	}
 
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(DataControlNanite.class);
+	}
+
 	private void _addSuppression(
 		JSONObject dataControlTaskJSONObject, String emailAddress) {
+
+		emailAddress = StringUtils.lowerCase(emailAddress);
 
 		if (faroInfoElasticsearchInvoker.exists(
 				"suppressions",
@@ -297,20 +289,6 @@ public class DataControlNanite extends BaseNanite {
 					zipOutputStream));
 		}
 
-		QueryBuilder liferayIndividualQueryBuilder =
-			_buildIndividualQueryBuilder(
-				"LIFERAY", individualJSONObject, "userId");
-
-		if (liferayIndividualQueryBuilder != null) {
-			zipFileBuilder.addToZip(
-				"analytics-events.json",
-				zipOutputStream -> _writeToZip(
-					"analytics-events", _cerebroRawElasticsearchInvoker,
-					_buildIndividualQueryBuilder(
-						"LIFERAY", individualJSONObject, "userId"),
-					zipOutputStream));
-		}
-
 		QueryBuilder individualIdQueryBuilder = QueryBuilders.termQuery(
 			"individualId", individualJSONObject.getString("id"));
 
@@ -488,8 +466,10 @@ public class DataControlNanite extends BaseNanite {
 
 	private static final Log _log = LogFactory.getLog(DataControlNanite.class);
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
@@ -503,6 +483,8 @@ public class DataControlNanite extends BaseNanite {
 			disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
 		}
 	};
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

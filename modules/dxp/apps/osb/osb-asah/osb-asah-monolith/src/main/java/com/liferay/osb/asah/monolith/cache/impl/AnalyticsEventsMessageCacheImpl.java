@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.monolith.cache.impl;
 
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
 
+import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 
@@ -30,23 +33,52 @@ public class AnalyticsEventsMessageCacheImpl
 	implements AnalyticsEventsMessageCache {
 
 	@Override
-	public void add(String id) {
+	public boolean add(String id) {
+		if (id == null) {
+			return true;
+		}
+
+		Queue<String> queue = _getQueue();
+
+		if (queue.contains(id)) {
+			return false;
+		}
+
+		queue.add(id);
+
+		return true;
+	}
+
+	public boolean contains(String id) {
+		Queue<String> queue = _getQueue();
+
+		return queue.contains(id);
+	}
+
+	@Override
+	public void remove(String id) {
 		if (id == null) {
 			return;
 		}
 
-		_queue.add(id);
+		Queue<String> queue = _getQueue();
+
+		queue.remove(id);
 	}
 
-	@Override
-	public boolean has(String id) {
-		if (id == null) {
-			return false;
+	private Queue<String> _getQueue() {
+		Queue<String> queue = _queues.get(ProjectIdThreadLocal.getProjectId());
+
+		if (queue == null) {
+			queue = new CircularFifoQueue<>(1000000);
+
+			_queues.put(ProjectIdThreadLocal.getProjectId(), queue);
 		}
 
-		return _queue.contains(id);
+		return queue;
 	}
 
-	private final Queue<String> _queue = new CircularFifoQueue<>(1000000);
+	private final Map<String, Queue<String>> _queues =
+		new ConcurrentHashMap<>();
 
 }

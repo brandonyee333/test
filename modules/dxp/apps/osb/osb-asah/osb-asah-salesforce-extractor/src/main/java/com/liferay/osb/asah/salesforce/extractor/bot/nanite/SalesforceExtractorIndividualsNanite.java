@@ -18,11 +18,10 @@ import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
-import com.liferay.osb.asah.common.json.JSONArrayPaginator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 import com.liferay.osb.asah.salesforce.extractor.util.TimeUtil;
 
@@ -31,8 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.annotation.PostConstruct;
-
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -65,11 +63,6 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		_osbAsahDataSourceIdTermQueryBuilder = QueryBuilders.termQuery(
 			"osbAsahDataSourceId",
 			_salesforceExtractorConfiguration.getDataSourceId());
-	}
-
-	@PostConstruct
-	public void init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forSalesforceRaw();
 	}
 
 	@Override
@@ -137,10 +130,10 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	}
 
 	private JSONObject _buildIndividualJSONObject(
-		JSONArray accountPKsJSONArray, String birthDate, String city,
+		JSONArray accountPKsJSONArray, String birthDateString, String city,
 		String company, String contactId, String country,
 		String currencyIsoCode, String department, String description,
-		String doNotCall, String email, String fax, String firstName,
+		String doNotCall, String emailAddress, String fax, String firstName,
 		String fullName, String industry, String lastName, String leadId,
 		String middleName, String mobilePhone, String phone, String postalCode,
 		String salutation, String state, String street, String suffix,
@@ -149,7 +142,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		return JSONUtil.put(
 			"accountPKs", accountPKsJSONArray
 		).put(
-			"birthDate", birthDate
+			"birthDate", birthDateString
 		).put(
 			"city", city
 		).put(
@@ -167,7 +160,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		).put(
 			"doNotCall", doNotCall
 		).put(
-			"email", email
+			"email", emailAddress
 		).put(
 			"fax", fax
 		).put(
@@ -216,19 +209,26 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 					"Account", accountId);
 			}
 
-			String email = jsonObject.optString("Email", null);
+			String emailAddress = jsonObject.optString("Email", null);
+
+			String birthDateString = jsonObject.optString("Birthdate", null);
+
+			if (NumberUtils.isCreatable(birthDateString) &&
+				(Long.parseLong(birthDateString) < 0)) {
+
+				birthDateString = DateUtil.toString(birthDateString);
+			}
 
 			individualJSONObject = _buildIndividualJSONObject(
-				_getAccountPKsJSONArray(accountId, email),
-				jsonObject.optString("Birthdate", null),
-				jsonObject.optString("MailingCity", null),
+				_getAccountPKsJSONArray(accountId, emailAddress),
+				birthDateString, jsonObject.optString("MailingCity", null),
 				accountJSONObject.optString("Name", null),
 				jsonObject.getString("id"),
 				jsonObject.optString("MailingCountry", null),
 				jsonObject.optString("CurrencyIsoCode", null),
 				jsonObject.optString("Department", null),
 				jsonObject.optString("Description", null),
-				jsonObject.optString("DoNotCall", null), email,
+				jsonObject.optString("DoNotCall", null), emailAddress,
 				jsonObject.optString("Fax", null),
 				jsonObject.optString("FirstName", null),
 				jsonObject.optString("Name", null), null,
@@ -276,8 +276,10 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		return individualJSONObject;
 	}
 
-	private JSONArray _getAccountPKsJSONArray(String accountId, String email) {
-		if (email == null) {
+	private JSONArray _getAccountPKsJSONArray(
+		String accountId, String emailAddress) {
+
+		if (emailAddress == null) {
 			if (accountId == null) {
 				return null;
 			}
@@ -306,7 +308,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			BoolQueryBuilderUtil.filter(
 				_osbAsahDataSourceIdTermQueryBuilder
 			).filter(
-				QueryBuilders.termQuery("Email", email)
+				QueryBuilders.termQuery("Email", emailAddress)
 			));
 
 		searchSourceBuilder.size(0);
@@ -342,7 +344,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		return jsonArray;
 	}
 
-	private JSONObject _mergeContactsAndLeads(String email) {
+	private JSONObject _mergeContactsAndLeads(String emailAddress) {
 		JSONObject individualJSONObject = null;
 
 		JSONArray contactsJSONArray = _elasticsearchInvoker.get(
@@ -350,7 +352,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			BoolQueryBuilderUtil.filter(
 				_osbAsahDataSourceIdTermQueryBuilder
 			).filter(
-				QueryBuilders.termQuery("Email", email)
+				QueryBuilders.termQuery("Email", emailAddress)
 			));
 
 		JSONArray leadsJSONArray = _elasticsearchInvoker.get(
@@ -358,7 +360,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			BoolQueryBuilderUtil.filter(
 				_osbAsahDataSourceIdTermQueryBuilder
 			).filter(
-				QueryBuilders.termQuery("Email", email)
+				QueryBuilders.termQuery("Email", emailAddress)
 			));
 
 		for (int i = 0; i < contactsJSONArray.length(); i++) {
@@ -384,14 +386,14 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		JSONObject additionalInfoJSONObject =
 			auditEventJSONObject.getJSONObject("additionalInfo");
 
-		String email = additionalInfoJSONObject.optString("Email");
+		String emailAddress = additionalInfoJSONObject.optString("Email");
 
 		JSONObject oldIndividualJSONObject = _elasticsearchInvoker.fetch(
 			"individuals",
 			BoolQueryBuilderUtil.filter(
 				_osbAsahDataSourceIdTermQueryBuilder
 			).filter(
-				QueryBuilders.termQuery("email", email)
+				QueryBuilders.termQuery("email", emailAddress)
 			));
 
 		JSONObject newIndividualJSONObject = null;
@@ -421,7 +423,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			}
 		}
 		else if (oldIndividualJSONObject != null) {
-			newIndividualJSONObject = _mergeContactsAndLeads(email);
+			newIndividualJSONObject = _mergeContactsAndLeads(emailAddress);
 
 			if (newIndividualJSONObject == null) {
 				_elasticsearchInvoker.delete(
@@ -452,7 +454,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		_elasticsearchInvoker.delete("audit-events", auditEventJSONObject);
 	}
 
-	private void _run() throws Exception {
+	private void _run() {
 		for (String typeName : new String[] {"Lead", "Contact"}) {
 			long time = System.currentTimeMillis();
 
@@ -460,44 +462,40 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 				_log.info("Curate " + typeName);
 			}
 
-			new JSONArrayPaginator() {
+			int processedCount = 0;
 
-				@Override
-				protected JSONArray paginate(int start, int end)
-					throws Exception {
+			while (true) {
+				JSONArray jsonArray = new JSONArray(
+					_elasticsearchInvoker.get(
+						"audit-events",
+						searchSourceBuilder -> {
+							searchSourceBuilder.query(
+								BoolQueryBuilderUtil.filter(
+									_osbAsahDataSourceIdTermQueryBuilder
+								).filter(
+									QueryBuilders.termQuery(
+										"typeName", typeName)
+								));
+							searchSourceBuilder.size(500);
+							searchSourceBuilder.sort("id");
+						}));
 
-					JSONArray jsonArray = new JSONArray(
-						_elasticsearchInvoker.get(
-							"audit-events",
-							searchSourceBuilder -> {
-								searchSourceBuilder.from(start);
-								searchSourceBuilder.query(
-									BoolQueryBuilderUtil.filter(
-										_osbAsahDataSourceIdTermQueryBuilder
-									).filter(
-										QueryBuilders.termQuery(
-											"typeName", typeName)
-									));
-								searchSourceBuilder.size(end - start);
-								searchSourceBuilder.sort("id");
-							}));
-
-					for (int i = 0; i < jsonArray.length(); i++) {
-						_process(jsonArray.getJSONObject(i));
-					}
-
-					processedCount += jsonArray.length();
-
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Curated " + processedCount + " " + typeName +
-								" records");
-					}
-
-					return jsonArray;
+				if (jsonArray.length() == 0) {
+					break;
 				}
 
-			};
+				for (int i = 0; i < jsonArray.length(); i++) {
+					_process(jsonArray.getJSONObject(i));
+				}
+
+				processedCount += jsonArray.length();
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Curated " + processedCount + " " + typeName +
+							" records");
+				}
+			}
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
@@ -509,10 +507,8 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	private static final Log _log = LogFactory.getLog(
 		SalesforceExtractorIndividualsNanite.class);
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;

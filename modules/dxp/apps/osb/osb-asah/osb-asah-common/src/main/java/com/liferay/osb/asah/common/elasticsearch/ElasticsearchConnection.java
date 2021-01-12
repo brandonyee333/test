@@ -27,16 +27,20 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpHost;
 
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequestBuilder;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.client.AdminClient;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.ClusterAdminClient;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.elasticsearch.xpack.client.PreBuiltXPackTransportClient;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -47,12 +51,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ElasticsearchConnection {
 
-	public Client getClient() {
-		return _client;
-	}
-
 	public ClusterHealthResponse getClusterHealthResponse() {
-		AdminClient adminClient = _client.admin();
+		AdminClient adminClient = _transportClient.admin();
 
 		ClusterAdminClient clusterAdminClient = adminClient.cluster();
 
@@ -61,9 +61,17 @@ public class ElasticsearchConnection {
 
 		clusterHealthRequestBuilder.setWaitForYellowStatus();
 
-		ClientUtil.waitForConnection(_client);
+		ClientUtil.waitForConnection(_transportClient);
 
 		return clusterHealthRequestBuilder.get();
+	}
+
+	public RestHighLevelClient getRestHighLevelClient() {
+		return _restHighLevelClient;
+	}
+
+	public Client getTransportClient() {
+		return _transportClient;
 	}
 
 	@PostConstruct
@@ -72,12 +80,6 @@ public class ElasticsearchConnection {
 
 		builder.loadFromSource(_readSettings(), XContentType.JSON);
 
-		_client = _createClient(builder.build());
-
-		_testConnection();
-	}
-
-	private Client _createClient(Settings settings) {
 		if (StringUtils.isBlank(
 				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP)) {
 
@@ -93,17 +95,59 @@ public class ElasticsearchConnection {
 					ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP);
 		}
 
-		TransportClient transportClient = new PreBuiltTransportClient(settings);
+		String password = System.getenv("ELASTICSEARCH_PASSWORD");
+		String user = System.getenv("ELASTICSEARCH_USER");
 
-		transportClient.addTransportAddress(ClientUtil.getTransportAddress());
+		if (!StringUtils.isBlank(password) && !StringUtils.isBlank(user)) {
+			builder.put(
+				"xpack.security.transport.ssl.certificate_authorities",
+				"/root/ca/ca.crt");
+			builder.put(
+				"xpack.security.transport.ssl.certificate",
+				"/root/client/client.crt");
+			builder.put("xpack.security.transport.ssl.enabled", true);
+			builder.put(
+				"xpack.security.transport.ssl.key", "/root/client/client.key");
+			builder.put(
+				"xpack.security.transport.ssl.verification_mode",
+				"certificate");
+			builder.put("xpack.security.user", user + ":" + password);
+		}
+
+		Settings settings = builder.build();
+
+		TransportAddress transportAddress = ClientUtil.getTransportAddress();
+
+		_restHighLevelClient = _createHttpClient(transportAddress.getAddress());
+		_transportClient = _createTransportClient(settings, transportAddress);
+
+		_testConnection();
+	}
+
+	private RestHighLevelClient _createHttpClient(String hostName) {
+		return new RestHighLevelClient(
+			RestClient.builder(new HttpHost(hostName, 9200, "http")));
+	}
+
+	private Client _createTransportClient(
+		Settings settings, TransportAddress transportAddress) {
+
+		TransportClient transportClient = new PreBuiltXPackTransportClient(
+			settings);
+
+		transportClient.addTransportAddress(transportAddress);
 
 		return transportClient;
 	}
 
 	@PreDestroy
-	private void _disconnect() {
-		if (_client != null) {
-			_client.close();
+	private void _disconnect() throws Exception {
+		if (_restHighLevelClient != null) {
+			_restHighLevelClient.close();
+		}
+
+		if (_transportClient != null) {
+			_transportClient.close();
 		}
 	}
 
@@ -153,12 +197,14 @@ public class ElasticsearchConnection {
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchConnection.class);
 
-	private Client _client;
+	private RestHighLevelClient _restHighLevelClient;
 
 	@Value("${osb.asah.elasticsearch.connection.retry.attempts:5}")
 	private Integer _retryAttempts;
 
 	@Value("${osb.asah.elasticsearch.connection.retry.delay:3000}")
 	private Integer _retryDelay;
+
+	private Client _transportClient;
 
 }

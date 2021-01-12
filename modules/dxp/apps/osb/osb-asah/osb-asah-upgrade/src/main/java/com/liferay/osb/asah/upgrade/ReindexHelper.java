@@ -17,8 +17,6 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.elasticsearch.ClientUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
 import java.util.Map;
@@ -42,6 +40,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.ClusterAdminClient;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.ReindexAction;
 import org.elasticsearch.index.reindex.ReindexRequestBuilder;
@@ -117,21 +116,6 @@ public class ReindexHelper {
 		}
 	}
 
-	public String getBaseIndexName(
-		String collectionName, WeDeployDataService weDeployDataService) {
-
-		return _elasticsearchIndexManager.getIndexName(
-			collectionName, weDeployDataService);
-	}
-
-	public String getIndexAlias(
-		String collectionName, WeDeployDataService weDeployDataService) {
-
-		return ElasticsearchIndexUtil.getIndexAlias(
-			collectionName,
-			_elasticsearchIndexManager.getIndexNamespace(weDeployDataService));
-	}
-
 	public String getNewIndexName(String indexName, String version) {
 		indexName = indexName + "_" + version;
 
@@ -140,7 +124,7 @@ public class ReindexHelper {
 
 	@PostConstruct
 	public void init() {
-		_client = _elasticsearchConnection.getClient();
+		_client = _elasticsearchConnection.getTransportClient();
 
 		_adminClient = _client.admin();
 	}
@@ -189,15 +173,19 @@ public class ReindexHelper {
 	}
 
 	public void reindex(
-			String destination, Map<String, Object> params, String script,
-			String source)
+			String destination, Map<String, Object> params,
+			QueryBuilder queryBuilder, String script, String source)
 		throws Exception {
 
 		ReindexRequestBuilder reindexRequestBuilder = new ReindexRequestBuilder(
-			_elasticsearchConnection.getClient(), ReindexAction.INSTANCE);
+			_elasticsearchConnection.getTransportClient(),
+			ReindexAction.INSTANCE);
 
 		reindexRequestBuilder.destination(destination);
-		reindexRequestBuilder.source(source);
+
+		if (queryBuilder != null) {
+			reindexRequestBuilder.filter(queryBuilder);
+		}
 
 		if (script != null) {
 			reindexRequestBuilder.script(
@@ -205,6 +193,8 @@ public class ReindexHelper {
 					Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 					script, params));
 		}
+
+		reindexRequestBuilder.source(source);
 
 		for (int i = _MAX_RETRIES; i >= 0; i--) {
 			ClientUtil.waitForConnection(_client);
@@ -249,7 +239,7 @@ public class ReindexHelper {
 	}
 
 	public void reindex(String destination, String source) throws Exception {
-		reindex(destination, null, null, source);
+		reindex(destination, null, null, null, source);
 	}
 
 	private boolean _isSnapshotInProgress() {

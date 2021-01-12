@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.rest.response.embedded.test;
 
 import com.liferay.osb.asah.backend.rest.response.embedded.ChannelsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -27,7 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,17 +39,12 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class ChannelsEmbeddedJSONObjectCreatorTest {
 
-	@Before
-	public void setUp() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	@ElasticsearchIndex(
 		name = "channels", resourcePath = "channels.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -73,9 +66,7 @@ public class ChannelsEmbeddedJSONObjectCreatorTest {
 		Assert.assertEquals("567", dataSourceJSONObject.getString("id"));
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

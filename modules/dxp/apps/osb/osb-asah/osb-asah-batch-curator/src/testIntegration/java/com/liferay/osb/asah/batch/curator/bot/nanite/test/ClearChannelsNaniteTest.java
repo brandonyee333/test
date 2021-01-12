@@ -21,9 +21,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -34,21 +32,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author André Miranda
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-@Import(
-	{
-		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahRedisDisabledTestConfiguration.class
-	}
-)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 
 	@Test
@@ -87,7 +78,7 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, assetJSONObject, channelId,
-				"pageViewed", new String[] {"pageLoadTime", "1000"}));
+				"pageViewed", new String[0]));
 
 		_clearChannelsNanite.run(
 			JSONUtil.put("channelIds", JSONUtil.put(channelId)));

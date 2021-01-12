@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,16 +48,30 @@ public class NanitesHttpImpl implements NanitesHttp {
 	}
 
 	@Override
-	public void run(String json) {
+	public void rescheduleNanites() {
+		_http.exchangeIfUp(
+			ServiceConstants.URL_BATCH_CURATOR, "/nanites/reschedule",
+			HttpMethod.POST, null);
+	}
+
+	@Override
+	public void run(JSONArray jsonArray) {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR, "/nanites/run", HttpMethod.POST,
-			json);
+			jsonArray.toString());
 	}
 
 	@Override
 	public void scheduleOSBAsahTask(JSONObject jsonObject) {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR, "/nanites/schedule",
+			HttpMethod.POST, jsonObject.toString());
+	}
+
+	@Override
+	public void unscheduleOSBAsahTask(JSONObject jsonObject) {
+		_http.exchangeIfUp(
+			ServiceConstants.URL_BATCH_CURATOR, "/nanites/unschedule",
 			HttpMethod.POST, jsonObject.toString());
 	}
 

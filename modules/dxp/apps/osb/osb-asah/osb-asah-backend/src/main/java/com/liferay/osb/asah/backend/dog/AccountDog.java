@@ -16,11 +16,12 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.FieldMapping;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
+import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.text.ParseException;
 
@@ -30,8 +31,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,7 +62,7 @@ public class AccountDog {
 				_getAccountOrganizationFetchSourceExcludes(),
 				QueryBuilders.termQuery("id", id), 1, 0));
 
-		if (searchHits.getTotalHits() == 0) {
+		if (!HitsUtil.hasHits(searchHits)) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "There is no account with ID " + id);
 		}
@@ -177,12 +176,6 @@ public class AccountDog {
 		return properties;
 	}
 
-	@PostConstruct
-	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	private Account _mapAccount(SearchHit searchHit) {
 		Account account = new Account();
 
@@ -223,9 +216,7 @@ public class AccountDog {
 	@Autowired
 	private DataDog _dataDog;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

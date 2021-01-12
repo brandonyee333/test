@@ -14,19 +14,19 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.util.Arrays;
 import java.util.List;
-
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -48,7 +48,11 @@ public class FaroInfoSessionsFilterStringConverterHelper
 
 		QueryBuilder queryBuilder = null;
 
-		fieldName = "interactions." + fieldName.replace('/', '.');
+		fieldName = fieldName.replace("context/", "");
+
+		if (_contextFieldNames.contains(fieldName)) {
+			fieldName = fieldName + "s";
+		}
 
 		String fieldValue = arguments.get(1);
 
@@ -61,6 +65,8 @@ public class FaroInfoSessionsFilterStringConverterHelper
 				value
 			).lte(
 				StringUtil.unquote(arguments.get(2))
+			).timeZone(
+				_timeZoneDog.getTimeZoneId()
 			);
 		}
 		else if (customFunctionName.equalsIgnoreCase("contains")) {
@@ -80,8 +86,7 @@ public class FaroInfoSessionsFilterStringConverterHelper
 			queryBuilder = BoolQueryBuilderUtil.mustNot(queryBuilder);
 		}
 
-		return QueryBuilders.nestedQuery(
-			"interactions", queryBuilder, ScoreMode.None);
+		return queryBuilder;
 	}
 
 	@Override
@@ -100,84 +105,81 @@ public class FaroInfoSessionsFilterStringConverterHelper
 			return null;
 		}
 
-		return _getInteractionsQueryBuilder(fieldName, operator, valueString);
+		return _getContextQueryBuilder(fieldName, operator, valueString);
 	}
 
-	private QueryBuilder _getInteractionsQueryBuilder(
+	private QueryBuilder _getContextQueryBuilder(
 		String fieldName, String operator, String valueString) {
 
-		fieldName = "interactions." + fieldName.replace('/', '.');
+		fieldName = fieldName.replace("context/", "");
+
+		if (_contextFieldNames.contains(fieldName)) {
+			fieldName = fieldName + "s";
+		}
 
 		Object value = StringUtil.toObject(valueString);
 
 		if (operator.equalsIgnoreCase("eq")) {
 			if (value != null) {
-				return QueryBuilders.nestedQuery(
-					"interactions",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(fieldName, value)),
-					ScoreMode.None);
+				return QueryBuilders.termQuery(fieldName, value);
 			}
 
-			return QueryBuilders.nestedQuery(
-				"interactions",
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.existsQuery(fieldName)),
-				ScoreMode.None);
+			return BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.existsQuery(fieldName));
 		}
 		else if (operator.equalsIgnoreCase("gt")) {
-			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
-				fieldName);
-
-			rangeQueryBuilder.gt(value);
-
-			return QueryBuilders.nestedQuery(
-				"interactions", rangeQueryBuilder, ScoreMode.None);
+			return QueryBuilders.rangeQuery(
+				fieldName
+			).gt(
+				value
+			).timeZone(
+				_timeZoneDog.getTimeZoneId()
+			);
 		}
 		else if (operator.equalsIgnoreCase("ge")) {
-			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
-				fieldName);
-
-			rangeQueryBuilder.gte(value);
-
-			return QueryBuilders.nestedQuery(
-				"interactions", rangeQueryBuilder, ScoreMode.None);
+			return QueryBuilders.rangeQuery(
+				fieldName
+			).gte(
+				value
+			).timeZone(
+				_timeZoneDog.getTimeZoneId()
+			);
 		}
 		else if (operator.equalsIgnoreCase("lt")) {
-			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
-				fieldName);
-
-			rangeQueryBuilder.lt(value);
-
-			return QueryBuilders.nestedQuery(
-				"interactions", rangeQueryBuilder, ScoreMode.None);
+			return QueryBuilders.rangeQuery(
+				fieldName
+			).lt(
+				value
+			).timeZone(
+				_timeZoneDog.getTimeZoneId()
+			);
 		}
 		else if (operator.equalsIgnoreCase("le")) {
-			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
-				fieldName);
-
-			rangeQueryBuilder.lte(value);
-
-			return QueryBuilders.nestedQuery(
-				"interactions", rangeQueryBuilder, ScoreMode.None);
+			return QueryBuilders.rangeQuery(
+				fieldName
+			).lte(
+				value
+			).timeZone(
+				_timeZoneDog.getTimeZoneId()
+			);
 		}
 		else if (operator.equalsIgnoreCase("ne")) {
 			if (value != null) {
-				return QueryBuilders.nestedQuery(
-					"interactions",
-					BoolQueryBuilderUtil.mustNot(
-						QueryBuilders.termQuery(fieldName, value)),
-					ScoreMode.None);
+				return BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.termQuery(fieldName, value));
 			}
 
-			return QueryBuilders.nestedQuery(
-				"interactions",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.existsQuery(fieldName)),
-				ScoreMode.None);
+			return BoolQueryBuilderUtil.filter(
+				QueryBuilders.existsQuery(fieldName));
 		}
 
 		return null;
 	}
+
+	private final List<String> _contextFieldNames = Arrays.asList(
+		"canonicalUrl", "referrer", "url");
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

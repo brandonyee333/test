@@ -63,10 +63,7 @@ public class RunLogger {
 					searchSourceBuilder.size(1);
 					searchSourceBuilder.sort(
 						SortBuilderUtil.fieldSort(
-							"dateLogged"
-						).order(
-							SortOrder.DESC
-						));
+							"dateLogged", SortOrder.DESC));
 				}));
 
 		if (runLogsJSONArray.length() == 0) {

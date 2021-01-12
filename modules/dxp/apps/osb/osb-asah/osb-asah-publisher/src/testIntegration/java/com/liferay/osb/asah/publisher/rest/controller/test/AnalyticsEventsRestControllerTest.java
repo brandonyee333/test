@@ -16,7 +16,7 @@ package com.liferay.osb.asah.publisher.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.http.QueueHttp;
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -28,6 +28,7 @@ import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisEnabledTestConfig
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 
 import org.assertj.core.api.Assertions;
 
@@ -48,7 +49,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -59,10 +59,12 @@ import org.springframework.http.ResponseEntity;
 /**
  * @author Inácio Nery
  */
-@Import(OSBAsahRedisEnabledTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(
-	classes = OSBAsahPublisherSpringBootApplication.class,
+	classes = {
+		OSBAsahPublisherSpringBootApplication.class,
+		OSBAsahRedisEnabledTestConfiguration.class
+	},
 	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 public class AnalyticsEventsRestControllerTest {
@@ -73,12 +75,13 @@ public class AnalyticsEventsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
 	public void testAddIndividual() {
-		String emailAddress = RandomTestUtil.randomEmailAddress();
+		String emailAddress = StringUtils.lowerCase(
+			RandomTestUtil.randomEmailAddress());
 
 		_exchange(
 			"/identity",
@@ -101,9 +104,9 @@ public class AnalyticsEventsRestControllerTest {
 			String.class);
 
 		Mockito.verify(
-			_queueHttp, Mockito.times(1)
-		).pushMessage(
-			argumentCaptor.capture(), Mockito.anyString()
+			_messageBus, Mockito.times(1)
+		).sendMessage(
+			Mockito.any(), argumentCaptor.capture()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(
@@ -133,7 +136,7 @@ public class AnalyticsEventsRestControllerTest {
 	@Test
 	public void testGetStatusCode500() throws Exception {
 		Mockito.doThrow(
-			Exception.class
+			RuntimeException.class
 		).when(
 			_messageBus
 		).sendMessage(
@@ -227,7 +230,7 @@ public class AnalyticsEventsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -241,7 +244,7 @@ public class AnalyticsEventsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -257,6 +260,7 @@ public class AnalyticsEventsRestControllerTest {
 	private <T> ResponseEntity<String> _exchange(String url, T body) {
 		HttpHeaders httpHeaders = new HttpHeaders();
 
+		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
 		httpHeaders.add(HttpHeaders.COOKIE, "ANONYMOUS_USER_ID=111111");
 		httpHeaders.add(HttpHeaders.USER_AGENT, "Google Chrome");
 		httpHeaders.add("X-Forwarded-For", "localhost");
@@ -294,9 +298,9 @@ public class AnalyticsEventsRestControllerTest {
 			String.class);
 
 		Mockito.verify(
-			_queueHttp, Mockito.times(1)
-		).pushMessage(
-			argumentCaptor.capture(), Mockito.anyString()
+			_messageBus, Mockito.times(1)
+		).sendMessage(
+			Mockito.any(), argumentCaptor.capture()
 		);
 
 		JSONObject messageJSONObject = new JSONObject(
@@ -311,9 +315,6 @@ public class AnalyticsEventsRestControllerTest {
 
 	@MockBean
 	private MessageBus _messageBus;
-
-	@MockBean
-	private QueueHttp _queueHttp;
 
 	@Autowired
 	private TestRestTemplate _testRestTemplate;

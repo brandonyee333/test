@@ -16,12 +16,14 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,27 +32,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClearChannelsNanite extends BaseNanite {
 
+	@CacheEvict(evictAll = true)
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		_faroInfoChannelDog.clearChannels(
 			JSONUtil.toStringList(contextJSONObject.getJSONArray("channelIds")),
 			this::monitorProcessedCount, this::monitorQueueSize);
-
-		_clearCache();
 	}
 
-	private void _clearCache() {
-		if (_cacheManager != null) {
-			for (String cacheName : _cacheManager.getCacheNames()) {
-				Cache cache = _cacheManager.getCache(cacheName);
-
-				cache.clear();
-			}
-		}
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(ClearChannelsNanite.class);
 	}
-
-	@Autowired(required = false)
-	private CacheManager _cacheManager;
 
 	@Autowired
 	private FaroInfoChannelDog _faroInfoChannelDog;

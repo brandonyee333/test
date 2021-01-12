@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.json;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.function.UnsafeFunction;
 import com.liferay.osb.asah.common.function.UnsafeRunnable;
 
@@ -112,7 +113,8 @@ public class JSONArrayIterator {
 
 			if (_queueMonitorConsumer != null) {
 				long remaining =
-					searchHits.getTotalHits() - delta - processedCount;
+					HitsUtil.getTotalHitsCount(searchHits) - delta -
+						processedCount;
 
 				_queueMonitorConsumer.accept((int)remaining);
 			}

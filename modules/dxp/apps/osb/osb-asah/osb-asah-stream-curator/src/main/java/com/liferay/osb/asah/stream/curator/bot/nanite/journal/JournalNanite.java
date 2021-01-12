@@ -17,21 +17,23 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.journal;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseStreamNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.journal.Journal;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,7 +41,7 @@ import org.springframework.stereotype.Component;
  * @author Brian Wing Shun Chan
  */
 @Component
-public class JournalNanite extends BaseStreamNanite<Journal> {
+public class JournalNanite extends BaseNanite<Journal> {
 
 	@Override
 	public String getCollectionName() {
@@ -85,6 +87,29 @@ public class JournalNanite extends BaseStreamNanite<Journal> {
 			journal.getAssetId(), journal.getChannelId(),
 			journal.getEventDate(), journal.getUserId(),
 			journal.getVariantId());
+	}
+
+	@Override
+	protected List<AnalyticsEvent> pullAnalyticsEvents() throws Exception {
+		List<AnalyticsEvent> analyticsEvents = super.pullAnalyticsEvents();
+
+		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+		return stream.filter(
+			analyticsEvent -> {
+				if (Objects.equals(
+						analyticsEvent.getApplicationId(), "WebContent") &&
+					Objects.equals(
+						analyticsEvent.getEventId(), "webContentClicked")) {
+
+					return false;
+				}
+
+				return true;
+			}
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	@Override

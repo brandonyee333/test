@@ -36,9 +36,9 @@ public class ActivitiesHistogramTransformationJSONArrayFunction
 	extends BaseTransformationJSONArrayFunction {
 
 	public ActivitiesHistogramTransformationJSONArrayFunction(
-		boolean includeToday) {
+		boolean includeToday, String rangeEnd, String rangeStart) {
 
-		super(includeToday);
+		super(includeToday, rangeEnd, rangeStart);
 	}
 
 	@Override
@@ -61,10 +61,15 @@ public class ActivitiesHistogramTransformationJSONArrayFunction
 				).extendedBounds(
 					extendedBounds
 				).field(
-					supportedFieldName
+					_getDateHistogramField(
+						computeFunctionString, supportedFieldName)
 				).minDocCount(
 					0
 				);
+
+				if (computeFunctionString.equals("week")) {
+					aggregationBuilder.offset("-1d");
+				}
 
 				searchSourceBuilder.aggregation(aggregationBuilder);
 
@@ -93,6 +98,16 @@ public class ActivitiesHistogramTransformationJSONArrayFunction
 		}
 
 		return jsonArray;
+	}
+
+	private String _getDateHistogramField(
+		String computeFunctionString, String supportedFieldName) {
+
+		if (computeFunctionString.equals("hour")) {
+			return "startTimeLocal";
+		}
+
+		return supportedFieldName;
 	}
 
 }

@@ -21,8 +21,8 @@ import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.MetricType;
-import com.liferay.osb.asah.backend.model.ResultBag;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Sort;
 
 import graphql.execution.ExecutionTypeInfo;
 
@@ -31,9 +31,6 @@ import graphql.schema.GraphQLFieldDefinition;
 
 import java.util.Map;
 import java.util.Set;
-
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,11 +67,9 @@ public class AssetMetricBagDataFetcher extends BaseDataFetcher<ResultBag> {
 
 		resultBag.setResults(
 			_metricDog.getAssetMetrics(
-				assetMetricsCount,
-				_createFieldSortBuilder(
-					searchQueryContext.getAssetType(), sort),
-				searchQueryContext, (Set<String>)context.get("selectedMetrics"),
-				size, start));
+				assetMetricsCount, searchQueryContext,
+				(Set<String>)context.get("selectedMetrics"), size,
+				_createSort(searchQueryContext.getAssetType(), sort), start));
 
 		resultBag.setTotal(assetMetricsCount);
 
@@ -96,15 +91,11 @@ public class AssetMetricBagDataFetcher extends BaseDataFetcher<ResultBag> {
 		return AssetType.of(name.substring(0, name.length() - 1));
 	}
 
-	private FieldSortBuilder _createFieldSortBuilder(
-		AssetType assetType, Map<String, String> sort) {
-
+	private Sort _createSort(AssetType assetType, Map<String, String> sort) {
 		MetricType metricType = _metricTypeDog.getMetricType(
 			assetType, sort.get("column"));
 
-		return SortBuilderUtil.fieldSort(
-			metricType.getAggregationName(),
-			SortOrder.valueOf(sort.get("type")));
+		return new Sort(metricType.getAggregationName(), sort.get("type"));
 	}
 
 	@Autowired

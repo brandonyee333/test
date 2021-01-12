@@ -20,9 +20,11 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchConnection;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerImpl;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -40,8 +42,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
-import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.Sum;
+import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.json.JSONArray;
@@ -69,16 +71,14 @@ public class ElasticsearchInvokerTest {
 
 	@Before
 	public void setUp() {
-		_indexNamespace = _generateIndexNamespace();
-
 		_elasticsearchInvoker = new ElasticsearchInvokerImpl(
-			Collections.emptyMap(), _elasticsearchConnection.getClient(),
-			_indexNamespace);
+			_elasticsearchConnection.getTransportClient(),
+			_elasticsearchIndexManager, WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		_collectionName = RandomTestUtil.randomString();
 
 		_indexName = ElasticsearchIndexUtil.getIndexName(
-			_collectionName, _indexNamespace);
+			_collectionName, WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		_elasticsearchIndexManager.create(
 			true, _createIndexConfiguration(), _indexName);
@@ -86,7 +86,7 @@ public class ElasticsearchInvokerTest {
 
 	@After
 	public void tearDown() {
-		_elasticsearchIndexManager.clear(_indexName);
+		_elasticsearchIndexManager.delete(_indexName);
 	}
 
 	@Test
@@ -421,7 +421,7 @@ public class ElasticsearchInvokerTest {
 
 		SearchHits searchHits = searchResponse.getHits();
 
-		Assert.assertEquals(3, searchHits.totalHits);
+		Assert.assertEquals(3, HitsUtil.getTotalHitsCount(searchHits));
 
 		SearchHit[] hits = searchHits.getHits();
 
@@ -629,12 +629,6 @@ public class ElasticsearchInvokerTest {
 		return jsonObject.toString();
 	}
 
-	private String _generateIndexNamespace() {
-		String indexNamespace = RandomTestUtil.randomString();
-
-		return indexNamespace.toLowerCase();
-	}
-
 	private String _collectionName;
 
 	@Autowired
@@ -643,8 +637,9 @@ public class ElasticsearchInvokerTest {
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
 	private String _indexName;
-	private String _indexNamespace;
 
 }

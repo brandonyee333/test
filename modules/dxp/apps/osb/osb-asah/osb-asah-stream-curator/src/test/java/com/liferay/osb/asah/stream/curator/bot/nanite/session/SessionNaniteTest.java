@@ -14,11 +14,14 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.session;
 
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
+
+import java.time.ZoneId;
 
 import java.util.Map;
 
@@ -54,8 +57,7 @@ public class SessionNaniteTest extends BaseNaniteTestCase {
 		Mockito.when(
 			elasticsearchInvoker.fetch(
 				Mockito.eq(nanite.getCollectionName()),
-				Mockito.any(QueryBuilder.class), Mockito.anyString(),
-				Mockito.anyString())
+				Mockito.any(QueryBuilder.class))
 		).thenReturn(
 			new JSONObject(
 				ResourceUtil.readResourceToString(
@@ -65,7 +67,23 @@ public class SessionNaniteTest extends BaseNaniteTestCase {
 		ReflectionTestUtils.setField(
 			nanite, "_sessionUpdateScriptSource",
 			ScriptUtil.loadScriptSource(
-				SessionNanite.class, "session-update-script.painless"));
+				SessionNanite.class, "session_update_script.painless"));
+
+		TimeZoneDog timeZoneDog = Mockito.mock(TimeZoneDog.class);
+
+		ReflectionTestUtils.setField(nanite, "_timeZoneDog", timeZoneDog);
+
+		Mockito.when(
+			timeZoneDog.getTimeZoneId()
+		).thenReturn(
+			"UTC"
+		);
+
+		Mockito.when(
+			timeZoneDog.getZoneId()
+		).thenReturn(
+			ZoneId.of("UTC")
+		);
 	}
 
 	@Override
@@ -87,7 +105,7 @@ public class SessionNaniteTest extends BaseNaniteTestCase {
 
 		Map<String, Object> params = script.getParams();
 
-		Assert.assertEquals(params.toString(), 5, params.size());
+		Assert.assertEquals(params.toString(), 7, params.size());
 	}
 
 }

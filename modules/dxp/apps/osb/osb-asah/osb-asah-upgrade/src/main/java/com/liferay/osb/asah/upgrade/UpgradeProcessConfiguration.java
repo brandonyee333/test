@@ -14,16 +14,11 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.upgrade.v2_5_0.AccountsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.CreateChannelsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.DXPRawUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.DataSourcesUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.EmailAddressHashedMappingFieldUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.ExperimentMappingFieldUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.FieldMappingsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.IndividualActivityFieldsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.UnprocessedAnalyticsEventsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.UnprocessedAssetAnalyticsEventsUpgradeStep;
+import com.liferay.osb.asah.common.util.ReleaseInfo;
+import com.liferay.osb.asah.upgrade.v0_0_0.ProjectsIndexUpgradeStep;
+import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_10_0.DeleteActivityNaniteOSBAsahTasksUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_10_0.UserSessionsInteractionsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,53 +34,29 @@ public class UpgradeProcessConfiguration {
 	public UpgradeProcess upgradeProcess() {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
-		// Order matters
+		upgradeProcess.addUpgradeSteps(
+			"0.0.0", ReleaseInfo.getVersion(), _projectsIndexUpgradeStep,
+			_snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
-			"2.4.0", "2.5.0", _accountsUpgradeStep, _createChannelsUpgradeStep,
-			_dataSourcesUpgradeStep, _dxpRawUpgradeStep,
-			_emailAddressHashedMappingFieldUpgradeStep,
-			_experimentMappingFieldUpgradeStep, _fieldMappingsUpgradeStep,
-			_individualActivityFieldsUpgradeStep,
-			_unprocessedAnalyticsEventsUpgradeStep,
-			_unprocessedAssetAnalyticsEventsUpgradeStep);
+			"2.9.0", "2.10.0", _deleteActivityNaniteOSBAsahTasksUpgradeStep,
+			_userSessionsInteractionsUpgradeStep);
 
 		return upgradeProcess;
 	}
 
 	@Autowired
-	private AccountsUpgradeStep _accountsUpgradeStep;
+	private DeleteActivityNaniteOSBAsahTasksUpgradeStep
+		_deleteActivityNaniteOSBAsahTasksUpgradeStep;
 
 	@Autowired
-	private CreateChannelsUpgradeStep _createChannelsUpgradeStep;
+	private ProjectsIndexUpgradeStep _projectsIndexUpgradeStep;
 
 	@Autowired
-	private DataSourcesUpgradeStep _dataSourcesUpgradeStep;
+	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
 
 	@Autowired
-	private DXPRawUpgradeStep _dxpRawUpgradeStep;
-
-	@Autowired
-	private EmailAddressHashedMappingFieldUpgradeStep
-		_emailAddressHashedMappingFieldUpgradeStep;
-
-	@Autowired
-	private ExperimentMappingFieldUpgradeStep
-		_experimentMappingFieldUpgradeStep;
-
-	@Autowired
-	private FieldMappingsUpgradeStep _fieldMappingsUpgradeStep;
-
-	@Autowired
-	private IndividualActivityFieldsUpgradeStep
-		_individualActivityFieldsUpgradeStep;
-
-	@Autowired
-	private UnprocessedAnalyticsEventsUpgradeStep
-		_unprocessedAnalyticsEventsUpgradeStep;
-
-	@Autowired
-	private UnprocessedAssetAnalyticsEventsUpgradeStep
-		_unprocessedAssetAnalyticsEventsUpgradeStep;
+	private UserSessionsInteractionsUpgradeStep
+		_userSessionsInteractionsUpgradeStep;
 
 }

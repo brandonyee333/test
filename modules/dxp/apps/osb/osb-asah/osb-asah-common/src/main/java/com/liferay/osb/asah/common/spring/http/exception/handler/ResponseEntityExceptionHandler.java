@@ -15,14 +15,20 @@
 package com.liferay.osb.asah.common.spring.http.exception.handler;
 
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahError;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.ResourceNotFoundException;
 
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -40,7 +46,7 @@ import org.springframework.web.client.RestClientException;
 public class ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<Object> handleIllegalArgumentException(
+	public ResponseEntity<OSBAsahError> handleIllegalArgumentException(
 		HttpServletRequest httpServletRequest, IllegalArgumentException iae) {
 
 		return _getResponseEntity(
@@ -48,7 +54,7 @@ public class ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<Object> handleMethodArgumentNotValidException(
+	public ResponseEntity<OSBAsahError> handleMethodArgumentNotValidException(
 			HttpServletRequest httpServletRequest,
 			MethodArgumentNotValidException manve)
 		throws Exception {
@@ -70,7 +76,7 @@ public class ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(OSBAsahException.class)
-	public ResponseEntity<Object> handleOSBAsahException(
+	public ResponseEntity<OSBAsahError> handleOSBAsahException(
 		HttpServletRequest httpServletRequest, OSBAsahException osbae) {
 
 		return _getResponseEntity(
@@ -79,7 +85,7 @@ public class ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<Object> handleResourceNotFoundException(
+	public ResponseEntity<OSBAsahError> handleResourceNotFoundException(
 		HttpServletRequest httpServletRequest, ResourceNotFoundException rnfe) {
 
 		return _getResponseEntity(
@@ -87,7 +93,7 @@ public class ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(RestClientException.class)
-	public ResponseEntity<Object> handleRestClientException(
+	public ResponseEntity<OSBAsahError> handleRestClientException(
 		HttpServletRequest httpServletRequest, RestClientException rce) {
 
 		if (rce instanceof HttpClientErrorException) {
@@ -101,40 +107,45 @@ public class ResponseEntityExceptionHandler {
 			rce, httpServletRequest, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	private ResponseEntity<Object> _getResponseEntity(
+	private ResponseEntity<OSBAsahError> _getResponseEntity(
 		Exception e, HttpServletRequest httpServletRequest,
 		HttpStatus httpStatus) {
 
 		return _getResponseEntity(null, e, httpServletRequest, httpStatus);
 	}
 
-	private ResponseEntity<Object> _getResponseEntity(
+	private ResponseEntity<OSBAsahError> _getResponseEntity(
 		JSONObject debugInfoJSONObject, Exception e,
 		HttpServletRequest httpServletRequest, HttpStatus httpStatus) {
 
-		Class<?> clazz = e.getClass();
+		_log.error("Unable to process request", e);
 
-		JSONObject jsonObject = new JSONObject();
+		OSBAsahError osbAsahError = new OSBAsahError(
+			_environment.getActiveProfiles());
 
 		if (debugInfoJSONObject != null) {
-			jsonObject.put("debugInfo", debugInfoJSONObject);
+			osbAsahError.setErrorAttribute("debugInfo", debugInfoJSONObject);
 		}
 
-		jsonObject.put(
-			"error", httpStatus.getReasonPhrase()
-		).put(
-			"exception", clazz.getName()
-		).put(
-			"message", e.getMessage()
-		).put(
-			"path", httpServletRequest.getRequestURI()
-		).put(
-			"status", httpStatus.value()
-		).put(
-			"timestamp", System.currentTimeMillis()
-		);
+		osbAsahError.setErrorAttribute("error", httpStatus.getReasonPhrase());
 
-		return new ResponseEntity<>(jsonObject.toString(), httpStatus);
+		Class<?> clazz = e.getClass();
+
+		osbAsahError.setErrorAttribute("exception", clazz.getName());
+
+		osbAsahError.setErrorAttribute("message", e.getMessage());
+		osbAsahError.setErrorAttribute(
+			"path", httpServletRequest.getRequestURI());
+		osbAsahError.setErrorAttribute("status", httpStatus.value());
+		osbAsahError.setErrorAttribute("timestamp", System.currentTimeMillis());
+
+		return new ResponseEntity<>(osbAsahError, httpStatus);
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		ResponseEntityExceptionHandler.class);
+
+	@Autowired
+	private Environment _environment;
 
 }

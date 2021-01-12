@@ -14,12 +14,11 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
 import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -41,11 +40,10 @@ public class FaroInfoPreferenceDogTest {
 			"data-retention-period");
 
 		Assert.assertEquals(
-			String.valueOf(TimeUnit.DAYS.toMillis(30 * 13)),
-			preference.getValue());
+			String.valueOf(13 * DateUtil.MONTH), preference.getValue());
 
 		String dataRetentionPeriod = String.valueOf(
-			TimeUnit.DAYS.toMillis(30 * 7));
+			String.valueOf(7 * DateUtil.MONTH));
 
 		_preferenceDog.addPreference(
 			"data-retention-period", dataRetentionPeriod);

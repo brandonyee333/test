@@ -15,11 +15,12 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.rest.response.InterestsHistogramTransformationJSONArrayFunction;
+import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.embedded.InterestsEmbeddedJSONObjectCreator;
-import com.liferay.osb.asah.backend.rest.response.embedded.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
+import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,7 +31,6 @@ import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 
 import org.json.JSONObject;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,7 +82,7 @@ public class InterestsRestController
 			"interest-keywords");
 	}
 
-	@Cacheable("getInterests")
+	@Cacheable
 	@GetMapping(params = "!apply")
 	public String getInterests(
 			@RequestParam(name = "filter", required = false)
@@ -103,7 +103,7 @@ public class InterestsRestController
 			size, sorts);
 	}
 
-	@Cacheable("getInterestTransformations")
+	@Cacheable
 	@GetMapping(params = "apply")
 	public String getInterestTransformations(
 			@RequestParam String apply,

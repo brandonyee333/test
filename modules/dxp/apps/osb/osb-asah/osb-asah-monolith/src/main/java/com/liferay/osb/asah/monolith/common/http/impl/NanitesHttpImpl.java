@@ -17,6 +17,7 @@ package com.liferay.osb.asah.monolith.common.http.impl;
 import com.liferay.osb.asah.batch.curator.rest.controller.NanitesRestController;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +42,23 @@ public class NanitesHttpImpl implements NanitesHttp {
 	}
 
 	@Override
-	public void run(String json) {
-		_nanitesRestController.run(json);
+	public void rescheduleNanites() {
+		_nanitesRestController.reschedule();
+	}
+
+	@Override
+	public void run(JSONArray jsonArray) {
+		_nanitesRestController.run(jsonArray.toString());
 	}
 
 	@Override
 	public void scheduleOSBAsahTask(JSONObject jsonObject) {
 		_nanitesRestController.schedule(jsonObject.toString());
+	}
+
+	@Override
+	public void unscheduleOSBAsahTask(JSONObject jsonObject) {
+		_nanitesRestController.unschedule(jsonObject.toString());
 	}
 
 	@Autowired

@@ -17,17 +17,15 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.dog.helper.MetricHelper;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.petra.string.StringPool;
 
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,26 +36,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class IndividualHistogramDog {
 
-	public List<HistogramMetric> getHistogramMetrics(
+	public HistogramMetricBag getHistogramMetricBag(
 		MetricType metricType, SearchQueryContext searchQueryContext) {
 
-		List<HistogramMetric> histogramMetrics = new ArrayList<>();
+		HistogramMetricBag histogramMetricBag =
+			_metricHelper.createHistogramMetricBag(
+				Clock.system(_timeZoneDog.getZoneId()),
+				searchQueryContext.isIncludePrevious(),
+				searchQueryContext.getInterval(), metricType,
+				searchQueryContext.getTimeRange());
 
-		Map<String, Metric> metrics = _metricHelper.createMetrics(
-			Clock.systemUTC(), searchQueryContext.getInterval(),
-			searchQueryContext.getTimeRange(), metricType);
+		for (HistogramMetric histogramMetric :
+				histogramMetricBag.getMetrics()) {
 
-		for (Map.Entry<String, Metric> entry : metrics.entrySet()) {
-			Metric metric = entry.getValue();
-
-			metric.setValue(
+			histogramMetric.setValue(
 				_individualMetricDog.getIndividualsCount(
-					_getLocalDate(metric), metricType, searchQueryContext));
-
-			histogramMetrics.add(new HistogramMetric(entry.getKey(), metric));
+					_getLocalDate(histogramMetric), metricType,
+					searchQueryContext));
 		}
 
-		return histogramMetrics;
+		return histogramMetricBag;
 	}
 
 	private LocalDate _getLocalDate(Metric metric) {
@@ -79,5 +77,8 @@ public class IndividualHistogramDog {
 
 	@Autowired
 	private MetricHelper _metricHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

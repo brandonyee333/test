@@ -1,23 +1,4 @@
 services:
-    osbasahelasticsearchexporter:
-        command:
-            - "--es.uri=http://wedeploy-elasticsearch:9200"
-        container_name: osbasahelasticsearchexporter
-        image: justwatch/elasticsearch_exporter:1.1.0
-        ports:
-            - "9114:9114"
-        restart: always
-    osbasahgrafana:
-        build: ./osb-asah-grafana
-        container_name: osbasahgrafana
-        depends_on:
-            - osbasahprometheus
-        ports:
-            - "3001:3000"
-        volumes:
-            - "./osb-asah-grafana/docker-resources/etc/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards"
-            - "./osb-asah-grafana/docker-resources/etc/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources"
-            - "./osb-asah-grafana/docker-resources/var/lib/grafana/dashboards:/var/lib/grafana/dashboards"
     osbasahmonolith:
         build:
             args:
@@ -44,17 +25,12 @@ services:
         volumes:
             - export:/export
             - temp:/temp
-    osbasahprometheus:
-        build: ./osb-asah-prometheus
-        container_name: osbasahprometheus
-        ports:
-            - "9090:9090"
     osbfarofrontend:
-        container_name: com-liferay-osb-faro-private
+        container_name: faro
         environment:
             - OSB_ASAH_BACKEND_URL=http://osbasahmonolith:8080
             - OSB_ASAH_PUBLISHER_URL=http://osbasahmonolith:8080
-        image: liferay/com-liferay-osb-faro:asah-local-latest
+        image: liferay/com-liferay-osb-faro:latest
         ports:
             - "11311:11311"
             - "8000:8000"
@@ -62,15 +38,14 @@ services:
     wedeploy-elasticsearch:
         container_name: wedeploy-elasticsearch
         env_file:
-            - common.env
-            - local.env
+            - elasticsearch.env
         healthcheck:
             interval: 10s
             retries: 3
             start_period: 5s
             test: ["CMD", "curl", "-f", "http://localhost:9200"]
             timeout: 10s
-        image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.1
+        image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.9.2
         ports:
             - "9200:9200"
             - "9300:9300"
@@ -81,8 +56,8 @@ services:
         depends_on:
             - wedeploy-elasticsearch
         environment:
-            - ELASTICSEARCH_URL=http://wedeploy-elasticsearch:9200
-        image: docker.elastic.co/kibana/kibana-oss:6.8.1
+            - ELASTICSEARCH_HOSTS=http://wedeploy-elasticsearch:9200
+        image: docker.elastic.co/kibana/kibana-oss:7.9.2
         ports:
             - "5601:5601"
         volumes:

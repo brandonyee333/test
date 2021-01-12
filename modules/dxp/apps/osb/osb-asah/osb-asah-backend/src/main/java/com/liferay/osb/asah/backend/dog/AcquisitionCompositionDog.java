@@ -20,31 +20,28 @@ import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
-import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders;
+import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.InternalCardinality;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,8 +53,8 @@ import org.springframework.stereotype.Component;
 public class AcquisitionCompositionDog {
 
 	public CompositionResultBag getCompositionResultBag(
-		String acquisitionType, String channelId, String dataSourceId,
-		int rangeKey, int size, int start) {
+		String acquisitionType, String channelId, String dataSourceId, int size,
+		int start, TimeRange timeRange, String timeZoneId) {
 
 		List<Composition> compositions = new ArrayList<>();
 
@@ -86,11 +83,8 @@ public class AcquisitionCompositionDog {
 					AggregationBuilders.cardinality("total");
 
 				BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-					QueryBuilders.nestedQuery(
-						"interactions",
-						_searchQueryHelper.createRangeQueryBuilder(
-							"interactions.eventDate", TimeRange.of(rangeKey)),
-						ScoreMode.None));
+					_searchQueryHelper.createRangeQueryBuilder(
+						"lastEventDate", timeRange, timeZoneId));
 
 				BoolQueryBuilderUtil.filterTerm(
 					boolQueryBuilder, "channelId", channelId);
@@ -167,26 +161,16 @@ public class AcquisitionCompositionDog {
 
 		InternalCardinality internalCardinality = aggregations.get("total");
 
-		SearchHits searchHits = searchResponse.getHits();
-
 		return new CompositionResultBag(
 			compositions, internalCardinality.getValue(),
-			searchHits.getTotalHits());
-	}
-
-	@PostConstruct
-	private void _init() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
+			HitsUtil.getTotalHitsCount(searchResponse.getHits()));
 	}
 
 	private static final Pattern _pattern = Pattern.compile(
 		"\\[(?<source>[^]]*)] \\[(?<medium>[^]]*)]");
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;

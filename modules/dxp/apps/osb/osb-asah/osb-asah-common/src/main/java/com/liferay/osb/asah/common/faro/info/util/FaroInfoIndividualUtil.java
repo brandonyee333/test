@@ -152,7 +152,9 @@ public class FaroInfoIndividualUtil {
 				JSONObject accountJSONObject = accountJSONObjects.get(
 					accountPK);
 
-				jsonArray.put(accountJSONObject);
+				if (accountJSONObject != null) {
+					jsonArray.put(accountJSONObject);
+				}
 			}
 
 			individualAccountsJSONObjects.put(
@@ -190,10 +192,10 @@ public class FaroInfoIndividualUtil {
 			return null;
 		}
 
-		Object email = _getFieldValue(demographicsJSONObject, "email");
+		Object emailAddress = _getFieldValue(demographicsJSONObject, "email");
 
-		if (email != null) {
-			return String.valueOf(email);
+		if (emailAddress != null) {
+			return String.valueOf(emailAddress);
 		}
 
 		return null;
@@ -266,6 +268,19 @@ public class FaroInfoIndividualUtil {
 		}
 
 		return individualPKsJSONArrays;
+	}
+
+	public static boolean isKnownIndividual(JSONObject individualJSONObject) {
+		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
+			"demographics");
+
+		if ((demographicsJSONObject != null) &&
+			demographicsJSONObject.has("email")) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private static Object _getFieldValue(

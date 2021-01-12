@@ -316,5 +316,29 @@
 			"depth": "25"
 		},
 		"userId": "4"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "Firefox",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Linux",
+			"referrer": "http://google.com",
+			"region": "Pernambuco",
+			"title": "About Us",
+			"url": "http://liferay.com/our-story?search=laptop"
+		},
+		"createDate": "2018-01-04T11:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T11:43:00.000Z",
+		"eventId": "pageDepthReached",
+		"eventProperties": {
+			"depth": "25"
+		},
+		"userId": "4"
 	}
 ]

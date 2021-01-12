@@ -14,18 +14,14 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Preference;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -39,23 +35,19 @@ import org.springframework.stereotype.Component;
 public class FaroInfoPreferenceDog {
 
 	public Preference addPreference(String key, String value) {
-		JSONObject preferenceJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"preferences", QueryBuilders.termQuery("key", key));
-
-		if (preferenceJSONObject == null) {
-			preferenceJSONObject = JSONUtil.put("key", key);
-		}
-
-		preferenceJSONObject.put("value", value);
-
 		return new Preference(
 			_faroInfoElasticsearchInvoker.add(
-				"preferences", preferenceJSONObject));
+				"preferences",
+				JSONUtil.put(
+					"id", key
+				).put(
+					"value", value
+				)));
 	}
 
 	public Preference getPreference(String key) {
 		JSONObject preferenceJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"preferences", QueryBuilders.termQuery("key", key));
+			"preferences", key);
 
 		if (preferenceJSONObject == null) {
 			return new Preference(key, _defaultPreferences.get(key));
@@ -64,24 +56,19 @@ public class FaroInfoPreferenceDog {
 		return new Preference(preferenceJSONObject);
 	}
 
-	@PostConstruct
-	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	private static final Map<String, String> _defaultPreferences =
 		new HashMap<String, String>() {
 			{
 				put(
 					"data-retention-period",
-					String.valueOf(TimeUnit.DAYS.toMillis(30 * 13)));
+					String.valueOf(13 * DateUtil.MONTH));
+				put("time-zone-id", "UTC");
 			}
 		};
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(
+		cacheable = true, value = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

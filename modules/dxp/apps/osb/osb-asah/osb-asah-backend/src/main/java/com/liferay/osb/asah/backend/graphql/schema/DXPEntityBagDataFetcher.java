@@ -17,7 +17,8 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.DXPEntityDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.DXPEntity;
-import com.liferay.osb.asah.backend.model.ResultBag;
+import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Sort;
 
 import graphql.execution.ExecutionTypeInfo;
 
@@ -50,7 +51,7 @@ public class DXPEntityBagDataFetcher
 			_getCollectionName(dataFetchingEnvironment),
 			dataFetchingEnvironment.getArgument("keywords"),
 			dataFetchingEnvironment.getArgument("size"),
-			dataFetchingEnvironment.getArgument("sort"),
+			Sort.of(dataFetchingEnvironment.getArgument("sort")),
 			dataFetchingEnvironment.getArgument("start"));
 	}
 

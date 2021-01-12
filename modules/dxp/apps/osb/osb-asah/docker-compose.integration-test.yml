@@ -1,24 +1,23 @@
 services:
     test_elasticsearch:
         container_name: test_elasticsearch
-        environment:
-            - ES_JAVA_OPTS=-Xms512m -Xmx512m
-            - discovery.type=single-node
+        env_file:
+            - elasticsearch.env
         healthcheck:
             interval: 10s
             retries: 3
             start_period: 5s
             test: ["CMD", "curl", "-f", "http://localhost:9200"]
             timeout: 10s
-        image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.1
-        mem_limit: 1g
+        image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.9.2
+        mem_limit: 2g
         ports:
             - 9200:9200
             - 9300:9300
         restart: always
-    test_osbasahpubsubemulator:
-        build: osb-asah-pubsub-emulator
-        container_name: test_osbasahpubsubemulator
+    test_pubsubemulator:
+        build: ./devtools/pubsub-emulator
+        container_name: test_pubsubemulator
         mem_limit: 1g
         ports:
             - "8095:8095"

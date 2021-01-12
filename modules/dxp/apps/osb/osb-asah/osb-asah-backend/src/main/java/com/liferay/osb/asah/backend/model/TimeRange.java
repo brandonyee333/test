@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
+
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,6 +42,11 @@ public class TimeRange {
 		true, "last-24-hours", 0) {
 
 		@Override
+		public int getDeltaDays() {
+			return 1;
+		}
+
+		@Override
 		public LocalDateTime getStartLocalDateTime() {
 			LocalDateTime localDateTime = getEndLocalDateTime();
 
@@ -63,6 +70,44 @@ public class TimeRange {
 
 	public static final TimeRange LAST_90_DAYS = new TimeRange(
 		false, "last-90-days", 90);
+
+	public static final TimeRange LAST_180_DAYS = new TimeRange(
+		false, "last-180-days", 180);
+
+	public static final TimeRange LAST_YEAR = new TimeRange(
+		false, "last-year", 365) {
+
+		@Override
+		public int getDeltaDays() {
+			LocalDate currentLocalDate = LocalDate.now(getClock());
+
+			int currentMonthValue = currentLocalDate.getMonthValue();
+			int dayOfMonth = currentLocalDate.getDayOfMonth();
+
+			if (currentLocalDate.isLeapYear() &&
+				(((currentMonthValue == 2) && (dayOfMonth == 29)) ||
+				 (currentMonthValue > 2))) {
+
+				return 366;
+			}
+
+			LocalDate previousLocalDate = currentLocalDate.minusYears(1);
+
+			if (previousLocalDate.isLeapYear()) {
+				return 366;
+			}
+
+			return 365;
+		}
+
+		@Override
+		public LocalDateTime getStartLocalDateTime() {
+			LocalDateTime localDateTime = getEndLocalDateTime();
+
+			return localDateTime.minusYears(1);
+		}
+
+	};
 
 	public static final TimeRange YESTERDAY = new TimeRange(
 		false, "yesterday", 1) {
@@ -143,16 +188,19 @@ public class TimeRange {
 	}
 
 	public Clock getClock() {
+		if (_clock == null) {
+			return Clock.system(TimeZoneDogUtil.getZoneId());
+		}
+
 		return _clock;
 	}
 
-	public long getDeltaDays() {
-		return ChronoUnit.DAYS.between(getStartLocalDate(), getEndLocalDate()) +
-			1;
+	public int getDeltaDays() {
+		return _deltaDays;
 	}
 
 	public LocalDate getEndLocalDate() {
-		LocalDateTime localDateTime = LocalDateTime.now(_clock);
+		LocalDateTime localDateTime = LocalDateTime.now(getClock());
 
 		if (!_includeToday) {
 			localDateTime = localDateTime.minusDays(1);
@@ -162,7 +210,7 @@ public class TimeRange {
 	}
 
 	public LocalDateTime getEndLocalDateTime() {
-		LocalDateTime localDateTime = LocalDateTime.now(_clock);
+		LocalDateTime localDateTime = LocalDateTime.now(getClock());
 
 		if (_includeToday) {
 			localDateTime = localDateTime.withMinute(0);
@@ -195,7 +243,7 @@ public class TimeRange {
 	public LocalDate getStartLocalDate() {
 		LocalDate localDate = getEndLocalDate();
 
-		return localDate.minusDays(getRangeKey() - 1);
+		return localDate.minusDays(getDeltaDays() - 1);
 	}
 
 	public LocalDateTime getStartLocalDateTime() {
@@ -206,7 +254,7 @@ public class TimeRange {
 		localDateTime = localDateTime.withNano(0);
 		localDateTime = localDateTime.withSecond(0);
 
-		return localDateTime.minusDays(getRangeKey() - 1);
+		return localDateTime.minusDays(getDeltaDays() - 1);
 	}
 
 	@Override
@@ -223,10 +271,11 @@ public class TimeRange {
 	}
 
 	private TimeRange(boolean includeToday, String key, int rangeKey) {
-		_clock = Clock.systemUTC();
 		_includeToday = includeToday;
 		_key = key;
 		_rangeKey = rangeKey;
+
+		_deltaDays = rangeKey;
 	}
 
 	private TimeRange(
@@ -236,6 +285,8 @@ public class TimeRange {
 		_includeToday = includeToday;
 		_key = key;
 		_rangeKey = rangeKey;
+
+		_deltaDays = rangeKey;
 	}
 
 	private static final Map<Integer, TimeRange> _timeRanges =
@@ -247,10 +298,13 @@ public class TimeRange {
 				put(28, LAST_28_DAYS);
 				put(30, LAST_30_DAYS);
 				put(90, LAST_90_DAYS);
+				put(180, LAST_180_DAYS);
+				put(365, LAST_YEAR);
 			}
 		};
 
-	private final Clock _clock;
+	private Clock _clock;
+	private final int _deltaDays;
 	private final boolean _includeToday;
 	private final String _key;
 	private final int _rangeKey;

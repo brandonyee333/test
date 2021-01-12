@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.DashboardDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Dashboard;
-import com.liferay.osb.asah.backend.model.ResultBag;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Sort;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -47,7 +47,7 @@ public class DashboardBagDataFetcher
 		int start = dataFetchingEnvironment.getArgument("start");
 
 		return _dashboardDog.getDashboardResultBag(
-			channelId, SortBuilderUtil.fieldSort(sort), keywords, size, start);
+			channelId, keywords, size, Sort.of(sort), start);
 	}
 
 	@Autowired

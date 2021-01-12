@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.backend.model.util.MetricUtil;
+
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Inácio Nery
@@ -39,6 +42,8 @@ public class DocumentLibraryMetric implements AssetMetric {
 			Objects.equals(
 				_assetMetrics, documentLibraryMetric._assetMetrics) &&
 			Objects.equals(_assetTitle, documentLibraryMetric._assetTitle) &&
+			Objects.equals(
+				_canonicalUrls, documentLibraryMetric._canonicalUrls) &&
 			Objects.equals(
 				_commentsMetric, documentLibraryMetric._commentsMetric) &&
 			Objects.equals(
@@ -77,6 +82,16 @@ public class DocumentLibraryMetric implements AssetMetric {
 		return AssetType.DOCUMENT.getValue();
 	}
 
+	@Override
+	public Set<Metric> getAvailableMetrics() {
+		return MetricUtil.getAvailableMetrics(this);
+	}
+
+	@Override
+	public List<String> getCanonicalUrls() {
+		return _canonicalUrls;
+	}
+
 	public Metric getCommentsMetric() {
 		return _commentsMetric;
 	}
@@ -111,9 +126,9 @@ public class DocumentLibraryMetric implements AssetMetric {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_assetId, _assetMetrics, _assetTitle, _commentsMetric,
-			_dataSourceId, _downloadsMetric, _previewsMetric, _ratingsMetric,
-			_urls);
+			_assetId, _assetMetrics, _assetTitle, _canonicalUrls,
+			_commentsMetric, _dataSourceId, _downloadsMetric, _previewsMetric,
+			_ratingsMetric, _urls);
 	}
 
 	@Override
@@ -129,6 +144,11 @@ public class DocumentLibraryMetric implements AssetMetric {
 	@Override
 	public void setAssetTitle(String assetTitle) {
 		_assetTitle = assetTitle;
+	}
+
+	@Override
+	public void setCanonicalUrls(List<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
 	}
 
 	public void setCommentsMetric(Metric commentsMetric) {
@@ -160,6 +180,7 @@ public class DocumentLibraryMetric implements AssetMetric {
 	private String _assetId;
 	private List<AssetMetric> _assetMetrics;
 	private String _assetTitle;
+	private List<String> _canonicalUrls;
 	private Metric _commentsMetric = new Metric(
 		DocumentLibraryMetricType.COMMENTS);
 	private String _dataSourceId;

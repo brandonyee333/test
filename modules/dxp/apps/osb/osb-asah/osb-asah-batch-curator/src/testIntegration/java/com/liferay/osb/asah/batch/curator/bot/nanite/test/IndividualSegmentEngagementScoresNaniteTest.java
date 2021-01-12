@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -35,24 +34,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Edward Kwok-Yu Wong
  * @author Michael Bowerman
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-@Import(CerebroQueueHttpTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class IndividualSegmentEngagementScoresNaniteTest
 	extends BaseNaniteTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());

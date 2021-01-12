@@ -17,15 +17,18 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import java.nio.charset.StandardCharsets;
 
@@ -42,13 +45,15 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,18 +67,16 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Vishal Reddy
  * @author Matthew Kong
  */
-@ConditionalOnProperty("osb.asah.backend.admin.rest.controller.enabled")
+@Profile("!prod")
 @RequestMapping("/admin")
-@RestController
+@RestController(
+	"com.liferay.osb.asah.backend.rest.controller.AdminRestController"
+)
 public class AdminRestController extends BaseRestController {
 
+	@CacheEvict(evictAll = true)
 	@DeleteMapping("/cache")
 	public void clearCache() {
-		for (String cacheName : _cacheManager.getCacheNames()) {
-			Cache cache = _cacheManager.getCache(cacheName);
-
-			cache.clear();
-		}
 	}
 
 	@DeleteMapping("/data/{weDeployDataServiceName}/{collectionName}")
@@ -95,7 +98,6 @@ public class AdminRestController extends BaseRestController {
 		return toDownloadResponse(file, file.getName());
 	}
 
-	@Override
 	@PostConstruct
 	public void init() {
 		for (WeDeployDataService weDeployDataService :
@@ -103,8 +105,23 @@ public class AdminRestController extends BaseRestController {
 
 			_elasticsearchInvokers.put(
 				weDeployDataService.toString(),
-				_elasticsearchInvokerFactory.forWeDeployDataService(
+				_elasticsearchInvokerManager.forWeDeployDataService(
 					weDeployDataService));
+		}
+
+		Class<?> clazz = getClass();
+
+		try (InputStream inputStream = clazz.getResourceAsStream(
+				"nanite_list_schema.json")) {
+
+			_naniteListSchema = SchemaLoader.load(
+				new JSONObject(new JSONTokener(inputStream)));
+		}
+		catch (IOException ioe) {
+			_log.error(ioe);
+
+			throw new IllegalStateException(
+				"Unable to read nanite list schema", ioe);
 		}
 	}
 
@@ -140,15 +157,15 @@ public class AdminRestController extends BaseRestController {
 
 	@PostMapping("/nanites")
 	public void run(@RequestBody String json) {
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
+		JSONArray jsonArray = new JSONArray(json);
 
-		elasticsearchInvoker.delete(
+		_naniteListSchema.validate(jsonArray);
+
+		_faroElasticsearchInvoker.delete(
 			"OSBAsahMarkers",
-			QueryBuilders.termsQuery(
-				"id", JSONUtil.toStringList(new JSONArray(json))));
+			QueryBuilders.termsQuery("id", JSONUtil.toStringList(jsonArray)));
 
-		_nanitesHttp.run(json);
+		_nanitesHttp.run(jsonArray);
 	}
 
 	private File _createSnapshot(String fileName) throws Exception {
@@ -229,19 +246,21 @@ public class AdminRestController extends BaseRestController {
 		AdminRestController.class);
 
 	@Autowired
-	private CacheManager _cacheManager;
-
-	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	private ElasticsearchInvokerManager _elasticsearchInvokerManager;
 
 	private final Map<String, ElasticsearchInvoker> _elasticsearchInvokers =
 		new HashMap<>();
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroElasticsearchInvoker;
+
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+
+	private Schema _naniteListSchema;
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;

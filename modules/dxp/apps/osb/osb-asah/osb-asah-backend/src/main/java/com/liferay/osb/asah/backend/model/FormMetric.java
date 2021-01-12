@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.backend.model.util.MetricUtil;
+
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Marcellus Tavares
@@ -40,6 +43,7 @@ public class FormMetric implements AssetMetric {
 			Objects.equals(_assetId, formMetric._assetId) &&
 			Objects.equals(_assetMetrics, formMetric._assetMetrics) &&
 			Objects.equals(_assetTitle, formMetric._assetTitle) &&
+			Objects.equals(_canonicalUrls, formMetric._canonicalUrls) &&
 			Objects.equals(
 				_completionTimeMetric, formMetric._completionTimeMetric) &&
 			Objects.equals(_dataSourceId, formMetric._dataSourceId) &&
@@ -77,6 +81,16 @@ public class FormMetric implements AssetMetric {
 		return AssetType.FORM.getValue();
 	}
 
+	@Override
+	public Set<Metric> getAvailableMetrics() {
+		return MetricUtil.getAvailableMetrics(this);
+	}
+
+	@Override
+	public List<String> getCanonicalUrls() {
+		return _canonicalUrls;
+	}
+
 	public Metric getCompletionTimeMetric() {
 		return _completionTimeMetric;
 	}
@@ -108,8 +122,8 @@ public class FormMetric implements AssetMetric {
 	public int hashCode() {
 		return Objects.hash(
 			_abandonmentsMetric, _assetId, _assetMetrics, _assetTitle,
-			_completionTimeMetric, _dataSourceId, _submissionsMetric, _urls,
-			_viewsMetric);
+			_canonicalUrls, _completionTimeMetric, _dataSourceId,
+			_submissionsMetric, _urls, _viewsMetric);
 	}
 
 	public void setAbandonmentsMetric(Metric abandonmentsMetric) {
@@ -129,6 +143,11 @@ public class FormMetric implements AssetMetric {
 	@Override
 	public void setAssetTitle(String assetTitle) {
 		_assetTitle = assetTitle;
+	}
+
+	@Override
+	public void setCanonicalUrls(List<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
 	}
 
 	public void setCompletionTimeMetric(Metric completionTimeMetric) {
@@ -158,6 +177,7 @@ public class FormMetric implements AssetMetric {
 	private String _assetId;
 	private List<AssetMetric> _assetMetrics;
 	private String _assetTitle;
+	private List<String> _canonicalUrls;
 	private Metric _completionTimeMetric = new Metric(
 		FormMetricType.COMPLETION_TIME);
 	private String _dataSourceId;

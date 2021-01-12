@@ -16,14 +16,16 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.DataSource;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,12 +40,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataSourceDog {
 
-	public List<DataSource> getDataSources(
-		String credentialsType, FieldSortBuilder fieldSortBuilder, Integer size,
-		String type) {
+	public DataSource getDataSource(String dataSourceId) {
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.fetchDataSourceJSONObject(dataSourceId);
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
+		if (dataSourceJSONObject == null) {
+			return null;
+		}
+
+		return new DataSource(
+			dataSourceJSONObject.getString("id"),
+			dataSourceJSONObject.getString("name"),
+			dataSourceJSONObject.optString("url"));
+	}
+
+	public List<DataSource> getDataSources(
+		String credentialsType, Integer size, Sort sort, String type) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -58,7 +70,7 @@ public class DataSourceDog {
 		}
 
 		JSONArray dataSourcesJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
+			_elasticsearchInvoker.get(
 				"data-sources",
 				searchSourceBuilder -> {
 					searchSourceBuilder.query(boolQueryBuilder);
@@ -67,8 +79,9 @@ public class DataSourceDog {
 						searchSourceBuilder.size(size);
 					}
 
-					if (fieldSortBuilder != null) {
-						searchSourceBuilder.sort(fieldSortBuilder);
+					if (sort != null) {
+						searchSourceBuilder.sort(
+							SortBuilderUtil.fieldSort(sort));
 					}
 				}));
 
@@ -91,7 +104,10 @@ public class DataSourceDog {
 		return dataSources;
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
+
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 }

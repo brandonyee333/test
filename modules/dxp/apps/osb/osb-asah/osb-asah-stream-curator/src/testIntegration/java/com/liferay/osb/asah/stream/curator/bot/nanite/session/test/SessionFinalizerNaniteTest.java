@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.session.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.SessionFinalizerNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
@@ -61,15 +60,12 @@ public class SessionFinalizerNaniteTest {
 	public void testExpiredSessionMultipleInteractions() {
 		_sessionFinalizerNanite.run();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		Assert.assertEquals(
 			1,
-			elasticsearchInvoker.count(
+			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
 
-		JSONObject sessionJSONObject = elasticsearchInvoker.fetch(
+		JSONObject sessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", QueryBuilders.matchAllQuery());
 
 		Assert.assertFalse(sessionJSONObject.getBoolean("bounced"));
@@ -78,7 +74,7 @@ public class SessionFinalizerNaniteTest {
 		Assert.assertEquals(
 			"expired", sessionJSONObject.getString("completeReason"));
 
-		JSONObject pageJSONObject = elasticsearchInvoker.fetch(
+		JSONObject pageJSONObject = _elasticsearchInvoker.fetch(
 			"pages", "372189498023251289");
 
 		Assert.assertEquals(
@@ -106,27 +102,24 @@ public class SessionFinalizerNaniteTest {
 	public void testExpiredSessionMultiplePageVisits() {
 		_sessionFinalizerNanite.run();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		Assert.assertEquals(
 			1,
-			elasticsearchInvoker.count(
+			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
 
-		JSONObject sessionJSONObject = elasticsearchInvoker.fetch(
+		JSONObject sessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", QueryBuilders.matchAllQuery());
 
 		Assert.assertFalse(sessionJSONObject.getBoolean("bounced"));
 		Assert.assertTrue(sessionJSONObject.getBoolean("completed"));
 		Assert.assertEquals(270481, sessionJSONObject.getLong("duration"));
 
-		JSONObject entryPageJSONObject = elasticsearchInvoker.fetch(
+		JSONObject entryPageJSONObject = _elasticsearchInvoker.fetch(
 			"pages", "372250348521977621");
 
 		Assert.assertEquals(1, entryPageJSONObject.getInt("entrances"));
 
-		JSONObject exitPageJSONObject = elasticsearchInvoker.fetch(
+		JSONObject exitPageJSONObject = _elasticsearchInvoker.fetch(
 			"pages", "372250474665065927");
 
 		Assert.assertEquals(1, exitPageJSONObject.getInt("exits"));
@@ -148,15 +141,12 @@ public class SessionFinalizerNaniteTest {
 	public void testExpiredSessionSingleInteraction() {
 		_sessionFinalizerNanite.run();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		Assert.assertEquals(
 			2,
-			elasticsearchInvoker.count(
+			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
 
-		JSONObject sessionJSONObject = elasticsearchInvoker.fetch(
+		JSONObject sessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", QueryBuilders.termQuery("completed", true));
 
 		Assert.assertTrue(sessionJSONObject.getBoolean("bounced"));
@@ -168,7 +158,7 @@ public class SessionFinalizerNaniteTest {
 			sessionJSONObject.getString("entryPage"),
 			sessionJSONObject.getString("exitPage"));
 
-		JSONArray pageJSONArray = elasticsearchInvoker.get("pages");
+		JSONArray pageJSONArray = _elasticsearchInvoker.get("pages");
 
 		Assert.assertEquals(1, pageJSONArray.length());
 
@@ -198,19 +188,16 @@ public class SessionFinalizerNaniteTest {
 	public void testExpiredSessionUpdatesAssets() {
 		_sessionFinalizerNanite.run();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		Assert.assertEquals(
 			1,
-			elasticsearchInvoker.count(
+			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
 
-		JSONObject userSessionJSONObject = elasticsearchInvoker.fetch(
+		JSONObject userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", QueryBuilders.matchAllQuery());
 
 		JSONArray pagesJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
+			_elasticsearchInvoker.get(
 				"pages",
 				searchSourceBuilder -> {
 					searchSourceBuilder.query(
@@ -265,18 +252,15 @@ public class SessionFinalizerNaniteTest {
 	public void testUpdatePageViews() {
 		_sessionFinalizerNanite.run();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		Assert.assertEquals(
 			1,
-			elasticsearchInvoker.count(
+			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
 
-		JSONObject userSessionJSONObject = elasticsearchInvoker.fetch(
+		JSONObject userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", QueryBuilders.matchAllQuery());
 
-		JSONArray pagesJSONArray = elasticsearchInvoker.get(
+		JSONArray pagesJSONArray = _elasticsearchInvoker.get(
 			"pages",
 			QueryBuilders.termQuery(
 				"sessionId", userSessionJSONObject.getString("id")));
@@ -304,18 +288,15 @@ public class SessionFinalizerNaniteTest {
 	public void testUpdateTimeOnPageSinglePage() {
 		_sessionFinalizerNanite.run();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		Assert.assertEquals(
 			1,
-			elasticsearchInvoker.count(
+			_elasticsearchInvoker.count(
 				"user-sessions", QueryBuilders.matchAllQuery()));
 
-		JSONObject userSessionJSONObject = elasticsearchInvoker.fetch(
+		JSONObject userSessionJSONObject = _elasticsearchInvoker.fetch(
 			"user-sessions", QueryBuilders.matchAllQuery());
 
-		JSONArray pagesJSONArray = elasticsearchInvoker.get(
+		JSONArray pagesJSONArray = _elasticsearchInvoker.get(
 			"pages",
 			QueryBuilders.termQuery(
 				"sessionId", userSessionJSONObject.getString("id")));
@@ -327,8 +308,8 @@ public class SessionFinalizerNaniteTest {
 		Assert.assertEquals(120000, pageJSONObject.getLong("timeOnPage"));
 	}
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private SessionFinalizerNanite _sessionFinalizerNanite;

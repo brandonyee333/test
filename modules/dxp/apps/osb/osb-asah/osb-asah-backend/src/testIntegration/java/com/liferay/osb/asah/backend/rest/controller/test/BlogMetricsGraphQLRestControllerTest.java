@@ -29,17 +29,17 @@ public class BlogMetricsGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "blog-metrics-body.json";
+		return "blog_metrics_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "blog-metrics-expected-result.json";
+		return "blog_metrics_expected_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "blog-metrics-query.graphql";
+		return "blog_metrics_query.graphql";
 	}
 
 }

@@ -32,6 +32,8 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.time.LocalDateTime;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -52,13 +54,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class MetricDogTest {
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset-metric-blog-info.json",
+		name = "blogs", resourcePath = "asset_metric_blog_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testBlogMetricShouldContainURL() {
 		AssetMetric assetMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				"1", AssetType.BLOG, null, TimeRange.LAST_7_DAYS, null));
 
@@ -71,13 +72,12 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset-metric-blog-info.json",
+		name = "blogs", resourcePath = "asset_metric_blog_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testBlogMetricShouldReturnEmptyListIfNoURLsAreFetched() {
 		AssetMetric assetMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				"1", AssetType.BLOG, null, TimeRange.LAST_24_HOURS, null));
 
@@ -90,13 +90,12 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset-metric-blog-average-info.json",
+		name = "blogs", resourcePath = "asset_metric_blog_average_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testBlogRatingAverage() {
 		BlogMetric blogMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				"1", AssetType.BLOG, null, TimeRange.LAST_24_HOURS, null),
 			new HashSet<String>() {
@@ -113,13 +112,12 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "blogs", resourcePath = "asset-metric-blog-info.json",
+		name = "blogs", resourcePath = "asset_metric_blog_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testBlogRatingMetricShouldNotBeNegative() {
 		BlogMetric blogMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				"2", AssetType.BLOG, null, TimeRange.LAST_24_HOURS, null),
 			new HashSet<String>() {
@@ -136,13 +134,12 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testCTAClicksMetrics() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -164,7 +161,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "custom-assets", resourcePath = "custom-assets-info.json",
+		name = "custom-assets", resourcePath = "custom_assets_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -173,7 +170,6 @@ public class MetricDogTest {
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9";
 
 		AssetMetric assetMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				assetId, AssetType.CUSTOM, null, TimeRange.LAST_24_HOURS,
 				null));
@@ -188,13 +184,218 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "asset-metric-journal-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetAssetMetricLast7Days() {
+		PageMetric pageMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null),
+			new HashSet<String>() {
+				{
+					add(PageMetricType.VIEWS.getName());
+				}
+			});
+
+		Assert.assertNotNull(pageMetric);
+
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(9, viewsMetric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetAssetMetricLast24Hours() {
+		PageMetric pageMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				null, AssetType.PAGE, null, TimeRange.LAST_24_HOURS, null),
+			new HashSet<String>() {
+				{
+					add(PageMetricType.VIEWS.getName());
+				}
+			});
+
+		Assert.assertNotNull(pageMetric);
+
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(0, viewsMetric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetAssetMetricLast28Days() {
+		PageMetric pageMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				null, AssetType.PAGE, null, TimeRange.LAST_28_DAYS, null),
+			new HashSet<String>() {
+				{
+					add(PageMetricType.VIEWS.getName());
+				}
+			});
+
+		Assert.assertNotNull(pageMetric);
+
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(11, viewsMetric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetAssetMetricLast30Days() {
+		PageMetric pageMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				null, AssetType.PAGE, null, TimeRange.LAST_30_DAYS, null),
+			new HashSet<String>() {
+				{
+					add(PageMetricType.VIEWS.getName());
+				}
+			});
+
+		Assert.assertNotNull(pageMetric);
+
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(11, viewsMetric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetAssetMetricLast90Days() {
+		PageMetric pageMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				null, AssetType.PAGE, null, TimeRange.LAST_90_DAYS, null),
+			new HashSet<String>() {
+				{
+					add(PageMetricType.VIEWS.getName());
+				}
+			});
+
+		Assert.assertNotNull(pageMetric);
+
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(14, viewsMetric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetAssetMetricLast180Days() {
+		PageMetric pageMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				null, AssetType.PAGE, null, TimeRange.LAST_180_DAYS, null),
+			new HashSet<String>() {
+				{
+					add(PageMetricType.VIEWS.getName());
+				}
+			});
+
+		Assert.assertNotNull(pageMetric);
+
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(15, viewsMetric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetAssetMetricLastCustomRange() {
+		LocalDateTime localDateTime = LocalDateTime.now();
+
+		LocalDateTime endLocalDateTime = localDateTime.minusDays(20);
+
+		LocalDateTime startLocalDateTime = endLocalDateTime.minusDays(180);
+
+		TimeRange timeRange = TimeRange.of(
+			endLocalDateTime, startLocalDateTime);
+
+		PageMetric pageMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(null, AssetType.PAGE, null, timeRange, null),
+			new HashSet<String>() {
+				{
+					add(PageMetricType.VIEWS.getName());
+				}
+			});
+
+		Assert.assertNotNull(pageMetric);
+
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(6, viewsMetric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetAssetMetricLastYear() {
+		PageMetric pageMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				null, AssetType.PAGE, null, TimeRange.LAST_YEAR, null),
+			new HashSet<String>() {
+				{
+					add(PageMetricType.VIEWS.getName());
+				}
+			});
+
+		Assert.assertNotNull(pageMetric);
+
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(17, viewsMetric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "pages_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testGetAssetMetricYesterday() {
+		PageMetric pageMetric = _metricDog.getAssetMetric(
+			_createSearchQuery(
+				null, AssetType.PAGE, null, TimeRange.YESTERDAY, null),
+			new HashSet<String>() {
+				{
+					add(PageMetricType.VIEWS.getName());
+				}
+			});
+
+		Assert.assertNotNull(pageMetric);
+
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(6, viewsMetric.getValue(), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "journals", resourcePath = "asset_metric_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testJournalDefaultMetric() {
 		AssetMetric assetMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				"1", AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS, null));
 
@@ -208,7 +409,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "asset-metric-journal-info.json",
+		name = "journals", resourcePath = "asset_metric_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -218,7 +419,7 @@ public class MetricDogTest {
 		Collections.addAll(set, "1", "2", "3");
 
 		List<AssetMetric> assetMetrics = _metricDog.getAssetMetrics(
-			set, null,
+			set,
 			_createSearchQuery(
 				null, AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -226,7 +427,7 @@ public class MetricDogTest {
 					add(JournalMetricType.VIEWS.getName());
 				}
 			},
-			10, 0);
+			10, null, 0);
 
 		Assert.assertEquals(assetMetrics.toString(), 3, assetMetrics.size());
 
@@ -236,7 +437,7 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "asset-metric-journal-info.json",
+		name = "journals", resourcePath = "asset_metric_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -249,42 +450,43 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testPagesExperimentAssetIdsFilter() {
+	public void testPageAssetIdsFilter() {
 		Set<String> assetIds = Collections.singleton(
-			"http://192.168.108.90:8080/search?q=Liferay");
+			"http://192.168.108.90:8080/");
 
-		List<AssetMetric> assetMetrics = _metricDog.getAssetMetrics(
-			assetIds, null, new SearchQueryContext(),
+		List<PageMetric> pageMetrics = _metricDog.getAssetMetrics(
+			assetIds, new SearchQueryContext(),
 			new HashSet<String>() {
 				{
 					add(PageMetricType.VIEWS.getName());
 				}
 			},
-			1000, 0);
+			1000, null, 0);
 
-		Assert.assertNotNull(assetMetrics);
+		Assert.assertNotNull(pageMetrics);
 
-		Assert.assertEquals(1, assetMetrics.size(), 0);
+		Assert.assertEquals(1, pageMetrics.size(), 0);
 
-		AssetMetric assetMetric = assetMetrics.get(0);
+		PageMetric pageMetric = pageMetrics.get(0);
 
-		List<String> urls = assetMetric.getURLs();
+		Assert.assertTrue(assetIds.contains(pageMetric.getAssetId()));
 
-		Assert.assertTrue(assetIds.containsAll(urls));
+		Metric viewsMetric = pageMetric.getViewsMetric();
+
+		Assert.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testPagesExperimentFilter() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				null, AssetType.PAGE, "10", TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -301,13 +503,12 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testPagesMaxScrollDepthMetric() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -324,13 +525,12 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testPagesVariantFilter() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, "2"),
 			new HashSet<String>() {
@@ -347,13 +547,12 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testPagesVisitorMetrics() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -366,17 +565,16 @@ public class MetricDogTest {
 
 		Metric visitorsMetric = pageMetric.getVisitorsMetric();
 
-		Assert.assertEquals(3, visitorsMetric.getValue(), 0);
+		Assert.assertEquals(4, visitorsMetric.getValue(), 0);
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testSessionsMetrics() {
 		SiteMetric siteMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				"1", AssetType.SITE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -405,13 +603,12 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testSiteBounceRateMetric() {
 		SiteMetric siteMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				"1", AssetType.SITE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -429,13 +626,12 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testSiteEngagementMetric() {
 		SiteMetric siteMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				"1", AssetType.SITE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -453,13 +649,12 @@ public class MetricDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
+		name = "pages", resourcePath = "pages_info_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testSiteVisitorsMetrics() {
 		SiteMetric siteMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(),
 			_createSearchQuery(
 				"1", AssetType.SITE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {

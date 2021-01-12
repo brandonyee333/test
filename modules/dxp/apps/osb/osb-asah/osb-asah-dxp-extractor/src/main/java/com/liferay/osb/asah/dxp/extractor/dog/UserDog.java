@@ -19,6 +19,9 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.dxp.extractor.client.ExtractorDXPClient;
 import com.liferay.osb.asah.dxp.extractor.configuration.DXPExtractorConfiguration;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -129,6 +132,8 @@ public class UserDog {
 			_extractorDXPClient.getJSONArray(
 				dxpExtractorConfiguration, "/api/jsonws/invoke",
 				bodyJSONObject));
+
+		_sanitize(usersJSONArray);
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Return " + usersJSONArray.length() + " users");
@@ -322,7 +327,89 @@ public class UserDog {
 		return usersJSONArray;
 	}
 
+	private void _sanitize(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject userJSONObject = jsonArray.getJSONObject(i);
+
+			Set<String> keys = userJSONObject.keySet();
+
+			keys.removeIf(key -> !_userFieldNames.contains(key));
+
+			JSONObject contactJSONObject = userJSONObject.getJSONObject(
+				"contact");
+
+			keys = contactJSONObject.keySet();
+
+			keys.removeIf(key -> !_contactFieldNames.contains(key));
+		}
+	}
+
 	private static final Log _log = LogFactory.getLog(UserDog.class);
+
+	private static final Set<String> _contactFieldNames =
+		new HashSet<String>() {
+			{
+				add("accountId");
+				add("birthday");
+				add("classNameId");
+				add("classPK");
+				add("companyId");
+				add("contactId");
+				add("createDate");
+				add("emailAddress");
+				add("employeeNumber");
+				add("employeeStatusId");
+				add("facebookSn");
+				add("firstName");
+				add("hoursOfOperation");
+				add("jabberSn");
+				add("jobClass");
+				add("jobTitle");
+				add("lastName");
+				add("male");
+				add("middleName");
+				add("modifiedDate");
+				add("parentContactId");
+				add("prefixId");
+				add("skypeSn");
+				add("smsSn");
+				add("suffixId");
+				add("twitterSn");
+				add("userId");
+				add("userName");
+			}
+		};
+	private static final Set<String> _userFieldNames = new HashSet<String>() {
+		{
+			add("agreedToTermsOfUse");
+			add("comments");
+			add("companyId");
+			add("contact");
+			add("contactId");
+			add("createDate");
+			add("defaultUser");
+			add("emailAddress");
+			add("emailAddressVerified");
+			add("externalReferenceCode");
+			add("facebookId");
+			add("firstName");
+			add("googleUserId");
+			add("greeting");
+			add("jobTitle");
+			add("languageId");
+			add("lastName");
+			add("ldapServerId");
+			add("middleName");
+			add("modifiedDate");
+			add("openId");
+			add("portraitId");
+			add("screenName");
+			add("status");
+			add("timeZoneId");
+			add("userId");
+			add("uuid");
+		}
+	};
 
 	@Autowired
 	private DXPExtractorUserDog _dxpExtractorUserDog;

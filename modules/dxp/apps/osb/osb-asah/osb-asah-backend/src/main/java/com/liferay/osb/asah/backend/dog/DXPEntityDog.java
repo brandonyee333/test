@@ -16,14 +16,15 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.DXPEntity;
 import com.liferay.osb.asah.backend.model.Organization;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.User;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,8 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -57,7 +56,7 @@ public class DXPEntityDog {
 
 	public ResultBag<? extends DXPEntity> getDXPEntityResultBag(
 		String channelId, String collectionName, String keywords, int size,
-		Map<String, String> sort, int start) {
+		Sort sort, int start) {
 
 		if (collectionName.equals("groups") || collectionName.equals("teams")) {
 			SearchHits searchHits = _dataDog.querySearchHits(
@@ -89,8 +88,7 @@ public class DXPEntityDog {
 				collectionName, _dxpRawElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(
 					_getFieldSortBuilders(collectionName, sort),
-					_getBoolQueryBuilder(
-						boolQueryBuilder, channelJSONObject, "groupId"),
+					_getBoolQueryBuilder(boolQueryBuilder, channelJSONObject),
 					size, start));
 
 			return _createResultBag(this::_mapDXPEntity, searchHits);
@@ -142,9 +140,7 @@ public class DXPEntityDog {
 				collectionName, _dxpRawElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(
 					_getFieldSortBuilders(collectionName, sort),
-					_getBoolQueryBuilder(
-						boolQueryBuilder, channelJSONObject,
-						"memberships.com.liferay.portal.kernel.model.Group"),
+					_getBoolQueryBuilder(boolQueryBuilder, channelJSONObject),
 					size, start));
 
 			return _createResultBag(this::_mapDXPUser, searchHits);
@@ -178,12 +174,12 @@ public class DXPEntityDog {
 					new JSONObject(searchHit.getSourceAsMap())));
 		}
 
-		return new ResultBag<>(dxpEntities, searchHits.getTotalHits());
+		return new ResultBag<>(
+			dxpEntities, HitsUtil.getTotalHitsCount(searchHits));
 	}
 
 	private BoolQueryBuilder _getBoolQueryBuilder(
-		BoolQueryBuilder boolQueryBuilder, JSONObject channelJSONObject,
-		String key) {
+		BoolQueryBuilder boolQueryBuilder, JSONObject channelJSONObject) {
 
 		JSONArray dataSourcesJSONArray = channelJSONObject.optJSONArray(
 			"dataSources");
@@ -194,49 +190,41 @@ public class DXPEntityDog {
 			return boolQueryBuilder;
 		}
 
+		BoolQueryBuilder dataSourceBoolQueryBuilder = QueryBuilders.boolQuery();
+
 		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
 			JSONObject jsonObject = dataSourcesJSONArray.getJSONObject(i);
 
-			boolQueryBuilder.should(
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termsQuery(
-						key,
-						JSONUtil.toStringArray(
-							jsonObject.getJSONArray("groupIds")))
-				).filter(
-					QueryBuilders.termQuery(
-						"osbAsahDataSourceId", jsonObject.getString("id"))
-				));
+			dataSourceBoolQueryBuilder.should(
+				QueryBuilders.termQuery(
+					"osbAsahDataSourceId", jsonObject.getString("id")));
 		}
 
-		return boolQueryBuilder;
+		return BoolQueryBuilderUtil.filter(
+			boolQueryBuilder
+		).filter(
+			dataSourceBoolQueryBuilder
+		);
 	}
 
 	private List<FieldSortBuilder> _getFieldSortBuilders(
-		String collectionName, Map<String, String> sort) {
+		String collectionName, Sort sort) {
 
 		if (!collectionName.equals("users") ||
-			!StringUtils.equals(sort.get("column"), "name")) {
+			!StringUtils.equals(sort.getColumn(), "name")) {
 
 			return Collections.singletonList(SortBuilderUtil.fieldSort(sort));
 		}
 
 		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
 
-		SortOrder sortOrder = SortOrder.valueOf(sort.get("type"));
+		SortOrder sortOrder = SortOrder.valueOf(sort.getType());
 
 		fieldSortBuilders.add(
 			SortBuilderUtil.fieldSort("firstName", sortOrder));
 		fieldSortBuilders.add(SortBuilderUtil.fieldSort("lastName", sortOrder));
 
 		return fieldSortBuilders;
-	}
-
-	@PostConstruct
-	private void _init() {
-		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	private DXPEntity _mapDXPEntity(
@@ -300,6 +288,10 @@ public class DXPEntityDog {
 							"data-sources",
 							QueryBuilders.termQuery("id", dataSourceId));
 
+					if (dataSourceJSONObject == null) {
+						return null;
+					}
+
 					return dataSourceJSONObject.getString("name");
 				}));
 		organization.setId(organizationJSONObject.getString("id"));
@@ -314,11 +306,10 @@ public class DXPEntityDog {
 	@Autowired
 	private DataDog _dataDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

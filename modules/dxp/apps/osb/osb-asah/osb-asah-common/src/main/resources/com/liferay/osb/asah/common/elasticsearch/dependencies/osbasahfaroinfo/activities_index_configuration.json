@@ -35,6 +35,12 @@
 				"endTime": {
 					"type": "date"
 				},
+				"endTimeLocal": {
+					"type": "date"
+				},
+				"eventContext": {
+					"type": "object"
+				},
 				"eventId": {
 					"normalizer": "case_insensitive_sort",
 					"type": "keyword"
@@ -50,6 +56,10 @@
 				},
 				"object": {
 					"properties": {
+						"canonicalUrl": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
 						"dataSourceAssetPK": {
 							"type": "keyword"
 						},
@@ -73,7 +83,13 @@
 				"ownerId": {
 					"type": "keyword"
 				},
+				"sessionId": {
+					"type": "keyword"
+				},
 				"startTime": {
+					"type": "date"
+				},
+				"startTimeLocal": {
 					"type": "date"
 				},
 				"userId": {

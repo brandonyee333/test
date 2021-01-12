@@ -14,9 +14,14 @@
 
 package com.liferay.osb.asah.backend.ext.seo.rest.controller.api.data.source.v1;
 
+import com.liferay.osb.asah.backend.ext.seo.model.CountrySearchKeywords;
 import com.liferay.osb.asah.backend.ext.seo.model.SearchKeyword;
 import com.liferay.osb.asah.backend.ext.seo.model.TrafficSource;
+import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
+import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.http.Http;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvFormat;
@@ -28,77 +33,107 @@ import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import java.nio.charset.StandardCharsets;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author David Arques
  */
+@EnableScheduling
 @RequestMapping("/api/seo/1.0")
 @RestController(
 	"com.liferay.osb.asah.backend.ext.seo.rest.controller.api.data.source.v1.RootRestController"
 )
 public class RootRestController {
 
-	@Cacheable("getTrafficSources")
+	@CacheEvict("getTrafficSources")
+	@DeleteMapping("/cache")
+	@Scheduled(cron = "0 0 2 ? * MON")
+	public void clearCache() {
+		if (_log.isInfoEnabled()) {
+			_log.info("Cache cleared: getTrafficSources");
+		}
+	}
+
+	@Cacheable
 	@GetMapping("/traffic-sources")
 	public List<TrafficSource> getTrafficSources(@RequestParam String url) {
 		if (StringUtils.isEmpty(url)) {
 			throw new IllegalArgumentException("URL is null");
 		}
 
-		List<TrafficSource> trafficSources = new ArrayList<>();
+		Set<String> databases = _getDatabases(url);
 
-		Optional<Integer> organicSearchKeywordsTotalTrafficAmountOptional =
-			_getSearchKeywordsTotalTrafficAmount("url_organic", url);
-		Optional<Integer> paidSearchKeywordsTotalTrafficAmountOptional =
-			_getSearchKeywordsTotalTrafficAmount("url_adwords", url);
+		List<CountrySearchKeywords> organicCountrySearchKeywordsList =
+			_getCountrySearchKeywordsList(
+				databases, _urlOrganicDisplayLimit, "url_organic", url);
 
-		int totalTrafficAmount = Math.addExact(
-			organicSearchKeywordsTotalTrafficAmountOptional.orElse(0),
-			paidSearchKeywordsTotalTrafficAmountOptional.orElse(0));
+		long organicSearchKeywordsTotalTraffic =
+			_getOrganicSearchKeywordsTotalTraffic(databases, url);
 
-		organicSearchKeywordsTotalTrafficAmountOptional.ifPresent(
-			organicSearchKeywordsTotalTrafficAmount -> trafficSources.add(
-				new TrafficSource(
-					"organic", organicSearchKeywordsTotalTrafficAmount,
-					_calculatePercentage(
-						organicSearchKeywordsTotalTrafficAmount,
-						totalTrafficAmount))));
-		paidSearchKeywordsTotalTrafficAmountOptional.ifPresent(
-			paidSearchKeywordsTotalTrafficAmount -> trafficSources.add(
-				new TrafficSource(
-					"paid", paidSearchKeywordsTotalTrafficAmount,
-					_calculatePercentage(
-						paidSearchKeywordsTotalTrafficAmount,
-						totalTrafficAmount))));
+		List<CountrySearchKeywords> paidCountrySearchKeywordsList =
+			_getCountrySearchKeywordsList(
+				databases, _urlAdwordsDisplayLimit, "url_adwords", url);
 
-		return trafficSources;
+		long paidSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
+			paidCountrySearchKeywordsList);
+
+		return Arrays.asList(
+			new TrafficSource(
+				organicCountrySearchKeywordsList, "organic",
+				organicSearchKeywordsTotalTraffic,
+				_calculatePercentage(
+					organicSearchKeywordsTotalTraffic,
+					organicSearchKeywordsTotalTraffic +
+						paidSearchKeywordsTotalTraffic)),
+			new TrafficSource(
+				paidCountrySearchKeywordsList, "paid",
+				paidSearchKeywordsTotalTraffic,
+				_calculatePercentage(
+					paidSearchKeywordsTotalTraffic,
+					organicSearchKeywordsTotalTraffic +
+						paidSearchKeywordsTotalTraffic)));
 	}
 
-	private double _calculatePercentage(int value, int total) {
+	private double _calculatePercentage(long value, long total) {
 		double percentage = 0;
 
 		if (total != 0) {
@@ -112,7 +147,177 @@ public class RootRestController {
 		return bigDecimal.doubleValue();
 	}
 
-	private List<SearchKeyword> _getSearchKeywords(String body) {
+	private List<CountrySearchKeywords> _getCountrySearchKeywordsList(
+		Set<String> databases, int displayLimit, String type, String url) {
+
+		Stream<String> stream = databases.stream();
+
+		return stream.map(
+			database -> new CountrySearchKeywords(
+				database, _getSearchKeywords(database, displayLimit, type, url))
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	private Set<String> _getDatabases(String url) {
+		Set<String> databases = new LinkedHashSet<>();
+
+		JSONArray jsonArray = new JSONArray(
+			_http.exchange(
+				ServiceConstants.URL_BACKEND_INTERNAL,
+				"/api/1.0/pages/geolocations?canonicalURL=" + url,
+				HttpMethod.GET, null));
+
+		for (int i = 0; (i < jsonArray.length()) && (i < _databasesLimit);
+			 i++) {
+
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			String database = _databases.get(jsonObject.getString("valueKey"));
+
+			if (database != null) {
+				databases.add(database);
+			}
+		}
+
+		return databases;
+	}
+
+	private String _getDomain(String url) {
+		try {
+			URI uri = new URI(url);
+
+			String host = uri.getHost();
+
+			if (StringUtil.isNull(host)) {
+				throw new IllegalArgumentException("Invalid URL " + url);
+			}
+
+			if (host.startsWith("www.")) {
+				return host.substring(4);
+			}
+
+			return host;
+		}
+		catch (URISyntaxException uriSyntaxException) {
+			throw new IllegalArgumentException(
+				"Invalid URL " + url, uriSyntaxException);
+		}
+	}
+
+	private long _getOrganicSearchKeywordsTotalTraffic(
+		Set<String> databases, String url) {
+
+		Stream<String> stream = databases.stream();
+
+		String domain = _getDomain(url);
+
+		return stream.mapToLong(
+			database -> _getOrganicSearchKeywordsTotalTraffic(
+				database, domain, url)
+		).sum();
+	}
+
+	private long _getOrganicSearchKeywordsTotalTraffic(
+		String database, String domain, String url) {
+
+		UriComponentsBuilder uriComponentsBuilder =
+			UriComponentsBuilder.fromHttpUrl("https://api.semrush.com/");
+
+		uriComponentsBuilder.queryParam("database", database);
+		uriComponentsBuilder.queryParam("display_filter", "+|Ur|Eq|" + url);
+		uriComponentsBuilder.queryParam("display_limit", 1);
+		uriComponentsBuilder.queryParam("domain", domain);
+		uriComponentsBuilder.queryParam("export_columns", "Tg");
+		uriComponentsBuilder.queryParam(
+			"key", _environment.getProperty("SEMRUSH_API_KEY", _semrushAPIKey));
+		uriComponentsBuilder.queryParam("type", "domain_organic_unique");
+
+		UriComponents uriComponents = uriComponentsBuilder.build();
+
+		ResponseEntity<String> responseEntity = _http.exchangeResponseEntity(
+			uriComponents.toUriString(), null, HttpMethod.GET, null);
+
+		if (!Objects.equals(responseEntity.getStatusCode(), HttpStatus.OK)) {
+			throw new HttpClientErrorException(responseEntity.getStatusCode());
+		}
+
+		return Optional.of(
+			responseEntity.getBody()
+		).map(
+			this::_readFirstCell
+		).map(
+			Long::parseLong
+		).orElse(
+			0L
+		);
+	}
+
+	private List<SearchKeyword> _getSearchKeywords(
+		String database, int displayLimit, String type, String url) {
+
+		UriComponentsBuilder uriComponentsBuilder =
+			UriComponentsBuilder.fromHttpUrl("https://api.semrush.com/");
+
+		uriComponentsBuilder.queryParam("database", database);
+		uriComponentsBuilder.queryParam("display_filter", "+|Tg|Gt|0");
+		uriComponentsBuilder.queryParam("display_limit", displayLimit);
+		uriComponentsBuilder.queryParam("display_sort", "tg_desc");
+		uriComponentsBuilder.queryParam("export_columns", "Ph,Po,Nq,Tg");
+		uriComponentsBuilder.queryParam(
+			"key", _environment.getProperty("SEMRUSH_API_KEY", _semrushAPIKey));
+		uriComponentsBuilder.queryParam("type", type);
+		uriComponentsBuilder.queryParam("url", url);
+
+		UriComponents uriComponents = uriComponentsBuilder.build();
+
+		ResponseEntity<String> responseEntity = _http.exchangeResponseEntity(
+			uriComponents.toUriString(), null, HttpMethod.GET, null);
+
+		if (!Objects.equals(responseEntity.getStatusCode(), HttpStatus.OK)) {
+			throw new HttpClientErrorException(responseEntity.getStatusCode());
+		}
+
+		return _toSearchKeywords(responseEntity.getBody());
+	}
+
+	private long _getSearchKeywordsTotalTraffic(
+		List<CountrySearchKeywords> countrySearchKeywordsList) {
+
+		Stream<CountrySearchKeywords> stream =
+			countrySearchKeywordsList.stream();
+
+		return stream.map(
+			CountrySearchKeywords::getSearchKeywords
+		).flatMap(
+			Collection::stream
+		).mapToLong(
+			SearchKeyword::getTraffic
+		).sum();
+	}
+
+	private String _readFirstCell(String body) {
+		CsvParserSettings csvParserSettings = new CsvParserSettings();
+
+		csvParserSettings.setHeaderExtractionEnabled(true);
+
+		CsvParser csvParser = new CsvParser(csvParserSettings);
+
+		List<String[]> rows = csvParser.parseAll(
+			new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
+
+		Stream<String[]> stream = rows.stream();
+
+		return stream.findFirst(
+		).map(
+			row -> row[0]
+		).orElse(
+			"0"
+		);
+	}
+
+	private List<SearchKeyword> _toSearchKeywords(String body) {
 		CsvParserSettings csvParserSettings = new CsvParserSettings();
 
 		CsvFormat csvFormat = csvParserSettings.getFormat();
@@ -126,81 +331,158 @@ public class RootRestController {
 
 		csvParserSettings.setProcessor(beanListProcessor);
 
-		CsvParser csvParser = new CsvParser(csvParserSettings);
+		if (body != null) {
+			CsvParser csvParser = new CsvParser(csvParserSettings);
 
-		csvParser.parse(
-			new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
+			csvParser.parse(
+				new ByteArrayInputStream(
+					body.getBytes(StandardCharsets.UTF_8)));
+		}
 
 		return beanListProcessor.getBeans();
 	}
 
-	private Optional<Integer> _getSearchKeywordsTotalTrafficAmount(
-		String type, String url) {
+	private static final Log _log = LogFactory.getLog(RootRestController.class);
 
-		try {
-			UriComponentsBuilder uriComponentsBuilder =
-				UriComponentsBuilder.fromHttpUrl("https://api.semrush.com/");
-
-			// TODO Use country codes to set database (LPS-111042)
-
-			uriComponentsBuilder.queryParam("database", "us");
-			uriComponentsBuilder.queryParam("display_filter", "+|Tg|Gt|0");
-			uriComponentsBuilder.queryParam("display_limit", 100);
-			uriComponentsBuilder.queryParam("display_sort", "tg_desc");
-			uriComponentsBuilder.queryParam("export_columns", "Ph,Po,Nq,Tg");
-			uriComponentsBuilder.queryParam(
-				"key", _environment.getProperty("SEMRUSH_API_KEY"));
-			uriComponentsBuilder.queryParam("type", type);
-			uriComponentsBuilder.queryParam("url", url);
-
-			UriComponents uriComponents = uriComponentsBuilder.build();
-
-			ResponseEntity<String> responseEntity =
-				_http.exchangeResponseEntity(
-					uriComponents.toUriString(), null, HttpMethod.GET, null);
-
-			if (!Objects.equals(
-					responseEntity.getStatusCode(), HttpStatus.OK)) {
-
-				if (_logger.isDebugEnabled()) {
-					_logger.debug(
-						String.format(
-							"Unexpected response status code %s",
-							responseEntity.getStatusCode()));
-				}
-
-				return Optional.empty();
+	private static final Map<String, String> _databases =
+		new HashMap<String, String>() {
+			{
+				put("Afghanistan", "af");
+				put("Albania", "al");
+				put("Algeria", "dz");
+				put("Angola", "ao");
+				put("Argentina", "ar");
+				put("Armenia", "am");
+				put("Australia", "au");
+				put("Austria", "at");
+				put("Azerbaijan", "az");
+				put("Bahamas", "bs");
+				put("Bahrain", "bh");
+				put("Bangladesh", "bd");
+				put("Belarus", "by");
+				put("Belgium", "be");
+				put("Belize", "bz");
+				put("Bolivia", "bo");
+				put("Bosnia and Herzegovina", "ba");
+				put("Botswana", "bw");
+				put("Brazil", "br");
+				put("Brunei", "bn");
+				put("Bulgaria", "bg");
+				put("Cabo Verde", "cv");
+				put("Cambodia", "kh");
+				put("Cameroon", "cm");
+				put("Canada", "ca");
+				put("Chile", "cl");
+				put("Colombia", "co");
+				put("Congo", "cg");
+				put("Costa Rica", "cr");
+				put("Croatia", "hr");
+				put("Cyprus", "cy");
+				put("Czech Republic", "cz");
+				put("Denmark", "dk");
+				put("Dominican Republic", "do");
+				put("Ecuador", "ec");
+				put("Egypt", "eg");
+				put("El Salvador", "sv");
+				put("Estonia", "ee");
+				put("Ethiopia", "et");
+				put("Finland", "fi");
+				put("France", "fr");
+				put("Georgia", "ge");
+				put("Germany", "de");
+				put("Ghana", "gh");
+				put("Greece", "gr");
+				put("Guatemala", "gt");
+				put("Guyana", "gy");
+				put("Haiti", "ht");
+				put("Honduras", "hn");
+				put("Hong Kong", "hk");
+				put("Hungary", "hu");
+				put("Iceland", "is");
+				put("India", "in");
+				put("Indonesia", "id");
+				put("Ireland", "ie");
+				put("Israel", "il");
+				put("Italy", "it");
+				put("Jamaica", "jm");
+				put("Japan", "jp");
+				put("Jordan", "jo");
+				put("Kazakhstan", "kz");
+				put("Kuwait", "kw");
+				put("Latvia", "lv");
+				put("Lebanon", "lb");
+				put("Libya", "ly");
+				put("Lithuania", "lt");
+				put("Luxembourg", "lu");
+				put("Madagascar", "mg");
+				put("Malaysia", "my");
+				put("Malta", "mt");
+				put("Mauritius", "mu");
+				put("Mexico", "mx");
+				put("Moldova", "md");
+				put("Mongolia", "mn");
+				put("Montenegro", "me");
+				put("Morocco", "ma");
+				put("Mozambique", "mz");
+				put("Namibia", "na");
+				put("Nepal", "np");
+				put("Netherlands", "nl");
+				put("New Zealand", "nz");
+				put("Nicaragua", "ni");
+				put("Nigeria", "ng");
+				put("Norway", "no");
+				put("Oman", "om");
+				put("Paraguay", "py");
+				put("Peru", "pe");
+				put("Philippines", "ph");
+				put("Poland", "pl");
+				put("Portugal", "pt");
+				put("Romania", "ro");
+				put("Russia", "ru");
+				put("Saudi Arabia", "sa");
+				put("Senegal", "sn");
+				put("Serbia", "rs");
+				put("Singapore", "sg");
+				put("Slovakia", "sk");
+				put("Slovenia", "si");
+				put("South Africa", "za");
+				put("South Korea", "kr");
+				put("Spain", "es");
+				put("Sri Lanka", "lk");
+				put("Sweden", "se");
+				put("Thailand", "th");
+				put("Trinidad and Tobago", "tt");
+				put("Tunisia", "tn");
+				put("Turkey", "tr");
+				put("Ukraine", "ua");
+				put("United Arab Emirates", "ae");
+				put("United Kingdom", "uk");
+				put("United States", "us");
+				put("Unknown", "us");
+				put("Uruguay", "uy");
+				put("Venezuela", "ve");
+				put("Vietnam", "vn");
+				put("Zambia", "zm");
+				put("Zimbabwe", "zw");
 			}
+		};
 
-			List<SearchKeyword> searchKeywords = _getSearchKeywords(
-				responseEntity.getBody());
-
-			Stream<SearchKeyword> stream = searchKeywords.stream();
-
-			return Optional.of(
-				stream.mapToInt(
-					SearchKeyword::getTraffic
-				).sum());
-		}
-		catch (Exception exception) {
-			_logger.error(
-				String.format(
-					"Unable to get search keywords total traffic amount of " +
-						"type %s",
-					type),
-				exception);
-
-			return Optional.empty();
-		}
-	}
-
-	private static final Logger _logger = LoggerFactory.getLogger(
-		RootRestController.class);
+	@Value("${osb.asah.seo.semrush.databases.limit:5}")
+	private int _databasesLimit;
 
 	@Autowired
 	private Environment _environment;
 
 	@Autowired
 	private Http _http;
+
+	@Value("${osb.asah.seo.semrush.api.key}")
+	private String _semrushAPIKey;
+
+	@Value("${osb.asah.seo.semrush.url.adwords.display.limit:10}")
+	private int _urlAdwordsDisplayLimit;
+
+	@Value("${osb.asah.seo.semrush.url.organic.display.limit:25}")
+	private int _urlOrganicDisplayLimit;
 
 }

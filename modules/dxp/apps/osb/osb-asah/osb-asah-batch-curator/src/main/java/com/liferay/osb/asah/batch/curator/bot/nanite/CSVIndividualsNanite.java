@@ -20,6 +20,9 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +52,11 @@ public class CSVIndividualsNanite extends BaseIndividualsNanite {
 	@Override
 	protected String getDataSourceType() {
 		return "CSV";
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(CSVIndividualsNanite.class);
 	}
 
 	@Override

@@ -292,5 +292,89 @@
 		"eventDate": "2018-01-04T11:31:04.000Z",
 		"eventId": "pageViewed",
 		"userId": "4"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "Firefox",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Linux",
+			"referrer": "https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwiH26qR9IHrAhUTG-cKHcssA84YABAEGgJwdg",
+			"region": "Pernambuco",
+			"title": "About Us",
+			"url": "http://liferay.com/our-story"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T11:31:04.000Z",
+		"eventId": "pageViewed",
+		"userId": "9"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "Firefox",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Linux",
+			"referrer": "",
+			"region": "Pernambuco",
+			"title": "About Us",
+			"url": "http://liferay.com/our-story?utm_medium=organic"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T11:31:04.000Z",
+		"eventId": "pageViewed",
+		"userId": "9"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "Firefox",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Linux",
+			"referrer": "https://www.facebook.com",
+			"region": "Pernambuco",
+			"title": "About Us",
+			"url": "http://liferay.com/our-story"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T11:31:04.000Z",
+		"eventId": "pageViewed",
+		"userId": "9"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "Firefox",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Linux",
+			"referrer": "https://www.facebook.com",
+			"region": "Pernambuco",
+			"title": "About Us",
+			"url": "http://liferay.com/our-story?gclid=CjwKCAjwydP5BRBREiwA-qrCGrt7eyGrZTJ6Tfmk34K_8g75KP9RLV4deH26M1U8rCiKTvWPl5JKHhoCH8cQAvD"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T11:31:04.000Z",
+		"eventId": "pageViewed",
+		"userId": "9"
 	}
 ]

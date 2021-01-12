@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.backend.model.util.MetricUtil;
+
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Inácio Nery
@@ -37,6 +40,7 @@ public class JournalMetric implements AssetMetric {
 		if (Objects.equals(_assetId, journalMetric._assetId) &&
 			Objects.equals(_assetMetrics, journalMetric._assetMetrics) &&
 			Objects.equals(_assetTitle, journalMetric._assetTitle) &&
+			Objects.equals(_canonicalUrls, journalMetric._canonicalUrls) &&
 			Objects.equals(_dataSourceId, journalMetric._dataSourceId) &&
 			Objects.equals(_urls, journalMetric._urls) &&
 			Objects.equals(_viewsMetric, journalMetric._viewsMetric)) {
@@ -68,6 +72,16 @@ public class JournalMetric implements AssetMetric {
 	}
 
 	@Override
+	public Set<Metric> getAvailableMetrics() {
+		return MetricUtil.getAvailableMetrics(this);
+	}
+
+	@Override
+	public List<String> getCanonicalUrls() {
+		return _canonicalUrls;
+	}
+
+	@Override
 	public String getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -89,8 +103,8 @@ public class JournalMetric implements AssetMetric {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_assetId, _assetMetrics, _assetTitle, _dataSourceId, _urls,
-			_viewsMetric);
+			_assetId, _assetMetrics, _assetTitle, _canonicalUrls, _dataSourceId,
+			_urls, _viewsMetric);
 	}
 
 	@Override
@@ -106,6 +120,11 @@ public class JournalMetric implements AssetMetric {
 	@Override
 	public void setAssetTitle(String assetTitle) {
 		_assetTitle = assetTitle;
+	}
+
+	@Override
+	public void setCanonicalUrls(List<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
 	}
 
 	@Override
@@ -125,6 +144,7 @@ public class JournalMetric implements AssetMetric {
 	private String _assetId;
 	private List<AssetMetric> _assetMetrics;
 	private String _assetTitle;
+	private List<String> _canonicalUrls;
 	private String _dataSourceId;
 	private List<String> _urls;
 	private Metric _viewsMetric = new Metric(JournalMetricType.VIEWS);

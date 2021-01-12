@@ -42,7 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class IndividualMetricDogTest {
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals-histogram-info.json",
+		name = "individuals", resourcePath = "individuals_histogram_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

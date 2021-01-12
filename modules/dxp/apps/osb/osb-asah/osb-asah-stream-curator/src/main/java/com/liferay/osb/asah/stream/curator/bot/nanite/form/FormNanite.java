@@ -17,7 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.form;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseStreamNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
 import com.liferay.osb.asah.stream.curator.model.form.Form;
 import com.liferay.osb.asah.stream.curator.model.form.FormField;
@@ -44,14 +44,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Inácio Nery
  */
 @Component
-public class FormNanite extends BaseStreamNanite<Form> {
+public class FormNanite extends BaseNanite<Form> {
 
 	@Override
 	public String getCollectionName() {
@@ -472,11 +471,7 @@ public class FormNanite extends BaseStreamNanite<Form> {
 
 		formPage.addFormField(formField);
 		formPage.setAbandonments(1);
-
-		int pageIndex = _getPageIndex(eventProperties);
-
-		formPage.setPageIndex(pageIndex);
-
+		formPage.setPageIndex(_getPageIndex(eventProperties));
 		formPage.setViews(1);
 
 		form.addFormPage(formPage);

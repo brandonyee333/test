@@ -8,7 +8,13 @@
 				"accessDates": {
 					"type": "date"
 				},
+				"acquisitionChannel": {
+					"type": "keyword"
+				},
 				"browserName": {
+					"type": "keyword"
+				},
+				"canonicalUrl": {
 					"type": "keyword"
 				},
 				"channelId": {

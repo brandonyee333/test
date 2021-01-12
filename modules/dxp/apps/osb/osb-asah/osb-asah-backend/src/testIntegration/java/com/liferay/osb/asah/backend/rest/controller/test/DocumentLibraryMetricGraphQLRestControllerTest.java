@@ -29,17 +29,17 @@ public class DocumentLibraryMetricGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "document-library-metric-body.json";
+		return "document_library_metric_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "document-library-metric-expected-result.json";
+		return "document_library_metric_expected_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "document-library-metric-query.graphql";
+		return "document_library_metric_query.graphql";
 	}
 
 }

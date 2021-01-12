@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.dog.configuration;
 
 import com.liferay.osb.asah.backend.dog.DogUtil;
+import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -38,12 +39,12 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
+import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
 import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.missing.MissingAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
-import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders;
+import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 
 /**
  * @author Marcellus Tavares
@@ -51,7 +52,7 @@ import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders
 public abstract class BaseDogConfiguration implements DogConfiguration {
 
 	@Override
-	public QueryBuilder getQueryBuilder() {
+	public QueryBuilder getQueryBuilder(SearchQueryContext searchQueryContext) {
 		return null;
 	}
 
@@ -140,16 +141,7 @@ public abstract class BaseDogConfiguration implements DogConfiguration {
 			valueSumFieldName);
 
 		sumAggregationBuilder.script(
-			new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				"doc[params.valueFieldName].value * " +
-					"doc[params.weightFieldName].value",
-				new HashMap() {
-					{
-						put("valueFieldName", valueFieldName);
-						put("weightFieldName", weightFieldName);
-					}
-				}));
+			_createMultiplicationScript(valueFieldName, weightFieldName));
 
 		builder.aggregate(sumAggregationBuilder);
 
@@ -226,10 +218,28 @@ public abstract class BaseDogConfiguration implements DogConfiguration {
 		return new Script(sb.toString());
 	}
 
+	private Script _createMultiplicationScript(
+		String metricFieldName1, String metricFieldName2) {
+
+		StringBundler sb = new StringBundler(9);
+
+		sb.append("(doc['");
+		sb.append(metricFieldName1);
+		sb.append("'].length > 0 ? doc['");
+		sb.append(metricFieldName1);
+		sb.append("'].value : 0) * (doc['");
+		sb.append(metricFieldName2);
+		sb.append("'].length > 0 ? doc['");
+		sb.append(metricFieldName2);
+		sb.append("'].value : 0)");
+
+		return new Script(sb.toString());
+	}
+
 	@PostConstruct
 	private void _init() {
 		_weightedAverageAggregationScript = ScriptUtil.createScript(
-			getClass(), "weighted-average-aggregation-script.painless");
+			getClass(), "weighted_average_aggregation_script.painless");
 	}
 
 	private Script _weightedAverageAggregationScript;

@@ -17,7 +17,7 @@
 			"templated": true
 		},
 		"activities": {
-			"href": "{url}/activities{?apply,filter,includeToday,page,size,sort*}",
+			"href": "{url}/activities{?apply,filter,includeToday,page,rangeEnd,rangeStart,size,sort*}",
 			"templated": true
 		},
 		"activity": {
@@ -46,10 +46,6 @@
 		},
 		"admin-nanites": {
 			"href": "{url}/admin/nanites",
-			"templated": true
-		},
-		"analytics-event-values": {
-			"href": "{url}/analytics-events/values{?fieldName,filter,page,size,value}",
 			"templated": true
 		},
 		"asset": {
@@ -134,6 +130,10 @@
 		},
 		"data-sources": {
 			"href": "{url}/data-sources{?apply,filter,page,size,sort*}",
+			"templated": true
+		},
+		"definitions-individual-attributes": {
+			"href": "{url}/definitions/individual-attributes{?name}",
 			"templated": true
 		},
 		"engagement": {
@@ -250,6 +250,10 @@
 		},
 		"self": {
 			"href": "{url}"
+		},
+		"session-values": {
+			"href": "{url}/sessions/values{?fieldName,filter,page,size,value}",
+			"templated": true
 		},
 		"suppression-logs": {
 			"href": "{url}/suppressions/logs{?filter}",

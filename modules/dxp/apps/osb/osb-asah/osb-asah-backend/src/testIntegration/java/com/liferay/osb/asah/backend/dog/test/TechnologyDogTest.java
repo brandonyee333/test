@@ -42,7 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class TechnologyDogTest {
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "technology-journal-info.json",
+		name = "journals", resourcePath = "technology_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -60,7 +60,7 @@ public class TechnologyDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "journals", resourcePath = "technology-journal-info.json",
+		name = "journals", resourcePath = "technology_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

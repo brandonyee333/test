@@ -11,6 +11,9 @@
 				"browserName": {
 					"type": "keyword"
 				},
+				"canonicalUrls": {
+					"type": "keyword"
+				},
 				"channelId": {
 					"type": "keyword"
 				},
@@ -66,6 +69,9 @@
 					"type": "keyword"
 				},
 				"sessionId": {
+					"type": "keyword"
+				},
+				"tempUrls": {
 					"type": "keyword"
 				},
 				"title": {

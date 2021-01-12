@@ -29,7 +29,7 @@ import nl.jqno.equalsverifier.Warning;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders;
+import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -172,10 +172,11 @@ public class MetricResolverBuilderTest
 		private TestMetricType(
 			String fieldName, String name, TrendClassification.Order order) {
 
-			_aggregationName = fieldName;
 			_fieldName = fieldName;
 			_name = name;
 			_order = order;
+
+			_aggregationName = fieldName;
 		}
 
 		private final String _aggregationName;

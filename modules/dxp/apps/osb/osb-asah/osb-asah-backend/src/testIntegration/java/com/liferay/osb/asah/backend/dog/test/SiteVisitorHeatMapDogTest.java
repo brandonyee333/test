@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.SiteVisitorHeatMapDog;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
+import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -23,6 +24,7 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -49,29 +51,66 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SiteVisitorHeatMapDogTest {
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testVisitorHeatMapMetricsLast24Hours() {
-		List<HeatMapMetric> heatMapMetrics =
-			_siteVisitorHeatMapDog.getHeatMapMetrics(null, "1", 0, "UTC");
+	public void testVisitorHeatMapMetricsCustomRange() {
+		LocalDate localDate = LocalDate.now(ZoneId.of("UTC"));
 
-		double[] expectedValues = new double[heatMapMetrics.size()];
+		List<HeatMapMetric> heatMapMetrics =
+			_siteVisitorHeatMapDog.getHeatMapMetrics(
+				null, "1", TimeRange.of(localDate, localDate.minusDays(49)),
+				"UTC");
+
+		Assert.assertEquals(
+			heatMapMetrics.toString(), 168, heatMapMetrics.size());
 
 		double[] actualValues = _getActualValues(heatMapMetrics);
+
+		Map<Pair<Integer, Integer>, Double> expectedValuesMap =
+			new HashMap<Pair<Integer, Integer>, Double>() {
+				{
+					put(Pair.of(2, 10), 1.0);
+					put(Pair.of(4, 1), 1.0);
+					put(Pair.of(5, 10), 1.0);
+					put(Pair.of(6, 1), 1.0);
+					put(Pair.of(6, 13), 1.0);
+					put(Pair.of(6, 20), 3.0);
+				}
+			};
+
+		double[] expectedValues = _getExpectedValues(
+			expectedValuesMap, "UTC", heatMapMetrics.size());
 
 		Assert.assertArrayEquals(expectedValues, actualValues, 0);
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testVisitorHeatMapMetricsLast24Hours() {
+		List<HeatMapMetric> heatMapMetrics =
+			_siteVisitorHeatMapDog.getHeatMapMetrics(
+				null, "1", TimeRange.LAST_24_HOURS, "UTC");
+
+		double[] expectedValues = new double[heatMapMetrics.size()];
+
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(heatMapMetrics), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testVisitorHeatMapMetricsLast28Days() {
 		List<HeatMapMetric> heatMapMetrics =
-			_siteVisitorHeatMapDog.getHeatMapMetrics(null, "1", 28, "UTC");
+			_siteVisitorHeatMapDog.getHeatMapMetrics(
+				null, "1", TimeRange.LAST_28_DAYS, "UTC");
 
 		Map<Pair<Integer, Integer>, Double> expectedValuesMap =
 			new HashMap<Pair<Integer, Integer>, Double>() {
@@ -87,19 +126,19 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		double[] actualValues = _getActualValues(heatMapMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testVisitorHeatMapMetricsLast30Days() {
 		List<HeatMapMetric> heatMapMetrics =
-			_siteVisitorHeatMapDog.getHeatMapMetrics(null, "1", 30, "UTC");
+			_siteVisitorHeatMapDog.getHeatMapMetrics(
+				null, "1", TimeRange.LAST_30_DAYS, "UTC");
 
 		double[] actualValues = _getActualValues(heatMapMetrics);
 
@@ -121,13 +160,14 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testVisitorHeatMapMetricsLast90Days() {
 		List<HeatMapMetric> heatMapMetrics =
-			_siteVisitorHeatMapDog.getHeatMapMetrics(null, "1", 90, "UTC");
+			_siteVisitorHeatMapDog.getHeatMapMetrics(
+				null, "1", TimeRange.LAST_90_DAYS, "UTC");
 
 		Assert.assertEquals(
 			heatMapMetrics.toString(), 168, heatMapMetrics.size());
@@ -155,14 +195,92 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testVisitorHeatMapMetricsLast180Days() {
+		List<HeatMapMetric> heatMapMetrics =
+			_siteVisitorHeatMapDog.getHeatMapMetrics(
+				null, "1", TimeRange.LAST_180_DAYS, "UTC");
+
+		Assert.assertEquals(
+			heatMapMetrics.toString(), 168, heatMapMetrics.size());
+
+		double[] actualValues = _getActualValues(heatMapMetrics);
+
+		Map<Pair<Integer, Integer>, Double> expectedValuesMap =
+			new HashMap<Pair<Integer, Integer>, Double>() {
+				{
+					put(Pair.of(0, 15), 1.0);
+					put(Pair.of(0, 23), 1.0);
+					put(Pair.of(1, 15), 1.0);
+					put(Pair.of(2, 0), 1.0);
+					put(Pair.of(2, 10), 1.0);
+					put(Pair.of(3, 0), 1.0);
+					put(Pair.of(4, 1), 1.0);
+					put(Pair.of(5, 10), 1.0);
+					put(Pair.of(6, 1), 1.0);
+					put(Pair.of(6, 13), 1.0);
+					put(Pair.of(6, 20), 3.0);
+				}
+			};
+
+		double[] expectedValues = _getExpectedValues(
+			expectedValuesMap, "UTC", heatMapMetrics.size());
+
+		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testVisitorHeatMapMetricsLastYear() {
+		List<HeatMapMetric> heatMapMetrics =
+			_siteVisitorHeatMapDog.getHeatMapMetrics(
+				null, "1", TimeRange.LAST_YEAR, "UTC");
+
+		Assert.assertEquals(
+			heatMapMetrics.toString(), 168, heatMapMetrics.size());
+
+		double[] actualValues = _getActualValues(heatMapMetrics);
+
+		Map<Pair<Integer, Integer>, Double> expectedValuesMap =
+			new HashMap<Pair<Integer, Integer>, Double>() {
+				{
+					put(Pair.of(0, 15), 1.0);
+					put(Pair.of(0, 23), 1.0);
+					put(Pair.of(1, 15), 1.0);
+					put(Pair.of(2, 0), 1.0);
+					put(Pair.of(2, 10), 1.0);
+					put(Pair.of(3, 0), 1.0);
+					put(Pair.of(3, 12), 1.0);
+					put(Pair.of(4, 1), 1.0);
+					put(Pair.of(5, 10), 1.0);
+					put(Pair.of(6, 1), 1.0);
+					put(Pair.of(6, 13), 1.0);
+					put(Pair.of(6, 20), 3.0);
+				}
+			};
+
+		double[] expectedValues = _getExpectedValues(
+			expectedValuesMap, "UTC", heatMapMetrics.size());
+
+		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Ignore
 	@Test
 	public void testVisitorHeatMapMetricsWithTimeZone() {
 		List<HeatMapMetric> heatMapMetrics =
-			_siteVisitorHeatMapDog.getHeatMapMetrics(null, "1", 90, "-07:00");
+			_siteVisitorHeatMapDog.getHeatMapMetrics(
+				null, "1", TimeRange.LAST_90_DAYS, "-07:00");
 
 		Map<Pair<Integer, Integer>, Double> expectedValuesMap =
 			new HashMap<Pair<Integer, Integer>, Double>() {
@@ -186,7 +304,7 @@ public class SiteVisitorHeatMapDogTest {
 		Assert.assertArrayEquals(expectedValues, actualValues, 0);
 
 		heatMapMetrics = _siteVisitorHeatMapDog.getHeatMapMetrics(
-			null, "1", 90, "-03:00");
+			null, "1", TimeRange.LAST_90_DAYS, "-03:00");
 
 		expectedValuesMap = new HashMap<Pair<Integer, Integer>, Double>() {
 			{
@@ -210,13 +328,14 @@ public class SiteVisitorHeatMapDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "pages", resourcePath = "visitor-heat-map-page-info.json",
+		name = "pages", resourcePath = "visitor_heat_map_page_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testVisitorHeatMapMetricsYesterday() {
 		List<HeatMapMetric> heatMapMetrics =
-			_siteVisitorHeatMapDog.getHeatMapMetrics(null, "1", 1, "UTC");
+			_siteVisitorHeatMapDog.getHeatMapMetrics(
+				null, "1", TimeRange.YESTERDAY, "UTC");
 
 		Map<Pair<Integer, Integer>, Double> expectedValuesMap =
 			new HashMap<Pair<Integer, Integer>, Double>() {
@@ -228,9 +347,8 @@ public class SiteVisitorHeatMapDogTest {
 		double[] expectedValues = _getExpectedValues(
 			expectedValuesMap, "UTC", heatMapMetrics.size());
 
-		double[] actualValues = _getActualValues(heatMapMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(heatMapMetrics), 0);
 	}
 
 	private double[] _getActualValues(List<HeatMapMetric> heatMapMetrics) {

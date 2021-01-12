@@ -47,8 +47,7 @@ public class PagesRestControllerTest {
 	@Test
 	public void testGetReadCount() {
 		Assert.assertEquals(
-			"3",
-			_pagesRestController.getReadCount("http://192.168.108.90:8080/"));
+			"3", _pagesRestController.getReadCount("https://liferay.com"));
 	}
 
 	@ElasticsearchIndex(
@@ -61,8 +60,8 @@ public class PagesRestControllerTest {
 
 		JSONObject responseJSONObject = new JSONObject(
 			_pagesRestController.getReadCounts(
-				localDate, Interval.DAY.getKey(), localDate.minusDays(2),
-				"http://192.168.108.90:8080/"));
+				"https://liferay.com", localDate, Interval.DAY.getKey(),
+				localDate.minusDays(2)));
 
 		Assert.assertEquals(3, responseJSONObject.get("value"));
 
@@ -80,8 +79,7 @@ public class PagesRestControllerTest {
 	@Test
 	public void testGetViewCount() {
 		Assert.assertEquals(
-			"6",
-			_pagesRestController.getViewCount("http://192.168.108.90:8080/"));
+			"6", _pagesRestController.getViewCount("https://liferay.com"));
 	}
 
 	@ElasticsearchIndex(
@@ -94,8 +92,8 @@ public class PagesRestControllerTest {
 
 		JSONObject responseJSONObject = new JSONObject(
 			_pagesRestController.getViewCounts(
-				localDate, Interval.DAY.getKey(), localDate.minusDays(2),
-				"http://192.168.108.90:8080/"));
+				"https://liferay.com", localDate, Interval.DAY.getKey(),
+				localDate.minusDays(2)));
 
 		Assert.assertEquals(6, responseJSONObject.get("value"));
 

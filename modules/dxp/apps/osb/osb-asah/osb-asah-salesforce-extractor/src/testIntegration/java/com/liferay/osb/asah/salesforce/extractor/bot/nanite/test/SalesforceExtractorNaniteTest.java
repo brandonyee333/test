@@ -17,7 +17,6 @@ package com.liferay.osb.asah.salesforce.extractor.bot.nanite.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -59,18 +58,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 /**
  * @author Rachael Koestartyo
  */
-@Import(
-	SalesforceExtractorNaniteTest.SalesforceExtractorNaniteTestConfiguration.
-		class
-)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahSalesforceExtractorSpringBootApplication.class)
+@SpringBootTest(
+	classes = {
+		OSBAsahSalesforceExtractorSpringBootApplication.class,
+		SalesforceExtractorNaniteTest.
+			SalesforceExtractorNaniteTestConfiguration.class
+	}
+)
 public class SalesforceExtractorNaniteTest {
 
 	@Before
@@ -78,11 +78,6 @@ public class SalesforceExtractorNaniteTest {
 		_elasticsearchIndexManager.clearIndices();
 
 		_elasticsearchIndexManager.checkIndices();
-
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-		_salesforceRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forSalesforceRaw();
 
 		_setUpConfigurationManager();
 	}
@@ -173,9 +168,7 @@ public class SalesforceExtractorNaniteTest {
 
 		return stream.map(
 			collectionName -> ElasticsearchIndexUtil.getIndexAlias(
-				collectionName,
-				_elasticsearchIndexManager.getIndexNamespace(
-					WeDeployDataService.OSB_ASAH_SALESFORCE_RAW))
+				collectionName, WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 		).toArray(
 			String[]::new
 		);
@@ -481,9 +474,7 @@ public class SalesforceExtractorNaniteTest {
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
@@ -492,6 +483,7 @@ public class SalesforceExtractorNaniteTest {
 	@Autowired
 	private SalesforcePartnerClientInvoker _salesforcePartnerClientInvoker;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

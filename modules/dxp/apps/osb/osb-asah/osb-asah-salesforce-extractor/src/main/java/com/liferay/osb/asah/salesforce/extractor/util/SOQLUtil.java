@@ -74,7 +74,7 @@ public class SOQLUtil {
 			return "SELECT " + s + " FROM " + describeSObjectResult.getName();
 		}
 
-		StringBuilder sb = new StringBuilder(salesforceKeys.length * 4 + 5);
+		StringBuilder sb = new StringBuilder((salesforceKeys.length * 4) + 5);
 
 		sb.append("SELECT ");
 		sb.append(String.join(", ", fieldNames));

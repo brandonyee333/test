@@ -53,7 +53,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	public void testAddMembershipWithActiveStatusAndAnonymousIndividual()
 		throws Exception {
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"individuals",
 			JSONUtil.put(
 				"id", "123"
@@ -61,7 +61,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 				"individualSegmentIds", JSONUtil.put("456")
 			));
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"individual-segments",
 			JSONUtil.put(
 				"id", "234"
@@ -90,7 +90,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertNotNull(membershipJSONObject);
 
-		JSONArray membershipsJSONArray = elasticsearchInvoker.get(
+		JSONArray membershipsJSONArray = faroInfoElasticsearchInvoker.get(
 			"memberships");
 
 		Assert.assertEquals(1, membershipsJSONArray.length());
@@ -107,9 +107,9 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"individualSegmentIds", JSONUtil.putAll("234", "456")
 			),
-			elasticsearchInvoker.get("individuals", "123"), false);
+			faroInfoElasticsearchInvoker.get("individuals", "123"), false);
 
-		JSONArray membershipChangesJSONArray = elasticsearchInvoker.get(
+		JSONArray membershipChangesJSONArray = faroInfoElasticsearchInvoker.get(
 			"membership-changes");
 
 		Assert.assertEquals(1, membershipChangesJSONArray.length());
@@ -142,7 +142,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertNotNull(membershipJSONObject);
 
-		JSONArray membershipsJSONArray = elasticsearchInvoker.get(
+		JSONArray membershipsJSONArray = faroInfoElasticsearchInvoker.get(
 			"memberships");
 
 		Assert.assertEquals(1, membershipsJSONArray.length());
@@ -252,7 +252,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -260,7 +260,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership-changes.json",
+		name = "membership-changes", resourcePath = "membership_changes.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -290,7 +290,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"status", "INACTIVE"
 			),
-			elasticsearchInvoker.fetch(
+			faroInfoElasticsearchInvoker.fetch(
 				"memberships",
 				QueryBuilders.termsQuery("individualId", "338486041327913341")),
 			false);
@@ -313,7 +313,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"operation", "REMOVED"
 			),
-			elasticsearchInvoker.fetch(
+			faroInfoElasticsearchInvoker.fetch(
 				"membership-changes",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
@@ -326,7 +326,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 				)),
 			false);
 
-		JSONObject individualJSONObject = elasticsearchInvoker.fetch(
+		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals", "338486041327913341");
 
 		JSONArray individualSegmentIdsJSONArray =
@@ -336,11 +336,11 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership-changes.json",
+		name = "membership-changes", resourcePath = "membership_changes.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -372,7 +372,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"status", "INACTIVE"
 			),
-			elasticsearchInvoker.fetch(
+			faroInfoElasticsearchInvoker.fetch(
 				"memberships",
 				QueryBuilders.termsQuery("individualId", "338486041327913339")),
 			false);
@@ -393,7 +393,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"operation", "REMOVED"
 			),
-			elasticsearchInvoker.fetch(
+			faroInfoElasticsearchInvoker.fetch(
 				"membership-changes",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
@@ -408,7 +408,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -416,7 +416,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership-changes.json",
+		name = "membership-changes", resourcePath = "membership_changes.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -427,7 +427,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	public void testGetIndividualSegmentIndividualIds() {
 		List<String> individualSegmentIndividualIds =
 			_faroInfoMembershipDog.getIndividualSegmentIndividualIds(
-				elasticsearchInvoker.get(
+				faroInfoElasticsearchInvoker.get(
 					"individual-segments", "338511398116723458"));
 
 		Assert.assertEquals(
@@ -459,7 +459,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testRemoveIndividualSegmentId() {
-		JSONObject individualJSONObject = elasticsearchInvoker.fetch(
+		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals", "338486041327913341");
 
 		JSONArray individualSegmentIdsJSONArray =
@@ -470,7 +470,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 		_faroInfoMembershipDog.removeIndividualSegmentId(
 			individualJSONObject, "338511398116723458");
 
-		individualJSONObject = elasticsearchInvoker.fetch(
+		individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals", "338486041327913341");
 
 		individualSegmentIdsJSONArray = individualJSONObject.getJSONArray(
@@ -481,7 +481,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testUpdateDynamicAddMemberships() throws Exception {
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"individuals",
 			JSONUtil.put(
 				"id", "123"
@@ -491,7 +491,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 
 		_faroInfoMembershipDog.updateDynamicAddMemberships(
 			true,
-			elasticsearchInvoker.add(
+			faroInfoElasticsearchInvoker.add(
 				"individual-segments",
 				JSONUtil.put(
 					"filter", ""
@@ -504,7 +504,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 				)),
 			"2019-02-11T20:26:53.218Z");
 
-		JSONObject individualJSONObject = elasticsearchInvoker.fetch(
+		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals", "123");
 
 		JSONAssert.assertEquals(
@@ -513,7 +513,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -522,7 +522,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testUpdateDynamicMemberships() throws Exception {
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"memberships",
 			JSONUtil.put(
 				"dateCreated", "2019-02-11T20:26:53.218Z"
@@ -535,26 +535,27 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 			));
 
 		_faroInfoMembershipDog.updateDynamicMemberships(
-			elasticsearchInvoker.fetch(
+			faroInfoElasticsearchInvoker.fetch(
 				"individual-segments", "338511451975440187"),
 			"2019-02-11T20:26:53.218Z");
 
-		JSONObject individualJSONObject = elasticsearchInvoker.fetch(
+		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
 			"individuals", "338486037253283140");
 
 		JSONAssert.assertEquals(
 			JSONUtil.putAll("338511398116723458", "338511451975440187"),
 			individualJSONObject.getJSONArray("individualSegmentIds"), false);
 
-		elasticsearchInvoker.delete("individuals", individualJSONObject);
+		faroInfoElasticsearchInvoker.delete(
+			"individuals", individualJSONObject);
 
 		_faroInfoMembershipDog.updateDynamicMemberships(
-			elasticsearchInvoker.fetch(
+			faroInfoElasticsearchInvoker.fetch(
 				"individual-segments", "338511398116723458"),
 			"2019-02-11T20:26:53.218Z");
 
 		Assert.assertFalse(
-			elasticsearchInvoker.exists(
+			faroInfoElasticsearchInvoker.exists(
 				"memberships",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
@@ -566,11 +567,11 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments", resourcePath = "individual-segments.json",
+		name = "individual-segments", resourcePath = "individual_segments.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "membership-changes", resourcePath = "membership-changes.json",
+		name = "membership-changes", resourcePath = "membership_changes.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -580,11 +581,11 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testUpdateDynamicRemoveMemberships() throws Exception {
 		_faroInfoMembershipDog.updateDynamicRemoveMemberships(
-			elasticsearchInvoker.fetch(
+			faroInfoElasticsearchInvoker.fetch(
 				"individual-segments", "338511398116723458"),
 			"2019-02-11T20:26:53.218Z");
 
-		JSONArray membershipJSONArray = elasticsearchInvoker.get(
+		JSONArray membershipJSONArray = faroInfoElasticsearchInvoker.get(
 			"memberships",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery(

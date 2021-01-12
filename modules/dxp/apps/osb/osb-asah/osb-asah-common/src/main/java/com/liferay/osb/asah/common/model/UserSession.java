@@ -21,8 +21,8 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import java.io.Serializable;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author André Miranda
@@ -62,7 +62,6 @@ public class UserSession implements Serializable {
 			Objects.equals(_firstEventDate, userSession._firstEventDate) &&
 			Objects.equals(_id, userSession._id) &&
 			Objects.equals(_individualId, userSession._individualId) &&
-			Objects.equals(_interactions, userSession._interactions) &&
 			Objects.equals(_lastEventDate, userSession._lastEventDate) &&
 			Objects.equals(_platformName, userSession._platformName) &&
 			Objects.equals(_region, userSession._region) &&
@@ -84,6 +83,10 @@ public class UserSession implements Serializable {
 
 	public String getBrowserName() {
 		return _browserName;
+	}
+
+	public Set<String> getCanonicalUrls() {
+		return _canonicalUrls;
 	}
 
 	public String getChannelId() {
@@ -134,6 +137,10 @@ public class UserSession implements Serializable {
 		return new Date(_date.getTime());
 	}
 
+	public String getDeviceType() {
+		return _deviceType;
+	}
+
 	public Long getDuration() {
 		return _duration;
 	}
@@ -166,10 +173,6 @@ public class UserSession implements Serializable {
 		return _individualId;
 	}
 
-	public List<AnalyticsEvent> getInteractions() {
-		return _interactions;
-	}
-
 	public Long getInteractionsCount() {
 		return _interactionsCount;
 	}
@@ -194,8 +197,16 @@ public class UserSession implements Serializable {
 		return _platformName;
 	}
 
+	public Set<String> getReferrers() {
+		return _referrers;
+	}
+
 	public String getRegion() {
 		return _region;
+	}
+
+	public Set<String> getUrls() {
+		return _urls;
 	}
 
 	public String getUserId() {
@@ -205,11 +216,11 @@ public class UserSession implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_acquisition, _bounced, _browserName, _channelId, _city, _completed,
-			_completeDate, _completeReason, _country, _dataSourceId, _date,
-			_duration, _entryPage, _exitPage, _firstEventDate, _id,
-			_individualId, _interactions, _lastEventDate, _platformName,
-			_region, _userId);
+			_acquisition, _bounced, _browserName, _canonicalUrls, _channelId,
+			_city, _completed, _completeDate, _completeReason, _country,
+			_dataSourceId, _date, _deviceType, _duration, _entryPage, _exitPage,
+			_firstEventDate, _id, _individualId, _lastEventDate, _platformName,
+			_referrers, _region, _urls, _userId);
 	}
 
 	public void setAcquisition(Acquisition acquisition) {
@@ -222,6 +233,10 @@ public class UserSession implements Serializable {
 
 	public void setBrowserName(String browserName) {
 		_browserName = browserName;
+	}
+
+	public void setCanonicalUrls(Set<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
 	}
 
 	public void setChannelId(String channelId) {
@@ -260,6 +275,10 @@ public class UserSession implements Serializable {
 		}
 	}
 
+	public void setDeviceType(String deviceType) {
+		_deviceType = deviceType;
+	}
+
 	public void setDuration(Long duration) {
 		_duration = duration;
 	}
@@ -286,10 +305,6 @@ public class UserSession implements Serializable {
 		_individualId = individualId;
 	}
 
-	public void setInteractions(List<AnalyticsEvent> interactions) {
-		_interactions = interactions;
-	}
-
 	public void setInteractionsCount(Long interactionsCount) {
 		_interactionsCount = interactionsCount;
 	}
@@ -308,8 +323,16 @@ public class UserSession implements Serializable {
 		_platformName = platformName;
 	}
 
+	public void setReferrers(Set<String> referrers) {
+		_referrers = referrers;
+	}
+
 	public void setRegion(String region) {
 		_region = region;
+	}
+
+	public void setUrls(Set<String> urls) {
+		_urls = urls;
 	}
 
 	public void setUserId(String userId) {
@@ -319,6 +342,7 @@ public class UserSession implements Serializable {
 	private Acquisition _acquisition;
 	private Boolean _bounced;
 	private String _browserName;
+	private Set<String> _canonicalUrls;
 	private String _channelId;
 	private String _city;
 	private Boolean _completed;
@@ -327,18 +351,20 @@ public class UserSession implements Serializable {
 	private String _country;
 	private String _dataSourceId;
 	private Date _date;
+	private String _deviceType;
 	private Long _duration;
 	private String _entryPage;
 	private String _exitPage;
 	private Date _firstEventDate;
 	private String _id;
 	private String _individualId;
-	private List<AnalyticsEvent> _interactions;
 	private Long _interactionsCount;
 	private Date _lastEventDate;
 	private Long _pageViewsCount;
 	private String _platformName;
+	private Set<String> _referrers;
 	private String _region;
+	private Set<String> _urls;
 	private String _userId;
 
 }

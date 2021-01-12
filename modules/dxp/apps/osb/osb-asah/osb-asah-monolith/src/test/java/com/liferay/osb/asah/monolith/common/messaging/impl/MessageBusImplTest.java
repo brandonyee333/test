@@ -53,12 +53,14 @@ public class MessageBusImplTest {
 	@Test
 	public void testRegisterMessageListener() {
 		_messageBusImpl.registerMessageListener(
-			Channel.DATA_SOURCES, Mockito.mock(MessageListener.class));
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			Mockito.mock(MessageListener.class));
 		_messageBusImpl.registerMessageListener(
-			Channel.DATA_SOURCES, Mockito.mock(MessageListener.class));
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			Mockito.mock(MessageListener.class));
 
 		Set<MessageListener> messageListeners = _getMessageBusMessageListeners(
-			Channel.DATA_SOURCES);
+			Channel.ANALYTICS_EVENTS_ACTIVITY);
 
 		Assert.assertEquals(
 			messageListeners.toString(), 2, messageListeners.size());
@@ -70,24 +72,26 @@ public class MessageBusImplTest {
 			MessageListener.class);
 
 		_messageBusImpl.registerMessageListener(
-			Channel.DATA_SOURCES, dataSourcesMessageListener1);
+			Channel.ANALYTICS_EVENTS_ACTIVITY, dataSourcesMessageListener1);
 
 		MessageListener dataSourcesMessageListener2 = Mockito.mock(
 			MessageListener.class);
 
 		_messageBusImpl.registerMessageListener(
-			Channel.DATA_SOURCES, dataSourcesMessageListener2);
+			Channel.ANALYTICS_EVENTS_ACTIVITY, dataSourcesMessageListener2);
 
 		MessageListener upgradeCheckMessageListener = Mockito.mock(
 			MessageListener.class);
 
 		String message = RandomTestUtil.randomString();
 
-		_messageBusImpl.sendMessage(Channel.DATA_SOURCES, message);
+		_messageBusImpl.sendMessage(Channel.ANALYTICS_EVENTS_ACTIVITY, message);
 
 		ExecutorService executorService =
 			(ExecutorService)ReflectionTestUtils.getField(
 				_messageBusImpl, "_executorService");
+
+		Assert.assertNotNull(executorService);
 
 		executorService.shutdown();
 
@@ -113,12 +117,12 @@ public class MessageBusImplTest {
 		MessageListener messageListener = Mockito.mock(MessageListener.class);
 
 		_messageBusImpl.registerMessageListener(
-			Channel.DATA_SOURCES, messageListener);
+			Channel.ANALYTICS_EVENTS_ACTIVITY, messageListener);
 
 		_messageBusImpl.unregisterMessageListener(messageListener);
 
 		Set<MessageListener> messageListeners = _getMessageBusMessageListeners(
-			Channel.DATA_SOURCES);
+			Channel.ANALYTICS_EVENTS_ACTIVITY);
 
 		Assert.assertEquals(
 			messageListeners.toString(), 0, messageListeners.size());
@@ -127,9 +131,13 @@ public class MessageBusImplTest {
 	private Set<MessageListener> _getMessageBusMessageListeners(
 		Channel channel) {
 
+		Object messageListenersObject = ReflectionTestUtils.getField(
+			_messageBusImpl, "_messageListeners");
+
+		Assert.assertNotNull(messageListenersObject);
+
 		Map<Channel, Set<MessageListener>> messageListeners =
-			(Map<Channel, Set<MessageListener>>)ReflectionTestUtils.getField(
-				_messageBusImpl, "_messageListeners");
+			(Map<Channel, Set<MessageListener>>)messageListenersObject;
 
 		return messageListeners.get(channel);
 	}

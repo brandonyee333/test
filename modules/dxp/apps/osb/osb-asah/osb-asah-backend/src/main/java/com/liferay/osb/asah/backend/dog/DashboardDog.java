@@ -21,11 +21,14 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.backend.model.Dashboard;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,10 +52,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 
 import org.json.JSONObject;
@@ -72,13 +73,15 @@ public class DashboardDog {
 			"custom-asset-dashboards", _cerebroInfoElasticsearchInvoker,
 			_buildDashboardSearchSourceBuilder(dashboardId));
 
-		if (searchHits.getTotalHits() != 1) {
+		long totalHitsCount = HitsUtil.getTotalHitsCount(searchHits);
+
+		if (totalHitsCount != 1) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					String.format(
 						"Unable to retrieve the dashboard definition for the " +
 							"dashboard ID %s. Returned %d total hits.",
-						dashboardId, searchHits.getTotalHits()));
+						dashboardId, totalHitsCount));
 			}
 
 			return null;
@@ -97,13 +100,12 @@ public class DashboardDog {
 	}
 
 	public ResultBag<Dashboard> getDashboardResultBag(
-		String channelId, FieldSortBuilder fieldSortBuilder, String keywords,
-		int size, int start) {
+		String channelId, String keywords, int size, Sort sort, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"custom-asset-dashboards", _cerebroInfoElasticsearchInvoker,
 			DogUtil.buildSearchSourceBuilder(
-				fieldSortBuilder,
+				SortBuilderUtil.fieldSort(sort),
 				_buildKeywordsQueryBuilder(channelId, keywords), size, start));
 
 		ResultBag<Dashboard> resultBag = new ResultBag<>();
@@ -119,7 +121,7 @@ public class DashboardDog {
 			}
 
 			resultBag.setResults(dashboards);
-			resultBag.setTotal(searchHits.getTotalHits());
+			resultBag.setTotal(HitsUtil.getTotalHitsCount(searchHits));
 
 			return resultBag;
 		}
@@ -132,7 +134,7 @@ public class DashboardDog {
 		String dashboardId, String definition, String modifiedByUserId,
 		String modifiedByUserName) {
 
-		_validate(definition);
+		_dashboardDefinitionSchema.validate(new JSONObject(definition));
 
 		JSONObject jsonObject = new JSONObject();
 
@@ -199,13 +201,10 @@ public class DashboardDog {
 
 	@PostConstruct
 	private void _init() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		Class<?> clazz = getClass();
 
 		try (InputStream inputStream = clazz.getResourceAsStream(
-				"dashboard-definition-schema.json")) {
+				"dashboard_definition_schema.json")) {
 
 			_dashboardDefinitionSchema = SchemaLoader.load(
 				new JSONObject(new JSONTokener(inputStream)));
@@ -218,20 +217,15 @@ public class DashboardDog {
 		}
 	}
 
-	private void _validate(String definition) throws ValidationException {
-		_dashboardDefinitionSchema.validate(new JSONObject(definition));
-	}
-
 	private static final Log _log = LogFactory.getLog(DashboardDog.class);
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
 	private Schema _dashboardDefinitionSchema;
 
 	@Autowired
 	private DataDog _dataDog;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	private final ObjectMapper _objectMapper = new ObjectMapper() {
 		{

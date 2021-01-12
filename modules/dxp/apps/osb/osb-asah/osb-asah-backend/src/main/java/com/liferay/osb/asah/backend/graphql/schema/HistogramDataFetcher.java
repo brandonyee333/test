@@ -20,21 +20,15 @@ import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.VisitorHistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetricType;
 
 import graphql.execution.ExecutionTypeInfo;
 
-import graphql.language.Field;
-
 import graphql.schema.DataFetchingEnvironment;
-import graphql.schema.DataFetchingFieldSelectionSet;
 import graphql.schema.GraphQLFieldDefinition;
-
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,26 +38,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "histogram", typeName = "Metric")
-public class HistogramDataFetcher
-	extends BaseDataFetcher<List<HistogramMetric>> {
+public class HistogramDataFetcher extends BaseDataFetcher<HistogramMetricBag> {
 
 	@Override
-	public List<HistogramMetric> get(
+	public HistogramMetricBag get(
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
-
-		DataFetchingFieldSelectionSet dataFetchingFieldSelectionSet =
-			dataFetchingEnvironment.getSelectionSet();
-
-		Map<String, List<Field>> fields = dataFetchingFieldSelectionSet.get();
-
-		boolean includePrevious = false;
-
-		if (fields.containsKey("previousValue") ||
-			fields.containsKey("trend")) {
-
-			includePrevious = true;
-		}
 
 		ExecutionTypeInfo fieldExecutionTypeInfo =
 			dataFetchingEnvironment.getFieldTypeInfo();
@@ -82,16 +62,18 @@ public class HistogramDataFetcher
 			(metricType == IndividualMetricType.KNOWN_INDIVIDUALS) ||
 			(metricType == IndividualMetricType.TOTAL_INDIVIDUALS)) {
 
-			return _individualHistogramDog.getHistogramMetrics(
+			return _individualHistogramDog.getHistogramMetricBag(
 				metricType, searchQueryContext);
 		}
 		else if (metricType == PageMetricType.VISITORS) {
-			return _visitorHistogramDog.getHistogramMetrics(
-				includePrevious, metricType, searchQueryContext);
+			return _visitorHistogramDog.getHistogramMetricBag(
+				searchQueryContext.isIncludePrevious(), metricType,
+				searchQueryContext);
 		}
 
-		return _histogramDog.getHistogramMetrics(
-			includePrevious, metricType, searchQueryContext);
+		return _histogramDog.getHistogramMetricBag(
+			searchQueryContext.isIncludePrevious(), metricType,
+			searchQueryContext);
 	}
 
 	@Autowired

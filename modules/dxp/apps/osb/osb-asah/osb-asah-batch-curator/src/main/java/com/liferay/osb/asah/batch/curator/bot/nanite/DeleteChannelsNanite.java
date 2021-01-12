@@ -17,6 +17,9 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,11 @@ public class DeleteChannelsNanite extends BaseNanite {
 		_faroInfoChannelDog.deleteChannels(
 			JSONUtil.toStringList(jsonObject.getJSONArray("channelIds")),
 			this::monitorProcessedCount, this::monitorQueueSize);
+	}
+
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(DeleteChannelsNanite.class);
 	}
 
 	@Autowired

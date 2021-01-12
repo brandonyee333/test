@@ -14,19 +14,14 @@
 
 package com.liferay.osb.asah.backend.model;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-
-import java.lang.reflect.Method;
+import com.liferay.osb.asah.backend.model.util.MetricUtil;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -53,6 +48,7 @@ public class PageMetric implements AssetMetric {
 				_avgTimeOnPageMetric, pageMetric._avgTimeOnPageMetric) &&
 			Objects.equals(_bounceMetric, pageMetric._bounceMetric) &&
 			Objects.equals(_bounceRateMetric, pageMetric._bounceRateMetric) &&
+			Objects.equals(_canonicalUrls, pageMetric._canonicalUrls) &&
 			Objects.equals(_ctpMetric, pageMetric._ctpMetric) &&
 			Objects.equals(_ctrMetric, pageMetric._ctrMetric) &&
 			Objects.equals(_dataSourceId, pageMetric._dataSourceId) &&
@@ -65,6 +61,7 @@ public class PageMetric implements AssetMetric {
 				_indirectAccessMetric, pageMetric._indirectAccessMetric) &&
 			Objects.equals(
 				_maxScrollDepthMetric, pageMetric._maxScrollDepthMetric) &&
+			Objects.equals(_readsMetric, pageMetric._readsMetric) &&
 			Objects.equals(_sessionsMetric, pageMetric._sessionsMetric) &&
 			Objects.equals(_timeOnPageMetric, pageMetric._timeOnPageMetric) &&
 			Objects.equals(_urls, pageMetric._urls) &&
@@ -79,11 +76,11 @@ public class PageMetric implements AssetMetric {
 
 	@Override
 	public String getAssetId() {
-		if ((_urls == null) || _urls.isEmpty()) {
+		if ((_canonicalUrls == null) || _canonicalUrls.isEmpty()) {
 			return null;
 		}
 
-		return _urls.get(0);
+		return _canonicalUrls.get(0);
 	}
 
 	@Override
@@ -101,29 +98,9 @@ public class PageMetric implements AssetMetric {
 		return AssetType.PAGE.getValue();
 	}
 
+	@Override
 	public Set<Metric> getAvailableMetrics() {
-		Set<Metric> availableMetrics = new HashSet<>();
-
-		try {
-			BeanInfo beanInfo = Introspector.getBeanInfo(getClass());
-
-			for (PropertyDescriptor propertyDescriptor :
-					beanInfo.getPropertyDescriptors()) {
-
-				Method readMethod = propertyDescriptor.getReadMethod();
-
-				if ((readMethod != null) &&
-					Objects.equals(
-						propertyDescriptor.getPropertyType(), Metric.class)) {
-
-					availableMetrics.add((Metric)readMethod.invoke(this));
-				}
-			}
-		}
-		catch (IntrospectionException | ReflectiveOperationException e) {
-		}
-
-		return availableMetrics;
+		return MetricUtil.getAvailableMetrics(this);
 	}
 
 	public Metric getAvgTimeOnPageMetric() {
@@ -136,6 +113,11 @@ public class PageMetric implements AssetMetric {
 
 	public Metric getBounceRateMetric() {
 		return _bounceRateMetric;
+	}
+
+	@Override
+	public List<String> getCanonicalUrls() {
+		return _canonicalUrls;
 	}
 
 	public Metric getCTPMetric() {
@@ -180,6 +162,10 @@ public class PageMetric implements AssetMetric {
 		return _maxScrollDepthMetric;
 	}
 
+	public Metric getReadsMetric() {
+		return _readsMetric;
+	}
+
 	public Metric getSessionsMetric() {
 		return _sessionsMetric;
 	}
@@ -205,16 +191,16 @@ public class PageMetric implements AssetMetric {
 	public int hashCode() {
 		return Objects.hash(
 			_assetMetrics, _assetTitle, _avgTimeOnPageMetric, _bounceMetric,
-			_bounceRateMetric, _ctpMetric, _ctrMetric, _dataSourceId,
-			_directAccessMetric, _engagementMetric, _entrancesMetric,
-			_exitRateMetric, _indirectAccessMetric, _maxScrollDepthMetric,
-			_sessionsMetric, _timeOnPageMetric, _urls, _viewsMetric,
-			_visitorsMetric);
+			_bounceRateMetric, _canonicalUrls, _ctpMetric, _ctrMetric,
+			_dataSourceId, _directAccessMetric, _engagementMetric,
+			_entrancesMetric, _exitRateMetric, _indirectAccessMetric,
+			_maxScrollDepthMetric, _readsMetric, _sessionsMetric,
+			_timeOnPageMetric, _urls, _viewsMetric, _visitorsMetric);
 	}
 
 	@Override
 	public void setAssetId(String assetId) {
-		_urls = Collections.singletonList(assetId);
+		_canonicalUrls = Collections.singletonList(assetId);
 	}
 
 	@Override
@@ -246,9 +232,9 @@ public class PageMetric implements AssetMetric {
 			bounceRateMetric.setValue(1.0);
 		}
 
-		double previousValue = bounceRateMetric.getPreviousValue();
+		Double previousValue = bounceRateMetric.getPreviousValue();
 
-		if (previousValue > 1) {
+		if ((previousValue != null) && (previousValue > 1)) {
 			_log.error(
 				_buildRateErrorMessage(
 					PageMetricType.BOUNCE_RATE, true, previousValue));
@@ -257,6 +243,11 @@ public class PageMetric implements AssetMetric {
 		}
 
 		_bounceRateMetric = bounceRateMetric;
+	}
+
+	@Override
+	public void setCanonicalUrls(List<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
 	}
 
 	public void setCTPMetric(Metric ctpMetric) {
@@ -294,9 +285,9 @@ public class PageMetric implements AssetMetric {
 			exitRateMetric.setValue(1.0);
 		}
 
-		double previousValue = exitRateMetric.getPreviousValue();
+		Double previousValue = exitRateMetric.getPreviousValue();
 
-		if (previousValue > 1) {
+		if ((previousValue != null) && (previousValue > 1)) {
 			_log.error(
 				_buildRateErrorMessage(
 					PageMetricType.EXIT_RATE, true, previousValue));
@@ -313,6 +304,10 @@ public class PageMetric implements AssetMetric {
 
 	public void setMaxScrollDepthMetric(Metric maxScrollDepthMetric) {
 		_maxScrollDepthMetric = maxScrollDepthMetric;
+	}
+
+	public void setReadsMetric(Metric readsMetric) {
+		_readsMetric = readsMetric;
 	}
 
 	public void setSessionsMetric(Metric sessionsMetric) {
@@ -349,7 +344,12 @@ public class PageMetric implements AssetMetric {
 		sb.append(" for page with title ");
 		sb.append(_assetTitle);
 
-		if (!_urls.isEmpty()) {
+		if (CollectionUtils.isNotEmpty(_canonicalUrls)) {
+			sb.append(", canonical URL ");
+			sb.append(_canonicalUrls.get(0));
+		}
+
+		if (CollectionUtils.isNotEmpty(_urls)) {
 			sb.append(" and URL ");
 			sb.append(_urls.get(0));
 		}
@@ -368,6 +368,7 @@ public class PageMetric implements AssetMetric {
 		PageMetricType.AVG_TIME_ON_PAGE);
 	private Metric _bounceMetric = new Metric(PageMetricType.BOUNCE);
 	private Metric _bounceRateMetric = new Metric(PageMetricType.BOUNCE_RATE);
+	private List<String> _canonicalUrls;
 	private Metric _ctpMetric = new Metric(
 		PageMetricType.CLICK_THROUGH_PROBABILITY);
 	private Metric _ctrMetric = new Metric(PageMetricType.CLICK_THROUGH_RATE);
@@ -381,6 +382,7 @@ public class PageMetric implements AssetMetric {
 		PageMetricType.INDIRECT_ACCESS);
 	private Metric _maxScrollDepthMetric = new Metric(
 		PageMetricType.MAX_SCROLL_DEPTH);
+	private Metric _readsMetric = new Metric(PageMetricType.READS);
 	private Metric _sessionsMetric = new Metric(PageMetricType.SESSIONS);
 	private Metric _timeOnPageMetric = new Metric(PageMetricType.TIME_ON_PAGE);
 	private List<String> _urls;

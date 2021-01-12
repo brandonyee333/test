@@ -37,6 +37,9 @@ public class AnalyticsEventsChannels {
 
 	public AnalyticsEventsChannels() {
 		_channels.put(
+			Channel.ANALYTICS_EVENTS_ACTIVITY,
+			_analyticsEventsActivityPredicate());
+		_channels.put(
 			Channel.ANALYTICS_EVENTS_BLOG, _analyticsEventsBlogPredicate());
 		_channels.put(
 			Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
@@ -51,6 +54,9 @@ public class AnalyticsEventsChannels {
 			_analyticsEventsJournalPredicate());
 		_channels.put(
 			Channel.ANALYTICS_EVENTS_PAGE, _analyticsEventsPagePredicate());
+		_channels.put(
+			Channel.ANALYTICS_EVENTS_SESSION,
+			_analyticsEventsSessionPredicate());
 	}
 
 	public List<Channel> getChannels(AnalyticsEvent analyticsEvent) {
@@ -67,6 +73,24 @@ public class AnalyticsEventsChannels {
 		}
 
 		return channels;
+	}
+
+	private Predicate<AnalyticsEvent> _analyticsEventsActivityPredicate() {
+		return analyticsEvent -> {
+			String applicationId = analyticsEvent.getApplicationId();
+
+			if (Objects.equals(applicationId, "Blog") ||
+				Objects.equals(applicationId, "Comment") ||
+				Objects.equals(applicationId, "Document") ||
+				Objects.equals(applicationId, "Form") ||
+				Objects.equals(applicationId, "Page") ||
+				Objects.equals(applicationId, "WebContent")) {
+
+				return true;
+			}
+
+			return false;
+		};
 	}
 
 	private Predicate<AnalyticsEvent> _analyticsEventsBlogPredicate() {
@@ -96,6 +120,17 @@ public class AnalyticsEventsChannels {
 					"com.liferay.blogs.model.BlogsEntry") &&
 				(Objects.isNull(ratingType) ||
 				 Objects.equals(ratingType, "stars"))) {
+
+				return true;
+			}
+
+			if (Objects.equals(
+					analyticsEvent.getApplicationId(), "SocialBookmarks") &&
+				Objects.equals(analyticsEvent.getEventId(), "shared") &&
+				Objects.equals(
+					MapUtil.getString(
+						analyticsEvent.getEventProperties(), "className"),
+					"com.liferay.blogs.model.BlogsEntry")) {
 
 				return true;
 			}
@@ -198,8 +233,10 @@ public class AnalyticsEventsChannels {
 
 			if (Objects.equals(
 					analyticsEvent.getApplicationId(), "WebContent") &&
-				Objects.equals(
-					analyticsEvent.getEventId(), "webContentViewed")) {
+				(Objects.equals(
+					analyticsEvent.getEventId(), "webContentClicked") ||
+				 Objects.equals(
+					 analyticsEvent.getEventId(), "webContentViewed"))) {
 
 				return true;
 			}
@@ -233,6 +270,10 @@ public class AnalyticsEventsChannels {
 
 			return true;
 		};
+	}
+
+	private Predicate<AnalyticsEvent> _analyticsEventsSessionPredicate() {
+		return analyticsEvent -> true;
 	}
 
 	private Map<Channel, Predicate<AnalyticsEvent>> _channels = new HashMap<>();

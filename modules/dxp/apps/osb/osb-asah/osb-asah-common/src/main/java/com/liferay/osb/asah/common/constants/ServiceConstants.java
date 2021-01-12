@@ -28,15 +28,20 @@ public class ServiceConstants {
 
 	public static final String LCP_ENGINE_ELASTICSEARCH_SERVER_IP;
 
+	/**
+	 * @deprecated As of 2.10.0, replaced by {@link ProjectThreadLocal#getProjectId()}}
+	 */
+	@Deprecated
 	public static final String LCP_PROJECT_ID = System.getenv("LCP_PROJECT_ID");
+
+	public static final boolean OSB_ASAH_MULTITENANCY_ENABLED =
+		Boolean.parseBoolean(System.getenv("OSB_ASAH_MULTITENANCY_ENABLED"));
 
 	public static final String URL_BACKEND;
 
 	public static final String URL_BACKEND_INTERNAL;
 
 	public static final String URL_BATCH_CURATOR;
-
-	public static final String URL_DEMO;
 
 	public static final String URL_DXP_EXTRACTOR;
 
@@ -47,8 +52,6 @@ public class ServiceConstants {
 	public static final String URL_PUBLISHER;
 
 	public static final String URL_PUBSUB_EMULATOR;
-
-	public static final String URL_QUEUE;
 
 	public static final String URL_REDIS;
 
@@ -102,6 +105,9 @@ public class ServiceConstants {
 		if (lcpProjectCluster.equals("europe-west2-c1")) {
 			sb.append("qbcxohfftcjtgoiczl");
 		}
+		else if (lcpProjectCluster.equals("europe-west3-c1")) {
+			sb.append("qiwvfjzwojvfzdelon");
+		}
 		else if (lcpProjectCluster.equals("southamerica-east1-c1")) {
 			sb.append("djjykaalhvzcovrqam");
 		}
@@ -145,15 +151,17 @@ public class ServiceConstants {
 	}
 
 	private static String _setInternalURL(String serviceName, String port) {
+		String internalServiceURL = null;
+
 		if (_MONOLITH_ENABLED) {
-			serviceName = "MONOLITH";
-			port = "8080";
+			internalServiceURL = "http://localhost:8080";
 		}
+		else {
+			serviceName = serviceName.replace("_", "");
+			serviceName = serviceName.toLowerCase();
 
-		serviceName = serviceName.replace("_", "");
-		serviceName = serviceName.toLowerCase();
-
-		String internalServiceURL = "http://osbasah" + serviceName + ":" + port;
+			internalServiceURL = "http://osbasah" + serviceName + ":" + port;
+		}
 
 		_internalServiceURLs.add(internalServiceURL);
 
@@ -202,22 +210,11 @@ public class ServiceConstants {
 		URL_BACKEND = _getURL("BACKEND", "8080", true);
 		URL_BACKEND_INTERNAL = _setInternalURL("BACKEND", "8080");
 		URL_BATCH_CURATOR = _getURL("BATCH_CURATOR", "8080", false);
-		URL_DEMO = _getURL("DEMO", "8080", false);
 		URL_DXP_EXTRACTOR = _getURL("DXP_EXTRACTOR", "8080", false);
 		URL_EXTRACTOR = _getURL("EXTRACTOR", "8080", false);
-
-		String osbFaroFrontendURL = System.getenv("OSB_FARO_FRONTEND_URL");
-
-		if (StringUtils.isEmpty(osbFaroFrontendURL)) {
-			URL_FRONTEND = "https://analytics.liferay.com";
-		}
-		else {
-			URL_FRONTEND = osbFaroFrontendURL;
-		}
-
+		URL_FRONTEND = System.getenv("OSB_FARO_FRONTEND_URL");
 		URL_PUBLISHER = _getURL("PUBLISHER", "8080", true);
 		URL_PUBSUB_EMULATOR = _getURL("PUBSUB_EMULATOR", "8095", false);
-		URL_QUEUE = _getURL("QUEUE", "3000", false);
 		URL_REDIS = _getURL("REDIS", "6379", false);
 		URL_SALESFORCE_EXTRACTOR = _getURL(
 			"SALESFORCE_EXTRACTOR", "8080", false);

@@ -21,29 +21,29 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
  * @author Geyson Silva
  */
 @ElasticsearchIndex(
-	name = "assets", resourcePath = "assets_info.json",
+	name = "activities", resourcePath = "activities_info.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @ElasticsearchIndex(
-	name = "user-sessions", resourcePath = "user_sessions_info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	name = "assets", resourcePath = "assets_info.json",
+	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 public class SiteInterestGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 
 	@Override
 	public String getBodyPath() {
-		return "site-interest-body.json";
+		return "site_interest_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "site-interest-expected-result.json";
+		return "site_interest_expected_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "site-interest-query.graphql";
+		return "site_interest_query.graphql";
 	}
 
 }

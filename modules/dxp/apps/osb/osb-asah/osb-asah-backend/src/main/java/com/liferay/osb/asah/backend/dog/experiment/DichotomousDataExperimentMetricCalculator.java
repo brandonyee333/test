@@ -277,11 +277,11 @@ public class DichotomousDataExperimentMetricCalculator
 	}
 
 	private TimeRange _getTimeRange(LocalDateTime startedDateLocalDateTime) {
-		LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
-
 		LocalDate startLocalDate = null;
 
 		if (startedDateLocalDateTime == null) {
+			LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
+
 			startLocalDate = localDate.minusDays(
 				ExperimentConstants.MINIMUM_TRAFFIC_SAMPLE_SIZE);
 		}

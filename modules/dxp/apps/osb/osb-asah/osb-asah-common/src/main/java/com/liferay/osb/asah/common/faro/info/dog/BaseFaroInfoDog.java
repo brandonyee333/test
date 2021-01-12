@@ -15,9 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
-
-import javax.annotation.PostConstruct;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,14 +24,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public abstract class BaseFaroInfoDog {
 
-	@PostConstruct
-	public void init() {
-		elasticsearchInvoker = elasticsearchInvokerFactory.forFaroInfo();
-	}
+	@ElasticsearchInvoker.Autowired(
+		cacheable = true, value = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	protected ElasticsearchInvoker cacheableElasticsearchInvoker;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	protected ElasticsearchInvoker elasticsearchInvoker;
-
-	@Autowired
-	protected ElasticsearchInvokerFactory elasticsearchInvokerFactory;
 
 }

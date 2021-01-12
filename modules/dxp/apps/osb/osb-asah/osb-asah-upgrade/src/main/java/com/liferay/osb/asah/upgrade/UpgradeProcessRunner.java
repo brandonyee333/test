@@ -15,13 +15,14 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.upgrade.UpgradeState;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,32 +39,27 @@ import org.springframework.stereotype.Component;
 public class UpgradeProcessRunner {
 
 	public void run() throws Exception {
-		String currentVersion = _getCurrentVersion();
+		List<Project> projects = _projectDog.getProjects();
 
-		if (currentVersion == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Skipping upgrade on new workspace");
+		for (Project project : projects) {
+			try {
+				ProjectIdThreadLocal.setProjectId(project.getId());
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Checking upgrades for project: " + project.getId());
+				}
+
+				_run();
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Finished upgrades for project: " + project.getId());
+				}
 			}
-
-			_saveCurrentVersion(_upgradeProcess.getMaxVersionString());
-
-			_upgradeState.complete();
-
-			return;
-		}
-
-		List<UpgradeStep> upgradeSteps = _upgradeProcess.getUpgradeSteps(
-			currentVersion);
-
-		while (!upgradeSteps.isEmpty()) {
-			String toVersionString = _upgradeProcess.getToVersionString(
-				currentVersion);
-
-			_run(upgradeSteps, toVersionString);
-
-			currentVersion = _saveCurrentVersion(toVersionString);
-
-			upgradeSteps = _upgradeProcess.getUpgradeSteps(currentVersion);
+			finally {
+				ProjectIdThreadLocal.remove();
+			}
 		}
 
 		_upgradeState.complete();
@@ -80,10 +76,22 @@ public class UpgradeProcessRunner {
 		return jsonObject.getString("version");
 	}
 
-	@PostConstruct
-	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
+	private void _run() throws Exception {
+		String currentVersion = _getCurrentVersion();
+
+		List<UpgradeStep> upgradeSteps = _upgradeProcess.getUpgradeSteps(
+			currentVersion);
+
+		while (!upgradeSteps.isEmpty()) {
+			String toVersionString = _upgradeProcess.getToVersionString(
+				currentVersion);
+
+			_run(upgradeSteps, toVersionString);
+
+			currentVersion = _saveCurrentVersion(toVersionString);
+
+			upgradeSteps = _upgradeProcess.getUpgradeSteps(currentVersion);
+		}
 	}
 
 	private void _run(List<UpgradeStep> upgradeSteps, String version)
@@ -120,10 +128,11 @@ public class UpgradeProcessRunner {
 	private static final Log _log = LogFactory.getLog(
 		UpgradeProcessRunner.class);
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private UpgradeProcess _upgradeProcess;

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
@@ -22,7 +23,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -32,16 +32,17 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author André Miranda
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@Import(OSBAsahRedisDisabledTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 
@@ -58,7 +59,7 @@ public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data-sources.json",
+		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -67,14 +68,14 @@ public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(
 			0,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"channels",
 				QueryBuilders.termQuery(
 					"dataSources.id", "405201047787757795")));
 
 		Assert.assertEquals(
 			2,
-			elasticsearchInvoker.count(
+			faroInfoElasticsearchInvoker.count(
 				"channels",
 				BoolQueryBuilderUtil.mustNot(
 					QueryBuilders.termQuery(
@@ -103,8 +104,53 @@ public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 			"INACTIVE", dataSourceJSONObject.optString("status"));
 	}
 
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testUpgradeFromOAuthToToken() throws Exception {
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.patchDataSource(
+				"405201047787757796",
+				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
+					"Token Authentication", "Liferay",
+					"http://localhost:8080"));
+
+		JSONObject credentialsJSONObject = dataSourceJSONObject.getJSONObject(
+			"credentials");
+
+		Assert.assertNull(credentialsJSONObject.opt("oAuthAuthorizationURL"));
+		Assert.assertNotNull(credentialsJSONObject.getString("privateKey"));
+		Assert.assertNotNull(credentialsJSONObject.getString("publicKey"));
+		Assert.assertEquals(
+			"Token Authentication", credentialsJSONObject.getString("type"));
+
+		ArgumentCaptor<JSONObject> argumentCaptor = ArgumentCaptor.forClass(
+			JSONObject.class);
+
+		Mockito.verify(
+			_dxpExtractorConfigurationDog, Mockito.times(1)
+		).updateConfiguration(
+			argumentCaptor.capture()
+		);
+
+		dataSourceJSONObject = argumentCaptor.getValue();
+
+		credentialsJSONObject = dataSourceJSONObject.getJSONObject(
+			"credentials");
+
+		Assert.assertNull(credentialsJSONObject.opt("oAuthClientId"));
+		Assert.assertNull(credentialsJSONObject.opt("oAuthClientSecret"));
+		Assert.assertNull(credentialsJSONObject.opt("oAuthOwner"));
+		Assert.assertNull(credentialsJSONObject.opt("oAuthRefreshToken"));
+	}
+
 	@MockBean
 	private ChannelHttp _channelHttp;
+
+	@MockBean
+	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;

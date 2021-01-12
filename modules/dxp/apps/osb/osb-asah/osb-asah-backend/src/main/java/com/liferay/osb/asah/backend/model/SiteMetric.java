@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.liferay.osb.asah.backend.model.util.MetricUtil;
+
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Rachael Koestartyo
@@ -41,6 +44,7 @@ public class SiteMetric implements AssetMetric {
 			Objects.equals(_assetMetrics, siteMetric._assetMetrics) &&
 			Objects.equals(_assetTitle, siteMetric._assetTitle) &&
 			Objects.equals(_bounceRateMetric, siteMetric._bounceRateMetric) &&
+			Objects.equals(_canonicalUrls, siteMetric._canonicalUrls) &&
 			Objects.equals(_dataSourceId, siteMetric._dataSourceId) &&
 			Objects.equals(_engagementMetric, siteMetric._engagementMetric) &&
 			Objects.equals(
@@ -83,8 +87,18 @@ public class SiteMetric implements AssetMetric {
 		return AssetType.SITE.getValue();
 	}
 
+	@Override
+	public Set<Metric> getAvailableMetrics() {
+		return MetricUtil.getAvailableMetrics(this);
+	}
+
 	public Metric getBounceRateMetric() {
 		return _bounceRateMetric;
+	}
+
+	@Override
+	public List<String> getCanonicalUrls() {
+		return _canonicalUrls;
 	}
 
 	@Override
@@ -159,6 +173,11 @@ public class SiteMetric implements AssetMetric {
 	}
 
 	@Override
+	public void setCanonicalUrls(List<String> canonicalUrls) {
+		_canonicalUrls = canonicalUrls;
+	}
+
+	@Override
 	public void setDataSourceId(String dataSourceId) {
 		_dataSourceId = dataSourceId;
 	}
@@ -198,6 +217,7 @@ public class SiteMetric implements AssetMetric {
 	private List<AssetMetric> _assetMetrics;
 	private String _assetTitle;
 	private Metric _bounceRateMetric = new Metric(SiteMetricType.BOUNCE_RATE);
+	private List<String> _canonicalUrls;
 	private String _dataSourceId;
 	private Metric _engagementMetric = new Metric(SiteMetricType.ENGAGEMENT);
 	private Metric _knownVisitorsMetric = new Metric(

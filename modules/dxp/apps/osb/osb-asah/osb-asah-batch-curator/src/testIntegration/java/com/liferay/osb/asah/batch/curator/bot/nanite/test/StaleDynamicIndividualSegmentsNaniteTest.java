@@ -24,10 +24,10 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,23 +47,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author Leslie Wong
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-@Import(CerebroQueueHttpTestConfiguration.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class StaleDynamicIndividualSegmentsNaniteTest
 	extends BaseNaniteTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		_mock();
 
 		_dataSourceJSONObject =
@@ -77,7 +72,8 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 				_dataSourceJSONObject.getString("id")));
 
 		_individualJSONObject = _faroInfoIndividualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividualJSONObject(_dataSourceJSONObject),
+			FaroInfoTestUtil.buildIndividualJSONObject(
+				"1", _dataSourceJSONObject),
 			false);
 	}
 
@@ -218,6 +214,54 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		}
 	}
 
+	@Test
+	public void testStaleSessionCriteriaMembershipsAreDeactivated()
+		throws Exception {
+
+		_addUserSession(DateUtil.addDays(DateUtil.newDayDateString(), -91));
+
+		_addSessionMemberships(
+			"last24Hours", "last28Days", "last30Days", "last7Days",
+			"last90Days", "yesterday");
+
+		JSONArray individualSegmentsJSONArray =
+			_getSessionsIndividualSegments();
+
+		for (int i = 0; i < individualSegmentsJSONArray.length(); i++) {
+			JSONObject individualSegmentJSONObject =
+				individualSegmentsJSONArray.getJSONObject(i);
+
+			Assert.assertTrue(
+				faroInfoElasticsearchInvoker.exists(
+					"memberships",
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery(
+							"individualSegmentId",
+							individualSegmentJSONObject.getString("id"))
+					).filter(
+						QueryBuilders.termQuery("status", "ACTIVE")
+					)));
+		}
+
+		_staleDynamicIndividualSegmentsNanite.run(null);
+
+		for (int i = 0; i < individualSegmentsJSONArray.length(); i++) {
+			JSONObject individualSegmentJSONObject =
+				individualSegmentsJSONArray.getJSONObject(i);
+
+			Assert.assertFalse(
+				faroInfoElasticsearchInvoker.exists(
+					"memberships",
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery(
+							"individualSegmentId",
+							individualSegmentJSONObject.getString("id"))
+					).filter(
+						QueryBuilders.termQuery("status", "ACTIVE")
+					)));
+		}
+	}
+
 	private void _addActivity(String dayDateString) throws Exception {
 		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.add(
 			"activity-groups",
@@ -229,7 +273,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, _assetJSONObject, "pageViewed",
-				new String[] {"pageLoadTime", "1000"}));
+				new String[0]));
 	}
 
 	private JSONArray _addMemberships(String... durations) throws Exception {
@@ -239,6 +283,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			JSONObject individualSegmentJSONObject =
 				_faroInfoIndividualSegmentDog.addIndividualSegment(
 					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
+						"1",
 						"(((activities/" + duration + " eq 'Page#pageViewed#" +
 							_assetJSONObject.getString("id") + "')))"));
 
@@ -260,6 +305,56 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		return membershipsJSONArray;
 	}
 
+	private JSONArray _addSessionMemberships(String... durations)
+		throws Exception {
+
+		JSONArray membershipsJSONArray = new JSONArray();
+
+		for (String duration : durations) {
+			JSONObject individualSegmentJSONObject =
+				_faroInfoIndividualSegmentDog.addIndividualSegment(
+					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
+						"1",
+						"(sessions.filter(filter='(context/country eq ''" +
+							"United States'' and completeDate gt ''" +
+								duration + "'')'))"));
+
+			_faroInfoIndividualDog.updateIndividual(
+				_individualJSONObject.getString("id"),
+				JSONUtil.put(
+					"individualSegmentIds",
+					JSONUtil.put(individualSegmentJSONObject.getString("id"))),
+				false);
+
+			membershipsJSONArray.put(
+				faroInfoElasticsearchInvoker.add(
+					"memberships",
+					FaroInfoTestUtil.buildMembershipJSONObject(
+						_individualJSONObject.getString("id"),
+						individualSegmentJSONObject.getString("id"))));
+		}
+
+		return membershipsJSONArray;
+	}
+
+	private void _addUserSession(String dayDateString) {
+		cerebroInfoElasticsearchInvoker.add(
+			"user-sessions",
+			FaroInfoTestUtil.buildUserSessionJSONObject(
+				new HashMap<String, String>() {
+					{
+						put("completeDate", dayDateString);
+						put(
+							"dataSourceId",
+							_dataSourceJSONObject.getString("id"));
+						put("date", dayDateString);
+						put(
+							"individualId",
+							_individualJSONObject.getString("id"));
+					}
+				}));
+	}
+
 	private String _getIndividualSegmentActivityFilterDuration(
 		JSONObject membershipJSONObject) {
 
@@ -278,11 +373,17 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		return null;
 	}
 
+	private JSONArray _getSessionsIndividualSegments() {
+		return faroInfoElasticsearchInvoker.get(
+			"individual-segments",
+			QueryBuilders.regexpQuery("filter", ".*sessions.filter.*"));
+	}
+
 	private void _mock() {
 		Mockito.doAnswer(
 			invocation -> {
 				_updateDynamicMembershipsNanite.run(
-					invocation.getArgumentAt(1, JSONObject.class));
+					invocation.getArgument(1, JSONObject.class));
 
 				return null;
 			}

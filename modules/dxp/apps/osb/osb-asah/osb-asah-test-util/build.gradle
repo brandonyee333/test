@@ -1,7 +1,7 @@
-apply plugin: "com.liferay.dependency.local.copy"
 apply plugin: "com.liferay.spring.boot.defaults"
+apply plugin: "io.spring.dependency-management"
 
-bootRepackage {
+bootJar {
 	enabled = false
 }
 
@@ -11,6 +11,13 @@ configurations.all {
 
 dependencies {
 	compile group: "it.ozimov", name: "embedded-redis", version: "0.7.2"
-	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-common"
+	compile group: "junit", name: "junit", version: "4.12"
+	compile group: "nl.jqno.equalsverifier", name: "equalsverifier", version: "2.5.1"
 	compile group: "org.springframework.boot", name: "spring-boot-starter-test"
+
+	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
+}
+
+jar {
+	enabled = true
 }

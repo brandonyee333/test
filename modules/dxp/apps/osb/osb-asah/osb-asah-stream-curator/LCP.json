@@ -6,7 +6,7 @@
 	},
 	"id": "osbasahstreamcurator",
 	"kind": "Deployment",
-	"memory": 4096,
+	"memory": 6144,
 	"ports": [
 		{
 			"external": false,

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.graphql.schema.test;
 
 import com.liferay.osb.asah.backend.graphql.schema.PreferenceMutationDataFetcher;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -24,7 +25,6 @@ import graphql.schema.DataFetchingEnvironmentBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,15 +44,14 @@ public class PreferenceMutationDataFetcherTest {
 	public void testAddInvalidKeyPreference() {
 		_preferenceMutationDataFetcher.get(
 			_getDataFetchingEnvironment(
-				"dummy-key", String.valueOf(TimeUnit.DAYS.toMillis(30 * 7))));
+				"dummy-key", String.valueOf(7 * DateUtil.MONTH)));
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void testAddInvalidValuePreference1() {
 		_preferenceMutationDataFetcher.get(
 			_getDataFetchingEnvironment(
-				"data-retention-period",
-				String.valueOf(TimeUnit.DAYS.toMillis(30 * 14))));
+				"data-retention-period", String.valueOf(14 * DateUtil.MONTH)));
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -63,7 +62,7 @@ public class PreferenceMutationDataFetcherTest {
 
 	@Test
 	public void testAddPreference() {
-		String value = String.valueOf(TimeUnit.DAYS.toMillis(30 * 7));
+		String value = String.valueOf(7 * DateUtil.MONTH);
 
 		Preference preference = _preferenceMutationDataFetcher.get(
 			_getDataFetchingEnvironment("data-retention-period", value));

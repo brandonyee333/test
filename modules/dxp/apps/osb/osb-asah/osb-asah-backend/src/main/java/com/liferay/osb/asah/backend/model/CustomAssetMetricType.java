@@ -79,10 +79,11 @@ public enum CustomAssetMetricType implements MetricType {
 	private CustomAssetMetricType(
 		String fieldName, String name, TrendClassification.Order order) {
 
-		_aggregationName = fieldName;
 		_fieldName = fieldName;
 		_name = name;
 		_order = order;
+
+		_aggregationName = fieldName;
 	}
 
 	private static Map<String, CustomAssetMetricType> _customAssetMetricTypes =

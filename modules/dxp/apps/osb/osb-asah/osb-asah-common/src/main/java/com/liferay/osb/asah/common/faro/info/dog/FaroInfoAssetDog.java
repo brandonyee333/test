@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -64,6 +65,8 @@ public class FaroInfoAssetDog extends BaseFaroInfoDog {
 							"dateRecorded"
 						).gte(
 							deletionDayDateString
+						).timeZone(
+							_timeZoneDog.getTimeZoneId()
 						)
 					).filter(
 						QueryBuilders.termQuery(
@@ -77,6 +80,8 @@ public class FaroInfoAssetDog extends BaseFaroInfoDog {
 							"day"
 						).gte(
 							deletionDayDateString
+						).timeZone(
+							_timeZoneDog.getTimeZoneId()
 						)
 					).filter(
 						QueryBuilders.termQuery(
@@ -121,5 +126,8 @@ public class FaroInfoAssetDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

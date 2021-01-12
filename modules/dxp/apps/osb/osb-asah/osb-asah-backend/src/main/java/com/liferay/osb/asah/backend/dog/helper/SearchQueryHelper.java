@@ -22,11 +22,11 @@ import com.liferay.osb.asah.backend.model.Geolocation;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.Technology;
 import com.liferay.osb.asah.backend.model.TimeRange;
-import com.liferay.osb.asah.backend.model.URL;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 import java.util.Optional;
 import java.util.Set;
@@ -43,8 +43,6 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.PipelineAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-
-import org.joda.time.DateTimeZone;
 
 import org.springframework.stereotype.Component;
 
@@ -73,6 +71,9 @@ public class SearchQueryHelper {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
 		_addAssetIdFilter(assetIdOptional, boolQueryBuilder);
+		_addCanonicalUrlFilter(
+			searchQueryContext.getAssetType(), boolQueryBuilder,
+			searchQueryContext.getCanonicalUrl());
 		_addChannelIdFilter(
 			boolQueryBuilder, searchQueryContext.getChannelId());
 		_addDataSourceIdFilter(
@@ -125,12 +126,6 @@ public class SearchQueryHelper {
 	}
 
 	public RangeQueryBuilder createRangeQueryBuilder(
-		String name, TimeRange timeRange) {
-
-		return createRangeQueryBuilder(name, timeRange, "UTC");
-	}
-
-	public RangeQueryBuilder createRangeQueryBuilder(
 		String name, TimeRange timeRange, String timeZoneId) {
 
 		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(name);
@@ -159,6 +154,14 @@ public class SearchQueryHelper {
 		}
 		else if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
 			rangeQueryBuilder.gte("now-90d/d");
+			rangeQueryBuilder.lt("now/d");
+		}
+		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+			rangeQueryBuilder.gte("now-180d/d");
+			rangeQueryBuilder.lt("now/d");
+		}
+		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+			rangeQueryBuilder.gte("now-1y/d");
 			rangeQueryBuilder.lt("now/d");
 		}
 		else {
@@ -190,10 +193,10 @@ public class SearchQueryHelper {
 
 		BoolQueryBuilder assetIdsBoolQueryBuilder = QueryBuilders.boolQuery();
 
-		for (String assetId : assetIds) {
-			assetIdsBoolQueryBuilder.should(
-				QueryBuilders.termQuery(
-					assetResolver.getAssetIdFieldName(), assetId));
+		if (!assetIds.isEmpty()) {
+			assetIdsBoolQueryBuilder.filter(
+				QueryBuilders.termsQuery(
+					assetResolver.getAssetIdFieldName(), assetIds));
 		}
 
 		boolQueryBuilder.filter(assetIdsBoolQueryBuilder);
@@ -268,6 +271,9 @@ public class SearchQueryHelper {
 		searchSourceBuilder.aggregation(aggregationBuilder);
 
 		_addAssetIdFilter(assetIdOptional, boolQueryBuilder);
+		_addCanonicalUrlFilter(
+			searchQueryContext.getAssetType(), boolQueryBuilder,
+			searchQueryContext.getCanonicalUrl());
 		_addChannelIdFilter(
 			boolQueryBuilder, searchQueryContext.getChannelId());
 		_addDataSourceIdFilter(
@@ -297,6 +303,14 @@ public class SearchQueryHelper {
 		return searchSourceBuilder;
 	}
 
+	public String getCanonicalUrlFieldName(AssetType assetType) {
+		if (assetType == AssetType.PAGE) {
+			return "canonicalUrl";
+		}
+
+		return "canonicalUrls";
+	}
+
 	public String getURLFieldName(AssetType assetType) {
 		if (assetType == AssetType.PAGE) {
 			return "url";
@@ -318,6 +332,17 @@ public class SearchQueryHelper {
 			boolQueryBuilder.filter(
 				QueryBuilders.termQuery(
 					assetId.getFieldName(), assetId.getFieldValue()));
+		}
+	}
+
+	private void _addCanonicalUrlFilter(
+		AssetType assetType, BoolQueryBuilder boolQueryBuilder,
+		String canonicalUrl) {
+
+		if (StringUtils.isNotBlank(canonicalUrl)) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery(
+					getCanonicalUrlFieldName(assetType), canonicalUrl));
 		}
 	}
 
@@ -457,13 +482,21 @@ public class SearchQueryHelper {
 			rangeQueryBuilder.gte("now-180d/d");
 			rangeQueryBuilder.lt("now/d");
 		}
+		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+			rangeQueryBuilder.gte("now-360d/d");
+			rangeQueryBuilder.lt("now/d");
+		}
+		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+			rangeQueryBuilder.gte("now-2y/d");
+			rangeQueryBuilder.lt("now/d");
+		}
 		else {
 			LocalDate endLocalDate = timeRange.getEndLocalDate();
 			LocalDate startLocalDate = timeRange.getStartLocalDate();
 
 			endLocalDate = endLocalDate.plusDays(1);
 
-			startLocalDate = startLocalDate.minusDays(timeRange.getRangeKey());
+			startLocalDate = startLocalDate.minusDays(timeRange.getDeltaDays());
 
 			rangeQueryBuilder.gte(startLocalDate.toString());
 
@@ -530,12 +563,11 @@ public class SearchQueryHelper {
 	}
 
 	private void _addURLFilter(
-		AssetType assetType, BoolQueryBuilder boolQueryBuilder, URL url) {
+		AssetType assetType, BoolQueryBuilder boolQueryBuilder, String url) {
 
-		if (!url.equals(URL.any())) {
+		if (StringUtils.isNotBlank(url)) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery(
-					getURLFieldName(assetType), url.getURL()));
+				QueryBuilders.termQuery(getURLFieldName(assetType), url));
 		}
 	}
 
@@ -569,7 +601,7 @@ public class SearchQueryHelper {
 			AggregationBuilders.dateRange("ranges");
 
 		dateRangeAggregationBuilder.field("eventDate");
-		dateRangeAggregationBuilder.timeZone(DateTimeZone.forID(timeZoneId));
+		dateRangeAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
 
 		if (TimeRange.LAST_24_HOURS.equals(timeRange)) {
 			dateRangeAggregationBuilder.addRange("current", "now-23h/h", "now");
@@ -594,6 +626,14 @@ public class SearchQueryHelper {
 			dateRangeAggregationBuilder.addRange(
 				"current", "now-90d/d", "now/d");
 		}
+		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+			dateRangeAggregationBuilder.addRange(
+				"current", "now-180d/d", "now/d");
+		}
+		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+			dateRangeAggregationBuilder.addRange(
+				"current", "now-1y/d", "now/d");
+		}
 		else {
 			LocalDate endLocalDate = timeRange.getEndLocalDate();
 			LocalDate startLocalDate = timeRange.getStartLocalDate();
@@ -615,7 +655,7 @@ public class SearchQueryHelper {
 			AggregationBuilders.dateRange("period_ranges");
 
 		dateRangeAggregationBuilder.field("eventDate");
-		dateRangeAggregationBuilder.timeZone(DateTimeZone.forID(timeZoneId));
+		dateRangeAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
 
 		if (TimeRange.LAST_24_HOURS.equals(timeRange)) {
 			dateRangeAggregationBuilder.addRange("current", "now-23h/h", "now");
@@ -652,6 +692,18 @@ public class SearchQueryHelper {
 			dateRangeAggregationBuilder.addRange(
 				"previous", "now-180d/d", "now-90d/d");
 		}
+		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+			dateRangeAggregationBuilder.addRange(
+				"current", "now-180d/d", "now/d");
+			dateRangeAggregationBuilder.addRange(
+				"previous", "now-360d/d", "now-180d/d");
+		}
+		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+			dateRangeAggregationBuilder.addRange(
+				"current", "now-1y/d", "now/d");
+			dateRangeAggregationBuilder.addRange(
+				"previous", "now-2y/d", "now-1y/d");
+		}
 		else {
 			LocalDate endLocalDate = timeRange.getEndLocalDate();
 			LocalDate startLocalDate = timeRange.getStartLocalDate();
@@ -661,9 +713,9 @@ public class SearchQueryHelper {
 			dateRangeAggregationBuilder.addRange(
 				"current", startLocalDate.toString(), endLocalDate.toString());
 
-			endLocalDate = endLocalDate.minusDays(timeRange.getRangeKey());
+			endLocalDate = endLocalDate.minusDays(timeRange.getDeltaDays());
 
-			startLocalDate = startLocalDate.minusDays(timeRange.getRangeKey());
+			startLocalDate = startLocalDate.minusDays(timeRange.getDeltaDays());
 
 			dateRangeAggregationBuilder.addRange(
 				"previous", startLocalDate.toString(), endLocalDate.toString());

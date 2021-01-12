@@ -19,7 +19,7 @@ import com.liferay.osb.asah.backend.model.Geolocation;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Technology;
 import com.liferay.osb.asah.backend.model.TimeRange;
-import com.liferay.osb.asah.backend.model.URL;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 
 /**
  * @author Marcellus Tavares
@@ -44,6 +44,10 @@ public class SearchQueryContext {
 
 	public AssetType getAssetType() {
 		return _assetType;
+	}
+
+	public String getCanonicalUrl() {
+		return _canonicalUrl;
 	}
 
 	public String getChannelId() {
@@ -87,6 +91,10 @@ public class SearchQueryContext {
 	}
 
 	public String getTimeZoneId() {
+		if (_timeZoneId == null) {
+			return TimeZoneDogUtil.getTimeZoneId();
+		}
+
 		return _timeZoneId;
 	}
 
@@ -94,7 +102,7 @@ public class SearchQueryContext {
 		return _title;
 	}
 
-	public URL getURL() {
+	public String getURL() {
 		return _url;
 	}
 
@@ -104,6 +112,10 @@ public class SearchQueryContext {
 
 	public Boolean isActive() {
 		return _active;
+	}
+
+	public Boolean isIncludeActiveSessions() {
+		return _includeActiveSessions;
 	}
 
 	public Boolean isIncludePrevious() {
@@ -120,6 +132,10 @@ public class SearchQueryContext {
 
 	public void setAssetType(AssetType assetType) {
 		_assetType = assetType;
+	}
+
+	public void setCanonicalUrl(String canonicalUrl) {
+		_canonicalUrl = canonicalUrl;
 	}
 
 	public void setChannelId(String channelId) {
@@ -144,6 +160,10 @@ public class SearchQueryContext {
 
 	public void setExperimentId(String experimentId) {
 		_experimentId = experimentId;
+	}
+
+	public void setIncludeActiveSessions(Boolean includeActiveSessions) {
+		_includeActiveSessions = includeActiveSessions;
 	}
 
 	public void setIncludePrevious(Boolean includePrevious) {
@@ -183,7 +203,7 @@ public class SearchQueryContext {
 	}
 
 	public void setURL(String url) {
-		_url = URL.url(url);
+		_url = url;
 	}
 
 	public void setVariantId(String variantId) {
@@ -193,20 +213,22 @@ public class SearchQueryContext {
 	private Boolean _active;
 	private String _assetId;
 	private AssetType _assetType = AssetType.PAGE;
+	private String _canonicalUrl;
 	private String _channelId;
 	private String _dataSourceId;
 	private String _experienceId;
 	private String _experimentId;
 	private Geolocation _geolocation = Geolocation.any();
+	private Boolean _includeActiveSessions = false;
 	private Boolean _includePrevious = true;
 	private Interval _interval = Interval.DAY;
 	private String _keywords;
 	private Technology _technology = Technology.any();
 	private String _terms;
 	private TimeRange _timeRange = TimeRange.LAST_30_DAYS;
-	private String _timeZoneId = "UTC";
+	private String _timeZoneId;
 	private String _title;
-	private URL _url = URL.any();
+	private String _url;
 	private String _variantId;
 
 }

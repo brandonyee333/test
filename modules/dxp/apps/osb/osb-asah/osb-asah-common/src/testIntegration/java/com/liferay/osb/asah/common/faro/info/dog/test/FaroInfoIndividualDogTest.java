@@ -51,10 +51,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
-	@Override
 	public void setUp() throws Exception {
-		super.setUp();
-
 		_liferayDataSourceJSONObject =
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 
@@ -64,12 +61,12 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
 
 		for (String fieldName : _FIELD_NAMES) {
-			elasticsearchInvoker.add(
+			faroInfoElasticsearchInvoker.add(
 				"field-mappings",
 				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 					_liferayDataSourceJSONObject.getString("id"), fieldName,
 					fieldName, "Text"));
-			elasticsearchInvoker.add(
+			faroInfoElasticsearchInvoker.add(
 				"field-mappings",
 				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 					_salesforceDataSourceJSONObject.getString("id"), fieldName,
@@ -130,7 +127,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	public void testAddAndUpdateLiferayIndividualCustomFields()
 		throws Exception {
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				_liferayDataSourceJSONObject.getString("id"), "address",
@@ -140,7 +137,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"displayType", "text-box"
 			));
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				_liferayDataSourceJSONObject.getString("id"), "spokenLanguages",
@@ -150,7 +147,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"displayType", "checkbox"
 			));
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				_liferayDataSourceJSONObject.getString("id"), "favoriteNumber",
@@ -336,7 +333,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals-associations.json",
+		name = "individuals", resourcePath = "individuals_associations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -353,7 +350,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			_faroInfoIndividualDog.addIndividualAssociation(
 				33134, "402139209179557944",
 				DXPEntityType.of(DXPEntityType.CLASS_NAME_ORGANIZATION),
-				elasticsearchInvoker.fetch(
+				faroInfoElasticsearchInvoker.fetch(
 					"individuals",
 					QueryBuilders.termQuery(
 						"demographics.email.value", "test1@liferay.com")));
@@ -366,7 +363,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals-associations.json",
+		name = "individuals", resourcePath = "individuals_associations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -383,7 +380,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			_faroInfoIndividualDog.deleteIndividualAssociation(
 				33134, "402139209179557944",
 				DXPEntityType.of(DXPEntityType.CLASS_NAME_ORGANIZATION),
-				elasticsearchInvoker.fetch(
+				faroInfoElasticsearchInvoker.fetch(
 					"individuals",
 					QueryBuilders.termQuery(
 						"demographics.email.value", "test1@liferay.com")));
@@ -445,7 +442,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@ElasticsearchIndex(
-		name = "individuals", resourcePath = "individuals-associations.json",
+		name = "individuals", resourcePath = "individuals_associations.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@ElasticsearchIndex(
@@ -463,7 +460,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		dataSourceJSONObject.put("id", "402139209179557944");
 
-		elasticsearchInvoker.add(
+		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
 				dataSourceJSONObject.getString("id"), "emailAddress", "email",
@@ -487,7 +484,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 					"userId", 36016
 				),
 				dataSourceJSONObject,
-				elasticsearchInvoker.fetch(
+				faroInfoElasticsearchInvoker.fetch(
 					"individuals",
 					QueryBuilders.termQuery(
 						"demographics.email.value", "test1@liferay.com")));
@@ -542,6 +539,83 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			"United States", countryJSONObject.getString("value"));
 	}
 
+	@Test
+	public void testUpdateIndividualUpdatesPagesAndAssets() throws Exception {
+		String dayDateString = DateUtil.newDayDateString();
+
+		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.add(
+			"individuals",
+			JSONUtil.put(
+				"activitiesCounts", new JSONArray()
+			).put(
+				"analyticsData", new JSONObject()
+			).put(
+				"channelIds", JSONUtil.put("1")
+			).put(
+				"dataSourceAccountPKs", new JSONArray()
+			).put(
+				"dataSourceIndividualPKs",
+				JSONUtil.put(
+					JSONUtil.put(
+						"dataSourceId",
+						_liferayDataSourceJSONObject.getString("id")
+					).put(
+						"dataSourceType", "LIFERAY"
+					).put(
+						"individualPKs", JSONUtil.put("12345")
+					))
+			).put(
+				"dateCreated", dayDateString
+			).put(
+				"dateModified", dayDateString
+			).put(
+				"emailAddressHashed",
+				"47ff64395860b1d498241d907069f649b98c198a95b3ba5303b87094058590"
+			).put(
+				"individualSegmentIds", new JSONArray()
+			));
+
+		JSONObject page1JSONObject = cerebroInfoElasticsearchInvoker.add(
+			"pages",
+			JSONUtil.put(
+				"individualId", individualJSONObject.getString("id")
+			).put(
+				"knownIndividual", false
+			));
+
+		JSONObject page2JSONObject = cerebroInfoElasticsearchInvoker.add(
+			"pages",
+			JSONUtil.put(
+				"individualId", individualJSONObject.getString("id")
+			).put(
+				"knownIndividual", true
+			));
+
+		_faroInfoIndividualDog.updateIndividual(
+			individualJSONObject.getString("id"),
+			JSONUtil.put(
+				"contact",
+				JSONUtil.put(
+					"country", ""
+				).put(
+					"email", "dummy.test@test.com"
+				)
+			).put(
+				"modifiedDate", System.currentTimeMillis()
+			),
+			_liferayDataSourceJSONObject, individualJSONObject);
+
+		page1JSONObject = cerebroInfoElasticsearchInvoker.fetch(
+			"pages", page1JSONObject.getString("id"));
+
+		Assert.assertTrue(page1JSONObject.getBoolean("knownIndividual"));
+
+		page2JSONObject = cerebroInfoElasticsearchInvoker.fetch(
+			"pages", page2JSONObject.getString("id"));
+
+		Assert.assertTrue(page2JSONObject.getBoolean("knownIndividual"));
+	}
+
 	private void _assertDataSourceIndividualPKs(
 		JSONArray expectedJSONArray, JSONObject individualJSONObject) {
 
@@ -562,7 +636,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 		int expectedSize, Object[] expectedValues, String fieldName,
 		String ownerId) {
 
-		JSONArray fieldsJSONArray = elasticsearchInvoker.get(
+		JSONArray fieldsJSONArray = faroInfoElasticsearchInvoker.get(
 			"fields",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("context", "custom")

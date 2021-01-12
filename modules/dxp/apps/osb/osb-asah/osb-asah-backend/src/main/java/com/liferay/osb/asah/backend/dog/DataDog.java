@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -85,7 +85,7 @@ public class DataDog {
 		String collectionName, SearchSourceBuilder searchSourceBuilder) {
 
 		SearchResponse searchResponse = query(
-			collectionName, _elasticsearchInvokerFactory.forCerebroInfo(),
+			collectionName, _cerebroInfoElasticsearchInvoker,
 			searchSourceBuilder);
 
 		if (searchResponse.status() != RestStatus.OK) {
@@ -115,8 +115,8 @@ public class DataDog {
 
 	private static final Log _log = LogFactory.getLog(DataDog.class);
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Value("${osb.asah.data.dog.query.response.threshold:10000}")
 	private int _queryResponseThreshold;

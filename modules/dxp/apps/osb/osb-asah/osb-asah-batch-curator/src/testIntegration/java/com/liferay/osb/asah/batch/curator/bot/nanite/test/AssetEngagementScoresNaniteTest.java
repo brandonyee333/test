@@ -14,21 +14,17 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.ActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.AssetEngagementScoresNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
+import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -36,60 +32,40 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  * @author Edward Kwok-Yu Wong
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-@Import(
-	{
-		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahRedisDisabledTestConfiguration.class
-	}
-)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
-	@Before
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-
-		_cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
-
-		JSONObject dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
-
-		String analyticsEventsJSON = ResourceUtil.readResourceToString(
-			"dependencies/osbasahcerebroraw/analytics-events-1.json", this);
-
-		JSONArray analyticsEventsJSONArray = new JSONArray(
-			analyticsEventsJSON.replace(
-				"[$DATA_SOURCE_ID$]", dataSourceJSONObject.getString("id")));
-
-		_cerebroRawElasticsearchInvoker.add(
-			"analytics-events", analyticsEventsJSONArray, 50);
-	}
-
+	@ElasticsearchIndex(
+		name = "activities", resourcePath = "activities.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "assets", resourcePath = "assets_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@Test
 	public void test() throws Exception {
-		_activitiesNanite.run();
-
 		String activityStartDayDateString = "2018-09-10T00:00:00.000Z";
 
 		String dayBeforeDayDateString = DateUtil.addDays(
@@ -166,7 +142,7 @@ public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
 			score = engagementJSONObject.getDouble("score");
 
-			Assert.assertNotEquals(
+			Assert.assertNotSame(
 				"Engagements with a score of 0 should not be stored in the " +
 					"data service",
 				0, score);
@@ -180,20 +156,15 @@ public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@Autowired
-	private ActivitiesNanite _activitiesNanite;
-
-	@Autowired
 	private AssetEngagementScoresNanite _assetEngagementScoresNanite;
-
-	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
 	@MockBean
 	private ChannelHttp _channelHttp;
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private MessageBus _messageBus;
 
 }

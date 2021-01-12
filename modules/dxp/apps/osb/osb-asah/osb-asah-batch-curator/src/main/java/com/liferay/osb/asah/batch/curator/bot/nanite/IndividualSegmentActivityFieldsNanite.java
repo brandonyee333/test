@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
@@ -21,6 +22,7 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Objects;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,7 +36,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.filter.Filter;
 import org.elasticsearch.search.aggregations.bucket.nested.Nested;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
+import org.elasticsearch.search.aggregations.metrics.Sum;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -48,10 +50,8 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class IndividualSegmentActivityFieldsNanite
-	extends BaseActivitiesNanite {
+public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 
-	@Override
 	public void run() throws Exception {
 		JSONArrayIterator.of(
 			"individual-segments", faroInfoElasticsearchInvoker,
@@ -67,25 +67,42 @@ public class IndividualSegmentActivityFieldsNanite
 			}
 		).setMonitoringConsumers(
 			this::monitorProcessedCount, this::monitorQueueSize
+		).setStopOnExceptions(
+			false
 		).iterate();
 	}
 
 	@Override
-	protected void cleanUp() {
-		faroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.matchAllQuery(), true,
-			new Script(
-				"ctx._source.remove('lastActivityDate');" +
-					"ctx._source.activitiesCount = 0"),
-			"individual-segments");
+	public void run(JSONObject contextJSONObject) throws Exception {
+		boolean locked = _reentrantLock.tryLock();
+
+		if (!locked) {
+			return;
+		}
+
+		try {
+			while (_analyticsConfigured) {
+				run();
+
+				Thread.sleep(DateUtil.MINUTE);
+			}
+
+			_cleanUp();
+		}
+		finally {
+			_reentrantLock.unlock();
+		}
+	}
+
+	public void setAnalyticsConfigured(boolean analyticsConfigured) {
+		_analyticsConfigured = analyticsConfigured;
 	}
 
 	@Override
-	protected boolean isActive() {
-		return _active;
+	protected Log getLog() {
+		return _log;
 	}
 
-	@Override
 	protected void process(JSONObject individualSegmentJSONObject)
 		throws Exception {
 
@@ -137,9 +154,13 @@ public class IndividualSegmentActivityFieldsNanite
 			));
 	}
 
-	@Override
-	protected void setActive(boolean active) {
-		_active = active;
+	private void _cleanUp() {
+		faroInfoElasticsearchInvoker.updateByQueryWithRetry(
+			QueryBuilders.matchAllQuery(), true,
+			new Script(
+				"ctx._source.remove('lastActivityDate');" +
+					"ctx._source.activitiesCount = 0"),
+			"individual-segments");
 	}
 
 	private long _getActivitiesCount(
@@ -284,9 +305,11 @@ public class IndividualSegmentActivityFieldsNanite
 	private static final Log _log = LogFactory.getLog(
 		IndividualSegmentActivityFieldsNanite.class);
 
-	private boolean _active;
+	private boolean _analyticsConfigured;
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
 
 }

@@ -85,6 +85,20 @@ public class TimeRangeTest {
 	}
 
 	@Test
+	public void testGetKey7() {
+		TimeRange timeRange = TimeRange.LAST_180_DAYS;
+
+		Assert.assertEquals("last-180-days", timeRange.getKey());
+	}
+
+	@Test
+	public void testGetKey8() {
+		TimeRange timeRange = TimeRange.LAST_YEAR;
+
+		Assert.assertEquals("last-year", timeRange.getKey());
+	}
+
+	@Test
 	public void testGetRangeKey1() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
 
@@ -124,6 +138,20 @@ public class TimeRangeTest {
 		TimeRange timeRange = TimeRange.YESTERDAY;
 
 		Assert.assertEquals(1, timeRange.getRangeKey());
+	}
+
+	@Test
+	public void testGetRangeKey7() {
+		TimeRange timeRange = TimeRange.LAST_180_DAYS;
+
+		Assert.assertEquals(180, timeRange.getRangeKey());
+	}
+
+	@Test
+	public void testGetRangeKey8() {
+		TimeRange timeRange = TimeRange.LAST_YEAR;
+
+		Assert.assertEquals(365, timeRange.getRangeKey());
 	}
 
 	@Test
@@ -198,6 +226,20 @@ public class TimeRangeTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testTimeRangeOf7() {
 		TimeRange.of(14);
+	}
+
+	@Test
+	public void testTimeRangeOf8() {
+		TimeRange timeRange = TimeRange.of(180);
+
+		Assert.assertEquals(TimeRange.LAST_180_DAYS, timeRange);
+	}
+
+	@Test
+	public void testTimeRangeOf9() {
+		TimeRange timeRange = TimeRange.of(365);
+
+		Assert.assertEquals(TimeRange.LAST_YEAR, timeRange);
 	}
 
 }

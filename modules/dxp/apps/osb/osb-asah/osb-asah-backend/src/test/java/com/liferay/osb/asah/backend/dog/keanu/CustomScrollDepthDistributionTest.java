@@ -151,11 +151,12 @@ public class CustomScrollDepthDistributionTest {
 				logProbGraph, customScrollDepthDistributionVertex,
 				DoubleTensor.scalar(value));
 
-			DoubleVertex logProbGraphOutput = logProbGraph.getLogProbOutput();
-
-			DoubleTensor outputTensor = logProbGraphOutput.getValue();
-
 			if ((value > 0) && (value <= 100)) {
+				DoubleVertex logProbGraphOutput =
+					logProbGraph.getLogProbOutput();
+
+				DoubleTensor outputTensor = logProbGraphOutput.getValue();
+
 				sumOfAreas += FastMath.exp(outputTensor.sum()) * sliceWidth;
 			}
 		}

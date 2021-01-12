@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -32,7 +33,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,7 +88,7 @@ public class EngagementsRestController extends BaseRestController {
 			id);
 	}
 
-	@Cacheable("getEngagements")
+	@Cacheable
 	@GetMapping(params = {"!accountId", "!apply", "!individualSegmentId"})
 	public String getEngagements(
 			@RequestParam(required = false) String expand,
@@ -107,7 +107,7 @@ public class EngagementsRestController extends BaseRestController {
 			size, sorts);
 	}
 
-	@Cacheable("getEngagementTransformations")
+	@Cacheable
 	@GetMapping(params = "apply")
 	public String getEngagementTransformations(
 			@RequestParam String apply,

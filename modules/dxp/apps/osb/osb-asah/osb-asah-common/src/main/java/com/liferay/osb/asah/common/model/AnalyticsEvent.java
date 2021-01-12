@@ -30,9 +30,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Inácio Nery
@@ -86,6 +88,7 @@ public class AnalyticsEvent implements Serializable {
 			Objects.equals(_eventId, analyticsEvent._eventId) &&
 			Objects.equals(_eventProperties, analyticsEvent._eventProperties) &&
 			Objects.equals(_id, analyticsEvent._id) &&
+			Objects.equals(_projectId, analyticsEvent._projectId) &&
 			Objects.equals(_userId, analyticsEvent._userId)) {
 
 			return true;
@@ -106,7 +109,7 @@ public class AnalyticsEvent implements Serializable {
 		return _clientIP;
 	}
 
-	public Map<String, Object> getContext() {
+	public Map<String, String> getContext() {
 		return _context;
 	}
 
@@ -150,6 +153,10 @@ public class AnalyticsEvent implements Serializable {
 		return _id;
 	}
 
+	public String getIndividualId() {
+		return _individualId;
+	}
+
 	public Date getNormalizedEventDate() {
 		Calendar eventCalendar = Calendar.getInstance();
 
@@ -162,6 +169,14 @@ public class AnalyticsEvent implements Serializable {
 		return eventCalendar.getTime();
 	}
 
+	public String getProjectId() {
+		return _projectId;
+	}
+
+	public Set<String> getSegmentNames() {
+		return _segmentNames;
+	}
+
 	public String getUserId() {
 		return _userId;
 	}
@@ -170,7 +185,12 @@ public class AnalyticsEvent implements Serializable {
 	public int hashCode() {
 		return Objects.hash(
 			_applicationId, _channelId, _clientIP, _id, _context, _createDate,
-			_dataSourceId, _eventDate, _eventId, _eventProperties, _userId);
+			_dataSourceId, _eventDate, _eventId, _eventProperties, _projectId,
+			_userId);
+	}
+
+	public boolean isKnownIndividual() {
+		return _knownIndividual;
 	}
 
 	public void setApplicationId(String applicationId) {
@@ -185,7 +205,7 @@ public class AnalyticsEvent implements Serializable {
 		_clientIP = clientIP;
 	}
 
-	public void setContext(Map<String, Object> context) {
+	public void setContext(Map<String, String> context) {
 		_context = context;
 	}
 
@@ -219,6 +239,22 @@ public class AnalyticsEvent implements Serializable {
 		_id = id;
 	}
 
+	public void setIndividualId(String individualId) {
+		_individualId = individualId;
+	}
+
+	public void setKnownIndividual(boolean knownIndividual) {
+		_knownIndividual = knownIndividual;
+	}
+
+	public void setProjectId(String projectId) {
+		_projectId = projectId;
+	}
+
+	public void setSegmentNames(Set<String> segmentNames) {
+		_segmentNames = segmentNames;
+	}
+
 	public void setUserId(String userId) {
 		_userId = userId;
 	}
@@ -248,13 +284,17 @@ public class AnalyticsEvent implements Serializable {
 	private String _applicationId;
 	private String _channelId;
 	private String _clientIP;
-	private Map<String, Object> _context;
+	private Map<String, String> _context;
 	private Date _createDate = new Date();
 	private String _dataSourceId;
 	private Date _eventDate = new Date();
 	private String _eventId;
 	private Map<String, String> _eventProperties;
 	private String _id;
+	private String _individualId;
+	private boolean _knownIndividual;
+	private String _projectId;
+	private Set<String> _segmentNames = new HashSet<>();
 	private String _userId;
 
 }

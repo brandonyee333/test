@@ -29,8 +29,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import org.springframework.test.util.ReflectionTestUtils;
-
 /**
  * @author André Miranda
  */
@@ -43,7 +41,9 @@ public class DogUtilTest {
 	}
 
 	@Test
-	public void testLogSearchResponseErrors() {
+	public void testLogSearchResponseErrors() throws Exception {
+		SearchResponse searchResponse = Mockito.mock(SearchResponse.class);
+
 		Exception exception1 = new Exception("exception1");
 		Exception exception2 = new Exception("exception2");
 
@@ -52,10 +52,11 @@ public class DogUtilTest {
 			new ShardSearchFailure(exception2)
 		};
 
-		SearchResponse searchResponse = new SearchResponse();
-
-		ReflectionTestUtils.setField(
-			searchResponse, "shardFailures", shardSearchFailures);
+		Mockito.when(
+			searchResponse.getShardFailures()
+		).thenReturn(
+			shardSearchFailures
+		);
 
 		Log log = Mockito.mock(Log.class);
 

@@ -14,15 +14,22 @@
 
 package com.liferay.osb.asah.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
+import com.liferay.osb.asah.backend.graphql.GraphQLType;
+import com.liferay.osb.asah.common.date.DateUtil;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * @author Marcellus Tavares
  */
+@GraphQLType
 public class Job {
 
 	@Override
@@ -37,12 +44,12 @@ public class Job {
 
 		Job job = (Job)obj;
 
-		if (Objects.equals(_active, job._active) &&
-			Objects.equals(_cronExpression, job._cronExpression) &&
-			Objects.equals(_id, job._id) &&
-			Objects.equals(_jobParameters, job._jobParameters) &&
-			Objects.equals(_jobType, job._jobType) &&
-			Objects.equals(_name, job._name)) {
+		if (equalsJob(job)) {
+			Class<?> clazz = obj.getClass();
+
+			if (!clazz.isInstance(this) && Job.class.isAssignableFrom(clazz)) {
+				return obj.equals(this);
+			}
 
 			return true;
 		}
@@ -50,44 +57,78 @@ public class Job {
 		return false;
 	}
 
-	public String getCronExpression() {
-		return _cronExpression;
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	public Date getCreatedDate() {
+		if (_createdDate == null) {
+			return null;
+		}
+
+		return new Date(_createdDate.getTime());
 	}
 
 	public String getId() {
 		return _id;
 	}
 
+	@GraphQLProperty("parameters")
 	@JsonProperty("parameters")
 	public List<JobParameter> getJobParameters() {
 		return _jobParameters;
 	}
 
+	@GraphQLProperty("runDataPeriod")
+	@JsonProperty("runDataPeriod")
+	public JobRunDataPeriod getJobRunDataPeriod() {
+		return _jobRunDataPeriod;
+	}
+
+	@GraphQLProperty("runFrequency")
+	@JsonProperty("runFrequency")
+	public JobRunFrequency getJobRunFrequency() {
+		return _jobRunFrequency;
+	}
+
+	@GraphQLProperty("type")
 	@JsonProperty("type")
 	public JobType getJobType() {
 		return _jobType;
+	}
+
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	public Date getLastUpdatedDate() {
+		if (_lastUpdatedDate == null) {
+			return null;
+		}
+
+		return new Date(_lastUpdatedDate.getTime());
 	}
 
 	public String getName() {
 		return _name;
 	}
 
+	@JsonProperty("osbAsahTaskId")
+	public String getOSBAsahTaskId() {
+		return _osbAsahTaskId;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_active, _cronExpression, _id, _jobParameters, _jobType, _name);
+			_createdDate, _id, _jobParameters, _jobRunDataPeriod,
+			_jobRunFrequency, _jobType, _lastUpdatedDate, _name);
 	}
 
-	public boolean isActive() {
-		return _active;
-	}
-
-	public void setActive(boolean active) {
-		_active = active;
-	}
-
-	public void setCronExpression(String cronExpression) {
-		_cronExpression = cronExpression;
+	public void setCreatedDate(Date createdDate) {
+		if (createdDate != null) {
+			_createdDate = new Date(createdDate.getTime());
+		}
 	}
 
 	public void setId(String id) {
@@ -98,19 +139,56 @@ public class Job {
 		_jobParameters = jobParameters;
 	}
 
+	public void setJobRunDataPeriod(JobRunDataPeriod jobRunDataPeriod) {
+		_jobRunDataPeriod = jobRunDataPeriod;
+	}
+
+	public void setJobRunFrequency(JobRunFrequency jobRunFrequency) {
+		_jobRunFrequency = jobRunFrequency;
+	}
+
 	public void setJobType(JobType jobType) {
 		_jobType = jobType;
+	}
+
+	public void setLastUpdatedDate(Date lastUpdatedDate) {
+		if (lastUpdatedDate != null) {
+			_lastUpdatedDate = new Date(lastUpdatedDate.getTime());
+		}
 	}
 
 	public void setName(String name) {
 		_name = name;
 	}
 
-	private boolean _active;
-	private String _cronExpression;
+	public void setOSBAsahTaskId(String osbAsahTaskId) {
+		_osbAsahTaskId = osbAsahTaskId;
+	}
+
+	protected boolean equalsJob(Job job) {
+		if (Objects.equals(_createdDate, job._createdDate) &&
+			Objects.equals(_id, job._id) &&
+			Objects.equals(_jobParameters, job._jobParameters) &&
+			Objects.equals(_jobRunDataPeriod, job._jobRunDataPeriod) &&
+			Objects.equals(_jobRunFrequency, job._jobRunFrequency) &&
+			Objects.equals(_jobType, job._jobType) &&
+			Objects.equals(_lastUpdatedDate, job._lastUpdatedDate) &&
+			Objects.equals(_name, job._name)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private Date _createdDate;
 	private String _id;
 	private List<JobParameter> _jobParameters = new ArrayList<>();
+	private JobRunDataPeriod _jobRunDataPeriod;
+	private JobRunFrequency _jobRunFrequency;
 	private JobType _jobType;
+	private Date _lastUpdatedDate;
 	private String _name;
+	private String _osbAsahTaskId;
 
 }

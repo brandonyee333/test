@@ -2,6 +2,7 @@
 	{
 		"bounce": 1,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
@@ -39,6 +40,7 @@
 			}
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"segmentNames": [
 		],
@@ -53,6 +55,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
@@ -80,6 +83,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"segmentNames": [
 		],
@@ -94,6 +98,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com",
 		"city": null,
 		"country": null,
 		"ctaClicks": 2,
@@ -121,6 +126,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 1,
 		"region": null,
 		"segmentNames": [
 		],
@@ -135,6 +141,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com",
 		"city": null,
 		"country": null,
 		"ctaClicks": 1,
@@ -162,6 +169,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 2,
 		"region": null,
 		"segmentNames": [
 		],
@@ -176,6 +184,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
@@ -202,6 +211,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": null,
 		"region": null,
 		"segmentNames": [
 		],
@@ -216,6 +226,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com/search?q=Liferay%20DXP",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
@@ -241,6 +252,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"searchTerm": "Liferay DXP",
 		"segmentNames": [
@@ -255,6 +267,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com/search?q=Liferay",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
@@ -280,6 +293,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"searchTerm": "Liferay",
 		"segmentNames": [
@@ -294,6 +308,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com/search?q=Liferay",
 		"city": null,
 		"country": null,
 		"ctaClicks": 1,
@@ -324,6 +339,7 @@
 			}
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"searchTerm": "Liferay",
 		"segmentNames": [
@@ -338,6 +354,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com/search?q=Liferay",
 		"city": null,
 		"country": null,
 		"ctaClicks": 3,
@@ -363,6 +380,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"searchTerm": "liferay",
 		"segmentNames": [

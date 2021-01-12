@@ -21,16 +21,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.liferay.osb.asah.backend.graphql.GraphQLRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-
-import io.prometheus.client.spring.boot.SpringBootMetricsCollector;
 
 import org.json.JSONObject;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -38,7 +35,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -56,7 +52,7 @@ import org.springframework.test.web.servlet.result.StatusResultMatchers;
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @TestPropertySource(properties = "osb.asah.security.enabled=false")
-@WebMvcTest(secure = false, value = GraphQLRestController.class)
+@WebMvcTest(GraphQLRestController.class)
 public abstract class BaseGraphQLRestControllerTestCase {
 
 	public abstract String getBodyPath();
@@ -64,11 +60,6 @@ public abstract class BaseGraphQLRestControllerTestCase {
 	public abstract String getExpectedResultPath();
 
 	public abstract String getQueryPath();
-
-	@Before
-	public void setUp() {
-		elasticsearchInvoker = _elasticsearchInvokerFactory.forCerebroInfo();
-	}
 
 	@Test
 	public void testQuery() throws Exception {
@@ -94,6 +85,7 @@ public abstract class BaseGraphQLRestControllerTestCase {
 			responseJSONObject, false);
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	protected ElasticsearchInvoker elasticsearchInvoker;
 
 	private void _expectContentTypeJSON(ResultActions resultActions)
@@ -115,6 +107,8 @@ public abstract class BaseGraphQLRestControllerTestCase {
 		MockHttpServletRequestBuilder mockHttpServletRequestBuilder = post(
 			"/graphql");
 
+		mockHttpServletRequestBuilder.accept(
+			MediaType.APPLICATION_JSON_UTF8_VALUE);
 		mockHttpServletRequestBuilder.content(jsonObject.toString());
 		mockHttpServletRequestBuilder.contentType(
 			MediaType.APPLICATION_JSON_UTF8);
@@ -134,12 +128,6 @@ public abstract class BaseGraphQLRestControllerTestCase {
 	}
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
-	@Autowired
 	private MockMvc _mockMvc;
-
-	@MockBean
-	private SpringBootMetricsCollector _springBootMetricsCollector;
 
 }

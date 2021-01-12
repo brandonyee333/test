@@ -16,6 +16,9 @@ package com.liferay.osb.asah.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
+import com.liferay.osb.asah.backend.graphql.GraphQLType;
+
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
@@ -23,6 +26,7 @@ import javax.validation.constraints.NotNull;
 /**
  * @author Marcellus Tavares
  */
+@GraphQLType
 public class Goal {
 
 	public Goal() {
@@ -54,6 +58,7 @@ public class Goal {
 		return false;
 	}
 
+	@GraphQLProperty("metric")
 	@JsonProperty("metric")
 	@NotNull
 	public GoalMetric getGoalMetric() {

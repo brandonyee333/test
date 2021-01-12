@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Experiment;
-import com.liferay.osb.asah.backend.model.ResultBag;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Sort;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -47,7 +47,7 @@ public class ExperimentBagDataFetcher
 		int start = dataFetchingEnvironment.getArgument("start");
 
 		return _experimentDog.getExperimentResultBag(
-			channelId, SortBuilderUtil.fieldSort(sort), keywords, size, start);
+			channelId, keywords, size, Sort.of(sort), start);
 	}
 
 	@Autowired

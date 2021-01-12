@@ -8,6 +8,15 @@
 				"browserName": {
 					"type": "keyword"
 				},
+				"canonicalUrl": {
+					"fields": {
+						"search": {
+							"normalizer": "folding_normalizer",
+							"type": "keyword"
+						}
+					},
+					"type": "keyword"
+				},
 				"channelId": {
 					"type": "keyword"
 				},
@@ -100,6 +109,9 @@
 				"primaryKey": {
 					"type": "keyword"
 				},
+				"reads": {
+					"type": "long"
+				},
 				"region": {
 					"type": "keyword"
 				},
@@ -156,8 +168,8 @@
 			"analyzer": {
 				"folding_analyzer": {
 					"filter": [
-						"lowercase",
-						"asciifolding"
+						"asciifolding",
+						"lowercase"
 					],
 					"tokenizer": "standard",
 					"type": "custom"
@@ -166,8 +178,9 @@
 			"normalizer": {
 				"folding_normalizer": {
 					"filter": [
+						"asciifolding",
 						"lowercase",
-						"asciifolding"
+						"trim"
 					],
 					"type": "custom"
 				}

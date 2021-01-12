@@ -73,10 +73,11 @@ public enum BlogMetricType implements MetricType {
 	private BlogMetricType(
 		String fieldName, String name, TrendClassification.Order order) {
 
-		_aggregationName = fieldName;
 		_fieldName = fieldName;
 		_name = name;
 		_order = order;
+
+		_aggregationName = fieldName;
 	}
 
 	private static Map<String, BlogMetricType> _blogMetricTypes =

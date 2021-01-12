@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.blog.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNaniteTestCase;
 import com.liferay.osb.asah.stream.curator.bot.nanite.blog.BlogNanite;
 import com.liferay.osb.asah.stream.curator.spring.OSBAsahCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,7 +43,12 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahCuratorSpringBootApplication.class)
-public class BlogNaniteTest {
+public class BlogNaniteTest extends BaseNaniteTestCase {
+
+	@Before
+	public void setUp() {
+		setUp(_blogNanite);
+	}
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "blog_info_2.json",
@@ -56,13 +62,10 @@ public class BlogNaniteTest {
 	public void testBlogMetrics() throws Exception {
 		_blogNanite.run();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/expected_blog_info.json", this),
-			elasticsearchInvoker.get("blogs"), false);
+			_cerebroInfoElasticsearchInvoker.get("blogs"), false);
 	}
 
 	@ElasticsearchIndex(
@@ -77,10 +80,7 @@ public class BlogNaniteTest {
 	public void testBlogRatingsMetric() {
 		_blogNanite.run();
 
-		ElasticsearchInvoker elasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-
-		JSONArray jsonArray = elasticsearchInvoker.get("blogs");
+		JSONArray jsonArray = _cerebroInfoElasticsearchInvoker.get("blogs");
 
 		Assert.assertEquals(1, jsonArray.length());
 
@@ -93,7 +93,7 @@ public class BlogNaniteTest {
 	@Autowired
 	private BlogNanite _blogNanite;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 }

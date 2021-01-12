@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
@@ -29,6 +30,9 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import java.util.List;
 
@@ -49,7 +53,28 @@ public class HistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-7-days-info.json",
+		resourcePath = "histogram_journal_last_90_days_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testHistogramMetricsCustomRange() {
+		double[] expectedValues = {
+			0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+		};
+
+		LocalDate localDate = LocalDate.now(ZoneId.of("UTC"));
+
+		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
+			Interval.DAY,
+			TimeRange.of(localDate.minusDays(85), localDate.minusDays(105)));
+
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "journals",
+		resourcePath = "histogram_journal_last_7_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -62,14 +87,13 @@ public class HistogramDogTest {
 
 		double[] expectedValues = {6, 6, 5, 4, 3, 2, 1};
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-24-hours-info.json",
+		resourcePath = "histogram_journal_last_24_hours_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -85,14 +109,13 @@ public class HistogramDogTest {
 			0
 		};
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-28-days-info.json",
+		resourcePath = "histogram_journal_last_28_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -108,14 +131,13 @@ public class HistogramDogTest {
 			11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 		};
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-90-days-info.json",
+		resourcePath = "histogram_journal_last_90_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Ignore
@@ -126,14 +148,13 @@ public class HistogramDogTest {
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			Interval.WEEK, TimeRange.LAST_90_DAYS);
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-last-7-days-info.json",
+		resourcePath = "histogram_journal_last_7_days_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -169,7 +190,7 @@ public class HistogramDogTest {
 
 	@ElasticsearchIndex(
 		name = "journals",
-		resourcePath = "histogram-journal-yesterday-info.json",
+		resourcePath = "histogram_journal_yesterday_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
@@ -185,9 +206,8 @@ public class HistogramDogTest {
 			2
 		};
 
-		double[] actualValues = _getActualValues(histogramMetrics);
-
-		Assert.assertArrayEquals(expectedValues, actualValues, 0);
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
 	private void _assertHistogramMetric(
@@ -224,14 +244,17 @@ public class HistogramDogTest {
 	private List<HistogramMetric> _getHistogramMetrics(
 		Interval interval, TimeRange timeRange) {
 
-		return _histogramDog.getHistogramMetrics(
-			true, JournalMetricType.VIEWS,
-			new SearchQueryContext("1", AssetType.JOURNAL) {
-				{
-					setInterval(interval.getKey());
-					setTimeRange(timeRange);
-				}
-			});
+		HistogramMetricBag histogramMetricBag =
+			_histogramDog.getHistogramMetricBag(
+				true, JournalMetricType.VIEWS,
+				new SearchQueryContext("1", AssetType.JOURNAL) {
+					{
+						setInterval(interval.getKey());
+						setTimeRange(timeRange);
+					}
+				});
+
+		return histogramMetricBag.getMetrics();
 	}
 
 	@Autowired

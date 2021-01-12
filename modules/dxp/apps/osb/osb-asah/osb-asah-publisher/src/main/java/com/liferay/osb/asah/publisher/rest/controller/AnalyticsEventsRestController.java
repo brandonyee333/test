@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.publisher.cache.AnalyticsEventsMessageCache;
 
 import io.prometheus.client.Histogram;
@@ -71,13 +72,13 @@ public class AnalyticsEventsRestController {
 		SimpleTimer simpleTimer = new SimpleTimer();
 
 		try {
-			if (_analyticsEventsMessageCache.has(
+			if (!_analyticsEventsMessageCache.add(
 					analyticsEventsMessage.getId())) {
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						"Discarding duplicate message: " +
-							analyticsEventsMessage.toString());
+							analyticsEventsMessage.toJSON());
 				}
 
 				return new ResponseEntity<>(
@@ -106,6 +107,9 @@ public class AnalyticsEventsRestController {
 			if (errors.hasErrors()) {
 				if (StringUtils.isEmpty(
 						analyticsEventsMessage.getDataSourceId())) {
+
+					_analyticsEventsMessageCache.remove(
+						analyticsEventsMessage.getId());
 
 					return new ResponseEntity<>(
 						errors.getAllErrors(), HttpStatus.BAD_REQUEST);
@@ -141,6 +145,9 @@ public class AnalyticsEventsRestController {
 				analyticsEventsMessage.setEvents(events);
 			}
 
+			analyticsEventsMessage.setProjectId(
+				ProjectIdThreadLocal.getProjectId());
+
 			if (!events.isEmpty()) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
@@ -151,8 +158,9 @@ public class AnalyticsEventsRestController {
 				_messageBus.sendMessage(
 					Channel.ANALYTICS_EVENTS_MESSAGE,
 					analyticsEventsMessage.toJSON());
-
-				_analyticsEventsMessageCache.add(
+			}
+			else {
+				_analyticsEventsMessageCache.remove(
 					analyticsEventsMessage.getId());
 			}
 

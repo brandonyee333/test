@@ -19,8 +19,8 @@ package com.liferay.osb.asah.publisher.cache;
  */
 public interface AnalyticsEventsMessageCache {
 
-	public void add(String id);
+	public boolean add(String id);
 
-	public boolean has(String id);
+	public void remove(String id);
 
 }

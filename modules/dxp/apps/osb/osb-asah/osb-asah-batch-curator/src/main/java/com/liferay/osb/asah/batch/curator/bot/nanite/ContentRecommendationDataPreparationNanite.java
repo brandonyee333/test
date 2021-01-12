@@ -14,69 +14,128 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.ml.SparkManager;
+import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Arrays;
+import java.util.Collections;
 
-import javax.annotation.PostConstruct;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Marcellus Tavares
  */
 @Component
+@ConditionalOnGoogleApplicationCredentials
 public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 
 	@Override
-	@PostConstruct
-	public void init() {
-		super.init();
+	public void run(JSONObject contextJSONObject) throws Exception {
+		JSONObject jobJSONObject = contextJSONObject.getJSONObject("job");
 
-		_faroInfoElasticsearchInvoker =
-			elasticsearchInvokerFactory.forFaroInfo();
-	}
+		String jobId = jobJSONObject.getString("id");
 
-	@Override
-	public void run(JSONObject jobJSONObject) throws Exception {
-		String now = DateUtil.newUTCDateString();
+		if (_getCurrentMonthJobRunsCount(jobId) >= _maxMonthlyJobRuns) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					String.format(
+						"Unable to run job ID %s because this run surpasses " +
+							"the maximum allowed monthly runs threshold",
+						jobId));
+			}
 
-		JSONObject jobExecutionJSONObject = _faroInfoElasticsearchInvoker.add(
-			"job-executions",
+			return;
+		}
+
+		String dateString = DateUtil.newUTCDateString();
+		String jobRunRunDataPeriod = contextJSONObject.optString(
+			"runDataPeriod", jobJSONObject.getString("runDataPeriod"));
+
+		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.add(
+			"job-runs",
 			JSONUtil.put(
-				"context", new JSONObject()
+				"context", JSONUtil.put("runDataPeriod", jobRunRunDataPeriod)
 			).put(
-				"createdDate", now
+				"createdDate", dateString
 			).put(
-				"job", jobJSONObject
+				"job",
+				JSONUtil.put(
+					"id", jobJSONObject.getString("id")
+				).put(
+					"type", jobJSONObject.getString("type")
+				)
 			).put(
-				"lastUpdatedDate", now
+				"lastUpdatedDate", dateString
 			).put(
 				"status", "RUNNING"
 			).put(
 				"step", "DATA_PREPARATION"
+			).put(
+				"trigger", contextJSONObject.optString("trigger", "SCHEDULE")
 			));
 
-		_sparkManager.submitJob(
+		_dataprocSparkManager.submitJob(
 			Arrays.asList(
-				"--job-execution-id", jobExecutionJSONObject.getString("id"),
-				"--job-execution-step",
-				jobExecutionJSONObject.getString("step"), "--lcp-project-id",
+				"--job-id", jobJSONObject.getString("id"), "--job-parameters",
+				String.valueOf(jobJSONObject.getJSONArray("parameters")),
+				"--job-run-id", jobRunJSONObject.getString("id"),
+				"--job-run-data-period", jobRunRunDataPeriod, "--job-run-step",
+				jobRunJSONObject.getString("step"), "--lcp-project-id",
 				ServiceConstants.LCP_PROJECT_ID),
-			"content_recommendation.yaml",
-			"liferay.content_recommendation.ContentRecommendationApplication");
+			"content_recommendation.yaml", Collections.emptyList(),
+			"liferay.content_recommendation.ContentRecommendationApplication",
+			Collections.emptyMap());
 	}
 
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	@Override
+	protected Log getLog() {
+		return LogFactory.getLog(
+			ContentRecommendationDataPreparationNanite.class);
+	}
+
+	private long _getCurrentMonthJobRunsCount(String jobId) {
+		return _faroInfoElasticsearchInvoker.count(
+			"job-runs",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("job.id", jobId)
+			).filter(
+				QueryBuilders.termsQuery("status", "COMPLETED", "PUBLISHED")
+			).filter(
+				QueryBuilders.rangeQuery(
+					"completedDate"
+				).gte(
+					"now/M"
+				).lte(
+					"now"
+				)
+			));
+	}
+
+	private static final Log _log = LogFactory.getLog(
+		ContentRecommendationDataPreparationNanite.class);
 
 	@Autowired
-	private SparkManager _sparkManager;
+	private DataprocSparkManager _dataprocSparkManager;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Value("${osb.asah.content.recommendation.max.monthly.job.runs:10}")
+	private int _maxMonthlyJobRuns;
 
 }

@@ -4,6 +4,7 @@
 		"dataSourceId": "1",
 		"id": "1",
 		"individualId": "100",
+		"knownIndividual": true,
 		"primaryKey": "1",
 		"segmentNames": [
 			"Developer",
@@ -16,6 +17,7 @@
 		"dataSourceId": "1",
 		"id": "2",
 		"individualId": "100",
+		"knownIndividual": true,
 		"primaryKey": "2",
 		"segmentNames": [
 			"Developer",
@@ -28,6 +30,7 @@
 		"dataSourceId": "1",
 		"id": "3",
 		"individualId": null,
+		"knownIndividual": false,
 		"primaryKey": "3",
 		"segmentNames": [
 		],
@@ -38,10 +41,11 @@
 		"dataSourceId": "2",
 		"id": "4",
 		"individualId": "200",
+		"knownIndividual": true,
 		"primaryKey": "4",
 		"segmentNames": [
 			"CEO"
 		],
-		"userId": "1"
+		"userId": "2"
 	}
 ]

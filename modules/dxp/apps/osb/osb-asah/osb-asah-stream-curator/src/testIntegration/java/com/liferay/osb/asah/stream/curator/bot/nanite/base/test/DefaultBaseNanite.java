@@ -14,7 +14,8 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.base.test;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.messaging.Channel;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.BaseModel;
@@ -28,9 +29,6 @@ import java.util.function.Supplier;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.stereotype.Component;
 
@@ -66,6 +64,11 @@ public class DefaultBaseNanite extends BaseNanite<DefaultAssetModel> {
 	}
 
 	@Override
+	protected MessageSubscriber getMessageSubscriber() {
+		return _messageSubscriber;
+	}
+
+	@Override
 	protected Supplier<DefaultAssetModel> getModelSupplier() {
 		return DefaultAssetModel::new;
 	}
@@ -78,11 +81,6 @@ public class DefaultBaseNanite extends BaseNanite<DefaultAssetModel> {
 	}
 
 	@Override
-	protected QueryBuilder getQueryBuilder() {
-		return BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("foo"));
-	}
-
-	@Override
 	protected void setModelCustomProperties(
 		AnalyticsEvent analyticsEvent, DefaultAssetModel defaultAssetModel) {
 
@@ -91,5 +89,8 @@ public class DefaultBaseNanite extends BaseNanite<DefaultAssetModel> {
 
 		defaultAssetModel.setId(eventProperties.get("baseId"));
 	}
+
+	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_MESSAGE)
+	private MessageSubscriber _messageSubscriber;
 
 }

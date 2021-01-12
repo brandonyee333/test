@@ -19,13 +19,11 @@ import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootAp
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.queue.http.CerebroQueueHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Map;
@@ -43,32 +41,23 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-@Import(
-	{
-		CerebroQueueHttpTestConfiguration.class,
-		OSBAsahRedisDisabledTestConfiguration.class
-	}
-)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
 public class DXPIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 
 	@Before
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-
-		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
 
 		addDataSource("LIFERAY");
 		addEmailFieldMapping();
@@ -256,10 +245,12 @@ public class DXPIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 	}
 
 	private static JSONObject _buildFaroAuditEventJSONObject(
-		String dataSourceId, String email, String eventType, long userId) {
+		String dataSourceId, String emailAddress, String eventType,
+		long userId) {
 
 		return JSONUtil.put(
-			"additionalInfo", String.valueOf(JSONUtil.put("email", email))
+			"additionalInfo",
+			String.valueOf(JSONUtil.put("email", emailAddress))
 		).put(
 			"dateCreated", DateUtil.newDateString()
 		).put(
@@ -317,9 +308,7 @@ public class DXPIndividualsNaniteTest extends BaseIndividualsNaniteTestCase {
 	@Autowired
 	private DXPIndividualsNanite _dxpIndividualsNanite;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

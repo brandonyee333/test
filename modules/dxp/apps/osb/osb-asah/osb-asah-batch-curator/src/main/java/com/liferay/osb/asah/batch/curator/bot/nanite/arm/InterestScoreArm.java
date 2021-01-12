@@ -15,10 +15,6 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite.arm;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,11 +66,6 @@ public class InterestScoreArm {
 		return Math.max(score, MINIMUM_THRESHOLD_SCORE);
 	}
 
-	@PostConstruct
-	protected void init() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	private double _computeDayScore(
 		double individualKeywordViews, double individualViews,
 		double totalKeywordViews, double totalViews) {
@@ -109,11 +100,6 @@ public class InterestScoreArm {
 	private static final double _WEIGHT_INDIVIDUAL_VIEWS = 1.0;
 
 	private static final double _WEIGHT_TOTAL_VIEWS = 2.0;
-
-	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
 	private URLArm _urlArm;

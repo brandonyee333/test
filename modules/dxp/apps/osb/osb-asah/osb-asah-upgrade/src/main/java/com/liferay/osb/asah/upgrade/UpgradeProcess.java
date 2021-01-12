@@ -62,7 +62,7 @@ public class UpgradeProcess {
 
 	public String getToVersionString(String fromVersionString) {
 		if (fromVersionString == null) {
-			fromVersionString = "0";
+			fromVersionString = "0.0.0";
 		}
 
 		return Optional.ofNullable(
@@ -76,7 +76,7 @@ public class UpgradeProcess {
 
 	public List<UpgradeStep> getUpgradeSteps(String fromVersionString) {
 		if (fromVersionString == null) {
-			fromVersionString = "0";
+			fromVersionString = "0.0.0";
 		}
 
 		return Optional.ofNullable(

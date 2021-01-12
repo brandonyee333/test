@@ -29,17 +29,17 @@ public class SearchTermGraphQLRestControllerTest
 
 	@Override
 	public String getBodyPath() {
-		return "search-term-body.json";
+		return "search_term_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "search-term-expected-result.json";
+		return "search_term_expected_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "search-term-query.graphql";
+		return "search_term_query.graphql";
 	}
 
 }

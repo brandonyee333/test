@@ -21,6 +21,10 @@ import com.liferay.osb.asah.stream.curator.model.BaseModel;
  */
 public abstract class BasePageModel extends BaseModel {
 
+	public String getCanonicalUrl() {
+		return _canonicalUrl;
+	}
+
 	public String getURL() {
 		return _url;
 	}
@@ -30,10 +34,15 @@ public abstract class BasePageModel extends BaseModel {
 		return false;
 	}
 
+	public void setCanonicalUrl(String canonicalUrl) {
+		_canonicalUrl = canonicalUrl;
+	}
+
 	public void setURL(String url) {
 		_url = url;
 	}
 
+	private String _canonicalUrl;
 	private String _url;
 
 }

@@ -42,7 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class FormPageDogTest {
 
 	@ElasticsearchIndex(
-		name = "forms", resourcePath = "forms-info.json",
+		name = "forms", resourcePath = "forms_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test

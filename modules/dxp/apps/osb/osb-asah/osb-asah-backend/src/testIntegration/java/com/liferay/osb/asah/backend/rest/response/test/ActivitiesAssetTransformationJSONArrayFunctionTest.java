@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.rest.response.test;
 
 import com.liferay.osb.asah.backend.rest.response.ActivitiesAssetTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -32,7 +31,6 @@ import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -55,11 +53,6 @@ import org.springframework.test.context.ContextConfiguration;
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class ActivitiesAssetTransformationJSONArrayFunctionTest {
-
-	@Before
-	public void setUp() {
-		_elasticsearchInvoker = _elasticsearchInvokerFactory.forFaroInfo();
-	}
 
 	@Test
 	public void testApplyAscSort() throws Exception {
@@ -95,9 +88,7 @@ public class ActivitiesAssetTransformationJSONArrayFunctionTest {
 			true);
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

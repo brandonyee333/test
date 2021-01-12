@@ -20,14 +20,13 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.faro.backend.http.DataSourceHttpTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-import com.liferay.osb.asah.test.util.spring.cache.OSBAsahRedisDisabledTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 import com.liferay.petra.string.StringPool;
 
@@ -57,18 +56,16 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Rachael Koestartyo
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
-@Import(
-	{
+@ContextConfiguration(
+	classes = {
 		DataSourceHttpTestConfiguration.class,
-		OSBAsahRedisDisabledTestConfiguration.class
+		OSBAsahBackendSpringBootApplication.class
 	}
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
@@ -77,12 +74,6 @@ public class DataSourcesRestControllerTest {
 	@Before
 	public void setUp() {
 		_mock();
-
-		_dxpRawElasticsearchInvoker = _elasticsearchInvokerFactory.forDXPRaw();
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-		_salesforceRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forSalesforceRaw();
 	}
 
 	@Test
@@ -119,7 +110,7 @@ public class DataSourcesRestControllerTest {
 			"activities",
 			FaroInfoTestUtil.buildActivityJSONObject(
 				activityGroupJSONObject, assetJSONObject, "pageViewed",
-				new String[] {"pageLoadTime", "1000"}));
+				new String[0]));
 
 		_dataSourcesRestController.deleteDataSource(
 			dataSourceJSONObject.getString("id"));
@@ -1826,17 +1817,17 @@ public class DataSourcesRestControllerTest {
 	@Mock
 	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Mock
 	private SalesforceExtractorConfigurationDog
 		_salesforceExtractorConfigurationDog;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }

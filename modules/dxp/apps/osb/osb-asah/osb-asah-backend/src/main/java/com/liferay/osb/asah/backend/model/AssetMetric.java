@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.model;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Inácio Nery
@@ -29,6 +30,10 @@ public interface AssetMetric {
 
 	public String getAssetType();
 
+	public Set<Metric> getAvailableMetrics();
+
+	public List<String> getCanonicalUrls();
+
 	public String getDataSourceId();
 
 	public Metric getDefaultMetric();
@@ -40,6 +45,8 @@ public interface AssetMetric {
 	public void setAssetMetrics(List<AssetMetric> assetMetrics);
 
 	public void setAssetTitle(String assetTitle);
+
+	public void setCanonicalUrls(List<String> canonicalUrls);
 
 	public void setDataSourceId(String dataSourceId);
 

@@ -46,23 +46,26 @@ public interface ElasticsearchIndexManager {
 
 	public boolean exists(String indexName);
 
-	public Map<String, String> getAliases();
+	public Map<String, String> getAliases(
+		WeDeployDataService weDeployDataService);
 
 	public JSONArray getCollectionsJSONArray(
 		WeDeployDataService weDeployDataService);
 
-	public String getIndexName(String indexAlias);
-
-	public String getIndexName(
+	public Map<String, Object> getIndexMappings(
 		String collectionName, WeDeployDataService weDeployDataService);
 
-	public String getIndexNamespace(WeDeployDataService weDeployDataService);
+	public String getIndexName(String indexAlias);
 
 	public String readIndexConfiguration(
 		String collectionName, WeDeployDataService weDeployDataService);
 
 	public boolean updateMapping(
 		String collectionName, String mappingSource, String mappingType,
+		WeDeployDataService weDeployDataService);
+
+	public boolean updateSettings(
+		String collectionName, String settingsJSON,
 		WeDeployDataService weDeployDataService);
 
 }

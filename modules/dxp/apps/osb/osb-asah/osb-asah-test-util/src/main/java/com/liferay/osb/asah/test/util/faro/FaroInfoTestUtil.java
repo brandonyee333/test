@@ -269,7 +269,7 @@ public class FaroInfoTestUtil {
 				"objectType", applicationId
 			)
 		).put(
-			"ownerId", activityGroupJSONObject.optString("ownerId")
+			"ownerId", activityGroupJSONObject.getString("ownerId")
 		).put(
 			"startTime", activityGroupJSONObject.getString("startTime")
 		).put(
@@ -390,6 +390,36 @@ public class FaroInfoTestUtil {
 		return JSONUtil.put(
 			"activitiesCount", 0
 		).put(
+			"channelId", RandomTestUtil.randomId()
+		).put(
+			"dateCreated", dateString
+		).put(
+			"dateModified", dateString
+		).put(
+			"filter", filterString
+		).put(
+			"individualCount", 0
+		).put(
+			"name", RandomTestUtil.randomString()
+		).put(
+			"scope", "PROJECT"
+		).put(
+			"segmentType", "DYNAMIC"
+		).put(
+			"status", "ACTIVE"
+		);
+	}
+
+	public static JSONObject buildDynamicIndividualSegmentJSONObject(
+		String channelId, String filterString) {
+
+		String dateString = DateUtil.newDateString();
+
+		return JSONUtil.put(
+			"activitiesCount", 0
+		).put(
+			"channelId", channelId
+		).put(
 			"dateCreated", dateString
 		).put(
 			"dateModified", dateString
@@ -441,6 +471,32 @@ public class FaroInfoTestUtil {
 			"id", id
 		).put(
 			"status", status
+		);
+	}
+
+	public static JSONObject buildFieldJSONObject(
+		String dataSourceId, String dataSourceName) {
+
+		return JSONUtil.put(
+			"context", "demographics"
+		).put(
+			"dataSourceId", dataSourceId
+		).put(
+			"dataSourceName", dataSourceName
+		).put(
+			"dateModified", DateUtil.newDateString()
+		).put(
+			"fieldType", "Text"
+		).put(
+			"name", "givenName"
+		).put(
+			"ownerId", RandomTestUtil.randomId()
+		).put(
+			"ownerType", "individual"
+		).put(
+			"sourceName", "firstName"
+		).put(
+			"value", RandomTestUtil.randomString()
 		);
 	}
 
@@ -855,6 +911,8 @@ public class FaroInfoTestUtil {
 		return JSONUtil.put(
 			"assetType", "Page"
 		).put(
+			"canonicalUrl", RandomTestUtil.randomURL()
+		).put(
 			"dataSourceAssetPK", RandomTestUtil.randomURL()
 		).put(
 			"dataSourceId", dataSourceId
@@ -941,6 +999,80 @@ public class FaroInfoTestUtil {
 			"segmentType", "STATIC"
 		).put(
 			"status", "ACTIVE"
+		);
+	}
+
+	public static JSONObject buildUserSessionJSONObject(
+		Map<String, String> parameters) {
+
+		return JSONUtil.put(
+			"acquisition",
+			JSONUtil.put(
+				"channel", parameters.getOrDefault("channel", "direct")
+			).put(
+				"medium", parameters.getOrDefault("medium", "referral")
+			)
+		).put(
+			"bounced", parameters.getOrDefault("bounced", "false")
+		).put(
+			"channelId", parameters.getOrDefault("channelId", "1")
+		).put(
+			"city", parameters.getOrDefault("city", "Diamond Bar")
+		).put(
+			"completed", parameters.getOrDefault("completed", "true")
+		).put(
+			"completeDate",
+			parameters.getOrDefault("completeDate", DateUtil.newDateString())
+		).put(
+			"completeReason",
+			parameters.getOrDefault("completeReason", "expired")
+		).put(
+			"country", parameters.getOrDefault("country", "United States")
+		).put(
+			"dataSourceId", parameters.getOrDefault("dataSourceId", "0")
+		).put(
+			"date", parameters.getOrDefault("date", DateUtil.newDateString())
+		).put(
+			"deviceType", parameters.getOrDefault("deviceType", "Desktop")
+		).put(
+			"duration", 0
+		).put(
+			"entryPage",
+			parameters.getOrDefault("entryPage", RandomTestUtil.randomURL())
+		).put(
+			"exitPage",
+			parameters.getOrDefault("exitPage", RandomTestUtil.randomURL())
+		).put(
+			"firstEventDate",
+			parameters.getOrDefault("firstEventDate", DateUtil.newDateString())
+		).put(
+			"id", RandomTestUtil.randomId()
+		).put(
+			"individualId", parameters.getOrDefault("individualId", "10000")
+		).put(
+			"interactionsCount", 0
+		).put(
+			"lastEventDate",
+			parameters.getOrDefault("lastEventDate", DateUtil.newDateString())
+		).put(
+			"pageViewsCount", parameters.getOrDefault("pageViewsCount", "0")
+		).put(
+			"platformName", parameters.getOrDefault("platformName", "Windows")
+		).put(
+			"referrers",
+			JSONUtil.put(
+				RandomTestUtil.randomURL()
+			).toString()
+		).put(
+			"region", parameters.getOrDefault("region", "California")
+		).put(
+			"urls",
+			JSONUtil.put(
+				RandomTestUtil.randomURL()
+			).toString()
+		).put(
+			"userId",
+			parameters.getOrDefault("userId", RandomTestUtil.randomUUID())
 		);
 	}
 

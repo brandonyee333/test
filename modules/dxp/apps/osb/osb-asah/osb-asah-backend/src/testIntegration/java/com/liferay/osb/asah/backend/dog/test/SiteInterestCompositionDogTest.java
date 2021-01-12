@@ -15,10 +15,13 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.SiteInterestCompositionDog;
+import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+
+import java.time.LocalDate;
 
 import java.util.LinkedHashMap;
 
@@ -32,22 +35,39 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Rachael Koestartyo
  */
 @ElasticsearchIndex(
-	name = "assets", resourcePath = "assets-info.json",
+	name = "activities", resourcePath = "activities_info_2.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @ElasticsearchIndex(
-	name = "user-sessions", resourcePath = "user-sessions-info.json",
-	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	name = "assets", resourcePath = "assets_info.json",
+	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@Test
+	public void testGetCompositionResultBagCustomRange() {
+		LocalDate localDate = LocalDate.now();
+
+		checkResults(
+			_siteInterestCompositionDog.getCompositionResultBag(
+				"1", "355524992631037473", 10, 0,
+				TimeRange.of(localDate.minusDays(9), localDate.minusDays(90)),
+				"UTC"),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("compelling action-items", 1L);
+				}
+			},
+			1, 1, 1);
+	}
+
+	@Test
 	public void testGetCompositionResultBagLast7Days() {
 		checkResults(
 			_siteInterestCompositionDog.getCompositionResultBag(
-				"1", "355524992631037473", 7, 10, 0),
+				"1", "355524992631037473", 10, 0, TimeRange.of(7), "UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("holistic roi", 1L);
@@ -60,7 +80,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetCompositionResultBagLast24Hours() {
 		checkResults(
 			_siteInterestCompositionDog.getCompositionResultBag(
-				"1", "355524992631037473", 0, 10, 0),
+				"1", "355524992631037473", 10, 0, TimeRange.of(0), "UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("engineer", 1L);
@@ -75,7 +95,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetCompositionResultBagLast28Days() {
 		checkResults(
 			_siteInterestCompositionDog.getCompositionResultBag(
-				"1", "355524992631037473", 28, 10, 0),
+				"1", "355524992631037473", 10, 0, TimeRange.of(28), "UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("compelling action-items", 1L);
@@ -89,7 +109,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetCompositionResultBagLast30Days() {
 		checkResults(
 			_siteInterestCompositionDog.getCompositionResultBag(
-				"1", "355524992631037473", 30, 10, 0),
+				"1", "355524992631037473", 10, 0, TimeRange.of(30), "UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("compelling action-items", 1L);
@@ -103,7 +123,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetCompositionResultBagLast90Days() {
 		checkResults(
 			_siteInterestCompositionDog.getCompositionResultBag(
-				"1", "355524992631037473", 90, 10, 0),
+				"1", "355524992631037473", 10, 0, TimeRange.of(90), "UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("compelling action-items", 1L);
@@ -114,10 +134,38 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 	}
 
 	@Test
+	public void testGetCompositionResultBagLast180Days() {
+		checkResults(
+			_siteInterestCompositionDog.getCompositionResultBag(
+				"1", "355524992631037473", 10, 0, TimeRange.of(180), "UTC"),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("compelling action-items", 2L);
+					put("holistic roi", 1L);
+				}
+			},
+			2, 2, 3);
+	}
+
+	@Test
+	public void testGetCompositionResultBagLastYear() {
+		checkResults(
+			_siteInterestCompositionDog.getCompositionResultBag(
+				"1", "355524992631037473", 10, 0, TimeRange.of(365), "UTC"),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("compelling action-items", 3L);
+					put("holistic roi", 1L);
+				}
+			},
+			3, 2, 4);
+	}
+
+	@Test
 	public void testGetCompositionResultBagYesterday() {
 		checkResults(
 			_siteInterestCompositionDog.getCompositionResultBag(
-				"1", "355524992631037473", 1, 10, 0),
+				"1", "355524992631037473", 10, 0, TimeRange.of(1), "UTC"),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("holistic roi", 1L);

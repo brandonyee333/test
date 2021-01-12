@@ -21,15 +21,19 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.petra.string.StringPool;
 
 import java.time.Clock;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +67,7 @@ public class HistogramDog {
 		_dogConfigurationBag = new DogConfigurationBag(dogConfigurations);
 	}
 
-	public List<HistogramMetric> getHistogramMetrics(
+	public HistogramMetricBag getHistogramMetricBag(
 		boolean includePrevious, MetricType metricType,
 		SearchQueryContext searchQueryContext) {
 
@@ -78,7 +82,7 @@ public class HistogramDog {
 				searchQueryContext));
 
 		if (DogUtil.isEmpty(aggregations)) {
-			return Collections.emptyList();
+			return new HistogramMetricBag();
 		}
 
 		String aggregationKey = "ranges";
@@ -87,10 +91,11 @@ public class HistogramDog {
 			aggregationKey = "period_ranges";
 		}
 
-		return _createHistogramMetrics(
+		return _createHistogramMetricBag(
 			searchQueryContext.getAssetType(), includePrevious,
-			searchQueryContext.getInterval(), aggregations.get(aggregationKey),
-			metricType, searchQueryContext.getTimeRange());
+			searchQueryContext.getInterval(), metricType,
+			aggregations.get(aggregationKey),
+			searchQueryContext.getTimeRange());
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(
@@ -100,7 +105,8 @@ public class HistogramDog {
 		DateHistogramAggregationBuilder dateHistogramAggregationBuilder =
 			_getDateHistogramAggregationBuilder(
 				searchQueryContext.getInterval(),
-				searchQueryContext.getTimeRange());
+				searchQueryContext.getTimeRange(),
+				searchQueryContext.getTimeZoneId());
 
 		MetricResolver metricResolver = dogConfiguration.getMetricResolver(
 			metricType);
@@ -122,7 +128,8 @@ public class HistogramDog {
 				Collections.singleton(dateHistogramAggregationBuilder),
 				DogUtil.getAssetIdOptional(
 					searchQueryContext.getAssetId(), dogConfiguration),
-				Collections.emptySet(), dogConfiguration.getQueryBuilder(),
+				Collections.emptySet(),
+				dogConfiguration.getQueryBuilder(searchQueryContext),
 				searchQueryContext);
 		}
 
@@ -130,24 +137,30 @@ public class HistogramDog {
 			Collections.singleton(dateHistogramAggregationBuilder),
 			DogUtil.getAssetIdOptional(
 				searchQueryContext.getAssetId(), dogConfiguration),
-			Collections.emptySet(), dogConfiguration.getQueryBuilder(),
+			Collections.emptySet(),
+			dogConfiguration.getQueryBuilder(searchQueryContext),
 			searchQueryContext);
 	}
 
-	private List<HistogramMetric> _createHistogramMetrics(
+	private HistogramMetricBag _createHistogramMetricBag(
 		AssetType assetType, boolean includePrevious, Interval interval,
-		Range range, MetricType metricType, TimeRange timeRange) {
+		MetricType metricType, Range range, TimeRange timeRange) {
 
 		List<? extends Range.Bucket> rangeBuckets = range.getBuckets();
 
 		if ((includePrevious && (rangeBuckets.size() < 2)) ||
 			rangeBuckets.isEmpty()) {
 
-			return Collections.emptyList();
+			return new HistogramMetricBag();
 		}
 
-		Map<String, Metric> metrics = _metricHelper.createMetrics(
-			Clock.systemUTC(), interval, timeRange, metricType);
+		HistogramMetricBag histogramMetricBag =
+			_metricHelper.createHistogramMetricBag(
+				Clock.system(_timeZoneDog.getZoneId()), includePrevious,
+				interval, metricType, timeRange);
+
+		Map<String, Metric> metrics = _getHistogramMetricBuckets(
+			histogramMetricBag);
 
 		DogConfiguration dogConfiguration =
 			_dogConfigurationBag.getDogConfiguration(assetType);
@@ -172,10 +185,8 @@ public class HistogramDog {
 			for (Histogram.Bucket histogramBucket :
 					previousHistogram.getBuckets()) {
 
-				String timeKey = _getTimeKey(
-					timeRange, histogramBucket.getKeyAsString());
-
-				Metric metric = metrics.get(timeKey);
+				Metric metric = _getMetricFromPreviousTimestamp(
+					interval, metrics, histogramBucket.getKeyAsString());
 
 				if (metric == null) {
 					continue;
@@ -183,8 +194,6 @@ public class HistogramDog {
 
 				metric.setPreviousValue(
 					mapperFunction.apply(histogramBucket.getAggregations()));
-
-				metrics.put(timeKey, metric);
 			}
 
 			index = 1;
@@ -199,10 +208,12 @@ public class HistogramDog {
 			"metric_over_time");
 
 		for (Histogram.Bucket histogramBucket : currentHistogram.getBuckets()) {
-			String timeKey = _getTimeKey(
-				null, histogramBucket.getKeyAsString());
+			ZonedDateTime zonedDateTime = ZonedDateTime.parse(
+				histogramBucket.getKeyAsString());
 
-			Metric metric = metrics.get(timeKey);
+			LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+
+			Metric metric = metrics.get(localDateTime.toString());
 
 			if (metric == null) {
 				continue;
@@ -210,79 +221,93 @@ public class HistogramDog {
 
 			metric.setValue(
 				mapperFunction.apply(histogramBucket.getAggregations()));
-
-			metrics.put(timeKey, metric);
 		}
 
-		Set<Map.Entry<String, Metric>> entries = metrics.entrySet();
-
-		Stream<Map.Entry<String, Metric>> stream = entries.stream();
-
-		return stream.map(
-			entry -> new HistogramMetric(entry.getKey(), entry.getValue())
-		).collect(
-			Collectors.toList()
-		);
+		return histogramMetricBag;
 	}
 
 	private DateHistogramAggregationBuilder _getDateHistogramAggregationBuilder(
-		Interval interval, TimeRange timeRange) {
+		Interval interval, TimeRange timeRange, String timeZoneId) {
 
 		DateHistogramAggregationBuilder dateHistogramAggregationBuilder =
 			AggregationBuilders.dateHistogram("metric_over_time");
 
 		dateHistogramAggregationBuilder.field("eventDate");
 
+		dateHistogramAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
+
 		if (timeRange.equals(TimeRange.LAST_24_HOURS) ||
 			timeRange.equals(TimeRange.YESTERDAY)) {
 
-			dateHistogramAggregationBuilder.dateHistogramInterval(
+			dateHistogramAggregationBuilder.calendarInterval(
 				DateHistogramInterval.HOUR);
 
 			return dateHistogramAggregationBuilder;
 		}
 
 		if (Interval.MONTH.equals(interval)) {
-			dateHistogramAggregationBuilder.dateHistogramInterval(
+			dateHistogramAggregationBuilder.calendarInterval(
 				DateHistogramInterval.MONTH);
 		}
 		else if (Interval.WEEK.equals(interval)) {
-			dateHistogramAggregationBuilder.dateHistogramInterval(
+			dateHistogramAggregationBuilder.calendarInterval(
 				DateHistogramInterval.WEEK);
 			dateHistogramAggregationBuilder.offset("-1d");
 		}
 		else {
-			dateHistogramAggregationBuilder.dateHistogramInterval(
+			dateHistogramAggregationBuilder.calendarInterval(
 				DateHistogramInterval.DAY);
 		}
 
 		return dateHistogramAggregationBuilder;
 	}
 
-	private String _getTimeKey(TimeRange timeRange, String timestamp) {
-		Instant instant = Instant.parse(timestamp);
+	private Map<String, Metric> _getHistogramMetricBuckets(
+		HistogramMetricBag histogramMetricBag) {
 
-		LocalDateTime localDateTime = LocalDateTime.ofInstant(
-			instant, ZoneOffset.UTC);
+		List<HistogramMetric> histogramMetrics =
+			histogramMetricBag.getMetrics();
 
-		if (TimeRange.LAST_24_HOURS.equals(timeRange) ||
-			TimeRange.YESTERDAY.equals(timeRange)) {
+		Stream<HistogramMetric> histogramMetricStream =
+			histogramMetrics.stream();
 
-			localDateTime = localDateTime.plusDays(1);
-		}
-		else if (TimeRange.LAST_7_DAYS.equals(timeRange)) {
-			localDateTime = localDateTime.plusDays(7);
-		}
-		else if (TimeRange.LAST_28_DAYS.equals(timeRange)) {
-			localDateTime = localDateTime.plusDays(28);
-		}
-		else if (TimeRange.LAST_30_DAYS.equals(timeRange)) {
-			localDateTime = localDateTime.plusDays(30);
-		}
-		else if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
-			localDateTime = localDateTime.plusDays(90);
+		return histogramMetricStream.collect(
+			Collectors.toMap(HistogramMetric::getKey, Function.identity()));
+	}
 
-			localDateTime = localDateTime.withDayOfMonth(1);
+	private Metric _getMetricFromPreviousTimestamp(
+		Interval interval, Map<String, Metric> metrics, String timestamp) {
+
+		String previousValueKey = _getPreviousValueKey(interval, timestamp);
+
+		for (Metric metric : metrics.values()) {
+			if (previousValueKey.equals(metric.getPreviousValueKey())) {
+				return metric;
+			}
+		}
+
+		return null;
+	}
+
+	private String _getPreviousValueKey(Interval interval, String timestamp) {
+		ZonedDateTime zonedDateTime = ZonedDateTime.parse(timestamp);
+
+		LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+
+		if (Interval.WEEK.equals(interval)) {
+			LocalDate startLocalDate = localDateTime.toLocalDate();
+
+			LocalDate endLocalDate = startLocalDate.plusDays(6);
+
+			return startLocalDate + StringPool.SLASH + endLocalDate;
+		}
+		else if (Interval.MONTH.equals(interval)) {
+			LocalDate startLocalDate = localDateTime.toLocalDate();
+
+			LocalDate endLocalDate = startLocalDate.withDayOfMonth(
+				startLocalDate.lengthOfMonth());
+
+			return startLocalDate + StringPool.SLASH + endLocalDate;
 		}
 
 		return localDateTime.toString();
@@ -298,5 +323,8 @@ public class HistogramDog {
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

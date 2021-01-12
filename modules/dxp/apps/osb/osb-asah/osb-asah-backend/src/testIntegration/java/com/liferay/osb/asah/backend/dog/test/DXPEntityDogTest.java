@@ -16,17 +16,16 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.DXPEntityDog;
 import com.liferay.osb.asah.backend.model.DXPEntity;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,7 +40,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Matthew Kong
  */
 @ElasticsearchIndex(
-	name = "data-sources", resourcePath = "data-sources.json",
+	name = "data-sources", resourcePath = "data_sources.json",
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
@@ -56,13 +55,13 @@ public class DXPEntityDogTest {
 	public void testGetGroupResultBag() {
 		_testGetResultBag(
 			null, "groups", Arrays.asList("Global", "Guest"), 2, null,
-			_getSort("name", "ASC"));
+			Sort.asc("name"));
 		_testGetResultBag(
-			"414686271857066676", "groups", Arrays.asList("Guest"), 1, null,
-			_getSort("name", "ASC"));
+			"414686271857066676", "groups", Arrays.asList("Global", "Guest"), 2,
+			null, Sort.asc("name"));
 		_testGetResultBag(
 			"414686271857066677", "groups", Collections.emptyList(), 0, null,
-			_getSort("name", "ASC"));
+			Sort.asc("name"));
 	}
 
 	@ElasticsearchIndex(
@@ -74,7 +73,7 @@ public class DXPEntityDogTest {
 		_testGetResultBag(
 			null, "organizations",
 			Arrays.asList("engineering", "marketing", "sales engineering"), 3,
-			null, _getSort("name", "ASC"));
+			null, Sort.asc("name"));
 	}
 
 	@ElasticsearchIndex(
@@ -86,7 +85,7 @@ public class DXPEntityDogTest {
 		_testGetResultBag(
 			null, "organizations",
 			Arrays.asList("engineering", "sales engineering"), 2, "engine",
-			_getSort("name", "ASC"));
+			Sort.asc("name"));
 	}
 
 	@ElasticsearchIndex(
@@ -98,7 +97,7 @@ public class DXPEntityDogTest {
 		_testGetResultBag(
 			null, "roles",
 			Arrays.asList("Administrator", "Guest", "Owner", "Power User"), 4,
-			null, _getSort("name", "ASC"));
+			null, Sort.asc("name"));
 	}
 
 	@ElasticsearchIndex(
@@ -114,21 +113,21 @@ public class DXPEntityDogTest {
 		_testGetResultBag(
 			"414686271857066676", "teams",
 			Arrays.asList("teamA", "teamB", "teamC", "teamD"), 4, null,
-			_getSort("name", "ASC"));
+			Sort.asc("name"));
 		_testGetResultBag(
 			"414686271857066677", "teams", Arrays.asList("teamE"), 1, null,
-			_getSort("name", "ASC"));
+			Sort.asc("name"));
 	}
 
 	@ElasticsearchIndex(
-		name = "user-groups", resourcePath = "user-groups.json",
+		name = "user-groups", resourcePath = "user_groups.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
 	@Test
 	public void testGetUserGroupResultBag() {
 		_testGetResultBag(
 			null, "user-groups", Arrays.asList("Mac Users"), 1, null,
-			_getSort("name", "ASC"));
+			Sort.asc("name"));
 	}
 
 	@ElasticsearchIndex(
@@ -146,10 +145,15 @@ public class DXPEntityDogTest {
 			Arrays.asList(
 				"Bruno Admin", "Bruno Badmin", "Test1 Test1", "Test2 Test2",
 				"Test3 Test3"),
-			5, null, _getSort("name", "ASC"));
+			5, null, Sort.asc("name"));
 		_testGetResultBag(
-			"414686271857066676", "users", Arrays.asList("Test3 Test3"), 1,
-			null, _getSort("name", "ASC"));
+			"414686271857066676", "users",
+			Arrays.asList(
+				"Bruno Admin", "Bruno Badmin", "Test1 Test1", "Test2 Test2"),
+			4, null, Sort.asc("name"));
+		_testGetResultBag(
+			"414686271857066677", "users", Arrays.asList("Test3 Test3"), 1,
+			null, Sort.asc("name"));
 	}
 
 	@ElasticsearchIndex(
@@ -161,9 +165,13 @@ public class DXPEntityDogTest {
 		_testGetResultBag(
 			null, "users",
 			Arrays.asList("Test1 Test1", "Test2 Test2", "Test3 Test3"), 3,
-			"test", _getSort("name", "ASC"));
+			"test", Sort.asc("name"));
 	}
 
+	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
 	@ElasticsearchIndex(
 		name = "users", resourcePath = "users.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
@@ -173,7 +181,11 @@ public class DXPEntityDogTest {
 		_testGetResultBag(
 			null, "users",
 			Arrays.asList("Test1 Test1", "Test2 Test2", "Test3 Test3"), 3,
-			"Test", _getSort("name", "ASC"));
+			"Test", Sort.asc("name"));
+		_testGetResultBag(
+			"414686271857066676", "users",
+			Arrays.asList("Test1 Test1", "Test2 Test2"), 2, "Test",
+			Sort.asc("name"));
 	}
 
 	@ElasticsearchIndex(
@@ -184,21 +196,12 @@ public class DXPEntityDogTest {
 	public void testGetUserResultBagSearchAndSort() {
 		_testGetResultBag(
 			null, "users", Arrays.asList("Bruno Badmin", "Bruno Admin"), 2,
-			"Bruno", _getSort("name", "DESC"));
-	}
-
-	private Map<String, String> _getSort(String column, String type) {
-		Map<String, String> sort = new HashMap<>();
-
-		sort.put("column", column);
-		sort.put("type", type);
-
-		return sort;
+			"Bruno", Sort.desc("name"));
 	}
 
 	private void _testGetResultBag(
 		String channelId, String collectionName, List<String> expectedNames,
-		int expectedTotal, String keywords, Map<String, String> sort) {
+		int expectedTotal, String keywords, Sort sort) {
 
 		ResultBag<? extends DXPEntity> dxpEntityResultBag =
 			_dxpEntityDog.getDXPEntityResultBag(

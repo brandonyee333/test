@@ -66,8 +66,9 @@ public enum FormMetricType implements MetricType {
 
 		_name = name;
 		_fieldName = fieldName;
-		_aggregationName = fieldName;
 		_order = order;
+
+		_aggregationName = fieldName;
 	}
 
 	private static Map<String, FormMetricType> _formMetricTypes =

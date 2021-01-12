@@ -36,10 +36,18 @@ import org.springframework.stereotype.Component;
 public class OSBAsahExtractorBot {
 
 	@Scheduled(fixedDelay = DateUtil.SECOND, initialDelay = DateUtil.SECOND * 5)
-	public void run() {
+	public void processAnalyticsEvents() {
 		try {
 			_analyticsEventsMessageProcessor.processQueuedMessages();
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+	}
 
+	@Scheduled(fixedDelay = DateUtil.SECOND, initialDelay = DateUtil.SECOND * 5)
+	public void processDXPEntities() {
+		try {
 			_dxpEntitiesMessageProcessor.processQueuedMessages();
 		}
 		catch (Exception e) {

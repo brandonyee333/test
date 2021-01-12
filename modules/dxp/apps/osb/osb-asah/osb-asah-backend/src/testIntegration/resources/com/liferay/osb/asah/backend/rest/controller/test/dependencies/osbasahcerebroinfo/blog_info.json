@@ -3,6 +3,9 @@
 		"assetId": "1",
 		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
 		"browserName": "Chrome",
+		"canonicalUrls": [
+			"http://liferay.com"
+		],
 		"channelId": "1",
 		"city": "Recife",
 		"country": "Brazil",
@@ -23,6 +26,9 @@
 		"assetId": "1",
 		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
 		"browserName": "Chrome",
+		"canonicalUrls": [
+			"http://liferay.com"
+		],
 		"channelId": "2",
 		"city": "Recife",
 		"country": "Brazil",
@@ -43,6 +49,9 @@
 		"assetId": "3",
 		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
 		"browserName": "Chrome",
+		"canonicalUrls": [
+			"http://liferay.com"
+		],
 		"channelId": "1",
 		"city": "Recife",
 		"country": "Brazil",
@@ -63,6 +72,9 @@
 		"assetId": "1",
 		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
 		"browserName": "Chrome",
+		"canonicalUrls": [
+			"http://liferay.com"
+		],
 		"channelId": "1",
 		"city": "Recife",
 		"country": "Brazil",
@@ -83,6 +95,9 @@
 		"assetId": "4",
 		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
 		"browserName": "Chrome",
+		"canonicalUrls": [
+			"http://liferay.com"
+		],
 		"channelId": "2",
 		"city": "Recife",
 		"country": "Brazil",

@@ -2,14 +2,14 @@
 	"mappings": {
 		"jobs": {
 			"properties": {
-				"active": {
-					"type": "boolean"
-				},
-				"cronExpression": {
-					"type": "keyword"
+				"createdDate": {
+					"type": "date"
 				},
 				"id": {
 					"type": "keyword"
+				},
+				"lastUpdatedDate": {
+					"type": "date"
 				},
 				"name": {
 					"fields": {
@@ -20,8 +20,17 @@
 					},
 					"type": "keyword"
 				},
+				"osbAsahTaskId": {
+					"type": "keyword"
+				},
 				"parameters": {
 					"type": "object"
+				},
+				"runDataPeriod": {
+					"type": "keyword"
+				},
+				"runFrequency": {
+					"type": "keyword"
 				},
 				"type": {
 					"type": "keyword"
@@ -34,8 +43,8 @@
 			"analyzer": {
 				"folding_analyzer": {
 					"filter": [
-						"lowercase",
-						"asciifolding"
+						"asciifolding",
+						"lowercase"
 					],
 					"tokenizer": "standard",
 					"type": "custom"

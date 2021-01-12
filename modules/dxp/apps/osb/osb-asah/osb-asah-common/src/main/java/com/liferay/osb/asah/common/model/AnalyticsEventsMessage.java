@@ -95,6 +95,10 @@ public class AnalyticsEventsMessage implements Serializable {
 		return _id;
 	}
 
+	public String getProjectId() {
+		return _projectId;
+	}
+
 	public String getProtocolVersion() {
 		return _protocolVersion;
 	}
@@ -134,6 +138,10 @@ public class AnalyticsEventsMessage implements Serializable {
 
 	public void setId(String id) {
 		_id = id;
+	}
+
+	public void setProjectId(String projectId) {
+		_projectId = projectId;
 	}
 
 	public void setProtocolVersion(String protocolVersion) {
@@ -229,6 +237,7 @@ public class AnalyticsEventsMessage implements Serializable {
 	private String _dataSourceId;
 	private List<Event> _events = Collections.emptyList();
 	private String _id;
+	private String _projectId;
 	private String _protocolVersion;
 	private String _userId;
 

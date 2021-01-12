@@ -15,12 +15,14 @@
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.hamcrest.Matchers;
 
@@ -28,8 +30,6 @@ import org.json.JSONArray;
 
 import org.junit.Assert;
 import org.junit.Before;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Vishal Reddy
@@ -41,17 +41,15 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
 		for (String collectionName : _COLLECTION_NAMES) {
 			faroInfoElasticsearchInvoker.add(
 				collectionName,
 				new JSONArray(
 					TestExecutionListenerUtil.replaceVariables(
 						ResourceUtil.readResourceToString(
-							"dependencies/osbasahfaroinfo/" + collectionName +
-								".json",
+							"dependencies/osbasahfaroinfo/" +
+								StringUtils.replace(collectionName, "-", "_") +
+									".json",
 							this))));
 		}
 	}
@@ -109,6 +107,7 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase {
 		}
 	}
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
 	private static final String[] _COLLECTION_NAMES = {
@@ -116,8 +115,5 @@ public abstract class BaseFaroInfoFilterStringConverterHelperTestCase {
 		"individual-segments", "individuals", "interests", "membership-changes",
 		"memberships"
 	};
-
-	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 }

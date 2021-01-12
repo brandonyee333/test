@@ -25,7 +25,7 @@ public class Preference {
 
 	public Preference(JSONObject jsonObject) {
 		_id = jsonObject.getString("id");
-		_key = jsonObject.getString("key");
+		_key = jsonObject.getString("id");
 		_value = jsonObject.getString("value");
 	}
 

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog.helper;
 
+import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Interval;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
@@ -31,7 +33,11 @@ import java.time.ZonedDateTime;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
@@ -42,20 +48,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class MetricHelper {
 
-	public Map<String, Metric> createMetrics(
-		Clock clock, Interval interval, TimeRange timeRange,
-		MetricType metricType) {
+	public HistogramMetricBag createHistogramMetricBag(
+		Clock clock, boolean includePrevious, Interval interval,
+		MetricType metricType, TimeRange timeRange) {
 
 		Map<String, Metric> metrics = new LinkedHashMap<>();
 
-		LocalDateTime localDateTime = LocalDateTime.of(
-			LocalDate.now(clock), LocalTime.MIDNIGHT);
+		LocalDate localDate = timeRange.getEndLocalDate();
 
-		if (!timeRange.getIncludeToday() &&
-			!TimeRange.YESTERDAY.equals(timeRange)) {
-
-			localDateTime = localDateTime.minusDays(1);
-		}
+		LocalDateTime localDateTime = localDate.atStartOfDay();
 
 		if (TimeRange.LAST_24_HOURS.equals(timeRange)) {
 			localDateTime = LocalDateTime.now(clock);
@@ -70,42 +71,40 @@ public class MetricHelper {
 				metrics.put(
 					String.valueOf(periodLocalDateTime),
 					_createMetric(
-						periodLocalDateTime, interval, metricType, timeRange));
+						periodLocalDateTime, i, interval, metricType,
+						timeRange));
 			}
 		}
-		else if (TimeRange.LAST_28_DAYS.equals(timeRange)) {
-			_addMetric(
-				28, interval, localDateTime, metricType, metrics, timeRange);
-		}
-		else if (TimeRange.LAST_30_DAYS.equals(timeRange)) {
-			_addMetric(
-				30, interval, localDateTime, metricType, metrics, timeRange);
-		}
-		else if (TimeRange.LAST_7_DAYS.equals(timeRange)) {
-			_addMetric(
-				7, interval, localDateTime, metricType, metrics, timeRange);
-		}
-		else if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
-			_addMetric(
-				90, interval, localDateTime, metricType, metrics, timeRange);
-		}
 		else if (TimeRange.YESTERDAY.equals(timeRange)) {
-			for (int i = 24; i > 0; i--) {
-				LocalDateTime periodLocalDateTime = localDateTime.minusHours(i);
+			for (int i = 0; i < 24; i++) {
+				LocalDateTime periodLocalDateTime = localDateTime.plusHours(i);
 
 				metrics.put(
 					String.valueOf(periodLocalDateTime),
 					_createMetric(
-						periodLocalDateTime, interval, metricType, timeRange));
+						periodLocalDateTime, i, interval, metricType,
+						timeRange));
 			}
 		}
 		else {
 			_addMetric(
-				timeRange.getRangeKey(), interval, localDateTime, metricType,
-				metrics, timeRange);
+				includePrevious, interval, localDateTime, metricType, metrics,
+				timeRange);
 		}
 
-		return metrics;
+		Set<Map.Entry<String, Metric>> entries = metrics.entrySet();
+
+		Stream<Map.Entry<String, Metric>> stream = entries.stream();
+
+		List<HistogramMetric> histogramMetrics = stream.map(
+			entry -> new HistogramMetric(entry.getKey(), entry.getValue())
+		).collect(
+			Collectors.toList()
+		);
+
+		return new HistogramMetricBag(
+			_isAsymmetricComparison(interval, timeRange), histogramMetrics,
+			histogramMetrics.size());
 	}
 
 	public Map<String, VisitorCohortMetric> createVisitorCohortMetrics(
@@ -172,49 +171,13 @@ public class MetricHelper {
 		return visitorCohortMetrics;
 	}
 
-	public LocalDateTime getPreviousPeriodLocalDateTime(
-		LocalDateTime currentPeriodLocalDateTime, Interval interval,
-		TimeRange timeRange) {
-
-		LocalDateTime previousPeriodLocalDateTime = LocalDateTime.from(
-			currentPeriodLocalDateTime);
-
-		if (TimeRange.LAST_24_HOURS.equals(timeRange)) {
-			return previousPeriodLocalDateTime.minusDays(1);
-		}
-		else if (Interval.DAY.equals(interval)) {
-			return previousPeriodLocalDateTime.minusDays(
-				timeRange.getRangeKey());
-		}
-		else if (Interval.WEEK.equals(interval)) {
-			if (TimeRange.LAST_7_DAYS.equals(timeRange)) {
-				return previousPeriodLocalDateTime.minusWeeks(1);
-			}
-			else if (TimeRange.LAST_28_DAYS.equals(timeRange) ||
-					 TimeRange.LAST_30_DAYS.equals(timeRange)) {
-
-				return previousPeriodLocalDateTime.minusWeeks(4);
-			}
-			else if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
-				return previousPeriodLocalDateTime.minusWeeks(13);
-			}
-		}
-		else if (Interval.MONTH.equals(interval)) {
-			previousPeriodLocalDateTime = previousPeriodLocalDateTime.minusDays(
-				timeRange.getRangeKey() - 1);
-
-			return previousPeriodLocalDateTime.withDayOfMonth(1);
-		}
-
-		return previousPeriodLocalDateTime;
-	}
-
 	private void _addMetric(
-		int days, Interval interval, LocalDateTime localDateTime,
+		boolean includePrevious, Interval interval, LocalDateTime localDateTime,
 		MetricType metricType, Map<String, Metric> metrics,
 		TimeRange timeRange) {
 
-		LocalDate localDate = localDateTime.toLocalDate();
+		int metricsCount = _getMetricsCount(
+			includePrevious, interval, timeRange);
 
 		if (Interval.WEEK.equals(interval)) {
 			if (localDateTime.getDayOfWeek() != DayOfWeek.SUNDAY) {
@@ -222,20 +185,14 @@ public class MetricHelper {
 				localDateTime = localDateTime.with(DayOfWeek.SUNDAY);
 			}
 
-			for (int i = _countWeeks(days, localDate) - 1; i >= 0; i--) {
+			for (int i = metricsCount - 1; i >= 0; i--) {
 				LocalDateTime periodLocalDateTime = localDateTime.minusWeeks(i);
 
-				Metric metric = _createMetric(
-					periodLocalDateTime, interval, metricType, timeRange);
-
-				metric.setPreviousValueKey(
-					_getWeekPreviousValueKey(
-						periodLocalDateTime.toLocalDate(), days));
-
-				metric.setValueKey(
-					_getWeekValueKey(periodLocalDateTime.toLocalDate()));
-
-				metrics.put(String.valueOf(periodLocalDateTime), metric);
+				metrics.put(
+					String.valueOf(periodLocalDateTime),
+					_createMetric(
+						periodLocalDateTime, i, interval, metricType,
+						timeRange));
 			}
 		}
 		else if (Interval.MONTH.equals(interval)) {
@@ -243,21 +200,15 @@ public class MetricHelper {
 				localDateTime = localDateTime.withDayOfMonth(1);
 			}
 
-			for (int i = _countMonths(days, localDate) - 1; i >= 0; i--) {
+			for (int i = metricsCount - 1; i >= 0; i--) {
 				LocalDateTime periodLocalDateTime = localDateTime.minusMonths(
 					i);
 
-				Metric metric = _createMetric(
-					periodLocalDateTime, interval, metricType, timeRange);
-
-				metric.setPreviousValueKey(
-					_getMonthPreviousValueKey(
-						days, periodLocalDateTime.toLocalDate()));
-
-				metric.setValueKey(
-					_getMonthValueKey(periodLocalDateTime.toLocalDate()));
-
-				metrics.put(String.valueOf(periodLocalDateTime), metric);
+				metrics.put(
+					String.valueOf(periodLocalDateTime),
+					_createMetric(
+						periodLocalDateTime, i, interval, metricType,
+						timeRange));
 			}
 		}
 		else {
@@ -267,102 +218,190 @@ public class MetricHelper {
 
 			LocalDateTime endLocalDateTime = timeRange.getEndLocalDateTime();
 
+			long deltaDays = timeRange.getDeltaDays();
+
 			while (!periodLocalDateTime.isAfter(endLocalDateTime)) {
 				metrics.put(
 					String.valueOf(periodLocalDateTime),
 					_createMetric(
-						periodLocalDateTime, interval, metricType, timeRange));
+						periodLocalDateTime, deltaDays, interval, metricType,
+						timeRange));
 
 				periodLocalDateTime = periodLocalDateTime.plusDays(1);
+
+				deltaDays--;
 			}
 		}
 	}
 
-	private int _countMonths(int days, LocalDate localDate) {
+	private int _countMonths(long days, LocalDate localDate) {
 		LocalDate startLocalDate = localDate.minusDays(days - 1);
 
 		return DateUtil.getDeltaMonths(startLocalDate, localDate);
 	}
 
-	private int _countWeeks(int days, LocalDate localDate) {
+	private int _countWeeks(long days, LocalDate localDate) {
 		LocalDate startLocalDate = localDate.minusDays(days - 1);
 
 		return DateUtil.getDeltaWeeks(startLocalDate, localDate);
 	}
 
 	private Metric _createMetric(
-		LocalDateTime currentPeriodLocalDateTime, Interval interval,
-		MetricType metricType, TimeRange timeRange) {
+		LocalDateTime currentPeriodLocalDateTime, long intervalDelta,
+		Interval interval, MetricType metricType, TimeRange timeRange) {
 
 		Metric metric = new Metric(metricType);
 
 		metric.setPreviousValue(0.0);
-
-		LocalDateTime previousPeriodLocalDateTime =
-			getPreviousPeriodLocalDateTime(
-				currentPeriodLocalDateTime, interval, timeRange);
-
-		metric.setPreviousValueKey(previousPeriodLocalDateTime.toString());
-
+		metric.setPreviousValueKey(
+			_getPreviousValueKey(
+				currentPeriodLocalDateTime, intervalDelta, interval,
+				timeRange));
 		metric.setValue(0.0);
-		metric.setValueKey(currentPeriodLocalDateTime.toString());
+		metric.setValueKey(_getValueKey(interval, currentPeriodLocalDateTime));
 
 		return metric;
 	}
 
-	private String _getMonthPreviousValueKey(
-		int days, LocalDate currentLocalDate) {
+	private int _getMetricsCount(
+		boolean includePrevious, Interval interval, TimeRange timeRange) {
 
-		currentLocalDate = currentLocalDate.minusMonths(1);
+		int deltaDays = timeRange.getDeltaDays();
 
-		currentLocalDate = currentLocalDate.minusDays(days - 1);
+		if (Interval.WEEK.equals(interval)) {
+			if (includePrevious) {
+				LocalDate startLocalDate = timeRange.getStartLocalDate();
 
-		LocalDate firstMonthDayLocalDate = currentLocalDate.withDayOfMonth(1);
+				return Integer.max(
+					_countWeeks(deltaDays, timeRange.getEndLocalDate()),
+					_countWeeks(deltaDays, startLocalDate.minusDays(1)));
+			}
 
-		LocalDate lastMonthDayLocalDate = firstMonthDayLocalDate.withDayOfMonth(
-			firstMonthDayLocalDate.lengthOfMonth());
+			return _countWeeks(deltaDays, timeRange.getEndLocalDate());
+		}
+		else if (Interval.MONTH.equals(interval)) {
+			if (includePrevious) {
+				LocalDate startLocalDate = timeRange.getStartLocalDate();
 
-		return firstMonthDayLocalDate + StringPool.SLASH +
-			lastMonthDayLocalDate;
-	}
+				return Integer.max(
+					_countMonths(deltaDays, timeRange.getEndLocalDate()),
+					_countMonths(deltaDays, startLocalDate.minusDays(1)));
+			}
 
-	private String _getMonthValueKey(LocalDate currentLocalDate) {
-		LocalDate firstMonthDayLocalDate = currentLocalDate.withDayOfMonth(1);
-
-		LocalDate lastMonthDayLocalDate = currentLocalDate.withDayOfMonth(
-			firstMonthDayLocalDate.lengthOfMonth());
-
-		if (firstMonthDayLocalDate.isEqual(lastMonthDayLocalDate)) {
-			return String.valueOf(firstMonthDayLocalDate);
+			return _countMonths(deltaDays, timeRange.getEndLocalDate());
 		}
 
-		return firstMonthDayLocalDate + StringPool.SLASH +
-			lastMonthDayLocalDate;
+		return deltaDays;
 	}
 
-	private String _getWeekPreviousValueKey(
-		LocalDate currentLocalDate, int days) {
+	private String _getPreviousValueKey(
+		LocalDateTime currentPeriodLocalDateTime, long intervalDelta,
+		Interval interval, TimeRange timeRange) {
 
-		currentLocalDate = currentLocalDate.minusWeeks(1);
+		if (Interval.WEEK.equals(interval)) {
+			LocalDate currentPeriodStartLocalDate =
+				timeRange.getStartLocalDate();
 
-		currentLocalDate = currentLocalDate.minusDays(days);
+			LocalDate firstWeekdayLocalDate =
+				currentPeriodStartLocalDate.minusDays((intervalDelta * 7) + 1);
 
-		LocalDate firstWeekdayLocalDate = currentLocalDate.with(
-			DayOfWeek.SUNDAY);
+			if (firstWeekdayLocalDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
+				firstWeekdayLocalDate = firstWeekdayLocalDate.minusWeeks(1);
 
-		LocalDate lastWeekdayLocalDate = firstWeekdayLocalDate.plusDays(6);
+				firstWeekdayLocalDate = firstWeekdayLocalDate.with(
+					DayOfWeek.SUNDAY);
+			}
 
-		return firstWeekdayLocalDate + StringPool.SLASH + lastWeekdayLocalDate;
-	}
+			LocalDate lastWeekdayLocalDate = firstWeekdayLocalDate.plusDays(6);
 
-	private String _getWeekValueKey(LocalDate currentLocalDate) {
-		LocalDate lastWeekdayLocalDate = currentLocalDate.plusDays(6);
+			return firstWeekdayLocalDate + StringPool.SLASH +
+				lastWeekdayLocalDate;
+		}
+		else if (Interval.MONTH.equals(interval)) {
+			LocalDate currentPeriodStartLocalDate =
+				timeRange.getStartLocalDate();
 
-		if (currentLocalDate.isEqual(lastWeekdayLocalDate)) {
-			return String.valueOf(currentLocalDate);
+			LocalDate firstMonthDayLocalDate =
+				currentPeriodStartLocalDate.minusDays(1);
+
+			firstMonthDayLocalDate = firstMonthDayLocalDate.minusMonths(
+				intervalDelta);
+
+			firstMonthDayLocalDate = firstMonthDayLocalDate.withDayOfMonth(1);
+
+			LocalDate lastMonthDayLocalDate =
+				firstMonthDayLocalDate.withDayOfMonth(
+					firstMonthDayLocalDate.lengthOfMonth());
+
+			return firstMonthDayLocalDate + StringPool.SLASH +
+				lastMonthDayLocalDate;
 		}
 
-		return currentLocalDate + StringPool.SLASH + lastWeekdayLocalDate;
+		LocalDateTime previousPeriodLocalDateTime = LocalDateTime.from(
+			currentPeriodLocalDateTime);
+
+		previousPeriodLocalDateTime = previousPeriodLocalDateTime.minusDays(
+			timeRange.getDeltaDays());
+
+		return previousPeriodLocalDateTime.toString();
+	}
+
+	private String _getValueKey(
+		Interval interval, LocalDateTime localDateTime) {
+
+		if (Interval.WEEK.equals(interval)) {
+			LocalDate startLocalDate = localDateTime.toLocalDate();
+
+			LocalDate endLocalDate = startLocalDate.plusDays(6);
+
+			return startLocalDate + StringPool.SLASH + endLocalDate;
+		}
+		else if (Interval.MONTH.equals(interval)) {
+			LocalDate localDate = localDateTime.toLocalDate();
+
+			LocalDate startLocalDate = localDate.withDayOfMonth(1);
+			LocalDate endLocalDate = localDate.withDayOfMonth(
+				localDate.lengthOfMonth());
+
+			return startLocalDate + StringPool.SLASH + endLocalDate;
+		}
+
+		return localDateTime.toString();
+	}
+
+	private boolean _isAsymmetricComparison(
+		Interval interval, TimeRange timeRange) {
+
+		int deltaDays = timeRange.getDeltaDays();
+
+		LocalDate startLocalDate = timeRange.getStartLocalDate();
+
+		if (Interval.WEEK.equals(interval)) {
+			int currentNumOfBins = _countWeeks(
+				deltaDays, timeRange.getEndLocalDate());
+			int previousNumOfBins = _countWeeks(
+				deltaDays, startLocalDate.minusDays(1));
+
+			if (previousNumOfBins > currentNumOfBins) {
+				return true;
+			}
+
+			return false;
+		}
+		else if (Interval.MONTH.equals(interval)) {
+			int currentNumOfBins = _countMonths(
+				deltaDays, timeRange.getEndLocalDate());
+			int previousNumOfBins = _countMonths(
+				deltaDays, startLocalDate.minusDays(1));
+
+			if (previousNumOfBins > currentNumOfBins) {
+				return true;
+			}
+
+			return false;
+		}
+
+		return false;
 	}
 
 }

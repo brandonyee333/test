@@ -14,22 +14,20 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.page;
 
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.util.MapUtil;
-import com.liferay.osb.asah.stream.curator.bot.nanite.BaseStreamNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.page.Page;
 import com.liferay.osb.asah.stream.curator.model.page.PageScroll;
-
-import java.net.URI;
-
-import java.nio.charset.StandardCharsets;
 
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Objects;
@@ -44,17 +42,20 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
+
+import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author Inácio Nery
  */
 @Component
-public class PageNanite extends BaseStreamNanite<Page> {
+public class PageNanite extends BaseNanite<Page> {
 
 	@Override
 	public String getCollectionName() {
@@ -85,6 +86,7 @@ public class PageNanite extends BaseStreamNanite<Page> {
 
 			oldPage.addInteractionDates(newPage.getInteractionDates());
 			oldPage.addPageScrolls(newPage.getPageScrolls());
+			oldPage.addReads(newPage.getReads());
 			oldPage.setDirectAccess(directAccessDates.size());
 			oldPage.setIndirectAccess(indirectAccessDates.size());
 
@@ -129,8 +131,38 @@ public class PageNanite extends BaseStreamNanite<Page> {
 	protected void setModelCustomProperties(
 		AnalyticsEvent analyticsEvent, Page page) {
 
-		if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
-			Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
+		if (Objects.equals(analyticsEvent.getApplicationId(), "Form") &&
+			Objects.equals(analyticsEvent.getEventId(), "formSubmitted")) {
+
+			page.addFormSubmission(1);
+
+			page.addInteractionDate(analyticsEvent.getEventDate());
+		}
+		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
+				 Objects.equals(analyticsEvent.getEventId(), "ctaClicked")) {
+
+			page.addCTAClicks(1);
+
+			page.addInteractionDate(analyticsEvent.getEventDate());
+		}
+		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
+				 Objects.equals(
+					 analyticsEvent.getEventId(), "pageDepthReached")) {
+
+			int depth = _getDepth(analyticsEvent.getEventProperties());
+
+			page.addPageScroll(
+				new PageScroll(depth, analyticsEvent.getEventDate()));
+
+			page.addInteractionDate(analyticsEvent.getEventDate());
+		}
+		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
+				 Objects.equals(analyticsEvent.getEventId(), "pageRead")) {
+
+			page.addReads(1);
+		}
+		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
+				 Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
 
 			String referrer = MapUtil.getString(
 				analyticsEvent.getContext(), "referrer", "");
@@ -149,31 +181,6 @@ public class PageNanite extends BaseStreamNanite<Page> {
 			page.setExits(0);
 			page.setViews(1);
 		}
-		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
-				 Objects.equals(
-					 analyticsEvent.getEventId(), "pageDepthReached")) {
-
-			int depth = _getDepth(analyticsEvent.getEventProperties());
-
-			page.addPageScroll(
-				new PageScroll(depth, analyticsEvent.getEventDate()));
-
-			page.addInteractionDate(analyticsEvent.getEventDate());
-		}
-		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
-				 Objects.equals(analyticsEvent.getEventId(), "ctaClicked")) {
-
-			page.addCTAClicks(1);
-
-			page.addInteractionDate(analyticsEvent.getEventDate());
-		}
-		else if (Objects.equals(analyticsEvent.getApplicationId(), "Form") &&
-				 Objects.equals(analyticsEvent.getEventId(), "formSubmitted")) {
-
-			page.addFormSubmission(1);
-
-			page.addInteractionDate(analyticsEvent.getEventDate());
-		}
 		else {
 			page.addInteractionDate(analyticsEvent.getEventDate());
 		}
@@ -189,7 +196,7 @@ public class PageNanite extends BaseStreamNanite<Page> {
 		double interactionScore = _computeInteractionScore(page);
 		double viewScore = _computeViewScore(page);
 
-		return (interactionScore * 4 + viewScore) / 5.0;
+		return ((interactionScore * 4) + viewScore) / 5.0;
 	}
 
 	private double _computeFormScore(Page page) {
@@ -216,7 +223,8 @@ public class PageNanite extends BaseStreamNanite<Page> {
 		}
 
 		double score =
-			scrollSpeedScore + scrollDepthScore + readTimeScore + 3 * formScore;
+			scrollSpeedScore + scrollDepthScore + readTimeScore +
+				(3 * formScore);
 
 		return score / 6.0;
 	}
@@ -328,6 +336,29 @@ public class PageNanite extends BaseStreamNanite<Page> {
 		);
 	}
 
+	private Set<String> _getSearchQueryStrings() {
+		Preference preference = _faroInfoPreferenceDog.getPreference(
+			"search-query-strings");
+
+		Set<String> searchQueryStrings = _searchQueryStringsMap.get(
+			preference.getValue());
+
+		if (searchQueryStrings != null) {
+			return searchQueryStrings;
+		}
+
+		searchQueryStrings = JSONUtil.toStringSet(
+			new JSONArray(preference.getValue()));
+
+		searchQueryStrings.add("q");
+
+		_searchQueryStringsMap.clear();
+
+		_searchQueryStringsMap.put(preference.getValue(), searchQueryStrings);
+
+		return searchQueryStrings;
+	}
+
 	private Page _setPageEngagementScore(Page page) {
 		double enagementScore = _computeEngagementScore(page);
 
@@ -347,15 +378,24 @@ public class PageNanite extends BaseStreamNanite<Page> {
 					url.indexOf("http", url.indexOf("http") + 1));
 			}
 
-			List<NameValuePair> nameValuePairs = URLEncodedUtils.parse(
-				new URI(url), StandardCharsets.UTF_8);
+			UriComponentsBuilder uriComponentsBuilder =
+				UriComponentsBuilder.fromHttpUrl(url);
 
-			for (NameValuePair nameValuePair : nameValuePairs) {
-				String name = nameValuePair.getName();
+			UriComponents uriComponents = uriComponentsBuilder.build();
 
-				if (name.equals("q")) {
-					page.setSearchTerm(nameValuePair.getValue());
+			MultiValueMap<String, String> parameters =
+				uriComponents.getQueryParams();
+
+			Set<String> searchQueryStrings = _getSearchQueryStrings();
+
+			for (String searchQueryString : searchQueryStrings) {
+				String searchTerm = parameters.getFirst(searchQueryString);
+
+				if (searchTerm == null) {
+					continue;
 				}
+
+				page.setSearchTerm(searchTerm);
 			}
 		}
 		catch (Exception e) {
@@ -389,7 +429,13 @@ public class PageNanite extends BaseStreamNanite<Page> {
 			}
 		};
 
+	@Autowired
+	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
+
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
 	private MessageSubscriber _messageSubscriber;
+
+	private final Map<String, Set<String>> _searchQueryStringsMap =
+		new HashMap<>();
 
 }

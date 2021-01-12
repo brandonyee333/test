@@ -1,6 +1,7 @@
 [
 	{
 		"channelId": "123",
+		"clientIP": "127.0.0.1",
 		"context": {
 			"description": "This is the Liferay Analytics JS client test page.",
 			"keywords": "Liferay, Analytics, Test, Javascript",
@@ -21,6 +22,6 @@
 			}
 		],
 		"protocolVersion": "1.0",
-		"userId": "id-i4xbdldy1af"
+		"userId": "aedfa915-c7a1-4309-abcf-024e247d414c"
 	}
 ]

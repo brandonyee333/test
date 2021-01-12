@@ -183,8 +183,8 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 	}
 
 	private JSONObject _getDataSourceAuthorJSONObject(String dataSourceId) {
-		JSONObject dataSourceJSONObject = elasticsearchInvoker.get(
-			"data-sources", dataSourceId);
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		return JSONUtil.put(
 			"id", dataSourceId
@@ -194,8 +194,8 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 	}
 
 	private String _getEmailDataSourceFieldName(String dataSourceId) {
-		JSONObject dataSourceJSONObject = elasticsearchInvoker.fetch(
-			"data-sources", dataSourceId);
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		if (dataSourceJSONObject == null) {
 			return null;

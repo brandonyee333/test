@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.storage.impl;
 
+import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
@@ -21,18 +22,23 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.nio.file.Files;
 
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.apache.commons.logging.Log;
@@ -47,11 +53,84 @@ import org.springframework.stereotype.Component;
 @ConditionalOnGoogleApplicationCredentials
 public class GoogleStorageArchiver {
 
-	public void archiveAsync(String bucket, File file) {
-		_executorService.submit(() -> _archive(bucket, file));
+	public void archiveAsync(
+		String bucket, String bucketFolder, File file, String fileName) {
+
+		_executorService.submit(
+			() -> _archive(bucket, bucketFolder, file, fileName));
 	}
 
-	private void _archive(String bucket, File file) {
+	public File readSparkJobResult(
+			String bucket, String bucketFolder, Date sparkJobResultDateAfter,
+			String sparkJobResultPathPrefix)
+		throws Exception {
+
+		BlobId successBlobId = BlobId.of(
+			bucket,
+			_getBlobName(bucketFolder, sparkJobResultPathPrefix + "/_SUCCESS"));
+
+		Blob successBlob = _storage.get(successBlobId);
+
+		if ((successBlob == null) || !successBlob.exists()) {
+			_log.error("_SUCCESS file missing");
+
+			return null;
+		}
+
+		if ((sparkJobResultDateAfter != null) &&
+			(sparkJobResultDateAfter.getTime() > successBlob.getCreateTime())) {
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					String.format(
+						"Success blob '%s' is older than the requested date %s",
+						successBlob.getName(), sparkJobResultDateAfter));
+			}
+
+			return null;
+		}
+
+		Page<Blob> blobs = _storage.list(
+			bucket,
+			Storage.BlobListOption.prefix(
+				_getBlobName(bucketFolder, sparkJobResultPathPrefix)));
+
+		String tempFileName = _createTempFileName(".zip", "export");
+
+		ZipOutputStream zipOutputStream = new ZipOutputStream(
+			new FileOutputStream(tempFileName));
+
+		File file = new File("export.json");
+
+		zipOutputStream.putNextEntry(new ZipEntry(file.getName()));
+
+		for (Blob blob : blobs.iterateAll()) {
+			String blobName = blob.getName();
+
+			if (!blobName.endsWith(".json")) {
+				continue;
+			}
+
+			try {
+				byte[] bytes = blob.getContent();
+
+				zipOutputStream.write(bytes, 0, bytes.length);
+			}
+			catch (IOException ioe) {
+				_log.error(ioe.getMessage(), ioe);
+			}
+		}
+
+		zipOutputStream.closeEntry();
+
+		zipOutputStream.close();
+
+		return new File(tempFileName);
+	}
+
+	private void _archive(
+		String bucket, String bucketFolder, File file, String fileName) {
+
 		byte[] content = null;
 
 		try {
@@ -65,7 +144,8 @@ public class GoogleStorageArchiver {
 		}
 
 		Blob blob = _uploadBlob(
-			0, _buildBlobInfo(bucket, file.getName()), content);
+			0, _buildBlobInfo(bucket, _getBlobName(bucketFolder, fileName)),
+			content);
 
 		if (blob == null) {
 			_log.error(
@@ -90,13 +170,23 @@ public class GoogleStorageArchiver {
 	}
 
 	private BlobInfo _buildBlobInfo(String bucket, String fileName) {
-		String objectName = String.format(
-			"%s/%s", ServiceConstants.LCP_PROJECT_ID, fileName);
-
 		BlobInfo.Builder builder = BlobInfo.newBuilder(
-			BlobId.of(bucket, objectName));
+			BlobId.of(bucket, fileName));
 
 		return builder.build();
+	}
+
+	private String _createTempFileName(String extension, String prefix) {
+		StringBuilder sb = new StringBuilder(7);
+
+		sb.append(System.getProperty(_TMP_DIR));
+		sb.append(File.separator);
+		sb.append(prefix);
+		sb.append("-");
+		sb.append(System.currentTimeMillis());
+		sb.append(extension);
+
+		return sb.toString();
 	}
 
 	@PreDestroy
@@ -112,13 +202,35 @@ public class GoogleStorageArchiver {
 		}
 	}
 
+	private String _getBlobName(String bucketFolder, String fileName) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(ProjectIdThreadLocal.getProjectId());
+
+		if (bucketFolder != null) {
+			sb.append("/");
+			sb.append(bucketFolder);
+		}
+
+		if (!fileName.startsWith("/")) {
+			sb.append("/");
+		}
+
+		sb.append(fileName);
+
+		return sb.toString();
+	}
+
+	@PostConstruct
+	private void _init() {
+		StorageOptions storageOptions = StorageOptions.getDefaultInstance();
+
+		_storage = storageOptions.getService();
+	}
+
 	private Blob _uploadBlob(int attempt, BlobInfo blobInfo, byte[] content) {
 		try {
-			StorageOptions storageOptions = StorageOptions.getDefaultInstance();
-
-			Storage storage = storageOptions.getService();
-
-			return storage.create(blobInfo, content);
+			return _storage.create(blobInfo, content);
 		}
 		catch (StorageException se) {
 			_log.error(
@@ -135,10 +247,13 @@ public class GoogleStorageArchiver {
 		return null;
 	}
 
+	private static final String _TMP_DIR = "java.io.tmpdir";
+
 	private static final Log _log = LogFactory.getLog(
 		GoogleStorageArchiver.class);
 
 	private final ExecutorService _executorService =
 		Executors.newSingleThreadExecutor();
+	private Storage _storage;
 
 }

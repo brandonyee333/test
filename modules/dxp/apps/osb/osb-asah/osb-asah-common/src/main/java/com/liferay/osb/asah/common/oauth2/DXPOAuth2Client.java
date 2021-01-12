@@ -116,7 +116,7 @@ public class DXPOAuth2Client extends BaseOAuth2Client {
 		}
 
 		public boolean isExpired() {
-			if (System.currentTimeMillis() > _expirationTime) {
+			if (System.currentTimeMillis() >= (_expirationTime - 10000)) {
 				return true;
 			}
 

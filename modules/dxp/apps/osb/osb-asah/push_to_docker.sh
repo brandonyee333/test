@@ -2,9 +2,10 @@
 
 CURRENT_DATE=$(date)
 GIT_HASH=$(git rev-parse --short=7 HEAD)
+PREVIOUS_GIT_HASH=${1}
 
 function build_and_push_docker_images {
-	if [[ $(docker images -q liferaycloud/com-liferay-osb-asah-private 2> /dev/null) ]]
+	if [ "$(docker images -q liferaycloud/com-liferay-osb-asah-private 2> /dev/null)" ]
 	then
 		echo ""
 		echo "Removing local images."
@@ -14,7 +15,7 @@ function build_and_push_docker_images {
 
 	for file_name in `ls`
 	do
-		if [ ${file_name} == "osb-asah-dxp-server" ] ||
+		if [ -z "$(ls -A ${file_name}/.wedeploy-profile-* 2> /dev/null)" ] ||
 		   [ ! -e ${file_name}/Dockerfile ]
 		then
 			continue
@@ -40,20 +41,49 @@ function build_docker_image {
 	echo "Building ${docker_image_tag}."
 	echo ""
 
-	if [[ ${file_name} == osb-asah-backend ]] ||
-	   [[ ${file_name} == osb-asah-batch-curator ]] ||
-	   [[ ${file_name} == osb-asah-dxp-extractor ]] ||
-	   [[ ${file_name} == osb-asah-extractor ]] ||
-	   [[ ${file_name} == osb-asah-publisher ]] ||
-	   [[ ${file_name} == osb-asah-salesforce-extractor ]] ||
-	   [[ ${file_name} == osb-asah-stream-curator ]] ||
-	   [[ ${file_name} == osb-asah-upgrade ]]
+	if [ ${file_name} == osb-asah-backend ] ||
+	   [ ${file_name} == osb-asah-batch-curator ] ||
+	   [ ${file_name} == osb-asah-dxp-extractor ] ||
+	   [ ${file_name} == osb-asah-extractor ] ||
+	   [ ${file_name} == osb-asah-publisher ] ||
+	   [ ${file_name} == osb-asah-salesforce-extractor ] ||
+	   [ ${file_name} == osb-asah-stream-curator ] ||
+	   [ ${file_name} == osb-asah-upgrade ]
 	then
+		cp ~/.asah/client.zip ${file_name}/build/client.zip
+
+		echo "" >> ${file_name}/Dockerfile
+		echo "COPY ./build/client.zip client.zip" >> ${file_name}/Dockerfile
+		echo "RUN unzip client.zip" >> ${file_name}/Dockerfile
+
 		cp ~/.asah/gcp_credentials.json ${file_name}/build/gcp_credentials.json
 
 		echo "" >> ${file_name}/Dockerfile
 		echo "COPY ./build/gcp_credentials.json gcp_credentials.json" >> ${file_name}/Dockerfile
 		echo "ENV GOOGLE_APPLICATION_CREDENTIALS=/root/gcp_credentials.json" >> ${file_name}/Dockerfile
+
+		echo "" >> ${file_name}/Dockerfile
+		echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
+		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
+	elif [ ${file_name} == osb-asah-elasticsearch-data-node ] ||
+		   [ ${file_name} == osb-asah-elasticsearch-master-node ]
+	then
+		cp ~/.asah/server.zip ${file_name}/build/server.zip
+
+		echo "" >> ${file_name}/Dockerfile
+		echo "COPY --chown=elasticsearch:root server.zip /certs/" >> ${file_name}/Dockerfile
+		echo "RUN mkdir /usr/share/elasticsearch/config/certificates && unzip /certs/server.zip -d /usr/share/elasticsearch/config/certificates" >> ${file_name}/Dockerfile
+	elif [ ${file_name} == osb-asah-monolith ]
+	then
+		cp ~/.asah/client.zip ${file_name}/build/client.zip
+
+		echo "" >> ${file_name}/Dockerfile
+		echo "COPY ./build/client.zip client.zip" >> ${file_name}/Dockerfile
+		echo "RUN unzip client.zip" >> ${file_name}/Dockerfile
+
+		echo "" >> ${file_name}/Dockerfile
+		echo "ENV OSB_FARO_FRONTEND_URL=https://analytics.liferay.com" >> ${file_name}/Dockerfile
+		echo "ENV SPRING_PROFILES_ACTIVE=prod" >> ${file_name}/Dockerfile
 	fi
 
 	docker build \
@@ -67,9 +97,23 @@ function build_docker_image {
 }
 
 function check_repository {
-	if [[ ! -f ~/.asah/gcp_credentials.json ]]
+	if [ ! -f ~/.asah/client.zip ]
+	then
+		echo "${HOME}/.asah/client.zip does not exist.";
+
+		exit
+	fi
+
+	if [ ! -f ~/.asah/gcp_credentials.json ]
 	then
 		echo "${HOME}/.asah/gcp_credentials.json does not exist.";
+
+		exit
+	fi
+
+	if [ ! -f ~/.asah/server.zip ]
+	then
+		echo "${HOME}/.asah/server.zip does not exist.";
 
 		exit
 	fi
@@ -129,7 +173,7 @@ function generate_wedeploy_profile {
 	then
 		sed "s@\"id\"@\"image\": \"$(get_docker_image_tag ${file_name})\", \"id\"@" .wedeploy_profiles/${dir_name}/${file_name}/LCP.json
 
-		python -m json.tool .wedeploy_profiles/${dir_name}/${file_name}/LCP.json > .wedeploy_profiles/${dir_name}/${file_name}/LCP.json.formatted
+		python -m json.tool --sort-keys .wedeploy_profiles/${dir_name}/${file_name}/LCP.json > .wedeploy_profiles/${dir_name}/${file_name}/LCP.json.formatted
 
 		mv .wedeploy_profiles/${dir_name}/${file_name}/LCP.json.formatted .wedeploy_profiles/${dir_name}/${file_name}/LCP.json
 
@@ -146,26 +190,43 @@ function generate_wedeploy_profiles {
 
 	for file_name in `ls`
 	do
-		if [ ! -e ${file_name}/LCP.json ]
+		local pattern="${file_name}/.wedeploy-*"
+
+		local markers=(${pattern})
+
+		local marker=${markers[0]}
+
+		if [ ! -f ${marker} ]
 		then
 			continue
 		fi
 
-		if [[ ${file_name} == osb-asah-backend ]] ||
-		   [[ ${file_name} == osb-asah-batch-curator ]] ||
-		   [[ ${file_name} == osb-asah-dxp-extractor ]] ||
-		   [[ ${file_name} == osb-asah-extractor ]] ||
-		   [[ ${file_name} == osb-asah-publisher ]] ||
-		   [[ ${file_name} == osb-asah-queue ]] ||
-		   [[ ${file_name} == osb-asah-redis ]] ||
-		   [[ ${file_name} == osb-asah-salesforce-extractor ]] ||
-		   [[ ${file_name} == osb-asah-stream-curator ]] ||
-		   [[ ${file_name} == osb-asah-upgrade ]]
+		generate_wedeploy_profile ${file_name} ${marker##*.wedeploy-profile-}
+
+		if [ ! ${PREVIOUS_GIT_HASH} ] ||
+		   [ $(basename ${marker}) != ".wedeploy-profile-customer" ]
 		then
-			generate_wedeploy_profile ${file_name} customer
-		elif [[ ${file_name} == osb-asah-monolith ]]
+			continue;
+		fi
+
+		if [ $(git diff ${PREVIOUS_GIT_HASH} ${file_name} | wc -l) -gt 0 ]
 		then
-			generate_wedeploy_profile ${file_name} customer-trial
+			generate_wedeploy_profile ${file_name} customer-upgrade
+
+			continue;
+		fi
+
+		if [ ! -f ${file_name}/build.gradle ]
+		then
+			continue;
+		fi
+
+		local file_content=$(<${file_name}/build.gradle)
+
+		if [ $(git diff ${PREVIOUS_GIT_HASH} osb-asah-common | wc -l) -gt 0 ] &&
+		   [[ ${file_content} == *\":dxp:apps:osb:osb-asah:osb-asah-common\"* ]]
+		then
+			generate_wedeploy_profile ${file_name} customer-upgrade
 		fi
 	done
 
@@ -185,7 +246,7 @@ function get_docker_image_tag {
 function gradlew {
 	./gradlew "$@"
 
-	if [[ $? -ne 0 ]]
+	if [ $? -ne 0 ]
 	then
 		exit 1
 	fi

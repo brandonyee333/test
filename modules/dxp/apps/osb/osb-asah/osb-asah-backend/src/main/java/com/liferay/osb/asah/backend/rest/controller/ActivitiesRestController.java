@@ -18,9 +18,9 @@ import com.liferay.osb.asah.backend.rest.response.ActivitiesAssetTransformationJ
 import com.liferay.osb.asah.backend.rest.response.ActivitiesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
+import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,9 +55,7 @@ public class ActivitiesRestController extends BaseRestController {
 		return toItemGetResponse("activities", id);
 	}
 
-	@Cacheable(
-		condition = "!#includeToday", value = "getActivityTransformations"
-	)
+	@Cacheable
 	@GetMapping(params = "apply")
 	public String getActivityTransformations(
 			@RequestParam String apply,
@@ -65,6 +63,8 @@ public class ActivitiesRestController extends BaseRestController {
 				String filterString,
 			@RequestParam(defaultValue = "true") boolean includeToday,
 			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(required = false) String rangeEnd,
+			@RequestParam(required = false) String rangeStart,
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {
 
@@ -74,7 +74,7 @@ public class ActivitiesRestController extends BaseRestController {
 				filterString, _faroInfoActivitiesFilterStringConverterHelper),
 			size, "day",
 			new ActivitiesHistogramTransformationJSONArrayFunction(
-				includeToday),
+				includeToday, rangeEnd, rangeStart),
 			"activity-transformations");
 	}
 

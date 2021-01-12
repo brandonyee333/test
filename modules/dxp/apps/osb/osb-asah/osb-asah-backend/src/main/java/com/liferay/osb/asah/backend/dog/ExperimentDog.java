@@ -29,35 +29,40 @@ import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.backend.model.Goal;
 import com.liferay.osb.asah.backend.model.GoalMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
+import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.PageMetricType;
-import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.ExperimentMetricsBag;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
+import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.VariantMetrics;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.IOException;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -71,9 +76,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
 
 import org.json.JSONObject;
 
@@ -137,13 +141,15 @@ public class ExperimentDog {
 			"experiments", _faroInfoElasticsearchInvoker,
 			_buildExperimentSearchSourceBuilder(experimentId));
 
-		if (searchHits.getTotalHits() != 1) {
+		long totalHitsCount = HitsUtil.getTotalHitsCount(searchHits);
+
+		if (totalHitsCount != 1) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
 						"Unable to retrieve experiment for the ID %s. Total " +
 							"hits returned %d.",
-						experimentId, searchHits.getTotalHits()));
+						experimentId, totalHitsCount));
 			}
 
 			return null;
@@ -224,13 +230,12 @@ public class ExperimentDog {
 	}
 
 	public ResultBag<Experiment> getExperimentResultBag(
-		String channelId, FieldSortBuilder fieldSortBuilder, String keywords,
-		int size, int start) {
+		String channelId, String keywords, int size, Sort sort, int start) {
 
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"experiments", _faroInfoElasticsearchInvoker,
 			DogUtil.buildSearchSourceBuilder(
-				fieldSortBuilder,
+				SortBuilderUtil.fieldSort(sort),
 				_buildKeywordsQueryBuilder(channelId, keywords), size, start));
 
 		return DogUtil.createResultBag(Experiment.class, searchHits);
@@ -249,13 +254,18 @@ public class ExperimentDog {
 			{
 				setExperimentId(experimentId);
 				setTimeRange(
-					_getTimeRange(experiment.getStartedDateLocalDateTime()));
+					_getTimeRange(
+						experiment.getStartedDateLocalDateTime(),
+						ZoneId.of(getTimeZoneId())));
 				setVariantId(variantId);
 			}
 		};
 
-		return _histogramDog.getHistogramMetrics(
-			false, PageMetricType.SESSIONS, searchQueryContext);
+		HistogramMetricBag histogramMetricBag =
+			_histogramDog.getHistogramMetricBag(
+				false, PageMetricType.SESSIONS, searchQueryContext);
+
+		return histogramMetricBag.getMetrics();
 	}
 
 	public Long getExperimentSessions(String experimentId) {
@@ -425,7 +435,7 @@ public class ExperimentDog {
 
 		cardinalityAggregationBuilder.field("sessionId");
 
-		cardinalityAggregationBuilder.precisionThreshold(1000);
+		cardinalityAggregationBuilder.precisionThreshold(2000);
 
 		searchSourceBuilder.aggregation(cardinalityAggregationBuilder);
 
@@ -447,7 +457,7 @@ public class ExperimentDog {
 
 		cardinalityAggregationBuilder.field("individualId");
 
-		cardinalityAggregationBuilder.precisionThreshold(1000);
+		cardinalityAggregationBuilder.precisionThreshold(2000);
 
 		searchSourceBuilder.aggregation(cardinalityAggregationBuilder);
 
@@ -488,13 +498,15 @@ public class ExperimentDog {
 			"experiments", _faroInfoElasticsearchInvoker,
 			_buildExperimentMetricsSearchSourceBuilder(experimentId));
 
-		if (searchHits.getTotalHits() != 1) {
+		long totalHitsCount = HitsUtil.getTotalHitsCount(searchHits);
+
+		if (totalHitsCount != 1) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
 						"Unable to retrieve experiment metrics for " +
 							"experiment ID %s. Returned %d total hits.",
-						experimentId, searchHits.getTotalHits()));
+						experimentId, totalHitsCount));
 			}
 
 			return null;
@@ -516,14 +528,11 @@ public class ExperimentDog {
 			return experiment.getChannelId();
 		}
 
-		JSONObject dataSourceJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"data-sources", experiment.getDataSourceId());
+		String channelId = _faroInfoDataSourceDog.getChannelId(
+			experiment.getDataSourceId());
 
-		if ((dataSourceJSONObject != null) &&
-			StringUtils.isNotEmpty(
-				dataSourceJSONObject.optString("channelId"))) {
-
-			return dataSourceJSONObject.optString("channelId");
+		if (channelId != null) {
+			return channelId;
 		}
 
 		throw new OSBAsahException(
@@ -538,20 +547,21 @@ public class ExperimentDog {
 			experimentStartedDate.toInstant(), Instant.now());
 	}
 
-	private TimeRange _getTimeRange(LocalDateTime startedDateLocalDateTime) {
-		LocalDate startLocalDate = LocalDate.now(ZoneOffset.UTC);
+	private TimeRange _getTimeRange(
+		LocalDateTime startedDateLocalDateTime, ZoneId zoneId) {
+
+		ZonedDateTime startZonedDateTime = ZonedDateTime.now(zoneId);
 
 		if (startedDateLocalDateTime != null) {
-			startLocalDate = startedDateLocalDateTime.toLocalDate();
+			ZonedDateTime startedDateZoneDateTime =
+				startedDateLocalDateTime.atZone(ZoneOffset.UTC);
+
+			startZonedDateTime = startedDateZoneDateTime.withZoneSameInstant(
+				zoneId);
 		}
 
-		return TimeRange.of(startLocalDate);
-	}
-
-	@PostConstruct
-	private void _init() {
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
+		return TimeRange.of(
+			LocalDate.now(zoneId), startZonedDateTime.toLocalDate());
 	}
 
 	private void _setExperimentSettings(
@@ -694,11 +704,12 @@ public class ExperimentDog {
 	private DXPClient _dxpClient;
 
 	@Autowired
-	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
-	@Autowired
 	private ExperimentMetricDog _experimentMetricDog;
 
+	@Autowired
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired

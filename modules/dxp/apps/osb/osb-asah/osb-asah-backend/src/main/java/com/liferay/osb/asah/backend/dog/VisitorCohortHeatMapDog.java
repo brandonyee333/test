@@ -32,7 +32,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.temporal.WeekFields;
 
 import java.util.ArrayList;
@@ -63,8 +62,6 @@ import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.pipeline.InternalSimpleValue;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-
-import org.joda.time.DateTimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -201,9 +198,6 @@ public class VisitorCohortHeatMapDog {
 			throw new RuntimeException("Invalid interval: " + interval);
 		}
 
-		ZonedDateTime zonedDateTime = startLocalDateTime.atZone(
-			ZoneId.of(searchQueryContext.getTimeZoneId()));
-
 		searchQueryContext.setDataSourceId(searchQueryContext.getAssetId());
 
 		return _searchQueryHelper.createSearchSourceBuilder(
@@ -212,7 +206,9 @@ public class VisitorCohortHeatMapDog {
 				QueryBuilders.rangeQuery(
 					"eventDate"
 				).gte(
-					String.valueOf(zonedDateTime.toLocalDate())
+					String.valueOf(startLocalDateTime.toLocalDate())
+				).timeZone(
+					searchQueryContext.getTimeZoneId()
 				)),
 			searchQueryContext);
 	}
@@ -385,8 +381,7 @@ public class VisitorCohortHeatMapDog {
 		}
 
 		dateHistogramAggregationBuilder.format("8u-MM-dd");
-		dateHistogramAggregationBuilder.timeZone(
-			DateTimeZone.forID(timeZoneId));
+		dateHistogramAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
 
 		return dateHistogramAggregationBuilder;
 	}
