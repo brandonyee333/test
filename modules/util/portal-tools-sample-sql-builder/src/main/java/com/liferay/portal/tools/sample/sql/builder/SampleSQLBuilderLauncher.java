@@ -71,15 +71,6 @@ public class SampleSQLBuilderLauncher {
 
 		Collections.addAll(urls, javaClassPathURLs);
 
-		_populateBundledClassPath(classLoader, urls);
-
-		return urls.toArray(new URL[0]);
-	}
-
-	private static void _populateBundledClassPath(
-			ClassLoader classLoader, Set<URL> urls)
-		throws Exception {
-
 		URL url = classLoader.getResource("lib");
 
 		try (FileSystem fileSystem = FileSystems.newFileSystem(
@@ -98,6 +89,8 @@ public class SampleSQLBuilderLauncher {
 					}
 				});
 		}
+
+		return urls.toArray(new URL[0]);
 	}
 
 }
