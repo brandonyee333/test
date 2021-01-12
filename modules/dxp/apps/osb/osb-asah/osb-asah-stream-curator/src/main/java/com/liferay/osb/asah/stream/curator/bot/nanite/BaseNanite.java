@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
 import com.liferay.osb.asah.stream.curator.model.BaseAssetModel;
@@ -88,7 +89,13 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 				break;
 			}
 
-			saveModels(getModels(analyticsEvents));
+			Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+			stream.collect(
+				Collectors.groupingBy(AnalyticsEvent::getProjectId)
+			).forEach(
+				this::_run
+			);
 
 			Log log = getLog();
 
@@ -271,6 +278,17 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			BaseAssetModel newAssetModel = (BaseAssetModel)newModel;
 
 			oldAssetModel.addURLs(newAssetModel.getURLs());
+		}
+	}
+
+	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
+
+			saveModels(getModels(analyticsEvents));
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
 		}
 	}
 
