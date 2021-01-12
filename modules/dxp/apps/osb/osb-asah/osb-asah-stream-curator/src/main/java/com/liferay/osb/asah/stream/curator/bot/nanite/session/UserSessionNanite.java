@@ -36,6 +36,7 @@ import com.liferay.osb.asah.common.model.AnalyticsEvents;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ObjectMapperUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.session.arm.FinalizeUserSessionArm;
@@ -438,7 +439,13 @@ public class UserSessionNanite implements Nanite {
 				break;
 			}
 
-			_processAnalyticsEvents(analyticsEvents);
+			Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+			stream.collect(
+				Collectors.groupingBy(AnalyticsEvent::getProjectId)
+			).forEach(
+				this::_run
+			);
 
 			if (_log.isInfoEnabled()) {
 				Class<?> clazz = getClass();
@@ -449,6 +456,17 @@ public class UserSessionNanite implements Nanite {
 						clazz.getSimpleName(), analyticsEvents.size(),
 						System.currentTimeMillis() - start));
 			}
+		}
+	}
+
+	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
+
+			_processAnalyticsEvents(analyticsEvents);
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
 		}
 	}
 
