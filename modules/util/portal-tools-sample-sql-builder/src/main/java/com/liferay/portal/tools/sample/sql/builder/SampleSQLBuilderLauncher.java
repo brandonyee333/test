@@ -15,6 +15,7 @@
 package com.liferay.portal.tools.sample.sql.builder;
 
 import com.liferay.petra.process.ClassPathUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
 
 import java.io.IOException;
 
@@ -46,17 +47,16 @@ public class SampleSQLBuilderLauncher {
 
 		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
 
-		ClassLoader classLoader = new URLClassLoader(
-			_getDependencies(contextClassLoader), null);
-
-		Class<?> clazz = classLoader.loadClass(
-			"com.liferay.portal.tools.sample.sql.builder.SampleSQLBuilder");
-
-		Method method = clazz.getMethod("main", String[].class);
-
-		currentThread.setContextClassLoader(classLoader);
+		currentThread.setContextClassLoader(
+			new URLClassLoader(_getDependencies(contextClassLoader), null));
 
 		try {
+			Method method = ReflectionUtil.getDeclaredMethod(
+				Class.forName(
+					"com.liferay.portal.tools.sample.sql.builder." +
+						"SampleSQLBuilder"),
+				"main", String[].class);
+
 			method.invoke(null, new Object[] {args});
 		}
 		finally {
