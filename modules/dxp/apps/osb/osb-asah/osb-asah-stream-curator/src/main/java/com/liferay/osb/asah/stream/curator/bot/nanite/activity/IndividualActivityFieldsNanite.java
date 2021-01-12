@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
@@ -67,50 +68,14 @@ public class IndividualActivityFieldsNanite implements Nanite {
 
 			Stream<String> stream = messages.stream();
 
-			Map<String, Map<String, Long>> ownerIdCounts = stream.map(
+			stream.map(
 				JSONObject::new
 			).collect(
 				Collectors.groupingBy(
-					jsonObject -> jsonObject.getString("ownerId"),
-					Collectors.groupingBy(
-						jsonObject -> jsonObject.getString("channelId"),
-						Collectors.counting()))
+					jsonObject -> jsonObject.getString("projectId"))
+			).forEach(
+				this::_run
 			);
-
-			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-				_faroInfoElasticsearchInvoker.
-					createElasticsearchBulkRequestBuilder();
-
-			for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
-					ownerIdCounts.entrySet()) {
-
-				String ownerId = ownerIdEntry.getKey();
-
-				JSONObject individualJSONObject =
-					_faroInfoElasticsearchInvoker.fetch("individuals", ownerId);
-
-				if (individualJSONObject == null) {
-					continue;
-				}
-
-				elasticsearchBulkRequestBuilder.update(
-					"individuals",
-					JSONUtil.put(
-						"activitiesCounts",
-						_getActivitiesCountsJSONArray(
-							ownerIdEntry.getValue(), individualJSONObject)
-					).put(
-						"id", ownerId
-					).put(
-						"lastActivityDates",
-						_getLastActivityDatesJSONArray(
-							ownerIdEntry.getValue(), individualJSONObject)
-					));
-			}
-
-			if (elasticsearchBulkRequestBuilder.hasActions()) {
-				elasticsearchBulkRequestBuilder.get();
-			}
 		}
 	}
 
@@ -198,6 +163,59 @@ public class IndividualActivityFieldsNanite implements Nanite {
 		}
 
 		return lastActivityDatesJSONArray;
+	}
+
+	private void _run(String projectId, List<JSONObject> messages) {
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
+
+			Stream<JSONObject> stream = messages.stream();
+
+			Map<String, Map<String, Long>> ownerIdCounts = stream.collect(
+				Collectors.groupingBy(
+					jsonObject -> jsonObject.getString("ownerId"),
+					Collectors.groupingBy(
+						jsonObject -> jsonObject.getString("channelId"),
+						Collectors.counting())));
+
+			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+				_faroInfoElasticsearchInvoker.
+					createElasticsearchBulkRequestBuilder();
+
+			for (Map.Entry<String, Map<String, Long>> ownerIdEntry :
+					ownerIdCounts.entrySet()) {
+
+				String ownerId = ownerIdEntry.getKey();
+
+				JSONObject individualJSONObject =
+					_faroInfoElasticsearchInvoker.fetch("individuals", ownerId);
+
+				if (individualJSONObject == null) {
+					continue;
+				}
+
+				elasticsearchBulkRequestBuilder.update(
+					"individuals",
+					JSONUtil.put(
+						"activitiesCounts",
+						_getActivitiesCountsJSONArray(
+							ownerIdEntry.getValue(), individualJSONObject)
+					).put(
+						"id", ownerId
+					).put(
+						"lastActivityDates",
+						_getLastActivityDatesJSONArray(
+							ownerIdEntry.getValue(), individualJSONObject)
+					));
+			}
+
+			if (elasticsearchBulkRequestBuilder.hasActions()) {
+				elasticsearchBulkRequestBuilder.get();
+			}
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
 	}
 
 	@Autowired

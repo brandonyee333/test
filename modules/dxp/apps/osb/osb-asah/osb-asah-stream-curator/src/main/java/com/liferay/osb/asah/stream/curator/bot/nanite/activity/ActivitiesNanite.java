@@ -135,6 +135,8 @@ public class ActivitiesNanite implements Nanite {
 
 	protected void process(AnalyticsEvent analyticsEvent) {
 		try {
+			ProjectIdThreadLocal.setProjectId(analyticsEvent.getProjectId());
+
 			String applicationId = analyticsEvent.getApplicationId();
 
 			_addActivityJSONObject(
@@ -146,6 +148,9 @@ public class ActivitiesNanite implements Nanite {
 				"Unable to process the analytics event " +
 					analyticsEvent.toJSON(),
 				e);
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
 		}
 	}
 
