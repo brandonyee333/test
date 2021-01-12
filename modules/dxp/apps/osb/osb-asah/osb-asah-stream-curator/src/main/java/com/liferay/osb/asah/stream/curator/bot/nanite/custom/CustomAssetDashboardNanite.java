@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.util.NaniteUtil;
@@ -132,9 +133,9 @@ public class CustomAssetDashboardNanite implements Nanite {
 			Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
 			stream.collect(
-				Collectors.groupingBy(this::_getCustomAssetPrimaryKey)
+				Collectors.groupingBy(AnalyticsEvent::getProjectId)
 			).forEach(
-				this::_addCustomAssetDashboards
+				this::_run
 			);
 
 			if (_log.isInfoEnabled()) {
@@ -146,6 +147,23 @@ public class CustomAssetDashboardNanite implements Nanite {
 						clazz.getSimpleName(), analyticsEvents.size(),
 						System.currentTimeMillis() - start));
 			}
+		}
+	}
+
+	private void _run(String projectId, List<AnalyticsEvent> analyticsEvents) {
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
+
+			Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+			stream.collect(
+				Collectors.groupingBy(this::_getCustomAssetPrimaryKey)
+			).forEach(
+				this::_addCustomAssetDashboards
+			);
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
 		}
 	}
 
