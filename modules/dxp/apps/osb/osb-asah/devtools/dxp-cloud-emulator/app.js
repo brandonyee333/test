@@ -5,19 +5,6 @@ const app = express();
 
 app.use(express.json());
 
-app.all('/projects/*', function (req, res) {
-	res.send({
-		buildGroupUidCounter: '987654321',
-		cluster: req.body.cluster || 'ac-us',
-		createdAt: new Date().toISOString(),
-		health: 'GOOD',
-		id: '321',
-		loadBalancerIp: '127.0.0.1',
-		ownerId: '654321',
-		projectId: req.body.projectId || uuid(),
-		status: 'READY'
-	});
-});
 app.get('/projects/:id/services', function (req, res) {
 	res.send([{
 		createdAt: new Date().toISOString(),
@@ -49,6 +36,20 @@ app.post('/projects/:id/build', function (req, res) {
 		serviceId: 123,
 		status: 'READY'
 	}]);
+});
+
+app.all('/projects/*', function (req, res) {
+	res.send({
+		buildGroupUidCounter: '987654321',
+		cluster: req.body.cluster || 'ac-us',
+		createdAt: new Date().toISOString(),
+		health: 'GOOD',
+		id: '321',
+		loadBalancerIp: '127.0.0.1',
+		ownerId: '654321',
+		projectId: req.body.projectId || uuid(),
+		status: 'READY'
+	});
 });
 
 app.listen(3000);
