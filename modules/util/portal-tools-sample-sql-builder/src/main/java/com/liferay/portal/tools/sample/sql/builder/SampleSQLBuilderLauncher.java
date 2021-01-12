@@ -17,8 +17,6 @@ package com.liferay.portal.tools.sample.sql.builder;
 import com.liferay.petra.process.ClassPathUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 
-import java.io.IOException;
-
 import java.lang.reflect.Method;
 
 import java.net.MalformedURLException;
@@ -30,7 +28,6 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -83,9 +80,6 @@ public class SampleSQLBuilderLauncher {
 			ClassLoader classLoader, Set<URL> urls)
 		throws Exception {
 
-		Path tempDirPath = Files.createTempDirectory(
-			SampleSQLBuilderLauncher.class.getName());
-
 		URL url = classLoader.getResource("lib");
 
 		try (FileSystem fileSystem = FileSystems.newFileSystem(
@@ -93,22 +87,7 @@ public class SampleSQLBuilderLauncher {
 
 			Stream<Path> pathStream = Files.list(fileSystem.getPath("/lib"));
 
-			pathStream.map(
-				path -> {
-					Path fileNamePath = path.getFileName();
-
-					Path targetPath = Paths.get(
-						tempDirPath.toString(), fileNamePath.toString());
-
-					try {
-						Files.copy(path, targetPath);
-					}
-					catch (IOException ioException) {
-					}
-
-					return targetPath;
-				}
-			).forEach(
+			pathStream.forEach(
 				path -> {
 					URI uri = path.toUri();
 
@@ -117,8 +96,7 @@ public class SampleSQLBuilderLauncher {
 					}
 					catch (MalformedURLException malformedURLException) {
 					}
-				}
-			);
+				});
 		}
 	}
 
