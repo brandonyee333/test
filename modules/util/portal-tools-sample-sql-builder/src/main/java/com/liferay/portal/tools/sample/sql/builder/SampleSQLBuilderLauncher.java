@@ -44,31 +44,11 @@ public class SampleSQLBuilderLauncher {
 
 		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
 
-		currentThread.setContextClassLoader(
-			new URLClassLoader(_getDependencies(contextClassLoader), null));
-
-		try {
-			Method method = ReflectionUtil.getDeclaredMethod(
-				Class.forName(
-					"com.liferay.portal.tools.sample.sql.builder." +
-						"SampleSQLBuilder"),
-				"main", String[].class);
-
-			method.invoke(null, new Object[] {args});
-		}
-		finally {
-			currentThread.setContextClassLoader(contextClassLoader);
-		}
-	}
-
-	private static URL[] _getDependencies(ClassLoader classLoader)
-		throws Exception {
-
 		Set<URL> urls = SetUtil.fromArray(
 			ClassPathUtil.getClassPathURLs(
 				ClassPathUtil.getJVMClassPath(true)));
 
-		URL url = classLoader.getResource("lib");
+		URL url = contextClassLoader.getResource("lib");
 
 		try (FileSystem fileSystem = FileSystems.newFileSystem(
 				url.toURI(), Collections.emptyMap())) {
@@ -87,7 +67,21 @@ public class SampleSQLBuilderLauncher {
 				});
 		}
 
-		return urls.toArray(new URL[0]);
+		currentThread.setContextClassLoader(
+			new URLClassLoader(urls.toArray(new URL[0]), null));
+
+		try {
+			Method method = ReflectionUtil.getDeclaredMethod(
+				Class.forName(
+					"com.liferay.portal.tools.sample.sql.builder." +
+						"SampleSQLBuilder"),
+				"main", String[].class);
+
+			method.invoke(null, new Object[] {args});
+		}
+		finally {
+			currentThread.setContextClassLoader(contextClassLoader);
+		}
 	}
 
 }
