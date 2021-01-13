@@ -192,7 +192,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 							if (purchased) {
 								purchasedProductEntries.add(curProductEntry);
 							}
-							else {
+							else if (hasUpdateAdmin) {
 								otherProductEntries.add(curProductEntry);
 							}
 						}
