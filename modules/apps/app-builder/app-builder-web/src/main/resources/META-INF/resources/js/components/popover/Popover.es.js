@@ -13,7 +13,7 @@
  */
 
 import classNames from 'classnames';
-import {Align} from 'metal-position';
+import {Align, align} from 'frontend-js-web';
 import {PropTypes} from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
@@ -46,11 +46,7 @@ const getAlignPosition = (source, target, suggestedPosition) => {
 		suggestedPosition = 'top';
 	}
 
-	const position = Align.align(
-		source,
-		target,
-		ALIGNMENTS_MAP[suggestedPosition]
-	);
+	const position = align(source, target, ALIGNMENTS_MAP[suggestedPosition]);
 
 	return POSITIONS[position];
 };

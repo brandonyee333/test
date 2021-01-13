@@ -14,7 +14,7 @@
 
 import ClayPopover from '@clayui/popover';
 import {useEventListener} from 'frontend-js-react-web';
-import {Align} from 'metal-position';
+import {Align, align, suggestAlignBestRegion} from 'frontend-js-web';
 import React, {
 	useCallback,
 	useEffect,
@@ -133,7 +133,7 @@ const DisabledArea = () => {
 
 	useLayoutEffect(() => {
 		if (popoverRef.current && currentElementClicked && show) {
-			const suggestedAlign = Align.suggestAlignBestRegion(
+			const suggestedAlign = suggestAlignBestRegion(
 				popoverRef.current,
 				currentElementClicked,
 				Align.TopCenter
@@ -144,7 +144,7 @@ const DisabledArea = () => {
 					? Align.BottomCenter
 					: Align.TopCenter;
 
-			Align.align(
+			align(
 				popoverRef.current,
 				currentElementClicked,
 				bestPosition,

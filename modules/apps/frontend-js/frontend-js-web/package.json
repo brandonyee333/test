@@ -22,7 +22,8 @@
 			"<rootDir>/test/liferay/portlet/mock/setup.es.js"
 		],
 		"testPathIgnorePatterns": [
-			"<rootDir>/test/liferay/portlet/mock/setup.es.js"
+			"<rootDir>/test/liferay/portlet/mock/setup.es.js",
+			"<rootDir>/test/liferay/position/helpers.js"
 		]
 	},
 	"main": "index.es.js",
