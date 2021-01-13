@@ -996,7 +996,7 @@ app.server.type=@{app.server.type}]]></echo>
 				</else>
 			</if>
 
-			<antcall inheritAll="false" target="prepare-portal-ext-properties" />
+			<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties" />
 
 			<antcall inheritAll="false" target="prepare-system-ext-properties" />
 
@@ -1224,7 +1224,7 @@ app.server.type=@{app.server.type}]]></echo>
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
-							<antcall inheritAll="false" target="prepare-portal-ext-properties">
+							<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
@@ -1302,7 +1302,7 @@ app.server.type=@{app.server.type}]]></echo>
 										<param name="database.type" value="@{database.type}" />
 									</antcall>
 
-									<antcall inheritAll="false" target="prepare-portal-ext-properties">
+									<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 										<param name="database.type" value="@{database.type}" />
 									</antcall>
 
@@ -1719,7 +1719,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
-							<antcall inheritAll="false" target="prepare-portal-ext-properties">
+							<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
@@ -1796,7 +1796,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
-							<antcall inheritAll="false" target="prepare-portal-ext-properties">
+							<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
@@ -1905,7 +1905,7 @@ log.sanitizer.enabled=false</echo>
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
-							<antcall inheritAll="false" target="prepare-portal-ext-properties">
+							<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
@@ -2212,7 +2212,7 @@ log.sanitizer.enabled=false</echo>
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
-							<antcall inheritAll="false" target="prepare-portal-ext-properties">
+							<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
@@ -2435,7 +2435,7 @@ log.sanitizer.enabled=false</echo>
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
-							<antcall inheritAll="false" target="prepare-portal-ext-properties">
+							<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
@@ -2655,7 +2655,7 @@ log.sanitizer.enabled=false</echo>
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
-							<antcall inheritAll="false" target="prepare-portal-ext-properties">
+							<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
@@ -2724,7 +2724,7 @@ log.sanitizer.enabled=false</echo>
 								/>
 							</delete>
 
-							<antcall inheritAll="false" target="prepare-portal-ext-properties">
+							<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 								<param name="database.type" value="@{database.type}" />
 								<param name="liferay.home" value="${project.dir}/bun dles" />
 							</antcall>
@@ -2838,7 +2838,7 @@ log.sanitizer.enabled=false</echo>
 				<param name="database.type" value="@{database.type}" />
 			</antcall>
 
-			<antcall inheritAll="false" target="prepare-portal-ext-properties">
+			<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 				<param name="database.type" value="@{database.type}" />
 			</antcall>
 
@@ -4924,7 +4924,7 @@ ${output.content}</echo>
 											<param name="database.type" value="@{database.type}" />
 										</antcall>
 
-										<antcall inheritAll="false" target="prepare-portal-ext-properties">
+										<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
 											<param name="database.type" value="@{database.type}" />
 										</antcall>
 
@@ -5753,7 +5753,7 @@ ${output.content}</echo>
 			<test-set-up>
 				<setup-test-environment />
 
-				<antcall target="prepare-portal-ext-properties">
+				<antcall if:set="env.JENKINS_HOME" target="prepare-portal-ext-properties">
 					<param name="hot.deploy.dependency.management.enabled" value="false" />
 				</antcall>
 
