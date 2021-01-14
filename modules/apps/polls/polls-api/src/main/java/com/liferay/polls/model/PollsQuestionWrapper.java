@@ -18,6 +18,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.persistence.impl.UserInputString;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -201,7 +202,7 @@ public class PollsQuestionWrapper
 	 * @return the localized description of this polls question
 	 */
 	@Override
-	public String getDescription(java.util.Locale locale) {
+	public UserInputString getDescription(java.util.Locale locale) {
 		return model.getDescription(locale);
 	}
 
@@ -213,7 +214,9 @@ public class PollsQuestionWrapper
 	 * @return the localized description of this polls question. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	 */
 	@Override
-	public String getDescription(java.util.Locale locale, boolean useDefault) {
+	public UserInputString getDescription(
+		java.util.Locale locale, boolean useDefault) {
+
 		return model.getDescription(locale, useDefault);
 	}
 
@@ -224,7 +227,7 @@ public class PollsQuestionWrapper
 	 * @return the localized description of this polls question
 	 */
 	@Override
-	public String getDescription(String languageId) {
+	public UserInputString getDescription(String languageId) {
 		return model.getDescription(languageId);
 	}
 
@@ -236,7 +239,9 @@ public class PollsQuestionWrapper
 	 * @return the localized description of this polls question
 	 */
 	@Override
-	public String getDescription(String languageId, boolean useDefault) {
+	public UserInputString getDescription(
+		String languageId, boolean useDefault) {
+
 		return model.getDescription(languageId, useDefault);
 	}
 
@@ -246,7 +251,7 @@ public class PollsQuestionWrapper
 	}
 
 	@Override
-	public String getDescriptionCurrentValue() {
+	public UserInputString getDescriptionCurrentValue() {
 		return model.getDescriptionCurrentValue();
 	}
 
@@ -256,7 +261,7 @@ public class PollsQuestionWrapper
 	 * @return the locales and localized descriptions of this polls question
 	 */
 	@Override
-	public Map<java.util.Locale, String> getDescriptionMap() {
+	public Map<java.util.Locale, UserInputString> getDescriptionMap() {
 		return model.getDescriptionMap();
 	}
 
@@ -357,7 +362,7 @@ public class PollsQuestionWrapper
 	 * @return the localized title of this polls question
 	 */
 	@Override
-	public String getTitle(java.util.Locale locale) {
+	public UserInputString getTitle(java.util.Locale locale) {
 		return model.getTitle(locale);
 	}
 
@@ -369,7 +374,9 @@ public class PollsQuestionWrapper
 	 * @return the localized title of this polls question. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	 */
 	@Override
-	public String getTitle(java.util.Locale locale, boolean useDefault) {
+	public UserInputString getTitle(
+		java.util.Locale locale, boolean useDefault) {
+
 		return model.getTitle(locale, useDefault);
 	}
 
@@ -380,7 +387,7 @@ public class PollsQuestionWrapper
 	 * @return the localized title of this polls question
 	 */
 	@Override
-	public String getTitle(String languageId) {
+	public UserInputString getTitle(String languageId) {
 		return model.getTitle(languageId);
 	}
 
@@ -392,7 +399,7 @@ public class PollsQuestionWrapper
 	 * @return the localized title of this polls question
 	 */
 	@Override
-	public String getTitle(String languageId, boolean useDefault) {
+	public UserInputString getTitle(String languageId, boolean useDefault) {
 		return model.getTitle(languageId, useDefault);
 	}
 
@@ -402,7 +409,7 @@ public class PollsQuestionWrapper
 	}
 
 	@Override
-	public String getTitleCurrentValue() {
+	public UserInputString getTitleCurrentValue() {
 		return model.getTitleCurrentValue();
 	}
 
@@ -412,7 +419,7 @@ public class PollsQuestionWrapper
 	 * @return the locales and localized titles of this polls question
 	 */
 	@Override
-	public Map<java.util.Locale, String> getTitleMap() {
+	public Map<java.util.Locale, UserInputString> getTitleMap() {
 		return model.getTitleMap();
 	}
 
@@ -540,7 +547,9 @@ public class PollsQuestionWrapper
 	 * @param locale the locale of the language
 	 */
 	@Override
-	public void setDescription(String description, java.util.Locale locale) {
+	public void setDescription(
+		UserInputString description, java.util.Locale locale) {
+
 		model.setDescription(description, locale);
 	}
 
@@ -553,7 +562,7 @@ public class PollsQuestionWrapper
 	 */
 	@Override
 	public void setDescription(
-		String description, java.util.Locale locale,
+		UserInputString description, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 
 		model.setDescription(description, locale, defaultLocale);
@@ -571,7 +580,7 @@ public class PollsQuestionWrapper
 	 */
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, String> descriptionMap) {
+		Map<java.util.Locale, UserInputString> descriptionMap) {
 
 		model.setDescriptionMap(descriptionMap);
 	}
@@ -584,7 +593,7 @@ public class PollsQuestionWrapper
 	 */
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, String> descriptionMap,
+		Map<java.util.Locale, UserInputString> descriptionMap,
 		java.util.Locale defaultLocale) {
 
 		model.setDescriptionMap(descriptionMap, defaultLocale);
@@ -687,7 +696,7 @@ public class PollsQuestionWrapper
 	 * @param locale the locale of the language
 	 */
 	@Override
-	public void setTitle(String title, java.util.Locale locale) {
+	public void setTitle(UserInputString title, java.util.Locale locale) {
 		model.setTitle(title, locale);
 	}
 
@@ -700,7 +709,8 @@ public class PollsQuestionWrapper
 	 */
 	@Override
 	public void setTitle(
-		String title, java.util.Locale locale, java.util.Locale defaultLocale) {
+		UserInputString title, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
 
 		model.setTitle(title, locale, defaultLocale);
 	}
@@ -716,7 +726,7 @@ public class PollsQuestionWrapper
 	 * @param titleMap the locales and localized titles of this polls question
 	 */
 	@Override
-	public void setTitleMap(Map<java.util.Locale, String> titleMap) {
+	public void setTitleMap(Map<java.util.Locale, UserInputString> titleMap) {
 		model.setTitleMap(titleMap);
 	}
 
@@ -728,7 +738,7 @@ public class PollsQuestionWrapper
 	 */
 	@Override
 	public void setTitleMap(
-		Map<java.util.Locale, String> titleMap,
+		Map<java.util.Locale, UserInputString> titleMap,
 		java.util.Locale defaultLocale) {
 
 		model.setTitleMap(titleMap, defaultLocale);

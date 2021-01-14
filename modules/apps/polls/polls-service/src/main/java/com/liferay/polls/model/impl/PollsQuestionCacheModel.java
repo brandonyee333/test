@@ -151,19 +151,8 @@ public class PollsQuestionCacheModel
 			pollsQuestionImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		if (title == null) {
-			pollsQuestionImpl.setTitle("");
-		}
-		else {
-			pollsQuestionImpl.setTitle(title);
-		}
-
-		if (description == null) {
-			pollsQuestionImpl.setDescription("");
-		}
-		else {
-			pollsQuestionImpl.setDescription(description);
-		}
+		pollsQuestionImpl.setTitle(title);
+		pollsQuestionImpl.setDescription(description);
 
 		if (expirationDate == Long.MIN_VALUE) {
 			pollsQuestionImpl.setExpirationDate(null);
@@ -192,7 +181,9 @@ public class PollsQuestionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
 
@@ -241,21 +232,8 @@ public class PollsQuestionCacheModel
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
-
-		if (title == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(title);
-		}
-
-		if (description == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(description);
-		}
-
+		objectOutput.writeObject(title);
+		objectOutput.writeObject(description);
 		objectOutput.writeLong(expirationDate);
 		objectOutput.writeLong(lastPublishDate);
 		objectOutput.writeLong(lastVoteDate);

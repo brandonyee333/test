@@ -17,6 +17,7 @@ package com.liferay.polls.model;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
+import com.liferay.portal.kernel.service.persistence.impl.UserInputString;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -122,7 +123,7 @@ public class PollsChoiceWrapper
 			setQuestionId(questionId);
 		}
 
-		String name = (String)attributes.get("name");
+		UserInputString name = (UserInputString)attributes.get("name");
 
 		if (name != null) {
 			setName(name);
@@ -198,7 +199,7 @@ public class PollsChoiceWrapper
 	 * @return the localized description of this polls choice
 	 */
 	@Override
-	public String getDescription(java.util.Locale locale) {
+	public UserInputString getDescription(java.util.Locale locale) {
 		return model.getDescription(locale);
 	}
 
@@ -210,7 +211,9 @@ public class PollsChoiceWrapper
 	 * @return the localized description of this polls choice. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	 */
 	@Override
-	public String getDescription(java.util.Locale locale, boolean useDefault) {
+	public UserInputString getDescription(
+		java.util.Locale locale, boolean useDefault) {
+
 		return model.getDescription(locale, useDefault);
 	}
 
@@ -221,7 +224,7 @@ public class PollsChoiceWrapper
 	 * @return the localized description of this polls choice
 	 */
 	@Override
-	public String getDescription(String languageId) {
+	public UserInputString getDescription(String languageId) {
 		return model.getDescription(languageId);
 	}
 
@@ -233,7 +236,9 @@ public class PollsChoiceWrapper
 	 * @return the localized description of this polls choice
 	 */
 	@Override
-	public String getDescription(String languageId, boolean useDefault) {
+	public UserInputString getDescription(
+		String languageId, boolean useDefault) {
+
 		return model.getDescription(languageId, useDefault);
 	}
 
@@ -243,7 +248,7 @@ public class PollsChoiceWrapper
 	}
 
 	@Override
-	public String getDescriptionCurrentValue() {
+	public UserInputString getDescriptionCurrentValue() {
 		return model.getDescriptionCurrentValue();
 	}
 
@@ -253,7 +258,7 @@ public class PollsChoiceWrapper
 	 * @return the locales and localized descriptions of this polls choice
 	 */
 	@Override
-	public Map<java.util.Locale, String> getDescriptionMap() {
+	public Map<java.util.Locale, UserInputString> getDescriptionMap() {
 		return model.getDescriptionMap();
 	}
 
@@ -303,7 +308,7 @@ public class PollsChoiceWrapper
 	 * @return the name of this polls choice
 	 */
 	@Override
-	public String getName() {
+	public UserInputString getName() {
 		return model.getName();
 	}
 
@@ -439,7 +444,9 @@ public class PollsChoiceWrapper
 	 * @param locale the locale of the language
 	 */
 	@Override
-	public void setDescription(String description, java.util.Locale locale) {
+	public void setDescription(
+		UserInputString description, java.util.Locale locale) {
+
 		model.setDescription(description, locale);
 	}
 
@@ -452,7 +459,7 @@ public class PollsChoiceWrapper
 	 */
 	@Override
 	public void setDescription(
-		String description, java.util.Locale locale,
+		UserInputString description, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 
 		model.setDescription(description, locale, defaultLocale);
@@ -470,7 +477,7 @@ public class PollsChoiceWrapper
 	 */
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, String> descriptionMap) {
+		Map<java.util.Locale, UserInputString> descriptionMap) {
 
 		model.setDescriptionMap(descriptionMap);
 	}
@@ -483,7 +490,7 @@ public class PollsChoiceWrapper
 	 */
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, String> descriptionMap,
+		Map<java.util.Locale, UserInputString> descriptionMap,
 		java.util.Locale defaultLocale) {
 
 		model.setDescriptionMap(descriptionMap, defaultLocale);
@@ -535,7 +542,7 @@ public class PollsChoiceWrapper
 	 * @param name the name of this polls choice
 	 */
 	@Override
-	public void setName(String name) {
+	public void setName(UserInputString name) {
 		model.setName(name);
 	}
 
