@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.service.persistence.impl.UserInputString;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.xml.Document;
@@ -127,6 +128,27 @@ public class LocalizationUtil {
 			xml, requestedLanguageId, useDefault, defaultValue);
 	}
 
+	public static UserInputString getLocalization(
+		UserInputString xml, String requestedLanguageId) {
+
+		return getLocalization().getLocalization(xml, requestedLanguageId);
+	}
+
+	public static UserInputString getLocalization(
+		UserInputString xml, String requestedLanguageId, boolean useDefault) {
+
+		return getLocalization().getLocalization(
+			xml, requestedLanguageId, useDefault);
+	}
+
+	public static UserInputString getLocalization(
+		UserInputString xml, String requestedLanguageId, boolean useDefault,
+		UserInputString defaultValue) {
+
+		return getLocalization().getLocalization(
+			xml, requestedLanguageId, useDefault, defaultValue);
+	}
+
 	public static Map<Locale, String> getLocalizationMap(
 		Collection<Locale> locales, Locale defaultLocale, String key) {
 
@@ -180,6 +202,21 @@ public class LocalizationUtil {
 			portletRequest, parameter, defaultValues);
 	}
 
+	public static Map<Locale, UserInputString> getLocalizationMapFromInput(
+		PortletRequest portletRequest, String parameter) {
+
+		return getLocalization().getLocalizationMapFromInput(
+			portletRequest, parameter);
+	}
+
+	public static Map<Locale, UserInputString> getLocalizationMapFromInput(
+		PortletRequest portletRequest, String parameter,
+		Map<Locale, String> defaultValues) {
+
+		return getLocalization().getLocalizationMapFromInput(
+			portletRequest, parameter, defaultValues);
+	}
+
 	public static Map<Locale, String> getLocalizationMap(String xml) {
 		return getLocalization().getLocalizationMap(xml);
 	}
@@ -202,6 +239,24 @@ public class LocalizationUtil {
 		String[] languageIds, String[] values) {
 
 		return getLocalization().getLocalizationMap(languageIds, values);
+	}
+
+	public static Map<Locale, UserInputString> getLocalizationMap(
+		String[] languageIds, UserInputString[] values) {
+
+		return getLocalization().getLocalizationMap(languageIds, values);
+	}
+
+	public static Map<Locale, UserInputString> getLocalizationMap(
+		UserInputString xml) {
+
+		return getLocalization().getLocalizationMap(xml);
+	}
+
+	public static Map<Locale, UserInputString> getLocalizationMap(
+		UserInputString xml, boolean useDefault) {
+
+		return getLocalization().getLocalizationMap(xml, useDefault);
 	}
 
 	public static String getLocalizationXmlFromPreferences(
@@ -357,6 +412,29 @@ public class LocalizationUtil {
 			xml, key, requestedLanguageId, cdata, localized);
 	}
 
+	public static UserInputString removeLocalization(
+		UserInputString xml, String key, String requestedLanguageId) {
+
+		return getLocalization().removeLocalization(
+			xml, key, requestedLanguageId);
+	}
+
+	public static UserInputString removeLocalization(
+		UserInputString xml, String key, String requestedLanguageId,
+		boolean cdata) {
+
+		return getLocalization().removeLocalization(
+			xml, key, requestedLanguageId, cdata);
+	}
+
+	public static UserInputString removeLocalization(
+		UserInputString xml, String key, String requestedLanguageId,
+		boolean cdata, boolean localized) {
+
+		return getLocalization().removeLocalization(
+			xml, key, requestedLanguageId, cdata, localized);
+	}
+
 	public static void setLocalizedPreferencesValues(
 			PortletRequest portletRequest, PortletPreferences preferences,
 			String parameter)
@@ -392,6 +470,14 @@ public class LocalizationUtil {
 			localizationMap, xml, key, defaultLanguageId);
 	}
 
+	public static String updateLocalizationFromUserInput(
+		Map<Locale, UserInputString> localizationMap, String xml,
+		String key, String defaultLanguageId) {
+
+		return getLocalization().updateLocalizationFromUserInput(
+			localizationMap, xml, key, defaultLanguageId);
+	}
+
 	public static String updateLocalization(
 		String xml, String key, String value) {
 
@@ -424,6 +510,46 @@ public class LocalizationUtil {
 	public static String updateLocalization(
 		String xml, String key, String value, String requestedLanguageId,
 		String defaultLanguageId, boolean cdata, boolean localized) {
+
+		return getLocalization().updateLocalization(
+			xml, key, value, requestedLanguageId, defaultLanguageId, cdata,
+			localized);
+	}
+
+	public static String updateLocalization(
+		String xml, String key, UserInputString value) {
+
+		return getLocalization().updateLocalization(xml, key, value);
+	}
+
+	public static String updateLocalization(
+		String xml, String key, UserInputString value,
+		String requestedLanguageId) {
+
+		return getLocalization().updateLocalization(
+			xml, key, value, requestedLanguageId);
+	}
+
+	public static String updateLocalization(
+		String xml, String key, UserInputString value,
+		String requestedLanguageId, String defaultLanguageId) {
+
+		return getLocalization().updateLocalization(
+			xml, key, value, requestedLanguageId, defaultLanguageId);
+	}
+
+	public static String updateLocalization(
+		String xml, String key, UserInputString value,
+		String requestedLanguageId, String defaultLanguageId, boolean cdata) {
+
+		return getLocalization().updateLocalization(
+			xml, key, value, requestedLanguageId, defaultLanguageId, cdata);
+	}
+
+	public static String updateLocalization(
+		String xml, String key, UserInputString value,
+		String requestedLanguageId, String defaultLanguageId, boolean cdata,
+		boolean localized) {
 
 		return getLocalization().updateLocalization(
 			xml, key, value, requestedLanguageId, defaultLanguageId, cdata,
