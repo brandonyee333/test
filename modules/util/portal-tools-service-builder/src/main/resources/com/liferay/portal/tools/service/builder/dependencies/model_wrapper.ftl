@@ -6,6 +6,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.persistence.impl.UserInputString;
 
 import java.io.Serializable;
 
@@ -88,7 +89,11 @@ public class ${entity.name}Wrapper
 			<#if entityColumn.isPrimitiveType()>
 				${serviceBuilder.getPrimitiveObj(entityColumn.type)}
 			<#else>
-				${entityColumn.genericizedType}
+				<#if entityColumn.isLocalized() && entityColumn.isUserInputString()>
+					String
+				<#else>
+					${entityColumn.genericizedType}
+				</#if>
 			</#if>
 
 			${entityColumn.name} =
@@ -96,7 +101,11 @@ public class ${entity.name}Wrapper
 			<#if entityColumn.isPrimitiveType()>
 				(${serviceBuilder.getPrimitiveObj(entityColumn.type)})
 			<#else>
-				(${entityColumn.genericizedType})
+                <#if entityColumn.isLocalized() && entityColumn.isUserInputString()>
+					(String)
+                <#else>
+					(${entityColumn.genericizedType})
+                </#if>
 			</#if>
 
 			attributes.get("${entityColumn.name}");

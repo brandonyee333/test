@@ -68,6 +68,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.persistence.impl.UserInputString;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
@@ -629,7 +630,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 			});
 	<#else>
-		attributeSetterBiConsumers.put("${entityColumn.name}", (BiConsumer<${entity.name}, ${entityColumnType}>)${entity.name}::set${entityColumn.methodName});
+		<#if entityColumn.isUserInputString() && entityColumn.localized>
+			attributeSetterBiConsumers.put("${entityColumn.name}", (BiConsumer<${entity.name}, String>)${entity.name}::set${entityColumn.methodName});
+		<#else>
+			attributeSetterBiConsumers.put("${entityColumn.name}", (BiConsumer<${entity.name}, ${entityColumnType}>)${entity.name}::set${entityColumn.methodName});
+		</#if>
 	</#if>
 </#list>
 
@@ -657,20 +662,38 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 		<#list entity.localizedEntityColumns as entityColumn>
 			@Override
-			public String get${entityColumn.methodName}() {
-				return get${entityColumn.methodName}(getDefaultLanguageId(), false);
-			}
+			<#if entityColumn.isUserInputString() && entityColumn.localized>
+				public String get${entityColumn.methodName}() {
+			<#else>
+				public ${entityColumn.genericizedType} get${entityColumn.methodName}() {
+			</#if>
+					return get${entityColumn.methodName}(getDefaultLanguageId(), false);
+				}
+
 
 			@Override
-			public String get${entityColumn.methodName}(String languageId) {
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}(String languageId) {
+			<#else>
+				public String get${entityColumn.methodName}(String languageId) {
+			</#if>
 				return get${entityColumn.methodName}(languageId, true);
 			}
 
 			@Override
-			public String get${entityColumn.methodName}(String languageId, boolean useDefault) {
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}(String languageId, boolean useDefault) {
+			<#else>
+				public String get${entityColumn.methodName}(String languageId, boolean useDefault) {
+			</#if>
 				if (useDefault) {
-					return LocalizationUtil.getLocalization(
-						new Function<String, String> () {
+					<#if entityColumn.isUserInputString()>
+						return New UserInputString(LocalizationUtil.getLocalization(
+							new Function<String, UserInputString> () {
+					<#else>
+						return LocalizationUtil.getLocalization(
+							new Function<String, String> () {
+					</#if>
 
 							@Override
 							public String apply(String languageId) {
@@ -678,7 +701,12 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 							}
 
 						},
-						languageId, getDefaultLanguageId());
+						languageId, getDefaultLanguageId())
+						<#if entityColumn.isUserInputString()>
+							);
+						<#else>
+							;
+						</#if>
 				}
 
 				return _get${entityColumn.methodName}(languageId);
@@ -690,8 +718,15 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			}
 
 			@Override
-			public Map<String, String> getLanguageIdTo${entityColumn.methodName}Map() {
+			<#if entityColumn.isUserInputString()>
+				public Map<String, UserInputString> getLanguageIdTo${entityColumn.methodName}Map() {
+
+				Map<String, UserInputString> languageIdTo${entityColumn.methodName}Map = new HashMap<String, UserInputString>();
+			<#else>
+				public Map<String, String> getLanguageIdTo${entityColumn.methodName}Map() {
+
 				Map<String, String> languageIdTo${entityColumn.methodName}Map = new HashMap<String, String>();
+			</#if>
 
 				List<${localizedEntity.name}> ${localizedEntity.pluralVariableName} = ${entity.name}LocalServiceUtil.get${localizedEntity.pluralName}(getPrimaryKey());
 
@@ -702,7 +737,12 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 				return languageIdTo${entityColumn.methodName}Map;
 			}
 
-			private String _get${entityColumn.methodName}(String languageId) {
+			<#if entityColumn.isUserInputString()>
+				private UserInputString _get${entityColumn.methodName}(String languageId) {
+			<#else>
+				private String _get${entityColumn.methodName}(String languageId) {
+			</#if>
+
 				${localizedEntity.name} ${localizedEntity.variableName} = ${entity.name}LocalServiceUtil.fetch${localizedEntity.name}(getPrimaryKey(), languageId);
 
 				if (${localizedEntity.variableName} == null) {
@@ -795,7 +835,12 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		<#if !entity.versionEntity?? || !stringUtil.equals(entityColumn.name, "head")>
 			@Override
 		</#if>
-		public ${entityColumn.genericizedType} get${entityColumn.methodName}() {
+		<#if entityColumn.isUserInputString() && entityColumn.localized>
+				public String get${entityColumn.methodName}() {
+		<#else>
+			public ${entityColumn.genericizedType} get${entityColumn.methodName}() {
+		</#if>
+
 			<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
 				if (_${entityColumn.name} == null) {
 					return "";
@@ -828,28 +873,50 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 		<#if entityColumn.localized>
 			@Override
-			public String get${entityColumn.methodName}(Locale locale) {
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}(Locale locale) {
+			<#else>
+				public String get${entityColumn.methodName}(Locale locale) {
+			</#if>
+
 				String languageId = LocaleUtil.toLanguageId(locale);
 
 				return get${entityColumn.methodName}(languageId);
 			}
 
 			@Override
-			public String get${entityColumn.methodName}(Locale locale, boolean useDefault) {
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}(Locale locale, boolean useDefault) {
+			<#else>
+				public String get${entityColumn.methodName}(Locale locale, boolean useDefault) {
+			</#if>
+
 				String languageId = LocaleUtil.toLanguageId(locale);
 
 				return get${entityColumn.methodName}(languageId, useDefault);
 			}
 
 			@Override
-			public String get${entityColumn.methodName}(String languageId) {
-				return LocalizationUtil.getLocalization(get${entityColumn.methodName}(), languageId);
-			}
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}(String languageId) {
+					return new UserInputString(LocalizationUtil.getLocalization(get${entityColumn.methodName}(), languageId));
+				}
+			<#else>
+				public String get${entityColumn.methodName}(String languageId) {
+					return LocalizationUtil.getLocalization(get${entityColumn.methodName}(), languageId);
+				}
+			</#if>
 
 			@Override
-			public String get${entityColumn.methodName}(String languageId, boolean useDefault) {
-				return LocalizationUtil.getLocalization(get${entityColumn.methodName}(), languageId, useDefault);
-			}
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}(String languageId, boolean useDefault) {
+				return new UserInputString(LocalizationUtil.getLocalization(get${entityColumn.methodName}(), languageId, useDefault));
+				}
+			<#else>
+				public String get${entityColumn.methodName}(String languageId, boolean useDefault) {
+					return LocalizationUtil.getLocalization(get${entityColumn.methodName}(), languageId, useDefault);
+				}
+			</#if>
 
 			@Override
 			public String get${entityColumn.methodName}CurrentLanguageId() {
@@ -858,16 +925,35 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 			@JSON
 			@Override
-			public String get${entityColumn.methodName}CurrentValue() {
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}CurrentValue() {
+			<#else>
+				public String get${entityColumn.methodName}CurrentValue() {
+			</#if>
 				Locale locale = getLocale(_${entityColumn.name}CurrentLanguageId);
 
 				return get${entityColumn.methodName}(locale);
 			}
 
 			@Override
-			public Map<Locale, String> get${entityColumn.methodName}Map() {
-				return LocalizationUtil.getLocalizationMap(get${entityColumn.methodName}());
-			}
+			<#if entityColumn.isUserInputString()>
+				public Map<Locale, UserInputString> get${entityColumn.methodName}Map() {
+
+					Map<Locale, String> stringLocalizationMap = LocalizationUtil.getLocalizationMap(get${entityColumn.methodName}());
+
+					Map<Locale, UserInputString> localizationMap = new HashMap<>();
+
+					for (Map.Entry<Locale, String> entry : stringLocalizationMap.entrySet()) {
+						localizationMap.put(entry.getKey(), new UserInputString(entry.getValue()));
+					}
+			
+					return localizationMap;
+				}
+			<#else>
+				public Map<Locale, String> get${entityColumn.methodName}Map() {
+					return LocalizationUtil.getLocalizationMap(get${entityColumn.methodName}());
+				}
+			</#if>
 		</#if>
 
 		<#if entityColumn.type== "boolean">
@@ -890,7 +976,15 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		<#if !entity.versionEntity?? || !stringUtil.equals(entityColumn.name, "head")>
 			@Override
 		</#if>
-		public void set${entityColumn.methodName}(${entityColumn.genericizedType} ${entityColumn.name}) {
+		<#if entityColumn.isUserInputString()>
+			<#if entityColumn.localized>
+				public void set${entityColumn.methodName}(String ${entityColumn.name}) {
+			<#else>
+				public void set${entityColumn.methodName}(UserInputString ${entityColumn.name}) {
+			</#if>
+		<#else>
+			public void set${entityColumn.methodName}(${entityColumn.genericizedType} ${entityColumn.name}) {
+		</#if>
 			<#if entity.hasEntityColumn("createDate", "Date") && entity.hasEntityColumn("modifiedDate", "Date") && stringUtil.equals(entityColumn.name, "modifiedDate")>
 				_setModifiedDate = true;
 			</#if>
@@ -938,7 +1032,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 		<#if entityColumn.localized>
 			@Override
-			public void set${entityColumn.methodName}(String ${entityColumn.name}, Locale locale) {
+			<#if entityColumn.isUserInputString()>
+				public void set${entityColumn.methodName}(UserInputString ${entityColumn.name}, Locale locale) {
+			<#else>
+				public void set${entityColumn.methodName}(String ${entityColumn.name}, Locale locale) {
+			</#if>
 				<#if entity.isGroupedModel()>
 					set${entityColumn.methodName}(${entityColumn.name}, locale, LocaleUtil.getSiteDefault());
 				<#else>
@@ -947,7 +1045,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			}
 
 			@Override
-			public void set${entityColumn.methodName}(String ${entityColumn.name}, Locale locale, Locale defaultLocale) {
+			<#if entityColumn.isUserInputString()>
+				public void set${entityColumn.methodName}(UserInputString ${entityColumn.name}, Locale locale, Locale defaultLocale) {
+			<#else>
+				public void set${entityColumn.methodName}(String ${entityColumn.name}, Locale locale, Locale defaultLocale) {
+			</#if>
 				String languageId = LocaleUtil.toLanguageId(locale);
 				String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
@@ -965,7 +1067,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			}
 
 			@Override
-			public void set${entityColumn.methodName}Map(Map<Locale, String> ${entityColumn.name}Map) {
+			<#if entityColumn.isUserInputString()>
+				public void set${entityColumn.methodName}Map(Map<Locale, UserInputString> ${entityColumn.name}Map) {
+			<#else>
+				public void set${entityColumn.methodName}Map(Map<Locale, String> ${entityColumn.name}Map) {
+			</#if>
 				<#if entity.isGroupedModel()>
 					set${entityColumn.methodName}Map(${entityColumn.name}Map, LocaleUtil.getSiteDefault());
 				<#else>
@@ -974,12 +1080,19 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			}
 
 			@Override
-			public void set${entityColumn.methodName}Map(Map<Locale, String> ${entityColumn.name}Map, Locale defaultLocale) {
+			<#if entityColumn.isUserInputString()>
+				public void set${entityColumn.methodName}Map(Map<Locale, UserInputString> ${entityColumn.name}Map, Locale defaultLocale) {
+			<#else>
+				public void set${entityColumn.methodName}Map(Map<Locale, String> ${entityColumn.name}Map, Locale defaultLocale) {
+			</#if>
 				if (${entityColumn.name}Map == null) {
 					return;
 				}
-
-				set${entityColumn.methodName}(LocalizationUtil.updateLocalization(${entityColumn.name}Map, get${entityColumn.methodName}(), "${entityColumn.methodName}", LocaleUtil.toLanguageId(defaultLocale)));
+				<#if entityColumn.isUserInputString()>
+					set${entityColumn.methodName}(LocalizationUtil.updateLocalizationFromUserInput(${entityColumn.name}Map, get${entityColumn.methodName}(), "${entityColumn.methodName}", LocaleUtil.toLanguageId(defaultLocale)));
+				<#else>
+					set${entityColumn.methodName}(LocalizationUtil.updateLocalization(${entityColumn.name}Map, get${entityColumn.methodName}(), "${entityColumn.methodName}", LocaleUtil.toLanguageId(defaultLocale)));
+                </#if>
 			}
 		</#if>
 
@@ -1417,13 +1530,22 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 			<#list entity.regularEntityColumns as entityColumn>
 				<#if entityColumn.localized>
-					Map<Locale, String> ${entityColumn.name}Map = get${entityColumn.methodName}Map();
 
-					for (Map.Entry<Locale, String> entry : ${entityColumn.name}Map.entrySet()) {
-						Locale locale = entry.getKey();
-						String value = entry.getValue();
+					<#if entityColumn.isUserInputString()>
+						Map<Locale, UserInputString> ${entityColumn.name}Map = get${entityColumn.methodName}Map();
 
-						if (Validator.isNotNull(value)) {
+						for (Map.Entry<Locale, UserInputString> entry : ${entityColumn.name}Map.entrySet()) {
+							Locale locale = entry.getKey();
+							UserInputString value = entry.getValue();
+							if (Validator.isNotNull(value.toString())) {
+					<#else>
+						Map<Locale, String> ${entityColumn.name}Map = get${entityColumn.methodName}Map();
+
+						for (Map.Entry<Locale, String> entry : ${entityColumn.name}Map.entrySet()) {
+							Locale locale = entry.getKey();
+							String value = entry.getValue();
+							if (Validator.isNotNull(value)) {
+					</#if>
 							availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
 						}
 					}
@@ -1442,6 +1564,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 					if (xml == null) {
 						return "";
 					}
+
 
 					<#if entity.isGroupedModel()>
 						Locale defaultLocale = LocaleUtil.getSiteDefault();
@@ -1479,7 +1602,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 			<#list entity.regularEntityColumns as entityColumn>
 				<#if entityColumn.localized>
-					String ${entityColumn.name} = get${entityColumn.methodName}(defaultLocale);
+					<#if entityColumn.isUserInputString()>
+						UserInputString ${entityColumn.name} = get${entityColumn.methodName}(defaultLocale);
+					<#else>
+						String ${entityColumn.name} = get${entityColumn.methodName}(defaultLocale);
+					</#if>
 
 					if (Validator.isNull(${entityColumn.name})) {
 						set${entityColumn.methodName}(get${entityColumn.methodName}(modelDefaultLanguageId), defaultLocale);
@@ -1880,7 +2007,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		<#if stringUtil.equals(entityColumn.type, "Blob") && entityColumn.lazy>
 			private ${entity.name}${entityColumn.methodName}BlobModel _${entityColumn.name}BlobModel;
 		<#else>
-			private ${entityColumn.genericizedType} _${entityColumn.name};
+			<#if entityColumn.isUserInputString() && entityColumn.localized>
+				private String _${entityColumn.name};
+			<#else>
+				private ${entityColumn.genericizedType} _${entityColumn.name};
+			</#if>
 
 			<#if entityColumn.localized>
 				private String _${entityColumn.name}CurrentLanguageId;

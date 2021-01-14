@@ -11,6 +11,7 @@ import ${apiPackagePath}.model.${entity.name};
 
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
+import com.liferay.portal.kernel.service.persistence.impl.UserInputString;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -190,7 +191,7 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 				${entityColumn.name} = objectInput.read${textFormatter.format(entityColumnPrimitiveType, 6)}();
 			<#elseif stringUtil.equals(entityColumn.type, "Date")>
 				${entityColumn.name} = objectInput.readLong();
-			<#elseif stringUtil.equals(entityColumn.type, "String")>
+			<#elseif stringUtil.equals(entityColumn.type, "String") || (stringUtil.equals(entityColumn.type, "UserInputString") && entityColumn.localized)>
 				<#if serviceBuilder.getSqlType(entity.getName(), entityColumn.getName(), entityColumn.getType()) == "CLOB">
 					${entityColumn.name} = (String)objectInput.readObject();
 				<#else>
@@ -260,6 +261,8 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 		<#if !stringUtil.equals(entityColumn.type, "Blob")>
 			<#if stringUtil.equals(entityColumn.type, "Date")>
 				public long ${entityColumn.name};
+			<#elseif stringUtil.equals(entityColumn.type, "UserInputString") && entityColumn.localized>
+				public String ${entityColumn.name};
 			<#else>
 				<#assign entityColumnPrimitiveType = serviceBuilder.getPrimitiveType(entityColumn.genericizedType) />
 

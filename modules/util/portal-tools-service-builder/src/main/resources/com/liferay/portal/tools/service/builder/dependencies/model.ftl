@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.model.change.tracking.CTModel;
 import com.liferay.portal.kernel.model.version.VersionModel;
 import com.liferay.portal.kernel.model.version.VersionedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.persistence.impl.UserInputString;
 
 import java.io.Serializable;
 
@@ -144,7 +145,11 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 			@Override
 		</#if>
 
-		public ${entityColumn.genericizedType} get${entityColumn.methodName}();
+		<#if entityColumn.isUserInputString() && entityColumn.localized>
+			public String get${entityColumn.methodName}();
+		<#else>
+			public ${entityColumn.genericizedType} get${entityColumn.methodName}();
+		</#if>
 
 		<#if entityColumn.localized>
 			/**
@@ -154,7 +159,11 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 			 * @return the localized ${entityColumn.humanName} of this ${entity.humanName}
 			 */
 			@AutoEscape
-			public String get${entityColumn.methodName}(Locale locale);
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}(Locale locale);
+			<#else>
+				public String get${entityColumn.methodName}(Locale locale);
+			</#if>
 
 			/**
 			 * Returns the localized ${entityColumn.humanName} of this ${entity.humanName} in the language, optionally using the default language if no localization exists for the requested language.
@@ -164,7 +173,11 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 			 * @return the localized ${entityColumn.humanName} of this ${entity.humanName}. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 			 */
 			@AutoEscape
-			public String get${entityColumn.methodName}(Locale locale, boolean useDefault);
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}(Locale locale, boolean useDefault);
+			<#else>
+				public String get${entityColumn.methodName}(Locale locale, boolean useDefault);
+			</#if>
 
 			/**
 			 * Returns the localized ${entityColumn.humanName} of this ${entity.humanName} in the language. Uses the default language if no localization exists for the requested language.
@@ -173,7 +186,11 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 			 * @return the localized ${entityColumn.humanName} of this ${entity.humanName}
 			 */
 			@AutoEscape
-			public String get${entityColumn.methodName}(String languageId);
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}(String languageId);
+			<#else>
+				public String get${entityColumn.methodName}(String languageId);
+			</#if>
 
 			/**
 			 * Returns the localized ${entityColumn.humanName} of this ${entity.humanName} in the language, optionally using the default language if no localization exists for the requested language.
@@ -183,20 +200,32 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 			 * @return the localized ${entityColumn.humanName} of this ${entity.humanName}
 			 */
 			@AutoEscape
-			public String get${entityColumn.methodName}(String languageId, boolean useDefault);
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}(String languageId, boolean useDefault);
+			<#else>
+				public String get${entityColumn.methodName}(String languageId, boolean useDefault);
+			</#if>
 
 			@AutoEscape
 			public String get${entityColumn.methodName}CurrentLanguageId();
 
 			@AutoEscape
-			public String get${entityColumn.methodName}CurrentValue();
+			<#if entityColumn.isUserInputString()>
+				public UserInputString get${entityColumn.methodName}CurrentValue();
+			<#else>
+				public String get${entityColumn.methodName}CurrentValue();
+			</#if>
 
 			/**
 			 * Returns a map of the locales and localized ${entityColumn.pluralHumanName} of this ${entity.humanName}.
 			 *
 			 * @return the locales and localized ${entityColumn.pluralHumanName} of this ${entity.humanName}
 			 */
-			public Map<Locale, String> get${entityColumn.methodName}Map();
+			<#if entityColumn.isUserInputString()>
+				public Map<Locale, UserInputString> get${entityColumn.methodName}Map();
+			<#else>
+				public Map<Locale, String> get${entityColumn.methodName}Map();
+			</#if>
 		</#if>
 
 		<#if stringUtil.equals(entityColumn.type, "boolean")>
@@ -220,7 +249,11 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 		<#if overrideColumnNames?seq_contains(entityColumn.name)>
 			@Override
 		</#if>
-		public void set${entityColumn.methodName}(${entityColumn.genericizedType} ${entityColumn.name});
+		<#if entityColumn.isUserInputString() && entityColumn.localized>
+			public void set${entityColumn.methodName}(String ${entityColumn.name});
+		<#else>
+			public void set${entityColumn.methodName}(${entityColumn.genericizedType} ${entityColumn.name});
+		</#if>
 
 		<#if entityColumn.localized>
 			/**
@@ -229,7 +262,11 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 			 * @param ${entityColumn.name} the localized ${entityColumn.humanName} of this ${entity.humanName}
 			 * @param locale the locale of the language
 			 */
-			public void set${entityColumn.methodName}(String ${entityColumn.name}, Locale locale);
+			<#if entityColumn.isUserInputString()>
+				public void set${entityColumn.methodName}(UserInputString ${entityColumn.name}, Locale locale);
+			<#else>
+				public void set${entityColumn.methodName}(String ${entityColumn.name}, Locale locale);
+			</#if>
 
 			/**
 			 * Sets the localized ${entityColumn.humanName} of this ${entity.humanName} in the language, and sets the default locale.
@@ -238,7 +275,11 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 			 * @param locale the locale of the language
 			 * @param defaultLocale the default locale
 			 */
-			public void set${entityColumn.methodName}(String ${entityColumn.name}, Locale locale, Locale defaultLocale);
+			<#if entityColumn.isUserInputString()>
+				public void set${entityColumn.methodName}(UserInputString ${entityColumn.name}, Locale locale, Locale defaultLocale);
+			<#else>
+				public void set${entityColumn.methodName}(String ${entityColumn.name}, Locale locale, Locale defaultLocale);
+			</#if>
 
 			public void set${entityColumn.methodName}CurrentLanguageId(String languageId);
 
@@ -247,7 +288,11 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 			 *
 			 * @param ${entityColumn.name}Map the locales and localized ${entityColumn.pluralHumanName} of this ${entity.humanName}
 			 */
-			public void set${entityColumn.methodName}Map(Map<Locale, String> ${entityColumn.name}Map);
+			<#if entityColumn.isUserInputString()>
+				public void set${entityColumn.methodName}Map(Map<Locale, UserInputString> ${entityColumn.name}Map);
+			<#else>
+				public void set${entityColumn.methodName}Map(Map<Locale, String> ${entityColumn.name}Map);
+			</#if>
 
 			/**
 			 * Sets the localized ${entityColumn.pluralHumanName} of this ${entity.humanName} from the map of locales and localized ${entityColumn.pluralHumanName}, and sets the default locale.
@@ -255,7 +300,11 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 			 * @param ${entityColumn.name}Map the locales and localized ${entityColumn.pluralHumanName} of this ${entity.humanName}
 			 * @param defaultLocale the default locale
 			 */
-			public void set${entityColumn.methodName}Map(Map<Locale, String> ${entityColumn.name}Map, Locale defaultLocale);
+			<#if entityColumn.isUserInputString()>
+				public void set${entityColumn.methodName}Map(Map<Locale, UserInputString> ${entityColumn.name}Map, Locale defaultLocale);
+			<#else>
+				public void set${entityColumn.methodName}Map(Map<Locale, String> ${entityColumn.name}Map, Locale defaultLocale);
+			</#if>
 		</#if>
 
 		<#if stringUtil.equals(entityColumn.name, "resourcePrimKey") && entity.isResourcedModel()>
@@ -294,15 +343,31 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 		public String[] getAvailableLanguageIds();
 
 		<#list entity.localizedEntityColumns as entityColumn>
-			public String get${entityColumn.methodName}();
+			<#if entityColumn.isUserInputString()>
 
-			public String get${entityColumn.methodName}(String languageId);
-
-			public String get${entityColumn.methodName}(String languageId, boolean useDefault);
-
-			public String get${entityColumn.methodName}MapAsXML();
-
-			public Map<String, String> getLanguageIdTo${entityColumn.methodName}Map();
+				<#if entityColumn.localized>
+					public String get${entityColumn.methodName}();
+				<#else>
+					public UserInputString get${entityColumn.methodName}();
+				</#if>
+				public UserInputString get${entityColumn.methodName}(String languageId);
+	
+				public UserInputString get${entityColumn.methodName}(String languageId, boolean useDefault);
+	
+				public UserInputString get${entityColumn.methodName}MapAsXML();
+	
+				public Map<String, UserInputString> getLanguageIdTo${entityColumn.methodName}Map();
+			<#else>
+				public String get${entityColumn.methodName}();
+	
+				public String get${entityColumn.methodName}(String languageId);
+	
+				public String get${entityColumn.methodName}(String languageId, boolean useDefault);
+	
+				public String get${entityColumn.methodName}MapAsXML();
+	
+				public Map<String, String> getLanguageIdTo${entityColumn.methodName}Map();
+			</#if>
 		</#list>
 	</#if>
 
