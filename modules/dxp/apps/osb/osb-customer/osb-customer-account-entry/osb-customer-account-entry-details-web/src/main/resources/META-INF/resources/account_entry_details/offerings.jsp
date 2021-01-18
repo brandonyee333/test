@@ -25,7 +25,7 @@
 	>
 		<liferay-ui:search-container-column-text
 			name="product"
-			value="<%= productPurchaseViewDisplay.getName() %>"
+			value="<%= productPurchaseViewDisplay.getProductName() %>"
 		/>
 
 		<liferay-ui:search-container-column-text

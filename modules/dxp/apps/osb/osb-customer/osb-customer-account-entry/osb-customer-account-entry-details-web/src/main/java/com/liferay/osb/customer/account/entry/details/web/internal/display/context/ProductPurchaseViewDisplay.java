@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.account.entry.details.web.internal.display.context;
 
+import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
@@ -21,6 +22,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -30,6 +32,7 @@ import java.text.DateFormat;
 import java.text.Format;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -90,6 +93,25 @@ public class ProductPurchaseViewDisplay {
 
 	public String getName() {
 		return _product.getName();
+	}
+
+	public String getProductName() {
+		String name = _product.getName();
+
+		Locale locale = _themeDisplay.getLocale();
+
+		if (name.equals(ProductConstants.NAME_GOLD) &&
+			locale.equals(LocaleUtil.JAPAN)) {
+
+			return "Light Subscription";
+		}
+		else if (name.equals(ProductConstants.NAME_PLATINUM) &&
+				 locale.equals(LocaleUtil.JAPAN)) {
+
+			return "Standard Subscription";
+		}
+
+		return name;
 	}
 
 	public String getQuantity() {
