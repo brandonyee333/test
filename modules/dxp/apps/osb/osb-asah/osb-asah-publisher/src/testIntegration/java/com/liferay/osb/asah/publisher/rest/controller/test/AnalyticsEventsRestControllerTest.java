@@ -119,6 +119,46 @@ public class AnalyticsEventsRestControllerTest {
 			messageJSONObject.getString("emailAddressHashed"));
 	}
 
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testEmailAddressHashed() {
+		String emailAddressHashed =
+			"47ff64395860b1d498241d907069f649b98c198a95b3ba5303b87094058590c1";
+
+		_exchange(
+			"/identity",
+			JSONUtil.put(
+				"channelId", "1"
+			).put(
+				"dataSourceId", "345085929068798696"
+			).put(
+				"emailAddressHashed", emailAddressHashed
+			).put(
+				"userId", RandomTestUtil.randomUUID()
+			).toString());
+
+		ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(
+			String.class);
+
+		Mockito.verify(
+			_messageBus, Mockito.times(1)
+		).sendMessage(
+			Mockito.any(), argumentCaptor.capture()
+		);
+
+		JSONObject messageJSONObject = new JSONObject(
+			argumentCaptor.getValue());
+
+		Assert.assertEquals(
+			"345085929068798696", messageJSONObject.getString("dataSourceId"));
+		Assert.assertEquals(
+			emailAddressHashed,
+			messageJSONObject.getString("emailAddressHashed"));
+	}
+
 	@Test
 	public void testGetStatusCode400() throws Exception {
 		ResponseEntity<String> responseEntity = _exchange(
