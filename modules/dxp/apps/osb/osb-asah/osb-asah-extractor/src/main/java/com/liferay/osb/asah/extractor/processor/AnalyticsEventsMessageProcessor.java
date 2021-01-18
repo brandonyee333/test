@@ -40,11 +40,13 @@ import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
 import io.prometheus.client.Counter;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -350,10 +352,12 @@ public class AnalyticsEventsMessageProcessor {
 		Set<String> segmentNames = _getSegmentNames(
 			channelId, individualJSONObject);
 
-		List<AnalyticsEventsMessage.Event> events =
-			analyticsEventsMessage.getEvents();
+		Set<AnalyticsEvent> analyticsEvents = new TreeSet<>(
+			Comparator.comparing(AnalyticsEvent::getId));
 
-		for (AnalyticsEventsMessage.Event event : events) {
+		for (AnalyticsEventsMessage.Event event :
+				analyticsEventsMessage.getEvents()) {
+
 			AnalyticsEvent analyticsEvent = new AnalyticsEvent();
 
 			analyticsEvent.setApplicationId(event.getApplicationId());
@@ -377,14 +381,20 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setProjectId(analyticsEventsMessage.getProjectId());
 			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
-			for (Channel channel :
-					_analyticsEventsChannels.getChannels(analyticsEvent)) {
-
-				_messageBus.sendMessage(channel, analyticsEvent.toJSON());
-			}
+			analyticsEvents.add(analyticsEvent);
 		}
 
-		_analyticsEventsCounter.inc(events.size());
+		analyticsEvents.forEach(this::_sendAnalyticsEventMessage);
+
+		_analyticsEventsCounter.inc(analyticsEvents.size());
+	}
+
+	private void _sendAnalyticsEventMessage(AnalyticsEvent analyticsEvent) {
+		for (Channel channel :
+				_analyticsEventsChannels.getChannels(analyticsEvent)) {
+
+			_messageBus.sendMessage(channel, analyticsEvent.toJSON());
+		}
 	}
 
 	private static final String[]
