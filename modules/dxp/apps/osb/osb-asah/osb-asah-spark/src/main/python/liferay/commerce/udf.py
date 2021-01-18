@@ -43,7 +43,7 @@ class BaseUDFFunction(object, metaclass=ABCMeta):
 
 class TanimotoCoefficientUDFFunction(BaseUDFFunction):
 	def __init__(self, spark_session):
-		super().__init__(spark_session)
+		super(TanimotoCoefficientUDFFunction, self).__init__(spark_session)
 
 	@staticmethod
 	def get_function_name():
@@ -68,7 +68,7 @@ class TanimotoCoefficientUDFFunction(BaseUDFFunction):
 
 class ToDenseVectorUDFFunction(BaseUDFFunction):
 	def __init__(self, spark_session):
-		super().__init__(spark_session)
+		super(ToDenseVectorUDFFunction, self).__init__(spark_session)
 
 	@staticmethod
 	def get_function_name():

@@ -29,83 +29,44 @@ from pyspark.sql.functions import PandasUDFType, \
 	row_number, \
 	sum as spark_sum
 
-class ForecastOrderJSONDataFrameReader(BaseJSONDataFrameReaderSparkJob):
-	def __init__(
-		self, spark_application, period: CommerceMLForecastPeriod,
-		scope: CommerceMLForecastScope, target: CommerceMLForecastTarget
-	):
-		super().__init__(
-			spark_application,
-			'com.liferay.headless.commerce.admin.order.dto.v1_0.Order',
-			'order_forecast'
-		)
-
-		self._period = period
-		self._scope = scope
-		self._target = target
-
-	def _post_process(self, data_frame):
-		data_frame = data_frame.selectExpr(
-			'id as orderId', 'accountId as commerceAccountId', 'orderDate',
-			'EXPLODE(orderItems) AS orderItem'
-		)
-
-		data_frame = data_frame.withColumn(
-			'orderDate', date_trunc(self._period.label, col('orderDate'))
-		)
-
-		return data_frame.selectExpr(
-			'orderId', 'commerceAccountId',
-			'TO_TIMESTAMP(orderDate) AS timestamp',
-			'orderItem.id AS orderItemId', 'orderItem.sku AS sku',
-			'orderItem.{} as actual'.format(self._target.column)
-		)
-
-class ForecastProductJSONDataFrameReaderSparkJob(
-	BaseJSONDataFrameReaderSparkJob
+class AccountCategoryForecastJSONDataFrameWriterSparkJob(
+	BaseJSONDataFrameWriterSparkJob
 ):
 	def __init__(self, spark_application):
-		super().__init__(
+		super(
+			AccountCategoryForecastJSONDataFrameWriterSparkJob,
+			self
+		).__init__(
 			spark_application,
-			'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
-			'product_forecast'
+			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
+			'AccountCategoryForecast', 'forecast_prediction'
 		)
 
-	def _post_process(self, data_frame):
-		data_frame = data_frame.selectExpr(
-			'categories.id AS assetCategoryId', 'EXPLODE(skus.sku) AS sku'
-		)
+	def _pre_process(self, data_frame):
+		return data_frame.filter('forecast IS NOT NULL')
 
-		return data_frame.selectExpr(
-			'EXPLODE(assetCategoryId) AS assetCategoryId', 'sku'
-		)
-
-class ForecastProductCategoryAugmentationSparkJob(BaseSparkJob):
+class AccountForecastJSONDataFrameWriterSparkJob(
+	BaseJSONDataFrameWriterSparkJob
+):
 	def __init__(self, spark_application):
-		super().__init__(spark_application)
-
-	def run(self):
-		order_forecast_data_frame = self.spark_session.table('order_forecast')
-
-		product_forecast_data_frame = self.spark_session.table(
-			'product_forecast'
+		super(
+			AccountForecastJSONDataFrameWriterSparkJob,
+			self
+		).__init__(
+			spark_application,
+			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
+			'AccountForecast', 'forecast_prediction'
 		)
 
-		order_forecast_data_frame = order_forecast_data_frame.join(
-			product_forecast_data_frame, on=['sku']
-		)
-
-		order_forecast_data_frame.createOrReplaceTempView('order_forecast')
-
-		self.spark_session.catalog.cacheTable('order_forecast')
+	def _pre_process(self, data_frame):
+		return data_frame.filter('forecast IS NOT NULL')
 
 class ForecastDataPrepareSparkJob(BaseSparkJob):
 	def __init__(
 		self, spark_application, period: CommerceMLForecastPeriod,
 		scope: CommerceMLForecastScope, target: CommerceMLForecastTarget
 	):
-
-		super().__init__(spark_application)
+		super(ForecastDataPrepareSparkJob, self).__init__(spark_application)
 
 		self._period = period
 		self._scope = scope
@@ -179,13 +140,85 @@ class ForecastDataPrepareSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('forecast_data')
 
+class ForecastOrderJSONDataFrameReader(BaseJSONDataFrameReaderSparkJob):
+	def __init__(
+		self, spark_application, period: CommerceMLForecastPeriod,
+		scope: CommerceMLForecastScope, target: CommerceMLForecastTarget
+	):
+		super(ForecastOrderJSONDataFrameReader, self).__init__(
+			spark_application,
+			'com.liferay.headless.commerce.admin.order.dto.v1_0.Order',
+			'order_forecast'
+		)
+
+		self._period = period
+		self._scope = scope
+		self._target = target
+
+	def _post_process(self, data_frame):
+		data_frame = data_frame.selectExpr(
+			'id as orderId', 'accountId as commerceAccountId', 'orderDate',
+			'EXPLODE(orderItems) AS orderItem'
+		)
+
+		data_frame = data_frame.withColumn(
+			'orderDate', date_trunc(self._period.label, col('orderDate'))
+		)
+
+		return data_frame.selectExpr(
+			'orderId', 'commerceAccountId',
+			'TO_TIMESTAMP(orderDate) AS timestamp',
+			'orderItem.id AS orderItemId', 'orderItem.sku AS sku',
+			'orderItem.{} as actual'.format(self._target.column)
+		)
+
+class ForecastProductCategoryAugmentationSparkJob(BaseSparkJob):
+	def __init__(self, spark_application):
+		super(
+			ForecastProductCategoryAugmentationSparkJob,
+			self
+		).__init__(spark_application)
+
+	def run(self):
+		order_forecast_data_frame = self.spark_session.table('order_forecast')
+
+		product_forecast_data_frame = self.spark_session.table(
+			'product_forecast'
+		)
+
+		order_forecast_data_frame = order_forecast_data_frame.join(
+			product_forecast_data_frame, on=['sku']
+		)
+
+		order_forecast_data_frame.createOrReplaceTempView('order_forecast')
+
+		self.spark_session.catalog.cacheTable('order_forecast')
+
+class ForecastProductJSONDataFrameReaderSparkJob(
+	BaseJSONDataFrameReaderSparkJob
+):
+	def __init__(self, spark_application):
+		super(ForecastProductJSONDataFrameReaderSparkJob, self).__init__(
+			spark_application,
+			'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
+			'product_forecast'
+		)
+
+	def _post_process(self, data_frame):
+		data_frame = data_frame.selectExpr(
+			'categories.id AS assetCategoryId', 'EXPLODE(skus.sku) AS sku'
+		)
+
+		return data_frame.selectExpr(
+			'EXPLODE(assetCategoryId) AS assetCategoryId', 'sku'
+		)
+
 class ForecastSparkJob(BaseSparkJob):
 	def __init__(
 		self, spark_application, period: CommerceMLForecastPeriod,
 		scope: CommerceMLForecastScope, target: CommerceMLForecastTarget
 	):
-
-		super().__init__(spark_application)
+		super(ForecastSparkJob, self).__init__(spark_application)
 
 		self._period = period
 		self._scope = scope
@@ -215,29 +248,3 @@ class ForecastSparkJob(BaseSparkJob):
 		forecast_prediction.createOrReplaceTempView('forecast_prediction')
 
 		self.spark_session.catalog.cacheTable('forecast_prediction')
-
-class AccountCategoryForecastJSONDataFrameWriterSparkJob(
-	BaseJSONDataFrameWriterSparkJob
-):
-	def __init__(self, spark_application):
-		super().__init__(
-			spark_application,
-			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
-			'AccountCategoryForecast', 'forecast_prediction'
-		)
-
-	def _pre_process(self, data_frame):
-		return data_frame.filter('forecast IS NOT NULL')
-
-class AccountForecastJSONDataFrameWriterSparkJob(
-	BaseJSONDataFrameWriterSparkJob
-):
-	def __init__(self, spark_application):
-		super().__init__(
-			spark_application,
-			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
-			'AccountForecast', 'forecast_prediction'
-		)
-
-	def _pre_process(self, data_frame):
-		return data_frame.filter('forecast IS NOT NULL')

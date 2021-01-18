@@ -45,7 +45,10 @@ class ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob(
 	BaseJSONDataFrameWriterSparkJob
 ):
 	def __init__(self, spark_application):
-		super().__init__(
+		super(
+			ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob,
+			self
+		).__init__(
 			spark_application,
 			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
 			'UserRecommendation', 'context_user_interaction_recommendation'
@@ -73,7 +76,10 @@ class ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob(
 
 class FrequentPatternDataPreparationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
-		super().__init__(spark_application)
+		super(
+			FrequentPatternDataPreparationSparkJob,
+			self
+		).__init__(spark_application)
 
 		self._log = logging.getLogger(self.__class__.__name__)
 
@@ -98,7 +104,10 @@ class FrequentPatternOrderJSONDataFrameReaderSparkJob(
 	BaseJSONDataFrameReaderSparkJob
 ):
 	def __init__(self, spark_application):
-		super().__init__(
+		super(
+			FrequentPatternOrderJSONDataFrameReaderSparkJob,
+			self
+		).__init__(
 			spark_application,
 			'com.liferay.headless.commerce.admin.order.dto.v1_0.Order', 'order'
 		)
@@ -110,7 +119,10 @@ class FrequentPatternOrderJSONDataFrameReaderSparkJob(
 
 class FrequentPatternPostProcessRecommendationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
-		super().__init__(spark_application)
+		super(
+			FrequentPatternPostProcessRecommendationSparkJob,
+			self
+		).__init__(spark_application)
 
 	def run(self):
 		association_rules_data_frame = self.spark_session.table(
@@ -206,7 +218,10 @@ class FrequentPatternProductJSONDataFrameReaderSparkJob(
 	BaseJSONDataFrameReaderSparkJob
 ):
 	def __init__(self, spark_application):
-		super().__init__(
+		super(
+			FrequentPatternProductJSONDataFrameReaderSparkJob,
+			self
+		).__init__(
 			spark_application,
 			'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
 			'product'
@@ -221,7 +236,10 @@ class FrequentPatternRecommendationJSONDataFrameWriterSparkJob(
 	BaseJSONDataFrameWriterSparkJob
 ):
 	def __init__(self, spark_application):
-		super().__init__(
+		super(
+			FrequentPatternRecommendationJSONDataFrameWriterSparkJob,
+			self
+		).__init__(
 			spark_application,
 			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
 			'FrequentPatternRecommendation', 'frequent_pattern_recommendation'
@@ -243,7 +261,10 @@ class FrequentPatternRecommendationJSONDataFrameWriterSparkJob(
 
 class FrequentPatternRecommendationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
-		super().__init__(spark_application)
+		super(
+			FrequentPatternRecommendationSparkJob,
+			self
+		).__init__(spark_application)
 
 		self._log = logging.getLogger(self.__class__.__name__)
 
@@ -299,7 +320,10 @@ class OrderInteractionJSONDataFrameReaderSparkJob(
 	BaseJSONDataFrameReaderSparkJob
 ):
 	def __init__(self, spark_application):
-		super().__init__(
+		super(
+			OrderInteractionJSONDataFrameReaderSparkJob,
+			self
+		).__init__(
 			spark_application,
 			'com.liferay.headless.commerce.admin.order.dto.v1_0.Order',
 			'order_interactions'
@@ -439,7 +463,10 @@ class ProductContentRecommendationJSONDataFrameWriter(
 	BaseJSONDataFrameWriterSparkJob
 ):
 	def __init__(self, spark_application):
-		super().__init__(
+		super(
+			ProductContentRecommendationJSONDataFrameWriter,
+			self
+		).__init__(
 			spark_application,
 			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
 			'ProductContentRecommendation', 'product_content_recommendations'
@@ -447,7 +474,10 @@ class ProductContentRecommendationJSONDataFrameWriter(
 
 class ProductContentRecommendationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
-		super().__init__(spark_application)
+		super(
+			ProductContentRecommendationSparkJob,
+			self
+		).__init__(spark_application)
 
 	def run(self):
 		pipeline_data_frame = self.spark_session.table('pipeline_data')
@@ -509,7 +539,10 @@ class ProductInteractionJSONDataFrameReaderSparkJob(
 	BaseJSONDataFrameReaderSparkJob
 ):
 	def __init__(self, spark_application):
-		super().__init__(
+		super(
+			ProductInteractionJSONDataFrameReaderSparkJob,
+			self
+		).__init__(
 			spark_application,
 			'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
 			'product_interactions'
@@ -525,7 +558,10 @@ class ProductInteractionRecommendationJSONDataFrameWriterSparkJob(
 	BaseJSONDataFrameWriterSparkJob
 ):
 	def __init__(self, spark_application):
-		super().__init__(
+		super(
+			ProductInteractionRecommendationJSONDataFrameWriterSparkJob,
+			self
+		).__init__(
 			spark_application,
 			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
 			'ProductInteractionRecommendation',
@@ -534,7 +570,10 @@ class ProductInteractionRecommendationJSONDataFrameWriterSparkJob(
 
 class ProductInteractionRecommendationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
-		super().__init__(spark_application)
+		super(
+			ProductInteractionRecommendationSparkJob,
+			self
+		).__init__(spark_application)
 
 	def run(self):
 		configuration = self.spark_application_configuration
@@ -606,7 +645,10 @@ class ProductInteractionRecommendationSparkJob(BaseSparkJob):
 
 class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
-		super().__init__(spark_application)
+		super(
+			UserInteractionCollaborativeFilteringSparkJob,
+			self
+		).__init__(spark_application)
 
 		self._default_count_approx_timeout = 5000
 
@@ -810,7 +852,10 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 
 class UserInteractionDataPreparationSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
-		super().__init__(spark_application)
+		super(
+			UserInteractionDataPreparationSparkJob,
+			self
+		).__init__(spark_application)
 
 	def run(self):
 		cp_instance_data_frame = self.spark_session.table(
