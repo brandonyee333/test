@@ -40,12 +40,13 @@ import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
 import io.prometheus.client.Counter;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -120,6 +121,21 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		return individualJSONObject;
+	}
+
+	private String _generateAnalyticsEventId(
+		String dataSourceId, AnalyticsEventsMessage.Event event,
+		String projectId, String userId) {
+
+		Date eventDate = event.getEventDate();
+
+		Map<String, String> eventProperties = event.getProperties();
+
+		return DigestUtils.sha256Hex(
+			String.join(
+				"#", projectId, dataSourceId, userId, event.getApplicationId(),
+				event.getEventId(), String.valueOf(eventProperties.hashCode()),
+				String.valueOf(eventDate.getTime())));
 	}
 
 	private JSONObject _getAnalyticsDataJSONObject(
@@ -350,7 +366,10 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setEventDate(event.getEventDate());
 			analyticsEvent.setEventId(event.getEventId());
 			analyticsEvent.setEventProperties(event.getProperties());
-			analyticsEvent.setId(String.valueOf(UUID.randomUUID()));
+			analyticsEvent.setId(
+				_generateAnalyticsEventId(
+					dataSourceId, event, analyticsEventsMessage.getProjectId(),
+					analyticsEventsMessage.getUserId()));
 			analyticsEvent.setIndividualId(
 				individualJSONObject.getString("id"));
 			analyticsEvent.setKnownIndividual(knownIndividual);
