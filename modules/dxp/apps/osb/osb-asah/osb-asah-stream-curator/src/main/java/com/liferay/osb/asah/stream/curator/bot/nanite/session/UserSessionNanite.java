@@ -494,6 +494,9 @@ public class UserSessionNanite implements Nanite {
 			QueryBuilders.termQuery(
 				"id", userSessionJSONObject.getString("id")));
 
+		_addUserSessionAnalyticsEvents(
+			analyticsEvents, userSessionJSONObject.getString("id"));
+
 		if (userSessionJSONObject.optBoolean("completed", false)) {
 			try {
 				_finalizeUserSessionArm.reprocessSession(
