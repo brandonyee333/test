@@ -3425,8 +3425,8 @@ public class JournalArticleLocalServiceImpl
 			long groupId, String articleId, String urlTitle)
 		throws PortalException {
 
-		String normalizedUrlTitle = FriendlyURLNormalizerUtil.normalize(
-			urlTitle);
+		String normalizedUrlTitle =
+			FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle);
 
 		int maxLength = ModelHintsUtil.getMaxLength(
 			JournalArticle.class.getName(), "urlTitle");
