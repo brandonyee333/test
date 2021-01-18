@@ -457,7 +457,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 											</exec>
 										</else>
 									</if>
-								<else>
+								</else>
 							</if>
 						</action>
 					</database-test-action>
