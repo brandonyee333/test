@@ -50,9 +50,6 @@ public class IdentityRestController {
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 
-			JSONObject identityJSONObject = jsonObject.getJSONObject(
-				"identity");
-
 			_messageBus.sendMessage(
 				Channel.IDENTITY_MESSAGE,
 				JSONUtil.put(
@@ -62,10 +59,7 @@ public class IdentityRestController {
 				).put(
 					"dataSourceId", jsonObject.getString("dataSourceId")
 				).put(
-					"emailAddressHashed",
-					DigestUtils.sha256Hex(
-						StringUtils.lowerCase(
-							identityJSONObject.getString("email")))
+					"emailAddressHashed", _getEmailAddressHashed(jsonObject)
 				).put(
 					"projectId", ProjectIdThreadLocal.getProjectId()
 				).put(
@@ -88,6 +82,17 @@ public class IdentityRestController {
 		}
 
 		return analyticsDataJSONObject;
+	}
+
+	private String _getEmailAddressHashed(JSONObject jsonObject) {
+		if (jsonObject.has("emailAddressHashed")) {
+			return jsonObject.getString("emailAddressHashed");
+		}
+
+		JSONObject identityJSONObject = jsonObject.getJSONObject("identity");
+
+		return DigestUtils.sha256Hex(
+			StringUtils.lowerCase(identityJSONObject.getString("email")));
 	}
 
 	private static final String[] _ANALYTICS_DATA_IDENTITY_FIELD_NAMES = {
