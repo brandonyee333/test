@@ -18,7 +18,6 @@ from abc import ABCMeta, \
 	abstractmethod
 
 from liferay.commerce.configuration import CommerceConfiguration
-
 from liferay.common.spark import BaseSparkApplication, \
 	BaseSparkJob
 

@@ -15,11 +15,9 @@ from liferay.commerce.forecast.constants import CommerceMLForecastPeriod, \
 	CommerceMLForecastScope, \
 	CommerceMLForecastTarget
 from liferay.commerce.forecast.udf import ForecastUDFHelper
-
 from liferay.common.spark import BaseSparkJob
 
 from pyspark.sql import Window
-
 from pyspark.sql.functions import PandasUDFType, \
 	col, \
 	count, \

@@ -12,13 +12,10 @@
 
 from polyglot.detect import Detector
 
-from pyspark.ml import Pipeline, \
-	Transformer
-
+from pyspark.ml import Transformer
 from pyspark.sql.functions import col, \
 	udf
 from pyspark.sql.types import ArrayType, \
-	DoubleType, \
 	FloatType, \
 	IntegerType, \
 	MapType, \

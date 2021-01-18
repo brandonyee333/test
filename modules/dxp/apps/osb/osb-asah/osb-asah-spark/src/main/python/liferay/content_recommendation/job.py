@@ -16,7 +16,6 @@ from liferay.common.pubsub import PubSubMessage
 from liferay.common.spark import BaseSparkJob
 
 from pyspark.sql import Window
-
 from pyspark.sql.functions import col, \
 	count, \
 	current_date, \

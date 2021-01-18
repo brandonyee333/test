@@ -20,7 +20,6 @@ from liferay.commerce.forecast.job import AccountCategoryForecastJSONDataFrameWr
 	ForecastProductCategoryAugmentationSparkJob, \
 	ForecastProductJSONDataFrameReaderSparkJob, \
 	ForecastSparkJob
-
 from liferay.common.spark import SparkJobPipeline
 
 class AccountCategoryForecastApplication(BaseCommerceSparkApplication):
