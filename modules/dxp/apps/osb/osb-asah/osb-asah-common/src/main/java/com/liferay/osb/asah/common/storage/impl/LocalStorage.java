@@ -167,8 +167,6 @@ public class LocalStorage implements Storage {
 		}
 
 		_archiveFile(successFile);
-
-		_deleteFile(successFile);
 	}
 
 	private void _deleteFile(File file) throws IOException {
