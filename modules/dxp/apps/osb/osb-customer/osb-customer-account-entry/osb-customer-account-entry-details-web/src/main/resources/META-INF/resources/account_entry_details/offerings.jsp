@@ -35,7 +35,7 @@
 
 		<liferay-ui:search-container-column-text
 			name="support-end-date"
-			value="<%= productPurchaseViewDisplay.getEndDate() %>"
+			value="<%= productPurchaseViewDisplay.getOriginalEndDate() %>"
 		/>
 
 		<liferay-ui:search-container-column-text

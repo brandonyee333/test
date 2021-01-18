@@ -79,20 +79,20 @@ public class ProductPurchaseViewDisplay {
 		}
 	}
 
-	public String getEndDate() {
+	public String getName() {
+		return _product.getName();
+	}
+
+	public String getOriginalEndDate() {
 		if (_perpetual) {
 			return LanguageUtil.get(_httpServletRequest, "perpetual");
 		}
 
-		if (_endDate == null) {
+		if (_originalEndDate == null) {
 			return StringPool.BLANK;
 		}
 
-		return _dateFormat.format(_endDate);
-	}
-
-	public String getName() {
-		return _product.getName();
+		return _dateFormat.format(_originalEndDate);
 	}
 
 	public String getProductName() {
@@ -153,6 +153,7 @@ public class ProductPurchaseViewDisplay {
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			Date startDate = productPurchase.getStartDate();
+			Date originalEndDate = productPurchase.getOriginalEndDate();
 			Date endDate = productPurchase.getEndDate();
 
 			boolean approved = false;
@@ -172,6 +173,13 @@ public class ProductPurchaseViewDisplay {
 				((_startDate == null) || startDate.before(_startDate))) {
 
 				_startDate = startDate;
+			}
+
+			if (approved && !_perpetual &&
+				((_originalEndDate == null) ||
+				 originalEndDate.after(_originalEndDate))) {
+
+				_originalEndDate = originalEndDate;
 			}
 
 			if (approved && !_perpetual &&
@@ -229,6 +237,7 @@ public class ProductPurchaseViewDisplay {
 	private HttpServletRequest _httpServletRequest;
 	private boolean _inSupportGap;
 	private Date _nextTermStartDate;
+	private Date _originalEndDate;
 	private boolean _perpetual;
 	private Product _product;
 	private int _purchasedCount;
