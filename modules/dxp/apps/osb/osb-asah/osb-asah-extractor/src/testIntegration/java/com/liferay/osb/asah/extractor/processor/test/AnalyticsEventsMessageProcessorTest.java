@@ -166,6 +166,27 @@ public class AnalyticsEventsMessageProcessorTest {
 	)
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "analytics_events_message_duplicated_events.json"
+	)
+	@Test
+	public void testProcessQueuedMessagesDiscardDuplicatedEvents()
+		throws Exception {
+
+		_analyticsEventsMessageProcessor.processQueuedMessages();
+
+		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
+			50, AnalyticsEvent::toAnalyticsEvent);
+
+		Assert.assertEquals(
+			analyticsEvents.toString(), 1, analyticsEvents.size());
+	}
+
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
 		resourcePath = "analytics_events_message_canonical_url_1.json"
 	)
 	@Test
