@@ -115,7 +115,7 @@ public class UserSessionNanite implements Nanite {
 
 			analyticsEventsJSONObject.put("sessionId", sessionId);
 
-			elasticsearchBulkRequestBuilder.add(
+			elasticsearchBulkRequestBuilder.upsert(
 				"user-session-analytics-events", analyticsEventsJSONObject);
 		}
 
