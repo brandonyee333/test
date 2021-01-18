@@ -1,0 +1,89 @@
+{
+    "fields": [
+        {
+            "logicalType": "date",
+            "name": "createDate",
+            "type": "string"
+        },
+        {
+            "logicalType": "date",
+            "name": "eventDate",
+            "type": "string"
+        },
+        {
+            "default": null,
+            "name": "analyticsKey",
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        {
+            "name": "applicationId",
+            "type": "string"
+        },
+        {
+            "name": "channelId",
+            "type": "string"
+        },
+        {
+            "name": "clientIP",
+            "type": "string"
+        },
+        {
+            "name": "context",
+            "type": {
+              "type": "map",
+              "values" : "string"
+            }
+        },
+        {
+            "name": "dataSourceId",
+            "type": "string"
+        },
+        {
+            "name": "eventId",
+            "type": "string"
+        },
+        {
+            "name": "eventProperties",
+            "type": {
+              "type": "map",
+              "values" : "string"
+            }
+        },
+        {
+            "logicalType": "uuid",
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "logicalType": "date",
+            "name": "normalizedEventDate",
+            "type": "long"
+        },
+        {
+            "name": "userId",
+            "type": "string"
+        },
+        {
+            "name": "knownIndividual",
+            "type": "boolean"
+        },
+        {
+            "default": [""],
+            "name": "segmentNames",
+            "type": {
+                "type": "array",
+                "items": "string"
+            }
+        },
+        {
+            "name": "sessionId",
+            "type": "string"
+        }
+    ],
+    "name": "AnalyticsEvent",
+    "namespace": "com.liferay.osb.asah",
+    "type": "record"
+}

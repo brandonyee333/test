@@ -4,13 +4,14 @@ import com.pswidersk.gradle.python.PythonPlugin
 import com.pswidersk.gradle.python.VenvTask
 
 configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
-	apply plugin: "com.liferay.root.defaults.plugin"
-	apply plugin: PythonPlugin
-
-	pythonPlugin {
-		minicondaVersion.set("py37_4.9.2")
-		pythonVersion.set("3.7.9")
+	repositories {
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
 	}
+
+	apply plugin: PythonPlugin
+	apply plugin: "com.liferay.source.formatter"
 
 	task installPackageDependencies(type: VenvTask)
 	task installProjectEnvDependencies(type: VenvTask)
@@ -19,9 +20,9 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 	task testPython(type: VenvTask)
 	task zipPython(type: VenvTask)
 
-	def pythonSource = "src/main/python"
-	def pythonTempDir = "$buildDir/python-temp"
-	def pythonTestSource = "src/test/python"
+	String pythonSource = "src/main/python"
+	String pythonTempDir = "$buildDir/python-temp"
+	String pythonTestSource = "src/test/python"
 
 	installPackageDependencies {
 		args = ["install", "--isolated", "-r", "$projectDir/$pythonSource/requirements-package.txt", "--target", pythonTempDir]
@@ -51,7 +52,7 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 				into pythonTempDir
 			}
 
-			def buildLibs = new File("$buildDir/libs")
+			File buildLibs = new File("$buildDir/libs")
 
 			if (!buildLibs.exists()) {
 				buildLibs.mkdirs()
@@ -59,11 +60,17 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 		}
 	}
 
+	pythonPlugin {
+		minicondaVersion.set("py37_4.9.2")
+		pythonVersion.set("3.7.9")
+	}
+
 	testPython {
+		args = ["$projectDir/$pythonTestSource/", "--capture=no", "--disable-warnings", "--suppress-no-test-exit-code"]
+
 		dependsOn installProjectEnvDependencies
 		dependsOn installTestEnvDependencies
 
-		args = ["$projectDir/$pythonTestSource/", "--capture=no", "--disable-warnings", "--suppress-no-test-exit-code"]
 		environment = ["PYTHONPATH": file("src/main")]
 		venvExec = "pytest"
 		workingDir = file("src/test")
@@ -77,7 +84,7 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 			copy {
 				from pythonSource + "/__main__.py"
 				into "$buildDir/libs"
-				rename '(.*)__main__.py', '$1osb-asah-spark-driver.py'
+				rename "(.*)__main__.py", "\$1osb-asah-spark-driver.py"
 			}
 
 			delete pythonTempDir

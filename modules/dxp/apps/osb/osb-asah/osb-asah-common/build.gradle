@@ -61,7 +61,7 @@ dependencies {
 	testCompile group: "org.skyscreamer", name: "jsonassert", transitive: false
 	testCompile group: "org.springframework.boot", name: "spring-boot-starter-test"
 
-	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
+	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }
 
 jar {

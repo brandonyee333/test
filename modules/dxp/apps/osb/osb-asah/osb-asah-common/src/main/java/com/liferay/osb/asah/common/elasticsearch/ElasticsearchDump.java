@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.SortOrder;
@@ -46,14 +47,28 @@ public class ElasticsearchDump {
 		public Builder from(
 			String collection, ElasticsearchInvoker elasticsearchInvoker) {
 
+			return from(collection, elasticsearchInvoker, null);
+		}
+
+		public Builder from(
+			String collection, ElasticsearchInvoker elasticsearchInvoker,
+			QueryBuilder queryBuilder) {
+
 			_elasticsearchDump._collection = collection;
 			_elasticsearchDump._elasticsearchInvoker = elasticsearchInvoker;
+			_elasticsearchDump._queryBuilder = queryBuilder;
 
 			return this;
 		}
 
 		public Builder to(Storage storage) {
 			_elasticsearchDump._storage = storage;
+
+			return this;
+		}
+
+		public Builder withQueryBuilder(QueryBuilder queryBuilder) {
+			_elasticsearchDump._queryBuilder = queryBuilder;
 
 			return this;
 		}
@@ -73,6 +88,10 @@ public class ElasticsearchDump {
 			searchResponse = _elasticsearchInvoker.searchScroll(
 				_collection,
 				searchSourceBuilder -> {
+					if (_queryBuilder != null) {
+						searchSourceBuilder.query(_queryBuilder);
+					}
+
 					searchSourceBuilder.trackTotalHits(true);
 					searchSourceBuilder.size(500);
 					searchSourceBuilder.sort("id", SortOrder.ASC);
@@ -104,6 +123,7 @@ public class ElasticsearchDump {
 
 	private String _collection;
 	private ElasticsearchInvoker _elasticsearchInvoker;
+	private QueryBuilder _queryBuilder;
 	private String _scrollId;
 	private Storage _storage;
 

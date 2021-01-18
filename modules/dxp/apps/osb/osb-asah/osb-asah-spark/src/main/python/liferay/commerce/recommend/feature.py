@@ -10,8 +10,17 @@
 #
 
 from pyspark.ml.evaluation import Evaluator
-from pyspark.ml.feature import VectorAssembler, StringIndexer, OneHotEncoder, Tokenizer, StopWordsRemover, CountVectorizer, IDF
-from pyspark.sql.functions import col, collect_list, when
+from pyspark.ml.feature import CountVectorizer, \
+	IDF, \
+	OneHotEncoder, \
+	StopWordsRemover, \
+	StringIndexer, \
+	Tokenizer, \
+	VectorAssembler
+
+from pyspark.sql.functions import col, \
+	collect_list, \
+	when
 
 import logging
 

@@ -20,21 +20,18 @@ dependencies {
 	compile group: "io.improbable", name: "keanu", version: "0.0.26"
 	compile group: "org.everit.json", name: "org.everit.json.schema", version: "1.5.1"
 	compile group: "org.springframework.boot", name: "spring-boot-starter-hateoas"
-
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-backend-ext-alfa")
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-backend-ext-seo")
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-backend-ext-alfa")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-backend-ext-seo")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
 
 	testCompile group: "junit", name: "junit", version: "4.12"
 	testCompile group: "nl.jqno.equalsverifier", name: "equalsverifier", version: "2.5.1"
-
-	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
+	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
 
 	testIntegrationCompile group: "com.esotericsoftware.yamlbeans", name: "yamlbeans", version: "1.12"
 	testIntegrationCompile group: "io.rest-assured", name: "json-schema-validator", version: "3.2.0"
 	testIntegrationCompile group: "io.rest-assured", name: "rest-assured", version: "3.2.0"
-
-	testIntegrationImplementation project(":dxp:apps:osb:osb-asah:osb-asah-batch-curator")
+	testIntegrationCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-batch-curator")
 }
 
 jar {

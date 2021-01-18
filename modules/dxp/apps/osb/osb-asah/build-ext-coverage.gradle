@@ -73,7 +73,6 @@ configure(javaSubprojects) {
 
 	configurations {
 		testIntegrationCompile.extendsFrom testCompile
-		testIntegrationImplementation.extendsFrom testImplementation
 		testIntegrationRuntime.extendsFrom testRuntime
 	}
 

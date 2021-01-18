@@ -52,7 +52,7 @@ public class Acquisition implements Serializable {
 		try {
 			URI uri = new URI(referrer);
 
-			this.referrer = uri.getHost();
+			referrerHost = uri.getHost();
 		}
 		catch (Exception e) {
 			throw new IllegalArgumentException(e);
@@ -153,7 +153,7 @@ public class Acquisition implements Serializable {
 			return _medium;
 		}
 
-		if (!StringUtils.isEmpty(referrer)) {
+		if (!StringUtils.isEmpty(referrerHost)) {
 			return "referral";
 		}
 
@@ -165,8 +165,8 @@ public class Acquisition implements Serializable {
 			return _source;
 		}
 
-		if (!StringUtils.isEmpty(referrer)) {
-			return referrer;
+		if (!StringUtils.isEmpty(referrerHost)) {
+			return referrerHost;
 		}
 
 		return null;
@@ -215,7 +215,7 @@ public class Acquisition implements Serializable {
 	}
 
 	protected MultiValueMap<String, String> queryParams;
-	protected String referrer;
+	protected String referrerHost;
 	protected String url;
 
 	private String _campaign;

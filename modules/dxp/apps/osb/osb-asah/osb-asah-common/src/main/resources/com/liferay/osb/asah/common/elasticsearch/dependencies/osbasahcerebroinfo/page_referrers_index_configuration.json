@@ -68,6 +68,12 @@
 				"referrer": {
 					"type": "keyword"
 				},
+				"referrerCanonicalUrl": {
+					"type": "keyword"
+				},
+				"referrerHost": {
+					"type": "keyword"
+				},
 				"region": {
 					"type": "keyword"
 				},

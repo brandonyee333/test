@@ -28,10 +28,6 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.storage.Storage;
-import com.liferay.osb.asah.common.storage.StorageConfiguration;
-import com.liferay.osb.asah.common.storage.StorageFactory;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -50,10 +46,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
-import org.apache.avro.Schema;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -65,7 +57,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -129,11 +120,6 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		return individualJSONObject;
-	}
-
-	@PreDestroy
-	private void _destroy() {
-		_storage.close();
 	}
 
 	private JSONObject _getAnalyticsDataJSONObject(
@@ -241,25 +227,6 @@ public class AnalyticsEventsMessageProcessor {
 			_faroInfoElasticsearchInvoker.get(
 				"individual-segments", boolQueryBuilder),
 			"name");
-	}
-
-	@PostConstruct
-	private void _init() throws Exception {
-		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			_analyticsEventsStoragePath);
-
-		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
-
-		Schema.Parser parser = new Schema.Parser();
-
-		builder.fileSchema(
-			parser.parse(
-				ResourceUtil.readResourceToString(
-					"dependencies/analytics_events.avsc", getClass())));
-
-		builder.googleBucket(_analyticsEventsBucket);
-
-		_storage = _storageFactory.getStorage(builder.build());
 	}
 
 	private boolean _isCrawler(Map<String, String> context) {
@@ -396,8 +363,6 @@ public class AnalyticsEventsMessageProcessor {
 
 				_messageBus.sendMessage(channel, analyticsEvent.toJSON());
 			}
-
-			_storage.write(analyticsEvent.toJSON());
 		}
 
 		_analyticsEventsCounter.inc(events.size());
@@ -423,18 +388,8 @@ public class AnalyticsEventsMessageProcessor {
 		}
 	};
 
-	@Value(
-		"${osb.asah.analytics.events.google.bucket:analytics-cloud-analytics-events}"
-	)
-	private String _analyticsEventsBucket;
-
 	@Autowired
 	private AnalyticsEventsChannels _analyticsEventsChannels;
-
-	@Value(
-		"${osb.asah.analytics.events.storage.path:/tmp/analytics_events.snappy.parquet}"
-	)
-	private String _analyticsEventsStoragePath;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
@@ -456,10 +411,5 @@ public class AnalyticsEventsMessageProcessor {
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
-
-	private Storage _storage;
-
-	@Autowired
-	private StorageFactory _storageFactory;
 
 }

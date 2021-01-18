@@ -9,7 +9,8 @@
 # distribution rights of the Software.
 #
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta, \
+	abstractmethod
 
 from liferay.common.configuration import Configuration
 

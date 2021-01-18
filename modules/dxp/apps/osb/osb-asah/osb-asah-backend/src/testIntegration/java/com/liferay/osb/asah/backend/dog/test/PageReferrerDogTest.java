@@ -77,6 +77,43 @@ public class PageReferrerDogTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "page-referrers", resourcePath = "page_referrers_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testPageReferrerHosts() {
+		Map<String, Double> pageReferrers = _pageReferrerDog.getPageReferrers(
+			"referrerHost",
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl("http://liferay.com/home");
+					setInterval(Interval.DAY.getKey());
+					setRangeKey(7);
+				}
+			},
+			10);
+
+		Assert.assertEquals(3, pageReferrers.get("www.facebook.com"), 0);
+		Assert.assertEquals(6, pageReferrers.get("www.google.com"), 0);
+		Assert.assertEquals(1, pageReferrers.get("www.latimes.com"), 0);
+
+		pageReferrers = _pageReferrerDog.getPageReferrers(
+			"referrerHost",
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl("http://liferay.com/home");
+					setInterval(Interval.DAY.getKey());
+					setRangeKey(30);
+				}
+			},
+			10);
+
+		Assert.assertEquals(3, pageReferrers.get("www.facebook.com"), 0);
+		Assert.assertEquals(6, pageReferrers.get("www.google.com"), 0);
+		Assert.assertEquals(6, pageReferrers.get("www.latimes.com"), 0);
+	}
+
+	@ElasticsearchIndex(
 		name = "page-referrers", resourcePath = "page_referrers_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
@@ -102,6 +139,71 @@ public class PageReferrerDogTest {
 		PageReferrerMetric pageReferrerMetric = pageReferrerMetrics.get(0);
 
 		DogTestUtil.assertMetric(8, pageReferrerMetric.getAccessMetric());
+	}
+
+	@ElasticsearchIndex(
+		name = "page-referrers", resourcePath = "page_referrers_info_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testPageReferrers() {
+		Map<String, Double> pageReferrers = _pageReferrerDog.getPageReferrers(
+			"referrerCanonicalUrl",
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl("http://liferay.com/home");
+					setInterval(Interval.DAY.getKey());
+					setRangeKey(7);
+				}
+			},
+			10);
+
+		Assert.assertEquals(
+			3, pageReferrers.get("https://www.facebook.com"), 0);
+		Assert.assertEquals(4, pageReferrers.get("https://www.google.com"), 0);
+		Assert.assertEquals(
+			2, pageReferrers.get("https://www.google.com/test"), 0);
+		Assert.assertEquals(1, pageReferrers.get("https://www.latimes.com"), 0);
+
+		pageReferrers = _pageReferrerDog.getPageReferrers(
+			"referrerCanonicalUrl",
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl("http://liferay.com/home");
+					setInterval(Interval.DAY.getKey());
+					setRangeKey(30);
+				}
+			},
+			10);
+
+		Assert.assertEquals(
+			3, pageReferrers.get("https://www.facebook.com"), 0);
+		Assert.assertEquals(4, pageReferrers.get("https://www.google.com"), 0);
+		Assert.assertEquals(
+			2, pageReferrers.get("https://www.google.com/test"), 0);
+		Assert.assertEquals(6, pageReferrers.get("https://www.latimes.com"), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "page-referrers",
+		resourcePath = "page_referrers_social_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@Test
+	public void testSocialPageReferrers() {
+		Map<String, Double> socialReferrers =
+			_pageReferrerDog.getSocialPageReferrers(
+				new SearchQueryContext() {
+					{
+						setCanonicalUrl("http://liferay.com/home");
+						setInterval(Interval.DAY.getKey());
+						setRangeKey(7);
+					}
+				});
+
+		Assert.assertEquals(3, socialReferrers.get("facebook"), 0);
+		Assert.assertEquals(4, socialReferrers.get("other"), 0);
+		Assert.assertEquals(6, socialReferrers.get("twitter"), 0);
 	}
 
 	@Autowired

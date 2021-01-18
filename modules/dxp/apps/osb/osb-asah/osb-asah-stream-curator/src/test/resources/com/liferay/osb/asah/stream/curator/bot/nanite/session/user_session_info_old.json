@@ -1,0 +1,23 @@
+{
+	"bounced": true,
+	"browserName": "Firefox",
+	"channelId": "1",
+	"city": null,
+	"completeReason": null,
+	"completed": false,
+	"country": null,
+	"dataSourceId": "362055312804551713",
+	"date": "2019-07-12T21:00:00.000Z",
+	"duration": 0,
+	"entryPage": "http://192.168.108.90:8089/",
+	"exitPage": null,
+	"firstEventDate": "2019-07-12T21:18:01.000Z",
+	"id": "366909399944215919",
+	"individualId": "366909392432123952",
+	"interactionsCount": 0,
+	"lastEventDate": "2019-07-12T21:18:01.000Z",
+	"pageViewsCount": 1,
+	"platformName": "Linux",
+	"region": null,
+	"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+}

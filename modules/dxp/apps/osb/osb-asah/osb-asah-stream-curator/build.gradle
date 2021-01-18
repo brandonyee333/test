@@ -21,10 +21,9 @@ dependencies {
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-json-org", version: "2.9.8"
 	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jsr310", version: "2.9.8"
 	compile group: "edu.stanford.nlp", name: "stanford-corenlp", version: "3.9.2"
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
 
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
-
-	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
+	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }
 
 if (!langDetectProfileDir.exists()) {

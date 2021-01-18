@@ -81,6 +81,48 @@ public class PagesRestController extends BaseRestController {
 					PageMetricType.VIEWS, searchQueryContext)));
 	}
 
+	@GetMapping("/page-referrer-hosts")
+	public Map<String, Double> getPageReferrerHosts(
+		@RequestParam String canonicalURL,
+		@RequestParam(defaultValue = "D") String interval,
+		@RequestParam(defaultValue = "7") int rangeKey,
+		@RequestParam(defaultValue = "30") int size) {
+
+		if (StringUtils.isBlank(canonicalURL)) {
+			return Collections.emptyMap();
+		}
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext();
+
+		searchQueryContext.setCanonicalUrl(canonicalURL);
+		searchQueryContext.setInterval(interval);
+		searchQueryContext.setRangeKey(rangeKey);
+
+		return _pageReferrerDog.getPageReferrers(
+			"referrerHost", searchQueryContext, size);
+	}
+
+	@GetMapping("/page-referrers")
+	public Map<String, Double> getPageReferrers(
+		@RequestParam String canonicalURL,
+		@RequestParam(defaultValue = "D") String interval,
+		@RequestParam(defaultValue = "7") int rangeKey,
+		@RequestParam(defaultValue = "30") int size) {
+
+		if (StringUtils.isBlank(canonicalURL)) {
+			return Collections.emptyMap();
+		}
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext();
+
+		searchQueryContext.setCanonicalUrl(canonicalURL);
+		searchQueryContext.setInterval(interval);
+		searchQueryContext.setRangeKey(rangeKey);
+
+		return _pageReferrerDog.getPageReferrers(
+			"referrerCanonicalUrl", searchQueryContext, size);
+	}
+
 	@GetMapping("/read-count")
 	public String getReadCount(@RequestParam String canonicalURL) {
 		return String.valueOf(
@@ -103,6 +145,25 @@ public class PagesRestController extends BaseRestController {
 		return _getHistogramMetrics(
 			canonicalURL, endLocalDate, interval, PageMetricType.READS,
 			startLocalDate);
+	}
+
+	@GetMapping("/social-page-referrers")
+	public Map<String, Double> getSocialPageReferrers(
+		@RequestParam String canonicalURL,
+		@RequestParam(defaultValue = "D") String interval,
+		@RequestParam(defaultValue = "7") int rangeKey) {
+
+		if (StringUtils.isBlank(canonicalURL)) {
+			return Collections.emptyMap();
+		}
+
+		SearchQueryContext searchQueryContext = new SearchQueryContext();
+
+		searchQueryContext.setCanonicalUrl(canonicalURL);
+		searchQueryContext.setInterval(interval);
+		searchQueryContext.setRangeKey(rangeKey);
+
+		return _pageReferrerDog.getSocialPageReferrers(searchQueryContext);
 	}
 
 	@GetMapping("/view-count")

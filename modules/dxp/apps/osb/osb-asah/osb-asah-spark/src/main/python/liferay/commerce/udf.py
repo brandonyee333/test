@@ -9,9 +9,12 @@
 # distribution rights of the Software.
 #
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta, \
+	abstractmethod
 
-from pyspark.ml.linalg import DenseVector, VectorUDT
+from pyspark.ml.linalg import DenseVector, \
+	VectorUDT
+
 from pyspark.sql.functions import udf
 from pyspark.sql.types import DoubleType
 

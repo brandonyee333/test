@@ -9,16 +9,24 @@
 # distribution rights of the Software.
 #
 
-from datetime import datetime, timedelta
+from datetime import datetime, \
+	timedelta
 
 from liferay.common.spark import BaseSparkJob
+
 from liferay.interest_score.nlp import LanguageDetectorPolyglotWrapper
 
-from pyspark.sql import functions as F
-from pyspark.sql import Window
+from pyspark.sql import Window, \
+	functions as F
 
-from sparknlp.base import DocumentAssembler, Finisher, RecursivePipeline
-from sparknlp.annotator import Chunker, Normalizer, PerceptronModel, SentenceDetector, Tokenizer
+from sparknlp.annotator import Chunker, \
+	Normalizer, \
+	PerceptronModel, \
+	SentenceDetector, \
+	Tokenizer
+from sparknlp.base import DocumentAssembler, \
+	Finisher, \
+	RecursivePipeline
 
 import json
 

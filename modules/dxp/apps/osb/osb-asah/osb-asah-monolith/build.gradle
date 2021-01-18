@@ -8,15 +8,15 @@ configurations.all {
 }
 
 dependencies {
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-backend")
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-batch-curator")
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-dxp-extractor")
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-extractor")
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-publisher")
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-salesforce-extractor")
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-stream-curator")
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-upgrade")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-backend")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-batch-curator")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-dxp-extractor")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-extractor")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-publisher")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-salesforce-extractor")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-stream-curator")
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-upgrade")
 
 	compile (group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.10") {
 		force = true
@@ -24,5 +24,5 @@ dependencies {
 
 	testCompile group: "junit", name: "junit", version: "4.12"
 
-	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
+	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }

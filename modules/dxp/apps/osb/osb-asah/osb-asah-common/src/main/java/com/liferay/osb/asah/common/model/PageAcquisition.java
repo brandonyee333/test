@@ -37,25 +37,25 @@ public class PageAcquisition extends Acquisition {
 		String channel = super.getChannel();
 
 		if (Objects.equals(channel, "organic") ||
-			_contains(_SEARCH_HOST_NAMES, referrer)) {
+			_contains(_SEARCH_HOST_NAMES, referrerHost)) {
 
 			return "organic";
 		}
 
 		if (Objects.equals(channel, "paid search") ||
 			!StringUtils.isBlank(decode(queryParams.getFirst("gclid"))) ||
-			_contains(_PAID_HOST_NAMES, referrer)) {
+			_contains(_PAID_HOST_NAMES, referrerHost)) {
 
 			return "paid";
 		}
 
 		if (Objects.equals(channel, "social") ||
-			_contains(_SOCIAL_HOST_NAMES, referrer)) {
+			_contains(_SOCIAL_HOST_NAMES, referrerHost)) {
 
 			return "social";
 		}
 
-		if (StringUtils.isBlank(referrer)) {
+		if (StringUtils.isBlank(referrerHost)) {
 			return "direct";
 		}
 
@@ -86,7 +86,7 @@ public class PageAcquisition extends Acquisition {
 		try {
 			URI uri = new URI(url);
 
-			if (StringUtils.equals(uri.getHost(), referrer)) {
+			if (StringUtils.equals(uri.getHost(), referrerHost)) {
 				return true;
 			}
 		}

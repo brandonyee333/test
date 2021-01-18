@@ -13,6 +13,7 @@
 		"osbasahmarkers",
 		"page-referrers",
 		"pages",
+		"user-session-analytics-events",
 		"user-sessions"
 	],
 	"osbasahdxpraw": [

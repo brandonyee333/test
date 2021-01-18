@@ -9,21 +9,32 @@
 # distribution rights of the Software.
 #
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta, \
+	abstractmethod
 
 from liferay.commerce.configuration import CommerceConfiguration
 from liferay.commerce.recommend.job import ContextUserInteractionRecommendationDataFrameWriterSparkJob, \
- FrequentPatternOrderDataFrameReaderSparkJob, FrequentPatternRecommendationSparkJob, \
- FrequentPatternPostProcessRecommendationSparkJob, FrequentPatternRecommendationDataFrameWriterSparkJob, \
- OrderInteractionDataFrameReaderSparkJob, ProductContentDataFrameReaderSparkJob, \
- ProductContentPipelineSparkJob, ProductContentRecommendationDataFrameWriter, \
- ProductContentRecommendationSparkJob, ProductInteractionDataFrameReaderSparkJob, \
- ProductInteractionRecommendationDataFrameWriterSparkJob, \
- ProductInteractionRecommendationSparkJob, UserInteractionCollaborativeFilteringSparkJob, \
- UserInteractionDataPreparationSparkJob, FrequentPatternProductDataFrameReaderSparkJob, \
- FrequentPatternDataPreparationSparkJob
-from liferay.commerce.udf import TanimotoCoefficientUDFFunction, ToDenseVectorUDFFunction
-from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
+	FrequentPatternDataPreparationSparkJob, \
+	FrequentPatternOrderDataFrameReaderSparkJob, \
+	FrequentPatternPostProcessRecommendationSparkJob, \
+	FrequentPatternProductDataFrameReaderSparkJob, \
+	FrequentPatternRecommendationDataFrameWriterSparkJob, \
+	FrequentPatternRecommendationSparkJob, \
+	OrderInteractionDataFrameReaderSparkJob, \
+	ProductContentDataFrameReaderSparkJob, \
+	ProductContentPipelineSparkJob, \
+	ProductContentRecommendationDataFrameWriter, \
+	ProductContentRecommendationSparkJob, \
+	ProductInteractionDataFrameReaderSparkJob, \
+	ProductInteractionRecommendationDataFrameWriterSparkJob, \
+	ProductInteractionRecommendationSparkJob, \
+	UserInteractionCollaborativeFilteringSparkJob, \
+	UserInteractionDataPreparationSparkJob
+from liferay.commerce.udf import TanimotoCoefficientUDFFunction, \
+	ToDenseVectorUDFFunction
+
+from liferay.common.spark import BaseSparkApplication, \
+	SparkJobPipeline
 
 import argparse
 import logging

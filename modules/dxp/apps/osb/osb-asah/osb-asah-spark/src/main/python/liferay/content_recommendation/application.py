@@ -10,12 +10,18 @@
 #
 
 from liferay.common.pubsub import PubSubBridge
-from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
+from liferay.common.spark import BaseSparkApplication, \
+	SparkJobPipeline
+
 from liferay.content_recommendation.job import GenerateItemsSparkJob, \
-GenerateUserItemInteractionsSparkJob, PublishJobRunSparkJob, \
-ReadAnalyticsEventsSparkJob, ReadRecommendedItemsSparkJob, \
-UpdateJobRunStepSparkJob, WriteItemsSparkJob, WriteRecommendedItemsSparkJob, \
-WriteUserItemInteractionsSparkJob
+	GenerateUserItemInteractionsSparkJob, \
+	PublishJobRunSparkJob, \
+	ReadAnalyticsEventsSparkJob, \
+	ReadRecommendedItemsSparkJob, \
+	UpdateJobRunStepSparkJob, \
+	WriteItemsSparkJob, \
+	WriteRecommendedItemsSparkJob, \
+	WriteUserItemInteractionsSparkJob
 
 from pyspark import SparkConf
 

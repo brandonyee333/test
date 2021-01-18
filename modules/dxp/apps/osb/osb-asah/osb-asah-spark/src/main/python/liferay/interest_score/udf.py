@@ -12,7 +12,10 @@
 from pyspark.sql.functions import udf
 from pyspark.sql.types import StringType
 
-from urllib.parse import urlparse, urlencode, parse_qs, urlunparse
+from urllib.parse import parse_qs, \
+	urlencode, \
+	urlparse, \
+	urlunparse
 
 class NormalizeURLFunction(object):
 	def __init__(self, spark_session, ignore_parameters=[]):

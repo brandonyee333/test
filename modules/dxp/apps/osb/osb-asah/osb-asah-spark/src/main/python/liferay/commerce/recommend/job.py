@@ -11,17 +11,33 @@
 
 from abc import abstractmethod
 
-from pyspark.ml.fpm import FPGrowth
+from liferay.commerce.recommend.feature import CommerceFeatureExtractor, \
+	MAPEvaluator
 
-from liferay.commerce.recommend.feature import CommerceFeatureExtractor, MAPEvaluator
 from liferay.common.spark import BaseSparkJob
 
 from pyspark import StorageLevel
 from pyspark.ml import Pipeline
+
+from pyspark.ml.fpm import FPGrowth
 from pyspark.ml.recommendation import ALS
-from pyspark.ml.tuning import ParamGridBuilder, CrossValidator
+from pyspark.ml.tuning import CrossValidator, \
+	ParamGridBuilder
+
 from pyspark.sql import Window
-from pyspark.sql.functions import coalesce, col, collect_set, current_date, explode, expr, regexp_replace, lit, rank, row_number, size as col_size, when
+
+from pyspark.sql.functions import coalesce, \
+	col, \
+	collect_set, \
+	current_date, \
+	explode, \
+	expr, \
+	lit, \
+	rank, \
+	regexp_replace, \
+	row_number, \
+	size as col_size, \
+	when
 
 import logging
 

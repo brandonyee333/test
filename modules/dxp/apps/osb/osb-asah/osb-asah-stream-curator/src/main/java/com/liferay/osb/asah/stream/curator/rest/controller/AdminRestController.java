@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.stream.curator.rest.controller;
 
-import com.liferay.osb.asah.stream.curator.bot.nanite.session.SessionFinalizerNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.session.UserSessionFinalizerNanite;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,7 +41,7 @@ public class AdminRestController {
 			_log.info("Starting to close all sessions");
 		}
 
-		_sessionFinalizerNanite.run(true);
+		_userSessionFinalizerNanite.run(true);
 
 		if (_log.isInfoEnabled()) {
 			_log.info("All sessions were closed");
@@ -52,6 +52,6 @@ public class AdminRestController {
 		AdminRestController.class);
 
 	@Autowired
-	private SessionFinalizerNanite _sessionFinalizerNanite;
+	private UserSessionFinalizerNanite _userSessionFinalizerNanite;
 
 }

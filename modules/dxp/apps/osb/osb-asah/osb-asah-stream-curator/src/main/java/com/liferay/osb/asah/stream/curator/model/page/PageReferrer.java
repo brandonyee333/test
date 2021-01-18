@@ -20,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 
+import java.net.URI;
+
 import java.util.Date;
 import java.util.NavigableSet;
 import java.util.TreeSet;
@@ -63,6 +65,14 @@ public class PageReferrer extends BasePageModel {
 		return _referrer;
 	}
 
+	public String getReferrerCanonicalUrl() {
+		return _referrerCanonicalUrl;
+	}
+
+	public String getReferrerHost() {
+		return _referrerHost;
+	}
+
 	public void setAccess(long access) {
 		_access = access;
 	}
@@ -77,11 +87,27 @@ public class PageReferrer extends BasePageModel {
 
 	public void setReferrer(String referrer) {
 		_referrer = referrer;
+
+		try {
+			URI uri = new URI(referrer);
+
+			URI canonicalURI = new URI(
+				uri.getScheme(), uri.getAuthority(), uri.getPath(), null,
+				uri.getFragment());
+
+			_referrerCanonicalUrl = canonicalURI.toString();
+			_referrerHost = canonicalURI.getHost();
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 
 	private long _access;
 	private NavigableSet<Date> _accessDates = new TreeSet<>();
 	private String _acquisitionChannel;
 	private String _referrer;
+	private String _referrerCanonicalUrl;
+	private String _referrerHost;
 
 }

@@ -7,10 +7,9 @@ bootJar {
 
 dependencies {
 	compile group: "com.liferay", name: "com.liferay.petra.json.web.service.client", version: "7.1.0"
+	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
 
-	implementation project(":dxp:apps:osb:osb-asah:osb-asah-common")
-
-	testImplementation project(":dxp:apps:osb:osb-asah:osb-asah-test-util")
+	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }
 
 jar {
