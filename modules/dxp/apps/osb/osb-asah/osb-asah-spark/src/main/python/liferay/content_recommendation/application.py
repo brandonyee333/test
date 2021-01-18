@@ -12,7 +12,6 @@
 from liferay.common.pubsub import PubSubBridge
 from liferay.common.spark import BaseSparkApplication, \
 	SparkJobPipeline
-
 from liferay.content_recommendation.job import GenerateItemsSparkJob, \
 	GenerateUserItemInteractionsSparkJob, \
 	PublishJobRunSparkJob, \

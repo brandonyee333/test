@@ -14,7 +14,6 @@ from abc import ABCMeta, \
 
 from pyspark.ml.linalg import DenseVector, \
 	VectorUDT
-
 from pyspark.sql.functions import udf
 from pyspark.sql.types import DoubleType
 
