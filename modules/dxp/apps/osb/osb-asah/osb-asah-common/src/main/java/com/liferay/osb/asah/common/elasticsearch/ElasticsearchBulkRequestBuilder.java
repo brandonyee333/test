@@ -192,6 +192,24 @@ public class ElasticsearchBulkRequestBuilder {
 		return this;
 	}
 
+	public ElasticsearchBulkRequestBuilder upsert(
+		String collectionName, JSONObject jsonObject) {
+
+		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
+			getIndexAlias(collectionName), collectionName,
+			jsonObject.optString("id", _timeOrderedUuidGenerator.generateId()));
+
+		updateRequestBuilder.setDoc(jsonObject.toString(), XContentType.JSON);
+		updateRequestBuilder.setFetchSource(false);
+		updateRequestBuilder.setRetryOnConflict(5);
+		updateRequestBuilder.setUpsert(
+			jsonObject.toString(), XContentType.JSON);
+
+		_bulkRequestBuilder.add(updateRequestBuilder);
+
+		return this;
+	}
+
 	private ElasticsearchBulkRequestBuilder(
 		Map<String, String> aliases, Client client, String indexNamespace) {
 

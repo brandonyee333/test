@@ -20,8 +20,13 @@ import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.Arrays;
+
+import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.support.WriteRequest;
 
 import org.json.JSONObject;
 
@@ -29,7 +34,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.skyscreamer.jsonassert.JSONAssert;
+
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -98,6 +104,67 @@ public class ElasticsearchBulkRequestBuilderTest {
 
 		Assert.assertFalse(_elasticsearchInvoker.exists("individuals", "1"));
 		Assert.assertFalse(_elasticsearchInvoker.exists("individuals", "2"));
+	}
+
+	@Test
+	public void testUpsertInsert() {
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+			_elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
+
+		elasticsearchBulkRequestBuilder.refreshPolicy(
+			WriteRequest.RefreshPolicy.IMMEDIATE);
+
+		JSONObject assetJSONObject = FaroInfoTestUtil.buildAssetJSONObject(
+			"Page", RandomTestUtil.randomId());
+
+		BulkResponse bulkResponse = elasticsearchBulkRequestBuilder.upsert(
+			"assets", assetJSONObject
+		).get();
+
+		BulkItemResponse[] bulkItemResponses = bulkResponse.getItems();
+
+		Assert.assertEquals(
+			Arrays.toString(bulkItemResponses), 1, bulkItemResponses.length);
+
+		BulkItemResponse bulkItemResponse = bulkItemResponses[0];
+
+		Assert.assertFalse(bulkItemResponse.isFailed());
+
+		JSONAssert.assertEquals(
+			assetJSONObject,
+			_elasticsearchInvoker.get("assets", bulkItemResponse.getId()),
+			false);
+	}
+
+	@Test
+	public void testUpsertUpdate() {
+		JSONObject assetJSONObject = _elasticsearchInvoker.add(
+			"assets",
+			FaroInfoTestUtil.buildAssetJSONObject(
+				"Page", RandomTestUtil.randomId()));
+
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+			_elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
+
+		elasticsearchBulkRequestBuilder.refreshPolicy(
+			WriteRequest.RefreshPolicy.IMMEDIATE);
+
+		String assetName = RandomTestUtil.randomMultipleWordString(5, 20);
+
+		assetJSONObject.put("name", assetName);
+
+		BulkResponse bulkResponse = elasticsearchBulkRequestBuilder.upsert(
+			"assets", assetJSONObject
+		).get();
+
+		Assert.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
+
+		Assert.assertFalse(bulkResponse.hasFailures());
+
+		assetJSONObject = _elasticsearchInvoker.get(
+			"assets", assetJSONObject.getString("id"));
+
+		Assert.assertEquals(assetName, assetJSONObject.getString("name"));
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
