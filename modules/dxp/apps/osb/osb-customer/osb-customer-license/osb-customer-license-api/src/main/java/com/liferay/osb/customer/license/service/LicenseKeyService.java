@@ -210,13 +210,13 @@ public interface LicenseKeyService extends BaseService {
 			int expirationDateLTMonth, int expirationDateLTYear,
 			LinkedHashMap<String, Object> params, boolean andSearch, int start,
 			int end, OrderByComparator obc)
-		throws PortalException;
+		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(
 			String keywords, LinkedHashMap<String, Object> params, int start,
 			int end, OrderByComparator obc)
-		throws PortalException;
+		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(
@@ -237,12 +237,12 @@ public interface LicenseKeyService extends BaseService {
 			int expirationDateGTYear, int expirationDateLTDay,
 			int expirationDateLTMonth, int expirationDateLTYear,
 			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws PortalException;
+		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(
 			String keywords, LinkedHashMap<String, Object> params)
-		throws PortalException;
+		throws Exception;
 
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
 		throws Exception;

@@ -967,7 +967,7 @@ public class LicenseKeyServiceHttp {
 				java.util.LinkedHashMap<String, Object> params,
 				boolean andSearch, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator obc)
-			throws com.liferay.portal.kernel.exception.PortalException {
+			throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -996,11 +996,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -1024,7 +1021,7 @@ public class LicenseKeyServiceHttp {
 				HttpPrincipal httpPrincipal, String keywords,
 				java.util.LinkedHashMap<String, Object> params, int start,
 				int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-			throws com.liferay.portal.kernel.exception.PortalException {
+			throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -1039,11 +1036,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -1081,7 +1075,7 @@ public class LicenseKeyServiceHttp {
 			int expirationDateGTYear, int expirationDateLTDay,
 			int expirationDateLTMonth, int expirationDateLTYear,
 			java.util.LinkedHashMap<String, Object> params, boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -1110,11 +1104,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(
@@ -1135,7 +1126,7 @@ public class LicenseKeyServiceHttp {
 	public static int searchCount(
 			HttpPrincipal httpPrincipal, String keywords,
 			java.util.LinkedHashMap<String, Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
@@ -1151,11 +1142,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception exception) {
-				if (exception instanceof
-						com.liferay.portal.kernel.exception.PortalException) {
-
-					throw (com.liferay.portal.kernel.exception.PortalException)
-						exception;
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(

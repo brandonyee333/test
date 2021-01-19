@@ -282,7 +282,7 @@ public class LicenseKeyServiceUtil {
 				java.util.LinkedHashMap<String, Object> params,
 				boolean andSearch, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator obc)
-			throws com.liferay.portal.kernel.exception.PortalException {
+			throws Exception {
 
 		return getService().search(
 			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
@@ -305,7 +305,7 @@ public class LicenseKeyServiceUtil {
 				String keywords, java.util.LinkedHashMap<String, Object> params,
 				int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator obc)
-			throws com.liferay.portal.kernel.exception.PortalException {
+			throws Exception {
 
 		return getService().search(keywords, params, start, end, obc);
 	}
@@ -328,7 +328,7 @@ public class LicenseKeyServiceUtil {
 			int expirationDateGTYear, int expirationDateLTDay,
 			int expirationDateLTMonth, int expirationDateLTYear,
 			java.util.LinkedHashMap<String, Object> params, boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return getService().searchCount(
 			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
@@ -347,7 +347,7 @@ public class LicenseKeyServiceUtil {
 
 	public static int searchCount(
 			String keywords, java.util.LinkedHashMap<String, Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return getService().searchCount(keywords, params);
 	}
