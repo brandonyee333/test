@@ -93,6 +93,7 @@
 		"eventId": "pageViewed",
 		"id": "366909392570778428",
 		"normalizedEventDate": 1562965200000,
+		"projectId": "asah652a6babdba143d086a19db542781bc2",
 		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
 	},
 	{
@@ -125,6 +126,7 @@
 		"eventId": "pageViewed",
 		"id": "366909392570778429",
 		"normalizedEventDate": 1562965200000,
+		"projectId": "asah652a6babdba143d086a19db542781bc2",
 		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
 	}
 ]
