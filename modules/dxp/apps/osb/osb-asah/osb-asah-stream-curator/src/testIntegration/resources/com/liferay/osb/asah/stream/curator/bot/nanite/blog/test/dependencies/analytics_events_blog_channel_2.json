@@ -21,6 +21,7 @@
 			"entryId": "1",
 			"title": "Title 1"
 		},
+		"projectId": "test",
 		"userId": "1"
 	},
 	{
@@ -44,6 +45,7 @@
 			"entryId": "1",
 			"title": "Title 1"
 		},
+		"projectId": "test",
 		"userId": "2"
 	},
 	{
@@ -67,6 +69,7 @@
 			"entryId": "1",
 			"tagName": "p"
 		},
+		"projectId": "test",
 		"userId": "1"
 	},
 	{
@@ -92,6 +95,7 @@
 			"tagName": "a",
 			"text": "google"
 		},
+		"projectId": "test",
 		"userId": "2"
 	},
 	{
@@ -117,6 +121,7 @@
 			"tagName": "img",
 			"text": "some image"
 		},
+		"projectId": "test",
 		"userId": "2"
 	},
 	{
@@ -141,6 +146,7 @@
 			"tagName": "p",
 			"text": "some text in a par."
 		},
+		"projectId": "test",
 		"userId": "2"
 	},
 	{
@@ -163,6 +169,7 @@
 			"className": "com.liferay.blogs.model.BlogsEntry",
 			"classPK": "1"
 		},
+		"projectId": "test",
 		"userId": "1"
 	},
 	{
@@ -186,6 +193,7 @@
 			"classPK": "1",
 			"score": "0.95"
 		},
+		"projectId": "test",
 		"userId": "2"
 	}
 ]

@@ -18,6 +18,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:40:01.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "8"
 	},
 	{
@@ -39,6 +40,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:41:01.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "8"
 	},
 	{
@@ -60,6 +62,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:50:02.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "8"
 	},
 	{
@@ -81,6 +84,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:01:00.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "6"
 	},
 	{
@@ -102,6 +106,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T11:05:08.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "7"
 	},
 	{
@@ -123,6 +128,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:30:09.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "5"
 	},
 	{
@@ -144,6 +150,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:40:01.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "7"
 	},
 	{
@@ -165,6 +172,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:42:03.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "5"
 	},
 	{
@@ -186,6 +194,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:38:07.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "6"
 	},
 	{
@@ -207,6 +216,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:36:11.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "2"
 	},
 	{
@@ -228,6 +238,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:47:10.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "4"
 	},
 	{
@@ -249,6 +260,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:22:05.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "1"
 	},
 	{
@@ -270,6 +282,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T10:10:04.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "3"
 	},
 	{
@@ -291,6 +304,7 @@
 		"dataSourceId": "liferay.com",
 		"eventDate": "2018-01-04T11:10:04.000Z",
 		"eventId": "pageViewed",
+		"projectId": "test",
 		"userId": "4"
 	},
 	{
@@ -315,6 +329,7 @@
 		"eventProperties": {
 			"depth": "25"
 		},
+		"projectId": "test",
 		"userId": "4"
 	},
 	{
@@ -339,6 +354,7 @@
 		"eventProperties": {
 			"depth": "25"
 		},
+		"projectId": "test",
 		"userId": "4"
 	}
 ]

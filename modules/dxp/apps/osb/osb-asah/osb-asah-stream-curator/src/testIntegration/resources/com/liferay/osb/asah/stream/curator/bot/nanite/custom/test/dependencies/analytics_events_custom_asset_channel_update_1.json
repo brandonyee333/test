@@ -20,6 +20,7 @@
 			"title": "Asset Title Update 1"
 		},
 		"id": "1",
+		"projectId": "test",
 		"userId": "1"
 	}
 ]
