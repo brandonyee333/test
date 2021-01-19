@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -286,22 +285,6 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			"liferay/zendesk_account_language_sync", message);
 
 		return accountEntry;
-	}
-
-	protected void addAccountMembershipParams(
-			LinkedHashMap<String, Object> params)
-		throws PortalException {
-
-		if (!organizationLocalService.hasUserOrganization(
-				getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID) &&
-			!organizationLocalService.hasUserOrganization(
-				getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-			params.put("accountEntryMembership", Long.valueOf(getUserId()));
-			params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
-		}
 	}
 
 	protected String getExternalLinkEntityId(

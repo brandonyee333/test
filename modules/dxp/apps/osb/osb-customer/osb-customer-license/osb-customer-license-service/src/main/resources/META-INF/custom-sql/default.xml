@@ -97,22 +97,28 @@
 				)
 		]]>
 	</sql>
+	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByAccountMembership">
+		<![CDATA[
+			WHERE
+				OSB_LicenseKey.koroneikiAccountKey = ?
+		]]>
+	</sql>
 	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByActive">
 		<![CDATA[
 			WHERE
 				OSB_LicenseKey.active_ = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByAccountEntryType">
-		<![CDATA[
-			WHERE
-				OSB_AccountEntry.type_ = ?
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByAssetReceiptLicense">
 		<![CDATA[
 			WHERE
 				OSB_LicenseKey.assetReceiptLicenseId >= ?
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByUser">
+		<![CDATA[
+			WHERE
+				OSB_LicenseKey.userId = ?
 		]]>
 	</sql>
 </custom-sql>

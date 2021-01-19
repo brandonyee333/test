@@ -59,14 +59,17 @@ public class LicenseKeyFinderImpl
 			LicenseKeyFinder.class.getName() +
 				".findByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A";
 
+	public static final String JOIN_BY_ACCOUNT_MEMBERSHIP =
+		LicenseKeyFinder.class.getName() + ".joinByAccountMembership";
+
 	public static final String JOIN_BY_ACTIVE =
 		LicenseKeyFinder.class.getName() + ".joinByActive";
 
-	public static final String JOIN_BY_ACCOUNT_ENTRY_TYPE =
-		LicenseKeyFinder.class.getName() + ".joinByAccountEntryType";
-
 	public static final String JOIN_BY_ASSET_RECEIPT_ITEM =
 		LicenseKeyFinder.class.getName() + ".joinByAssetReceiptLicense";
+
+	public static final String JOIN_BY_USER =
+		LicenseKeyFinder.class.getName() + ".joinByUser";
 
 	public int countByKeywords(
 		String keywords, LinkedHashMap<String, Object> params) {
@@ -234,24 +237,6 @@ public class LicenseKeyFinderImpl
 		Date expirationDateLT, LinkedHashMap<String, Object> params,
 		boolean andOperator) {
 
-		if (params == null) {
-			params = new LinkedHashMap<>();
-		}
-
-		Long userId = (Long)params.remove("accountEntryMembership");
-
-		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
-
-		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
-
-		LinkedHashMap<String, Object> params3 = new LinkedHashMap<>(params2);
-
-		if (userId != null) {
-			params1.put("accountCustomer", new Long[] {userId, userId});
-			params2.put("accountWorker", new Long[] {userId, userId});
-			params3.put("partnerWorker", userId);
-		}
-
 		Timestamp createDateGT_TS = CalendarUtil.getTimestamp(createDateGT);
 		Timestamp createDateLT_TS = CalendarUtil.getTimestamp(createDateLT);
 		Timestamp modifiedDateGT_TS = CalendarUtil.getTimestamp(modifiedDateGT);
@@ -278,46 +263,21 @@ public class LicenseKeyFinderImpl
 		Timestamp expirationDateLT_TS = CalendarUtil.getTimestamp(
 			expirationDateLT);
 
-		StringBundler sb = new StringBundler(7);
-
 		String sql = CustomSQLUtil.get(
 			getClass(),
 			COUNT_BY_U_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
 
-		sb.append(
-			replaceSQL(
-				sql, createUserId, modifiedUserId, accountEntryNames,
-				licenseKeySetNames, licenseEntryIds, productEntryIds,
-				productEntryNames, productIds, productVersions, owners,
-				descriptions, hostNames, ipAddresses, macAddresses, serverIds,
-				keys, params1, andOperator));
-
-		if (userId != null) {
-			sb.append(" UNION (");
-			sb.append(
-				replaceSQL(
-					sql, createUserId, modifiedUserId, accountEntryNames,
-					licenseKeySetNames, licenseEntryIds, productEntryIds,
-					productEntryNames, productIds, productVersions, owners,
-					descriptions, hostNames, ipAddresses, macAddresses,
-					serverIds, keys, params2, andOperator));
-			sb.append(") ");
-
-			sb.append("UNION (");
-			sb.append(
-				replaceSQL(
-					sql, createUserId, modifiedUserId, accountEntryNames,
-					licenseKeySetNames, licenseEntryIds, productEntryIds,
-					productEntryNames, productIds, productVersions, owners,
-					descriptions, hostNames, ipAddresses, macAddresses,
-					serverIds, keys, params3, andOperator));
-			sb.append(")");
-		}
+		sql = replaceSQL(
+			sql, createUserId, modifiedUserId, accountEntryNames,
+			licenseKeySetNames, licenseEntryIds, productEntryIds,
+			productEntryNames, productIds, productVersions, owners,
+			descriptions, hostNames, ipAddresses, macAddresses, serverIds, keys,
+			params, andOperator);
 
 		String selectSql = PortalCustomSQLUtil.get(
 			"com.liferay.util.dao.orm.CustomSQL.countBySelectSQL");
 
-		sql = StringUtil.replace(selectSql, "[$SELECT_SQL$]", sb.toString());
+		sql = StringUtil.replace(selectSql, "[$SELECT_SQL$]", sql);
 
 		Session session = null;
 
@@ -331,7 +291,7 @@ public class LicenseKeyFinderImpl
 			QueryPos qPos = QueryPos.getInstance(q);
 
 			setJoin(
-				qPos, params1, createUserId, createDateGT_TS, createDateLT_TS,
+				qPos, params, createUserId, createDateGT_TS, createDateLT_TS,
 				modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS,
 				koroneikiAccountKey, koroneikiProductPurchaseKey,
 				accountEntryNames, licenseKeySetNames, startDateGT_TS,
@@ -339,30 +299,6 @@ public class LicenseKeyFinderImpl
 				productEntryNames, productIds, productVersions, owners,
 				descriptions, hostNames, ipAddresses, macAddresses, serverIds,
 				keys, expirationDateGT_TS, expirationDateLT_TS);
-
-			if (userId != null) {
-				setJoin(
-					qPos, params2, createUserId, createDateGT_TS,
-					createDateLT_TS, modifiedUserId, modifiedDateGT_TS,
-					modifiedDateLT_TS, koroneikiAccountKey,
-					koroneikiProductPurchaseKey, accountEntryNames,
-					licenseKeySetNames, startDateGT_TS, startDateLT_TS,
-					licenseEntryIds, productEntryIds, productEntryNames,
-					productIds, productVersions, owners, descriptions,
-					hostNames, ipAddresses, macAddresses, serverIds, keys,
-					expirationDateGT_TS, expirationDateLT_TS);
-
-				setJoin(
-					qPos, params3, createUserId, createDateGT_TS,
-					createDateLT_TS, modifiedUserId, modifiedDateGT_TS,
-					modifiedDateLT_TS, koroneikiAccountKey,
-					koroneikiProductPurchaseKey, accountEntryNames,
-					licenseKeySetNames, startDateGT_TS, startDateLT_TS,
-					licenseEntryIds, productEntryIds, productEntryNames,
-					productIds, productVersions, owners, descriptions,
-					hostNames, ipAddresses, macAddresses, serverIds, keys,
-					expirationDateGT_TS, expirationDateLT_TS);
-			}
 
 			Iterator<Long> itr = q.iterate();
 
@@ -399,24 +335,6 @@ public class LicenseKeyFinderImpl
 			LinkedHashMap<String, Object> params, boolean andOperator,
 			int start, int end, OrderByComparator obc) {
 
-		if (params == null) {
-			params = new LinkedHashMap<>();
-		}
-
-		Long userId = (Long)params.remove("accountEntryMembership");
-
-		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
-
-		LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
-
-		LinkedHashMap<String, Object> params3 = new LinkedHashMap<>(params2);
-
-		if (userId != null) {
-			params1.put("accountCustomer", new Long[] {userId, userId});
-			params2.put("accountWorker", new Long[] {userId, userId});
-			params3.put("partnerWorker", userId);
-		}
-
 		Timestamp createDateGT_TS = CalendarUtil.getTimestamp(createDateGT);
 		Timestamp createDateLT_TS = CalendarUtil.getTimestamp(createDateLT);
 		Timestamp modifiedDateGT_TS = CalendarUtil.getTimestamp(modifiedDateGT);
@@ -443,42 +361,15 @@ public class LicenseKeyFinderImpl
 		Timestamp expirationDateLT_TS = CalendarUtil.getTimestamp(
 			expirationDateLT);
 
-		StringBuilder sb = new StringBuilder();
-
 		String sql = CustomSQLUtil.get(
 			getClass(), FIND_BY_U_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
 
-		sb.append(
-			replaceSQL(
-				sql, createUserId, modifiedUserId, accountEntryNames,
-				licenseKeySetNames, licenseEntryIds, productEntryIds,
-				productEntryNames, productIds, productVersions, owners,
-				descriptions, hostNames, ipAddresses, macAddresses, serverIds,
-				keys, params1, andOperator));
-
-		if (userId != null) {
-			sb.append(" UNION (");
-			sb.append(
-				replaceSQL(
-					sql, createUserId, modifiedUserId, accountEntryNames,
-					licenseKeySetNames, licenseEntryIds, productEntryIds,
-					productEntryNames, productIds, productVersions, owners,
-					descriptions, hostNames, ipAddresses, macAddresses,
-					serverIds, keys, params2, andOperator));
-			sb.append(") ");
-
-			sb.append("UNION (");
-			sb.append(
-				replaceSQL(
-					sql, createUserId, modifiedUserId, accountEntryNames,
-					licenseKeySetNames, licenseEntryIds, productEntryIds,
-					productEntryNames, productIds, productVersions, owners,
-					descriptions, hostNames, ipAddresses, macAddresses,
-					serverIds, keys, params3, andOperator));
-			sb.append(")");
-		}
-
-		sql = sb.toString();
+		sql = replaceSQL(
+			sql, createUserId, modifiedUserId, accountEntryNames,
+			licenseKeySetNames, licenseEntryIds, productEntryIds,
+			productEntryNames, productIds, productVersions, owners,
+			descriptions, hostNames, ipAddresses, macAddresses, serverIds, keys,
+			params, andOperator);
 
 		sql = CustomSQLUtil.replaceOrderBy(sql, obc);
 
@@ -494,7 +385,7 @@ public class LicenseKeyFinderImpl
 			QueryPos qPos = QueryPos.getInstance(q);
 
 			setJoin(
-				qPos, params1, createUserId, createDateGT_TS, createDateLT_TS,
+				qPos, params, createUserId, createDateGT_TS, createDateLT_TS,
 				modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS,
 				koroneikiAccountKey, koroneikiProductPurchaseKey,
 				accountEntryNames, licenseKeySetNames, startDateGT_TS,
@@ -502,30 +393,6 @@ public class LicenseKeyFinderImpl
 				productEntryNames, productIds, productVersions, owners,
 				descriptions, hostNames, ipAddresses, macAddresses, serverIds,
 				keys, expirationDateGT_TS, expirationDateLT_TS);
-
-			if (userId != null) {
-				setJoin(
-					qPos, params2, createUserId, createDateGT_TS,
-					createDateLT_TS, modifiedUserId, modifiedDateGT_TS,
-					modifiedDateLT_TS, koroneikiAccountKey,
-					koroneikiProductPurchaseKey, accountEntryNames,
-					licenseKeySetNames, startDateGT_TS, startDateLT_TS,
-					licenseEntryIds, productEntryIds, productEntryNames,
-					productIds, productVersions, owners, descriptions,
-					hostNames, ipAddresses, macAddresses, serverIds, keys,
-					expirationDateGT_TS, expirationDateLT_TS);
-
-				setJoin(
-					qPos, params3, createUserId, createDateGT_TS,
-					createDateLT_TS, modifiedUserId, modifiedDateGT_TS,
-					modifiedDateLT_TS, koroneikiAccountKey,
-					koroneikiProductPurchaseKey, accountEntryNames,
-					licenseKeySetNames, startDateGT_TS, startDateLT_TS,
-					licenseEntryIds, productEntryIds, productEntryNames,
-					productIds, productVersions, owners, descriptions,
-					hostNames, ipAddresses, macAddresses, serverIds, keys,
-					expirationDateGT_TS, expirationDateLT_TS);
-			}
 
 			List<Long> licenseKeyIds = (List<Long>)QueryUtil.list(
 				q, getDialect(), start, end);
@@ -572,10 +439,7 @@ public class LicenseKeyFinderImpl
 	protected String getJoin(String key, Object value) {
 		String join = StringPool.BLANK;
 
-		if (key.equals("accountEntryType")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENTRY_TYPE);
-		}
-		else if (key.equals("active")) {
+		if (key.equals("active")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE);
 		}
 
@@ -612,14 +476,36 @@ public class LicenseKeyFinderImpl
 	protected String getWhere(String key, Object value) {
 		String join = StringPool.BLANK;
 
-		if (key.equals("accountEntryType")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENTRY_TYPE);
+		if (key.equals("accountMembership")) {
+			String[] valueArray = (String[])value;
+
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_MEMBERSHIP);
+
+			StringBundler sb = new StringBundler((valueArray.length * 2) + 2);
+
+			sb.append(StringPool.OPEN_PARENTHESIS);
+
+			for (int i = 0; i < valueArray.length; i++) {
+				if (i > 0) {
+					sb.append(" OR ");
+				}
+
+				sb.append("(OSB_LicenseKey.koroneikiAccountKey = ?)");
+			}
+
+			sb.append(StringPool.CLOSE_PARENTHESIS);
+
+			join = StringUtil.replace(
+				join, "OSB_LicenseKey.koroneikiAccountKey = ?", sb.toString());
 		}
 		else if (key.equals("active")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE);
 		}
 		else if (key.equals("assetReceiptLicense")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ASSET_RECEIPT_ITEM);
+		}
+		else if (key.equals("user")) {
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_USER);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -755,9 +641,7 @@ public class LicenseKeyFinderImpl
 				String[] valueArray = (String[])value;
 
 				for (String valueString : valueArray) {
-					if (Validator.isNotNull(valueString)) {
-						qPos.add(valueString);
-					}
+					qPos.add(valueString);
 				}
 			}
 		}

@@ -25,6 +25,7 @@ import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
 import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
 import com.liferay.osb.customer.license.model.LicenseKey;
@@ -32,6 +33,7 @@ import com.liferay.osb.customer.license.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.osb.customer.license.service.permission.AssetReceiptPermission;
 import com.liferay.osb.customer.license.service.permission.LicenseKeyPermission;
 import com.liferay.osb.customer.license.util.LicenseKeyExporter;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.petra.string.StringPool;
@@ -472,7 +474,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int expirationDateLTMonth, int expirationDateLTYear,
 			LinkedHashMap<String, Object> params, boolean andSearch, int start,
 			int end, OrderByComparator obc)
-		throws PortalException {
+		throws Exception {
+
+		addPermissionParams(params);
 
 		return licenseKeyLocalService.search(
 			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
@@ -493,7 +497,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public List<LicenseKey> search(
 			String keywords, LinkedHashMap<String, Object> params, int start,
 			int end, OrderByComparator obc)
-		throws PortalException {
+		throws Exception {
+
+		addPermissionParams(params);
 
 		return licenseKeyLocalService.search(keywords, params, start, end, obc);
 	}
@@ -516,7 +522,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int expirationDateGTYear, int expirationDateLTDay,
 			int expirationDateLTMonth, int expirationDateLTYear,
 			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws PortalException {
+		throws Exception {
+
+		addPermissionParams(params);
 
 		return licenseKeyLocalService.searchCount(
 			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
@@ -535,7 +543,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public int searchCount(
 			String keywords, LinkedHashMap<String, Object> params)
-		throws PortalException {
+		throws Exception {
+
+		addPermissionParams(params);
 
 		return licenseKeyLocalService.searchCount(keywords, params);
 	}
@@ -625,6 +635,45 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 	}
 
+	protected void addPermissionParams(LinkedHashMap<String, Object> params)
+		throws Exception {
+
+		if (isAccountAdmin(getUserId())) {
+			return;
+		}
+
+		StringBundler sb = new StringBundler();
+
+		sb.append("contactUuids/any(s:s eq '");
+
+		User user = getUser();
+
+		sb.append(user.getUuid());
+
+		sb.append("')");
+
+		List<Account> accounts = _accountWebService.search(
+			StringPool.BLANK, sb.toString(), 1, 1000, null);
+
+		if (accounts.isEmpty()) {
+			params.put("accountMembership", new String[] {StringPool.BLANK});
+		}
+		else {
+			String[] koroneikiAccountKeys = new String[accounts.size()];
+
+			for (int i = 0; i < accounts.size(); i++) {
+				Account account = accounts.get(i);
+
+				koroneikiAccountKeys[i] = account.getKey();
+			}
+
+			params.put("accountMembership", koroneikiAccountKeys);
+		}
+
+		params.put("active", Boolean.TRUE);
+		params.put("user", user.getUserId());
+	}
+
 	protected List<LicenseKey> filterLicenseKeys(List<LicenseKey> licenseKeys)
 		throws PortalException {
 
@@ -671,6 +720,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	@ServiceReference(type = AccountEntryLocalService.class)
 	private AccountEntryLocalService _accountEntryLocalService;
+
+	@ServiceReference(type = AccountWebService.class)
+	private AccountWebService _accountWebService;
 
 	@ServiceReference(type = LicenseEntryLocalService.class)
 	private LicenseEntryLocalService _licenseEntryLocalService;
