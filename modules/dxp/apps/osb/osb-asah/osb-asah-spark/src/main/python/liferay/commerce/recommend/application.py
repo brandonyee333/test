@@ -32,6 +32,7 @@ from liferay.commerce.recommend.job import ContextUserInteractionRecommendationD
 	UserInteractionDataPreparationSparkJob
 from liferay.commerce.udf import TanimotoCoefficientUDFFunction, \
 	ToDenseVectorUDFFunction
+
 from liferay.common.spark import BaseSparkApplication, \
 	SparkJobPipeline
 

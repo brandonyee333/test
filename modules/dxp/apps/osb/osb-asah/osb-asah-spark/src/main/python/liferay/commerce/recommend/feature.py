@@ -17,6 +17,7 @@ from pyspark.ml.feature import CountVectorizer, \
 	StringIndexer, \
 	Tokenizer, \
 	VectorAssembler
+
 from pyspark.sql.functions import col, \
 	collect_list, \
 	when

@@ -11,6 +11,7 @@
 
 from liferay.common.spark import BaseSparkApplication, \
 	SparkJobPipeline
+
 from liferay.interest_score.job import IndividualInterestScoreSparkJob, \
 	KeywordsExtractionSparkJob, \
 	ReadAnalyticsEventsSparkJob, \

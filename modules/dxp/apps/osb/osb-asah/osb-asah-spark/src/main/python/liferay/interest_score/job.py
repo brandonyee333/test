@@ -13,6 +13,7 @@ from datetime import datetime, \
 	timedelta
 
 from liferay.common.spark import BaseSparkJob
+
 from liferay.interest_score.nlp import LanguageDetectorPolyglotWrapper
 
 from pyspark.sql import Window, \
