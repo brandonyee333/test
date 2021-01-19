@@ -46,11 +46,15 @@
             "type": "string"
         },
         {
+            "default": null,
             "name": "eventProperties",
-            "type": {
-              "type": "map",
-              "values" : "string"
-            }
+            "type": [
+                "null",
+                {
+                  "type": "map",
+                  "values" : "string"
+                }
+            ]
         },
         {
             "logicalType": "uuid",
@@ -69,6 +73,10 @@
         {
             "name": "knownIndividual",
             "type": "boolean"
+        },
+        {
+            "name": "projectId",
+            "type": "string"
         },
         {
             "default": [""],
