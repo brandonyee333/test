@@ -104,8 +104,8 @@ class CommerceSARIMAX(object):
 
 		self._test_sample_count = test_sample_count
 
-		# Avoid clogging cpu between multiprocess and blas/linpack
-		# this should be picked up from os environment (NOT PROPERTIES)
+		# Avoid clogging the CPU between multiprocess and blas/linpack. This
+		# should be picked up from the OS environment and not from properties.
 
 		self._parallel_count = parallel_count if parallel_count is not None else cpu_count(
 		) // 2
