@@ -16,11 +16,14 @@ package com.liferay.osb.customer.account.entry.details.web.internal.display.cont
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
+import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -47,7 +50,8 @@ public class AccountEntrySearchDisplayContext {
 			PortletRequest portletRequest, MimeResponse mimeResponse,
 			ThemeDisplay themeDisplay, AccountReader accountReader,
 			AccountWebService accountWebService,
-			ProductWebService productWebService)
+			ProductWebService productWebService,
+			TeamRoleWebService teamRoleWebService)
 		throws PortalException {
 
 		_portletRequest = portletRequest;
@@ -56,6 +60,7 @@ public class AccountEntrySearchDisplayContext {
 		_accountReader = accountReader;
 		_accountWebService = accountWebService;
 		_productWebService = productWebService;
+		_teamRoleWebService = teamRoleWebService;
 	}
 
 	public SearchContainer getAccountsSearchContainer() throws Exception {
@@ -86,9 +91,23 @@ public class AccountEntrySearchDisplayContext {
 				sb.append(" and ");
 			}
 
-			sb.append("contactUuids/any(u:u eq '");
+			sb.append("(contactUuids/any(s:s eq '");
 			sb.append(user.getUuid());
-			sb.append("')");
+			sb.append("') or ");
+			sb.append("assignedTeamKeyTeamRoleKeyContactUuidContactRoleKeys");
+			sb.append("/any(s:contains(s, '");
+
+			TeamRole teamRole = _teamRoleWebService.fetchTeamRole(
+				TeamRole.Type.ACCOUNT.toString(),
+				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
+
+			if (teamRole != null) {
+				sb.append(teamRole.getKey());
+				sb.append("*");
+			}
+
+			sb.append(user.getUuid());
+			sb.append("')))");
 		}
 
 		String productFilter = getProductsFilter();
@@ -202,6 +221,7 @@ public class AccountEntrySearchDisplayContext {
 	private final PortletRequest _portletRequest;
 	private final ProductWebService _productWebService;
 	private SearchContainer _searchContainer;
+	private final TeamRoleWebService _teamRoleWebService;
 	private final ThemeDisplay _themeDisplay;
 
 }
