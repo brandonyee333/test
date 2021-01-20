@@ -25,10 +25,6 @@ List<CPOptionCategory> cpOptionCategories = cpDefinitionSpecificationOptionValue
 CPSpecificationOption cpSpecificationOption = cpDefinitionSpecificationOptionValue.getCPSpecificationOption();
 
 long cpOptionCategoryId = BeanParamUtil.getLong(cpDefinitionSpecificationOptionValue, request, "CPOptionCategoryId");
-
-NumberFormat decimalFormat = NumberFormat.getNumberInstance(locale);
-
-decimalFormat.setMinimumFractionDigits(0);
 %>
 
 <portlet:actionURL name="/cp_definitions/edit_cp_definition_specification_option_value" var="editProductDefinitionSpecificationOptionValueActionURL" />
@@ -60,7 +56,13 @@ decimalFormat.setMinimumFractionDigits(0);
 
 			</aui:select>
 
-			<aui:input label="position" name="priority" value="<%= decimalFormat.format(cpDefinitionSpecificationOptionValue.getPriority()) %>">
+			<%
+			NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
+
+			numberFormat.setMinimumFractionDigits(0);
+			%>
+
+			<aui:input label="position" name="priority" value="<%= numberFormat.format(cpDefinitionSpecificationOptionValue.getPriority()) %>">
 				<aui:validator name="min">[0]</aui:validator>
 				<aui:validator name="number" />
 			</aui:input>
