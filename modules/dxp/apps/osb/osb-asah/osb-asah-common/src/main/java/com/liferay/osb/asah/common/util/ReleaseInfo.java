@@ -27,8 +27,8 @@ public class ReleaseInfo {
 		return _VERSION;
 	}
 
-	private static final int _SCHEMA_VERSION = 10;
+	private static final int _SCHEMA_VERSION = 11;
 
-	private static final String _VERSION = "2.9.0";
+	private static final String _VERSION = "2.10.0";
 
 }
