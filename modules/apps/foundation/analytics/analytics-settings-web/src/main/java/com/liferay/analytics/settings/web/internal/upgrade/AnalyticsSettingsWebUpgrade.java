@@ -30,15 +30,17 @@ public class AnalyticsSettingsWebUpgrade implements UpgradeStepRegistrator {
 
 	@Override
 	public void register(Registry registry) {
-		registry.register("0.0.0", "0.0.1", new DummyUpgradeStep());
+		registry.register(
+			"com.liferay.analytics.settings.web", "0.0.0", "0.0.1",
+			new DummyUpgradeStep());
 
 		registry.register(
-			"0.0.1", "1.0.0",
+			"com.liferay.analytics.settings.web", "0.0.1", "1.0.0",
 			new com.liferay.analytics.settings.web.internal.upgrade.v1_0_0.
 				UpgradeAnalyticsConfigurationPreferences(_configurationAdmin));
 
 		registry.register(
-			"1.0.0", "1.0.1",
+			"com.liferay.analytics.settings.web", "1.0.0", "1.0.1",
 			new com.liferay.analytics.settings.web.internal.upgrade.v1_0_1.
 				UpgradeAnalyticsConfigurationPreferences(
 					_companyLocalService, _configurationAdmin));
