@@ -14,25 +14,36 @@
 
 package com.liferay.osb.asah.upgrade.v2_10_0;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.upgrade.BaseReindexUpgradeStep;
+import com.liferay.osb.asah.upgrade.UpgradeStep;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Matthew Kong
  */
 @Component
-public class PageReferrersUpgradeStep extends BaseReindexUpgradeStep {
+public class PageReferrersUpgradeStep implements UpgradeStep {
 
 	@Override
-	public String[] getCollectionNames() {
-		return new String[] {"page-referrers"};
+	public void upgrade(String version) {
+		_elasticsearchIndexManager.updateMapping(
+			"page-referrers",
+			JSONUtil.put(
+				"properties",
+				JSONUtil.put(
+					"referrerCanonicalUrl", JSONUtil.put("type", "keyword")
+				).put(
+					"referrerHost", JSONUtil.put("type", "keyword")
+				)
+			).toString(),
+			"page-referrers", WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
 	}
 
-	@Override
-	public WeDeployDataService getWeDeployDataService() {
-		return WeDeployDataService.OSB_ASAH_CEREBRO_INFO;
-	}
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 }
