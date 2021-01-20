@@ -125,7 +125,7 @@ definition {
 
 		Portlet.changeDisplayStyle(displayStyle = "List");
 
-		BlogsEntry.viewEntryTable(entryTitle = "Blogs Entry Title");
+		BlogsEntry.viewEntryTableAsUser(entryTitle = "Blogs Entry Title");
 
 		BlogsEntry.viewEntryAuthorCP(
 			entryAuthorFullName = "Test Test",

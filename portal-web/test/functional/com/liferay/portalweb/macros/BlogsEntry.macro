@@ -776,6 +776,24 @@ definition {
 			value1 = "Approved");
 	}
 
+	macro viewEntryTableAsUser {
+		var key_entryTitle = "${entryTitle}";
+
+		Portlet.changeDisplayStyle(displayStyle = "List");
+
+		AssertElementPresent(locator1 = "Blogs#ENTRY_TABLE_CHECKBOX");
+
+		AssertTextEquals(
+			locator1 = "Blogs#ENTRY_TABLE_TITLE_USER_VIEW",
+			value1 = "${entryTitle}");
+
+		AssertElementPresent(locator1 = "Blogs#ENTRY_TABLE_CREATE_DATE");
+
+		AssertTextEquals(
+			locator1 = "Blogs#ENTRY_TABLE_STATUS",
+			value1 = "Approved");
+	}
+
 	macro viewEntryViaAPPG {
 		var key_assetContent = "${entryContent}";
 		var key_assetTitle = "${assetTitle}";
