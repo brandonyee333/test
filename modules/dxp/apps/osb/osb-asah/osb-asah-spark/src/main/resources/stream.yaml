@@ -1,0 +1,6 @@
+google:
+    storage:
+        path:
+            analytics-events: gs://analytics-cloud-analytics-events-uat
+            stream-curator-checkpoint: gs://analytics-cloud-stream-curator-checkpoint-uat
+            stream-curator-output: gs://analytics-cloud-stream-curator-output-uat
