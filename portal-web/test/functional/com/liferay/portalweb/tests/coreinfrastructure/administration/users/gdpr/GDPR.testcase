@@ -20,7 +20,7 @@ definition {
 			roleName = "Administrator",
 			userEmailAddress = "userea@liferay.com");
 
-		Refresh();
+		Upgrade.reindexSearches();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
