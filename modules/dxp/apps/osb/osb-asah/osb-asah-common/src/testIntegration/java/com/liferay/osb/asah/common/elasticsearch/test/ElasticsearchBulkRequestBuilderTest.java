@@ -67,6 +67,7 @@ public class ElasticsearchBulkRequestBuilderTest {
 		).get();
 
 		Assert.assertFalse(bulkResponse.hasFailures());
+
 		Assert.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
 
 		Assert.assertTrue(_elasticsearchInvoker.exists("individuals", "1"));
@@ -97,6 +98,7 @@ public class ElasticsearchBulkRequestBuilderTest {
 		).get();
 
 		Assert.assertFalse(bulkResponse.hasFailures());
+
 		Assert.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
 
 		Assert.assertFalse(_elasticsearchInvoker.exists("individuals", "1"));
@@ -155,6 +157,7 @@ public class ElasticsearchBulkRequestBuilderTest {
 		).get();
 
 		Assert.assertFalse(bulkResponse.hasFailures());
+
 		Assert.assertFalse(elasticsearchBulkRequestBuilder.hasActions());
 
 		assetJSONObject = _elasticsearchInvoker.get(
