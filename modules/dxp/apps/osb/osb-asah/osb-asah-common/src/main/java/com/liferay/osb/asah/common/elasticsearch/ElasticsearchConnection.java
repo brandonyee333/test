@@ -95,10 +95,13 @@ public class ElasticsearchConnection {
 					ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP);
 		}
 
+		String keyPassphrase = System.getenv("ELASTICSEARCH_KEY_PASSPHRASE");
 		String password = System.getenv("ELASTICSEARCH_PASSWORD");
 		String user = System.getenv("ELASTICSEARCH_USER");
 
-		if (!StringUtils.isBlank(password) && !StringUtils.isBlank(user)) {
+		if (!StringUtils.isBlank(keyPassphrase) &&
+			!StringUtils.isBlank(password) && !StringUtils.isBlank(user)) {
+
 			builder.put(
 				"xpack.security.transport.ssl.certificate_authorities",
 				"/root/ca/ca.crt");
@@ -108,6 +111,8 @@ public class ElasticsearchConnection {
 			builder.put("xpack.security.transport.ssl.enabled", true);
 			builder.put(
 				"xpack.security.transport.ssl.key", "/root/client/client.key");
+			builder.put(
+				"xpack.security.transport.ssl.key_passphrase", keyPassphrase);
 			builder.put(
 				"xpack.security.transport.ssl.verification_mode",
 				"certificate");

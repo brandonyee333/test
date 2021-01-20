@@ -30,4 +30,5 @@ xpack:
                 certificate_authorities: /usr/share/elasticsearch/config/certificates/ca/ca.crt
                 enabled: true
                 key: /usr/share/elasticsearch/config/certificates/${HOSTNAME}/${HOSTNAME}.key
+                key_passphrase: ${ELASTICSEARCH_KEY_PASSPHRASE}
                 verification_mode: certificate
