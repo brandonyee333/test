@@ -43,3 +43,7 @@ def spark_application():
 			return spark_conf
 
 	return BaseSparkApplicationTest()
+
+@pytest.fixture
+def spark_session(spark_application):
+	return spark_application.spark_session
