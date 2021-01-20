@@ -1708,7 +1708,7 @@ definition {
 			fieldName = "DocumentsAndMedia",
 			structureName = "WC Structure Name",
 			templateName = "WC Template Name",
-			webContentDocumentsAndMedia = "DM Document Title.txt",
+			webContentDocumentsAndMedia = "DM Document Title",
 			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
