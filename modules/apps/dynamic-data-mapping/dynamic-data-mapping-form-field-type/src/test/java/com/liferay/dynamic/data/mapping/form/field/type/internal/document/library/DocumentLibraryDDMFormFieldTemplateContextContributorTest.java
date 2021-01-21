@@ -23,7 +23,6 @@ import com.liferay.dynamic.data.mapping.form.item.selector.criterion.DDMUserPers
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
 import com.liferay.item.selector.ItemSelector;
-import com.liferay.item.selector.criteria.file.criterion.FileItemSelectorCriterion;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -111,6 +110,34 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 		_setUpPortletFileRepository();
 		_setUpRequestBackedPortletURLFactoryUtil();
 		_setUpUserLocalService();
+	}
+
+	@Test
+	public void testDDMFormPortletItemSelector() {
+		mockDDMFormPortletItemSelector();
+
+		ThemeDisplay themeDisplay = mockThemeDisplay();
+
+		when(
+			themeDisplay.isSignedIn()
+		).thenReturn(
+			Boolean.TRUE
+		);
+
+		DocumentLibraryDDMFormFieldTemplateContextContributor spy = createSpy(
+			themeDisplay);
+
+		DDMFormFieldRenderingContext ddmFormFieldRenderingContext =
+			createDDMFormFieldRenderingContext();
+
+		ddmFormFieldRenderingContext.setPortletNamespace(
+			_DDM_FORM_PORTLET_NAMESPACE);
+
+		Map<String, Object> parameters = spy.getParameters(
+			new DDMFormField("field", "document_library"),
+			ddmFormFieldRenderingContext);
+
+		Assert.assertTrue(parameters.containsKey("itemSelectorURL"));
 	}
 
 	@Test
@@ -346,6 +373,19 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 		return spy;
 	}
 
+	protected void mockDDMFormPortletItemSelector() {
+		PowerMockito.when(
+			_itemSelector.getItemSelectorURL(
+				Mockito.eq(_requestBackedPortletURLFactory), Mockito.eq(_group),
+				Mockito.eq(_GROUP_ID),
+				Mockito.eq(
+					_DDM_FORM_PORTLET_NAMESPACE + "selectDocumentLibrary"),
+				Mockito.any(DDMUserPersonalFolderItemSelectorCriterion.class))
+		).thenReturn(
+			new MockLiferayPortletURL()
+		);
+	}
+
 	protected Folder mockFolder(long folderId) {
 		Folder folder = mock(Folder.class);
 
@@ -562,8 +602,7 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 					}),
 				Mockito.eq(_GROUP_ID),
 				Mockito.eq(_PORTLET_NAMESPACE + "selectDocumentLibrary"),
-				Mockito.any(DDMUserPersonalFolderItemSelectorCriterion.class),
-				Mockito.any(FileItemSelectorCriterion.class))
+				Mockito.any(DDMUserPersonalFolderItemSelectorCriterion.class))
 		).thenReturn(
 			new MockLiferayPortletURL()
 		);
@@ -594,6 +633,13 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 			"portal"
 		).set(
 			_documentLibraryDDMFormFieldTemplateContextContributor, _portal
+		);
+
+		PowerMockito.when(
+			_portal.getPortletNamespace(
+				DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM)
+		).thenReturn(
+			_DDM_FORM_PORTLET_NAMESPACE
 		);
 	}
 
@@ -659,6 +705,9 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 	}
 
 	private static final long _COMPANY_ID = RandomTestUtil.randomLong();
+
+	private static final String _DDM_FORM_PORTLET_NAMESPACE =
+		"_com_liferay_dynamic_data_mapping_form_web_portlet_DDMFormPortlet_";
 
 	private static final String _FILE_ENTRY_UUID =
 		RandomTestUtil.randomString();
