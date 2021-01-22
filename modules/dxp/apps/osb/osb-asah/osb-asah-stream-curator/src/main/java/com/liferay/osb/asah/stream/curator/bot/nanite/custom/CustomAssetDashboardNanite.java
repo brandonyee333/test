@@ -38,7 +38,6 @@ import org.elasticsearch.script.Script;
 
 import org.json.JSONObject;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
