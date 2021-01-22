@@ -74,7 +74,7 @@ public class AccountEntrySearchDisplayContext {
 			_portletRequest, _mimeResponse.createRenderURL(),
 			Collections.emptyList(), "no-accounts-were-found");
 
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(17);
 
 		if (Validator.isNotNull(keywords)) {
 			sb.append("(contains(name, '");
