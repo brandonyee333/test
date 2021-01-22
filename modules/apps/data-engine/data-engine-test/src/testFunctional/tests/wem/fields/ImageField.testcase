@@ -1,0 +1,67 @@
+@component-name = "portal-wcm"
+definition {
+
+    property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Web Content Administration";
+
+    setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+
+		JSONGroup.addGroup(groupName = "Test Site Name");
+	}
+
+    tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+		else {
+			JSONGroup.deleteGroupByName(groupName = "Test Site Name");
+		}
+	}
+
+    @description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
+	@ignore = "true"
+	@priority = "5"
+	test DragAndDropImageFieldToBuilder {
+		property portal.acceptance = "false";
+
+		// TODO LPS-98073 DragAndDropImageFieldToBuilder pending implementation
+
+	}
+
+    @description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
+	@ignore = "true"
+	@priority = "3"
+	test ShowAndHideImageFieldLabel {
+		property portal.acceptance = "false";
+
+		// TODO LPS-98073 ShowAndHideImageFieldLabel pending implementation
+
+	}
+
+    @description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
+	@ignore = "true"
+	@priority = "5"
+	test AddDataAndDuplicateImageFieldOnWebContent {
+		property portal.acceptance = "false";
+
+		// TODO LPS-98073 AddDataAndDuplicateImageFieldOnWebContent pending implementation
+
+	}
+
+    @description = "This is a test for LPS-98073. As a Developer, I want to Implement the image field type"
+	@ignore = "true"
+	@priority = "4"
+	test LocalizationOfImageFieldtPersists {
+		property portal.acceptance = "false";
+
+		// TODO LPS-98073 LocalizationOfImageFieldtPersists pending implementation
+
+	}
+
+}
