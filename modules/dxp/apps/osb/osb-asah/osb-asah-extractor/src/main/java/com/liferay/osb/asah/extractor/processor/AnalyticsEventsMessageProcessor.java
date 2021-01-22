@@ -49,6 +49,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -291,8 +292,13 @@ public class AnalyticsEventsMessageProcessor {
 	private boolean _isDataSourceActive(
 		AnalyticsEventsMessage analyticsEventsMessage) {
 
-		if (_faroInfoDataSourceDog.fetchDataSourceJSONObject(
-				analyticsEventsMessage.getDataSourceId()) != null) {
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.fetchDataSourceJSONObject(
+				analyticsEventsMessage.getDataSourceId());
+
+		if ((dataSourceJSONObject != null) &&
+			Objects.equals(
+				dataSourceJSONObject.getString("status"), "ACTIVE")) {
 
 			return true;
 		}
