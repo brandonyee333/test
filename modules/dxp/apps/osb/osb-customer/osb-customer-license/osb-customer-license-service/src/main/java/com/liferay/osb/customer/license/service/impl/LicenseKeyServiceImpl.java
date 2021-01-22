@@ -642,7 +642,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			return;
 		}
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(3);
 
 		sb.append("contactUuids/any(s:s eq '");
 
