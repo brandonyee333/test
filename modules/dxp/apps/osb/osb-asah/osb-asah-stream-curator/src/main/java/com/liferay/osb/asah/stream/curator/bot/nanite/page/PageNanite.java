@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.page.Page;
 import com.liferay.osb.asah.stream.curator.model.page.PageScroll;
@@ -28,6 +29,7 @@ import com.liferay.osb.asah.stream.curator.model.page.PageScroll;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Objects;
@@ -340,15 +342,18 @@ public class PageNanite extends BaseNanite<Page> {
 		Preference preference = _faroInfoPreferenceDog.getPreference(
 			"search-query-strings");
 
-		Set<String> searchQueryStrings = _searchQueryStringsMap.get(
-			preference.getValue());
+		Set<String> searchQueryStrings = new HashSet<>();
 
-		if (searchQueryStrings != null) {
-			return searchQueryStrings;
+		String preferenceValue = preference.getValue();
+
+		if (!StringUtil.isNull(preferenceValue)) {
+			if (_searchQueryStringsMap.containsKey(preferenceValue)) {
+				return _searchQueryStringsMap.get(preferenceValue);
+			}
+
+			searchQueryStrings = JSONUtil.toStringSet(
+				new JSONArray(preferenceValue));
 		}
-
-		searchQueryStrings = JSONUtil.toStringSet(
-			new JSONArray(preference.getValue()));
 
 		searchQueryStrings.add("q");
 
