@@ -17,5 +17,15 @@
 		},
 		"state": "READY",
 		"status": "ACTIVE"
+	},
+	{
+		"channelId": "456",
+		"id": "880121114030678088",
+		"name": "LIFERAY-DATASOURCE-INACTIVE",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "DISCONNECTED",
+		"status": "INACTIVE"
 	}
 ]

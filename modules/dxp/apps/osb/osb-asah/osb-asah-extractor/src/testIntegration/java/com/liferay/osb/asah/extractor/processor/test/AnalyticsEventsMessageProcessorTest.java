@@ -129,6 +129,8 @@ public class AnalyticsEventsMessageProcessorTest {
 				"id", "990121114030678099"
 			).put(
 				"provider", JSONUtil.put("type", "LIFERAY")
+			).put(
+				"status", "ACTIVE"
 			));
 
 		_analyticsEventsMessageProcessor.processQueuedMessages();
@@ -137,6 +139,25 @@ public class AnalyticsEventsMessageProcessorTest {
 			50, AnalyticsEvent::toAnalyticsEvent);
 
 		Assert.assertNotEquals(0, analyticsEvents.size());
+	}
+
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@MessageBusChannel(
+		channel = Channel.ANALYTICS_EVENTS_MESSAGE,
+		resourcePath = "analytics_events_message_channel_5.json"
+	)
+	@Test
+	public void testProcessQueuedMessagesDataSourceInactive() throws Exception {
+		_analyticsEventsMessageProcessor.processQueuedMessages();
+
+		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
+			50, AnalyticsEvent::toAnalyticsEvent);
+
+		Assert.assertEquals(
+			analyticsEvents.toString(), 0, analyticsEvents.size());
 	}
 
 	@ElasticsearchIndex(
