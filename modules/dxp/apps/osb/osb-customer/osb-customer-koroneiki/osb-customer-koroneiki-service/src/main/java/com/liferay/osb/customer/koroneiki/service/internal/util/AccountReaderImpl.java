@@ -167,7 +167,7 @@ public class AccountReaderImpl implements AccountReader {
 	}
 
 	public String getState(String accountKey) throws Exception {
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(3);
 
 		sb.append("accountKey eq '");
 		sb.append(accountKey);

@@ -232,19 +232,19 @@ public class ProductPurchaseViewDisplay {
 		}
 	}
 
-	private Format _dateFormat;
+	private final Format _dateFormat;
 	private Date _endDate;
-	private HttpServletRequest _httpServletRequest;
+	private final HttpServletRequest _httpServletRequest;
 	private boolean _inSupportGap;
 	private Date _nextTermStartDate;
 	private Date _originalEndDate;
 	private boolean _perpetual;
-	private Product _product;
+	private final Product _product;
 	private int _purchasedCount;
 	private int _sizing;
 	private Date _startDate;
-	private String _state;
+	private final String _state;
 	private String _status;
-	private ThemeDisplay _themeDisplay;
+	private final ThemeDisplay _themeDisplay;
 
 }
