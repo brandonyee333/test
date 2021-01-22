@@ -91,7 +91,7 @@
             "type": "string"
         }
     ],
-    "name": "AnalyticsEvent",
+    "name": "UserSessionEvent",
     "namespace": "com.liferay.osb.asah",
     "type": "record"
 }

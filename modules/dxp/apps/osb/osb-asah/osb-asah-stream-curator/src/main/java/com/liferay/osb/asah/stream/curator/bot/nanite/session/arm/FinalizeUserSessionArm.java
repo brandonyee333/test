@@ -339,7 +339,7 @@ public class FinalizeUserSessionArm {
 	@PostConstruct
 	private void _init() throws Exception {
 		StorageConfiguration.Builder builder = StorageConfiguration.builder(
-			_analyticsEventsStoragePath);
+			_userSessionEventsStoragePath);
 
 		builder.fileFormat(StorageConfiguration.FileFormat.SNAPPY_PARQUET);
 
@@ -348,11 +348,11 @@ public class FinalizeUserSessionArm {
 		builder.fileSchema(
 			parser.parse(
 				ResourceUtil.readResourceToString(
-					"dependencies/analytics_events.avsc", getClass())));
+					"dependencies/user_session_event.avsc", getClass())));
 
 		builder.googleBucket(
 			StringUtils.replace(
-				_analyticsEventsBucketTemplate, "{region}",
+				_userSessionEventsBucketTemplate, "{region}",
 				System.getenv("LCP_PROJECT_CLUSTER")));
 
 		_storage = _storageFactory.getStorage(builder.build());
@@ -717,16 +717,6 @@ public class FinalizeUserSessionArm {
 	private static final Pattern _pattern = Pattern.compile(
 		"\\[(?<title>[^]]+)] \\[(?<url>[^]]+)]");
 
-	@Value(
-		"${osb.asah.analytics.events.google.bucket:analytics-cloud-analytics-events-{region}}"
-	)
-	private String _analyticsEventsBucketTemplate;
-
-	@Value(
-		"${osb.asah.analytics.events.storage.path:/tmp/analytics_events.snappy.parquet}"
-	)
-	private String _analyticsEventsStoragePath;
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
@@ -740,5 +730,15 @@ public class FinalizeUserSessionArm {
 
 	@Autowired
 	private StorageFactory _storageFactory;
+
+	@Value(
+		"${osb.asah.user.session.events.google.bucket:analytics-cloud-session-events-{region}}"
+	)
+	private String _userSessionEventsBucketTemplate;
+
+	@Value(
+		"${osb.asah.user.session.events.storage.path:/tmp/user_session_events.snappy.parquet}"
+	)
+	private String _userSessionEventsStoragePath;
 
 }
