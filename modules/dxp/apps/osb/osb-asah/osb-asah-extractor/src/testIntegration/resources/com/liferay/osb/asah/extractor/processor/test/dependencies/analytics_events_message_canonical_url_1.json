@@ -21,6 +21,7 @@
 				}
 			}
 		],
+		"projectId": "test",
 		"protocolVersion": "1.0",
 		"userId": "id-i4xbdldy1af"
 	},
@@ -44,6 +45,7 @@
 				}
 			}
 		],
+		"projectId": "test",
 		"protocolVersion": "1.0",
 		"userId": "aedfa915-c7a1-4309-abcf-024e247d414c"
 	}
