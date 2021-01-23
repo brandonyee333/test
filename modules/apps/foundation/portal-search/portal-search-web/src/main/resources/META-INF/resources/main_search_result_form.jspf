@@ -127,6 +127,13 @@
 		</liferay-ui:search-container-column-text>
 	</c:when>
 	<c:otherwise>
+		<liferay-ui:search-container-column-text>
+			<liferay-ui:user-portrait
+				cssClass="user-icon-lg"
+				userId=""
+			/>
+		</liferay-ui:search-container-column-text>
+
 		<liferay-ui:search-container-column-text
 			colspan="<%= 3 %>"
 		>
