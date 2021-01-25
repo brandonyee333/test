@@ -131,7 +131,7 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 			createDDMFormFieldRenderingContext();
 
 		ddmFormFieldRenderingContext.setPortletNamespace(
-			_DDM_FORM_PORTLET_NAMESPACE);
+			_PORTLET_NAMESPACE_DDM_FORM);
 
 		Map<String, Object> parameters = spy.getParameters(
 			new DDMFormField("field", "document_library"),
@@ -379,7 +379,7 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 				Mockito.eq(_requestBackedPortletURLFactory), Mockito.eq(_group),
 				Mockito.eq(_GROUP_ID),
 				Mockito.eq(
-					_DDM_FORM_PORTLET_NAMESPACE + "selectDocumentLibrary"),
+					_PORTLET_NAMESPACE_DDM_FORM + "selectDocumentLibrary"),
 				Mockito.any(DDMUserPersonalFolderItemSelectorCriterion.class))
 		).thenReturn(
 			new MockLiferayPortletURL()
@@ -639,7 +639,7 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 			_portal.getPortletNamespace(
 				DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM)
 		).thenReturn(
-			_DDM_FORM_PORTLET_NAMESPACE
+			_PORTLET_NAMESPACE_DDM_FORM
 		);
 	}
 
@@ -706,7 +706,7 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 
 	private static final long _COMPANY_ID = RandomTestUtil.randomLong();
 
-	private static final String _DDM_FORM_PORTLET_NAMESPACE =
+	private static final String _PORTLET_NAMESPACE_DDM_FORM =
 		"_com_liferay_dynamic_data_mapping_form_web_portlet_DDMFormPortlet_";
 
 	private static final String _FILE_ENTRY_UUID =
