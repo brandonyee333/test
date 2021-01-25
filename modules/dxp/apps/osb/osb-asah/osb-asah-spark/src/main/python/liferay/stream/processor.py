@@ -39,6 +39,101 @@ class AnalyticsEventsDataFrameProcessor(object):
 			self._process(self._filter(analytics_events_data_frame))
 		)
 
+class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
+	def _filter(self, analytics_events_data_frame):
+		return analytics_events_data_frame.filter(
+			"""
+				(
+					(
+						(applicationId = 'Comment') AND 
+						(eventId = 'posted') AND 
+						(eventProperties.className = '{class_name}') AND
+						(eventProperties.classPK != '')
+					) OR
+					(
+						(applicationId = 'Document') AND 
+						(
+							(eventId = 'documentDownloaded') OR
+							(eventId = 'documentPreviewed')
+						) AND 
+						( 
+							(eventProperties.fileEntryId != '')
+						)
+					) OR 
+					(
+						(applicationId = 'Ratings') AND 
+						(eventId = 'VOTE') AND
+						(eventProperties.className = '{class_name}') AND
+						(eventProperties.classPK != '') AND
+						(
+							(eventProperties.ratingType IS NULL) OR
+							(eventProperties.ratingType = 'stars')
+						)
+					)
+				)	
+			""".format(
+				class_name =
+					'com.liferay.document.library.kernel.model.DLFileEntry'
+			)
+		)
+
+	def _process(self, filtered_analytics_events_data_frame):
+		return filtered_analytics_events_data_frame.withColumn(
+			'assetId',
+			F.when(
+				F.col('eventId').isin('posted', 'VOTE'),
+				F.col('eventProperties.classPK')
+			).otherwise(
+				F.col('eventProperties.fileEntryId')
+			)
+		).withColumn(
+			'comments',
+			F.when(
+				F.col('eventId') == 'posted', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'downloads',
+			F.when(
+				F.col('eventId') == 'documentDownloaded', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'previews',
+			F.when(
+				F.col('eventId') == 'documentPreviewed', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'primaryKey',
+			F.sha2(
+				F.concat_ws(
+					"#", F.col('projectId'),  F.col('assetId'),
+					F.col('channelId'), F.col('eventDate'), F.col('userId'),
+					F.col('variantId')
+				),
+				256
+			)
+		).withColumn(
+			'ratings',
+			F.when(
+				F.col('eventId') == 'VOTE', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'ratingsScore',
+			F.when(
+				F.col('eventId') == 'VOTE',
+				F.col('eventProperties.score').cast('float')
+			).otherwise(
+				F.lit(0.0)
+			)
+		)
+
 class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 	def _filter(self, analytics_events_data_frame):
 		return analytics_events_data_frame.filter(
