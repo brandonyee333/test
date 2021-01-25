@@ -437,7 +437,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	@Reference
 	private LCSEventManager _lcsEventManager;
 
-	private ObjectMapper _objectMapper = new ObjectMapper();
+	private final ObjectMapper _objectMapper = new ObjectMapper();
 	private RESTClient _restClient;
 
 	@Reference

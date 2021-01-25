@@ -259,7 +259,7 @@ public class JIRAIssue {
 	}
 
 	private String _assigneeName;
-	private Map<String, Object> _customFieldValues = new HashMap<>();
+	private final Map<String, Object> _customFieldValues = new HashMap<>();
 	private String _description;
 	private String _issueType;
 	private Set<String> _labels;

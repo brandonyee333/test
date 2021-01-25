@@ -106,6 +106,6 @@ public class LoopTopicIndexer extends BaseLoopIndexer {
 		setClassName(LoopTopic.class.getName());
 	}
 
-	private static LoopTopicIndexer _instance = new LoopTopicIndexer();
+	private static final LoopTopicIndexer _instance = new LoopTopicIndexer();
 
 }

@@ -314,8 +314,8 @@ public class LCSTaskExecutor implements LCSEventListener, TaskStatus {
 	private final Set<String> _activeTaskClassNames = new HashSet<>();
 	private final Map<String, ScheduledFuture<?>> _commonFutures =
 		new HashMap<>();
-	private AtomicBoolean _deactivatePending = new AtomicBoolean(false);
-	private List<TaskDefinition> _delayedTaskDefinitions =
+	private final AtomicBoolean _deactivatePending = new AtomicBoolean(false);
+	private final List<TaskDefinition> _delayedTaskDefinitions =
 		new CopyOnWriteArrayList<>();
 
 	@Reference

@@ -61,7 +61,8 @@ public class APIChangeMethod extends APIChangeBase {
 		return _signature;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(APIChangeMethod.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		APIChangeMethod.class);
 
 	private final String _signature;
 

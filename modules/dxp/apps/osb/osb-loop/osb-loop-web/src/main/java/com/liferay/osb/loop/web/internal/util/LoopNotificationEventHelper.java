@@ -984,7 +984,7 @@ public class LoopNotificationEventHelper extends AlloyNotificationEventHelper {
 	private static final Pattern _actionPathPattern = Pattern.compile(
 		_REGEX_ACTION_PATH);
 
-	private Map<String, List<String>> _controllerNotificationActionPaths =
+	private final Map<String, List<String>> _controllerNotificationActionPaths =
 		new HashMap<>();
 	private ThemeDisplay _themeDisplay;
 

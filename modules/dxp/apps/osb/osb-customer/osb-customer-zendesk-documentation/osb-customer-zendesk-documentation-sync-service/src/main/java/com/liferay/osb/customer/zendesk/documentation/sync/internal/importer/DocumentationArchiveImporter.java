@@ -381,8 +381,8 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 
 	private int _iterationCount;
 	private int _zendeskArticlePosition;
-	private List<ZendeskArticle> _zendeskArticles = new ArrayList<>();
+	private final List<ZendeskArticle> _zendeskArticles = new ArrayList<>();
 	private int _zendeskSectionPosition;
-	private List<ZendeskSection> _zendeskSections = new ArrayList<>();
+	private final List<ZendeskSection> _zendeskSections = new ArrayList<>();
 
 }

@@ -55,7 +55,7 @@ public class LoopAuditEntryIndexer extends BaseLoopIndexer {
 		setClassName(LoopAuditEntry.class.getName());
 	}
 
-	private static LoopAuditEntryIndexer _instance =
+	private static final LoopAuditEntryIndexer _instance =
 		new LoopAuditEntryIndexer();
 
 }

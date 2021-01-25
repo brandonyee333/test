@@ -167,6 +167,7 @@ public class LoopDivisionIndexer extends BaseLoopIndexer {
 		setClassName(LoopDivision.class.getName());
 	}
 
-	private static LoopDivisionIndexer _instance = new LoopDivisionIndexer();
+	private static final LoopDivisionIndexer _instance =
+		new LoopDivisionIndexer();
 
 }

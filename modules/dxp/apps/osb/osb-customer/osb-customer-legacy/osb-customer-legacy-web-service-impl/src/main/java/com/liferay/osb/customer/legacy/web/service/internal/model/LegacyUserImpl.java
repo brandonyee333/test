@@ -80,7 +80,7 @@ public class LegacyUserImpl extends UserWrapper {
 		_roleIds = ListUtil.toLongArray(roles, Role.ROLE_ID_ACCESSOR);
 	}
 
-	private ExpandoBridge _expandoBridge = new LegacyExpandoBridgeImpl();
+	private final ExpandoBridge _expandoBridge = new LegacyExpandoBridgeImpl();
 	private long[] _organizationIds = new long[0];
 	private List<Organization> _organizations;
 	private List<Phone> _phones;

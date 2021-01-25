@@ -78,6 +78,7 @@ public class LoopJobTitleIndexer extends BaseLoopIndexer {
 		setClassName(LoopJobTitle.class.getName());
 	}
 
-	private static LoopJobTitleIndexer _instance = new LoopJobTitleIndexer();
+	private static final LoopJobTitleIndexer _instance =
+		new LoopJobTitleIndexer();
 
 }

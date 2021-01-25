@@ -177,6 +177,6 @@ public class LoopPersonIndexer extends BaseLoopIndexer {
 		setClassName(LoopPerson.class.getName());
 	}
 
-	private static LoopPersonIndexer _instance = new LoopPersonIndexer();
+	private static final LoopPersonIndexer _instance = new LoopPersonIndexer();
 
 }

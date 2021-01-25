@@ -400,7 +400,8 @@ public class AssetEntrySetIndexer extends BaseIndexer {
 		indexableActionableDynamicQuery.performActions();
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(AssetEntrySetIndexer.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetEntrySetIndexer.class);
 
 	@Reference
 	private AssetEntrySetLocalService _assetEntrySetLocalService;

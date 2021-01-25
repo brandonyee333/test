@@ -241,6 +241,7 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(LicenseKeySearch.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		LicenseKeySearch.class);
 
 }
