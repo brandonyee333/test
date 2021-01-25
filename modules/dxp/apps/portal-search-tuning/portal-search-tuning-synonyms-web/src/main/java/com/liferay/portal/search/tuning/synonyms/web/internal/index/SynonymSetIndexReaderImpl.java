@@ -69,6 +69,7 @@ public class SynonymSetIndexReaderImpl implements SynonymSetIndexReader {
 
 		searchSearchRequest.setIndexNames(synonymSetIndexName.getIndexName());
 		searchSearchRequest.setPreferLocalCluster(false);
+		searchSearchRequest.setSize(10000);
 
 		SearchSearchResponse searchSearchResponse =
 			_searchEngineAdapter.execute(searchSearchRequest);
