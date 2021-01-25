@@ -706,9 +706,6 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 
 	private static final long _COMPANY_ID = RandomTestUtil.randomLong();
 
-	private static final String _PORTLET_NAMESPACE_DDM_FORM =
-		"_com_liferay_dynamic_data_mapping_form_web_portlet_DDMFormPortlet_";
-
 	private static final String _FILE_ENTRY_UUID =
 		RandomTestUtil.randomString();
 
@@ -720,6 +717,9 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributorTest
 
 	private static final String _PORTLET_NAMESPACE =
 		RandomTestUtil.randomString();
+
+	private static final String _PORTLET_NAMESPACE_DDM_FORM =
+		"_com_liferay_dynamic_data_mapping_form_web_portlet_DDMFormPortlet_";
 
 	private static final long _PRIVATE_FOLDER_ID = RandomTestUtil.randomLong();
 
