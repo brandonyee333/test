@@ -137,13 +137,11 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 	def _filter(self, analytics_events_data_frame):
 		return analytics_events_data_frame.filter(
-			"applicationId = 'WebContent'"
-		).filter(
-			"eventId = 'webContentViewed'"
-		).filter(
-			"eventProperties.articleId IS NOT NULL"
-		).filter(
-			"eventProperties.articleId != ''"
+			"""
+				(applicationId = 'WebContent') AND
+				(eventId = 'webContentViewed') AND
+				(eventProperties.articleId != '')
+			"""
 		)
 
 	def _process(self, filtered_analytics_events_data_frame):
