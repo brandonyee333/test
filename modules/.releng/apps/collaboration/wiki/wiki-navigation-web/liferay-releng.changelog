@@ -152,3 +152,8 @@ b91bdf37b992b6043fd9689483a5626142233083^..95efdf3e76c2cccc3bfcd83b8d9b3ea92fbdb
 # Bundle Version 2.0.33
 #
 faa0591585e147c1b5ccdcff86924b799246e3e7^..adeb42b3d78dd85c65daebfc0d883c5a251c8a03=LRQA-51488
+
+#
+# Bundle Version 2.0.34
+#
+adeb42b3d78dd85c65daebfc0d883c5a251c8a03^..576d75cbf6a02223d81f654be36218beddcdb02d=ISOPS-151 LPS-77699
