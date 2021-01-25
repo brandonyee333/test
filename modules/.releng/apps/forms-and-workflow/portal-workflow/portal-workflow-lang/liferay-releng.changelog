@@ -92,3 +92,8 @@ b73b22133c1a0a82bdaf4ebeb70d48f27edbc48b^..7da5dc6ba9477301adfd2312d5c2b2cadec12
 # Bundle Version 2.0.18
 #
 9f021dbe84863d9f843c65317b2dfb3b5f394d54^..faab809ac8baa0d3b8eefdf04f7d9ed292af2112=LPS-77699
+
+#
+# Bundle Version 2.0.19
+#
+faab809ac8baa0d3b8eefdf04f7d9ed292af2112^..6aad301e6ba17d8d38788a05d032204b0052fa91=ISOPS-151 LPS-77699
