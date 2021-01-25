@@ -63,6 +63,10 @@ public class OSBAsahTaskRunnable implements Runnable {
 
 	@Override
 	public void run() {
+		_run();
+	}
+
+	private void _run() {
 		for (String naniteClassName : _naniteClassNames) {
 			Nanite nanite = _osbAsahTaskManager.getNanite(naniteClassName);
 
