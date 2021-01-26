@@ -3,11 +3,15 @@ apply plugin: "io.spring.dependency-management"
 
 configurations.all {
 	exclude group: "com.google.cloud", module: "google-cloud-pubsub"
-	exclude group: "org.springframework.data", module: "spring-data-redis"
+	exclude group: "org.springframework.boot", module: "spring-boot-starter-data-redis"
 	exclude group: "redis.clients", module: "jedis"
 }
 
 dependencies {
+	compile (group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.10") {
+		force = true
+	}
+
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-backend")
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-batch-curator")
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
@@ -18,11 +22,6 @@ dependencies {
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-stream-curator")
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-upgrade")
 
-	compile (group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.10") {
-		force = true
-	}
-
 	testCompile group: "junit", name: "junit", version: "4.12"
-
 	testCompile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-test-util")
 }
