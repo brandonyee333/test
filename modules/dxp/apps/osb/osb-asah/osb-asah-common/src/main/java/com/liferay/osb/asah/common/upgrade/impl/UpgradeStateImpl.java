@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.upgrade.impl;
 
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.upgrade.UpgradeState;
+import com.liferay.osb.asah.common.util.ReleaseInfo;
 
 import java.util.Objects;
 
@@ -57,14 +58,16 @@ public class UpgradeStateImpl implements UpgradeState {
 	public void complete() {
 		Jedis jedis = _jedisPool.getResource();
 
-		jedis.set("UPGRADE_STATE", "COMPLETE");
+		jedis.set("UPGRADE_STATE", ReleaseInfo.getVersion());
 	}
 
 	@Override
 	public boolean isComplete() {
 		Jedis jedis = _jedisPool.getResource();
 
-		if (Objects.equals(jedis.get("UPGRADE_STATE"), "COMPLETE")) {
+		if (Objects.equals(
+				jedis.get("UPGRADE_STATE"), ReleaseInfo.getVersion())) {
+
 			return true;
 		}
 
