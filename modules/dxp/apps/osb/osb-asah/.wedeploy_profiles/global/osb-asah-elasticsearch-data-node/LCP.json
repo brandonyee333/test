@@ -9,7 +9,7 @@
 		}
 	},
 	"id": "esdata",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-elasticsearch-data-node-20201208-719c0ec",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-elasticsearch-data-node-20210126-f329881",
 	"kind": "StatefulSet",
 	"livenessProbe": {
 		"failureThreshold": 15,
