@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -48,10 +49,8 @@ public class DataSourceDog {
 			return null;
 		}
 
-		return new DataSource(
-			dataSourceJSONObject.getString("id"),
-			dataSourceJSONObject.getString("name"),
-			dataSourceJSONObject.optString("url"));
+		return ObjectMapperUtil.convertValue(
+			dataSourceJSONObject, DataSource.class);
 	}
 
 	public List<DataSource> getDataSources(
@@ -89,19 +88,14 @@ public class DataSourceDog {
 	}
 
 	private List<DataSource> _toDataSources(JSONArray jsonArray) {
-		List<DataSource> dataSources = new ArrayList<>();
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject dataSourceJSONObject = jsonArray.getJSONObject(i);
-
-			dataSources.add(
-				new DataSource(
-					dataSourceJSONObject.getString("id"),
-					dataSourceJSONObject.getString("name"),
-					dataSourceJSONObject.optString("url")));
+		try {
+			return ObjectMapperUtil.convertValues(
+				jsonArray.toString(), DataSource.class);
 		}
-
-		return dataSources;
+		catch (Exception exception) {
+			throw new RuntimeException(
+				"Unable to process search request", exception);
+		}
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)

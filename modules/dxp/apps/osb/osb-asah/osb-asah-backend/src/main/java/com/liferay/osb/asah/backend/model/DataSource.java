@@ -16,34 +16,18 @@ package com.liferay.osb.asah.backend.model;
 
 import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
 import com.liferay.osb.asah.backend.graphql.GraphQLType;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 
 /**
  * @author Rachael Koestartyo
  */
 @GraphQLType
-public class DataSource {
-
-	public DataSource(String id, String name, String url) {
-		_id = id;
-		_name = name;
-		_url = url;
-	}
-
-	public String getId() {
-		return _id;
-	}
-
-	public String getName() {
-		return _name;
-	}
+public class DataSource extends DataSourceDTO {
 
 	@GraphQLProperty("url")
+	@Override
 	public String getURL() {
-		return _url;
+		return super.getURL();
 	}
-
-	private final String _id;
-	private final String _name;
-	private final String _url;
 
 }
