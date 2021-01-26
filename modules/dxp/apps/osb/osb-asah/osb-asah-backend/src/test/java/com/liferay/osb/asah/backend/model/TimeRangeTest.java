@@ -34,10 +34,7 @@ public class TimeRangeTest {
 		LocalDateTime localDateTime = LocalDateTime.now(ZoneOffset.UTC);
 
 		localDateTime = localDateTime.minusDays(1);
-		localDateTime = localDateTime.withHour(23);
-		localDateTime = localDateTime.withMinute(59);
-		localDateTime = localDateTime.withSecond(59);
-		localDateTime = localDateTime.withNano(999999999);
+		localDateTime = localDateTime.with(LocalTime.MAX);
 
 		Assert.assertEquals(localDateTime, timeRange.getEndLocalDateTime());
 	}
@@ -159,7 +156,7 @@ public class TimeRangeTest {
 		TimeRange timeRange = TimeRange.LAST_30_DAYS;
 
 		LocalDateTime localDateTime = LocalDateTime.of(
-			LocalDate.now(ZoneOffset.UTC), LocalTime.MIDNIGHT);
+			LocalDate.now(ZoneOffset.UTC), LocalTime.MIN);
 
 		Assert.assertEquals(
 			localDateTime.minusDays(30), timeRange.getStartLocalDateTime());

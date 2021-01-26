@@ -50,6 +50,10 @@ public class TimeRange {
 		public LocalDateTime getStartLocalDateTime() {
 			LocalDateTime localDateTime = getEndLocalDateTime();
 
+			localDateTime = localDateTime.withMinute(0);
+			localDateTime = localDateTime.withSecond(0);
+			localDateTime = localDateTime.withNano(0);
+
 			return localDateTime.minusHours(23);
 		}
 
@@ -115,16 +119,16 @@ public class TimeRange {
 		@Override
 		public LocalDateTime getEndLocalDateTime() {
 			LocalDateTime localDateTime = LocalDateTime.of(
-				LocalDate.now(getClock()), LocalTime.MIDNIGHT);
+				LocalDate.now(getClock()), LocalTime.MAX);
 
-			return localDateTime.minusHours(1);
+			return localDateTime.minusDays(1);
 		}
 
 		@Override
 		public LocalDateTime getStartLocalDateTime() {
 			LocalDateTime localDateTime = getEndLocalDateTime();
 
-			return localDateTime.minusHours(23);
+			return localDateTime.with(LocalTime.MIN);
 		}
 
 	};
@@ -219,10 +223,7 @@ public class TimeRange {
 		}
 		else {
 			localDateTime = localDateTime.minusDays(1);
-			localDateTime = localDateTime.withHour(23);
-			localDateTime = localDateTime.withMinute(59);
-			localDateTime = localDateTime.withNano(999999999);
-			localDateTime = localDateTime.withSecond(59);
+			localDateTime = localDateTime.with(LocalTime.MAX);
 		}
 
 		return localDateTime;
@@ -249,10 +250,7 @@ public class TimeRange {
 	public LocalDateTime getStartLocalDateTime() {
 		LocalDateTime localDateTime = getEndLocalDateTime();
 
-		localDateTime = localDateTime.withHour(0);
-		localDateTime = localDateTime.withMinute(0);
-		localDateTime = localDateTime.withNano(0);
-		localDateTime = localDateTime.withSecond(0);
+		localDateTime = localDateTime.with(LocalTime.MIN);
 
 		return localDateTime.minusDays(getDeltaDays() - 1);
 	}
