@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.HashMap;
@@ -116,7 +117,8 @@ public class OSBAsahTaskManager {
 
 	public void runNanites(String... naniteClassNames) {
 		_osbAsahTaskScheduler.execute(
-			new OSBAsahTaskRunnable(this, naniteClassNames));
+			new OSBAsahTaskRunnable(
+				this, ProjectIdThreadLocal.getProjectId(), naniteClassNames));
 	}
 
 	public void scheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {

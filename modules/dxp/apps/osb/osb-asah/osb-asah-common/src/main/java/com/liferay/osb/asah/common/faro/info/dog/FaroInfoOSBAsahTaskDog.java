@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import org.json.JSONObject;
 
@@ -35,6 +36,8 @@ public class FaroInfoOSBAsahTaskDog extends BaseFaroInfoDog {
 				"className", className
 			).put(
 				"context", contextJSONObject
+			).put(
+				"projectId", ProjectIdThreadLocal.getProjectId()
 			));
 
 		_nanitesHttp.executeOSBAsahTask(osbAsahTaskJSONObject);
@@ -51,6 +54,8 @@ public class FaroInfoOSBAsahTaskDog extends BaseFaroInfoDog {
 				"context", contextJSONObject
 			).put(
 				"cronExpression", cronExpression
+			).put(
+				"projectId", ProjectIdThreadLocal.getProjectId()
 			));
 
 		_nanitesHttp.scheduleOSBAsahTask(osbAsahTaskJSONObject);

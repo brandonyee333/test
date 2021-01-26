@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.scheduling;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,6 +42,7 @@ public class OSBAsahTaskRunnable implements Runnable {
 			osbAsahTaskJSONObject.getString("className")
 		};
 		_osbAsahTaskId = osbAsahTaskJSONObject.optString("id");
+		_projectId = osbAsahTaskJSONObject.getString("projectId");
 	}
 
 	public OSBAsahTaskRunnable(
@@ -51,9 +53,11 @@ public class OSBAsahTaskRunnable implements Runnable {
 	}
 
 	public OSBAsahTaskRunnable(
-		OSBAsahTaskManager osbAsahTaskManager, String... naniteClassNames) {
+		OSBAsahTaskManager osbAsahTaskManager, String projectId,
+		String... naniteClassNames) {
 
 		_osbAsahTaskManager = osbAsahTaskManager;
+		_projectId = projectId;
 		_naniteClassNames = naniteClassNames;
 
 		_contextJSONObject = null;
@@ -63,7 +67,14 @@ public class OSBAsahTaskRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		_run();
+		try {
+			ProjectIdThreadLocal.setProjectId(_projectId);
+
+			_run();
+		}
+		finally {
+			ProjectIdThreadLocal.remove();
+		}
 	}
 
 	private void _run() {
@@ -119,5 +130,6 @@ public class OSBAsahTaskRunnable implements Runnable {
 	private final String[] _naniteClassNames;
 	private final String _osbAsahTaskId;
 	private final OSBAsahTaskManager _osbAsahTaskManager;
+	private final String _projectId;
 
 }
