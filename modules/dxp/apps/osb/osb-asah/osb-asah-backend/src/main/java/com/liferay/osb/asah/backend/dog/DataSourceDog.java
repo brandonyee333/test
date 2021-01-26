@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -51,6 +50,12 @@ public class DataSourceDog {
 
 		return ObjectMapperUtil.convertValue(
 			dataSourceJSONObject, DataSource.class);
+	}
+
+	public List<DataSource> getDataSources(List<String> dataSourceIds) {
+		return _toDataSources(
+			_elasticsearchInvoker.get(
+				"data-sources", QueryBuilders.termsQuery("id", dataSourceIds)));
 	}
 
 	public List<DataSource> getDataSources(
