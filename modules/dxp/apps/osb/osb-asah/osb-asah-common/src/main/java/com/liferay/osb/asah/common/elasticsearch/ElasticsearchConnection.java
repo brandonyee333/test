@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
+import com.liferay.osb.asah.common.constants.CredentialConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 
 import java.io.InputStream;
@@ -95,13 +96,11 @@ public class ElasticsearchConnection {
 					ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP);
 		}
 
-		String keyPassphrase = System.getenv("ELASTICSEARCH_KEY_PASSPHRASE");
-		String password = System.getenv("ELASTICSEARCH_PASSWORD");
-		String user = System.getenv("ELASTICSEARCH_USER");
+		String keyPassphrase = CredentialConstants.ELASTICSEARCH_KEY_PASSPHRASE;
+		String password = CredentialConstants.ELASTICSEARCH_PASSWORD;
+		String user = CredentialConstants.ELASTICSEARCH_USER;
 
-		if (!StringUtils.isBlank(keyPassphrase) &&
-			!StringUtils.isBlank(password) && !StringUtils.isBlank(user)) {
-
+		if (!StringUtils.isAnyBlank(keyPassphrase, password, user)) {
 			builder.put(
 				"xpack.security.transport.ssl.certificate_authorities",
 				"/root/ca/ca.crt");
