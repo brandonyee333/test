@@ -20,6 +20,7 @@ import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.json.JSONArray;
@@ -54,7 +55,8 @@ public class NanitesRestController {
 
 	@PostMapping("/reschedule")
 	public void reschedule() {
-		_osbAsahBatchCuratorBot.rescheduleNanites();
+		_osbAsahBatchCuratorBot.rescheduleNanites(
+			ProjectIdThreadLocal.getProjectId());
 	}
 
 	@PostMapping("/run")

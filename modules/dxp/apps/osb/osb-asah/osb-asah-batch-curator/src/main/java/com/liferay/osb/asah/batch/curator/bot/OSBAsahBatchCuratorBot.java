@@ -21,14 +21,18 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.TimeZone;
 
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,11 +70,26 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.HOUR * 6)
 	public void curateExperiments() {
-		_osbAsahTaskManager.runNanites("ExperimentNanite");
+		_osbAsahTaskManager.runNanitesForAllProjects("ExperimentNanite");
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void onStartup() {
+		List<Project> projects = null;
+
+		try {
+			projects = _projectDog.getProjects();
+		}
+		catch (Exception e) {
+			_log.error("Unable to schedule nanites", e);
+
+			return;
+		}
+
+		for (Project project : projects) {
+			try {
+				ProjectIdThreadLocal.setProjectId(project.getId());
+
 		_individualSegmentActivityFieldsNanite.setAnalyticsConfigured(
 			_faroInfoDataSourceDog.isAnalyticsConfigured());
 
@@ -98,17 +117,22 @@ public class OSBAsahBatchCuratorBot {
 
 		_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
 
-		_osbAsahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
+		_osbAsahTaskManager.runNanites(
+			"StaleDynamicIndividualSegmentsNanite");
 
 		_osbAsahTaskManager.executeOSBAsahTasks();
 
 		_osbAsahTaskManager.scheduleOSBAsahTasks();
 
 		_scheduleNanites();
+			} finally {
+				ProjectIdThreadLocal.remove();
+			}
+		}
 	}
 
-	public void rescheduleNanites() {
-		for (String scheduledTask : _scheduledTasks) {
+	public void rescheduleNanites(String projectId) {
+		for (String scheduledTask : _scheduledTasks.get(projectId)) {
 			if (_log.isInfoEnabled()) {
 				_log.info(scheduledTask + " unscheduled");
 			}
@@ -116,9 +140,15 @@ public class OSBAsahBatchCuratorBot {
 			_osbAsahTaskScheduler.unschedule(scheduledTask);
 		}
 
-		_scheduledTasks.clear();
+		_scheduledTasks.remove(projectId);
+
+		try {
+			ProjectIdThreadLocal.setProjectId(projectId);
 
 		_scheduleNanites();
+		} finally {
+			ProjectIdThreadLocal.remove();
+		}
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -130,12 +160,12 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runDataControlTasks() {
-		_osbAsahTaskManager.runNanites("DataControlNanite");
+		_osbAsahTaskManager.runNanitesForAllProjects("DataControlNanite");
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runDataExportTasks() {
-		_osbAsahTaskManager.runNanites("DataExportNanite");
+		_osbAsahTaskManager.runNanitesForAllProjects("DataExportNanite");
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -193,6 +223,11 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	private void _scheduleNanite(Runnable runnable, String scheduledTaskId) {
+		String projectId = ProjectIdThreadLocal.getProjectId();
+
+		String scopedScheduledTaskId = String.format(
+			"%s#%s", projectId, scheduledTaskId);
+
 		String cronExpression = _buildCronExpression(
 			RandomUtils.nextInt(0, 60), RandomUtils.nextInt(0, 16));
 
@@ -200,16 +235,16 @@ public class OSBAsahBatchCuratorBot {
 
 		_osbAsahTaskScheduler.schedule(
 			new CronTrigger(cronExpression, TimeZone.getTimeZone(timeZoneId)),
-			runnable, scheduledTaskId);
+			runnable, scopedScheduledTaskId);
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				String.format(
-					"%s scheduled to run at %s (%s)", scheduledTaskId,
-					cronExpression, timeZoneId));
+					"%s scheduled to run at %s (%s) for project %s",
+					scheduledTaskId, cronExpression, timeZoneId, projectId));
 		}
 
-		_scheduledTasks.add(scheduledTaskId);
+		_scheduledTasks.put(projectId, scopedScheduledTaskId);
 	}
 
 	private void _scheduleNanites() {
@@ -256,7 +291,11 @@ public class OSBAsahBatchCuratorBot {
 	@Autowired
 	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
 
-	private final Set<String> _scheduledTasks = new HashSet<>();
+	@Autowired
+	private ProjectDog _projectDog;
+
+	private final MultiValuedMap<String, String> _scheduledTasks =
+		new HashSetValuedHashMap<>();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

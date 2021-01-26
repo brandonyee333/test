@@ -18,6 +18,8 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -121,6 +123,21 @@ public class OSBAsahTaskManager {
 				this, ProjectIdThreadLocal.getProjectId(), naniteClassNames));
 	}
 
+	public void runNanitesForAllProjects(String... naniteClassNames) {
+		try {
+			List<Project> projects = _projectDog.getProjects();
+
+			for (Project project : projects) {
+				_osbAsahTaskScheduler.execute(
+					new OSBAsahTaskRunnable(
+						this, project.getId(), naniteClassNames));
+			}
+		}
+		catch (Exception e) {
+			_log.error("Unable to run nanites for all projects", e);
+		}
+	}
+
 	public void scheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
 		String className = osbAsahTaskJSONObject.getString("className");
 
@@ -182,6 +199,9 @@ public class OSBAsahTaskManager {
 
 	@Autowired
 	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private RunLogger _runLogger;
