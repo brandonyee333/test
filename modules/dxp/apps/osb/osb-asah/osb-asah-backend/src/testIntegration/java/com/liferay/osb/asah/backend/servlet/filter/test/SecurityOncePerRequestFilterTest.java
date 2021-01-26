@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.backend.servlet.filter.test;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -40,6 +37,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.result.StatusResultMatchers;
 
 /**
@@ -76,13 +75,15 @@ public class SecurityOncePerRequestFilterTest {
 	private void _expectStatusForbidden(ResultActions resultActions)
 		throws Exception {
 
-		StatusResultMatchers statusResultMatchers = status();
+		StatusResultMatchers statusResultMatchers =
+			MockMvcResultMatchers.status();
 
 		resultActions.andExpect(statusResultMatchers.isForbidden());
 	}
 
 	private void _expectStatusOK(ResultActions resultActions) throws Exception {
-		StatusResultMatchers statusResultMatchers = status();
+		StatusResultMatchers statusResultMatchers =
+			MockMvcResultMatchers.status();
 
 		resultActions.andExpect(statusResultMatchers.isOk());
 	}
@@ -90,14 +91,16 @@ public class SecurityOncePerRequestFilterTest {
 	private void _testGet(String url, String securitySignature)
 		throws Exception {
 
-		MockHttpServletRequestBuilder mockHttpServletRequestBuilder1 = get(url);
+		MockHttpServletRequestBuilder mockHttpServletRequestBuilder1 =
+			MockMvcRequestBuilders.get(url);
 
 		mockHttpServletRequestBuilder1.header(
 			HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE, securitySignature);
 
 		_expectStatusOK(_mockMvc.perform(mockHttpServletRequestBuilder1));
 
-		MockHttpServletRequestBuilder mockHttpServletRequestBuilder2 = get(url);
+		MockHttpServletRequestBuilder mockHttpServletRequestBuilder2 =
+			MockMvcRequestBuilders.get(url);
 
 		mockHttpServletRequestBuilder2.header(
 			HeaderConstants.FARO_BACKEND_SECURITY_SIGNATURE,

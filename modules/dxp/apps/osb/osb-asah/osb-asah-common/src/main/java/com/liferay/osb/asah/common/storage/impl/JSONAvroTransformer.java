@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.storage.impl;
 
-import static java.util.stream.Collectors.toList;
-
 import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 
 import java.nio.ByteBuffer;
@@ -25,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.avro.Schema;
@@ -67,7 +66,7 @@ public class JSONAvroTransformer {
 		return stream.map(
 			element -> _toType(field, fieldSchema.getElementType(), element)
 		).collect(
-			toList()
+			Collectors.toList()
 		);
 	}
 

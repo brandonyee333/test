@@ -14,10 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.liferay.osb.asah.backend.graphql.GraphQLRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -43,7 +39,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.ContentResultMatchers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.result.StatusResultMatchers;
 
 /**
@@ -91,21 +89,23 @@ public abstract class BaseGraphQLRestControllerTestCase {
 	private void _expectContentTypeJSON(ResultActions resultActions)
 		throws Exception {
 
-		ContentResultMatchers contentResultMatchers = content();
+		ContentResultMatchers contentResultMatchers =
+			MockMvcResultMatchers.content();
 
 		resultActions.andExpect(
 			contentResultMatchers.contentType(MediaType.APPLICATION_JSON_UTF8));
 	}
 
 	private void _expectStatusOK(ResultActions resultActions) throws Exception {
-		StatusResultMatchers statusResultMatchers = status();
+		StatusResultMatchers statusResultMatchers =
+			MockMvcResultMatchers.status();
 
 		resultActions.andExpect(statusResultMatchers.isOk());
 	}
 
 	private JSONObject _request(JSONObject jsonObject) throws Exception {
-		MockHttpServletRequestBuilder mockHttpServletRequestBuilder = post(
-			"/graphql");
+		MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
+			MockMvcRequestBuilders.post("/graphql");
 
 		mockHttpServletRequestBuilder.accept(
 			MediaType.APPLICATION_JSON_UTF8_VALUE);
