@@ -562,6 +562,7 @@ class CommerceSARIMAX(object):
 		return result
 
 class DateTimeIndexGenerator(object):
+
 	def __init__(self, period):
 		if period == CommerceMLForecastPeriod.MONTH:
 			self._freq = '1MS'

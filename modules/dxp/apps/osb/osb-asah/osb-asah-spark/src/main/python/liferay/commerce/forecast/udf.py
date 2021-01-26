@@ -25,6 +25,7 @@ import logging
 import os
 
 class ForecastUDFHelper(object):
+
 	def __init__(
 		self, configuration: CommerceConfiguration,
 		period: CommerceMLForecastPeriod, scope: CommerceMLForecastScope,

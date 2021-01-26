@@ -23,6 +23,7 @@ from liferay.commerce.forecast.job import AccountCategoryForecastJSONDataFrameWr
 from liferay.common.spark import SparkJobPipeline
 
 class AccountCategoryForecastApplication(BaseCommerceSparkApplication):
+
 	def __init__(self):
 		super(AccountCategoryForecastApplication, self).__init__()
 
@@ -58,6 +59,7 @@ class AccountCategoryForecastApplication(BaseCommerceSparkApplication):
 		return SparkJobPipeline(jobs)
 
 class AccountForecastApplication(BaseCommerceSparkApplication):
+
 	def __init__(self):
 		super(AccountForecastApplication, self).__init__()
 

@@ -18,6 +18,7 @@ from urllib.parse import parse_qs, \
 	urlunparse
 
 class NormalizeURLFunction(object):
+
 	def __init__(self, spark_session, ignore_parameters=[]):
 		udf_function = udf(
 			lambda url: self.normalize_url(url, ignore_parameters),

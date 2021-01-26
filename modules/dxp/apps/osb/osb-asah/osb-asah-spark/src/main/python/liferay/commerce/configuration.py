@@ -12,6 +12,7 @@
 from liferay.common.configuration import Configuration
 
 class CommerceConfiguration(Configuration):
+
 	def __init__(self, configuration_path):
 		super(CommerceConfiguration, self).__init__(configuration_path)
 

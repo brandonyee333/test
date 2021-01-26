@@ -41,6 +41,7 @@ import os
 import sys
 
 class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
+
 	def __init__(self):
 		super(BaseCommerceSparkApplication, self).__init__()
 
@@ -94,6 +95,7 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 			raise e
 
 class FrequentPatternRecommendationApplication(BaseCommerceSparkApplication):
+
 	def __init__(self):
 		super(FrequentPatternRecommendationApplication, self).__init__()
 
@@ -117,6 +119,7 @@ class FrequentPatternRecommendationApplication(BaseCommerceSparkApplication):
 		return SparkJobPipeline(jobs)
 
 class ProductContentRecommendationApplication(BaseCommerceSparkApplication):
+
 	def __init__(self):
 		super(ProductContentRecommendationApplication, self).__init__()
 
@@ -136,6 +139,7 @@ class ProductContentRecommendationApplication(BaseCommerceSparkApplication):
 		return SparkJobPipeline(jobs)
 
 class UserInteractionRecommendationApplication(BaseCommerceSparkApplication):
+
 	def __init__(self):
 		super(UserInteractionRecommendationApplication, self).__init__()
 

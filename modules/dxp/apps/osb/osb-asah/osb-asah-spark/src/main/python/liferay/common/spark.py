@@ -18,6 +18,7 @@ from pyspark import SparkConf
 from pyspark.sql import SparkSession
 
 class BaseSparkApplication(object):
+
 	__metaclass__ = ABCMeta
 
 	def __init__(self):
@@ -47,6 +48,7 @@ class BaseSparkApplication(object):
 		pass
 
 class BaseSparkJob(object, metaclass=ABCMeta):
+
 	def __init__(self, spark_application):
 		self.spark_application = spark_application
 		self.spark_application_args = spark_application.args
@@ -58,6 +60,7 @@ class BaseSparkJob(object, metaclass=ABCMeta):
 		pass
 
 class SparkJobPipeline:
+
 	def __init__(self, jobs):
 		self.jobs = jobs
 

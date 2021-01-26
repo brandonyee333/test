@@ -29,6 +29,7 @@ def spark_application():
 	from liferay.common.spark import BaseSparkApplication
 
 	class BaseSparkApplicationTest(BaseSparkApplication):
+
 		def __init__(self):
 			self.args = ''
 			self.configuration = Configuration()

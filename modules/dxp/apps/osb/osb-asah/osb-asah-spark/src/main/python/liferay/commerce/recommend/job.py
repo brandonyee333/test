@@ -37,9 +37,8 @@ from pyspark.sql.functions import coalesce, \
 
 import logging
 
-class ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob(
-	BaseJSONDataFrameWriterSparkJob
-):
+class ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob(BaseJSONDataFrameWriterSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob,
@@ -71,6 +70,7 @@ class ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob(
 		return data_frame
 
 class FrequentPatternDataPreparationSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			FrequentPatternDataPreparationSparkJob,
@@ -96,9 +96,8 @@ class FrequentPatternDataPreparationSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('items')
 
-class FrequentPatternOrderJSONDataFrameReaderSparkJob(
-	BaseJSONDataFrameReaderSparkJob
-):
+class FrequentPatternOrderJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			FrequentPatternOrderJSONDataFrameReaderSparkJob,
@@ -114,6 +113,7 @@ class FrequentPatternOrderJSONDataFrameReaderSparkJob(
 		)
 
 class FrequentPatternPostProcessRecommendationSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			FrequentPatternPostProcessRecommendationSparkJob,
@@ -210,9 +210,8 @@ class FrequentPatternPostProcessRecommendationSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('frequent_pattern_recommendation')
 
-class FrequentPatternProductJSONDataFrameReaderSparkJob(
-	BaseJSONDataFrameReaderSparkJob
-):
+class FrequentPatternProductJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			FrequentPatternProductJSONDataFrameReaderSparkJob,
@@ -228,9 +227,8 @@ class FrequentPatternProductJSONDataFrameReaderSparkJob(
 			'id AS CPDefinitionId', 'EXPLODE(skus.sku) AS sku'
 		)
 
-class FrequentPatternRecommendationJSONDataFrameWriterSparkJob(
-	BaseJSONDataFrameWriterSparkJob
-):
+class FrequentPatternRecommendationJSONDataFrameWriterSparkJob(BaseJSONDataFrameWriterSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			FrequentPatternRecommendationJSONDataFrameWriterSparkJob,
@@ -256,6 +254,7 @@ class FrequentPatternRecommendationJSONDataFrameWriterSparkJob(
 		return data_frame
 
 class FrequentPatternRecommendationSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			FrequentPatternRecommendationSparkJob,
@@ -312,9 +311,8 @@ class FrequentPatternRecommendationSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('frequent_itemsets')
 
-class OrderInteractionJSONDataFrameReaderSparkJob(
-	BaseJSONDataFrameReaderSparkJob
-):
+class OrderInteractionJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			OrderInteractionJSONDataFrameReaderSparkJob,
@@ -331,9 +329,8 @@ class OrderInteractionJSONDataFrameReaderSparkJob(
 			'explode(orderItems.sku) as sku'
 		)
 
-class ProductContentJSONDataFrameReaderSparkJob(
-	BaseJSONDataFrameReaderSparkJob
-):
+class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
+
 	def __init__(self, spark_application):
 		super(ProductContentJSONDataFrameReaderSparkJob, self).__init__(
 			spark_application,
@@ -416,6 +413,7 @@ class ProductContentJSONDataFrameReaderSparkJob(
 		).withColumnRenamed("id", 'entryClassPK')
 
 class ProductContentPipelineSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application):
 		super(ProductContentPipelineSparkJob, self).__init__(spark_application)
 
@@ -455,9 +453,8 @@ class ProductContentPipelineSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('pipeline_data')
 
-class ProductContentRecommendationJSONDataFrameWriter(
-	BaseJSONDataFrameWriterSparkJob
-):
+class ProductContentRecommendationJSONDataFrameWriter(BaseJSONDataFrameWriterSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			ProductContentRecommendationJSONDataFrameWriter,
@@ -469,6 +466,7 @@ class ProductContentRecommendationJSONDataFrameWriter(
 		)
 
 class ProductContentRecommendationSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			ProductContentRecommendationSparkJob,
@@ -531,9 +529,8 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('product_content_recommendations')
 
-class ProductInteractionJSONDataFrameReaderSparkJob(
-	BaseJSONDataFrameReaderSparkJob
-):
+class ProductInteractionJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			ProductInteractionJSONDataFrameReaderSparkJob,
@@ -550,9 +547,8 @@ class ProductInteractionJSONDataFrameReaderSparkJob(
 			"skus.sku AS sku_list"
 		)
 
-class ProductInteractionRecommendationJSONDataFrameWriterSparkJob(
-	BaseJSONDataFrameWriterSparkJob
-):
+class ProductInteractionRecommendationJSONDataFrameWriterSparkJob(BaseJSONDataFrameWriterSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			ProductInteractionRecommendationJSONDataFrameWriterSparkJob,
@@ -565,6 +561,7 @@ class ProductInteractionRecommendationJSONDataFrameWriterSparkJob(
 		)
 
 class ProductInteractionRecommendationSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			ProductInteractionRecommendationSparkJob,
@@ -640,6 +637,7 @@ class ProductInteractionRecommendationSparkJob(BaseSparkJob):
 		)
 
 class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			UserInteractionCollaborativeFilteringSparkJob,
@@ -847,6 +845,7 @@ class UserInteractionCollaborativeFilteringSparkJob(BaseSparkJob):
 			self.spark_session.catalog.cacheTable('item_factors')
 
 class UserInteractionDataPreparationSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			UserInteractionDataPreparationSparkJob,

@@ -28,6 +28,7 @@ import argparse
 import sys
 
 class ContentRecommendationApplication(BaseSparkApplication):
+
 	def __init__(self):
 		super(ContentRecommendationApplication, self).__init__()
 

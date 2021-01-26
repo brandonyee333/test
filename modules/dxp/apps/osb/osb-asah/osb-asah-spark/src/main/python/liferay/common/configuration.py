@@ -13,6 +13,7 @@ import os
 import yaml
 
 class Configuration:
+
 	def __init__(self, configuration_path=None):
 		self._dict = self._create_dict(configuration_path)
 

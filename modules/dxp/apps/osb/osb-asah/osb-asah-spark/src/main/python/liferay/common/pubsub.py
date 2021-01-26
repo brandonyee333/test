@@ -14,6 +14,7 @@ from google.cloud import pubsub_v1
 import json
 
 class PubSubBridge:
+
 	def __init__(self, spark_application):
 		self.publisher_client = pubsub_v1.PublisherClient()
 
@@ -30,6 +31,7 @@ class PubSubBridge:
 		)
 
 class PubSubMessage:
+
 	def __init__(self, application_id, message):
 		self.application_id = application_id
 		self.message = message

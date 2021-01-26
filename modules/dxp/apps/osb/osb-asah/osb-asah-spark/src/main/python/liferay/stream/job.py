@@ -15,6 +15,7 @@ from liferay.stream.processor import JournalDataFrameProcessor
 from pyspark.sql import types as T
 
 class CuratorSparkJob(BaseSparkJob):
+
 	def _process_batch(self, analytics_events_data_frame, batch_id):
 		analytics_events_data_frame.persist()
 

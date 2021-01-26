@@ -27,6 +27,7 @@ from pyspark.sql.functions import col, \
 import json
 
 class GenerateItemsSparkJob(BaseSparkJob):
+
 	def _update_job_run_items_dataset_count(self, items_data_frame):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
@@ -57,6 +58,7 @@ class GenerateItemsSparkJob(BaseSparkJob):
 		items_data_frame.createOrReplaceTempView('items')
 
 class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
+
 	def _update_job_run_user_item_interactions_dataset_count(
 		self, user_item_interactions_data_frame
 	):
@@ -103,6 +105,7 @@ class GenerateUserItemInteractionsSparkJob(BaseSparkJob):
 		)
 
 class PublishJobRunSparkJob(BaseSparkJob):
+
 	def run(self):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
@@ -117,6 +120,7 @@ class PublishJobRunSparkJob(BaseSparkJob):
 		)
 
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application):
 		super(ReadAnalyticsEventsSparkJob, self).__init__(spark_application)
 
@@ -245,6 +249,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		analytics_events_data_frame.createOrReplaceTempView('analytics_events')
 
 class ReadRecommendedItemsSparkJob(BaseSparkJob):
+
 	def run(self):
 		data_frame_reader = self.spark_session.read
 
@@ -266,6 +271,7 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 		)
 
 class UpdateJobRunStepSparkJob(BaseSparkJob):
+
 	def run(self):
 		pub_sub_bridge = self.spark_application.pub_sub_bridge
 
@@ -282,6 +288,7 @@ class UpdateJobRunStepSparkJob(BaseSparkJob):
 		)
 
 class WriteDataframeSparkJob(BaseSparkJob):
+
 	def __init__(self, data_frame_name, output_format, spark_application):
 		super(WriteDataframeSparkJob, self).__init__(spark_application)
 
@@ -304,17 +311,13 @@ class WriteDataframeSparkJob(BaseSparkJob):
 		)
 
 class WriteItemsSparkJob(WriteDataframeSparkJob):
+
 	def __init__(self, spark_application):
 		super(WriteItemsSparkJob,
 			  self).__init__('items', 'json', spark_application)
 
-class WriteUserItemInteractionsSparkJob(WriteDataframeSparkJob):
-	def __init__(self, spark_application):
-		super(WriteUserItemInteractionsSparkJob, self).__init__(
-			'user_item_interactions', 'csv', spark_application
-		)
-
 class WriteRecommendedItemsSparkJob(BaseSparkJob):
+
 	def run(self):
 		data_frame = self.spark_session.table('recommended_items')
 
@@ -327,4 +330,11 @@ class WriteRecommendedItemsSparkJob(BaseSparkJob):
 				self.spark_application_args.lcp_project_id,
 				self.spark_application.job_id, self.spark_application.job_run_id
 			)
+		)
+
+class WriteUserItemInteractionsSparkJob(WriteDataframeSparkJob):
+
+	def __init__(self, spark_application):
+		super(WriteUserItemInteractionsSparkJob, self).__init__(
+			'user_item_interactions', 'csv', spark_application
 		)

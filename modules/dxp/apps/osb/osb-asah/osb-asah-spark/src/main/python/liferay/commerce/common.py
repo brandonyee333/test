@@ -22,6 +22,7 @@ from liferay.common.spark import BaseSparkApplication, \
 	BaseSparkJob
 
 class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
+
 	def __init__(self):
 		super(BaseCommerceSparkApplication, self).__init__()
 
@@ -75,6 +76,7 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 			raise e
 
 class BaseJSONDataFrameReaderSparkJob(BaseSparkJob):
+
 	def __init__(
 		self,
 		spark_application,
@@ -147,6 +149,7 @@ class BaseJSONDataFrameReaderSparkJob(BaseSparkJob):
 			self.spark_session.catalog.cacheTable(self.table_name)
 
 class BaseJSONDataFrameWriterSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application, target_folder, table_name):
 		super(BaseJSONDataFrameWriterSparkJob, self).__init__(spark_application)
 

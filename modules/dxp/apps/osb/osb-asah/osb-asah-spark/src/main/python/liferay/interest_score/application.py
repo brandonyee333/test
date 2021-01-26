@@ -23,6 +23,7 @@ import argparse
 import sys
 
 class InterestScoreApplication(BaseSparkApplication):
+
 	def __init__(self):
 		super(InterestScoreApplication, self).__init__()
 

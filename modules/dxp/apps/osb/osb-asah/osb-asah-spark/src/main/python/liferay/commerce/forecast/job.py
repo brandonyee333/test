@@ -27,9 +27,8 @@ from pyspark.sql.functions import PandasUDFType, \
 	row_number, \
 	sum as spark_sum
 
-class AccountCategoryForecastJSONDataFrameWriterSparkJob(
-	BaseJSONDataFrameWriterSparkJob
-):
+class AccountCategoryForecastJSONDataFrameWriterSparkJob(BaseJSONDataFrameWriterSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			AccountCategoryForecastJSONDataFrameWriterSparkJob,
@@ -43,9 +42,8 @@ class AccountCategoryForecastJSONDataFrameWriterSparkJob(
 	def _pre_process(self, data_frame):
 		return data_frame.filter('forecast IS NOT NULL')
 
-class AccountForecastJSONDataFrameWriterSparkJob(
-	BaseJSONDataFrameWriterSparkJob
-):
+class AccountForecastJSONDataFrameWriterSparkJob(BaseJSONDataFrameWriterSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			AccountForecastJSONDataFrameWriterSparkJob,
@@ -60,6 +58,7 @@ class AccountForecastJSONDataFrameWriterSparkJob(
 		return data_frame.filter('forecast IS NOT NULL')
 
 class ForecastDataPrepareSparkJob(BaseSparkJob):
+
 	def __init__(
 		self, spark_application, period: CommerceMLForecastPeriod,
 		scope: CommerceMLForecastScope, target: CommerceMLForecastTarget
@@ -139,6 +138,7 @@ class ForecastDataPrepareSparkJob(BaseSparkJob):
 		self.spark_session.catalog.cacheTable('forecast_data')
 
 class ForecastOrderJSONDataFrameReader(BaseJSONDataFrameReaderSparkJob):
+
 	def __init__(
 		self, spark_application, period: CommerceMLForecastPeriod,
 		scope: CommerceMLForecastScope, target: CommerceMLForecastTarget
@@ -171,6 +171,7 @@ class ForecastOrderJSONDataFrameReader(BaseJSONDataFrameReaderSparkJob):
 		)
 
 class ForecastProductCategoryAugmentationSparkJob(BaseSparkJob):
+
 	def __init__(self, spark_application):
 		super(
 			ForecastProductCategoryAugmentationSparkJob,
@@ -192,9 +193,8 @@ class ForecastProductCategoryAugmentationSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('order_forecast')
 
-class ForecastProductJSONDataFrameReaderSparkJob(
-	BaseJSONDataFrameReaderSparkJob
-):
+class ForecastProductJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
+
 	def __init__(self, spark_application):
 		super(ForecastProductJSONDataFrameReaderSparkJob, self).__init__(
 			spark_application,
@@ -212,6 +212,7 @@ class ForecastProductJSONDataFrameReaderSparkJob(
 		)
 
 class ForecastSparkJob(BaseSparkJob):
+
 	def __init__(
 		self, spark_application, period: CommerceMLForecastPeriod,
 		scope: CommerceMLForecastScope, target: CommerceMLForecastTarget

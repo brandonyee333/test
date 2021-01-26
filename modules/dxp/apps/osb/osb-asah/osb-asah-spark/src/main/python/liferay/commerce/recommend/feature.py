@@ -24,6 +24,7 @@ from pyspark.sql.functions import col, \
 import logging
 
 class CommerceFeatureExtractor(object):
+
 	def __init__(self):
 		self._categorical_column_names = ['companyId', 'productTypeName']
 		self._count_vectorizer_column_names = ['assetCategoryIds']
@@ -125,6 +126,7 @@ class CommerceFeatureExtractor(object):
 		return {'feature_column': feature_column_name, 'stages': stages}
 
 class MAPEvaluator(Evaluator):
+
 	def __init__(
 		self,
 		label_column_name,

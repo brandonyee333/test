@@ -19,6 +19,7 @@ import argparse
 import sys
 
 class OSBAsahStreamCuratorApplication(BaseSparkApplication):
+
 	def __init__(self):
 		super(OSBAsahStreamCuratorApplication, self).__init__()
 

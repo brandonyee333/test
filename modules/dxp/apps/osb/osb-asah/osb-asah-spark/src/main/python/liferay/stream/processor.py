@@ -12,6 +12,7 @@
 from pyspark.sql import functions as F
 
 class AnalyticsEventsDataFrameProcessor(object):
+
 	def __init__(self, batch_id, spark_job):
 		self._batch_id = batch_id
 		self._spark_job = spark_job
@@ -40,6 +41,7 @@ class AnalyticsEventsDataFrameProcessor(object):
 		)
 
 class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
+
 	def _filter(self, analytics_events_data_frame):
 		return analytics_events_data_frame.filter(
 			"""
@@ -135,6 +137,7 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		)
 
 class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
+
 	def _filter(self, analytics_events_data_frame):
 		return analytics_events_data_frame.filter(
 			"""

@@ -25,6 +25,7 @@ from pyspark.sql.types import ArrayType, \
 	StructType
 
 class LanguageDetectorPolyglotWrapper(Transformer):
+
 	def __init__(self):
 		super(LanguageDetectorPolyglotWrapper, self).__init__()
 

@@ -20,6 +20,7 @@ from pyspark.sql.types import DoubleType
 import numpy as np
 
 class BaseUDFFunction(object, metaclass=ABCMeta):
+
 	def __init__(self, spark_session):
 		udf_function = udf(self.udf_function, self.get_return_type())
 
@@ -41,6 +42,7 @@ class BaseUDFFunction(object, metaclass=ABCMeta):
 		raise NotImplementedError()
 
 class TanimotoCoefficientUDFFunction(BaseUDFFunction):
+
 	def __init__(self, spark_session):
 		super(TanimotoCoefficientUDFFunction, self).__init__(spark_session)
 
@@ -66,6 +68,7 @@ class TanimotoCoefficientUDFFunction(BaseUDFFunction):
 				(norm1_squared + norm2_squared - dot_product)).item()
 
 class ToDenseVectorUDFFunction(BaseUDFFunction):
+
 	def __init__(self, spark_session):
 		super(ToDenseVectorUDFFunction, self).__init__(spark_session)
 
