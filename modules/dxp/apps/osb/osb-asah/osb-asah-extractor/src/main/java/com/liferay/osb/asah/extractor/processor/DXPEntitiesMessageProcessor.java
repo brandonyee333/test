@@ -73,15 +73,9 @@ public class DXPEntitiesMessageProcessor {
 			for (String message : messages) {
 				JSONObject jsonObject = new JSONObject(message);
 
-				try {
-					ProjectIdThreadLocal.setProjectId(
-						jsonObject.getString("projectId"));
-
-					_processMessage(jsonObject);
-				}
-				finally {
-					ProjectIdThreadLocal.remove();
-				}
+				ProjectIdThreadLocal.forProject(
+					jsonObject.getString("projectId"),
+					() -> _processMessage(jsonObject));
 			}
 
 			_dxpEntitiesCounter.inc(messages.size());

@@ -21,14 +21,12 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
-import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.commons.collections4.MultiValuedMap;
@@ -75,62 +73,12 @@ public class OSBAsahBatchCuratorBot {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void onStartup() {
-		List<Project> projects = null;
-
 		try {
-			projects = _projectDog.getProjects();
+			ProjectIdThreadLocal.forProjects(
+				_projectDog.getProjects(), this::_init);
 		}
 		catch (Exception e) {
 			_log.error("Unable to schedule nanites", e);
-
-			return;
-		}
-
-		for (Project project : projects) {
-			try {
-				ProjectIdThreadLocal.setProjectId(project.getId());
-
-				_individualSegmentActivityFieldsNanite.setAnalyticsConfigured(
-					_faroInfoDataSourceDog.isAnalyticsConfigured());
-
-				_elasticsearchInvoker.updateByQueryWithRetry(
-					QueryBuilders.termQuery("status", "STARTED"), true,
-					new Script(
-						Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-						"ctx._source.status = 'INTERRUPTED'",
-						Collections.emptyMap()),
-					"run-logs");
-
-				_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
-
-				_osbAsahTaskManager.runNanites("DataRetentionNanite");
-
-				_osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
-
-				_osbAsahTaskManager.runNanites(
-					"IndividualEngagementScoresNanite",
-					"IndividualSegmentEngagementScoresNanite",
-					"AccountEngagementScoresNanite");
-
-				_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
-
-				_osbAsahTaskManager.runNanites("InterestTopicsNanite");
-
-				_osbAsahTaskManager.runNanites(
-					"IndividualInterestScoresNanite");
-
-				_osbAsahTaskManager.runNanites(
-					"StaleDynamicIndividualSegmentsNanite");
-
-				_osbAsahTaskManager.executeOSBAsahTasks();
-
-				_osbAsahTaskManager.scheduleOSBAsahTasks();
-
-				_scheduleNanites();
-			}
-			finally {
-				ProjectIdThreadLocal.remove();
-			}
 		}
 	}
 
@@ -145,14 +93,7 @@ public class OSBAsahBatchCuratorBot {
 
 		_scheduledTasks.remove(projectId);
 
-		try {
-			ProjectIdThreadLocal.setProjectId(projectId);
-
-			_scheduleNanites();
-		}
-		finally {
-			ProjectIdThreadLocal.remove();
-		}
+		ProjectIdThreadLocal.forProject(projectId, this::_scheduleNanites);
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -224,6 +165,43 @@ public class OSBAsahBatchCuratorBot {
 	private Runnable _getStaleDynamicIndividualSegmentsRunnable() {
 		return () -> _osbAsahTaskManager.runNanites(
 			"StaleDynamicIndividualSegmentsNanite");
+	}
+
+	private void _init() {
+		_individualSegmentActivityFieldsNanite.setAnalyticsConfigured(
+			_faroInfoDataSourceDog.isAnalyticsConfigured());
+
+		_elasticsearchInvoker.updateByQueryWithRetry(
+			QueryBuilders.termQuery("status", "STARTED"), true,
+			new Script(
+				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+				"ctx._source.status = 'INTERRUPTED'", Collections.emptyMap()),
+			"run-logs");
+
+		_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
+
+		_osbAsahTaskManager.runNanites("DataRetentionNanite");
+
+		_osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
+
+		_osbAsahTaskManager.runNanites(
+			"IndividualEngagementScoresNanite",
+			"IndividualSegmentEngagementScoresNanite",
+			"AccountEngagementScoresNanite");
+
+		_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
+
+		_osbAsahTaskManager.runNanites("InterestTopicsNanite");
+
+		_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
+
+		_osbAsahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
+
+		_osbAsahTaskManager.executeOSBAsahTasks();
+
+		_osbAsahTaskManager.scheduleOSBAsahTasks();
+
+		_scheduleNanites();
 	}
 
 	private void _scheduleNanite(Runnable runnable, String scheduledTaskId) {

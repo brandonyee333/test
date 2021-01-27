@@ -67,14 +67,7 @@ public class OSBAsahTaskRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			ProjectIdThreadLocal.setProjectId(_projectId);
-
-			_run();
-		}
-		finally {
-			ProjectIdThreadLocal.remove();
-		}
+		ProjectIdThreadLocal.forProject(_projectId, this::_run);
 	}
 
 	private void _run() {

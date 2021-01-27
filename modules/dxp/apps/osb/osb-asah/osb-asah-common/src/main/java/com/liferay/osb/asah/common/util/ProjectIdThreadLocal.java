@@ -15,6 +15,10 @@
 package com.liferay.osb.asah.common.util;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.model.Project;
+
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,6 +27,27 @@ import org.apache.commons.logging.LogFactory;
  * @author Shinn Lok
  */
 public class ProjectIdThreadLocal {
+
+	public static void forProject(Project project, Runnable runnable) {
+		forProjects(Collections.singletonList(project), runnable);
+	}
+
+	public static void forProject(String projectId, Runnable runnable) {
+		forProject(new Project(projectId), runnable);
+	}
+
+	public static void forProjects(List<Project> projects, Runnable runnable) {
+		for (Project project : projects) {
+			try {
+				setProjectId(project.getId());
+
+				runnable.run();
+			}
+			finally {
+				remove();
+			}
+		}
+	}
 
 	public static String getProjectId() {
 		String projectId = _projectId.get();

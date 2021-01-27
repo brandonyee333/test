@@ -92,15 +92,9 @@ public class AnalyticsEventsMessageProcessor {
 			for (AnalyticsEventsMessage analyticsEventsMessage :
 					analyticsEventsMessages) {
 
-				try {
-					ProjectIdThreadLocal.setProjectId(
-						analyticsEventsMessage.getProjectId());
-
-					_processMessage(analyticsEventsMessage);
-				}
-				finally {
-					ProjectIdThreadLocal.remove();
-				}
+				ProjectIdThreadLocal.forProject(
+					analyticsEventsMessage.getProjectId(),
+					() -> _processMessage(analyticsEventsMessage));
 			}
 		}
 	}
