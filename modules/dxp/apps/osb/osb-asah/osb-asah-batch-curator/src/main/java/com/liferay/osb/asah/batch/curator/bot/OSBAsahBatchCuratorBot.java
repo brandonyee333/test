@@ -90,42 +90,45 @@ public class OSBAsahBatchCuratorBot {
 			try {
 				ProjectIdThreadLocal.setProjectId(project.getId());
 
-		_individualSegmentActivityFieldsNanite.setAnalyticsConfigured(
-			_faroInfoDataSourceDog.isAnalyticsConfigured());
+				_individualSegmentActivityFieldsNanite.setAnalyticsConfigured(
+					_faroInfoDataSourceDog.isAnalyticsConfigured());
 
-		_elasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.termQuery("status", "STARTED"), true,
-			new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				"ctx._source.status = 'INTERRUPTED'", Collections.emptyMap()),
-			"run-logs");
+				_elasticsearchInvoker.updateByQueryWithRetry(
+					QueryBuilders.termQuery("status", "STARTED"), true,
+					new Script(
+						Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+						"ctx._source.status = 'INTERRUPTED'",
+						Collections.emptyMap()),
+					"run-logs");
 
-		_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
+				_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
 
-		_osbAsahTaskManager.runNanites("DataRetentionNanite");
+				_osbAsahTaskManager.runNanites("DataRetentionNanite");
 
-		_osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
+				_osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
 
-		_osbAsahTaskManager.runNanites(
-			"IndividualEngagementScoresNanite",
-			"IndividualSegmentEngagementScoresNanite",
-			"AccountEngagementScoresNanite");
+				_osbAsahTaskManager.runNanites(
+					"IndividualEngagementScoresNanite",
+					"IndividualSegmentEngagementScoresNanite",
+					"AccountEngagementScoresNanite");
 
-		_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
+				_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
 
-		_osbAsahTaskManager.runNanites("InterestTopicsNanite");
+				_osbAsahTaskManager.runNanites("InterestTopicsNanite");
 
-		_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
+				_osbAsahTaskManager.runNanites(
+					"IndividualInterestScoresNanite");
 
-		_osbAsahTaskManager.runNanites(
-			"StaleDynamicIndividualSegmentsNanite");
+				_osbAsahTaskManager.runNanites(
+					"StaleDynamicIndividualSegmentsNanite");
 
-		_osbAsahTaskManager.executeOSBAsahTasks();
+				_osbAsahTaskManager.executeOSBAsahTasks();
 
-		_osbAsahTaskManager.scheduleOSBAsahTasks();
+				_osbAsahTaskManager.scheduleOSBAsahTasks();
 
-		_scheduleNanites();
-			} finally {
+				_scheduleNanites();
+			}
+			finally {
 				ProjectIdThreadLocal.remove();
 			}
 		}
@@ -145,8 +148,9 @@ public class OSBAsahBatchCuratorBot {
 		try {
 			ProjectIdThreadLocal.setProjectId(projectId);
 
-		_scheduleNanites();
-		} finally {
+			_scheduleNanites();
+		}
+		finally {
 			ProjectIdThreadLocal.remove();
 		}
 	}
