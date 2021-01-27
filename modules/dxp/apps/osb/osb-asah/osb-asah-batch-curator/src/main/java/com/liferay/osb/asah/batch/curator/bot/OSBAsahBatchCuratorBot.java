@@ -98,8 +98,18 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void runContentRecommendationDataSolutionNanite() {
-		if (_contentRecommendationDataSolutionNaniteRunnable != null) {
-			_contentRecommendationDataSolutionNaniteRunnable.run();
+		if (_contentRecommendationDataSolutionNaniteRunnable == null) {
+			return;
+		}
+
+		try {
+			ProjectIdThreadLocal.forProjects(
+				_projectDog.getProjects(),
+				_contentRecommendationDataSolutionNaniteRunnable);
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to execute ContentRecommendationDataSolutionNanite", e);
 		}
 	}
 
@@ -115,8 +125,18 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
 	public void runDataprocSparkManagerMonitoringNanite() {
-		if (_dataprocSparkManagerMonitoringNaniteRunnable != null) {
-			_dataprocSparkManagerMonitoringNaniteRunnable.run();
+		if (_dataprocSparkManagerMonitoringNaniteRunnable == null) {
+			return;
+		}
+
+		try {
+			ProjectIdThreadLocal.forProjects(
+				_projectDog.getProjects(),
+				_dataprocSparkManagerMonitoringNaniteRunnable);
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to execute DataprocSparkManagerMonitoringNanite", e);
 		}
 	}
 
