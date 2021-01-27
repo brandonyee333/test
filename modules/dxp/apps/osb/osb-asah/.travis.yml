@@ -6,23 +6,30 @@ jdk: openjdk8
 jobs:
     include:
         - stage: "Analysis"
-          script: ./gradlew checkSourceFormatting pmdMain pmdTest pmdTestIntegration spotbugsMain spotbugsTest spotbugsTestIntegration --configure-on-demand --parallel
+          script:
+              - ./gradlew checkSourceFormatting pmdMain pmdTest pmdTestIntegration spotbugsMain spotbugsTest spotbugsTestIntegration --configure-on-demand --parallel
         - stage: "Tests"
-          before_script: sudo /etc/init.d/postgresql stop && docker-compose -f docker-compose.integration-test.yml up -d
-          script: ./gradlew test --configure-on-demand --parallel && ./gradlew testIntegration --configure-on-demand && ./gradlew jacocoTestCoverageVerification
-          after_script: docker-compose -f docker-compose.integration-test.yml down
+          before_script:
+              - sudo /etc/init.d/postgresql stop
+              - docker-compose -f docker-compose.integration-test.yml up -d
+          script:
+              - ./gradlew test --configure-on-demand --parallel
+              - ./gradlew testIntegration --configure-on-demand
+              - ./gradlew jacocoTestCoverageVerification
+          after_script:
+              - docker-compose -f docker-compose.integration-test.yml down
           after_success:
-              - test $TRAVIS_BRANCH = "7.0.x" &&
-                test $TRAVIS_EVENT_TYPE = "push" &&
-                test $TRAVIS_REPO_SLUG = "liferay/com-liferay-osb-asah-private" &&
-                ./gradlew coveralls &&
-                cd osb-asah-monolith &&
-                ../gradlew assemble &&
-                docker build -t liferay/com-liferay-osb-asah:latest . &&
-                docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" &&
-                docker push liferay/com-liferay-osb-asah:latest &&
-                docker logout &&
-                cd ..
+              - test $TRAVIS_BRANCH = "7.0.x"
+              - test $TRAVIS_EVENT_TYPE = "push"
+              - test $TRAVIS_REPO_SLUG = "liferay/com-liferay-osb-asah-private"
+              - ./gradlew coveralls
+              - cd osb-asah-monolith
+              - ../gradlew assemble
+              - docker build -t liferay/com-liferay-osb-asah:latest .
+              - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+              - docker push liferay/com-liferay-osb-asah:latest
+              - docker logout
+              - cd ..
 language: java
 services:
     - docker
