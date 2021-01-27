@@ -1,0 +1,111 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.configuration;
+
+import com.liferay.osb.asah.common.condition.ElasticsearchCondition;
+import com.liferay.osb.asah.common.condition.PostgreSQLCondition;
+import com.liferay.osb.asah.common.postgresql.PostgreSQLDataSource;
+
+import javax.sql.DataSource;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.data.relational.core.dialect.AnsiDialect;
+import org.springframework.data.relational.core.dialect.Dialect;
+import org.springframework.data.relational.core.mapping.NamingStrategy;
+import org.springframework.data.relational.core.mapping.RelationalPersistentProperty;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.transaction.TransactionManager;
+
+/**
+ * @author Inácio Nery
+ */
+@Configuration
+@EnableJdbcRepositories(
+	basePackages = {
+		"com.liferay.osb.asah.common.elasticsearch.repository.impl",
+		"com.liferay.osb.asah.common.repository"
+	},
+	namedQueriesLocation = "classpath:com/liferay/osb/asah/common/repository/*.xml"
+)
+public class JDBCConfiguration extends AbstractJdbcConfiguration {
+
+	@Bean
+	@Conditional(ElasticsearchCondition.class)
+	public DataSource elasticsearchDataSource() {
+		return new SimpleDriverDataSource();
+	}
+
+	@Bean
+	@Conditional(ElasticsearchCondition.class)
+	@Override
+	public Dialect jdbcDialect(
+		NamedParameterJdbcOperations namedParameterJdbcOperations) {
+
+		return AnsiDialect.INSTANCE;
+	}
+
+	@Bean
+	public NamedParameterJdbcOperations namedParameterJdbcOperations(
+		DataSource dataSource) {
+
+		return new NamedParameterJdbcTemplate(dataSource);
+	}
+
+	@Bean
+	public NamingStrategy namingStrategy() {
+		return new NamingStrategy() {
+
+			@Override
+			public String getColumnName(
+				RelationalPersistentProperty relationalPersistentProperty) {
+
+				String columnName = relationalPersistentProperty.getName();
+
+				columnName = columnName.replace("_", "");
+
+				return columnName.toLowerCase();
+			}
+
+			@Override
+			public String getTableName(Class<?> clazz) {
+				String tableName = clazz.getSimpleName();
+
+				tableName = tableName.replace("_", "");
+
+				return tableName.toLowerCase();
+			}
+
+		};
+	}
+
+	@Bean
+	@Conditional(PostgreSQLCondition.class)
+	public DataSource postgreSQLDataSource() {
+		return new PostgreSQLDataSource();
+	}
+
+	@Bean
+	public TransactionManager transactionManager(DataSource dataSource) {
+		return new DataSourceTransactionManager(dataSource);
+	}
+
+}
