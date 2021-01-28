@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="Channel.findByDataSourceIdAndGroupIds">
+		<![CDATA[
+			SELECT
+				Channel.createDate,
+				Channel.id,
+				Channel.name,
+				ChannelDataSource.channelId,
+				ChannelDataSource.dataSourceId,
+				ChannelDataSource.groupIds
+			FROM
+				Channel,
+				(
+					SELECT
+						ChannelDataSource.channelId,
+						ChannelDataSource.dataSourceId,
+						ChannelDataSource.groupIds,
+						UNNEST(ChannelDataSource.groupIds) AS groupId
+					FROM
+						ChannelDataSource
+				)
+				ChannelDataSource
+			WHERE
+				Channel.id = ChannelDataSource.channelId AND
+				ChannelDataSource.dataSourceId = :dataSourceId AND
+				ChannelDataSource.groupId IN (:groupsIds)
+			GROUP BY
+				Channel.createDate,
+				Channel.id,
+				Channel.name,
+				ChannelDataSource.channelId,
+				ChannelDataSource.dataSourceId,
+				ChannelDataSource.groupIds
+			ORDER BY
+				Channel.id
+		]]>
+	</entry>
+	<entry key="Channel.findByDataSourceId">
+		<![CDATA[
+			SELECT
+				Channel.createDate,
+				Channel.id,
+				Channel.name,
+				ChannelDataSource.channelId,
+				ChannelDataSource.dataSourceId,
+				ChannelDataSource.groupIds
+			FROM
+				Channel
+			JOIN
+				ChannelDataSource ON
+					Channel.id = ChannelDataSource.channelId
+			WHERE
+				ChannelDataSource.dataSourceId = :dataSourceId
+			ORDER BY
+				Channel.id
+		]]>
+	</entry>
+	<entry key="Channel.deleteByIdIn">
+		<![CDATA[
+			DELETE FROM Channel WHERE Channel.id IN (:ids)
+		]]>
+	</entry>
+</properties>
