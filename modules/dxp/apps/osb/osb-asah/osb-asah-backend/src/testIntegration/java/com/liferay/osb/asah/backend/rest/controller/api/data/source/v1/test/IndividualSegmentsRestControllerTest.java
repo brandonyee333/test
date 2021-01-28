@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
+import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -22,9 +23,15 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import io.restassured.http.Method;
 import io.restassured.response.ValidatableResponse;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -71,5 +78,55 @@ public class IndividualSegmentsRestControllerTest
 
 		validateIndividuals(validatableResponse);
 	}
+
+	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data_sources_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individual-segments",
+		resourcePath = "individual_segments_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetIndividualSegmentsForDataSourceId() throws Exception {
+		String responseJSON =
+			_individualSegmentsRestController.getIndividualSegments(
+				"327968823603501234", "((individualCount ge 1))", 0, 20,
+				new String[] {"dateModified"});
+
+		JSONObject responseJSONObject = new JSONObject(responseJSON);
+
+		JSONObject embeddedJSONObject = responseJSONObject.getJSONObject(
+			"_embedded");
+
+		JSONArray individualSegmentsJSONArray = embeddedJSONObject.getJSONArray(
+			"individual-segments");
+
+		Assert.assertEquals(2, individualSegmentsJSONArray.length());
+
+		responseJSON = _individualSegmentsRestController.getIndividualSegments(
+			"331238757269547423", "((individualCount ge 1))", 0, 20,
+			new String[] {"dateModified"});
+
+		responseJSONObject = new JSONObject(responseJSON);
+
+		embeddedJSONObject = responseJSONObject.getJSONObject("_embedded");
+
+		individualSegmentsJSONArray = embeddedJSONObject.getJSONArray(
+			"individual-segments");
+
+		Assert.assertEquals(1, individualSegmentsJSONArray.length());
+	}
+
+	@Autowired
+	@Qualifier(
+		"com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController"
+	)
+	private IndividualSegmentsRestController _individualSegmentsRestController;
 
 }
