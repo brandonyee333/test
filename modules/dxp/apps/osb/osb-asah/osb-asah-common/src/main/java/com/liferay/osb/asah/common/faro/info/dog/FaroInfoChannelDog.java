@@ -16,15 +16,13 @@ package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
-import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -35,11 +33,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,8 +53,9 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -67,40 +68,27 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 	public Channel addChannel(
 		Map<Long, Set<Long>> dataSources, String name, boolean updateFaro) {
 
-		List<JSONObject> dataSourceJSONObjects = new ArrayList<>();
+		Channel channel = new Channel();
 
 		if (dataSources != null) {
 			for (Map.Entry<Long, Set<Long>> entry : dataSources.entrySet()) {
-				dataSourceJSONObjects.add(
-					JSONUtil.put(
-						"groupIds", entry.getValue()
-					).put(
-						"id", entry.getKey()
-					));
+				channel.addChannelDataSource(
+					new ChannelDataSource(entry.getKey(), entry.getValue()));
 			}
 		}
 
-		JSONObject channelJSONObject = JSONUtil.put(
-			"dataSources", dataSourceJSONObjects
-		).put(
-			"dateCreated", DateUtil.newDateString()
-		).put(
-			"name", _getChannelName(name)
-		);
+		channel.setName(_getChannelName(name));
 
-		channelJSONObject = elasticsearchInvoker.add(
-			"channels", channelJSONObject);
-
-		Channel channel = _toChannel(channelJSONObject);
+		channel = _channelRepository.save(channel);
 
 		if (updateFaro) {
 			try {
 				_channelHttp.addChannel(channel);
 			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
+			catch (Exception e) {
+				_log.error(e, e);
 
-				_handleFaroError(channelJSONObject);
+				_handleFaroError(channel);
 			}
 		}
 
@@ -155,37 +143,33 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		clearChannels(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 
-		elasticsearchInvoker.deleteByQuery(
-			QueryBuilders.termsQuery(
-				"id",
-				Stream.of(
-					channelIds
-				).flatMap(
-					List::stream
-				).map(
-					String::valueOf
-				).collect(
-					Collectors.toList()
-				)),
-			true, "channels");
+		_channelRepository.deleteByIdIn(
+			Stream.of(
+				channelIds
+			).flatMap(
+				List::stream
+			).collect(
+				Collectors.toSet()
+			));
 	}
 
 	public Channel fetchChannel(Long channelId) {
-		JSONObject channelJSONObject = elasticsearchInvoker.fetch(
-			"channels", String.valueOf(channelId));
+		Optional<Channel> channelOptional = _channelRepository.findById(
+			channelId);
 
-		if (channelJSONObject != null) {
-			return _toChannel(channelJSONObject);
-		}
-
-		return null;
+		return channelOptional.orElse(null);
 	}
 
 	public Channel getChannel(Long channelId) {
-		JSONObject channelJSONObject = elasticsearchInvoker.get(
-			"channels", String.valueOf(channelId));
+		Channel channel = fetchChannel(channelId);
 
-		return _toChannel(channelJSONObject);
+		if (channel == null) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no channel with ID " + channelId);
+		}
+
+		return channel;
 	}
 
 	public Map<Long, String> getChannelNamesByGroupIds(
@@ -193,40 +177,31 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 
 		Map<Long, String> channelNamesByGroupIds = new HashMap<>();
 
-		JSONArray channelsJSONArray = elasticsearchInvoker.get(
-			"channels",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery(
-					"dataSources.id", String.valueOf(dataSourceId))
-			).filter(
-				QueryBuilders.termsQuery("dataSources.groupIds", groupsIds)
-			));
+		List<Channel> channels =
+			_channelRepository.findByDataSourceIdAndGroupIds(
+				dataSourceId,
+				Stream.of(
+					groupsIds
+				).flatMap(
+					Set::stream
+				).collect(
+					Collectors.toSet()
+				));
 
-		for (int i = 0; i < channelsJSONArray.length(); i++) {
-			JSONObject channelJSONObject = channelsJSONArray.getJSONObject(i);
-
-			String channelName = channelJSONObject.getString("name");
-
-			Stream<Object> stream = JSONUtil.toObjectStream(
-				channelJSONObject.getJSONArray("dataSources"));
-
-			stream.map(
-				object -> (JSONObject)object
-			).filter(
-				dataSourceJSONObject -> Objects.equals(
-					dataSourceJSONObject.getString("id"),
-					String.valueOf(dataSourceId))
+		for (Channel channel : channels) {
+			Stream.of(
+				channel.getChannelDataSources()
 			).flatMap(
-				dataSourceJSONObject -> JSONUtil.toObjectStream(
-					dataSourceJSONObject.getJSONArray("groupIds"))
+				Set::stream
 			).map(
-				String::valueOf
-			).map(
-				Long::valueOf
+				ChannelDataSource::getGroupIds
+			).flatMap(
+				Set::stream
 			).filter(
 				groupsIds::contains
 			).forEach(
-				groupId -> channelNamesByGroupIds.put(groupId, channelName)
+				groupId -> channelNamesByGroupIds.put(
+					groupId, channel.getName())
 			);
 		}
 
@@ -234,55 +209,21 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 	}
 
 	public List<Channel> getChannels() {
-		JSONArray channelJSONArray = elasticsearchInvoker.get("channels");
-
-		return _toChannels(channelJSONArray);
+		return _channelRepository.findAll();
 	}
 
 	public List<Channel> getChannels(Long dataSourceId) {
-		JSONArray channelJSONArray = elasticsearchInvoker.get(
-			"channels",
-			QueryBuilders.termQuery(
-				"dataSources.id", String.valueOf(dataSourceId)));
-
-		return _toChannels(channelJSONArray);
+		return _channelRepository.findByDataSourceId(dataSourceId);
 	}
 
 	public Page<Channel> getChannels(
 		String name, int page, int size, String[] sorts) {
 
-		try {
-			CollectionGetResponse collectionGetResponse =
-				new CollectionGetResponse();
-
-			collectionGetResponse.setCollectionName("channels");
-			collectionGetResponse.setElasticsearchInvoker(elasticsearchInvoker);
-			collectionGetResponse.setPage(page);
-			collectionGetResponse.setQueryBuilder(
-				QueryUtil.buildSearchQueryBuilder("name.search", name));
-			collectionGetResponse.setSize(size);
-			collectionGetResponse.setSorts(sorts);
-
-			JSONObject jsonObject = new JSONObject(
-				collectionGetResponse.respond());
-
-			JSONObject pageJSONObject = jsonObject.getJSONObject("page");
-
-			JSONObject embeddedJSONObject = jsonObject.getJSONObject(
-				"_embedded");
-
-			return new PageImpl<>(
-				_toChannels(embeddedJSONObject.getJSONArray("channels")),
-				PageRequest.of(
-					pageJSONObject.getInt("number"),
-					pageJSONObject.getInt("size")),
-				pageJSONObject.getLong("totalElements"));
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			return Page.empty();
-		}
+		return PageableExecutionUtils.getPage(
+			_channelRepository.findByNameContainingIgnoreCase(
+				name, PageRequest.of(page, size, _getSort(sorts))),
+			PageRequest.of(page, size, _getSort(sorts)),
+			() -> _channelRepository.countByNameContainingIgnoreCase(name));
 	}
 
 	public Set<Long> getRemovedGroupIds(
@@ -316,21 +257,19 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		Channel channel = getChannel(channelId);
 
 		if (StringUtils.isNotBlank(name)) {
-			channel.setName(_getChannelName(name));
+			channel.setName(_getChannelName(channelId, name));
 		}
 
 		if ((dataSourceId != null) && (groupIds != null)) {
-			channel.clearDataSource();
-			channel.addDataSource(dataSourceId, groupIds);
+			channel.addChannelDataSource(
+				new ChannelDataSource(dataSourceId, groupIds));
 		}
 
-		return _toChannel(
-			elasticsearchInvoker.update("channels", _toJSONObject(channel)));
+		return _channelRepository.save(channel);
 	}
 
 	public Channel update(Channel channel) {
-		return _toChannel(
-			elasticsearchInvoker.update("channels", _toJSONObject(channel)));
+		return _channelRepository.save(channel);
 	}
 
 	private BoolQueryBuilder _buildBoolQueryBuilder(
@@ -427,7 +366,17 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		).setMonitoringConsumers(
 			processedCountMonitorConsumer, queueMonitorConsumer
 		).setQueryBuilder(
-			QueryBuilders.termsQuery("channelIds", channelIds)
+			QueryBuilders.termsQuery(
+				"channelIds",
+				Stream.of(
+					channelIds
+				).flatMap(
+					List::stream
+				).map(
+					String::valueOf
+				).collect(
+					Collectors.toList()
+				))
 		).iterate();
 	}
 
@@ -462,7 +411,17 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 			channelIds, "activitiesCounts", "lastActivityDates");
 
 		boolQueryBuilder.should(
-			QueryBuilders.termsQuery("channelIds", channelIds));
+			QueryBuilders.termsQuery(
+				"channelIds",
+				Stream.of(
+					channelIds
+				).flatMap(
+					List::stream
+				).map(
+					String::valueOf
+				).collect(
+					Collectors.toList()
+				)));
 
 		JSONArrayIterator.of(
 			"individuals", elasticsearchInvoker,
@@ -501,15 +460,28 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		).iterate();
 	}
 
+	private String _getChannelName(Long channelId, String name) {
+		name = StringUtils.truncate(name, 65);
+
+		int nameCount = 0;
+		String originalName = name;
+
+		while (_channelRepository.existsByNotIdAndNameIgnoreCase(
+					channelId, name)) {
+
+			name = String.format("%s (%d)", originalName, ++nameCount);
+		}
+
+		return name;
+	}
+
 	private String _getChannelName(String name) {
 		name = StringUtils.truncate(name, 65);
 
 		int nameCount = 0;
 		String originalName = name;
 
-		while (elasticsearchInvoker.exists(
-					"channels", QueryBuilders.termQuery("name", name))) {
-
+		while (_channelRepository.existsByNameIgnoreCase(name)) {
 			name = String.format("%s (%d)", originalName, ++nameCount);
 		}
 
@@ -530,8 +502,35 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		return oldGroupIds;
 	}
 
-	private void _handleFaroError(JSONObject channelJSONObject) {
-		elasticsearchInvoker.delete("channels", channelJSONObject);
+	private Sort _getSort(String[] sorts) {
+		if (ArrayUtils.isEmpty(sorts)) {
+			return Sort.by(Sort.Order.asc("name"));
+		}
+
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (String sort : sorts) {
+			String[] properties = sort.split(",");
+
+			String property = properties[0];
+
+			if (property.startsWith("name")) {
+				property = property.split("\\.")[0];
+			}
+
+			if (Objects.equals(properties[1], "asc")) {
+				Sort.Order.asc(property);
+			}
+			else {
+				Sort.Order.desc(property);
+			}
+		}
+
+		return Sort.by(orders);
+	}
+
+	private void _handleFaroError(Channel channel) {
+		_channelRepository.delete(channel);
 
 		throw new OSBAsahException(
 			HttpStatus.BAD_REQUEST, "Unable to create channel");
@@ -568,101 +567,6 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		).collect(
 			Collectors.toList()
 		);
-	}
-
-	private Channel _toChannel(JSONObject channelJSONObject) {
-		Channel channel = new Channel();
-
-		JSONArray dataSourcesJSONArray = channelJSONObject.getJSONArray(
-			"dataSources");
-
-		for (int j = 0; j < dataSourcesJSONArray.length(); j++) {
-			JSONObject dataSourceJSONObject =
-				dataSourcesJSONArray.getJSONObject(j);
-
-			channel.addDataSource(
-				dataSourceJSONObject.getLong("id"),
-				Stream.of(
-					dataSourceJSONObject.getJSONArray("groupIds")
-				).map(
-					JSONArray::toList
-				).flatMap(
-					List::stream
-				).map(
-					String::valueOf
-				).map(
-					Long::valueOf
-				).collect(
-					Collectors.toSet()
-				));
-		}
-
-		try {
-			channel.setCreateDate(
-				DateUtil.toUTCDate(channelJSONObject.getString("dateCreated")));
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-
-		channel.setId(channelJSONObject.getLong("id"));
-		channel.setName(channelJSONObject.getString("name"));
-
-		return channel;
-	}
-
-	private List<Channel> _toChannels(JSONArray channelsJSONArray) {
-		List<Channel> channels = new ArrayList<>();
-
-		for (int i = 0; i < channelsJSONArray.length(); i++) {
-			try {
-				channels.add(_toChannel(channelsJSONArray.getJSONObject(i)));
-			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
-		}
-
-		return channels;
-	}
-
-	private JSONObject _toJSONObject(Channel channel) {
-		JSONObject channelJSONObject = new JSONObject();
-
-		channelJSONObject.put(
-			"dateCreated", DateUtil.toUTCString(channel.getCreateDate()));
-		channelJSONObject.put("id", String.valueOf(channel.getId()));
-
-		JSONArray dataSourcesJSONArray = new JSONArray();
-
-		for (ChannelDataSource channelDataSource :
-				channel.getChannelDataSources()) {
-
-			JSONObject channelDataSourceJSONObject = new JSONObject();
-
-			channelDataSourceJSONObject.put(
-				"groupIds",
-				Stream.of(
-					channelDataSource.getGroupIds()
-				).flatMap(
-					Set::stream
-				).map(
-					String::valueOf
-				).collect(
-					Collectors.toList()
-				));
-
-			channelDataSourceJSONObject.put(
-				"id", String.valueOf(channelDataSource.getDataSourceId()));
-
-			dataSourcesJSONArray.put(channelDataSourceJSONObject);
-		}
-
-		channelJSONObject.put("dataSources", dataSourcesJSONArray);
-
-		channelJSONObject.put("name", channel.getName());
-
-		return channelJSONObject;
 	}
 
 	private void _updateChannelIds(
@@ -702,6 +606,9 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private ChannelHttp _channelHttp;
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private FaroInfoAssetDog _faroInfoAssetDog;
