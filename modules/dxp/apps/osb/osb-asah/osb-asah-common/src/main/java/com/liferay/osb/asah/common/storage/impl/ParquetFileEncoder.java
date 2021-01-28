@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.storage.impl;
 
-import java.io.IOException;
-
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.hadoop.fs.Path;
@@ -37,12 +35,12 @@ public class ParquetFileEncoder implements FileEncoder {
 	}
 
 	@Override
-	public void close() throws IOException {
+	public void close() throws Exception {
 		_parquetWriter.close();
 	}
 
 	@Override
-	public void encode(String data) throws IOException {
+	public void encode(String data) throws Exception {
 		_parquetWriter.write(
 			_jsonAvroTransformer.transform(new JSONObject(data), _schema));
 	}
@@ -53,7 +51,7 @@ public class ParquetFileEncoder implements FileEncoder {
 	}
 
 	@Override
-	public void open() throws IOException {
+	public void open() throws Exception {
 		AvroParquetWriter.Builder<GenericRecord> builder =
 			AvroParquetWriter.builder(new Path(_pathString));
 

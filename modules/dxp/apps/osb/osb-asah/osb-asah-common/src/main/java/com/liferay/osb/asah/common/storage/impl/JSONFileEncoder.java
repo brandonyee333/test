@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.storage.impl;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 import java.nio.charset.StandardCharsets;
 
@@ -34,12 +33,12 @@ public class JSONFileEncoder implements FileEncoder {
 	}
 
 	@Override
-	public void close() throws IOException {
+	public void close() throws Exception {
 		_bufferedOutputStream.close();
 	}
 
 	@Override
-	public void encode(String data) throws IOException {
+	public void encode(String data) throws Exception {
 		String newLineAppendedData =
 			data + System.getProperty("line.separator");
 
@@ -53,7 +52,7 @@ public class JSONFileEncoder implements FileEncoder {
 	}
 
 	@Override
-	public void open() throws IOException {
+	public void open() throws Exception {
 		_file = new File(_pathString);
 
 		_createMissingParentFileDirectories(_file);

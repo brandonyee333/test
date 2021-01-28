@@ -47,7 +47,7 @@ public class LocalStorage implements Storage {
 		try {
 			_open();
 		}
-		catch (IOException e) {
+		catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 	}
@@ -57,11 +57,11 @@ public class LocalStorage implements Storage {
 		try {
 			_fileEncoder.close();
 		}
-		catch (IOException ioe) {
+		catch (Exception e) {
 			_log.error(
 				"Unable to close local storage for path " +
 					_storageConfiguration.getPath(),
-				ioe);
+				e);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class LocalStorage implements Storage {
 		try {
 			_rollover();
 		}
-		catch (IOException ioe) {
+		catch (Exception ioe) {
 			_log.error(ioe, ioe);
 		}
 	}
@@ -140,8 +140,8 @@ public class LocalStorage implements Storage {
 
 			return true;
 		}
-		catch (IOException ioe) {
-			_log.error("Unable to write data " + data, ioe);
+		catch (Exception e) {
+			_log.error("Unable to write data " + data, e);
 
 			return false;
 		}
@@ -209,7 +209,7 @@ public class LocalStorage implements Storage {
 		return true;
 	}
 
-	private void _open() throws IOException {
+	private void _open() throws Exception {
 		if (_storageConfiguration.getFileFormat() ==
 				StorageConfiguration.FileFormat.JSON) {
 
@@ -239,7 +239,7 @@ public class LocalStorage implements Storage {
 		}
 	}
 
-	private void _rollover() throws IOException {
+	private void _rollover() throws Exception {
 		_fileEncoder.close();
 
 		File targetFile = new File(

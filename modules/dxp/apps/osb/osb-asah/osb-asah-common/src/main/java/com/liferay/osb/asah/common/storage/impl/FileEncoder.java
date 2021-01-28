@@ -14,19 +14,17 @@
 
 package com.liferay.osb.asah.common.storage.impl;
 
-import java.io.IOException;
-
 /**
  * @author Marcellus Tavares
  */
 public interface FileEncoder {
 
-	public void close() throws IOException;
+	public void close() throws Exception;
 
-	public void encode(String data) throws IOException;
+	public void encode(String data) throws Exception;
 
 	public long getDataSize();
 
-	public void open() throws IOException;
+	public void open() throws Exception;
 
 }
