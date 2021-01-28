@@ -41,8 +41,10 @@ public class ParquetFileEncoder implements FileEncoder {
 
 	@Override
 	public void encode(String data) throws Exception {
-		_parquetWriter.write(
-			_jsonAvroTransformer.transform(new JSONObject(data), _schema));
+		synchronized (this) {
+			_parquetWriter.write(
+				_jsonAvroTransformer.transform(new JSONObject(data), _schema));
+		}
 	}
 
 	@Override
