@@ -26,10 +26,10 @@ from pyspark.sql.functions import coalesce, \
 	col, \
 	collect_set, \
 	current_date, \
+	dense_rank, \
 	explode, \
 	expr, \
 	lit, \
-	rank, \
 	regexp_replace, \
 	row_number, \
 	size as col_size, \
@@ -496,11 +496,15 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 
 		recommendations_data_frame = score_data_frame.select(
 			'*',
-			rank().over(window).alias('rank')
+			dense_rank().over(window).alias('rank')
+		)
+
+		max_rank = self.spark_application_configuration.get(
+			'product.content.recommendation.max.rank'
 		)
 
 		recommendations_data_frame = recommendations_data_frame.filter(
-			'rank > 1 AND rank <= 11'
+			'rank > 1 AND rank <= {}'.format(max_rank)
 		)
 
 		recommendations_data_frame = recommendations_data_frame.withColumn(
@@ -599,11 +603,15 @@ class ProductInteractionRecommendationSparkJob(BaseSparkJob):
 
 		recommendations_data_frame = recommendations_data_frame.select(
 			'*',
-			rank().over(window).alias('rank')
+			dense_rank().over(window).alias('rank')
+		)
+
+		max_rank = self.spark_application_configuration.get(
+			'product.content.recommendation.max.rank'
 		)
 
 		recommendations_data_frame = recommendations_data_frame.filter(
-			'rank > 1 AND rank <= 11'
+			'rank > 1 AND rank <= {}'.format(max_rank)
 		)
 
 		recommendations_data_frame = recommendations_data_frame.withColumn(
