@@ -37,6 +37,8 @@ public class ServiceConstants {
 	public static final boolean OSB_ASAH_MULTITENANCY_ENABLED =
 		Boolean.parseBoolean(System.getenv("OSB_ASAH_MULTITENANCY_ENABLED"));
 
+	public static final String POSTGRESQL_SERVER_IP;
+
 	public static final String URL_BACKEND;
 
 	public static final String URL_BACKEND_INTERNAL;
@@ -123,6 +125,16 @@ public class ServiceConstants {
 		return sb.toString();
 	}
 
+	private static String _getPostgreSQLClusterURL() {
+		String postgresServerIp = System.getenv("POSTGRESQL_SERVER_IP");
+
+		if (StringUtils.isNotEmpty(postgresServerIp)) {
+			return postgresServerIp;
+		}
+
+		return _LOCALHOST_IP;
+	}
+
 	private static String _getURL(
 		String serviceName, String port, boolean external) {
 
@@ -206,6 +218,8 @@ public class ServiceConstants {
 						_doGetURL("MONOLITH", "8080", true));
 			}
 		}
+
+		POSTGRESQL_SERVER_IP = _getPostgreSQLClusterURL();
 
 		URL_BACKEND = _getURL("BACKEND", "8080", true);
 		URL_BACKEND_INTERNAL = _setInternalURL("BACKEND", "8080");

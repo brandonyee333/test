@@ -234,6 +234,13 @@ services:
             - "8080:8080"
         volumes:
             - faro:/opt/liferay/data
+    postgresql:
+        container_name: postgresql
+        env_file:
+            - postgresql.env
+        image: postgres:13.1
+        ports:
+            - "5432:5432"
     pubsubemulator:
         build: ./devtools/pubsub-emulator
         container_name: pubsubemulator
