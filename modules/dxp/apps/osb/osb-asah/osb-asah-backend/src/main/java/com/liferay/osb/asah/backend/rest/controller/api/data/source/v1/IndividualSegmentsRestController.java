@@ -103,6 +103,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@GetMapping(params = "!apply")
 	public String getIndividualSegments(
+			@RequestParam(name = "dataSourceId", required = false)
+				String dataSourceId,
 			@RequestParam(name = "filter", required = false)
 				String filterString,
 			@RequestParam(defaultValue = "0") int page,
@@ -112,8 +114,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 		return toCollectionGetResponse(
 			"individual-segments", null, page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			sorts);
+			_getIndividualSegmentsQueryBuilder(dataSourceId, filterString),
+			size, sorts);
 	}
 
 	@GetMapping(params = "apply")
@@ -350,6 +352,36 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		postResponse.setJSON(json);
 
 		return postResponse.respond();
+	}
+
+	private QueryBuilder _getIndividualSegmentsQueryBuilder(
+			String dataSourceId, String filterString)
+		throws Exception {
+
+		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+			filterString);
+
+		if (StringUtils.isEmpty(dataSourceId)) {
+			return queryBuilder;
+		}
+
+		JSONArray channelsJSONArray = faroInfoElasticsearchInvoker.get(
+			"channels",
+			QueryBuilders.termQuery("dataSources.id", dataSourceId));
+
+		if (channelsJSONArray.length() == 0) {
+			return queryBuilder;
+		}
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termsQuery(
+				"channelId", JSONUtil.toStringArray(channelsJSONArray, "id")));
+
+		if (queryBuilder == null) {
+			return boolQueryBuilder;
+		}
+
+		return boolQueryBuilder.filter(queryBuilder);
 	}
 
 	private QueryBuilder _getIndividualsQueryBuilder(
