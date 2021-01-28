@@ -70,11 +70,15 @@ google:
 product:
     content:
         recommendation:
+            max:
+                rank: 10
             score:
                 function: "tanimoto_coefficient"
     interaction:
         recommendation:
             enable: true
+            max:
+                rank: 10
             score:
                 function: "tanimoto_coefficient"
 user:
