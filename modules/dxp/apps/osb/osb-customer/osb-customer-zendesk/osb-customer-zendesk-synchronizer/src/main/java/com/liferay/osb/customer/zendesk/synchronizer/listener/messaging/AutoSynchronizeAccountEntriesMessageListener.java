@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 import java.util.Map;
@@ -95,6 +96,10 @@ public class AutoSynchronizeAccountEntriesMessageListener
 			new AccountEntryLastZendeskAuditDateComparator());
 
 		for (AccountEntry accountEntry : accountEntries) {
+			if (Validator.isNotNull(accountEntry.getKoroneikiAccountKey())) {
+				continue;
+			}
+
 			Message synchronizeMessage = new Message();
 
 			synchronizeMessage.put(
