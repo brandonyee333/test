@@ -156,10 +156,7 @@ public class GoogleStorageArchiver {
 		}
 
 		if (_log.isInfoEnabled()) {
-			_log.info(
-				String.format(
-					"Successfully uploaded file %s to the bucket %s", file,
-					bucket));
+			_log.info(String.format("Successfully uploaded blob %s", blob));
 		}
 
 		boolean result = file.delete();
