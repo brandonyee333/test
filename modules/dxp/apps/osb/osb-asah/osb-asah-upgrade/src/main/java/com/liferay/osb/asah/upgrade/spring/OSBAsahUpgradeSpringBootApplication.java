@@ -35,6 +35,7 @@ import org.springframework.context.annotation.FilterType;
 		"com.liferay.osb.asah.common.messaging",
 		"com.liferay.osb.asah.common.multitenancy",
 		"com.liferay.osb.asah.common.oauth2",
+		"com.liferay.osb.asah.common.repository",
 		"com.liferay.osb.asah.common.salesforce",
 		"com.liferay.osb.asah.common.security",
 		"com.liferay.osb.asah.common.spring.cache",

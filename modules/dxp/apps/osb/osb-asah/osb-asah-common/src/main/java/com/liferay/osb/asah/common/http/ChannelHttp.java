@@ -14,13 +14,13 @@
 
 package com.liferay.osb.asah.common.http;
 
-import org.json.JSONObject;
+import com.liferay.osb.asah.common.model.Channel;
 
 /**
  * @author Geyson Silva
  */
 public interface ChannelHttp {
 
-	public void addChannel(JSONObject jsonObject);
+	public void addChannel(Channel channel);
 
 }

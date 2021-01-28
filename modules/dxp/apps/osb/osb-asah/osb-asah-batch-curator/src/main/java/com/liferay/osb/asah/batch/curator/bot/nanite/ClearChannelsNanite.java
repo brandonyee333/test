@@ -15,12 +15,15 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +38,17 @@ public class ClearChannelsNanite extends BaseNanite {
 	@CacheEvict(evictAll = true)
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
+		List<Long> channelIds = new ArrayList<>();
+
+		JSONArray channelIdsSONArray = contextJSONObject.getJSONArray(
+			"channelIds");
+
+		for (int i = 0; i < channelIdsSONArray.length(); i++) {
+			channelIds.add(channelIdsSONArray.getLong(i));
+		}
+
 		_faroInfoChannelDog.clearChannels(
-			JSONUtil.toStringList(contextJSONObject.getJSONArray("channelIds")),
-			this::monitorProcessedCount, this::monitorQueueSize);
+			channelIds, this::monitorProcessedCount, this::monitorQueueSize);
 	}
 
 	@Override

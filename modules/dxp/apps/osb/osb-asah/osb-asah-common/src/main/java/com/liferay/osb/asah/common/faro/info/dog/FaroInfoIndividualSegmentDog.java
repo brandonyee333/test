@@ -78,7 +78,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	public void assignChannel(String channelId, String individualSegmentId)
 		throws Exception {
 
-		elasticsearchInvoker.get("channels", channelId);
+		_faroInfoChannelDog.getChannel(Long.valueOf(channelId));
 
 		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
 			"individual-segments", individualSegmentId);
@@ -900,6 +900,9 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoAccountDog _faroInfoAccountDog;
+
+	@Autowired
+	private FaroInfoChannelDog _faroInfoChannelDog;
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;

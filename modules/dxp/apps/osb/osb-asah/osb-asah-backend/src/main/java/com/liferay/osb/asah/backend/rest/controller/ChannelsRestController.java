@@ -14,22 +14,32 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.response.embedded.ChannelsEmbeddedJSONObjectCreator;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.backend.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dto.ChannelDTO;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
+import com.liferay.osb.asah.common.dto.PageDTO;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.rest.response.PostResponse;
+import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.model.ChannelDataSource;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -63,24 +73,50 @@ public class ChannelsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}")
-	public String getChannel(
+	public ChannelDTO getChannel(
 			@PathVariable String id,
 			@RequestParam(required = false) String expand)
 		throws Exception {
 
+		Channel channel = _faroInfoChannelDog.getChannel(Long.valueOf(id));
+
 		if (StringUtils.isEmpty(expand)) {
-			return toItemGetResponse("channels", id);
+			return new ChannelDTO(channel);
 		}
 
-		return toItemGetResponse(
-			"channels",
-			new ChannelsEmbeddedJSONObjectCreator(
-				faroInfoElasticsearchInvoker, expand),
-			id);
+		List<String> dataSourceIds = Stream.of(
+			channel
+		).map(
+			Channel::getChannelDataSources
+		).filter(
+			Objects::nonNull
+		).flatMap(
+			Set::stream
+		).map(
+			ChannelDataSource::getDataSourceId
+		).map(
+			String::valueOf
+		).collect(
+			Collectors.toList()
+		);
+
+		return new ChannelDTO(
+			channel,
+			Collections.singletonMap(
+				"data-sources",
+				Stream.of(
+					_dataSourceDog.getDataSources(dataSourceIds)
+				).flatMap(
+					List::stream
+				).map(
+					dataSource -> (DataSourceDTO)dataSource
+				).collect(
+					Collectors.toSet()
+				)));
 	}
 
 	@GetMapping
-	public String getChannels(
+	public PageDTO<ChannelDTO> getChannels(
 			@RequestParam(name = "filter", required = false)
 				String filterString,
 			@RequestParam(defaultValue = "0") int page,
@@ -88,48 +124,59 @@ public class ChannelsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		if (ArrayUtils.isEmpty(sorts)) {
-			sorts = new String[] {"name.sort,asc"};
-		}
-
-		return toCollectionGetResponse(
-			"channels", null, page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			sorts);
+		return _toPageDTO(
+			_faroInfoChannelDog.getChannels(filterString, page, size, sorts));
 	}
 
 	@PatchMapping("/{id}")
-	public String patchChannel(
+	public ChannelDTO patchChannel(
 		@PathVariable String id, @RequestBody String json) {
 
-		JSONObject jsonObject = _faroInfoChannelDog.patchChannel(
-			id, new JSONObject(json));
+		Set<Long> groupIds = new HashSet<>();
 
-		return jsonObject.toString();
+		JSONObject jsonObject = new JSONObject(json);
+
+		JSONArray groupsJSONArray = jsonObject.optJSONArray("groups");
+
+		if (groupsJSONArray != null) {
+			for (int i = 0; i < groupsJSONArray.length(); i++) {
+				JSONObject groupJSONObject = groupsJSONArray.getJSONObject(i);
+
+				groupIds.add(Long.valueOf(groupJSONObject.getString("id")));
+			}
+		}
+
+		Set<Long> removedGroupIds = _faroInfoChannelDog.getRemovedGroupIds(
+			Long.valueOf(id),
+			NumberUtils.createLong(jsonObject.optString("dataSourceId", null)),
+			groupIds);
+
+		return new ChannelDTO(
+			_faroInfoChannelDog.patchChannel(
+				Long.valueOf(id),
+				NumberUtils.createLong(
+					jsonObject.optString("dataSourceId", null)),
+				groupIds, jsonObject.optString("name")),
+			removedGroupIds);
 	}
 
 	@PostMapping
-	public String postChannel(@RequestBody String json) throws Exception {
-		PostResponse postResponse = new PostResponse() {
+	public ChannelDTO postChannel(@RequestBody String json) throws Exception {
+		JSONObject jsonObject = new JSONObject(json);
 
-			@Override
-			protected JSONObject invokeElasticsearch(JSONObject jsonObject) {
-				try {
-					return _faroInfoChannelDog.addChannel(
-						Collections.emptyList(), jsonObject.getString("name"));
-				}
-				catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-
-		};
-
-		postResponse.setElasticsearchInvoker(faroInfoElasticsearchInvoker);
-		postResponse.setJSON(json);
-
-		return postResponse.respond();
+		return new ChannelDTO(
+			_faroInfoChannelDog.addChannel(jsonObject.getString("name")));
 	}
+
+	private PageDTO<ChannelDTO> _toPageDTO(Page<Channel> channels) {
+		return new PageDTO<>(
+			"_embedded", new ChannelDTO(channels.getContent()),
+			channels.getNumber(), channels.getSize(),
+			channels.getTotalElements(), channels.getTotalPages());
+	}
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private FaroInfoChannelDog _faroInfoChannelDog;

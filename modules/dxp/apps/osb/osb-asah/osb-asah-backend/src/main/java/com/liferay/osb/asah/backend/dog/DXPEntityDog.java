@@ -22,6 +22,9 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
+import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -31,6 +34,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +46,6 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,10 +73,10 @@ public class DXPEntityDog {
 				return _createResultBag(this::_mapDXPEntity, searchHits);
 			}
 
-			JSONObject channelJSONObject = _faroInfoElasticsearchInvoker.fetch(
-				"channels", channelId);
+			Channel channel = _faroInfoChannelDog.fetchChannel(
+				Long.valueOf(channelId));
 
-			if (channelJSONObject == null) {
+			if (channel == null) {
 				return _createResultBag(this::_mapDXPEntity, searchHits);
 			}
 
@@ -88,8 +91,8 @@ public class DXPEntityDog {
 				collectionName, _dxpRawElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(
 					_getFieldSortBuilders(collectionName, sort),
-					_getBoolQueryBuilder(boolQueryBuilder, channelJSONObject),
-					size, start));
+					_getBoolQueryBuilder(boolQueryBuilder, channel), size,
+					start));
 
 			return _createResultBag(this::_mapDXPEntity, searchHits);
 		}
@@ -119,10 +122,10 @@ public class DXPEntityDog {
 				return _createResultBag(this::_mapDXPUser, searchHits);
 			}
 
-			JSONObject channelJSONObject = _faroInfoElasticsearchInvoker.fetch(
-				"channels", channelId);
+			Channel channel = _faroInfoChannelDog.fetchChannel(
+				Long.valueOf(channelId));
 
-			if (channelJSONObject == null) {
+			if (channel == null) {
 				return _createResultBag(this::_mapDXPUser, searchHits);
 			}
 
@@ -140,8 +143,8 @@ public class DXPEntityDog {
 				collectionName, _dxpRawElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(
 					_getFieldSortBuilders(collectionName, sort),
-					_getBoolQueryBuilder(boolQueryBuilder, channelJSONObject),
-					size, start));
+					_getBoolQueryBuilder(boolQueryBuilder, channel), size,
+					start));
 
 			return _createResultBag(this::_mapDXPUser, searchHits);
 		}
@@ -179,25 +182,22 @@ public class DXPEntityDog {
 	}
 
 	private BoolQueryBuilder _getBoolQueryBuilder(
-		BoolQueryBuilder boolQueryBuilder, JSONObject channelJSONObject) {
+		BoolQueryBuilder boolQueryBuilder, Channel channel) {
 
-		JSONArray dataSourcesJSONArray = channelJSONObject.optJSONArray(
-			"dataSources");
+		Set<ChannelDataSource> channelDataSources =
+			channel.getChannelDataSources();
 
-		if ((dataSourcesJSONArray == null) ||
-			(dataSourcesJSONArray.length() == 0)) {
-
+		if (channelDataSources.isEmpty()) {
 			return boolQueryBuilder;
 		}
 
 		BoolQueryBuilder dataSourceBoolQueryBuilder = QueryBuilders.boolQuery();
 
-		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
-			JSONObject jsonObject = dataSourcesJSONArray.getJSONObject(i);
-
+		for (ChannelDataSource channelDataSource : channelDataSources) {
 			dataSourceBoolQueryBuilder.should(
 				QueryBuilders.termQuery(
-					"osbAsahDataSourceId", jsonObject.getString("id")));
+					"osbAsahDataSourceId",
+					String.valueOf(channelDataSource.getDataSourceId())));
 		}
 
 		return BoolQueryBuilderUtil.filter(
@@ -308,6 +308,9 @@ public class DXPEntityDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoChannelDog _faroInfoChannelDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

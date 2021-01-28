@@ -20,6 +20,8 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -29,6 +31,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -362,42 +365,36 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 	}
 
 	private void _addDefaultChannel(JSONObject dataSourceJSONObject) {
-		JSONObject channelJSONObject = _faroInfoChannelDog.addChannel(
-			Collections.singletonList(
-				JSONUtil.put(
-					"groupIds", Collections.emptyList()
-				).put(
-					"id", dataSourceJSONObject.getString("id")
-				)),
+		Channel channel = _faroInfoChannelDog.addChannel(
+			Collections.singletonMap(
+				Long.valueOf(dataSourceJSONObject.getString("id")),
+				Collections.emptySet()),
 			dataSourceJSONObject.getString("name"), true);
 
-		dataSourceJSONObject.put(
-			"channelId", channelJSONObject.getString("id"));
+		dataSourceJSONObject.put("channelId", channel.getId());
 	}
 
 	private void _clearChannels(String dataSourceId) {
-		JSONArray channelsJSONArray = elasticsearchInvoker.get(
-			"channels",
-			QueryBuilders.termQuery("dataSources.id", dataSourceId));
+		for (Channel channel :
+				_faroInfoChannelDog.getChannels(Long.valueOf(dataSourceId))) {
 
-		for (int i = 0; i < channelsJSONArray.length(); i++) {
-			JSONObject channelJSONObject = channelsJSONArray.getJSONObject(i);
+			Set<ChannelDataSource> channelDataSources = Stream.of(
+				channel
+			).map(
+				Channel::getChannelDataSources
+			).flatMap(
+				Set::stream
+			).filter(
+				channelDataSource -> !Objects.equals(
+					channelDataSource.getDataSourceId(),
+					Long.valueOf(dataSourceId))
+			).collect(
+				Collectors.toSet()
+			);
 
-			Stream<Object> stream = JSONUtil.toObjectStream(
-				channelJSONObject.getJSONArray("dataSources"));
+			channel.setChannelDataSources(channelDataSources);
 
-			channelJSONObject.put(
-				"dataSources",
-				stream.map(
-					object -> (JSONObject)object
-				).filter(
-					jsonObject -> !Objects.equals(
-						jsonObject.get("id"), dataSourceId)
-				).collect(
-					Collectors.toList()
-				));
-
-			elasticsearchInvoker.update("channels", channelJSONObject);
+			_faroInfoChannelDog.update(channel);
 		}
 	}
 
