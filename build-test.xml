@@ -2176,6 +2176,7 @@ logExceptionsOnly=B&quot;false&quot;</echo>
 			>
 				<filterchain>
 					<filterreader classname="org.apache.tools.ant.filters.LineContains">
+						<param type="contains" value="registry" />
 						<param type="contains" value="resource-root" />
 						<param type="contains" value="petra" />
 					</filterreader>
