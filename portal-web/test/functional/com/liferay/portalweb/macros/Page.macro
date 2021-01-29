@@ -500,7 +500,9 @@ definition {
 	macro gotoChildPagePG {
 		var key_pageName = "${pageName}";
 
-		MouseOver(locator1 = "Home#PAGE");
+		ClickNoError(locator1 = "Home#PAGE");
+
+		MouseOver(locator1 = "Home#CHILD_TOGGLE");
 
 		var key_childPageName = "${childPageName}";
 
