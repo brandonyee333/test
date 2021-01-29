@@ -20,15 +20,15 @@ import java.time.temporal.TemporalUnit;
 /**
  * @author André Miranda
  */
-public class Timer {
+public class CountdownTimer {
 
-	public Timer(TemporalUnit temporalUnit, int value) {
+	public CountdownTimer(TemporalUnit temporalUnit, int value) {
 		LocalDateTime nowLocalDateTime = LocalDateTime.now();
 
 		_expirationLocalDateTime = nowLocalDateTime.plus(value, temporalUnit);
 	}
 
-	public boolean isValid() {
+	public boolean isRunning() {
 		return _expirationLocalDateTime.isAfter(LocalDateTime.now());
 	}
 

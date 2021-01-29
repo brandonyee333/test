@@ -21,8 +21,8 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import com.liferay.osb.asah.common.date.CountdownTimer;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.Timer;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -125,9 +125,10 @@ public class UserSessionFinalizerNanite implements Nanite {
 			)
 		).iterate();
 
-		Timer timer = new Timer(ChronoUnit.MINUTES, 5);
+		CountdownTimer countdownTimer = new CountdownTimer(
+			ChronoUnit.MINUTES, 5);
 
-		while (timer.isValid()) {
+		while (countdownTimer.isRunning()) {
 			long start = System.currentTimeMillis();
 
 			String userSessionsJSON = _cerebroInfoElasticsearchInvoker.get(
