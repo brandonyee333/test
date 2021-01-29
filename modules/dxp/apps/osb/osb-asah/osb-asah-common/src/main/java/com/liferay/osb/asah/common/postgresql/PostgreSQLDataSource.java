@@ -83,6 +83,20 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
 		HikariDataSource hikariDataSource = new HikariDataSource();
 
+		hikariDataSource.setConnectionInitSql(
+			"CREATE SCHEMA IF NOT EXISTS " + dataSource);
+		hikariDataSource.setJdbcUrl(_buildJdbcUrl(dataSource));
+		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
+		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
+
+		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(new ClassPathResource("schema.sql")),
+			hikariDataSource);
+
+		return hikariDataSource;
+	}
+
+	private String _buildJdbcUrl(Object dataSource) {
 		StringBuilder sb = new StringBuilder("jdbc:postgresql://");
 
 		String[] transportAddressParts = StringUtils.split(
@@ -104,18 +118,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		sb.append("?currentSchema=");
 		sb.append(dataSource);
 
-		hikariDataSource.setJdbcUrl(sb.toString());
-
-		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
-		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
-		hikariDataSource.setConnectionInitSql(
-			"CREATE SCHEMA IF NOT EXISTS " + dataSource);
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(new ClassPathResource("schema.sql")),
-			hikariDataSource);
-
-		return hikariDataSource;
+		return sb.toString();
 	}
 
 	private static final Log _log = LogFactory.getLog(

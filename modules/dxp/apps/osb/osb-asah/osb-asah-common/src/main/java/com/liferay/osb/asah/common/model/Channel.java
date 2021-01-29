@@ -23,20 +23,14 @@ import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.util.Assert;
 
 /**
  * @author Inácio Nery
  */
 public class Channel {
 
-	public void addDataSource(Long dataSourceId, Set<Long> groupIds) {
-		_channelDataSources.removeIf(
-			channelDataSource -> Objects.equals(
-				channelDataSource.getDataSourceId(), dataSourceId));
-
-		_channelDataSources.add(
-			_createChannelDataSource(dataSourceId, groupIds));
+	public void addChannelDataSource(ChannelDataSource channelDataSource) {
+		_channelDataSources.add(channelDataSource);
 	}
 
 	@Override
@@ -111,20 +105,6 @@ public class Channel {
 
 	public void setName(String name) {
 		_name = name;
-	}
-
-	private ChannelDataSource _createChannelDataSource(
-		Long dataSourceId, Set<Long> groupIds) {
-
-		Assert.notNull(dataSourceId, "Data Source Id, must not be null");
-		Assert.notNull(groupIds, "Group Ids, must not be null");
-
-		ChannelDataSource channelDataSource = new ChannelDataSource();
-
-		channelDataSource.setDataSourceId(dataSourceId);
-		channelDataSource.setGroupIds(groupIds);
-
-		return channelDataSource;
 	}
 
 	@Transient

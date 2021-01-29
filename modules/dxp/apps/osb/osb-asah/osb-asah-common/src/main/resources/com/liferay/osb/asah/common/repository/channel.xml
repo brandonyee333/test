@@ -2,6 +2,31 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
+	<entry key="Channel.deleteByIdIn">
+		<![CDATA[
+			DELETE FROM Channel WHERE Channel.id IN (:ids)
+		]]>
+	</entry>
+	<entry key="Channel.findByDataSourceId">
+		<![CDATA[
+			SELECT
+				Channel.createDate,
+				Channel.id,
+				Channel.name,
+				ChannelDataSource.channelId,
+				ChannelDataSource.dataSourceId,
+				ChannelDataSource.groupIds
+			FROM
+				Channel
+			JOIN
+				ChannelDataSource ON
+					Channel.id = ChannelDataSource.channelId
+			WHERE
+				ChannelDataSource.dataSourceId = :dataSourceId
+			ORDER BY
+				Channel.id
+		]]>
+	</entry>
 	<entry key="Channel.findByDataSourceIdAndGroupIds">
 		<![CDATA[
 			SELECT
@@ -36,31 +61,6 @@
 				ChannelDataSource.groupIds
 			ORDER BY
 				Channel.id
-		]]>
-	</entry>
-	<entry key="Channel.findByDataSourceId">
-		<![CDATA[
-			SELECT
-				Channel.createDate,
-				Channel.id,
-				Channel.name,
-				ChannelDataSource.channelId,
-				ChannelDataSource.dataSourceId,
-				ChannelDataSource.groupIds
-			FROM
-				Channel
-			JOIN
-				ChannelDataSource ON
-					Channel.id = ChannelDataSource.channelId
-			WHERE
-				ChannelDataSource.dataSourceId = :dataSourceId
-			ORDER BY
-				Channel.id
-		]]>
-	</entry>
-	<entry key="Channel.deleteByIdIn">
-		<![CDATA[
-			DELETE FROM Channel WHERE Channel.id IN (:ids)
 		]]>
 	</entry>
 </properties>
