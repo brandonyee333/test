@@ -19,6 +19,9 @@ import com.liferay.osb.asah.common.storage.Storage;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -36,6 +39,8 @@ public class ElasticsearchDump {
 
 			_writeBatch(searchHits);
 		}
+
+		_clearScroll();
 	}
 
 	public static class Builder {
@@ -81,6 +86,19 @@ public class ElasticsearchDump {
 	private ElasticsearchDump() {
 	}
 
+	private void _clearScroll() {
+		if (_scrollId == null) {
+			return;
+		}
+
+		try {
+			_elasticsearchInvoker.clearScroll(_scrollId);
+		}
+		catch (Exception e) {
+			_log.error("Unable to clear scroll ID " + _scrollId, e);
+		}
+	}
+
 	private SearchHit[] _readBatch() {
 		SearchResponse searchResponse = null;
 
@@ -120,6 +138,8 @@ public class ElasticsearchDump {
 			_storage::write
 		);
 	}
+
+	private static final Log _log = LogFactory.getLog(ElasticsearchDump.class);
 
 	private String _collection;
 	private ElasticsearchInvoker _elasticsearchInvoker;
