@@ -14,14 +14,12 @@
 
 package com.liferay.osb.asah.common.configuration;
 
-import com.liferay.osb.asah.common.condition.ElasticsearchCondition;
-import com.liferay.osb.asah.common.condition.PostgreSQLCondition;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLDataSource;
 
 import javax.sql.DataSource;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
@@ -40,22 +38,24 @@ import org.springframework.transaction.TransactionManager;
  */
 @Configuration
 @EnableJdbcRepositories(
-	basePackages = {
-		"com.liferay.osb.asah.common.elasticsearch.repository.impl",
-		"com.liferay.osb.asah.common.repository"
-	},
 	namedQueriesLocation = "classpath:com/liferay/osb/asah/common/repository/*.xml"
 )
 public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 	@Bean
-	@Conditional(ElasticsearchCondition.class)
+	@ConditionalOnProperty(
+		havingValue = "false", matchIfMissing = true,
+		value = "osb.asah.postgresql.enabled"
+	)
 	public DataSource elasticsearchDataSource() {
 		return new SimpleDriverDataSource();
 	}
 
 	@Bean
-	@Conditional(ElasticsearchCondition.class)
+	@ConditionalOnProperty(
+		havingValue = "false", matchIfMissing = true,
+		value = "osb.asah.postgresql.enabled"
+	)
 	@Override
 	public Dialect jdbcDialect(
 		NamedParameterJdbcOperations namedParameterJdbcOperations) {
@@ -98,7 +98,9 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	}
 
 	@Bean
-	@Conditional(PostgreSQLCondition.class)
+	@ConditionalOnProperty(
+		havingValue = "true", value = "osb.asah.postgresql.enabled"
+	)
 	public DataSource postgreSQLDataSource() {
 		return new PostgreSQLDataSource();
 	}
