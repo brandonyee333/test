@@ -5364,17 +5364,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				</or>
 				<then>
 					<ant antfile="build-test-elasticsearch.xml" target="stop-elasticsearch" />
-
-					<get-testcase-property property.name="elastic.kibana.enabled" />
-
-					<if>
-						<equals arg1="${elastic.kibana.enabled}" arg2="true" />
-						<then>
-							<print-file file.name="${elastic.kibana.dir}/bin/kibana.log" />
-
-							<ant antfile="build-test-elasticsearch.xml" target="stop-kibana" />
-						</then>
-					</if>
 				</then>
 			</if>
 

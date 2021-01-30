@@ -894,9 +894,20 @@ elasticsearch.password: "liferay"]]></replacevalue>
 		</antelope:repeat>
 
 		<print-file file.name="${elasticsearch.dir}/logs/LiferayElasticsearchCluster.log" />
+
+		<get-testcase-property property.name="elastic.kibana.enabled" />
+
+		<if>
+			<equals arg1="${elastic.kibana.enabled}" arg2="true" />
+			<then>
+				<antcall target="stop-kibana" />
+			</then>
+		</if>
 	</target>
 
 	<target name="stop-kibana">
+		<print-file file.name="${elastic.kibana.dir}/bin/kibana.log" />
+
 		<if>
 			<os family="unix" />
 			<then>
