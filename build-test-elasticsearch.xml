@@ -606,6 +606,16 @@ shield.transport.ssl: true</echo>
 					</then>
 				</elseif>
 			</if>
+
+			<chmod
+				maxparallel="10"
+				perm="a+rwx"
+				type="both"
+			>
+				<fileset
+					dir="${elastic.kibana.dir}"
+				/>
+			</chmod>
 		</sequential>
 	</macrodef>
 
@@ -773,23 +783,6 @@ username=&quot;liferay&quot;</echo>
 
 	<target name="start-kibana">
 		<unzip-kibana />
-
-		<chmod
-			maxparallel="10"
-			perm="a+x"
-			type="both"
-		>
-			<fileset
-				dir="${elastic.kibana.dir}/bin"
-			>
-				<include name="**" />
-			</fileset>
-			<fileset
-				dir="${elastic.kibana.dir}/node"
-			>
-				<include name="**" />
-			</fileset>
-		</chmod>
 
 		<prepare-kibana />
 
