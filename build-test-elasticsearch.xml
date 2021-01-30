@@ -3,6 +3,36 @@
 <project basedir="." name="portal-test-elasticsearch" xmlns:antelope="antlib:ise.antelope.tasks">
 	<import file="build-test.xml" />
 
+	<property name="elasticsearch.version" value="2.4.1" />
+	<property name="elasticsearch.dir" value="${app.server.parent.dir}/elasticsearch-${elasticsearch.version}" />
+	<property name="elastic.kibana.version" value="4.6.1" />
+	<property name="elastic.kibana.dir" value="${app.server.parent.dir}/kibana-${elastic.kibana.version}" />
+	<property name="elastic.kibana.tar.name.linux" value="kibana-${elastic.kibana.version}-linux-x86_64.tar.gz" />
+	<property name="elastic.kibana.tar.name.mac" value="kibana-${elastic.kibana.version}-darwin-x86_64.tar.gz" />
+	<property name="elastic.kibana.tar.url.linux" value="http://download.elastic.co/kibana/kibana/${elastic.kibana.tar.name.linux}" />
+	<property name="elastic.kibana.tar.url.mac" value="http://download.elastic.co/kibana/kibana/${elastic.kibana.tar.name.mac}" />
+	<property name="elastic.kibana.zip.name.windows" value="kibana-${elastic.kibana.version}-windows-x86.zip" />
+	<property name="elastic.kibana.zip.url.windows" value="http://download.elastic.co/kibana/kibana/${elastic.kibana.zip.name.windows}" />
+	<property name="elastic.marvel.tar.name" value="marvel-${elasticsearch.version}.tar.gz" />
+	<property name="elastic.marvel.tar.url" value="http://download.elasticsearch.org/elasticsearch/marvel/${elastic.marvel.tar.name}" />
+	<property name="elastic.shield.ca.dir" value="${elasticsearch.dir}/config/shield/ca" />
+	<property name="elastic.shield.zip.name" value="shield-${elasticsearch.version}.zip" />
+	<property name="elastic.shield.zip.url" value="http://download.elastic.co/elasticsearch/release/org/elasticsearch/plugin/shield/${elasticsearch.version}/${elastic.shield.zip.name}" />
+	<property name="elasticsearch.analysis-icu.zip.name" value="analysis-icu-${elasticsearch.version}.zip" />
+	<property name="elasticsearch.analysis-icu.zip.url" value="http://download.elastic.co/elasticsearch/release/org/elasticsearch/plugin/analysis-icu/${elasticsearch.version}/${elasticsearch.analysis-icu.zip.name}" />
+	<property name="elasticsearch.analysis-kuromoji.zip.name" value="analysis-kuromoji-${elasticsearch.version}.zip" />
+	<property name="elasticsearch.analysis-kuromoji.zip.url" value="http://download.elastic.co/elasticsearch/release/org/elasticsearch/plugin/analysis-kuromoji/${elasticsearch.version}/${elasticsearch.analysis-kuromoji.zip.name}" />
+	<property name="elasticsearch.analysis-smartcn.zip.name" value="analysis-smartcn-${elasticsearch.version}.zip" />
+	<property name="elasticsearch.analysis-smartcn.zip.url" value="http://download.elastic.co/elasticsearch/release/org/elasticsearch/plugin/analysis-smartcn/${elasticsearch.version}/${elasticsearch.analysis-smartcn.zip.name}" />
+	<property name="elasticsearch.analysis-stempel.zip.name" value="analysis-stempel-${elasticsearch.version}.zip" />
+	<property name="elasticsearch.analysis-stempel.zip.url" value="http://download.elastic.co/elasticsearch/release/org/elasticsearch/plugin/analysis-stempel/${elasticsearch.version}/${elasticsearch.analysis-stempel.zip.name}" />
+	<property name="elasticsearch.license.zip.name" value="license-${elasticsearch.version}.zip" />
+	<property name="elasticsearch.license.zip.url" value="http://download.elastic.co/elasticsearch/release/org/elasticsearch/plugin/license/${elasticsearch.version}/${elasticsearch.license.zip.name}" />
+	<property name="elasticsearch.marvel-agent.zip.name" value="marvel-agent-${elasticsearch.version}.zip" />
+	<property name="elasticsearch.marvel-agent.zip.url" value="http://download.elastic.co/elasticsearch/release/org/elasticsearch/plugin/marvel-agent/${elasticsearch.version}/${elasticsearch.marvel-agent.zip.name}" />
+	<property name="elasticsearch.zip.name" value="elasticsearch-${elasticsearch.version}.zip" />
+	<property name="elasticsearch.zip.url" value="http://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/${elasticsearch.version}/${elasticsearch.zip.name}" />
+
 	<macrodef name="configure-shield">
 		<sequential>
 			<mkdir dir="${elastic.shield.ca.dir}/certs" />
