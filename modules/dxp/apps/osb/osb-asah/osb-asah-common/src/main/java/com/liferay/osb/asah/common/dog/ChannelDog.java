@@ -237,12 +237,22 @@ public class ChannelDog extends BaseFaroInfoDog {
 		}
 
 		if ((dataSourceId != null) && (groupIds != null)) {
-			ChannelDataSource channelDataSource = new ChannelDataSource();
+			Set<ChannelDataSource> channelChannelDataSources =
+				channel.getChannelDataSources();
 
-			channelDataSource.setDataSourceId(dataSourceId);
-			channelDataSource.setGroupIds(groupIds);
+			channelChannelDataSources.removeIf(
+				channelDataSource -> Objects.equals(
+					channelDataSource.getDataSourceId(), dataSourceId));
 
-			channel.addChannelDataSource(channelDataSource);
+			ChannelDataSource updatedChannelDataSource =
+				new ChannelDataSource();
+
+			updatedChannelDataSource.setDataSourceId(dataSourceId);
+			updatedChannelDataSource.setGroupIds(groupIds);
+
+			channelChannelDataSources.add(updatedChannelDataSource);
+
+			channel.setChannelDataSources(channelChannelDataSources);
 		}
 
 		return _channelRepository.save(channel);
