@@ -18,6 +18,7 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFi
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -42,7 +43,18 @@ public class OSBAsahTaskRunnable implements Runnable {
 			osbAsahTaskJSONObject.getString("className")
 		};
 		_osbAsahTaskId = osbAsahTaskJSONObject.optString("id");
-		_projectId = osbAsahTaskJSONObject.getString("projectId");
+
+		_projectId = osbAsahTaskJSONObject.optString("projectId");
+
+		if (StringUtils.isBlank(_projectId)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Invalid projectId, defaulting to: " +
+						ProjectIdThreadLocal.getProjectId());
+			}
+
+			_projectId = ProjectIdThreadLocal.getProjectId();
+		}
 	}
 
 	public OSBAsahTaskRunnable(
@@ -123,6 +135,6 @@ public class OSBAsahTaskRunnable implements Runnable {
 	private final String[] _naniteClassNames;
 	private final String _osbAsahTaskId;
 	private final OSBAsahTaskManager _osbAsahTaskManager;
-	private final String _projectId;
+	private String _projectId;
 
 }
