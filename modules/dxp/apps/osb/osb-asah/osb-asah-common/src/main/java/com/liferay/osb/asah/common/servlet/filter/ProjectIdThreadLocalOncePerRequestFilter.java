@@ -84,7 +84,7 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		ProjectIdThreadLocal.class);
+		ProjectIdThreadLocalOncePerRequestFilter.class);
 
 	private static final Pattern _urlPattern = Pattern.compile(
 		"^https://osbasah(?:backend|monolith|publisher)-(\\w+)\\.lfr\\.cloud");
