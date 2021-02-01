@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -71,13 +70,7 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 
 		Channel channel = new Channel();
 
-		if (dataSources != null) {
-			for (Map.Entry<Long, Set<Long>> entry : dataSources.entrySet()) {
-				channel.addChannelDataSource(
-					new ChannelDataSource(entry.getKey(), entry.getValue()));
-			}
-		}
-
+		channel.setChannelDataSources(_getChannelDataSources(dataSources));
 		channel.setName(_getChannelName(name));
 
 		channel = _channelRepository.save(channel);
@@ -97,7 +90,7 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 	}
 
 	public Channel addChannel(String name) {
-		return addChannel(null, name, false);
+		return addChannel(Collections.emptyMap(), name, false);
 	}
 
 	public List<Channel> addChannels(
@@ -144,14 +137,7 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		clearChannels(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 
-		_channelRepository.deleteByIdIn(
-			Stream.of(
-				channelIds
-			).flatMap(
-				List::stream
-			).collect(
-				Collectors.toSet()
-			));
+		_channelRepository.deleteByIdIn(new HashSet<>(channelIds));
 	}
 
 	public Channel fetchChannel(Long channelId) {
@@ -162,15 +148,13 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 	}
 
 	public Channel getChannel(Long channelId) {
-		Channel channel = fetchChannel(channelId);
+		Optional<Channel> channelOptional = _channelRepository.findById(
+			channelId);
 
-		if (channel == null) {
-			throw new OSBAsahException(
+		return channelOptional.orElseThrow(
+			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
-				"There is no channel with ID " + channelId);
-		}
-
-		return channel;
+				"There is no channel with ID " + channelId));
 	}
 
 	public Map<Long, String> getChannelNamesByGroupIds(
@@ -178,32 +162,24 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 
 		Map<Long, String> channelNamesByGroupIds = new HashMap<>();
 
-		List<Channel> channels =
-			_channelRepository.findByDataSourceIdAndGroupIds(
-				dataSourceId,
-				Stream.of(
-					groupsIds
-				).flatMap(
-					Set::stream
-				).collect(
-					Collectors.toSet()
-				));
+		for (Channel channel :
+				_channelRepository.findByDataSourceIdAndGroupIds(
+					dataSourceId, groupsIds)) {
 
-		for (Channel channel : channels) {
-			Stream.of(
-				channel.getChannelDataSources()
-			).flatMap(
-				Set::stream
-			).map(
-				ChannelDataSource::getGroupIds
-			).flatMap(
-				Set::stream
-			).filter(
-				groupsIds::contains
-			).forEach(
-				groupId -> channelNamesByGroupIds.put(
-					groupId, channel.getName())
-			);
+			for (ChannelDataSource channelDataSource :
+					channel.getChannelDataSources()) {
+
+				for (Long channelDataSourceGroupId :
+						channelDataSource.getGroupIds()) {
+
+					if (!groupsIds.contains(channelDataSourceGroupId)) {
+						continue;
+					}
+
+					channelNamesByGroupIds.put(
+						channelDataSourceGroupId, channel.getName());
+				}
+			}
 		}
 
 		return channelNamesByGroupIds;
@@ -230,23 +206,20 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 	public Set<Long> getRemovedGroupIds(
 		Long channelId, Long dataSourceId, Set<Long> groupIds) {
 
-		if ((dataSourceId != null) && (groupIds != null)) {
-			return Stream.of(
-				getChannel(channelId)
-			).map(
-				Channel::getChannelDataSources
-			).flatMap(
-				Set::stream
-			).filter(
-				channelDataSource -> Objects.equals(
-					channelDataSource.getDataSourceId(), dataSourceId)
-			).findFirst(
-			).map(
-				channelDataSource -> _getRemovedGroupIds(
-					channelDataSource, groupIds)
-			).orElse(
-				Collections.emptySet()
-			);
+		if ((dataSourceId == null) || (groupIds == null)) {
+			return Collections.emptySet();
+		}
+
+		Channel channel = getChannel(channelId);
+
+		for (ChannelDataSource channelDataSource :
+				channel.getChannelDataSources()) {
+
+			if (Objects.equals(
+					channelDataSource.getDataSourceId(), dataSourceId)) {
+
+				return _getRemovedGroupIds(channelDataSource, groupIds);
+			}
 		}
 
 		return Collections.emptySet();
@@ -262,8 +235,12 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		}
 
 		if ((dataSourceId != null) && (groupIds != null)) {
-			channel.addChannelDataSource(
-				new ChannelDataSource(dataSourceId, groupIds));
+			ChannelDataSource channelDataSource = new ChannelDataSource();
+
+			channelDataSource.setDataSourceId(dataSourceId);
+			channelDataSource.setGroupIds(groupIds);
+
+			channel.addChannelDataSource(channelDataSource);
 		}
 
 		return _channelRepository.save(channel);
@@ -426,6 +403,27 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 		).iterate();
 	}
 
+	private Set<ChannelDataSource> _getChannelDataSources(
+		Map<Long, Set<Long>> dataSources) {
+
+		if (dataSources == null) {
+			return Collections.emptySet();
+		}
+
+		Set<ChannelDataSource> channelDataSources = new HashSet<>();
+
+		for (Map.Entry<Long, Set<Long>> entry : dataSources.entrySet()) {
+			ChannelDataSource channelDataSource = new ChannelDataSource();
+
+			channelDataSource.setDataSourceId(entry.getKey());
+			channelDataSource.setGroupIds(entry.getValue());
+
+			channelDataSources.add(channelDataSource);
+		}
+
+		return channelDataSources;
+	}
+
 	private String _getChannelName(Long channelId, String name) {
 		name = StringUtils.truncate(name, 65);
 
@@ -519,20 +517,19 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 	private List<Channel> _saveMultipleChannel(
 		Long dataSourceId, Map<Long, String> channelNamesByGroupIds) {
 
-		return Stream.of(
-			channelNamesByGroupIds
-		).map(
-			Map::entrySet
-		).flatMap(
-			Set::stream
-		).map(
-			entry -> addChannel(
-				Collections.singletonMap(
-					dataSourceId, Collections.singleton(entry.getKey())),
-				_getChannelName(entry.getValue()), true)
-		).collect(
-			Collectors.toList()
-		);
+		List<Channel> channels = new ArrayList<>();
+
+		for (Map.Entry<Long, String> entry :
+				channelNamesByGroupIds.entrySet()) {
+
+			channels.add(
+				addChannel(
+					Collections.singletonMap(
+						dataSourceId, Collections.singleton(entry.getKey())),
+					_getChannelName(entry.getValue()), true));
+		}
+
+		return channels;
 	}
 
 	private void _updateChannelIds(

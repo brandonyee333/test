@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.util;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -25,10 +26,10 @@ import java.util.stream.Stream;
 public class ListUtil {
 
 	public static <T, R> List<R> map(
-		List<? extends T> list,
+		Collection<? extends T> collection,
 		Function<? super T, ? extends R> mapperFunction) {
 
-		Stream<? extends T> stream = list.stream();
+		Stream<? extends T> stream = collection.stream();
 
 		return stream.map(
 			mapperFunction

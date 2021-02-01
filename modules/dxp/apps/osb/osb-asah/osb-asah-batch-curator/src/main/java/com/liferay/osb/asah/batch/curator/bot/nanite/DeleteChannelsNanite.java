@@ -15,14 +15,11 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.liferay.osb.asah.common.json.JSONUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +33,9 @@ public class DeleteChannelsNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject jsonObject) throws Exception {
-		List<Long> channelIds = new ArrayList<>();
-
-		JSONArray channelIdsSONArray = jsonObject.getJSONArray("channelIds");
-
-		for (int i = 0; i < channelIdsSONArray.length(); i++) {
-			channelIds.add(Long.valueOf(channelIdsSONArray.getString(i)));
-		}
-
 		_faroInfoChannelDog.deleteChannels(
-			channelIds, this::monitorProcessedCount, this::monitorQueueSize);
+			JSONUtil.toLongList(jsonObject.getJSONArray("channelIds")),
+			this::monitorProcessedCount, this::monitorQueueSize);
 	}
 
 	@Override

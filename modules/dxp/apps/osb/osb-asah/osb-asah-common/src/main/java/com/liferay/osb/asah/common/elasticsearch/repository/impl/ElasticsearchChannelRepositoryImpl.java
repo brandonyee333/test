@@ -233,24 +233,24 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 			List<String> sorts = new ArrayList<>();
 
 			for (Sort.Order order : pageable.getSort()) {
-				StringBuilder sort = new StringBuilder();
+				StringBuilder sb = new StringBuilder();
 
-				sort.append(order.getProperty());
+				sb.append(order.getProperty());
 
 				if (Objects.equal(order.getProperty(), "name")) {
-					sort.append(".sort");
+					sb.append(".sort");
 				}
 
-				sort.append(",");
+				sb.append(",");
 
 				if (order.isAscending()) {
-					sort.append("asc");
+					sb.append("asc");
 				}
 				else {
-					sort.append("desc");
+					sb.append("desc");
 				}
 
-				sorts.add(sort.toString());
+				sorts.add(sb.toString());
 			}
 
 			collectionGetResponse.setSorts(sorts.toArray(new String[0]));
@@ -327,22 +327,15 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 			JSONObject dataSourceJSONObject =
 				dataSourcesJSONArray.getJSONObject(j);
 
-			channel.addChannelDataSource(
-				new ChannelDataSource(
-					dataSourceJSONObject.getLong("id"),
-					Stream.of(
-						dataSourceJSONObject.getJSONArray("groupIds")
-					).map(
-						JSONArray::toList
-					).flatMap(
-						List::stream
-					).map(
-						String::valueOf
-					).map(
-						Long::valueOf
-					).collect(
-						Collectors.toSet()
-					)));
+			ChannelDataSource channelDataSource = new ChannelDataSource();
+
+			channelDataSource.setDataSourceId(
+				dataSourceJSONObject.getLong("id"));
+			channelDataSource.setGroupIds(
+				JSONUtil.toLongSet(
+					dataSourceJSONObject.getJSONArray("groupIds")));
+
+			channel.addChannelDataSource(channelDataSource);
 		}
 
 		try {

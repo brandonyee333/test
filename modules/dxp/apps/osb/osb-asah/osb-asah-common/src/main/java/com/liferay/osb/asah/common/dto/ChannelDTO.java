@@ -20,13 +20,12 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
+import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Inácio Nery
@@ -36,15 +35,8 @@ import java.util.stream.Stream;
 public class ChannelDTO {
 
 	public ChannelDTO(Channel channel) {
-		_channelDataSourceDTOs = Stream.of(
-			channel.getChannelDataSources()
-		).flatMap(
-			Set::stream
-		).map(
-			ChannelDataSourceDTO::new
-		).collect(
-			Collectors.toSet()
-		);
+		_channelDataSourceDTOs = SetUtil.map(
+			channel.getChannelDataSources(), ChannelDataSourceDTO::new);
 		_createDate = channel.getCreateDate();
 		_id = channel.getId();
 		_name = channel.getName();
@@ -65,15 +57,7 @@ public class ChannelDTO {
 	}
 
 	public ChannelDTO(List<Channel> channels) {
-		_channelDTOs = Stream.of(
-			channels
-		).flatMap(
-			List::stream
-		).map(
-			ChannelDTO::new
-		).collect(
-			Collectors.toSet()
-		);
+		_channelDTOs = SetUtil.map(channels, ChannelDTO::new);
 	}
 
 	@JsonProperty("dataSources")

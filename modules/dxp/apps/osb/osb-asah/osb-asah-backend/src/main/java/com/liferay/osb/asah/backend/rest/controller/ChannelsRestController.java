@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dog.DataSourceDog;
+import com.liferay.osb.asah.backend.model.DataSource;
 import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.dto.PageDTO;
@@ -22,15 +23,13 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
-import com.liferay.osb.asah.common.model.ChannelDataSource;
+import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -84,35 +83,18 @@ public class ChannelsRestController extends BaseRestController {
 			return new ChannelDTO(channel);
 		}
 
-		List<String> dataSourceIds = Stream.of(
-			channel
-		).map(
-			Channel::getChannelDataSources
-		).filter(
-			Objects::nonNull
-		).flatMap(
-			Set::stream
-		).map(
-			ChannelDataSource::getDataSourceId
-		).map(
-			String::valueOf
-		).collect(
-			Collectors.toList()
-		);
+		List<DataSource> dataSources = _dataSourceDog.getDataSources(
+			ListUtil.map(
+				channel.getChannelDataSources(),
+				channelDataSource -> String.valueOf(
+					channelDataSource.getDataSourceId())));
 
 		return new ChannelDTO(
 			channel,
 			Collections.singletonMap(
 				"data-sources",
-				Stream.of(
-					_dataSourceDog.getDataSources(dataSourceIds)
-				).flatMap(
-					List::stream
-				).map(
-					dataSource -> (DataSourceDTO)dataSource
-				).collect(
-					Collectors.toSet()
-				)));
+				SetUtil.map(
+					dataSources, dataSource -> (DataSourceDTO)dataSource)));
 	}
 
 	@GetMapping
