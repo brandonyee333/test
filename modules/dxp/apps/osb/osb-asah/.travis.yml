@@ -1,3 +1,11 @@
+before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+    - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+    directories:
+        - $HOME/.gradle/caches/
+        - $HOME/.gradle/wrapper/
+    timeout: 600
 dist: trusty
 env:
     global:
@@ -9,13 +17,6 @@ jobs:
           script:
               - ./gradlew checkSourceFormatting pmdMain pmdTest pmdTestIntegration spotbugsMain spotbugsTest spotbugsTestIntegration --configure-on-demand --parallel
         - stage: "Tests"
-          before_script:
-              - sudo /etc/init.d/postgresql stop
-              - docker-compose -f docker-compose.integration-test.yml up -d
-          script:
-              - ./gradlew test --configure-on-demand --parallel
-              - ./gradlew testIntegration --configure-on-demand
-              - ./gradlew jacocoTestCoverageVerification
           after_script:
               - docker-compose -f docker-compose.integration-test.yml down
           after_success:
@@ -30,15 +31,14 @@ jobs:
               - docker push liferay/com-liferay-osb-asah:latest
               - docker logout
               - cd ..
+          before_script:
+              - sudo /etc/init.d/postgresql stop
+              - docker-compose -f docker-compose.integration-test.yml up -d
+          script:
+              - ./gradlew test --configure-on-demand --parallel
+              - ./gradlew testIntegration --configure-on-demand
+              - ./gradlew jacocoTestCoverageVerification
 language: java
 services:
     - docker
 sudo: required
-before_cache:
-    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-    - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-    directories:
-        - $HOME/.gradle/caches/
-        - $HOME/.gradle/wrapper/
-    timeout: 600
