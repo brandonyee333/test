@@ -16,17 +16,19 @@ package com.liferay.osb.asah.common.model;
 
 import java.util.Objects;
 
-import org.json.JSONObject;
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Matthew Kong
  */
-public class Preference {
+@Table
+public class Preference implements Persistable<Long> {
 
-	public Preference(JSONObject jsonObject) {
-		_id = jsonObject.getString("id");
-		_key = jsonObject.getString("id");
-		_value = jsonObject.getString("value");
+	public Preference() {
 	}
 
 	public Preference(String key, String value) {
@@ -60,14 +62,18 @@ public class Preference {
 		return false;
 	}
 
-	public String getId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	public Long getId() {
 		return _id;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getKey() {
 		return _key;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getValue() {
 		return _value;
 	}
@@ -77,8 +83,21 @@ public class Preference {
 		return Objects.hash(_id, _key, _value);
 	}
 
-	public void setId(String id) {
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public void setId(Long id) {
 		_id = id;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
 	}
 
 	public void setKey(String key) {
@@ -89,8 +108,16 @@ public class Preference {
 		_value = value;
 	}
 
-	private String _id;
+	@Transient
+	private Long _id;
+
+	@Transient
+	private Boolean _isNew;
+
+	@Transient
 	private String _key;
+
+	@Transient
 	private String _value;
 
 }
