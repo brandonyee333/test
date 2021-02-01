@@ -1765,13 +1765,16 @@ public class JournalArticleLocalServiceImpl
 		OrderByComparator<JournalArticle> orderByComparator =
 			new ArticleVersionComparator();
 
+		String normalizedUrlTitle =
+			FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle);
+
 		if (status == WorkflowConstants.STATUS_ANY) {
 			articles = journalArticlePersistence.findByG_UT(
-				groupId, urlTitle, 0, 1, orderByComparator);
+				groupId, normalizedUrlTitle, 0, 1, orderByComparator);
 		}
 		else {
 			articles = journalArticlePersistence.findByG_UT_ST(
-				groupId, urlTitle, status, 0, 1, orderByComparator);
+				groupId, normalizedUrlTitle, status, 0, 1, orderByComparator);
 		}
 
 		if (articles.isEmpty()) {
@@ -2871,8 +2874,9 @@ public class JournalArticleLocalServiceImpl
 			new ArticleVersionComparator();
 
 		List<JournalArticle> articles = journalArticlePersistence.findByG_UT_ST(
-			groupId, urlTitle, WorkflowConstants.STATUS_APPROVED,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, orderByComparator);
+			groupId, FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle),
+			WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, orderByComparator);
 
 		if (articles.isEmpty()) {
 			throw new NoSuchArticleException(
