@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -230,15 +231,8 @@ public class SegmentDog {
 	}
 
 	private List<Metric> _getMetrics(MetricType metricType, Terms terms) {
-		List<? extends Terms.Bucket> buckets = terms.getBuckets();
-
-		Stream<? extends Terms.Bucket> stream = buckets.stream();
-
-		return stream.map(
-			bucket -> _createMetric(bucket, metricType)
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(
+			terms.getBuckets(), bucket -> _createMetric(bucket, metricType));
 	}
 
 	private Metric _getOthersSegmentMetric(

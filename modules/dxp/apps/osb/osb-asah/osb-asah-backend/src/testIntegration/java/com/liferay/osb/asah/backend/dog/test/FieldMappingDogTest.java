@@ -18,14 +18,13 @@ import com.liferay.osb.asah.backend.dog.FieldMappingDog;
 import com.liferay.osb.asah.backend.model.FieldMapping;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -60,13 +59,7 @@ public class FieldMappingDogTest {
 	private List<String> _getFieldMappingsFieldNames(
 		List<FieldMapping> fieldMappings) {
 
-		Stream<FieldMapping> stream = fieldMappings.stream();
-
-		return stream.map(
-			FieldMapping::getFieldName
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(fieldMappings, FieldMapping::getFieldName);
 	}
 
 	@Autowired

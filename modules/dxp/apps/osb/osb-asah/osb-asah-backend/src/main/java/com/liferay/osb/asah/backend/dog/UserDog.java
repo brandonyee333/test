@@ -20,10 +20,10 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -201,15 +201,8 @@ public class UserDog {
 	}
 
 	private List<String> _getIndividualIds(Terms terms) {
-		List<? extends Terms.Bucket> buckets = terms.getBuckets();
-
-		Stream<? extends Terms.Bucket> stream = buckets.stream();
-
-		return stream.map(
-			MultiBucketsAggregation.Bucket::getKeyAsString
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(
+			terms.getBuckets(), MultiBucketsAggregation.Bucket::getKeyAsString);
 	}
 
 	private BoolQueryBuilder _getKnownIndividualBoolQueryBuilder() {

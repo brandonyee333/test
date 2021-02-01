@@ -37,8 +37,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -214,13 +212,7 @@ public class RecommendationRestController extends BaseRestController {
 		List<T> results,
 		Function<T, EntityModel<R>> resultEntityModelMapperFunction) {
 
-		Stream<T> stream = results.stream();
-
-		return stream.map(
-			resultEntityModelMapperFunction
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(results, resultEntityModelMapperFunction);
 	}
 
 	private EntityModel<Model> _toModelEntityModel(Job job) {

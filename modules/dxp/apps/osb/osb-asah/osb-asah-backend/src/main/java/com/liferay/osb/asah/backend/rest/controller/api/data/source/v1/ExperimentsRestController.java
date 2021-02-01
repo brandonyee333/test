@@ -25,9 +25,9 @@ import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.validation.Valid;
@@ -135,15 +135,11 @@ public class ExperimentsRestController extends BaseRestController {
 	private List<DXPVariantSettings> _createDXPVariantSettings(
 		List<DXPVariant> dxpVariants) {
 
-		Stream<DXPVariant> stream = dxpVariants.stream();
-
-		return stream.map(
+		return ListUtil.map(
+			dxpVariants,
 			dxpVariant -> new DXPVariantSettings(
 				dxpVariant.isControl(), dxpVariant.getDXPVariantId(),
-				dxpVariant.getTrafficSplit())
-		).collect(
-			Collectors.toList()
-		);
+				dxpVariant.getTrafficSplit()));
 	}
 
 	private ExperimentSettings _createExperimentSettings(

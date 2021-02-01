@@ -29,13 +29,12 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -306,15 +305,8 @@ public class IndividualDog {
 	}
 
 	private List<String> _getIndividualIds(Terms terms) {
-		List<? extends Terms.Bucket> buckets = terms.getBuckets();
-
-		Stream<? extends Terms.Bucket> stream = buckets.stream();
-
-		return stream.map(
-			MultiBucketsAggregation.Bucket::getKeyAsString
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(
+			terms.getBuckets(), MultiBucketsAggregation.Bucket::getKeyAsString);
 	}
 
 	private QueryBuilder _getKeywordsQueryBuilder(

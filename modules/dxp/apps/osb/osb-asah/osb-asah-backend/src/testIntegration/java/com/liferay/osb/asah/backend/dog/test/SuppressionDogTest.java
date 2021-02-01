@@ -19,14 +19,13 @@ import com.liferay.osb.asah.backend.model.Suppression;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -54,18 +53,12 @@ public class SuppressionDogTest {
 
 		Assert.assertEquals(3, suppressionResultBag.getTotal());
 
-		List<Suppression> suppressions = suppressionResultBag.getResults();
-
-		Stream<Suppression> stream = suppressions.stream();
-
 		Assert.assertEquals(
 			Arrays.asList(
 				"jane.doe@gmail.com", "test@liferay.com", "john.doe@gmail.com"),
-			stream.map(
-				Suppression::getEmailAddress
-			).collect(
-				Collectors.toList()
-			));
+			ListUtil.map(
+				suppressionResultBag.getResults(),
+				Suppression::getEmailAddress));
 	}
 
 	@Test

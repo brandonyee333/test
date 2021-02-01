@@ -16,11 +16,10 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Marcellus Tavares
@@ -49,16 +48,12 @@ public class BaseExperimentDataFetcher {
 	private List<DXPVariantSettings> _createDXPVariantSettings(
 		List<Map<String, Object>> dxpVariantsSettingsMap) {
 
-		Stream<Map<String, Object>> stream = dxpVariantsSettingsMap.stream();
-
-		return stream.map(
+		return ListUtil.map(
+			dxpVariantsSettingsMap,
 			dxpVariantSettingsMap -> new DXPVariantSettings(
 				(boolean)dxpVariantSettingsMap.get("control"),
 				(String)dxpVariantSettingsMap.get("dxpVariantId"),
-				(Double)dxpVariantSettingsMap.get("trafficSplit"))
-		).collect(
-			Collectors.toList()
-		);
+				(Double)dxpVariantSettingsMap.get("trafficSplit")));
 	}
 
 }

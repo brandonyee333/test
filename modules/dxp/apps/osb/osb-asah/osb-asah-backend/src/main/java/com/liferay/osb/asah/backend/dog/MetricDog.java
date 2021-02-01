@@ -26,6 +26,7 @@ import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.petra.string.CharPool;
 
 import java.util.ArrayList;
@@ -571,14 +572,8 @@ public class MetricDog {
 			return;
 		}
 
-		Stream<? extends Terms.Bucket> stream = termsBuckets.stream();
-
 		assetMetric.setCanonicalUrls(
-			stream.map(
-				Terms.Bucket::getKeyAsString
-			).collect(
-				Collectors.toList()
-			));
+			ListUtil.map(termsBuckets, Terms.Bucket::getKeyAsString));
 	}
 
 	private void _setModelMetrics(
@@ -614,14 +609,8 @@ public class MetricDog {
 			return;
 		}
 
-		Stream<? extends Terms.Bucket> stream = termsBuckets.stream();
-
 		assetMetric.setURLs(
-			stream.map(
-				Terms.Bucket::getKeyAsString
-			).collect(
-				Collectors.toList()
-			));
+			ListUtil.map(termsBuckets, Terms.Bucket::getKeyAsString));
 	}
 
 	@Autowired

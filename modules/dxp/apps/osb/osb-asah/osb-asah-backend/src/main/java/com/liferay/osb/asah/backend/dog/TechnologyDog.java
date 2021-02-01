@@ -20,12 +20,11 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -189,15 +188,10 @@ public class TechnologyDog {
 			return Collections.emptyList();
 		}
 
-		List<? extends Terms.Bucket> termsBuckets = terms.getBuckets();
-
-		Stream<? extends Terms.Bucket> stream = termsBuckets.stream();
-
-		return stream.map(
-			termsBucket -> _getMetric(dogConfiguration, metricType, termsBucket)
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(
+			terms.getBuckets(),
+			termsBucket -> _getMetric(
+				dogConfiguration, metricType, termsBucket));
 	}
 
 	private Range.Bucket _getRangeAggregationBucket(Aggregations aggregations) {

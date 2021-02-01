@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import com.univocity.parsers.csv.CsvParser;
@@ -39,8 +40,6 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -208,15 +207,7 @@ public class DataControlTaskDog {
 
 		CsvParser csvParser = new CsvParser(csvParserSettings);
 
-		List<String[]> rows = csvParser.parseAll(file);
-
-		Stream<String[]> stream = rows.stream();
-
-		return stream.map(
-			row -> row[0]
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(csvParser.parseAll(file), row -> row[0]);
 	}
 
 	private void _updateSuppression(

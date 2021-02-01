@@ -63,6 +63,7 @@ import com.liferay.osb.asah.common.model.DataExportTaskStatus;
 import com.liferay.osb.asah.common.model.DataExportTaskType;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -852,16 +853,9 @@ public class ReportRestController extends BaseRestController {
 			_segmentDog.getSegmentMetricResultBag(
 				metricType, searchQueryContext);
 
-		List<Metric> results = segmentMetricResultBag.getResults();
-
-		Stream<Metric> stream = results.stream();
-
 		audienceReport._segmentMetricReportResultBag = new ResultBag<>(
-			stream.map(
-				MetricReport::new
-			).collect(
-				Collectors.toList()
-			),
+			ListUtil.map(
+				segmentMetricResultBag.getResults(), MetricReport::new),
 			segmentMetricResultBag.getTotal());
 
 		metricReport._audienceReport = audienceReport;
@@ -1256,13 +1250,7 @@ public class ReportRestController extends BaseRestController {
 		List<T> results,
 		Function<T, EntityModel<R>> resultEntityModelMapperFunction) {
 
-		Stream<T> stream = results.stream();
-
-		return stream.map(
-			resultEntityModelMapperFunction
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(results, resultEntityModelMapperFunction);
 	}
 
 	private EntityModel<PageAssetReport> _toPageAssetReportEntityModel(

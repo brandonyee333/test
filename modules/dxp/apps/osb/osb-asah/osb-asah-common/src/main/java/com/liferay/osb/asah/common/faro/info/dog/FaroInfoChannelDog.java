@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -283,15 +284,7 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 					propertyName,
 					QueryBuilders.termsQuery(
 						propertyName + ".channelId",
-						Stream.of(
-							channelIds
-						).flatMap(
-							List::stream
-						).map(
-							String::valueOf
-						).collect(
-							Collectors.toList()
-						)),
+						ListUtil.map(channelIds, String::valueOf)),
 					ScoreMode.None));
 		}
 
@@ -367,16 +360,7 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 			processedCountMonitorConsumer, queueMonitorConsumer
 		).setQueryBuilder(
 			QueryBuilders.termsQuery(
-				"channelIds",
-				Stream.of(
-					channelIds
-				).flatMap(
-					List::stream
-				).map(
-					String::valueOf
-				).collect(
-					Collectors.toList()
-				))
+				"channelIds", ListUtil.map(channelIds, String::valueOf))
 		).iterate();
 	}
 
@@ -388,16 +372,7 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 			elasticsearchInvoker.delete(
 				collectionName,
 				QueryBuilders.termsQuery(
-					"channelId",
-					Stream.of(
-						channelIds
-					).flatMap(
-						List::stream
-					).map(
-						String::valueOf
-					).collect(
-						Collectors.toList()
-					)));
+					"channelId", ListUtil.map(channelIds, String::valueOf)));
 		}
 	}
 
@@ -412,16 +387,7 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 
 		boolQueryBuilder.should(
 			QueryBuilders.termsQuery(
-				"channelIds",
-				Stream.of(
-					channelIds
-				).flatMap(
-					List::stream
-				).map(
-					String::valueOf
-				).collect(
-					Collectors.toList()
-				)));
+				"channelIds", ListUtil.map(channelIds, String::valueOf)));
 
 		JSONArrayIterator.of(
 			"individuals", elasticsearchInvoker,

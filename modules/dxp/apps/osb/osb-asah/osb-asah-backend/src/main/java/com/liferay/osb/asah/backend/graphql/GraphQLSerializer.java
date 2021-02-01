@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
+import com.liferay.osb.asah.common.util.ListUtil;
+
 import graphql.ExecutionResult;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorHelper;
@@ -27,8 +29,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
@@ -50,15 +50,10 @@ public class GraphQLSerializer {
 		List<GraphQLError> graphQLErrors = executionResult.getErrors();
 
 		if ((graphQLErrors != null) && !graphQLErrors.isEmpty()) {
-			Stream<GraphQLError> stream = graphQLErrors.stream();
-
 			map.put(
 				"errors",
-				stream.map(
-					GraphqlErrorHelper::toSpecification
-				).collect(
-					Collectors.toList()
-				));
+				ListUtil.map(
+					graphQLErrors, GraphqlErrorHelper::toSpecification));
 		}
 
 		return _objectMapper.writeValueAsString(map);

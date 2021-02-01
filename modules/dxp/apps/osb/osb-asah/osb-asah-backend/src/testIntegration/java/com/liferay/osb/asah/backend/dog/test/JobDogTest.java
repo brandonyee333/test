@@ -28,6 +28,7 @@ import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -42,8 +43,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -336,13 +335,7 @@ public class JobDogTest {
 	private <R> List<R> _getJobRunsProperty(
 		List<JobRun> jobRuns, Function<JobRun, ? extends R> mapFunction) {
 
-		Stream<JobRun> stream = jobRuns.stream();
-
-		return stream.map(
-			mapFunction
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(jobRuns, mapFunction);
 	}
 
 	@Autowired

@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -36,8 +37,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -239,17 +238,10 @@ public class DataControlTaskDogTest {
 
 		Assert.assertEquals(expectedTotal, resultBag.getTotal());
 
-		List<DataControlTask> results = resultBag.getResults();
-
-		Stream<DataControlTask> stream = results.stream();
-
 		Assert.assertEquals(
 			expectedResults,
-			stream.map(
-				DataControlTask::getEmailAddress
-			).collect(
-				Collectors.toList()
-			));
+			ListUtil.map(
+				resultBag.getResults(), DataControlTask::getEmailAddress));
 	}
 
 	private static final Log _log = LogFactory.getLog(

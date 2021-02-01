@@ -23,6 +23,7 @@ import com.liferay.osb.asah.backend.model.GoalMetric;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.VariantMetrics;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import io.improbable.keanu.Keanu;
 import io.improbable.keanu.algorithms.NetworkSamples;
@@ -47,7 +48,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
@@ -69,13 +69,9 @@ public abstract class BaseExperimentMetricCalculator<T>
 			return null;
 		}
 
-		Stream<DXPVariantSettings> stream = dxpVariantsSettings.stream();
-
-		List<Variant<T>> variants = stream.map(
-			dxpVariantSettings -> mapVariant(dxpVariantSettings, experiment)
-		).collect(
-			Collectors.toList()
-		);
+		List<Variant<T>> variants = ListUtil.map(
+			dxpVariantsSettings,
+			dxpVariantSettings -> mapVariant(dxpVariantSettings, experiment));
 
 		for (Variant<T> variant : variants) {
 			if ((variant.getFailures() < 5) || (variant.getSuccesses() < 5)) {
@@ -184,13 +180,8 @@ public abstract class BaseExperimentMetricCalculator<T>
 			return Collections.emptyList();
 		}
 
-		Stream<DXPVariant> stream = dxpVariants.stream();
-
-		return stream.map(
-			dxpVariant -> mapVariant(dxpVariant, experiment)
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(
+			dxpVariants, dxpVariant -> mapVariant(dxpVariant, experiment));
 	}
 
 	protected abstract Variant<T> mapVariant(

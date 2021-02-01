@@ -18,13 +18,12 @@ import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.dto.PageDTO;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
 import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang.math.NumberUtils;
@@ -136,15 +135,7 @@ public class ChannelsRestController {
 	}
 
 	private List<ChannelDTO> _toChannelDTOs(List<Channel> channels) {
-		return Stream.of(
-			channels
-		).flatMap(
-			List::stream
-		).map(
-			ChannelDTO::new
-		).collect(
-			Collectors.toList()
-		);
+		return ListUtil.map(channels, ChannelDTO::new);
 	}
 
 	private PageDTO<ChannelDTO> _toPageDTO(Page<Channel> channels) {
