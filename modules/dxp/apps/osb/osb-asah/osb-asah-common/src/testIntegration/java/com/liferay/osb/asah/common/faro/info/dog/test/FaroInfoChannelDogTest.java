@@ -58,7 +58,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testAddChannelWithDuplicateName() {
-		Channel channel = _faroInfoChannelTest.addChannel("channel1");
+		Channel channel = _faroInfoChannelDog.addChannel("channel1");
 
 		Assert.assertEquals("channel1 (1)", channel.getName());
 	}
@@ -90,7 +90,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testDeleteChannels() throws Exception {
-		_faroInfoChannelTest.deleteChannels(Arrays.asList(1L, 3L), null, null);
+		_faroInfoChannelDog.deleteChannels(Arrays.asList(1L, 3L), null, null);
 
 		JSONArray assetsJSONArray = faroInfoElasticsearchInvoker.get("assets");
 
@@ -188,7 +188,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testGetChannelNamesByGroupIds() {
 		Map<Long, String> channelNames =
-			_faroInfoChannelTest.getChannelNamesByGroupIds(
+			_faroInfoChannelDog.getChannelNamesByGroupIds(
 				405201047787757795L, SetUtil.of(123L, 456L, 789L));
 
 		Assert.assertEquals(channelNames.toString(), 2, channelNames.size());
@@ -205,7 +205,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	public void testPatchChannelAddGroups() {
 		Long dataSourceId = RandomTestUtil.randomNumber();
 
-		_faroInfoChannelTest.patchChannel(
+		_faroInfoChannelDog.patchChannel(
 			1L, dataSourceId, SetUtil.of(456L, 789L), null);
 
 		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
@@ -242,9 +242,9 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	public void testPatchChannelName() {
 		String name = RandomTestUtil.randomString();
 
-		_faroInfoChannelTest.patchChannel(1L, null, null, name);
+		_faroInfoChannelDog.patchChannel(1L, null, null, name);
 
-		Channel channel = _faroInfoChannelTest.getChannel(1L);
+		Channel channel = _faroInfoChannelDog.getChannel(1L);
 
 		Assert.assertEquals(name, channel.getName());
 	}
@@ -255,10 +255,10 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testPatchChannelReplaceGroups() {
-		_faroInfoChannelTest.patchChannel(
+		_faroInfoChannelDog.patchChannel(
 			1L, 405201047787757795L, SetUtil.of(456L, 789L), null);
 
-		Channel channel = _faroInfoChannelTest.getChannel(1L);
+		Channel channel = _faroInfoChannelDog.getChannel(1L);
 
 		ChannelDataSource channelDataSource1 = _findFirstChannelDataSource(
 			405201047787757795L, channel.getChannelDataSources());
@@ -278,7 +278,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testPatchChannelWithDuplicateName() {
-		Channel channel = _faroInfoChannelTest.patchChannel(
+		Channel channel = _faroInfoChannelDog.patchChannel(
 			2L, null, null, "channel1");
 
 		Assert.assertEquals("channel1 (1)", channel.getName());
@@ -302,6 +302,6 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoChannelDog _faroInfoChannelTest;
+	private FaroInfoChannelDog _faroInfoChannelDog;
 
 }
