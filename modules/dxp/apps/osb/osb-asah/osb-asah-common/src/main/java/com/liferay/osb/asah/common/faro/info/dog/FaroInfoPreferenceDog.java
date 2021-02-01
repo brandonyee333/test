@@ -15,16 +15,13 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Preference;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.repository.PreferenceRepository;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONObject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,25 +31,25 @@ import org.springframework.stereotype.Component;
 public class FaroInfoPreferenceDog {
 
 	public Preference addPreference(String key, String value) {
-		return new Preference(
-			_faroInfoElasticsearchInvoker.add(
-				"preferences",
-				JSONUtil.put(
-					"id", key
-				).put(
-					"value", value
-				)));
+		Preference preference = new Preference();
+
+		preference.setKey(key);
+		preference.setValue(value);
+
+		return _preferenceRepository.save(preference);
 	}
 
 	public Preference getPreference(String key) {
-		JSONObject preferenceJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"preferences", key);
+		Preference preference = _preferenceRepository.findByKey(key);
 
-		if (preferenceJSONObject == null) {
-			return new Preference(key, _defaultPreferences.get(key));
+		if (preference == null) {
+			preference = new Preference();
+
+			preference.setKey(key);
+			preference.setValue(_defaultPreferences.get(key));
 		}
 
-		return new Preference(preferenceJSONObject);
+		return preference;
 	}
 
 	private static final Map<String, String> _defaultPreferences =
@@ -65,9 +62,7 @@ public class FaroInfoPreferenceDog {
 			}
 		};
 
-	@ElasticsearchInvoker.Autowired(
-		cacheable = true, value = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	@Autowired
+	private PreferenceRepository _preferenceRepository;
 
 }
