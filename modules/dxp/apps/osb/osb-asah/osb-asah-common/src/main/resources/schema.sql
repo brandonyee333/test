@@ -10,3 +10,9 @@ CREATE TABLE IF NOT EXISTS ChannelDataSource (
     groupIds BIGINT[],
     PRIMARY KEY (channelId, dataSourceId)
 );
+
+CREATE TABLE IF NOT EXISTS Preference (	
+    id BIGSERIAL PRIMARY KEY,
+    key TEXT UNIQUE,
+    value TEXT
+);
