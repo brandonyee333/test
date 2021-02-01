@@ -145,9 +145,7 @@ public class UserSessionFinalizerNanite implements Nanite {
 				break;
 			}
 
-			for (UserSession userSession : userSessions) {
-				_finalizeUserSessionArm.processSession(userSession);
-			}
+			_finalizeUserSessionArm.processSessions(userSessions);
 
 			if (_log.isInfoEnabled()) {
 				Class<?> clazz = getClass();

@@ -115,6 +115,14 @@ public class FinalizeUserSessionArm {
 			));
 	}
 
+	public void processSessions(UserSession[] userSessions) throws Exception {
+		for (UserSession userSession : userSessions) {
+			processSession(userSession);
+		}
+
+		_storage.flush();
+	}
+
 	public void reprocessSession(UserSession userSession) throws Exception {
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("sessionId", userSession.getId())
