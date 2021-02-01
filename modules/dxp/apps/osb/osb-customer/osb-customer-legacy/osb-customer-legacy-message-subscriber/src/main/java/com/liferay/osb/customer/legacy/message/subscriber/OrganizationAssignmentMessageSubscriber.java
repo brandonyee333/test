@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.legacy.message.subscriber;
 
+import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Organization;
@@ -38,6 +39,12 @@ public class OrganizationAssignmentMessageSubscriber
 		Organization organization = fetchOrganization(organizationJSONObject);
 
 		if (organization == null) {
+			return;
+		}
+
+		String name = organization.getName();
+
+		if (name.startsWith(EntitlementConstants.ORGANIZATION_NAME_PREFIX)) {
 			return;
 		}
 

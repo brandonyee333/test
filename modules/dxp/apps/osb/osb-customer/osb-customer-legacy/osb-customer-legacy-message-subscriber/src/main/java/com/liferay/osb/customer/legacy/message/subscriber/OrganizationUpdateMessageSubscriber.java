@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.legacy.message.subscriber;
 
+import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
@@ -36,16 +37,21 @@ public class OrganizationUpdateMessageSubscriber extends BaseMessageSubscriber {
 			return;
 		}
 
-		String name = jsonObject.getString("name");
+		String name = organization.getName();
+
+		if (name.startsWith(EntitlementConstants.ORGANIZATION_NAME_PREFIX)) {
+			return;
+		}
 
 		Group group = organization.getGroup();
 
 		organizationLocalService.updateOrganization(
 			organization.getCompanyId(), organization.getOrganizationId(),
-			organization.getParentOrganizationId(), name,
-			organization.getType(), organization.getRegionId(),
-			organization.getCountryId(), organization.getStatusId(),
-			organization.getComments(), true, null, group.isSite(), null);
+			organization.getParentOrganizationId(),
+			jsonObject.getString("name"), organization.getType(),
+			organization.getRegionId(), organization.getCountryId(),
+			organization.getStatusId(), organization.getComments(), true, null,
+			group.isSite(), null);
 	}
 
 }

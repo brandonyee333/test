@@ -16,6 +16,7 @@ package com.liferay.osb.customer.admin.internal.events;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.admin.constants.EntitlementConstants;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.legacy.web.service.LegacyWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
@@ -124,12 +125,18 @@ public class LoginPostAction extends Action {
 
 				_userLocalService.addOrganizationUser(
 					organization.getOrganizationId(), user.getUserId());
+
+				_userIdentityProvider.addOrganizationMembership(
+					organization.getOrganizationId(), user.getUserId());
 			}
 		}
 
 		for (Long organizationId : entitlementsMap.values()) {
 			_userLocalService.unsetOrganizationUsers(
 				organizationId, new long[] {user.getUserId()});
+
+			_userIdentityProvider.removeOrganizationMembership(
+				organizationId, user.getUserId());
 		}
 	}
 
@@ -169,17 +176,17 @@ public class LoginPostAction extends Action {
 
 		// Organizations
 
-		long[] newOrganizationIds = remoteUser.getOrganizationIds();
+		long[] webOrganizationIds = remoteUser.getOrganizationIds();
 
-		long[] oldOrganizationIds = user.getOrganizationIds();
+		long[] curOrganizationIds = user.getOrganizationIds();
 
-		for (long oldOrganizationId : oldOrganizationIds) {
-			if (ArrayUtil.contains(newOrganizationIds, oldOrganizationId)) {
+		for (long curOrganizationId : curOrganizationIds) {
+			if (ArrayUtil.contains(webOrganizationIds, curOrganizationId)) {
 				continue;
 			}
 
 			Organization organization =
-				_organizationLocalService.getOrganization(oldOrganizationId);
+				_organizationLocalService.getOrganization(curOrganizationId);
 
 			ExpandoBridge organizationExpandoBridge =
 				organization.getExpandoBridge();
@@ -191,14 +198,39 @@ public class LoginPostAction extends Action {
 				continue;
 			}
 
-			_userLocalService.unsetOrganizationUsers(
-				oldOrganizationId, new long[] {user.getUserId()});
+			String name = organization.getName();
+
+			if (name.startsWith(
+					EntitlementConstants.ORGANIZATION_NAME_PREFIX)) {
+
+				_userIdentityProvider.addOrganizationMembership(
+					organization.getOrganizationId(), user.getUserId());
+			}
+			else {
+				_userLocalService.unsetOrganizationUsers(
+					curOrganizationId, new long[] {user.getUserId()});
+			}
 		}
 
-		for (long newOrganizationId : newOrganizationIds) {
-			if (!ArrayUtil.contains(oldOrganizationIds, newOrganizationId)) {
+		for (long webOrganizationId : webOrganizationIds) {
+			if (ArrayUtil.contains(curOrganizationIds, webOrganizationId)) {
+				continue;
+			}
+
+			Organization organization =
+				_organizationLocalService.getOrganization(webOrganizationId);
+
+			String name = organization.getName();
+
+			if (name.startsWith(
+					EntitlementConstants.ORGANIZATION_NAME_PREFIX)) {
+
+				_userIdentityProvider.removeOrganizationMembership(
+					webOrganizationId, user.getUserId());
+			}
+			else {
 				_userLocalService.addOrganizationUsers(
-					newOrganizationId, new long[] {user.getUserId()});
+					webOrganizationId, new long[] {user.getUserId()});
 			}
 		}
 
@@ -253,6 +285,9 @@ public class LoginPostAction extends Action {
 
 	@Reference
 	private RoleLocalService _roleLocalService;
+
+	@Reference(target = "(provider=web)")
+	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
 	private UserLocalService _userLocalService;
