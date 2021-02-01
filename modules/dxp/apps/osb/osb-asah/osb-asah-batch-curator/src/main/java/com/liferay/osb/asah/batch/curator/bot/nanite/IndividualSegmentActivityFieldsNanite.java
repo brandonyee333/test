@@ -20,7 +20,10 @@ import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -81,7 +84,9 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 		}
 
 		try {
-			while (_analyticsConfigured) {
+			while (_analyticsConfigured.getOrDefault(
+						ProjectIdThreadLocal.getProjectId(), false)) {
+
 				run();
 
 				Thread.sleep(DateUtil.MINUTE);
@@ -95,7 +100,8 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	}
 
 	public void setAnalyticsConfigured(boolean analyticsConfigured) {
-		_analyticsConfigured = analyticsConfigured;
+		_analyticsConfigured.put(
+			ProjectIdThreadLocal.getProjectId(), analyticsConfigured);
 	}
 
 	@Override
@@ -305,7 +311,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	private static final Log _log = LogFactory.getLog(
 		IndividualSegmentActivityFieldsNanite.class);
 
-	private boolean _analyticsConfigured;
+	private final Map<String, Boolean> _analyticsConfigured = new HashMap<>();
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
