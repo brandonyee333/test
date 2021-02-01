@@ -17,6 +17,8 @@ package com.liferay.osb.asah.common.faro.info.dog.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -25,8 +27,9 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import org.hamcrest.Matchers;
 
@@ -55,10 +58,9 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testAddChannelWithDuplicateName() {
-		JSONObject channelJSONObject = _faroInfoChannelTest.addChannel(
-			Collections.emptyList(), "channel1");
+		Channel channel = _faroInfoChannelTest.addChannel("channel1");
 
-		Assert.assertEquals("channel1 (1)", channelJSONObject.get("name"));
+		Assert.assertEquals("channel1 (1)", channel.getName());
 	}
 
 	@ElasticsearchIndex(
@@ -88,8 +90,7 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testDeleteChannels() throws Exception {
-		_faroInfoChannelTest.deleteChannels(
-			Arrays.asList("1", "3"), null, null);
+		_faroInfoChannelTest.deleteChannels(Arrays.asList(1L, 3L), null, null);
 
 		JSONArray assetsJSONArray = faroInfoElasticsearchInvoker.get("assets");
 
@@ -186,14 +187,14 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testGetChannelNamesByGroupIds() {
-		Map<String, String> channelNames =
+		Map<Long, String> channelNames =
 			_faroInfoChannelTest.getChannelNamesByGroupIds(
-				"405201047787757795", SetUtil.of("123", "456", "789"));
+				405201047787757795L, SetUtil.of(123L, 456L, 789L));
 
 		Assert.assertEquals(channelNames.toString(), 2, channelNames.size());
-		Assert.assertEquals("channel1", channelNames.get("123"));
-		Assert.assertEquals("channel2", channelNames.get("456"));
-		Assert.assertNull(channelNames.get("789"));
+		Assert.assertEquals("channel1", channelNames.get(123L));
+		Assert.assertEquals("channel2", channelNames.get(456L));
+		Assert.assertNull(channelNames.get(789L));
 	}
 
 	@ElasticsearchIndex(
@@ -202,17 +203,10 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testPatchChannelAddGroups() {
-		String dataSourceId = RandomTestUtil.randomId();
+		Long dataSourceId = RandomTestUtil.randomNumber();
 
 		_faroInfoChannelTest.patchChannel(
-			"1",
-			JSONUtil.put(
-				"dataSourceId", dataSourceId
-			).put(
-				"groups",
-				JSONUtil.putAll(
-					JSONUtil.put("id", "456"), JSONUtil.put("id", "789"))
-			));
+			1L, dataSourceId, SetUtil.of(456L, 789L), null);
 
 		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
 			"channels", "1");
@@ -248,12 +242,11 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	public void testPatchChannelName() {
 		String name = RandomTestUtil.randomString();
 
-		_faroInfoChannelTest.patchChannel("1", JSONUtil.put("name", name));
+		_faroInfoChannelTest.patchChannel(1L, null, null, name);
 
-		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
-			"channels", "1");
+		Channel channel = _faroInfoChannelTest.getChannel(1L);
 
-		Assert.assertEquals(name, channelJSONObject.getString("name"));
+		Assert.assertEquals(name, channel.getName());
 	}
 
 	@ElasticsearchIndex(
@@ -263,36 +256,20 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testPatchChannelReplaceGroups() {
 		_faroInfoChannelTest.patchChannel(
-			"1",
-			JSONUtil.put(
-				"dataSourceId", "405201047787757795"
-			).put(
-				"groups",
-				JSONUtil.putAll(
-					JSONUtil.put("id", "456"), JSONUtil.put("id", "789"))
-			));
+			1L, 405201047787757795L, SetUtil.of(456L, 789L), null);
 
-		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
-			"channels", "1");
+		Channel channel = _faroInfoChannelTest.getChannel(1L);
 
-		JSONAssert.assertEquals(
-			JSONUtil.put(
-				"dataSources",
-				JSONUtil.putAll(
-					JSONUtil.put(
-						"groupIds", JSONUtil.putAll("456", "789")
-					).put(
-						"id", "405201047787757795"
-					),
-					JSONUtil.put(
-						"groupIds", JSONUtil.put("000")
-					).put(
-						"id", "402135416847684684"
-					))
-			).put(
-				"name", "channel1"
-			),
-			channelJSONObject, false);
+		ChannelDataSource channelDataSource1 = _findFirstChannelDataSource(
+			405201047787757795L, channel.getChannelDataSources());
+
+		Assert.assertEquals(
+			SetUtil.of(456L, 789L), channelDataSource1.getGroupIds());
+
+		ChannelDataSource channelDataSource2 = _findFirstChannelDataSource(
+			402135416847684684L, channel.getChannelDataSources());
+
+		Assert.assertEquals(SetUtil.of(0L), channelDataSource2.getGroupIds());
 	}
 
 	@ElasticsearchIndex(
@@ -301,12 +278,24 @@ public class FaroInfoChannelDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testPatchChannelWithDuplicateName() {
-		JSONObject patchJSONObject = _faroInfoChannelTest.patchChannel(
-			"2", JSONUtil.put("name", "channel1"));
+		Channel channel = _faroInfoChannelTest.patchChannel(
+			2L, null, null, "channel1");
 
-		JSONObject channelJSONObject = patchJSONObject.getJSONObject("channel");
+		Assert.assertEquals("channel1 (1)", channel.getName());
+	}
 
-		Assert.assertEquals("channel1 (1)", channelJSONObject.get("name"));
+	private ChannelDataSource _findFirstChannelDataSource(
+		Long dataSourceId, Set<ChannelDataSource> channelDataSources) {
+
+		for (ChannelDataSource channelDataSource : channelDataSources) {
+			if (Objects.equals(
+					channelDataSource.getDataSourceId(), dataSourceId)) {
+
+				return channelDataSource;
+			}
+		}
+
+		return null;
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)

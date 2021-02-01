@@ -37,7 +37,9 @@ public class RandomTestUtil {
 	}
 
 	public static String randomId() {
-		return RandomStringUtils.randomAlphabetic(4);
+		Long id = Long.parseLong(RandomStringUtils.randomNumeric(4));
+
+		return id.toString();
 	}
 
 	public static String randomMultipleWordString(

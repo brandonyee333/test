@@ -85,7 +85,7 @@ public class DataSourceDogTest {
 
 		DataSource dataSource = dataSources.get(0);
 
-		Assert.assertEquals("400", dataSource.getId());
+		Assert.assertEquals(Long.valueOf(400), dataSource.getId());
 		Assert.assertEquals("Liferay 3", dataSource.getName());
 		Assert.assertEquals("http://portal:8083", dataSource.getURL());
 	}

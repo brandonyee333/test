@@ -20,7 +20,9 @@ import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -73,8 +75,9 @@ public class ChannelsRestControllerTest {
 				String.valueOf(channelJSONObject));
 		}
 
-		JSONObject channelsJSONObject = new JSONObject(
-			_channelsRestController.getChannels(null, 0, 20, null));
+		JSONObject channelsJSONObject = ObjectMapperUtil.convertValue(
+			_channelsRestController.getChannels(null, 0, 20, null),
+			JSONObject.class);
 
 		JSONArray channelsJSONArray = (JSONArray)channelsJSONObject.query(
 			"/_embedded/channels");
@@ -104,8 +107,9 @@ public class ChannelsRestControllerTest {
 	)
 	@Test
 	public void testGetChannels() throws Exception {
-		JSONObject channelsJSONObject = new JSONObject(
-			_channelsRestController.getChannels(null, 0, 20, null));
+		JSONObject channelsJSONObject = ObjectMapperUtil.convertValue(
+			_channelsRestController.getChannels(null, 0, 20, null),
+			JSONObject.class);
 
 		JSONArray channelsJSONArray = (JSONArray)channelsJSONObject.query(
 			"/_embedded/channels");
@@ -120,7 +124,7 @@ public class ChannelsRestControllerTest {
 		).when(
 			_channelHttp
 		).addChannel(
-			Mockito.any(JSONObject.class)
+			Mockito.any(Channel.class)
 		);
 
 		try {
@@ -158,11 +162,12 @@ public class ChannelsRestControllerTest {
 	public void testPatchChannelExistingDataSource() {
 		String dataSourceId = "351238757269547424";
 
-		JSONArray channelsJSONArray = new JSONArray(
+		JSONArray channelsJSONArray = ObjectMapperUtil.convertValue(
 			_channelsRestController.postChannels(
 				String.valueOf(
 					FaroInfoTestUtil.buildChannelJSONObject(
-						dataSourceId, "combined"))));
+						dataSourceId, "combined"))),
+			JSONArray.class);
 
 		JSONObject channelJSONObject = channelsJSONArray.getJSONObject(0);
 
@@ -180,10 +185,11 @@ public class ChannelsRestControllerTest {
 				))
 		);
 
-		JSONObject responseJSONObject = new JSONObject(
+		JSONObject responseJSONObject = ObjectMapperUtil.convertValue(
 			_channelsRestController.patchChannel(
 				channelJSONObject.getString("id"),
-				inputChannelJSONObject.toString()));
+				inputChannelJSONObject.toString()),
+			JSONObject.class);
 
 		JSONObject actualChannelJSONObject = responseJSONObject.getJSONObject(
 			"channel");
@@ -220,9 +226,10 @@ public class ChannelsRestControllerTest {
 				))
 		);
 
-		JSONObject responseJSONObject = new JSONObject(
+		JSONObject responseJSONObject = ObjectMapperUtil.convertValue(
 			_channelsRestController.patchChannel(
-				"123456789", inputChannelJSONObject.toString()));
+				"123456789", inputChannelJSONObject.toString()),
+			JSONObject.class);
 
 		JSONObject actualChannelJSONObject = responseJSONObject.getJSONObject(
 			"channel");
@@ -261,9 +268,10 @@ public class ChannelsRestControllerTest {
 
 		JSONObject inputChannelJSONObject = JSONUtil.put("name", randomName);
 
-		JSONObject responseJSONObject = new JSONObject(
+		JSONObject responseJSONObject = ObjectMapperUtil.convertValue(
 			_channelsRestController.patchChannel(
-				"123456789", inputChannelJSONObject.toString()));
+				"123456789", inputChannelJSONObject.toString()),
+			JSONObject.class);
 
 		JSONObject actualChannelJSONObject = responseJSONObject.getJSONObject(
 			"channel");
@@ -290,7 +298,7 @@ public class ChannelsRestControllerTest {
 		Mockito.verify(
 			_channelHttp, Mockito.times(2)
 		).addChannel(
-			Mockito.any(JSONObject.class)
+			Mockito.any(Channel.class)
 		);
 	}
 
@@ -312,7 +320,7 @@ public class ChannelsRestControllerTest {
 		Mockito.verify(
 			_channelHttp, Mockito.times(3)
 		).addChannel(
-			Mockito.any(JSONObject.class)
+			Mockito.any(Channel.class)
 		);
 	}
 
@@ -334,9 +342,10 @@ public class ChannelsRestControllerTest {
 				))
 		);
 
-		JSONObject responseJSONObject = new JSONObject(
+		JSONObject responseJSONObject = ObjectMapperUtil.convertValue(
 			_channelsRestController.patchChannel(
-				"4324324324", inputChannelJSONObject.toString()));
+				"4324324324", inputChannelJSONObject.toString()),
+			JSONObject.class);
 
 		JSONArray removedGroupIdsJSONArray = responseJSONObject.optJSONArray(
 			"removedGroupIds");
