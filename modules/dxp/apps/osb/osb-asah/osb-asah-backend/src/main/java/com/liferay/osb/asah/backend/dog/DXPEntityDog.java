@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.model.DXPEntity;
 import com.liferay.osb.asah.backend.model.Organization;
 import com.liferay.osb.asah.backend.model.User;
-import com.liferay.osb.asah.common.dog.FaroInfoChannelDog;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
@@ -73,8 +73,7 @@ public class DXPEntityDog {
 				return _createResultBag(this::_mapDXPEntity, searchHits);
 			}
 
-			Channel channel = _faroInfoChannelDog.fetchChannel(
-				Long.valueOf(channelId));
+			Channel channel = _channelDog.fetchChannel(Long.valueOf(channelId));
 
 			if (channel == null) {
 				return _createResultBag(this::_mapDXPEntity, searchHits);
@@ -122,8 +121,7 @@ public class DXPEntityDog {
 				return _createResultBag(this::_mapDXPUser, searchHits);
 			}
 
-			Channel channel = _faroInfoChannelDog.fetchChannel(
-				Long.valueOf(channelId));
+			Channel channel = _channelDog.fetchChannel(Long.valueOf(channelId));
 
 			if (channel == null) {
 				return _createResultBag(this::_mapDXPUser, searchHits);
@@ -304,13 +302,13 @@ public class DXPEntityDog {
 	}
 
 	@Autowired
+	private ChannelDog _channelDog;
+
+	@Autowired
 	private DataDog _dataDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoChannelDog _faroInfoChannelDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

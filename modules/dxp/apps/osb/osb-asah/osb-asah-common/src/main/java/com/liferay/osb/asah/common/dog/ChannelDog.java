@@ -65,7 +65,7 @@ import org.springframework.stereotype.Component;
  * @author Geyson Silva
  */
 @Component
-public class FaroInfoChannelDog extends BaseFaroInfoDog {
+public class ChannelDog extends BaseFaroInfoDog {
 
 	public Channel addChannel(
 		Map<Long, Set<Long>> dataSources, String name, boolean updateFaro) {
@@ -564,7 +564,7 @@ public class FaroInfoChannelDog extends BaseFaroInfoDog {
 
 	private static final String _CHANNEL_TYPE_MULTIPLE = "multiple";
 
-	private static final Log _log = LogFactory.getLog(FaroInfoChannelDog.class);
+	private static final Log _log = LogFactory.getLog(ChannelDog.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

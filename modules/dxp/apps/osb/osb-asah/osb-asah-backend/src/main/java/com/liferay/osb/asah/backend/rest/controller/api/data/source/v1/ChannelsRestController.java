@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
-import com.liferay.osb.asah.common.dog.FaroInfoChannelDog;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.dto.PageDTO;
 import com.liferay.osb.asah.common.model.Channel;
@@ -61,7 +61,7 @@ public class ChannelsRestController {
 		throws Exception {
 
 		return _toPageDTO(
-			_faroInfoChannelDog.getChannels(filterString, page, size, sorts));
+			_channelDog.getChannels(filterString, page, size, sorts));
 	}
 
 	@PatchMapping("/{id}")
@@ -82,13 +82,13 @@ public class ChannelsRestController {
 			}
 		}
 
-		Set<Long> removedGroupIds = _faroInfoChannelDog.getRemovedGroupIds(
+		Set<Long> removedGroupIds = _channelDog.getRemovedGroupIds(
 			Long.valueOf(id),
 			NumberUtils.createLong(jsonObject.optString("dataSourceId", null)),
 			groupIds);
 
 		return new ChannelDTO(
-			_faroInfoChannelDog.patchChannel(
+			_channelDog.patchChannel(
 				Long.valueOf(id),
 				NumberUtils.createLong(
 					jsonObject.optString("dataSourceId", null)),
@@ -113,7 +113,7 @@ public class ChannelsRestController {
 		}
 
 		return _toChannelDTOs(
-			_faroInfoChannelDog.addChannels(
+			_channelDog.addChannels(
 				channelNamesByGroupIds, jsonObject.getString("channelType"),
 				Long.valueOf(jsonObject.getString("dataSourceId"))));
 	}
@@ -130,7 +130,7 @@ public class ChannelsRestController {
 			groupIds.add(Long.valueOf(groupIdsJSONArray.getString(i)));
 		}
 
-		return _faroInfoChannelDog.getChannelNamesByGroupIds(
+		return _channelDog.getChannelNamesByGroupIds(
 			Long.valueOf(groupsJSONObject.getString("dataSourceId")), groupIds);
 	}
 
@@ -146,6 +146,6 @@ public class ChannelsRestController {
 	}
 
 	@Autowired
-	private FaroInfoChannelDog _faroInfoChannelDog;
+	private ChannelDog _channelDog;
 
 }

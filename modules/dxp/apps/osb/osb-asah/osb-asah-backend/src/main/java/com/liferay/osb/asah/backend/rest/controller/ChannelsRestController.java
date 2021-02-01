@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dog.DataSourceDog;
 import com.liferay.osb.asah.backend.model.DataSource;
-import com.liferay.osb.asah.common.dog.FaroInfoChannelDog;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.dto.PageDTO;
@@ -77,7 +77,7 @@ public class ChannelsRestController extends BaseRestController {
 			@RequestParam(required = false) String expand)
 		throws Exception {
 
-		Channel channel = _faroInfoChannelDog.getChannel(Long.valueOf(id));
+		Channel channel = _channelDog.getChannel(Long.valueOf(id));
 
 		if (StringUtils.isEmpty(expand)) {
 			return new ChannelDTO(channel);
@@ -107,7 +107,7 @@ public class ChannelsRestController extends BaseRestController {
 		throws Exception {
 
 		return _toPageDTO(
-			_faroInfoChannelDog.getChannels(filterString, page, size, sorts));
+			_channelDog.getChannels(filterString, page, size, sorts));
 	}
 
 	@PatchMapping("/{id}")
@@ -128,13 +128,13 @@ public class ChannelsRestController extends BaseRestController {
 			}
 		}
 
-		Set<Long> removedGroupIds = _faroInfoChannelDog.getRemovedGroupIds(
+		Set<Long> removedGroupIds = _channelDog.getRemovedGroupIds(
 			Long.valueOf(id),
 			NumberUtils.createLong(jsonObject.optString("dataSourceId", null)),
 			groupIds);
 
 		return new ChannelDTO(
-			_faroInfoChannelDog.patchChannel(
+			_channelDog.patchChannel(
 				Long.valueOf(id),
 				NumberUtils.createLong(
 					jsonObject.optString("dataSourceId", null)),
@@ -147,7 +147,7 @@ public class ChannelsRestController extends BaseRestController {
 		JSONObject jsonObject = new JSONObject(json);
 
 		return new ChannelDTO(
-			_faroInfoChannelDog.addChannel(jsonObject.getString("name")));
+			_channelDog.addChannel(jsonObject.getString("name")));
 	}
 
 	private PageDTO<ChannelDTO> _toPageDTO(Page<Channel> channels) {
@@ -158,10 +158,10 @@ public class ChannelsRestController extends BaseRestController {
 	}
 
 	@Autowired
-	private DataSourceDog _dataSourceDog;
+	private ChannelDog _channelDog;
 
 	@Autowired
-	private FaroInfoChannelDog _faroInfoChannelDog;
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;

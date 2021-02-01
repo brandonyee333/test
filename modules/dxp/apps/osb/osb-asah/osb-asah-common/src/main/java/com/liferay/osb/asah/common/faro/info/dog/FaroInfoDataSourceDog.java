@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
-import com.liferay.osb.asah.common.dog.FaroInfoChannelDog;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -366,7 +366,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 	}
 
 	private void _addDefaultChannel(JSONObject dataSourceJSONObject) {
-		Channel channel = _faroInfoChannelDog.addChannel(
+		Channel channel = _channelDog.addChannel(
 			Collections.singletonMap(
 				Long.valueOf(dataSourceJSONObject.getString("id")),
 				Collections.emptySet()),
@@ -377,7 +377,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 	private void _clearChannels(String dataSourceId) {
 		for (Channel channel :
-				_faroInfoChannelDog.getChannels(Long.valueOf(dataSourceId))) {
+				_channelDog.getChannels(Long.valueOf(dataSourceId))) {
 
 			Set<ChannelDataSource> channelDataSources = Stream.of(
 				channel
@@ -395,7 +395,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 			channel.setChannelDataSources(channelDataSources);
 
-			_faroInfoChannelDog.update(channel);
+			_channelDog.update(channel);
 		}
 	}
 
@@ -681,6 +681,9 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		FaroInfoDataSourceDog.class);
 
 	@Autowired
+	private ChannelDog _channelDog;
+
+	@Autowired
 	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
@@ -688,9 +691,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoAccountDog _faroInfoAccountDog;
-
-	@Autowired
-	private FaroInfoChannelDog _faroInfoChannelDog;
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;

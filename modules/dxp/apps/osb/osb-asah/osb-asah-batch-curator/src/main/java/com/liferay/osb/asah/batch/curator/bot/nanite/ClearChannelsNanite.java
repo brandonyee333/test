@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.common.dog.FaroInfoChannelDog;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 
@@ -35,7 +35,7 @@ public class ClearChannelsNanite extends BaseNanite {
 	@CacheEvict(evictAll = true)
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		_faroInfoChannelDog.clearChannels(
+		_channelDog.clearChannels(
 			JSONUtil.toLongList(contextJSONObject.getJSONArray("channelIds")),
 			this::monitorProcessedCount, this::monitorQueueSize);
 	}
@@ -46,6 +46,6 @@ public class ClearChannelsNanite extends BaseNanite {
 	}
 
 	@Autowired
-	private FaroInfoChannelDog _faroInfoChannelDog;
+	private ChannelDog _channelDog;
 
 }

@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.FaroInfoChannelDog;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
@@ -79,7 +79,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	public void assignChannel(String channelId, String individualSegmentId)
 		throws Exception {
 
-		_faroInfoChannelDog.getChannel(Long.valueOf(channelId));
+		_channelDog.getChannel(Long.valueOf(channelId));
 
 		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
 			"individual-segments", individualSegmentId);
@@ -896,14 +896,14 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		"individualCount", "lastActivityDate"
 	};
 
+	@Autowired
+	private ChannelDog _channelDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
 	private FaroInfoAccountDog _faroInfoAccountDog;
-
-	@Autowired
-	private FaroInfoChannelDog _faroInfoChannelDog;
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
