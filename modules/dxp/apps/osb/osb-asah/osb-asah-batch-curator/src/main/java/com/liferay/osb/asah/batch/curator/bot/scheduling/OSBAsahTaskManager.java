@@ -40,6 +40,7 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ClassUtils;
 
 /**
  * @author André Miranda
@@ -113,7 +114,7 @@ public class OSBAsahTaskManager {
 		for (Nanite nanite : _nanites) {
 			Class<?> clazz = nanite.getClass();
 
-			_nanitesMap.put(clazz.getSimpleName(), nanite);
+			_nanitesMap.put(ClassUtils.getShortName(clazz), nanite);
 		}
 	}
 
