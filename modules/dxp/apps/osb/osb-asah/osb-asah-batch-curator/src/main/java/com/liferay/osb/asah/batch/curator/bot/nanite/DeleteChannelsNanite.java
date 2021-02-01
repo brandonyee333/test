@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoChannelDog;
+import com.liferay.osb.asah.common.dog.FaroInfoChannelDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import org.apache.commons.logging.Log;
