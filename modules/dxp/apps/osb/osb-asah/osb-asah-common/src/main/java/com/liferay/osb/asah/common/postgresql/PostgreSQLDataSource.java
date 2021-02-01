@@ -22,6 +22,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.sql.DataSource;
 
@@ -85,7 +86,13 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
 		hikariDataSource.setConnectionInitSql(
 			"CREATE SCHEMA IF NOT EXISTS " + dataSource);
+		hikariDataSource.setConnectionTimeout(TimeUnit.SECONDS.toMillis(30));
+		hikariDataSource.setIdleTimeout(TimeUnit.SECONDS.toMillis(60));
 		hikariDataSource.setJdbcUrl(_buildJdbcUrl(dataSource));
+		hikariDataSource.setLeakDetectionThreshold(
+			TimeUnit.SECONDS.toMillis(20));
+		hikariDataSource.setMaximumPoolSize(10);
+		hikariDataSource.setMaxLifetime(TimeUnit.SECONDS.toMillis(120));
 		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
 
