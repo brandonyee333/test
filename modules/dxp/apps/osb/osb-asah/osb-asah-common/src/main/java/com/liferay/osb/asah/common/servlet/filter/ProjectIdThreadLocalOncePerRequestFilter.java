@@ -64,6 +64,7 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 		}
 
 		if (!Objects.equals(projectId, ServiceConstants.LCP_PROJECT_ID) &&
+			!ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED &&
 			_log.isWarnEnabled()) {
 
 			_log.warn(
