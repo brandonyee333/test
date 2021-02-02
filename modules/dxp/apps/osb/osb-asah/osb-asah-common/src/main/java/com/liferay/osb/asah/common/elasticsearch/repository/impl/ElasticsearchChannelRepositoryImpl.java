@@ -295,9 +295,9 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 		}
 
 		JSONObject channelJSONObject = JSONUtil.put(
-			"createDate", DateUtil.toUTCString(channel.getCreateDate())
-		).put(
 			"dataSources", dataSourceJSONObjects
+		).put(
+			"dateCreated", DateUtil.toUTCString(channel.getCreateDate())
 		).put(
 			"name", channel.getName()
 		);
@@ -340,7 +340,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 
 		try {
 			channel.setCreateDate(
-				DateUtil.toUTCDate(channelJSONObject.getString("createDate")));
+				DateUtil.toUTCDate(channelJSONObject.getString("dateCreated")));
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
