@@ -43,11 +43,121 @@ class AnalyticsEventsDataFrameProcessor(object):
 
 class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
+	def _deduplicate_ratings_events(self, filtered_analytics_events_data_frame):
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'applicationId', 'sessionId', 'eventId',
+			'assetId'
+		)
+
+		data_frame = filtered_analytics_events_data_frame.withColumn(
+			'row_number',
+			F.row_number().over(window.orderBy(F.desc('eventDate')))
+		)
+
+		return data_frame.filter(
+			"(applicationId = 'Ratings' AND row_number = 1) OR " \
+			"(applicationId != 'Ratings')"
+		).drop(
+			'row_number'
+		)
+
 	def _filter(self, analytics_events_data_frame):
-		pass
+		return analytics_events_data_frame.filter(
+			"""
+				(
+					(
+						(applicationId = 'Comment') AND 
+						(eventId = 'posted') AND 
+						(eventProperties.className = '{class_name}') AND
+						(eventProperties.classPK != '')
+					) OR
+					(
+						(applicationId = 'Blog') AND 
+						(
+							(eventId = 'blogClicked') OR
+							(eventId = 'blogDepthReached') OR
+							(eventId = 'blogViewed')
+						) AND 
+						( 
+							(eventProperties.entryId != '')
+						)
+					) OR 
+					(
+						(applicationId = 'Ratings') AND 
+						(eventId = 'VOTE') AND
+						(eventProperties.className = '{class_name}') AND
+						(eventProperties.classPK != '') AND
+						(
+							(eventProperties.ratingType IS NULL) OR
+							(eventProperties.ratingType = 'stars')
+						)
+					)
+				)	
+			""".format(
+				class_name = 'com.liferay.blogs.model.BlogsEntry'
+			)
+		)
 
 	def _process(self, filtered_analytics_events_data_frame):
-		pass
+		data_frame = filtered_analytics_events_data_frame.withColumn(
+			'assetId',
+			F.when(
+				F.col('eventId').isin('posted', 'VOTE'),
+				F.col('eventProperties.classPK')
+			).otherwise(
+				F.col('eventProperties.entryId')
+			)
+		)
+
+		data_frame = self._deduplicate_ratings_events(data_frame)
+
+		data_frame.withColumn(
+			'clicks',
+			F.when(
+				F.col('eventId') == 'blogClicked', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'comments',
+			F.when(
+				F.col('eventId') == 'posted', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'primaryKey',
+			F.sha2(
+				F.concat_ws(
+					"#", F.col('projectId'), F.col('assetId'),
+					F.col('channelId'), F.col('eventDate'), F.col('userId'),
+					F.col('variantId')
+				),
+				256
+			)
+		).withColumn(
+			'ratings',
+			F.when(
+				F.col('eventId') == 'VOTE', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'ratingsScore',
+			F.when(
+				F.col('eventId') == 'VOTE',
+				F.col('eventProperties.score').cast('float')
+			).otherwise(
+				F.lit(0.0)
+			)
+		).withColumn(
+			'views',
+			F.when(
+				F.col('eventId') == 'blogViewed', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		)
 
 class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
