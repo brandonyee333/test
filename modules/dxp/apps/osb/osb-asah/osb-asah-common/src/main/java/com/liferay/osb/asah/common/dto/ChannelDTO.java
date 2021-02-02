@@ -38,7 +38,7 @@ public class ChannelDTO {
 		_channelDataSourceDTOs = SetUtil.map(
 			channel.getChannelDataSources(), ChannelDataSourceDTO::new);
 		_createDate = channel.getCreateDate();
-		_id = channel.getId();
+		_id = String.valueOf(channel.getId());
 		_name = channel.getName();
 	}
 
@@ -53,7 +53,7 @@ public class ChannelDTO {
 	public ChannelDTO(Channel channel, Set<Long> removedGroupIds) {
 		_channelDTO = new ChannelDTO(channel);
 
-		_removedGroupIds = removedGroupIds;
+		_removedGroupIds = SetUtil.map(removedGroupIds, String::valueOf);
 	}
 
 	public ChannelDTO(List<Channel> channels) {
@@ -90,7 +90,7 @@ public class ChannelDTO {
 	}
 
 	@JsonProperty("id")
-	public Long getId() {
+	public String getId() {
 		return _id;
 	}
 
@@ -100,7 +100,7 @@ public class ChannelDTO {
 	}
 
 	@JsonProperty("removedGroupIds")
-	public Set<Long> getRemovedGroupIds() {
+	public Set<String> getRemovedGroupIds() {
 		return _removedGroupIds;
 	}
 
@@ -108,30 +108,31 @@ public class ChannelDTO {
 	public static class ChannelDataSourceDTO {
 
 		public ChannelDataSourceDTO(ChannelDataSource channelDataSource) {
-			_dataSourceId = channelDataSource.getDataSourceId();
-			_groupIds = channelDataSource.getGroupIds();
+			_dataSourceId = String.valueOf(channelDataSource.getDataSourceId());
+			_groupIds = SetUtil.map(
+				channelDataSource.getGroupIds(), String::valueOf);
 		}
 
 		@JsonProperty("id")
-		public Long getDataSourceId() {
+		public String getDataSourceId() {
 			return _dataSourceId;
 		}
 
 		@JsonProperty("groupIds")
-		public Set<Long> getGroupIds() {
+		public Set<String> getGroupIds() {
 			return _groupIds;
 		}
 
-		public void setDataSourceId(Long dataSourceId) {
+		public void setDataSourceId(String dataSourceId) {
 			_dataSourceId = dataSourceId;
 		}
 
-		public void setGroupIds(Set<Long> groupIds) {
+		public void setGroupIds(Set<String> groupIds) {
 			_groupIds = groupIds;
 		}
 
-		private Long _dataSourceId;
-		private Set<Long> _groupIds;
+		private String _dataSourceId;
+		private Set<String> _groupIds;
 
 	}
 
@@ -140,8 +141,8 @@ public class ChannelDTO {
 	private Set<ChannelDTO> _channelDTOs;
 	private Date _createDate;
 	private Map<String, Set<DataSourceDTO>> _dataSourceDTOs;
-	private Long _id;
+	private String _id;
 	private String _name;
-	private Set<Long> _removedGroupIds;
+	private Set<String> _removedGroupIds;
 
 }
