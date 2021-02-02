@@ -28,7 +28,7 @@ import org.springframework.context.annotation.FilterType;
 	basePackages = {
 		"com.liferay.osb.asah.common.configuration",
 		"com.liferay.osb.asah.common.date.dog",
-		"com.liferay.osb.asah.common.dxp",
+		"com.liferay.osb.asah.common.dog", "com.liferay.osb.asah.common.dxp",
 		"com.liferay.osb.asah.common.elasticsearch",
 		"com.liferay.osb.asah.common.faro.info",
 		"com.liferay.osb.asah.common.http",
