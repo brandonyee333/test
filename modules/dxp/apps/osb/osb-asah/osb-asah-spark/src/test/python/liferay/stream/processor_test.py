@@ -25,6 +25,43 @@ def document_library_data_frame_processor(spark_application):
 def journal_data_frame_processor(spark_application):
 	return JournalDataFrameProcessor(0, CuratorSparkJob(spark_application))
 
+def test_document_library_data_frame_processor_deduplicate_ratings_events(
+	 document_library_data_frame_processor, spark_session
+):
+	columns = [
+		'projectId', 'channelId', 'applicationId', 'sessionId', 'eventId',
+		'eventDate', 'assetId'
+	]
+	rows = [
+		(
+			'a', 'c1', 'Ratings', '1', 'VOTE', '2019-04-23T16:00:00.000Z', '1'
+		),
+		(
+			'a', 'c1', 'Ratings', '1', 'VOTE', '2019-04-23T16:01:00.000Z', '1'
+		),
+		(
+			'a', 'c1', 'Ratings', '1', 'VOTE', '2019-04-23T16:02:00.000Z', '2'
+		),
+		(
+			'a', 'c1', 'Comment', '1', 'posted', '2019-04-23T16:00:00.000Z', '1'
+		),
+		(
+			'a', 'c1', 'Comment', '1', 'posted', '2019-04-23T16:01:00.000Z', '1'
+		),
+		(
+			'b', 'c1', 'Comment', '1', 'posted', '2019-04-23T16:02:00.000Z', '1'
+		)
+	]
+
+	actual_data_frame = \
+		document_library_data_frame_processor._deduplicate_ratings_events(
+			spark_session.createDataFrame(rows, columns)
+		)
+
+	actual_data_frame_rows = actual_data_frame.collect()
+
+	assert len(actual_data_frame_rows) == 5
+
 def test_document_library_data_frame_processor_filter(
 	 document_library_data_frame_processor, spark_session
 ):
@@ -86,7 +123,6 @@ def test_document_library_data_frame_processor_filter(
 				"ratingType": "thumbs"
 			}
 		)
-
 	]
 
 	actual_data_frame = document_library_data_frame_processor._filter(
