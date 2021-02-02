@@ -41,6 +41,14 @@ class AnalyticsEventsDataFrameProcessor(object):
 			self._process(self._filter(analytics_events_data_frame))
 		)
 
+class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
+
+	def _filter(self, analytics_events_data_frame):
+		pass
+
+	def _process(self, filtered_analytics_events_data_frame):
+		pass
+
 class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 	def _deduplicate_ratings_events(self, filtered_analytics_events_data_frame):
