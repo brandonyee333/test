@@ -9,7 +9,8 @@
 # distribution rights of the Software.
 #
 
-from pyspark.sql import functions as F
+from pyspark.sql import Window, \
+	functions as F
 
 class AnalyticsEventsDataFrameProcessor(object):
 
@@ -41,6 +42,24 @@ class AnalyticsEventsDataFrameProcessor(object):
 		)
 
 class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
+
+	def _deduplicate_ratings_events(self, filtered_analytics_events_data_frame):
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'applicationId', 'sessionId', 'eventId',
+			'assetId'
+		)
+
+		data_frame = filtered_analytics_events_data_frame.withColumn(
+			'row_number',
+			F.row_number().over(window.orderBy(F.desc('eventDate')))
+		)
+
+		return data_frame.filter(
+			"(applicationId = 'Ratings' AND row_number = 1) OR " \
+			"(applicationId != 'Ratings')"
+		).drop(
+			'row_number'
+		)
 
 	def _filter(self, analytics_events_data_frame):
 		return analytics_events_data_frame.filter(
@@ -80,7 +99,7 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		)
 
 	def _process(self, filtered_analytics_events_data_frame):
-		return filtered_analytics_events_data_frame.withColumn(
+		data_frame = filtered_analytics_events_data_frame.withColumn(
 			'assetId',
 			F.when(
 				F.col('eventId').isin('posted', 'VOTE'),
@@ -88,7 +107,11 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			).otherwise(
 				F.col('eventProperties.fileEntryId')
 			)
-		).withColumn(
+		)
+
+		data_frame = self._deduplicate_ratings_events(data_frame)
+
+		data_frame.withColumn(
 			'comments',
 			F.when(
 				F.col('eventId') == 'posted', F.lit(1)
