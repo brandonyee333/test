@@ -47,7 +47,8 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 		JSONObject dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
-		String channelId = dataSourceJSONObject.getString("channelId");
+		String channelId = String.valueOf(
+			dataSourceJSONObject.getLong("channelId"));
 
 		JSONObject accountJSONObject = faroInfoElasticsearchInvoker.add(
 			"accounts",

@@ -12,10 +12,11 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
@@ -27,9 +28,12 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hamcrest.Matchers;
 
@@ -39,8 +43,6 @@ import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -207,30 +209,37 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 		_channelDog.patchChannel(
 			1L, dataSourceId, SetUtil.of(456L, 789L), null);
 
-		JSONObject channelJSONObject = faroInfoElasticsearchInvoker.get(
-			"channels", "1");
+		Channel channel = _channelDog.getChannel(1L);
 
-		JSONArray dataSourcesJSONArray = channelJSONObject.getJSONArray(
-			"dataSources");
+		Set<ChannelDataSource> channelChannelDataSources =
+			channel.getChannelDataSources();
 
-		JSONAssert.assertEquals(
-			JSONUtil.putAll(
-				JSONUtil.put(
-					"groupIds", JSONUtil.put("123")
-				).put(
-					"id", "405201047787757795"
-				),
-				JSONUtil.put(
-					"groupIds", JSONUtil.putAll("456", "789")
-				).put(
-					"id", dataSourceId
-				),
-				JSONUtil.put(
-					"groupIds", JSONUtil.put("000")
-				).put(
-					"id", "402135416847684684"
-				)),
-			dataSourcesJSONArray, false);
+		Stream<ChannelDataSource> stream = channelChannelDataSources.stream();
+
+		Map<Long, List<ChannelDataSource>> channelDataSourcesByDataSourceId =
+			stream.collect(
+				Collectors.groupingBy(ChannelDataSource::getDataSourceId));
+
+		List<ChannelDataSource> channelDataSources =
+			channelDataSourcesByDataSourceId.get(405201047787757795L);
+
+		ChannelDataSource channelDataSource = channelDataSources.get(0);
+
+		Assert.assertEquals(SetUtil.of(123L), channelDataSource.getGroupIds());
+
+		channelDataSources = channelDataSourcesByDataSourceId.get(dataSourceId);
+
+		channelDataSource = channelDataSources.get(0);
+
+		Assert.assertEquals(
+			SetUtil.of(456L, 789L), channelDataSource.getGroupIds());
+
+		channelDataSources = channelDataSourcesByDataSourceId.get(
+			402135416847684684L);
+
+		channelDataSource = channelDataSources.get(0);
+
+		Assert.assertEquals(SetUtil.of(321L), channelDataSource.getGroupIds());
 	}
 
 	@ElasticsearchIndex(
@@ -268,7 +277,7 @@ public class ChannelDogTest extends BaseFaroInfoDogTestCase {
 		ChannelDataSource channelDataSource2 = _findFirstChannelDataSource(
 			402135416847684684L, channel.getChannelDataSources());
 
-		Assert.assertEquals(SetUtil.of(0L), channelDataSource2.getGroupIds());
+		Assert.assertEquals(SetUtil.of(321L), channelDataSource2.getGroupIds());
 	}
 
 	@ElasticsearchIndex(

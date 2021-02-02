@@ -1,5 +1,6 @@
 [
 	{
+		"createDate": "${now-1h}",
 		"dataSources": [
 			{
 				"groupIds": [
@@ -9,16 +10,16 @@
 			},
 			{
 				"groupIds": [
-					"000"
+					"321"
 				],
 				"id": "402135416847684684"
 			}
 		],
-		"dateCreated": "${now-1h}",
 		"id": "1",
 		"name": "channel1"
 	},
 	{
+		"createDate": "${now-1h}",
 		"dataSources": [
 			{
 				"groupIds": [
@@ -27,11 +28,11 @@
 				"id": "405201047787757795"
 			}
 		],
-		"dateCreated": "${now-1h}",
 		"id": "2",
 		"name": "channel2"
 	},
 	{
+		"createDate": "${now-1h}",
 		"dataSources": [
 			{
 				"groupIds": [
@@ -40,7 +41,6 @@
 				"id": "321354651654654651"
 			}
 		],
-		"dateCreated": "${now-1h}",
 		"id": "3",
 		"name": "channel3"
 	}
