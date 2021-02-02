@@ -36,7 +36,7 @@ jobs:
               - docker-compose -f docker-compose.integration-test.yml up -d
           script:
               - ./gradlew test --configure-on-demand --parallel
-              - ./gradlew testIntegration --configure-on-demand
+              - ./gradlew testIntegration --configure-on-demand --continue
               - ./gradlew jacocoTestCoverageVerification
 language: java
 services:
