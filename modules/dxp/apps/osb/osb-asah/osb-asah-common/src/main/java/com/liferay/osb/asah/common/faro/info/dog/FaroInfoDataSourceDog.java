@@ -372,7 +372,7 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 				Collections.emptySet()),
 			dataSourceJSONObject.getString("name"), true);
 
-		dataSourceJSONObject.put("channelId", channel.getId());
+		dataSourceJSONObject.put("channelId", String.valueOf(channel.getId()));
 	}
 
 	private void _clearChannels(String dataSourceId) {
