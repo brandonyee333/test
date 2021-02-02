@@ -123,16 +123,8 @@ public class ChannelDTO {
 			return _groupIds;
 		}
 
-		public void setDataSourceId(String dataSourceId) {
-			_dataSourceId = dataSourceId;
-		}
-
-		public void setGroupIds(Set<String> groupIds) {
-			_groupIds = groupIds;
-		}
-
-		private String _dataSourceId;
-		private Set<String> _groupIds;
+		private final String _dataSourceId;
+		private final Set<String> _groupIds;
 
 	}
 
