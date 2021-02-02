@@ -220,7 +220,15 @@ public class ChannelDog extends BaseFaroInfoDog {
 			if (Objects.equals(
 					channelDataSource.getDataSourceId(), dataSourceId)) {
 
-				return _getRemovedGroupIds(channelDataSource, groupIds);
+				Set<Long> oldGroupIds = channelDataSource.getGroupIds();
+
+				if (oldGroupIds.isEmpty()) {
+					return Collections.emptySet();
+				}
+
+				oldGroupIds.removeAll(groupIds);
+
+				return oldGroupIds;
 			}
 		}
 
@@ -462,20 +470,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 		}
 
 		return name;
-	}
-
-	private Set<Long> _getRemovedGroupIds(
-		ChannelDataSource channelDataSource, Set<Long> groupIds) {
-
-		Set<Long> oldGroupIds = channelDataSource.getGroupIds();
-
-		if (oldGroupIds.isEmpty()) {
-			return Collections.emptySet();
-		}
-
-		oldGroupIds.removeAll(groupIds);
-
-		return oldGroupIds;
 	}
 
 	private Sort _getSort(String[] sorts) {
