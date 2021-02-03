@@ -10,10 +10,17 @@
 #
 
 from liferay.stream.job import CuratorSparkJob
-from liferay.stream.processor import DocumentLibraryDataFrameProcessor, \
+from liferay.stream.processor import BlogDataFrameProcessor, \
+	DocumentLibraryDataFrameProcessor, \
 	JournalDataFrameProcessor
 
+from pyspark.sql import types as T
+
 import pytest
+
+@pytest.fixture
+def blog_data_frame_processor(spark_application):
+	return BlogDataFrameProcessor(0, CuratorSparkJob(spark_application))
 
 @pytest.fixture
 def document_library_data_frame_processor(spark_application):
@@ -24,6 +31,45 @@ def document_library_data_frame_processor(spark_application):
 @pytest.fixture
 def journal_data_frame_processor(spark_application):
 	return JournalDataFrameProcessor(0, CuratorSparkJob(spark_application))
+
+def read_session_events_data_frame(file_name, spark_session):
+	data_frame_reader = spark_session.read
+
+	return data_frame_reader.schema(
+		T.StructType([
+			T.StructField("applicationId", T.StringType(), False),
+			T.StructField("channelId", T.StringType(), False),
+			T.StructField("eventDate", T.StringType(), False),
+			T.StructField("eventId", T.StringType(), False),
+			T.StructField(
+				"eventProperties",
+				T.MapType(T.StringType(), T.StringType(), True), True
+			),
+			T.StructField("projectId", T.StringType(), False),
+			T.StructField("userId", T.StringType(), False),
+			T.StructField("variantId", T.StringType(), True)
+		])
+	).option(
+		"multiLine", "true"
+	).json(
+		'resources/liferay/stream/dependencies/{}'.format(file_name)
+	)
+
+def test_blog_data_frame_processor_filter(
+	blog_data_frame_processor, spark_session
+):
+
+	actual_data_frame = blog_data_frame_processor._filter(
+		read_session_events_data_frame(
+			'blog_data_frame_processor_filter_input.json', spark_session
+		)
+	)
+
+	expected_data_frame = read_session_events_data_frame(
+		'blog_data_frame_processor_filter_expected_output.json', spark_session
+	)
+
+	assert expected_data_frame.collect() == actual_data_frame.collect()
 
 def test_document_library_data_frame_processor_deduplicate_ratings_events(
 	 document_library_data_frame_processor, spark_session
