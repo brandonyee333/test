@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.elasticsearch.test;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.model.Preference;
+import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -44,91 +44,69 @@ public class ElasticsearchRepositoryTest {
 
 	@Test
 	public void testAdd() {
-		ElasticsearchRepository<MyPreference> elasticsearchRepository =
+		ElasticsearchRepository<Channel> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"preferences", _faroInfoElasticsearchInvoker,
-				MyPreference.class);
+				"channels", _faroInfoElasticsearchInvoker, Channel.class);
 
-		MyPreference myPreference = elasticsearchRepository.add(
-			new MyPreference("key", "value"));
+		Channel channel = elasticsearchRepository.add(new Channel("name"));
 
-		Assert.assertNotNull(myPreference.getId());
-		Assert.assertEquals("key", myPreference.getKey());
-		Assert.assertEquals("value", myPreference.getValue());
+		Assert.assertNotNull(channel.getId());
+		Assert.assertEquals("name", channel.getName());
 	}
 
 	@Test
 	public void testFetchFirst() {
-		ElasticsearchRepository<MyPreference> elasticsearchRepository =
+		ElasticsearchRepository<Channel> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"preferences", _faroInfoElasticsearchInvoker,
-				MyPreference.class);
+				"channels", _faroInfoElasticsearchInvoker, Channel.class);
 
-		MyPreference myPreference1 = elasticsearchRepository.add(
-			new MyPreference("key1", "value1"));
+		Channel channel = elasticsearchRepository.add(new Channel("name1"));
 
-		elasticsearchRepository.add(new MyPreference("key2", "value2"));
+		elasticsearchRepository.add(new Channel("name2"));
 
-		MyPreference returnedMyPreference = elasticsearchRepository.fetchFirst(
+		Channel returnedChannel = elasticsearchRepository.fetchFirst(
 			searchSourceBuilder -> searchSourceBuilder.sort(
 				SortBuilderUtil.fieldSort("id", SortOrder.ASC)));
 
-		Assert.assertEquals(
-			myPreference1.getId(), returnedMyPreference.getId());
+		Assert.assertEquals(channel.getId(), returnedChannel.getId());
 	}
 
 	@Test
 	public void testGet() {
-		ElasticsearchRepository<MyPreference> elasticsearchRepository =
+		ElasticsearchRepository<Channel> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"preferences", _faroInfoElasticsearchInvoker,
-				MyPreference.class);
+				"channels", _faroInfoElasticsearchInvoker, Channel.class);
 
-		MyPreference myPreference = elasticsearchRepository.add(
-			new MyPreference("key1", "value1"));
+		Channel channel = elasticsearchRepository.add(new Channel("name"));
 
-		MyPreference returnedMyPreference = elasticsearchRepository.get(
-			myPreference.getId());
+		Channel returnedChannel = elasticsearchRepository.get(
+			String.valueOf(channel.getId()));
 
-		Assert.assertEquals(myPreference.getId(), returnedMyPreference.getId());
+		Assert.assertEquals(channel.getId(), returnedChannel.getId());
 	}
 
 	@Test
 	public void testSearch() {
-		ElasticsearchRepository<MyPreference> elasticsearchRepository =
+		ElasticsearchRepository<Channel> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"preferences", _faroInfoElasticsearchInvoker,
-				MyPreference.class);
+				"channels", _faroInfoElasticsearchInvoker, Channel.class);
 
-		MyPreference myPreference1 = elasticsearchRepository.add(
-			new MyPreference("key1", "value1"));
-		MyPreference myPreference2 = elasticsearchRepository.add(
-			new MyPreference("key2", "value2"));
-		MyPreference myPreference3 = elasticsearchRepository.add(
-			new MyPreference("key3", "value3"));
+		Channel channel1 = elasticsearchRepository.add(new Channel("name1"));
 
-		ResultBag<MyPreference> resultBag = elasticsearchRepository.search(
+		Channel channel2 = elasticsearchRepository.add(new Channel("name2"));
+
+		Channel channel3 = elasticsearchRepository.add(new Channel("name3"));
+
+		ResultBag<Channel> resultBag = elasticsearchRepository.search(
 			QueryBuilders.matchAllQuery(), 20, Sort.desc("id"), 0);
 
 		Assert.assertEquals(3, resultBag.getTotal());
 		Assert.assertEquals(
-			Arrays.asList(myPreference3, myPreference2, myPreference1),
+			Arrays.asList(channel3, channel2, channel1),
 			resultBag.getResults());
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	private static class MyPreference extends Preference {
-
-		public MyPreference() {
-			super(null, null);
-		}
-
-		public MyPreference(String key, String value) {
-			super(key, value);
-		}
-
-	}
 
 }
