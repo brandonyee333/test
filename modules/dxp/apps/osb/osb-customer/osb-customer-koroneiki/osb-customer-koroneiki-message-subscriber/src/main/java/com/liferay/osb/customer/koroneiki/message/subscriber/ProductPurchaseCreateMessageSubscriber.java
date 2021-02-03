@@ -52,6 +52,10 @@ public class ProductPurchaseCreateMessageSubscriber
 		List<ProductPurchase> productPurchases =
 			accountReader.getProductPurchases(productPurchase.getAccountKey());
 
+		if (!productPurchases.contains(productPurchase)) {
+			productPurchases.add(productPurchase);
+		}
+
 		Account account = accountWebService.getAccount(
 			productPurchase.getAccountKey());
 
