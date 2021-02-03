@@ -22,6 +22,7 @@ import java.util.Set;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -29,7 +30,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Inácio Nery
  */
 @Table
-public class Channel {
+public class Channel implements Persistable<Long> {
 
 	public void addChannelDataSource(ChannelDataSource channelDataSource) {
 		_channelDataSources.add(channelDataSource);
@@ -89,6 +90,15 @@ public class Channel {
 		return Objects.hash(_channelDataSources, _createDate, _id, _name);
 	}
 
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public void setChannelDataSources(
 		Set<ChannelDataSource> channelDataSources) {
 
@@ -105,6 +115,10 @@ public class Channel {
 		_id = id;
 	}
 
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
+	}
+
 	public void setName(String name) {
 		_name = name;
 	}
@@ -117,6 +131,9 @@ public class Channel {
 
 	@Transient
 	private Long _id;
+
+	@Transient
+	private Boolean _isNew;
 
 	@Transient
 	private String _name;
