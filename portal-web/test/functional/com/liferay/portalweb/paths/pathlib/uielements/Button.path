@@ -269,11 +269,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>DUPLICATE</td>
-	<td>//button[contains(@class, 'ddm-form-field-repeatable-add-button p-0 btn btn-sm btn-primary')]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>EDIT</td>
 	<td>//a[contains(@class,'btn') and contains(.,'Edit')] | //a[contains(@id,'edit') and contains(@class,'btn')] | //button[contains(.,'Edit')]</td>
 	<td></td>
@@ -516,11 +511,6 @@
 <tr>
 	<td>PUBLISH_LOCALIZED</td>
 	<td>//button[contains(@id,'publishButton')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>REMOVE_BUTTON</td>
-	<td>//button[contains(@class, 'ddm-form-field-repeatable-delete-button p-0 btn btn-sm btn-primary')]</td>
 	<td></td>
 </tr>
 <tr>
