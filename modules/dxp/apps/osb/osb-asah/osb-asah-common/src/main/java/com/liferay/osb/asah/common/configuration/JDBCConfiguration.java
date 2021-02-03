@@ -27,6 +27,7 @@ import org.springframework.data.relational.core.dialect.AnsiDialect;
 import org.springframework.data.relational.core.dialect.Dialect;
 import org.springframework.data.relational.core.mapping.NamingStrategy;
 import org.springframework.data.relational.core.mapping.RelationalPersistentProperty;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -56,22 +57,25 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnProperty(
-		havingValue = "false", matchIfMissing = true,
-		value = "osb.asah.postgresql.enabled"
-	)
 	@Override
 	public Dialect jdbcDialect(
 		NamedParameterJdbcOperations namedParameterJdbcOperations) {
 
-		return AnsiDialect.INSTANCE;
+		JdbcTemplate jdbcTemplate =
+			(JdbcTemplate)namedParameterJdbcOperations.getJdbcOperations();
+
+		if (jdbcTemplate.getDataSource() instanceof SimpleDriverDataSource) {
+			return AnsiDialect.INSTANCE;
+		}
+
+		return super.jdbcDialect(namedParameterJdbcOperations);
 	}
 
 	@Bean
 	public NamedParameterJdbcOperations namedParameterJdbcOperations(
 		DataSource dataSource) {
 
-		return new NamedParameterJdbcTemplate(dataSource);
+		return new NamedParameterJdbcTemplate(new JdbcTemplate(dataSource));
 	}
 
 	@Bean
