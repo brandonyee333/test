@@ -12,28 +12,22 @@
  * details.
  */
 
-package com.liferay.portal.crypto.hash.exception;
+package com.liferay.portal.crypto.hash;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.crypto.hash.generation.CryptoHashGenerationResponse;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Arthur Chan
+ * @author Carlos Sierra Andrés
  */
-public class CryptoHashException extends PortalException {
+@ProviderType
+public interface CryptoHasher {
 
-	public CryptoHashException() {
-	}
+	public CryptoHashGenerationResponse generate(byte[] input) throws Exception;
 
-	public CryptoHashException(String msg) {
-		super(msg);
-	}
-
-	public CryptoHashException(String msg, Throwable throwable) {
-		super(msg, throwable);
-	}
-
-	public CryptoHashException(Throwable throwable) {
-		super(throwable);
-	}
+	public boolean verify(byte[] input, byte[] hash, byte[] salt)
+		throws Exception;
 
 }
