@@ -153,6 +153,11 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	}
 
 	@Override
+	public List<Channel> findAll(Pageable pageable) {
+		return findByNameContainingIgnoreCase(null, pageable);
+	}
+
+	@Override
 	public List<Channel> findAllById(Iterable<Long> channelIds) {
 		Stream<Long> stream = StreamSupport.stream(
 			channelIds.spliterator(), false);

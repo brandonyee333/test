@@ -40,6 +40,8 @@ public interface ChannelRepository extends CrudRepository<Channel, Long> {
 
 	public List<Channel> findAll();
 
+	public List<Channel> findAll(Pageable pageable);
+
 	public List<Channel> findByDataSourceId(
 		@Param("dataSourceId") Long dataSourceId);
 
