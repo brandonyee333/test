@@ -17,9 +17,11 @@ package com.liferay.osb.asah.common.multitenancy.impl;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
+import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ObjectMapperUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.List;
 
@@ -48,6 +50,9 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 
 		_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
 			project.getId());
+
+		ProjectIdThreadLocal.forProject(
+			project, _nanitesHttp::rescheduleNanites);
 	}
 
 	@Override
@@ -67,5 +72,8 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 
 	@Autowired
 	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;
+
+	@Autowired
+	private NanitesHttp _nanitesHttp;
 
 }
