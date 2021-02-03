@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -22,6 +23,9 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.model.ChannelDataSource;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -84,11 +88,16 @@ public class AdminRestController extends BaseRestController {
 		@PathVariable String collectionName,
 		@PathVariable String weDeployDataServiceName) {
 
-		ElasticsearchInvoker elasticsearchInvoker = _elasticsearchInvokers.get(
-			weDeployDataServiceName);
+		if (collectionName.equals("channels")) {
+			_channelRepository.deleteAll();
+		}
+		else {
+			ElasticsearchInvoker elasticsearchInvoker =
+				_elasticsearchInvokers.get(weDeployDataServiceName);
 
-		elasticsearchInvoker.delete(
-			collectionName, QueryBuilders.matchAllQuery());
+			elasticsearchInvoker.delete(
+				collectionName, QueryBuilders.matchAllQuery());
+		}
 	}
 
 	@GetMapping("/snapshot")
@@ -131,13 +140,18 @@ public class AdminRestController extends BaseRestController {
 		@PathVariable String weDeployDataServiceName,
 		@RequestBody String json) {
 
-		ElasticsearchInvoker elasticsearchInvoker = _elasticsearchInvokers.get(
-			weDeployDataServiceName);
+		if (collectionName.equals("channels")) {
+			_addChannels(new JSONArray(json));
+		}
+		else {
+			ElasticsearchInvoker elasticsearchInvoker =
+				_elasticsearchInvokers.get(weDeployDataServiceName);
 
-		elasticsearchInvoker.add(collectionName, new JSONArray(json));
+			elasticsearchInvoker.add(collectionName, new JSONArray(json));
 
-		if (collectionName.equals("data-sources")) {
-			_nanitesHttp.refreshAnalytics();
+			if (collectionName.equals("data-sources")) {
+				_nanitesHttp.refreshAnalytics();
+			}
 		}
 	}
 
@@ -166,6 +180,46 @@ public class AdminRestController extends BaseRestController {
 			QueryBuilders.termsQuery("id", JSONUtil.toStringList(jsonArray)));
 
 		_nanitesHttp.run(jsonArray);
+	}
+
+	private void _addChannels(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			Channel channel = new Channel();
+
+			JSONArray dataSourcesJSONArray = jsonObject.getJSONArray(
+				"dataSources");
+
+			for (int j = 0; j < dataSourcesJSONArray.length(); j++) {
+				JSONObject dataSourceJSONObject =
+					dataSourcesJSONArray.getJSONObject(j);
+
+				ChannelDataSource channelDataSource = new ChannelDataSource();
+
+				channelDataSource.setDataSourceId(
+					dataSourceJSONObject.getLong("id"));
+				channelDataSource.setGroupIds(
+					JSONUtil.toLongSet(
+						dataSourceJSONObject.getJSONArray("groupIds")));
+
+				channel.addChannelDataSource(channelDataSource);
+			}
+
+			try {
+				channel.setCreateDate(
+					DateUtil.toUTCDate(jsonObject.getString("dateCreated")));
+			}
+			catch (Exception exception) {
+				_log.error(exception, exception);
+			}
+
+			channel.setId(Long.valueOf(jsonObject.getString("id")));
+			channel.setIsNew(true);
+			channel.setName(jsonObject.getString("name"));
+
+			_channelRepository.save(channel);
+		}
 	}
 
 	private File _createSnapshot(String fileName) throws Exception {
@@ -244,6 +298,9 @@ public class AdminRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		AdminRestController.class);
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
