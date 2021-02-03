@@ -34,9 +34,9 @@ public interface ChannelRepository extends CrudRepository<Channel, Long> {
 	@Modifying
 	public void deleteByIdIn(@Param("ids") Set<Long> ids);
 
-	public boolean existsByNameIgnoreCase(String name);
+	public boolean existsByIdNotAndNameIgnoreCase(Long id, String name);
 
-	public boolean existsByNotIdAndNameIgnoreCase(Long id, String name);
+	public boolean existsByNameIgnoreCase(String name);
 
 	public List<Channel> findAll();
 

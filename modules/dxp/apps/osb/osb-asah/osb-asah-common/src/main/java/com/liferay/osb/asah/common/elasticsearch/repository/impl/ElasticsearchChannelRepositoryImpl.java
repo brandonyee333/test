@@ -131,13 +131,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	}
 
 	@Override
-	public boolean existsByNameIgnoreCase(String name) {
-		return _faroInfoElasticsearchInvoker.exists(
-			"channels", QueryBuilders.termQuery("name", name));
-	}
-
-	@Override
-	public boolean existsByNotIdAndNameIgnoreCase(Long id, String name) {
+	public boolean existsByIdNotAndNameIgnoreCase(Long id, String name) {
 		return _faroInfoElasticsearchInvoker.exists(
 			"channels",
 			BoolQueryBuilderUtil.filter(
@@ -145,6 +139,12 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 			).mustNot(
 				QueryBuilders.termQuery("id", id)
 			));
+	}
+
+	@Override
+	public boolean existsByNameIgnoreCase(String name) {
+		return _faroInfoElasticsearchInvoker.exists(
+			"channels", QueryBuilders.termQuery("name", name));
 	}
 
 	@Override
