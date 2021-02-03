@@ -12,33 +12,26 @@
  * details.
  */
 
-package com.liferay.portal.crypto.hash.test;
+package com.liferay.portal.crypto.hash.internal;
 
-import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.crypto.hash.CryptoHasher;
 import com.liferay.portal.crypto.hash.generation.CryptoHashGenerationResponse;
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.UnicodeFormatter;
-import com.liferay.portal.test.rule.Inject;
-import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import org.junit.Assert;
-import org.junit.ClassRule;
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Arthur Chan
  * @author Carlos Sierra Andrés
  */
-@RunWith(Arquillian.class)
 public class CryptoHasherTest {
 
-	@ClassRule
-	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+	@Before
+	public void setUp() throws Exception {
+		_cryptoHasher = new CryptoHasherImpl();
+	}
 
 	@Test
 	public void testGenerationAndVerification() throws Exception {
@@ -75,7 +68,6 @@ public class CryptoHasherTest {
 
 	private static final String _WRONG_PASSWORD = "wrongPassword";
 
-	@Inject
 	private CryptoHasher _cryptoHasher;
 
 }
