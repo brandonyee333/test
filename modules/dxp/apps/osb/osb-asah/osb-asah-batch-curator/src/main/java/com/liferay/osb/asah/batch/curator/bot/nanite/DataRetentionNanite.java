@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -48,7 +48,7 @@ public class DataRetentionNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject jsonObject) throws Exception {
-		Preference preference = _faroInfoPreferenceDog.getPreference(
+		Preference preference = _preferenceDog.getPreference(
 			"data-retention-period");
 
 		String dateString = DateUtil.toUTCString(
@@ -111,6 +111,6 @@ public class DataRetentionNanite extends BaseNanite {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
+	private PreferenceDog _preferenceDog;
 
 }

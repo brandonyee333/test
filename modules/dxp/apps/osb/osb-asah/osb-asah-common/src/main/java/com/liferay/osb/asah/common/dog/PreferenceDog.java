@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.Preference;
@@ -28,25 +28,17 @@ import org.springframework.stereotype.Component;
  * @author Matthew Kong
  */
 @Component
-public class FaroInfoPreferenceDog {
+public class PreferenceDog {
 
 	public Preference addPreference(String key, String value) {
-		Preference preference = new Preference();
-
-		preference.setKey(key);
-		preference.setValue(value);
-
-		return _preferenceRepository.save(preference);
+		return _preferenceRepository.save(new Preference(key, value));
 	}
 
 	public Preference getPreference(String key) {
 		Preference preference = _preferenceRepository.findByKey(key);
 
 		if (preference == null) {
-			preference = new Preference();
-
-			preference.setKey(key);
-			preference.setValue(_defaultPreferences.get(key));
+			preference = new Preference(key, _defaultPreferences.get(key));
 		}
 
 		return preference;

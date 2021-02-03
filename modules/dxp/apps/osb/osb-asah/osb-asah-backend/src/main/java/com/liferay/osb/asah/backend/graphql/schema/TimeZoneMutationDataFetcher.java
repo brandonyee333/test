@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 
@@ -37,7 +37,7 @@ public class TimeZoneMutationDataFetcher implements DataFetcher<String> {
 	public String get(DataFetchingEnvironment dataFetchingEnvironment) {
 		String value = dataFetchingEnvironment.getArgument("value");
 
-		_faroInfoPreferenceDog.addPreference("time-zone-id", value);
+		_preferenceDog.addPreference("time-zone-id", value);
 
 		_nanitesHttp.rescheduleNanites();
 
@@ -45,9 +45,9 @@ public class TimeZoneMutationDataFetcher implements DataFetcher<String> {
 	}
 
 	@Autowired
-	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
+	private NanitesHttp _nanitesHttp;
 
 	@Autowired
-	private NanitesHttp _nanitesHttp;
+	private PreferenceDog _preferenceDog;
 
 }

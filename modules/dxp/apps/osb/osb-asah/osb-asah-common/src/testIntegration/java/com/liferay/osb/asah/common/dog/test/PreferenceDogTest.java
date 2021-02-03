@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -32,7 +32,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class FaroInfoPreferenceDogTest {
+public class PreferenceDogTest {
 
 	@Test
 	public void testAddPreference() {
@@ -54,6 +54,6 @@ public class FaroInfoPreferenceDogTest {
 	}
 
 	@Autowired
-	private FaroInfoPreferenceDog _preferenceDog;
+	private PreferenceDog _preferenceDog;
 
 }

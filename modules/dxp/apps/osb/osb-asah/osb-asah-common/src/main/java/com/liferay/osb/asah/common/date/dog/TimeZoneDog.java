@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.date.dog;
 
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.model.Preference;
 
 import java.time.ZoneId;
@@ -32,8 +32,7 @@ import org.springframework.stereotype.Component;
 public class TimeZoneDog {
 
 	public String getTimeZoneId() {
-		Preference preference = _faroInfoPreferenceDog.getPreference(
-			"time-zone-id");
+		Preference preference = _preferenceDog.getPreference("time-zone-id");
 
 		return preference.getValue();
 	}
@@ -48,6 +47,6 @@ public class TimeZoneDog {
 	}
 
 	@Autowired
-	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
+	private PreferenceDog _preferenceDog;
 
 }

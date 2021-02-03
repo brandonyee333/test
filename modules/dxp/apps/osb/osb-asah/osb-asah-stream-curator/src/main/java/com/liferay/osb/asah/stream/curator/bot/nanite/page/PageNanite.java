@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.page;
 
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
@@ -339,7 +339,7 @@ public class PageNanite extends BaseNanite<Page> {
 	}
 
 	private Set<String> _getSearchQueryStrings() {
-		Preference preference = _faroInfoPreferenceDog.getPreference(
+		Preference preference = _preferenceDog.getPreference(
 			"search-query-strings");
 
 		Set<String> searchQueryStrings = new HashSet<>();
@@ -434,11 +434,11 @@ public class PageNanite extends BaseNanite<Page> {
 			}
 		};
 
-	@Autowired
-	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
-
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
 	private MessageSubscriber _messageSubscriber;
+
+	@Autowired
+	private PreferenceDog _preferenceDog;
 
 	private final Map<String, Set<String>> _searchQueryStringsMap =
 		new HashMap<>();

@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.model.Preference;
 
 import graphql.schema.DataFetcher;
@@ -33,11 +33,11 @@ public class PreferenceDataFetcher implements DataFetcher<Preference> {
 
 	@Override
 	public Preference get(DataFetchingEnvironment dataFetchingEnvironment) {
-		return _faroInfoPreferenceDog.getPreference(
+		return _preferenceDog.getPreference(
 			dataFetchingEnvironment.getArgument("key"));
 	}
 
 	@Autowired
-	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
+	private PreferenceDog _preferenceDog;
 
 }

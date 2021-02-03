@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoPreferenceDog;
+import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.model.Preference;
 
 import graphql.schema.DataFetcher;
@@ -45,7 +45,7 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 
 		_validate(key, value);
 
-		return _faroInfoPreferenceDog.addPreference(key, value);
+		return _preferenceDog.addPreference(key, value);
 	}
 
 	private void _validate(String key, String value) {
@@ -90,6 +90,6 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 		};
 
 	@Autowired
-	private FaroInfoPreferenceDog _faroInfoPreferenceDog;
+	private PreferenceDog _preferenceDog;
 
 }
