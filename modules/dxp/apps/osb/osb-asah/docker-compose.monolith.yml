@@ -35,6 +35,13 @@ services:
             - "11311:11311"
             - "8000:8000"
             - "8080:8080"
+    postgresql:
+        container_name: postgresql
+        env_file:
+            - postgresql.env
+        image: postgres:13.1
+        ports:
+            - "5432:5432"
     wedeploy-elasticsearch:
         container_name: wedeploy-elasticsearch
         env_file:
