@@ -20,9 +20,12 @@ import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.spring.http.Http;
+import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import org.apache.commons.codec.digest.DigestUtils;
+
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +45,10 @@ public class ChannelHttpImpl implements ChannelHttp {
 			ServiceConstants.URL_FRONTEND,
 			String.format(
 				"/o/faro/asah/%s/channel", ProjectIdThreadLocal.getProjectId()),
-			HttpMethod.POST, new ChannelDTO(channel), _getHttpHeaders());
+			HttpMethod.POST,
+			ObjectMapperUtil.convertValue(
+				new ChannelDTO(channel), JSONObject.class),
+			_getHttpHeaders());
 	}
 
 	private HttpHeaders _getHttpHeaders() {
