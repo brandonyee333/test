@@ -57,6 +57,9 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 
 	@Override
 	public boolean deleteProject(String projectId) {
+		ProjectIdThreadLocal.forProject(
+			projectId, _nanitesHttp::removeSchedule);
+
 		return _elasticsearchInvoker.delete("projects", projectId);
 	}
 

@@ -53,6 +53,12 @@ public class NanitesRestController {
 			_faroInfoDataSourceDog.isAnalyticsConfigured());
 	}
 
+	@PostMapping("/remove-schedule")
+	public void removeSchedule() {
+		_osbAsahBatchCuratorBot.removeNanitesSchedule(
+			ProjectIdThreadLocal.getProjectId());
+	}
+
 	@PostMapping("/reschedule")
 	public void reschedule() {
 		_osbAsahBatchCuratorBot.rescheduleNanites(

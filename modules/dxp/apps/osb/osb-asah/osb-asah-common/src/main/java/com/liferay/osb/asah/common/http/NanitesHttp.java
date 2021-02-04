@@ -26,6 +26,8 @@ public interface NanitesHttp {
 
 	public void refreshAnalytics();
 
+	public void removeSchedule();
+
 	public void rescheduleNanites();
 
 	public void run(JSONArray jsonArray);

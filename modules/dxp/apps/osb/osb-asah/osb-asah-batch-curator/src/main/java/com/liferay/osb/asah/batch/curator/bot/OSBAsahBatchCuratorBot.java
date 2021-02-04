@@ -82,18 +82,22 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
+	public void removeNanitesSchedule(String projectId) {
+		ProjectIdThreadLocal.forProject(
+			projectId,
+			() -> {
+				_unscheduleNanites();
+				_osbAsahTaskManager.removeOSBAsahTasks();
+			});
+	}
+
 	public void rescheduleNanites(String projectId) {
-		for (String scheduledTask : _scheduledTasks.get(projectId)) {
-			if (_log.isInfoEnabled()) {
-				_log.info(scheduledTask + " unscheduled");
-			}
-
-			_osbAsahTaskScheduler.unschedule(scheduledTask);
-		}
-
-		_scheduledTasks.remove(projectId);
-
-		ProjectIdThreadLocal.forProject(projectId, this::_scheduleNanites);
+		ProjectIdThreadLocal.forProject(
+			projectId,
+			() -> {
+				_unscheduleNanites();
+				_scheduleNanites();
+			});
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -260,6 +264,20 @@ public class OSBAsahBatchCuratorBot {
 		_scheduleNanite(
 			_getStaleDynamicIndividualSegmentsRunnable(),
 			"StaleDynamicIndividualSegments");
+	}
+
+	private void _unscheduleNanites() {
+		String projectId = ProjectIdThreadLocal.getProjectId();
+
+		for (String scheduledTask : _scheduledTasks.get(projectId)) {
+			if (_log.isInfoEnabled()) {
+				_log.info(scheduledTask + " unscheduled");
+			}
+
+			_osbAsahTaskScheduler.unschedule(scheduledTask);
+		}
+
+		_scheduledTasks.remove(projectId);
 	}
 
 	private static final Log _log = LogFactory.getLog(

@@ -42,6 +42,11 @@ public class NanitesHttpImpl implements NanitesHttp {
 	}
 
 	@Override
+	public void removeSchedule() {
+		_nanitesRestController.removeSchedule();
+	}
+
+	@Override
 	public void rescheduleNanites() {
 		_nanitesRestController.reschedule();
 	}

@@ -118,6 +118,30 @@ public class OSBAsahTaskManager {
 		}
 	}
 
+	public void removeOSBAsahTasks() {
+		try {
+			JSONArrayIterator.of(
+				"OSBAsahTasks", _elasticsearchInvoker,
+				osbAsahTaskJSONObject -> {
+					unscheduleOSBAsahTask(osbAsahTaskJSONObject);
+
+					return null;
+				}
+			).setQueryBuilder(
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.existsQuery("cronExpression"))
+			).setStopOnExceptions(
+				false
+			).iterate();
+		}
+		catch (Exception e) {
+			_log.error("Unable to unschedule existing tasks", e);
+		}
+
+		_elasticsearchInvoker.delete(
+			"OSBAsahTasks", QueryBuilders.matchAllQuery());
+	}
+
 	public void runNanites(String... naniteClassNames) {
 		_osbAsahTaskScheduler.execute(
 			new OSBAsahTaskRunnable(

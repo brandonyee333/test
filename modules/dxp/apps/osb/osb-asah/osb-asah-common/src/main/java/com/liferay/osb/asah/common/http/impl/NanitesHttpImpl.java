@@ -48,6 +48,13 @@ public class NanitesHttpImpl implements NanitesHttp {
 	}
 
 	@Override
+	public void removeSchedule() {
+		_http.exchangeIfUp(
+			ServiceConstants.URL_BATCH_CURATOR, "/nanites/remove-schedule",
+			HttpMethod.POST, null);
+	}
+
+	@Override
 	public void rescheduleNanites() {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR, "/nanites/reschedule",
