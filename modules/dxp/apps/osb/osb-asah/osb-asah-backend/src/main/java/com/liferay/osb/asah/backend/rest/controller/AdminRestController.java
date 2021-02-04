@@ -25,7 +25,9 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
+import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -91,6 +93,9 @@ public class AdminRestController extends BaseRestController {
 		if (collectionName.equals("channels")) {
 			_channelRepository.deleteAll();
 		}
+		else if (collectionName.equals("preferences")) {
+			_preferenceRepository.deleteAll();
+		}
 		else {
 			ElasticsearchInvoker elasticsearchInvoker =
 				_elasticsearchInvokers.get(weDeployDataServiceName);
@@ -142,6 +147,9 @@ public class AdminRestController extends BaseRestController {
 
 		if (collectionName.equals("channels")) {
 			_addChannels(new JSONArray(json));
+		}
+		else if (collectionName.equals("preferences")) {
+			_addPreferences(new JSONArray(json));
 		}
 		else {
 			ElasticsearchInvoker elasticsearchInvoker =
@@ -219,6 +227,19 @@ public class AdminRestController extends BaseRestController {
 			channel.setName(jsonObject.getString("name"));
 
 			_channelRepository.save(channel);
+		}
+	}
+
+	private void _addPreferences(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			Preference preference = new Preference(
+				jsonObject.getString("key"), jsonObject.getString("value"));
+
+			preference.setIsNew(true);
+
+			_preferenceRepository.save(preference);
 		}
 	}
 
@@ -321,5 +342,8 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;
+
+	@Autowired
+	private PreferenceRepository _preferenceRepository;
 
 }
