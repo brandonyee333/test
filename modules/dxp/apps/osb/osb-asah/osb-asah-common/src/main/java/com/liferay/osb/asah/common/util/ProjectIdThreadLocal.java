@@ -53,6 +53,10 @@ public class ProjectIdThreadLocal {
 		String projectId = _projectId.get();
 
 		if (projectId == null) {
+			if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
+				throw new IllegalStateException("Project ID is not set");
+			}
+
 			projectId = ServiceConstants.LCP_PROJECT_ID;
 		}
 
