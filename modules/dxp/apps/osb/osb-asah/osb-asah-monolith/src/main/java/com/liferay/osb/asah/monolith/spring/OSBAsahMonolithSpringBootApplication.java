@@ -42,6 +42,10 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 	excludeFilters = {
 		@ComponentScan.Filter(MonolithExclude.class),
 		@ComponentScan.Filter(
+			pattern = "com.liferay.osb.asah.test.util.*",
+			type = FilterType.REGEX
+		),
+		@ComponentScan.Filter(
 			pattern = ".*SpringBootApplication", type = FilterType.REGEX
 		)
 	}
