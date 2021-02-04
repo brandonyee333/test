@@ -39,10 +39,7 @@ import org.springframework.transaction.TransactionManager;
  */
 @Configuration
 @EnableJdbcRepositories(
-	basePackages = {
-		"com.liferay.osb.asah.common.elasticsearch.repository.impl",
-		"com.liferay.osb.asah.common.repository"
-	},
+	basePackages = "com.liferay.osb.asah.common.repository",
 	namedQueriesLocation = "classpath:com/liferay/osb/asah/common/repository/*.xml"
 )
 public class JDBCConfiguration extends AbstractJdbcConfiguration {
