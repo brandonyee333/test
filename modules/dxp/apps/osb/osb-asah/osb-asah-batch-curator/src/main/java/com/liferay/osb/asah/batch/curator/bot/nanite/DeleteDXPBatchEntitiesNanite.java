@@ -19,8 +19,8 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.Objects;
 
@@ -48,7 +48,7 @@ public class DeleteDXPBatchEntitiesNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		_scanDirectory(ServiceConstants.LCP_PROJECT_ID + "/");
+		_scanDirectory(ProjectIdThreadLocal.getProjectId() + "/");
 	}
 
 	@Override

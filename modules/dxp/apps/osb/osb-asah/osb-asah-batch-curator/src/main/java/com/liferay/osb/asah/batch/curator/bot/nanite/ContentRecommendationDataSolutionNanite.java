@@ -67,12 +67,12 @@ import com.amazonaws.services.personalize.model.SolutionSummary;
 import com.amazonaws.services.personalize.model.SolutionVersion;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Arrays;
@@ -185,7 +185,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 					withPath(
 						String.format(
 							"%s/%s/%s/items/", _awsPersonalizeDataLocation,
-							ServiceConstants.LCP_PROJECT_ID, jobId));
+							ProjectIdThreadLocal.getProjectId(), jobId));
 				}
 			});
 
@@ -205,7 +205,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 						String.format(
 							"%s/%s/%s/inference_result/",
 							_awsPersonalizeDataLocation,
-							ServiceConstants.LCP_PROJECT_ID, jobId));
+							ProjectIdThreadLocal.getProjectId(), jobId));
 				}
 			});
 
@@ -244,7 +244,8 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			_amazonPersonalize.createDatasetGroup(
 				new CreateDatasetGroupRequest() {
 					{
-						withName(ServiceConstants.LCP_PROJECT_ID + "_" + jobId);
+						withName(
+							ProjectIdThreadLocal.getProjectId() + "_" + jobId);
 					}
 				});
 
@@ -338,7 +339,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		dataSource.withDataLocation(
 			String.format(
 				"%s/%s/%s/user_item_interactions/", _awsPersonalizeDataLocation,
-				ServiceConstants.LCP_PROJECT_ID, jobId));
+				ProjectIdThreadLocal.getProjectId(), jobId));
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
@@ -406,7 +407,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		return stream.filter(
 			datasetGroupSummary -> Objects.equals(
 				datasetGroupSummary.getName(),
-				ServiceConstants.LCP_PROJECT_ID + "_" + jobId)
+				ProjectIdThreadLocal.getProjectId() + "_" + jobId)
 		).findFirst(
 		).map(
 			DatasetGroupSummary::getDatasetGroupArn
@@ -786,7 +787,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		_dataprocSparkManager.submitJob(
 			Arrays.asList(
 				"--job-run-id", jobRunJSONObject.getString("id"),
-				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
+				"--lcp-project-id", ProjectIdThreadLocal.getProjectId()),
 			"content_recommendation.yaml", Collections.emptyList(),
 			"liferay.content_recommendation.ContentRecommendationApplication",
 			Collections.emptyMap());

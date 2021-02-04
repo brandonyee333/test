@@ -15,12 +15,12 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Arrays;
@@ -96,7 +96,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--job-run-data-period", jobRunRunDataPeriod, "--job-run-step",
 				jobRunJSONObject.getString("step"), "--lcp-project-id",
-				ServiceConstants.LCP_PROJECT_ID),
+				ProjectIdThreadLocal.getProjectId()),
 			"content_recommendation.yaml", Collections.emptyList(),
 			"liferay.content_recommendation.ContentRecommendationApplication",
 			Collections.emptyMap());

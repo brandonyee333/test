@@ -15,11 +15,11 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Arrays;
@@ -54,7 +54,8 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 		String jobType = jobJSONObject.getString("type");
 
 		String sparkJobId = _dataprocSparkManager.submitJob(
-			Arrays.asList("--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
+			Arrays.asList(
+				"--lcp-project-id", ProjectIdThreadLocal.getProjectId()),
 			"commerce_application.yaml",
 			_collectJobSparkJars(jobJSONObject.getJSONArray("parameters")),
 			_jobTypeApplicationClassNameMap.get(jobType),
