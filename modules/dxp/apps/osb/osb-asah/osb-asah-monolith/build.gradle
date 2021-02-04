@@ -5,6 +5,7 @@ configurations.all {
 	exclude group: "com.google.cloud", module: "google-cloud-pubsub"
 	exclude group: "org.springframework.boot", module: "spring-boot-starter-data-redis"
 	exclude group: "redis.clients", module: "jedis"
+	exclude group: "xerces", module: "xercesImpl"
 }
 
 dependencies {
