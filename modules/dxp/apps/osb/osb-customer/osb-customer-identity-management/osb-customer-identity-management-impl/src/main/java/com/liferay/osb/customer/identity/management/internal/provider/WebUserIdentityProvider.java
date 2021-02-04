@@ -97,7 +97,8 @@ public class WebUserIdentityProvider
 
 	public User fetchUserByProviderId(String providerId) throws Exception {
 		try {
-			return getUserByProviderId(providerId);
+			return _userLocalService.getUserByUuidAndCompanyId(
+				providerId, _companyId);
 		}
 		catch (NoSuchUserException nsue) {
 			return _importUserByUuid(providerId);
@@ -115,8 +116,13 @@ public class WebUserIdentityProvider
 	}
 
 	public User getUserByProviderId(String providerId) throws Exception {
-		return _userLocalService.getUserByUuidAndCompanyId(
-			providerId, _companyId);
+		User user = fetchUserByProviderId(providerId);
+
+		if (user == null) {
+			throw new NoSuchUserException();
+		}
+
+		return user;
 	}
 
 	public void removeOrganizationMembership(long organizationId, long userId)

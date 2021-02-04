@@ -25,6 +25,7 @@ import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
 import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
@@ -188,8 +189,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		validateJSONWebServicePermissions();
 
-		User user = userLocalService.getUserByUuidAndCompanyId(
-			userUuid, OSBCustomerConstants.COMPANY_ID);
+		User user = _userIdentityProvider.getUserByProviderId(userUuid);
 
 		return licenseKeyLocalService.addLicenseKey(
 			user.getUserId(), assetReceiptLicenseUuid, licenseEntryType,
@@ -611,8 +611,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		validateJSONWebServicePermissions();
 
-		User user = userLocalService.getUserByUuidAndCompanyId(
-			userUuid, OSBCustomerConstants.COMPANY_ID);
+		User user = _userIdentityProvider.getUserByProviderId(userUuid);
 
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKeyByUuid(
 			uuid);
@@ -738,5 +737,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	@ServiceReference(type = RoleLocalService.class)
 	private RoleLocalService _roleLocalService;
+
+	@ServiceReference(
+		filterString = "(provider=web)", type = UserIdentityProvider.class
+	)
+	private UserIdentityProvider _userIdentityProvider;
 
 }
