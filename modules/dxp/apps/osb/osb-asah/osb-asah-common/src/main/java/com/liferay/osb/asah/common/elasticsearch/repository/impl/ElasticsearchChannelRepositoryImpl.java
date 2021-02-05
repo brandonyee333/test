@@ -62,7 +62,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	@Override
 	public long count() {
 		return _faroInfoElasticsearchInvoker.count(
-			"channels", QueryBuilders.boolQuery());
+			"channels", QueryBuilders.matchAllQuery());
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	@Override
 	public void deleteAll() {
 		_faroInfoElasticsearchInvoker.delete(
-			"channels", QueryBuilders.boolQuery());
+			"channels", QueryBuilders.matchAllQuery());
 	}
 
 	@Override
