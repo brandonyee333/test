@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.graphql;
+package com.liferay.osb.asah.common.graphql;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -20,12 +20,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author André Miranda
+ * @author Marcellus Tavares
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface GraphQLTypeWirings {
+@Target(ElementType.METHOD)
+public @interface GraphQLProperty {
 
-	public GraphQLTypeWiring[] value();
+	public String value();
 
 }

@@ -14,15 +14,15 @@
 
 package com.liferay.osb.asah.backend.configuration;
 
-import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
-import com.liferay.osb.asah.backend.graphql.GraphQLType;
-import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.BlogMetric;
 import com.liferay.osb.asah.backend.model.DocumentLibraryMetric;
 import com.liferay.osb.asah.backend.model.FormMetric;
 import com.liferay.osb.asah.backend.model.JournalMetric;
 import com.liferay.osb.asah.backend.model.Organization;
 import com.liferay.osb.asah.backend.model.User;
+import com.liferay.osb.asah.common.graphql.GraphQLProperty;
+import com.liferay.osb.asah.common.graphql.GraphQLType;
+import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.GraphQL;
 

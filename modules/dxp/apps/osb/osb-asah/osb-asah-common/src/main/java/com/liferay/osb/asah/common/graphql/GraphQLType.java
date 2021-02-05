@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.graphql;
+package com.liferay.osb.asah.common.graphql;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -17,9 +17,9 @@ package com.liferay.osb.asah.backend.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.backend.graphql.GraphQLProperty;
-import com.liferay.osb.asah.backend.graphql.GraphQLType;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.graphql.GraphQLProperty;
+import com.liferay.osb.asah.common.graphql.GraphQLType;
 
 import java.util.ArrayList;
 import java.util.Date;
