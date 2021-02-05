@@ -18,6 +18,8 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFi
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.util.Arrays;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -78,7 +80,7 @@ public class OSBAsahTaskRunnable implements Runnable {
 	}
 
 	public String[] getNaniteClassNames() {
-		return _naniteClassNames;
+		return Arrays.copyOf(_naniteClassNames, _naniteClassNames.length);
 	}
 
 	public String getOSBAsahTaskId() {
