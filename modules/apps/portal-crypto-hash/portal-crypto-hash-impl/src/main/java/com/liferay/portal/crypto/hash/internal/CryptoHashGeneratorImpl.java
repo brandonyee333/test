@@ -18,12 +18,14 @@ import com.liferay.portal.crypto.hash.CryptoHashGenerator;
 import com.liferay.portal.crypto.hash.CryptoHashResponse;
 import com.liferay.portal.crypto.hash.exception.CryptoHashException;
 import com.liferay.portal.crypto.hash.spi.CryptoHashProvider;
-import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.crypto.hash.spi.factory.CryptoHashProviderFactory;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Arthur Chan
@@ -32,9 +34,9 @@ import org.osgi.service.component.annotations.Component;
 @Component(service = CryptoHashGenerator.class)
 public class CryptoHashGeneratorImpl implements CryptoHashGenerator {
 
-	public CryptoHashGeneratorImpl() throws NoSuchAlgorithmException {
-		_messageDigestCryptoHashProvider =
-			new MessageDigestCryptoHashProvider();
+	public CryptoHashGeneratorImpl() throws Exception {
+		_messageDigestCryptoHashProvider = _getCryptoHashProvider(
+			"SHA-256", null);
 	}
 
 	@Override
@@ -55,23 +57,23 @@ public class CryptoHashGeneratorImpl implements CryptoHashGenerator {
 			_messageDigestCryptoHashProvider.generate(salt, input), hash);
 	}
 
-	private final CryptoHashProvider _messageDigestCryptoHashProvider;
+	private CryptoHashProvider _getCryptoHashProvider(
+			String cryptoHashProviderName,
+			Map<String, ?> cryptoHashProviderProperties)
+		throws Exception {
 
-	private class MessageDigestCryptoHashProvider
-		implements CryptoHashProvider {
+		CryptoHashProviderFactory cryptoHashProviderFactory =
+			_cryptoHashProviderFactoryRegistry.getCryptoHashProviderFactory(
+				cryptoHashProviderName);
 
-		public MessageDigestCryptoHashProvider()
-			throws NoSuchAlgorithmException {
-
-			_messageDigest = MessageDigest.getInstance("SHA-256");
-		}
-
-		public byte[] generate(byte[] salt, byte[] input) {
-			return _messageDigest.digest(ArrayUtil.append(salt, input));
-		}
-
-		private final MessageDigest _messageDigest;
-
+		return cryptoHashProviderFactory.create(
+			cryptoHashProviderName, cryptoHashProviderProperties);
 	}
+
+	@Reference
+	private CryptoHashProviderFactoryRegistry
+		_cryptoHashProviderFactoryRegistry;
+
+	private final CryptoHashProvider _messageDigestCryptoHashProvider;
 
 }
