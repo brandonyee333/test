@@ -66,7 +66,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	}
 
 	@Override
-	public Long countByNameContainingIgnoreCase(String name) {
+	public long countByNameContainingIgnoreCase(String name) {
 		return _faroInfoElasticsearchInvoker.count(
 			"channels", QueryUtil.buildSearchQueryBuilder("name.search", name));
 	}
@@ -131,18 +131,18 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	}
 
 	@Override
-	public boolean existsByIdNotAndNameIgnoreCase(Long id, String name) {
+	public boolean existsByIdNotAndName(Long id, String name) {
 		return _faroInfoElasticsearchInvoker.exists(
 			"channels",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("name", name)
 			).mustNot(
-				QueryBuilders.termQuery("id", id)
+				QueryBuilders.termQuery("id", String.valueOf(id))
 			));
 	}
 
 	@Override
-	public boolean existsByNameIgnoreCase(String name) {
+	public boolean existsByName(String name) {
 		return _faroInfoElasticsearchInvoker.exists(
 			"channels", QueryBuilders.termQuery("name", name));
 	}
@@ -276,6 +276,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Channel save(Channel channel) {
 		List<JSONObject> dataSourceJSONObjects = new ArrayList<>();
 
@@ -316,10 +317,15 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <S extends Channel> Iterable<S> saveAll(Iterable<S> channels) {
 		Stream<S> stream = StreamSupport.stream(channels.spliterator(), false);
 
-		return (Iterable<S>)stream.map(this::save);
+		return (Iterable<S>)stream.map(
+			this::save
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	private Channel _toChannel(JSONObject channelJSONObject) {

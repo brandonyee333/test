@@ -448,9 +448,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 		int nameCount = 0;
 		String originalName = name;
 
-		while (_channelRepository.existsByIdNotAndNameIgnoreCase(
-					channelId, name)) {
-
+		while (_channelRepository.existsByIdNotAndName(channelId, name)) {
 			name = String.format("%s (%d)", originalName, ++nameCount);
 		}
 
@@ -463,7 +461,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 		int nameCount = 0;
 		String originalName = name;
 
-		while (_channelRepository.existsByNameIgnoreCase(name)) {
+		while (_channelRepository.existsByName(name)) {
 			name = String.format("%s (%d)", originalName, ++nameCount);
 		}
 

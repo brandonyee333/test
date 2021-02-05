@@ -35,14 +35,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ChannelRepository extends CrudRepository<Channel, Long> {
 
-	public Long countByNameContainingIgnoreCase(String name);
+	public long countByNameContainingIgnoreCase(String name);
 
 	@Modifying
 	public void deleteByIdIn(@Param("ids") Set<Long> ids);
 
-	public boolean existsByIdNotAndNameIgnoreCase(Long id, String name);
+	public boolean existsByIdNotAndName(Long id, String name);
 
-	public boolean existsByNameIgnoreCase(String name);
+	public boolean existsByName(String name);
 
 	public List<Channel> findAll();
 
