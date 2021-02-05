@@ -92,7 +92,11 @@ public class ChannelRepositoryTest {
 
 	@Test
 	public void testDeleteById() {
-		_channelRepository.deleteById(_channel.getId());
+		Long id = _channel.getId();
+
+		Assert.assertNotNull(id);
+
+		_channelRepository.deleteById(id);
 
 		Assert.assertEquals(0, _channelRepository.count());
 	}
@@ -205,8 +209,11 @@ public class ChannelRepositoryTest {
 
 	@Test
 	public void testFindById() {
-		Optional<Channel> channelOptional = _channelRepository.findById(
-			_channel.getId());
+		Long id = _channel.getId();
+
+		Assert.assertNotNull(id);
+
+		Optional<Channel> channelOptional = _channelRepository.findById(id);
 
 		Assert.assertTrue(channelOptional.isPresent());
 
