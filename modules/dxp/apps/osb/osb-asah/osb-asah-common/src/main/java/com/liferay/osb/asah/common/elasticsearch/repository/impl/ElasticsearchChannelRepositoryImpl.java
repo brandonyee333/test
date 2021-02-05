@@ -323,7 +323,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	}
 
 	private Channel _toChannel(JSONObject channelJSONObject) {
-		Channel channel = new Channel();
+		Channel channel = new Channel(channelJSONObject.getString("name"));
 
 		JSONArray dataSourcesJSONArray = channelJSONObject.getJSONArray(
 			"dataSources");
@@ -332,15 +332,11 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 			JSONObject dataSourceJSONObject =
 				dataSourcesJSONArray.getJSONObject(j);
 
-			ChannelDataSource channelDataSource = new ChannelDataSource();
-
-			channelDataSource.setDataSourceId(
-				dataSourceJSONObject.getLong("id"));
-			channelDataSource.setGroupIds(
-				JSONUtil.toLongSet(
-					dataSourceJSONObject.getJSONArray("groupIds")));
-
-			channel.addChannelDataSource(channelDataSource);
+			channel.addChannelDataSource(
+				new ChannelDataSource(
+					dataSourceJSONObject.getLong("id"),
+					JSONUtil.toLongSet(
+						dataSourceJSONObject.getJSONArray("groupIds"))));
 		}
 
 		try {
@@ -352,7 +348,6 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 		}
 
 		channel.setId(channelJSONObject.getLong("id"));
-		channel.setName(channelJSONObject.getString("name"));
 
 		return channel;
 	}

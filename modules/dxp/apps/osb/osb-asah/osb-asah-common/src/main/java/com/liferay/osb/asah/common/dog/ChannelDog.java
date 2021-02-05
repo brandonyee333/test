@@ -70,10 +70,9 @@ public class ChannelDog extends BaseFaroInfoDog {
 	public Channel addChannel(
 		Map<Long, Set<Long>> dataSources, String name, boolean updateFaro) {
 
-		Channel channel = new Channel();
+		Channel channel = new Channel(_getChannelName(name));
 
 		channel.setChannelDataSources(_getChannelDataSources(dataSources));
-		channel.setName(_getChannelName(name));
 
 		channel = _channelRepository.save(channel);
 
@@ -260,13 +259,8 @@ public class ChannelDog extends BaseFaroInfoDog {
 				channelDataSource -> Objects.equals(
 					channelDataSource.getDataSourceId(), dataSourceId));
 
-			ChannelDataSource updatedChannelDataSource =
-				new ChannelDataSource();
-
-			updatedChannelDataSource.setDataSourceId(dataSourceId);
-			updatedChannelDataSource.setGroupIds(groupIds);
-
-			channelChannelDataSources.add(updatedChannelDataSource);
+			channelChannelDataSources.add(
+				new ChannelDataSource(dataSourceId, groupIds));
 
 			channel.setChannelDataSources(channelChannelDataSources);
 		}
@@ -441,12 +435,8 @@ public class ChannelDog extends BaseFaroInfoDog {
 		Set<ChannelDataSource> channelDataSources = new HashSet<>();
 
 		for (Map.Entry<Long, Set<Long>> entry : dataSources.entrySet()) {
-			ChannelDataSource channelDataSource = new ChannelDataSource();
-
-			channelDataSource.setDataSourceId(entry.getKey());
-			channelDataSource.setGroupIds(entry.getValue());
-
-			channelDataSources.add(channelDataSource);
+			channelDataSources.add(
+				new ChannelDataSource(entry.getKey(), entry.getValue()));
 		}
 
 		return channelDataSources;
