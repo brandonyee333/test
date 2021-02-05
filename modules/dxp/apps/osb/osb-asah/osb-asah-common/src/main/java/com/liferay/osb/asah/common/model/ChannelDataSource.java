@@ -27,6 +27,14 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class ChannelDataSource {
 
+	public ChannelDataSource() {
+	}
+
+	public ChannelDataSource(Long dataSourceId, Set<Long> groupIds) {
+		_dataSourceId = dataSourceId;
+		_groupIds = groupIds;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

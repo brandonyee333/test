@@ -32,6 +32,13 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class Channel implements Persistable<Long> {
 
+	public Channel() {
+	}
+
+	public Channel(String name) {
+		_name = name;
+	}
+
 	public void addChannelDataSource(ChannelDataSource channelDataSource) {
 		_channelDataSources.add(channelDataSource);
 	}
