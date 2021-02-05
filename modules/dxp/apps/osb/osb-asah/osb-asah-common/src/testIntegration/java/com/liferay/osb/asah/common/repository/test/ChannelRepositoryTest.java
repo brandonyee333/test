@@ -32,7 +32,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,27 +133,22 @@ public class ChannelRepositoryTest {
 
 	@Test
 	public void testFindAll1() {
-		Iterable<Channel> channels = new ArrayList<>(Arrays.asList(_channel));
-
-		Assertions.assertIterableEquals(channels, _channelRepository.findAll());
+		Assert.assertEquals(
+			Arrays.asList(_channel), _channelRepository.findAll());
 	}
 
 	@Test
 	public void testFindAll2() {
-		Iterable<Channel> channels = new ArrayList<>(Arrays.asList(_channel));
-
-		Assertions.assertIterableEquals(
-			channels, _channelRepository.findAll(PageRequest.of(0, 1)));
+		Assert.assertEquals(
+			Arrays.asList(_channel),
+			_channelRepository.findAll(PageRequest.of(0, 1)));
 	}
 
 	@Test
 	public void testFindAllById() {
-		Iterable<Channel> channels = new ArrayList<>(Arrays.asList(_channel));
-
-		Assertions.assertIterableEquals(
-			channels,
-			_channelRepository.findAllById(
-				new ArrayList<>(Arrays.asList(_channel.getId()))));
+		Assert.assertEquals(
+			Arrays.asList(_channel),
+			_channelRepository.findAllById(Arrays.asList(_channel.getId())));
 	}
 
 	@Test
@@ -238,10 +232,9 @@ public class ChannelRepositoryTest {
 
 	@Test
 	public void testSaveAll() {
-		Iterable<Channel> channels = new ArrayList<>(Arrays.asList(_channel));
+		List<Channel> channels = Arrays.asList(_channel);
 
-		Assertions.assertIterableEquals(
-			channels, _channelRepository.saveAll(channels));
+		Assert.assertEquals(channels, _channelRepository.saveAll(channels));
 	}
 
 	private void _assertChannel(Channel channel) {
