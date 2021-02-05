@@ -8899,21 +8899,20 @@ session.cookie.use.full.hostname=true
 
 		<copy
 			overwrite="true"
-			tofile="${project.dir}/liferay-portal-bundle-tomcat.tar.gz"
+			tofile="${project.dir}/liferay-portal-bundle-tomcat.zip"
 		>
 			<fileset
 				dir="dist/"
-				includes="liferay-*-tomcat-*.tar.gz"
+				includes="liferay-*-tomcat-*.zip"
 			/>
 		</copy>
 
-		<untar
-			compression="gzip"
+		<unzip
 			dest="./bundles"
-			src="liferay-portal-bundle-tomcat.tar.gz"
+			src="liferay-portal-bundle-tomcat.zip"
 		>
 			<cutdirsmapper dirs="1" />
-		</untar>
+		</unzip>
 
 		<antcall target="deploy-license-xml">
 			<param name="test.build.license.xml.zip.url" value="${test.license.xml.url}" />
