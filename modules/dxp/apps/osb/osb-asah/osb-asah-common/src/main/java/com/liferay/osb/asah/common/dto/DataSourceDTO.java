@@ -14,12 +14,26 @@
 
 package com.liferay.osb.asah.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.AccountsConfigurationDTO;
+import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.AnalyticsConfigurationDTO;
+import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.ContactsConfigurationDTO;
+import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.DetailDTO;
+import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.DataSourceOrganization;
+import com.liferay.osb.asah.common.model.DataSourceSite;
+import com.liferay.osb.asah.common.model.DataSourceUserGroup;
+import com.liferay.osb.asah.common.util.ListUtil;
+
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Inácio Nery
@@ -28,17 +42,78 @@ import java.util.List;
 @JsonRootName("data-sources")
 public class DataSourceDTO {
 
+	public DataSourceDTO() {
+	}
+
+	public DataSourceDTO(DataSource dataSource) {
+		AuthorDTO authorDTO = new AuthorDTO(dataSource);
+
+		if (!authorDTO.isEmpty()) {
+			_authorDTO = authorDTO;
+		}
+
+		_channelId = Objects.toString(dataSource.getChannelId(), null);
+		_createDate = dataSource.getCreateDate();
+
+		CredentialDTO credentialDTO = new CredentialDTO(dataSource);
+
+		if (!credentialDTO.isEmpty()) {
+			_credentialDTO = credentialDTO;
+		}
+
+		_deletionDate = dataSource.getDeletionDate();
+
+		DetailDTO detailDTO = new DetailDTO(dataSource);
+
+		if (!detailDTO.isEmpty()) {
+			_detailDTO = detailDTO;
+		}
+
+		_faroBackendSecuritySignature =
+			dataSource.getFaroBackendSecuritySignature();
+		_id = Objects.toString(dataSource.getId(), null);
+		_modifiedDate = dataSource.getModifiedDate();
+		_name = dataSource.getName();
+
+		ProviderDTO providerDTO = new ProviderDTO(dataSource);
+
+		if (!providerDTO.isEmpty()) {
+			_providerDTO = providerDTO;
+		}
+
+		_state = dataSource.getState();
+		_status = dataSource.getStatus();
+		_url = dataSource.getURL();
+		_workspaceURL = dataSource.getWorkspaceURL();
+	}
+
+	@JsonProperty("accountsConfiguration")
+	public AccountsConfigurationDTO getAccountsConfigurationDTO() {
+		return _accountsConfigurationDTO;
+	}
+
+	@JsonProperty("analyticsConfiguration")
+	public AnalyticsConfigurationDTO getAnalyticsConfigurationDTO() {
+		return _analyticsConfigurationDTO;
+	}
+
 	@JsonProperty("author")
 	public AuthorDTO getAuthorDTO() {
 		return _authorDTO;
 	}
 
 	@JsonProperty("channelId")
-	public Long getChannelId() {
+	public String getChannelId() {
 		return _channelId;
 	}
 
-	@JsonProperty("dateCreated")
+	@JsonProperty("contactsConfiguration")
+	public ContactsConfigurationDTO getContactsConfigurationDTO() {
+		return _contactsConfigurationDTO;
+	}
+
+	@JsonAlias("dateCreated")
+	@JsonProperty("createDate")
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -52,6 +127,21 @@ public class DataSourceDTO {
 		return _credentialDTO;
 	}
 
+	@JsonProperty("dataSourceId")
+	public String getDataSourceId() {
+		return _dataSourceId;
+	}
+
+	@JsonProperty("dataSourceState")
+	public String getDataSourceState() {
+		return _dataSourceState;
+	}
+
+	@JsonProperty("dataSourceStatus")
+	public String getDataSourceStatus() {
+		return _dataSourceStatus;
+	}
+
 	@JsonProperty("deletionDate")
 	public Date getDeletionDate() {
 		if (_deletionDate == null) {
@@ -61,17 +151,28 @@ public class DataSourceDTO {
 		return new Date(_deletionDate.getTime());
 	}
 
+	@JsonProperty("details")
+	public DetailDTO getDetailDTO() {
+		return _detailDTO;
+	}
+
+	@JsonProperty("existingDataSourceId")
+	public String getExistingDataSourceId() {
+		return _existingDataSourceId;
+	}
+
 	@JsonProperty("faroBackendSecuritySignature")
 	public String getFaroBackendSecuritySignature() {
 		return _faroBackendSecuritySignature;
 	}
 
 	@JsonProperty("id")
-	public Long getId() {
+	public String getId() {
 		return _id;
 	}
 
-	@JsonProperty("dateModified")
+	@JsonAlias("dateModified")
+	@JsonProperty("modifiedDate")
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -110,17 +211,38 @@ public class DataSourceDTO {
 		return _workspaceURL;
 	}
 
+	public void setAccountsConfigurationDTO(
+		AccountsConfigurationDTO accountsConfigurationDTO) {
+
+		_accountsConfigurationDTO = accountsConfigurationDTO;
+	}
+
+	public void setAnalyticsConfigurationDTO(
+		AnalyticsConfigurationDTO analyticsConfigurationDTO) {
+
+		_analyticsConfigurationDTO = analyticsConfigurationDTO;
+	}
+
 	public void setAuthorDTO(AuthorDTO authorDTO) {
 		_authorDTO = authorDTO;
 	}
 
-	public void setChannelId(Long channelId) {
+	public void setChannelId(String channelId) {
 		_channelId = channelId;
+	}
+
+	public void setContactsConfigurationDTO(
+		ContactsConfigurationDTO contactsConfigurationDTO) {
+
+		_contactsConfigurationDTO = contactsConfigurationDTO;
 	}
 
 	public void setCreateDate(Date createDate) {
 		if (createDate != null) {
 			_createDate = new Date(createDate.getTime());
+		}
+		else {
+			_createDate = null;
 		}
 	}
 
@@ -128,10 +250,33 @@ public class DataSourceDTO {
 		_credentialDTO = credentialDTO;
 	}
 
+	public void setDataSourceId(String dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
+	public void setDataSourceState(String dataSourceState) {
+		_dataSourceState = dataSourceState;
+	}
+
+	public void setDataSourceStatus(String dataSourceStatus) {
+		_dataSourceStatus = dataSourceStatus;
+	}
+
 	public void setDeletionDate(Date deletionDate) {
 		if (deletionDate != null) {
 			_deletionDate = new Date(deletionDate.getTime());
 		}
+		else {
+			_deletionDate = null;
+		}
+	}
+
+	public void setDetailDTO(DetailDTO detailDTO) {
+		_detailDTO = detailDTO;
+	}
+
+	public void setExistingDataSourceId(String existingDataSourceId) {
+		_existingDataSourceId = existingDataSourceId;
 	}
 
 	public void setFaroBackendSecuritySignature(
@@ -140,13 +285,16 @@ public class DataSourceDTO {
 		_faroBackendSecuritySignature = faroBackendSecuritySignature;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		_id = id;
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
 		if (modifiedDate != null) {
 			_modifiedDate = new Date(modifiedDate.getTime());
+		}
+		else {
+			_modifiedDate = null;
 		}
 	}
 
@@ -177,8 +325,37 @@ public class DataSourceDTO {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class AuthorDTO {
 
+		public AuthorDTO() {
+		}
+
+		public AuthorDTO(DataSource dataSource) {
+			_id = Objects.toString(dataSource.getAuthorId(), null);
+			_name = dataSource.getAuthorName();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof AuthorDTO)) {
+				return false;
+			}
+
+			AuthorDTO authorDTO = (AuthorDTO)obj;
+
+			if (Objects.equals(_id, authorDTO._id) &&
+				Objects.equals(_name, authorDTO._name)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
 		@JsonProperty("id")
-		public Long getId() {
+		public String getId() {
 			return _id;
 		}
 
@@ -187,7 +364,17 @@ public class DataSourceDTO {
 			return _name;
 		}
 
-		public void setId(Long id) {
+		@Override
+		public int hashCode() {
+			return Objects.hash(_id, _name);
+		}
+
+		@JsonIgnore
+		public boolean isEmpty() {
+			return equals(new AuthorDTO());
+		}
+
+		public void setId(String id) {
 			_id = id;
 		}
 
@@ -195,7 +382,7 @@ public class DataSourceDTO {
 			_name = name;
 		}
 
-		private Long _id;
+		private String _id;
 		private String _name;
 
 	}
@@ -203,48 +390,111 @@ public class DataSourceDTO {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class CredentialDTO {
 
+		public CredentialDTO() {
+		}
+
+		public CredentialDTO(DataSource dataSource) {
+			_login = dataSource.getLogin();
+			_oAuthAccessSecret = dataSource.getOAuthAccessSecret();
+			_oAuthAccessToken = dataSource.getOAuthAccessToken();
+			_oAuthClientId = dataSource.getOAuthClientId();
+			_oAuthClientSecret = dataSource.getOAuthClientSecret();
+			_oAuthConsumerKey = dataSource.getOAuthConsumerKey();
+			_oAuthConsumerSecret = dataSource.getOAuthConsumerSecret();
+
+			OAuthOwnerDTO oAuthOwnerDTO = new OAuthOwnerDTO(dataSource);
+
+			if (!oAuthOwnerDTO.isEmpty()) {
+				_oAuthOwnerDTO = oAuthOwnerDTO;
+			}
+
+			_oAuthRefreshToken = dataSource.getOAuthRefreshToken();
+			_password = dataSource.getPassword();
+			_privateKey = dataSource.getPrivateKey();
+			_publicKey = dataSource.getPublicKey();
+			_type = dataSource.getType();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof CredentialDTO)) {
+				return false;
+			}
+
+			CredentialDTO credentialDTO = (CredentialDTO)obj;
+
+			if (Objects.equals(_login, credentialDTO._login) &&
+				Objects.equals(
+					_oAuthAccessSecret, credentialDTO._oAuthAccessSecret) &&
+				Objects.equals(
+					_oAuthAccessToken, credentialDTO._oAuthAccessToken) &&
+				Objects.equals(_oAuthClientId, credentialDTO._oAuthClientId) &&
+				Objects.equals(
+					_oAuthClientSecret, credentialDTO._oAuthClientSecret) &&
+				Objects.equals(
+					_oAuthConsumerKey, credentialDTO._oAuthConsumerKey) &&
+				Objects.equals(
+					_oAuthConsumerSecret, credentialDTO._oAuthConsumerSecret) &&
+				Objects.equals(_oAuthOwnerDTO, credentialDTO._oAuthOwnerDTO) &&
+				Objects.equals(
+					_oAuthRefreshToken, credentialDTO._oAuthRefreshToken) &&
+				Objects.equals(_password, credentialDTO._password) &&
+				Objects.equals(_privateKey, credentialDTO._privateKey) &&
+				Objects.equals(_publicKey, credentialDTO._publicKey) &&
+				Objects.equals(_type, credentialDTO._type)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
 		@JsonProperty("login")
 		public String getLogin() {
 			return _login;
 		}
 
 		@JsonProperty("oAuthAccessSecret")
-		public String getoAuthAccessSecret() {
+		public String getOAuthAccessSecret() {
 			return _oAuthAccessSecret;
 		}
 
 		@JsonProperty("oAuthAccessToken")
-		public String getoAuthAccessToken() {
+		public String getOAuthAccessToken() {
 			return _oAuthAccessToken;
 		}
 
 		@JsonProperty("oAuthClientId")
-		public String getoAuthClientId() {
+		public String getOAuthClientId() {
 			return _oAuthClientId;
 		}
 
 		@JsonProperty("oAuthClientSecret")
-		public String getoAuthClientSecret() {
+		public String getOAuthClientSecret() {
 			return _oAuthClientSecret;
 		}
 
 		@JsonProperty("oAuthConsumerKey")
-		public String getoAuthConsumerKey() {
+		public String getOAuthConsumerKey() {
 			return _oAuthConsumerKey;
 		}
 
 		@JsonProperty("oAuthConsumerSecret")
-		public String getoAuthConsumerSecret() {
+		public String getOAuthConsumerSecret() {
 			return _oAuthConsumerSecret;
 		}
 
 		@JsonProperty("oAuthOwner")
-		public OAuthOwnerDTO getoAuthOwnerDTO() {
+		public OAuthOwnerDTO getOAuthOwnerDTO() {
 			return _oAuthOwnerDTO;
 		}
 
 		@JsonProperty("oAuthRefreshToken")
-		public String getoAuthRefreshToken() {
+		public String getOAuthRefreshToken() {
 			return _oAuthRefreshToken;
 		}
 
@@ -266,6 +516,20 @@ public class DataSourceDTO {
 		@JsonProperty("type")
 		public String getType() {
 			return _type;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(
+				_login, _oAuthAccessSecret, _oAuthAccessToken, _oAuthClientId,
+				_oAuthClientSecret, _oAuthConsumerKey, _oAuthConsumerSecret,
+				_oAuthOwnerDTO, _oAuthRefreshToken, _password, _privateKey,
+				_publicKey, _type);
+		}
+
+		@JsonIgnore
+		public boolean isEmpty() {
+			return equals(new CredentialDTO());
 		}
 
 		public void setLogin(String login) {
@@ -323,6 +587,36 @@ public class DataSourceDTO {
 		@JsonInclude(JsonInclude.Include.NON_NULL)
 		public static class OAuthOwnerDTO {
 
+			public OAuthOwnerDTO() {
+			}
+
+			public OAuthOwnerDTO(DataSource dataSource) {
+				_emailAddress = dataSource.getOAuthOwnerEmailAddress();
+				_name = dataSource.getOAuthOwnerName();
+			}
+
+			@Override
+			public boolean equals(Object obj) {
+				if (this == obj) {
+					return true;
+				}
+
+				if (!(obj instanceof OAuthOwnerDTO)) {
+					return false;
+				}
+
+				OAuthOwnerDTO oAuthOwnerDTO = (OAuthOwnerDTO)obj;
+
+				if (Objects.equals(
+						_emailAddress, oAuthOwnerDTO._emailAddress) &&
+					Objects.equals(_name, oAuthOwnerDTO._name)) {
+
+					return true;
+				}
+
+				return false;
+			}
+
 			@JsonProperty("emailAddress")
 			public String getEmailAddress() {
 				return _emailAddress;
@@ -331,6 +625,16 @@ public class DataSourceDTO {
 			@JsonProperty("name")
 			public String getName() {
 				return _name;
+			}
+
+			@Override
+			public int hashCode() {
+				return Objects.hash(_emailAddress, _name);
+			}
+
+			@JsonIgnore
+			public boolean isEmpty() {
+				return equals(new OAuthOwnerDTO());
 			}
 
 			public void setEmailAddress(String emailAddress) {
@@ -365,6 +669,63 @@ public class DataSourceDTO {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class ProviderDTO {
 
+		public ProviderDTO() {
+		}
+
+		public ProviderDTO(DataSource dataSource) {
+			AccountsConfigurationDTO accountsConfigurationDTO =
+				new AccountsConfigurationDTO(dataSource);
+
+			if (!accountsConfigurationDTO.isEmpty()) {
+				_accountsConfigurationDTO = accountsConfigurationDTO;
+			}
+
+			AnalyticsConfigurationDTO analyticsConfigurationDTO =
+				new AnalyticsConfigurationDTO(dataSource);
+
+			if (!analyticsConfigurationDTO.isEmpty()) {
+				_analyticsConfigurationDTO = analyticsConfigurationDTO;
+			}
+
+			ContactsConfigurationDTO contactsConfigurationDTO =
+				new ContactsConfigurationDTO(dataSource);
+
+			if (!contactsConfigurationDTO.isEmpty()) {
+				_contactsConfigurationDTO = contactsConfigurationDTO;
+			}
+
+			_type = dataSource.getProviderType();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof ProviderDTO)) {
+				return false;
+			}
+
+			ProviderDTO providerDTO = (ProviderDTO)obj;
+
+			if (Objects.equals(
+					_accountsConfigurationDTO,
+					providerDTO._accountsConfigurationDTO) &&
+				Objects.equals(
+					_analyticsConfigurationDTO,
+					providerDTO._analyticsConfigurationDTO) &&
+				Objects.equals(
+					_contactsConfigurationDTO,
+					providerDTO._contactsConfigurationDTO) &&
+				Objects.equals(_type, providerDTO._type)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
 		@JsonProperty("accountsConfiguration")
 		public AccountsConfigurationDTO getAccountsConfigurationDTO() {
 			return _accountsConfigurationDTO;
@@ -383,6 +744,18 @@ public class DataSourceDTO {
 		@JsonProperty("type")
 		public String getType() {
 			return _type;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(
+				_accountsConfigurationDTO, _analyticsConfigurationDTO,
+				_contactsConfigurationDTO, _type);
+		}
+
+		@JsonIgnore
+		public boolean isEmpty() {
+			return equals(new ProviderDTO());
 		}
 
 		public void setAccountsConfigurationDTO(
@@ -410,9 +783,44 @@ public class DataSourceDTO {
 		@JsonInclude(JsonInclude.Include.NON_NULL)
 		public static class AccountsConfigurationDTO {
 
+			public AccountsConfigurationDTO() {
+			}
+
+			public AccountsConfigurationDTO(DataSource dataSource) {
+				_enableAllAccounts = dataSource.getEnableAllAccounts();
+			}
+
+			@Override
+			public boolean equals(Object obj) {
+				if (this == obj) {
+					return true;
+				}
+
+				if (!(obj instanceof AccountsConfigurationDTO)) {
+					return false;
+				}
+
+				AccountsConfigurationDTO accountsConfigurationDTO =
+					(AccountsConfigurationDTO)obj;
+
+				return Objects.equals(
+					_enableAllAccounts,
+					accountsConfigurationDTO._enableAllAccounts);
+			}
+
 			@JsonProperty("enableAllAccounts")
 			public Boolean getEnableAllAccounts() {
 				return _enableAllAccounts;
+			}
+
+			@Override
+			public int hashCode() {
+				return Objects.hash(_enableAllAccounts);
+			}
+
+			@JsonIgnore
+			public boolean isEmpty() {
+				return equals(new AccountsConfigurationDTO());
 			}
 
 			public void setEnableAllAccounts(Boolean enableAllAccounts) {
@@ -426,18 +834,61 @@ public class DataSourceDTO {
 		@JsonInclude(JsonInclude.Include.NON_NULL)
 		public static class AnalyticsConfigurationDTO {
 
+			public AnalyticsConfigurationDTO() {
+			}
+
+			public AnalyticsConfigurationDTO(DataSource dataSource) {
+				_enableAllSites = dataSource.getEnableAllSites();
+				_lastSyncDate = dataSource.getAnalyticsLastSyncDate();
+
+				List<SiteDTO> siteDTOs = ListUtil.map(
+					dataSource.getDataSourceSites(), SiteDTO::new);
+
+				if (!siteDTOs.isEmpty()) {
+					_siteDTOs = siteDTOs;
+				}
+			}
+
+			@Override
+			public boolean equals(Object obj) {
+				if (this == obj) {
+					return true;
+				}
+
+				if (!(obj instanceof AnalyticsConfigurationDTO)) {
+					return false;
+				}
+
+				AnalyticsConfigurationDTO analyticsConfigurationDTO =
+					(AnalyticsConfigurationDTO)obj;
+
+				if (Objects.equals(
+						_enableAllSites,
+						analyticsConfigurationDTO._enableAllSites) &&
+					Objects.equals(
+						_lastSyncDate,
+						analyticsConfigurationDTO._lastSyncDate) &&
+					Objects.equals(
+						_siteDTOs, analyticsConfigurationDTO._siteDTOs)) {
+
+					return true;
+				}
+
+				return false;
+			}
+
 			@JsonProperty("enableAllSites")
 			public Boolean getEnableAllSites() {
 				return _enableAllSites;
 			}
 
 			@JsonProperty("lastSyncTime")
-			public Date getLastSyncTime() {
-				if (_lastSyncTime == null) {
+			public Date getLastSyncDate() {
+				if (_lastSyncDate == null) {
 					return null;
 				}
 
-				return new Date(_lastSyncTime.getTime());
+				return new Date(_lastSyncDate.getTime());
 			}
 
 			@JsonProperty("sites")
@@ -445,13 +896,26 @@ public class DataSourceDTO {
 				return _siteDTOs;
 			}
 
+			@Override
+			public int hashCode() {
+				return Objects.hash(_enableAllSites, _lastSyncDate, _siteDTOs);
+			}
+
+			@JsonIgnore
+			public boolean isEmpty() {
+				return equals(new AnalyticsConfigurationDTO());
+			}
+
 			public void setEnableAllSites(Boolean enableAllSites) {
 				_enableAllSites = enableAllSites;
 			}
 
-			public void setLastSyncTime(Date lastSyncTime) {
-				if (lastSyncTime != null) {
-					_lastSyncTime = new Date(lastSyncTime.getTime());
+			public void setLastSyncDate(Date lastSyncDate) {
+				if (lastSyncDate != null) {
+					_lastSyncDate = new Date(lastSyncDate.getTime());
+				}
+				else {
+					_lastSyncDate = null;
 				}
 			}
 
@@ -462,37 +926,143 @@ public class DataSourceDTO {
 			@JsonInclude(JsonInclude.Include.NON_NULL)
 			public static class SiteDTO {
 
+				public SiteDTO() {
+				}
+
+				public SiteDTO(DataSourceSite dataSourceSite) {
+					_enableAllChildren = dataSourceSite.getEnableAllChildren();
+					_siteId = Objects.toString(
+						dataSourceSite.getSiteId(), null);
+				}
+
+				@Override
+				public boolean equals(Object obj) {
+					if (this == obj) {
+						return true;
+					}
+
+					if (!(obj instanceof SiteDTO)) {
+						return false;
+					}
+
+					SiteDTO siteDTO = (SiteDTO)obj;
+
+					if (Objects.equals(
+							_enableAllChildren, siteDTO._enableAllChildren) &&
+						Objects.equals(_siteId, siteDTO._siteId)) {
+
+						return true;
+					}
+
+					return false;
+				}
+
 				@JsonProperty("enableAllChildren")
 				public Boolean getEnableAllChildren() {
 					return _enableAllChildren;
 				}
 
 				@JsonProperty("id")
-				public Long getId() {
-					return _id;
+				public String getSiteId() {
+					return _siteId;
+				}
+
+				@Override
+				public int hashCode() {
+					return Objects.hash(_enableAllChildren, _siteId);
+				}
+
+				@JsonIgnore
+				public boolean isEmpty() {
+					return equals(new SiteDTO());
 				}
 
 				public void setEnableAllChildren(Boolean enableAllChildren) {
 					_enableAllChildren = enableAllChildren;
 				}
 
-				public void setId(Long id) {
-					_id = id;
+				public void setSiteId(String id) {
+					_siteId = id;
 				}
 
 				private Boolean _enableAllChildren;
-				private Long _id;
+				private String _siteId;
 
 			}
 
 			private Boolean _enableAllSites;
-			private Date _lastSyncTime;
+			private Date _lastSyncDate;
 			private List<SiteDTO> _siteDTOs;
 
 		}
 
 		@JsonInclude(JsonInclude.Include.NON_NULL)
 		public static class ContactsConfigurationDTO {
+
+			public ContactsConfigurationDTO() {
+			}
+
+			public ContactsConfigurationDTO(DataSource dataSource) {
+				_enableAllContacts = dataSource.getEnableAllContacts();
+				_enableAllLeads = dataSource.getEnableAllLeads();
+				_lastSuccessfulAuditEventDate =
+					dataSource.getContactsLastSuccessfulAuditEventDate();
+				_lastSyncDate = dataSource.getContactsLastSyncDate();
+
+				List<OrganizationDTO> organizationDTOs = ListUtil.map(
+					dataSource.getDataSourceOrganizations(),
+					OrganizationDTO::new);
+
+				if (!organizationDTOs.isEmpty()) {
+					_organizationDTOs = organizationDTOs;
+				}
+
+				List<UserGroupDTO> userGroupDTOs = ListUtil.map(
+					dataSource.getDataSourceUserGroups(), UserGroupDTO::new);
+
+				if (!userGroupDTOs.isEmpty()) {
+					_userGroupDTOs = userGroupDTOs;
+				}
+			}
+
+			@Override
+			public boolean equals(Object obj) {
+				if (this == obj) {
+					return true;
+				}
+
+				if (!(obj instanceof ContactsConfigurationDTO)) {
+					return false;
+				}
+
+				ContactsConfigurationDTO contactsConfigurationDTO =
+					(ContactsConfigurationDTO)obj;
+
+				if (Objects.equals(
+						_enableAllContacts,
+						contactsConfigurationDTO._enableAllContacts) &&
+					Objects.equals(
+						_enableAllLeads,
+						contactsConfigurationDTO._enableAllLeads) &&
+					Objects.equals(
+						_lastSuccessfulAuditEventDate,
+						contactsConfigurationDTO.
+							_lastSuccessfulAuditEventDate) &&
+					Objects.equals(
+						_lastSyncDate,
+						contactsConfigurationDTO._lastSyncDate) &&
+					Objects.equals(
+						_organizationDTOs,
+						contactsConfigurationDTO._organizationDTOs) &&
+					Objects.equals(
+						_userGroupDTOs,
+						contactsConfigurationDTO._userGroupDTOs)) {
+
+					return true;
+				}
+
+				return false;
+			}
 
 			@JsonProperty("enableAllContacts")
 			public Boolean getEnableAllContacts() {
@@ -505,21 +1075,21 @@ public class DataSourceDTO {
 			}
 
 			@JsonProperty("lastSuccessfulAuditEventTime")
-			public Date getLastSuccessfulAuditEventTime() {
-				if (_lastSuccessfulAuditEventTime == null) {
+			public Date getLastSuccessfulAuditEventDate() {
+				if (_lastSuccessfulAuditEventDate == null) {
 					return null;
 				}
 
-				return new Date(_lastSuccessfulAuditEventTime.getTime());
+				return new Date(_lastSuccessfulAuditEventDate.getTime());
 			}
 
 			@JsonProperty("lastSyncTime")
-			public Date getLastSyncTime() {
-				if (_lastSyncTime == null) {
+			public Date getLastSyncDate() {
+				if (_lastSyncDate == null) {
 					return null;
 				}
 
-				return new Date(_lastSyncTime.getTime());
+				return new Date(_lastSyncDate.getTime());
 			}
 
 			@JsonProperty("organizations")
@@ -532,6 +1102,19 @@ public class DataSourceDTO {
 				return _userGroupDTOs;
 			}
 
+			@Override
+			public int hashCode() {
+				return Objects.hash(
+					_enableAllContacts, _enableAllLeads,
+					_lastSuccessfulAuditEventDate, _lastSyncDate,
+					_organizationDTOs, _userGroupDTOs);
+			}
+
+			@JsonIgnore
+			public boolean isEmpty() {
+				return equals(new ContactsConfigurationDTO());
+			}
+
 			public void setEnableAllContacts(Boolean enableAllContacts) {
 				_enableAllContacts = enableAllContacts;
 			}
@@ -540,18 +1123,24 @@ public class DataSourceDTO {
 				_enableAllLeads = enableAllLeads;
 			}
 
-			public void setLastSuccessfulAuditEventTime(
-				Date lastSuccessfulAuditEventTime) {
+			public void setLastSuccessfulAuditEventDate(
+				Date lastSuccessfulAuditEventDate) {
 
-				if (lastSuccessfulAuditEventTime != null) {
-					_lastSuccessfulAuditEventTime = new Date(
-						lastSuccessfulAuditEventTime.getTime());
+				if (lastSuccessfulAuditEventDate != null) {
+					_lastSuccessfulAuditEventDate = new Date(
+						lastSuccessfulAuditEventDate.getTime());
+				}
+				else {
+					_lastSuccessfulAuditEventDate = null;
 				}
 			}
 
-			public void setLastSyncTime(Date lastSyncTime) {
-				if (lastSyncTime != null) {
-					_lastSyncTime = new Date(lastSyncTime.getTime());
+			public void setLastSyncDate(Date lastSyncDate) {
+				if (lastSyncDate != null) {
+					_lastSyncDate = new Date(lastSyncDate.getTime());
+				}
+				else {
+					_lastSyncDate = null;
 				}
 			}
 
@@ -568,61 +1157,246 @@ public class DataSourceDTO {
 			@JsonInclude(JsonInclude.Include.NON_NULL)
 			public static class OrganizationDTO {
 
+				public OrganizationDTO() {
+				}
+
+				public OrganizationDTO(
+					DataSourceOrganization dataSourceOrganization) {
+
+					_enableAllChildren =
+						dataSourceOrganization.getEnableAllChildren();
+					_organizationId =
+						dataSourceOrganization.getOrganizationId();
+					_organizationIds =
+						dataSourceOrganization.getOrganizationIds();
+				}
+
+				@Override
+				public boolean equals(Object obj) {
+					if (this == obj) {
+						return true;
+					}
+
+					if (!(obj instanceof OrganizationDTO)) {
+						return false;
+					}
+
+					OrganizationDTO organizationDTO = (OrganizationDTO)obj;
+
+					if (Objects.equals(
+							_enableAllChildren,
+							organizationDTO._enableAllChildren) &&
+						Objects.equals(
+							_organizationId, organizationDTO._organizationId) &&
+						Objects.equals(
+							_organizationIds,
+							organizationDTO._organizationIds)) {
+
+						return true;
+					}
+
+					return false;
+				}
+
 				@JsonProperty("enableAllChildren")
 				public Boolean getEnableAllChildren() {
 					return _enableAllChildren;
 				}
 
+				@JsonProperty("id")
+				public Long getOrganizationId() {
+					return _organizationId;
+				}
+
 				@JsonProperty("organizationIds")
-				public List<Long> getOrganizationIds() {
+				public Set<Long> getOrganizationIds() {
 					return _organizationIds;
+				}
+
+				@Override
+				public int hashCode() {
+					return Objects.hash(
+						_enableAllChildren, _organizationId, _organizationIds);
+				}
+
+				@JsonIgnore
+				public boolean isEmpty() {
+					return equals(new OrganizationDTO());
 				}
 
 				public void setEnableAllChildren(Boolean enableAllChildren) {
 					_enableAllChildren = enableAllChildren;
 				}
 
-				public void setOrganizationIds(List<Long> organizationIds) {
+				public void setOrganizationId(Long organizationId) {
+					_organizationId = organizationId;
+				}
+
+				public void setOrganizationIds(Set<Long> organizationIds) {
 					_organizationIds = organizationIds;
 				}
 
 				private Boolean _enableAllChildren;
-				private List<Long> _organizationIds;
+				private Long _organizationId;
+				private Set<Long> _organizationIds;
 
 			}
 
 			@JsonInclude(JsonInclude.Include.NON_NULL)
 			public static class UserGroupDTO {
 
+				public UserGroupDTO() {
+				}
+
+				public UserGroupDTO(DataSourceUserGroup dataSourceUserGroup) {
+					_enableAllChildren =
+						dataSourceUserGroup.getEnableAllChildren();
+					_userGroupId = dataSourceUserGroup.getUserGroupId();
+					_userGroupIds = dataSourceUserGroup.getUserGroupIds();
+				}
+
+				@Override
+				public boolean equals(Object obj) {
+					if (this == obj) {
+						return true;
+					}
+
+					if (!(obj instanceof UserGroupDTO)) {
+						return false;
+					}
+
+					UserGroupDTO userGroupDTO = (UserGroupDTO)obj;
+
+					if (Objects.equals(
+							_enableAllChildren,
+							userGroupDTO._enableAllChildren) &&
+						Objects.equals(
+							_userGroupId, userGroupDTO._userGroupId) &&
+						Objects.equals(
+							_userGroupIds, userGroupDTO._userGroupIds)) {
+
+						return true;
+					}
+
+					return false;
+				}
+
 				@JsonProperty("enableAllChildren")
 				public Boolean getEnableAllChildren() {
 					return _enableAllChildren;
 				}
 
+				@JsonProperty("id")
+				public Long getUserGroupId() {
+					return _userGroupId;
+				}
+
 				@JsonProperty("userGroupIds")
-				public List<Long> getUserGroupIds() {
+				public Set<Long> getUserGroupIds() {
 					return _userGroupIds;
+				}
+
+				@Override
+				public int hashCode() {
+					return Objects.hash(
+						_enableAllChildren, _userGroupId, _userGroupIds);
+				}
+
+				@JsonIgnore
+				public boolean isEmpty() {
+					return equals(new UserGroupDTO());
 				}
 
 				public void setEnableAllChildren(Boolean enableAllChildren) {
 					_enableAllChildren = enableAllChildren;
 				}
 
-				public void setUserGroupIds(List<Long> userGroupIds) {
+				public void setUserGroupId(Long userGroupId) {
+					_userGroupId = userGroupId;
+				}
+
+				public void setUserGroupIds(Set<Long> userGroupIds) {
 					_userGroupIds = userGroupIds;
 				}
 
 				private Boolean _enableAllChildren;
-				private List<Long> _userGroupIds;
+				private Long _userGroupId;
+				private Set<Long> _userGroupIds;
 
 			}
 
 			private Boolean _enableAllContacts;
 			private Boolean _enableAllLeads;
-			private Date _lastSuccessfulAuditEventTime;
-			private Date _lastSyncTime;
+			private Date _lastSuccessfulAuditEventDate;
+			private Date _lastSyncDate;
 			private List<OrganizationDTO> _organizationDTOs;
 			private List<UserGroupDTO> _userGroupDTOs;
+
+		}
+
+		@JsonInclude(JsonInclude.Include.NON_NULL)
+		public static class DetailDTO {
+
+			public DetailDTO() {
+			}
+
+			public DetailDTO(DataSource dataSource) {
+				_contactsSelected = dataSource.getContactsSelected();
+				_sitesSelected = dataSource.getSitesSelected();
+			}
+
+			@Override
+			public boolean equals(Object obj) {
+				if (this == obj) {
+					return true;
+				}
+
+				if (!(obj instanceof DetailDTO)) {
+					return false;
+				}
+
+				DetailDTO detailDTO = (DetailDTO)obj;
+
+				if (Objects.equals(
+						_contactsSelected, detailDTO._contactsSelected) &&
+					Objects.equals(_sitesSelected, detailDTO._sitesSelected)) {
+
+					return true;
+				}
+
+				return false;
+			}
+
+			@JsonProperty("contactsSelected")
+			public Boolean getContactsSelected() {
+				return _contactsSelected;
+			}
+
+			@JsonProperty("sitesSelected")
+			public Boolean getSitesSelected() {
+				return _sitesSelected;
+			}
+
+			@Override
+			public int hashCode() {
+				return Objects.hash(_contactsSelected, _sitesSelected);
+			}
+
+			@JsonIgnore
+			public boolean isEmpty() {
+				return equals(new DetailDTO());
+			}
+
+			public void setContactsSelected(Boolean contactsSelected) {
+				_contactsSelected = contactsSelected;
+			}
+
+			public void setSitesSelected(Boolean sitesSelected) {
+				_sitesSelected = sitesSelected;
+			}
+
+			private Boolean _contactsSelected;
+			private Boolean _sitesSelected;
 
 		}
 
@@ -633,13 +1407,21 @@ public class DataSourceDTO {
 
 	}
 
+	private AccountsConfigurationDTO _accountsConfigurationDTO;
+	private AnalyticsConfigurationDTO _analyticsConfigurationDTO;
 	private AuthorDTO _authorDTO;
-	private Long _channelId;
+	private String _channelId;
+	private ContactsConfigurationDTO _contactsConfigurationDTO;
 	private Date _createDate;
 	private CredentialDTO _credentialDTO;
+	private String _dataSourceId;
+	private String _dataSourceState;
+	private String _dataSourceStatus;
 	private Date _deletionDate;
+	private DetailDTO _detailDTO;
+	private String _existingDataSourceId;
 	private String _faroBackendSecuritySignature;
-	private Long _id;
+	private String _id;
 	private Date _modifiedDate;
 	private String _name;
 	private ProviderDTO _providerDTO;
