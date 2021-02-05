@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dog.DataSourceDog;
-import com.liferay.osb.asah.backend.model.DataSource;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
@@ -23,6 +22,8 @@ import com.liferay.osb.asah.common.dto.PageDTO;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.model.ChannelDataSource;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
@@ -86,15 +87,12 @@ public class ChannelsRestController extends BaseRestController {
 		List<DataSource> dataSources = _dataSourceDog.getDataSources(
 			ListUtil.map(
 				channel.getChannelDataSources(),
-				channelDataSource -> String.valueOf(
-					channelDataSource.getDataSourceId())));
+				ChannelDataSource::getDataSourceId));
 
 		return new ChannelDTO(
 			channel,
 			Collections.singletonMap(
-				"data-sources",
-				SetUtil.map(
-					dataSources, dataSource -> (DataSourceDTO)dataSource)));
+				"data-sources", SetUtil.map(dataSources, DataSourceDTO::new)));
 	}
 
 	@GetMapping

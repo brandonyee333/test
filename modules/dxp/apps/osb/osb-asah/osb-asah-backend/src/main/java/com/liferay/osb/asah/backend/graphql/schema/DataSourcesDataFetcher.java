@@ -15,9 +15,10 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.DataSourceDog;
-import com.liferay.osb.asah.backend.model.DataSource;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -34,10 +35,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "dataSources", typeName = "QueryType")
-public class DataSourcesDataFetcher implements DataFetcher<List<DataSource>> {
+public class DataSourcesDataFetcher
+	implements DataFetcher<List<DataSourceDTO>> {
 
 	@Override
-	public List<DataSource> get(
+	public List<DataSourceDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		Sort sort = null;
@@ -49,10 +51,12 @@ public class DataSourcesDataFetcher implements DataFetcher<List<DataSource>> {
 			sort = Sort.of(sortMap);
 		}
 
-		return _dataSourceDog.getDataSources(
-			dataFetchingEnvironment.getArgument("credentialsType"),
-			dataFetchingEnvironment.getArgument("size"), sort,
-			dataFetchingEnvironment.getArgument("type"));
+		return ListUtil.map(
+			_dataSourceDog.getDataSources(
+				dataFetchingEnvironment.getArgument("credentialsType"),
+				dataFetchingEnvironment.getArgument("size"), sort,
+				dataFetchingEnvironment.getArgument("type")),
+			DataSourceDTO::new);
 	}
 
 	@Autowired

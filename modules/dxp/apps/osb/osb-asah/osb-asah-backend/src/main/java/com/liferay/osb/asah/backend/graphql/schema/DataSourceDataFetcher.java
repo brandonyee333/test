@@ -15,8 +15,9 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.DataSourceDog;
-import com.liferay.osb.asah.backend.model.DataSource;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.DataSource;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -29,14 +30,21 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "dataSource", typeName = "QueryType")
-public class DataSourceDataFetcher implements DataFetcher<DataSource> {
+public class DataSourceDataFetcher implements DataFetcher<DataSourceDTO> {
 
 	@Override
-	public DataSource get(DataFetchingEnvironment dataFetchingEnvironment) {
+	public DataSourceDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
 		String dataSourceId = dataFetchingEnvironment.getArgument(
 			"dataSourceId");
 
-		return _dataSourceDog.getDataSource(dataSourceId);
+		DataSource dataSource = _dataSourceDog.fetchDataSource(
+			Long.valueOf(dataSourceId));
+
+		if (dataSource != null) {
+			return new DataSourceDTO(dataSource);
+		}
+
+		return null;
 	}
 
 	@Autowired

@@ -24,6 +24,8 @@ import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.AccountsConfigu
 import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.AnalyticsConfigurationDTO;
 import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.ContactsConfigurationDTO;
 import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.DetailDTO;
+import com.liferay.osb.asah.common.graphql.GraphQLProperty;
+import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.DataSourceOrganization;
 import com.liferay.osb.asah.common.model.DataSourceSite;
@@ -38,6 +40,7 @@ import java.util.Set;
 /**
  * @author Inácio Nery
  */
+@GraphQLType
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName("data-sources")
 public class DataSourceDTO {
@@ -201,6 +204,7 @@ public class DataSourceDTO {
 		return _status;
 	}
 
+	@GraphQLProperty("url")
 	@JsonProperty("url")
 	public String getURL() {
 		return _url;

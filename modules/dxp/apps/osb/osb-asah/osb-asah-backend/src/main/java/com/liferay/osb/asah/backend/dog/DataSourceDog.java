@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.liferay.osb.asah.backend.model.DataSource;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
