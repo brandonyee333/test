@@ -93,6 +93,6 @@ public class MessageSubscriberImpl implements MessageSubscriber {
 
 	private final Channel _channel;
 	private final String _name;
-	private Queue<String> _queue = new ConcurrentLinkedQueue<>();
+	private final Queue<String> _queue = new ConcurrentLinkedQueue<>();
 
 }

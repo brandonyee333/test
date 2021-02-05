@@ -117,7 +117,7 @@ public enum PageMetricType implements MetricType {
 		_aggregationName = fieldName;
 	}
 
-	private static Map<String, PageMetricType> _pageMetricTypes =
+	private static final Map<String, PageMetricType> _pageMetricTypes =
 		new HashMap<>();
 
 	static {

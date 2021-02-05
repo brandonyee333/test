@@ -145,12 +145,12 @@ public class PropertyFilter {
 		};
 	}
 
-	private static Pattern _filterStringPattern = Pattern.compile(
+	private static final Pattern _filterStringPattern = Pattern.compile(
 		"(.+)\\s([=~])\\s(.+)");
 
 	private boolean _negate;
 	private String _operator;
-	private List<PropertyFilter> _propertyFilters = new ArrayList<>();
+	private final List<PropertyFilter> _propertyFilters = new ArrayList<>();
 	private String _propertyName;
 	private String _propertyNamespace = "";
 	private String _propertyValue;

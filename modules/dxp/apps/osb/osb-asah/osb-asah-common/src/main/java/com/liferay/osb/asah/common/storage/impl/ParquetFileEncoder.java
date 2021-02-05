@@ -64,7 +64,7 @@ public class ParquetFileEncoder implements FileEncoder {
 		_parquetWriter = builder.build();
 	}
 
-	private JSONAvroTransformer _jsonAvroTransformer =
+	private final JSONAvroTransformer _jsonAvroTransformer =
 		new JSONAvroTransformer();
 	private ParquetWriter<GenericRecord> _parquetWriter;
 	private final String _pathString;

@@ -43,7 +43,7 @@ public enum AssetType {
 		_value = value;
 	}
 
-	private static Map<String, AssetType> _assetTypes = new HashMap<>();
+	private static final Map<String, AssetType> _assetTypes = new HashMap<>();
 
 	static {
 		for (AssetType assetType : values()) {

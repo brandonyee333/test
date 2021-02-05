@@ -74,8 +74,8 @@ public enum FormFieldMetricType implements MetricType {
 		_aggregationName = fieldName;
 	}
 
-	private static Map<String, FormFieldMetricType> _formFieldMetricTypes =
-		new HashMap<>();
+	private static final Map<String, FormFieldMetricType>
+		_formFieldMetricTypes = new HashMap<>();
 
 	static {
 		Stream.of(

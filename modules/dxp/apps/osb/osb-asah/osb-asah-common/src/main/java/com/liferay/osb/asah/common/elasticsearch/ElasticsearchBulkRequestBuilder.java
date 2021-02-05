@@ -237,7 +237,7 @@ public class ElasticsearchBulkRequestBuilder {
 	private final String _indexNamespace;
 	private WriteRequest.RefreshPolicy _refreshPolicy =
 		WriteRequest.RefreshPolicy.NONE;
-	private TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
 
 }

@@ -67,7 +67,7 @@ public enum DocumentLibraryMetricType implements MetricType {
 		_aggregationName = fieldName;
 	}
 
-	private static Map<String, DocumentLibraryMetricType>
+	private static final Map<String, DocumentLibraryMetricType>
 		_documentLibraryMetricTypes = new HashMap<>();
 
 	static {

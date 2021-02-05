@@ -79,7 +79,7 @@ public class ZipFileBuilder {
 	private static final Log _log = LogFactory.getLog(ZipFileBuilder.class);
 
 	private final File _file;
-	private Map<String, UnsafeConsumer<ZipOutputStream, Exception>>
+	private final Map<String, UnsafeConsumer<ZipOutputStream, Exception>>
 		_unsafeConsumers = new HashMap<>();
 
 }

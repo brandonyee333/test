@@ -65,7 +65,7 @@ public enum JournalMetricType implements MetricType {
 		_aggregationName = fieldName;
 	}
 
-	private static Map<String, JournalMetricType> _journalMetricTypes =
+	private static final Map<String, JournalMetricType> _journalMetricTypes =
 		new HashMap<>();
 
 	static {

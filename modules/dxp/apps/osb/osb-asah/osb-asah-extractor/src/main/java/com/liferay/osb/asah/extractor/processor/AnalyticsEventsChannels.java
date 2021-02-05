@@ -276,6 +276,7 @@ public class AnalyticsEventsChannels {
 		return analyticsEvent -> true;
 	}
 
-	private Map<Channel, Predicate<AnalyticsEvent>> _channels = new HashMap<>();
+	private final Map<Channel, Predicate<AnalyticsEvent>> _channels =
+		new HashMap<>();
 
 }

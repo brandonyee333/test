@@ -881,7 +881,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	private final Map<String, String> _aliases = new ConcurrentHashMap<>();
 	private final Client _client;
 	private final ElasticsearchIndexManager _elasticsearchIndexManager;
-	private TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
 	private final WeDeployDataService _weDeployDataService;
 

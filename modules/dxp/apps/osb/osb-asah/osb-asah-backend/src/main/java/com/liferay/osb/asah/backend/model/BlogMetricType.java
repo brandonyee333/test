@@ -80,7 +80,7 @@ public enum BlogMetricType implements MetricType {
 		_aggregationName = fieldName;
 	}
 
-	private static Map<String, BlogMetricType> _blogMetricTypes =
+	private static final Map<String, BlogMetricType> _blogMetricTypes =
 		new HashMap<>();
 
 	static {

@@ -211,11 +211,11 @@ public class AssetResolver<T extends AssetMetric> {
 		}
 	}
 
-	private Set<String> _assetFieldNames = new HashSet<>();
+	private final Set<String> _assetFieldNames = new HashSet<>();
 	private final String _assetIdFieldName;
-	private Map<String, BiConsumer<T, Object>> _fieldSetterBiConsumer =
+	private final Map<String, BiConsumer<T, Object>> _fieldSetterBiConsumer =
 		new HashMap<>();
-	private Set<String> _searchableFieldNames = new HashSet<>();
+	private final Set<String> _searchableFieldNames = new HashSet<>();
 	private BiConsumer<T, String> _setterBiConsumer = T::setAssetId;
 	private Supplier<T> _supplier;
 

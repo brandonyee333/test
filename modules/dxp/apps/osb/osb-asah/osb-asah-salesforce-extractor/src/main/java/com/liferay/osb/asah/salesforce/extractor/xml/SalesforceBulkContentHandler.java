@@ -235,15 +235,15 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 
 	private static final int _DELTA = 50;
 
-	private static Log _log = LogFactory.getLog(
+	private static final Log _log = LogFactory.getLog(
 		SalesforceBulkContentHandler.class);
 
-	private List<JSONObject> _auditEventJSONObjects = new ArrayList<>();
+	private final List<JSONObject> _auditEventJSONObjects = new ArrayList<>();
 	private int _count;
 	private final List<Exception> _exceptions;
 	private final Map<String, Field> _fields;
 	private final Supplier<Boolean> _isStopSupplier;
-	private List<JSONObject> _jsonObjects = new ArrayList<>();
+	private final List<JSONObject> _jsonObjects = new ArrayList<>();
 	private final String _osbAsahDataSourceId;
 	private final Map<String, char[]> _recordFieldChars = new HashMap<>();
 	private String _recordFieldName;

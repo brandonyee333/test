@@ -71,8 +71,8 @@ public enum IndividualMetricType implements MetricType {
 		_aggregationName = fieldName;
 	}
 
-	private static Map<String, IndividualMetricType> _individualMetricTypes =
-		new HashMap<>();
+	private static final Map<String, IndividualMetricType>
+		_individualMetricTypes = new HashMap<>();
 
 	static {
 		Stream.of(

@@ -222,7 +222,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		return new Metric(_metricType);
 	}
 
-	private MetricType _metricType = new MockMetricType();
+	private final MetricType _metricType = new MockMetricType();
 
 	private static class MockMetricType implements MetricType {
 

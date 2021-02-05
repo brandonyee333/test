@@ -67,7 +67,7 @@ public enum FormPageMetricType implements MetricType {
 		_aggregationName = fieldName;
 	}
 
-	private static Map<String, FormPageMetricType> _formPageMetricTypes =
+	private static final Map<String, FormPageMetricType> _formPageMetricTypes =
 		new HashMap<>();
 
 	static {

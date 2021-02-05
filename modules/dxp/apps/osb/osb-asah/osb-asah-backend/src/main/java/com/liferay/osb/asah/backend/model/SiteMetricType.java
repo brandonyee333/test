@@ -91,7 +91,7 @@ public enum SiteMetricType implements MetricType {
 		_aggregationName = fieldName;
 	}
 
-	private static Map<String, SiteMetricType> _siteMetricTypes =
+	private static final Map<String, SiteMetricType> _siteMetricTypes =
 		new HashMap<>();
 
 	static {

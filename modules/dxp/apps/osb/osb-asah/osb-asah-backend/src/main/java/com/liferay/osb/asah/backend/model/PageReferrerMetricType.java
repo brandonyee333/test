@@ -64,7 +64,7 @@ public enum PageReferrerMetricType implements MetricType {
 		_aggregationName = fieldName;
 	}
 
-	private static Map<String, PageReferrerMetricType>
+	private static final Map<String, PageReferrerMetricType>
 		_pageReferrerMetricTypes = new HashMap<>();
 
 	static {

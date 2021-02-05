@@ -102,13 +102,12 @@ public class UserDogTest {
 		Assert.assertEquals(2, segmentedKnownUsersCount);
 	}
 
-	private SearchQueryContext _searchQueryContext = new SearchQueryContext(
-		"1", AssetType.JOURNAL) {
-
-		{
-			setTimeRange(TimeRange.LAST_7_DAYS);
-		}
-	};
+	private final SearchQueryContext _searchQueryContext =
+		new SearchQueryContext("1", AssetType.JOURNAL) {
+			{
+				setTimeRange(TimeRange.LAST_7_DAYS);
+			}
+		};
 
 	@Autowired
 	private UserDog _userDog;

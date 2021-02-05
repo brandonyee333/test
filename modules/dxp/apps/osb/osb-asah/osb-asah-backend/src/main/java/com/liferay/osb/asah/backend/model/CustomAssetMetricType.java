@@ -86,8 +86,8 @@ public enum CustomAssetMetricType implements MetricType {
 		_aggregationName = fieldName;
 	}
 
-	private static Map<String, CustomAssetMetricType> _customAssetMetricTypes =
-		new HashMap<>();
+	private static final Map<String, CustomAssetMetricType>
+		_customAssetMetricTypes = new HashMap<>();
 
 	static {
 		Stream.of(

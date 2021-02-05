@@ -221,12 +221,13 @@ public class MetricResolver {
 		return sum.getValue();
 	}
 
-	private Set<AggregationBuilder> _aggregationBuilders = new HashSet<>();
+	private final Set<AggregationBuilder> _aggregationBuilders =
+		new HashSet<>();
 	private Consumer<TermsAggregationBuilder>
 		_bucketOrderTermsAggregationBuilderConsumer;
 	private Function<Aggregations, Double> _mapperFunction;
 	private final MetricType _metricType;
-	private Set<PipelineAggregationBuilder> _pipelineAggregationBuilders =
+	private final Set<PipelineAggregationBuilder> _pipelineAggregationBuilders =
 		new HashSet<>();
 	private BiConsumer<?, Metric> _setterBiConsumer;
 

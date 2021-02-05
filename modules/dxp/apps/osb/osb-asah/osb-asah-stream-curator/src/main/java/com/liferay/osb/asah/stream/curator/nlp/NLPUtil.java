@@ -352,7 +352,7 @@ public class NLPUtil {
 
 	private static final Log _log = LogFactory.getLog(NLPUtil.class);
 
-	private static NLPUtil _instance = new NLPUtil();
+	private static final NLPUtil _instance = new NLPUtil();
 
 	private final StanfordCoreNLP _stanfordCoreNLP;
 
