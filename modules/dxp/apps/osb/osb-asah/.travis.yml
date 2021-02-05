@@ -20,17 +20,17 @@ jobs:
           after_script:
               - docker-compose -f docker-compose.integration-test.yml down
           after_success:
-              - test $TRAVIS_BRANCH = "7.0.x"
-              - test $TRAVIS_EVENT_TYPE = "push"
-              - test $TRAVIS_REPO_SLUG = "liferay/com-liferay-osb-asah-private"
-              - ./gradlew coveralls
-              - cd osb-asah-monolith
-              - ../gradlew assemble
-              - docker build -t liferay/com-liferay-osb-asah:latest .
-              - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-              - docker push liferay/com-liferay-osb-asah:latest
-              - docker logout
-              - cd ..
+              - test $TRAVIS_BRANCH = "7.0.x" &&
+                test $TRAVIS_EVENT_TYPE = "push" &&
+                test $TRAVIS_REPO_SLUG = "liferay/com-liferay-osb-asah-private" &&
+                ./gradlew coveralls &&
+                cd osb-asah-monolith &&
+                ../gradlew assemble &&
+                docker build -t liferay/com-liferay-osb-asah:latest . &&
+                docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" &&
+                docker push liferay/com-liferay-osb-asah:latest &&
+                docker logout &&
+                cd ..
           before_script:
               - sudo /etc/init.d/postgresql stop
               - docker-compose -f docker-compose.integration-test.yml up -d
