@@ -77,6 +77,22 @@ public class OSBAsahTaskRunnable implements Runnable {
 		_osbAsahTaskId = null;
 	}
 
+	public String[] getNaniteClassNames() {
+		return _naniteClassNames;
+	}
+
+	public String getOSBAsahTaskId() {
+		return _osbAsahTaskId;
+	}
+
+	public String getProjectId() {
+		return _projectId;
+	}
+
+	public boolean isForce() {
+		return _force;
+	}
+
 	@Override
 	public void run() {
 		ProjectIdThreadLocal.forProject(_projectId, this::_run);

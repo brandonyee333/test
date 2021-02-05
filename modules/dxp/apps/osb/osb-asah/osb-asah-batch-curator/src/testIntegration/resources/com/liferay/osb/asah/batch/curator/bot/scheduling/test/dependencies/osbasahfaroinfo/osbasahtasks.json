@@ -1,0 +1,19 @@
+[
+	{
+		"className": "DataControlNanite",
+		"id": "450553576847486527"
+	},
+	{
+		"className": "IndividualActivityFieldsNanite",
+		"id": "450553576847486528"
+	},
+	{
+		"className": "IndividualSegmentActivityFieldsNanite",
+		"id": "450553576847486529"
+	},
+	{
+		"className": "DataControlNanite",
+		"cronExpression": "0 0 0 * * ?",
+		"id": "450553576847486530"
+	}
+]

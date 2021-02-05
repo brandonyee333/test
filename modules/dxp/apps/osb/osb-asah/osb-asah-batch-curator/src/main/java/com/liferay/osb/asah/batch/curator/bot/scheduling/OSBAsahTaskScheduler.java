@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.scheduling;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -43,6 +44,10 @@ public class OSBAsahTaskScheduler {
 
 		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.execute(
 			osbAsahTaskRunnable);
+	}
+
+	public Map<String, ScheduledFuture<?>> getScheduledFuturesMap() {
+		return Collections.unmodifiableMap(_scheduledFuturesMap);
 	}
 
 	public void schedule(

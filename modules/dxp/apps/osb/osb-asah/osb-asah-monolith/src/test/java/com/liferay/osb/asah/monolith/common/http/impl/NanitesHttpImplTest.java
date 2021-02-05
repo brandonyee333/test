@@ -67,6 +67,15 @@ public class NanitesHttpImplTest {
 	}
 
 	@Test
+	public void testRemoveSchedule() {
+		_nanitesHttp.removeSchedule();
+
+		Mockito.verify(
+			_nanitesRestController
+		).removeSchedule();
+	}
+
+	@Test
 	public void testRescheduleNanites() {
 		_nanitesHttp.rescheduleNanites();
 
