@@ -20,19 +20,14 @@ import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -47,24 +42,13 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchPreferenceRepositoryImpl
+	extends BaseElasticsearchRepository<Preference>
 	implements PreferenceRepository {
-
-	@Override
-	public long count() {
-		return _faroInfoElasticsearchInvoker.count(
-			"preferences", QueryBuilders.matchAllQuery());
-	}
 
 	@Override
 	public void delete(Preference preference) {
 		_faroInfoElasticsearchInvoker.delete(
-			"preferences", String.valueOf(preference.getKey()));
-	}
-
-	@Override
-	public void deleteAll() {
-		_faroInfoElasticsearchInvoker.delete(
-			"preferences", QueryBuilders.matchAllQuery());
+			getCollection(), String.valueOf(preference.getKey()));
 	}
 
 	@Override
@@ -82,7 +66,7 @@ public class ElasticsearchPreferenceRepositoryImpl
 				).collect(
 					Collectors.toList()
 				)),
-			true, "preferences");
+			true, getCollection());
 	}
 
 	@Override
@@ -93,11 +77,6 @@ public class ElasticsearchPreferenceRepositoryImpl
 	@Override
 	public boolean existsById(Long preferenceId) {
 		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public List<Preference> findAll() {
-		return _toPreferences(_faroInfoElasticsearchInvoker.get("preferences"));
 	}
 
 	@Override
@@ -113,64 +92,38 @@ public class ElasticsearchPreferenceRepositoryImpl
 	@Override
 	public Preference findByKey(String key) {
 		return Optional.ofNullable(
-			_faroInfoElasticsearchInvoker.fetch("preferences", key)
+			_faroInfoElasticsearchInvoker.fetch(getCollection(), key)
 		).map(
-			this::_toPreference
+			this::toEntity
 		).orElse(
 			null
 		);
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public Preference save(Preference preference) {
-		return _toPreference(
-			_faroInfoElasticsearchInvoker.add(
-				"preferences",
-				JSONUtil.put(
-					"id", preference.getKey()
-				).put(
-					"value", preference.getValue()
-				)));
+	protected String getCollection() {
+		return "preferences";
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public <S extends Preference> Iterable<S> saveAll(Iterable<S> preferences) {
-		Stream<S> stream = StreamSupport.stream(
-			preferences.spliterator(), false);
+	protected ElasticsearchInvoker getElasticsearchInvoker() {
+		return _faroInfoElasticsearchInvoker;
+	}
 
-		return (Iterable<S>)stream.map(
-			this::save
-		).collect(
-			Collectors.toList()
+	@Override
+	protected Preference toEntity(JSONObject jsonObject) {
+		return new Preference(
+			jsonObject.getString("id"), jsonObject.getString("value"));
+	}
+
+	@Override
+	protected JSONObject toJSONObject(Preference preference) {
+		return JSONUtil.put(
+			"id", preference.getKey()
+		).put(
+			"value", preference.getValue()
 		);
 	}
-
-	private Preference _toPreference(JSONObject preferenceJSONObject) {
-		return new Preference(
-			preferenceJSONObject.getString("id"),
-			preferenceJSONObject.getString("value"));
-	}
-
-	private List<Preference> _toPreferences(JSONArray preferencesJSONArray) {
-		List<Preference> preferences = new ArrayList<>();
-
-		for (int i = 0; i < preferencesJSONArray.length(); i++) {
-			try {
-				preferences.add(
-					_toPreference(preferencesJSONArray.getJSONObject(i)));
-			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
-		}
-
-		return preferences;
-	}
-
-	private static final Log _log = LogFactory.getLog(
-		ElasticsearchPreferenceRepositoryImpl.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

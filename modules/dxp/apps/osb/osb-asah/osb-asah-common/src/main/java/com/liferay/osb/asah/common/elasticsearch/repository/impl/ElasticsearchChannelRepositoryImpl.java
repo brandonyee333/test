@@ -30,11 +30,9 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,54 +55,14 @@ import org.springframework.stereotype.Repository;
 	value = "osb.asah.postgresql.enabled"
 )
 @Repository
-public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
-
-	@Override
-	public long count() {
-		return _faroInfoElasticsearchInvoker.count(
-			"channels", QueryBuilders.matchAllQuery());
-	}
+public class ElasticsearchChannelRepositoryImpl
+	extends BaseElasticsearchRepository<Channel> implements ChannelRepository {
 
 	@Override
 	public long countByNameContainingIgnoreCase(String name) {
 		return _faroInfoElasticsearchInvoker.count(
-			"channels", QueryUtil.buildSearchQueryBuilder("name.search", name));
-	}
-
-	@Override
-	public void delete(Channel channel) {
-		_faroInfoElasticsearchInvoker.delete(
-			"channels", String.valueOf(channel.getId()));
-	}
-
-	@Override
-	public void deleteAll() {
-		_faroInfoElasticsearchInvoker.delete(
-			"channels", QueryBuilders.matchAllQuery());
-	}
-
-	@Override
-	public void deleteAll(Iterable<? extends Channel> channels) {
-		Stream<? extends Channel> stream = StreamSupport.stream(
-			channels.spliterator(), false);
-
-		_faroInfoElasticsearchInvoker.deleteByQuery(
-			QueryBuilders.termsQuery(
-				"id",
-				stream.map(
-					Channel::getId
-				).map(
-					String::valueOf
-				).collect(
-					Collectors.toList()
-				)),
-			true, "channels");
-	}
-
-	@Override
-	public void deleteById(Long channelId) {
-		_faroInfoElasticsearchInvoker.delete(
-			"channels", String.valueOf(channelId));
+			getCollection(),
+			QueryUtil.buildSearchQueryBuilder("name.search", name));
 	}
 
 	@Override
@@ -121,19 +79,13 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 				).collect(
 					Collectors.toList()
 				)),
-			true, "channels");
-	}
-
-	@Override
-	public boolean existsById(Long channelId) {
-		return _faroInfoElasticsearchInvoker.exists(
-			"channels", String.valueOf(channelId));
+			true, getCollection());
 	}
 
 	@Override
 	public boolean existsByIdNotAndName(Long id, String name) {
 		return _faroInfoElasticsearchInvoker.exists(
-			"channels",
+			getCollection(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("name", name)
 			).mustNot(
@@ -144,12 +96,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	@Override
 	public boolean existsByName(String name) {
 		return _faroInfoElasticsearchInvoker.exists(
-			"channels", QueryBuilders.termQuery("name", name));
-	}
-
-	@Override
-	public List<Channel> findAll() {
-		return _toChannels(_faroInfoElasticsearchInvoker.get("channels"));
+			getCollection(), QueryBuilders.termQuery("name", name));
 	}
 
 	@Override
@@ -158,27 +105,10 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	}
 
 	@Override
-	public List<Channel> findAllById(Iterable<Long> channelIds) {
-		Stream<Long> stream = StreamSupport.stream(
-			channelIds.spliterator(), false);
-
-		return _toChannels(
-			_faroInfoElasticsearchInvoker.get(
-				"channels",
-				QueryBuilders.termsQuery(
-					"id",
-					stream.map(
-						String::valueOf
-					).collect(
-						Collectors.toList()
-					))));
-	}
-
-	@Override
 	public List<Channel> findByDataSourceId(Long dataSourceId) {
 		return _toChannels(
 			_faroInfoElasticsearchInvoker.get(
-				"channels",
+				getCollection(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
 						"dataSources.id", String.valueOf(dataSourceId)))));
@@ -190,7 +120,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 
 		return _toChannels(
 			_faroInfoElasticsearchInvoker.get(
-				"channels",
+				getCollection(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
 						"dataSources.id", String.valueOf(dataSourceId))
@@ -210,16 +140,6 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	}
 
 	@Override
-	public Optional<Channel> findById(Long channelId) {
-		return Optional.ofNullable(
-			_faroInfoElasticsearchInvoker.fetch(
-				"channels", String.valueOf(channelId))
-		).map(
-			channelJSONObject -> _toChannel(channelJSONObject)
-		);
-	}
-
-	@Override
 	public List<Channel> findByNameContainingIgnoreCase(
 		String name, Pageable pageable) {
 
@@ -227,7 +147,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 			CollectionGetResponse collectionGetResponse =
 				new CollectionGetResponse();
 
-			collectionGetResponse.setCollectionName("channels");
+			collectionGetResponse.setCollectionName(getCollection());
 			collectionGetResponse.setElasticsearchInvoker(
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
@@ -266,7 +186,8 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 			JSONObject embeddedJSONObject = jsonObject.getJSONObject(
 				"_embedded");
 
-			return _toChannels(embeddedJSONObject.getJSONArray("channels"));
+			return _toChannels(
+				embeddedJSONObject.getJSONArray(getCollection()));
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -276,8 +197,47 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public Channel save(Channel channel) {
+	protected String getCollection() {
+		return "channels";
+	}
+
+	@Override
+	protected ElasticsearchInvoker getElasticsearchInvoker() {
+		return _faroInfoElasticsearchInvoker;
+	}
+
+	@Override
+	protected Channel toEntity(JSONObject jsonObject) {
+		Channel channel = new Channel(jsonObject.getString("name"));
+
+		JSONArray dataSourcesJSONArray = jsonObject.getJSONArray("dataSources");
+
+		for (int j = 0; j < dataSourcesJSONArray.length(); j++) {
+			JSONObject dataSourceJSONObject =
+				dataSourcesJSONArray.getJSONObject(j);
+
+			channel.addChannelDataSource(
+				new ChannelDataSource(
+					dataSourceJSONObject.getLong("id"),
+					JSONUtil.toLongSet(
+						dataSourceJSONObject.getJSONArray("groupIds"))));
+		}
+
+		try {
+			channel.setCreateDate(
+				DateUtil.toUTCDate(jsonObject.getString("dateCreated")));
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+
+		channel.setId(jsonObject.getLong("id"));
+
+		return channel;
+	}
+
+	@Override
+	protected JSONObject toJSONObject(Channel channel) {
 		List<JSONObject> dataSourceJSONObjects = new ArrayList<>();
 
 		for (ChannelDataSource channelDataSource :
@@ -312,50 +272,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 			channelJSONObject.put("id", String.valueOf(channel.getId()));
 		}
 
-		return _toChannel(
-			_faroInfoElasticsearchInvoker.add("channels", channelJSONObject));
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <S extends Channel> Iterable<S> saveAll(Iterable<S> channels) {
-		Stream<S> stream = StreamSupport.stream(channels.spliterator(), false);
-
-		return (Iterable<S>)stream.map(
-			this::save
-		).collect(
-			Collectors.toList()
-		);
-	}
-
-	private Channel _toChannel(JSONObject channelJSONObject) {
-		Channel channel = new Channel(channelJSONObject.getString("name"));
-
-		JSONArray dataSourcesJSONArray = channelJSONObject.getJSONArray(
-			"dataSources");
-
-		for (int j = 0; j < dataSourcesJSONArray.length(); j++) {
-			JSONObject dataSourceJSONObject =
-				dataSourcesJSONArray.getJSONObject(j);
-
-			channel.addChannelDataSource(
-				new ChannelDataSource(
-					dataSourceJSONObject.getLong("id"),
-					JSONUtil.toLongSet(
-						dataSourceJSONObject.getJSONArray("groupIds"))));
-		}
-
-		try {
-			channel.setCreateDate(
-				DateUtil.toUTCDate(channelJSONObject.getString("dateCreated")));
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-
-		channel.setId(channelJSONObject.getLong("id"));
-
-		return channel;
+		return channelJSONObject;
 	}
 
 	private List<Channel> _toChannels(JSONArray channelsJSONArray) {
@@ -363,7 +280,7 @@ public class ElasticsearchChannelRepositoryImpl implements ChannelRepository {
 
 		for (int i = 0; i < channelsJSONArray.length(); i++) {
 			try {
-				channels.add(_toChannel(channelsJSONArray.getJSONObject(i)));
+				channels.add(toEntity(channelsJSONArray.getJSONObject(i)));
 			}
 			catch (Exception exception) {
 				_log.error(exception, exception);

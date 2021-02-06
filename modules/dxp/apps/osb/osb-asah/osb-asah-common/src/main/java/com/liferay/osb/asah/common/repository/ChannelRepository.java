@@ -44,8 +44,6 @@ public interface ChannelRepository extends CrudRepository<Channel, Long> {
 
 	public boolean existsByName(String name);
 
-	public List<Channel> findAll();
-
 	public List<Channel> findAll(Pageable pageable);
 
 	public List<Channel> findByDataSourceId(

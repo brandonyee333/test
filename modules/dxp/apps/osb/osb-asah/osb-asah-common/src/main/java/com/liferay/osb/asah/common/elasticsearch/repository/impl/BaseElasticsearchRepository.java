@@ -1,0 +1,173 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.elasticsearch.repository.impl;
+
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.json.JSONUtil;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import org.elasticsearch.index.query.QueryBuilders;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.repository.CrudRepository;
+
+/**
+ * @author Marcellus Tavares
+ */
+public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
+	implements CrudRepository<T, Long> {
+
+	@Override
+	public long count() {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		return elasticsearchInvoker.count(
+			getCollection(), QueryBuilders.matchAllQuery());
+	}
+
+	@Override
+	public void delete(T entity) {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		elasticsearchInvoker.delete(
+			getCollection(), String.valueOf(entity.getId()));
+	}
+
+	@Override
+	public void deleteAll() {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		elasticsearchInvoker.delete(
+			getCollection(), QueryBuilders.matchAllQuery());
+	}
+
+	@Override
+	public void deleteAll(Iterable<? extends T> entities) {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		Stream<? extends T> stream = StreamSupport.stream(
+			entities.spliterator(), false);
+
+		elasticsearchInvoker.deleteByQuery(
+			QueryBuilders.termsQuery(
+				"id",
+				stream.map(
+					T::getId
+				).map(
+					String::valueOf
+				).collect(
+					Collectors.toList()
+				)),
+			true, getCollection());
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		elasticsearchInvoker.delete(getCollection(), id.toString());
+	}
+
+	@Override
+	public boolean existsById(Long id) {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		return elasticsearchInvoker.exists(getCollection(), id.toString());
+	}
+
+	@Override
+	public Iterable<T> findAll() {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		return _toList(elasticsearchInvoker.get(getCollection()));
+	}
+
+	@Override
+	public Iterable<T> findAllById(Iterable<Long> ids) {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		Stream<Long> stream = StreamSupport.stream(ids.spliterator(), false);
+
+		return _toList(
+			elasticsearchInvoker.get(
+				getCollection(),
+				QueryBuilders.termsQuery(
+					"id",
+					stream.map(
+						String::valueOf
+					).collect(
+						Collectors.toList()
+					))));
+	}
+
+	@Override
+	public Optional<T> findById(Long id) {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		return Optional.ofNullable(
+			elasticsearchInvoker.fetch(getCollection(), id.toString())
+		).map(
+			this::toEntity
+		);
+	}
+
+	@Override
+	public <S extends T> S save(S entity) {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		JSONObject jsonObject = elasticsearchInvoker.add(
+			getCollection(), toJSONObject(entity));
+
+		return (S)toEntity(jsonObject);
+	}
+
+	@Override
+	public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
+		Stream<S> stream = StreamSupport.stream(entities.spliterator(), false);
+
+		return (Iterable<S>)stream.map(
+			this::save
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	protected abstract String getCollection();
+
+	protected abstract ElasticsearchInvoker getElasticsearchInvoker();
+
+	protected abstract T toEntity(JSONObject jsonObject);
+
+	protected abstract JSONObject toJSONObject(T entity);
+
+	private List<T> _toList(JSONArray jsonArray) {
+		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
+
+		return stream.map(
+			object -> toEntity((JSONObject)object)
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+}
