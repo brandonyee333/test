@@ -40,9 +40,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
-
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -189,13 +190,12 @@ public class ChannelDog extends BaseFaroInfoDog {
 	}
 
 	public List<Channel> getChannels() {
-		Iterable<Channel> iterable = _channelRepository.findAll();
+		Iterable<Channel> channels = _channelRepository.findAll();
 
-		return StreamSupport.stream(
-			iterable.spliterator(), false
-		).collect(
-			Collectors.toList()
-		);
+		Stream<Channel> stream = StreamSupport.stream(
+			channels.spliterator(), false);
+
+		return stream.collect(Collectors.toList());
 	}
 
 	public List<Channel> getChannels(Long dataSourceId) {
