@@ -67,6 +67,9 @@ def test_blog_data_frame_processor_calculate_read_time(
 			spark_session
 		).withColumn(
 			'assetId', F.col('eventProperties.entryId')
+		).withColumn(
+			'event_date',
+			F.to_timestamp(F.col('eventDate'))
 		)
 	)
 

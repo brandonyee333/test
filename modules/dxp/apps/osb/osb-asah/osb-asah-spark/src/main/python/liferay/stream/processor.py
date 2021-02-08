@@ -53,9 +53,17 @@ class AnalyticsEventsDataFrameProcessor(object):
 		)
 
 	def process(self, analytics_events_data_frame):
-		return self._write(
-			self._process(self._filter(analytics_events_data_frame))
+		data_frame = self._filter(
+			analytics_events_data_frame
+		).withColumn(
+			'event_date',
+			F.to_timestamp(F.col('eventDate'))
+		).withColumn(
+			'normalized_event_date',
+			F.date_trunc('hour', 'event_date')
 		)
+
+		return self._write(self._process(data_frame))
 
 class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
@@ -71,9 +79,6 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		)
 
 		data_frame = data_frame.withColumn(
-			'event_date',
-			F.to_timestamp(F.col('eventDate'))
-		).withColumn(
 			'previous_blog_viewed_event_date',
 			F.max(
 				F.when(
