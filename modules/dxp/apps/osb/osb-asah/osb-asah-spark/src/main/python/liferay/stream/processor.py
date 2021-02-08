@@ -18,20 +18,31 @@ class AnalyticsEventsDataFrameProcessor(object):
 		self._batch_id = batch_id
 		self._spark_job = spark_job
 
-	def _deduplicate_ratings_events(self, data_frame):
+	def _calculate_rating_score(self, data_frame):
+		data_frame = data_frame.filter(
+			"applicationId = 'Ratings' AND eventId = 'VOTE'"
+		)
+
 		window = Window.partitionBy(
-			'projectId', 'channelId', 'applicationId', 'sessionId', 'eventId',
-			'assetId'
+			'projectId', 'channelId', 'assetId', 'variantId', 'eventId'
+		).orderBy(
+			F.desc('eventDate')
+		)
+
+		data_frame = data_frame.withColumn(
+			'row_number',
+			F.row_number().over(window)
+		).filter(
+			"row_number = 1"
 		)
 
 		return data_frame.withColumn(
-			'row_number',
-			F.row_number().over(window.orderBy(F.desc('eventDate')))
-		).filter(
-			"(applicationId = 'Ratings' AND row_number = 1) OR " \
-			"(applicationId != 'Ratings')"
-		).drop(
-			'row_number'
+			'ratings', F.lit(1)
+		).withColumn(
+			'ratingsScore', F.col('eventProperties.score').cast('float')
+		).select(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'normalized_event_date', 'primaryKey', 'ratings', 'ratingsScore'
 		)
 
 	def _filter(self, analytics_events_data_frame):
@@ -181,7 +192,7 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			)
 		)
 
-		data_frame = self._deduplicate_ratings_events(data_frame)
+		data_frame_with_rating_score = self._calculate_rating_score(data_frame)
 
 		data_frame.withColumn(
 			'clicks',
@@ -206,21 +217,6 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 					F.col('variantId')
 				),
 				256
-			)
-		).withColumn(
-			'ratings',
-			F.when(
-				F.col('eventId') == 'VOTE', F.lit(1)
-			).otherwise(
-				F.lit(0)
-			)
-		).withColumn(
-			'ratingsScore',
-			F.when(
-				F.col('eventId') == 'VOTE',
-				F.col('eventProperties.score').cast('float')
-			).otherwise(
-				F.lit(0.0)
 			)
 		).withColumn(
 			'views',
@@ -281,7 +277,7 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			)
 		)
 
-		data_frame = self._deduplicate_ratings_events(data_frame)
+		data_frame_with_rating_score = self._calculate_rating_score(data_frame)
 
 		data_frame.withColumn(
 			'comments',
@@ -313,21 +309,6 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 					F.col('variantId')
 				),
 				256
-			)
-		).withColumn(
-			'ratings',
-			F.when(
-				F.col('eventId') == 'VOTE', F.lit(1)
-			).otherwise(
-				F.lit(0)
-			)
-		).withColumn(
-			'ratingsScore',
-			F.when(
-				F.col('eventId') == 'VOTE',
-				F.col('eventProperties.score').cast('float')
-			).otherwise(
-				F.lit(0.0)
 			)
 		)
 
