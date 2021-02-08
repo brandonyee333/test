@@ -226,6 +226,7 @@ services:
             - FARO_DXP_CLOUD_API_URL=http://dxpcloudemulator:3000/projects/
             - FARO_WEDEPLOY_EMAIL_ADDRESS=test@liferay.com
             - FARO_WEDEPLOY_PASSWORD=test
+            - OSB_ASAH_LOCAL_CLUSTER_URL=http://{service}:8080
             - OSB_API_URL=http://osbapiemulator:3000
         image: liferay/com-liferay-osb-faro:latest
         ports:
