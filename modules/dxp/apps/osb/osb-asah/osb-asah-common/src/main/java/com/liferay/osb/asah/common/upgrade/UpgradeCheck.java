@@ -15,7 +15,10 @@
 package com.liferay.osb.asah.common.upgrade;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -34,26 +37,47 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author Michael Bowerman
+ * @author André Miranda
  */
 @Component
 @MonolithExclude
 @Profile({"dev", "prod"})
 public class UpgradeCheck {
 
+	public boolean checkVersion() throws Exception {
+		for (Project project : _projectDog.getProjects()) {
+			try {
+				ProjectIdThreadLocal.setProjectId(project.getId());
+
+				JSONObject osbAsahMarkerJSONObject =
+					_elasticsearchInvoker.fetch("OSBAsahMarkers", "Upgrade");
+
+				if (osbAsahMarkerJSONObject == null) {
+					continue;
+				}
+
+				if (!Objects.equals(
+						osbAsahMarkerJSONObject.optString("version"),
+						ReleaseInfo.getVersion())) {
+
+					return false;
+				}
+			}
+			finally {
+				ProjectIdThreadLocal.remove();
+			}
+		}
+
+		return true;
+	}
+
 	@PostConstruct
-	public void init() {
+	public void init() throws Exception {
 		if (_upgradeState.isComplete()) {
 			return;
 		}
 
-		JSONObject osbAsahMarkerJSONObject = _elasticsearchInvoker.fetch(
-			"OSBAsahMarkers", "Upgrade");
-
-		if ((osbAsahMarkerJSONObject != null) &&
-			Objects.equals(
-				osbAsahMarkerJSONObject.optString("version"),
-				ReleaseInfo.getVersion())) {
-
+		if (checkVersion()) {
 			return;
 		}
 
@@ -72,6 +96,9 @@ public class UpgradeCheck {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private UpgradeState _upgradeState;
