@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.util.URLUtil;
+
 import java.net.URI;
 
 import java.util.Objects;
@@ -84,7 +86,7 @@ public class PageAcquisition extends Acquisition {
 
 	private boolean _isInternalReferrer() {
 		try {
-			URI uri = new URI(url);
+			URI uri = URLUtil.toURI(url);
 
 			if (StringUtils.equals(uri.getHost(), referrerHost)) {
 				return true;

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.messaging.impl;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
+import com.liferay.osb.asah.common.util.URLUtil;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -51,7 +52,7 @@ public class PubSubConfiguration {
 			String target = ServiceConstants.URL_PUBSUB_EMULATOR;
 
 			try {
-				URI uri = new URI(target);
+				URI uri = URLUtil.toURI(target);
 
 				target = uri.getAuthority();
 			}

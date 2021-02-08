@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.common.util.StringUtil;
+import com.liferay.osb.asah.common.util.URLUtil;
 
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvFormat;
@@ -186,7 +187,7 @@ public class RootRestController {
 
 	private String _getDomain(String url) {
 		try {
-			URI uri = new URI(url);
+			URI uri = URLUtil.toURI(url);
 
 			String host = uri.getHost();
 

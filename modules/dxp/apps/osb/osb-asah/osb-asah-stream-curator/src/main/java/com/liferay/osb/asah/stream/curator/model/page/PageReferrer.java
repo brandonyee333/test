@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.util.URLUtil;
 
 import java.net.URI;
 
@@ -89,13 +90,13 @@ public class PageReferrer extends BasePageModel {
 		_referrer = referrer;
 
 		try {
-			URI uri = new URI(referrer);
+			URI uri = URLUtil.toURI(referrer);
 
 			URI canonicalURI = new URI(
 				uri.getScheme(), uri.getAuthority(), uri.getPath(), null,
 				uri.getFragment());
 
-			_referrerCanonicalUrl = canonicalURI.toString();
+			_referrerCanonicalUrl = URLUtil.decode(canonicalURI.toString());
 			_referrerHost = canonicalURI.getHost();
 		}
 		catch (Exception e) {

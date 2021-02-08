@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.util.URLUtil;
+
 import java.io.Serializable;
 
 import java.net.URI;
@@ -50,7 +52,7 @@ public class Acquisition implements Serializable {
 		_medium = decode(queryParams.getFirst("utm_medium"));
 
 		try {
-			URI uri = new URI(referrer);
+			URI uri = URLUtil.toURI(referrer);
 
 			referrerHost = uri.getHost();
 		}
