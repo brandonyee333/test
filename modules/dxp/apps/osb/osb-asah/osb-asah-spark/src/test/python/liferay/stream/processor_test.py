@@ -14,7 +14,8 @@ from liferay.stream.processor import BlogDataFrameProcessor, \
 	DocumentLibraryDataFrameProcessor, \
 	JournalDataFrameProcessor
 
-from pyspark.sql import types as T
+from pyspark.sql import functions as F, \
+	types as T
 
 import pytest
 
@@ -46,6 +47,7 @@ def read_session_events_data_frame(file_name, spark_session):
 				T.MapType(T.StringType(), T.StringType(), True), True
 			),
 			T.StructField("projectId", T.StringType(), False),
+			T.StructField("sessionId", T.StringType(), True),
 			T.StructField("userId", T.StringType(), False),
 			T.StructField("variantId", T.StringType(), True)
 		])
@@ -54,6 +56,25 @@ def read_session_events_data_frame(file_name, spark_session):
 	).json(
 		'resources/liferay/stream/dependencies/{}'.format(file_name)
 	)
+
+def test_blog_data_frame_processor_calculate_read_time(
+	blog_data_frame_processor, spark_session
+):
+
+	actual_data_frame = blog_data_frame_processor._calculate_read_time(
+		read_session_events_data_frame(
+			'blog_data_frame_processor_calculate_read_time_input.json',
+			spark_session
+		).withColumn(
+			'assetId', F.col('eventProperties.entryId')
+		)
+	)
+
+	actual_data_frame_rows = actual_data_frame.collect()
+
+	assert len(actual_data_frame_rows) == 1
+
+	assert actual_data_frame_rows[0].read_time == 44
 
 def test_blog_data_frame_processor_filter(
 	blog_data_frame_processor, spark_session
