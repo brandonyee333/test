@@ -528,6 +528,24 @@ public class JSONUtil {
 		return StreamSupport.stream(jsonArray.spliterator(), false);
 	}
 
+	public static <T> Set<T> toSet(
+			JSONArray jsonArray,
+			UnsafeFunction<JSONObject, T, Exception> unsafeFunction)
+		throws Exception {
+
+		if (jsonArray == null) {
+			return new HashSet<>();
+		}
+
+		Set<T> values = new HashSet<>(jsonArray.length());
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			values.add(unsafeFunction.apply(jsonArray.getJSONObject(i)));
+		}
+
+		return values;
+	}
+
 	public static String[] toStringArray(JSONArray jsonArray) {
 		if (jsonArray == null) {
 			return new String[0];
