@@ -39,6 +39,8 @@ class OSBAsahStreamCuratorApplication(BaseSparkApplication):
 
 		spark_conf.setAppName('OSB Asah Stream Curator')
 
+		spark_conf.set('spark.sql.session.timeZone', 'UTC')
+
 		return spark_conf
 
 	def start(self):
