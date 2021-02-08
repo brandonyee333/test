@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -24,8 +25,11 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
+import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
+import java.security.KeyPair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -59,7 +64,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
-	public JSONObject addDataSource(JSONObject dataSourceJSONObject) {
+	public JSONObject addDataSource(JSONObject dataSourceJSONObject)
+		throws Exception {
+
 		String name = dataSourceJSONObject.getString("name");
 		int nameCount = 0;
 		String originalName = name;
@@ -82,8 +89,14 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		}
 		else if (Objects.equals(type, "LIFERAY")) {
 			_addDefaultChannel(dataSourceJSONObject);
-			_dxpExtractorConfigurationDog.addConfiguration(
-				dataSourceJSONObject);
+
+			if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
+				updateTokenDataSourceCredentials(dataSourceJSONObject);
+			}
+			else {
+				_dxpExtractorConfigurationDog.addConfiguration(
+					dataSourceJSONObject);
+			}
 		}
 		else if (Objects.equals(type, "SALESFORCE")) {
 			_salesforceExtractorConfigurationDog.addConfiguration(
@@ -324,8 +337,13 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		String type = getDataSourceType(dataSourceJSONObject);
 
 		if (type.equals("LIFERAY")) {
-			_dxpExtractorConfigurationDog.updateConfiguration(
-				dataSourceJSONObject);
+			if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
+				updateTokenDataSourceCredentials(dataSourceJSONObject);
+			}
+			else {
+				_dxpExtractorConfigurationDog.updateConfiguration(
+					dataSourceJSONObject);
+			}
 		}
 		else if (type.equals("SALESFORCE")) {
 			_salesforceExtractorConfigurationDog.updateConfiguration(
@@ -363,6 +381,68 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		}
 
 		return jsonObject;
+	}
+
+	public void updateTokenDataSourceCredentials(
+		JSONObject dataSourceJSONObject) {
+
+		JSONObject credentialsJSONObject = dataSourceJSONObject.getJSONObject(
+			"credentials");
+
+		if (!Objects.equals(
+				credentialsJSONObject.getString("type"),
+				"Token Authentication")) {
+
+			return;
+		}
+
+		try {
+			JSONObject oldDataSourceJSONObject = getDataSourceJSONObject(
+				dataSourceJSONObject.getString("id"));
+
+			JSONObject oldCredentialsJSONObject =
+				oldDataSourceJSONObject.getJSONObject("credentials");
+
+			String privateKey = oldCredentialsJSONObject.optString(
+				"privateKey");
+
+			if (StringUtils.isBlank(privateKey)) {
+				KeyPair keyPair = _encryptor.generateKeyPair();
+
+				credentialsJSONObject.put(
+					"privateKey",
+					_encryptor.encrypt(
+						dataSourceJSONObject.getString("url"),
+						_encryptor.encode(keyPair.getPrivate())));
+				credentialsJSONObject.put(
+					"publicKey", _encryptor.encode(keyPair.getPublic()));
+			}
+
+			if (StringUtils.isBlank(
+					oldDataSourceJSONObject.optString(
+						"faroBackendSecuritySignature"))) {
+
+				dataSourceJSONObject.put(
+					"faroBackendSecuritySignature",
+					String.valueOf(UUID.randomUUID()));
+			}
+
+			if (Objects.equals(
+					oldCredentialsJSONObject.getString("type"),
+					"OAuth 2 Authentication")) {
+
+				oldDataSourceJSONObject.put(
+					"credentials", credentialsJSONObject);
+
+				elasticsearchInvoker.replace(
+					"data-sources", oldDataSourceJSONObject);
+			}
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
 	}
 
 	private void _addDefaultChannel(JSONObject dataSourceJSONObject) {
@@ -688,6 +768,9 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
+	@Autowired
+	private Encryptor _encryptor;
 
 	@Autowired
 	private FaroInfoAccountDog _faroInfoAccountDog;

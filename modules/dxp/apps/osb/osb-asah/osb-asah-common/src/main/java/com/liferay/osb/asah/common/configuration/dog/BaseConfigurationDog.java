@@ -14,22 +14,12 @@
 
 package com.liferay.osb.asah.common.configuration.dog;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.Http;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-
-import java.security.KeyPair;
 
 import java.util.Objects;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
@@ -135,51 +125,8 @@ public abstract class BaseConfigurationDog {
 				credentialsJSONObject.getString("type"),
 				"Token Authentication")) {
 
-			try {
-				JSONObject oldDataSourceJSONObject =
-					_faroInfoDataSourceDog.getDataSourceJSONObject(
-						dataSourceJSONObject.getString("id"));
-
-				JSONObject oldCredentialsJSONObject =
-					oldDataSourceJSONObject.getJSONObject("credentials");
-
-				String privateKey = oldCredentialsJSONObject.optString(
-					"privateKey");
-
-				if (StringUtils.isBlank(privateKey)) {
-					KeyPair keyPair = _encryptor.generateKeyPair();
-
-					credentialsJSONObject.put(
-						"privateKey",
-						_encryptor.encrypt(
-							dataSourceJSONObject.getString("url"),
-							_encryptor.encode(keyPair.getPrivate())));
-					credentialsJSONObject.put(
-						"publicKey", _encryptor.encode(keyPair.getPublic()));
-				}
-
-				if (StringUtils.isBlank(
-						oldDataSourceJSONObject.optString(
-							"faroBackendSecuritySignature"))) {
-
-					dataSourceJSONObject.put(
-						"faroBackendSecuritySignature",
-						String.valueOf(UUID.randomUUID()));
-				}
-
-				if (Objects.equals(
-						oldCredentialsJSONObject.getString("type"),
-						"OAuth 2 Authentication")) {
-
-					_updateCredentials(
-						credentialsJSONObject, oldDataSourceJSONObject);
-				}
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(e, e);
-				}
-			}
+			_faroInfoDataSourceDog.updateTokenDataSourceCredentials(
+				dataSourceJSONObject);
 
 			return;
 		}
@@ -261,23 +208,6 @@ public abstract class BaseConfigurationDog {
 		configurationHttp.updateConfiguration(
 			configurationsJSONObject, getProviderType());
 	}
-
-	private void _updateCredentials(
-		JSONObject credentialsJSONObject, JSONObject oldDataSourceJSONObject) {
-
-		oldDataSourceJSONObject.put("credentials", credentialsJSONObject);
-
-		_elasticsearchInvoker.replace("data-sources", oldDataSourceJSONObject);
-	}
-
-	private static final Log _log = LogFactory.getLog(
-		BaseConfigurationDog.class);
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private Encryptor _encryptor;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
