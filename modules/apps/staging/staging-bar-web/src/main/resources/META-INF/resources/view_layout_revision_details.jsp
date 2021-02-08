@@ -198,25 +198,21 @@ else {
 						List<LayoutRevision> childLayoutRevisions = layoutRevision.getChildren();
 
 						LayoutRevision firstChildLayoutRevision = childLayoutRevisions.get(0);
-
-						if (firstChildLayoutRevision.isInactive()) {
 						%>
 
-						<li>
-							<a class="dropdown-item" href="javascript:Liferay.fire('<%= liferayPortletResponse.getNamespace() %>redo', {layoutRevisionId: '<%= firstChildLayoutRevision.getLayoutRevisionId() %>', layoutSetBranchId: '<%= firstChildLayoutRevision.getLayoutSetBranchId() %>'}); void(0);" id="redoLink">
-								<liferay-ui:message key="redo" />
-							</a>
-						</li>
-
-						<%
-						}
-						%>
-
+						<c:if test="<%= firstChildLayoutRevision.isInactive() %>">
+							<li>
+								<a class="dropdown-item" href="javascript:Liferay.fire('<%= liferayPortletResponse.getNamespace() %>redo', {layoutRevisionId: '<%= firstChildLayoutRevision.getLayoutRevisionId() %>', layoutSetBranchId: '<%= firstChildLayoutRevision.getLayoutSetBranchId() %>'}); void(0);" id="redoLink">
+									<liferay-ui:message key="redo" />
+								</a>
+							</li>
+						</c:if>
 					</c:if>
 				</c:if>
 			</ul>
 		</div>
 	</li>
+</ul>
 
 <portlet:renderURL var="layoutRevisionStatusURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
 	<portlet:param name="mvcPath" value="/view_layout_revision_status.jsp" />
