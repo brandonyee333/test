@@ -59,6 +59,75 @@ class AnalyticsEventsDataFrameProcessor(object):
 
 class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
+	def _calculate_read_time(self, data_frame):
+		data_frame = data_frame.filter("applicationId = 'Blog'")
+
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId'
+		).orderBy(
+			F.asc('eventDate')
+		).rowsBetween(
+			Window.unboundedPreceding, Window.currentRow - 1
+		)
+
+		data_frame = data_frame.withColumn(
+			'event_date',
+			F.to_timestamp(F.col('eventDate'))
+		).withColumn(
+			'previous_blog_viewed_event_date',
+			F.max(
+				F.when(
+					F.col("eventId") == 'blogViewed',
+					F.col("event_date")
+				)
+			).over(window)
+		)
+
+		data_frame = data_frame.filter(F.col('eventId') != 'blogViewed')
+
+		data_frame = data_frame.withColumn(
+			'previous_blog_viewed_to_current_event_delta',
+			F.col("event_date").cast('long') -
+			F.col("previous_blog_viewed_event_date").cast('long')
+		)
+
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'previous_blog_viewed_event_date'
+		).orderBy(
+			F.desc('previous_blog_viewed_to_current_event_delta')
+		)
+
+		data_frame = data_frame.withColumn(
+			'row_number',
+			F.row_number().over(window)
+		)
+
+		data_frame = data_frame.filter('row_number = 1')
+
+		data_frame = data_frame.withColumn(
+			'last_blog_event_date',
+			F.max(
+				F.col("event_date")
+			).over(
+				Window.partitionBy(
+					'projectId', 'channelId', 'userId', 'assetId', 'variantId'
+				)
+			)
+		)
+
+		return data_frame.groupby(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'last_blog_event_date'
+		).sum(
+			'previous_blog_viewed_to_current_event_delta'
+		).withColumnRenamed(
+			'last_blog_event_date', 'event_date'
+		).withColumnRenamed(
+			'sum(previous_blog_viewed_to_current_event_delta)',
+			'read_time'
+		)
+
 	def _filter(self, analytics_events_data_frame):
 		return analytics_events_data_frame.filter(
 			"""
