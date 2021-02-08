@@ -10346,8 +10346,8 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 					src="liferay-portal-tools.zip"
 				>
 					<mapper
-						from="[^/]+/(.*)"
-						to="\1"
+						from="[^/]+/(tools/)?(.*)"
+						to="\2"
 						type="regexp"
 					/>
 				</unzip>
@@ -10365,7 +10365,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 					</then>
 					<else>
 						<move
-							todir="${liferay.home}/tools/portal-tools-db-upgrade-client"
+							todir="${liferay.home}/tools"
 						>
 							<fileset
 								dir="${liferay.portal.tools.temp.dir}"
