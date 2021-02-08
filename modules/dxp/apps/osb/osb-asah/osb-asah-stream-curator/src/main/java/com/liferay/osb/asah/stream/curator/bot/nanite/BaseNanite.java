@@ -133,8 +133,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	protected abstract MessageSubscriber getMessageSubscriber();
 
 	protected Collection<T> getModels(List<AnalyticsEvent> analyticsEvents) {
-		Stream<AnalyticsEvent> analyticsEventsStream =
-			analyticsEvents.parallelStream();
+		Stream<AnalyticsEvent> analyticsEventsStream = analyticsEvents.stream();
 
 		Map<String, T> map = analyticsEventsStream.distinct(
 		).map(
@@ -160,7 +159,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		if (!models.isEmpty()) {
 			models.addAll(map.values());
 
-			Stream<T> modelsStream = models.parallelStream();
+			Stream<T> modelsStream = models.stream();
 
 			map = modelsStream.collect(
 				Collectors.toMap(
