@@ -311,7 +311,6 @@ request.setAttribute("view.jsp-viewCategory", Boolean.TRUE.toString());
 					%>
 
 				</div>
-
 			</c:when>
 			<c:when test="<%= mbListDisplayContext.isShowMyPosts() || mbListDisplayContext.isShowRecentPosts() %>">
 				<div class="main-content-body">

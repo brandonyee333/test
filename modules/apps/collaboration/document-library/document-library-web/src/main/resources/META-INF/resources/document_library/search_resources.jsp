@@ -290,7 +290,6 @@ SearchContainer searchContainer = new SearchContainer(liferayPortletRequest, por
 
 		</aui:form>
 	</div>
-
 </liferay-util:buffer>
 
 <c:choose>

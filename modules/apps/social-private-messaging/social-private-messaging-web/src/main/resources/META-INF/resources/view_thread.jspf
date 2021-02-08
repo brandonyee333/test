@@ -223,7 +223,6 @@ iteratorURL.setParameter("mbThreadId", String.valueOf(mbThreadId));
 						%>
 
 					</div>
-
 				</c:if>
 			</div>
 

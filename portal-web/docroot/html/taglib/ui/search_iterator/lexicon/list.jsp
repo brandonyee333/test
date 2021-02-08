@@ -315,7 +315,6 @@ String fixedHeaderCssClass = "lfr-search-iterator-fixed-header-table";
 
 									</c:otherwise>
 								</c:choose>
-
 							</td>
 
 						<%
