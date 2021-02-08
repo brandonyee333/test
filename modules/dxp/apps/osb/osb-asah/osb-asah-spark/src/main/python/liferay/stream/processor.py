@@ -83,6 +83,16 @@ class AnalyticsEventsDataFrameProcessor(object):
 		).withColumn(
 			'normalized_event_date',
 			F.date_trunc('hour', 'event_date')
+		).withColumn(
+			'primaryKey',
+			F.sha2(
+				F.concat_ws(
+					"#", F.col('projectId'), F.col('channelId'),
+					F.col('userId'), F.col('assetId'), F.col('variantId'),
+					F.col('normalized_event_date'),
+				),
+				256
+			)
 		)
 
 		return self._write(self._process(data_frame))
@@ -220,16 +230,6 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 				F.lit(0)
 			)
 		).withColumn(
-			'primaryKey',
-			F.sha2(
-				F.concat_ws(
-					"#", F.col('projectId'), F.col('assetId'),
-					F.col('channelId'), F.col('eventDate'), F.col('userId'),
-					F.col('variantId')
-				),
-				256
-			)
-		).withColumn(
 			'views',
 			F.when(
 				F.col('eventId') == 'blogViewed', F.lit(1)
@@ -309,16 +309,6 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			).otherwise(
 				F.lit(0)
 			)
-		).withColumn(
-			'primaryKey',
-			F.sha2(
-				F.concat_ws(
-					"#", F.col('projectId'),  F.col('assetId'),
-					F.col('channelId'), F.col('eventDate'), F.col('userId'),
-					F.col('variantId')
-				),
-				256
-			)
 		)
 
 class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
@@ -345,14 +335,4 @@ class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			'views'
 		).withColumnRenamed(
 			'sum(views)', 'views'
-		).withColumn(
-			'primaryKey',
-			F.sha2(
-				F.concat_ws(
-					"#", F.col('projectId'),  F.col('assetId'),
-					F.col('channelId'), F.col('eventDate'), F.col('userId'),
-					F.col('variantId')
-				),
-				256
-			)
 		)
