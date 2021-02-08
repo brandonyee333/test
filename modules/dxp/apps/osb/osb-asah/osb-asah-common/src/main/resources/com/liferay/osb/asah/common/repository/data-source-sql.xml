@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="DataSource.existsByProviderTypeAndDataSourceSitesIsNotNullOrEnableAllSitesIsTrueOrSitesSelectedIsTrue">
+		<![CDATA[
+			SELECT
+				CASE WHEN
+					COUNT(DataSource) > 0
+				THEN
+					TRUE
+				ELSE
+					FALSE
+				END
+			FROM
+				DataSource
+			LEFT JOIN
+				DataSourceSite ON
+					DataSource.id = DataSourceSite.dataSourceId
+			WHERE
+				DataSource.providerType = :providerType AND
+				(
+					DataSourceSite.dataSourceId IS NOT NULL OR
+					enableAllSites = TRUE OR
+					sitesSelected = TRUE
+				)
+		]]>
+	</entry>
+</properties>
