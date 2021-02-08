@@ -57,8 +57,8 @@ class AnalyticsEventsDataFrameProcessor(object):
 	def _get_asset_id_column(self):
 		return
 
-	def _process(self, filtered_analytics_events_data_frame):
-		return filtered_analytics_events_data_frame
+	def _process(self, data_frame):
+		return data_frame
 
 	def _write(self, output_data_frame):
 		data_frame_writer = output_data_frame.write
