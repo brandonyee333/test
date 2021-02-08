@@ -9,10 +9,15 @@
 # distribution rights of the Software.
 #
 
+from abc import ABCMeta, \
+	abstractmethod
+
 from pyspark.sql import Window, \
 	functions as F
 
 class AnalyticsEventsDataFrameProcessor(object):
+
+	__metaclass__ = ABCMeta
 
 	def __init__(self, batch_id, spark_job):
 		self._batch_id = batch_id
@@ -48,6 +53,10 @@ class AnalyticsEventsDataFrameProcessor(object):
 	def _filter(self, analytics_events_data_frame):
 		return analytics_events_data_frame
 
+	@abstractmethod
+	def _get_asset_id_column(self):
+		return
+
 	def _process(self, filtered_analytics_events_data_frame):
 		return filtered_analytics_events_data_frame
 
@@ -66,6 +75,8 @@ class AnalyticsEventsDataFrameProcessor(object):
 	def process(self, analytics_events_data_frame):
 		data_frame = self._filter(
 			analytics_events_data_frame
+		).withColum(
+			'assetId', self._get_asset_id_column()
 		).withColumn(
 			'event_date',
 			F.to_timestamp(F.col('eventDate'))
@@ -181,18 +192,18 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			)
 		)
 
-	def _process(self, filtered_analytics_events_data_frame):
-		data_frame = filtered_analytics_events_data_frame.withColumn(
-			'assetId',
-			F.when(
-				F.col('eventId').isin('posted', 'VOTE'),
-				F.col('eventProperties.classPK')
-			).otherwise(
-				F.col('eventProperties.entryId')
-			)
+	def _get_asset_id_column(self):
+		return F.when(
+			F.col('eventId').isin('posted', 'VOTE'),
+			F.col('eventProperties.classPK')
+		).otherwise(
+			F.col('eventProperties.entryId')
 		)
 
-		data_frame_with_rating_score = self._calculate_rating_score(data_frame)
+	def _process(self, data_frame):
+		data_frame_with_rating_score = self._calculate_rating_score(
+			data_frame
+		)
 
 		data_frame.withColumn(
 			'clicks',
@@ -266,17 +277,15 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			)
 		)
 
-	def _process(self, filtered_analytics_events_data_frame):
-		data_frame = filtered_analytics_events_data_frame.withColumn(
-			'assetId',
-			F.when(
-				F.col('eventId').isin('posted', 'VOTE'),
-				F.col('eventProperties.classPK')
-			).otherwise(
-				F.col('eventProperties.fileEntryId')
-			)
+	def _get_asset_id_column(self):
+		return F.when(
+			F.col('eventId').isin('posted', 'VOTE'),
+			F.col('eventProperties.classPK')
+		).otherwise(
+			F.col('eventProperties.fileEntryId')
 		)
 
+	def _process(self, data_frame):
 		data_frame_with_rating_score = self._calculate_rating_score(data_frame)
 
 		data_frame.withColumn(
@@ -323,10 +332,11 @@ class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			"""
 		)
 
-	def _process(self, filtered_analytics_events_data_frame):
-		return filtered_analytics_events_data_frame.withColumn(
-			'assetId', F.col('eventProperties.articleId')
-		).withColumn(
+	def _get_asset_id_column(self):
+		return F.col('eventProperties.articleId')
+
+	def _process(self, data_frame):
+		return data_frame.withColumn(
 			'views', F.lit(1)
 		).groupBy(
 			'projectId', 'channelId', 'assetId', 'eventDate', 'userId',
