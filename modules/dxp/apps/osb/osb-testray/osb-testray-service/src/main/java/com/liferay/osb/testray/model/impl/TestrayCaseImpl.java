@@ -14,12 +14,9 @@
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 /**
  * @author Ethan Bustad
  */
-@ProviderType
 public class TestrayCaseImpl extends TestrayCaseBaseImpl {
 
 	public TestrayCaseImpl() {

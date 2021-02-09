@@ -75,7 +75,8 @@ public class UpgradeRole extends UpgradeProcess {
 		}
 	}
 
-	private static final String[] _TESTRAY_ROLE_NAMES =
-		{"Test Designer", "Tester"};
+	private static final String[] _TESTRAY_ROLE_NAMES = {
+		"Test Designer", "Tester"
+	};
 
 }

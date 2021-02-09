@@ -33,8 +33,7 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.info.keywords=Testray JIRA Issue Engine",
 		"javax.portlet.info.short-title=Testray JIRA Issue Engine",
 		"javax.portlet.info.title=Testray JIRA Issue Engine",
-		"javax.portlet.name=" +
-			TestrayIssueEngineJiraPortletKeys.TESTRAY_ISSUE_ENGINE_JIRA
+		"javax.portlet.name=" + TestrayIssueEngineJiraPortletKeys.TESTRAY_ISSUE_ENGINE_JIRA
 	},
 	service = Portlet.class
 )

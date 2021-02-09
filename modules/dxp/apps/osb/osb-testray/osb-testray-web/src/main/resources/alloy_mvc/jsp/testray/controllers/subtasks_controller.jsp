@@ -189,7 +189,6 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 			}
 
 			if (status != testrayCaseResult.getStatus()) {
-				TestrayCase testrayCase = TestrayCaseLocalServiceUtil.getTestrayCase(testrayCaseResult.getTestrayCaseId());
 			}
 
 			updateModelIgnoreRequest(testrayCaseResult, "commentMBMessageId", commentMBMessageId, "status", status);

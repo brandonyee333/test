@@ -153,7 +153,7 @@
 							<c:set value="${testrayFactorCategoryEntry.key}" var="testrayFactorCategory" />
 
 							<aui:col span="${12 / testrayFactorCategoryMap.size()}">
-								<aui:select cssClass="testray-factor-category-${testrayFactorCategory.testrayFactorCategoryId} testray-factor-option-select" label="${testrayFactorCategory.name}" name="testrayFactorOptionId_column${l.index}_new1" onChange="${htmlNamespace}updateFactorsRequired(this)" required="${true}" showEmptyOption="${true}" showRequiredLabel="${false}" style="width:220px">
+								<aui:select cssClass="testray-factor-category-${testrayFactorCategory.testrayFactorCategoryId} testray-factor-option-select" label="${testrayFactorCategory.name}" name="testrayFactorOptionId_column${l.index}_new1" onChange="${htmlNamespace}updateFactorsRequired(this)" required="${true}" showEmptyOption="${true}" showRequiredLabel="${false}" style="width: 220px;">
 									<c:forEach items="${testrayFactorCategoryEntry.value}" var="testrayFactorOption">
 										<aui:option label="${testrayFactorOption.name}" selected="${testrayBuild.templateTestrayBuildId <= 0 ? selectedTestrayFactorOptionIds.contains(testrayFactorOption.testrayFactorOptionId) : false}" value="${testrayFactorOption.testrayFactorOptionId}" />
 									</c:forEach>

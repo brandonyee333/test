@@ -71,7 +71,7 @@
 					<c:set value="${testrayFactorCategoryEntry.key}" var="testrayFactorCategory" />
 
 					<aui:col span="${testrayFactorCategoryMap.size() / 12}">
-						<aui:select cssClass="lfr-form-row-select" label="${testrayFactorCategory.name}" name="testrayFactorOptionId_column${l.index}_custom1" showEmptyOption="${true}" style="width:220px">
+						<aui:select cssClass="lfr-form-row-select" label="${testrayFactorCategory.name}" name="testrayFactorOptionId_column${l.index}_custom1" showEmptyOption="${true}" style="width: 220px;">
 							<c:forEach items="${testrayFactorCategoryEntry.value}" var="testrayFactorOption">
 								<aui:option label="${testrayFactorOption.name}" value="${testrayFactorOption.testrayFactorOptionId}" />
 							</c:forEach>

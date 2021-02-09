@@ -89,7 +89,8 @@ public class UpgradeRole extends UpgradeProcess {
 
 	private static final String[] _TESTRAY_ROLE_NAMES_TO_DELETE = {"Test Lead"};
 
-	private static final String[] _TESTRAY_ROLE_NAMES_TO_UPDATE =
-		{"Testray Analyst", "Testray Lead"};
+	private static final String[] _TESTRAY_ROLE_NAMES_TO_UPDATE = {
+		"Testray Analyst", "Testray Lead"
+	};
 
 }
