@@ -58,7 +58,7 @@ minifier.enabled=false
 0. If your portal repo isn't already set up, run the following command from the repo base directory:
 
    ```
-   ant setup-sdk compile install-portal-snapshots
+   ant setup-profile-dxp setup-sdk compile install-portal-snapshots
    ```
 
 1. Run `gw deploy` in the current directory.
