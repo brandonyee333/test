@@ -30,8 +30,7 @@ import org.osgi.service.component.annotations.Component;
 		"context.id=TestrayUnnamespaceJspBag",
 		"context.name=Testray Unnamespace JSP Bag",
 		"service.ranking:Integer=100"
-	},
-	service = CustomJspBag.class
+	}
 )
 public class TestrayUnnamespaceJspBag
 	extends BaseCustomJspBag implements CustomJspBag {
