@@ -19,7 +19,7 @@
 <%@ include file="/alloy_mvc/jsp/testray/views/start.jspf" %>
 
 <liferay-util:include page="/alloy_mvc/jsp/testray/views/header.jsp" servletContext="<%= application %>">
-	<liferay-util:param name="title" value="assigned-users" />
+	<liferay-util:param name="title" value="Assigned Users" />
 </liferay-util:include>
 
 <%@ include file="/alloy_mvc/jsp/testray/views/content_start.jspf" %>
