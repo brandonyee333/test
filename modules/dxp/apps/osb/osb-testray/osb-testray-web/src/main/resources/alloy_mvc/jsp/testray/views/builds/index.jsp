@@ -157,7 +157,37 @@
 				>
 					${testrayBuildComposite.gitHashShortened}
 
-					<a class="copy-icon-inline" data-toggle="tooltip" onClick="${htmlNamespace}copyGitHash(this, '${testrayBuildComposite.gitHash}', title='Copied.');" title="Click to copy."></a>
+					<a class="copy-icon-inline" data-toggle="tooltip" onClick="${htmlNamespace}copyGitHash(this, '${testrayBuildComposite.gitHash}', title='Copied.');" title="Click to copy.">
+						<svg
+							height="15"
+							style=" fill:#000000;"
+							viewBox="0 0 192 192"
+							width="15"
+							x="0px"
+							xmlns="http://www.w3.org/2000/svg"
+							y="0px"
+						>
+							<g
+								fill-rule="nonzero"
+								stroke-dashoffset="0"
+								stroke-linecap="butt"
+								stroke-linejoin="miter"
+								stroke-miterlimit="10"
+								stroke-width="1"
+								style="mix-blend-mode: normal"
+							>
+								<path d="M0,192v-192h192v192z" fill="none"></path>
+
+								<g fill="#303376">
+									<path
+										d="M32,16c-8.84,0 -16,7.16 -16,16v104c0,4.416 3.584,8 8,8c4.416,0 8,-3.584 8,
+											-8v-104h104c4.416,0 8,-3.584 8,-8c0,-4.416 -3.584,-8 -8,-8zM64,48c-8.84,0 -16,7.16 -16,16v96c0,8.84 7.16,
+											16 16,16h96c8.84,0 16,-7.16 16,-16v-96c0,-8.84 -7.16,-16 -16,-16zM64,64h96v96h-96z"
+									></path>
+								</g>
+							</g>
+						</svg>
+					</a>
 				</liferay-ui:search-container-column-text>
 			</c:if>
 
