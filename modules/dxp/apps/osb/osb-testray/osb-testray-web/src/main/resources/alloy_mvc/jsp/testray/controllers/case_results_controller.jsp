@@ -446,7 +446,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 				respondWith(_getTestrayCaseResultsJSONArray("testrayCaseId", testrayCaseId));
 			}
-			else if (testrayBuildId != null) {
+			else if (Validator.isNotNull(testrayBuildId)) {
 				respondWith(_getTestrayCaseResultsJSONArray("testrayBuildId", testrayBuildId));
 			}
 			else if (Validator.isNotNull(testrayBuildName)) {

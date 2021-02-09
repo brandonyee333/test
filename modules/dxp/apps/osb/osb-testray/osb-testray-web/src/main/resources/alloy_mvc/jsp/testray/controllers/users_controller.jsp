@@ -183,7 +183,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		int status = WorkflowConstants.STATUS_APPROVED;
 
-		boolean active = ParamUtil.getBoolean(request, "active", user.getStatus() == 0);
+		boolean active = ParamUtil.getBoolean(request, "active", (user.getStatus() == 0));
 
 		if (!active) {
 			status = WorkflowConstants.STATUS_INACTIVE;
@@ -390,7 +390,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		else if (!password1.equals(password2)) {
 			throw new AlloyException("passwords-do-not-match", false);
 		}
-	}
+	};
 
 	private void _validateRoleIds() throws Exception {
 		long[] selUserRoleIds = ParamUtil.getLongValues(request, "selUserRoleIds");
