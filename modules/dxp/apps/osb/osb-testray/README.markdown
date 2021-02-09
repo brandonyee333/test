@@ -2,7 +2,7 @@
 
 ## MySQL
 
-1. Start MySQL.
+1. Start a MySQL server.
 
 	```
 	docker run \
@@ -19,13 +19,13 @@
 		--collation-server=utf8mb4_unicode_ci
 	```
 
-1. Connect to MySQL via the MySQL client.
+1. Connect to the MySQL server via the MySQL client.
 
-	1. ```docker exec -it testray-mysql mysql -utest -ptest***```
+	1. ```docker exec -it testray-mysql mysql -utest -ptest```
 
 	1. ```use lportal;```
 
-	1. ```***show tables;```
+	1. ```show tables;```
 
 		No tables exist because the database is empty.
 
@@ -55,7 +55,7 @@
 
 1. Verify databases were created. Go to your MySQL client.
 
-	1. ```***show tables;```
+	1. ```show tables;```
 
 		Many tables exist because the database was populated by Liferay.
 
