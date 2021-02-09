@@ -235,7 +235,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		render("tasks/select_users");
 	}
 
-	public void listUsers() throws Exception {
+	public void selectListUsers() throws Exception {
 		TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(request);
 
 		TestrayTaskComposite testrayTaskComposite = new TestrayTaskComposite(testrayTask, themeDisplay, user);

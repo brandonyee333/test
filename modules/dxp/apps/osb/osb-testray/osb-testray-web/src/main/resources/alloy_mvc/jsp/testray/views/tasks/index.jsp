@@ -80,15 +80,15 @@
 			</portlet:renderURL>
 
 			<c:if test='${testrayPermission:containsModelAction(themeDisplay, testrayTaskComposite.testrayTask, "updateUsers")}'>
-				<portlet:renderURL var="listUsersURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:renderURL var="selectListUsersURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="controller" value="tasks" />
-					<portlet:param name="action" value="listUsers" />
+					<portlet:param name="action" value="selectListUsers" />
 					<portlet:param name="id" value="${testrayTaskComposite.testrayTaskId}" />
 				</portlet:renderURL>
 
-				<c:set value='${AlloyLanguageUtil.getUnicode("users")}' var="listUsersURLTitle" />
+				<c:set value='${AlloyLanguageUtil.getUnicode("users")}' var="selectListUsersURLTitle" />
 
-				<c:set value="javascript:Liferay.Testray.openWindow('${listUsersURL}', '${listUsersURLTitle}', 1000)" var="listUsersURL" />
+				<c:set value="javascript:Liferay.Testray.openWindow('${selectListUsersURL}', '${selectListUsersURLTitle}', 1000)" var="selectListUsersURL" />
 			</c:if>
 
 			<c:if test="${testrayTasksIndexColumns.contains(TestrayTaskConstants.COLUMN_LABEL_STATUS)}">
@@ -232,7 +232,7 @@
 								<aui:button disabled="${testrayTaskComposite.testrayBuildArchived}" value="assign-users" />
 							</div>
 
-							<img class="button-avatar-change" data-placement="top" data-toggle="tooltip" disabled="${testrayTaskComposite.testrayBuildArchived}" onClick="${listUsersURL}" src="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext(request) + "/images/profileEdit.png") %>" title='<liferay-ui:message key="click-to-see-all-assigned-users" />' />
+							<img class="button-avatar-change" data-placement="top" data-toggle="tooltip" disabled="${testrayTaskComposite.testrayBuildArchived}" onClick="${selectListUsersURL}" src="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext(request) + "/images/profileEdit.png") %>" title='<liferay-ui:message key="click-to-see-all-assigned-users" />' />
 						</div>
 
 						<div class="col-md-1">
