@@ -44,12 +44,12 @@ public static class TestrayTaskIndexer extends BaseAlloyIndexer {
 		Map<String, Serializable> attributes = searchContext.getAttributes();
 
 		if ((attributes != null) && !attributes.isEmpty()) {
-			long assignedUserId = GetterUtil.getLong(attributes.get("assignedUserId"), 1);
+			Long assignedUserId = GetterUtil.getLong(attributes.get("assignedUserId"), 1);
 
 			if ((assignedUserId != null) && (assignedUserId <= 0)) {
-				WildcardQuery existsWildcardQuery = new WildcardQueryImpl("assignedUserId", "*");
+				WildcardQuery existsQuery = new WildcardQueryImpl("assignedUserId", "*");
 
-				searchQuery.add(existsWildcardQuery, BooleanClauseOccur.MUST_NOT);
+				searchQuery.add(existsQuery, BooleanClauseOccur.MUST_NOT);
 			}
 		}
 	}
