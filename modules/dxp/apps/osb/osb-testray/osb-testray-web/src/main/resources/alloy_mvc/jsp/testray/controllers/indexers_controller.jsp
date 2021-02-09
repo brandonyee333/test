@@ -62,17 +62,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 	public void index() throws Exception {
 		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
 
-		Set<Indexer<?>> testrayIndexers = new HashSet<Indexer<?>>();
-
-		for (Indexer<?> indexer : indexers) {
-			String indexerClassName = indexer.getClassName();
-
-			if (indexerClassName.startsWith("com.liferay.osb.testray")) {
-				testrayIndexers.add(indexer);
-			}
-		}
-
-		renderRequest.setAttribute("indexers", testrayIndexers);
+		renderRequest.setAttribute("indexers", indexers);
 	}
 
 }
