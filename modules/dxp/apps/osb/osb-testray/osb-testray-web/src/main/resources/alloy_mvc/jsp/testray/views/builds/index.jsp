@@ -82,6 +82,7 @@
 			keyProperty="testrayBuildId"
 			modelVar="testrayBuildComposite"
 		>
+
 			<c:if test="${!param.archived}">
 				<portlet:renderURL var="viewTestrayCaseResultsURL">
 					<portlet:param name="controller" value="case_results" />
