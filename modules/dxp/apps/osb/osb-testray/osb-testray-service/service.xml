@@ -578,10 +578,6 @@
 		<column name="linkURL" type="String" />
 		<column name="description" type="String" />
 		<column name="descriptionType" type="String" />
-		<column name="goals" type="String" />
-		<column name="goalsType" type="String" />
-		<column name="variations" type="String" />
-		<column name="variationsType" type="String" />
 
 		<!-- Relationships -->
 
