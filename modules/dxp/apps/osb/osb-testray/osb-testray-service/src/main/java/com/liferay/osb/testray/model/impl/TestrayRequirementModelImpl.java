@@ -107,7 +107,7 @@ public class TestrayRequirementModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_TestrayRequirement (testrayRequirementId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,testrayComponentId LONG,testrayProjectId LONG,key_ VARCHAR(75) null,summary VARCHAR(255) null,components VARCHAR(255) null,linkTitle VARCHAR(75) null,linkURL VARCHAR(255) null,description STRING null,descriptionType VARCHAR(75) null,goals STRING null,goalsType VARCHAR(75) null,variations STRING null,variationsType VARCHAR(75) null)";
+		"create table OSB_TestrayRequirement (testrayRequirementId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,testrayComponentId LONG,testrayProjectId LONG,key_ VARCHAR(75) null,summary VARCHAR(255) null,components VARCHAR(255) null,linkTitle VARCHAR(75) null,linkURL VARCHAR(255) null,description STRING null,descriptionType VARCHAR(75) null,goals VARCHAR(75) null,goalsType VARCHAR(75) null,variations VARCHAR(75) null,variationsType VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table OSB_TestrayRequirement";

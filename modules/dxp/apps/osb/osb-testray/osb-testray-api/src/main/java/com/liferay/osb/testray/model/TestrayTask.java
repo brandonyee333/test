@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.osb.testray.model.impl.TestrayTaskImpl")
 @ProviderType
-public interface TestrayTask extends PersistedModel, TestrayTaskModel {
+public interface TestrayTask extends TestrayTaskModel, PersistedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

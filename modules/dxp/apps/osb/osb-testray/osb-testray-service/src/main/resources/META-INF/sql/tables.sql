@@ -253,9 +253,9 @@ create table OSB_TestrayRequirement (
 	linkURL VARCHAR(255) null,
 	description STRING null,
 	descriptionType VARCHAR(75) null,
-	goals STRING null,
+	goals VARCHAR(75) null,
 	goalsType VARCHAR(75) null,
-	variations STRING null,
+	variations VARCHAR(75) null,
 	variationsType VARCHAR(75) null
 );
 

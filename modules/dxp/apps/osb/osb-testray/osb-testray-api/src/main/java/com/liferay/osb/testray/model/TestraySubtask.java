@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.Accessor;
 	"com.liferay.osb.testray.model.impl.TestraySubtaskImpl"
 )
 @ProviderType
-public interface TestraySubtask extends PersistedModel, TestraySubtaskModel {
+public interface TestraySubtask extends TestraySubtaskModel, PersistedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

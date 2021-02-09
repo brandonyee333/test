@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.Accessor;
 )
 @ProviderType
 public interface TestrayProductVersion
-	extends PersistedModel, TestrayProductVersionModel {
+	extends TestrayProductVersionModel, PersistedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

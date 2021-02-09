@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.Accessor;
 	"com.liferay.osb.testray.model.impl.TestrayRoutineImpl"
 )
 @ProviderType
-public interface TestrayRoutine extends PersistedModel, TestrayRoutineModel {
+public interface TestrayRoutine extends TestrayRoutineModel, PersistedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
