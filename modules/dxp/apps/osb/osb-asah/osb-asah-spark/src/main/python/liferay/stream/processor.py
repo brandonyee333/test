@@ -357,7 +357,19 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 	def _filter(self, analytics_events_data_frame):
-		pass
+		return analytics_events_data_frame.filter(
+			"""
+				(applicationId = 'Form') AND
+				(
+					(eventId = 'fieldBlurred') OR
+					(eventId = 'fieldFocused') OR
+					(eventId = 'formSubmitted') OR
+					(eventId = 'formViewed') OR
+					(eventId = 'pageViewed')
+				) AND
+				(eventProperties.formId != '')
+			"""
+		)
 
 	def _get_asset_id_column(self):
 		pass
