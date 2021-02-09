@@ -2,17 +2,16 @@
 
 ## Start MySQL
 
-If you want to run MySQL in a Docker image:
-
 ```
-docker run -it \
+docker run \
+    --name testray-mysql \
+    --rm \
     -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
     -e MYSQL_DATABASE=lportal \
     -e MYSQL_PASSWORD=test \
     -e MYSQL_USER=test \
-    --name localmysql \
+    -it \
     -p 3306:3306 \
-    --rm \
     mysql:5.7 \
     --character-set-server=utf8mb4 \
     --collation-server=utf8mb4_unicode_ci
@@ -20,10 +19,9 @@ docker run -it \
 
 ## Start Liferay
 
-If you want to run Liferay in a Docker image:
-
 ```
-docker run -it \
+docker run \
+    --link testray-mysql \
     -e LIFERAY_AUTO_PERIOD_LOGIN_PERIOD_HOOKS=com.liferay.portal.security.auto.login.basic.auth.header.BasicAuthHeaderAutoLogin \
     -e LIFERAY_COUNTER_PERIOD_INCREMENT_PERIOD_COM_PERIOD_OSB_PERIOD_TESTRAY_PERIOD_MODEL_PERIOD_UPPERCASET_ESTRAY_UPPERCASER_EQUIREMENT=1 \
     -e LIFERAY_COUNTER_PERIOD_INCREMENT_PERIOD_COM_PERIOD_OSB_PERIOD_TESTRAY_PERIOD_MODEL_PERIOD_UPPERCASET_ESTRAY_UPPERCASET_ASK=1 \
@@ -32,9 +30,9 @@ docker run -it \
     -e LIFERAY_JAVASCRIPT_PERIOD_SINGLE_PERIOD_PAGE_PERIOD_APPLICATION_PERIOD_ENABLED=false \
     -e LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_LASS_UPPERCASEN_AME=com.mysql.jdbc.Driver \
     -e LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD=test \
-    -e LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL='jdbc:mysql://localmysql/lportal?characterEncoding=UTF-8&useFastDateParsing=false&useUnicode=true' \
+    -e LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL='jdbc:mysql://testray-mysql/lportal?characterEncoding=UTF-8&useFastDateParsing=false&useUnicode=true' \
     -e LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME=test \
-    --link localmysql \
+    -it \
     -p 8080:8080 \
     -p 11311:11311 \
     --rm \
