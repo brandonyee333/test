@@ -148,7 +148,15 @@
 						<dd>
 							<div class="row">
 								<div class="col-md-1">
-									<div class="avatar-container" id="${htmlNamespace}avatarContainer${testrayTaskComposite.testrayTaskId}" onClick="${listUsersURL}" title='<liferay-ui:message key="click-to-see-all-assigned-users" />'></div>
+									<div class="button-avatar-userassigned">
+										<aui:button disabled="${testrayTaskComposite.testrayBuildArchived}" value="assign-users" />
+									</div>
+
+									<img class="button-avatar-change" data-placement="right" data-toggle="tooltip" disabled="${testrayTaskComposite.testrayBuildArchived}" onClick="${listUsersURL}" src="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext(request) + "/images/profileEdit.png") %>" title='<liferay-ui:message key="click-to-see-all-assigned-users" />' />
+								</div>
+
+								<div class="col-md-1">
+									<div class="text-count-user-subtask" id="${htmlNamespace}avatarContainer${testrayTaskComposite.testrayTaskId}"></div>
 								</div>
 
 								<div class="col-md-10"></div>
@@ -420,8 +428,7 @@
 			new Liferay.Testray.Avatar(
 				{
 					container: '#${htmlNamespace}avatarContainer${testrayTaskComposite.testrayTaskId}',
-					data: testrayTaskJSON.assignedUsers,
-					maxVisible: 5
+					data: testrayTaskJSON.assignedUsers
 				}
 			).render();
 
