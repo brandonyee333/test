@@ -172,14 +172,18 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		String body = ParamUtil.getString(request, "comment");
 
 		if (Validator.isNotNull(body)) {
-			StringBundler sb = new StringBundler(22);
+			StringBundler sb = new StringBundler(26);
 
 			sb.append("*Testray Link*");
 			sb.append(StringPool.NEW_LINE);
 			sb.append(StringPool.OPEN_BRACKET);
 			sb.append(testraySubtask.getName());
 			sb.append(StringPool.PIPE);
-			sb.append(TestrayUtil.getURL(this, "subtasks", "view", testraySubtask.getTestraySubtaskId()));
+			sb.append("https://");
+			sb.append(request.getServerName());
+			sb.append("/home/-/testray/subtasks/");
+			sb.append(testraySubtask.getTestraySubtaskId());
+			sb.append("/view");
 			sb.append(StringPool.CLOSE_BRACKET);
 			sb.append(StringPool.NEW_LINE);
 			sb.append(StringPool.NEW_LINE);
