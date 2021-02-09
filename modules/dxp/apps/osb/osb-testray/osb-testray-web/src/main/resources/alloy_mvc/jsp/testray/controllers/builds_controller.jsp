@@ -343,6 +343,8 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		Map<String, Serializable> attributes = new HashMap<String, Serializable>();
 
+		long testrayProductVersionId = ParamUtil.getLong(request, "testrayProductVersionId");
+
 		int[] testrayTaskStatuses = ParamUtil.getIntegerValues(request, "testrayTaskStatuses");
 
 		List<Integer> testrayTaskStatusesList = ListUtil.toList(testrayTaskStatuses);
