@@ -119,18 +119,28 @@
 		First Name: Dashboard
 		Last Name: User
 	1. Save
+
 1. Testray is now set up to work on your Liferay instance
 
 ### Get Testray Ready
 
-1. In the upper right of the Project Directory click the blue button labeled `+ New Project`
-1. Enter `Liferay Portal 7.1` as the name, and click Add
-1. Click on `Liferay Portal 7.1` in the search container
-1. In the page that opens up, click the blue button `+ Add Routine`
-1. Enter `Hotfix Tester` as the name, and click Add
-1. Import the test file located in this directory via curl command:
-	```
-	curl -sS -X POST \
-		 --data-urlencode "results@TESTS-test-1-1_test-portal-hotfix-release_13003_functional-bundle-tomcat-mysql57-jdk8_3_9.xml" \
-		 -u test@liferay.com:test \
-		 "http://127.0.0.1:8080/web/guest/home/-/testray/case_results/importResults.json?type=poshi"
+1. Add a Project
+	1. In the upper right of the Project Directory click the blue button labeled `+ New Project`
+	1. Enter `Liferay Portal 7.1` as the name, and click `Add`
+	1. Click on `Liferay Portal 7.1` in the search container
+1. Add a Routine
+	1. In the page that opens up, click the blue button `+ Add Routine`
+	1. Enter `Hotfix Tester` as the name, and click `Add`
+1. Add a Case Type
+	1. Click on Manage (bottom left) > Case Types
+		1. There seems to be a bug at the moment blocking this navigation. To work around, change the URL to `.../-/testray/case_types`.
+	1. Click `Add Case Type`
+	1. In the page that opens up, enter `Automated Functional Test` as the name, and click `Add`
+1. Import test results
+	1. Import the test file located in this directory via curl command:
+		```
+		curl -sS -X POST \
+			 --data-urlencode "results@TESTS-test-1-1_test-portal-hotfix-release_13003_functional-bundle-tomcat-mysql57-jdk8_3_9.xml" \
+			 -u test@liferay.com:test \
+			 "http://127.0.0.1:8080/web/guest/home/-/testray/case_results/importResults.json?type=poshi"
+		```
