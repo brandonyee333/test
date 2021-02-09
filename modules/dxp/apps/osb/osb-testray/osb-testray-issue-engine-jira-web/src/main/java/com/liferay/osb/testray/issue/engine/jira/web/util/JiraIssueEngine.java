@@ -261,19 +261,8 @@ public class JiraIssueEngine implements TestrayIssueEngine {
 		}
 
 		public String getAllIssuesLinkURL(String[] issueNames) {
-			StringBundler sb = new StringBundler((issueNames.length * 2) + 2);
-
-			sb.append(TestrayIssueEngineJiraWebValues.JIRA_JQL_URL);
-			sb.append("key%20in(");
-
-			for (String issueName : issueNames) {
-				sb.append(issueName);
-				sb.append(StringPool.COMMA);
-			}
-
-			sb.setStringAt(StringPool.CLOSE_PARENTHESIS, sb.index());
-
-			return sb.toString();
+			return TestrayIssueEngineJiraWebValues.JIRA_JQL_URL + "key%20in(" +
+				String.join(StringPool.COMMA, issueNames) + ")";
 		}
 
 		public String getIssueLinkLabel(String issueName) {
@@ -309,7 +298,7 @@ public class JiraIssueEngine implements TestrayIssueEngine {
 				}
 			}
 
-			return StringUtil.merge(fieldValues, StringPool.COMMA_AND_SPACE);
+			return String.join(StringPool.COMMA_AND_SPACE, fieldValues);
 		}
 
 		return jsonObject.getString(field);

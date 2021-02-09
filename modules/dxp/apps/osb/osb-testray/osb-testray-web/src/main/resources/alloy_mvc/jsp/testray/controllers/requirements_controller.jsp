@@ -187,7 +187,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 			pattern = "the-issue-x-failed-to-import";
 		}
 
-		String message = translate(pattern, StringUtil.merge(failedIssueKeys, StringPool.COMMA_AND_SPACE));
+		String message = translate(pattern, String.join(StringPool.COMMA_AND_SPACE, failedIssueKeys));
 
 		if (isRespondingTo("json")) {
 			if (!failedIssueKeys.isEmpty()) {
