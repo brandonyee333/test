@@ -64,9 +64,18 @@
 
 1. Prepare your repository. Go to the repository's base directory.
 
-	```
-	ant setup-profile-dxp setup-sdk compile install-portal-snapshots
-	```
+	1. Use the DXP profile.
+
+		```
+		ant setup-profile-dxp
+
+		```
+
+	1. Compile Testray dependencies.
+
+		```
+		ant setup-sdk compile install-portal-snapshots
+		```
 
 1. Verify that Liferay does not have the Testray modules.
 
