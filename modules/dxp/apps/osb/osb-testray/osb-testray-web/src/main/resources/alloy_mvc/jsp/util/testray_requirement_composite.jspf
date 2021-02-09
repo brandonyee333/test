@@ -33,32 +33,12 @@ public static class TestrayRequirementComposite {
 		return _testrayRequirement.getDescriptionType();
 	}
 
-	public String getGoals() {
-		return _testrayRequirement.getGoals();
-	}
-
-	public String getGoalsType() {
-		return _testrayRequirement.getGoalsType();
-	}
-
-	public String getVariations() {
-		return _testrayRequirement.getVariations();
-	}
-
-	public String getVariationsType() {
-		return _testrayRequirement.getVariationsType();
-	}
-
 	public JSONObject getJSONObject() throws Exception {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("components", getComponents());
 		jsonObject.put("description", getDescription());
 		jsonObject.put("descriptionType", getDescriptionType());
-		jsonObject.put("goals", getGoals());
-		jsonObject.put("goalsType", getGoalsType());
-		jsonObject.put("variations", getVariations());
-		jsonObject.put("variationsType", getVariationsType());
 		jsonObject.put("key", getKey());
 		jsonObject.put("linkTitle", getLinkTitle());
 		jsonObject.put("linkURL", getLinkURL());
