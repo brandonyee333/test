@@ -1,4 +1,4 @@
-# Databases
+# Testray
 
 ## MySQL
 
@@ -36,6 +36,7 @@
 	```
 	docker run \
 		--link testray-mysql \
+		--name testray-liferay \
 		-e LIFERAY_COUNTER_PERIOD_INCREMENT_PERIOD_COM_PERIOD_OSB_PERIOD_TESTRAY_PERIOD_MODEL_PERIOD_UPPERCASET_ESTRAY_UPPERCASER_EQUIREMENT="1" \
 		-e LIFERAY_COUNTER_PERIOD_INCREMENT_PERIOD_COM_PERIOD_OSB_PERIOD_TESTRAY_PERIOD_MODEL_PERIOD_UPPERCASET_ESTRAY_UPPERCASET_ASK="1" \
 		-e LIFERAY_COUNTER_PERIOD_INCREMENT_PERIOD_COM_PERIOD_OSB_PERIOD_TESTRAY_PERIOD_MODEL_PERIOD_UPPERCASET_ESTRAY_UPPERCASEB_UILD="1" \
@@ -60,3 +61,11 @@
 		Many tables exist because the database was populated by Liferay.
 
 ## Deploy Testray
+
+1. Prepare your repository. Go to the repository's base directory.
+
+	```
+	ant setup-profile-dxp setup-sdk compile install-portal-snapshots
+	```
+
+1.
