@@ -41,17 +41,6 @@ public static class TestrayTaskIndexer extends BaseAlloyIndexer {
 
 	@Override
 	public void postProcessSearchQuery(BooleanQuery searchQuery, BooleanFilter booleanFilter, SearchContext searchContext) throws Exception {
-		Map<String, Serializable> attributes = searchContext.getAttributes();
-
-		if ((attributes != null) && !attributes.isEmpty()) {
-			Long assignedUserId = GetterUtil.getLong(attributes.get("assignedUserId"), 1);
-
-			if ((assignedUserId != null) && (assignedUserId <= 0)) {
-				WildcardQuery existsQuery = new WildcardQueryImpl("assignedUserId", "*");
-
-				searchQuery.add(existsQuery, BooleanClauseOccur.MUST_NOT);
-			}
-		}
 	}
 
 	@Override
