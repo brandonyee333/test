@@ -57,11 +57,11 @@ public static class TestrayRequirementComposite {
 		jsonObject.put("descriptionType", getDescriptionType());
 		jsonObject.put("goals", getGoals());
 		jsonObject.put("goalsType", getGoalsType());
+		jsonObject.put("variations", getVariations());
+		jsonObject.put("variationsType", getVariationsType());
 		jsonObject.put("key", getKey());
 		jsonObject.put("linkTitle", getLinkTitle());
 		jsonObject.put("linkURL", getLinkURL());
-		jsonObject.put("variations", getVariations());
-		jsonObject.put("variationsType", getVariationsType());
 
 		JSONArray testrayCasesJSONArray = JSONFactoryUtil.createJSONArray();
 
