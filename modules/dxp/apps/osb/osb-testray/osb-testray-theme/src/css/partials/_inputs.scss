@@ -45,8 +45,8 @@ pre {
 }
 
 .environment-options-size {
-	display: inline-block;
-	width: 250px;
+	display: -webkit-inline-box;
+    width: 250px;
 }
 
 .input-icon-group {
@@ -144,6 +144,7 @@ pre {
 
 @media (max-width: 992px) {
 	.environment-options-size {
+		display: -webkit-inline-box;
 		width: 100%;
 	}
 }
