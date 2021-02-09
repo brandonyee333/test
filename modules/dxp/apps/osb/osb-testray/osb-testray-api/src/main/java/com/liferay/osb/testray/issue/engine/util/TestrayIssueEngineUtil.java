@@ -41,14 +41,6 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 @Component(immediate = true, service = TestrayIssueEngineUtil.class)
 public class TestrayIssueEngineUtil {
 
-	public static void addComment(String comment, String issueName, User user)
-		throws Exception {
-
-		for (TestrayIssueEngine testrayIssueEngine : _testrayIssueEngines) {
-			testrayIssueEngine.addComment(comment, issueName, user);
-		}
-	}
-
 	public static void addLink(
 			String linkURL, String linkTitle, String issueName, User user)
 		throws Exception {

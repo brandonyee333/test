@@ -30,9 +30,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface TestrayIssueEngine {
 
-	public void addComment(String comment, String issueName, User user)
-		throws Exception;
-
 	public void addLink(
 			String linkURL, String linkTitle, String issueName, User user)
 		throws Exception;

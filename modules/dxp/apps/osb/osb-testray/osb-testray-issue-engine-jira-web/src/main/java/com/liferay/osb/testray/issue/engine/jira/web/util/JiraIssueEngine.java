@@ -70,31 +70,6 @@ import org.scribe.model.Verb;
 public class JiraIssueEngine implements TestrayIssueEngine {
 
 	@Override
-	public void addComment(String comment, String issueName, User user)
-		throws Exception {
-
-		if (!_testrayOAuthService.hasAccessToken(user)) {
-			_log.error("No JIRA access token for user " + user.getFullName());
-
-			return;
-		}
-
-		Token accessToken = _testrayOAuthService.getOAuthAccessToken(user);
-
-		JSONObject payloadJSONObject = _jsonFactory.createJSONObject();
-
-		payloadJSONObject.put("body", comment);
-
-		_jiraRequestSender.addJiraRequest(
-			TestrayIssueEngineJiraWebValues.JIRA_REST_API_LINK_URL + issueName +
-				"/comment",
-			payloadJSONObject.toString(), user.getFullName(), accessToken,
-			Verb.POST);
-
-		_jiraRequestSender.nonblockingSendJiraRequests();
-	}
-
-	@Override
 	public void addLink(
 			String linkURL, String linkTitle, String issueName, User user)
 		throws Exception {
