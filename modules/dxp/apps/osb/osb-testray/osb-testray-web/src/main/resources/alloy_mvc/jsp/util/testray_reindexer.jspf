@@ -28,46 +28,32 @@ public static class TestrayReindexer {
 
 		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
 
-		for (Indexer<?> indexer : indexers) {
-			_reindexSingleEntity(indexer, executorService);
-		}
-
-		executorService.shutdown();
-	}
-
-	public void reindex(String className) {
-		ExecutorService executorService = Executors.newFixedThreadPool(THREADS_COUNT);
-
-		Indexer<?> indexer = IndexerRegistryUtil.getIndexer(className);
-
-		_reindexSingleEntity(indexer, executorService);
-
-		executorService.shutdown();
-	}
-
-	private void _reindexSingleEntity(Indexer<?> indexer, ExecutorService executorService) {
 		try {
-			_log.info("Queuing up reindex for " + indexer.getClassName());
+			for (Indexer<?> indexer : indexers) {
+				_log.info("Queuing up reindex for " + indexer.getClassName());
 
-			executorService.submit(
-				new Runnable() {
+				executorService.submit(
+					new Runnable() {
 
-					@Override
-					public void run() {
-						try {
-							_log.info("Reindex initiated for " + indexer.getClassName());
+						@Override
+						public void run() {
+							try {
+								_log.info("Reindex initiated for " + indexer.getClassName());
 
-							indexer.reindex(_companyIds);
+								indexer.reindex(_companyIds);
 
-							_log.info("Reindex completed for " + indexer.getClassName());
+								_log.info("Reindex completed for " + indexer.getClassName());
+							}
+							catch (Exception e) {
+								_log.error(e, e);
+							}
 						}
-						catch (Exception e) {
-							_log.error(e, e);
-						}
+
 					}
+				);
+			}
 
-				}
-			);
+			executorService.shutdown();
 		}
 		catch (Exception e) {
 			_log.error(e, e);

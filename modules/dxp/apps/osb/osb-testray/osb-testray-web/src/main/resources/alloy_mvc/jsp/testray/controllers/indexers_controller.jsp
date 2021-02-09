@@ -40,30 +40,5 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		redirectTo(redirect);
 	}
 
-	@JSONWebServiceMethod(lifecycle = PortletRequest.ACTION_PHASE, parameterNames = {}, parameterTypes = {})
-	public void executeSingleReindex() throws Exception {
-		String className = ParamUtil.getString(request, "className");
-
-		TestrayIndexerUtil.executeReindex(themeDisplay.getCompanyId(), className);
-
-		if (isRespondingTo("json")) {
-			respondWith("the-reindex-is-now-running");
-
-			return;
-		}
-
-		addSuccessMessage();
-
-		String redirect = ParamUtil.getString(request, "redirect");
-
-		redirectTo(redirect);
-	}
-
-	public void index() throws Exception {
-		Set<Indexer<?>> indexers = IndexerRegistryUtil.getIndexers();
-
-		renderRequest.setAttribute("indexers", indexers);
-	}
-
 }
 %>

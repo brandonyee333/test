@@ -36,23 +36,6 @@
 	</aui:field-wrapper>
 </aui:button-row>
 
-<aui:field-wrapper>
-	<c:forEach items="${indexers}" var="indexer">
-		<aui:button-row>
-			<portlet:actionURL var="executeSingleReindexURL">
-				<portlet:param name="controller" value="indexers" />
-				<portlet:param name="action" value="executeSingleReindex" />
-				<portlet:param name="className" value="${indexer.className}" />
-				<portlet:param name="redirect" value="${portletURL}" />
-			</portlet:actionURL>
-
-			<aui:button href="${executeSingleReindexURL}" icon="icon-refresh" primary="${true}" value="reindex" />
-
-			${indexer.className}
-		</aui:button-row>
-	</c:forEach>
-</aui:field-wrapper>
-
 <%@ include file="/alloy_mvc/jsp/testray/views/content_end.jspf" %>
 
 <%@ include file="/alloy_mvc/jsp/testray/views/end.jspf" %>
