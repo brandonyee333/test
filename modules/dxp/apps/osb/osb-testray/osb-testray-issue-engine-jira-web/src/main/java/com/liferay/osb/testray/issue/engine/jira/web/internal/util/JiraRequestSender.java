@@ -14,6 +14,7 @@
 
 package com.liferay.osb.testray.issue.engine.jira.web.internal.util;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -153,7 +154,7 @@ public class JiraRequestSender {
 					StringBundler.concat(
 						"API call to ", jiraRequest.getURL(), " by ",
 						jiraRequest.getUserName(), " failed with status code ",
-						response.getCode()));
+						String.valueOf(response.getCode())));
 			}
 
 			retryInterval = _RETRY_INTERVAL_DEFAULT;
