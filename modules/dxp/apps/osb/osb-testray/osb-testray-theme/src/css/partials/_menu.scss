@@ -1,8 +1,7 @@
 .manage-page-dropdown {
-    display: flex;
-    flex-direction: row-reverse;
-    margin-top: -50px;
-    margin-right: 5%;
+	position: absolute;
+	right: $layout-padding-horizontal;
+	top: 35px;
 
 	.manage-page-button {
 		background-color: $color-white;
