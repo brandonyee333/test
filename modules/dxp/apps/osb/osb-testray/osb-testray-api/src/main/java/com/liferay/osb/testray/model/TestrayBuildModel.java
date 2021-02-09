@@ -277,21 +277,6 @@ public interface TestrayBuildModel
 	public void setDescription(String description);
 
 	/**
-	 * Returns the description type of this testray build.
-	 *
-	 * @return the description type of this testray build
-	 */
-	@AutoEscape
-	public String getDescriptionType();
-
-	/**
-	 * Sets the description type of this testray build.
-	 *
-	 * @param descriptionType the description type of this testray build
-	 */
-	public void setDescriptionType(String descriptionType);
-
-	/**
 	 * Returns the template of this testray build.
 	 *
 	 * @return the template of this testray build

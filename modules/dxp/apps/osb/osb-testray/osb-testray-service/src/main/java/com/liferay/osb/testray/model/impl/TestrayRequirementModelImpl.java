@@ -75,9 +75,7 @@ public class TestrayRequirementModelImpl
 		{"testrayProjectId", Types.BIGINT}, {"key_", Types.VARCHAR},
 		{"summary", Types.VARCHAR}, {"components", Types.VARCHAR},
 		{"linkTitle", Types.VARCHAR}, {"linkURL", Types.VARCHAR},
-		{"description", Types.VARCHAR}, {"descriptionType", Types.VARCHAR},
-		{"goals", Types.VARCHAR}, {"goalsType", Types.VARCHAR},
-		{"variations", Types.VARCHAR}, {"variationsType", Types.VARCHAR}
+		{"description", Types.VARCHAR}, {"descriptionType", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -100,14 +98,10 @@ public class TestrayRequirementModelImpl
 		TABLE_COLUMNS_MAP.put("linkURL", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("descriptionType", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("goals", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("goalsType", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("variations", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("variationsType", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_TestrayRequirement (testrayRequirementId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,testrayComponentId LONG,testrayProjectId LONG,key_ VARCHAR(75) null,summary VARCHAR(255) null,components VARCHAR(255) null,linkTitle VARCHAR(75) null,linkURL VARCHAR(255) null,description STRING null,descriptionType VARCHAR(75) null,goals VARCHAR(75) null,goalsType VARCHAR(75) null,variations VARCHAR(75) null,variationsType VARCHAR(75) null)";
+		"create table OSB_TestrayRequirement (testrayRequirementId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,testrayComponentId LONG,testrayProjectId LONG,key_ VARCHAR(75) null,summary VARCHAR(255) null,components VARCHAR(255) null,linkTitle VARCHAR(75) null,linkURL VARCHAR(255) null,description STRING null,descriptionType VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table OSB_TestrayRequirement";
@@ -671,98 +665,6 @@ public class TestrayRequirementModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"goals",
-			new Function<TestrayRequirement, Object>() {
-
-				@Override
-				public Object apply(TestrayRequirement testrayRequirement) {
-					return testrayRequirement.getGoals();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"goals",
-			new BiConsumer<TestrayRequirement, Object>() {
-
-				@Override
-				public void accept(
-					TestrayRequirement testrayRequirement, Object goalsObject) {
-
-					testrayRequirement.setGoals((String)goalsObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"goalsType",
-			new Function<TestrayRequirement, Object>() {
-
-				@Override
-				public Object apply(TestrayRequirement testrayRequirement) {
-					return testrayRequirement.getGoalsType();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"goalsType",
-			new BiConsumer<TestrayRequirement, Object>() {
-
-				@Override
-				public void accept(
-					TestrayRequirement testrayRequirement,
-					Object goalsTypeObject) {
-
-					testrayRequirement.setGoalsType((String)goalsTypeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"variations",
-			new Function<TestrayRequirement, Object>() {
-
-				@Override
-				public Object apply(TestrayRequirement testrayRequirement) {
-					return testrayRequirement.getVariations();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"variations",
-			new BiConsumer<TestrayRequirement, Object>() {
-
-				@Override
-				public void accept(
-					TestrayRequirement testrayRequirement,
-					Object variationsObject) {
-
-					testrayRequirement.setVariations((String)variationsObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"variationsType",
-			new Function<TestrayRequirement, Object>() {
-
-				@Override
-				public Object apply(TestrayRequirement testrayRequirement) {
-					return testrayRequirement.getVariationsType();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"variationsType",
-			new BiConsumer<TestrayRequirement, Object>() {
-
-				@Override
-				public void accept(
-					TestrayRequirement testrayRequirement,
-					Object variationsTypeObject) {
-
-					testrayRequirement.setVariationsType(
-						(String)variationsTypeObject);
-				}
-
-			});
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -1014,66 +916,6 @@ public class TestrayRequirementModelImpl
 		_descriptionType = descriptionType;
 	}
 
-	@Override
-	public String getGoals() {
-		if (_goals == null) {
-			return "";
-		}
-		else {
-			return _goals;
-		}
-	}
-
-	@Override
-	public void setGoals(String goals) {
-		_goals = goals;
-	}
-
-	@Override
-	public String getGoalsType() {
-		if (_goalsType == null) {
-			return "";
-		}
-		else {
-			return _goalsType;
-		}
-	}
-
-	@Override
-	public void setGoalsType(String goalsType) {
-		_goalsType = goalsType;
-	}
-
-	@Override
-	public String getVariations() {
-		if (_variations == null) {
-			return "";
-		}
-		else {
-			return _variations;
-		}
-	}
-
-	@Override
-	public void setVariations(String variations) {
-		_variations = variations;
-	}
-
-	@Override
-	public String getVariationsType() {
-		if (_variationsType == null) {
-			return "";
-		}
-		else {
-			return _variationsType;
-		}
-	}
-
-	@Override
-	public void setVariationsType(String variationsType) {
-		_variationsType = variationsType;
-	}
-
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -1129,10 +971,6 @@ public class TestrayRequirementModelImpl
 		testrayRequirementImpl.setLinkURL(getLinkURL());
 		testrayRequirementImpl.setDescription(getDescription());
 		testrayRequirementImpl.setDescriptionType(getDescriptionType());
-		testrayRequirementImpl.setGoals(getGoals());
-		testrayRequirementImpl.setGoalsType(getGoalsType());
-		testrayRequirementImpl.setVariations(getVariations());
-		testrayRequirementImpl.setVariationsType(getVariationsType());
 
 		testrayRequirementImpl.resetOriginalValues();
 
@@ -1303,38 +1141,6 @@ public class TestrayRequirementModelImpl
 			testrayRequirementCacheModel.descriptionType = null;
 		}
 
-		testrayRequirementCacheModel.goals = getGoals();
-
-		String goals = testrayRequirementCacheModel.goals;
-
-		if ((goals != null) && (goals.length() == 0)) {
-			testrayRequirementCacheModel.goals = null;
-		}
-
-		testrayRequirementCacheModel.goalsType = getGoalsType();
-
-		String goalsType = testrayRequirementCacheModel.goalsType;
-
-		if ((goalsType != null) && (goalsType.length() == 0)) {
-			testrayRequirementCacheModel.goalsType = null;
-		}
-
-		testrayRequirementCacheModel.variations = getVariations();
-
-		String variations = testrayRequirementCacheModel.variations;
-
-		if ((variations != null) && (variations.length() == 0)) {
-			testrayRequirementCacheModel.variations = null;
-		}
-
-		testrayRequirementCacheModel.variationsType = getVariationsType();
-
-		String variationsType = testrayRequirementCacheModel.variationsType;
-
-		if ((variationsType != null) && (variationsType.length() == 0)) {
-			testrayRequirementCacheModel.variationsType = null;
-		}
-
 		return testrayRequirementCacheModel;
 	}
 
@@ -1428,10 +1234,6 @@ public class TestrayRequirementModelImpl
 	private String _linkURL;
 	private String _description;
 	private String _descriptionType;
-	private String _goals;
-	private String _goalsType;
-	private String _variations;
-	private String _variationsType;
 	private long _columnBitmask;
 	private TestrayRequirement _escapedModel;
 

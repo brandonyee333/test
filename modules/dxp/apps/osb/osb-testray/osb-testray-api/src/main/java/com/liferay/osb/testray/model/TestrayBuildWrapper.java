@@ -68,7 +68,6 @@ public class TestrayBuildWrapper
 		attributes.put("testrayProjectId", getTestrayProjectId());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
-		attributes.put("descriptionType", getDescriptionType());
 		attributes.put("template", isTemplate());
 		attributes.put("dueDate", getDueDate());
 		attributes.put("gitHash", getGitHash());
@@ -161,12 +160,6 @@ public class TestrayBuildWrapper
 			setDescription(description);
 		}
 
-		String descriptionType = (String)attributes.get("descriptionType");
-
-		if (descriptionType != null) {
-			setDescriptionType(descriptionType);
-		}
-
 		Boolean template = (Boolean)attributes.get("template");
 
 		if (template != null) {
@@ -242,16 +235,6 @@ public class TestrayBuildWrapper
 	@Override
 	public String getDescription() {
 		return _testrayBuild.getDescription();
-	}
-
-	/**
-	 * Returns the description type of this testray build.
-	 *
-	 * @return the description type of this testray build
-	 */
-	@Override
-	public String getDescriptionType() {
-		return _testrayBuild.getDescriptionType();
 	}
 
 	/**
@@ -522,16 +505,6 @@ public class TestrayBuildWrapper
 	@Override
 	public void setDescription(String description) {
 		_testrayBuild.setDescription(description);
-	}
-
-	/**
-	 * Sets the description type of this testray build.
-	 *
-	 * @param descriptionType the description type of this testray build
-	 */
-	@Override
-	public void setDescriptionType(String descriptionType) {
-		_testrayBuild.setDescriptionType(descriptionType);
 	}
 
 	/**

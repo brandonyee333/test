@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.osb.testray.model.impl.TestrayBuildImpl")
 @ProviderType
-public interface TestrayBuild extends TestrayBuildModel, PersistedModel {
+public interface TestrayBuild extends PersistedModel, TestrayBuildModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

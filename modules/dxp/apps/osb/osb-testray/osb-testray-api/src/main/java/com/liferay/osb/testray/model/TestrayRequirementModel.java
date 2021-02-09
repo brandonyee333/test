@@ -323,66 +323,6 @@ public interface TestrayRequirementModel
 	 */
 	public void setDescriptionType(String descriptionType);
 
-	/**
-	 * Returns the goals of this testray requirement.
-	 *
-	 * @return the goals of this testray requirement
-	 */
-	@AutoEscape
-	public String getGoals();
-
-	/**
-	 * Sets the goals of this testray requirement.
-	 *
-	 * @param goals the goals of this testray requirement
-	 */
-	public void setGoals(String goals);
-
-	/**
-	 * Returns the goals type of this testray requirement.
-	 *
-	 * @return the goals type of this testray requirement
-	 */
-	@AutoEscape
-	public String getGoalsType();
-
-	/**
-	 * Sets the goals type of this testray requirement.
-	 *
-	 * @param goalsType the goals type of this testray requirement
-	 */
-	public void setGoalsType(String goalsType);
-
-	/**
-	 * Returns the variations of this testray requirement.
-	 *
-	 * @return the variations of this testray requirement
-	 */
-	@AutoEscape
-	public String getVariations();
-
-	/**
-	 * Sets the variations of this testray requirement.
-	 *
-	 * @param variations the variations of this testray requirement
-	 */
-	public void setVariations(String variations);
-
-	/**
-	 * Returns the variations type of this testray requirement.
-	 *
-	 * @return the variations type of this testray requirement
-	 */
-	@AutoEscape
-	public String getVariationsType();
-
-	/**
-	 * Sets the variations type of this testray requirement.
-	 *
-	 * @param variationsType the variations type of this testray requirement
-	 */
-	public void setVariationsType(String variationsType);
-
 	@Override
 	public boolean isNew();
 

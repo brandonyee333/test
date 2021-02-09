@@ -75,10 +75,10 @@ public class TestrayBuildModelImpl
 		{"testrayRoutineId", Types.BIGINT},
 		{"testrayProductVersionId", Types.BIGINT},
 		{"testrayProjectId", Types.BIGINT}, {"name", Types.VARCHAR},
-		{"description", Types.VARCHAR}, {"descriptionType", Types.VARCHAR},
-		{"template", Types.BOOLEAN}, {"dueDate", Types.TIMESTAMP},
-		{"gitHash", Types.VARCHAR}, {"githubCompareURLs", Types.VARCHAR},
-		{"promoted", Types.BOOLEAN}, {"status", Types.INTEGER}
+		{"description", Types.VARCHAR}, {"template", Types.BOOLEAN},
+		{"dueDate", Types.TIMESTAMP}, {"gitHash", Types.VARCHAR},
+		{"githubCompareURLs", Types.VARCHAR}, {"promoted", Types.BOOLEAN},
+		{"status", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -98,7 +98,6 @@ public class TestrayBuildModelImpl
 		TABLE_COLUMNS_MAP.put("testrayProjectId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("descriptionType", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("template", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("dueDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("gitHash", Types.VARCHAR);
@@ -108,7 +107,7 @@ public class TestrayBuildModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_TestrayBuild (testrayBuildId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,templateTestrayBuildId LONG,testrayRoutineId LONG,testrayProductVersionId LONG,testrayProjectId LONG,name VARCHAR(150) null,description STRING null,descriptionType VARCHAR(75) null,template BOOLEAN,dueDate DATE null,gitHash VARCHAR(75) null,githubCompareURLs VARCHAR(500) null,promoted BOOLEAN,status INTEGER)";
+		"create table OSB_TestrayBuild (testrayBuildId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,templateTestrayBuildId LONG,testrayRoutineId LONG,testrayProductVersionId LONG,testrayProjectId LONG,name VARCHAR(150) null,description STRING null,template BOOLEAN,dueDate DATE null,gitHash VARCHAR(75) null,githubCompareURLs VARCHAR(500) null,promoted BOOLEAN,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_TestrayBuild";
 
@@ -588,29 +587,6 @@ public class TestrayBuildModelImpl
 
 			});
 		attributeGetterFunctions.put(
-			"descriptionType",
-			new Function<TestrayBuild, Object>() {
-
-				@Override
-				public Object apply(TestrayBuild testrayBuild) {
-					return testrayBuild.getDescriptionType();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"descriptionType",
-			new BiConsumer<TestrayBuild, Object>() {
-
-				@Override
-				public void accept(
-					TestrayBuild testrayBuild, Object descriptionTypeObject) {
-
-					testrayBuild.setDescriptionType(
-						(String)descriptionTypeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
 			"template",
 			new Function<TestrayBuild, Object>() {
 
@@ -940,21 +916,6 @@ public class TestrayBuildModelImpl
 	}
 
 	@Override
-	public String getDescriptionType() {
-		if (_descriptionType == null) {
-			return "";
-		}
-		else {
-			return _descriptionType;
-		}
-	}
-
-	@Override
-	public void setDescriptionType(String descriptionType) {
-		_descriptionType = descriptionType;
-	}
-
-	@Override
 	public boolean getTemplate() {
 		return _template;
 	}
@@ -1084,7 +1045,6 @@ public class TestrayBuildModelImpl
 		testrayBuildImpl.setTestrayProjectId(getTestrayProjectId());
 		testrayBuildImpl.setName(getName());
 		testrayBuildImpl.setDescription(getDescription());
-		testrayBuildImpl.setDescriptionType(getDescriptionType());
 		testrayBuildImpl.setTemplate(isTemplate());
 		testrayBuildImpl.setDueDate(getDueDate());
 		testrayBuildImpl.setGitHash(getGitHash());
@@ -1225,14 +1185,6 @@ public class TestrayBuildModelImpl
 			testrayBuildCacheModel.description = null;
 		}
 
-		testrayBuildCacheModel.descriptionType = getDescriptionType();
-
-		String descriptionType = testrayBuildCacheModel.descriptionType;
-
-		if ((descriptionType != null) && (descriptionType.length() == 0)) {
-			testrayBuildCacheModel.descriptionType = null;
-		}
-
 		testrayBuildCacheModel.template = isTemplate();
 
 		Date dueDate = getDueDate();
@@ -1354,7 +1306,6 @@ public class TestrayBuildModelImpl
 	private String _name;
 	private String _originalName;
 	private String _description;
-	private String _descriptionType;
 	private boolean _template;
 	private Date _dueDate;
 	private String _gitHash;

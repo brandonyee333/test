@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.Accessor;
 )
 @ProviderType
 public interface TestrayCaseResult
-	extends TestrayCaseResultModel, PersistedModel {
+	extends PersistedModel, TestrayCaseResultModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

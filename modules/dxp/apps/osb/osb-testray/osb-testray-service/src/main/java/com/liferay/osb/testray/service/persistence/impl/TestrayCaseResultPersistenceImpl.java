@@ -2704,238 +2704,6 @@ public class TestrayCaseResultPersistenceImpl
 	private static final String _FINDER_COLUMN_TESTRAYRUNID_TESTRAYRUNID_2 =
 		"testrayCaseResult.testrayRunId = ?";
 
-	private FinderPath _finderPathFetchByTCaI_TRI;
-	private FinderPath _finderPathCountByTCaI_TRI;
-
-	/**
-	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or throws a <code>NoSuchTestrayCaseResultException</code> if it could not be found.
-	 *
-	 * @param testrayCaseId the testray case ID
-	 * @param testrayRunId the testray run ID
-	 * @return the matching testray case result
-	 * @throws NoSuchTestrayCaseResultException if a matching testray case result could not be found
-	 */
-	@Override
-	public TestrayCaseResult findByTCaI_TRI(
-			long testrayCaseId, long testrayRunId)
-		throws NoSuchTestrayCaseResultException {
-
-		TestrayCaseResult testrayCaseResult = fetchByTCaI_TRI(
-			testrayCaseId, testrayRunId);
-
-		if (testrayCaseResult == null) {
-			StringBundler sb = new StringBundler(6);
-
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			sb.append("testrayCaseId=");
-			sb.append(testrayCaseId);
-
-			sb.append(", testrayRunId=");
-			sb.append(testrayRunId);
-
-			sb.append("}");
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
-			}
-
-			throw new NoSuchTestrayCaseResultException(sb.toString());
-		}
-
-		return testrayCaseResult;
-	}
-
-	/**
-	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param testrayCaseId the testray case ID
-	 * @param testrayRunId the testray run ID
-	 * @return the matching testray case result, or <code>null</code> if a matching testray case result could not be found
-	 */
-	@Override
-	public TestrayCaseResult fetchByTCaI_TRI(
-		long testrayCaseId, long testrayRunId) {
-
-		return fetchByTCaI_TRI(testrayCaseId, testrayRunId, true);
-	}
-
-	/**
-	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param testrayCaseId the testray case ID
-	 * @param testrayRunId the testray run ID
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching testray case result, or <code>null</code> if a matching testray case result could not be found
-	 */
-	@Override
-	public TestrayCaseResult fetchByTCaI_TRI(
-		long testrayCaseId, long testrayRunId, boolean useFinderCache) {
-
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {testrayCaseId, testrayRunId};
-		}
-
-		Object result = null;
-
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByTCaI_TRI, finderArgs, this);
-		}
-
-		if (result instanceof TestrayCaseResult) {
-			TestrayCaseResult testrayCaseResult = (TestrayCaseResult)result;
-
-			if ((testrayCaseId != testrayCaseResult.getTestrayCaseId()) ||
-				(testrayRunId != testrayCaseResult.getTestrayRunId())) {
-
-				result = null;
-			}
-		}
-
-		if (result == null) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append(_SQL_SELECT_TESTRAYCASERESULT_WHERE);
-
-			sb.append(_FINDER_COLUMN_TCAI_TRI_TESTRAYCASEID_2);
-
-			sb.append(_FINDER_COLUMN_TCAI_TRI_TESTRAYRUNID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(testrayCaseId);
-
-				queryPos.add(testrayRunId);
-
-				List<TestrayCaseResult> list = query.list();
-
-				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByTCaI_TRI, finderArgs, list);
-					}
-				}
-				else {
-					TestrayCaseResult testrayCaseResult = list.get(0);
-
-					result = testrayCaseResult;
-
-					cacheResult(testrayCaseResult);
-				}
-			}
-			catch (Exception exception) {
-				if (useFinderCache) {
-					finderCache.removeResult(
-						_finderPathFetchByTCaI_TRI, finderArgs);
-				}
-
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		if (result instanceof List<?>) {
-			return null;
-		}
-		else {
-			return (TestrayCaseResult)result;
-		}
-	}
-
-	/**
-	 * Removes the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; from the database.
-	 *
-	 * @param testrayCaseId the testray case ID
-	 * @param testrayRunId the testray run ID
-	 * @return the testray case result that was removed
-	 */
-	@Override
-	public TestrayCaseResult removeByTCaI_TRI(
-			long testrayCaseId, long testrayRunId)
-		throws NoSuchTestrayCaseResultException {
-
-		TestrayCaseResult testrayCaseResult = findByTCaI_TRI(
-			testrayCaseId, testrayRunId);
-
-		return remove(testrayCaseResult);
-	}
-
-	/**
-	 * Returns the number of testray case results where testrayCaseId = &#63; and testrayRunId = &#63;.
-	 *
-	 * @param testrayCaseId the testray case ID
-	 * @param testrayRunId the testray run ID
-	 * @return the number of matching testray case results
-	 */
-	@Override
-	public int countByTCaI_TRI(long testrayCaseId, long testrayRunId) {
-		FinderPath finderPath = _finderPathCountByTCaI_TRI;
-
-		Object[] finderArgs = new Object[] {testrayCaseId, testrayRunId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(_SQL_COUNT_TESTRAYCASERESULT_WHERE);
-
-			sb.append(_FINDER_COLUMN_TCAI_TRI_TESTRAYCASEID_2);
-
-			sb.append(_FINDER_COLUMN_TCAI_TRI_TESTRAYRUNID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(testrayCaseId);
-
-				queryPos.add(testrayRunId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				finderCache.removeResult(finderPath, finderArgs);
-
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
-	}
-
-	private static final String _FINDER_COLUMN_TCAI_TRI_TESTRAYCASEID_2 =
-		"testrayCaseResult.testrayCaseId = ? AND ";
-
-	private static final String _FINDER_COLUMN_TCAI_TRI_TESTRAYRUNID_2 =
-		"testrayCaseResult.testrayRunId = ?";
-
 	private FinderPath _finderPathWithPaginationFindByTCI_TRI;
 	private FinderPath _finderPathWithoutPaginationFindByTCI_TRI;
 	private FinderPath _finderPathCountByTCI_TRI;
@@ -3490,6 +3258,238 @@ public class TestrayCaseResultPersistenceImpl
 		"testrayCaseResult.testrayComponentId = ? AND ";
 
 	private static final String _FINDER_COLUMN_TCI_TRI_TESTRAYRUNID_2 =
+		"testrayCaseResult.testrayRunId = ?";
+
+	private FinderPath _finderPathFetchByTCaI_TRI;
+	private FinderPath _finderPathCountByTCaI_TRI;
+
+	/**
+	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or throws a <code>NoSuchTestrayCaseResultException</code> if it could not be found.
+	 *
+	 * @param testrayCaseId the testray case ID
+	 * @param testrayRunId the testray run ID
+	 * @return the matching testray case result
+	 * @throws NoSuchTestrayCaseResultException if a matching testray case result could not be found
+	 */
+	@Override
+	public TestrayCaseResult findByTCaI_TRI(
+			long testrayCaseId, long testrayRunId)
+		throws NoSuchTestrayCaseResultException {
+
+		TestrayCaseResult testrayCaseResult = fetchByTCaI_TRI(
+			testrayCaseId, testrayRunId);
+
+		if (testrayCaseResult == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("testrayCaseId=");
+			sb.append(testrayCaseId);
+
+			sb.append(", testrayRunId=");
+			sb.append(testrayRunId);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchTestrayCaseResultException(sb.toString());
+		}
+
+		return testrayCaseResult;
+	}
+
+	/**
+	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param testrayCaseId the testray case ID
+	 * @param testrayRunId the testray run ID
+	 * @return the matching testray case result, or <code>null</code> if a matching testray case result could not be found
+	 */
+	@Override
+	public TestrayCaseResult fetchByTCaI_TRI(
+		long testrayCaseId, long testrayRunId) {
+
+		return fetchByTCaI_TRI(testrayCaseId, testrayRunId, true);
+	}
+
+	/**
+	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param testrayCaseId the testray case ID
+	 * @param testrayRunId the testray run ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching testray case result, or <code>null</code> if a matching testray case result could not be found
+	 */
+	@Override
+	public TestrayCaseResult fetchByTCaI_TRI(
+		long testrayCaseId, long testrayRunId, boolean useFinderCache) {
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {testrayCaseId, testrayRunId};
+		}
+
+		Object result = null;
+
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByTCaI_TRI, finderArgs, this);
+		}
+
+		if (result instanceof TestrayCaseResult) {
+			TestrayCaseResult testrayCaseResult = (TestrayCaseResult)result;
+
+			if ((testrayCaseId != testrayCaseResult.getTestrayCaseId()) ||
+				(testrayRunId != testrayCaseResult.getTestrayRunId())) {
+
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_SQL_SELECT_TESTRAYCASERESULT_WHERE);
+
+			sb.append(_FINDER_COLUMN_TCAI_TRI_TESTRAYCASEID_2);
+
+			sb.append(_FINDER_COLUMN_TCAI_TRI_TESTRAYRUNID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(testrayCaseId);
+
+				queryPos.add(testrayRunId);
+
+				List<TestrayCaseResult> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByTCaI_TRI, finderArgs, list);
+					}
+				}
+				else {
+					TestrayCaseResult testrayCaseResult = list.get(0);
+
+					result = testrayCaseResult;
+
+					cacheResult(testrayCaseResult);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByTCaI_TRI, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (TestrayCaseResult)result;
+		}
+	}
+
+	/**
+	 * Removes the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; from the database.
+	 *
+	 * @param testrayCaseId the testray case ID
+	 * @param testrayRunId the testray run ID
+	 * @return the testray case result that was removed
+	 */
+	@Override
+	public TestrayCaseResult removeByTCaI_TRI(
+			long testrayCaseId, long testrayRunId)
+		throws NoSuchTestrayCaseResultException {
+
+		TestrayCaseResult testrayCaseResult = findByTCaI_TRI(
+			testrayCaseId, testrayRunId);
+
+		return remove(testrayCaseResult);
+	}
+
+	/**
+	 * Returns the number of testray case results where testrayCaseId = &#63; and testrayRunId = &#63;.
+	 *
+	 * @param testrayCaseId the testray case ID
+	 * @param testrayRunId the testray run ID
+	 * @return the number of matching testray case results
+	 */
+	@Override
+	public int countByTCaI_TRI(long testrayCaseId, long testrayRunId) {
+		FinderPath finderPath = _finderPathCountByTCaI_TRI;
+
+		Object[] finderArgs = new Object[] {testrayCaseId, testrayRunId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_TESTRAYCASERESULT_WHERE);
+
+			sb.append(_FINDER_COLUMN_TCAI_TRI_TESTRAYCASEID_2);
+
+			sb.append(_FINDER_COLUMN_TCAI_TRI_TESTRAYRUNID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(testrayCaseId);
+
+				queryPos.add(testrayRunId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_TCAI_TRI_TESTRAYCASEID_2 =
+		"testrayCaseResult.testrayCaseId = ? AND ";
+
+	private static final String _FINDER_COLUMN_TCAI_TRI_TESTRAYRUNID_2 =
 		"testrayCaseResult.testrayRunId = ?";
 
 	public TestrayCaseResultPersistenceImpl() {
@@ -5252,21 +5252,6 @@ public class TestrayCaseResultPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTestrayRunId",
 			new String[] {Long.class.getName()});
 
-		_finderPathFetchByTCaI_TRI = new FinderPath(
-			TestrayCaseResultModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayCaseResultModelImpl.FINDER_CACHE_ENABLED,
-			TestrayCaseResultImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByTCaI_TRI",
-			new String[] {Long.class.getName(), Long.class.getName()},
-			TestrayCaseResultModelImpl.TESTRAYCASEID_COLUMN_BITMASK |
-			TestrayCaseResultModelImpl.TESTRAYRUNID_COLUMN_BITMASK);
-
-		_finderPathCountByTCaI_TRI = new FinderPath(
-			TestrayCaseResultModelImpl.ENTITY_CACHE_ENABLED,
-			TestrayCaseResultModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTCaI_TRI",
-			new String[] {Long.class.getName(), Long.class.getName()});
-
 		_finderPathWithPaginationFindByTCI_TRI = new FinderPath(
 			TestrayCaseResultModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayCaseResultModelImpl.FINDER_CACHE_ENABLED,
@@ -5291,6 +5276,21 @@ public class TestrayCaseResultPersistenceImpl
 			TestrayCaseResultModelImpl.ENTITY_CACHE_ENABLED,
 			TestrayCaseResultModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTCI_TRI",
+			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_finderPathFetchByTCaI_TRI = new FinderPath(
+			TestrayCaseResultModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayCaseResultModelImpl.FINDER_CACHE_ENABLED,
+			TestrayCaseResultImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByTCaI_TRI",
+			new String[] {Long.class.getName(), Long.class.getName()},
+			TestrayCaseResultModelImpl.TESTRAYCASEID_COLUMN_BITMASK |
+			TestrayCaseResultModelImpl.TESTRAYRUNID_COLUMN_BITMASK);
+
+		_finderPathCountByTCaI_TRI = new FinderPath(
+			TestrayCaseResultModelImpl.ENTITY_CACHE_ENABLED,
+			TestrayCaseResultModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTCaI_TRI",
 			new String[] {Long.class.getName(), Long.class.getName()});
 	}
 

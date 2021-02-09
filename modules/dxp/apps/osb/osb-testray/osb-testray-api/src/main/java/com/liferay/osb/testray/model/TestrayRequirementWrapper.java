@@ -71,10 +71,6 @@ public class TestrayRequirementWrapper
 		attributes.put("linkURL", getLinkURL());
 		attributes.put("description", getDescription());
 		attributes.put("descriptionType", getDescriptionType());
-		attributes.put("goals", getGoals());
-		attributes.put("goalsType", getGoalsType());
-		attributes.put("variations", getVariations());
-		attributes.put("variationsType", getVariationsType());
 
 		return attributes;
 	}
@@ -177,30 +173,6 @@ public class TestrayRequirementWrapper
 		if (descriptionType != null) {
 			setDescriptionType(descriptionType);
 		}
-
-		String goals = (String)attributes.get("goals");
-
-		if (goals != null) {
-			setGoals(goals);
-		}
-
-		String goalsType = (String)attributes.get("goalsType");
-
-		if (goalsType != null) {
-			setGoalsType(goalsType);
-		}
-
-		String variations = (String)attributes.get("variations");
-
-		if (variations != null) {
-			setVariations(variations);
-		}
-
-		String variationsType = (String)attributes.get("variationsType");
-
-		if (variationsType != null) {
-			setVariationsType(variationsType);
-		}
 	}
 
 	@Override
@@ -267,26 +239,6 @@ public class TestrayRequirementWrapper
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _testrayRequirement.getExpandoBridge();
-	}
-
-	/**
-	 * Returns the goals of this testray requirement.
-	 *
-	 * @return the goals of this testray requirement
-	 */
-	@Override
-	public String getGoals() {
-		return _testrayRequirement.getGoals();
-	}
-
-	/**
-	 * Returns the goals type of this testray requirement.
-	 *
-	 * @return the goals type of this testray requirement
-	 */
-	@Override
-	public String getGoalsType() {
-		return _testrayRequirement.getGoalsType();
 	}
 
 	/**
@@ -424,26 +376,6 @@ public class TestrayRequirementWrapper
 		return _testrayRequirement.getUserUuid();
 	}
 
-	/**
-	 * Returns the variations of this testray requirement.
-	 *
-	 * @return the variations of this testray requirement
-	 */
-	@Override
-	public String getVariations() {
-		return _testrayRequirement.getVariations();
-	}
-
-	/**
-	 * Returns the variations type of this testray requirement.
-	 *
-	 * @return the variations type of this testray requirement
-	 */
-	@Override
-	public String getVariationsType() {
-		return _testrayRequirement.getVariationsType();
-	}
-
 	@Override
 	public int hashCode() {
 		return _testrayRequirement.hashCode();
@@ -539,26 +471,6 @@ public class TestrayRequirementWrapper
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_testrayRequirement.setExpandoBridgeAttributes(serviceContext);
-	}
-
-	/**
-	 * Sets the goals of this testray requirement.
-	 *
-	 * @param goals the goals of this testray requirement
-	 */
-	@Override
-	public void setGoals(String goals) {
-		_testrayRequirement.setGoals(goals);
-	}
-
-	/**
-	 * Sets the goals type of this testray requirement.
-	 *
-	 * @param goalsType the goals type of this testray requirement
-	 */
-	@Override
-	public void setGoalsType(String goalsType) {
-		_testrayRequirement.setGoalsType(goalsType);
 	}
 
 	/**
@@ -699,26 +611,6 @@ public class TestrayRequirementWrapper
 	@Override
 	public void setUserUuid(String userUuid) {
 		_testrayRequirement.setUserUuid(userUuid);
-	}
-
-	/**
-	 * Sets the variations of this testray requirement.
-	 *
-	 * @param variations the variations of this testray requirement
-	 */
-	@Override
-	public void setVariations(String variations) {
-		_testrayRequirement.setVariations(variations);
-	}
-
-	/**
-	 * Sets the variations type of this testray requirement.
-	 *
-	 * @param variationsType the variations type of this testray requirement
-	 */
-	@Override
-	public void setVariationsType(String variationsType) {
-		_testrayRequirement.setVariationsType(variationsType);
 	}
 
 	@Override

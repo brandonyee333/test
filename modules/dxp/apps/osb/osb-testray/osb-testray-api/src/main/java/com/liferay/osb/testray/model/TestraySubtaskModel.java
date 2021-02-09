@@ -276,20 +276,6 @@ public interface TestraySubtaskModel
 	public void setScore(int score);
 
 	/**
-	 * Returns the status update date of this testray subtask.
-	 *
-	 * @return the status update date of this testray subtask
-	 */
-	public Date getStatusUpdateDate();
-
-	/**
-	 * Sets the status update date of this testray subtask.
-	 *
-	 * @param statusUpdateDate the status update date of this testray subtask
-	 */
-	public void setStatusUpdateDate(Date statusUpdateDate);
-
-	/**
 	 * Returns the status of this testray subtask.
 	 *
 	 * @return the status of this testray subtask
@@ -302,6 +288,20 @@ public interface TestraySubtaskModel
 	 * @param status the status of this testray subtask
 	 */
 	public void setStatus(int status);
+
+	/**
+	 * Returns the status update date of this testray subtask.
+	 *
+	 * @return the status update date of this testray subtask
+	 */
+	public Date getStatusUpdateDate();
+
+	/**
+	 * Sets the status update date of this testray subtask.
+	 *
+	 * @param statusUpdateDate the status update date of this testray subtask
+	 */
+	public void setStatusUpdateDate(Date statusUpdateDate);
 
 	@Override
 	public boolean isNew();

@@ -71,8 +71,8 @@ public class TestrayTaskModelImpl
 		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP}, {"testrayBuildId", Types.BIGINT},
-		{"name", Types.VARCHAR}, {"statusUpdateDate", Types.TIMESTAMP},
-		{"status", Types.INTEGER}
+		{"name", Types.VARCHAR}, {"status", Types.INTEGER},
+		{"statusUpdateDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -88,12 +88,12 @@ public class TestrayTaskModelImpl
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("testrayBuildId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("statusUpdateDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("statusUpdateDate", Types.TIMESTAMP);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_TestrayTask (testrayTaskId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,testrayBuildId LONG,name VARCHAR(150) null,statusUpdateDate DATE null,status INTEGER)";
+		"create table OSB_TestrayTask (testrayTaskId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,testrayBuildId LONG,name VARCHAR(150) null,status INTEGER,statusUpdateDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_TestrayTask";
 
@@ -469,6 +469,28 @@ public class TestrayTaskModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"status",
+			new Function<TestrayTask, Object>() {
+
+				@Override
+				public Object apply(TestrayTask testrayTask) {
+					return testrayTask.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<TestrayTask, Object>() {
+
+				@Override
+				public void accept(
+					TestrayTask testrayTask, Object statusObject) {
+
+					testrayTask.setStatus((Integer)statusObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"statusUpdateDate",
 			new Function<TestrayTask, Object>() {
 
@@ -488,28 +510,6 @@ public class TestrayTaskModelImpl
 
 					testrayTask.setStatusUpdateDate(
 						(Date)statusUpdateDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<TestrayTask, Object>() {
-
-				@Override
-				public Object apply(TestrayTask testrayTask) {
-					return testrayTask.getStatus();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"status",
-			new BiConsumer<TestrayTask, Object>() {
-
-				@Override
-				public void accept(
-					TestrayTask testrayTask, Object statusObject) {
-
-					testrayTask.setStatus((Integer)statusObject);
 				}
 
 			});
@@ -643,16 +643,6 @@ public class TestrayTaskModelImpl
 	}
 
 	@Override
-	public Date getStatusUpdateDate() {
-		return _statusUpdateDate;
-	}
-
-	@Override
-	public void setStatusUpdateDate(Date statusUpdateDate) {
-		_statusUpdateDate = statusUpdateDate;
-	}
-
-	@Override
 	public int getStatus() {
 		return _status;
 	}
@@ -660,6 +650,16 @@ public class TestrayTaskModelImpl
 	@Override
 	public void setStatus(int status) {
 		_status = status;
+	}
+
+	@Override
+	public Date getStatusUpdateDate() {
+		return _statusUpdateDate;
+	}
+
+	@Override
+	public void setStatusUpdateDate(Date statusUpdateDate) {
+		_statusUpdateDate = statusUpdateDate;
 	}
 
 	@Override
@@ -703,8 +703,8 @@ public class TestrayTaskModelImpl
 		testrayTaskImpl.setModifiedDate(getModifiedDate());
 		testrayTaskImpl.setTestrayBuildId(getTestrayBuildId());
 		testrayTaskImpl.setName(getName());
-		testrayTaskImpl.setStatusUpdateDate(getStatusUpdateDate());
 		testrayTaskImpl.setStatus(getStatus());
+		testrayTaskImpl.setStatusUpdateDate(getStatusUpdateDate());
 
 		testrayTaskImpl.resetOriginalValues();
 
@@ -815,6 +815,8 @@ public class TestrayTaskModelImpl
 			testrayTaskCacheModel.name = null;
 		}
 
+		testrayTaskCacheModel.status = getStatus();
+
 		Date statusUpdateDate = getStatusUpdateDate();
 
 		if (statusUpdateDate != null) {
@@ -823,8 +825,6 @@ public class TestrayTaskModelImpl
 		else {
 			testrayTaskCacheModel.statusUpdateDate = Long.MIN_VALUE;
 		}
-
-		testrayTaskCacheModel.status = getStatus();
 
 		return testrayTaskCacheModel;
 	}
@@ -909,8 +909,8 @@ public class TestrayTaskModelImpl
 	private boolean _setModifiedDate;
 	private long _testrayBuildId;
 	private String _name;
-	private Date _statusUpdateDate;
 	private int _status;
+	private Date _statusUpdateDate;
 	private TestrayTask _escapedModel;
 
 }

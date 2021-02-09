@@ -75,7 +75,6 @@
 		<property name="testrayProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="descriptionType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="template" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="dueDate" type="org.hibernate.type.TimestampType" />
 		<property name="gitHash" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -267,10 +266,6 @@
 		<property name="linkURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="descriptionType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="goals" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="goalsType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="variations" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="variationsType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.testray.model.impl.TestrayRoutineImpl" table="OSB_TestrayRoutine">
 		<id name="testrayRoutineId" type="long">
@@ -321,8 +316,8 @@
 		<property name="testrayTaskId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="score" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="statusUpdateDate" type="org.hibernate.type.TimestampType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="statusUpdateDate" type="org.hibernate.type.TimestampType" />
 	</class>
 	<class name="com.liferay.osb.testray.model.impl.TestraySuiteImpl" table="OSB_TestraySuite">
 		<id name="testraySuiteId" type="long">
@@ -351,8 +346,8 @@
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="testrayBuildId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="statusUpdateDate" type="org.hibernate.type.TimestampType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="statusUpdateDate" type="org.hibernate.type.TimestampType" />
 	</class>
 	<class name="com.liferay.osb.testray.model.impl.TestrayTeamImpl" table="OSB_TestrayTeam">
 		<id name="testrayTeamId" type="long">

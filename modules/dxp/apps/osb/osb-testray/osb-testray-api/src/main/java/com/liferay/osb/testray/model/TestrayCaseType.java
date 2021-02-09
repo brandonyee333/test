@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.Accessor;
 	"com.liferay.osb.testray.model.impl.TestrayCaseTypeImpl"
 )
 @ProviderType
-public interface TestrayCaseType extends TestrayCaseTypeModel, PersistedModel {
+public interface TestrayCaseType extends PersistedModel, TestrayCaseTypeModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

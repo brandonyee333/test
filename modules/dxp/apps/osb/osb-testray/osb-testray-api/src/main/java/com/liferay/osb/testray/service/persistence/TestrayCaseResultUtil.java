@@ -1017,76 +1017,6 @@ public class TestrayCaseResultUtil {
 	}
 
 	/**
-	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or throws a <code>NoSuchTestrayCaseResultException</code> if it could not be found.
-	 *
-	 * @param testrayCaseId the testray case ID
-	 * @param testrayRunId the testray run ID
-	 * @return the matching testray case result
-	 * @throws NoSuchTestrayCaseResultException if a matching testray case result could not be found
-	 */
-	public static TestrayCaseResult findByTCaI_TRI(
-			long testrayCaseId, long testrayRunId)
-		throws com.liferay.osb.testray.exception.
-			NoSuchTestrayCaseResultException {
-
-		return getPersistence().findByTCaI_TRI(testrayCaseId, testrayRunId);
-	}
-
-	/**
-	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param testrayCaseId the testray case ID
-	 * @param testrayRunId the testray run ID
-	 * @return the matching testray case result, or <code>null</code> if a matching testray case result could not be found
-	 */
-	public static TestrayCaseResult fetchByTCaI_TRI(
-		long testrayCaseId, long testrayRunId) {
-
-		return getPersistence().fetchByTCaI_TRI(testrayCaseId, testrayRunId);
-	}
-
-	/**
-	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param testrayCaseId the testray case ID
-	 * @param testrayRunId the testray run ID
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching testray case result, or <code>null</code> if a matching testray case result could not be found
-	 */
-	public static TestrayCaseResult fetchByTCaI_TRI(
-		long testrayCaseId, long testrayRunId, boolean useFinderCache) {
-
-		return getPersistence().fetchByTCaI_TRI(
-			testrayCaseId, testrayRunId, useFinderCache);
-	}
-
-	/**
-	 * Removes the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; from the database.
-	 *
-	 * @param testrayCaseId the testray case ID
-	 * @param testrayRunId the testray run ID
-	 * @return the testray case result that was removed
-	 */
-	public static TestrayCaseResult removeByTCaI_TRI(
-			long testrayCaseId, long testrayRunId)
-		throws com.liferay.osb.testray.exception.
-			NoSuchTestrayCaseResultException {
-
-		return getPersistence().removeByTCaI_TRI(testrayCaseId, testrayRunId);
-	}
-
-	/**
-	 * Returns the number of testray case results where testrayCaseId = &#63; and testrayRunId = &#63;.
-	 *
-	 * @param testrayCaseId the testray case ID
-	 * @param testrayRunId the testray run ID
-	 * @return the number of matching testray case results
-	 */
-	public static int countByTCaI_TRI(long testrayCaseId, long testrayRunId) {
-		return getPersistence().countByTCaI_TRI(testrayCaseId, testrayRunId);
-	}
-
-	/**
 	 * Returns all the testray case results where testrayComponentId = &#63; and testrayRunId = &#63;.
 	 *
 	 * @param testrayComponentId the testray component ID
@@ -1282,6 +1212,76 @@ public class TestrayCaseResultUtil {
 
 		return getPersistence().countByTCI_TRI(
 			testrayComponentId, testrayRunId);
+	}
+
+	/**
+	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or throws a <code>NoSuchTestrayCaseResultException</code> if it could not be found.
+	 *
+	 * @param testrayCaseId the testray case ID
+	 * @param testrayRunId the testray run ID
+	 * @return the matching testray case result
+	 * @throws NoSuchTestrayCaseResultException if a matching testray case result could not be found
+	 */
+	public static TestrayCaseResult findByTCaI_TRI(
+			long testrayCaseId, long testrayRunId)
+		throws com.liferay.osb.testray.exception.
+			NoSuchTestrayCaseResultException {
+
+		return getPersistence().findByTCaI_TRI(testrayCaseId, testrayRunId);
+	}
+
+	/**
+	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param testrayCaseId the testray case ID
+	 * @param testrayRunId the testray run ID
+	 * @return the matching testray case result, or <code>null</code> if a matching testray case result could not be found
+	 */
+	public static TestrayCaseResult fetchByTCaI_TRI(
+		long testrayCaseId, long testrayRunId) {
+
+		return getPersistence().fetchByTCaI_TRI(testrayCaseId, testrayRunId);
+	}
+
+	/**
+	 * Returns the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param testrayCaseId the testray case ID
+	 * @param testrayRunId the testray run ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching testray case result, or <code>null</code> if a matching testray case result could not be found
+	 */
+	public static TestrayCaseResult fetchByTCaI_TRI(
+		long testrayCaseId, long testrayRunId, boolean useFinderCache) {
+
+		return getPersistence().fetchByTCaI_TRI(
+			testrayCaseId, testrayRunId, useFinderCache);
+	}
+
+	/**
+	 * Removes the testray case result where testrayCaseId = &#63; and testrayRunId = &#63; from the database.
+	 *
+	 * @param testrayCaseId the testray case ID
+	 * @param testrayRunId the testray run ID
+	 * @return the testray case result that was removed
+	 */
+	public static TestrayCaseResult removeByTCaI_TRI(
+			long testrayCaseId, long testrayRunId)
+		throws com.liferay.osb.testray.exception.
+			NoSuchTestrayCaseResultException {
+
+		return getPersistence().removeByTCaI_TRI(testrayCaseId, testrayRunId);
+	}
+
+	/**
+	 * Returns the number of testray case results where testrayCaseId = &#63; and testrayRunId = &#63;.
+	 *
+	 * @param testrayCaseId the testray case ID
+	 * @param testrayRunId the testray run ID
+	 * @return the number of matching testray case results
+	 */
+	public static int countByTCaI_TRI(long testrayCaseId, long testrayRunId) {
+		return getPersistence().countByTCaI_TRI(testrayCaseId, testrayRunId);
 	}
 
 	/**

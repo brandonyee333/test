@@ -82,10 +82,10 @@ public class TestrayTaskCacheModel
 		sb.append(testrayBuildId);
 		sb.append(", name=");
 		sb.append(name);
-		sb.append(", statusUpdateDate=");
-		sb.append(statusUpdateDate);
 		sb.append(", status=");
 		sb.append(status);
+		sb.append(", statusUpdateDate=");
+		sb.append(statusUpdateDate);
 		sb.append("}");
 
 		return sb.toString();
@@ -130,14 +130,14 @@ public class TestrayTaskCacheModel
 			testrayTaskImpl.setName(name);
 		}
 
+		testrayTaskImpl.setStatus(status);
+
 		if (statusUpdateDate == Long.MIN_VALUE) {
 			testrayTaskImpl.setStatusUpdateDate(null);
 		}
 		else {
 			testrayTaskImpl.setStatusUpdateDate(new Date(statusUpdateDate));
 		}
-
-		testrayTaskImpl.setStatus(status);
 
 		testrayTaskImpl.resetOriginalValues();
 
@@ -159,9 +159,9 @@ public class TestrayTaskCacheModel
 
 		testrayBuildId = objectInput.readLong();
 		name = objectInput.readUTF();
-		statusUpdateDate = objectInput.readLong();
 
 		status = objectInput.readInt();
+		statusUpdateDate = objectInput.readLong();
 	}
 
 	@Override
@@ -193,9 +193,8 @@ public class TestrayTaskCacheModel
 			objectOutput.writeUTF(name);
 		}
 
-		objectOutput.writeLong(statusUpdateDate);
-
 		objectOutput.writeInt(status);
+		objectOutput.writeLong(statusUpdateDate);
 	}
 
 	public long testrayTaskId;
@@ -207,7 +206,7 @@ public class TestrayTaskCacheModel
 	public long modifiedDate;
 	public long testrayBuildId;
 	public String name;
-	public long statusUpdateDate;
 	public int status;
+	public long statusUpdateDate;
 
 }

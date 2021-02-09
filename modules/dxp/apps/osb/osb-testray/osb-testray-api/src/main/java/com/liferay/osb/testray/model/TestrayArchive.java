@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.Accessor;
 	"com.liferay.osb.testray.model.impl.TestrayArchiveImpl"
 )
 @ProviderType
-public interface TestrayArchive extends TestrayArchiveModel, PersistedModel {
+public interface TestrayArchive extends PersistedModel, TestrayArchiveModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

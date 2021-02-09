@@ -64,7 +64,7 @@ public class TestrayRequirementCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(41);
+		StringBundler sb = new StringBundler(33);
 
 		sb.append("{testrayRequirementId=");
 		sb.append(testrayRequirementId);
@@ -98,14 +98,6 @@ public class TestrayRequirementCacheModel
 		sb.append(description);
 		sb.append(", descriptionType=");
 		sb.append(descriptionType);
-		sb.append(", goals=");
-		sb.append(goals);
-		sb.append(", goalsType=");
-		sb.append(goalsType);
-		sb.append(", variations=");
-		sb.append(variations);
-		sb.append(", variationsType=");
-		sb.append(variationsType);
 		sb.append("}");
 
 		return sb.toString();
@@ -194,34 +186,6 @@ public class TestrayRequirementCacheModel
 			testrayRequirementImpl.setDescriptionType(descriptionType);
 		}
 
-		if (goals == null) {
-			testrayRequirementImpl.setGoals("");
-		}
-		else {
-			testrayRequirementImpl.setGoals(goals);
-		}
-
-		if (goalsType == null) {
-			testrayRequirementImpl.setGoalsType("");
-		}
-		else {
-			testrayRequirementImpl.setGoalsType(goalsType);
-		}
-
-		if (variations == null) {
-			testrayRequirementImpl.setVariations("");
-		}
-		else {
-			testrayRequirementImpl.setVariations(variations);
-		}
-
-		if (variationsType == null) {
-			testrayRequirementImpl.setVariationsType("");
-		}
-		else {
-			testrayRequirementImpl.setVariationsType(variationsType);
-		}
-
 		testrayRequirementImpl.resetOriginalValues();
 
 		return testrayRequirementImpl;
@@ -250,10 +214,6 @@ public class TestrayRequirementCacheModel
 		linkURL = objectInput.readUTF();
 		description = objectInput.readUTF();
 		descriptionType = objectInput.readUTF();
-		goals = objectInput.readUTF();
-		goalsType = objectInput.readUTF();
-		variations = objectInput.readUTF();
-		variationsType = objectInput.readUTF();
 	}
 
 	@Override
@@ -328,34 +288,6 @@ public class TestrayRequirementCacheModel
 		else {
 			objectOutput.writeUTF(descriptionType);
 		}
-
-		if (goals == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(goals);
-		}
-
-		if (goalsType == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(goalsType);
-		}
-
-		if (variations == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(variations);
-		}
-
-		if (variationsType == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(variationsType);
-		}
 	}
 
 	public long testrayRequirementId;
@@ -374,9 +306,5 @@ public class TestrayRequirementCacheModel
 	public String linkURL;
 	public String description;
 	public String descriptionType;
-	public String goals;
-	public String goalsType;
-	public String variations;
-	public String variationsType;
 
 }

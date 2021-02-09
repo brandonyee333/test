@@ -38,7 +38,6 @@ create table OSB_TestrayBuild (
 	testrayProjectId LONG,
 	name VARCHAR(150) null,
 	description STRING null,
-	descriptionType VARCHAR(75) null,
 	template BOOLEAN,
 	dueDate DATE null,
 	gitHash VARCHAR(75) null,
@@ -252,11 +251,7 @@ create table OSB_TestrayRequirement (
 	linkTitle VARCHAR(75) null,
 	linkURL VARCHAR(255) null,
 	description STRING null,
-	descriptionType VARCHAR(75) null,
-	goals VARCHAR(75) null,
-	goalsType VARCHAR(75) null,
-	variations VARCHAR(75) null,
-	variationsType VARCHAR(75) null
+	descriptionType VARCHAR(75) null
 );
 
 create table OSB_TestrayRequirements_TestrayCases (
@@ -311,8 +306,8 @@ create table OSB_TestraySubtask (
 	testrayTaskId LONG,
 	name VARCHAR(75) null,
 	score INTEGER,
-	statusUpdateDate DATE null,
-	status INTEGER
+	status INTEGER,
+	statusUpdateDate DATE null
 );
 
 create table OSB_TestraySubtasks_TestrayCaseResults (
@@ -360,8 +355,8 @@ create table OSB_TestrayTask (
 	modifiedDate DATE null,
 	testrayBuildId LONG,
 	name VARCHAR(150) null,
-	statusUpdateDate DATE null,
-	status INTEGER
+	status INTEGER,
+	statusUpdateDate DATE null
 );
 
 create table OSB_TestrayTasks_TestrayCaseTypes (

@@ -62,7 +62,7 @@ public class TestrayBuildCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(41);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{testrayBuildId=");
 		sb.append(testrayBuildId);
@@ -90,8 +90,6 @@ public class TestrayBuildCacheModel
 		sb.append(name);
 		sb.append(", description=");
 		sb.append(description);
-		sb.append(", descriptionType=");
-		sb.append(descriptionType);
 		sb.append(", template=");
 		sb.append(template);
 		sb.append(", dueDate=");
@@ -158,13 +156,6 @@ public class TestrayBuildCacheModel
 			testrayBuildImpl.setDescription(description);
 		}
 
-		if (descriptionType == null) {
-			testrayBuildImpl.setDescriptionType("");
-		}
-		else {
-			testrayBuildImpl.setDescriptionType(descriptionType);
-		}
-
 		testrayBuildImpl.setTemplate(template);
 
 		if (dueDate == Long.MIN_VALUE) {
@@ -218,7 +209,6 @@ public class TestrayBuildCacheModel
 		testrayProjectId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
-		descriptionType = objectInput.readUTF();
 
 		template = objectInput.readBoolean();
 		dueDate = objectInput.readLong();
@@ -272,13 +262,6 @@ public class TestrayBuildCacheModel
 			objectOutput.writeUTF(description);
 		}
 
-		if (descriptionType == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(descriptionType);
-		}
-
 		objectOutput.writeBoolean(template);
 		objectOutput.writeLong(dueDate);
 
@@ -314,7 +297,6 @@ public class TestrayBuildCacheModel
 	public long testrayProjectId;
 	public String name;
 	public String description;
-	public String descriptionType;
 	public boolean template;
 	public long dueDate;
 	public String gitHash;

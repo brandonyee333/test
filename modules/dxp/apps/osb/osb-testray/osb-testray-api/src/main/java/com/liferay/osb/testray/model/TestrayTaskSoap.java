@@ -40,8 +40,8 @@ public class TestrayTaskSoap implements Serializable {
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setTestrayBuildId(model.getTestrayBuildId());
 		soapModel.setName(model.getName());
-		soapModel.setStatusUpdateDate(model.getStatusUpdateDate());
 		soapModel.setStatus(model.getStatus());
+		soapModel.setStatusUpdateDate(model.getStatusUpdateDate());
 
 		return soapModel;
 	}
@@ -167,20 +167,20 @@ public class TestrayTaskSoap implements Serializable {
 		_name = name;
 	}
 
-	public Date getStatusUpdateDate() {
-		return _statusUpdateDate;
-	}
-
-	public void setStatusUpdateDate(Date statusUpdateDate) {
-		_statusUpdateDate = statusUpdateDate;
-	}
-
 	public int getStatus() {
 		return _status;
 	}
 
 	public void setStatus(int status) {
 		_status = status;
+	}
+
+	public Date getStatusUpdateDate() {
+		return _statusUpdateDate;
+	}
+
+	public void setStatusUpdateDate(Date statusUpdateDate) {
+		_statusUpdateDate = statusUpdateDate;
 	}
 
 	private long _testrayTaskId;
@@ -192,7 +192,7 @@ public class TestrayTaskSoap implements Serializable {
 	private Date _modifiedDate;
 	private long _testrayBuildId;
 	private String _name;
-	private Date _statusUpdateDate;
 	private int _status;
+	private Date _statusUpdateDate;
 
 }

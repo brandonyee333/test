@@ -90,10 +90,10 @@ public class TestraySubtaskCacheModel
 		sb.append(name);
 		sb.append(", score=");
 		sb.append(score);
-		sb.append(", statusUpdateDate=");
-		sb.append(statusUpdateDate);
 		sb.append(", status=");
 		sb.append(status);
+		sb.append(", statusUpdateDate=");
+		sb.append(statusUpdateDate);
 		sb.append("}");
 
 		return sb.toString();
@@ -144,6 +144,7 @@ public class TestraySubtaskCacheModel
 		}
 
 		testraySubtaskImpl.setScore(score);
+		testraySubtaskImpl.setStatus(status);
 
 		if (statusUpdateDate == Long.MIN_VALUE) {
 			testraySubtaskImpl.setStatusUpdateDate(null);
@@ -151,8 +152,6 @@ public class TestraySubtaskCacheModel
 		else {
 			testraySubtaskImpl.setStatusUpdateDate(new Date(statusUpdateDate));
 		}
-
-		testraySubtaskImpl.setStatus(status);
 
 		testraySubtaskImpl.resetOriginalValues();
 
@@ -182,9 +181,9 @@ public class TestraySubtaskCacheModel
 		name = objectInput.readUTF();
 
 		score = objectInput.readInt();
-		statusUpdateDate = objectInput.readLong();
 
 		status = objectInput.readInt();
+		statusUpdateDate = objectInput.readLong();
 	}
 
 	@Override
@@ -223,9 +222,9 @@ public class TestraySubtaskCacheModel
 		}
 
 		objectOutput.writeInt(score);
-		objectOutput.writeLong(statusUpdateDate);
 
 		objectOutput.writeInt(status);
+		objectOutput.writeLong(statusUpdateDate);
 	}
 
 	public long testraySubtaskId;
@@ -241,7 +240,7 @@ public class TestraySubtaskCacheModel
 	public long testrayTaskId;
 	public String name;
 	public int score;
-	public long statusUpdateDate;
 	public int status;
+	public long statusUpdateDate;
 
 }

@@ -70,8 +70,8 @@ public class TestraySubtaskWrapper
 		attributes.put("testrayTaskId", getTestrayTaskId());
 		attributes.put("name", getName());
 		attributes.put("score", getScore());
-		attributes.put("statusUpdateDate", getStatusUpdateDate());
 		attributes.put("status", getStatus());
+		attributes.put("statusUpdateDate", getStatusUpdateDate());
 
 		return attributes;
 	}
@@ -158,16 +158,16 @@ public class TestraySubtaskWrapper
 			setScore(score);
 		}
 
-		Date statusUpdateDate = (Date)attributes.get("statusUpdateDate");
-
-		if (statusUpdateDate != null) {
-			setStatusUpdateDate(statusUpdateDate);
-		}
-
 		Integer status = (Integer)attributes.get("status");
 
 		if (status != null) {
 			setStatus(status);
+		}
+
+		Date statusUpdateDate = (Date)attributes.get("statusUpdateDate");
+
+		if (statusUpdateDate != null) {
+			setStatusUpdateDate(statusUpdateDate);
 		}
 	}
 

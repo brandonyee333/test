@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.Accessor;
 )
 @ProviderType
 public interface TestrayFactorOption
-	extends TestrayFactorOptionModel, PersistedModel {
+	extends PersistedModel, TestrayFactorOptionModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

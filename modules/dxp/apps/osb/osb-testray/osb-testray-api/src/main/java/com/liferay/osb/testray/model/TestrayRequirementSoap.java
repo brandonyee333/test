@@ -47,10 +47,6 @@ public class TestrayRequirementSoap implements Serializable {
 		soapModel.setLinkURL(model.getLinkURL());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setDescriptionType(model.getDescriptionType());
-		soapModel.setGoals(model.getGoals());
-		soapModel.setGoalsType(model.getGoalsType());
-		soapModel.setVariations(model.getVariations());
-		soapModel.setVariationsType(model.getVariationsType());
 
 		return soapModel;
 	}
@@ -241,38 +237,6 @@ public class TestrayRequirementSoap implements Serializable {
 		_descriptionType = descriptionType;
 	}
 
-	public String getGoals() {
-		return _goals;
-	}
-
-	public void setGoals(String goals) {
-		_goals = goals;
-	}
-
-	public String getGoalsType() {
-		return _goalsType;
-	}
-
-	public void setGoalsType(String goalsType) {
-		_goalsType = goalsType;
-	}
-
-	public String getVariations() {
-		return _variations;
-	}
-
-	public void setVariations(String variations) {
-		_variations = variations;
-	}
-
-	public String getVariationsType() {
-		return _variationsType;
-	}
-
-	public void setVariationsType(String variationsType) {
-		_variationsType = variationsType;
-	}
-
 	private long _testrayRequirementId;
 	private long _groupId;
 	private long _companyId;
@@ -289,9 +253,5 @@ public class TestrayRequirementSoap implements Serializable {
 	private String _linkURL;
 	private String _description;
 	private String _descriptionType;
-	private String _goals;
-	private String _goalsType;
-	private String _variations;
-	private String _variationsType;
 
 }

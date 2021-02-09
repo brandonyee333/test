@@ -45,7 +45,6 @@ public class TestrayBuildSoap implements Serializable {
 		soapModel.setTestrayProjectId(model.getTestrayProjectId());
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
-		soapModel.setDescriptionType(model.getDescriptionType());
 		soapModel.setTemplate(model.isTemplate());
 		soapModel.setDueDate(model.getDueDate());
 		soapModel.setGitHash(model.getGitHash());
@@ -209,14 +208,6 @@ public class TestrayBuildSoap implements Serializable {
 		_description = description;
 	}
 
-	public String getDescriptionType() {
-		return _descriptionType;
-	}
-
-	public void setDescriptionType(String descriptionType) {
-		_descriptionType = descriptionType;
-	}
-
 	public boolean getTemplate() {
 		return _template;
 	}
@@ -286,7 +277,6 @@ public class TestrayBuildSoap implements Serializable {
 	private long _testrayProjectId;
 	private String _name;
 	private String _description;
-	private String _descriptionType;
 	private boolean _template;
 	private Date _dueDate;
 	private String _gitHash;
