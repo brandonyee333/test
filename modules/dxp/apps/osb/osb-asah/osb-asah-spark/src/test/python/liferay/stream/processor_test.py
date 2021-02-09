@@ -243,7 +243,8 @@ def test_form_data_frame_processor_process(
 			T.StructField("normalized_event_date", T.TimestampType(), False),
 			T.StructField("primaryKey", T.StringType(), False),
 			T.StructField("submissions", T.LongType(), False),
-			T.StructField("views", T.LongType(), False)
+			T.StructField("views", T.LongType(), False),
+			T.StructField("abandonments", T.LongType(), False),
 		])
 	)
 

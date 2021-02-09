@@ -216,5 +216,28 @@
 		],
 		"sessionId": "469326956289899904",
 		"userId": "d9072bf6-67f2-4e70-8a74-39a9511304a4"
+	},
+	{
+		"applicationId": "Form",
+		"channelId": "420253908131944590",
+		"clientIP": "14.198.42.181",
+		"context": {
+		},
+		"createDate": "2021-02-02T02:25:00.948Z",
+		"dataSourceId": "370975939087274525",
+		"eventDate": "2021-02-02T02:25:01.727Z",
+		"eventId": "formSubmitted",
+		"eventProperties": {
+			"formId": "872a3ca0-324d-438a-9d82-e4cad68c3a20",
+			"title": "Opt-in: Liferay Blog Subscription"
+		},
+		"id": "f2ee4eee554bf893201495263385ede2ed813d39dc01aab5ba2669be6096b3da",
+		"knownIndividual": false,
+		"normalizedEventDate": 1612227600000,
+		"projectId": "asah652a6babdba143d086a19db542781bc2",
+		"segmentNames": [
+		],
+		"sessionId": "570426956289899904",
+		"userId": "b2c929ca-2068-4831-8582-693f840583a7"
 	}
 ]

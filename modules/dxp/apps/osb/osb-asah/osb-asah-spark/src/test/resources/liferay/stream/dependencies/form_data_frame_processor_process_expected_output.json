@@ -1,5 +1,6 @@
 [
 	{
+		"abandonments": 1,
 		"assetId": "872a3ca0-324d-438a-9d82-e4cad68c3a20",
 		"channelId": "420253908131944590",
 		"normalized_event_date": "2021-02-02T01:00:00.000Z",
@@ -11,6 +12,19 @@
 		"views": 1
 	},
 	{
+		"abandonments": 0,
+		"assetId": "872a3ca0-324d-438a-9d82-e4cad68c3a20",
+		"channelId": "420253908131944590",
+		"normalized_event_date": "2021-02-02T02:00:00.000Z",
+		"primaryKey": "55fb31ed7ee96a336c64ddf20e68d656b9f003df928f3ac9502b10642d44eb1f",
+		"projectId": "asah652a6babdba143d086a19db542781bc2",
+		"submissions": 1,
+		"userId": "b2c929ca-2068-4831-8582-693f840583a7",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"abandonments": 2,
 		"assetId": "872a3ca0-324d-438a-9d82-e4cad68c3a20",
 		"channelId": "420253908131944590",
 		"normalized_event_date": "2021-02-02T01:00:00.000Z",
@@ -22,6 +36,7 @@
 		"views": 2
 	},
 	{
+		"abandonments": 1,
 		"assetId": "872a3ca0-324d-438a-9d82-e4cad68c3a20",
 		"channelId": "420253908131944590",
 		"normalized_event_date": "2021-02-02T00:00:00.000Z",
