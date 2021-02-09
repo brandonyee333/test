@@ -33,10 +33,21 @@ def document_library_data_frame_processor(spark_application):
 def journal_data_frame_processor(spark_application):
 	return JournalDataFrameProcessor(0, CuratorSparkJob(spark_application))
 
-def read_session_events_data_frame(file_name, spark_session):
+def read_data_frame(file_name, spark_session, schema=None):
 	data_frame_reader = spark_session.read
 
-	return data_frame_reader.schema(
+	if schema is not None:
+		data_frame_reader = data_frame_reader.schema(schema)\
+
+	return data_frame_reader.option(
+		"multiLine", "true"
+	).json(
+		'resources/liferay/stream/dependencies/{}'.format(file_name)
+	)
+
+def read_session_events_data_frame(file_name, spark_session):
+	return read_data_frame(
+		file_name, spark_session,
 		T.StructType([
 			T.StructField("applicationId", T.StringType(), False),
 			T.StructField("channelId", T.StringType(), False),
@@ -51,10 +62,6 @@ def read_session_events_data_frame(file_name, spark_session):
 			T.StructField("userId", T.StringType(), False),
 			T.StructField("variantId", T.StringType(), True)
 		])
-	).option(
-		"multiLine", "true"
-	).json(
-		'resources/liferay/stream/dependencies/{}'.format(file_name)
 	)
 
 def test_blog_data_frame_processor_calculate_read_time(
@@ -94,43 +101,6 @@ def test_blog_data_frame_processor_filter(
 	)
 
 	assert expected_data_frame.collect() == actual_data_frame.collect()
-
-def test_document_library_data_frame_processor_deduplicate_ratings_events(
-	 document_library_data_frame_processor, spark_session
-):
-	columns = [
-		'projectId', 'channelId', 'applicationId', 'sessionId', 'eventId',
-		'eventDate', 'assetId'
-	]
-	rows = [
-		(
-			'a', 'c1', 'Ratings', '1', 'VOTE', '2019-04-23T16:00:00.000Z', '1'
-		),
-		(
-			'a', 'c1', 'Ratings', '1', 'VOTE', '2019-04-23T16:01:00.000Z', '1'
-		),
-		(
-			'a', 'c1', 'Ratings', '1', 'VOTE', '2019-04-23T16:02:00.000Z', '2'
-		),
-		(
-			'a', 'c1', 'Comment', '1', 'posted', '2019-04-23T16:00:00.000Z', '1'
-		),
-		(
-			'a', 'c1', 'Comment', '1', 'posted', '2019-04-23T16:01:00.000Z', '1'
-		),
-		(
-			'b', 'c1', 'Comment', '1', 'posted', '2019-04-23T16:02:00.000Z', '1'
-		)
-	]
-
-	actual_data_frame = \
-		document_library_data_frame_processor._deduplicate_ratings_events(
-			spark_session.createDataFrame(rows, columns)
-		)
-
-	actual_data_frame_rows = actual_data_frame.collect()
-
-	assert len(actual_data_frame_rows) == 5
 
 def test_document_library_data_frame_processor_filter(
 	 document_library_data_frame_processor, spark_session
@@ -202,6 +172,30 @@ def test_document_library_data_frame_processor_filter(
 	actual_data_frame_rows = actual_data_frame.collect()
 
 	assert len(actual_data_frame_rows) == 3
+
+def test_document_library_data_frame_processor_process(
+	 document_library_data_frame_processor, spark_session
+):
+
+	actual_data_frame = document_library_data_frame_processor.process(
+		read_session_events_data_frame(
+			'document_library_data_frame_processor_process_input.json',
+			spark_session
+		),
+		write=False
+	)
+
+	actual_data_frame_rows = actual_data_frame.collect()
+
+	assert len(actual_data_frame_rows) == 1
+
+	row = actual_data_frame_rows[0]
+
+	assert 0 == row.comments
+	assert 0 == row.downloads
+	assert 3 == row.previews
+	assert 1 == row.ratings
+	assert 2.0 == row.ratingsScore
 
 def test_journal_data_frame_processor_filter(
 		journal_data_frame_processor, spark_session
