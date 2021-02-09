@@ -288,7 +288,7 @@
 				<dd>
 					${testrayBuildComposite.gitHashShortened}
 
-					<a class="copy-icon-inline" data-toggle="tooltip" onClick="${htmlNamespace}copyGitHash('${testrayBuildComposite.gitHash}', title='<liferay-ui:message key="copied" />');" title='<liferay-ui:message key="click-to-copy" />'></a>
+					<a class="copy-icon-inline" data-toggle="tooltip" onClick="${htmlNamespace}copyGitHash('${testrayBuildComposite.gitHash}', title='Copied.');" title="Click to copy."></a>
 				</dd>
 				<dt>
 					<liferay-ui:message key="create-date" />

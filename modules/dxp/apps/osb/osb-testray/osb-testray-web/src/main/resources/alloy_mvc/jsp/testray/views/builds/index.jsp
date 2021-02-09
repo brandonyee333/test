@@ -158,7 +158,7 @@
 				>
 					${testrayBuildComposite.gitHashShortened}
 
-					<a class="copy-icon-inline" data-toggle="tooltip" onClick="${htmlNamespace}copyGitHash('${testrayBuildComposite.gitHash}', title='<liferay-ui:message key="copied" />');" title='<liferay-ui:message key="click-to-copy" />'></a>
+					<a class="copy-icon-inline" data-toggle="tooltip" onClick="${htmlNamespace}copyGitHash('${testrayBuildComposite.gitHash}', title='Copied.');" title="Click to copy."></a>
 				</liferay-ui:search-container-column-text>
 			</c:if>
 
