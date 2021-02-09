@@ -49,6 +49,23 @@ pre {
 	width: 250px;
 }
 
+.input-icon-group {
+	@include align-items(flex-end);
+	@include display(flex);
+
+	margin-bottom: 15px;
+
+	.add-product-version {
+		font-size: 1.3em;
+		margin-bottom: 5px;
+		margin-left: 10px;
+	}
+
+	.form-group {
+		margin-bottom: 0;
+	}
+}
+
 .form-group {
 	&.error {
 		input, select {
@@ -77,23 +94,6 @@ pre {
 	display: block;
 	font-size: 1em;
 	font-weight: $font-weight;
-}
-
-.input-icon-group {
-	@include align-items(flex-end);
-	@include display(flex);
-
-	margin-bottom: 15px;
-
-	.add-product-version {
-		font-size: 1.3em;
-		margin-bottom: 5px;
-		margin-left: 10px;
-	}
-
-	.form-group {
-		margin-bottom: 0;
-	}
 }
 
 .lfr-form-row {
