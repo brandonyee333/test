@@ -372,10 +372,30 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		)
 
 	def _get_asset_id_column(self):
-		pass
+		return F.col('eventProperties.formId')
 
 	def _process(self, data_frame):
-		pass
+		return data_frame.withColumn(
+			'submissions',
+			F.when(
+				F.col('eventId') == 'formSubmitted', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'views',
+			F.when(
+				F.col('eventId') == 'formViewed', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).groupBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'normalized_event_date', 'primaryKey'
+		).agg(
+			F.sum('submissions').alias('submissions'),
+			F.sum('views').alias('views')
+		)
 
 class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
