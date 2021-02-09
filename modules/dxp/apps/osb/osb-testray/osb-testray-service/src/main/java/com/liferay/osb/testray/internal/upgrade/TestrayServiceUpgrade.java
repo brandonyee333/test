@@ -155,11 +155,6 @@ public class TestrayServiceUpgrade implements UpgradeStepRegistrator {
 			"com.liferay.osb.testray.service", "1.17.0", "1.18.0",
 			new com.liferay.osb.testray.internal.upgrade.v1_18_0.
 				UpgradeTestrayBuild());
-
-		registry.register(
-			"com.liferay.osb.testray.service", "1.18.0", "1.19.0",
-			new com.liferay.osb.testray.internal.upgrade.v1_19_0.
-				UpgradeTestrayCaseResult());
 	}
 
 	@Reference
