@@ -56,10 +56,10 @@
 			</c:forEach>
 		</aui:select>
 
-		<c:set value="${TestrayRichTextConstants.TYPE_MARKDOWN},${TestrayRichTextConstants.TYPE_PLAIN_TEXT}" var="types" />
-
 		<aui:row cssClass="testray-form-section">
 			<aui:col cssClass="testray-form-content" md="12">
+				<c:set value="${TestrayRichTextConstants.TYPE_MARKDOWN},${TestrayRichTextConstants.TYPE_PLAIN_TEXT}" var="types" />
+
 				<testray:rich-input
 					label="description"
 					name="description"
@@ -72,6 +72,8 @@
 
 		<aui:row cssClass="testray-form-section">
 			<aui:col cssClass="testray-form-content" md="12">
+				<c:set value="${TestrayRichTextConstants.TYPE_MARKDOWN},${TestrayRichTextConstants.TYPE_PLAIN_TEXT}" var="types" />
+
 				<testray:rich-input
 					label="goals"
 					name="goals"
@@ -84,6 +86,8 @@
 
 		<aui:row cssClass="testray-form-section">
 			<aui:col cssClass="testray-form-content" md="12">
+				<c:set value="${TestrayRichTextConstants.TYPE_MARKDOWN},${TestrayRichTextConstants.TYPE_PLAIN_TEXT}" var="types" />
+
 				<testray:rich-input
 					label="variations"
 					name="variations"
