@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -73,8 +74,10 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
 	public void deleteDataSource(@PathVariable String id) throws Exception {
-		_dxpExtractorConfigurationDog.deleteConfiguration(id);
-		_salesforceExtractorConfigurationDog.deleteConfiguration(id);
+		if (!ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
+			_dxpExtractorConfigurationDog.deleteConfiguration(id);
+			_salesforceExtractorConfigurationDog.deleteConfiguration(id);
+		}
 
 		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 			"DeleteDataSourcesNanite",

@@ -175,15 +175,13 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			dataSourceId, disabledFieldMappingIds);
 	}
 
-	public JSONObject disconnectDataSource(String dataSourceId)
-		throws Exception {
-
+	public JSONObject disconnectDataSource(String dataSourceId) {
 		JSONObject dataSourceJSONObject = getDataSourceJSONObject(dataSourceId);
 
 		if (Objects.equals(
-				dataSourceJSONObject.getString("state"), "DISCONNECTED") &&
+				dataSourceJSONObject.optString("state"), "DISCONNECTED") &&
 			Objects.equals(
-				dataSourceJSONObject.getString("status"), "INACTIVE")) {
+				dataSourceJSONObject.optString("status"), "INACTIVE")) {
 
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "Data source already disconnected");
@@ -395,6 +393,9 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 			return;
 		}
+
+		dataSourceJSONObject.put("state", "CREDENTIALS_VALID");
+		dataSourceJSONObject.put("status", "ACTIVE");
 
 		try {
 			JSONObject oldDataSourceJSONObject = getDataSourceJSONObject(
