@@ -89,7 +89,7 @@
 
 	1. Go to ***modules/dxp/apps/osb/osb-testray***.
 
-	1. ```gw deploy -Ddeploy.docker.container.id=testray-liferay```
+	1. ```../../../../../gradlew deploy -Ddeploy.docker.container.id=testray-liferay```
 
 ## Set Up Testray
 
