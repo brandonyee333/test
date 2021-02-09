@@ -1,0 +1,163 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<div class="testray-card testray-card-metadata-panel">
+	<liferay-ui:panel-container
+		cssClass="metadata-panel"
+		extended="${false}"
+		persistState="${true}"
+	>
+		<liferay-ui:panel
+			collapsible="${true}"
+			defaultState="closed"
+			extended="${false}"
+			id="additionInformationPanel"
+			persistState="${true}"
+			title="details"
+		>
+			<dl class="data-list dl-horizontal">
+				<dt>
+					<liferay-ui:message key="build" />
+				</dt>
+				<dd>
+					${fn:escapeXml(testrayBuildComposite.name)}
+				</dd>
+				<dt>
+					<liferay-ui:message key="description" />
+				</dt>
+				<dd>
+					${fn:escapeXml(testrayBuildComposite.description)}
+				</dd>
+				<dt>
+					<liferay-ui:message key="create-date" />
+				</dt>
+				<dd>
+					<testray:date
+						value="${testrayBuildComposite.createDate}"
+					/>
+				</dd>
+				<dt>
+					<liferay-ui:message key="all-issues-found" />
+				</dt>
+				<dd>
+					<c:set value="${testrayBuildComposite.testrayCaseResultReporter.issues}" var="issues" />
+					<c:set value="${true}" var="showViewAllLink" />
+
+					<%@ include file="/alloy_mvc/jsp/testray/views/issues.jspf" %>
+				</dd>
+			</dl>
+		</liferay-ui:panel>
+	</liferay-ui:panel-container>
+</div>
+
+<div class="testray-card testray-card-metadata-panel">
+	<c:set value="${fn:split(testrayCaseResultReporter.testrayCaseResultsCount, StringPool.COMMA)}" var="arguments" />
+
+	<liferay-ui:panel-container
+		cssClass="metadata-panel"
+		extended="${false}"
+		persistState="${true}"
+	>
+		<liferay-ui:panel
+			collapsible="${true}"
+			defaultState="closed"
+			extended="${false}"
+			id="testResultsPanel"
+			persistState="${true}"
+			title='${AlloyLanguageUtil.format("total-test-cases-x", arguments)}'
+		>
+			<div class="data-section metrics-container">
+				<div class="text-label">
+					<liferay-ui:message key="metrics" />
+				</div>
+
+				<div class="metrics-bar" id="${htmlNamespace}metricsBar${testrayRunComposite.testrayRunId}"></div>
+
+				<div class="metrics-legend" id="${htmlNamespace}metricsLegend${testrayRunComposite.testrayRunId}">
+					<div class="legend-item legend-total-container">
+						<div class="legend-item-numbers">
+							<span class="total">${testrayCaseResultReporter.testrayCaseResultsCount}</span>
+						</div>
+
+						<div class="legend-item-label">
+							<liferay-ui:message key="total-test-cases" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<aui:script use="testray-metrics-bar">
+				var data = {};
+
+				<c:forEach items="${testrayCaseResultReporter.simplifiedTestrayCaseResultStatusCounts}" var="testrayCaseResultsStatusCount">
+					data['${testrayCaseResultsStatusCount.key}'] = {
+						label: '<liferay-ui:message key="${testrayCaseResultsStatusCount.key}" />',
+						value: ${testrayCaseResultsStatusCount.value}
+					};
+				</c:forEach>
+
+				new Liferay.Testray.MetricsBar(
+					{
+						container: '#${htmlNamespace}metricsBar${testrayRunComposite.testrayRunId}',
+						data: data,
+						legendContainer: '#${htmlNamespace}metricsLegend${testrayRunComposite.testrayRunId}',
+						total: ${testrayCaseResultReporter.testrayCaseResultsCount}
+					}
+				).render();
+			</aui:script>
+
+			<ul class="legend-container">
+				<li class="legend-item">
+					<div class="legend-item-numbers">
+						<span class="primary">
+							<c:set value="${testrayCaseResultReporter.getTestrayCaseEstimatedDuration(false)}" var="minutesCount" />
+
+							<%@ include file="/alloy_mvc/jsp/testray/views/format_minutes.jspf" %>
+						</span>
+					</div>
+
+					<div class="legend-item-label">
+						<liferay-ui:message key="total-estimated-time" />
+					</div>
+				</li>
+				<li class="legend-item">
+					<div class="legend-item-numbers">
+						<span class="primary">
+							<c:set value="${testrayCaseResultReporter.getTestrayCaseEstimatedDuration(true)}" var="minutesCount" />
+
+							<%@ include file="/alloy_mvc/jsp/testray/views/format_minutes.jspf" %>
+						</span>
+					</div>
+
+					<div class="legend-item-label">
+						<liferay-ui:message key="remaining-estimated-time" />
+					</div>
+				</li>
+				<li class="legend-item">
+					<div class="legend-item-numbers">
+						<span class="primary">
+							${testrayCaseResultReporter.issuesCount}
+						</span>
+					</div>
+
+					<div class="legend-item-label">
+						<liferay-ui:message key="total-issues" />
+					</div>
+				</li>
+			</ul>
+		</liferay-ui:panel>
+	</liferay-ui:panel-container>
+</div>
