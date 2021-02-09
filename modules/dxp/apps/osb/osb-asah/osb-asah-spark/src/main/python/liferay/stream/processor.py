@@ -354,6 +354,17 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			how='left'
 		).fillna(0)
 
+class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
+
+	def _filter(self, analytics_events_data_frame):
+		pass
+
+	def _get_asset_id_column(self):
+		pass
+
+	def _process(self, data_frame):
+		pass
+
 class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 	def _filter(self, analytics_events_data_frame):
