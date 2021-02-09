@@ -681,26 +681,6 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 			attributes.put("description", description);
 		}
 
-		String goals = ParamUtil.getString(request, "goals");
-		boolean goalsBlankOnly = ParamUtil.getBoolean(request, "goalsBlankOnly");
-
-		if (goalsBlankOnly) {
-			attributes.put("blankDescription", true);
-		}
-		else if (Validator.isNotNull(goals)) {
-			attributes.put("goals", goals);
-		}
-
-		String variations = ParamUtil.getString(request, "variations");
-		boolean variationsBlankOnly = ParamUtil.getBoolean(request, "variationsBlankOnly");
-
-		if (variationsBlankOnly) {
-			attributes.put("blankDescription", true);
-		}
-		else if (Validator.isNotNull(variations)) {
-			attributes.put("variations", variations);
-		}
-
 		String issues = ParamUtil.getString(request, "issues");
 		boolean issuesBlankOnly = ParamUtil.getBoolean(request, "issuesBlankOnly");
 
