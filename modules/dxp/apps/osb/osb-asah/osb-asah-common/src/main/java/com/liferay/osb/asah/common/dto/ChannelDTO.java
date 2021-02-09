@@ -76,7 +76,7 @@ public class ChannelDTO {
 		return _channelDTOs;
 	}
 
-	@JsonProperty("dateCreated")
+	@JsonProperty("createDate")
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;

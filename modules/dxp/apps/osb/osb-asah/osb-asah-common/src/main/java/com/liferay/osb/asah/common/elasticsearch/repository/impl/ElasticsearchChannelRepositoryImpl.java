@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.google.api.client.util.Objects;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
@@ -25,10 +26,12 @@ import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
+import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -224,8 +227,15 @@ public class ElasticsearchChannelRepositoryImpl
 		}
 
 		try {
-			channel.setCreateDate(
-				DateUtil.toUTCDate(jsonObject.getString("dateCreated")));
+			long createDate = jsonObject.optLong("createDate");
+
+			if (createDate > 0) {
+				channel.setCreateDate(new Date(createDate));
+			}
+			else {
+				channel.setCreateDate(
+					DateUtil.toUTCDate(jsonObject.getString("dateCreated")));
+			}
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -238,41 +248,8 @@ public class ElasticsearchChannelRepositoryImpl
 
 	@Override
 	protected JSONObject toJSONObject(Channel channel) {
-		List<JSONObject> dataSourceJSONObjects = new ArrayList<>();
-
-		for (ChannelDataSource channelDataSource :
-				channel.getChannelDataSources()) {
-
-			dataSourceJSONObjects.add(
-				JSONUtil.put(
-					"groupIds",
-					Stream.of(
-						channelDataSource.getGroupIds()
-					).flatMap(
-						Set::stream
-					).map(
-						String::valueOf
-					).collect(
-						Collectors.toList()
-					)
-				).put(
-					"id", String.valueOf(channelDataSource.getDataSourceId())
-				));
-		}
-
-		JSONObject channelJSONObject = JSONUtil.put(
-			"dataSources", dataSourceJSONObjects
-		).put(
-			"dateCreated", DateUtil.toUTCString(channel.getCreateDate())
-		).put(
-			"name", channel.getName()
-		);
-
-		if (channel.getId() != null) {
-			channelJSONObject.put("id", String.valueOf(channel.getId()));
-		}
-
-		return channelJSONObject;
+		return ObjectMapperUtil.convertValue(
+			new ChannelDTO(channel), JSONObject.class);
 	}
 
 	private List<Channel> _toChannels(JSONArray channelsJSONArray) {
