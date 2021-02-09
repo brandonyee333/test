@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -38,7 +39,7 @@ public class ChannelDTO {
 		_channelDataSourceDTOs = SetUtil.map(
 			channel.getChannelDataSources(), ChannelDataSourceDTO::new);
 		_createDate = channel.getCreateDate();
-		_id = String.valueOf(channel.getId());
+		_id = Objects.toString(channel.getId(), null);
 		_name = channel.getName();
 	}
 
@@ -108,7 +109,8 @@ public class ChannelDTO {
 	public static class ChannelDataSourceDTO {
 
 		public ChannelDataSourceDTO(ChannelDataSource channelDataSource) {
-			_dataSourceId = String.valueOf(channelDataSource.getDataSourceId());
+			_dataSourceId = Objects.toString(
+				channelDataSource.getDataSourceId(), null);
 			_groupIds = SetUtil.map(
 				channelDataSource.getGroupIds(), String::valueOf);
 		}
