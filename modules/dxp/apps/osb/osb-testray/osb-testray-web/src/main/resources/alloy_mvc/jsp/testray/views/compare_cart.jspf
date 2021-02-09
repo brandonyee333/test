@@ -37,11 +37,11 @@
 
 			<aui:fieldset>
 				<aui:field-wrapper cssClass="select-run-field" label="run-a">
-					<aui:button cssClass="select-run-button" disabled="${empty param.testrayRunId}" name="testrayRunIdAButton" onClick="${htmlNamespace}compareCartSelectRun('testrayRunIdA'${(not empty testrayRunComposite.testrayRunId) ? (', ' + testrayRunComposite.testrayRunId) : StringPool.BLANK})" primary="${(not empty testrayRunIdA) ? true : false}" title="${(not empty testrayRunIdA) ? testrayRunIdA : StringPool.BLANK}" value="${(not empty testrayRunIdA) ? testrayRunIdA : selectRunPlaceholder}" />
+					<aui:button cssClass="select-run-button" disabled="${empty param.testrayRunId}" name="testrayRunIdAButton" onClick="${htmlNamespace}compareCartSelectRun('testrayRunIdA', ${testrayRunComposite.testrayRunId})" primary="${(not empty testrayRunIdA) ? true : false}" title="${(not empty testrayRunIdA) ? testrayRunIdA : StringPool.BLANK}" value="${(not empty testrayRunIdA) ? testrayRunIdA : selectRunPlaceholder}" />
 				</aui:field-wrapper>
 
 				<aui:field-wrapper cssClass="select-run-field" label="run-b">
-					<aui:button cssClass="select-run-button" disabled="${empty param.testrayRunId}" name="testrayRunIdBButton" onClick="${htmlNamespace}compareCartSelectRun('testrayRunIdB'${(not empty testrayRunComposite.testrayRunId) ? (', ' + testrayRunComposite.testrayRunId) : StringPool.BLANK})" primary="${(not empty testrayRunIdB) ? true : false}" title="${(not empty testrayRunIdB) ? testrayRunIdB : StringPool.BLANK}" value="${(not empty testrayRunIdB) ? testrayRunIdB : selectRunPlaceholder}" />
+					<aui:button cssClass="select-run-button" disabled="${empty param.testrayRunId}" name="testrayRunIdBButton" onClick="${htmlNamespace}compareCartSelectRun('testrayRunIdB', ${testrayRunComposite.testrayRunId})" primary="${(not empty testrayRunIdB) ? true : false}" title="${(not empty testrayRunIdB) ? testrayRunIdB : StringPool.BLANK}" value="${(not empty testrayRunIdB) ? testrayRunIdB : selectRunPlaceholder}" />
 				</aui:field-wrapper>
 			</aui:fieldset>
 
