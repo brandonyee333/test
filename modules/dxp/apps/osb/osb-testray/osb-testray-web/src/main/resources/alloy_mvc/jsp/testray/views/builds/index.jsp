@@ -53,8 +53,7 @@
 						priorities: ${testrayCasePriorities},
 						testrayCaseTypeId: ${testrayCaseTypeIds},
 						testrayRoutineId: ${testrayRoutine.testrayRoutineId},
-						testrayTeamId: ${testrayTeamId},
-						delta: ${delta}
+						testrayTeamId: ${testrayTeamId}
 					},
 					reverseData: true,
 					xAxisLabel: '<liferay-ui:message key="builds-ordered-by-date" />',
@@ -82,7 +81,6 @@
 			keyProperty="testrayBuildId"
 			modelVar="testrayBuildComposite"
 		>
-
 			<c:if test="${!param.archived}">
 				<portlet:renderURL var="viewTestrayCaseResultsURL">
 					<portlet:param name="controller" value="case_results" />

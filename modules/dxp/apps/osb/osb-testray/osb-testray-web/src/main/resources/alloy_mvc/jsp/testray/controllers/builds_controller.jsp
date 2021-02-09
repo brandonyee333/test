@@ -333,10 +333,6 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("cur", cur);
 
-		int delta = ParamUtil.getInteger(request, "delta", 75);
-
-		renderRequest.setAttribute("delta", delta);
-
 		String orderByCol = ParamUtil.getString(request, "orderByCol", "createDate_sortable");
 
 		renderRequest.setAttribute("orderByCol", orderByCol);
@@ -408,8 +404,6 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		renderRequest.setAttribute("testrayTeamId", testrayTeamId);
 
 		renderRequest.setAttribute("testrayBuildComposites", TestrayCompositeUtil.getComposites(alloySearchResult.getBaseModels(), TestrayBuildComposite.class, new Class<?>[] {TestrayBuild.class, ThemeDisplay.class, Map.class}, new Object[] {themeDisplay, testrayCaseResultProperties}));
-
-		renderRequest.setAttribute("testrayBuildCount", alloySearchResult.getBaseModels());
 
 		List<TestrayBuild> templateTestrayBuilds = alloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayRoutineId", testrayRoutineId, "template", true, "status", TestrayBuildConstants.STATUS_DEFAULT});
 
