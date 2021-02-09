@@ -182,26 +182,6 @@
 	font-weight: $font-header-weight;
 }
 
-.table-column-sha {
-	&:hover {
-		.copy-icon {
-			display: block;
-		}
-
-		.sha-code {
-			display: none;
-		}
-	}
-}
-
-.table-column-sha .copy-icon {
-	display: none;
-}
-
-.table-column-sha .sha-code {
-	display: block;
-}
-
 .table-row-checker {
 	&.table-error {
 		td {
