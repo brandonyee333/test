@@ -157,7 +157,7 @@
 				>
 					${testrayBuildComposite.gitHashShortened}
 
-					<a class="copy-icon-inline" data-toggle="tooltip" onClick="${htmlNamespace}copyGitHash('${testrayBuildComposite.gitHash}', title='Copied.');" title="Click to copy."></a>
+					<a class="copy-icon-inline" data-toggle="tooltip" onClick="${htmlNamespace}copyGitHash(this, '${testrayBuildComposite.gitHash}', title='Copied.');" title="Click to copy."></a>
 				</liferay-ui:search-container-column-text>
 			</c:if>
 
@@ -245,7 +245,7 @@
 	Liferay.provide(
 		window,
 		'${htmlNamespace}copyGitHash',
-		function(gitHash) {
+		function(element, gitHash) {
 			var copyText = document.createElement('input');
 
 			copyText.style = 'position: absolute; left: -1000px; top: -1000px';
