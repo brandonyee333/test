@@ -79,8 +79,14 @@
 		}
 	}
 
-	thead > tr.info > th {
-		background-color: $background-color;
+	thead {
+		> tr {
+			&.info {
+				> th {
+					background-color: $background-color;
+				}
+			}
+		}
 	}
 
 	&.table-bordered {
@@ -93,8 +99,10 @@
 			border-right-width: 0;
 		}
 
-		td.current {
-			border-left: 4px solid $current-marker-color;
+		td {
+			&.current {
+				border-left: 4px solid $current-marker-color;
+			}
 		}
 	}
 
@@ -118,8 +126,10 @@
 				}
 			}
 
-			&.focused > td {
-				@include experimental(animation, flash-row-background 4s ease);
+			&.focused {
+				> td {
+					@include experimental(animation, flash-row-background 4s ease);
+				}
 			}
 		}
 	}
@@ -177,8 +187,12 @@
 }
 
 .table-row-checker {
-	&.table-error td.first {
-		vertical-align: top;
+	&.table-error {
+		td {
+			&.first {
+				vertical-align: top;
+			}
+		}
 	}
 
 	td.first, th.table-first-header {
@@ -187,12 +201,34 @@
 
 	&:not(.active) {
 		tr {
-			td.first input[type=checkbox], th.table-first-header input[type=checkbox] {
-				visibility: hidden;
+			td {
+				&.first {
+					input[type=checkbox] {
+						visibility: hidden;
+					}
+				}
 			}
 
-			&:hover td.first input[type=checkbox], th.table-first-header input[type=checkbox] {
-				visibility: visible;
+			th {
+				&.table-first-header input[type=checkbox] {
+					visibility: hidden;
+				}
+			}
+
+			&:hover {
+				td {
+					&.first {
+						input[type=checkbox] {
+							visibility: visible;
+						}
+					}
+				}
+
+				th {
+					&.table-first-header input[type=checkbox] {
+						visibility: visible;
+					}
+				}
 			}
 		}
 	}
