@@ -75,7 +75,7 @@
 				<c:set value="${TestrayRichTextConstants.TYPE_MARKDOWN},${TestrayRichTextConstants.TYPE_PLAIN_TEXT}" var="types" />
 
 				<testray:rich-input
-					label="Goals"
+					label="goals"
 					name="goals"
 					selectedType="${TestrayRichTextConstants.TYPE_MARKDOWN}"
 					types="${fn:split(types, StringPool.COMMA)}"
@@ -89,7 +89,7 @@
 				<c:set value="${TestrayRichTextConstants.TYPE_MARKDOWN},${TestrayRichTextConstants.TYPE_PLAIN_TEXT}" var="types" />
 
 				<testray:rich-input
-					label="Variations"
+					label="variations"
 					name="variations"
 					selectedType="${TestrayRichTextConstants.TYPE_MARKDOWN}"
 					types="${fn:split(types, StringPool.COMMA)}"
