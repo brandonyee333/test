@@ -498,27 +498,3 @@
 		<aui:button href="${editTestrayCaseResultsBulkURL}" primary="${true}" value="bulk-operation" />
 	</aui:button-row>
 </c:if>
-
-<aui:script>
-	Liferay.provide(
-		window,
-		'${htmlNamespace}copyGitHash',
-		function(element) {
-			var copyText = document.createElement("input");
-
-			var elementId = element.id;
-
-			copyText.style = "position: absolute; left: -1000px; top: -1000px";
-
-			copyText.value = elementId;
-
-			document.body.appendChild(copyText);
-
-			copyText.select();
-
-			document.execCommand("copy");
-
-			document.body.removeChild(copyText);
-		}
-	);
-</aui:script>

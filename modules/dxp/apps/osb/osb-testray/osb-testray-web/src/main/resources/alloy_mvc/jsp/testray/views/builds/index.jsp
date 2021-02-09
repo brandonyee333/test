@@ -252,28 +252,6 @@
 <%@ include file="/alloy_mvc/jsp/testray/views/end.jspf" %>
 
 <aui:script use="testray-context-menu">
-	Liferay.provide(
-		window,
-		'${htmlNamespace}copyGitHash',
-		function(element) {
-			var copyText = document.createElement("input");
-
-			var elementId = element.id;
-
-			copyText.style = "position: absolute; left: -1000px; top: -1000px";
-
-			copyText.value = elementId;
-
-			document.body.appendChild(copyText);
-
-			copyText.select();
-
-			document.execCommand("copy");
-
-			document.body.removeChild(copyText);
-		}
-	);
-
 	new Liferay.Testray.ContextMenu(
 		{
 			containerId: '${htmlNamespace}buildsSearchContainer',
