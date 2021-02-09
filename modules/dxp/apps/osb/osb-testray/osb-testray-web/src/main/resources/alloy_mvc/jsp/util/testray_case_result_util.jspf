@@ -84,6 +84,12 @@ public static class TestrayCaseResultUtil {
 
 		recipientTestrayCaseResult.setAssignedUserId(sourceTestrayCaseResultComposite.getAssignedUserId());
 
+		String body = _getAutofillComment(alloyController, sourceTestrayCaseResultComposite.getComment());
+
+		long commentMBMessageId = TestrayUtil.updateMBMessage(alloyController.getThemeDisplay(), 0, TestrayCase.class.getName(), recipientTestrayCaseResult.getTestrayCaseId(), body, null);
+
+		recipientTestrayCaseResult.setCommentMBMessageId(commentMBMessageId);
+
 		recipientTestrayCaseResult.setStatus(sourceTestrayCaseResultComposite.getStatus());
 
 		TestrayCaseResultLocalServiceUtil.updateTestrayCaseResult(recipientTestrayCaseResult);
@@ -372,6 +378,37 @@ public static class TestrayCaseResultUtil {
 		}
 
 		return StringPool.BLANK;
+	}
+
+	private static String _getAutofillComment(AlloyController alloyController, String comment) {
+		String autofillMessage = null;
+
+		try {
+			autofillMessage = LanguageUtil.get(alloyController.getRequest(), "this-has-been-automatically-populated-from-a-previous-result");
+		}
+		catch (Exception e) {
+			autofillMessage = _getDefaultTranslation("this-has-been-automatically-populated-from-a-previous-result");
+		}
+
+		if (!comment.contains(autofillMessage) && !comment.contains("this-has-been-automatically-populated-from-a-previous-result")) {
+			comment += StringPool.NEW_LINE + autofillMessage;
+		}
+
+		return comment;
+	}
+
+	private static String _getDefaultTranslation(String message, String... arguments) {
+		PortletConfig portletConfig = PortletConfigFactoryUtil.get(TestrayPortletKeys.TESTRAY);
+
+		Locale locale = LocaleUtil.getDefault();
+
+		ResourceBundle resourceBundle = portletConfig.getResourceBundle(locale);
+
+		if (resourceBundle.containsKey(message)) {
+			return LanguageUtil.format(resourceBundle, message, arguments);
+		}
+
+		return LanguageUtil.format(locale, message, arguments);
 	}
 
 	private static String[] _getIssues(String issuesString) {
