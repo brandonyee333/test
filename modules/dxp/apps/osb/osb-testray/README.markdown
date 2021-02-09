@@ -23,7 +23,11 @@
 
 	1. ```docker exec -it testray-mysql mysql -utest -ptest```
 
-	1. ```use lportal;```
+	1.
+
+		```
+		use lportal;
+		```
 
 	1. ```show tables;```
 
