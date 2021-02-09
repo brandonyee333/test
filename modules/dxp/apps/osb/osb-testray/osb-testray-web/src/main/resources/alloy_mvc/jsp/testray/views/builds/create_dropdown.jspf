@@ -35,11 +35,11 @@
 		</portlet:renderURL>
 
 		<portlet:renderURL var="viewTemplateTestrayBuildsURL">
-			<portlet:param name="controller" value="builds" />
-			<portlet:param name="action" value="templates" />
-			<portlet:param name="testrayRoutineId" value="${testrayRoutine.testrayRoutineId}" />
+				<portlet:param name="controller" value="builds" />
+				<portlet:param name="action" value="templates" />
+				<portlet:param name="testrayRoutineId" value="${testrayRoutine.testrayRoutineId}" />
 		</portlet:renderURL>
-
+		
 		<ul class="dropdown-menu dropdown-menu-right">
 			<li>
 				<portlet:renderURL var="createTestrayBuildURL">
