@@ -70,34 +70,6 @@
 			</aui:col>
 		</aui:row>
 
-		<aui:row cssClass="testray-form-section">
-			<aui:col cssClass="testray-form-content" md="12">
-				<c:set value="${TestrayRichTextConstants.TYPE_MARKDOWN},${TestrayRichTextConstants.TYPE_PLAIN_TEXT}" var="types" />
-
-				<testray:rich-input
-					label="goals"
-					name="goals"
-					selectedType="${testrayRequirement.goalsType}"
-					types="${fn:split(types, StringPool.COMMA)}"
-					value="${testrayRequirement.goals}"
-				/>
-			</aui:col>
-		</aui:row>
-
-		<aui:row cssClass="testray-form-section">
-			<aui:col cssClass="testray-form-content" md="12">
-				<c:set value="${TestrayRichTextConstants.TYPE_MARKDOWN},${TestrayRichTextConstants.TYPE_PLAIN_TEXT}" var="types" />
-
-				<testray:rich-input
-					label="variations"
-					name="variations"
-					selectedType="${testrayRequirement.variationsType}"
-					types="${fn:split(types, StringPool.COMMA)}"
-					value="${testrayRequirement.variations}"
-				/>
-			</aui:col>
-		</aui:row>
-
 		<aui:button-row>
 			<aui:button type="submit" />
 
