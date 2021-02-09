@@ -375,7 +375,7 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		return F.col('eventProperties.formId')
 
 	def _process(self, data_frame):
-		return data_frame.withColumn(
+		data_frame = data_frame.withColumn(
 			'submissions',
 			F.when(
 				F.col('eventId') == 'formSubmitted', F.lit(1)
@@ -396,6 +396,18 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			F.sum('submissions').alias('submissions'),
 			F.sum('views').alias('views')
 		)
+
+		data_frame = data_frame.withColumn(
+			'views',
+			F.greatest(F.col('views'), F.col('submissions'))
+		)
+
+		data_frame = data_frame.withColumn(
+			'abandonments',
+			F.col('views') - F.col('submissions')
+		)
+
+		return data_frame
 
 class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
