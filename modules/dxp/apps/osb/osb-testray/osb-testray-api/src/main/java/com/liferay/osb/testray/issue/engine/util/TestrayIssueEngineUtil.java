@@ -124,7 +124,8 @@ public class TestrayIssueEngineUtil {
 
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC, service = TestrayIssueEngine.class
+		policy = ReferencePolicy.DYNAMIC, service = TestrayIssueEngine.class,
+		unbind = "unsetTestrayIssueEngine"
 	)
 	protected void setTestrayIssueEngine(
 		TestrayIssueEngine testrayIssueEngine) {
