@@ -80,7 +80,7 @@
 			</aui:form>
 		</c:if>
 
-		<aui:button cssClass="btn-primary button-action" onClick="${htmlNamespace}compareCartClear();" value="clear" />
+		<aui:button cssClass="button-action" onClick="${htmlNamespace}compareCartClear();" value="clear" />
 	</div>
 </div>
 

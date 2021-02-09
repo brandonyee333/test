@@ -416,8 +416,8 @@
 			</div>
 		</div>
 
-		<aui:script use="testray-avatar,testray-context-menu,testray-metrics-bar,testray-row-checker-toolbar">
-			$(document).ready(function() {
+		<aui:script use="testray-avatar,testray-context-menu,testray-metrics-bar,testray-row-checker-toolbar">	
+			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();
 			});
 

@@ -188,9 +188,11 @@
 					cssClass="metrics metrics-compact"
 					name="progress"
 				>
-					<div class="progress-new">
-						<progress class="progress-new" max="100" role="progressbar" value="10"></progress>
-					</div>
+					<progress class="progress" max="100" value="1">
+						<liferay-ui:message arguments="${fn:split(arguments, StringPool.SEMICOLON)}" key="x-slash-x" />
+
+						<span class="score-percent" id="${htmlNamespace}completedPercent${testrayTaskComposite.testrayTaskId}"></span>
+					</progress>
 
 					<div class="metrics-bar" id="${htmlNamespace}metricsBar${testrayTaskComposite.testrayTaskId}"></div>
 
@@ -224,24 +226,23 @@
 					cssClass="assignee-portraits"
 					name="assigned-users"
 				>
-					<div class="row">
-						<div class="col-md-10"></div>
+				<div class="row">
+					<div class="col-md-10"></div>
 
-						<div class="col-md-1">
-							<div class="button-avatar-userassigned">
-								<aui:button disabled="${testrayTaskComposite.testrayBuildArchived}" value="assign-users" />
-							</div>
-
-							<a href="#"><img class="button-avatar-change" data-placement="top" data-toggle="tooltip" disabled="${testrayTaskComposite.testrayBuildArchived}" onClick="${selectListUsersURL}" src="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext(request) + "/images/profileEdit.png") %>" title="Click to see all assigned Users" /></a>
+					<div class="col-md-1">
+						<div class="button-avatar-userassigned">
+							<aui:button disabled="${testrayTaskComposite.testrayBuildArchived}" value="assign-users" />
 						</div>
 
-						<div class="col-md-1">
-							<div class="text-count-user-task" id="${htmlNamespace}avatarContainer${testrayTaskComposite.testrayTaskId}"></div>
-						</div>
+						<a href="#"><img class="button-avatar-change" data-placement="top" data-toggle="tooltip" disabled="${testrayTaskComposite.testrayBuildArchived}" onClick="${selectListUsersURL}" src="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext(request) + "/images/profileEdit.png") %>" title="Click to see all assigned Users" /></a>
 					</div>
 
+					<div class="col-md-1">
+						<div class="text-count-user-task" id="${htmlNamespace}avatarContainer${testrayTaskComposite.testrayTaskId}"></div>
+					</div>
+				</div>
 					<aui:script use="testray-avatar">
-					$(document).ready(function() {
+					$(document).ready(function(){
 						$('[data-toggle="tooltip"]').tooltip();
 					});
 

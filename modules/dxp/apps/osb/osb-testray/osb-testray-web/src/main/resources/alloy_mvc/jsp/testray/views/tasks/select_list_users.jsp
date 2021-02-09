@@ -31,6 +31,7 @@
 	<portlet:param name="testrayTaskId" value="${param.testrayTaskId}" />
 </portlet:renderURL>
 
+
 <div class="hide" id="${htmlNamespace}userSearchAlertContainer">
 	<div class="alert alert-error">
 		<liferay-ui:message key="your-request-failed-to-complete" />

@@ -244,7 +244,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		render("tasks/select_list_users");
 	}
-
+	
 	@JSONWebServiceMethod(lifecycle = PortletRequest.ACTION_PHASE, parameterNames = {"id", "name", "userIds"}, parameterTypes = {String.class, String.class, String.class})
 	public void update() throws Exception {
 		TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(request);
