@@ -167,9 +167,8 @@ public class JiraRequestSender {
 
 	private static final long _RETRY_INTERVAL_MAX = 600000;
 
-	private static final int[] _RETRY_STATUS_CODES = {
-		408, 409, 423, 429, 503, 504
-	};
+	private static final int[] _RETRY_STATUS_CODES =
+		{408, 409, 423, 429, 503, 504};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JiraRequestSender.class);

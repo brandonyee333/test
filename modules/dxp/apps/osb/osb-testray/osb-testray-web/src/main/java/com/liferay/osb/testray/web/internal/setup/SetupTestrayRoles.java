@@ -152,7 +152,8 @@ public class SetupTestrayRoles {
 
 					_resourcePermissionLocalService.setResourcePermissions(
 						company.getCompanyId(), name, scope, primKey,
-						role.getRoleId(), actionIds.toArray(new String[0]));
+						role.getRoleId(),
+						actionIds.toArray(new String[0]));
 				}
 				else {
 					for (Element actionKeyElement : actionKeyElements) {
