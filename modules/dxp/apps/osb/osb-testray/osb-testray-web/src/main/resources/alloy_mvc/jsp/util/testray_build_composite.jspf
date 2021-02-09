@@ -56,10 +56,6 @@ public static class TestrayBuildComposite extends BaseTestrayComposite {
 		return _testrayBuild.getDescription();
 	}
 
-	public String getDescriptionType() {
-		return _testrayBuild.getDescriptionType();
-	}
-
 	public int getEstimatedTestrayCaseResultsCount() throws Exception {
 		int testrayCasesCount = getTestrayCasesCount();
 		int testrayRunsCount = getTestrayRunsCount();
@@ -88,7 +84,6 @@ public static class TestrayBuildComposite extends BaseTestrayComposite {
 
 		jsonObject.put("archived", isArchived());
 		jsonObject.put("description", getDescription());
-		jsonObject.put("descriptionType", getDescriptionType());
 		jsonObject.put("htmlURL", getHtmlURL());
 		jsonObject.put("name", getName());
 		jsonObject.put("promoted", isPromoted());

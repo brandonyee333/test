@@ -84,7 +84,6 @@
 		<column name="testrayProjectId" type="long" />
 		<column name="name" type="String" />
 		<column name="description" type="String" />
-		<column name="descriptionType" type="String" />
 		<column name="template" type="boolean" />
 		<column name="dueDate" type="Date" />
 		<column name="gitHash" type="String" />
