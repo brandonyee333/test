@@ -286,7 +286,7 @@
 					<liferay-ui:message key="git-hash" />
 				</dt>
 				<dd>
-					${testrayBuildComposite.gitHashShortened}
+					${testrayBuildComposite.gitHash}
 
 					<div class="copy-icon-inline">
 						<liferay-ui:icon
