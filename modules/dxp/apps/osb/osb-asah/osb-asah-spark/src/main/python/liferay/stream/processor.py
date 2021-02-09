@@ -354,10 +354,8 @@ class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		return data_frame.withColumn(
 			'views', F.lit(1)
 		).groupBy(
-			'projectId', 'channelId', 'assetId', 'eventDate', 'userId',
-			'variantId'
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'normalized_event_date'
 		).sum(
-			'views'
-		).withColumnRenamed(
-			'sum(views)', 'views'
+			F.sum('views').alias('comments')
 		)
