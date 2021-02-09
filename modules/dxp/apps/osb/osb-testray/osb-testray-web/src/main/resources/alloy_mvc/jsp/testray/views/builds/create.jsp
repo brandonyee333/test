@@ -80,19 +80,7 @@
 
 		<aui:input name="git-hash" type="text" />
 
-		<aui:row cssClass="testray-form-section">
-			<aui:col cssClass="testray-form-content" md="12">
-				<c:set value="${TestrayRichTextConstants.TYPE_MARKDOWN},${TestrayRichTextConstants.TYPE_PLAIN_TEXT}" var="types" />
-
-				<testray:rich-input
-					label="description"
-					name="description"
-					selectedType=""
-					types="${fn:split(types, StringPool.COMMA)}"
-					value=""
-				/>
-			</aui:col>
-		</aui:row>
+		<aui:input name="description" />
 
 		<c:choose>
 			<c:when test="${not empty testrayFactorCategoryMap}">

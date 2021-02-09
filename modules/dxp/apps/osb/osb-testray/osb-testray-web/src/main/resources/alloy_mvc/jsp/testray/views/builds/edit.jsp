@@ -91,14 +91,8 @@
 		</c:if>
 
 		<aui:input name="git-hash" type="text" value="${testrayBuild.gitHash}" />
-		
-		<testray:rich-input
-			label="description"
-			name="description"
-			selectedType=""
-			types="${fn:split(types, StringPool.COMMA)}"
-			value="${testrayBuild.description}"
-		/>
+
+		<aui:input name="description" />
 
 		<c:choose>
 			<c:when test="${not empty testrayFactorCategoryMap}">

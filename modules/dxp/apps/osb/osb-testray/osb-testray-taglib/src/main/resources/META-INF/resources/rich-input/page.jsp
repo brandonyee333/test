@@ -31,24 +31,11 @@
 		</aui:col>
 
 		<aui:col cssClass="testray-form-content" md="9">
-			<c:choose>
-				<c:when test="${testrayRequirement.key == null}">
-				<div hidden="true">
-					<aui:select cssClass="testray-input-right testray-input-small" label="" name="${name}Type" onChange="${htmlNamespace}updatePreview('#${htmlNamespace}${name}', '#${htmlNamespace}${name}Preview blockquote', '#${htmlNamespace}${name}Type');" showEmptyOption="${false}" wrapperCssClass="testray-input-right-wrapper">
-						<c:forEach items="${types}" var="type">
-							<aui:option label="${type}" selected="${type == selectedType}" value="${type}" />
-						</c:forEach>
-					</aui:select>
-				</div>
-				</c:when>
-				<c:otherwise>
-					<aui:select cssClass="testray-input-right testray-input-small" label="" name="${name}Type" onChange="${htmlNamespace}updatePreview('#${htmlNamespace}${name}', '#${htmlNamespace}${name}Preview blockquote', '#${htmlNamespace}${name}Type');" showEmptyOption="${false}" wrapperCssClass="testray-input-right-wrapper">
-						<c:forEach items="${types}" var="type">
-							<aui:option label="${type}" selected="${type == selectedType}" value="${type}" />
-						</c:forEach>
-					</aui:select>
-				</c:otherwise>
-			</c:choose>
+			<aui:select cssClass="testray-input-right testray-input-small" label="" name="${name}Type" onChange="${htmlNamespace}updatePreview('#${htmlNamespace}${name}', '#${htmlNamespace}${name}Preview blockquote', '#${htmlNamespace}${name}Type');" showEmptyOption="${false}" wrapperCssClass="testray-input-right-wrapper">
+				<c:forEach items="${types}" var="type">
+					<aui:option label="${type}" selected="${type == selectedType}" value="${type}" />
+				</c:forEach>
+			</aui:select>
 		</aui:col>
 	</aui:row>
 
