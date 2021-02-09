@@ -14,11 +14,14 @@
 
 package com.liferay.osb.testray.exception;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Ethan Bustad
  */
+@ProviderType
 public class NoSuchTestrayRoutineException extends NoSuchModelException {
 
 	public NoSuchTestrayRoutineException() {

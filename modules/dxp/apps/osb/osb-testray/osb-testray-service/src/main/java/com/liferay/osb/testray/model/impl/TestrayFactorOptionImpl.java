@@ -14,9 +14,12 @@
 
 package com.liferay.osb.testray.model.impl;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * @author Ethan Bustad
  */
+@ProviderType
 public class TestrayFactorOptionImpl extends TestrayFactorOptionBaseImpl {
 
 	public TestrayFactorOptionImpl() {
