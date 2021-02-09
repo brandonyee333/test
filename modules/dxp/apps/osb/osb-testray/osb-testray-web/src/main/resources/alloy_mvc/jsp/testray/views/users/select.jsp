@@ -24,16 +24,14 @@
 
 <%@ include file="/alloy_mvc/jsp/testray/views/content_start.jspf" %>
 
-<c:if test="${not viewOnly}">
-	<portlet:renderURL var="viewTestrayUsersURL">
-		<portlet:param name="controller" value="users" />
-		<portlet:param name="action" value="select" />
-		<portlet:param name="submitAction" value="${submitAction}" />
-		<portlet:param name="submitController" value="${submitController}" />
-		<portlet:param name="submitIdName" value="${submitIdName}" />
-		<portlet:param name="submitIdValue" value="${submitIdValue}" />
-	</portlet:renderURL>
-</c:if>
+<portlet:renderURL var="viewTestrayUsersURL">
+	<portlet:param name="controller" value="users" />
+	<portlet:param name="action" value="select" />
+	<portlet:param name="submitAction" value="${submitAction}" />
+	<portlet:param name="submitController" value="${submitController}" />
+	<portlet:param name="submitIdName" value="${submitIdName}" />
+	<portlet:param name="submitIdValue" value="${submitIdValue}" />
+</portlet:renderURL>
 
 <div class="hide" id="${htmlNamespace}userSearchAlertContainer">
 	<div class="alert alert-error">
@@ -42,15 +40,13 @@
 </div>
 
 <aui:form action="${viewTestrayUsersURL}" method="get" name="fm" onSubmit="event.preventDefault(); ${htmlNamespace}searchUsers();">
-	<c:if test="${not viewOnly}">
-		<div class="${popup ? "testray-modal-toolbar" : StringPool.BLANK}">
-			<aui:fieldset>
-				<aui:input inlineField="${true}" label="" name="keywords" size="30" title="search-users" type="text" />
+	<div class="${popup ? "testray-modal-toolbar" : StringPool.BLANK}">
+		<aui:fieldset>
+			<aui:input inlineField="${true}" label="" name="keywords" size="30" title="search-users" type="text" />
 
-				<aui:button type="submit" value="search" />
-			</aui:fieldset>
-		</div>
-	</c:if>
+			<aui:button type="submit" value="search" />
+		</aui:fieldset>
+	</div>
 
 	<div class="${popup ? "spacing-toolbar testray-modal-content" : StringPool.BLANK}">
 		<liferay-ui:search-container
@@ -69,15 +65,13 @@
 				keyProperty="userId"
 				modelVar="curUser"
 			>
-				<c:if test="${not viewOnly}">
-					<portlet:actionURL var="setUserURL">
-						<portlet:param name="controller" value="${submitController}" />
-						<portlet:param name="action" value="${submitAction}" />
-						<portlet:param name="redirect" value="${portletURL}" />
-						<portlet:param name="assignedUserId" value="${curUser.userId}" />
-						<portlet:param name="${submitIdName}" value="${submitIdValue}" />
-					</portlet:actionURL>
-				</c:if>
+				<portlet:actionURL var="setUserURL">
+					<portlet:param name="controller" value="${submitController}" />
+					<portlet:param name="action" value="${submitAction}" />
+					<portlet:param name="redirect" value="${portletURL}" />
+					<portlet:param name="assignedUserId" value="${curUser.userId}" />
+					<portlet:param name="${submitIdName}" value="${submitIdValue}" />
+				</portlet:actionURL>
 
 				<liferay-ui:search-container-column-text
 					cssClass="user"
@@ -118,53 +112,51 @@
 	}
 </aui:script>
 
-<c:if test="${not viewOnly}">
-	<aui:script use="aui-base,aui-io-request,testray-base">
-		function ${htmlNamespace}setUser(url) {
-			A.io.request(
-				url,
-				{
-					on: {
-						failure: function(event, id, obj) {
-							var alertContainer = A.one('#${htmlNamespace}userSearchAlertContainer');
+<aui:script use="aui-base,aui-io-request,testray-base">
+	function ${htmlNamespace}setUser(url) {
+		A.io.request(
+			url,
+			{
+				on: {
+					failure: function(event, id, obj) {
+						var alertContainer = A.one('#${htmlNamespace}userSearchAlertContainer');
 
-							if (alertContainer) {
-								alertContainer.show();
+						if (alertContainer) {
+							alertContainer.show();
+						}
+					},
+					success: function(event, id, obj) {
+						var opener = Liferay.Util.getOpener();
+
+						if (opener) {
+							if (opener.${htmlNamespace}refreshAssignedUserSection) {
+								opener.${htmlNamespace}refreshAssignedUserSection();
+
+								Liferay.Testray.closeWindow();
 							}
-						},
-						success: function(event, id, obj) {
-							var opener = Liferay.Util.getOpener();
-
-							if (opener) {
-								if (opener.${htmlNamespace}refreshAssignedUserSection) {
-									opener.${htmlNamespace}refreshAssignedUserSection();
-
-									Liferay.Testray.closeWindow();
-								}
-								else {
-									opener.location.reload();
-								}
+							else {
+								opener.location.reload();
 							}
 						}
 					}
 				}
-			);
-		}
+			}
+		);
+	}
 
-		var userSearchContainerNode = A.one('#${htmlNamespace}usersSearchContainerSearchContainer');
+	var userSearchContainerNode = A.one('#${htmlNamespace}usersSearchContainerSearchContainer');
 
-		if (userSearchContainerNode) {
-			userSearchContainerNode.delegate(
-				'click',
-				function(event) {
-					event.preventDefault();
+	if (userSearchContainerNode) {
+		userSearchContainerNode.delegate(
+			'click',
+			function(event) {
+				event.preventDefault();
 
-					var userLink = event.currentTarget.attr('href');
+				var userLink = event.currentTarget.attr('href');
 
-					${htmlNamespace}setUser(userLink);
-				},
-				'.user a'
-			);
-		}
-	</aui:script>
-</c:if>
+				${htmlNamespace}setUser(userLink);
+			},
+			'.user a'
+		);
+	}
+</aui:script>

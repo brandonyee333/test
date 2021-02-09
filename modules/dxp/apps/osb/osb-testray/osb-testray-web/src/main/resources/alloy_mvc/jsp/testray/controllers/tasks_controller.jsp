@@ -240,11 +240,9 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		TestrayTaskComposite testrayTaskComposite = new TestrayTaskComposite(testrayTask, themeDisplay, user);
 
-		renderRequest.setAttribute("users", testrayTaskComposite.getAssignedUsers());
+		renderRequest.setAttribute("assignedUsers", testrayTaskComposite.getAssignedUsers());
 
-		renderRequest.setAttribute("viewOnly", true);
-
-		render("users/select");
+		render("tasks/select_list_users");
 	}
 
 	@JSONWebServiceMethod(lifecycle = PortletRequest.ACTION_PHASE, parameterNames = {"id", "name", "userIds"}, parameterTypes = {String.class, String.class, String.class})
