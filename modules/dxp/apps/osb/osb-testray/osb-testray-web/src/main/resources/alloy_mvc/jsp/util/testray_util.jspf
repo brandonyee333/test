@@ -256,7 +256,7 @@ public static class TestrayUtil {
 
 		DynamicQuery testrayCaseResultDynamicQuery = getTestrayCaseResultsDynamicQuery(testrayRunId, assignedUserId, errors, errorsBlankOnly, issues, issuesBlankOnly, comments, commentsBlankOnly, statuses, testrayTeamId, name, testrayComponentId, testrayCasePriorities);
 
-		if (Validator.isNull(testrayCaseResultDynamicQuery)) {
+		if (testrayCaseResultDynamicQuery == null) {
 			return Collections.emptyList();
 		}
 

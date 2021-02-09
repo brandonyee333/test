@@ -4,6 +4,8 @@
 	<source-check>
 		<suppress checks="JavaAPISignatureCheck" files="osb-testray-api/src/main/java/com/liferay/osb/testray/issue/engine/util/TestrayIssueEngine\.java" />
 		<suppress checks="JavaAPISignatureCheck" files="osb-testray-api/src/main/java/com/liferay/osb/testray/issue/engine/util/TestrayIssueEngineUtil\.java" />
+		<suppress checks="JavaAPISignatureCheck" files="osb-testray-api/src/main/java/com/liferay/osb/testray/util/TestrayPermission\.java" />
 		<suppress checks="SQLLongNamesCheck" files="osb-testray-service/src/main/resources/META-INF/sql/tables\.sql" />
+		<suppress checks="XMLServiceFileCheck" files="osb-testray-service/service\.xml" />
 	</source-check>
 </suppressions>

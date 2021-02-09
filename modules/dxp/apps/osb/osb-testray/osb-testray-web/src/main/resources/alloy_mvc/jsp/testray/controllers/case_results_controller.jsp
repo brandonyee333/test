@@ -446,7 +446,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 				respondWith(_getTestrayCaseResultsJSONArray("testrayCaseId", testrayCaseId));
 			}
-			else if (Validator.isNotNull(testrayBuildId)) {
+			else if (testrayBuildId > 0) {
 				respondWith(_getTestrayCaseResultsJSONArray("testrayBuildId", testrayBuildId));
 			}
 			else if (Validator.isNotNull(testrayBuildName)) {
@@ -461,7 +461,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 				respondWith(_getTestrayCaseResultsJSONArray("testrayRunId", testrayRunId));
 			}
-			else if (Validator.isNotNull(testraySubtaskId)) {
+			else if (testraySubtaskId > 0) {
 				TestraySubtask testraySubtask = TestraySubtaskUtil.fetchTestraySubtask(request, "testraySubtaskId");
 
 				TestrayValidator.validateBaseModel(request, testraySubtask, "the-subtask-with-id-x-does-not-exist", "testraySubtaskId");

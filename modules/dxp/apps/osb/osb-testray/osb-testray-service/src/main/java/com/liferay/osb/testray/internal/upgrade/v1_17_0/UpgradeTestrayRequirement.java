@@ -24,9 +24,7 @@ public class UpgradeTestrayRequirement extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasColumn("OSB_TestrayRequirement", "goals")) {
-			runSQL(
-				"alter table OSB_TestrayRequirement add goals " +
-					"STRING null");
+			runSQL("alter table OSB_TestrayRequirement add goals STRING null");
 		}
 
 		if (!hasColumn("OSB_TestrayRequirement", "goalsType")) {
@@ -34,14 +32,13 @@ public class UpgradeTestrayRequirement extends UpgradeProcess {
 				"alter table OSB_TestrayRequirement add goalsType " +
 					"VARCHAR(75) null");
 			runSQL(
-				"update OSB_TestrayRequirement set goalsType = " +
-					"'plain-text'");
+				"update OSB_TestrayRequirement set goalsType = 'plain-text'");
 		}
 
 		if (!hasColumn("OSB_TestrayRequirement", "variations")) {
 			runSQL(
-				"alter table OSB_TestrayRequirement add variations " +
-					"STRING null");
+				"alter table OSB_TestrayRequirement add variations STRING " +
+					"null");
 		}
 
 		if (!hasColumn("OSB_TestrayRequirement", "variationsType")) {

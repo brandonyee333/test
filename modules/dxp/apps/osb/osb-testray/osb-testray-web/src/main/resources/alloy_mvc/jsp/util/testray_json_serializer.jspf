@@ -27,7 +27,7 @@ public static class TestrayJSONSerializer extends JSONSerializer {
 			object = jsonTokener.nextValue();
 		}
 		catch (org.json.JSONException jsone) {
-			throw new UnmarshallException("Couldn't parse JSON: " + json, jsone);
+			throw new UnmarshallException("Could not parse JSON: " + json, jsone);
 		}
 
 		SerializerState state = new TestraySerializerState();

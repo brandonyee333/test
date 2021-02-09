@@ -28,8 +28,7 @@ public class UpgradeTestrayBuild extends UpgradeProcess {
 				"alter table OSB_TestrayBuild add descriptionType " +
 					"VARCHAR(75) null");
 			runSQL(
-				"update OSB_TestrayBuild set descriptionType = " +
-					"'plain-text'");
+				"update OSB_TestrayBuild set descriptionType = 'plain-text'");
 		}
 	}
 
