@@ -70,7 +70,7 @@
 					function(event) {
 						var target = event.target;
 
-						if (!target.ancestor('.filter-popover-content')) {
+						if (!target.ancestor('.popover')) {
 							popover.hide();
 
 							boundingBox.detach();
