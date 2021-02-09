@@ -390,11 +390,7 @@ public static class TestrayCaseResultUtil {
 			autofillMessage = _getDefaultTranslation("this-has-been-automatically-populated-from-a-previous-result");
 		}
 
-		if (!comment.contains(autofillMessage) && !comment.contains("this-has-been-automatically-populated-from-a-previous-result")) {
-			comment += StringPool.NEW_LINE + autofillMessage
-		}
-
-		return comment;
+		return comment + StringPool.NEW_LINE + autofillMessage;
 	}
 
 	private static String _getDefaultTranslation(String message, String... arguments) {
