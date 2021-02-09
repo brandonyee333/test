@@ -2,7 +2,7 @@
 
 ## MySQL
 
-1. Start MySQL. Type:
+1. Start MySQL.
 
     ```
     docker run \
@@ -21,11 +21,13 @@
 
 1. Connect to MySQL.
 
-  1. Type ***docker exec -it testray-mysql mysql -utest -ptest***
+  1. ```docker exec -it testray-mysql mysql -utest -ptest***```
 
-  1. Type ***use lportal;***
+  1. ```use lportal;```
 
-  1. Type ***show tables;*** to see that no tables exist.
+  1. ```***show tables;```
+
+    No tables exist because the database is empty.
 
 ## Liferay
 
