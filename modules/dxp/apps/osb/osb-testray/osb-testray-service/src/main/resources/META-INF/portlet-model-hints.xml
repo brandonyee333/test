@@ -253,13 +253,9 @@
 			<hint-collection name="TEXTAREA" />
 		</field>
 		<field name="descriptionType" type="String" />
-		<field name="goals" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
+		<field name="goals" type="String" />
 		<field name="goalsType" type="String" />
-		<field name="variations" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
+		<field name="variations" type="String" />
 		<field name="variationsType" type="String" />
 	</model>
 	<model name="com.liferay.osb.testray.model.TestrayRoutine">
