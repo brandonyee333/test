@@ -222,7 +222,9 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			data_frame
 		)
 
-		data_frame.withColumn(
+		data_frame.filter(
+			"applicationId != 'Ratings'"
+		).withColumn(
 			'clicks',
 			F.when(
 				F.col('eventId') == 'blogClicked', F.lit(1)
@@ -243,7 +245,23 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			).otherwise(
 				F.lit(0)
 			)
+		).groupBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'normalized_event_date', 'primaryKey'
+		).agg(
+			F.sum('clicks').alias('clicks'),
+			F.sum('comments').alias('comments'),
+			F.sum('views').alias('views')
 		)
+
+		return data_frame.join(
+			data_frame_with_rating_score,
+			on=[
+				'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+				'normalized_event_date', 'primaryKey'
+			],
+			how='left'
+		).fillna(0)
 
 class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
