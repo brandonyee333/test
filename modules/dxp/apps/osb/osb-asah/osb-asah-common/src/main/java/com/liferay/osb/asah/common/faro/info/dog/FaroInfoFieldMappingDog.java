@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -184,7 +185,7 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 
 	private JSONObject _getDataSourceAuthorJSONObject(String dataSourceId) {
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		return JSONUtil.put(
 			"id", dataSourceId
@@ -195,7 +196,7 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 
 	private String _getEmailDataSourceFieldName(String dataSourceId) {
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		if (dataSourceJSONObject == null) {
 			return null;
@@ -203,8 +204,7 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 
 		String dataSourceFieldName = "email";
 
-		String type = _faroInfoDataSourceDog.getDataSourceType(
-			dataSourceJSONObject);
+		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
 
 		if (type.equals("LIFERAY")) {
 			dataSourceFieldName = "emailAddress";
@@ -251,6 +251,6 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 		FaroInfoFieldMappingDog.class);
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceDog _dataSourceDog;
 
 }

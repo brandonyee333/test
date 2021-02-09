@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.salesforce.extractor.dog;
 
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -53,10 +53,9 @@ public class SalesforceExtractorConfigurationDog {
 
 	public void deleteConfiguration(String dataSourceId) {
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
 
-		String type = _faroInfoDataSourceDog.getDataSourceType(
-			dataSourceJSONObject);
+		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
 
 		if (!Objects.equals(type, _getProviderType())) {
 			return;
@@ -199,7 +198,7 @@ public class SalesforceExtractorConfigurationDog {
 		configurationsJSONObject.put("dataSourceId", dataSourceId);
 
 		JSONObject existingDataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		configurationsJSONObject.put(
 			"existingDataSourceId",
@@ -213,9 +212,9 @@ public class SalesforceExtractorConfigurationDog {
 	private ConfigurationHttp _configurationHttp;
 
 	@Autowired
-	private DataSourceHttp _dataSourceHttp;
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceHttp _dataSourceHttp;
 
 }

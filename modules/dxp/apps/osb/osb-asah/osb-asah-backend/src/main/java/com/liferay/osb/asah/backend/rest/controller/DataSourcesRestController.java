@@ -16,10 +16,10 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
@@ -88,8 +88,8 @@ public class DataSourcesRestController extends BaseRestController {
 	public String disconnectDataSource(@PathVariable String id)
 		throws Exception {
 
-		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.disconnectDataSource(id);
+		JSONObject dataSourceJSONObject = _dataSourceDog.disconnectDataSource(
+			id);
 
 		_sanitize(dataSourceJSONObject);
 
@@ -99,7 +99,7 @@ public class DataSourcesRestController extends BaseRestController {
 	@GetMapping("/{id}")
 	public String getDataSource(@PathVariable String id) {
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(id);
+			_dataSourceDog.getDataSourceJSONObject(id);
 
 		_setLastSyncTime(dataSourceJSONObject);
 
@@ -160,8 +160,8 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@GetMapping("/{id}/progress")
 	public String getProgress(@PathVariable String id) {
-		String type = _faroInfoDataSourceDog.getDataSourceType(
-			_faroInfoDataSourceDog.getDataSourceJSONObject(id));
+		String type = _dataSourceDog.getDataSourceType(
+			_dataSourceDog.getDataSourceJSONObject(id));
 
 		if (type.equals("CSV")) {
 			return String.valueOf(_getCSVDataSourceProgressJSONObject(id));
@@ -207,7 +207,7 @@ public class DataSourcesRestController extends BaseRestController {
 			protected JSONObject invokeElasticsearch(JSONObject jsonObject)
 				throws Exception {
 
-				return _faroInfoDataSourceDog.patchDataSource(id, jsonObject);
+				return _dataSourceDog.patchDataSource(id, jsonObject);
 			}
 
 		};
@@ -225,7 +225,7 @@ public class DataSourcesRestController extends BaseRestController {
 			protected JSONObject invokeElasticsearch(JSONObject jsonObject)
 				throws Exception {
 
-				return _faroInfoDataSourceDog.addDataSource(jsonObject);
+				return _dataSourceDog.addDataSource(jsonObject);
 			}
 
 			@Override
@@ -253,7 +253,7 @@ public class DataSourcesRestController extends BaseRestController {
 			protected JSONObject invokeElasticsearch(JSONObject jsonObject)
 				throws Exception {
 
-				return _faroInfoDataSourceDog.updateDataSource(id, jsonObject);
+				return _dataSourceDog.updateDataSource(id, jsonObject);
 			}
 
 			@Override
@@ -275,7 +275,7 @@ public class DataSourcesRestController extends BaseRestController {
 		throws Exception {
 
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		try {
 			ResponseEntity<String> responseEntity = supplier.get();
@@ -625,7 +625,7 @@ public class DataSourcesRestController extends BaseRestController {
 		String dataSourceId) {
 
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
 			"provider");
@@ -715,8 +715,7 @@ public class DataSourcesRestController extends BaseRestController {
 	private void _refreshConfiguration(JSONObject dataSourceJSONObject)
 		throws Exception {
 
-		String type = _faroInfoDataSourceDog.getDataSourceType(
-			dataSourceJSONObject);
+		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
 
 		if (!Objects.equals(type, "SALESFORCE")) {
 			return;
@@ -733,7 +732,7 @@ public class DataSourcesRestController extends BaseRestController {
 		_salesforceExtractorConfigurationDog.updateConfiguration(
 			newDataSourceJSONObject);
 
-		_faroInfoDataSourceDog.updateDataSource(
+		_dataSourceDog.updateDataSource(
 			dataSourceJSONObject.getString("id"), newDataSourceJSONObject);
 	}
 
@@ -885,10 +884,10 @@ public class DataSourcesRestController extends BaseRestController {
 	private ConfigurationHttp _configurationHttp;
 
 	@Autowired
-	private DataSourceHttp _dataSourceHttp;
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceHttp _dataSourceHttp;
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;

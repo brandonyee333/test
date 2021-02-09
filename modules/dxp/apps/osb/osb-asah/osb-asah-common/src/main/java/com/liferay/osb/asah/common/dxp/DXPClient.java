@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.dxp;
 
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
@@ -43,7 +43,7 @@ public class DXPClient extends BaseDXPClient {
 			"/o/segments-asah/v1.0/experiments/%s", experimentId);
 
 		return deleteJSONObject(
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId), path);
+			_dataSourceDog.getDataSourceJSONObject(dataSourceId), path);
 	}
 
 	public JSONObject runDXPExperiment(
@@ -68,7 +68,7 @@ public class DXPClient extends BaseDXPClient {
 		);
 
 		return postJSONObject(
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId), path,
+			_dataSourceDog.getDataSourceJSONObject(dataSourceId), path,
 			JSONUtil.put(
 				"confidenceLevel", confidenceLevel
 			).put(
@@ -94,11 +94,11 @@ public class DXPClient extends BaseDXPClient {
 		}
 
 		return postJSONObject(
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId), path,
+			_dataSourceDog.getDataSourceJSONObject(dataSourceId), path,
 			bodyJSONObject);
 	}
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceDog _dataSourceDog;
 
 }

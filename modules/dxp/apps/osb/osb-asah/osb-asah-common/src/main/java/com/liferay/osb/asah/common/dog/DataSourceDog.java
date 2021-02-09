@@ -14,23 +14,55 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
+import com.liferay.osb.asah.common.http.NanitesHttp;
+import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
+import com.liferay.osb.asah.common.security.Encryptor;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.security.KeyPair;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,9 +72,171 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataSourceDog {
 
+	public JSONObject addDataSource(JSONObject dataSourceJSONObject)
+		throws Exception {
+
+		String name = dataSourceJSONObject.getString("name");
+		int nameCount = 0;
+		String originalName = name;
+
+		while (_elasticsearchInvoker.exists(
+					"data-sources", QueryBuilders.termQuery("name", name))) {
+
+			name = String.format("%s (%d)", originalName, ++nameCount);
+		}
+
+		dataSourceJSONObject.put("name", name);
+
+		String type = getDataSourceType(dataSourceJSONObject);
+
+		dataSourceJSONObject = _cacheableElasticsearchInvoker.add(
+			"data-sources", dataSourceJSONObject);
+
+		if (Objects.equals(type, "CSV")) {
+			dataSourceJSONObject.put("state", "READY");
+		}
+		else if (Objects.equals(type, "LIFERAY")) {
+			_addDefaultChannel(dataSourceJSONObject);
+
+			if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
+				updateTokenDataSourceCredentials(dataSourceJSONObject);
+			}
+		}
+		else if (Objects.equals(type, "SALESFORCE")) {
+			_salesforceExtractorConfigurationDog.addConfiguration(
+				dataSourceJSONObject);
+		}
+
+		return _cacheableElasticsearchInvoker.update(
+			"data-sources", dataSourceJSONObject.getString("id"),
+			dataSourceJSONObject);
+	}
+
+	public void deleteDataSource(
+			JSONObject dataSourceJSONObject,
+			Consumer<Integer> processedCountMonitorConsumer,
+			Consumer<Integer> queueMonitorConsumer)
+		throws Exception {
+
+		_clearDataSource(
+			dataSourceJSONObject, processedCountMonitorConsumer,
+			queueMonitorConsumer);
+
+		String dataSourceId = dataSourceJSONObject.getString("id");
+
+		deleteFieldMappings(
+			dataSourceId, processedCountMonitorConsumer, queueMonitorConsumer);
+
+		_cacheableElasticsearchInvoker.delete("data-sources", dataSourceId);
+
+		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
+			"provider");
+
+		if (Objects.equals(providerJSONObject.getString("type"), "LIFERAY") ||
+			(providerJSONObject.optJSONObject("analyticsConfiguration") !=
+				null)) {
+
+			_nanitesHttp.refreshAnalytics();
+		}
+	}
+
+	public void deleteFieldMappings(
+			String dataSourceId,
+			Consumer<Integer> processedCountMonitorConsumer,
+			Consumer<Integer> queueMonitorConsumer)
+		throws Exception {
+
+		List<String> disabledFieldMappingIds = new ArrayList<>();
+
+		JSONArrayIterator.of(
+			"field-mappings", _elasticsearchInvoker,
+			fieldMappingJSONObject -> {
+				fieldMappingJSONObject =
+					_faroInfoFieldMappingDog.removeDataSourceFieldName(
+						fieldMappingJSONObject, dataSourceId);
+
+				JSONObject dataSourceFieldNamesJSONObject =
+					fieldMappingJSONObject.getJSONObject(
+						"dataSourceFieldNames");
+
+				if ((dataSourceFieldNamesJSONObject.length() == 0) &&
+					_faroInfoFieldMappingDog.deleteFieldMapping(
+						fieldMappingJSONObject)) {
+
+					disabledFieldMappingIds.add(
+						fieldMappingJSONObject.getString("id"));
+				}
+
+				return null;
+			}
+		).setMonitoringConsumers(
+			processedCountMonitorConsumer, queueMonitorConsumer
+		).setQueryBuilder(
+			QueryBuilders.existsQuery("dataSourceFieldNames." + dataSourceId)
+		).iterate();
+
+		_faroInfoIndividualSegmentDog.disableDynamicIndividualSegments(
+			dataSourceId, disabledFieldMappingIds);
+	}
+
+	public JSONObject disconnectDataSource(String dataSourceId) {
+		JSONObject dataSourceJSONObject = getDataSourceJSONObject(dataSourceId);
+
+		if (Objects.equals(
+				dataSourceJSONObject.optString("state"), "DISCONNECTED") &&
+			Objects.equals(
+				dataSourceJSONObject.optString("status"), "INACTIVE")) {
+
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST, "Data source already disconnected");
+		}
+
+		_clearChannels(dataSourceId);
+
+		JSONObject credentialsJSONObject = dataSourceJSONObject.getJSONObject(
+			"credentials");
+
+		credentialsJSONObject.put("privateKey", "");
+		credentialsJSONObject.put("publicKey", "");
+
+		JSONObject detailsJSONObject = dataSourceJSONObject.optJSONObject(
+			"details");
+
+		if (dataSourceJSONObject.has("details")) {
+			if (detailsJSONObject == null) {
+				detailsJSONObject = new JSONObject();
+			}
+
+			detailsJSONObject.put("contactsSelected", false);
+			detailsJSONObject.put("sitesSelected", false);
+		}
+
+		dataSourceJSONObject.put("faroBackendSecuritySignature", "");
+		dataSourceJSONObject.put("state", "DISCONNECTED");
+		dataSourceJSONObject.put("status", "INACTIVE");
+
+		return _cacheableElasticsearchInvoker.update(
+			"data-sources", dataSourceId, dataSourceJSONObject);
+	}
+
+	public JSONObject fetchDataSourceJSONObject(String dataSourceId) {
+		return _cacheableElasticsearchInvoker.fetch(
+			"data-sources", dataSourceId);
+	}
+
+	public String getChannelId(String dataSourceId) {
+		JSONObject dataSourceJSONObject = getDataSourceJSONObject(dataSourceId);
+
+		if (dataSourceJSONObject == null) {
+			return null;
+		}
+
+		return dataSourceJSONObject.optString("channelId");
+	}
+
 	public DataSource getDataSource(String dataSourceId) {
-		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.fetchDataSourceJSONObject(dataSourceId);
+		JSONObject dataSourceJSONObject = fetchDataSourceJSONObject(
+			dataSourceId);
 
 		if (dataSourceJSONObject == null) {
 			return null;
@@ -52,7 +246,46 @@ public class DataSourceDog {
 			dataSourceJSONObject, DataSource.class);
 	}
 
-	public List<DataSource> getDataSources(List<String> dataSourceIds) {
+	public List<String> getDataSourceFieldMappingIds(
+		String dataSourceId, boolean previewDelete) {
+
+		List<String> dataSourceFieldMappingIds = new ArrayList<>();
+
+		JSONArray jsonArray = _elasticsearchInvoker.get(
+			"field-mappings",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.existsQuery(
+					"dataSourceFieldNames." + dataSourceId)));
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			JSONObject dataSourceFieldNamesJSONObject =
+				jsonObject.getJSONObject("dataSourceFieldNames");
+
+			if (previewDelete &&
+				(dataSourceFieldNamesJSONObject.length() > 1)) {
+
+				continue;
+			}
+
+			dataSourceFieldMappingIds.add(jsonObject.getString("id"));
+		}
+
+		return dataSourceFieldMappingIds;
+	}
+
+	public JSONObject getDataSourceJSONObject(String dataSourceId) {
+		return _elasticsearchInvoker.get("data-sources", dataSourceId);
+	}
+
+	public String getDataSourceName(String dataSourceId) {
+		JSONObject jsonObject = getDataSourceJSONObject(dataSourceId);
+
+		return jsonObject.getString("name");
+	}
+
+	public List<DataSource> getDataSources(List<Long> dataSourceIds) {
 		return _toDataSources(
 			_elasticsearchInvoker.get(
 				"data-sources", QueryBuilders.termsQuery("id", dataSourceIds)));
@@ -92,6 +325,491 @@ public class DataSourceDog {
 		return _toDataSources(dataSourcesJSONArray);
 	}
 
+	public String getDataSourceType(JSONObject dataSourceJSONObject) {
+		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
+			"provider");
+
+		return providerJSONObject.getString("type");
+	}
+
+	public boolean isAnalyticsConfigured() {
+		return _elasticsearchInvoker.exists(
+			"data-sources",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("provider.type", "LIFERAY")
+			).filter(
+				BoolQueryBuilderUtil.should(
+					QueryBuilders.termQuery("details.sitesSelected", true)
+				).should(
+					QueryBuilders.existsQuery(
+						"provider.analyticsConfiguration.sites")
+				).should(
+					QueryBuilders.termQuery(
+						"provider.analyticsConfiguration.enableAllSites", true)
+				)
+			));
+	}
+
+	public JSONObject patchDataSource(
+			String dataSourceId, JSONObject dataSourceJSONObject)
+		throws Exception {
+
+		JSONObject existingDataSourceJSONObject = getDataSourceJSONObject(
+			dataSourceId);
+
+		for (String key : JSONObject.getNames(dataSourceJSONObject)) {
+			existingDataSourceJSONObject.put(
+				key, dataSourceJSONObject.get(key));
+		}
+
+		return updateDataSource(dataSourceId, existingDataSourceJSONObject);
+	}
+
+	public JSONObject updateDataSource(
+			String dataSourceId, JSONObject dataSourceJSONObject)
+		throws Exception {
+
+		String name = dataSourceJSONObject.optString("name", null);
+
+		// Skip JavaParser, will fix
+
+		if ((name != null) &&
+			_elasticsearchInvoker.exists(
+				"data-sources",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.boolQuery(
+				).mustNot(
+					QueryBuilders.termQuery("id", dataSourceId)
+				)
+			).filter(
+				QueryBuilders.termQuery("name", name)
+			))) {
+
+			throw new Exception("Duplicate data source name " + name);
+		}
+
+		String type = getDataSourceType(dataSourceJSONObject);
+
+		if (type.equals("LIFERAY")) {
+			if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
+				updateTokenDataSourceCredentials(dataSourceJSONObject);
+			}
+		}
+		else if (type.equals("SALESFORCE")) {
+			_salesforceExtractorConfigurationDog.updateConfiguration(
+				dataSourceJSONObject);
+		}
+
+		return _cacheableElasticsearchInvoker.update(
+			"data-sources", dataSourceId, dataSourceJSONObject);
+	}
+
+	public JSONObject updateDataSourceDetails(
+			String dataSourceId, JSONObject newDetailsJSONObject)
+		throws Exception {
+
+		JSONObject dataSourceJSONObject = getDataSourceJSONObject(dataSourceId);
+
+		JSONObject existingDetailsJSONObject =
+			dataSourceJSONObject.optJSONObject("details");
+
+		dataSourceJSONObject.put(
+			"details",
+			JSONUtil.merge(existingDetailsJSONObject, newDetailsJSONObject));
+
+		JSONObject jsonObject = _cacheableElasticsearchInvoker.update(
+			"data-sources", dataSourceId, dataSourceJSONObject);
+
+		if (newDetailsJSONObject.optBoolean("sitesSelected") &&
+			((existingDetailsJSONObject == null) ||
+			 !existingDetailsJSONObject.optBoolean("sitesSelected"))) {
+
+			_nanitesHttp.refreshAnalytics();
+
+			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+				"IndividualSegmentActivityFieldsNanite", null);
+		}
+
+		return jsonObject;
+	}
+
+	public void updateTokenDataSourceCredentials(
+		JSONObject dataSourceJSONObject) {
+
+		JSONObject credentialsJSONObject = dataSourceJSONObject.getJSONObject(
+			"credentials");
+
+		if (!Objects.equals(
+				credentialsJSONObject.getString("type"),
+				"Token Authentication")) {
+
+			return;
+		}
+
+		dataSourceJSONObject.put("state", "CREDENTIALS_VALID");
+		dataSourceJSONObject.put("status", "ACTIVE");
+
+		try {
+			JSONObject oldDataSourceJSONObject = getDataSourceJSONObject(
+				dataSourceJSONObject.getString("id"));
+
+			JSONObject oldCredentialsJSONObject =
+				oldDataSourceJSONObject.getJSONObject("credentials");
+
+			String privateKey = oldCredentialsJSONObject.optString(
+				"privateKey");
+
+			if (StringUtils.isBlank(privateKey)) {
+				KeyPair keyPair = _encryptor.generateKeyPair();
+
+				credentialsJSONObject.put(
+					"privateKey",
+					_encryptor.encrypt(
+						dataSourceJSONObject.getString("url"),
+						_encryptor.encode(keyPair.getPrivate())));
+				credentialsJSONObject.put(
+					"publicKey", _encryptor.encode(keyPair.getPublic()));
+			}
+
+			if (StringUtils.isBlank(
+					oldDataSourceJSONObject.optString(
+						"faroBackendSecuritySignature"))) {
+
+				dataSourceJSONObject.put(
+					"faroBackendSecuritySignature",
+					String.valueOf(UUID.randomUUID()));
+			}
+
+			if (Objects.equals(
+					oldCredentialsJSONObject.getString("type"),
+					"OAuth 2 Authentication")) {
+
+				oldDataSourceJSONObject.put(
+					"credentials", credentialsJSONObject);
+
+				_elasticsearchInvoker.replace(
+					"data-sources", oldDataSourceJSONObject);
+			}
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
+	}
+
+	private void _addDefaultChannel(JSONObject dataSourceJSONObject) {
+		Channel channel = _channelDog.addChannel(
+			Collections.singletonMap(
+				Long.valueOf(dataSourceJSONObject.getString("id")),
+				Collections.emptySet()),
+			dataSourceJSONObject.getString("name"), true);
+
+		dataSourceJSONObject.put("channelId", String.valueOf(channel.getId()));
+	}
+
+	private void _clearChannels(String dataSourceId) {
+		for (Channel channel :
+				_channelDog.getChannels(Long.valueOf(dataSourceId))) {
+
+			Set<ChannelDataSource> channelDataSources = Stream.of(
+				channel
+			).map(
+				Channel::getChannelDataSources
+			).flatMap(
+				Set::stream
+			).filter(
+				channelDataSource -> !Objects.equals(
+					channelDataSource.getDataSourceId(),
+					Long.valueOf(dataSourceId))
+			).collect(
+				Collectors.toSet()
+			);
+
+			channel.setChannelDataSources(channelDataSources);
+
+			_channelDog.update(channel);
+		}
+	}
+
+	private void _clearDataSource(
+			JSONObject dataSourceJSONObject,
+			Consumer<Integer> processedCountMonitorConsumer,
+			Consumer<Integer> queueMonitorConsumer)
+		throws Exception {
+
+		String dataSourceId = dataSourceJSONObject.getString("id");
+
+		_deleteData(dataSourceJSONObject);
+
+		_deleteRunLogs(dataSourceJSONObject);
+
+		JSONArrayIterator.of(
+			"accounts", _elasticsearchInvoker,
+			accountJSONObject -> {
+				try {
+					_faroInfoAccountDog.deleteAccount(accountJSONObject);
+				}
+				catch (Exception e) {
+					return e;
+				}
+
+				return null;
+			}
+		).setMonitoringConsumers(
+			processedCountMonitorConsumer, queueMonitorConsumer
+		).setQueryBuilder(
+			QueryBuilders.termQuery("dataSourceId", dataSourceId)
+		).iterate();
+
+		String deletionDateString = dataSourceJSONObject.getString(
+			"deletionDate");
+
+		JSONArrayIterator.of(
+			"individuals", _elasticsearchInvoker,
+			individualJSONObject -> {
+				try {
+					JSONArray dataSourceIndividualPKsJSONArray =
+						individualJSONObject.getJSONArray(
+							"dataSourceIndividualPKs");
+
+					if (dataSourceIndividualPKsJSONArray.length() == 1) {
+						_faroInfoIndividualDog.deleteIndividual(
+							deletionDateString,
+							individualJSONObject.getString("id"));
+					}
+					else {
+						_faroInfoIndividualDog.removeDataSourceIndividualPKs(
+							individualJSONObject, dataSourceId);
+
+						_faroInfoIndividualDog.updateIndividual(
+							null, _getEmptyDataJSONObject(dataSourceJSONObject),
+							dataSourceJSONObject, individualJSONObject);
+					}
+				}
+				catch (Exception e) {
+					return e;
+				}
+
+				return null;
+			}
+		).setMonitoringConsumers(
+			processedCountMonitorConsumer, queueMonitorConsumer
+		).setQueryBuilder(
+			QueryBuilders.nestedQuery(
+				"dataSourceIndividualPKs",
+				QueryBuilders.termQuery(
+					"dataSourceIndividualPKs.dataSourceId", dataSourceId),
+				ScoreMode.None)
+		).iterate();
+	}
+
+	private void _deleteAccountReferences(String dataSourceId)
+		throws Exception {
+
+		JSONArrayIterator.of(
+			"individuals", _elasticsearchInvoker,
+			individualJSONObject -> {
+				JSONObject modifiedJSONObject = new JSONObject();
+
+				JSONArray dataSourceAccountPKsJSONArray =
+					individualJSONObject.getJSONArray("dataSourceAccountPKs");
+
+				Iterator<Object> iterator =
+					dataSourceAccountPKsJSONArray.iterator();
+
+				while (iterator.hasNext()) {
+					JSONObject jsonObject = (JSONObject)iterator.next();
+
+					if (StringUtils.equals(
+							jsonObject.getString("dataSourceId"),
+							dataSourceId)) {
+
+						iterator.remove();
+					}
+				}
+
+				modifiedJSONObject.put(
+					"dataSourceAccountPKs", dataSourceAccountPKsJSONArray);
+
+				_elasticsearchInvoker.update(
+					"individuals", individualJSONObject.getString("id"),
+					modifiedJSONObject);
+
+				return null;
+			}
+		).setQueryBuilder(
+			QueryBuilders.nestedQuery(
+				"dataSourceAccountPKs",
+				QueryBuilders.termQuery(
+					"dataSourceAccountPKs.dataSourceId", dataSourceId),
+				ScoreMode.None)
+		).iterate();
+	}
+
+	private void _deleteData(JSONObject dataSourceJSONObject) throws Exception {
+		String dataSourceId = dataSourceJSONObject.getString("id");
+
+		String type = getDataSourceType(dataSourceJSONObject);
+
+		if (type.equals("CSV")) {
+			_deleteData(
+				dataSourceId, "dataSourceId", _elasticsearchInvoker,
+				"csv-individuals");
+		}
+		else if (type.equals("LIFERAY")) {
+			_deleteData(
+				dataSourceId, "osbAsahDataSourceId",
+				_dxpRawElasticsearchInvoker, "OSBAsahMarkers", "audit-events",
+				"groups", "organizations", "roles", "teams", "user-groups",
+				"users");
+			_deleteData(
+				dataSourceId, "dataSourceId", _elasticsearchInvoker,
+				"organizations");
+			_deleteIndividualReferences(dataSourceId);
+		}
+		else if (type.equals("SALESFORCE")) {
+			_deleteAccountReferences(dataSourceId);
+			_deleteData(
+				dataSourceId, "osbAsahDataSourceId",
+				_salesforceElasticsearchInvoker, "Account", "Contact", "Lead",
+				"OSBAsahMarkers", "individuals");
+			_deleteData(
+				dataSourceId, "dataSourceId", _elasticsearchInvoker, "fields");
+		}
+		else if (_log.isWarnEnabled()) {
+			_log.warn(
+				"Raw data for data source " + dataSourceId +
+					" with unknown provider type " + type +
+						" will not be deleted");
+		}
+	}
+
+	private void _deleteData(
+		String dataSourceId, String dataSourceIdFieldName,
+		ElasticsearchInvoker elasticsearchInvoker, String... collectionNames) {
+
+		for (String collectionName : collectionNames) {
+			elasticsearchInvoker.delete(
+				collectionName,
+				QueryBuilders.termQuery(dataSourceIdFieldName, dataSourceId));
+		}
+	}
+
+	private void _deleteIndividualReferences(String dataSourceId)
+		throws Exception {
+
+		_deleteIndividualReferences(
+			"groupIds",
+			_getDataIds(
+				"groups", dataSourceId, "osbAsahDataSourceId",
+				_dxpRawElasticsearchInvoker));
+		_deleteIndividualReferences(
+			"organizationIds",
+			_getDataIds(
+				"organizations", dataSourceId, "dataSourceId",
+				_elasticsearchInvoker));
+		_deleteIndividualReferences(
+			"roleIds",
+			_getDataIds(
+				"roles", dataSourceId, "osbAsahDataSourceId",
+				_dxpRawElasticsearchInvoker));
+		_deleteIndividualReferences(
+			"teamIds",
+			_getDataIds(
+				"teams", dataSourceId, "osbAsahDataSourceId",
+				_dxpRawElasticsearchInvoker));
+		_deleteIndividualReferences(
+			"userGroupIds",
+			_getDataIds(
+				"user-groups", dataSourceId, "osbAsahDataSourceId",
+				_dxpRawElasticsearchInvoker));
+	}
+
+	private void _deleteIndividualReferences(String fieldName, List<String> ids)
+		throws Exception {
+
+		JSONArrayIterator.of(
+			"individuals", _elasticsearchInvoker,
+			individualJSONObject -> {
+				JSONObject modifiedJSONObject = new JSONObject();
+
+				JSONArray idsJSONArray = individualJSONObject.getJSONArray(
+					fieldName);
+
+				Iterator<Object> iterator = idsJSONArray.iterator();
+
+				while (iterator.hasNext()) {
+					String id = (String)iterator.next();
+
+					if (ids.contains(id)) {
+						iterator.remove();
+					}
+				}
+
+				modifiedJSONObject.put(fieldName, idsJSONArray);
+
+				_elasticsearchInvoker.update(
+					"individuals", individualJSONObject.getString("id"),
+					modifiedJSONObject);
+
+				return null;
+			}
+		).setQueryBuilder(
+			QueryBuilders.termsQuery(fieldName, ids)
+		).iterate();
+	}
+
+	private void _deleteRunLogs(JSONObject dataSourceJSONObject) {
+		QueryBuilder queryBuilder = QueryBuilders.termQuery(
+			"dataSourceId", dataSourceJSONObject.getString("id"));
+
+		_elasticsearchInvoker.delete("run-logs", queryBuilder);
+
+		String type = getDataSourceType(dataSourceJSONObject);
+
+		if (type.equals("LIFERAY")) {
+			_dxpRawElasticsearchInvoker.delete("run-logs", queryBuilder);
+		}
+		else if (type.equals("SALESFORCE")) {
+			_salesforceElasticsearchInvoker.delete("run-logs", queryBuilder);
+		}
+	}
+
+	private List<String> _getDataIds(
+		String collectionName, String dataSourceId,
+		String dataSourceIdFieldName,
+		ElasticsearchInvoker elasticsearchInvoker) {
+
+		return JSONUtil.toStringList(
+			elasticsearchInvoker.get(
+				collectionName,
+				QueryBuilders.termQuery(dataSourceIdFieldName, dataSourceId)),
+			"id");
+	}
+
+	private JSONObject _getEmptyDataJSONObject(
+		JSONObject dataSourceJSONObject) {
+
+		String type = getDataSourceType(dataSourceJSONObject);
+
+		if (type.equals("CSV")) {
+			return JSONUtil.put("fields", new JSONObject());
+		}
+		else if (type.equals("LIFERAY")) {
+			return JSONUtil.put("contact", new JSONObject());
+		}
+		else if (type.equals("SALESFORCE")) {
+		}
+		else if (_log.isWarnEnabled()) {
+			_log.warn(
+				"Invalid provider type " + type + " for data source " +
+					dataSourceJSONObject.getString("id"));
+		}
+
+		return new JSONObject();
+	}
+
 	private List<DataSource> _toDataSources(JSONArray jsonArray) {
 		try {
 			return ObjectMapperUtil.convertValues(
@@ -103,10 +821,48 @@ public class DataSourceDog {
 		}
 	}
 
+	private static final Log _log = LogFactory.getLog(DataSourceDog.class);
+
+	@ElasticsearchInvoker.Autowired(
+		cacheable = true, value = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	private ElasticsearchInvoker _cacheableElasticsearchInvoker;
+
+	@Autowired
+	private ChannelDog _channelDog;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
+	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private Encryptor _encryptor;
+
+	@Autowired
+	private FaroInfoAccountDog _faroInfoAccountDog;
+
+	@Autowired
+	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
+
+	@Autowired
+	private FaroInfoIndividualDog _faroInfoIndividualDog;
+
+	@Autowired
+	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+
+	@Autowired
+	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+
+	@Autowired
+	private NanitesHttp _nanitesHttp;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
+	private ElasticsearchInvoker _salesforceElasticsearchInvoker;
+
+	@Autowired
+	private SalesforceExtractorConfigurationDog
+		_salesforceExtractorConfigurationDog;
 
 }

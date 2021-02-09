@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,7 +32,7 @@ public class DeleteDataSourcesNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject dataSourceJSONObject) throws Exception {
-		_faroInfoDataSourceDog.deleteDataSource(
+		_dataSourceDog.deleteDataSource(
 			dataSourceJSONObject, this::monitorProcessedCount,
 			this::monitorQueueSize);
 	}
@@ -43,6 +43,6 @@ public class DeleteDataSourcesNanite extends BaseNanite {
 	}
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceDog _dataSourceDog;
 
 }

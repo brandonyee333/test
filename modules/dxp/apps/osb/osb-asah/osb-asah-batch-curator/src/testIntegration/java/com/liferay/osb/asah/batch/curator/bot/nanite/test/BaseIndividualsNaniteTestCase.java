@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -45,15 +45,15 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 
 	protected void addDataSource(String type) throws Exception {
 		if (type.equals("CSV")) {
-			_dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
+			_dataSourceJSONObject = _dataSourceDog.addDataSource(
 				FaroInfoTestUtil.buildCSVDataSourceJSONObject());
 		}
 		else if (type.equals("LIFERAY")) {
-			_dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
+			_dataSourceJSONObject = _dataSourceDog.addDataSource(
 				FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 		}
 		else if (type.equals("SALESFORCE")) {
-			_dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
+			_dataSourceJSONObject = _dataSourceDog.addDataSource(
 				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
 		}
 		else {
@@ -275,11 +275,10 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 
 	private static final String _SUBSCRIPTION = RandomTestUtil.randomString();
 
-	private JSONObject _dataSourceJSONObject;
-
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceDog _dataSourceDog;
 
+	private JSONObject _dataSourceJSONObject;
 	private String _individual1PK;
 	private String _individual2PK;
 

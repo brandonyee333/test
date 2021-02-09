@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class DefinitionsRestController extends BaseRestController {
 
 				pairs.add(
 					new Pair<>(
-						_faroInfoDataSourceDog.getDataSourceName(key),
+						_dataSourceDog.getDataSourceName(key),
 						dataSourceFieldNamesJSONObject.getString(key)));
 			}
 
@@ -136,6 +136,6 @@ public class DefinitionsRestController extends BaseRestController {
 	}
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceDog _dataSourceDog;
 
 }

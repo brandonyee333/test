@@ -18,6 +18,7 @@ import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -98,8 +99,7 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			JSONObject dataSourceJSONObject)
 		throws Exception {
 
-		String type = _faroInfoDataSourceDog.getDataSourceType(
-			dataSourceJSONObject);
+		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
 
 		if (type.equals("CSV")) {
 			return dataJSONObject.getJSONObject("fields");
@@ -465,8 +465,7 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 		JSONObject dataSourceJSONObject, String ownerType, String uniqueId,
 		String uniqueIdFieldName) {
 
-		String type = _faroInfoDataSourceDog.getDataSourceType(
-			dataSourceJSONObject);
+		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
 
 		if (type.equals("CSV")) {
 			return elasticsearchInvoker.fetch(
@@ -574,8 +573,7 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			String ownerType)
 		throws Exception {
 
-		String type = _faroInfoDataSourceDog.getDataSourceType(
-			dataSourceJSONObject);
+		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
 
 		if (type.equals("CSV")) {
 			return dataSourceJSONObject.getString("dateModified");
@@ -651,7 +649,7 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			}
 
 			JSONObject dataSourceJSONObject =
-				_faroInfoDataSourceDog.fetchDataSourceJSONObject(dataSourceId);
+				_dataSourceDog.fetchDataSourceJSONObject(dataSourceId);
 
 			if (dataSourceJSONObject == null) {
 				if (_log.isWarnEnabled()) {
@@ -1003,11 +1001,11 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 
 	private static final Log _log = LogFactory.getLog(FaroInfoFieldDog.class);
 
+	@Autowired
+	private DataSourceDog _dataSourceDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;

@@ -17,8 +17,8 @@ package com.liferay.osb.asah.batch.curator.rest.controller;
 import com.liferay.osb.asah.batch.curator.bot.OSBAsahBatchCuratorBot;
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -50,7 +50,7 @@ public class NanitesRestController {
 	@PostMapping("/analytics")
 	public void refreshAnalytics() {
 		_individualSegmentActivityFieldsNanite.setAnalyticsConfigured(
-			_faroInfoDataSourceDog.isAnalyticsConfigured());
+			_dataSourceDog.isAnalyticsConfigured());
 	}
 
 	@PostMapping("/remove-schedule")
@@ -83,11 +83,11 @@ public class NanitesRestController {
 			new JSONObject(osbAsahTaskJSON));
 	}
 
+	@Autowired
+	private DataSourceDog _dataSourceDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
 	private IndividualSegmentActivityFieldsNanite

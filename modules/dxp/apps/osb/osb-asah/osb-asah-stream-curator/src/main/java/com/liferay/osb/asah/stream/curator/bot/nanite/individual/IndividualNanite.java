@@ -15,11 +15,11 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.individual;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -316,7 +316,7 @@ public class IndividualNanite implements Nanite {
 				 (individualJSONObject2 == null)) {
 
 			JSONObject dataSourceJSONObject =
-				_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+				_dataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 			if (StringUtils.isBlank(channelId)) {
 				channelId = dataSourceJSONObject.optString("channelId");
@@ -328,7 +328,7 @@ public class IndividualNanite implements Nanite {
 		}
 		else {
 			JSONObject dataSourceJSONObject =
-				_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+				_dataSourceDog.getDataSourceJSONObject(dataSourceId);
 
 			JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
 				"provider");
@@ -434,13 +434,13 @@ public class IndividualNanite implements Nanite {
 	private String[] _collections;
 
 	@Autowired
+	private DataSourceDog _dataSourceDog;
+
+	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
-
-	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

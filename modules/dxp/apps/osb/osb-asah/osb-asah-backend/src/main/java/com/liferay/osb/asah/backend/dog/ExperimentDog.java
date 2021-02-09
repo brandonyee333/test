@@ -25,13 +25,13 @@ import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.PageMetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentMetrics;
 import com.liferay.osb.asah.common.model.ExperimentMetricsBag;
@@ -522,7 +522,7 @@ public class ExperimentDog {
 			return experiment.getChannelId();
 		}
 
-		String channelId = _faroInfoDataSourceDog.getChannelId(
+		String channelId = _dataSourceDog.getChannelId(
 			experiment.getDataSourceId());
 
 		if (channelId != null) {
@@ -695,13 +695,13 @@ public class ExperimentDog {
 	private DataDog _dataDog;
 
 	@Autowired
+	private DataSourceDog _dataSourceDog;
+
+	@Autowired
 	private DXPClient _dxpClient;
 
 	@Autowired
 	private ExperimentMetricDog _experimentMetricDog;
-
-	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

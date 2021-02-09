@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -193,8 +194,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
 			"provider");
 
-		String type = _faroInfoDataSourceDog.getDataSourceType(
-			dataSourceJSONObject);
+		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
 
 		if (type.equals("SALESFORCE")) {
 			JSONArray dataAccountPKsJSONArray = dataJSONObject.optJSONArray(
@@ -521,14 +521,13 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		if ((dataId != null) && !dataId.equals(individualId)) {
 			addDataSourceIndividualPK(
 				dataId, dataSourceId,
-				_faroInfoDataSourceDog.getDataSourceType(dataSourceJSONObject),
+				_dataSourceDog.getDataSourceType(dataSourceJSONObject),
 				individualJSONObject);
 		}
 
 		boolean dataAccountPKsUpdated = false;
 
-		String type = _faroInfoDataSourceDog.getDataSourceType(
-			dataSourceJSONObject);
+		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
 
 		if (type.equals("SALESFORCE")) {
 			JSONArray dataAccountPKsJSONArray = dataJSONObject.optJSONArray(
@@ -786,14 +785,14 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 	private String[] _collections;
 
+	@Autowired
+	private DataSourceDog _dataSourceDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
-
-	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
 	private FaroInfoFieldDog _faroInfoFieldDog;

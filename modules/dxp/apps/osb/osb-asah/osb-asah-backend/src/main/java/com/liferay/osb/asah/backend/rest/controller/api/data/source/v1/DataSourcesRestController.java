@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 
 import org.json.JSONObject;
 
@@ -41,8 +41,8 @@ public class DataSourcesRestController extends BaseRestController {
 	public String disconnectDataSource(@PathVariable String id)
 		throws Exception {
 
-		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.disconnectDataSource(id);
+		JSONObject dataSourceJSONObject = _dataSourceDog.disconnectDataSource(
+			id);
 
 		_sanitize(dataSourceJSONObject);
 
@@ -52,7 +52,7 @@ public class DataSourcesRestController extends BaseRestController {
 	@GetMapping("/{id}")
 	public String getDataSource(@PathVariable String id) throws Exception {
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(id);
+			_dataSourceDog.getDataSourceJSONObject(id);
 
 		_sanitize(dataSourceJSONObject);
 
@@ -65,8 +65,7 @@ public class DataSourcesRestController extends BaseRestController {
 		throws Exception {
 
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.updateDataSourceDetails(
-				id, new JSONObject(json));
+			_dataSourceDog.updateDataSourceDetails(id, new JSONObject(json));
 
 		_sanitize(dataSourceJSONObject);
 
@@ -85,6 +84,6 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceDog _dataSourceDog;
 
 }

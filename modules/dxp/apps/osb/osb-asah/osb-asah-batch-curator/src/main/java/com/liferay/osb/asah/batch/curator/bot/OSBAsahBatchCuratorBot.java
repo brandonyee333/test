@@ -19,8 +19,8 @@ import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskScheduler;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -182,7 +182,7 @@ public class OSBAsahBatchCuratorBot {
 
 	private void _init() {
 		_individualSegmentActivityFieldsNanite.setAnalyticsConfigured(
-			_faroInfoDataSourceDog.isAnalyticsConfigured());
+			_dataSourceDog.isAnalyticsConfigured());
 
 		_elasticsearchInvoker.updateByQueryWithRetry(
 			QueryBuilders.termQuery("status", "STARTED"), true,
@@ -272,15 +272,15 @@ public class OSBAsahBatchCuratorBot {
 	@Qualifier("dataprocSparkManagerMonitoringNaniteRunnable")
 	private Runnable _dataprocSparkManagerMonitoringNaniteRunnable;
 
+	@Autowired
+	private DataSourceDog _dataSourceDog;
+
 	@Autowired(required = false)
 	@Qualifier("deleteDXPBatchEntitiesNaniteRunnable")
 	private Runnable _deleteDXPBatchEntitiesNaniteRunnable;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
 	private IndividualSegmentActivityFieldsNanite

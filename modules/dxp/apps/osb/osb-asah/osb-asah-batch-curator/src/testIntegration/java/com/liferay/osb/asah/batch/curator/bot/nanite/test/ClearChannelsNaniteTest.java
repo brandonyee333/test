@@ -17,7 +17,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.ClearChannelsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -44,7 +44,7 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void test() throws Exception {
-		JSONObject dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
+		JSONObject dataSourceJSONObject = _dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
 		String channelId = String.valueOf(
@@ -123,6 +123,6 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 	private ClearChannelsNanite _clearChannelsNanite;
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceDog _dataSourceDog;
 
 }

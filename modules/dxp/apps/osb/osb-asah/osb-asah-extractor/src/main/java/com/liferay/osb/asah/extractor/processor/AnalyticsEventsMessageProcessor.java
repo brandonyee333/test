@@ -17,9 +17,9 @@ package com.liferay.osb.asah.extractor.processor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -112,8 +112,8 @@ public class AnalyticsEventsMessageProcessor {
 		if (individualJSONObject == null) {
 			individualJSONObject = _faroInfoIndividualDog.addIndividual(
 				_getAnalyticsDataJSONObject(analyticsEventsMessage), channelId,
-				_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId),
-				null, userId);
+				_dataSourceDog.getDataSourceJSONObject(dataSourceId), null,
+				userId);
 		}
 		else {
 			Set<String> channelIds = JSONUtil.toStringSet(
@@ -300,7 +300,7 @@ public class AnalyticsEventsMessageProcessor {
 		AnalyticsEventsMessage analyticsEventsMessage) {
 
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.fetchDataSourceJSONObject(
+			_dataSourceDog.fetchDataSourceJSONObject(
 				analyticsEventsMessage.getDataSourceId());
 
 		if ((dataSourceJSONObject != null) &&
@@ -378,7 +378,7 @@ public class AnalyticsEventsMessageProcessor {
 		String dataSourceId = analyticsEventsMessage.getDataSourceId();
 
 		if (StringUtil.isNull(channelId) || StringUtils.isBlank(channelId)) {
-			channelId = _faroInfoDataSourceDog.getChannelId(dataSourceId);
+			channelId = _dataSourceDog.getChannelId(dataSourceId);
 
 			if (StringUtils.isBlank(channelId)) {
 				if (_log.isDebugEnabled()) {
@@ -480,7 +480,7 @@ public class AnalyticsEventsMessageProcessor {
 	private String _analyticsEventsStoragePath;
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceDog _dataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

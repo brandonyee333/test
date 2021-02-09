@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -52,7 +52,7 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 	public void setUp() throws Exception {
 		for (int i = 0; i < 3; i++) {
 			JSONObject liferayDataSourceJSONObject =
-				_faroInfoDataSourceDog.addDataSource(
+				_dataSourceDog.addDataSource(
 					FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
 			String liferayDataSourceId = liferayDataSourceJSONObject.getString(
@@ -1052,11 +1052,11 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 	@MockBean
 	private ChannelHttp _channelHttp;
 
+	@Autowired
+	private DataSourceDog _dataSourceDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;

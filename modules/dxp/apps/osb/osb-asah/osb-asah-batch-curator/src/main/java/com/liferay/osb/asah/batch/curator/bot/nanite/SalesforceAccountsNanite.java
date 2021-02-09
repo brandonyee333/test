@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -155,7 +155,7 @@ public class SalesforceAccountsNanite extends BaseNanite {
 			"osbAsahDataSourceId");
 
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(osbAsahDataSourceId);
+			_dataSourceDog.getDataSourceJSONObject(osbAsahDataSourceId);
 
 		if (dataSourceJSONObject == null) {
 			if (_log.isWarnEnabled()) {
@@ -190,10 +190,10 @@ public class SalesforceAccountsNanite extends BaseNanite {
 		SalesforceAccountsNanite.class);
 
 	@Autowired
-	private FaroInfoAccountDog _faroInfoAccountDog;
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private FaroInfoAccountDog _faroInfoAccountDog;
 
 	@Autowired
 	private RunLogger _runLogger;

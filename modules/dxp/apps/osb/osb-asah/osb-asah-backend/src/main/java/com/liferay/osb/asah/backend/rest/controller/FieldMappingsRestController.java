@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
@@ -283,8 +283,8 @@ public class FieldMappingsRestController extends BaseRestController {
 	private void _addReprocessOSBAsahTask(String dataSourceId, String ownerType)
 		throws Exception {
 
-		String dataSourceType = _faroInfoDataSourceDog.getDataSourceType(
-			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId));
+		String dataSourceType = _dataSourceDog.getDataSourceType(
+			_dataSourceDog.getDataSourceJSONObject(dataSourceId));
 
 		String naniteClassName = _naniteClassNames.get(
 			dataSourceType + "#" + ownerType);
@@ -320,7 +320,7 @@ public class FieldMappingsRestController extends BaseRestController {
 		FieldMappingsRestController.class);
 
 	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;

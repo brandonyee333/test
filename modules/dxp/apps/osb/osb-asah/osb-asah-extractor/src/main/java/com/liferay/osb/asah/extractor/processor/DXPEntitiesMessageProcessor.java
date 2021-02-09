@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.extractor.processor;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
@@ -367,7 +367,7 @@ public class DXPEntitiesMessageProcessor {
 		}
 
 		JSONObject dataSourceJSONObject =
-			_faroInfoDataSourceDog.getDataSourceJSONObject(
+			_dataSourceDog.getDataSourceJSONObject(
 				objectJSONObject.getString("osbAsahDataSourceId"));
 
 		if ((dataSourceJSONObject == null) ||
@@ -497,11 +497,11 @@ public class DXPEntitiesMessageProcessor {
 	private static final Counter _dxpEntitiesCounter = PrometheusUtil.counter(
 		"extractor_dxp_entities_count", "The number of extracted DXP entities");
 
+	@Autowired
+	private DataSourceDog _dataSourceDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
