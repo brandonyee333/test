@@ -176,14 +176,12 @@
 					cssClass="metrics metrics-compact"
 					name="progress"
 				>
-					<br /><br /><br />
+				<br/><br/><br/>
 
-					<progress class="progress" max="100" value="1">
-						<liferay-ui:message arguments="${fn:split(arguments, StringPool.SEMICOLON)}" key="x-slash-x" />
-
-						<span class="score-percent" id="${htmlNamespace}completedPercent${testrayTaskComposite.testrayTaskId}"></span>
-					</progress>
-
+				<progress class="progress" max="100" value="1">
+					<liferay-ui:message arguments="${fn:split(arguments, StringPool.SEMICOLON)}" key="x-slash-x" />
+					<span class="score-percent" id="${htmlNamespace}completedPercent${testrayTaskComposite.testrayTaskId}"></span>
+				</progress>
 					<div class="metrics-bar" id="${htmlNamespace}metricsBar${testrayTaskComposite.testrayTaskId}"></div>
 
 					<aui:script use="testray-metrics-bar">

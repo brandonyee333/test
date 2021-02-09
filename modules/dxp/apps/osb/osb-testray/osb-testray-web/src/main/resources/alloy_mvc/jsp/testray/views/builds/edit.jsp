@@ -91,7 +91,7 @@
 		</c:if>
 
 		<aui:input name="git-hash" type="text" value="${testrayBuild.gitHash}" />
-
+		
 		<testray:rich-input
 			label="description"
 			name="description"
