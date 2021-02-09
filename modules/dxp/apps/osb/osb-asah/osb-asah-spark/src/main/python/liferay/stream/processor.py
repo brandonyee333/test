@@ -75,7 +75,7 @@ class AnalyticsEventsDataFrameProcessor(object):
 	def process(self, analytics_events_data_frame):
 		data_frame = self._filter(
 			analytics_events_data_frame
-		).withColum(
+		).withColumn(
 			'assetId', self._get_asset_id_column()
 		).withColumn(
 			'event_date',
