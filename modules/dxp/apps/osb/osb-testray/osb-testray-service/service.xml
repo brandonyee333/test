@@ -215,12 +215,12 @@
 		<finder name="TestrayRunId" return-type="Collection">
 			<finder-column name="testrayRunId" />
 		</finder>
-		<finder name="TCI_TRI" return-type="Collection">
-			<finder-column name="testrayComponentId" />
-			<finder-column name="testrayRunId" />
-		</finder>
 		<finder name="TCaI_TRI" return-type="TestrayCaseResult" unique="true">
 			<finder-column name="testrayCaseId" />
+			<finder-column name="testrayRunId" />
+		</finder>
+		<finder name="TCI_TRI" return-type="Collection">
+			<finder-column name="testrayComponentId" />
 			<finder-column name="testrayRunId" />
 		</finder>
 	</entity>

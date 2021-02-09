@@ -24,6 +24,8 @@ import com.liferay.osb.testray.model.TestrayIssue;
 import com.liferay.osb.testray.service.TestrayCaseLocalService;
 import com.liferay.osb.testray.service.TestrayCaseResultLocalService;
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -36,8 +38,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -261,8 +261,10 @@ public class JiraIssueEngine implements TestrayIssueEngine {
 		}
 
 		public String getAllIssuesLinkURL(String[] issueNames) {
-			return TestrayIssueEngineJiraWebValues.JIRA_JQL_URL + "key%20in(" +
-				String.join(StringPool.COMMA, issueNames) + ")";
+			return StringBundler.concat(
+				TestrayIssueEngineJiraWebValues.JIRA_JQL_URL, "key%20in(",
+				String.join(StringPool.COMMA, issueNames),
+				StringPool.CLOSE_PARENTHESIS);
 		}
 
 		public String getIssueLinkLabel(String issueName) {
