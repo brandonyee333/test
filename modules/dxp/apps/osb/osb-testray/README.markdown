@@ -1,21 +1,35 @@
 # Setup
 
-## Start MySQL
+## MySQL
 
-```
-docker run \
-    --name testray-mysql \
-    --rm \
-    -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
-    -e MYSQL_DATABASE=lportal \
-    -e MYSQL_PASSWORD=test \
-    -e MYSQL_USER=test \
-    -it \
-    -p 3306:3306 \
-    mysql:5.7 \
-    --character-set-server=utf8mb4 \
-    --collation-server=utf8mb4_unicode_ci
-```
+1. Start MySQL.
+
+  ```
+  docker run \
+      --name testray-mysql \
+      --rm \
+      -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+      -e MYSQL_DATABASE=lportal \
+      -e MYSQL_PASSWORD=test \
+      -e MYSQL_USER=test \
+      -it \
+      -p 3306:3306 \
+      mysql:5.7 \
+      --character-set-server=utf8mb4 \
+      --collation-server=utf8mb4_unicode_ci
+  ```
+
+1. Connect to MySQL.
+
+  1.
+
+    ```
+    docker exec -it testray-mysql mysql -utest -ptest
+    ```
+
+  1. Type ***use lportal;***
+
+  1. Type ***show tables;*** to see that no tables exist.
 
 ## Start Liferay
 
