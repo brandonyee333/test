@@ -167,13 +167,11 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		String[] issues = ParamUtil.getStringValues(request, "issues");
 
-		String issueComment = null;
+		StringBundler sb = new StringBundler(26);
 
 		String body = ParamUtil.getString(request, "comment");
 
 		if (Validator.isNotNull(body)) {
-			StringBundler sb = new StringBundler(26);
-
 			sb.append("*Testray Link*");
 			sb.append(StringPool.NEW_LINE);
 			sb.append(StringPool.OPEN_BRACKET);
@@ -200,11 +198,9 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 			sb.append("*Testray Comment*");
 			sb.append(StringPool.NEW_LINE);
 			sb.append(body);
-
-			issueComment = sb.toString();
 		}
 
-		TestraySubtaskUtil.updateTestraySubtasksTestrayIssues(this, issues, testraySubtask.getTestraySubtaskId(), user, issueComment);
+		TestraySubtaskUtil.updateTestraySubtasksTestrayIssues(this, issues, testraySubtask.getTestraySubtaskId(), user, sb.toString());
 
 		long commentMBMessageId = TestrayUtil.updateMBMessage(themeDisplay, testraySubtask.getCommentMBMessageId(), TestraySubtask.class.getName(), testraySubtask.getTestraySubtaskId(), body, portletRequest);
 
