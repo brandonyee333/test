@@ -155,20 +155,8 @@
 				<liferay-ui:search-container-column-text
 					href="${viewTestrayCaseResultsURL}"
 					name="git-hash"
-				>
-					<div class="table-column-sha">
-						<div class="copy-icon" align="center">
-							<liferay-ui:icon
-								id="${testrayBuildComposite.gitHash}"
-								image="copy"
-								onClick="${htmlNamespace}copyGitHash(this);"
-								url="javascript:;"
-							/>
-						</div>
-
-						<div class="sha-code">${testrayBuildComposite.gitHashShortened}</div>
-					</div>
-				</liferay-ui:search-container-column-text>
+					value="${testrayBuildComposite.gitHashShortened}"
+				/>
 			</c:if>
 
 			<c:if test="${testrayBuildsIndexColumns.contains(TestrayBuildConstants.COLUMN_LABEL_PRODUCT_VERSION)}">

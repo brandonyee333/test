@@ -287,15 +287,6 @@
 				</dt>
 				<dd>
 					${testrayBuildComposite.gitHash}
-
-					<div class="copy-icon-inline">
-						<liferay-ui:icon
-							id="${testrayBuildComposite.gitHash}"
-							image="copy"
-							onClick="${htmlNamespace}copyGitHash(this);"
-							url="javascript:;"
-						/>
-					</div>
 				</dd>
 				<dt>
 					<liferay-ui:message key="create-date" />
