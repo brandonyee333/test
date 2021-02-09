@@ -566,7 +566,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayRequirementComposite", testrayRequirementComposite);
 
-		Map<String, Serializable> attributes = _getTestrayCaseAttributes(testrayRequirementComposite);
+		Map<String, Serializable> attributes = _getAttributes(testrayRequirementComposite);
 
 		int[] startAndEnd = TestrayUtil.getStartAndEnd(request, portletRequest, portletURL);
 
@@ -630,15 +630,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		return testrayRequirement;
 	}
 
-	private String _getCSVField(String value) {
-		if ((value.charAt(0) == CharPool.QUOTE) || (value.charAt(0) == CharPool.APOSTROPHE)) {
-			return value.substring(1, value.length() - 1);
-		}
-
-		return value;
-	}
-
-	private Map<String, Serializable> _getTestrayCaseAttributes(TestrayRequirementComposite testrayRequirementComposite) throws Exception {
+	private Map<String, Serializable> _getAttributes(TestrayRequirementComposite testrayRequirementComposite) throws Exception {
 		Map<String, Serializable> attributes = new HashMap<String, Serializable>();
 
 		attributes.put("testrayProjectId", testrayRequirementComposite.getTestrayProjectId());
@@ -689,6 +681,26 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 			attributes.put("description", description);
 		}
 
+		String goals = ParamUtil.getString(request, "goals");
+		boolean goalsBlankOnly = ParamUtil.getBoolean(request, "goalsBlankOnly");
+
+		if (goalsBlankOnly) {
+			attributes.put("blankDescription", true);
+		}
+		else if (Validator.isNotNull(goals)) {
+			attributes.put("goals", goals);
+		}
+
+		String variations = ParamUtil.getString(request, "variations");
+		boolean variationsBlankOnly = ParamUtil.getBoolean(request, "variationsBlankOnly");
+
+		if (variationsBlankOnly) {
+			attributes.put("blankDescription", true);
+		}
+		else if (Validator.isNotNull(variations)) {
+			attributes.put("variations", variations);
+		}
+
 		String issues = ParamUtil.getString(request, "issues");
 		boolean issuesBlankOnly = ParamUtil.getBoolean(request, "issuesBlankOnly");
 
@@ -700,6 +712,14 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		}
 
 		return attributes;
+	}
+
+	private String _getCSVField(String value) {
+		if ((value.charAt(0) == CharPool.QUOTE) || (value.charAt(0) == CharPool.APOSTROPHE)) {
+			return value.substring(1, value.length() - 1);
+		}
+
+		return value;
 	}
 
 	private long[] _getTestrayCaseIds(String testrayCasesJSON) throws Exception {
