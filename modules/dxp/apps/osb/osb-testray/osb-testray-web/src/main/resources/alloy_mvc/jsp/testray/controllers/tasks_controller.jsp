@@ -158,18 +158,6 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		renderRequest.setAttribute("users", users);
 	}
 
-	public void listUsers() throws Exception {
-		TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(request);
-
-		TestrayTaskComposite testrayTaskComposite = new TestrayTaskComposite(testrayTask, themeDisplay, user);
-
-		renderRequest.setAttribute("users", testrayTaskComposite.getAssignedUsers());
-
-		renderRequest.setAttribute("viewOnly", true);
-
-		render("users/select");
-	}
-
 	@JSONWebServiceMethod(lifecycle = PortletRequest.ACTION_PHASE, parameterNames = {"id"}, parameterTypes = {Long.class})
 	public void metrics() throws Exception {
 		if (!isRespondingTo("json")) {
@@ -245,6 +233,18 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		renderRequest.setAttribute("usersCount", hits.getLength());
 
 		render("tasks/select_users");
+	}
+
+	public void listUsers() throws Exception {
+		TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(request);
+
+		TestrayTaskComposite testrayTaskComposite = new TestrayTaskComposite(testrayTask, themeDisplay, user);
+
+		renderRequest.setAttribute("users", testrayTaskComposite.getAssignedUsers());
+
+		renderRequest.setAttribute("viewOnly", true);
+
+		render("users/select");
 	}
 
 	@JSONWebServiceMethod(lifecycle = PortletRequest.ACTION_PHASE, parameterNames = {"id", "name", "userIds"}, parameterTypes = {String.class, String.class, String.class})
