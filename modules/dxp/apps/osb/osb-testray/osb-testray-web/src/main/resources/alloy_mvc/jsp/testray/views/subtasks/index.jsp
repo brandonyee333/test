@@ -152,7 +152,7 @@
 										<aui:button disabled="${testrayTaskComposite.testrayBuildArchived}" value="assign-users" />
 									</div>
 
-									<a href="#"><img class="button-avatar-change" data-placement="right" data-toggle="tooltip" disabled="${testrayTaskComposite.testrayBuildArchived}" onClick="${selectListUsersURL}" src="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext(request) + "/images/profileEdit.png") %>" title="Click to see all assigned Users" /></a>
+									<img class="button-avatar-change" disabled="${testrayTaskComposite.testrayBuildArchived}" onClick="${selectListUsersURL}" src="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext(request) + "/images/profileEdit.png") %>" />
 								</div>
 
 								<div class="col-md-1">
@@ -416,11 +416,7 @@
 			</div>
 		</div>
 
-		<aui:script use="testray-avatar,testray-context-menu,testray-metrics-bar,testray-row-checker-toolbar">	
-			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();
-			});
-
+		<aui:script use="testray-avatar,testray-context-menu,testray-metrics-bar,testray-row-checker-toolbar">
 			var testrayTaskJSON = ${testrayTaskComposite.getJSONObject()};
 
 			new Liferay.Testray.Avatar(
