@@ -94,7 +94,7 @@ public class MetricDog {
 		T assetMetric = supplier.get();
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildAssetMetricSearchSourceBuilder(
 				dogConfiguration, includePrevious, searchQueryContext,
 				selectedMetrics));
@@ -196,7 +196,7 @@ public class MetricDog {
 				searchQueryContext.getAssetType());
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildAssetMetricsCountSearchSourceBuilder(searchQueryContext));
 
 		if (DogUtil.isEmpty(aggregations)) {
@@ -425,7 +425,7 @@ public class MetricDog {
 				searchQueryContext.getAssetType());
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildAssetMetricsSearchSourceBuilder(
 				assetIds, count, dogConfiguration, searchQueryContext,
 				selectedMetrics, size, sort, start));

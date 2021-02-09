@@ -76,7 +76,7 @@ public class HistogramDog {
 				searchQueryContext.getAssetType());
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildSearchSourceBuilder(
 				dogConfiguration, includePrevious, metricType,
 				searchQueryContext));

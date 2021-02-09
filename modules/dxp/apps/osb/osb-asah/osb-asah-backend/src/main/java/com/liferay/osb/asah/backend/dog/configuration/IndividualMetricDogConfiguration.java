@@ -49,7 +49,7 @@ public class IndividualMetricDogConfiguration extends BaseDogConfiguration {
 	}
 
 	@Override
-	public String getCollection() {
+	public String getCollectionName() {
 		return "individuals";
 	}
 

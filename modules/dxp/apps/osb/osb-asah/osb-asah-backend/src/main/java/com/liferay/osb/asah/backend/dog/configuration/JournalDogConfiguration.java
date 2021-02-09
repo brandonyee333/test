@@ -50,7 +50,7 @@ public class JournalDogConfiguration extends BaseDogConfiguration {
 	}
 
 	@Override
-	public String getCollection() {
+	public String getCollectionName() {
 		return "journals";
 	}
 

@@ -50,7 +50,7 @@ public class DocumentLibraryDogConfiguration extends BaseDogConfiguration {
 	}
 
 	@Override
-	public String getCollection() {
+	public String getCollectionName() {
 		return "document-libraries";
 	}
 

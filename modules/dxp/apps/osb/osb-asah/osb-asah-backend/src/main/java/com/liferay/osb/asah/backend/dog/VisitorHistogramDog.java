@@ -73,7 +73,7 @@ public class VisitorHistogramDog {
 				searchQueryContext.getAssetType());
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildSearchSourceBuilder(
 				dogConfiguration, includePrevious, searchQueryContext));
 

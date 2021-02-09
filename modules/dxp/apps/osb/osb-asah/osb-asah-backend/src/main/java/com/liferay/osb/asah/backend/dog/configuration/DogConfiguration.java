@@ -38,7 +38,7 @@ public interface DogConfiguration {
 
 	public AssetType getAssetType();
 
-	public String getCollection();
+	public String getCollectionName();
 
 	public default MetricResolver getMetricResolver(MetricType metricType) {
 		Set<MetricResolver> metricResolvers = getMetricResolvers(

@@ -71,7 +71,7 @@ public class TitleDog {
 			_dogConfigurationBag.getDogConfiguration(assetType);
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildSearchSourceBuilder(assetIds, assetType, keywords));
 
 		if (DogUtil.isEmpty(aggregations)) {

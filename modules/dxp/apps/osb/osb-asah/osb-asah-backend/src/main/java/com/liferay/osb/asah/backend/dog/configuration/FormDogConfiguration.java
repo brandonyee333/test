@@ -54,7 +54,7 @@ public class FormDogConfiguration extends BaseDogConfiguration {
 	}
 
 	@Override
-	public String getCollection() {
+	public String getCollectionName() {
 		return "forms";
 	}
 

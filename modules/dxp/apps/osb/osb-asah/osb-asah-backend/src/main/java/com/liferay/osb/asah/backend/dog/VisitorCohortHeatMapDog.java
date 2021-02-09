@@ -85,7 +85,7 @@ public class VisitorCohortHeatMapDog {
 				searchQueryContext.getAssetType());
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildSearchSourceBuilder(
 				dogConfiguration.getMetricResolver(metricType), metricType,
 				searchQueryContext));

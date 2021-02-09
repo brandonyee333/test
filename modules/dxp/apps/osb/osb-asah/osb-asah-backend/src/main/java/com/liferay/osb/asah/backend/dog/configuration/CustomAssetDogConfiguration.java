@@ -55,7 +55,7 @@ public class CustomAssetDogConfiguration extends BaseDogConfiguration {
 	}
 
 	@Override
-	public String getCollection() {
+	public String getCollectionName() {
 		return "custom-assets";
 	}
 

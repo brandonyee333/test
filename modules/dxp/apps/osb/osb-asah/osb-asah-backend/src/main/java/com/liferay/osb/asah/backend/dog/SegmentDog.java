@@ -90,7 +90,7 @@ public class SegmentDog {
 				searchQueryContext.getAssetType());
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildSearchSourceBuilder(
 				dogConfiguration, metricType, Optional.empty(),
 				searchQueryContext, _createSegmentsTermsAggregationBuilder(),
@@ -260,7 +260,7 @@ public class SegmentDog {
 		);
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildSearchSourceBuilder(
 				dogConfiguration, metricType, Optional.of(boolQueryBuilder),
 				searchQueryContext,

@@ -60,7 +60,7 @@ public class UserDog {
 				searchQueryContext.getAssetType());
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildSearchSourceBuilder(
 				metricType, QueryBuilders.termQuery("knownIndividual", false),
 				searchQueryContext,
@@ -77,7 +77,7 @@ public class UserDog {
 				searchQueryContext.getAssetType());
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildSearchSourceBuilder(
 				metricType, _getKnownIndividualBoolQueryBuilder(),
 				searchQueryContext,
@@ -99,7 +99,7 @@ public class UserDog {
 		boolQueryBuilder.mustNot(QueryBuilders.existsQuery("segmentNames"));
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildSearchSourceBuilder(
 				metricType, boolQueryBuilder, searchQueryContext,
 				_createIndividualIdsTermsAggregationBuilder()));
@@ -120,7 +120,7 @@ public class UserDog {
 		boolQueryBuilder.filter(QueryBuilders.existsQuery("segmentNames"));
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildSearchSourceBuilder(
 				metricType, boolQueryBuilder, searchQueryContext,
 				_createIndividualIdsTermsAggregationBuilder()));

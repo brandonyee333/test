@@ -56,7 +56,7 @@ public class TechnologyDog {
 				searchQueryContext.getAssetType());
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildBrowserSearchSourceBuilder(
 				dogConfiguration, metricType, searchQueryContext));
 
@@ -82,7 +82,7 @@ public class TechnologyDog {
 				searchQueryContext.getAssetType());
 
 		Aggregations aggregations = _dataDog.queryAggregations(
-			dogConfiguration.getCollection(),
+			dogConfiguration.getCollectionName(),
 			_buildDeviceSearchSourceBuilder(
 				dogConfiguration, metricType, searchQueryContext));
 

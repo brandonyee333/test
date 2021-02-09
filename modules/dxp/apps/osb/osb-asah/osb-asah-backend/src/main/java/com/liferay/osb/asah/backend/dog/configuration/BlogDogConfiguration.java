@@ -53,7 +53,7 @@ public class BlogDogConfiguration extends BaseDogConfiguration {
 	}
 
 	@Override
-	public String getCollection() {
+	public String getCollectionName() {
 		return "blogs";
 	}
 

@@ -71,7 +71,7 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 	}
 
 	@Override
-	public String getCollection() {
+	public String getCollectionName() {
 		return "pages";
 	}
 

@@ -65,7 +65,7 @@ public class SiteDogConfiguration extends BaseDogConfiguration {
 	}
 
 	@Override
-	public String getCollection() {
+	public String getCollectionName() {
 		return "pages";
 	}
 
