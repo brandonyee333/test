@@ -137,24 +137,6 @@
 						value="${testrayRequirementComposite.description}"
 					/>
 				</dd>
-				<dt>
-					<liferay-ui:message key="goals" />
-				</dt>
-				<dd>
-					<testray:rich-output
-						type="${testrayRequirementComposite.goalsType}"
-						value="${testrayRequirementComposite.goals}"
-					/>
-				</dd>
-				<dt>
-					<liferay-ui:message key="variations" />
-				</dt>
-				<dd>
-					<testray:rich-output
-						type="${testrayRequirementComposite.variationsType}"
-						value="${testrayRequirementComposite.variations}"
-					/>
-				</dd>
 			</dl>
 		</liferay-ui:panel>
 	</liferay-ui:panel-container>
