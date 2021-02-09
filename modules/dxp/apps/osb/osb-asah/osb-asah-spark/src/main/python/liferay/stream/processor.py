@@ -93,6 +93,8 @@ class AnalyticsEventsDataFrameProcessor(object):
 				),
 				256
 			)
+		).fillna(
+			'', subset=['variantId']
 		)
 
 		data_frame = self._process(data_frame)
@@ -293,7 +295,9 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 	def _process(self, data_frame):
 		data_frame_with_rating_score = self._calculate_rating_score(data_frame)
 
-		data_frame.withColumn(
+		data_frame = data_frame.filter(
+			"applicationId != 'Ratings'"
+		).withColumn(
 			'comments',
 			F.when(
 				F.col('eventId') == 'posted', F.lit(1)
@@ -314,7 +318,23 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			).otherwise(
 				F.lit(0)
 			)
+		).groupBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'normalized_event_date', 'primaryKey'
+		).agg(
+			F.sum('comments').alias('comments'),
+			F.sum('downloads').alias('downloads'),
+			F.sum('previews').alias('previews')
 		)
+
+		return data_frame.join(
+			data_frame_with_rating_score,
+			on=[
+				'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+				'normalized_event_date', 'primaryKey'
+			],
+			how='left'
+		).fillna(0)
 
 class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
