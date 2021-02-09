@@ -85,10 +85,10 @@ public class TestrayLoginFilter extends BaseFilter {
 		User currentUser = _portal.getUser(request);
 
 		if (currentUser == null) {
+			String currentURL = _portal.getCurrentURL(request);
+
 			response.sendRedirect(
-				_http.addParameter(
-					"/c/portal/login", "redirect",
-					_portal.getCurrentURL(request)));
+				_http.addParameter("/c/portal/login", "redirect", currentURL));
 
 			return;
 		}

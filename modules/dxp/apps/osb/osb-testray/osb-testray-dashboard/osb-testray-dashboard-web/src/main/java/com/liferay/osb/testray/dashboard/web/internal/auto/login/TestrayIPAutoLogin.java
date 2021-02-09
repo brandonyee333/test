@@ -55,7 +55,9 @@ public class TestrayIPAutoLogin extends BaseAutoLogin {
 			_log.info("Remote address: " + request.getRemoteAddr());
 		}
 
-		String[] credentials = getCredentials(_portal.getCompanyId(request));
+		long companyId = _portal.getCompanyId(request);
+
+		String[] credentials = getCredentials(companyId);
 
 		if ((credentials == null) || !isValidIP(request.getRemoteAddr())) {
 			return null;
