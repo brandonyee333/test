@@ -49,8 +49,7 @@
 			height: 35px;
 
 			circle, path, polygon {
-				fill:#ffffff;
-				// fill: $sidebar-text-color;
+				fill: $sidebar-text-color;
 			}
 		}
 	}
@@ -72,7 +71,7 @@
 	}
 
 	.testray-sidebar-item {
-		color:#f1f1f1;
+		color: $sidebar-text-color;
 		display: block;
 		padding: 10px 25px;
 		position: relative;
@@ -99,7 +98,6 @@
 		}
 
 		.testray-sidebar-text {
-			color:#f1f1f1;
 			font-size: 1.3em;
 			font-weight: $font-header-weight;
 			padding-left: 10px;
