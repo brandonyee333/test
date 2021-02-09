@@ -391,7 +391,7 @@ public static class TestrayCaseResultUtil {
 		}
 
 		if (!comment.contains(autofillMessage) && !comment.contains("this-has-been-automatically-populated-from-a-previous-result")) {
-			comment += StringPool.NEW_LINE + autofillMessage;
+			comment += StringPool.NEW_LINE + autofillMessage
 		}
 
 		return comment;
