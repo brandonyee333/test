@@ -50,11 +50,11 @@
 					controllerMethod: 'buildMetrics.json',
 					params: {
 						cur: ${cur},
-						delta: ${delta},
 						priorities: ${testrayCasePriorities},
 						testrayCaseTypeId: ${testrayCaseTypeIds},
 						testrayRoutineId: ${testrayRoutine.testrayRoutineId},
-						testrayTeamId: ${testrayTeamId}
+						testrayTeamId: ${testrayTeamId},
+						delta: ${delta}
 					},
 					reverseData: true,
 					xAxisLabel: '<liferay-ui:message key="builds-ordered-by-date" />',
