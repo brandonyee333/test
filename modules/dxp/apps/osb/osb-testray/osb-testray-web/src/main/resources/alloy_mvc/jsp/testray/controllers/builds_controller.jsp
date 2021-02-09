@@ -409,6 +409,8 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayBuildComposites", TestrayCompositeUtil.getComposites(alloySearchResult.getBaseModels(), TestrayBuildComposite.class, new Class<?>[] {TestrayBuild.class, ThemeDisplay.class, Map.class}, new Object[] {themeDisplay, testrayCaseResultProperties}));
 
+		renderRequest.setAttribute("testrayBuildCount", alloySearchResult.getBaseModels());
+
 		List<TestrayBuild> templateTestrayBuilds = alloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayRoutineId", testrayRoutineId, "template", true, "status", TestrayBuildConstants.STATUS_DEFAULT});
 
 		renderRequest.setAttribute("templateTestrayBuildComposites", TestrayCompositeUtil.getComposites(templateTestrayBuilds, TestrayBuildComposite.class, new Class<?>[] {TestrayBuild.class, ThemeDisplay.class, Map.class}, new Object[] {themeDisplay, testrayCaseResultProperties}));
