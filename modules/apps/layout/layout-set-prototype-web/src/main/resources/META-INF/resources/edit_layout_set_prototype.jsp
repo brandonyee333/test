@@ -144,3 +144,23 @@ else {
 	PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "add-page"), currentURL);
 }
 %>
+
+<c:if test='<%= SessionMessages.contains(renderRequest, "disablePropagation") %>'>
+	<aui:script>
+		Liferay.Util.openToast({
+			autoClose: 10000,
+			message: '<liferay-ui:message key="disable-propagation" />',
+			type: 'info'
+		});
+	</aui:script>
+</c:if>
+
+<c:if test='<%= SessionMessages.contains(renderRequest, "enablePropagation") %>'>
+	<aui:script>
+		Liferay.Util.openToast({
+			autoClose: 10000,
+			message: '<liferay-ui:message key="ready-for-propagation" />',
+			type: 'info'
+		});
+	</aui:script>
+</c:if>
