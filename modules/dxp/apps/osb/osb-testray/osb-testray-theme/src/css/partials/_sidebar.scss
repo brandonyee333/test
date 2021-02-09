@@ -5,7 +5,7 @@
 	@include display(flex);
 	@include flex-direction(column);
 
-	padding: 20px 0 0;
+	padding: 20px 0 0 0;
 	width: $sidebar-width;
 
 	.divider {
@@ -43,13 +43,14 @@
 	}
 
 	.testray-logo {
-		margin: 5px 25px 30px;
+		margin: 5px 25px 30px 25px;
 
 		svg {
 			height: 35px;
 
 			circle, path, polygon {
-				fill: #FFF;
+				fill:#FFFFFF;
+				// fill: $sidebar-text-color;
 			}
 		}
 	}
@@ -71,7 +72,7 @@
 	}
 
 	.testray-sidebar-item {
-		color: #F1F1F1;
+		color:#F1F1F1;
 		display: block;
 		padding: 10px 25px;
 		position: relative;
@@ -98,7 +99,7 @@
 		}
 
 		.testray-sidebar-text {
-			color: #F1F1F1;
+			color:#F1F1F1;
 			font-size: 1.3em;
 			font-weight: $font-header-weight;
 			padding-left: 10px;
@@ -173,7 +174,7 @@
 			display: block;
 			font-size: $font-size-smallest;
 			line-height: 1.5;
-			margin: 5px 0 10px;
+			margin: 5px 0 10px 0;
 		}
 
 		.task-list {

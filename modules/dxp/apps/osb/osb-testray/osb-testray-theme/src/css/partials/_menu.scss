@@ -37,7 +37,7 @@
 }
 
 .testray-menu {
-	background-color: #E2E2E2;
+	background-color:#E2E2E2;
 	border-radius: $border-radius;
 	box-shadow: $box-shadow;
 	margin: 0;
@@ -52,9 +52,9 @@
 	}
 
 	.testray-menu-header {
-		color: #0275C3;
+		color:#0275C3;
 		font-size: $font-size-smallest;
-		padding: 5px 22px 0;
+		padding: 5px 22px 0 22px;
 	}
 
 	.testray-menu-item {

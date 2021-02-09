@@ -176,6 +176,8 @@
 					cssClass="metrics metrics-compact"
 					name="progress"
 				>
+					<br /><br /><br />
+
 					<progress class="progress" max="100" value="1">
 						<liferay-ui:message arguments="${fn:split(arguments, StringPool.SEMICOLON)}" key="x-slash-x" />
 
