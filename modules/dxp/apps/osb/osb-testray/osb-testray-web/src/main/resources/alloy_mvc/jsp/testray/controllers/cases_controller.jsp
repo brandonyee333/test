@@ -415,12 +415,12 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayTeams", testrayTeams);
 
-		JSONArray testrayCasesJSONArray = _getTestrayCasesJSONArray(testrayCaseComposites);
+		JSONArray testraySuitesJSONArray = _getTestrayCasesJSONArray(testrayCaseComposites);
 
-		renderRequest.setAttribute("testrayCasesJSONArray", testrayCasesJSONArray);
+		renderRequest.setAttribute("testrayCasesJSONArray", testraySuitesJSONArray);
 
 		if (isRespondingTo("json")) {
-			respondWith(testrayCasesJSONArray);
+			respondWith(testraySuitesJSONArray);
 		}
 	}
 
