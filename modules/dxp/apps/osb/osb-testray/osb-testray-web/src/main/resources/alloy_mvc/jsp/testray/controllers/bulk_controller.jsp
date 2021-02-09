@@ -219,6 +219,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 			int status = ParamUtil.getInteger(request, "status", -1);
 
 			if ((status != testrayCaseResult.getStatus()) && (status >= 0)) {
+				TestrayCase testrayCase = TestrayCaseLocalServiceUtil.getTestrayCase(testrayCaseResult.getTestrayCaseId());
 			}
 
 			updateModel(testrayCaseResult);
