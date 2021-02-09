@@ -163,13 +163,13 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		_validateUpdateStatus(testraySubtask);
 
-		int status = ParamUtil.getInteger(request, "status", -1);
-
 		String[] issues = ParamUtil.getStringValues(request, "issues");
 
-		StringBundler sb = new StringBundler(26);
-
 		String body = ParamUtil.getString(request, "comment");
+
+		int status = ParamUtil.getInteger(request, "status", -1);
+
+		StringBundler sb = new StringBundler(26);
 
 		if (Validator.isNotNull(body)) {
 			sb.append("*Testray Link*");
