@@ -235,16 +235,6 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		render("tasks/select_users");
 	}
 
-	public void selectListUsers() throws Exception {
-		TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(request);
-
-		TestrayTaskComposite testrayTaskComposite = new TestrayTaskComposite(testrayTask, themeDisplay, user);
-
-		renderRequest.setAttribute("assignedUsers", testrayTaskComposite.getAssignedUsers());
-
-		render("tasks/select_list_users");
-	}
-	
 	@JSONWebServiceMethod(lifecycle = PortletRequest.ACTION_PHASE, parameterNames = {"id", "name", "userIds"}, parameterTypes = {String.class, String.class, String.class})
 	public void update() throws Exception {
 		TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(request);

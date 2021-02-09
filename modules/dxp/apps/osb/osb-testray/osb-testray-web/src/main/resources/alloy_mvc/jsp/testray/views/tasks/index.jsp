@@ -79,18 +79,6 @@
 				/>
 			</portlet:renderURL>
 
-			<c:if test='${testrayPermission:containsModelAction(themeDisplay, testrayTaskComposite.testrayTask, "updateUsers")}'>
-				<portlet:renderURL var="selectListUsersURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-					<portlet:param name="controller" value="tasks" />
-					<portlet:param name="action" value="selectListUsers" />
-					<portlet:param name="id" value="${testrayTaskComposite.testrayTaskId}" />
-				</portlet:renderURL>
-
-				<c:set value='${AlloyLanguageUtil.getUnicode("users")}' var="selectListUsersURLTitle" />
-
-				<c:set value="javascript:Liferay.Testray.openWindow('${selectListUsersURL}', '${selectListUsersURLTitle}', 1000)" var="selectListUsersURL" />
-			</c:if>
-
 			<c:if test="${testrayTasksIndexColumns.contains(TestrayTaskConstants.COLUMN_LABEL_STATUS)}">
 				<liferay-ui:search-container-column-text
 					href="${!param.archived ? viewTestraySubtasksURL : null}"
@@ -226,21 +214,8 @@
 					cssClass="assignee-portraits"
 					name="assigned-users"
 				>
-				<div class="row">
-					<div class="col-md-10"></div>
+					<div class="avatar-container" id="${htmlNamespace}avatarContainer${testrayTaskComposite.testrayTaskId}"></div>
 
-					<div class="col-md-1">
-						<div class="button-avatar-userassigned">
-							<aui:button disabled="${testrayTaskComposite.testrayBuildArchived}" value="assign-users" />
-						</div>
-
-						<img class="button-avatar-change" disabled="${testrayTaskComposite.testrayBuildArchived}" onClick="${selectListUsersURL}" src="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext(request) + "/images/profileEdit.png") %>" />
-					</div>
-
-					<div class="col-md-1">
-						<div class="text-count-user-task" id="${htmlNamespace}avatarContainer${testrayTaskComposite.testrayTaskId}"></div>
-					</div>
-				</div>
 					<aui:script use="testray-avatar">
 						var testrayTaskJSON = ${testrayTaskComposite.getJSONObject()};
 

@@ -41,18 +41,6 @@
 				<aui:button disabled="${testrayTaskComposite.testrayBuildArchived}" onClick="${selectUsersURL}" value="assign-users" />
 			</c:if>
 
-			<c:if test='${testrayPermission:containsModelAction(themeDisplay, testrayTaskComposite.testrayTask, "updateUsers")}'>
-				<portlet:renderURL var="selectListUsersURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-					<portlet:param name="controller" value="tasks" />
-					<portlet:param name="action" value="selectListUsers" />
-					<portlet:param name="id" value="${testrayTaskComposite.testrayTaskId}" />
-				</portlet:renderURL>
-
-				<c:set value='${AlloyLanguageUtil.getUnicode("users")}' var="selectListUsersURLTitle" />
-
-				<c:set value="javascript:Liferay.Testray.openWindow('${selectListUsersURL}', '${selectListUsersURLTitle}', 1000)" var="selectListUsersURL" />
-			</c:if>
-
 			<c:if test='${testrayPermission:containsModelAction(themeDisplay, testrayTaskComposite.testrayTask, "edit")}'>
 				<portlet:renderURL var="editTestrayTaskURL">
 					<portlet:param name="controller" value="tasks" />
@@ -146,21 +134,7 @@
 							<liferay-ui:message key="assigned-users" />
 						</dt>
 						<dd>
-							<div class="row">
-								<div class="col-md-1">
-									<div class="button-avatar-userassigned">
-										<aui:button disabled="${testrayTaskComposite.testrayBuildArchived}" value="assign-users" />
-									</div>
-
-									<img class="button-avatar-change" disabled="${testrayTaskComposite.testrayBuildArchived}" onClick="${selectListUsersURL}" src="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext(request) + "/images/profileEdit.png") %>" />
-								</div>
-
-								<div class="col-md-1">
-									<div class="text-count-user-subtask" id="${htmlNamespace}avatarContainer${testrayTaskComposite.testrayTaskId}"></div>
-								</div>
-
-								<div class="col-md-10"></div>
-							</div>
+							<div class="avatar-container" id="${htmlNamespace}avatarContainer${testrayTaskComposite.testrayTaskId}"></div>
 						</dd>
 						<dt>
 							<liferay-ui:message key="created" />

@@ -52,7 +52,7 @@ AUI.add(
 					},
 
 					maxVisible: {
-						value: 0
+						value: 3
 					},
 
 					showLabel: {
