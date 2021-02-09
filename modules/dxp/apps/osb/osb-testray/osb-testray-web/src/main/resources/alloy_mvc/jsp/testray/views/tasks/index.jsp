@@ -225,6 +225,8 @@
 					name="assigned-users"
 				>
 					<div class="row">
+						<div class="col-md-10"></div>
+
 						<div class="col-md-1">
 							<div class="avatar-container" id="${htmlNamespace}avatarContainer${testrayTaskComposite.testrayTaskId}" onClick="${listUsersURL}" title="<liferay-ui:message key="click-to-see-all-assigned-users" />"></div>
 						</div>
