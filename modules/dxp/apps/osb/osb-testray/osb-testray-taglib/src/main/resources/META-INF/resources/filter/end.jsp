@@ -31,7 +31,6 @@
 
 <aui:script use="aui-popover,event-outside">
 	var trigger = A.one('#filterToggle');
-	var filterField = A.one('#testrayFilterField');
 
 	if (trigger) {
 		var popover = new A.Popover(
@@ -63,8 +62,6 @@
 				event.stopPropagation();
 
 				popover.toggle();
-
-				filterField.focus();
 
 				var boundingBox = popover.get('boundingBox');
 
