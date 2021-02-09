@@ -115,13 +115,13 @@
 							<c:forEach items="${testrayFactorCategoryMap}" var="testrayFactorCategoryEntry" varStatus="l">
 								<c:set value="${testrayFactorCategoryEntry.key}" var="testrayFactorCategory" />
 
-								<div class="environment-options-size">
+								<aui:col span="${12 / testrayFactorCategoryMap.size()}">
 									<aui:select cssClass="testray-factor-category-${testrayFactorCategory.testrayFactorCategoryId} testray-factor-option-select" label="${testrayFactorCategory.name}" name="testrayFactorOptionName_column${testrayFactorCategory.testrayFactorCategoryId}_existing${testrayRunComposite.testrayRunId}" onChange="Liferay.Testray.validateUniqueFormRow('#testrayFactors', '.lfr-form-row')" required="${true}" showEmptyOption="${true}" showRequiredLabel="${false}" style="width:220px">
 										<c:forEach items="${testrayFactorCategoryEntry.value}" var="testrayFactorOption">
 											<aui:option label="${testrayFactorOption.name}" selected="${selectedTestrayFactorOptionIds.contains(testrayFactorOption.testrayFactorOptionId)}" value="${testrayFactorOption.testrayFactorOptionId}" />
 										</c:forEach>
 									</aui:select>
-								</div>
+								</aui:col>
 							</c:forEach>
 
 							<aui:input label="delete-run" name="delete-${testrayRunComposite.testrayRunId}" onChange="${htmlNamespace}deactivateTestrayRun(${testrayRunComposite.testrayRunId});" type="checkbox" />
