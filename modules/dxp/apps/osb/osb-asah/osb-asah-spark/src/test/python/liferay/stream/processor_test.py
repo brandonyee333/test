@@ -12,6 +12,7 @@
 from liferay.stream.job import CuratorSparkJob
 from liferay.stream.processor import BlogDataFrameProcessor, \
 	DocumentLibraryDataFrameProcessor, \
+	FormDataFrameProcessor, \
 	JournalDataFrameProcessor
 
 from pyspark.sql import functions as F, \
@@ -28,6 +29,10 @@ def document_library_data_frame_processor(spark_application):
 	return DocumentLibraryDataFrameProcessor(
 		0, CuratorSparkJob(spark_application)
 	)
+
+@pytest.fixture
+def form_data_frame_processor(spark_application):
+	return FormDataFrameProcessor(0, CuratorSparkJob(spark_application))
 
 @pytest.fixture
 def journal_data_frame_processor(spark_application):
@@ -51,6 +56,10 @@ def read_session_events_data_frame(file_name, spark_session):
 		T.StructType([
 			T.StructField("applicationId", T.StringType(), False),
 			T.StructField("channelId", T.StringType(), False),
+			T.StructField(
+				"context",
+				T.MapType(T.StringType(), T.StringType(), True), True
+			),
 			T.StructField("eventDate", T.StringType(), False),
 			T.StructField("eventId", T.StringType(), False),
 			T.StructField(
@@ -196,6 +205,21 @@ def test_document_library_data_frame_processor_process(
 	assert 3 == row.previews
 	assert 1 == row.ratings
 	assert 2.0 == row.ratingsScore
+
+def test_form_data_frame_processor_filter(
+	form_data_frame_processor, spark_session
+):
+
+	actual_data_frame = form_data_frame_processor._filter(
+		read_session_events_data_frame(
+			'form_data_frame_processor_filter_input.json',
+			spark_session
+		)
+	)
+
+	actual_data_frame_rows = actual_data_frame.collect()
+
+	assert len(actual_data_frame_rows) == 4
 
 def test_journal_data_frame_processor_filter(
 		journal_data_frame_processor, spark_session
