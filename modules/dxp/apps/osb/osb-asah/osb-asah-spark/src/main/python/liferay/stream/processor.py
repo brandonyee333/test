@@ -72,7 +72,7 @@ class AnalyticsEventsDataFrameProcessor(object):
 			)
 		)
 
-	def process(self, analytics_events_data_frame):
+	def process(self, analytics_events_data_frame, write=True):
 		data_frame = self._filter(
 			analytics_events_data_frame
 		).withColumn(
@@ -95,7 +95,12 @@ class AnalyticsEventsDataFrameProcessor(object):
 			)
 		)
 
-		return self._write(self._process(data_frame))
+		data_frame = self._process(data_frame)
+
+		if write:
+			self._write(data_frame)
+
+		return data_frame
 
 class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
