@@ -74,7 +74,7 @@
 	1. Compile Testray dependencies.
 
 		```
-		ant setup-sdk compile install-portal-snapshots
+		ant all
 		```
 
 1. Verify that Liferay does not have the Testray modules.
