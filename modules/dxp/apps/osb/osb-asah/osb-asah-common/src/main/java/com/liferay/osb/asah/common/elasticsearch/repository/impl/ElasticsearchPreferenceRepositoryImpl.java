@@ -48,7 +48,7 @@ public class ElasticsearchPreferenceRepositoryImpl
 	@Override
 	public void delete(Preference preference) {
 		_faroInfoElasticsearchInvoker.delete(
-			getCollection(), String.valueOf(preference.getKey()));
+			getCollectionName(), String.valueOf(preference.getKey()));
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class ElasticsearchPreferenceRepositoryImpl
 				).collect(
 					Collectors.toList()
 				)),
-			true, getCollection());
+			true, getCollectionName());
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class ElasticsearchPreferenceRepositoryImpl
 	@Override
 	public Preference findByKey(String key) {
 		return Optional.ofNullable(
-			_faroInfoElasticsearchInvoker.fetch(getCollection(), key)
+			_faroInfoElasticsearchInvoker.fetch(getCollectionName(), key)
 		).map(
 			this::toEntity
 		).orElse(
@@ -101,7 +101,7 @@ public class ElasticsearchPreferenceRepositoryImpl
 	}
 
 	@Override
-	protected String getCollection() {
+	protected String getCollectionName() {
 		return "preferences";
 	}
 

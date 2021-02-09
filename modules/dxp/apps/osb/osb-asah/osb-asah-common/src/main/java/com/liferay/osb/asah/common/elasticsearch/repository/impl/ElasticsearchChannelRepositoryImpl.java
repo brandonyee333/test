@@ -64,7 +64,7 @@ public class ElasticsearchChannelRepositoryImpl
 	@Override
 	public long countByNameContainingIgnoreCase(String name) {
 		return _faroInfoElasticsearchInvoker.count(
-			getCollection(),
+			getCollectionName(),
 			QueryUtil.buildSearchQueryBuilder("name.search", name));
 	}
 
@@ -82,13 +82,13 @@ public class ElasticsearchChannelRepositoryImpl
 				).collect(
 					Collectors.toList()
 				)),
-			true, getCollection());
+			true, getCollectionName());
 	}
 
 	@Override
 	public boolean existsByIdNotAndName(Long id, String name) {
 		return _faroInfoElasticsearchInvoker.exists(
-			getCollection(),
+			getCollectionName(),
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("name", name)
 			).mustNot(
@@ -99,7 +99,7 @@ public class ElasticsearchChannelRepositoryImpl
 	@Override
 	public boolean existsByName(String name) {
 		return _faroInfoElasticsearchInvoker.exists(
-			getCollection(), QueryBuilders.termQuery("name", name));
+			getCollectionName(), QueryBuilders.termQuery("name", name));
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class ElasticsearchChannelRepositoryImpl
 	public List<Channel> findByDataSourceId(Long dataSourceId) {
 		return _toChannels(
 			_faroInfoElasticsearchInvoker.get(
-				getCollection(),
+				getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
 						"dataSources.id", String.valueOf(dataSourceId)))));
@@ -123,7 +123,7 @@ public class ElasticsearchChannelRepositoryImpl
 
 		return _toChannels(
 			_faroInfoElasticsearchInvoker.get(
-				getCollection(),
+				getCollectionName(),
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
 						"dataSources.id", String.valueOf(dataSourceId))
@@ -150,7 +150,7 @@ public class ElasticsearchChannelRepositoryImpl
 			CollectionGetResponse collectionGetResponse =
 				new CollectionGetResponse();
 
-			collectionGetResponse.setCollectionName(getCollection());
+			collectionGetResponse.setCollectionName(getCollectionName());
 			collectionGetResponse.setElasticsearchInvoker(
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
@@ -190,7 +190,7 @@ public class ElasticsearchChannelRepositoryImpl
 				"_embedded");
 
 			return _toChannels(
-				embeddedJSONObject.getJSONArray(getCollection()));
+				embeddedJSONObject.getJSONArray(getCollectionName()));
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -200,7 +200,7 @@ public class ElasticsearchChannelRepositoryImpl
 	}
 
 	@Override
-	protected String getCollection() {
+	protected String getCollectionName() {
 		return "channels";
 	}
 

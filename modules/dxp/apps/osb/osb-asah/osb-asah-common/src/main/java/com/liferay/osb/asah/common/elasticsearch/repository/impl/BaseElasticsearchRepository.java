@@ -42,7 +42,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
 		return elasticsearchInvoker.count(
-			getCollection(), QueryBuilders.matchAllQuery());
+			getCollectionName(), QueryBuilders.matchAllQuery());
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
 		elasticsearchInvoker.delete(
-			getCollection(), String.valueOf(entity.getId()));
+			getCollectionName(), String.valueOf(entity.getId()));
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
 		elasticsearchInvoker.delete(
-			getCollection(), QueryBuilders.matchAllQuery());
+			getCollectionName(), QueryBuilders.matchAllQuery());
 	}
 
 	@Override
@@ -78,28 +78,28 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 				).collect(
 					Collectors.toList()
 				)),
-			true, getCollection());
+			true, getCollectionName());
 	}
 
 	@Override
 	public void deleteById(Long id) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
-		elasticsearchInvoker.delete(getCollection(), id.toString());
+		elasticsearchInvoker.delete(getCollectionName(), id.toString());
 	}
 
 	@Override
 	public boolean existsById(Long id) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
-		return elasticsearchInvoker.exists(getCollection(), id.toString());
+		return elasticsearchInvoker.exists(getCollectionName(), id.toString());
 	}
 
 	@Override
 	public Iterable<T> findAll() {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
-		return _toList(elasticsearchInvoker.get(getCollection()));
+		return _toList(elasticsearchInvoker.get(getCollectionName()));
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 
 		return _toList(
 			elasticsearchInvoker.get(
-				getCollection(),
+				getCollectionName(),
 				QueryBuilders.termsQuery(
 					"id",
 					stream.map(
@@ -125,7 +125,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
 		return Optional.ofNullable(
-			elasticsearchInvoker.fetch(getCollection(), id.toString())
+			elasticsearchInvoker.fetch(getCollectionName(), id.toString())
 		).map(
 			this::toEntity
 		);
@@ -136,7 +136,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
 		JSONObject jsonObject = elasticsearchInvoker.add(
-			getCollection(), toJSONObject(entity));
+			getCollectionName(), toJSONObject(entity));
 
 		return (S)toEntity(jsonObject);
 	}
@@ -152,7 +152,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 		);
 	}
 
-	protected abstract String getCollection();
+	protected abstract String getCollectionName();
 
 	protected abstract ElasticsearchInvoker getElasticsearchInvoker();
 
