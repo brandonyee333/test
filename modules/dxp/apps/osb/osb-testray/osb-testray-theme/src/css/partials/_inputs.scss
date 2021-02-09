@@ -141,10 +141,3 @@ pre {
 .text-warning {
 	color: $validation-error-text;
 }
-
-@media (max-width: 992px) {
-	.environment-options-size {
-		display: -webkit-inline-box;
-		width: 100%;
-	}
-}
