@@ -250,7 +250,7 @@ public static class TestraySubtaskUtil {
 		TestraySubtaskLocalServiceUtil.updateTestraySubtask(testraySubtask);
 	}
 
-	public static void updateTestraySubtasksTestrayIssues(AlloyController alloyController, String[] testrayIssueNames, long testraySubtaskId, User user, String issueComment) throws Exception {
+	public static void updateTestraySubtasksTestrayIssues(AlloyController alloyController, String[] testrayIssueNames, long testraySubtaskId, User user) throws Exception {
 		List<TestrayIssue> oldTestrayIssues = TestrayIssueLocalServiceUtil.getTestraySubtaskTestrayIssues(testraySubtaskId);
 
 		List<TestrayIssue> newTestrayIssues = TestrayIssueUtil.fetchOrAddTestrayIssues(alloyController, testrayIssueNames);
@@ -258,12 +258,6 @@ public static class TestraySubtaskUtil {
 		TestrayUtil.updateTestrayIssuesRelationships(TestraySubtask.class.getName(), testraySubtaskId, newTestrayIssues);
 
 		TestrayIssueEngineUtil.updateIssues(SetUtil.symmetricDifference(oldTestrayIssues, newTestrayIssues), user);
-
-		if (Validator.isNotNull(issueComment)) {
-			for (TestrayIssue testrayIssue : newTestrayIssues) {
-				TestrayIssueEngineUtil.addComment(issueComment, testrayIssue.getName(), user);
-			}
-		}
 	}
 
 }

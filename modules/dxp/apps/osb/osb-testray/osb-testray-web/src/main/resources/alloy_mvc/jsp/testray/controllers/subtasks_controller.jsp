@@ -165,42 +165,9 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		String[] issues = ParamUtil.getStringValues(request, "issues");
 
+		TestraySubtaskUtil.updateTestraySubtasksTestrayIssues(this, issues, testraySubtask.getTestraySubtaskId(), user);
+
 		String body = ParamUtil.getString(request, "comment");
-
-		int status = ParamUtil.getInteger(request, "status", -1);
-
-		StringBundler sb = new StringBundler(26);
-
-		if (Validator.isNotNull(body)) {
-			sb.append("*Testray Link*");
-			sb.append(StringPool.NEW_LINE);
-			sb.append(StringPool.OPEN_BRACKET);
-			sb.append(testraySubtask.getName());
-			sb.append(StringPool.PIPE);
-			sb.append("https://");
-			sb.append(request.getServerName());
-			sb.append("/home/-/testray/subtasks/");
-			sb.append(testraySubtask.getTestraySubtaskId());
-			sb.append("/view");
-			sb.append(StringPool.CLOSE_BRACKET);
-			sb.append(StringPool.NEW_LINE);
-			sb.append(StringPool.NEW_LINE);
-			sb.append("*Status*");
-			sb.append(StringPool.NEW_LINE);
-			sb.append(LanguageUtil.get(request, TestraySubtaskConstants.getLabelStatus(status)));
-			sb.append(StringPool.NEW_LINE);
-			sb.append(StringPool.NEW_LINE);
-			sb.append("*Issues*");
-			sb.append(StringPool.NEW_LINE);
-			sb.append(StringUtil.merge(issues, StringPool.COMMA_AND_SPACE));
-			sb.append(StringPool.NEW_LINE);
-			sb.append(StringPool.NEW_LINE);
-			sb.append("*Testray Comment*");
-			sb.append(StringPool.NEW_LINE);
-			sb.append(body);
-		}
-
-		TestraySubtaskUtil.updateTestraySubtasksTestrayIssues(this, issues, testraySubtask.getTestraySubtaskId(), user, sb.toString());
 
 		long commentMBMessageId = TestrayUtil.updateMBMessage(themeDisplay, testraySubtask.getCommentMBMessageId(), TestraySubtask.class.getName(), testraySubtask.getTestraySubtaskId(), body, portletRequest);
 
@@ -213,10 +180,15 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 			commentMBMessageId = TestrayUtil.updateMBMessage(themeDisplay, testrayCaseResult.getCommentMBMessageId(), TestrayCase.class.getName(), testrayCaseResult.getTestrayCaseId(), body, portletRequest);
 
+			int status = ParamUtil.getInteger(request, "status", -1);
+
 			if (status < 0) {
 				String statusLabel = ParamUtil.getString(request, "statusLabel");
 
 				status = TestrayCaseResultConstants.getLabelStatus(statusLabel);
+			}
+
+			if (status != testrayCaseResult.getStatus()) {
 			}
 
 			updateModelIgnoreRequest(testrayCaseResult, "commentMBMessageId", commentMBMessageId, "status", status);
