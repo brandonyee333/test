@@ -51,7 +51,7 @@ public class OSBAsahTaskRunnable implements Runnable {
 		if (StringUtils.isBlank(_projectId)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Invalid projectId, defaulting to: " +
+					"Defaulting to project ID " +
 						ProjectIdThreadLocal.getProjectId());
 			}
 
