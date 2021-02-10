@@ -74,6 +74,15 @@ public class AnalyticsEventsMessageProcessorTest {
 
 		Assert.assertEquals("Page", analyticsEvent.getApplicationId());
 		Assert.assertEquals("pageViewed", analyticsEvent.getEventId());
+
+		Map<String, String> eventProperties =
+			analyticsEvent.getEventProperties();
+
+		Assert.assertEquals(
+			"http://www.google.com", eventProperties.get("referrer"));
+
+		Assert.assertFalse(eventProperties.containsKey("x"));
+
 		Assert.assertEquals(
 			analyticsEvent.getSegmentNames(),
 			new HashSet<>(Arrays.asList("Developer", "Support")));
@@ -83,6 +92,8 @@ public class AnalyticsEventsMessageProcessorTest {
 		Assert.assertEquals("Chrome", context.get("browserName"));
 		Assert.assertEquals("Desktop", context.get("deviceType"));
 		Assert.assertEquals("macOS", context.get("platformName"));
+
+		Assert.assertFalse(context.containsKey("x"));
 	}
 
 	@ElasticsearchIndex(
