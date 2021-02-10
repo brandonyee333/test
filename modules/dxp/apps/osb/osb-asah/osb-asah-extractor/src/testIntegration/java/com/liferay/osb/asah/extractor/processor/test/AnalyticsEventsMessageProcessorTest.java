@@ -78,10 +78,9 @@ public class AnalyticsEventsMessageProcessorTest {
 		Map<String, String> eventProperties =
 			analyticsEvent.getEventProperties();
 
+		Assert.assertEquals("", eventProperties.get("x"));
 		Assert.assertEquals(
 			"http://www.google.com", eventProperties.get("referrer"));
-
-		Assert.assertFalse(eventProperties.containsKey("x"));
 
 		Assert.assertEquals(
 			analyticsEvent.getSegmentNames(),
@@ -89,11 +88,10 @@ public class AnalyticsEventsMessageProcessorTest {
 
 		Map<String, String> context = analyticsEvent.getContext();
 
+		Assert.assertEquals("", eventProperties.get("x"));
 		Assert.assertEquals("Chrome", context.get("browserName"));
 		Assert.assertEquals("Desktop", context.get("deviceType"));
 		Assert.assertEquals("macOS", context.get("platformName"));
-
-		Assert.assertFalse(context.containsKey("x"));
 	}
 
 	@ElasticsearchIndex(

@@ -179,11 +179,7 @@ public class AnalyticsEventsMessageProcessor {
 		for (Map.Entry<String, Object> entry :
 				analyticsEventsMessageContext.entrySet()) {
 
-			if (entry.getValue() == null) {
-				continue;
-			}
-
-			context.put(entry.getKey(), String.valueOf(entry.getValue()));
+			context.put(entry.getKey(), StringUtil.get(entry.getValue()));
 		}
 
 		FiftyOneDegreesDevice fiftyOneDegreesEngineDevice =
@@ -232,11 +228,8 @@ public class AnalyticsEventsMessageProcessor {
 		Map<String, String> safeEventProperties = new HashMap<>();
 
 		for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
-			if (entry.getValue() == null) {
-				continue;
-			}
-
-			safeEventProperties.put(entry.getKey(), entry.getValue());
+			safeEventProperties.put(
+				entry.getKey(), StringUtil.get(entry.getValue()));
 		}
 
 		return safeEventProperties;

@@ -30,6 +30,13 @@ import org.skyscreamer.jsonassert.JSONAssert;
 public class StringUtilTest {
 
 	@Test
+	public void testGet() {
+		Assert.assertEquals("", StringUtil.get(null));
+		Assert.assertEquals("1", StringUtil.get(1));
+		Assert.assertEquals("a", StringUtil.get("a"));
+	}
+
+	@Test
 	public void testIsQuoted() {
 		Assert.assertFalse(StringUtil.isQuoted("'Hello World"));
 		Assert.assertTrue(StringUtil.isQuoted("'Hello World'"));

@@ -25,6 +25,18 @@ import org.json.JSONObject;
  */
 public class StringUtil {
 
+	public static String get(Object value) {
+		return get(value, "");
+	}
+
+	public static String get(Object value, String defaultValue) {
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return String.valueOf(value);
+	}
+
 	public static boolean isNull(String s) {
 		if ((s == null) || s.equalsIgnoreCase("null")) {
 			return true;
