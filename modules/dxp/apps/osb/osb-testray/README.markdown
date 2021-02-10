@@ -47,6 +47,7 @@
 		-e LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL="jdbc:mysql://testray-mysql/lportal?characterEncoding=UTF-8&useFastDateParsing=false&useUnicode=true" \
 		-e LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME="test" \
 		-e LIFERAY_MINIFIER_PERIOD_ENABLE="false" \
+		-e LIFERAY_REDIRECT_PERIOD_URL_PERIOD_IPS_PERIOD_ALLOWED="" \
 		-it \
 		-p 8080:8080 \
 		-p 11311:11311 \
