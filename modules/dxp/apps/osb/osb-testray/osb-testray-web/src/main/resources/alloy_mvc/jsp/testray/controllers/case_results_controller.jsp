@@ -437,7 +437,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 			String testrayBuildName = ParamUtil.getString(request, "testrayBuildName");
 			long testrayCaseId = ParamUtil.getLong(request, "testrayCaseId", -1);
 			long testrayRunId = ParamUtil.getLong(request, "testrayRunId", -1);
-			String testraySubtaskId = ParamUtil.getString(request, "testraySubtaskId");
+			String testraySubtaskIdentifier = ParamUtil.getString(request, "testraySubtaskId");
 
 			if (testrayCaseId >= 0) {
 				TestrayCase testrayCase = TestrayCaseLocalServiceUtil.fetchTestrayCase(testrayCaseId);
@@ -461,7 +461,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 				respondWith(_getTestrayCaseResultsJSONArray("testrayRunId", testrayRunId));
 			}
-			else if (testraySubtaskId > 0) {
+			else if (Validator.isNotNull(testraySubtaskIdentifier)) {
 				TestraySubtask testraySubtask = TestraySubtaskUtil.fetchTestraySubtask(request, "testraySubtaskId");
 
 				TestrayValidator.validateBaseModel(request, testraySubtask, "the-subtask-with-id-x-does-not-exist", "testraySubtaskId");
