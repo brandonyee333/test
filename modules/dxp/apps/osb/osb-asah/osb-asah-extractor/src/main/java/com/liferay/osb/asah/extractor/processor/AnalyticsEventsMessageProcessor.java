@@ -179,6 +179,10 @@ public class AnalyticsEventsMessageProcessor {
 		for (Map.Entry<String, Object> entry :
 				analyticsEventsMessageContext.entrySet()) {
 
+			if (entry.getValue() == null) {
+				continue;
+			}
+
 			context.put(entry.getKey(), String.valueOf(entry.getValue()));
 		}
 
@@ -220,6 +224,22 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		return context;
+	}
+
+	private Map<String, String> _getSafeEventProperties(
+		Map<String, String> eventProperties) {
+
+		Map<String, String> safeEventProperties = new HashMap<>();
+
+		for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
+			if (entry.getValue() == null) {
+				continue;
+			}
+
+			safeEventProperties.put(entry.getKey(), entry.getValue());
+		}
+
+		return safeEventProperties;
 	}
 
 	private Set<String> _getSegmentNames(
@@ -402,7 +422,8 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setDataSourceId(dataSourceId);
 			analyticsEvent.setEventDate(event.getEventDate());
 			analyticsEvent.setEventId(event.getEventId());
-			analyticsEvent.setEventProperties(event.getProperties());
+			analyticsEvent.setEventProperties(
+				_getSafeEventProperties(event.getProperties()));
 			analyticsEvent.setId(
 				_generateAnalyticsEventId(
 					dataSourceId, event, analyticsEventsMessage.getProjectId(),
