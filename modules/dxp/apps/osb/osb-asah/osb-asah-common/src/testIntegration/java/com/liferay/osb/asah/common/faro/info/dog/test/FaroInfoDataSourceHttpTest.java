@@ -136,7 +136,7 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Test
-	public void testAddDataSourceWithDuplicateName() {
+	public void testAddDataSourceWithDuplicateName() throws Exception {
 		for (int i = 0; i < 4; i++) {
 			_faroInfoDataSourceDog.addDataSource(
 				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(

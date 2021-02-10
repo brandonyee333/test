@@ -47,7 +47,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
-	public void testAddDataSourceWithDefaultChannel() {
+	public void testAddDataSourceWithDefaultChannel() throws Exception {
 		JSONObject dataSourceJSONObject = _faroInfoDataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
 
