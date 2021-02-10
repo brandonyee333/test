@@ -19,14 +19,18 @@ import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
 import java.net.URL;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 import redis.clients.jedis.JedisPool;
@@ -40,6 +44,23 @@ import redis.clients.jedis.JedisPool;
 @MonolithExclude
 @Profile("!test")
 public class OSBAsahRedisConfiguration {
+
+	@Bean
+	public CacheManager cacheManager() throws Exception {
+		RedisCacheManager.RedisCacheManagerBuilder redisCacheManagerBuilder =
+			RedisCacheManager.builder(jedisConnectionFactory());
+
+		RedisCacheConfiguration redisCacheConfiguration =
+			RedisCacheConfiguration.defaultCacheConfig();
+
+		redisCacheConfiguration = redisCacheConfiguration.serializeValuesWith(
+			RedisSerializationContext.SerializationPair.fromSerializer(
+				redisSerializer()));
+
+		redisCacheManagerBuilder.cacheDefaults(redisCacheConfiguration);
+
+		return redisCacheManagerBuilder.build();
+	}
 
 	@Bean
 	public JedisConnectionFactory jedisConnectionFactory() throws Exception {
