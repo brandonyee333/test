@@ -53,7 +53,7 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * @author Vishal Reddy
  */
-@ActiveProfiles("AdminRestControllerTest")
+@ActiveProfiles({"AdminRestControllerTest", "test"})
 @ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @EnableCaching
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
