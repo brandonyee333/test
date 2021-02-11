@@ -356,6 +356,57 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
+	def _calculate_submission_time(self, data_frame):
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId'
+		).orderBy(
+			F.asc('event_date')
+		).rowsBetween(
+			Window.unboundedPreceding, Window.currentRow - 1
+		)
+
+		data_frame = data_frame.withColumn(
+			'previous_form_viewed_event_date',
+			F.max(
+				F.when(
+					F.col("eventId") == 'formViewed',
+					F.col("event_date")
+				)
+			).over(window)
+		)
+
+		data_frame = data_frame.filter(F.col('eventId') == 'formSubmitted')
+
+		data_frame = data_frame.withColumn(
+			'previous_form_viewed_to_submit_event_delta',
+			F.col("event_date").cast('long') -
+			F.col("previous_form_viewed_event_date").cast('long')
+		)
+
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'previous_form_viewed_event_date'
+		).orderBy(
+			F.desc('previous_form_viewed_to_submit_event_delta')
+		)
+
+		data_frame = data_frame.withColumn(
+			'row_number',
+			F.row_number().over(window)
+		)
+
+		data_frame = data_frame.filter('row_number = 1')
+
+		return data_frame.groupby(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'normalized_event_date', 'primaryKey'
+		).sum(
+			'previous_form_viewed_to_submit_event_delta'
+		).withColumnRenamed(
+			'sum(previous_form_viewed_to_submit_event_delta)',
+			'submission_time'
+		)
+
 	def _filter(self, analytics_events_data_frame):
 		return analytics_events_data_frame.filter(
 			"""
