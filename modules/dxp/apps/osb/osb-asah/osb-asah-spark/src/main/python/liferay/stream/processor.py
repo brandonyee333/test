@@ -359,6 +359,57 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
+	def _calculate_page_metrics(self, data_frame):
+		form_page_data_frame = data_frame.withColumn(
+			'page_index',
+			F.coalesce(
+				F.col('eventProperties.page'), F.lit(0)
+			).cast(
+				"integer"
+			)
+		).withColumn(
+			'views', F.lit(1)
+		).withColumn(
+			'submissions',
+			F.when(
+				F.col("eventId") == 'formSubmitted',
+				F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		)
+
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'page_index'
+		).orderBy(
+			F.desc('event_date')
+		)
+
+		form_page_data_frame = form_page_data_frame.withColumn(
+			'row_number',
+			F.row_number().over(window)
+		)
+
+		form_page_data_frame = form_page_data_frame.filter(
+			"row_number = 1 OR eventId = 'formSubmitted'"
+		)
+
+		form_page_data_frame = form_page_data_frame.groupBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'normalized_event_date', 'primaryKey', 'page_index'
+		).agg(
+			F.sum('views').alias('views'),
+			F.sum('submissions').alias('submissions')
+		)
+
+		return form_page_data_frame.withColumn(
+			'abandonments',
+			F.col('views') - F.col('submissions')
+		).drop(
+			'submissions'
+		)
+
 	def _calculate_submission_time(self, data_frame):
 		window = Window.partitionBy(
 			'projectId', 'channelId', 'userId', 'assetId', 'variantId'
