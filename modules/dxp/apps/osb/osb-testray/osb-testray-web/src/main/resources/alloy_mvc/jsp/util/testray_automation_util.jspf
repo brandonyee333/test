@@ -152,7 +152,7 @@ public static class TestrayAutomationUtil {
 			while (keysIterator.hasNext()) {
 				String key = keysIterator.next();
 
-				String attachmentAbsolutePath = PortalPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH + "logs/" + attachmentsJSONObject.getString(key);
+				String attachmentAbsolutePath = PortalPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_PATH + attachmentsJSONObject.getString(key);
 
 				FileUtil.delete(attachmentAbsolutePath);
 

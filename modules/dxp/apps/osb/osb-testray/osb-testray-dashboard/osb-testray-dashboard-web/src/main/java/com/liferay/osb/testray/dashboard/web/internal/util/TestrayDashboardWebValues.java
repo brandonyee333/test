@@ -25,6 +25,6 @@ public class TestrayDashboardWebValues {
 		TestrayDashboardWebUtil.get("auto.login.ips"));
 
 	public static final String AUTO_LOGIN_USER_EMAIL_ADDRESS =
-		TestrayDashboardWebUtil.get("auto.login.user.email.address");
+		"dashboard.user@liferay.com";
 
 }

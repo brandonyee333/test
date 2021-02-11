@@ -20,7 +20,7 @@ package com.liferay.osb.testray.issue.engine.jira.web.internal.util;
 public class TestrayIssueEngineJiraWebValues {
 
 	public static final String JIRA_BROWSE_URL =
-		TestrayIssueEngineJiraWebUtil.get("jira.browse.url");
+		TestrayIssueEngineJiraWebUtil.get("jira.url") + "/browse/";
 
 	public static final String JIRA_FIELD_ID_QA_TEST_NAME =
 		TestrayIssueEngineJiraWebUtil.get("jira.field.id.qa.test.name");
@@ -28,8 +28,8 @@ public class TestrayIssueEngineJiraWebValues {
 	public static final String JIRA_FIELD_ID_QA_TEST_SCORE =
 		TestrayIssueEngineJiraWebUtil.get("jira.field.id.qa.test.score");
 
-	public static final String JIRA_JQL_URL = TestrayIssueEngineJiraWebUtil.get(
-		"jira.jql.url");
+	public static final String JIRA_JQL_URL =
+		TestrayIssueEngineJiraWebUtil.get("jira.url") + "/issues/?jql=";
 
 	public static final String JIRA_OAUTH_CONSUMER_KEY =
 		TestrayIssueEngineJiraWebUtil.get("jira.oauth.consumer.key");
@@ -41,16 +41,18 @@ public class TestrayIssueEngineJiraWebValues {
 		TestrayIssueEngineJiraWebUtil.get("jira.oauth.shared.secret");
 
 	public static final String JIRA_OAUTH_URL =
-		TestrayIssueEngineJiraWebUtil.get("jira.oauth.url");
+		TestrayIssueEngineJiraWebUtil.get("jira.url") +
+			"/plugins/servlet/oauth/";
 
 	public static final String JIRA_REST_API_ISSUE_URL =
-		TestrayIssueEngineJiraWebUtil.get("jira.rest.api.issue.url");
+		TestrayIssueEngineJiraWebUtil.get("jira.url") + "/issue/";
 
 	public static final String JIRA_REST_API_LINK_URL =
-		TestrayIssueEngineJiraWebUtil.get("jira.rest.api.link.url");
+		TestrayIssueEngineJiraWebUtil.get("jira.url") +
+			"/rest/api/latest/issue/";
 
 	public static final String JIRA_REST_API_URL =
-		TestrayIssueEngineJiraWebUtil.get("jira.rest.api.url");
+		TestrayIssueEngineJiraWebUtil.get("jira.url") + "/rest/api/latest/";
 
 	public static final String JIRA_URL = TestrayIssueEngineJiraWebUtil.get(
 		"jira.url");
