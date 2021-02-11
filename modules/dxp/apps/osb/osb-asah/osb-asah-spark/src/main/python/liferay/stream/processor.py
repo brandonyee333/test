@@ -426,6 +426,10 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		return F.col('eventProperties.formId')
 
 	def _process(self, data_frame):
+		data_frame_with_submission_time = self._calculate_submission_time(
+			data_frame
+		)
+
 		data_frame = data_frame.withColumn(
 			'submissions',
 			F.when(
@@ -458,7 +462,14 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			F.col('views') - F.col('submissions')
 		)
 
-		return data_frame
+		return data_frame.join(
+			data_frame_with_submission_time,
+			on=[
+				'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+				'normalized_event_date', 'primaryKey'
+			],
+			how='left'
+		).fillna(0)
 
 class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
