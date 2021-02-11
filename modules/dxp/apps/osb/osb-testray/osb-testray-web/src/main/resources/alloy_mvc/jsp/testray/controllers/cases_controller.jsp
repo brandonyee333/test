@@ -47,7 +47,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		_indexTestraySuites(testrayCase);
 
-		if (!PortletPropsValues.TESTRAY_SIMPLIFIED_CASES) {
+		if (!PortalPropsValues.TESTRAY_SIMPLIFIED_CASES) {
 			_updateTestrayComponentIds(testrayCase);
 		}
 
@@ -106,7 +106,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		List<KeyValuePair> currentTestrayComponents = new ArrayList<KeyValuePair>();
 
-		if (!PortletPropsValues.TESTRAY_SIMPLIFIED_CASES) {
+		if (!PortalPropsValues.TESTRAY_SIMPLIFIED_CASES) {
 			renderRequest.setAttribute("currentTestrayComponents", currentTestrayComponents);
 
 			List<KeyValuePair> availableTestrayComponents = new ArrayList<KeyValuePair>();
@@ -175,7 +175,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayComponents", testrayComponents);
 
-		if (!PortletPropsValues.TESTRAY_SIMPLIFIED_CASES) {
+		if (!PortalPropsValues.TESTRAY_SIMPLIFIED_CASES) {
 			List<KeyValuePair> currentTestrayComponents = new ArrayList<KeyValuePair>();
 
 			List<TestrayComponent> testrayCaseTestrayComponents = TestrayComponentLocalServiceUtil.getTestrayCaseTestrayComponents(testrayCase.getTestrayCaseId());
@@ -593,7 +593,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		TestrayComponentLocalServiceUtil.clearTestrayCaseTestrayComponents(testrayCase.getTestrayCaseId());
 
-		if (!PortletPropsValues.TESTRAY_SIMPLIFIED_CASES) {
+		if (!PortalPropsValues.TESTRAY_SIMPLIFIED_CASES) {
 			_updateTestrayComponentIds(testrayCase);
 		}
 
@@ -752,7 +752,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 			renderRequest.setAttribute("testrayCaseResultComposites", ListUtil.subList(testrayCaseResultComposites, searchContainer.getStart(), searchContainer.getEnd()));
 		}
 
-		if (!PortletPropsValues.TESTRAY_SIMPLIFIED_CASES) {
+		if (!PortalPropsValues.TESTRAY_SIMPLIFIED_CASES) {
 			List<TestrayComponent> testrayCaseTestrayComponents = TestrayComponentLocalServiceUtil.getTestrayCaseTestrayComponents(testrayCase.getTestrayCaseId());
 
 			String[] testrayCaseTestrayComponentNames = new String[testrayCaseTestrayComponents.size()];
@@ -799,7 +799,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 	@Override
 	protected Trigger getSchedulerTrigger() {
-		return TriggerFactoryUtil.createTrigger(getSchedulerJobName(), getMessageListenerGroupName(), PortletPropsValues.TESTRAY_CRON_TRIGGER_CASES_CONTROLLER);
+		return TriggerFactoryUtil.createTrigger(getSchedulerJobName(), getMessageListenerGroupName(), PortalPropsValues.TESTRAY_CRON_TRIGGER_CASES_CONTROLLER);
 	}
 
 	private TestrayComponent _fetchOrAddTestrayComponent(long testrayProjectId, String name, String testrayTeamName) throws Exception {
@@ -1272,7 +1272,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 	}
 
 	private void _validateTestrayComponentIds() throws Exception {
-		if ((request.getParameter("testrayComponentIds") == null) || PortletPropsValues.TESTRAY_SIMPLIFIED_CASES) {
+		if ((request.getParameter("testrayComponentIds") == null) || PortalPropsValues.TESTRAY_SIMPLIFIED_CASES) {
 			return;
 		}
 

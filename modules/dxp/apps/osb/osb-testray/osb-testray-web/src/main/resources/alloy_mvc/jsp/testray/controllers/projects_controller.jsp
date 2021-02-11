@@ -242,7 +242,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 	private void _validateDeleteTree(TestrayProject testrayProject) throws Exception {
 		_validateTestrayProject(testrayProject);
 
-		if (!PortletPropsValues.TESTRAY_DELETE_TREE_ENABLED) {
+		if (!PortalPropsValues.TESTRAY_DELETE_TREE_ENABLED) {
 			throw new AlloyException("project-delete-tree-is-not-enabled", false);
 		}
 	}

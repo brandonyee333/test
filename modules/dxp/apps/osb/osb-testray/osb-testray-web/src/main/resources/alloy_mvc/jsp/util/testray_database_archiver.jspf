@@ -316,7 +316,7 @@ public static class TestrayDatabaseArchiver {
 			while (keysIterator.hasNext()) {
 				String key = keysIterator.next();
 
-				String attachmentAbsolutePath = PortletPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH + "logs/" + attachmentsJSONObject.getString(key);
+				String attachmentAbsolutePath = PortalPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH + "logs/" + attachmentsJSONObject.getString(key);
 
 				if (!FileUtil.exists(attachmentAbsolutePath)) {
 					keysIterator.remove();

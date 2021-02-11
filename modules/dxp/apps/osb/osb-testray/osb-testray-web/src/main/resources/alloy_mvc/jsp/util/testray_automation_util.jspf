@@ -18,7 +18,7 @@
 public static class TestrayAutomationUtil {
 
 	public static void archiveTestrayBuilds(AlloyController alloyController) throws Exception {
-		if (PortletPropsValues.TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS < 0) {
+		if (PortalPropsValues.TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS < 0) {
 			return;
 		}
 
@@ -36,7 +36,7 @@ public static class TestrayAutomationUtil {
 
 		Calendar archiveThresholdCalendar = CalendarFactoryUtil.getCalendar();
 
-		archiveThresholdCalendar.add(Calendar.HOUR, -PortletPropsValues.TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS);
+		archiveThresholdCalendar.add(Calendar.HOUR, -PortalPropsValues.TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS);
 
 		Date date = archiveThresholdCalendar.getTime();
 
@@ -60,7 +60,7 @@ public static class TestrayAutomationUtil {
 
 		List<String> messages = new ArrayList<String>();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(PortletPropsValues.TESTRAY_AUTOMATION_THREAD_COUNT);
+		ExecutorService executorService = Executors.newFixedThreadPool(PortalPropsValues.TESTRAY_AUTOMATION_THREAD_COUNT);
 
 		try {
 			List<Callable<String>> callables = new ArrayList<>();
@@ -77,7 +77,7 @@ public static class TestrayAutomationUtil {
 
 			Calendar expirationCalendar = CalendarFactoryUtil.getCalendar();
 
-			expirationCalendar.add(Calendar.DATE, -PortletPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS);
+			expirationCalendar.add(Calendar.DATE, -PortalPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS);
 
 			testrayCaseResultDynamicQuery.add(createDateProperty.le(expirationCalendar.getTime()));
 
@@ -91,7 +91,7 @@ public static class TestrayAutomationUtil {
 
 			int recentTestrayCaseResultsCount = (int)testrayCaseResultAlloyServiceInvoker.executeDynamicQueryCount(recentTestrayCaseResultDynamicQuery);
 
-			testrayCaseResultDynamicQuery.setLimit(0, recentTestrayCaseResultsCount + PortletPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_MINIMUM_CASE_RESULTS_COUNT);
+			testrayCaseResultDynamicQuery.setLimit(0, recentTestrayCaseResultsCount + PortalPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_MINIMUM_CASE_RESULTS_COUNT);
 
 			List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(testrayCaseResultDynamicQuery);
 
@@ -152,7 +152,7 @@ public static class TestrayAutomationUtil {
 			while (keysIterator.hasNext()) {
 				String key = keysIterator.next();
 
-				String attachmentAbsolutePath = PortletPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH + "logs/" + attachmentsJSONObject.getString(key);
+				String attachmentAbsolutePath = PortalPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH + "logs/" + attachmentsJSONObject.getString(key);
 
 				FileUtil.delete(attachmentAbsolutePath);
 
@@ -288,12 +288,12 @@ public static class TestrayAutomationUtil {
 
 		List<String> messages = new ArrayList<>();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(PortletPropsValues.TESTRAY_AUTOMATION_THREAD_COUNT);
+		ExecutorService executorService = Executors.newFixedThreadPool(PortalPropsValues.TESTRAY_AUTOMATION_THREAD_COUNT);
 
 		try {
 			List<Callable<String>> callables = new ArrayList<>();
 
-			File automationResultsDirectory = new File(PortletPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH);
+			File automationResultsDirectory = new File(PortalPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH);
 
 			File[] automationResultFiles = automationResultsDirectory.listFiles();
 
@@ -387,7 +387,7 @@ public static class TestrayAutomationUtil {
 	}
 
 	public static void reindexTestrayCases(AlloyController alloyController) throws Exception {
-		if (PortletPropsValues.TESTRAY_CASE_REINDEX_THRESHOLD_HOURS < 0) {
+		if (PortalPropsValues.TESTRAY_CASE_REINDEX_THRESHOLD_HOURS < 0) {
 			return;
 		}
 
@@ -401,7 +401,7 @@ public static class TestrayAutomationUtil {
 
 		Calendar archiveThresholdCalendar = CalendarFactoryUtil.getCalendar();
 
-		archiveThresholdCalendar.add(Calendar.HOUR, -PortletPropsValues.TESTRAY_CASE_REINDEX_THRESHOLD_HOURS);
+		archiveThresholdCalendar.add(Calendar.HOUR, -PortalPropsValues.TESTRAY_CASE_REINDEX_THRESHOLD_HOURS);
 
 		Date date = archiveThresholdCalendar.getTime();
 
@@ -921,7 +921,7 @@ public static class TestrayAutomationUtil {
 	protected static boolean move(File file, String directoryName) {
 		StringBundler sb = new StringBundler(5);
 
-		sb.append(PortletPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH);
+		sb.append(PortalPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH);
 		sb.append(File.separator);
 		sb.append(directoryName);
 		sb.append(File.separator);

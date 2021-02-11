@@ -39,7 +39,7 @@ public static class TestrayCaseResultSchedulerMessageListener extends BaseMessag
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		if (ArrayUtil.isNotEmpty(PortletPropsValues.TESTRAY_AUTOMATION_COMPUTER_NAMES) && !ArrayUtil.contains(PortletPropsValues.TESTRAY_AUTOMATION_COMPUTER_NAMES, PortalUtil.getComputerName())) {
+		if (ArrayUtil.isNotEmpty(PortalPropsValues.TESTRAY_AUTOMATION_COMPUTER_NAMES) && !ArrayUtil.contains(PortalPropsValues.TESTRAY_AUTOMATION_COMPUTER_NAMES, PortalUtil.getComputerName())) {
 			return;
 		}
 

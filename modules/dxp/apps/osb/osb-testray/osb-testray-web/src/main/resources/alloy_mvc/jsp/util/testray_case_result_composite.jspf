@@ -129,7 +129,7 @@ public static class TestrayCaseResultComposite {
 	}
 
 	public String getErrorsTruncated() {
-		return TestrayUtil.shorten(_testrayCaseResult.getErrors(), PortletPropsValues.TESTRAY_CASE_RESULT_ERRORS_TRUNCATED_CHAR_COUNT, StringPool.TRIPLE_PERIOD);
+		return TestrayUtil.shorten(_testrayCaseResult.getErrors(), PortalPropsValues.TESTRAY_CASE_RESULT_ERRORS_TRUNCATED_CHAR_COUNT, StringPool.TRIPLE_PERIOD);
 	}
 
 	public int getEstimatedDuration() throws Exception {
@@ -557,7 +557,7 @@ public static class TestrayCaseResultComposite {
 	}
 
 	protected String getTestrayAutomationAttachmentURL(String testrayAttachmentRelativePath) {
-		String url = PortletPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_URL + StringPool.FORWARD_SLASH + testrayAttachmentRelativePath;
+		String url = PortalPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_URL + StringPool.FORWARD_SLASH + testrayAttachmentRelativePath;
 
 		return url.replaceAll(StringPool.POUND, "%23");
 	}

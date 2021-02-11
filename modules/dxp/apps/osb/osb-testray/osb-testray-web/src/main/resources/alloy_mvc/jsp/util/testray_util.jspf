@@ -478,7 +478,7 @@ public static class TestrayUtil {
 		subscriptionSender.setSubject(subject);
 		subscriptionSender.setUserId(themeDisplay.getDefaultUserId());
 
-		String[] emailAddresses = StringUtil.split(PortletPropsValues.TESTRAY_SUBSCRIBER_EMAIL_ADDRESSES, StringPool.COMMA);
+		String[] emailAddresses = StringUtil.split(PortalPropsValues.TESTRAY_SUBSCRIBER_EMAIL_ADDRESSES, StringPool.COMMA);
 
 		if (emailAddresses.length == 0) {
 			return;

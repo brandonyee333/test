@@ -201,7 +201,7 @@
 					${testrayCaseResultComposite.testrayBuildGitHash}
 				</dd>
 
-				<c:if test="${PortletPropsValues.TESTRAY_GITHUB_COMPARE_URLS_ENABLED}">
+				<c:if test="${PortalPropsValues.TESTRAY_GITHUB_COMPARE_URLS_ENABLED}">
 					<dt>
 						<liferay-ui:message key="github-compare-urls" />
 					</dt>

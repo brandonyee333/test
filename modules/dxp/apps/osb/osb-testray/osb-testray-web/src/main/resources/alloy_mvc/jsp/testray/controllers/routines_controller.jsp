@@ -278,7 +278,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		long testrayBuildsCount = testrayBuildAlloyServiceInvoker.executeDynamicQueryCount(new Object[] {"testrayRoutineId", testrayRoutine.getTestrayRoutineId()});
 
 		if (testrayBuildsCount > 0) {
-			if (isRespondingTo("json") && !PortletPropsValues.TESTRAY_DELETE_TREE_ENABLED) {
+			if (isRespondingTo("json") && !PortalPropsValues.TESTRAY_DELETE_TREE_ENABLED) {
 				throw new AlloyException("delete-tree-is-disabled", false);
 			}
 

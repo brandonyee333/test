@@ -18,7 +18,7 @@
 public static class TestrayFileArchiver {
 
 	public void doArchiveTree(AlloyController alloyController, TestrayBuild testrayBuild) throws Exception {
-		Path parentDirectoryPath = Paths.get(PortletPropsValues.TESTRAY_AUTOMATION_ARCHIVES_PATH);
+		Path parentDirectoryPath = Paths.get(PortalPropsValues.TESTRAY_AUTOMATION_ARCHIVES_PATH);
 
 		File tempFolder = _getTempFolder(parentDirectoryPath, testrayBuild);
 
@@ -94,7 +94,7 @@ public static class TestrayFileArchiver {
 	public void doRestoreTree(TestrayArchive testrayArchive) throws Exception {
 		String testrayBuildId = String.valueOf(testrayArchive.getClassPK());
 
-		Path parentDirectoryPath = Paths.get(PortletPropsValues.TESTRAY_AUTOMATION_ARCHIVES_PATH);
+		Path parentDirectoryPath = Paths.get(PortalPropsValues.TESTRAY_AUTOMATION_ARCHIVES_PATH);
 
 		Path zipFilePath = parentDirectoryPath.resolve(testrayBuildId + ".zip");
 
@@ -272,7 +272,7 @@ public static class TestrayFileArchiver {
 			while (keysIterator.hasNext()) {
 				String key = keysIterator.next();
 
-				String attachmentAbsolutePath = PortletPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH + "logs/" + attachmentsJSONObject.getString(key);
+				String attachmentAbsolutePath = PortalPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH + "logs/" + attachmentsJSONObject.getString(key);
 
 				if (!FileUtil.exists(attachmentAbsolutePath)) {
 					keysIterator.remove();

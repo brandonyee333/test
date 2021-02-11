@@ -96,7 +96,7 @@
 					</c:forEach>
 				</aui:select>
 
-				<c:if test="${!PortletPropsValues.TESTRAY_SIMPLIFIED_CASES}">
+				<c:if test="${!PortalPropsValues.TESTRAY_SIMPLIFIED_CASES}">
 					<liferay-ui:input-move-boxes
 						leftBoxName="availableTestrayComponentFields"
 						leftList="${availableTestrayComponents}"
@@ -155,7 +155,7 @@
 		window,
 		'${htmlNamespace}submit',
 		function() {
-			<c:if test="${!PortletPropsValues.TESTRAY_SIMPLIFIED_CASES}">
+			<c:if test="${!PortalPropsValues.TESTRAY_SIMPLIFIED_CASES}">
 				document.${htmlNamespace}fm.${htmlNamespace}testrayComponentIds.value = Liferay.Util.listSelect(document.${htmlNamespace}fm.${htmlNamespace}currentTestrayComponentFields);
 			</c:if>
 

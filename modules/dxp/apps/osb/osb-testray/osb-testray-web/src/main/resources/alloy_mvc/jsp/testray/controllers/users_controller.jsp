@@ -337,7 +337,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 	private void _validateAvatarFile(File avatarFile) throws Exception {
 		String extension = StringPool.PERIOD + FileUtil.getExtension(avatarFile.getName());
 
-		if (!ArrayUtil.contains(PortletPropsValues.IMAGE_EXTENSIONS, extension)) {
+		if (!ArrayUtil.contains(PortalPropsValues.IMAGE_EXTENSIONS, extension)) {
 			throw new AlloyException("image-type-is-invalid", false);
 		}
 	}

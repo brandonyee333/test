@@ -909,7 +909,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 	@Override
 	protected Trigger getSchedulerTrigger() {
-		return TriggerFactoryUtil.createTrigger(getSchedulerJobName(), getMessageListenerGroupName(), PortletPropsValues.TESTRAY_CRON_TRIGGER_CASE_RESULTS_CONTROLLER);
+		return TriggerFactoryUtil.createTrigger(getSchedulerJobName(), getMessageListenerGroupName(), PortalPropsValues.TESTRAY_CRON_TRIGGER_CASE_RESULTS_CONTROLLER);
 	}
 
 	private TestrayCaseResult _fetchTestrayCaseResult() throws Exception {

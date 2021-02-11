@@ -33,7 +33,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		File attachmentFile = TestrayAttachmentUtil.writeFile(file);
 
-		Path attachmentsPath = Paths.get(PortletPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_PATH);
+		Path attachmentsPath = Paths.get(PortalPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_PATH);
 
 		Path attachmentPath = attachmentsPath.relativize(attachmentFile.toPath());
 

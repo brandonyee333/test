@@ -50,7 +50,7 @@ public static class TestrayArchiveUtil {
 		for (TestrayArchive testrayArchive : testrayArchives) {
 			TestrayArchiveLocalServiceUtil.deleteTestrayArchive(testrayArchive);
 
-			Path parentDirectoryPath = Paths.get(PortletPropsValues.TESTRAY_AUTOMATION_ARCHIVES_PATH);
+			Path parentDirectoryPath = Paths.get(PortalPropsValues.TESTRAY_AUTOMATION_ARCHIVES_PATH);
 
 			Path zipFilePath = parentDirectoryPath.resolve(String.valueOf(testrayArchive.getClassPK()) + ".zip");
 

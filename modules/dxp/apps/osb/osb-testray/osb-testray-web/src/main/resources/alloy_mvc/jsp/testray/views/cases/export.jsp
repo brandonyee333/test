@@ -62,7 +62,7 @@
 							<c:out value="${testrayCaseComposite.testrayComponentName}" />
 						</dd>
 
-						<c:if test="${!PortletPropsValues.TESTRAY_SIMPLIFIED_CASES}">
+						<c:if test="${!PortalPropsValues.TESTRAY_SIMPLIFIED_CASES}">
 							<dt>
 								<liferay-ui:message key="subcomponents" />
 							</dt>

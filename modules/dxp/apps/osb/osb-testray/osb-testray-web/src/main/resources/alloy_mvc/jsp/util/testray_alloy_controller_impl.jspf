@@ -76,7 +76,7 @@ public static class TestrayAlloyControllerImpl extends BaseAlloyControllerImpl {
 	protected void executeRender(Method method) throws Exception {
 		renderRequest.setAttribute("ActionKeys", getConstantsBean(ActionKeys.class));
 		renderRequest.setAttribute("PortletKeys", getConstantsBean(PortletKeys.class));
-		renderRequest.setAttribute("PortletPropsValues", getConstantsBean(PortletPropsValues.class));
+		renderRequest.setAttribute("PortalPropsValues", getConstantsBean(PortalPropsValues.class));
 		renderRequest.setAttribute("StringPool", getConstantsBean(StringPool.class));
 		renderRequest.setAttribute("StringUtil", new StringUtil());
 		renderRequest.setAttribute("TestrayAutomationConstants", getConstantsBean(TestrayAutomationConstants.class));

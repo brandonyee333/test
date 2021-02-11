@@ -20,7 +20,7 @@ public static class TestrayAttachmentUtil {
 	public static File writeFile(File fromFile) throws Exception {
 		Date now = new Date();
 
-		Path parentDirectoryPath = Paths.get(PortletPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_PATH, _ATTACHMENTS_UPLOAD_PARENT_DIRECTORY, _YEAR_MONTH_DATE_FORMAT.format(now), _DAY_DATE_FORMAT.format(now));
+		Path parentDirectoryPath = Paths.get(PortalPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_PATH, _ATTACHMENTS_UPLOAD_PARENT_DIRECTORY, _YEAR_MONTH_DATE_FORMAT.format(now), _DAY_DATE_FORMAT.format(now));
 
 		File parentDirectory = parentDirectoryPath.toFile();
 
