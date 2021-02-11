@@ -34,7 +34,7 @@ public class OSBAsahDXPExtractorSpringBootApplication
 		if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"DXP Extractor cannot execute if multitenancy is enabled");
+					"DXP extractor cannot execute if multitenancy is enabled");
 			}
 
 			return;

@@ -34,7 +34,7 @@ public class OSBAsahSalesforceExtractorSpringBootApplication
 		if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Salesforce Extractor cannot execute if multitenancy is " +
+					"Salesforce extractor cannot execute if multitenancy is " +
 						"enabled");
 			}
 
