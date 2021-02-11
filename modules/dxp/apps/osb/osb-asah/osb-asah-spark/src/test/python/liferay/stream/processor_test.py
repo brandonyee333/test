@@ -206,6 +206,28 @@ def test_document_library_data_frame_processor_process(
 	assert 1 == row.ratings
 	assert 2.0 == row.ratingsScore
 
+def test_form_data_frame_processor_calculate_submission_time(
+	form_data_frame_processor, spark_session
+):
+
+	actual_data_frame = form_data_frame_processor._calculate_submission_time(
+		read_session_events_data_frame(
+			'form_data_frame_processor_calculate_submission_time_input.json',
+			spark_session
+		).withColumn(
+			'assetId', F.col('eventProperties.formId')
+		).withColumn(
+			'event_date',
+			F.to_timestamp(F.col('eventDate'))
+		)
+	)
+
+	actual_data_frame_rows = actual_data_frame.collect()
+
+	assert len(actual_data_frame_rows) == 1
+
+	assert actual_data_frame_rows[0].submission_time == 120
+
 def test_form_data_frame_processor_filter(
 	form_data_frame_processor, spark_session
 ):
