@@ -6,18 +6,6 @@
 					base: MODULE_PATH + '/js/',
 					combine: Liferay.AUI.getCombine(),
 					modules: {
-						'c3': {
-							path: 'c3/c3.min.js',
-							requires: [
-								'd3'
-							]
-						},
-						'choices': {
-							path: 'choices.min.js'
-						},
-						'd3': {
-							path: 'd3/d3.min.js'
-						},
 						'testray-avatar': {
 							path: 'avatar.js',
 							requires: [
@@ -65,7 +53,6 @@
 						'testray-graph': {
 							path: 'graph.js',
 							requires: [
-								'c3',
 								'testray-base'
 							]
 						},

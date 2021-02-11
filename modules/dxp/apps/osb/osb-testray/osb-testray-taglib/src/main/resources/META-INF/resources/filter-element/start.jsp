@@ -100,7 +100,7 @@
 				</aui:select>
 			</aui:field-wrapper>
 
-			<aui:script use="choices,testray-base">
+			<aui:script use="testray-base">
 				if (!Liferay.Testray.Choices) {
 					Liferay.Testray.Choices = new Choices(
 						'.choices-select',

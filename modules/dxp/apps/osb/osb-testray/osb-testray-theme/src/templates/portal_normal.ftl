@@ -9,6 +9,12 @@
 
 	<meta content="initial-scale=1.0, width=device-width" name="viewport" />
 
+	<script src="${javascript_folder}/choices.min.js" type="text/javascript"></script>
+	<script src="${javascript_folder}/d3.min.js" type="text/javascript"></script>
+	<script src="${javascript_folder}/moment.min.js" type="text/javascript"></script>
+
+	<script src="${javascript_folder}/c3.min.js" type="text/javascript"></script>
+
 	<@liferay_util["include"] page=top_head_include />
 </head>
 
