@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 public class TestrayDashboardWebValues {
 
 	public static final String[] AUTO_LOGIN_IPS = StringUtil.split(
-		TestrayDashboardWebUtil.get("auto.login.ips"));
+		TestrayDashboardWebUtil.get("osb.testray.auto.login.ips"));
 
 	public static final String AUTO_LOGIN_USER_EMAIL_ADDRESS =
 		"dashboard.user@liferay.com";
