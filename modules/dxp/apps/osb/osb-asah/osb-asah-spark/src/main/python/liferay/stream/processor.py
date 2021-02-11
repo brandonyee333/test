@@ -57,25 +57,8 @@ class AnalyticsEventsDataFrameProcessor(object):
 	def _get_asset_id_column(self):
 		return
 
-	def _process(self, data_frame):
-		return data_frame
-
-	def _write(self, output_data_frame):
-		data_frame_writer = output_data_frame.write
-
-		data_frame_writer.json(
-			'{}/journal/{}'.format(
-				self._spark_job.spark_application_configuration.get(
-					'google.storage.path.stream-curator-output'
-				),
-				self._batch_id
-			)
-		)
-
-	def process(self, analytics_events_data_frame, write=True):
-		data_frame = self._filter(
-			analytics_events_data_frame
-		).withColumn(
+	def _pre_process(self, data_frame):
+		return data_frame.withColumn(
 			'assetId', self._get_asset_id_column()
 		).withColumn(
 			'event_date',
@@ -96,6 +79,26 @@ class AnalyticsEventsDataFrameProcessor(object):
 		).fillna(
 			'', subset=['variantId']
 		)
+
+	def _process(self, data_frame):
+		return data_frame
+
+	def _write(self, output_data_frame):
+		data_frame_writer = output_data_frame.write
+
+		data_frame_writer.json(
+			'{}/journal/{}'.format(
+				self._spark_job.spark_application_configuration.get(
+					'google.storage.path.stream-curator-output'
+				),
+				self._batch_id
+			)
+		)
+
+	def process(self, analytics_events_data_frame, write=True):
+		data_frame = self._filter(analytics_events_data_frame)
+
+		data_frame = self._pre_process(data_frame)
 
 		data_frame = self._process(data_frame)
 

@@ -76,17 +76,15 @@ def read_session_events_data_frame(file_name, spark_session):
 def test_blog_data_frame_processor_calculate_read_time(
 	blog_data_frame_processor, spark_session
 ):
-
-	actual_data_frame = blog_data_frame_processor._calculate_read_time(
+	input_data_frame = blog_data_frame_processor._pre_process(
 		read_session_events_data_frame(
 			'blog_data_frame_processor_calculate_read_time_input.json',
 			spark_session
-		).withColumn(
-			'assetId', F.col('eventProperties.entryId')
-		).withColumn(
-			'event_date',
-			F.to_timestamp(F.col('eventDate'))
 		)
+	)
+
+	actual_data_frame = blog_data_frame_processor._calculate_read_time(
+		input_data_frame
 	)
 
 	actual_data_frame_rows = actual_data_frame.collect()
@@ -210,31 +208,15 @@ def test_form_data_frame_processor_calculate_submission_time(
 	form_data_frame_processor, spark_session
 ):
 
-	actual_data_frame = form_data_frame_processor._calculate_submission_time(
+	input_data_frame = form_data_frame_processor._pre_process(
 		read_session_events_data_frame(
 			'form_data_frame_processor_calculate_submission_time_input.json',
 			spark_session
-		).withColumn(
-			'assetId', F.col('eventProperties.formId')
-		).withColumn(
-			'event_date',
-			F.to_timestamp(F.col('eventDate'))
-		).withColumn(
-			'normalized_event_date',
-			F.date_trunc('hour', F.col('event_date'))
-		).withColumn(
-			'primaryKey',
-			F.sha2(
-				F.concat_ws(
-					"#", F.col('projectId'), F.col('channelId'),
-					F.col('userId'), F.col('assetId'), F.col('variantId'),
-					F.col('normalized_event_date'),
-				),
-				256
-			)
-		).fillna(
-			'', subset=['variantId']
 		)
+	)
+
+	actual_data_frame = form_data_frame_processor._calculate_submission_time(
+		input_data_frame
 	)
 
 	actual_data_frame_rows = actual_data_frame.collect()
