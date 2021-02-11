@@ -15,7 +15,7 @@
 --%>
 
 <%!
-public static class PortletPropsValues {
+public static class PortalPropsValues {
 
 	public static final String[] IMAGE_EXTENSIONS = PortletPropsUtil.getArray(PortletPropsKeys.IMAGE_EXTENSIONS);
 

@@ -276,9 +276,8 @@ page import="org.jabsorb.serializer.UnmarshallException" %>
 <%@ page import="org.json.JSONTokener" %>
 
 <%@ include file="/alloy_mvc/jsp/util/base_testray_composite.jspf" %>
-<%@ include file="/alloy_mvc/jsp/util/portlet_props_keys.jspf" %>
-<%@ include file="/alloy_mvc/jsp/util/portlet_props_util.jspf" %>
-<%@ include file="/alloy_mvc/jsp/util/portlet_props_values.jspf" %>
+<%@ include file="/alloy_mvc/jsp/util/portal_props_keys.jspf" %>
+<%@ include file="/alloy_mvc/jsp/util/portal_props_values.jspf" %>
 <%@ include file="/alloy_mvc/jsp/util/testray_archive_util.jspf" %>
 <%@ include file="/alloy_mvc/jsp/util/testray_assignment_checker.jspf" %>
 <%@ include file="/alloy_mvc/jsp/util/testray_attachment_util.jspf" %>

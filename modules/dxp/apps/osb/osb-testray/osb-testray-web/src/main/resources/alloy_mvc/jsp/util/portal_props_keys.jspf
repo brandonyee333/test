@@ -15,7 +15,7 @@
 --%>
 
 <%!
-public static class PortletPropsKeys {
+public static class PortalPropsKeys {
 
 	public static final String IMAGE_EXTENSIONS = "image.extensions";
 
