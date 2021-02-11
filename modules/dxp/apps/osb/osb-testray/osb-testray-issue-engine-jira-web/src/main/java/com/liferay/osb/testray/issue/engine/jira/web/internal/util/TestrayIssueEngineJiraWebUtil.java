@@ -14,8 +14,7 @@
 
 package com.liferay.osb.testray.issue.engine.jira.web.internal.util;
 
-import com.liferay.portal.kernel.configuration.Configuration;
-import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 
 /**
  * @author Ethan Bustad
@@ -23,11 +22,7 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 public class TestrayIssueEngineJiraWebUtil {
 
 	public static String get(String key) {
-		return _configuration.get(key);
+		return PropsUtil.get(key);
 	}
-
-	private static final Configuration _configuration =
-		ConfigurationFactoryUtil.getConfiguration(
-			TestrayIssueEngineJiraWebUtil.class.getClassLoader(), "portlet");
 
 }

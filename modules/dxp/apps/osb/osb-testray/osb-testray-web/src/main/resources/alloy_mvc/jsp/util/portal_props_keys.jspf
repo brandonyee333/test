@@ -17,9 +17,9 @@
 <%!
 public static class PortalPropsKeys {
 
-	public static final String TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS = "testray.automation.attachment.expiration.age.days";
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS = "osb.testray.automation.attachment.expiration.age.days";
 
-	public static final String TESTRAY_AUTOMATION_ATTACHMENT_URL = "testray.automation.attachment.url";
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_URL = "osb.testray.automation.attachment.url";
 
 }
 %>

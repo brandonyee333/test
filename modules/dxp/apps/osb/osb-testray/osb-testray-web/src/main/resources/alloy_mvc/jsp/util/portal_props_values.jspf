@@ -23,13 +23,13 @@ public static class PortalPropsValues {
 
 	public static final String TESTRAY_AUTOMATION_ARCHIVES_PATH = "/opt/liferay/testray/archives";
 
-	public static final int TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS = GetterUtil.getInteger(PortalPropsUtil.get(PortalPropsKeys.TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS));
+	public static final int TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS = GetterUtil.getInteger(PropsUtil.get(PortalPropsKeys.TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS));
 
 	public static final int TESTRAY_AUTOMATION_ATTACHMENT_MINIMUM_CASE_RESULTS_COUNT = 1000;
 
 	public static final String TESTRAY_AUTOMATION_ATTACHMENT_PATH = "/opt/liferay/testray/attachments/";
 
-	public static final String TESTRAY_AUTOMATION_ATTACHMENT_URL = PortalPropsUtil.get(PortalPropsKeys.TESTRAY_AUTOMATION_ATTACHMENT_URL);
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_URL = PropsUtil.get(PortalPropsKeys.TESTRAY_AUTOMATION_ATTACHMENT_URL);
 
 	public static final String[] TESTRAY_AUTOMATION_COMPUTER_NAMES = {"should-not-match-any-but-arbitrary"};
 
