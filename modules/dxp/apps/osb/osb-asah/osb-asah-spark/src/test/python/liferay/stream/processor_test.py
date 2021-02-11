@@ -219,6 +219,21 @@ def test_form_data_frame_processor_calculate_submission_time(
 		).withColumn(
 			'event_date',
 			F.to_timestamp(F.col('eventDate'))
+		).withColumn(
+			'normalized_event_date',
+			F.date_trunc('hour', F.col('event_date'))
+		).withColumn(
+			'primaryKey',
+			F.sha2(
+				F.concat_ws(
+					"#", F.col('projectId'), F.col('channelId'),
+					F.col('userId'), F.col('assetId'), F.col('variantId'),
+					F.col('normalized_event_date'),
+				),
+				256
+			)
+		).fillna(
+			'', subset=['variantId']
 		)
 	)
 
@@ -267,6 +282,7 @@ def test_form_data_frame_processor_process(
 			T.StructField("submissions", T.LongType(), False),
 			T.StructField("views", T.LongType(), False),
 			T.StructField("abandonments", T.LongType(), False),
+			T.StructField("submission_time", T.LongType(), False),
 		])
 	)
 
