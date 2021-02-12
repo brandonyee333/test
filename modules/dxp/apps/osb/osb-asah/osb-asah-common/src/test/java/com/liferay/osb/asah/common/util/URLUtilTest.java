@@ -38,8 +38,8 @@ public class URLUtilTest {
 	public void testToURI() throws URISyntaxException {
 		URI uri = URLUtil.toURI("https://liferay.com/foo?q=escaping em ação!");
 
-		Assert.assertEquals("liferay.com", uri.getHost());
 		Assert.assertEquals("/foo?q=escaping em ação!", uri.getPath());
+		Assert.assertEquals("liferay.com", uri.getHost());
 	}
 
 }
