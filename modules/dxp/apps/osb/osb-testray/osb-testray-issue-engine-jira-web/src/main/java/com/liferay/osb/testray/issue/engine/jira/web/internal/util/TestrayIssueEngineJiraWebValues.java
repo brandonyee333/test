@@ -51,7 +51,8 @@ public class TestrayIssueEngineJiraWebValues {
 			"/plugins/servlet/oauth/";
 
 	public static final String JIRA_REST_API_ISSUE_URL =
-		TestrayIssueEngineJiraWebUtil.get("osb.testray.jira.url") + "/issue/";
+		TestrayIssueEngineJiraWebUtil.get("osb.testray.jira.url") +
+			"/rest/api/latest/issue/";
 
 	public static final String JIRA_REST_API_LINK_URL =
 		TestrayIssueEngineJiraWebUtil.get("osb.testray.jira.url") +
