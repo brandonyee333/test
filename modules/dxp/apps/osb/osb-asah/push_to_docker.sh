@@ -67,6 +67,7 @@ function build_docker_image {
 		   [ ${file_name} == osb-asah-elasticsearch-master-node ]
 	then
 		mkdir -p ${file_name}/build
+
 		cp ~/.asah/server.zip ${file_name}/build/server.zip
 
 		echo "" >> ${file_name}/Dockerfile
