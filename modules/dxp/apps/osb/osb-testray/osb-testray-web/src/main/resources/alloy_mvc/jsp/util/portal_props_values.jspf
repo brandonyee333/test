@@ -19,7 +19,7 @@ public static class PortalPropsValues {
 
 	public static final String[] IMAGE_EXTENSIONS = {".gif", ".jpeg", ".jpg", ".png"};
 
-	public static final int TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS = Integer.MAX_VALUE;
+	public static final int TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS = 744;
 
 	public static final String TESTRAY_AUTOMATION_ARCHIVES_PATH = "/opt/liferay/testray/archives";
 
