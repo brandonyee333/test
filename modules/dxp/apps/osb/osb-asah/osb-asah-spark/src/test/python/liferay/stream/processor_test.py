@@ -204,6 +204,42 @@ def test_document_library_data_frame_processor_process(
 	assert 1 == row.ratings
 	assert 2.0 == row.ratingsScore
 
+def test_form_data_frame_processor_calculate_field_metrics(
+	form_data_frame_processor, spark_session
+):
+
+	input_data_frame = form_data_frame_processor._pre_process(
+		read_session_events_data_frame(
+			'form_data_frame_processor_calculate_field_metrics_input.json',
+			spark_session
+		)
+	)
+
+	actual_data_frame = form_data_frame_processor._calculate_field_metrics(
+		input_data_frame
+	)
+
+	expected_data_frame = read_data_frame(
+		'form_data_frame_processor_calculate_field_metrics_expected_output.json',
+		spark_session,
+		T.StructType([
+			T.StructField("projectId", T.StringType(), False),
+			T.StructField("channelId", T.StringType(), False),
+			T.StructField("userId", T.StringType(), False),
+			T.StructField("assetId", T.StringType(), False),
+			T.StructField("variantId", T.StringType(), False),
+			T.StructField("normalized_event_date", T.TimestampType(), False),
+			T.StructField("primaryKey", T.StringType(), False),
+			T.StructField("page_index", T.IntegerType(), False),
+			T.StructField("field_name", T.StringType(), False),
+			T.StructField("abandonments", T.LongType(), False),
+			T.StructField("interaction_duration", T.LongType(), False),
+			T.StructField("interactions", T.LongType(), False)
+		])
+	)
+
+	assert expected_data_frame.collect() == actual_data_frame.collect()
+
 def test_form_data_frame_processor_calculate_page_metrics(
 	form_data_frame_processor, spark_session
 ):

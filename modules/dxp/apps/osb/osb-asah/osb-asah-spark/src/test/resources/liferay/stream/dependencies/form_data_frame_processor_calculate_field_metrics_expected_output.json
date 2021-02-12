@@ -1,0 +1,30 @@
+[
+	{
+		"abandonments": 1,
+		"assetId": "2",
+		"channelId": "1",
+		"field_name": "Field1",
+		"interaction_duration": 1,
+		"interactions": 1,
+		"normalized_event_date": "2018-09-13T12:00:00.000Z",
+		"page_index": 1,
+		"primaryKey": "aeedc92a452415f478ccf1192bba0942508c60129fc805baa18380f044bfea34",
+		"projectId": "test",
+		"userId": "1",
+		"variantId": ""
+	},
+	{
+		"abandonments": 0,
+		"assetId": "1",
+		"channelId": "1",
+		"field_name": "Field2",
+		"interaction_duration": 1000,
+		"interactions": 1,
+		"normalized_event_date": "2018-09-13T12:00:00.000Z",
+		"page_index": 1,
+		"primaryKey": "fc8b69fab27700778c4dd8d6e1faa8bca63b7db1cfadbd14b7160966fc15b3d4",
+		"projectId": "test",
+		"userId": "1",
+		"variantId": ""
+	}
+]
