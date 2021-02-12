@@ -29,10 +29,10 @@ public class PageReferrerTest {
 		pageReferrer.setReferrer(
 			"https://liferay.com/some-random-path?q=liferay portal");
 
-		Assert.assertEquals("liferay.com", pageReferrer.getReferrerHost());
 		Assert.assertEquals(
 			"https://liferay.com/some-random-path?q=liferay portal",
 			pageReferrer.getReferrerCanonicalUrl());
+		Assert.assertEquals("liferay.com", pageReferrer.getReferrerHost());
 	}
 
 	@Test
@@ -42,10 +42,10 @@ public class PageReferrerTest {
 		pageReferrer.setReferrer(
 			"http://www.google.com/?q=\"hsR=0'hsR={{31337*31337}}>&lt;hsR>");
 
-		Assert.assertEquals("www.google.com", pageReferrer.getReferrerHost());
 		Assert.assertEquals(
 			"http://www.google.com/?q=\"hsR=0'hsR={{31337*31337}}>&lt;hsR>",
 			pageReferrer.getReferrerCanonicalUrl());
+		Assert.assertEquals("www.google.com", pageReferrer.getReferrerHost());
 	}
 
 }
