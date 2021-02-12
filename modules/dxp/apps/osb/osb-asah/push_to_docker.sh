@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function build_and_push_docker_images {
 	if [ "$(docker images -q liferaycloud/com-liferay-osb-asah-private 2> /dev/null)" ]
 	then
