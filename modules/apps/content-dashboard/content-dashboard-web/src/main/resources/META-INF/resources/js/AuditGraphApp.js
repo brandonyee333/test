@@ -21,13 +21,27 @@ export default function ({context, props}) {
 	const {languageDirection} = context;
 	const {learnHowURL, namespace, vocabularies} = props;
 
+	const barFilterApplied = () => {
+		const urlParams = new URLSearchParams(window.location.href);
+
+		return urlParams.get('resetBarsFilterURL');
+	};
 
 	return vocabularies.length ? (
-		<AuditBarChart
-			namespace={namespace}
-			rtl={languageDirection === 'rtl'}
-			vocabularies={vocabularies}
-		/>
+		<>
+			{barFilterApplied() && (
+				<p>
+					You have some bar filters selected. To exit them, please
+					pess ESC
+				</p>
+			)}
+
+			<AuditBarChart
+				namespace={namespace}
+				rtl={languageDirection === 'rtl'}
+				vocabularies={vocabularies}
+			/>
+		</>
 	) : (
 		<EmptyAuditBarChart learnHowURL={learnHowURL} />
 	);
