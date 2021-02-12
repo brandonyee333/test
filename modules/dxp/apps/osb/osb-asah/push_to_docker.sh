@@ -66,10 +66,11 @@ function build_docker_image {
 	elif [ ${file_name} == osb-asah-elasticsearch-data-node ] ||
 		   [ ${file_name} == osb-asah-elasticsearch-master-node ]
 	then
+		mkdir -p ${file_name}/build
 		cp ~/.asah/server.zip ${file_name}/build/server.zip
 
 		echo "" >> ${file_name}/Dockerfile
-		echo "COPY --chown=elasticsearch:root server.zip /certs/" >> ${file_name}/Dockerfile
+		echo "COPY --chown=elasticsearch:root ./build/server.zip /certs/" >> ${file_name}/Dockerfile
 		echo "RUN mkdir /usr/share/elasticsearch/config/certificates && unzip /certs/server.zip -d /usr/share/elasticsearch/config/certificates" >> ${file_name}/Dockerfile
 	elif [ ${file_name} == osb-asah-monolith ]
 	then
