@@ -1,9 +1,5 @@
 #!/bin/bash
 
-CURRENT_DATE=$(date)
-GIT_HASH=$(git rev-parse --short=7 HEAD)
-PREVIOUS_GIT_HASH=${1}
-
 function build_and_push_docker_images {
 	if [ "$(docker images -q liferaycloud/com-liferay-osb-asah-private 2> /dev/null)" ]
 	then
@@ -280,5 +276,9 @@ function sed {
 		/usr/bin/sed -i "${1}" "${2}"
 	fi
 }
+
+CURRENT_DATE=$(date)
+GIT_HASH=$(git rev-parse --short=7 HEAD)
+PREVIOUS_GIT_HASH=${1}
 
 main
