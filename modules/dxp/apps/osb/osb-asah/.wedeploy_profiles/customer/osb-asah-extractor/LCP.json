@@ -6,7 +6,7 @@
 		"OSB_ASAH_ANALYTICS_EVENTS_STORAGE_PATH": "/storage/analytics_events.snappy.parquet"
 	},
 	"id": "osbasahextractor",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-extractor-20210126-f329881",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-extractor--b6ef9ea",
 	"kind": "Deployment",
 	"memory": 3072,
 	"ports": [

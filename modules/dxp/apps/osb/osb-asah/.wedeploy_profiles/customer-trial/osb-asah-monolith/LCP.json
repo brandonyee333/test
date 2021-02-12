@@ -6,7 +6,7 @@
 		"OSB_ASAH_MONOLITH_ENABLED": "true"
 	},
 	"id": "osbasahmonolith",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-monolith-20210126-f329881",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-monolith--b6ef9ea",
 	"kind": "Deployment",
 	"loadBalancer": {
 		"cdn": false,
