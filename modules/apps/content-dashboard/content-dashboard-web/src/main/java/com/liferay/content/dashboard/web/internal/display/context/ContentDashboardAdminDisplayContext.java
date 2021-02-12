@@ -436,6 +436,8 @@ public class ContentDashboardAdminDisplayContext {
 					linkToDocumentationURL();
 			}
 		).put(
+			"namespace", _liferayPortletResponse.getNamespace()
+		).put(
 			"vocabularies", _assetVocabularyMetric.toJSONArray()
 		).build();
 	}

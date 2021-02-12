@@ -15,8 +15,9 @@
 import ClayEmptyState from '@clayui/empty-state';
 import {ClayCheckbox} from '@clayui/form';
 import ClayLayout from '@clayui/layout';
+import {useEventListener} from 'frontend-js-react-web';
 import PropTypes from 'prop-types';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
 	Bar,
 	BarChart,
@@ -32,7 +33,12 @@ import {
 import {BAR_CHART, COLORS, DEFAULT_COLOR} from '../utils/constants';
 import {shortenNumber} from '../utils/shortenNumber';
 
-export default function AuditBarChart({rtl, vocabularies}) {
+const ESCAPE_KEYS = [
+	'Escape', // Most browsers.
+	'Esc', // IE and Edge.
+];
+
+export default function AuditBarChart({namespace, rtl, vocabularies}) {
 	const auditBarChartData = useMemo(() => {
 		const dataKeys = new Set();
 		var maxValue = 0;
@@ -86,7 +92,7 @@ export default function AuditBarChart({rtl, vocabularies}) {
 						[key]: value,
 					};
 				},
-				{name: category.name}
+				{key: category.key, name: category.name}
 			);
 		});
 
@@ -206,6 +212,46 @@ export default function AuditBarChart({rtl, vocabularies}) {
 
 	const [tooltip, setTooltip] = useState(null);
 
+	const onBarClick = (assetCategoryIds) => {
+		if (assetCategoryIds.length) {
+			let uri = window.location.href;
+
+			if (!uri.includes('resetBarsFilterURL')) {
+				uri = Liferay.Util.addParams(
+					'resetBarsFilterURL=' + encodeURIComponent(uri),
+					uri
+				);
+			}
+
+			assetCategoryIds.map((assetCategoryId) => {
+				const param = namespace + 'assetCategoryId=' + assetCategoryId;
+
+				if (!uri.includes(param) && assetCategoryId !== 'none') {
+					uri = Liferay.Util.addParams(param, uri);
+				}
+			});
+
+			Liferay.Util.navigate(uri);
+		}
+	};
+
+	const handleKeydown = useCallback((event) => {
+		const uri = window.location.href;
+
+		if (
+			ESCAPE_KEYS.includes(event.key) &&
+			uri.includes('resetBarsFilterURL')
+		) {
+			const urlParams = new URLSearchParams(uri);
+
+			Liferay.Util.navigate(
+				decodeURIComponent(urlParams.get('resetBarsFilterURL'))
+			);
+		}
+	}, []);
+
+	useEventListener('keydown', handleKeydown, true, document);
+
 	return (
 		<>
 			{Object.keys(checkboxes).length > 0 && noCheckboxesChecked && (
@@ -284,6 +330,12 @@ export default function AuditBarChart({rtl, vocabularies}) {
 									key={index}
 									legendType="square"
 									name={bar.name}
+									onClick={(props) =>
+										onBarClick([
+											props.payload.key,
+											bar.dataKey,
+										])
+									}
 									onMouseOut={() => {
 										setTooltip(null);
 									}}
@@ -293,6 +345,7 @@ export default function AuditBarChart({rtl, vocabularies}) {
 											name: props.name,
 										});
 									}}
+									style={{cursor: 'pointer'}}
 								>
 									{data.map((entry, index) => (
 										<Cell
@@ -317,6 +370,7 @@ export default function AuditBarChart({rtl, vocabularies}) {
 						<Bar
 							barSize={BAR_CHART.barHeight}
 							dataKey="value"
+							onClick={(props) => onBarClick([props.payload.key])}
 							onMouseOut={() => {
 								setTooltip(null);
 							}}
@@ -326,6 +380,7 @@ export default function AuditBarChart({rtl, vocabularies}) {
 									name: props.name,
 								});
 							}}
+							style={{cursor: 'pointer'}}
 						>
 							{data.map((entry, index) => (
 								<Cell
@@ -416,6 +471,7 @@ function CustomYAxisTick(props) {
 }
 
 AuditBarChart.propTypes = {
+	namespace: PropTypes.string.isRequired,
 	rtl: PropTypes.bool.isRequired,
 	vocabularies: PropTypes.array.isRequired,
 };
