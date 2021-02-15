@@ -235,7 +235,7 @@ public class AdminRestController extends BaseRestController {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
 			Preference preference = new Preference(
-				jsonObject.getString("key"), jsonObject.getString("value"));
+				jsonObject.getString("id"), jsonObject.getString("value"));
 
 			preference.setIsNew(true);
 
