@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -28,6 +29,10 @@ public class ListUtil {
 	public static <T, R> List<R> map(
 		Collection<? extends T> collection,
 		Function<? super T, ? extends R> mapperFunction) {
+
+		if (collection == null) {
+			return Collections.emptyList();
+		}
 
 		Stream<? extends T> stream = collection.stream();
 

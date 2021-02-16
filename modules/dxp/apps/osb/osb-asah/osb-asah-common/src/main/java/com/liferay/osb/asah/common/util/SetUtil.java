@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.util;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -30,6 +31,10 @@ public class SetUtil {
 	public static <T, R> Set<R> map(
 		Collection<? extends T> collection,
 		Function<? super T, ? extends R> mapperFunction) {
+
+		if (collection == null) {
+			return Collections.emptySet();
+		}
 
 		Stream<? extends T> stream = collection.stream();
 
