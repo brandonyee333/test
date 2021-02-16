@@ -22,6 +22,8 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.io.IOException;
+
 import java.util.List;
 
 /**
@@ -42,6 +44,12 @@ public class ObjectMapperUtil {
 		return _objectMapper.readValue(
 			fromValues,
 			typeFactory.constructCollectionType(List.class, toValueType));
+	}
+
+	public static <T> T readValue(String fromValue, Class<T> toValueType)
+		throws IOException {
+
+		return _objectMapper.readValue(fromValue, toValueType);
 	}
 
 	private static final ObjectMapper _objectMapper = new ObjectMapper() {

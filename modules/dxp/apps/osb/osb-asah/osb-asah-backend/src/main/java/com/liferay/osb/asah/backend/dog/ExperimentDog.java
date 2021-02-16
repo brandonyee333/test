@@ -14,13 +14,6 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.DXPVariant;
@@ -47,6 +40,7 @@ import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.VariantMetrics;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.IOException;
@@ -102,7 +96,7 @@ public class ExperimentDog {
 
 		JSONObject experimentJSONObject = _faroInfoElasticsearchInvoker.add(
 			"experiments",
-			_objectMapper.convertValue(experiment, JSONObject.class));
+			ObjectMapperUtil.convertValue(experiment, JSONObject.class));
 
 		experiment.setId(experimentJSONObject.optString("id"));
 
@@ -158,7 +152,7 @@ public class ExperimentDog {
 		SearchHit searchHit = searchHits.getAt(0);
 
 		try {
-			return _objectMapper.readValue(
+			return ObjectMapperUtil.readValue(
 				searchHit.getSourceAsString(), Experiment.class);
 		}
 		catch (IOException ioe) {
@@ -359,7 +353,7 @@ public class ExperimentDog {
 
 		_faroInfoElasticsearchInvoker.update(
 			"experiments",
-			_objectMapper.convertValue(experiment, JSONObject.class));
+			ObjectMapperUtil.convertValue(experiment, JSONObject.class));
 
 		return experiment;
 	}
@@ -515,7 +509,7 @@ public class ExperimentDog {
 		SearchHit searchHit = searchHits.getAt(0);
 
 		try {
-			return _objectMapper.readValue(
+			return ObjectMapperUtil.readValue(
 				searchHit.getSourceAsString(), ExperimentMetricsBag.class);
 		}
 		catch (IOException ioe) {
@@ -714,16 +708,5 @@ public class ExperimentDog {
 
 	@Autowired
 	private HistogramDog _histogramDog;
-
-	private final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-			registerModule(new JavaTimeModule());
-			registerModule(new Jdk8Module());
-			registerModule(new JsonOrgModule());
-		}
-	};
 
 }
