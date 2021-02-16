@@ -65,6 +65,7 @@ public class LocalStorage implements Storage {
 		}
 	}
 
+	@Override
 	public void flush() {
 		try {
 			_rollover();

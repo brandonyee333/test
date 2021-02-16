@@ -115,6 +115,7 @@ public class SalesforceIndividualsNanite extends BaseIndividualsNanite {
 	protected void reprocessUpdateDataSource(String dataSourceId) {
 	}
 
+	@Override
 	protected void setInterrupted(String dataSourceId, boolean interrupted) {
 		_interruptedMap.put(dataSourceId, interrupted);
 	}

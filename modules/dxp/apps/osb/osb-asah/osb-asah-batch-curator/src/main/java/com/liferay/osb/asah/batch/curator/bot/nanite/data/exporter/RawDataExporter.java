@@ -48,6 +48,7 @@ public class RawDataExporter extends BaseDataExporter {
 		jsonGenerator.useDefaultPrettyPrinter();
 	}
 
+	@Override
 	protected JSONObject doGetResultPageJSONObject(String after) {
 		JSONArray jsonArray = new JSONArray(
 			_elasticsearchInvoker.get(

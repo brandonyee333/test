@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component;
 @Primary
 public class ExperimentHttpImpl implements ExperimentHttp {
 
+	@Override
 	public JSONObject getExperimentMetricsJSONObject(String id) {
 		return _objectMapper.convertValue(
 			_experimentsRestController.getCalculateExperimentMetrics(id),

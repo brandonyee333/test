@@ -66,6 +66,7 @@ public class CountrySearchKeywords {
 		return _searchKeywords;
 	}
 
+	@Override
 	public int hashCode() {
 		return Objects.hash(_countryCode, _searchKeywords);
 	}

@@ -83,6 +83,7 @@ public class Channel implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
+	@Override
 	public Long getId() {
 		return _id;
 	}

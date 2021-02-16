@@ -29,18 +29,22 @@ import org.springframework.stereotype.Component;
 public class UserSessionsInteractionsUpgradeStep
 	extends BaseReindexUpgradeStep {
 
+	@Override
 	public String[] getCollectionNames() {
 		return new String[] {"user-sessions"};
 	}
 
+	@Override
 	public Map<String, Object> getParams() {
 		return Collections.emptyMap();
 	}
 
+	@Override
 	public String getScript() {
 		return "ctx._source.remove('interactions')";
 	}
 
+	@Override
 	public WeDeployDataService getWeDeployDataService() {
 		return WeDeployDataService.OSB_ASAH_CEREBRO_INFO;
 	}

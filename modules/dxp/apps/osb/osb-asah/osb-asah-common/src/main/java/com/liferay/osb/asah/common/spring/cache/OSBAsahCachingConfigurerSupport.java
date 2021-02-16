@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
 public class OSBAsahCachingConfigurerSupport extends CachingConfigurerSupport {
 
 	@Bean
+	@Override
 	public KeyGenerator keyGenerator() {
 		return (target, method, params) -> {
 			StringBuilder sb = new StringBuilder();

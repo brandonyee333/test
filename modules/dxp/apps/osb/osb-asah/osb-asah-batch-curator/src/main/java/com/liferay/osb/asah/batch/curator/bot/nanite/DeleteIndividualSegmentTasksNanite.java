@@ -75,6 +75,7 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 	}
 
 	@Autowired
+	@Override
 	protected Log getLog() {
 		return LogFactory.getLog(DeleteIndividualSegmentTasksNanite.class);
 	}

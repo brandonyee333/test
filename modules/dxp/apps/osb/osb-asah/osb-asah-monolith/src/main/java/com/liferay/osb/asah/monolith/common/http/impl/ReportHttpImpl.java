@@ -38,6 +38,7 @@ public class ReportHttpImpl implements ReportHttp {
 			_reportRestController.getAccountResultBag(after), JSONObject.class);
 	}
 
+	@Override
 	public JSONObject getIndividualsJSONObject(String after) {
 		return _objectMapper.convertValue(
 			_reportRestController.getIndividualResultBag(after),

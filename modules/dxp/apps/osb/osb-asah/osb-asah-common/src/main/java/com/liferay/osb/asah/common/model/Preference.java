@@ -64,6 +64,7 @@ public class Preference implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
+	@Override
 	public Long getId() {
 		return _id;
 	}

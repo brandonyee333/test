@@ -126,6 +126,7 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 
 		return new DichotomousDataExperimentMetricCalculator() {
 
+			@Override
 			protected List<Variant<Double>> getVariants(Experiment experiment) {
 				for (Variant<Double> variant : variants) {
 					setVariantProperties(deltaDays, variant);
@@ -159,6 +160,7 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 
 		return new ScrollDepthExperimentCalculator() {
 
+			@Override
 			protected List<Variant<Double[]>> getVariants(
 				Experiment experiment) {
 
