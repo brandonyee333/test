@@ -78,6 +78,16 @@
 				"deletionDate": {
 					"type": "date"
 				},
+				"details": {
+					"properties": {
+						"contactsSelected": {
+							"type": "boolean"
+						},
+						"sitesSelected": {
+							"type": "boolean"
+						}
+					}
+				},
 				"faroBackendSecuritySignature": {
 					"type": "keyword"
 				},
@@ -136,6 +146,9 @@
 										"enableAllChildren": {
 											"type": "boolean"
 										},
+										"id": {
+											"type": "long"
+										},
 										"organizationIds": {
 											"type": "long"
 										}
@@ -145,6 +158,9 @@
 									"properties": {
 										"enableAllChildren": {
 											"type": "boolean"
+										},
+										"id": {
+											"type": "long"
 										},
 										"userGroupIds": {
 											"type": "long"
