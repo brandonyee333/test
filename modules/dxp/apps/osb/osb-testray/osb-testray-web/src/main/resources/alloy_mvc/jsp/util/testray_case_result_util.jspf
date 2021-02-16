@@ -391,7 +391,6 @@ public static class TestrayCaseResultUtil {
 		}
 
 		String sanitizedComment = comment.replaceAll("[\\n\\t ]", "");
-
 		String sanitizedAutofillMessage = autofillMessage.replaceAll("[\\n\\t ]", "");
 
 		if (sanitizedComment.contains(sanitizedAutofillMessage)) {
