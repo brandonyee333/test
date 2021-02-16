@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -24,11 +23,13 @@ import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
-import com.liferay.osb.asah.common.model.ChannelDataSource;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
@@ -60,6 +61,8 @@ import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -92,6 +95,9 @@ public class AdminRestController extends BaseRestController {
 
 		if (collectionName.equals("channels")) {
 			_channelRepository.deleteAll();
+		}
+		else if (collectionName.equals("data-sources")) {
+			_dataSourceRepository.deleteAll();
 		}
 		else if (collectionName.equals("preferences")) {
 			_preferenceRepository.deleteAll();
@@ -148,6 +154,11 @@ public class AdminRestController extends BaseRestController {
 		if (collectionName.equals("channels")) {
 			_addChannels(new JSONArray(json));
 		}
+		else if (collectionName.equals("data-sources")) {
+			_addDataSources(new JSONArray(json));
+
+			_nanitesHttp.refreshAnalytics();
+		}
 		else if (collectionName.equals("preferences")) {
 			_addPreferences(new JSONArray(json));
 		}
@@ -156,10 +167,6 @@ public class AdminRestController extends BaseRestController {
 				_elasticsearchInvokers.get(weDeployDataServiceName);
 
 			elasticsearchInvoker.add(collectionName, new JSONArray(json));
-
-			if (collectionName.equals("data-sources")) {
-				_nanitesHttp.refreshAnalytics();
-			}
 		}
 	}
 
@@ -192,41 +199,37 @@ public class AdminRestController extends BaseRestController {
 
 	private void _addChannels(JSONArray jsonArray) {
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			Channel channel = _conversionService.convert(
+				jsonArray.getJSONObject(i), Channel.class);
 
-			Channel channel = new Channel();
-
-			JSONArray dataSourcesJSONArray = jsonObject.getJSONArray(
-				"dataSources");
-
-			for (int j = 0; j < dataSourcesJSONArray.length(); j++) {
-				JSONObject dataSourceJSONObject =
-					dataSourcesJSONArray.getJSONObject(j);
-
-				ChannelDataSource channelDataSource = new ChannelDataSource();
-
-				channelDataSource.setDataSourceId(
-					dataSourceJSONObject.getLong("id"));
-				channelDataSource.setGroupIds(
-					JSONUtil.toLongSet(
-						dataSourceJSONObject.getJSONArray("groupIds")));
-
-				channel.addChannelDataSource(channelDataSource);
+			if (channel == null) {
+				throw new OSBAsahException(
+					HttpStatus.BAD_REQUEST,
+					"Unable to convert to channel " +
+						jsonArray.getJSONObject(i));
 			}
 
-			try {
-				channel.setCreateDate(
-					DateUtil.toUTCDate(jsonObject.getString("dateCreated")));
-			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
-
-			channel.setId(Long.valueOf(jsonObject.getString("id")));
 			channel.setIsNew(true);
-			channel.setName(jsonObject.getString("name"));
 
 			_channelRepository.save(channel);
+		}
+	}
+
+	private void _addDataSources(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			DataSource dataSource = _conversionService.convert(
+				jsonArray.getJSONObject(i), DataSource.class);
+
+			if (dataSource == null) {
+				throw new OSBAsahException(
+					HttpStatus.BAD_REQUEST,
+					"Unable to convert to data source " +
+						jsonArray.getJSONObject(i));
+			}
+
+			dataSource.setIsNew(true);
+
+			_dataSourceRepository.save(dataSource);
 		}
 	}
 
@@ -322,6 +325,12 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private ChannelRepository _channelRepository;
+
+	@Autowired
+	private ConversionService _conversionService;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
