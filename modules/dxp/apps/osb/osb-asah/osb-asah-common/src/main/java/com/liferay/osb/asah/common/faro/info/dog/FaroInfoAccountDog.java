@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.faro.info.dog;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -80,11 +81,11 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject addAccount(
-			JSONObject dataJSONObject, JSONObject dataSourceJSONObject)
+			JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
 		JSONObject contextJSONObject = _faroInfoFieldDog.buildContextJSONObject(
-			"organization", dataJSONObject, dataSourceJSONObject, "account");
+			"organization", dataJSONObject, dataSource, "account");
 
 		String dateString = DateUtil.newDateString();
 
@@ -96,7 +97,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 			).put(
 				"activitiesCounts", new JSONArray()
 			).put(
-				"dataSourceId", dataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(dataSource.getId())
 			).put(
 				"dateCreated", dateString
 			).put(
@@ -176,13 +177,13 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 
 	public JSONObject updateAccount(
 			JSONObject accountJSONObject, JSONObject dataJSONObject,
-			JSONObject dataSourceJSONObject)
+			DataSource dataSource)
 		throws Exception {
 
 		return replaceAccount(
 			_faroInfoFieldDog.updateContextFields(
-				"organization", dataJSONObject, dataSourceJSONObject,
-				accountJSONObject, "account", null, null));
+				"organization", dataJSONObject, dataSource, accountJSONObject,
+				"account", null, null));
 	}
 
 	public JSONObject updateAccount(

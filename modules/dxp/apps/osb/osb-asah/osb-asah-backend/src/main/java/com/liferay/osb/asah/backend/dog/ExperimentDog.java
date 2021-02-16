@@ -87,7 +87,7 @@ import org.springframework.stereotype.Component;
 public class ExperimentDog {
 
 	public Experiment addExperiment(Experiment experiment) {
-		experiment.setChannelId(_getChannelId(experiment));
+		experiment.setChannelId(String.valueOf(_getChannelId(experiment)));
 		experiment.setId(null);
 
 		if (experiment.getModifiedDate() == null) {
@@ -123,7 +123,7 @@ public class ExperimentDog {
 
 		if (updateDXP) {
 			_dxpClient.deleteDXPExperiment(
-				experiment.getDataSourceId(), experiment.getId());
+				Long.valueOf(experiment.getDataSourceId()), experiment.getId());
 		}
 
 		return _faroInfoElasticsearchInvoker.delete(
@@ -517,13 +517,13 @@ public class ExperimentDog {
 		}
 	}
 
-	private String _getChannelId(Experiment experiment) {
+	private Long _getChannelId(Experiment experiment) {
 		if (StringUtils.isNotEmpty(experiment.getChannelId())) {
-			return experiment.getChannelId();
+			return Long.valueOf(experiment.getChannelId());
 		}
 
-		String channelId = _dataSourceDog.getChannelId(
-			experiment.getDataSourceId());
+		Long channelId = _dataSourceDog.getChannelId(
+			Long.valueOf(experiment.getDataSourceId()));
 
 		if (channelId != null) {
 			return channelId;
@@ -653,7 +653,7 @@ public class ExperimentDog {
 			}
 
 			_dxpClient.updateDXPExperimentStatus(
-				experiment.getDataSourceId(), experiment.getId(),
+				Long.valueOf(experiment.getDataSourceId()), experiment.getId(),
 				experimentStatus, dxpVariantId);
 
 			return;
@@ -667,7 +667,7 @@ public class ExperimentDog {
 
 		_dxpClient.runDXPExperiment(
 			experimentSettings.getConfidenceLevel(),
-			experiment.getDataSourceId(),
+			Long.valueOf(experiment.getDataSourceId()),
 			experimentSettings.getDXPVariantsSettings(), experiment.getId());
 	}
 

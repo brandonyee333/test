@@ -88,7 +88,7 @@ public class DefinitionsRestController extends BaseRestController {
 
 				pairs.add(
 					new Pair<>(
-						_dataSourceDog.getDataSourceName(key),
+						_dataSourceDog.getDataSourceName(Long.valueOf(key)),
 						dataSourceFieldNamesJSONObject.getString(key)));
 			}
 

@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -132,7 +135,8 @@ public class FaroInfoFieldDogTest extends BaseFaroInfoDogTestCase {
 						put("date", date);
 					}
 				}),
-			_dataSourceJSONObject, "individual");
+			_objectMapper.convertValue(_dataSourceJSONObject, DataSource.class),
+			"individual");
 
 		String actualDateString = String.valueOf(
 			JSONUtil.getValue(
@@ -149,5 +153,8 @@ public class FaroInfoFieldDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private FaroInfoFieldDog _faroInfoFieldDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

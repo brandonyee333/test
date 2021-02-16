@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
@@ -24,20 +27,19 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.rest.response.PatchResponse;
-import com.liferay.osb.asah.common.rest.response.PostResponse;
-import com.liferay.osb.asah.common.rest.response.PutResponse;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.script.Script;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
@@ -70,40 +72,42 @@ import org.springframework.web.client.HttpClientErrorException;
 public class DataSourcesRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
-	public void deleteDataSource(@PathVariable String id) throws Exception {
+	public void deleteDataSource(@PathVariable Long id) throws Exception {
 		_salesforceExtractorConfigurationDog.deleteConfiguration(id);
+
+		DataSource dataSource = _dataSourceDog.getDataSource(id);
+
+		dataSource.setDeletionDate(new Date());
+		dataSource.setState("IN_PROGRESS_DELETING");
 
 		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 			"DeleteDataSourcesNanite",
-			faroInfoElasticsearchInvoker.update(
-				"data-sources", id,
-				JSONUtil.put(
-					"deletionDate", DateUtil.newDateString()
-				).put(
-					"state", "IN_PROGRESS_DELETING"
-				)));
+			_objectMapper.convertValue(
+				_dataSourceDog.updateDataSource(dataSource), JSONObject.class));
 	}
 
 	@PostMapping("/{id}/disconnect")
-	public String disconnectDataSource(@PathVariable String id)
-		throws Exception {
+	public String disconnectDataSource(@PathVariable Long id) throws Exception {
+		DataSource dataSource = _dataSourceDog.disconnectDataSource(id);
 
-		JSONObject dataSourceJSONObject = _dataSourceDog.disconnectDataSource(
-			id);
+		_sanitize(dataSource);
 
-		_sanitize(dataSourceJSONObject);
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			dataSource, JSONObject.class);
 
 		return dataSourceJSONObject.toString();
 	}
 
 	@GetMapping("/{id}")
-	public String getDataSource(@PathVariable String id) {
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.getDataSourceJSONObject(id);
+	public String getDataSource(@PathVariable Long id) {
+		DataSource dataSource = _dataSourceDog.getDataSource(id);
 
-		_setLastSyncTime(dataSourceJSONObject);
+		_setLastSyncTime(dataSource);
 
-		_sanitize(dataSourceJSONObject);
+		_sanitize(dataSource);
+
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			dataSource, JSONObject.class);
 
 		return dataSourceJSONObject.toString();
 	}
@@ -126,17 +130,21 @@ public class DataSourcesRestController extends BaseRestController {
 		JSONObject embeddedJSONObject = responseJSONObject.getJSONObject(
 			"_embedded");
 
-		JSONArray dataSourcesJSONArray = embeddedJSONObject.getJSONArray(
-			"data-sources");
+		embeddedJSONObject.put(
+			"data-sources",
+			JSONUtil.toJSONArray(
+				JSONUtil.toList(
+					embeddedJSONObject.getJSONArray("data-sources"),
+					jsonObject -> _objectMapper.convertValue(
+						jsonObject, DataSource.class)),
+				dataSource -> {
+					_setLastSyncTime(dataSource);
 
-		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
-			JSONObject dataSourceJSONObject =
-				dataSourcesJSONArray.getJSONObject(i);
+					_sanitize(dataSource);
 
-			_setLastSyncTime(dataSourceJSONObject);
-
-			_sanitize(dataSourceJSONObject);
-		}
+					return _objectMapper.convertValue(
+						dataSource, JSONObject.class);
+				}));
 
 		return responseJSONObject.toString();
 	}
@@ -159,20 +167,21 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}/progress")
-	public String getProgress(@PathVariable String id) {
-		String type = _dataSourceDog.getDataSourceType(
-			_dataSourceDog.getDataSourceJSONObject(id));
+	public String getProgress(@PathVariable Long id) {
+		DataSource dataSource = _dataSourceDog.getDataSource(id);
 
-		if (type.equals("CSV")) {
+		String providerType = dataSource.getProviderType();
+
+		if (providerType.equals("CSV")) {
 			return String.valueOf(_getCSVDataSourceProgressJSONObject(id));
 		}
-		else if (type.equals("SALESFORCE")) {
+		else if (providerType.equals("SALESFORCE")) {
 			return String.valueOf(
 				_getSalesforceDataSourceProgressJSONObject(id));
 		}
 
 		throw new UnsupportedOperationException(
-			"Unknown data source type " + type);
+			"Unknown data source type " + providerType);
 	}
 
 	@GetMapping("/{id}/salesforce-accounts/fields")
@@ -182,7 +191,7 @@ public class DataSourcesRestController extends BaseRestController {
 		throws Exception {
 
 		return _exchange(
-			id,
+			Long.valueOf(id),
 			() -> _dataSourceHttp.getSalesforceAccountsFields(id, end, start));
 	}
 
@@ -193,101 +202,93 @@ public class DataSourcesRestController extends BaseRestController {
 		throws Exception {
 
 		return _exchange(
-			id, () -> _dataSourceHttp.getSalesforceUsersFields(id, end, start));
+			Long.valueOf(id),
+			() -> _dataSourceHttp.getSalesforceUsersFields(id, end, start));
 	}
 
 	@PatchMapping("/{id}")
 	public String patchDataSource(
-			@PathVariable String id, @RequestBody String json)
+			@PathVariable String id, @RequestBody DataSourceDTO dataSourceDTO)
 		throws Exception {
 
-		PatchResponse patchResponse = new PatchResponse() {
+		dataSourceDTO.setId(id);
 
-			@Override
-			protected JSONObject invokeElasticsearch(JSONObject jsonObject)
-				throws Exception {
+		DataSource dataSource = _dataSourceDog.patchDataSource(
+			_objectMapper.convertValue(dataSourceDTO, DataSource.class));
 
-				return _dataSourceDog.patchDataSource(id, jsonObject);
-			}
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			dataSource, JSONObject.class);
 
-		};
-
-		patchResponse.setJSON(json);
-
-		return patchResponse.respond();
+		return dataSourceJSONObject.toString();
 	}
 
 	@PostMapping
-	public String postDataSource(@RequestBody String json) throws Exception {
-		PostResponse postResponse = new PostResponse() {
+	public String postDataSource(@RequestBody DataSourceDTO dataSourceDTO)
+		throws Exception {
 
-			@Override
-			protected JSONObject invokeElasticsearch(JSONObject jsonObject)
-				throws Exception {
+		_beforeAdd(dataSourceDTO);
+		_removeLastSyncTime(dataSourceDTO);
 
-				return _dataSourceDog.addDataSource(jsonObject);
-			}
+		DataSource dataSource = _dataSourceDog.addDataSource(
+			_objectMapper.convertValue(dataSourceDTO, DataSource.class));
 
-			@Override
-			protected void onBeforeAdd(JSONObject jsonObject) {
-				super.onBeforeAdd(jsonObject);
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			dataSource, JSONObject.class);
 
-				_removeLastSyncTime(jsonObject);
-			}
-
-		};
-
-		postResponse.setJSON(json);
-
-		return postResponse.respond();
+		return dataSourceJSONObject.toString();
 	}
 
 	@PutMapping("/{id}")
 	public String putDataSource(
-			@PathVariable String id, @RequestBody String json)
+			@PathVariable String id, @RequestBody DataSourceDTO dataSourceDTO)
 		throws Exception {
 
-		PutResponse putResponse = new PutResponse() {
+		dataSourceDTO.setId(id);
 
-			@Override
-			protected JSONObject invokeElasticsearch(JSONObject jsonObject)
-				throws Exception {
+		_beforeUpdate(dataSourceDTO);
 
-				return _dataSourceDog.updateDataSource(id, jsonObject);
-			}
+		_removeLastSyncTime(dataSourceDTO);
 
-			@Override
-			protected void onBeforeUpdate(JSONObject jsonObject) {
-				super.onBeforeUpdate(jsonObject);
+		DataSource dataSource = _dataSourceDog.updateDataSourceConfiguration(
+			_objectMapper.convertValue(dataSourceDTO, DataSource.class));
 
-				_removeLastSyncTime(jsonObject);
-			}
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			dataSource, JSONObject.class);
 
-		};
+		return dataSourceJSONObject.toString();
+	}
 
-		putResponse.setJSON(json);
+	private void _beforeAdd(DataSourceDTO dataSourceDTO) {
+		Date now = new Date();
 
-		return putResponse.respond();
+		dataSourceDTO.setCreateDate(now);
+
+		dataSourceDTO.setId(null);
+
+		dataSourceDTO.setModifiedDate(now);
+	}
+
+	private void _beforeUpdate(DataSourceDTO dataSourceDTO) {
+		dataSourceDTO.setModifiedDate(new Date());
 	}
 
 	private String _exchange(
-			String dataSourceId, Supplier<ResponseEntity<String>> supplier)
+			Long dataSourceId, Supplier<ResponseEntity<String>> supplier)
 		throws Exception {
 
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
+		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
 		try {
 			ResponseEntity<String> responseEntity = supplier.get();
 
 			if (responseEntity.getStatusCode() != HttpStatus.OK) {
-				_refreshConfiguration(dataSourceJSONObject);
+				_refreshConfiguration(dataSource);
 			}
 
 			return responseEntity.getBody();
 		}
 		catch (Exception e) {
-			_refreshConfiguration(dataSourceJSONObject);
+			_refreshConfiguration(dataSource);
 
 			if (e instanceof HttpClientErrorException) {
 				HttpClientErrorException hcee = (HttpClientErrorException)e;
@@ -303,9 +304,7 @@ public class DataSourcesRestController extends BaseRestController {
 		}
 	}
 
-	private JSONObject _getCSVDataSourceProgressJSONObject(
-		String dataSourceId) {
-
+	private JSONObject _getCSVDataSourceProgressJSONObject(Long dataSourceId) {
 		JSONObject runLogJSONObject = _runLogger.fetchLatestRunLogJSONObject(
 			dataSourceId, faroInfoElasticsearchInvoker, "CSVIndividualsNanite");
 
@@ -327,7 +326,8 @@ public class DataSourcesRestController extends BaseRestController {
 				"totalOperations",
 				faroInfoElasticsearchInvoker.count(
 					"csv-individuals",
-					QueryBuilders.termQuery("dataSourceId", dataSourceId))
+					QueryBuilders.termQuery(
+						"dataSourceId", String.valueOf(dataSourceId)))
 			);
 		}
 
@@ -339,7 +339,7 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private JSONObject _getSalesforceDataSourceAccountsProgressJSONObject(
-		String dataSourceId) {
+		Long dataSourceId) {
 
 		JSONObject salesforceExtractorNaniteRunLogJSONObject =
 			_runLogger.fetchLatestRunLogJSONObject(
@@ -441,7 +441,7 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private JSONObject _getSalesforceDataSourceIndividualsProgressJSONObject(
-		String dataSourceId) {
+		Long dataSourceId) {
 
 		JSONObject salesforceExtractorNaniteRunLogJSONObject =
 			_runLogger.fetchLatestRunLogJSONObject(
@@ -622,33 +622,21 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private JSONObject _getSalesforceDataSourceProgressJSONObject(
-		String dataSourceId) {
+		Long dataSourceId) {
 
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
-
-		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-			"provider");
-
-		JSONObject accountsConfigurationJSONObject =
-			providerJSONObject.optJSONObject("accountsConfiguration");
-		JSONObject contactsConfigurationJSONObject =
-			providerJSONObject.optJSONObject("contactsConfiguration");
+		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
 		JSONObject progressJSONObject = new JSONObject();
 
-		if ((accountsConfigurationJSONObject != null) &&
-			accountsConfigurationJSONObject.getBoolean("enableAllAccounts")) {
-
+		if (dataSource.getEnableAllAccounts()) {
 			progressJSONObject.put(
 				"accounts",
 				_getSalesforceDataSourceAccountsProgressJSONObject(
 					dataSourceId));
 		}
 
-		if ((contactsConfigurationJSONObject != null) &&
-			(contactsConfigurationJSONObject.getBoolean("enableAllContacts") ||
-			 contactsConfigurationJSONObject.getBoolean("enableAllLeads"))) {
+		if (dataSource.getEnableAllContacts() ||
+			dataSource.getEnableAllLeads()) {
 
 			progressJSONObject.put(
 				"individuals",
@@ -712,78 +700,65 @@ public class DataSourcesRestController extends BaseRestController {
 		);
 	}
 
-	private void _refreshConfiguration(JSONObject dataSourceJSONObject)
-		throws Exception {
+	private void _refreshConfiguration(DataSource dataSource) throws Exception {
+		String providerType = dataSource.getProviderType();
 
-		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
-
-		if (!Objects.equals(type, "SALESFORCE")) {
+		if (!Objects.equals(providerType, "SALESFORCE")) {
 			return;
 		}
 
-		JSONObject newDataSourceJSONObject = new JSONObject(
+		DataSource newDataSource = _objectMapper.convertValue(
 			_configurationHttp.refreshConfiguration(
-				dataSourceJSONObject, type));
+				new DataSourceDTO(dataSource), providerType),
+			DataSource.class);
 
-		if (JSONUtil.equals(dataSourceJSONObject, newDataSourceJSONObject)) {
+		if (Objects.equals(dataSource, newDataSource)) {
 			return;
 		}
 
-		_salesforceExtractorConfigurationDog.updateConfiguration(
-			newDataSourceJSONObject);
+		_salesforceExtractorConfigurationDog.updateConfiguration(newDataSource);
 
-		_dataSourceDog.updateDataSource(
-			dataSourceJSONObject.getString("id"), newDataSourceJSONObject);
+		_dataSourceDog.updateDataSourceConfiguration(newDataSource);
 	}
 
-	private void _removeLastSyncTime(JSONObject dataSourceJSONObject) {
-		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-			"provider");
+	private void _removeLastSyncTime(DataSourceDTO dataSourceDTO) {
+		DataSourceDTO.ProviderDTO providerDTO = dataSourceDTO.getProviderDTO();
 
-		JSONObject analyticsConfigurationJSONObject =
-			providerJSONObject.optJSONObject("analyticsConfiguration");
+		DataSourceDTO.ProviderDTO.AnalyticsConfigurationDTO
+			analyticsConfigurationDTO =
+				providerDTO.getAnalyticsConfigurationDTO();
 
-		if (analyticsConfigurationJSONObject != null) {
-			analyticsConfigurationJSONObject.remove("lastSyncTime");
+		if (analyticsConfigurationDTO != null) {
+			analyticsConfigurationDTO.setLastSyncDate(null);
 		}
 
-		JSONObject contactsConfigurationJSONObject =
-			providerJSONObject.optJSONObject("contactsConfiguration");
+		DataSourceDTO.ProviderDTO.ContactsConfigurationDTO
+			contactsConfigurationDTO =
+				providerDTO.getContactsConfigurationDTO();
 
-		if (contactsConfigurationJSONObject != null) {
-			contactsConfigurationJSONObject.remove(
-				"lastSuccessfulAuditEventTime");
-			contactsConfigurationJSONObject.remove("lastSyncTime");
+		if (contactsConfigurationDTO != null) {
+			contactsConfigurationDTO.setLastSuccessfulAuditEventDate(null);
+			contactsConfigurationDTO.setLastSyncDate(null);
 		}
 	}
 
-	private void _sanitize(JSONObject dataSourceJSONObject) {
-		dataSourceJSONObject.remove("faroBackendSecuritySignature");
-
-		JSONObject credentialsJSONObject = dataSourceJSONObject.optJSONObject(
-			"credentials");
-
-		if (credentialsJSONObject != null) {
-			credentialsJSONObject.remove("privateKey");
-		}
+	private void _sanitize(DataSource dataSource) {
+		dataSource.setFaroBackendSecuritySignature(null);
+		dataSource.setPrivateKey(null);
 	}
 
-	private void _setLastSyncTime(JSONObject dataSourceJSONObject) {
-		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-			"provider");
+	private void _setLastSyncTime(DataSource dataSource) {
+		String providerType = dataSource.getProviderType();
 
-		String type = providerJSONObject.getString("type");
-
-		if (!type.equals("LIFERAY")) {
+		if (!providerType.equals("LIFERAY")) {
 			return;
 		}
 
-		String dataSourceId = dataSourceJSONObject.getString("id");
+		Long dataSourceId = dataSource.getId();
 
-		JSONObject analyticsConfigurationJSONObject =
-			providerJSONObject.optJSONObject("analyticsConfiguration");
+		Date analyticsLastSyncDate = dataSource.getAnalyticsLastSyncDate();
 
-		if (analyticsConfigurationJSONObject != null) {
+		if (analyticsLastSyncDate != null) {
 			JSONArray activitiesJSONArray = new JSONArray(
 				faroInfoElasticsearchInvoker.get(
 					"activities",
@@ -791,24 +766,15 @@ public class DataSourcesRestController extends BaseRestController {
 						BoolQueryBuilder boolQueryBuilder =
 							BoolQueryBuilderUtil.filter(
 								QueryBuilders.termQuery(
-									"dataSourceId", dataSourceId));
-
-						Object lastSyncTime =
-							analyticsConfigurationJSONObject.opt(
-								"lastSyncTime");
-
-						if (!Objects.isNull(lastSyncTime)) {
-							String lastSyncTimeString = lastSyncTime.toString();
-
-							if (!lastSyncTimeString.equals("null")) {
-								boolQueryBuilder.filter(
-									QueryBuilders.rangeQuery(
-										"endTime"
-									).gt(
-										lastSyncTime
-									));
-							}
-						}
+									"dataSourceId",
+									String.valueOf(dataSourceId))
+							).filter(
+								QueryBuilders.rangeQuery(
+									"endTime"
+								).gt(
+									analyticsLastSyncDate
+								)
+							);
 
 						searchSourceBuilder.query(boolQueryBuilder);
 
@@ -822,33 +788,30 @@ public class DataSourcesRestController extends BaseRestController {
 				JSONObject activityJSONObject =
 					activitiesJSONArray.getJSONObject(0);
 
-				String lastSyncTime = activityJSONObject.getString("endTime");
+				try {
+					dataSource.setAnalyticsLastSyncDate(
+						DateUtil.toUTCDate(
+							activityJSONObject.getString("endTime")));
 
-				analyticsConfigurationJSONObject.put(
-					"lastSyncTime", lastSyncTime);
-
-				Script script = new Script(
-					Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-					"ctx._source.provider.analyticsConfiguration." +
-						"lastSyncTime = params.lastSyncTime",
-					Collections.singletonMap("lastSyncTime", lastSyncTime));
-
-				faroInfoElasticsearchInvoker.update(
-					"data-sources", dataSourceId, script);
+					_dataSourceDog.updateDataSource(dataSource);
+				}
+				catch (Exception exception) {
+					_log.error(exception);
+				}
 			}
 		}
 
-		JSONObject contactsConfigurationJSONObject =
-			providerJSONObject.optJSONObject("contactsConfiguration");
+		Date contactsLastSyncDate = dataSource.getContactsLastSyncDate();
 
-		if (contactsConfigurationJSONObject == null) {
+		if (contactsLastSyncDate == null) {
 			return;
 		}
 
 		JSONObject dxpRawOSBAsahMarkersJSONObject =
 			dxpRawElasticsearchInvoker.fetch(
 				"OSBAsahMarkers",
-				QueryBuilders.termQuery("osbAsahDataSourceId", dataSourceId));
+				QueryBuilders.termQuery(
+					"osbAsahDataSourceId", String.valueOf(dataSourceId)));
 
 		if (dxpRawOSBAsahMarkersJSONObject == null) {
 			return;
@@ -858,8 +821,7 @@ public class DataSourcesRestController extends BaseRestController {
 			"lastSyncTime");
 
 		if (lastSyncTime > 0) {
-			contactsConfigurationJSONObject.put(
-				"lastSyncTime", DateUtil.toUTCString(new Date(lastSyncTime)));
+			dataSource.setContactsLastSyncDate(new Date(lastSyncTime));
 		}
 
 		JSONObject lastSuccessfulAuditEventJSONObject =
@@ -874,11 +836,13 @@ public class DataSourcesRestController extends BaseRestController {
 			"createDate");
 
 		if (createDate > 0) {
-			contactsConfigurationJSONObject.put(
-				"lastSuccessfulAuditEventTime",
-				DateUtil.toUTCString(new Date(createDate)));
+			dataSource.setContactsLastSuccessfulAuditEventDate(
+				new Date(createDate));
 		}
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		DataSourcesRestController.class);
 
 	@Autowired
 	private ConfigurationHttp _configurationHttp;
@@ -891,6 +855,9 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private RunLogger _runLogger;

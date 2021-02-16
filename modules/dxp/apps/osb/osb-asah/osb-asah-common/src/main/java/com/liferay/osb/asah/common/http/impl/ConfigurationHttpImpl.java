@@ -14,8 +14,12 @@
 
 package com.liferay.osb.asah.common.http.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
 
@@ -33,44 +37,47 @@ import org.springframework.stereotype.Component;
 public class ConfigurationHttpImpl implements ConfigurationHttp {
 
 	@Override
-	public void addConfiguration(JSONObject jsonObject, String providerType) {
+	public void addConfiguration(
+		DataSourceDTO dataSourceDTO, String providerType) {
+
 		_http.exchange(
 			_getURL(providerType), "/configurations", HttpMethod.POST,
-			jsonObject);
+			_objectMapper.convertValue(dataSourceDTO, JSONObject.class));
 	}
 
 	@Override
-	public void deleteConfiguration(
-		JSONObject jsonObject, String providerType) {
-
+	public void deleteConfiguration(String dataSourceId, String providerType) {
 		_http.exchange(
 			_getURL(providerType), "/configurations", HttpMethod.DELETE,
-			jsonObject);
+			JSONUtil.put("dataSourceId", dataSourceId));
 	}
 
 	@Override
-	public String getState(JSONObject jsonObject, String providerType) {
+	public String getState(DataSourceDTO dataSourceDTO, String providerType) {
 		return _http.exchange(
 			_getURL(providerType), "/configurations/state", HttpMethod.GET,
-			jsonObject);
+			_objectMapper.convertValue(dataSourceDTO, JSONObject.class));
 	}
 
 	@Override
-	public String refreshConfiguration(
-		JSONObject jsonObject, String providerType) {
+	public DataSourceDTO refreshConfiguration(
+		DataSourceDTO dataSourceDTO, String providerType) {
 
-		return _http.exchange(
-			_getURL(providerType), "/configurations/refresh", HttpMethod.POST,
-			jsonObject);
+		return _objectMapper.convertValue(
+			_http.exchange(
+				_getURL(providerType), "/configurations/refresh",
+				HttpMethod.POST,
+				_objectMapper.convertValue(dataSourceDTO, JSONObject.class)),
+			DataSourceDTO.class);
 	}
 
 	@Override
 	public void updateConfiguration(
-		JSONObject jsonObject, String providerType) {
+		DataSourceDTO dataSourceDTO, String providerType) {
 
 		_http.exchange(
 			_getURL(providerType), "/configurations", HttpMethod.PUT,
-			jsonObject);
+			_objectMapper.convertValue(dataSourceDTO, JSONObject.class));
 	}
 
 	private String _getURL(String providerType) {
@@ -83,5 +90,8 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 
 	@Autowired
 	private Http _http;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

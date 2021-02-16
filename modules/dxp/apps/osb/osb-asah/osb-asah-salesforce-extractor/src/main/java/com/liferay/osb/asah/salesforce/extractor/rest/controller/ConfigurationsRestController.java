@@ -14,8 +14,13 @@
 
 package com.liferay.osb.asah.salesforce.extractor.rest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
+
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,30 +41,39 @@ public class ConfigurationsRestController {
 
 	@DeleteMapping
 	public void deleteConfiguration(@RequestBody String json) {
-		_configurationManager.deleteConfiguration(json);
+		JSONObject jsonObject = new JSONObject(json);
+
+		_configurationManager.deleteConfiguration(
+			jsonObject.getString("dataSourceId"));
 	}
 
 	@GetMapping("/state")
-	public String getState(@RequestBody String json) {
-		return _configurationManager.getState(json);
+	public String getState(@RequestBody DataSourceDTO dataSourceDTO) {
+		return _configurationManager.getState(dataSourceDTO);
 	}
 
 	@PostMapping
-	public void postConfiguration(@RequestBody String json) {
-		_configurationManager.addConfiguration(json);
+	public void postConfiguration(@RequestBody DataSourceDTO dataSourceDTO) {
+		_configurationManager.addConfiguration(dataSourceDTO);
 	}
 
 	@PutMapping
-	public void putConfiguration(@RequestBody String json) {
-		_configurationManager.updateConfiguration(json);
+	public void putConfiguration(@RequestBody DataSourceDTO dataSourceDTO) {
+		_configurationManager.updateConfiguration(dataSourceDTO);
 	}
 
 	@PostMapping("/refresh")
-	public String refresh(@RequestBody String json) {
-		return _configurationManager.refresh(json);
+	public String refresh(@RequestBody DataSourceDTO dataSourceDTO) {
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			_configurationManager.refresh(dataSourceDTO), JSONObject.class);
+
+		return dataSourceJSONObject.toString();
 	}
 
 	@Autowired
 	private ConfigurationManager _configurationManager;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

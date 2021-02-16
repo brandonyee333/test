@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import org.springframework.http.HttpStatus;
@@ -59,20 +58,6 @@ public class DataSourceHttpImplTest {
 
 	@Test
 	public void testGetSalesforceOwner() {
-		ResponseEntity<String> responseEntity =
-			_dataSourceHttp.getSalesforceOwner(null);
-
-		Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-	}
-
-	@Test
-	public void testGetSalesforceOwnerException() throws Exception {
-		Mockito.when(
-			_salesforceUsersRestController.get(Mockito.any())
-		).thenThrow(
-			new Exception()
-		);
-
 		ResponseEntity<String> responseEntity =
 			_dataSourceHttp.getSalesforceOwner(null);
 

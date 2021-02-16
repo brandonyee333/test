@@ -15,13 +15,13 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Collections;
@@ -55,7 +55,7 @@ import org.springframework.stereotype.Component;
 public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 	public boolean addDataSourceIndividualPK(
-		String dataId, String dataSourceId, String dataSourceType,
+		String dataId, Long dataSourceId, String dataSourceType,
 		JSONObject individualJSONObject) {
 
 		JSONArray dataSourceIndividualPKsJSONArray =
@@ -67,9 +67,9 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 		Set<String> dataSourceIds = individualPKsJSONArrays.keySet();
 
-		if (dataSourceIds.contains(dataSourceId)) {
+		if (dataSourceIds.contains(String.valueOf(dataSourceId))) {
 			JSONArray individualPKsJSONArray = individualPKsJSONArrays.get(
-				dataSourceId);
+				String.valueOf(dataSourceId));
 
 			if (JSONUtil.hasValue(individualPKsJSONArray, dataId)) {
 				return false;
@@ -80,7 +80,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				JSONUtil.replace(
 					dataSourceIndividualPKsJSONArray, "dataSourceId",
 					JSONUtil.put(
-						"dataSourceId", dataSourceId
+						"dataSourceId", String.valueOf(dataSourceId)
 					).put(
 						"dataSourceType", dataSourceType
 					).put(
@@ -90,7 +90,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		else {
 			dataSourceIndividualPKsJSONArray.put(
 				JSONUtil.put(
-					"dataSourceId", dataSourceId
+					"dataSourceId", String.valueOf(dataSourceId)
 				).put(
 					"dataSourceType", dataSourceType
 				).put(
@@ -131,19 +131,16 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject addIndividual(
-		JSONObject analyticsDataJSONObject, String channelId,
-		JSONObject dataSourceJSONObject, String emailAddressHashed,
-		String userId) {
+		JSONObject analyticsDataJSONObject, Long channelId,
+		DataSource dataSource, String emailAddressHashed, String userId) {
 
 		JSONArray channelIds = new JSONArray();
 
-		if (StringUtils.isNotBlank(channelId)) {
-			channelIds.put(channelId);
+		if (Objects.nonNull(channelId)) {
+			channelIds.put(String.valueOf(channelId));
 		}
 
 		String dateString = DateUtil.newDateString();
-		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-			"provider");
 
 		return addIndividual(
 			JSONUtil.put(
@@ -158,9 +155,9 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				"dataSourceIndividualPKs",
 				JSONUtil.put(
 					JSONUtil.put(
-						"dataSourceId", dataSourceJSONObject.getString("id")
+						"dataSourceId", String.valueOf(dataSource.getId())
 					).put(
-						"dataSourceType", providerJSONObject.getString("type")
+						"dataSourceType", dataSource.getProviderType()
 					).put(
 						"individualPKs", JSONUtil.put(userId)
 					))
@@ -177,26 +174,23 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject addIndividual(
-			String dataId, JSONObject dataJSONObject,
-			JSONObject dataSourceJSONObject)
+			String dataId, JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
 		JSONObject contextJSONObject = _faroInfoFieldDog.buildContextJSONObject(
-			"demographics", dataJSONObject, dataSourceJSONObject, "individual");
+			"demographics", dataJSONObject, dataSource, "individual");
 
 		if (contextJSONObject.optJSONArray("email") == null) {
 			return null;
 		}
 
 		JSONArray dataSourceAccountPKsJSONArray = new JSONArray();
-		String dataSourceId = dataSourceJSONObject.getString("id");
+		Long dataSourceId = dataSource.getId();
 		String dateString = DateUtil.newDateString();
-		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-			"provider");
 
-		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
+		String providerType = dataSource.getProviderType();
 
-		if (type.equals("SALESFORCE")) {
+		if (providerType.equals("SALESFORCE")) {
 			JSONArray dataAccountPKsJSONArray = dataJSONObject.optJSONArray(
 				"accountPKs");
 
@@ -205,7 +199,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 					JSONUtil.put(
 						"accountPKs", dataAccountPKsJSONArray
 					).put(
-						"dataSourceId", dataSourceId
+						"dataSourceId", String.valueOf(dataSourceId)
 					));
 			}
 		}
@@ -221,16 +215,16 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		).put(
 			"custom",
 			_faroInfoFieldDog.buildContextJSONObject(
-				"custom", dataJSONObject, dataSourceJSONObject, "individual")
+				"custom", dataJSONObject, dataSource, "individual")
 		).put(
 			"dataSourceAccountPKs", dataSourceAccountPKsJSONArray
 		).put(
 			"dataSourceIndividualPKs",
 			JSONUtil.put(
 				JSONUtil.put(
-					"dataSourceId", dataSourceId
+					"dataSourceId", String.valueOf(dataSourceId)
 				).put(
-					"dataSourceType", providerJSONObject.getString("type")
+					"dataSourceType", providerType
 				).put(
 					"individualPKs", individualPKsJSONArray
 				))
@@ -276,7 +270,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject addIndividualAssociation(
-		long classPK, String dataSourceId, DXPEntityType dxpEntityType,
+		long classPK, Long dataSourceId, DXPEntityType dxpEntityType,
 		JSONObject individualJSONObject) {
 
 		if (individualJSONObject == null) {
@@ -335,7 +329,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject deleteIndividualAssociation(
-		long classPK, String dataSourceId, DXPEntityType dxpEntityType,
+		long classPK, Long dataSourceId, DXPEntityType dxpEntityType,
 		JSONObject individualJSONObject) {
 
 		if (individualJSONObject == null) {
@@ -370,7 +364,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public List<String> getAssociatedIds(
-		String dataSourceId, DXPEntityType dxpEntityType, List<Long> classPKs) {
+		Long dataSourceId, DXPEntityType dxpEntityType, List<Long> classPKs) {
 
 		JSONArray associatedIdsJSONArray = null;
 
@@ -378,7 +372,8 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			associatedIdsJSONArray = elasticsearchInvoker.get(
 				dxpEntityType.getCollectionName(),
 				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("dataSourceId", dataSourceId)
+					QueryBuilders.termQuery(
+						"dataSourceId", String.valueOf(dataSourceId))
 				).filter(
 					QueryBuilders.termsQuery("organizationPK", classPKs)
 				));
@@ -387,7 +382,8 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			associatedIdsJSONArray = _dxpRawElasticsearchInvoker.get(
 				dxpEntityType.getCollectionName(),
 				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("osbAsahDataSourceId", dataSourceId)
+					QueryBuilders.termQuery(
+						"osbAsahDataSourceId", String.valueOf(dataSourceId))
 				).filter(
 					QueryBuilders.termsQuery(
 						dxpEntityType.getIdFieldName(), classPKs)
@@ -398,7 +394,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject getIndividualJSONObject(
-		String dataSourceId, String userId) {
+		Long dataSourceId, String userId) {
 
 		return elasticsearchInvoker.fetch(
 			"individuals",
@@ -406,7 +402,8 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				"dataSourceIndividualPKs",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
-						"dataSourceIndividualPKs.dataSourceId", dataSourceId)
+						"dataSourceIndividualPKs.dataSourceId",
+						String.valueOf(dataSourceId))
 				).filter(
 					QueryBuilders.termsQuery(
 						"dataSourceIndividualPKs.individualPKs", userId)
@@ -427,7 +424,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public Set<String> getIndividualSegmentNames(
-		String channelId, JSONObject individualJSONObject) {
+		Long channelId, JSONObject individualJSONObject) {
 
 		if (individualJSONObject == null) {
 			return Collections.emptySet();
@@ -442,9 +439,10 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			QueryBuilders.termQuery("status", "ACTIVE")
 		);
 
-		if (StringUtils.isNotBlank(channelId)) {
+		if (Objects.nonNull(channelId)) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("channelId", channelId));
+				QueryBuilders.termQuery(
+					"channelId", String.valueOf(channelId)));
 		}
 
 		return JSONUtil.toStringSet(
@@ -463,7 +461,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject removeDataSourceIndividualPKs(
-		JSONObject individualJSONObject, String dataSourceId) {
+		JSONObject individualJSONObject, Long dataSourceId) {
 
 		JSONArray dataSourceIndividualPKsJSONArray =
 			individualJSONObject.getJSONArray("dataSourceIndividualPKs");
@@ -473,7 +471,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				dataSourceIndividualPKsJSONArray.getJSONObject(i);
 
 			if (Objects.equals(
-					dataSourceIndividualPKsJSONObject.getString("dataSourceId"),
+					dataSourceIndividualPKsJSONObject.getLong("dataSourceId"),
 					dataSourceId)) {
 
 				dataSourceIndividualPKsJSONArray.remove(i);
@@ -511,25 +509,24 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject updateIndividual(
-			String dataId, JSONObject dataJSONObject,
-			JSONObject dataSourceJSONObject, JSONObject individualJSONObject)
+			String dataId, JSONObject dataJSONObject, DataSource dataSource,
+			JSONObject individualJSONObject)
 		throws Exception {
 
-		String dataSourceId = dataSourceJSONObject.getString("id");
+		Long dataSourceId = dataSource.getId();
 		String individualId = individualJSONObject.getString("id");
 
 		if ((dataId != null) && !dataId.equals(individualId)) {
 			addDataSourceIndividualPK(
-				dataId, dataSourceId,
-				_dataSourceDog.getDataSourceType(dataSourceJSONObject),
+				dataId, dataSourceId, dataSource.getProviderType(),
 				individualJSONObject);
 		}
 
 		boolean dataAccountPKsUpdated = false;
 
-		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
+		String providerType = dataSource.getProviderType();
 
-		if (type.equals("SALESFORCE")) {
+		if (providerType.equals("SALESFORCE")) {
 			JSONArray dataAccountPKsJSONArray = dataJSONObject.optJSONArray(
 				"accountPKs");
 
@@ -540,10 +537,10 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				JSONObject accountPKsJSONObject = JSONUtil.put(
 					"accountPKs", dataAccountPKsJSONArray
 				).put(
-					"dataSourceId", dataSourceId
+					"dataSourceId", String.valueOf(dataSourceId)
 				);
 
-				Set<String> dataSourceIds = JSONUtil.toStringSet(
+				Set<Long> dataSourceIds = JSONUtil.toLongSet(
 					dataSourceAccountPKsJSONArray, "dataSourceId");
 
 				if (dataSourceIds.contains(dataSourceId)) {
@@ -565,11 +562,11 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			individualJSONObject, new String[] {"demographics"});
 
 		individualJSONObject = _faroInfoFieldDog.updateContextFields(
-			"custom", dataJSONObject, dataSourceJSONObject,
-			individualJSONObject, "individual", "demographics", "email");
+			"custom", dataJSONObject, dataSource, individualJSONObject,
+			"individual", "demographics", "email");
 		individualJSONObject = _faroInfoFieldDog.updateContextFields(
-			"demographics", dataJSONObject, dataSourceJSONObject,
-			individualJSONObject, "individual", "demographics", "email");
+			"demographics", dataJSONObject, dataSource, individualJSONObject,
+			"individual", "demographics", "email");
 
 		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
 			"demographics");
@@ -596,7 +593,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		_setFirstEnrichmentDate(individualId, partialIndividualJSONObject);
 
 		JSONObject fieldsJSONObject = _faroInfoFieldDog.getFieldsJSONObject(
-			"demographics", dataJSONObject, dataSourceJSONObject);
+			"demographics", dataJSONObject, dataSource);
 
 		if ((fieldsJSONObject.names() != null) &&
 			(!JSONUtil.equals(
@@ -773,7 +770,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			individualJSONObject.put(
 				dxpEntityType.getIndividualFieldName(),
 				getAssociatedIds(
-					dataJSONObject.getString("osbAsahDataSourceId"),
+					dataJSONObject.getLong("osbAsahDataSourceId"),
 					dxpEntityType,
 					JSONUtil.toLongList(
 						membershipsJSONObject.getJSONArray(type))));
@@ -784,9 +781,6 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	private String[] _collections;
-
-	@Autowired
-	private DataSourceDog _dataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;

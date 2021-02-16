@@ -102,7 +102,7 @@ public abstract class BaseNaniteTestCase {
 
 			Mockito.when(
 				faroInfoIndividualDog.getIndividualJSONObject(
-					Mockito.anyString(), Mockito.anyString())
+					Mockito.anyLong(), Mockito.anyString())
 			).thenReturn(
 				null
 			);

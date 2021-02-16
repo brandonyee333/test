@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.rest.response.embedded.BlockedKeywordEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -38,6 +39,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -89,7 +91,7 @@ public class BlockedKeywordsRestController extends BaseRestController {
 		return toItemGetResponse(
 			"blocked-keywords",
 			new BlockedKeywordEmbeddedJSONObjectCreator(
-				faroInfoElasticsearchInvoker),
+				_dataSourceDog, faroInfoElasticsearchInvoker),
 			id);
 	}
 
@@ -112,7 +114,7 @@ public class BlockedKeywordsRestController extends BaseRestController {
 		return toCollectionGetResponse(
 			"blocked-keywords",
 			new BlockedKeywordEmbeddedJSONObjectCreator(
-				faroInfoElasticsearchInvoker),
+				_dataSourceDog, faroInfoElasticsearchInvoker),
 			page, queryBuilder, size, sorts);
 	}
 
@@ -235,5 +237,8 @@ public class BlockedKeywordsRestController extends BaseRestController {
 
 		return jsonArray;
 	}
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 }

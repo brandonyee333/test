@@ -44,7 +44,7 @@ public class DataSourceDogTest {
 	)
 	@Test
 	public void testDataSourceNotFound() {
-		Assert.assertNull(_dataSourceDog.getDataSource("0"));
+		Assert.assertNull(_dataSourceDog.fetchDataSource(0L));
 	}
 
 	@ElasticsearchIndex(
@@ -65,7 +65,7 @@ public class DataSourceDogTest {
 	)
 	@Test
 	public void testGetDataSource() {
-		DataSource dataSource = _dataSourceDog.getDataSource("200");
+		DataSource dataSource = _dataSourceDog.getDataSource(200L);
 
 		Assert.assertNotNull(dataSource);
 		Assert.assertEquals("Liferay 1", dataSource.getName());

@@ -14,9 +14,14 @@
 
 package com.liferay.osb.asah.monolith.common.http.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.AccountsRestController;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.SalesforceUsersRestController;
+
+import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -40,10 +45,17 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 	}
 
 	@Override
-	public ResponseEntity<String> getSalesforceOwner(String json) {
+	public ResponseEntity<String> getSalesforceOwner(
+		DataSourceDTO dataSourceDTO) {
+
 		try {
+			JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+				dataSourceDTO, JSONObject.class);
+
 			return new ResponseEntity<>(
-				_salesforceUsersRestController.get(json), HttpStatus.OK);
+				_salesforceUsersRestController.get(
+					dataSourceJSONObject.toString()),
+				HttpStatus.OK);
 		}
 		catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -61,6 +73,9 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 
 	@Autowired
 	private AccountsRestController _accountsRestController;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SalesforceUsersRestController _salesforceUsersRestController;

@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -227,7 +228,8 @@ public class DXPEntitiesMessageProcessor {
 			membershipJSONArray.put(classPK);
 
 			_faroInfoIndividualDog.addIndividualAssociation(
-				classPK, dataSourceId, dxpEntityType, individualJSONObject);
+				classPK, Long.valueOf(dataSourceId), dxpEntityType,
+				individualJSONObject);
 
 			queryBuilderName = "addQueryBuilder";
 		}
@@ -235,7 +237,8 @@ public class DXPEntitiesMessageProcessor {
 			JSONUtil.removeValue(membershipJSONArray, classPK);
 
 			_faroInfoIndividualDog.deleteIndividualAssociation(
-				classPK, dataSourceId, dxpEntityType, individualJSONObject);
+				classPK, Long.valueOf(dataSourceId), dxpEntityType,
+				individualJSONObject);
 
 			queryBuilderName = "removeQueryBuilder";
 		}
@@ -248,7 +251,7 @@ public class DXPEntitiesMessageProcessor {
 					QueryBuilders.termsQuery(
 						dxpEntityType.getIndividualSegmentFieldName(),
 						_faroInfoIndividualDog.getAssociatedIds(
-							dataSourceId, dxpEntityType,
+							Long.valueOf(dataSourceId), dxpEntityType,
 							Collections.singletonList(classPK))
 					).toString()
 				).put(
@@ -271,7 +274,7 @@ public class DXPEntitiesMessageProcessor {
 		String name = objectJSONObject.getString("name");
 
 		_faroInfoFieldMappingDog.addFieldMapping(
-			"custom", name, objectJSONObject.getString("osbAsahDataSourceId"),
+			"custom", name, objectJSONObject.getLong("osbAsahDataSourceId"),
 			displayType, StringUtils.removeEnd(name, "-" + dataType),
 			_getFieldType(dataType, displayType),
 			_getOwnerType(objectJSONObject.getString("className")));
@@ -366,30 +369,25 @@ public class DXPEntitiesMessageProcessor {
 			return;
 		}
 
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.getDataSourceJSONObject(
-				objectJSONObject.getString("osbAsahDataSourceId"));
+		DataSource dataSource = _dataSourceDog.fetchDataSource(
+			objectJSONObject.getLong("osbAsahDataSourceId"));
 
-		if ((dataSourceJSONObject == null) ||
-			Objects.equals(
-				dataSourceJSONObject.getString("state"),
-				"IN_PROGRESS_DELETING")) {
+		if ((dataSource == null) ||
+			Objects.equals(dataSource.getState(), "IN_PROGRESS_DELETING")) {
 
 			return;
 		}
 
 		if (dxpEntityType.isOrganization()) {
-			_processOrganizationObject(
-				action, dataSourceJSONObject, objectJSONObject);
+			_processOrganizationObject(action, dataSource, objectJSONObject);
 		}
 		else if (dxpEntityType.isUser()) {
-			_processUserObject(dataSourceJSONObject, objectJSONObject);
+			_processUserObject(dataSource, objectJSONObject);
 		}
 	}
 
 	private void _processOrganizationObject(
-		String action, JSONObject dataSourceJSONObject,
-		JSONObject objectJSONObject) {
+		String action, DataSource dataSource, JSONObject objectJSONObject) {
 
 		String organizationPK = objectJSONObject.optString("organizationId");
 
@@ -401,7 +399,7 @@ public class DXPEntitiesMessageProcessor {
 			"organizations",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termsQuery(
-					"dataSourceId", dataSourceJSONObject.getString("id"))
+					"dataSourceId", String.valueOf(dataSource.getId()))
 			).filter(
 				QueryBuilders.termsQuery("organizationPK", organizationPK)
 			));
@@ -413,12 +411,11 @@ public class DXPEntitiesMessageProcessor {
 			}
 			else if (organizationJSONObject == null) {
 				_faroInfoOrganizationDog.addOrganization(
-					objectJSONObject, dataSourceJSONObject);
+					objectJSONObject, dataSource);
 			}
 			else {
 				_faroInfoOrganizationDog.updateOrganization(
-					objectJSONObject, dataSourceJSONObject,
-					organizationJSONObject);
+					objectJSONObject, dataSource, organizationJSONObject);
 			}
 		}
 		catch (Exception e) {
@@ -440,13 +437,13 @@ public class DXPEntitiesMessageProcessor {
 
 		_faroInfoFieldMappingDog.addFieldMapping(
 			"demographics", name,
-			objectJSONObject.getString("osbAsahDataSourceId"), null,
+			objectJSONObject.getLong("osbAsahDataSourceId"), null,
 			_defaultLiferayFieldMappingMaps.getOrDefault(name, name),
 			_getFieldType(dataType, dataType), "individual");
 	}
 
 	private void _processUserObject(
-		JSONObject dataSourceJSONObject, JSONObject objectJSONObject) {
+		DataSource dataSource, JSONObject objectJSONObject) {
 
 		String emailAddress = objectJSONObject.optString("emailAddress");
 
@@ -464,12 +461,12 @@ public class DXPEntitiesMessageProcessor {
 			if (individualJSONObject == null) {
 				_faroInfoIndividualDog.addIndividual(
 					objectJSONObject.optString("uuid", null), objectJSONObject,
-					dataSourceJSONObject);
+					dataSource);
 			}
 			else {
 				_faroInfoIndividualDog.updateIndividual(
 					objectJSONObject.optString("uuid", null), objectJSONObject,
-					dataSourceJSONObject, individualJSONObject);
+					dataSource, individualJSONObject);
 			}
 		}
 		catch (Exception e) {

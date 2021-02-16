@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.storage.Storage;
@@ -100,8 +101,8 @@ public class AnalyticsEventsMessageProcessor {
 	}
 
 	private JSONObject _addIndividual(
-		AnalyticsEventsMessage analyticsEventsMessage, String channelId,
-		String dataSourceId) {
+		AnalyticsEventsMessage analyticsEventsMessage, Long channelId,
+		Long dataSourceId) {
 
 		String userId = analyticsEventsMessage.getUserId();
 
@@ -112,14 +113,13 @@ public class AnalyticsEventsMessageProcessor {
 		if (individualJSONObject == null) {
 			individualJSONObject = _faroInfoIndividualDog.addIndividual(
 				_getAnalyticsDataJSONObject(analyticsEventsMessage), channelId,
-				_dataSourceDog.getDataSourceJSONObject(dataSourceId), null,
-				userId);
+				_dataSourceDog.getDataSource(dataSourceId), null, userId);
 		}
 		else {
 			Set<String> channelIds = JSONUtil.toStringSet(
 				individualJSONObject.optJSONArray("channelIds"));
 
-			if (channelIds.add(channelId)) {
+			if (channelIds.add(String.valueOf(channelId))) {
 				individualJSONObject = _faroInfoElasticsearchInvoker.update(
 					"individuals", individualJSONObject.getString("id"),
 					JSONUtil.put("channelIds", channelIds));
@@ -299,13 +299,11 @@ public class AnalyticsEventsMessageProcessor {
 	private boolean _isDataSourceActive(
 		AnalyticsEventsMessage analyticsEventsMessage) {
 
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.fetchDataSourceJSONObject(
-				analyticsEventsMessage.getDataSourceId());
+		DataSource dataSource = _dataSourceDog.fetchDataSource(
+			Long.valueOf(analyticsEventsMessage.getDataSourceId()));
 
-		if ((dataSourceJSONObject != null) &&
-			Objects.equals(
-				dataSourceJSONObject.getString("status"), "ACTIVE")) {
+		if ((dataSource != null) &&
+			Objects.equals(dataSource.getStatus(), "ACTIVE")) {
 
 			return true;
 		}
@@ -378,7 +376,8 @@ public class AnalyticsEventsMessageProcessor {
 		String dataSourceId = analyticsEventsMessage.getDataSourceId();
 
 		if (StringUtil.isNull(channelId) || StringUtils.isBlank(channelId)) {
-			channelId = _dataSourceDog.getChannelId(dataSourceId);
+			channelId = String.valueOf(
+				_dataSourceDog.getChannelId(Long.valueOf(dataSourceId)));
 
 			if (StringUtils.isBlank(channelId)) {
 				if (_log.isDebugEnabled()) {
@@ -392,7 +391,8 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		JSONObject individualJSONObject = _addIndividual(
-			analyticsEventsMessage, channelId, dataSourceId);
+			analyticsEventsMessage, Long.valueOf(channelId),
+			Long.valueOf(dataSourceId));
 
 		boolean knownIndividual = _isKnownIndividual(individualJSONObject);
 		Set<String> segmentNames = _getSegmentNames(

@@ -18,7 +18,10 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,6 +30,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +42,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 
-	public void addEmailFieldMapping(String dataSourceId) {
+	public void addEmailFieldMapping(Long dataSourceId) {
 		String dataSourceFieldName = _getEmailDataSourceFieldName(dataSourceId);
 
 		if (dataSourceFieldName == null) {
@@ -57,7 +61,7 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 	}
 
 	public void addFieldMapping(
-		String context, String dataSourceFieldName, String dataSourceId,
+		String context, String dataSourceFieldName, Long dataSourceId,
 		String displayType, String fieldName, String fieldType,
 		String ownerType) {
 
@@ -84,7 +88,7 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 				fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
 
 			dataSourceFieldNamesJSONObject.put(
-				dataSourceId, dataSourceFieldName);
+				String.valueOf(dataSourceId), dataSourceFieldName);
 
 			elasticsearchInvoker.update(
 				"field-mappings",
@@ -100,7 +104,8 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 				QueryBuilders.termQuery("context", context)
 			).filter(
 				QueryBuilders.termQuery(
-					"dataSourceFieldNames." + dataSourceId, fieldName)
+					"dataSourceFieldNames." + String.valueOf(dataSourceId),
+					fieldName)
 			).filter(
 				QueryBuilders.termQuery("displayName", fieldName)
 			).filter(
@@ -121,7 +126,7 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 				"context", context
 			).put(
 				"dataSourceFieldNames",
-				JSONUtil.put(dataSourceId, dataSourceFieldName)
+				JSONUtil.put(String.valueOf(dataSourceId), dataSourceFieldName)
 			).put(
 				"dateCreated", dateString
 			).put(
@@ -171,48 +176,75 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 			));
 	}
 
+	public List<String> getDataSourceFieldMappingIds(
+		Long dataSourceId, boolean previewDelete) {
+
+		List<String> dataSourceFieldMappingIds = new ArrayList<>();
+
+		JSONArray jsonArray = elasticsearchInvoker.get(
+			"field-mappings",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.existsQuery(
+					"dataSourceFieldNames." + String.valueOf(dataSourceId))));
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			JSONObject dataSourceFieldNamesJSONObject =
+				jsonObject.getJSONObject("dataSourceFieldNames");
+
+			if (previewDelete &&
+				(dataSourceFieldNamesJSONObject.length() > 1)) {
+
+				continue;
+			}
+
+			dataSourceFieldMappingIds.add(jsonObject.getString("id"));
+		}
+
+		return dataSourceFieldMappingIds;
+	}
+
 	public JSONObject removeDataSourceFieldName(
-		JSONObject fieldMappingJSONObject, String dataSourceId) {
+		JSONObject fieldMappingJSONObject, Long dataSourceId) {
 
 		JSONObject dataSourceFieldNamesJSONObject =
 			fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
 
-		dataSourceFieldNamesJSONObject.remove(dataSourceId);
+		dataSourceFieldNamesJSONObject.remove(String.valueOf(dataSourceId));
 
 		return elasticsearchInvoker.replace(
 			"field-mappings", fieldMappingJSONObject);
 	}
 
-	private JSONObject _getDataSourceAuthorJSONObject(String dataSourceId) {
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
+	private JSONObject _getDataSourceAuthorJSONObject(Long dataSourceId) {
+		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
 		return JSONUtil.put(
-			"id", dataSourceId
+			"id", String.valueOf(dataSourceId)
 		).put(
-			"name", dataSourceJSONObject.getString("name")
+			"name", dataSource.getName()
 		);
 	}
 
-	private String _getEmailDataSourceFieldName(String dataSourceId) {
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
+	private String _getEmailDataSourceFieldName(Long dataSourceId) {
+		DataSource dataSource = _dataSourceDog.fetchDataSource(dataSourceId);
 
-		if (dataSourceJSONObject == null) {
+		if (dataSource == null) {
 			return null;
 		}
 
 		String dataSourceFieldName = "email";
 
-		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
+		String providerType = dataSource.getProviderType();
 
-		if (type.equals("LIFERAY")) {
+		if (providerType.equals("LIFERAY")) {
 			dataSourceFieldName = "emailAddress";
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
 				"Default to using \"email\" as the data source field name " +
-					"because of unknown provider type " + type);
+					"because of unknown provider type " + providerType);
 		}
 
 		return dataSourceFieldName;

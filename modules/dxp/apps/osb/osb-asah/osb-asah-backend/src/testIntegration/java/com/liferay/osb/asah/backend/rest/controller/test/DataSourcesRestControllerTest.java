@@ -14,13 +14,17 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.controller.DataSourcesRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -79,8 +83,9 @@ public class DataSourcesRestControllerTest {
 	public void testDeleteDataSource() throws Exception {
 		JSONObject dataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.postDataSource(
-				String.valueOf(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject())));
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+					DataSourceDTO.class)));
 
 		JSONObject accountJSONObject = _faroInfoElasticsearchInvoker.add(
 			"accounts",
@@ -112,11 +117,11 @@ public class DataSourcesRestControllerTest {
 				new String[0]));
 
 		_dataSourcesRestController.deleteDataSource(
-			dataSourceJSONObject.getString("id"));
+			dataSourceJSONObject.getLong("id"));
 
 		JSONObject updateDataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.getDataSource(
-				dataSourceJSONObject.getString("id")));
+				dataSourceJSONObject.getLong("id")));
 
 		Assert.assertTrue(updateDataSourceJSONObject.has("deletionDate"));
 		Assert.assertEquals(
@@ -162,10 +167,10 @@ public class DataSourcesRestControllerTest {
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
 				"Liferay", RandomTestUtil.randomURL());
 
-		String dataSourceJSON = dataSourceJSONObject.toString();
-
 		for (int i = 0; i < 4; i++) {
-			_dataSourcesRestController.postDataSource(dataSourceJSON);
+			_dataSourcesRestController.postDataSource(
+				_objectMapper.convertValue(
+					dataSourceJSONObject, DataSourceDTO.class));
 		}
 
 		JSONObject responseJSONObject = new JSONObject(
@@ -200,7 +205,7 @@ public class DataSourcesRestControllerTest {
 		Assert.assertEquals(
 			"{}",
 			_dataSourcesRestController.getProgress(
-				csvDataSourceJSONObject.getString("id")));
+				csvDataSourceJSONObject.getLong("id")));
 
 		// CSV individuals nanite started
 
@@ -224,7 +229,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				csvDataSourceJSONObject.getString("id")));
+				csvDataSourceJSONObject.getLong("id")));
 
 		Assert.assertEquals(
 			1, progressJSONObject.getInt("processedOperations"));
@@ -261,15 +266,16 @@ public class DataSourcesRestControllerTest {
 			),
 			new JSONObject(
 				_dataSourcesRestController.getProgress(
-					csvDataSourceJSONObject.getString("id"))),
+					csvDataSourceJSONObject.getLong("id"))),
 			true);
 	}
 
 	@Test
 	public void testGetDataSources() throws Exception {
 		_dataSourcesRestController.postDataSource(
-			String.valueOf(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject()));
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+				DataSourceDTO.class));
 
 		JSONObject dataSourcesJSONObject = new JSONObject(
 			_dataSourcesRestController.getDataSources(null, 0, 20, null));
@@ -291,8 +297,9 @@ public class DataSourcesRestControllerTest {
 	@Test
 	public void testGetDataSourceTransformations() throws Exception {
 		_dataSourcesRestController.postDataSource(
-			String.valueOf(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject()));
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+				DataSourceDTO.class));
 
 		JSONObject dataSourceTransformationsJSONObject = new JSONObject(
 			_dataSourcesRestController.getDataSourceTransformations(
@@ -337,7 +344,7 @@ public class DataSourcesRestControllerTest {
 				"individuals", new JSONObject()
 			).toString(),
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		// Salesforce accounts nanite is null
 
@@ -357,7 +364,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONObject accountsJSONObject = progressJSONObject.getJSONObject(
 			"accounts");
@@ -388,7 +395,7 @@ public class DataSourcesRestControllerTest {
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -418,7 +425,7 @@ public class DataSourcesRestControllerTest {
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -459,7 +466,7 @@ public class DataSourcesRestControllerTest {
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -487,7 +494,7 @@ public class DataSourcesRestControllerTest {
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -528,7 +535,7 @@ public class DataSourcesRestControllerTest {
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -567,7 +574,7 @@ public class DataSourcesRestControllerTest {
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -596,7 +603,7 @@ public class DataSourcesRestControllerTest {
 				"individuals", new JSONObject()
 			).toString(),
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 	}
 
 	@Test
@@ -626,7 +633,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -688,7 +695,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -741,7 +748,7 @@ public class DataSourcesRestControllerTest {
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		individualsJSONObject = progressJSONObject.getJSONObject("individuals");
 
@@ -778,7 +785,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -848,7 +855,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -903,7 +910,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -958,7 +965,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -1011,7 +1018,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -1088,7 +1095,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -1157,7 +1164,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -1226,7 +1233,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getString("id")));
+				salesforceDataSourceJSONObject.getLong("id")));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -1254,8 +1261,9 @@ public class DataSourcesRestControllerTest {
 	public void testPutDataSource() throws Exception {
 		JSONObject dataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.postDataSource(
-				String.valueOf(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject())));
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+					DataSourceDTO.class)));
 
 		dataSourceJSONObject.put(
 			"provider",
@@ -1288,7 +1296,8 @@ public class DataSourcesRestControllerTest {
 		JSONObject newDataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.putDataSource(
 				dataSourceJSONObject.getString("id"),
-				dataSourceJSONObject.toString()));
+				_objectMapper.convertValue(
+					dataSourceJSONObject, DataSourceDTO.class)));
 
 		JSONObject providerJSONObject = newDataSourceJSONObject.getJSONObject(
 			"provider");
@@ -1323,7 +1332,7 @@ public class DataSourcesRestControllerTest {
 
 		Mockito.when(
 			_salesforceExtractorConfigurationDog.getState(
-				Mockito.any(JSONObject.class))
+				Mockito.any(DataSource.class))
 		).thenReturn(
 			"CREDENTIALS_VALID"
 		);
@@ -1367,6 +1376,9 @@ public class DataSourcesRestControllerTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Mock
 	private SalesforceExtractorConfigurationDog

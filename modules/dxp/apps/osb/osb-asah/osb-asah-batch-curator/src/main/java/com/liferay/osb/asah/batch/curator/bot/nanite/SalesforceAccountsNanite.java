@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -154,10 +155,10 @@ public class SalesforceAccountsNanite extends BaseNanite {
 		String osbAsahDataSourceId = salesforceAccountJSONObject.getString(
 			"osbAsahDataSourceId");
 
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.getDataSourceJSONObject(osbAsahDataSourceId);
+		DataSource dataSource = _dataSourceDog.fetchDataSource(
+			Long.valueOf(osbAsahDataSourceId));
 
-		if (dataSourceJSONObject == null) {
+		if (dataSource == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Unable to get data source " + osbAsahDataSourceId);
 			}
@@ -172,17 +173,16 @@ public class SalesforceAccountsNanite extends BaseNanite {
 					"accountPK", salesforceAccountJSONObject.getString("id"))
 			).filter(
 				QueryBuilders.termQuery(
-					"dataSourceId", dataSourceJSONObject.getString("id"))
+					"dataSourceId", String.valueOf(dataSource.getId()))
 			));
 
 		if (accountJSONObject == null) {
 			_faroInfoAccountDog.addAccount(
-				salesforceAccountJSONObject, dataSourceJSONObject);
+				salesforceAccountJSONObject, dataSource);
 		}
 		else {
 			_faroInfoAccountDog.updateAccount(
-				accountJSONObject, salesforceAccountJSONObject,
-				dataSourceJSONObject);
+				accountJSONObject, salesforceAccountJSONObject, dataSource);
 		}
 	}
 

@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOrganizationDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.DXPRawTestUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -76,7 +79,9 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		JSONObject organizationJSONObject =
 			_faroInfoOrganizationDog.addOrganization(
-				dxpRawOrganizationJSONObject, _liferayDataSourceJSONObject);
+				dxpRawOrganizationJSONObject,
+				_objectMapper.convertValue(
+					_liferayDataSourceJSONObject, DataSource.class));
 
 		Assert.assertEquals(
 			"1400 Montefino Ave",
@@ -110,7 +115,8 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 			_faroInfoOrganizationDog.addOrganization(
 				DXPRawTestUtil.buildOrganizationJSONObject(
 					_liferayDataSourceJSONObject.getString("id")),
-				_liferayDataSourceJSONObject);
+				_objectMapper.convertValue(
+					_liferayDataSourceJSONObject, DataSource.class));
 
 		_faroInfoOrganizationDog.deleteOrganization(organizationJSONObject);
 
@@ -134,7 +140,9 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 
 		JSONObject organizationJSONObject =
 			_faroInfoOrganizationDog.addOrganization(
-				dxpRawOrganizationJSONObject, _liferayDataSourceJSONObject);
+				dxpRawOrganizationJSONObject,
+				_objectMapper.convertValue(
+					_liferayDataSourceJSONObject, DataSource.class));
 
 		organizationJSONObject = _faroInfoOrganizationDog.updateOrganization(
 			dxpRawOrganizationJSONObject.put(
@@ -144,7 +152,9 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"name", "marketing"
 			),
-			_liferayDataSourceJSONObject, organizationJSONObject);
+			_objectMapper.convertValue(
+				_liferayDataSourceJSONObject, DataSource.class),
+			organizationJSONObject);
 
 		Assert.assertEquals(
 			"marketing", organizationJSONObject.getString("name"));
@@ -169,5 +179,8 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 	private FaroInfoOrganizationDog _faroInfoOrganizationDog;
 
 	private JSONObject _liferayDataSourceJSONObject;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

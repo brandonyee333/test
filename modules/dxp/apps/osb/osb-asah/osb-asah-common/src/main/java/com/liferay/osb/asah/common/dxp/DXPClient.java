@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.dxp;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
@@ -37,17 +38,18 @@ import org.springframework.stereotype.Component;
 public class DXPClient extends BaseDXPClient {
 
 	public JSONObject deleteDXPExperiment(
-		String dataSourceId, String experimentId) {
+		Long dataSourceId, String experimentId) {
 
 		String path = String.format(
 			"/o/segments-asah/v1.0/experiments/%s", experimentId);
 
 		return deleteJSONObject(
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId), path);
+			new DataSourceDTO(_dataSourceDog.getDataSource(dataSourceId)),
+			path);
 	}
 
 	public JSONObject runDXPExperiment(
-		Double confidenceLevel, String dataSourceId,
+		Double confidenceLevel, Long dataSourceId,
 		List<DXPVariantSettings> dxpVariantSettingsList, String experimentId) {
 
 		String path = String.format(
@@ -68,7 +70,7 @@ public class DXPClient extends BaseDXPClient {
 		);
 
 		return postJSONObject(
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId), path,
+			new DataSourceDTO(_dataSourceDog.getDataSource(dataSourceId)), path,
 			JSONUtil.put(
 				"confidenceLevel", confidenceLevel
 			).put(
@@ -77,7 +79,7 @@ public class DXPClient extends BaseDXPClient {
 	}
 
 	public JSONObject updateDXPExperimentStatus(
-		String dataSourceId, String experimentId,
+		Long dataSourceId, String experimentId,
 		ExperimentStatus experimentStatus, String dxpVariantId) {
 
 		String path = String.format(
@@ -94,7 +96,7 @@ public class DXPClient extends BaseDXPClient {
 		}
 
 		return postJSONObject(
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId), path,
+			new DataSourceDTO(_dataSourceDog.getDataSource(dataSourceId)), path,
 			bodyJSONObject);
 	}
 

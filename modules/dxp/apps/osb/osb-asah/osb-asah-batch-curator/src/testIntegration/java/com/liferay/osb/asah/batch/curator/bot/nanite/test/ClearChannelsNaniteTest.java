@@ -14,12 +14,15 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.batch.curator.bot.nanite.ClearChannelsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -44,8 +47,14 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 
 	@Test
 	public void test() throws Exception {
-		JSONObject dataSourceJSONObject = _dataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			_dataSourceDog.addDataSource(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+					DataSource.class)),
+			JSONObject.class);
+
+		Assert.assertNotNull(dataSourceJSONObject);
 
 		String channelId = String.valueOf(
 			dataSourceJSONObject.getLong("channelId"));
@@ -124,5 +133,8 @@ public class ClearChannelsNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

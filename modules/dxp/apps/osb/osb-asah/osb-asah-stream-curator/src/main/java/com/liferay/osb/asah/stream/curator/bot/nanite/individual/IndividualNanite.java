@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -41,7 +42,6 @@ import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -103,19 +103,19 @@ public class IndividualNanite implements Nanite {
 
 					JSONObject individualJSONObject = _updateIndividual(
 						messageJSONObject.getJSONObject("analyticsData"),
-						messageJSONObject.getString("channelId"),
-						messageJSONObject.getString("dataSourceId"),
+						messageJSONObject.getLong("channelId"),
+						messageJSONObject.getLong("dataSourceId"),
 						messageJSONObject.getString("emailAddressHashed"),
 						messageJSONObject.getString("userId"));
 
 					_updatePagesAndAssets(
-						messageJSONObject.getString("channelId"),
-						messageJSONObject.getString("dataSourceId"),
+						messageJSONObject.getLong("channelId"),
+						messageJSONObject.getLong("dataSourceId"),
 						individualJSONObject,
 						messageJSONObject.getString("userId"));
 
 					_updateUserSessions(
-						messageJSONObject.getString("dataSourceId"),
+						messageJSONObject.getLong("dataSourceId"),
 						individualJSONObject.getString("id"),
 						messageJSONObject.getString("userId"));
 				}
@@ -132,7 +132,7 @@ public class IndividualNanite implements Nanite {
 	}
 
 	private List<String> _fetchIndividualSegmentNames(
-		String channelId, String individualId) {
+		Long channelId, String individualId) {
 
 		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			"individuals", individualId);
@@ -150,9 +150,10 @@ public class IndividualNanite implements Nanite {
 			QueryBuilders.termQuery("status", "ACTIVE")
 		);
 
-		if (StringUtils.isNotBlank(channelId)) {
+		if (Objects.nonNull(channelId)) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("channelId", channelId));
+				QueryBuilders.termQuery(
+					"channelId", String.valueOf(channelId)));
 		}
 
 		return JSONUtil.toStringList(
@@ -204,7 +205,7 @@ public class IndividualNanite implements Nanite {
 
 	private void _mergeIndividual(
 			JSONObject analyticsDataJSONObject,
-			JSONObject anonymousIndividualJSONObject, String dataSourceId,
+			JSONObject anonymousIndividualJSONObject, Long dataSourceId,
 			JSONObject knownIndividualJSONObject, String userId)
 		throws Exception {
 
@@ -267,26 +268,8 @@ public class IndividualNanite implements Nanite {
 	}
 
 	private JSONObject _updateIndividual(
-		JSONObject analyticsDataJSONObject, String emailAddressHashed,
-		JSONObject individualJSONObject) {
-
-		String dateString = DateUtil.newDateString();
-
-		return _faroInfoIndividualDog.updateIndividual(
-			individualJSONObject.getString("id"),
-			individualJSONObject.put(
-				"analyticsData", analyticsDataJSONObject
-			).put(
-				"dateModified", dateString
-			).put(
-				"emailAddressHashed", emailAddressHashed
-			),
-			false);
-	}
-
-	private JSONObject _updateIndividual(
-			JSONObject analyticsDataJSONObject, String channelId,
-			String dataSourceId, String emailAddressHashed, String userId)
+			JSONObject analyticsDataJSONObject, Long channelId,
+			Long dataSourceId, String emailAddressHashed, String userId)
 		throws Exception {
 
 		JSONObject individualJSONObject1 =
@@ -315,31 +298,26 @@ public class IndividualNanite implements Nanite {
 		else if ((individualJSONObject1 == null) &&
 				 (individualJSONObject2 == null)) {
 
-			JSONObject dataSourceJSONObject =
-				_dataSourceDog.getDataSourceJSONObject(dataSourceId);
+			DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
-			if (StringUtils.isBlank(channelId)) {
-				channelId = dataSourceJSONObject.optString("channelId");
+			if (Objects.isNull(channelId)) {
+				channelId = dataSource.getChannelId();
 			}
 
 			return _faroInfoIndividualDog.addIndividual(
-				analyticsDataJSONObject, channelId, dataSourceJSONObject,
+				analyticsDataJSONObject, channelId, dataSource,
 				emailAddressHashed, userId);
 		}
 		else {
-			JSONObject dataSourceJSONObject =
-				_dataSourceDog.getDataSourceJSONObject(dataSourceId);
-
-			JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-				"provider");
+			DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
 			if (individualJSONObject1 == null) {
 				individualJSONObject1 = individualJSONObject2;
 			}
 
 			_faroInfoIndividualDog.addDataSourceIndividualPK(
-				userId, dataSourceJSONObject.getString("id"),
-				providerJSONObject.getString("type"), individualJSONObject1);
+				userId, dataSource.getId(), dataSource.getProviderType(),
+				individualJSONObject1);
 
 			individualJSONObject2 = _updateIndividual(
 				analyticsDataJSONObject, emailAddressHashed,
@@ -351,8 +329,26 @@ public class IndividualNanite implements Nanite {
 		return individualJSONObject2;
 	}
 
+	private JSONObject _updateIndividual(
+		JSONObject analyticsDataJSONObject, String emailAddressHashed,
+		JSONObject individualJSONObject) {
+
+		String dateString = DateUtil.newDateString();
+
+		return _faroInfoIndividualDog.updateIndividual(
+			individualJSONObject.getString("id"),
+			individualJSONObject.put(
+				"analyticsData", analyticsDataJSONObject
+			).put(
+				"dateModified", dateString
+			).put(
+				"emailAddressHashed", emailAddressHashed
+			),
+			false);
+	}
+
 	private void _updatePagesAndAssets(
-		String channelId, String dataSourceId, JSONObject individualJSONObject,
+		Long channelId, Long dataSourceId, JSONObject individualJSONObject,
 		String userId) {
 
 		StringBuilder sb = new StringBuilder();
@@ -387,7 +383,8 @@ public class IndividualNanite implements Nanite {
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("userId", userId)
 			).filter(
-				QueryBuilders.termQuery("dataSourceId", dataSourceId)
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId))
 			).filter(
 				BoolQueryBuilderUtil.shouldNot(
 					QueryBuilders.existsQuery("knownIndividual")
@@ -403,7 +400,7 @@ public class IndividualNanite implements Nanite {
 	}
 
 	private void _updateUserSessions(
-		String dataSourceId, String individualId, String userId) {
+		Long dataSourceId, String individualId, String userId) {
 
 		Script script = new Script(
 			Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
@@ -412,7 +409,8 @@ public class IndividualNanite implements Nanite {
 
 		_cerebroInfoElasticsearchInvoker.updateByQueryWithRetry(
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("dataSourceId", dataSourceId)
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId))
 			).filter(
 				QueryBuilders.termQuery("userId", userId)
 			).mustNot(

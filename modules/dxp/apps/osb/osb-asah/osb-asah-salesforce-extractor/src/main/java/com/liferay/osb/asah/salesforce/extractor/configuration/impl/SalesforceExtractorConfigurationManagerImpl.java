@@ -16,8 +16,10 @@ package com.liferay.osb.asah.salesforce.extractor.configuration.impl;
 
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -44,9 +46,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,11 +61,11 @@ public class SalesforceExtractorConfigurationManagerImpl
 	implements ConfigurationManager {
 
 	@Override
-	public boolean addConfiguration(String json) {
+	public boolean addConfiguration(DataSourceDTO dataSourceDTO) {
 		Configuration configuration = null;
 
 		try {
-			configuration = _toConfiguration(json);
+			configuration = _toConfiguration(dataSourceDTO);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -98,39 +97,26 @@ public class SalesforceExtractorConfigurationManagerImpl
 		return true;
 	}
 
-	public JSONObject buildConfigurationsJSONObject(
-		JSONObject dataSourceJSONObject) {
+	public DataSourceDTO buildDataSourceDTO(DataSource dataSource) {
+		DataSourceDTO dataSourceDTO = new DataSourceDTO();
 
-		JSONObject configurationsJSONObject = JSONUtil.put(
-			"credentials", dataSourceJSONObject.getJSONObject("credentials")
-		).put(
-			"dataSourceId", dataSourceJSONObject.getString("id")
-		).put(
-			"dataSourceState", dataSourceJSONObject.getString("state")
-		).put(
-			"dataSourceStatus", dataSourceJSONObject.getString("status")
-		).put(
-			"url", dataSourceJSONObject.getString("url")
-		);
+		dataSourceDTO.setAccountsConfigurationDTO(
+			new DataSourceDTO.ProviderDTO.AccountsConfigurationDTO(dataSource));
+		dataSourceDTO.setContactsConfigurationDTO(
+			new DataSourceDTO.ProviderDTO.ContactsConfigurationDTO(dataSource));
+		dataSourceDTO.setCredentialDTO(
+			new DataSourceDTO.CredentialDTO(dataSource));
+		dataSourceDTO.setDataSourceId(
+			Objects.toString(dataSource.getId(), null));
+		dataSourceDTO.setDataSourceState(dataSource.getState());
+		dataSourceDTO.setDataSourceStatus(dataSource.getStatus());
+		dataSourceDTO.setURL(dataSource.getURL());
 
-		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-			"provider");
-
-		return configurationsJSONObject.put(
-			"accountsConfiguration",
-			providerJSONObject.optJSONObject("accountsConfiguration")
-		).put(
-			"contactsConfiguration",
-			providerJSONObject.optJSONObject("contactsConfiguration")
-		);
+		return dataSourceDTO;
 	}
 
 	@Override
-	public boolean deleteConfiguration(String json) {
-		JSONObject jsonObject = new JSONObject(json);
-
-		String dataSourceId = jsonObject.getString("dataSourceId");
-
+	public boolean deleteConfiguration(String dataSourceId) {
 		Configuration configuration = _configurations.remove(
 			ProjectIdThreadLocal.getProjectId() + "_" + dataSourceId);
 
@@ -202,17 +188,15 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	@Override
-	public String getState(String dataSourceJSON) {
-		JSONObject dataSourceJSONObject = new JSONObject(dataSourceJSON);
+	public String getState(DataSourceDTO dataSourceDTO) {
+		DataSourceDTO.CredentialDTO credentialDTO =
+			dataSourceDTO.getCredentialDTO();
 
-		JSONObject credentialsJSONObject = dataSourceJSONObject.optJSONObject(
-			"credentials");
-
-		if (credentialsJSONObject == null) {
+		if (credentialDTO == null) {
 			return "CREDENTIALS_INVALID";
 		}
 
-		String type = credentialsJSONObject.getString("type");
+		String type = credentialDTO.getType();
 
 		if (type.equals("Dummy Authentication")) {
 			return "DUMMY_CREDENTIALS";
@@ -222,13 +206,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 			return "CREDENTIALS_INVALID";
 		}
 
-		JSONObject jsonObject = JSONUtil.put(
-			"credentials", credentialsJSONObject
-		).put(
-			"url", dataSourceJSONObject.getString("url")
-		);
-
-		if (!_validate(jsonObject.toString())) {
+		if (!_validate(dataSourceDTO)) {
 			return "CREDENTIALS_INVALID";
 		}
 
@@ -252,25 +230,19 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	@Override
-	public String refresh(String json) {
-		JSONObject dataSourceJSONObject = new JSONObject(json);
+	public DataSourceDTO refresh(DataSourceDTO dataSourceDTO) {
+		dataSourceDTO.setState(getState(dataSourceDTO));
 
-		dataSourceJSONObject.put(
-			"state", getState(dataSourceJSONObject.toString()));
-
-		return dataSourceJSONObject.toString();
+		return dataSourceDTO;
 	}
 
 	@Override
-	public Configuration updateConfiguration(String json) {
-		Configuration configuration = _toConfiguration(json);
+	public Configuration updateConfiguration(DataSourceDTO dataSourceDTO) {
+		Configuration configuration = _toConfiguration(dataSourceDTO);
 
 		String dataSourceId = configuration.getDataSourceId();
 
-		JSONObject jsonObject = new JSONObject(json);
-
-		String existingDataSourceId = jsonObject.getString(
-			"existingDataSourceId");
+		String existingDataSourceId = dataSourceDTO.getExistingDataSourceId();
 
 		if (dataSourceId.equals(existingDataSourceId)) {
 			Configuration existingConfigurationImpl = _configurations.get(
@@ -351,33 +323,23 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	private void _initConfigurations(String projectId) {
-		JSONArray dataSourcesJSONArray = _elasticsearchInvoker.get(
-			"data-sources",
-			QueryBuilders.termQuery("provider.type", "SALESFORCE"));
-
-		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
-			JSONObject dataSourceJSONObject =
-				dataSourcesJSONArray.getJSONObject(i);
+		for (DataSource dataSource :
+				_dataSourceDog.getDataSources("SALESFORCE")) {
 
 			try {
-				JSONObject configurationsJSONObject =
-					buildConfigurationsJSONObject(dataSourceJSONObject);
+				DataSourceDTO dataSourceDTO = buildDataSourceDTO(dataSource);
 
-				String dataSourceId = configurationsJSONObject.getString(
-					"dataSourceId");
+				String dataSourceId = dataSourceDTO.getDataSourceId();
 
 				Configuration configuration = _getInitializedConfiguration(
 					dataSourceId);
 
 				configuration.setDataSourceId(dataSourceId);
-				configuration.setDataSourceState(
-					dataSourceJSONObject.getString("state"));
-				configuration.setDataSourceStatus(
-					dataSourceJSONObject.getString("status"));
+				configuration.setDataSourceState(dataSource.getState());
+				configuration.setDataSourceStatus(dataSource.getStatus());
 				configuration.setProjectId(projectId);
 
-				_setConfigurationAttributes(
-					configurationsJSONObject, configuration);
+				_setConfigurationAttributes(dataSourceDTO, configuration);
 
 				_configurations.put(
 					configuration.getProjectId() + "_" +
@@ -388,7 +350,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						projectId + ": Unable to add configuration for data " +
-							"source " + dataSourceJSONObject.getString("id"),
+							"source " + dataSource.getId(),
 						e);
 				}
 			}
@@ -396,54 +358,39 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	private void _setConfigurationAttributes(
-		JSONObject configurationsJSONObject, Configuration configuration) {
+		DataSourceDTO dataSourceDTO, Configuration configuration) {
 
 		SalesforceExtractorConfigurationImpl
 			salesforceExtractorConfigurationImpl =
 				(SalesforceExtractorConfigurationImpl)configuration;
 
-		JSONObject accountsConfigurationJSONObject =
-			configurationsJSONObject.optJSONObject("accountsConfiguration");
-
-		if (accountsConfigurationJSONObject != null) {
-			salesforceExtractorConfigurationImpl.
-				setAccountsConfigurationJSONObject(
-					accountsConfigurationJSONObject);
-		}
-
-		JSONObject contactsConfigurationJSONObject =
-			configurationsJSONObject.optJSONObject("contactsConfiguration");
-
-		if (contactsConfigurationJSONObject != null) {
-			salesforceExtractorConfigurationImpl.
-				setContactsConfigurationJSONObject(
-					contactsConfigurationJSONObject);
-		}
-
+		salesforceExtractorConfigurationImpl.setAccountsConfigurationDTO(
+			dataSourceDTO.getAccountsConfigurationDTO());
+		salesforceExtractorConfigurationImpl.setContactsConfigurationDTO(
+			dataSourceDTO.getContactsConfigurationDTO());
 		salesforceExtractorConfigurationImpl.setSalesforceAuthEndpoint(
-			configurationsJSONObject.getString("url") +
-				_salesforceOAuth2Client.getPath());
+			dataSourceDTO.getURL() + _salesforceOAuth2Client.getPath());
 		salesforceExtractorConfigurationImpl.setSalesforceURL(
-			configurationsJSONObject.getString("url"));
+			dataSourceDTO.getURL());
 
-		JSONObject credentialsJSONObject =
-			configurationsJSONObject.getJSONObject("credentials");
+		DataSourceDTO.CredentialDTO credentialDTO =
+			dataSourceDTO.getCredentialDTO();
 
-		String type = credentialsJSONObject.getString("type");
+		String type = credentialDTO.getType();
 
 		if (type.equals("Basic Authentication")) {
 			salesforceExtractorConfigurationImpl.setSalesforcePassword(
-				credentialsJSONObject.getString("password"));
+				credentialDTO.getPassword());
 			salesforceExtractorConfigurationImpl.setSalesforceUserName(
-				credentialsJSONObject.getString("login"));
+				credentialDTO.getLogin());
 		}
 		else if (type.equals("OAuth 2 Authentication")) {
 			salesforceExtractorConfigurationImpl.setSalesforceOAuthClientId(
-				credentialsJSONObject.getString("oAuthClientId"));
+				credentialDTO.getOAuthClientId());
 			salesforceExtractorConfigurationImpl.setSalesforceOAuthClientSecret(
-				credentialsJSONObject.getString("oAuthClientSecret"));
+				credentialDTO.getOAuthClientSecret());
 			salesforceExtractorConfigurationImpl.setSalesforceOAuthRefreshToken(
-				credentialsJSONObject.getString("oAuthRefreshToken"));
+				credentialDTO.getOAuthRefreshToken());
 
 			try {
 				_salesforceOAuth2Client.refreshOAuthToken(
@@ -460,41 +407,34 @@ public class SalesforceExtractorConfigurationManagerImpl
 		}
 	}
 
-	private Configuration _toConfiguration(String json) {
-		JSONObject jsonObject = new JSONObject(json);
-
-		String dataSourceId = jsonObject.getString("dataSourceId");
+	private Configuration _toConfiguration(DataSourceDTO dataSourceDTO) {
+		String dataSourceId = dataSourceDTO.getDataSourceId();
 
 		Configuration configuration = _getInitializedConfiguration(
 			dataSourceId);
 
 		configuration.setDataSourceId(dataSourceId);
-		configuration.setDataSourceState(
-			jsonObject.getString("dataSourceState"));
-		configuration.setDataSourceStatus(
-			jsonObject.getString("dataSourceStatus"));
+		configuration.setDataSourceState(dataSourceDTO.getDataSourceState());
+		configuration.setDataSourceStatus(dataSourceDTO.getDataSourceStatus());
 		configuration.setProjectId(ProjectIdThreadLocal.getProjectId());
 
-		_setConfigurationAttributes(jsonObject, configuration);
+		_setConfigurationAttributes(dataSourceDTO, configuration);
 
 		return configuration;
 	}
 
-	private boolean _validate(String json) {
-		JSONObject configurationsJSONObject = new JSONObject(json);
+	private boolean _validate(DataSourceDTO dataSourceDTO) {
+		DataSourceDTO.CredentialDTO credentialDTO =
+			dataSourceDTO.getCredentialDTO();
 
-		JSONObject credentialsJSONObject =
-			configurationsJSONObject.optJSONObject("credentials");
-
-		if (credentialsJSONObject == null) {
+		if (credentialDTO == null) {
 			return false;
 		}
 
 		String responseJSON = _salesforceOAuth2Client.post(
-			credentialsJSONObject.getString("oAuthClientId"),
-			credentialsJSONObject.getString("oAuthClientSecret"),
-			credentialsJSONObject.getString("oAuthRefreshToken"),
-			configurationsJSONObject.getString("url"));
+			credentialDTO.getOAuthClientId(),
+			credentialDTO.getOAuthClientSecret(),
+			credentialDTO.getOAuthRefreshToken(), dataSourceDTO.getURL());
 
 		if (StringUtils.isEmpty(responseJSON)) {
 			return false;
@@ -537,6 +477,9 @@ public class SalesforceExtractorConfigurationManagerImpl
 
 	private final Map<String, Configuration> _configurations =
 		new ConcurrentHashMap<>();
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;

@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
@@ -45,16 +48,28 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 
 	protected void addDataSource(String type) throws Exception {
 		if (type.equals("CSV")) {
-			_dataSourceJSONObject = _dataSourceDog.addDataSource(
-				FaroInfoTestUtil.buildCSVDataSourceJSONObject());
+			_dataSourceJSONObject = _objectMapper.convertValue(
+				_dataSourceDog.addDataSource(
+					_objectMapper.convertValue(
+						FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
+						DataSource.class)),
+				JSONObject.class);
 		}
 		else if (type.equals("LIFERAY")) {
-			_dataSourceJSONObject = _dataSourceDog.addDataSource(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
+			_dataSourceJSONObject = _objectMapper.convertValue(
+				_dataSourceDog.addDataSource(
+					_objectMapper.convertValue(
+						FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+						DataSource.class)),
+				JSONObject.class);
 		}
 		else if (type.equals("SALESFORCE")) {
-			_dataSourceJSONObject = _dataSourceDog.addDataSource(
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+			_dataSourceJSONObject = _objectMapper.convertValue(
+				_dataSourceDog.addDataSource(
+					_objectMapper.convertValue(
+						FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
+						DataSource.class)),
+				JSONObject.class);
 		}
 		else {
 			throw new Exception("Unsupported data source type " + type);
@@ -281,5 +296,8 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 	private JSONObject _dataSourceJSONObject;
 	private String _individual1PK;
 	private String _individual2PK;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

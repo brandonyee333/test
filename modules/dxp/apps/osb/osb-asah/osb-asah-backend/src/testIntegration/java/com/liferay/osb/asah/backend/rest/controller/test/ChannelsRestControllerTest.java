@@ -14,15 +14,17 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.controller.DataSourcesRestController;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ChannelsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.dto.ChannelDTO;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -63,9 +65,10 @@ public class ChannelsRestControllerTest {
 	public void testDuplicateChannelName() throws Exception {
 		JSONObject dataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.postDataSource(
-				String.valueOf(
+				_objectMapper.convertValue(
 					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-						"Liferay", RandomTestUtil.randomURL()))));
+						"Liferay", RandomTestUtil.randomURL()),
+					DataSourceDTO.class)));
 
 		JSONObject channelJSONObject = FaroInfoTestUtil.buildChannelJSONObject(
 			dataSourceJSONObject.getString("id"), "combined");
@@ -75,7 +78,7 @@ public class ChannelsRestControllerTest {
 				String.valueOf(channelJSONObject));
 		}
 
-		JSONObject channelsJSONObject = ObjectMapperUtil.convertValue(
+		JSONObject channelsJSONObject = _objectMapper.convertValue(
 			_channelsRestController.getChannels(null, 0, 20, null),
 			JSONObject.class);
 
@@ -107,7 +110,7 @@ public class ChannelsRestControllerTest {
 	)
 	@Test
 	public void testGetChannels() throws Exception {
-		JSONObject channelsJSONObject = ObjectMapperUtil.convertValue(
+		JSONObject channelsJSONObject = _objectMapper.convertValue(
 			_channelsRestController.getChannels(null, 0, 20, null),
 			JSONObject.class);
 
@@ -124,14 +127,15 @@ public class ChannelsRestControllerTest {
 		).when(
 			_channelHttp
 		).addChannel(
-			Mockito.any(Channel.class)
+			Mockito.any(ChannelDTO.class)
 		);
 
 		try {
 			JSONObject dataSourceJSONObject = new JSONObject(
 				_dataSourcesRestController.postDataSource(
-					String.valueOf(
-						FaroInfoTestUtil.buildLiferayDataSourceJSONObject())));
+					_objectMapper.convertValue(
+						FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+						DataSourceDTO.class)));
 
 			new JSONArray(
 				_channelsRestController.postChannels(
@@ -162,7 +166,7 @@ public class ChannelsRestControllerTest {
 	public void testPatchChannelExistingDataSource() {
 		String dataSourceId = "351238757269547424";
 
-		JSONArray channelsJSONArray = ObjectMapperUtil.convertValue(
+		JSONArray channelsJSONArray = _objectMapper.convertValue(
 			_channelsRestController.postChannels(
 				String.valueOf(
 					FaroInfoTestUtil.buildChannelJSONObject(
@@ -185,7 +189,7 @@ public class ChannelsRestControllerTest {
 				))
 		);
 
-		JSONObject responseJSONObject = ObjectMapperUtil.convertValue(
+		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
 				channelJSONObject.getString("id"),
 				inputChannelJSONObject.toString()),
@@ -226,7 +230,7 @@ public class ChannelsRestControllerTest {
 				))
 		);
 
-		JSONObject responseJSONObject = ObjectMapperUtil.convertValue(
+		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
 				"123456789", inputChannelJSONObject.toString()),
 			JSONObject.class);
@@ -268,7 +272,7 @@ public class ChannelsRestControllerTest {
 
 		JSONObject inputChannelJSONObject = JSONUtil.put("name", randomName);
 
-		JSONObject responseJSONObject = ObjectMapperUtil.convertValue(
+		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
 				"123456789", inputChannelJSONObject.toString()),
 			JSONObject.class);
@@ -284,8 +288,9 @@ public class ChannelsRestControllerTest {
 	public void testPostCombinedChannels() throws Exception {
 		JSONObject dataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.postDataSource(
-				String.valueOf(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject())));
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+					DataSourceDTO.class)));
 
 		JSONArray channelsJSONArray = new JSONArray(
 			_channelsRestController.postChannels(
@@ -298,7 +303,7 @@ public class ChannelsRestControllerTest {
 		Mockito.verify(
 			_channelHttp, Mockito.times(2)
 		).addChannel(
-			Mockito.any(Channel.class)
+			Mockito.any(ChannelDTO.class)
 		);
 	}
 
@@ -306,8 +311,9 @@ public class ChannelsRestControllerTest {
 	public void testPostMultipleChannels() throws Exception {
 		JSONObject dataSourceJSONObject = new JSONObject(
 			_dataSourcesRestController.postDataSource(
-				String.valueOf(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject())));
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+					DataSourceDTO.class)));
 
 		JSONArray channelsJSONArray = new JSONArray(
 			_channelsRestController.postChannels(
@@ -320,7 +326,7 @@ public class ChannelsRestControllerTest {
 		Mockito.verify(
 			_channelHttp, Mockito.times(3)
 		).addChannel(
-			Mockito.any(Channel.class)
+			Mockito.any(ChannelDTO.class)
 		);
 	}
 
@@ -342,7 +348,7 @@ public class ChannelsRestControllerTest {
 				))
 		);
 
-		JSONObject responseJSONObject = ObjectMapperUtil.convertValue(
+		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_channelsRestController.patchChannel(
 				"4324324324", inputChannelJSONObject.toString()),
 			JSONObject.class);
@@ -370,5 +376,8 @@ public class ChannelsRestControllerTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

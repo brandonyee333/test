@@ -14,11 +14,15 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
@@ -37,6 +41,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -47,8 +52,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -127,37 +130,30 @@ public class SalesforceConfigurableBot {
 		SalesforceExtractorConfiguration salesforceExtractorConfiguration =
 			(SalesforceExtractorConfiguration)configuration;
 
-		JSONObject existingDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.get(
-				"data-sources",
-				salesforceExtractorConfiguration.getDataSourceId());
+		DataSourceDTO existingDataSourceDTO = new DataSourceDTO(
+			_dataSourceDog.getDataSource(
+				Long.valueOf(
+					salesforceExtractorConfiguration.getDataSourceId())));
 
-		String newDataSourceJSON =
+		DataSourceDTO newDataSourceDTO =
 			_salesforceExtractorConfigurationManagerImpl.refresh(
-				existingDataSourceJSONObject.toString());
+				existingDataSourceDTO);
 
-		JSONObject newDataSourceJSONObject = new JSONObject(newDataSourceJSON);
-
-		if (JSONUtil.equals(
-				existingDataSourceJSONObject, newDataSourceJSONObject)) {
-
+		if (Objects.equals(existingDataSourceDTO, newDataSourceDTO)) {
 			return configuration;
 		}
 
-		_faroInfoElasticsearchInvoker.update(
-			"data-sources", newDataSourceJSONObject.getString("id"),
-			newDataSourceJSONObject);
+		DataSourceDTO configurationsDataSourceDTO =
+			_salesforceExtractorConfigurationManagerImpl.buildDataSourceDTO(
+				_dataSourceDog.updateDataSource(
+					_objectMapper.convertValue(
+						newDataSourceDTO, DataSource.class)));
 
-		JSONObject configurationsJSONObject =
-			_salesforceExtractorConfigurationManagerImpl.
-				buildConfigurationsJSONObject(newDataSourceJSONObject);
-
-		configurationsJSONObject.put(
-			"existingDataSourceId",
+		configurationsDataSourceDTO.setExistingDataSourceId(
 			salesforceExtractorConfiguration.getDataSourceId());
 
 		return _salesforceExtractorConfigurationManagerImpl.updateConfiguration(
-			configurationsJSONObject.toString());
+			configurationsDataSourceDTO);
 	}
 
 	protected void runNanite(Configuration configuration, Nanite nanite)
@@ -246,8 +242,14 @@ public class SalesforceConfigurableBot {
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
 
+	@Autowired
+	private DataSourceDog _dataSourceDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private ProjectDog _projectDog;

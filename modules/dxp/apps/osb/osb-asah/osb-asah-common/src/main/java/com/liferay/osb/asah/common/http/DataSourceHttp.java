@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.http;
 
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
+
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -24,7 +26,8 @@ public interface DataSourceHttp {
 	public ResponseEntity<String> getSalesforceAccountsFields(
 		String id, int end, int start);
 
-	public ResponseEntity<String> getSalesforceOwner(String json);
+	public ResponseEntity<String> getSalesforceOwner(
+		DataSourceDTO dataSourceDTO);
 
 	public ResponseEntity<String> getSalesforceUsersFields(
 		String id, int end, int start);

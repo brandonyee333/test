@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -31,15 +32,15 @@ import org.springframework.stereotype.Component;
 public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 
 	public JSONObject addOrganization(
-			JSONObject dataJSONObject, JSONObject dataSourceJSONObject)
+			JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
 		JSONObject organizationJSONObject = JSONUtil.put(
 			"custom",
 			_faroInfoFieldDog.buildContextJSONObject(
-				"custom", dataJSONObject, dataSourceJSONObject, "organization")
+				"custom", dataJSONObject, dataSource, "organization")
 		).put(
-			"dataSourceId", dataSourceJSONObject.getString("id")
+			"dataSourceId", String.valueOf(dataSource.getId())
 		).put(
 			"dateCreated", DateUtil.newDateString()
 		).put(
@@ -83,7 +84,7 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject updateOrganization(
-			JSONObject dataJSONObject, JSONObject dataSourceJSONObject,
+			JSONObject dataJSONObject, DataSource dataSource,
 			JSONObject organizationJSONObject)
 		throws Exception {
 
@@ -104,8 +105,8 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 		);
 
 		organizationJSONObject = _faroInfoFieldDog.updateContextFields(
-			"custom", dataJSONObject, dataSourceJSONObject,
-			organizationJSONObject, "organization", null, null);
+			"custom", dataJSONObject, dataSource, organizationJSONObject,
+			"organization", null, null);
 
 		organizationJSONObject = elasticsearchInvoker.update(
 			"organizations", organizationJSONObject);

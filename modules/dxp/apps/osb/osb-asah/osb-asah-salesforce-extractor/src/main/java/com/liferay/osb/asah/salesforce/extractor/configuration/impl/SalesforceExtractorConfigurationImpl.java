@@ -15,12 +15,11 @@
 package com.liferay.osb.asah.salesforce.extractor.configuration.impl;
 
 import com.liferay.osb.asah.common.configuration.impl.BaseConfigurationImpl;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 
 import java.util.Arrays;
 import java.util.Objects;
-
-import org.json.JSONObject;
 
 /**
  * @author Rachael Koestartyo
@@ -146,22 +145,24 @@ public class SalesforceExtractorConfigurationImpl
 		return super.hashCode() ^ hash ^ Arrays.hashCode(_tableNames);
 	}
 
-	public void setAccountsConfigurationJSONObject(
-		JSONObject accountsConfigurationJSONObject) {
+	public void setAccountsConfigurationDTO(
+		DataSourceDTO.ProviderDTO.AccountsConfigurationDTO
+			accountsConfigurationDTO) {
 
-		if (accountsConfigurationJSONObject.getBoolean("enableAllAccounts")) {
+		if (accountsConfigurationDTO.getEnableAllAccounts()) {
 			_addTableName("Account");
 		}
 	}
 
-	public void setContactsConfigurationJSONObject(
-		JSONObject contactsConfigurationJSONObject) {
+	public void setContactsConfigurationDTO(
+		DataSourceDTO.ProviderDTO.ContactsConfigurationDTO
+			contactsConfigurationDTO) {
 
-		if (contactsConfigurationJSONObject.getBoolean("enableAllContacts")) {
+		if (contactsConfigurationDTO.getEnableAllContacts()) {
 			_addTableName("Contact");
 		}
 
-		if (contactsConfigurationJSONObject.getBoolean("enableAllLeads")) {
+		if (contactsConfigurationDTO.getEnableAllLeads()) {
 			_addTableName("Lead");
 		}
 	}

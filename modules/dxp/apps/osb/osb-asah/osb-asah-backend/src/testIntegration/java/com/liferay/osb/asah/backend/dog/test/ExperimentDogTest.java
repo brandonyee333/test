@@ -72,7 +72,7 @@ public class ExperimentDogTest {
 		Mockito.verify(
 			_dxpClient, Mockito.times(1)
 		).deleteDXPExperiment(
-			Mockito.eq("333962835564819755"), Mockito.eq("2")
+			Mockito.eq(333962835564819755L), Mockito.eq("2")
 		);
 
 		Assert.assertNull(_experimentDog.fetchExperiment("2"));

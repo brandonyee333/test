@@ -14,10 +14,13 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -45,8 +48,12 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddDataSourceWithDefaultChannel() throws Exception {
-		JSONObject dataSourceJSONObject = _dataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			_dataSourceDog.addDataSource(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+					DataSource.class)),
+			JSONObject.class);
 
 		Assert.assertNotNull(dataSourceJSONObject.getString("channelId"));
 	}
@@ -61,7 +68,7 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testChannelsCleared() throws Exception {
-		_dataSourceDog.disconnectDataSource("405201047787757795");
+		_dataSourceDog.disconnectDataSource(405201047787757795L);
 
 		Assert.assertEquals(
 			0,
@@ -84,16 +91,23 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testDisconnectDataSource() throws Exception {
-		JSONObject dataSourceJSONObject = _dataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-				"Token Authentication", "Liferay", "http://localhost:8080"));
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			_dataSourceDog.addDataSource(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
+						"Token Authentication", "Liferay",
+						"http://localhost:8080"),
+					DataSource.class)),
+			JSONObject.class);
 
 		Assert.assertEquals(
 			"CREDENTIALS_VALID", dataSourceJSONObject.optString("state"));
 		Assert.assertEquals("ACTIVE", dataSourceJSONObject.optString("status"));
 
-		dataSourceJSONObject = _dataSourceDog.disconnectDataSource(
-			dataSourceJSONObject.getString("id"));
+		dataSourceJSONObject = _objectMapper.convertValue(
+			_dataSourceDog.disconnectDataSource(
+				dataSourceJSONObject.getLong("id")),
+			JSONObject.class);
 
 		Assert.assertEquals(
 			"DISCONNECTED", dataSourceJSONObject.optString("state"));
@@ -107,10 +121,17 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testUpgradeFromOAuthToToken() throws Exception {
-		JSONObject dataSourceJSONObject = _dataSourceDog.patchDataSource(
-			"405201047787757796",
+		JSONObject liferayDataSourceJSONObject =
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
-				"Token Authentication", "Liferay", "http://localhost:8080"));
+				"Token Authentication", "Liferay", "http://localhost:8080");
+
+		liferayDataSourceJSONObject.put("id", "405201047787757796");
+
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			_dataSourceDog.patchDataSource(
+				_objectMapper.convertValue(
+					liferayDataSourceJSONObject, DataSource.class)),
+			JSONObject.class);
 
 		JSONObject credentialsJSONObject = dataSourceJSONObject.getJSONObject(
 			"credentials");
@@ -127,5 +148,8 @@ public class DataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

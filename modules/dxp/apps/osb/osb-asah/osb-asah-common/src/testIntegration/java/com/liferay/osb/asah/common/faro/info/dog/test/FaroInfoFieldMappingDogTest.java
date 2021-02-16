@@ -49,7 +49,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 		String name = "What is your income?";
 
 		_faroInfoFieldMappingDog.addFieldMapping(
-			"custom", name, dataSourceJSONObject.getString("id"), "input-field",
+			"custom", name, dataSourceJSONObject.getLong("id"), "input-field",
 			name, "Number", "individuals");
 
 		JSONArray fieldMappingsJSONArray = faroInfoElasticsearchInvoker.get(
@@ -67,7 +67,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 			fieldMappingJSONObject.getString("fieldName"));
 
 		_faroInfoFieldMappingDog.addFieldMapping(
-			"custom", name, dataSourceJSONObject.getString("id"), "input-field",
+			"custom", name, dataSourceJSONObject.getLong("id"), "input-field",
 			name, "Text", "individuals");
 
 		Assert.assertEquals(
@@ -124,7 +124,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 		String name = "test!@#$%^Invalid_Characters^&*()";
 
 		_faroInfoFieldMappingDog.addFieldMapping(
-			"custom", name, dataSourceJSONObject.getString("id"), "input-field",
+			"custom", name, dataSourceJSONObject.getLong("id"), "input-field",
 			name, "Text", "individuals");
 
 		JSONArray fieldMappingsJSONArray = faroInfoElasticsearchInvoker.get(
@@ -151,7 +151,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 		String name = "What is your income?";
 
 		_faroInfoFieldMappingDog.addFieldMapping(
-			"custom", name, dataSourceJSONObject.getString("id"), "input-field",
+			"custom", name, dataSourceJSONObject.getLong("id"), "input-field",
 			name, "Number", "individuals");
 
 		JSONArray fieldMappingsJSONArray = faroInfoElasticsearchInvoker.get(
@@ -171,7 +171,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 		name = "What-is-your-income?";
 
 		_faroInfoFieldMappingDog.addFieldMapping(
-			"custom", name, dataSourceJSONObject.getString("id"), "input-field",
+			"custom", name, dataSourceJSONObject.getLong("id"), "input-field",
 			name, "Number", "individuals");
 
 		Assert.assertEquals(
@@ -249,7 +249,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 						).put(
 							"234", "testFieldName2"
 						))),
-				"123");
+				123L);
 
 		JSONObject dataSourceFieldNamesJSONObject =
 			fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
@@ -283,7 +283,7 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 		JSONObject dataSourceJSONObject, String emailFieldName) {
 
 		_faroInfoFieldMappingDog.addEmailFieldMapping(
-			dataSourceJSONObject.getString("id"));
+			dataSourceJSONObject.getLong("id"));
 
 		JSONArray fieldMappingsJSONArray = faroInfoElasticsearchInvoker.get(
 			"field-mappings");

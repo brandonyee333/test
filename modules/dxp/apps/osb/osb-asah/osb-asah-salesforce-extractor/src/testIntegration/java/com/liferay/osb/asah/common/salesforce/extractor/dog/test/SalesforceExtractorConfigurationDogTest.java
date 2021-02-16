@@ -14,7 +14,10 @@
 
 package com.liferay.osb.asah.common.salesforce.extractor.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.SalesforceExtractorTestUtil;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
@@ -83,12 +86,16 @@ public class SalesforceExtractorConfigurationDogTest {
 		Assert.assertEquals(
 			"CREDENTIALS_VALID",
 			_salesforceExtractorConfigurationDog.getState(
-				dataSourceJSONObject));
+				_objectMapper.convertValue(
+					dataSourceJSONObject, DataSource.class)));
 	}
 
 	private static final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration =
 			SalesforceExtractorTestUtil.getSalesforceExtractorConfiguration();
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SalesforceExtractorConfigurationDog

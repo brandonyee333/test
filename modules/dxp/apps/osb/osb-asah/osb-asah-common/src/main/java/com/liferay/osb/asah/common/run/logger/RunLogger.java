@@ -39,7 +39,7 @@ import org.springframework.stereotype.Component;
 public class RunLogger {
 
 	public JSONObject fetchLatestRunLogJSONObject(
-		String dataSourceId, ElasticsearchInvoker elasticsearchInvoker,
+		Long dataSourceId, ElasticsearchInvoker elasticsearchInvoker,
 		String naniteClassName) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
@@ -47,7 +47,8 @@ public class RunLogger {
 
 		if (dataSourceId != null) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("dataSourceId", dataSourceId));
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId)));
 		}
 		else {
 			boolQueryBuilder.filter(

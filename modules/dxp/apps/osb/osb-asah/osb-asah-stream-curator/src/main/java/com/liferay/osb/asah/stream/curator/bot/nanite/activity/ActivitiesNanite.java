@@ -519,11 +519,10 @@ public class ActivitiesNanite implements Nanite {
 	private Set<Pair<String, String>> _getKeywordPairs(
 		Map<String, String> context) {
 
-		Set<Pair<String, String>> keywords = new HashSet<>();
-
-		keywords.addAll(
+		Set<Pair<String, String>> keywords = new HashSet<>(
 			_getKeywordPairs(
 				MapUtil.getString(context, "description"), "description"));
+
 		keywords.addAll(
 			_getKeywordPairs(
 				MapUtil.getString(context, "keywords"), "keyword"));
@@ -595,7 +594,8 @@ public class ActivitiesNanite implements Nanite {
 
 		JSONObject individualJSONObject =
 			_faroInfoIndividualDog.getIndividualJSONObject(
-				analyticsEvent.getDataSourceId(), analyticsEvent.getUserId());
+				Long.valueOf(analyticsEvent.getDataSourceId()),
+				analyticsEvent.getUserId());
 
 		if (individualJSONObject != null) {
 			return individualJSONObject.getString("id");

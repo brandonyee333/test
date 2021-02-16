@@ -320,7 +320,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 		JSONObject individualJSONObject =
 			_faroInfoIndividualDog.getIndividualJSONObject(
-				analyticsEvent.getDataSourceId(), analyticsEvent.getUserId());
+				Long.valueOf(analyticsEvent.getDataSourceId()),
+				analyticsEvent.getUserId());
 
 		if (individualJSONObject != null) {
 			model.setIndividualId(individualJSONObject.getString("id"));
@@ -328,7 +329,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 				FaroInfoIndividualUtil.isKnownIndividual(individualJSONObject));
 			model.setSegmentNames(
 				_faroInfoIndividualDog.getIndividualSegmentNames(
-					analyticsEvent.getChannelId(), individualJSONObject));
+					Long.valueOf(analyticsEvent.getChannelId()),
+					individualJSONObject));
 		}
 	}
 

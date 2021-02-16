@@ -14,11 +14,14 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -51,9 +54,12 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 	@Before
 	public void setUp() throws Exception {
 		for (int i = 0; i < 3; i++) {
-			JSONObject liferayDataSourceJSONObject =
+			JSONObject liferayDataSourceJSONObject = _objectMapper.convertValue(
 				_dataSourceDog.addDataSource(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject());
+					_objectMapper.convertValue(
+						FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
+						DataSource.class)),
+				JSONObject.class);
 
 			String liferayDataSourceId = liferayDataSourceJSONObject.getString(
 				"id");
@@ -1067,5 +1073,8 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 	private final JSONArray _liferayDataSourceIdsJSONArray = new JSONArray();
 	private final JSONObject _liferayDataSourceOrganizationIdsJSONObject =
 		new JSONObject();
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

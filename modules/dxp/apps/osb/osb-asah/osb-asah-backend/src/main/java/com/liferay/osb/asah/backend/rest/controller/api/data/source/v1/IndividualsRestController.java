@@ -14,10 +14,13 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsIndividualSegmentsEmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
@@ -72,7 +75,8 @@ public class IndividualsRestController extends BaseRestController {
 			responseJSON = toItemGetResponse(
 				"individuals",
 				new IndividualsEmbeddedJSONObjectCreator(
-					faroInfoElasticsearchInvoker, expand),
+					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
+					_objectMapper),
 				id);
 		}
 
@@ -111,7 +115,8 @@ public class IndividualsRestController extends BaseRestController {
 			return toCollectionGetResponse(
 				"individuals",
 				new IndividualsEmbeddedJSONObjectCreator(
-					faroInfoElasticsearchInvoker, expand),
+					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
+					_objectMapper),
 				page,
 				_faroInfoMembershipDog.buildIndividualsQueryBuilder(
 					null, filterString, includeAnonymousUsers),
@@ -170,7 +175,8 @@ public class IndividualsRestController extends BaseRestController {
 			responseJSON = toCollectionGetResponse(
 				"individuals",
 				new IndividualsEmbeddedJSONObjectCreator(
-					faroInfoElasticsearchInvoker, expand),
+					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
+					_objectMapper),
 				fieldSortBuilders, page,
 				_faroInfoMembershipDog.buildIndividualsQueryBuilder(
 					channelId, filterString, includeAnonymousUsers),
@@ -319,6 +325,12 @@ public class IndividualsRestController extends BaseRestController {
 	}
 
 	@Autowired
+	private DataSourceDog _dataSourceDog;
+
+	@Autowired
 	private FaroInfoMembershipDog _faroInfoMembershipDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

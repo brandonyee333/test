@@ -14,24 +14,26 @@
 
 package com.liferay.osb.asah.common.configuration;
 
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
+
 /**
  * @author Vishal Reddy
  * @author Brian Wing Shun Chan
  */
 public interface ConfigurationManager {
 
-	public boolean addConfiguration(String json);
+	public boolean addConfiguration(DataSourceDTO dataSourceDTO);
 
-	public boolean deleteConfiguration(String json);
+	public boolean deleteConfiguration(String dataSourceId);
 
 	public Configuration getConfiguration(String dataSourceId);
 
 	public Configuration[] getConfigurations(String projectId);
 
-	public String getState(String json);
+	public String getState(DataSourceDTO dataSourceDTO);
 
-	public String refresh(String json);
+	public DataSourceDTO refresh(DataSourceDTO dataSourceDTO);
 
-	public Configuration updateConfiguration(String json);
+	public Configuration updateConfiguration(DataSourceDTO dataSourceDTO);
 
 }

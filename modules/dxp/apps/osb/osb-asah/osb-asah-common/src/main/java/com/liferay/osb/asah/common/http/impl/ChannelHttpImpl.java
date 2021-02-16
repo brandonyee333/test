@@ -14,13 +14,13 @@
 
 package com.liferay.osb.asah.common.http.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.http.ChannelHttp;
-import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.spring.http.Http;
-import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -40,14 +40,13 @@ import org.springframework.stereotype.Component;
 public class ChannelHttpImpl implements ChannelHttp {
 
 	@Override
-	public void addChannel(Channel channel) {
+	public void addChannel(ChannelDTO channelDTO) {
 		_http.exchangeResponseEntity(
 			ServiceConstants.URL_FRONTEND,
 			String.format(
 				"/o/faro/asah/%s/channel", ProjectIdThreadLocal.getProjectId()),
 			HttpMethod.POST,
-			ObjectMapperUtil.convertValue(
-				new ChannelDTO(channel), JSONObject.class),
+			_objectMapper.convertValue(channelDTO, JSONObject.class),
 			_getHttpHeaders());
 	}
 
@@ -65,6 +64,9 @@ public class ChannelHttpImpl implements ChannelHttp {
 
 	@Autowired
 	private Http _http;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Value("${osb.asah.security.token:}")
 	private String _osbAsahSecurityToken;

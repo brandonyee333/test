@@ -15,10 +15,9 @@
 package com.liferay.osb.asah.monolith.common.http.impl;
 
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -32,49 +31,49 @@ import org.springframework.stereotype.Component;
 public class ConfigurationHttpImpl implements ConfigurationHttp {
 
 	@Override
-	public void addConfiguration(JSONObject jsonObject, String providerType) {
+	public void addConfiguration(
+		DataSourceDTO dataSourceDTO, String providerType) {
+
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		configurationManager.addConfiguration(jsonObject.toString());
+		configurationManager.addConfiguration(dataSourceDTO);
 	}
 
 	@Override
-	public void deleteConfiguration(
-		JSONObject jsonObject, String providerType) {
-
+	public void deleteConfiguration(String dataSourceId, String providerType) {
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		configurationManager.deleteConfiguration(jsonObject.toString());
+		configurationManager.deleteConfiguration(dataSourceId);
 	}
 
 	@Override
-	public String getState(JSONObject jsonObject, String providerType) {
+	public String getState(DataSourceDTO dataSourceDTO, String providerType) {
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		return configurationManager.getState(jsonObject.toString());
+		return configurationManager.getState(dataSourceDTO);
 	}
 
 	@Override
-	public String refreshConfiguration(
-		JSONObject jsonObject, String providerType) {
+	public DataSourceDTO refreshConfiguration(
+		DataSourceDTO dataSourceDTO, String providerType) {
 
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		return configurationManager.refresh(jsonObject.toString());
+		return configurationManager.refresh(dataSourceDTO);
 	}
 
 	@Override
 	public void updateConfiguration(
-		JSONObject jsonObject, String providerType) {
+		DataSourceDTO dataSourceDTO, String providerType) {
 
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		configurationManager.updateConfiguration(jsonObject.toString());
+		configurationManager.updateConfiguration(dataSourceDTO);
 	}
 
 	private ConfigurationManager _getConfigurationManager(String providerType) {

@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.math.BigDecimal;
@@ -84,27 +85,26 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject buildContextJSONObject(
-			String context, JSONObject dataJSONObject,
-			JSONObject dataSourceJSONObject, String ownerType)
+			String context, JSONObject dataJSONObject, DataSource dataSource,
+			String ownerType)
 		throws Exception {
 
 		JSONArray fieldsJSONArray = _buildFieldsJSONArray(
-			context, dataJSONObject, dataSourceJSONObject, null, ownerType);
+			context, dataJSONObject, dataSource, null, ownerType);
 
 		return _buildContextJSONObject(fieldsJSONArray);
 	}
 
 	public JSONObject getFieldsJSONObject(
-			String context, JSONObject dataJSONObject,
-			JSONObject dataSourceJSONObject)
+			String context, JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
-		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
+		String providerType = dataSource.getProviderType();
 
-		if (type.equals("CSV")) {
+		if (providerType.equals("CSV")) {
 			return dataJSONObject.getJSONObject("fields");
 		}
-		else if (type.equals("LIFERAY")) {
+		else if (providerType.equals("LIFERAY")) {
 			if (context.equals("custom")) {
 				JSONObject expandoJSONObject = dataJSONObject.optJSONObject(
 					"expando");
@@ -146,27 +146,27 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 
 			return dataJSONObject;
 		}
-		else if (type.equals("SALESFORCE")) {
+		else if (providerType.equals("SALESFORCE")) {
 			return dataJSONObject;
 		}
 
 		throw new Exception(
-			"Invalid data source type " + type + " for data source " +
-				dataSourceJSONObject.getString("id"));
+			"Invalid data source type " + providerType + " for data source " +
+				dataSource.getId());
 	}
 
 	public JSONObject updateContextFields(
-			String context, JSONObject dataJSONObject,
-			JSONObject dataSourceJSONObject, JSONObject ownerJSONObject,
-			String ownerType, String uniqueIdContext, String uniqueIdFieldName)
+			String context, JSONObject dataJSONObject, DataSource dataSource,
+			JSONObject ownerJSONObject, String ownerType,
+			String uniqueIdContext, String uniqueIdFieldName)
 		throws Exception {
 
-		String dataSourceId = dataSourceJSONObject.getString("id");
+		String dataSourceId = String.valueOf(dataSource.getId());
 		String ownerId = ownerJSONObject.getString("id");
 		Map<String, List<JSONObject>> multiValueFieldsMap = new HashMap<>();
 
 		JSONArray newFieldsJSONArray = _buildFieldsJSONArray(
-			context, dataJSONObject, dataSourceJSONObject, ownerId, ownerType);
+			context, dataJSONObject, dataSource, ownerId, ownerType);
 
 		Iterator<Object> iterator = newFieldsJSONArray.iterator();
 
@@ -319,16 +319,16 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 	}
 
 	private JSONArray _buildFieldsJSONArray(
-			String context, JSONObject dataJSONObject,
-			JSONObject dataSourceJSONObject, String ownerId, String ownerType)
+			String context, JSONObject dataJSONObject, DataSource dataSource,
+			String ownerId, String ownerType)
 		throws Exception {
 
 		JSONArray fieldsJSONArray = new JSONArray();
 
 		JSONObject fieldsJSONObject = getFieldsJSONObject(
-			context, dataJSONObject, dataSourceJSONObject);
+			context, dataJSONObject, dataSource);
 
-		String dataSourceId = dataSourceJSONObject.getString("id");
+		String dataSourceId = String.valueOf(dataSource.getId());
 
 		JSONArray fieldMappingsJSONArray = _getFieldMappingsJSONArray(
 			context, dataSourceId, ownerType);
@@ -357,13 +357,12 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 				fieldType, value.toString());
 
 			String modifiedDateString = _getModifiedDateString(
-				dataJSONObject, dataSourceJSONObject, ownerType);
+				dataJSONObject, dataSource, ownerType);
 
 			if (value instanceof List) {
 				for (Object currentValue : (List<?>)value) {
 					JSONObject fieldJSONObject = _buildFieldJSONObject(
-						context, dataSourceJSONObject.getString("id"),
-						dataSourceJSONObject.getString("name"), fieldType,
+						context, dataSourceId, dataSource.getName(), fieldType,
 						modifiedDateString, fieldName, ownerId, ownerType,
 						dataSourceFieldName, currentValue);
 
@@ -372,8 +371,7 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			}
 			else {
 				JSONObject fieldJSONObject = _buildFieldJSONObject(
-					context, dataSourceJSONObject.getString("id"),
-					dataSourceJSONObject.getString("name"), fieldType,
+					context, dataSourceId, dataSource.getName(), fieldType,
 					modifiedDateString, fieldName, ownerId, ownerType,
 					dataSourceFieldName, value);
 
@@ -462,35 +460,35 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 	}
 
 	private JSONObject _fetchDataJSONObject(
-		JSONObject dataSourceJSONObject, String ownerType, String uniqueId,
+		DataSource dataSource, String ownerType, String uniqueId,
 		String uniqueIdFieldName) {
 
-		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
+		String providerType = dataSource.getProviderType();
 
-		if (type.equals("CSV")) {
+		if (providerType.equals("CSV")) {
 			return elasticsearchInvoker.fetch(
 				"csv-individuals",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
-						"dataSourceId", dataSourceJSONObject.getString("id"))
+						"dataSourceId", String.valueOf(dataSource.getId()))
 				).filter(
 					QueryBuilders.termQuery(
 						"fields." + uniqueIdFieldName, uniqueId)
 				));
 		}
-		else if (type.equals("LIFERAY")) {
+		else if (providerType.equals("LIFERAY")) {
 			return _dxpRawElasticsearchInvoker.fetch(
 				"users",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
 						"osbAsahDataSourceId",
-						dataSourceJSONObject.getString("id"))
+						String.valueOf(dataSource.getId()))
 				).filter(
 					QueryBuilders.termQuery(
 						"contact." + uniqueIdFieldName, uniqueId)
 				));
 		}
-		else if (type.equals("SALESFORCE")) {
+		else if (providerType.equals("SALESFORCE")) {
 			if (ownerType.equals("account")) {
 				return _salesforceRawElasticsearchInvoker.fetch(
 					"Account",
@@ -512,8 +510,8 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 
 		if (_log.isWarnEnabled()) {
 			_log.warn(
-				"Invalid data source type " + type + " for data source " +
-					dataSourceJSONObject.getString("id"));
+				"Invalid data source type " + providerType +
+					" for data source " + dataSource.getId());
 		}
 
 		return null;
@@ -569,16 +567,15 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 	}
 
 	private String _getModifiedDateString(
-			JSONObject dataJSONObject, JSONObject dataSourceJSONObject,
-			String ownerType)
+			JSONObject dataJSONObject, DataSource dataSource, String ownerType)
 		throws Exception {
 
-		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
+		String providerType = dataSource.getProviderType();
 
-		if (type.equals("CSV")) {
-			return dataSourceJSONObject.getString("dateModified");
+		if (providerType.equals("CSV")) {
+			return DateUtil.toUTCString(dataSource.getModifiedDate());
 		}
-		else if (type.equals("LIFERAY")) {
+		else if (providerType.equals("LIFERAY")) {
 			if (dataJSONObject.isNull("modifiedDate")) {
 				return DateUtil.toUTCString(
 					new Date(dataJSONObject.getLong("createDate")));
@@ -587,7 +584,7 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			return DateUtil.toUTCString(
 				new Date(dataJSONObject.getLong("modifiedDate")));
 		}
-		else if (type.equals("SALESFORCE")) {
+		else if (providerType.equals("SALESFORCE")) {
 			if (ownerType.equals("account")) {
 				return dataJSONObject.getString("LastModifiedDate");
 			}
@@ -599,7 +596,8 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			}
 		}
 
-		throw new Exception("Invalid data source provider type: " + type);
+		throw new Exception(
+			"Invalid data source provider type: " + providerType);
 	}
 
 	private JSONArray _getNewFieldsJSONArray(
@@ -648,10 +646,10 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 				continue;
 			}
 
-			JSONObject dataSourceJSONObject =
-				_dataSourceDog.fetchDataSourceJSONObject(dataSourceId);
+			DataSource dataSource = _dataSourceDog.fetchDataSource(
+				Long.valueOf(dataSourceId));
 
-			if (dataSourceJSONObject == null) {
+			if (dataSource == null) {
 				if (_log.isWarnEnabled()) {
 					_log.warn("Unable to get data source " + dataSourceId);
 				}
@@ -663,7 +661,7 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 				uniqueIdFieldsJSONArray.getJSONObject(0);
 
 			JSONObject dataJSONObject = _fetchDataJSONObject(
-				dataSourceJSONObject, ownerType,
+				dataSource, ownerType,
 				uniqueIdFieldJSONObject.getString("value"),
 				uniqueIdDataSourceFieldNamesJSONObject.getString(dataSourceId));
 
@@ -672,11 +670,10 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			}
 
 			JSONObject fieldsJSONObject = getFieldsJSONObject(
-				context, dataJSONObject, dataSourceJSONObject);
+				context, dataJSONObject, dataSource);
 
 			String dataSourceFieldName =
-				dataSourceFieldNamesJSONObject.getString(
-					dataSourceJSONObject.getString("id"));
+				dataSourceFieldNamesJSONObject.getString(dataSourceId);
 
 			Object value = fieldsJSONObject.opt(dataSourceFieldName);
 
@@ -691,13 +688,12 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 				fieldType, value.toString());
 
 			String modifiedDateString = _getModifiedDateString(
-				dataJSONObject, dataSourceJSONObject, ownerType);
+				dataJSONObject, dataSource, ownerType);
 
 			if (value instanceof List) {
 				for (Object currentValue : (List<?>)value) {
 					JSONObject fieldJSONObject = _buildFieldJSONObject(
-						context, dataSourceJSONObject.getString("id"),
-						dataSourceJSONObject.getString("name"), fieldType,
+						context, dataSourceId, dataSource.getName(), fieldType,
 						modifiedDateString,
 						fieldMappingJSONObject.getString("fieldName"), ownerId,
 						ownerType, dataSourceFieldName, currentValue);
@@ -707,8 +703,7 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 			}
 			else {
 				JSONObject fieldJSONObject = _buildFieldJSONObject(
-					context, dataSourceJSONObject.getString("id"),
-					dataSourceJSONObject.getString("name"), fieldType,
+					context, dataSourceId, dataSource.getName(), fieldType,
 					modifiedDateString,
 					fieldMappingJSONObject.getString("fieldName"), ownerId,
 					ownerType, dataSourceFieldName, value);

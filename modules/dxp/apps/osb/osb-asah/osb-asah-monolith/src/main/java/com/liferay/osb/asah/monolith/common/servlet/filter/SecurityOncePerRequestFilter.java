@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.monolith.common.servlet.filter;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.servlet.filter.BaseSecurityOncePerRequestFilter;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -23,8 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -61,11 +61,8 @@ public class SecurityOncePerRequestFilter
 			StringUtils.equals(
 				httpServletRequest.getRequestURI(), "/dxp-entities")) {
 
-			if (!_elasticsearchInvoker.exists(
-					"data-sources",
-					QueryBuilders.termQuery(
-						"faroBackendSecuritySignature",
-						faroBackendSecuritySignature))) {
+			if (!_dataSourceDog.existsDataSource(
+					faroBackendSecuritySignature)) {
 
 				logInvalidRequest(
 					faroBackendSecuritySignature, httpServletRequest);
@@ -89,6 +86,9 @@ public class SecurityOncePerRequestFilter
 
 		return super.shouldNotFilter(httpServletRequest);
 	}
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;

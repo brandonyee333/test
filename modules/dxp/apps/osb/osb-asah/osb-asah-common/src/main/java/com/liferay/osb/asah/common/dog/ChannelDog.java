@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAssetDog;
@@ -24,7 +25,9 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -81,7 +84,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 		if (updateFaro) {
 			try {
-				_channelHttp.addChannel(channel);
+				_channelHttp.addChannel(new ChannelDTO(channel));
 			}
 			catch (Exception e) {
 				_log.error(e, e);
@@ -513,14 +516,16 @@ public class ChannelDog extends BaseFaroInfoDog {
 	private List<Channel> _saveCombinedChannel(
 		Long dataSourceId, Set<Long> groupIds) {
 
-		JSONObject jsonObject = elasticsearchInvoker.get(
-			"data-sources", String.valueOf(dataSourceId));
+		Optional<DataSource> dataSourceOptional =
+			_dataSourceRepository.findById(dataSourceId);
 
 		return Collections.singletonList(
 			addChannel(
 				Collections.singletonMap(dataSourceId, groupIds),
 				_getChannelName(
-					jsonObject.getString("name") + " Combined Property"),
+					dataSourceOptional.map(
+						DataSource::getName
+					).get() + " Combined Property"),
 				true));
 	}
 
@@ -559,8 +564,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 				JSONObject propertyJSONObject = (JSONObject)iterator.next();
 
 				if (channelIds.contains(
-						Long.valueOf(
-							propertyJSONObject.getString("channelId")))) {
+						propertyJSONObject.getLong("channelId"))) {
 
 					iterator.remove();
 				}
@@ -582,6 +586,9 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private ChannelRepository _channelRepository;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private FaroInfoAssetDog _faroInfoAssetDog;

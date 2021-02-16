@@ -14,11 +14,18 @@
 
 package com.liferay.osb.asah.monolith.common.http.impl;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
+import com.liferay.osb.asah.common.mapper.DataSourceMapper;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-
-import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -44,97 +51,122 @@ public class ConfigurationHttpImplTest {
 		ReflectionTestUtils.setField(
 			_configurationHttp, "_salesforceConfigurationManagerImpl",
 			_salesforceConfigurationManagerImpl);
+
+		_setUpObjectMapper();
 	}
 
 	@Test
 	public void testAddConfiguration() {
-		JSONObject salesforceDataSourceJSONObject =
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
+		DataSourceDTO salesforceDataSourceDTO = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
+			DataSourceDTO.class);
 
 		_configurationHttp.addConfiguration(
-			salesforceDataSourceJSONObject, "SALESFORCE");
+			salesforceDataSourceDTO, "SALESFORCE");
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).addConfiguration(
-			salesforceDataSourceJSONObject.toString()
+			salesforceDataSourceDTO
 		);
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void testAddInvalidConfiguration() {
-		_configurationHttp.addConfiguration(new JSONObject(), "INVALID");
+		_configurationHttp.addConfiguration(new DataSourceDTO(), "INVALID");
 	}
 
 	@Test
 	public void testDeleteConfiguration() {
-		JSONObject salesforceDataSourceJSONObject =
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
+		DataSourceDTO salesforceDataSourceDTO = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
+			DataSourceDTO.class);
 
 		_configurationHttp.deleteConfiguration(
-			salesforceDataSourceJSONObject, "SALESFORCE");
+			salesforceDataSourceDTO.getDataSourceId(), "SALESFORCE");
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).deleteConfiguration(
-			salesforceDataSourceJSONObject.toString()
+			salesforceDataSourceDTO.getDataSourceId()
 		);
 	}
 
 	@Test
 	public void testGetState() {
 		Mockito.when(
-			_salesforceConfigurationManagerImpl.getState(Mockito.anyString())
+			_salesforceConfigurationManagerImpl.getState(
+				Mockito.any(DataSourceDTO.class))
 		).thenReturn(
 			"CREDENTIALS_VALID"
 		);
 
-		JSONObject salesforceDataSourceJSONObject =
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
+		DataSourceDTO salesforceDataSourceDTO = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
+			DataSourceDTO.class);
 
 		Assert.assertEquals(
 			"CREDENTIALS_VALID",
-			_configurationHttp.getState(
-				salesforceDataSourceJSONObject, "SALESFORCE"));
+			_configurationHttp.getState(salesforceDataSourceDTO, "SALESFORCE"));
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).getState(
-			salesforceDataSourceJSONObject.toString()
+			salesforceDataSourceDTO
 		);
 	}
 
 	@Test
 	public void testRefreshConfiguration() {
-		JSONObject salesforceDataSourceJSONObject =
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
+		DataSourceDTO salesforceDataSourceDTO = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
+			DataSourceDTO.class);
 
 		_configurationHttp.refreshConfiguration(
-			salesforceDataSourceJSONObject, "SALESFORCE");
+			salesforceDataSourceDTO, "SALESFORCE");
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).refresh(
-			salesforceDataSourceJSONObject.toString()
+			salesforceDataSourceDTO
 		);
 	}
 
 	@Test
 	public void testUpdateConfiguration() throws Exception {
-		JSONObject salesforceDataSourceJSONObject =
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
+		DataSourceDTO salesforceDataSourceDTO = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
+			DataSourceDTO.class);
 
 		_configurationHttp.updateConfiguration(
-			salesforceDataSourceJSONObject, "SALESFORCE");
+			salesforceDataSourceDTO, "SALESFORCE");
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).updateConfiguration(
-			salesforceDataSourceJSONObject.toString()
+			salesforceDataSourceDTO
 		);
 	}
 
+	private void _setUpObjectMapper() {
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+		DataSourceMapper dataSourceMapper = new DataSourceMapper();
+
+		objectMapper.registerModule(dataSourceMapper.getSimpleModule());
+
+		objectMapper.registerModule(new JavaTimeModule());
+		objectMapper.registerModule(new Jdk8Module());
+		objectMapper.registerModule(new JsonOrgModule());
+
+		_objectMapper = objectMapper;
+	}
+
 	private ConfigurationHttp _configurationHttp;
+	private ObjectMapper _objectMapper;
 
 	@Mock
 	private SalesforceExtractorConfigurationManagerImpl

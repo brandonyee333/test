@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.model.DXPEntity;
 import com.liferay.osb.asah.backend.model.Organization;
 import com.liferay.osb.asah.backend.model.User;
 import com.liferay.osb.asah.common.dog.ChannelDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
@@ -25,6 +26,7 @@ import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -234,12 +236,14 @@ public class DXPEntityDog {
 			dataSourceNames.computeIfAbsent(
 				dxpEntityJSONObject.getString("osbAsahDataSourceId"),
 				dataSourceId -> {
-					JSONObject dataSourceJSONObject =
-						_faroInfoElasticsearchInvoker.fetch(
-							"data-sources",
-							QueryBuilders.termQuery("id", dataSourceId));
+					DataSource dataSource = _dataSourceDog.fetchDataSource(
+						Long.valueOf(dataSourceId));
 
-					return dataSourceJSONObject.getString("name");
+					if (dataSource != null) {
+						return dataSource.getName();
+					}
+
+					return null;
 				}));
 		dxpEntity.setId(dxpEntityJSONObject.getString("id"));
 		dxpEntity.setName(dxpEntityJSONObject.getString("name"));
@@ -256,12 +260,14 @@ public class DXPEntityDog {
 			dataSourceNames.computeIfAbsent(
 				userJSONObject.getString("osbAsahDataSourceId"),
 				dataSourceId -> {
-					JSONObject dataSourceJSONObject =
-						_faroInfoElasticsearchInvoker.fetch(
-							"data-sources",
-							QueryBuilders.termQuery("id", dataSourceId));
+					DataSource dataSource = _dataSourceDog.fetchDataSource(
+						Long.valueOf(dataSourceId));
 
-					return dataSourceJSONObject.getString("name");
+					if (dataSource != null) {
+						return dataSource.getName();
+					}
+
+					return null;
 				}));
 		user.setFirstName(userJSONObject.getString("firstName"));
 		user.setId(userJSONObject.getString("id"));
@@ -281,16 +287,14 @@ public class DXPEntityDog {
 			dataSourceNames.computeIfAbsent(
 				organizationJSONObject.getString("dataSourceId"),
 				dataSourceId -> {
-					JSONObject dataSourceJSONObject =
-						_faroInfoElasticsearchInvoker.fetch(
-							"data-sources",
-							QueryBuilders.termQuery("id", dataSourceId));
+					DataSource dataSource = _dataSourceDog.fetchDataSource(
+						Long.valueOf(dataSourceId));
 
-					if (dataSourceJSONObject == null) {
-						return null;
+					if (dataSource != null) {
+						return dataSource.getName();
 					}
 
-					return dataSourceJSONObject.getString("name");
+					return null;
 				}));
 		organization.setId(organizationJSONObject.getString("id"));
 		organization.setName(organizationJSONObject.getString("name"));
@@ -306,6 +310,9 @@ public class DXPEntityDog {
 
 	@Autowired
 	private DataDog _dataDog;
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;

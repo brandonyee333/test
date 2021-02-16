@@ -14,7 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.response.embedded.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsEmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
@@ -56,7 +59,8 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 	public void testExpandAccountNames() throws Exception {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
-				_elasticsearchInvoker, "account-names");
+				_dataSourceDog, _elasticsearchInvoker, "account-names",
+				_objectMapper);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"346468649722790279");
@@ -92,7 +96,8 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 	public void testExpandAccounts() throws Exception {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
-				_elasticsearchInvoker, "accounts");
+				_dataSourceDog, _elasticsearchInvoker, "accounts",
+				_objectMapper);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"346468649722790279");
@@ -115,7 +120,8 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 	public void testExpandDataSources() throws Exception {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
-				_elasticsearchInvoker, "data-sources");
+				_dataSourceDog, _elasticsearchInvoker, "data-sources",
+				_objectMapper);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"123");
@@ -142,7 +148,8 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 	public void testExpandIndividualSegments() throws Exception {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
-				_elasticsearchInvoker, "individual-segments");
+				_dataSourceDog, _elasticsearchInvoker, "individual-segments",
+				_objectMapper);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"123");
@@ -153,7 +160,13 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		Assert.assertEquals(2, individualSegmentsJSONArray.length());
 	}
 
+	@Autowired
+	private DataSourceDog _dataSourceDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.ArrayList;
@@ -153,7 +154,8 @@ public class FieldMappingsRestController extends BaseRestController {
 			null, deletedFieldMappingIds);
 
 		_addReprocessOSBAsahTask(
-			dataSourceId, fieldMappingJSONObject.getString("ownerType"));
+			Long.valueOf(dataSourceId),
+			fieldMappingJSONObject.getString("ownerType"));
 
 		return responseJSON;
 	}
@@ -230,7 +232,7 @@ public class FieldMappingsRestController extends BaseRestController {
 		_faroInfoIndividualSegmentDog.disableDynamicIndividualSegments(
 			null, deletedFieldMappingIds);
 
-		_addReprocessOSBAsahTask(dataSourceId, ownerType);
+		_addReprocessOSBAsahTask(Long.valueOf(dataSourceId), ownerType);
 
 		return responseJSONArray.toString();
 	}
@@ -276,18 +278,18 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		for (String dataSourceId : dataSourceFieldNamesJSONObject.keySet()) {
 			_addReprocessOSBAsahTask(
-				dataSourceId, fieldMappingJSONObject.getString("ownerType"));
+				Long.valueOf(dataSourceId),
+				fieldMappingJSONObject.getString("ownerType"));
 		}
 	}
 
-	private void _addReprocessOSBAsahTask(String dataSourceId, String ownerType)
+	private void _addReprocessOSBAsahTask(Long dataSourceId, String ownerType)
 		throws Exception {
 
-		String dataSourceType = _dataSourceDog.getDataSourceType(
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId));
+		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
 		String naniteClassName = _naniteClassNames.get(
-			dataSourceType + "#" + ownerType);
+			dataSource.getProviderType() + "#" + ownerType);
 
 		if (naniteClassName == null) {
 			if (_log.isInfoEnabled()) {
@@ -297,7 +299,7 @@ public class FieldMappingsRestController extends BaseRestController {
 				sb.append(dataSourceId);
 				sb.append(" because reprocess operations are not supported ");
 				sb.append("for data source type ");
-				sb.append(dataSourceType);
+				sb.append(dataSource.getProviderType());
 				sb.append(" and owner type ");
 				sb.append(ownerType);
 
@@ -310,7 +312,7 @@ public class FieldMappingsRestController extends BaseRestController {
 		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 			naniteClassName,
 			JSONUtil.put(
-				"dataSourceId", dataSourceId
+				"dataSourceId", String.valueOf(dataSourceId)
 			).put(
 				"type", "reprocess"
 			));

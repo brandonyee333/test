@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
-import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.model.DataSource;
 
 import org.json.JSONObject;
 
@@ -35,55 +37,60 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController(
 	"com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.DataSourcesRestController"
 )
-public class DataSourcesRestController extends BaseRestController {
+public class DataSourcesRestController {
 
 	@PostMapping("/{id}/disconnect")
-	public String disconnectDataSource(@PathVariable String id)
-		throws Exception {
+	public String disconnectDataSource(@PathVariable Long id) throws Exception {
+		DataSource dataSource = _dataSourceDog.disconnectDataSource(id);
 
-		JSONObject dataSourceJSONObject = _dataSourceDog.disconnectDataSource(
-			id);
+		_sanitize(dataSource);
 
-		_sanitize(dataSourceJSONObject);
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			dataSource, JSONObject.class);
 
 		return dataSourceJSONObject.toString();
 	}
 
 	@GetMapping("/{id}")
-	public String getDataSource(@PathVariable String id) throws Exception {
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.getDataSourceJSONObject(id);
+	public String getDataSource(@PathVariable Long id) throws Exception {
+		DataSource dataSource = _dataSourceDog.getDataSource(id);
 
-		_sanitize(dataSourceJSONObject);
+		_sanitize(dataSource);
+
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			dataSource, JSONObject.class);
 
 		return dataSourceJSONObject.toString();
 	}
 
 	@PutMapping("/{id}/details")
 	public String updateDataSourceDetails(
-			@PathVariable String id, @RequestBody String json)
+			@PathVariable Long id, @RequestBody String json)
 		throws Exception {
 
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.updateDataSourceDetails(id, new JSONObject(json));
+		JSONObject detailJSONObject = new JSONObject(json);
 
-		_sanitize(dataSourceJSONObject);
+		DataSource dataSource = _dataSourceDog.updateDataSourceDetails(
+			id, detailJSONObject.optBoolean("contactsSelected"),
+			detailJSONObject.optBoolean("sitesSelected"));
+
+		_sanitize(dataSource);
+
+		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
+			dataSource, JSONObject.class);
 
 		return dataSourceJSONObject.toString();
 	}
 
-	private void _sanitize(JSONObject dataSourceJSONObject) {
-		dataSourceJSONObject.remove("faroBackendSecuritySignature");
-
-		JSONObject credentialsJSONObject = dataSourceJSONObject.optJSONObject(
-			"credentials");
-
-		if (credentialsJSONObject != null) {
-			credentialsJSONObject.remove("privateKey");
-		}
+	private void _sanitize(DataSource dataSource) {
+		dataSource.setFaroBackendSecuritySignature(null);
+		dataSource.setPrivateKey(null);
 	}
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

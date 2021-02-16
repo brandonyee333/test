@@ -14,7 +14,10 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.model.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,8 +36,8 @@ public class DeleteDataSourcesNanite extends BaseNanite {
 	@Override
 	public void run(JSONObject dataSourceJSONObject) throws Exception {
 		_dataSourceDog.deleteDataSource(
-			dataSourceJSONObject, this::monitorProcessedCount,
-			this::monitorQueueSize);
+			_objectMapper.convertValue(dataSourceJSONObject, DataSource.class),
+			this::monitorProcessedCount, this::monitorQueueSize);
 	}
 
 	@Override
@@ -44,5 +47,8 @@ public class DeleteDataSourcesNanite extends BaseNanite {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

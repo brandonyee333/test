@@ -14,23 +14,25 @@
 
 package com.liferay.osb.asah.common.http;
 
-import org.json.JSONObject;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 
 /**
  * @author Shinn Lok
  */
 public interface ConfigurationHttp {
 
-	public void addConfiguration(JSONObject jsonObject, String providerType);
+	public void addConfiguration(
+		DataSourceDTO dataSourceDTO, String providerType);
 
-	public void deleteConfiguration(JSONObject jsonObject, String providerType);
+	public void deleteConfiguration(String dataSourceId, String providerType);
 
-	public String getState(JSONObject jsonObject, String providerType);
+	public String getState(DataSourceDTO dataSourceDTO, String providerType);
 
-	public String refreshConfiguration(
-		JSONObject jsonObject, String providerType);
+	public DataSourceDTO refreshConfiguration(
+		DataSourceDTO dataSourceDTO, String providerType);
 
-	public void updateConfiguration(JSONObject jsonObject, String providerType)
+	public void updateConfiguration(
+			DataSourceDTO dataSourceDTO, String providerType)
 		throws Exception;
 
 }

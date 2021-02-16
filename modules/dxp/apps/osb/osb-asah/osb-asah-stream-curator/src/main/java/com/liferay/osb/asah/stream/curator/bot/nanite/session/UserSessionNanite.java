@@ -204,7 +204,8 @@ public class UserSessionNanite implements Nanite {
 		}
 
 		return _faroInfoIndividualDog.getIndividualJSONObject(
-			analyticsEvent.getDataSourceId(), analyticsEvent.getUserId());
+			Long.valueOf(analyticsEvent.getDataSourceId()),
+			analyticsEvent.getUserId());
 	}
 
 	private JSONObject _getUserSession(String userId, Date firstEventDate) {

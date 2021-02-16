@@ -15,11 +15,12 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.array.ArrayUtil;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -29,6 +30,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,15 +65,11 @@ public class FieldNamesRestController extends BaseRestController {
 				fieldNames.add(label);
 			}
 
-			List<String> dataSourceIds = JSONUtil.toStringList(
-				new JSONArray(
-					faroInfoElasticsearchInvoker.get(
-						"data-sources",
-						searchSourceBuilder -> searchSourceBuilder.fetchSource(
-							"id", null))),
-				"id");
+			for (String dataSourceId :
+					ListUtil.map(
+						_dataSourceDog.getDataSources(),
+						dataSource -> String.valueOf(dataSource.getId()))) {
 
-			for (String dataSourceId : dataSourceIds) {
 				JSONArray fieldMappingsJSONArray =
 					faroInfoElasticsearchInvoker.get(
 						"field-mappings",
@@ -105,5 +103,8 @@ public class FieldNamesRestController extends BaseRestController {
 
 		return fieldNamesJSONArray.toString();
 	}
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 }

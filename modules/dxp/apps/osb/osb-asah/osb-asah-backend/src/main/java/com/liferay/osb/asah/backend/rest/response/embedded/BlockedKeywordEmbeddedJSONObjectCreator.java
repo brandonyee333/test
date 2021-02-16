@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.response.embedded;
 
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.embedded.BaseEmbeddedJSONObjectCreator;
@@ -21,8 +22,6 @@ import com.liferay.osb.asah.common.rest.response.embedded.BaseEmbeddedJSONObject
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,13 +33,17 @@ public class BlockedKeywordEmbeddedJSONObjectCreator
 	extends BaseEmbeddedJSONObjectCreator {
 
 	public BlockedKeywordEmbeddedJSONObjectCreator(
+		DataSourceDog dataSourceDog,
 		ElasticsearchInvoker elasticsearchInvoker) {
 
+		_dataSourceDog = dataSourceDog;
 		_elasticsearchInvoker = elasticsearchInvoker;
 	}
 
 	@Override
-	public Map<String, JSONObject> create(JSONArray jsonArray) {
+	public Map<String, JSONObject> create(JSONArray jsonArray)
+		throws Exception {
+
 		return _getDataSourceJSONObjects(jsonArray);
 	}
 
@@ -50,7 +53,8 @@ public class BlockedKeywordEmbeddedJSONObjectCreator
 	}
 
 	private Map<String, JSONObject> _getDataSourceJSONObjects(
-		JSONArray blockedKeywordsJSONArray) {
+			JSONArray blockedKeywordsJSONArray)
+		throws Exception {
 
 		Map<String, JSONObject> dataSourceJSONObjects = new HashMap<>();
 
@@ -58,27 +62,28 @@ public class BlockedKeywordEmbeddedJSONObjectCreator
 			JSONObject blockedKeywordJSONObject =
 				blockedKeywordsJSONArray.getJSONObject(i);
 
-			List<String> dataSourceIds = JSONUtil.toStringList(
+			List<Long> dataSourceIds = JSONUtil.toLongList(
 				blockedKeywordJSONObject.getJSONArray("dataSourceIds"));
-
-			JSONArray dataSourcesJSONArray = new JSONArray(
-				_elasticsearchInvoker.get(
-					"data-sources",
-					searchSourceBuilder -> {
-						searchSourceBuilder.fetchSource(
-							new String[] {"id", "name", "status"}, null);
-						searchSourceBuilder.query(
-							QueryBuilders.termsQuery("id", dataSourceIds));
-					}));
 
 			dataSourceJSONObjects.put(
 				blockedKeywordJSONObject.getString("id"),
-				JSONUtil.put("data-sources", dataSourcesJSONArray));
+				JSONUtil.put(
+					"data-sources",
+					JSONUtil.toJSONArray(
+						_dataSourceDog.getDataSources(dataSourceIds),
+						dataSource -> JSONUtil.put(
+							"id", String.valueOf(dataSource.getId())
+						).put(
+							"name", dataSource.getName()
+						).put(
+							"status", dataSource.getStatus()
+						))));
 		}
 
 		return dataSourceJSONObjects;
 	}
 
+	private final DataSourceDog _dataSourceDog;
 	private final ElasticsearchInvoker _elasticsearchInvoker;
 
 }

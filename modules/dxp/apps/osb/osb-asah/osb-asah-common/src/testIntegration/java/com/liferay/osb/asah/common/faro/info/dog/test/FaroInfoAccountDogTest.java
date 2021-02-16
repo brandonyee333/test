@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -43,20 +46,21 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		_salesforceDataSourceJSONObject =
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
+		_salesforceDataSourceDataSource = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
+			DataSource.class);
 
 		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
 			FaroInfoTestUtil.buildAccountFieldMappingJSONObject(
-				_salesforceDataSourceJSONObject.getString("id"), "country",
-				"country", "Text"));
+				String.valueOf(_salesforceDataSourceDataSource.getId()),
+				"country", "country", "Text"));
 	}
 
 	@Test
 	public void testAddAccount() throws Exception {
 		JSONObject accountJSONObject = _faroInfoAccountDog.addAccount(
-			JSONUtil.put("id", "123"), _salesforceDataSourceJSONObject);
+			JSONUtil.put("id", "123"), _salesforceDataSourceDataSource);
 
 		_assertAccountIndividualSegment();
 		_assertOSBAsahTaskIndividualSegmentContext();
@@ -79,7 +83,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testDeleteAccount() throws Exception {
 		JSONObject accountJSONObject = _faroInfoAccountDog.addAccount(
-			JSONUtil.put("id", "123"), _salesforceDataSourceJSONObject);
+			JSONUtil.put("id", "123"), _salesforceDataSourceDataSource);
 
 		_assertAccountIndividualSegment();
 		_assertOSBAsahTaskIndividualSegmentContext();
@@ -122,7 +126,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testReplaceAccount() throws Exception {
 		JSONObject accountJSONObject = _faroInfoAccountDog.addAccount(
-			JSONUtil.put("id", "123"), _salesforceDataSourceJSONObject);
+			JSONUtil.put("id", "123"), _salesforceDataSourceDataSource);
 
 		_assertAccountIndividualSegment();
 		_assertOSBAsahTaskIndividualSegmentContext();
@@ -146,7 +150,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		throws Exception {
 
 		JSONObject accountJSONObject = _faroInfoAccountDog.addAccount(
-			JSONUtil.put("id", "123"), _salesforceDataSourceJSONObject);
+			JSONUtil.put("id", "123"), _salesforceDataSourceDataSource);
 
 		_assertAccountIndividualSegment();
 		_assertOSBAsahTaskIndividualSegmentContext();
@@ -171,7 +175,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		throws Exception {
 
 		JSONObject accountJSONObject = _faroInfoAccountDog.addAccount(
-			JSONUtil.put("id", "123"), _salesforceDataSourceJSONObject);
+			JSONUtil.put("id", "123"), _salesforceDataSourceDataSource);
 
 		_assertAccountIndividualSegment();
 		_assertOSBAsahTaskIndividualSegmentContext();
@@ -187,7 +191,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"LastModifiedDate", DateUtil.newDateString()
 			),
-			_salesforceDataSourceJSONObject);
+			_salesforceDataSourceDataSource);
 
 		_assertAccountIndividualSegment();
 		_assertOSBTasksContextAfterUpdate(
@@ -293,6 +297,9 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	@Autowired
 	private FaroInfoAccountDog _faroInfoAccountDog;
 
-	private JSONObject _salesforceDataSourceJSONObject;
+	@Autowired
+	private ObjectMapper _objectMapper;
+
+	private DataSource _salesforceDataSourceDataSource;
 
 }

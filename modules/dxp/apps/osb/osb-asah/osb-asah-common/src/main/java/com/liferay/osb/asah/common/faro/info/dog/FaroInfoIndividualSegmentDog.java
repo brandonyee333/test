@@ -123,7 +123,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	}
 
 	public void disableDynamicIndividualSegments(
-			String dataSourceId, List<String> fieldMappingIds)
+			Long dataSourceId, List<String> fieldMappingIds)
 		throws Exception {
 
 		if ((dataSourceId == null) && fieldMappingIds.isEmpty()) {
@@ -135,7 +135,8 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		if (dataSourceId != null) {
 			boolQueryBuilder.should(
 				QueryBuilders.termQuery(
-					"referencedAssetDataSourceIds", dataSourceId));
+					"referencedAssetDataSourceIds",
+					String.valueOf(dataSourceId)));
 		}
 
 		if (!fieldMappingIds.isEmpty()) {

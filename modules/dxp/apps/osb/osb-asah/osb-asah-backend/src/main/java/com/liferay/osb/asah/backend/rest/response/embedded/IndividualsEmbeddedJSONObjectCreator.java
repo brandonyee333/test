@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.backend.rest.response.embedded;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -40,14 +43,19 @@ public class IndividualsEmbeddedJSONObjectCreator
 	extends BaseEmbeddedJSONObjectCreator {
 
 	public IndividualsEmbeddedJSONObjectCreator(
-		ElasticsearchInvoker elasticsearchInvoker, String expand) {
+		DataSourceDog dataSourceDog, ElasticsearchInvoker elasticsearchInvoker,
+		String expand, ObjectMapper objectMapper) {
 
+		_dataSourceDog = dataSourceDog;
 		_elasticsearchInvoker = elasticsearchInvoker;
 		_expand = expand;
+		_objectMapper = objectMapper;
 	}
 
 	@Override
-	public Map<String, JSONObject> create(JSONArray jsonArray) {
+	public Map<String, JSONObject> create(JSONArray jsonArray)
+		throws Exception {
+
 		if (StringUtils.isEmpty(_expand)) {
 			return null;
 		}
@@ -84,7 +92,8 @@ public class IndividualsEmbeddedJSONObjectCreator
 	}
 
 	private Map<String, JSONObject> _getDataSourceJSONObjects(
-		JSONArray individualsJSONArray) {
+			JSONArray individualsJSONArray)
+		throws Exception {
 
 		Map<String, JSONObject> dataSourceJSONObjects = new HashMap<>();
 
@@ -92,22 +101,18 @@ public class IndividualsEmbeddedJSONObjectCreator
 			JSONObject individualJSONObject =
 				individualsJSONArray.getJSONObject(i);
 
-			List<String> dataSourceIds = JSONUtil.toStringList(
+			List<Long> dataSourceIds = JSONUtil.toLongList(
 				individualJSONObject.getJSONArray("dataSourceIndividualPKs"),
 				"dataSourceId");
 
-			JSONArray dataSourcesJSONArray = new JSONArray(
-				_elasticsearchInvoker.get(
-					"data-sources",
-					searchSourceBuilder -> {
-						searchSourceBuilder.query(
-							QueryBuilders.termsQuery("id", dataSourceIds));
-						searchSourceBuilder.size(20);
-					}));
-
 			dataSourceJSONObjects.put(
 				individualJSONObject.getString("id"),
-				JSONUtil.put("data-sources", dataSourcesJSONArray));
+				JSONUtil.put(
+					"data-sources",
+					JSONUtil.toJSONArray(
+						_dataSourceDog.getDataSources(dataSourceIds),
+						dataSource -> _objectMapper.convertValue(
+							dataSource, JSONObject.class))));
 		}
 
 		return dataSourceJSONObjects;
@@ -153,7 +158,9 @@ public class IndividualsEmbeddedJSONObjectCreator
 	private static final Log _log = LogFactory.getLog(
 		IndividualsEmbeddedJSONObjectCreator.class);
 
+	private final DataSourceDog _dataSourceDog;
 	private final ElasticsearchInvoker _elasticsearchInvoker;
 	private final String _expand;
+	private final ObjectMapper _objectMapper;
 
 }

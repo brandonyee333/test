@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.google.api.client.util.Objects;
+
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -22,6 +24,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -103,11 +106,11 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		}
 
 		_faroInfoIndividualDog.removeDataSourceIndividualPKs(
-			individualJSONObject, dataSourceId);
+			individualJSONObject, Long.valueOf(dataSourceId));
 
 		_faroInfoIndividualDog.updateIndividual(
 			null, getEmptyDataJSONObject(),
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId),
+			_dataSourceDog.getDataSource(Long.valueOf(dataSourceId)),
 			individualJSONObject);
 	}
 
@@ -214,15 +217,10 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			return;
 		}
 
-		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"data-sources",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("id", dataSourceId)
-			).mustNot(
-				QueryBuilders.termQuery("state", "IN_PROGRESS_DELETING")
-			));
+		DataSource dataSource = _dataSourceDog.getDataSource(
+			Long.valueOf(dataSourceId));
 
-		if (dataSourceJSONObject == null) {
+		if (Objects.equal(dataSource.getState(), "IN_PROGRESS_DELETING")) {
 			Log log = getLog();
 
 			if (log.isWarnEnabled()) {
@@ -246,12 +244,11 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 		if (individualJSONObject == null) {
 			_faroInfoIndividualDog.addIndividual(
-				dataId, dataJSONObject, dataSourceJSONObject);
+				dataId, dataJSONObject, dataSource);
 		}
 		else {
 			_faroInfoIndividualDog.updateIndividual(
-				dataId, dataJSONObject, dataSourceJSONObject,
-				individualJSONObject);
+				dataId, dataJSONObject, dataSource, individualJSONObject);
 		}
 	}
 

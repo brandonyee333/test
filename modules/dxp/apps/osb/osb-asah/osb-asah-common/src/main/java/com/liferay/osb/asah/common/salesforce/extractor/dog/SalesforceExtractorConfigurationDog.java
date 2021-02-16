@@ -15,11 +15,15 @@
 package com.liferay.osb.asah.common.salesforce.extractor.dog;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 
 import java.util.Objects;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
@@ -34,110 +38,88 @@ import org.springframework.stereotype.Component;
 @Component
 public class SalesforceExtractorConfigurationDog {
 
-	public JSONObject addConfiguration(JSONObject dataSourceJSONObject) {
-		String state = getState(dataSourceJSONObject);
+	public DataSource addConfiguration(DataSource dataSource) {
+		String state = getState(dataSource);
 
-		dataSourceJSONObject.put("state", state);
+		dataSource.setState(state);
 
 		try {
-			_addConfiguration(dataSourceJSONObject.toString());
+			_addConfiguration(dataSource);
 		}
-		catch (Exception e) {
-			dataSourceJSONObject.put("exceptionMessage", e.getMessage());
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
-		_updateConfiguration(dataSourceJSONObject, state);
+		_updateConfiguration(dataSource, state);
 
-		return dataSourceJSONObject;
+		return dataSource;
 	}
 
-	public void deleteConfiguration(String dataSourceId) {
-		JSONObject dataSourceJSONObject =
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
+	public void deleteConfiguration(Long dataSourceId) {
+		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);
 
-		String type = _dataSourceDog.getDataSourceType(dataSourceJSONObject);
-
-		if (!Objects.equals(type, _getProviderType())) {
+		if (!Objects.equals(dataSource.getProviderType(), _getProviderType())) {
 			return;
 		}
 
 		_configurationHttp.deleteConfiguration(
-			JSONUtil.put("dataSourceId", dataSourceJSONObject.getString("id")),
-			_getProviderType());
+			String.valueOf(dataSource.getId()), _getProviderType());
 	}
 
-	public String getState(JSONObject dataSourceJSONObject) {
+	public String getState(DataSource dataSource) {
 		return _configurationHttp.getState(
-			dataSourceJSONObject, _getProviderType());
+			new DataSourceDTO(dataSource), _getProviderType());
 	}
 
-	public JSONObject updateConfiguration(JSONObject dataSourceJSONObject) {
-		String state = getState(dataSourceJSONObject);
+	public DataSource updateConfiguration(DataSource dataSource) {
+		String state = getState(dataSource);
 
-		dataSourceJSONObject.put("state", state);
+		dataSource.setState(state);
 
 		try {
-			_updateConfiguration(
-				dataSourceJSONObject.getString("id"), dataSourceJSONObject);
+			_updateConfiguration(dataSource);
 		}
-		catch (Exception e) {
-			dataSourceJSONObject.put("exceptionMessage", e.getMessage());
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
-		_updateConfiguration(dataSourceJSONObject, state);
+		_updateConfiguration(dataSource, state);
 
-		return dataSourceJSONObject;
+		return dataSource;
 	}
 
-	private void _addConfiguration(String json) {
-		JSONObject dataSourceJSONObject = new JSONObject(json);
-
-		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-			"provider");
-
-		String type = providerJSONObject.getString("type");
-
-		if (!Objects.equals(type, _getProviderType())) {
+	private void _addConfiguration(DataSource dataSource) {
+		if (!Objects.equals(dataSource.getProviderType(), _getProviderType())) {
 			return;
 		}
 
-		JSONObject configurationsJSONObject = _buildConfigurationsJSONObject(
-			dataSourceJSONObject, providerJSONObject);
+		DataSourceDTO dataSourceDTO = _buildDataSourceDTO(dataSource);
 
-		configurationsJSONObject.put(
-			"dataSourceId", dataSourceJSONObject.getString("id"));
+		dataSourceDTO.setDataSourceId(
+			Objects.toString(dataSource.getId(), null));
 
-		_configurationHttp.addConfiguration(
-			configurationsJSONObject, _getProviderType());
+		_configurationHttp.addConfiguration(dataSourceDTO, _getProviderType());
 	}
 
-	private JSONObject _buildConfigurationsJSONObject(
-		JSONObject dataSourceJSONObject, JSONObject providerJSONObject) {
+	private DataSourceDTO _buildDataSourceDTO(DataSource dataSource) {
+		DataSourceDTO dataSourceDTO = new DataSourceDTO();
 
-		JSONObject configurationsJSONObject = JSONUtil.put(
-			"credentials", dataSourceJSONObject.getJSONObject("credentials")
-		).put(
-			"dataSourceState", dataSourceJSONObject.getString("state")
-		).put(
-			"dataSourceStatus", dataSourceJSONObject.getString("status")
-		).put(
-			"url", dataSourceJSONObject.getString("url")
-		);
+		dataSourceDTO.setAccountsConfigurationDTO(
+			new DataSourceDTO.ProviderDTO.AccountsConfigurationDTO(dataSource));
+		dataSourceDTO.setContactsConfigurationDTO(
+			new DataSourceDTO.ProviderDTO.ContactsConfigurationDTO(dataSource));
+		dataSourceDTO.setCredentialDTO(
+			new DataSourceDTO.CredentialDTO(dataSource));
+		dataSourceDTO.setDataSourceState(dataSource.getState());
+		dataSourceDTO.setDataSourceStatus(dataSource.getStatus());
+		dataSourceDTO.setURL(dataSource.getURL());
 
-		return configurationsJSONObject.put(
-			"accountsConfiguration",
-			providerJSONObject.optJSONObject("accountsConfiguration")
-		).put(
-			"contactsConfiguration",
-			providerJSONObject.optJSONObject("contactsConfiguration")
-		);
+		return dataSourceDTO;
 	}
 
-	private JSONObject _buildOAuthOwnerJSONObject(
-		JSONObject dataSourceJSONObject) {
-
+	private JSONObject _buildOAuthOwnerJSONObject(DataSource dataSource) {
 		ResponseEntity<String> responseEntity =
-			_dataSourceHttp.getSalesforceOwner(dataSourceJSONObject.toString());
+			_dataSourceHttp.getSalesforceOwner(new DataSourceDTO(dataSource));
 
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
 			return new JSONObject(responseEntity.getBody());
@@ -150,63 +132,59 @@ public class SalesforceExtractorConfigurationDog {
 		return "SALESFORCE";
 	}
 
-	private void _updateConfiguration(
-		JSONObject dataSourceJSONObject, String state) {
+	private void _updateConfiguration(DataSource dataSource) throws Exception {
+		if (!Objects.equals(dataSource.getProviderType(), _getProviderType())) {
+			return;
+		}
 
+		DataSourceDTO dataSourceDTO = _buildDataSourceDTO(dataSource);
+
+		Long dataSourceId = dataSource.getId();
+
+		if (dataSourceId != null) {
+			dataSourceDTO.setDataSourceId(String.valueOf(dataSourceId));
+
+			DataSource existingDataSource = _dataSourceDog.fetchDataSource(
+				dataSourceId);
+
+			if (existingDataSource != null) {
+				dataSourceDTO.setExistingDataSourceId(
+					dataSourceDTO.getDataSourceId());
+			}
+		}
+
+		_configurationHttp.updateConfiguration(
+			dataSourceDTO, _getProviderType());
+	}
+
+	private void _updateConfiguration(DataSource dataSource, String state) {
 		if (!Objects.equals(state, "CREDENTIALS_VALID")) {
 			return;
 		}
 
 		JSONObject oAuthOwnerJSONObject = _buildOAuthOwnerJSONObject(
-			dataSourceJSONObject);
+			dataSource);
 
 		if (oAuthOwnerJSONObject == null) {
-			dataSourceJSONObject.put("state", "CREDENTIALS_INVALID");
+			dataSource.setState("CREDENTIALS_INVALID");
 
 			try {
-				_updateConfiguration(
-					dataSourceJSONObject.getString("id"), dataSourceJSONObject);
+				_updateConfiguration(dataSource);
 			}
-			catch (Exception e) {
-				dataSourceJSONObject.put("exceptionMessage", e.getMessage());
+			catch (Exception exception) {
+				_log.error(exception, exception);
 			}
 		}
 		else {
-			JSONObject credentialsJSONObject =
-				dataSourceJSONObject.getJSONObject("credentials");
-
-			credentialsJSONObject.put("oAuthOwner", oAuthOwnerJSONObject);
+			dataSource.setOAuthOwnerEmailAddress(
+				oAuthOwnerJSONObject.optString("emailAddress"));
+			dataSource.setOAuthOwnerName(
+				oAuthOwnerJSONObject.optString("name"));
 		}
 	}
 
-	private void _updateConfiguration(
-			String dataSourceId, JSONObject dataSourceJSONObject)
-		throws Exception {
-
-		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
-			"provider");
-
-		String type = providerJSONObject.getString("type");
-
-		if (!Objects.equals(type, _getProviderType())) {
-			return;
-		}
-
-		JSONObject configurationsJSONObject = _buildConfigurationsJSONObject(
-			dataSourceJSONObject, providerJSONObject);
-
-		configurationsJSONObject.put("dataSourceId", dataSourceId);
-
-		JSONObject existingDataSourceJSONObject =
-			_dataSourceDog.getDataSourceJSONObject(dataSourceId);
-
-		configurationsJSONObject.put(
-			"existingDataSourceId",
-			existingDataSourceJSONObject.getString("id"));
-
-		_configurationHttp.updateConfiguration(
-			configurationsJSONObject, _getProviderType());
-	}
+	private static final Log _log = LogFactory.getLog(
+		SalesforceExtractorConfigurationDog.class);
 
 	@Autowired
 	private ConfigurationHttp _configurationHttp;
