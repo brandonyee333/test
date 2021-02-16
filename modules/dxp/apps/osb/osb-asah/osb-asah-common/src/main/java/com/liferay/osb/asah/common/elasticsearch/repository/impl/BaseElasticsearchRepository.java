@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -28,6 +30,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.repository.CrudRepository;
 
@@ -99,7 +103,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 	public Iterable<T> findAll() {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
-		return _toList(elasticsearchInvoker.get(getCollectionName()));
+		return toList(elasticsearchInvoker.get(getCollectionName()));
 	}
 
 	@Override
@@ -108,7 +112,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 
 		Stream<Long> stream = StreamSupport.stream(ids.spliterator(), false);
 
-		return _toList(
+		return toList(
 			elasticsearchInvoker.get(
 				getCollectionName(),
 				QueryBuilders.termsQuery(
@@ -132,6 +136,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <S extends T> S save(S entity) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
@@ -156,11 +161,24 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 
 	protected abstract ElasticsearchInvoker getElasticsearchInvoker();
 
-	protected abstract T toEntity(JSONObject jsonObject);
+	@SuppressWarnings("unchecked")
+	protected T toEntity(JSONObject jsonObject) {
+		Class<T> entityClass =
+			(Class<T>)GenericTypeResolver.resolveTypeArgument(
+				getClass(), BaseElasticsearchRepository.class);
 
-	protected abstract JSONObject toJSONObject(T entity);
+		if (entityClass != null) {
+			return _objectMapper.convertValue(jsonObject, entityClass);
+		}
 
-	private List<T> _toList(JSONArray jsonArray) {
+		return null;
+	}
+
+	protected JSONObject toJSONObject(T entity) {
+		return _objectMapper.convertValue(entity, JSONObject.class);
+	}
+
+	protected List<T> toList(JSONArray jsonArray) {
 		Stream<Object> stream = JSONUtil.toObjectStream(jsonArray);
 
 		return stream.map(
@@ -169,5 +187,8 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 			Collectors.toList()
 		);
 	}
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

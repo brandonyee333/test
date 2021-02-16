@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.model.FieldMapping;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -46,7 +48,8 @@ public class FieldMappingDog {
 				Collections.emptyList(), _buildQueryBuilder(context, ownerType),
 				size, start));
 
-		return DogUtil.createResultBag(FieldMapping.class, searchHits);
+		return DogUtil.createResultBag(
+			FieldMapping.class, _objectMapper, searchHits);
 	}
 
 	private QueryBuilder _buildQueryBuilder(String context, String ownerType) {
@@ -70,5 +73,8 @@ public class FieldMappingDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

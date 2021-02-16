@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -34,6 +35,9 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName("channel")
 public class ChannelDTO {
+
+	public ChannelDTO() {
+	}
 
 	public ChannelDTO(Channel channel) {
 		_channelDataSourceDTOs = SetUtil.map(
@@ -76,6 +80,7 @@ public class ChannelDTO {
 		return _channelDTOs;
 	}
 
+	@JsonAlias("dateCreated")
 	@JsonProperty("createDate")
 	public Date getCreateDate() {
 		if (_createDate == null) {
@@ -108,6 +113,9 @@ public class ChannelDTO {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public static class ChannelDataSourceDTO {
 
+		public ChannelDataSourceDTO() {
+		}
+
 		public ChannelDataSourceDTO(ChannelDataSource channelDataSource) {
 			_dataSourceId = Objects.toString(
 				channelDataSource.getDataSourceId(), null);
@@ -125,8 +133,8 @@ public class ChannelDTO {
 			return _groupIds;
 		}
 
-		private final String _dataSourceId;
-		private final Set<String> _groupIds;
+		private String _dataSourceId;
+		private Set<String> _groupIds;
 
 	}
 

@@ -14,11 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.DXPClient;
@@ -276,13 +273,7 @@ public class ExperimentNanite extends BaseNanite {
 	@Autowired
 	private ExperimentHttp _experimentHttp;
 
-	private final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-			registerModule(new JavaTimeModule());
-		}
-	};
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

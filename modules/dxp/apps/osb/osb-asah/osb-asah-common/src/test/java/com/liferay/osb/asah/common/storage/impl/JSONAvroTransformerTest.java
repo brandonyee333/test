@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.storage.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
+
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Arrays;
@@ -27,12 +30,27 @@ import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecordBuilder;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Marcellus Tavares
  */
 public class JSONAvroTransformerTest {
+
+	@Before
+	public void setUp() {
+		_jsonAvroTransformer = new JSONAvroTransformer();
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		objectMapper.registerModule(new JsonOrgModule());
+
+		ReflectionTestUtils.setField(
+			_jsonAvroTransformer, "_objectMapper", objectMapper);
+	}
 
 	@Test
 	public void testRecordWithArrayDefault() {
@@ -463,7 +481,6 @@ public class JSONAvroTransformerTest {
 		return genericRecordBuilder.build();
 	}
 
-	private final JSONAvroTransformer _jsonAvroTransformer =
-		new JSONAvroTransformer();
+	private JSONAvroTransformer _jsonAvroTransformer;
 
 }

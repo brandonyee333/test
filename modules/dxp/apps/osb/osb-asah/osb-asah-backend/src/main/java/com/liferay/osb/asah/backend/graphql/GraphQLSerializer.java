@@ -15,8 +15,6 @@
 package com.liferay.osb.asah.backend.graphql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -30,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -59,11 +58,7 @@ public class GraphQLSerializer {
 		return _objectMapper.writeValueAsString(map);
 	}
 
-	private final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-			registerModule(new Jdk8Module());
-		}
-	};
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

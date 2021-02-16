@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
@@ -56,7 +58,8 @@ public class ActivityDog {
 				Collections.emptyList(),
 				QueryBuilders.termQuery("ownerId", ownerId), size, start));
 
-		return DogUtil.createResultBag(Activity.class, searchHits);
+		return DogUtil.createResultBag(
+			Activity.class, _objectMapper, searchHits);
 	}
 
 	public ResultBag<Activity> getActivityResultBag(
@@ -71,7 +74,8 @@ public class ActivityDog {
 					applicationId, propertyFilters, eventId, rangeKey),
 				size, start));
 
-		return DogUtil.createResultBag(Activity.class, searchHits);
+		return DogUtil.createResultBag(
+			Activity.class, _objectMapper, searchHits);
 	}
 
 	public List<String> getEventContextKeys() {
@@ -152,6 +156,9 @@ public class ActivityDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

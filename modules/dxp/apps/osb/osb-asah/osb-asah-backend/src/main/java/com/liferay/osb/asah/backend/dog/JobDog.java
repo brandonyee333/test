@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobRun;
@@ -34,7 +36,6 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.LocalDateTime;
@@ -278,7 +279,7 @@ public class JobDog {
 		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 			_jobTypeNaniteMap.get(job.getJobType()),
 			JSONUtil.put(
-				"job", ObjectMapperUtil.convertValue(job, JSONObject.class)
+				"job", _objectMapper.convertValue(job, JSONObject.class)
 			).put(
 				"runDataPeriod", jobRunDataPeriod.toString()
 			).put(
@@ -485,10 +486,11 @@ public class JobDog {
 	@PostConstruct
 	private void _init() {
 		_jobElasticsearchRepository = new ElasticsearchRepository<>(
-			"jobs", _faroInfoElasticsearchInvoker, Job.class);
+			"jobs", _faroInfoElasticsearchInvoker, Job.class, _objectMapper);
 
 		_jobRunElasticsearchRepository = new ElasticsearchRepository<>(
-			"job-runs", _faroInfoElasticsearchInvoker, JobRun.class);
+			"job-runs", _faroInfoElasticsearchInvoker, JobRun.class,
+			_objectMapper);
 	}
 
 	private void _rescheduleOSBAsahTask(
@@ -516,8 +518,7 @@ public class JobDog {
 			_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
 				_jobTypeNaniteMap.get(job.getJobType()),
 				JSONUtil.put(
-					"job",
-					ObjectMapperUtil.convertValue(job, JSONObject.class)),
+					"job", _objectMapper.convertValue(job, JSONObject.class)),
 				jobRunFrequency.getCronExpression());
 
 		job.setOSBAsahTaskId(osbAsahTaskJSONObject.getString("id"));
@@ -569,6 +570,9 @@ public class JobDog {
 
 	@Value("${osb.asah.content.recommendation.max.monthly.job.runs:10}")
 	private int _maxMonthlyJobRuns;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private RecommendationDog _recommendationDog;

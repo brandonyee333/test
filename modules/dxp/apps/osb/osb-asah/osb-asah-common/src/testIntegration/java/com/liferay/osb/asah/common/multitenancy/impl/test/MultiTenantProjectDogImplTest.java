@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.multitenancy.impl.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
@@ -67,6 +69,8 @@ public class MultiTenantProjectDogImplTest {
 			_elasticsearchSnapshotManager);
 		ReflectionTestUtils.setField(
 			_multiTenantProjectDogImpl, "_nanitesHttp", _nanitesHttp);
+		ReflectionTestUtils.setField(
+			_multiTenantProjectDogImpl, "_objectMapper", _objectMapper);
 	}
 
 	@Test
@@ -130,5 +134,8 @@ public class MultiTenantProjectDogImplTest {
 
 	@MockBean
 	private NanitesHttp _nanitesHttp;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

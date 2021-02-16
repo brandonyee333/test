@@ -14,9 +14,10 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,16 +39,20 @@ public class ElasticsearchRepository<T> {
 
 	public ElasticsearchRepository(
 		String collectionName, ElasticsearchInvoker elasticsearchInvoker,
-		Class<T> modelClass) {
+		Class<T> modelClass, ObjectMapper objectMapper) {
 
 		_collectionName = collectionName;
 		_elasticsearchInvoker = elasticsearchInvoker;
 		_modelClass = modelClass;
+		_objectMapper = objectMapper;
 	}
 
 	public T add(T model) {
-		return _toModel(
-			_elasticsearchInvoker.add(_collectionName, _toJSONObject(model)));
+		return _objectMapper.convertValue(
+			_elasticsearchInvoker.add(
+				_collectionName,
+				_objectMapper.convertValue(model, JSONObject.class)),
+			_modelClass);
 	}
 
 	public boolean delete(String id) {
@@ -82,7 +87,8 @@ public class ElasticsearchRepository<T> {
 	}
 
 	public T get(String id) {
-		return _toModel(_elasticsearchInvoker.get(_collectionName, id));
+		return _objectMapper.convertValue(
+			_elasticsearchInvoker.get(_collectionName, id), _modelClass);
 	}
 
 	public List<T> list(Consumer<SearchSourceBuilder> consumer) {
@@ -116,9 +122,11 @@ public class ElasticsearchRepository<T> {
 	}
 
 	public T update(String id, T model) {
-		return _toModel(
+		return _objectMapper.convertValue(
 			_elasticsearchInvoker.update(
-				_collectionName, id, _toJSONObject(model)));
+				_collectionName, id,
+				_objectMapper.convertValue(model, JSONObject.class)),
+			_modelClass);
 	}
 
 	private ResultBag<T> _search(SearchSourceBuilder searchSourceBuilder) {
@@ -131,23 +139,16 @@ public class ElasticsearchRepository<T> {
 
 		for (SearchHit searchHit : searchHits) {
 			results.add(
-				ObjectMapperUtil.convertValue(
+				_objectMapper.convertValue(
 					searchHit.getSourceAsMap(), _modelClass));
 		}
 
 		return new ResultBag<>(results, HitsUtil.getTotalHitsCount(searchHits));
 	}
 
-	private JSONObject _toJSONObject(T model) {
-		return ObjectMapperUtil.convertValue(model, JSONObject.class);
-	}
-
-	private T _toModel(JSONObject jsonObject) {
-		return ObjectMapperUtil.convertValue(jsonObject, _modelClass);
-	}
-
 	private final String _collectionName;
 	private final ElasticsearchInvoker _elasticsearchInvoker;
 	private final Class<T> _modelClass;
+	private final ObjectMapper _objectMapper;
 
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.elasticsearch.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
@@ -33,6 +35,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -46,7 +49,8 @@ public class ElasticsearchRepositoryTest {
 	public void testAdd() {
 		ElasticsearchRepository<Channel> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"channels", _faroInfoElasticsearchInvoker, Channel.class);
+				"channels", _faroInfoElasticsearchInvoker, Channel.class,
+				_objectMapper);
 
 		Channel channel = elasticsearchRepository.add(new Channel("name"));
 
@@ -58,7 +62,8 @@ public class ElasticsearchRepositoryTest {
 	public void testFetchFirst() {
 		ElasticsearchRepository<Channel> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"channels", _faroInfoElasticsearchInvoker, Channel.class);
+				"channels", _faroInfoElasticsearchInvoker, Channel.class,
+				_objectMapper);
 
 		Channel channel = elasticsearchRepository.add(new Channel("name1"));
 
@@ -75,7 +80,8 @@ public class ElasticsearchRepositoryTest {
 	public void testGet() {
 		ElasticsearchRepository<Channel> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"channels", _faroInfoElasticsearchInvoker, Channel.class);
+				"channels", _faroInfoElasticsearchInvoker, Channel.class,
+				_objectMapper);
 
 		Channel channel = elasticsearchRepository.add(new Channel("name"));
 
@@ -89,7 +95,8 @@ public class ElasticsearchRepositoryTest {
 	public void testSearch() {
 		ElasticsearchRepository<Channel> elasticsearchRepository =
 			new ElasticsearchRepository<>(
-				"channels", _faroInfoElasticsearchInvoker, Channel.class);
+				"channels", _faroInfoElasticsearchInvoker, Channel.class,
+				_objectMapper);
 
 		Channel channel1 = elasticsearchRepository.add(new Channel("name1"));
 
@@ -108,5 +115,8 @@ public class ElasticsearchRepositoryTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

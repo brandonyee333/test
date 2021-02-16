@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.DXPVariant;
@@ -40,7 +42,6 @@ import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.VariantMetrics;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.IOException;
@@ -96,7 +97,7 @@ public class ExperimentDog {
 
 		JSONObject experimentJSONObject = _faroInfoElasticsearchInvoker.add(
 			"experiments",
-			ObjectMapperUtil.convertValue(experiment, JSONObject.class));
+			_objectMapper.convertValue(experiment, JSONObject.class));
 
 		experiment.setId(experimentJSONObject.optString("id"));
 
@@ -152,7 +153,7 @@ public class ExperimentDog {
 		SearchHit searchHit = searchHits.getAt(0);
 
 		try {
-			return ObjectMapperUtil.readValue(
+			return _objectMapper.readValue(
 				searchHit.getSourceAsString(), Experiment.class);
 		}
 		catch (IOException ioe) {
@@ -232,7 +233,8 @@ public class ExperimentDog {
 				SortBuilderUtil.fieldSort(sort),
 				_buildKeywordsQueryBuilder(channelId, keywords), size, start));
 
-		return DogUtil.createResultBag(Experiment.class, searchHits);
+		return DogUtil.createResultBag(
+			Experiment.class, _objectMapper, searchHits);
 	}
 
 	public List<HistogramMetric> getExperimentSessionHistogramMetrics(
@@ -353,7 +355,7 @@ public class ExperimentDog {
 
 		_faroInfoElasticsearchInvoker.update(
 			"experiments",
-			ObjectMapperUtil.convertValue(experiment, JSONObject.class));
+			_objectMapper.convertValue(experiment, JSONObject.class));
 
 		return experiment;
 	}
@@ -509,7 +511,7 @@ public class ExperimentDog {
 		SearchHit searchHit = searchHits.getAt(0);
 
 		try {
-			return ObjectMapperUtil.readValue(
+			return _objectMapper.readValue(
 				searchHit.getSourceAsString(), ExperimentMetricsBag.class);
 		}
 		catch (IOException ioe) {
@@ -708,5 +710,8 @@ public class ExperimentDog {
 
 	@Autowired
 	private HistogramDog _histogramDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

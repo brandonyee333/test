@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.model.PageAsset;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -54,7 +56,8 @@ public class AssetDog {
 				_buildQueryBuilder("Page", keywords, propertyFilters), size,
 				start));
 
-		return DogUtil.createResultBag(PageAsset.class, searchHits);
+		return DogUtil.createResultBag(
+			PageAsset.class, _objectMapper, searchHits);
 	}
 
 	private QueryBuilder _buildQueryBuilder(
@@ -96,5 +99,8 @@ public class AssetDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

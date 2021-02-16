@@ -14,11 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.backend.model.Dashboard;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -227,14 +223,7 @@ public class DashboardDog {
 	@Autowired
 	private DataDog _dataDog;
 
-	private final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-			registerModule(new JavaTimeModule());
-			registerModule(new Jdk8Module());
-		}
-	};
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

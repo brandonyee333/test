@@ -16,22 +16,16 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.google.api.client.util.Objects;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
-import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
-import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,9 +36,9 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -109,7 +103,7 @@ public class ElasticsearchChannelRepositoryImpl
 
 	@Override
 	public List<Channel> findByDataSourceId(Long dataSourceId) {
-		return _toChannels(
+		return toList(
 			_faroInfoElasticsearchInvoker.get(
 				getCollectionName(),
 				BoolQueryBuilderUtil.filter(
@@ -121,7 +115,7 @@ public class ElasticsearchChannelRepositoryImpl
 	public List<Channel> findByDataSourceIdAndGroupIds(
 		Long dataSourceId, Set<Long> groupsIds) {
 
-		return _toChannels(
+		return toList(
 			_faroInfoElasticsearchInvoker.get(
 				getCollectionName(),
 				BoolQueryBuilderUtil.filter(
@@ -189,8 +183,7 @@ public class ElasticsearchChannelRepositoryImpl
 			JSONObject embeddedJSONObject = jsonObject.getJSONObject(
 				"_embedded");
 
-			return _toChannels(
-				embeddedJSONObject.getJSONArray(getCollectionName()));
+			return toList(embeddedJSONObject.getJSONArray(getCollectionName()));
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -207,64 +200,6 @@ public class ElasticsearchChannelRepositoryImpl
 	@Override
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
 		return _faroInfoElasticsearchInvoker;
-	}
-
-	@Override
-	protected Channel toEntity(JSONObject jsonObject) {
-		Channel channel = new Channel(jsonObject.getString("name"));
-
-		JSONArray dataSourcesJSONArray = jsonObject.getJSONArray("dataSources");
-
-		for (int j = 0; j < dataSourcesJSONArray.length(); j++) {
-			JSONObject dataSourceJSONObject =
-				dataSourcesJSONArray.getJSONObject(j);
-
-			channel.addChannelDataSource(
-				new ChannelDataSource(
-					dataSourceJSONObject.getLong("id"),
-					JSONUtil.toLongSet(
-						dataSourceJSONObject.getJSONArray("groupIds"))));
-		}
-
-		try {
-			long createDate = jsonObject.optLong("createDate");
-
-			if (createDate > 0) {
-				channel.setCreateDate(new Date(createDate));
-			}
-			else {
-				channel.setCreateDate(
-					DateUtil.toUTCDate(jsonObject.getString("dateCreated")));
-			}
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-
-		channel.setId(jsonObject.getLong("id"));
-
-		return channel;
-	}
-
-	@Override
-	protected JSONObject toJSONObject(Channel channel) {
-		return ObjectMapperUtil.convertValue(
-			new ChannelDTO(channel), JSONObject.class);
-	}
-
-	private List<Channel> _toChannels(JSONArray channelsJSONArray) {
-		List<Channel> channels = new ArrayList<>();
-
-		for (int i = 0; i < channelsJSONArray.length(); i++) {
-			try {
-				channels.add(toEntity(channelsJSONArray.getJSONObject(i)));
-			}
-			catch (Exception exception) {
-				_log.error(exception, exception);
-			}
-		}
-
-		return channels;
 	}
 
 	private static final Log _log = LogFactory.getLog(

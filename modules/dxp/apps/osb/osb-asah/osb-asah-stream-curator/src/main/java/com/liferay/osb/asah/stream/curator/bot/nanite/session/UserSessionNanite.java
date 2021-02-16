@@ -14,12 +14,7 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.session;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
@@ -35,7 +30,6 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEvents;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.util.MapUtil;
-import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
@@ -111,8 +105,8 @@ public class UserSessionNanite implements Nanite {
 		for (AnalyticsEvent analyticsEvent :
 				analyticsEvents.getAnalyticsEventsList()) {
 
-			JSONObject analyticsEventsJSONObject =
-				ObjectMapperUtil.convertValue(analyticsEvent, JSONObject.class);
+			JSONObject analyticsEventsJSONObject = _objectMapper.convertValue(
+				analyticsEvent, JSONObject.class);
 
 			analyticsEventsJSONObject.put("sessionId", sessionId);
 
@@ -545,16 +539,8 @@ public class UserSessionNanite implements Nanite {
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_SESSION)
 	private MessageSubscriber _messageSubscriber;
 
-	private final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-			registerModule(new JavaTimeModule());
-			registerModule(new Jdk8Module());
-			registerModule(new JsonOrgModule());
-		}
-	};
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	private String _sessionUpdateScriptSource;
 

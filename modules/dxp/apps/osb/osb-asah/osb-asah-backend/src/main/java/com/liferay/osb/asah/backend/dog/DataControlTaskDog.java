@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.model.DataControlTask;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
@@ -174,7 +176,7 @@ public class DataControlTaskDog {
 		}
 
 		return DogUtil.createResultBag(
-			DataControlTask.class,
+			DataControlTask.class, _objectMapper,
 			_dataDog.querySearchHits(
 				"data-control-tasks", _faroInfoElasticsearchInvoker,
 				_buildSearchSourceBuilder(
@@ -235,6 +237,9 @@ public class DataControlTaskDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();

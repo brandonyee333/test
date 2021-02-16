@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
@@ -133,7 +135,8 @@ public class SegmentDog {
 			"individual-segments", _faroInfoElasticsearchInvoker,
 			searchSourceBuilder);
 
-		return DogUtil.createResultBag(Segment.class, searchHits);
+		return DogUtil.createResultBag(
+			Segment.class, _objectMapper, searchHits);
 	}
 
 	public ResultBag<Segment> getSegmentResultBag(
@@ -144,7 +147,8 @@ public class SegmentDog {
 			DogUtil.buildSearchSourceBuilder(
 				null, null, searchAfter, size, sortBuilder));
 
-		return DogUtil.createResultBag(Segment.class, searchHits);
+		return DogUtil.createResultBag(
+			Segment.class, _objectMapper, searchHits);
 	}
 
 	public List<Segment> getSegments(String... ids) {
@@ -158,7 +162,7 @@ public class SegmentDog {
 			searchSourceBuilder);
 
 		ResultBag<Segment> segmentResultBag = DogUtil.createResultBag(
-			Segment.class, searchHits);
+			Segment.class, _objectMapper, searchHits);
 
 		return segmentResultBag.getResults();
 	}
@@ -302,6 +306,9 @@ public class SegmentDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;

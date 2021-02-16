@@ -14,13 +14,15 @@
 
 package com.liferay.osb.asah.common.multitenancy.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
-import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.List;
@@ -45,8 +47,7 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 	@Override
 	public void addProject(Project project) throws Exception {
 		_elasticsearchInvoker.add(
-			"projects",
-			ObjectMapperUtil.convertValue(project, JSONObject.class));
+			"projects", _objectMapper.convertValue(project, JSONObject.class));
 
 		_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
 			project.getId());
@@ -67,8 +68,10 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 	public List<Project> getProjects() throws Exception {
 		JSONArray projectsJSONArray = _elasticsearchInvoker.get("projects");
 
-		return ObjectMapperUtil.convertValues(
-			projectsJSONArray.toString(), Project.class);
+		return _objectMapper.convertValue(
+			projectsJSONArray,
+			new TypeReference<List<Project>>() {
+			});
 	}
 
 	private final ElasticsearchInvoker _elasticsearchInvoker;
@@ -78,5 +81,8 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

@@ -14,12 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
@@ -118,15 +113,7 @@ public class DataExportTaskDog {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
-	private final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-			registerModule(new JavaTimeModule());
-			registerModule(new Jdk8Module());
-			registerModule(new JsonOrgModule());
-		}
-	};
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

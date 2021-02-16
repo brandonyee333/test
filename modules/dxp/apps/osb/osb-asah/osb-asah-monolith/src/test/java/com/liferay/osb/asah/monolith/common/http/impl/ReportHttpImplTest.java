@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.monolith.common.http.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.controller.ReportRestController;
 import com.liferay.osb.asah.common.http.ReportHttp;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -37,6 +39,9 @@ public class ReportHttpImplTest {
 	@Before
 	public void setUp() {
 		_reportHttp = new ReportHttpImpl();
+
+		ReflectionTestUtils.setField(
+			_reportHttp, "_objectMapper", new ObjectMapper());
 
 		ReflectionTestUtils.setField(
 			_reportHttp, "_reportRestController", _reportRestController);

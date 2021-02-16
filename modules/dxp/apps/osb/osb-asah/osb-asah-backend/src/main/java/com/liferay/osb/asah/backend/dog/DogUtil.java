@@ -14,12 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.resolver.AssetResolver;
@@ -61,8 +56,6 @@ import org.elasticsearch.search.aggregations.metrics.NumericMetricsAggregation;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
-
-import org.json.JSONObject;
 
 /**
  * @author Marcellus Tavares
@@ -204,15 +197,13 @@ public class DogUtil {
 		return searchSourceBuilder;
 	}
 
-	public static <T> T convert(JSONObject jsonObject, Class<T> modelClass) {
-		return _objectMapper.convertValue(jsonObject, modelClass);
-	}
-
 	public static <T> ResultBag<T> createResultBag(
-		Class<T> modelClass, SearchHits searchHits) {
+		Class<T> modelClass, ObjectMapper objectMapper, SearchHits searchHits) {
 
 		return createResultBag(
-			_createDefaultSearchHitModelMapperFunction(modelClass), searchHits);
+			_createDefaultSearchHitModelMapperFunction(
+				modelClass, objectMapper),
+			searchHits);
 	}
 
 	public static <T> ResultBag<T> createResultBag(
@@ -302,11 +293,12 @@ public class DogUtil {
 	}
 
 	private static <T> Function<SearchHit, T>
-		_createDefaultSearchHitModelMapperFunction(Class<T> modelClass) {
+		_createDefaultSearchHitModelMapperFunction(
+			Class<T> modelClass, ObjectMapper objectMapper) {
 
 		return (SearchHit searchHit) -> {
 			try {
-				return _objectMapper.readValue(
+				return objectMapper.readValue(
 					searchHit.getSourceAsString(), modelClass);
 			}
 			catch (IOException ioe) {
@@ -327,16 +319,5 @@ public class DogUtil {
 
 		return true;
 	}
-
-	private static final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-			registerModule(new JavaTimeModule());
-			registerModule(new Jdk8Module());
-			registerModule(new JsonOrgModule());
-		}
-	};
 
 }

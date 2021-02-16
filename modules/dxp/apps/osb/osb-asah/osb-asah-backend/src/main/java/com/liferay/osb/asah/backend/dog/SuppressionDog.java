@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.model.Suppression;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -63,7 +65,7 @@ public class SuppressionDog {
 		}
 
 		return DogUtil.createResultBag(
-			Suppression.class,
+			Suppression.class, _objectMapper,
 			_dataDog.querySearchHits(
 				"suppressions", _faroInfoElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(
@@ -76,5 +78,8 @@ public class SuppressionDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -29,7 +31,6 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
@@ -61,8 +62,6 @@ import org.json.JSONTokener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -199,15 +198,8 @@ public class AdminRestController extends BaseRestController {
 
 	private void _addChannels(JSONArray jsonArray) {
 		for (int i = 0; i < jsonArray.length(); i++) {
-			Channel channel = _conversionService.convert(
+			Channel channel = _objectMapper.convertValue(
 				jsonArray.getJSONObject(i), Channel.class);
-
-			if (channel == null) {
-				throw new OSBAsahException(
-					HttpStatus.BAD_REQUEST,
-					"Unable to convert to channel " +
-						jsonArray.getJSONObject(i));
-			}
 
 			channel.setIsNew(true);
 
@@ -217,15 +209,8 @@ public class AdminRestController extends BaseRestController {
 
 	private void _addDataSources(JSONArray jsonArray) {
 		for (int i = 0; i < jsonArray.length(); i++) {
-			DataSource dataSource = _conversionService.convert(
+			DataSource dataSource = _objectMapper.convertValue(
 				jsonArray.getJSONObject(i), DataSource.class);
-
-			if (dataSource == null) {
-				throw new OSBAsahException(
-					HttpStatus.BAD_REQUEST,
-					"Unable to convert to data source " +
-						jsonArray.getJSONObject(i));
-			}
 
 			dataSource.setIsNew(true);
 
@@ -327,9 +312,6 @@ public class AdminRestController extends BaseRestController {
 	private ChannelRepository _channelRepository;
 
 	@Autowired
-	private ConversionService _conversionService;
-
-	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
@@ -351,6 +333,9 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private PreferenceRepository _preferenceRepository;

@@ -14,8 +14,9 @@
 
 package com.liferay.osb.asah.common.storage.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.util.ObjectMapperUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -31,6 +32,7 @@ import org.apache.avro.generic.GenericRecordBuilder;
 
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -41,7 +43,7 @@ public class JSONAvroTransformer {
 
 	public GenericData.Record transform(JSONObject jsonObject, Schema schema) {
 		return _toRecord(
-			ObjectMapperUtil.convertValue(jsonObject, Map.class), schema);
+			_objectMapper.convertValue(jsonObject, Map.class), schema);
 	}
 
 	private Object _toEnumSymbol(
@@ -203,5 +205,8 @@ public class JSONAvroTransformer {
 		throw new IllegalStateException(
 			"Value was incorrectly set for field " + field.name());
 	}
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

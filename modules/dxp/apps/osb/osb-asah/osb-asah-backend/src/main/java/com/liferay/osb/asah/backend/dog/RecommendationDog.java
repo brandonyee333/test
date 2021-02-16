@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.model.ItemRecommendation;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
@@ -50,7 +52,7 @@ public class RecommendationDog {
 	}
 
 	public ItemRecommendation getItemRecommendation(String id) {
-		return DogUtil.convert(
+		return _objectMapper.convertValue(
 			_faroInfoElasticsearchInvoker.get("recommended-items", id),
 			ItemRecommendation.class);
 	}
@@ -64,7 +66,8 @@ public class RecommendationDog {
 				SortBuilderUtil.fieldSort(sort),
 				QueryBuilders.termQuery("jobId", jobId), size, start));
 
-		return DogUtil.createResultBag(ItemRecommendation.class, searchHits);
+		return DogUtil.createResultBag(
+			ItemRecommendation.class, _objectMapper, searchHits);
 	}
 
 	@Autowired
@@ -72,5 +75,8 @@ public class RecommendationDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

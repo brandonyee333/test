@@ -14,12 +14,7 @@
 
 package com.liferay.osb.asah.monolith.common.http.impl;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ExperimentsRestController;
 import com.liferay.osb.asah.common.http.ExperimentHttp;
@@ -46,15 +41,7 @@ public class ExperimentHttpImpl implements ExperimentHttp {
 	@Autowired
 	private ExperimentsRestController _experimentsRestController;
 
-	private final ObjectMapper _objectMapper = new ObjectMapper() {
-		{
-			disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-			registerModule(new JavaTimeModule());
-			registerModule(new Jdk8Module());
-			registerModule(new JsonOrgModule());
-		}
-	};
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
