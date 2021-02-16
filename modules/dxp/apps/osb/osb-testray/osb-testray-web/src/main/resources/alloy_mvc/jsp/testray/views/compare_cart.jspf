@@ -48,35 +48,35 @@
 			<aui:button cssClass="button-action" disabled="${empty testrayRunIdA || empty testrayRunIdB}" name="compareCartCompareRunsButton" type="submit" value="compare-runs" />
 		</aui:form>
 
-		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayRunClass, "autoFill")}'>
-			<portlet:actionURL var="autoFillTestrayRunsURL">
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayRunClass, "autofill")}'>
+			<portlet:actionURL var="autofillTestrayRunsURL">
 				<portlet:param name="controller" value="runs" />
-				<portlet:param name="action" value="autoFill" />
+				<portlet:param name="action" value="autofill" />
 			</portlet:actionURL>
 
-			<aui:form action="${autoFillTestrayRunsURL}" cssClass="form-auto-fill" method="post" name="autoFillCartFm">
+			<aui:form action="${autofillTestrayRunsURL}" cssClass="form-auto-fill" method="post" name="autofillCartFm">
 				<aui:input name="redirect" type="hidden" value="${portletURL}" />
 
 				<aui:input name="testrayRunIdA" type="hidden" value="${testrayRunIdA}" />
 				<aui:input name="testrayRunIdB" type="hidden" value="${testrayRunIdB}" />
 
-				<aui:button cssClass="button-action" disabled="${empty testrayRunIdA || empty testrayRunIdB}" name="compareCartAutoFillRunsButton" type="submit" value="auto-fill" />
+				<aui:button cssClass="button-action" disabled="${empty testrayRunIdA || empty testrayRunIdB}" name="compareCartAutofillRunsButton" type="submit" value="auto-fill" />
 			</aui:form>
 		</c:if>
 
-		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayBuildClass, "autoFill")}'>
-			<portlet:actionURL var="autoFillTestrayBuildsURL">
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayBuildClass, "autofill")}'>
+			<portlet:actionURL var="autofillTestrayBuildsURL">
 				<portlet:param name="controller" value="builds" />
-				<portlet:param name="action" value="autoFill" />
+				<portlet:param name="action" value="autofill" />
 			</portlet:actionURL>
 
-			<aui:form action="${autoFillTestrayBuildsURL}" cssClass="form-auto-fill" method="post" name="autoFillBuildsCartFm">
+			<aui:form action="${autofillTestrayBuildsURL}" cssClass="form-auto-fill" method="post" name="autofillBuildsCartFm">
 				<aui:input name="redirect" type="hidden" value="${portletURL}" />
 
 				<aui:input name="testrayRunIdA" type="hidden" value="${testrayRunIdA}" />
 				<aui:input name="testrayRunIdB" type="hidden" value="${testrayRunIdB}" />
 
-				<aui:button cssClass="button-action" disabled="${empty testrayRunIdA || empty testrayRunIdB}" name="compareCartAutoFillBuildsButton" type="submit" value="auto-fill-builds" />
+				<aui:button cssClass="button-action" disabled="${empty testrayRunIdA || empty testrayRunIdB}" name="compareCartAutofillBuildsButton" type="submit" value="auto-fill-builds" />
 			</aui:form>
 		</c:if>
 
@@ -124,8 +124,8 @@
 			${htmlNamespace}compareCartSelectRun('testrayRunIdA', '');
 			${htmlNamespace}compareCartSelectRun('testrayRunIdB', '');
 
-			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutoFillBuildsButton');
-			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutoFillRunsButton');
+			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutofillBuildsButton');
+			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutofillRunsButton');
 			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartCompareRunsButton');
 		},
 		['aui-base']
@@ -162,8 +162,8 @@
 				button.toggleClass('btn-primary', value);
 			}
 
-			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutoFillBuildsButton');
-			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutoFillRunsButton');
+			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutofillBuildsButton');
+			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutofillRunsButton');
 			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartCompareRunsButton');
 		},
 		['aui-base']

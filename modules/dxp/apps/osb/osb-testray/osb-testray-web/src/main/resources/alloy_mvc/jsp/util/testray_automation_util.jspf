@@ -266,7 +266,7 @@ public static class TestrayAutomationUtil {
 			TestrayRun latestMatchingTestrayRun = fetchLatestMatchingTestrayRun(testrayRun);
 
 			if (latestMatchingTestrayRun != null) {
-				TestrayRunUtil.autoFill(alloyController, new TestrayRunComposite(testrayRun, alloyController.getThemeDisplay()), new TestrayRunComposite(latestMatchingTestrayRun, alloyController.getThemeDisplay()));
+				TestrayRunUtil.autofill(alloyController, new TestrayRunComposite(testrayRun, alloyController.getThemeDisplay()), new TestrayRunComposite(latestMatchingTestrayRun, alloyController.getThemeDisplay()));
 			}
 		}
 

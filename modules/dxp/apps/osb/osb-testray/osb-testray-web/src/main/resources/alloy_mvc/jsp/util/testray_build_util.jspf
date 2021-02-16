@@ -17,7 +17,7 @@
 <%!
 public static class TestrayBuildUtil {
 
-	public static int autoFill(AlloyController alloyController, TestrayBuildComposite testrayBuildCompositeA, TestrayBuildComposite testrayBuildCompositeB) throws Exception {
+	public static int autofill(AlloyController alloyController, TestrayBuildComposite testrayBuildCompositeA, TestrayBuildComposite testrayBuildCompositeB) throws Exception {
 		int testrayCaseResultsCount = 0;
 
 		Map<Long, List<TestrayCaseResultComposite>> testrayCaseIdCompositeMapA = _getTestrayCaseIdCompositeMap(testrayBuildCompositeA);
@@ -48,9 +48,9 @@ public static class TestrayBuildUtil {
 						continue;
 					}
 
-					boolean autoFilled = TestrayCaseResultUtil.autoFill(alloyController, testrayCaseResultCompositeA, testrayCaseResultCompositeB);
+					boolean autofilled = TestrayCaseResultUtil.autofill(alloyController, testrayCaseResultCompositeA, testrayCaseResultCompositeB);
 
-					if (autoFilled) {
+					if (autofilled) {
 						testrayCaseResultsCount++;
 					}
 				}

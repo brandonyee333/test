@@ -99,8 +99,8 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 	}
 
 	@JSONWebServiceMethod(lifecycle = PortletRequest.ACTION_PHASE, parameterNames = {"testrayRunIdA", "testrayRunIdB"}, parameterTypes = {Long.class, Long.class})
-	public void autoFill() throws Exception {
-		_validateAutoFill();
+	public void autofill() throws Exception {
+		_validateAutofill();
 
 		long testrayRunIdA = ParamUtil.getLong(request, "testrayRunIdA");
 
@@ -114,7 +114,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		TestrayBuildComposite testrayBuildCompositeB = new TestrayBuildComposite(TestrayBuildLocalServiceUtil.getTestrayBuild(testrayRunB.getTestrayBuildId()), themeDisplay);
 
-		int testrayCaseResultsCount = TestrayBuildUtil.autoFill(this, testrayBuildCompositeA, testrayBuildCompositeB);
+		int testrayCaseResultsCount = TestrayBuildUtil.autofill(this, testrayBuildCompositeA, testrayBuildCompositeB);
 
 		String message = translate("x-case-results-were-auto-filled", testrayCaseResultsCount);
 
@@ -1084,7 +1084,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		}
 	}
 
-	private void _validateAutoFill() throws Exception {
+	private void _validateAutofill() throws Exception {
 		TestrayValidator.validateTestrayRuns(request, themeDisplay);
 	}
 

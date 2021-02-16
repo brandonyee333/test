@@ -81,7 +81,7 @@ public static class TestrayRunUtil {
 		return testrayRun;
 	}
 
-	public static int autoFill(AlloyController alloyController, TestrayRunComposite testrayRunCompositeA, TestrayRunComposite testrayRunCompositeB) throws Exception {
+	public static int autofill(AlloyController alloyController, TestrayRunComposite testrayRunCompositeA, TestrayRunComposite testrayRunCompositeB) throws Exception {
 		Map<Long, TestrayCaseResultComposite> testrayCaseIdCompositeMapA = _getTestrayCaseIdCompositeMap(testrayRunCompositeA);
 		Map<Long, TestrayCaseResultComposite> testrayCaseIdCompositeMapB = _getTestrayCaseIdCompositeMap(testrayRunCompositeB);
 
@@ -106,9 +106,9 @@ public static class TestrayRunUtil {
 				continue;
 			}
 
-			boolean autoFilled = TestrayCaseResultUtil.autoFill(alloyController, testrayCaseResultCompositeA, testrayCaseResultCompositeB);
+			boolean autofilled = TestrayCaseResultUtil.autofill(alloyController, testrayCaseResultCompositeA, testrayCaseResultCompositeB);
 
-			if (autoFilled) {
+			if (autofilled) {
 				testrayCaseResultsCount++;
 			}
 		}
