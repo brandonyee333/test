@@ -390,6 +390,14 @@ public static class TestrayCaseResultUtil {
 			autofillMessage = _getDefaultTranslation("this-has-been-automatically-populated-from-a-previous-result");
 		}
 
+		String commentClean = comment.replaceAll("[\\n\\t ]", "");
+
+		String autoFillClean = autofillMessage.replaceAll("[\\n\\t ]", "");
+
+		if (commentClean.contains(autoFillClean)) {
+			return comment;
+		}
+
 		return comment + StringPool.NEW_LINE + autofillMessage;
 	}
 
