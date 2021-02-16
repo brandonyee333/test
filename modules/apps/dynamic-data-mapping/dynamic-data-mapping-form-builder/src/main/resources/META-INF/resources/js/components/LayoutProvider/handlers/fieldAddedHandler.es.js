@@ -84,7 +84,7 @@ const handleFieldAdded = (props, state, event) => {
 	const {pages} = state;
 	const {parentFieldName} = data;
 
-	const newField = createField(props, event);
+	const newField = event.newField || createField(props, event);
 
 	return addField(props, {
 		indexes,
