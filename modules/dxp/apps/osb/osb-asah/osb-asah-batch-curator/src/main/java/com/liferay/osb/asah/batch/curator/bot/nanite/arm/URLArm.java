@@ -25,7 +25,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**

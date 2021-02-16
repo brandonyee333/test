@@ -17,8 +17,6 @@ package com.liferay.osb.asah.common.faro.info.dog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  * @author Michael Bowerman
  */

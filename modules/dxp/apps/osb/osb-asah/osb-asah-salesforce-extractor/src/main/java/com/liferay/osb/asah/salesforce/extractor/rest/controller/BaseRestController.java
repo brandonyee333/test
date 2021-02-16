@@ -31,8 +31,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  * @author Rachael Koestartyo
  */

@@ -150,7 +150,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 	public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
 		Stream<S> stream = StreamSupport.stream(entities.spliterator(), false);
 
-		return (Iterable<S>)stream.map(
+		return stream.map(
 			this::save
 		).collect(
 			Collectors.toList()

@@ -337,7 +337,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			for (CompositeAggregation.Bucket bucket : buckets) {
 				Map<String, Object> keys = bucket.getKey();
 
-				jsonArray.put((String)keys.get("accountPKs"));
+				jsonArray.put(keys.get("accountPKs"));
 			}
 
 			compositeAggregationBuilder.aggregateAfter(
