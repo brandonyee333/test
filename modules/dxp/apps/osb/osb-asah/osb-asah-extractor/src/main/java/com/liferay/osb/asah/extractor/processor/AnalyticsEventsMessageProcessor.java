@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
+import com.liferay.osb.asah.common.dog.EventAttributeDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -458,7 +459,7 @@ public class AnalyticsEventsMessageProcessor {
 	}
 
 	private void _storeEventAttributes(
-		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
+		AnalyticsEvent analyticsEvent, Event event, Long eventDefinitionId) {
 
 		Map<String, String> analyticsEventProperties =
 			analyticsEvent.getEventProperties();
@@ -473,20 +474,28 @@ public class AnalyticsEventsMessageProcessor {
 					propertyName);
 
 			if (eventAttributeDefinition == null) {
-				_eventAttributeDefinitionDog.addEventAttributeDefinition(
-					"String", null, null,
-					Collections.singleton(eventDefinitionId), propertyName);
+				eventAttributeDefinition =
+					_eventAttributeDefinitionDog.addEventAttributeDefinition(
+						"String", null, null,
+						Collections.singleton(eventDefinitionId), propertyName);
 			}
 			else {
 				Set<Long> eventDefinitionIds = new HashSet<>(
 					eventAttributeDefinition.getEventDefinitionIds());
 
 				if (eventDefinitionIds.add(eventDefinitionId)) {
-					_eventAttributeDefinitionDog.patchEventAttributeDefinition(
-						null, null, null, eventAttributeDefinition.getId(),
-						eventDefinitionIds, null);
+					eventAttributeDefinition =
+						_eventAttributeDefinitionDog.
+							patchEventAttributeDefinition(
+								null, null, null,
+								eventAttributeDefinition.getId(),
+								eventDefinitionIds, null);
 				}
 			}
+
+			_eventAttributeDog.addEventAttribute(
+				eventAttributeDefinition.getId(), entry.getValue(),
+				event.getId());
 		}
 	}
 
@@ -512,9 +521,10 @@ public class AnalyticsEventsMessageProcessor {
 			Long eventDefinitionId = eventDefinition.getId();
 
 			for (AnalyticsEvent analyticsEvent : entry.getValue()) {
-				_eventDog.addEvent(analyticsEvent, eventDefinitionId);
+				Event event = _eventDog.addEvent(
+					analyticsEvent, eventDefinitionId);
 
-				_storeEventAttributes(analyticsEvent, eventDefinitionId);
+				_storeEventAttributes(analyticsEvent, event, eventDefinitionId);
 			}
 		}
 	}
@@ -557,6 +567,9 @@ public class AnalyticsEventsMessageProcessor {
 
 	@Autowired
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
+
+	@Autowired
+	private EventAttributeDog _eventAttributeDog;
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
