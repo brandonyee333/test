@@ -71,6 +71,41 @@ CREATE TABLE IF NOT EXISTS DataSourceUserGroup (
 	userGroupIds BIGINT []
 );
 
+CREATE TABLE IF NOT EXISTS EventDefinition (
+    id BIGSERIAL PRIMARY KEY,
+    description TEXT,
+    displayName TEXT UNIQUE,
+    name TEXT UNIQUE,
+    type TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Event (
+    id BIGSERIAL PRIMARY KEY,
+    applicationId TEXT,
+    channelId BIGINT NOT NULL REFERENCES Channel,
+    createDate TIMESTAMPTZ,
+    dataSourceId TEXT,
+    eventDate TiMESTAMPTZ,
+    eventDefinitionId BIGINT REFERENCES EventDefinition,
+    userId TEXT
+);
+
+CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
+    id BIGSERIAL PRIMARY KEY,
+    eventDefinitionIds BIGINT[],
+    dataType TEXT NOT NULL,
+    description TEXT,
+    displayName TEXT UNIQUE,
+    name TEXT UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS EventAttribute (
+    id BIGSERIAL PRIMARY KEY,
+    attributeValue TEXT,
+    eventAttributeDefinitionId BIGINT REFERENCES EventAttributeDefinition,
+    eventId BIGINT REFERENCES Event
+);
+
 CREATE TABLE IF NOT EXISTS Preference (
 	id BIGSERIAL PRIMARY KEY,
 	key TEXT UNIQUE,
