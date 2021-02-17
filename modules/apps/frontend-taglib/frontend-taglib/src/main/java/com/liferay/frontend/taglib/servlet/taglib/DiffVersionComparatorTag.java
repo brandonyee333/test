@@ -15,6 +15,7 @@
 package com.liferay.frontend.taglib.servlet.taglib;
 
 import com.liferay.frontend.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.diff.DiffVersion;
 import com.liferay.portal.kernel.diff.DiffVersionsInfo;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -89,15 +90,26 @@ public class DiffVersionComparatorTag extends IncludeTag {
 
 		diffVersionJSONObject.put("targetURL", targetURL.toString());
 
-		User user = UserLocalServiceUtil.getUser(diffVersion.getUserId());
+		User user = UserLocalServiceUtil.fetchUser(diffVersion.getUserId());
 
-		diffVersionJSONObject.put(
-			"userInitials", user.getInitials()
-		).put(
-			"userName", user.getFullName()
-		).put(
-			"version", diffVersionString
-		);
+		if (user != null) {
+			diffVersionJSONObject.put(
+				"userInitials", user.getInitials()
+			).put(
+				"userName", user.getFullName()
+			).put(
+				"version", diffVersionString
+			);
+		}
+		else {
+			diffVersionJSONObject.put(
+				"userInitials", StringPool.BLANK
+			).put(
+				"userName", StringPool.BLANK
+			).put(
+				"version", diffVersionString
+			);
+		}
 
 		return diffVersionJSONObject;
 	}
