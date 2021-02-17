@@ -47,8 +47,6 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 			QueryBuilders.termQuery("ownerType", "individual-segment")
 		);
 
-		faroInfoElasticsearchInvoker.delete("engagements", boolQueryBuilder);
-
 		faroInfoElasticsearchInvoker.delete("interests", boolQueryBuilder);
 
 		faroInfoElasticsearchInvoker.delete("visited-pages", boolQueryBuilder);

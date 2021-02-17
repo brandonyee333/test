@@ -74,18 +74,15 @@ public class DataRetentionNanite extends BaseNanite {
 				return null;
 			}
 		).setQueryBuilder(
+
+			// FIXME: is there a substitute for engagementScore as an active
+			// criteria? In this case maybe lastActivityDates
+
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					"dateCreated"
 				).lt(
 					dateString
-				)
-			).filter(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.termQuery("engagementScore", 0)
-				).should(
-					BoolQueryBuilderUtil.mustNot(
-						QueryBuilders.existsQuery("engagementScore"))
 				)
 			).mustNot(
 				QueryBuilders.existsQuery("demographics.email")

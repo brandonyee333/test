@@ -26,7 +26,6 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;
 import com.liferay.osb.asah.stream.curator.model.page.Page;
 import com.liferay.osb.asah.stream.curator.model.page.PageScroll;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,7 +38,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -95,8 +93,6 @@ public class PageNanite extends BaseNanite<Page> {
 			long views = directAccessDates.size() + indirectAccessDates.size();
 
 			oldPage.setViews(views);
-
-			_setPageEngagementScore(oldPage);
 
 			return oldPage;
 		};
@@ -189,114 +185,8 @@ public class PageNanite extends BaseNanite<Page> {
 
 		page.setFirstEventDate(analyticsEvent.getEventDate());
 
-		_setPageEngagementScore(page);
 		_setPageSearchTerm(page);
 		_setPageTitle(analyticsEvent, page);
-	}
-
-	private double _computeEngagementScore(Page page) {
-		double interactionScore = _computeInteractionScore(page);
-		double viewScore = _computeViewScore(page);
-
-		return ((interactionScore * 4) + viewScore) / 5.0;
-	}
-
-	private double _computeFormScore(Page page) {
-		if (page.getFormSubmissions() >= 1) {
-			return 1.0;
-		}
-
-		return 0.0;
-	}
-
-	private double _computeInteractionScore(Page page) {
-		double formScore = _computeFormScore(page);
-		double readTimeScore = _computeReadTimeScore(page);
-
-		Optional<PageScroll> pageScrollOptional = _getMaxPageScrollOptional(
-			page.getPageScrolls());
-
-		double scrollDepthScore = _computeScrollDepthScore(pageScrollOptional);
-		double scrollSpeedScore = _computeScrollSpeedScore(
-			page, pageScrollOptional);
-
-		if (formScore == -1.0) {
-			return (scrollSpeedScore + scrollDepthScore + readTimeScore) / 3.0;
-		}
-
-		double score =
-			scrollSpeedScore + scrollDepthScore + readTimeScore +
-				(3 * formScore);
-
-		return score / 6.0;
-	}
-
-	private long _computeReadTime(Date firstEventDate, Date lastEventDate) {
-		if ((firstEventDate != null) && (lastEventDate != null)) {
-			return lastEventDate.getTime() - firstEventDate.getTime();
-		}
-
-		return 0;
-	}
-
-	private double _computeReadTimeScore(Page page) {
-		double readTime = _computeReadTime(
-			page.getFirstEventDate(), page.getLastEventDate());
-
-		double score = readTime / _AVERAGE_READ_TIME;
-
-		if (score > 1.0) {
-			return 1.0;
-		}
-		else if (score < 0.0) {
-			return 0.0;
-		}
-
-		return score;
-	}
-
-	private double _computeScrollDepthScore(
-		Optional<PageScroll> maxPageScrollOptional) {
-
-		int maxScrollDepth = _getMaxScrollDepth(maxPageScrollOptional);
-
-		return maxScrollDepth / 100.0;
-	}
-
-	private double _computeScrollSpeedScore(
-		Page page, Optional<PageScroll> maxPageScrollOptional) {
-
-		int maxScrollDepth = _getMaxScrollDepth(maxPageScrollOptional);
-
-		if (!_averageScrollTime.containsKey(maxScrollDepth)) {
-			return 0.0;
-		}
-
-		long maxScrollTime = _getMaxScrollTime(
-			page.getFirstEventDate(), maxPageScrollOptional);
-
-		Double score = maxScrollTime / _averageScrollTime.get(maxScrollDepth);
-
-		if (score > 1.0) {
-			return 1.0;
-		}
-		else if (score < 0.0) {
-			return 0.0;
-		}
-
-		return score;
-	}
-
-	private double _computeViewScore(Page page) {
-		long views = page.getDirectAccess() + page.getIndirectAccess();
-
-		double score = views / _AVERAGE_VIEWS;
-
-		if (score >= 1.0) {
-			return 1.0;
-		}
-
-		return 0.0;
 	}
 
 	private int _getDepth(Map<String, String> eventProperties) {
@@ -306,35 +196,6 @@ public class PageNanite extends BaseNanite<Page> {
 			Integer::valueOf
 		).orElse(
 			0
-		);
-	}
-
-	private Optional<PageScroll> _getMaxPageScrollOptional(
-		Set<PageScroll> pageScrolls) {
-
-		Stream<PageScroll> stream = pageScrolls.stream();
-
-		return stream.max(Comparator.comparing(PageScroll::getDepth));
-	}
-
-	private int _getMaxScrollDepth(Optional<PageScroll> maxPageScrollOptional) {
-		return maxPageScrollOptional.map(
-			PageScroll::getDepth
-		).orElse(
-			0
-		);
-	}
-
-	private long _getMaxScrollTime(
-		Date firstEventDate, Optional<PageScroll> maxPageScrollOptional) {
-
-		return maxPageScrollOptional.map(
-			PageScroll::getEventDate
-		).map(
-			pageScrollEventDate -> _computeReadTime(
-				firstEventDate, pageScrollEventDate)
-		).orElse(
-			0L
 		);
 	}
 
@@ -362,14 +223,6 @@ public class PageNanite extends BaseNanite<Page> {
 		_searchQueryStringsMap.put(preference.getValue(), searchQueryStrings);
 
 		return searchQueryStrings;
-	}
-
-	private Page _setPageEngagementScore(Page page) {
-		double enagementScore = _computeEngagementScore(page);
-
-		page.setEngagementScore(enagementScore);
-
-		return page;
 	}
 
 	private void _setPageSearchTerm(Page page) {
@@ -418,21 +271,7 @@ public class PageNanite extends BaseNanite<Page> {
 		}
 	}
 
-	private static final double _AVERAGE_READ_TIME = 600000.0;
-
-	private static final double _AVERAGE_VIEWS = 30.0;
-
 	private static final Log _log = LogFactory.getLog(PageNanite.class);
-
-	private static final Map<Integer, Double> _averageScrollTime =
-		new HashMap<Integer, Double>() {
-			{
-				put(25, 15000.0);
-				put(50, 20000.0);
-				put(75, 25000.0);
-				put(100, 30000.0);
-			}
-		};
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_PAGE)
 	private MessageSubscriber _messageSubscriber;

@@ -165,17 +165,6 @@ public class OSBAsahBatchCuratorBot {
 		return () -> _osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
 	}
 
-	private Runnable _getEngagementsRunnable() {
-		return () -> {
-			_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
-
-			_osbAsahTaskManager.runNanites(
-				"IndividualEngagementScoresNanite",
-				"IndividualSegmentEngagementScoresNanite",
-				"AccountEngagementScoresNanite");
-		};
-	}
-
 	private Runnable _getInterestsRunnable() {
 		return () -> {
 			_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
@@ -202,16 +191,9 @@ public class OSBAsahBatchCuratorBot {
 				"ctx._source.status = 'INTERRUPTED'", Collections.emptyMap()),
 			"run-logs");
 
-		_osbAsahTaskManager.runNanites("AssetEngagementScoresNanite");
-
 		_osbAsahTaskManager.runNanites("DataRetentionNanite");
 
 		_osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
-
-		_osbAsahTaskManager.runNanites(
-			"IndividualEngagementScoresNanite",
-			"IndividualSegmentEngagementScoresNanite",
-			"AccountEngagementScoresNanite");
 
 		_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
 
@@ -259,7 +241,6 @@ public class OSBAsahBatchCuratorBot {
 			_getDeleteDXPBatchEntitiesRunnable(),
 			"DeleteDXPBatchEntitiesNanite");
 		_scheduleNanite(_getDeleteTempFilesRunnable(), "DeleteTempFilesNanite");
-		_scheduleNanite(_getEngagementsRunnable(), "Engagements");
 		_scheduleNanite(_getInterestsRunnable(), "Interests");
 		_scheduleNanite(
 			_getStaleDynamicIndividualSegmentsRunnable(),

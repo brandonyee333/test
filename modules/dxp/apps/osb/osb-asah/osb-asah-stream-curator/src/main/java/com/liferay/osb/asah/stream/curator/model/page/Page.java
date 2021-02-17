@@ -101,10 +101,6 @@ public class Page extends BasePageModel {
 		return _directAccessDates;
 	}
 
-	public double getEngagementScore() {
-		return _engagementScore;
-	}
-
 	public long getEntrances() {
 		return _entrances;
 	}
@@ -185,10 +181,6 @@ public class Page extends BasePageModel {
 		_directAccessDates = directAccessDates;
 	}
 
-	public void setEngagementScore(double enagementScore) {
-		_engagementScore = enagementScore;
-	}
-
 	public void setEntrances(long entrances) {
 		_entrances = entrances;
 	}
@@ -243,7 +235,6 @@ public class Page extends BasePageModel {
 	private long _ctaClicks;
 	private long _directAccess;
 	private NavigableSet<Date> _directAccessDates = new TreeSet<>();
-	private double _engagementScore;
 	private long _entrances;
 	private long _exits;
 	private Date _firstEventDate;
