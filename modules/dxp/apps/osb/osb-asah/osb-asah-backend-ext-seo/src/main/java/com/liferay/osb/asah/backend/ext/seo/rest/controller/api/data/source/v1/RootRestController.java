@@ -51,9 +51,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -89,9 +86,6 @@ public class RootRestController {
 	@DeleteMapping("/cache")
 	@Scheduled(cron = "0 0 2 ? * MON")
 	public void clearCache() {
-		if (_log.isInfoEnabled()) {
-			_log.info("Cache cleared: getTrafficSources");
-		}
 	}
 
 	@Cacheable
@@ -342,8 +336,6 @@ public class RootRestController {
 
 		return beanListProcessor.getBeans();
 	}
-
-	private static final Log _log = LogFactory.getLog(RootRestController.class);
 
 	private static final Map<String, String> _databases =
 		new HashMap<String, String>() {

@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -199,6 +201,10 @@ public class CacheProcessorAspect {
 		}
 
 		cache.clear();
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Cache cleared: " + cache.getName());
+		}
 	}
 
 	private void _evict(String cacheName, Object key) {
@@ -334,6 +340,9 @@ public class CacheProcessorAspect {
 
 		return true;
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		CacheProcessorAspect.class);
 
 	@Autowired(required = false)
 	private CacheManager _cacheManager;
