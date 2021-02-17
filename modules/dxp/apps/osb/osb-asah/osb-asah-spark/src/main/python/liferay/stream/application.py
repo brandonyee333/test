@@ -12,6 +12,7 @@
 from liferay.common.spark import BaseSparkApplication, \
 	SparkJobPipeline
 from liferay.stream.job import CuratorSparkJob
+from liferay.stream.udf import AcquisitionChannelFunction
 
 from pyspark import SparkConf
 
@@ -22,6 +23,13 @@ class OSBAsahStreamCuratorApplication(BaseSparkApplication):
 
 	def __init__(self):
 		super(OSBAsahStreamCuratorApplication, self).__init__()
+
+		AcquisitionChannelFunction(
+			self.spark_session,
+			self.configuration.get('acquisition.channel.paid-host-names'),
+			self.configuration.get('acquisition.channel.search-host-names'),
+			self.configuration.get('acquisition.channel.social-host-names'),
+		)
 
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(
