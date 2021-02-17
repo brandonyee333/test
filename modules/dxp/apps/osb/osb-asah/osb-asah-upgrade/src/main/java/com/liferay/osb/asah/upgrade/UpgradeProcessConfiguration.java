@@ -20,6 +20,7 @@ import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_10_0.DeleteActivityNaniteOSBAsahTasksUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_10_0.PageReferrersUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_10_0.UserSessionsInteractionsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_11_0.EngagementsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -43,12 +44,18 @@ public class UpgradeProcessConfiguration {
 			"2.9.0", "2.10.0", _deleteActivityNaniteOSBAsahTasksUpgradeStep,
 			_pageReferrersUpgradeStep, _userSessionsInteractionsUpgradeStep);
 
+		upgradeProcess.addUpgradeSteps(
+			"2.10.0", "2.11.0", _engagementsUpgradeStep);
+
 		return upgradeProcess;
 	}
 
 	@Autowired
 	private DeleteActivityNaniteOSBAsahTasksUpgradeStep
 		_deleteActivityNaniteOSBAsahTasksUpgradeStep;
+
+	@Autowired
+	private EngagementsUpgradeStep _engagementsUpgradeStep;
 
 	@Autowired
 	private PageReferrersUpgradeStep _pageReferrersUpgradeStep;
