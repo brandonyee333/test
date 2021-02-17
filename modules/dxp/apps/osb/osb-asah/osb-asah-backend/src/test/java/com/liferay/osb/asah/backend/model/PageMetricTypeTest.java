@@ -95,29 +95,6 @@ public class PageMetricTypeTest extends BaseEnumTestCase<PageMetricType> {
 	}
 
 	@Test
-	public void testEngagement() {
-		PageMetricType pageMetricType = PageMetricType.of("engagementMetric");
-
-		Assert.assertEquals(PageMetricType.ENGAGEMENT, pageMetricType);
-	}
-
-	@Test
-	public void testEngagementFieldName() {
-		PageMetricType pageMetricType = PageMetricType.ENGAGEMENT;
-
-		Assert.assertEquals("engagementScore", pageMetricType.getFieldName());
-	}
-
-	@Test
-	public void testEngagementTrendClassificationOrder() {
-		PageMetricType pageMetricType = PageMetricType.ENGAGEMENT;
-
-		Assert.assertEquals(
-			TrendClassification.Order.ASC,
-			pageMetricType.getTrendClassificationOrder());
-	}
-
-	@Test
 	public void testUsers() {
 		PageMetricType pageMetricType = PageMetricType.of("visitorsMetric");
 

@@ -8,10 +8,6 @@ query SiteMetrics($channelId: String, $interval: String!, $rangeEnd: String, $ra
             ...metricFragment
             __typename
         }
-        engagementMetric {
-            ...metricFragment
-            __typename
-        }
         knownVisitorsMetric {
             ...metricFragment
             __typename

@@ -32,9 +32,6 @@ query PageMetric($canonicalUrl: String, $channelId: String, $country: String, $d
 		directAccessMetric {
 			...metricFragment
 		}
-		engagementMetric {
-			...metricFragment
-		}
 		indirectAccessMetric {
 			...metricFragment
 		}

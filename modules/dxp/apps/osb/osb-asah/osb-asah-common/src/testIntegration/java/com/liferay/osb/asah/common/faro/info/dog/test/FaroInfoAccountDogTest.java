@@ -286,7 +286,6 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		Assert.assertNotNull(accountJSONObject.getString("dataSourceId"));
 		Assert.assertNotNull(accountJSONObject.getString("dateCreated"));
 		Assert.assertNotNull(accountJSONObject.getString("dateModified"));
-		Assert.assertEquals(0, accountJSONObject.getInt("engagementScore"));
 		Assert.assertNotNull(accountJSONObject.getString("id"));
 		Assert.assertEquals(0, accountJSONObject.getInt("individualCount"));
 	}

@@ -14,7 +14,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "${now-2d}",
 		"exits": 1,
@@ -65,7 +64,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 0,
 		"eventDate": "${now-2d}",
 		"exits": 0,
@@ -116,7 +114,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 0,
 		"eventDate": "${now-2d}",
 		"exits": 0,
@@ -167,7 +164,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "${now-2d}",
 		"exits": 1,

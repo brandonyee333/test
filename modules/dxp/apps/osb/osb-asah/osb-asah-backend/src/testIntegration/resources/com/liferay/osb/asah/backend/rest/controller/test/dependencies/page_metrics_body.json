@@ -5,7 +5,7 @@
 		"rangeKey": 30,
 		"size": 10,
 		"sort": {
-			"column": "engagementMetric",
+			"column": "visitorsMetric",
 			"type": "DESC"
 		},
 		"start": 0

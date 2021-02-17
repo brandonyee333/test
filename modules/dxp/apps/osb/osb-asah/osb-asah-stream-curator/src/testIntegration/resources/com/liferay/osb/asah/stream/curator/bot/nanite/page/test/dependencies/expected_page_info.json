@@ -272,7 +272,6 @@
 		"dataSourceId": "liferay.com",
 		"deviceType": "Desktop",
 		"directAccess": 0,
-		"engagementScore": 0.3,
 		"eventDate": "2018-01-04T11:00:00.000Z",
 		"firstEventDate": "2018-01-04T11:10:04.000Z",
 		"indirectAccess": 2,

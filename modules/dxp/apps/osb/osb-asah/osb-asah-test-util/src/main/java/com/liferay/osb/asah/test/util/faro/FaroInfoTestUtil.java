@@ -123,8 +123,6 @@ public class FaroInfoTestUtil {
 		).put(
 			"dateModified", dateString
 		).put(
-			"engagementScore", 0
-		).put(
 			"id", id
 		).put(
 			"individualCount", 0
@@ -438,28 +436,6 @@ public class FaroInfoTestUtil {
 		);
 	}
 
-	public static JSONObject buildEngagementJSONObject(
-		String dayDateString, String emailAddress,
-		JSONArray individualSegmentIds, String name, String ownerId,
-		String ownerType, double score) {
-
-		return JSONUtil.put(
-			"dateRecorded", dayDateString
-		).put(
-			"emailAddress", emailAddress
-		).put(
-			"individualSegmentIds", individualSegmentIds
-		).put(
-			"name", name
-		).put(
-			"ownerId", ownerId
-		).put(
-			"ownerType", ownerType
-		).put(
-			"score", score
-		);
-	}
-
 	public static JSONObject buildExperimentJSONObject(
 		String id, String metric, String status) {
 
@@ -531,17 +507,6 @@ public class FaroInfoTestUtil {
 				"key", "MOST_RECENT"
 			)
 		);
-	}
-
-	public static JSONObject buildIndividualEngagementJSONObject(
-		String dayDateString, JSONObject individualJSONObject, double score) {
-
-		return buildEngagementJSONObject(
-			dayDateString,
-			FaroInfoIndividualUtil.getIndividualEmail(individualJSONObject),
-			individualJSONObject.getJSONArray("individualSegmentIds"),
-			FaroInfoIndividualUtil.getIndividualName(individualJSONObject),
-			individualJSONObject.getString("id"), "individual", score);
 	}
 
 	public static JSONObject buildIndividualFieldJSONObject(
@@ -687,14 +652,6 @@ public class FaroInfoTestUtil {
 		).put(
 			"individualSegmentIds", new JSONArray()
 		);
-	}
-
-	public static JSONObject buildIndividualSegmentEngagementJSONObject(
-		String dayDateString, String individualSegmentId, double score) {
-
-		return buildEngagementJSONObject(
-			dayDateString, null, null, null, individualSegmentId,
-			"individual-segment", score);
 	}
 
 	public static JSONArray buildIndividualSegmentVisitedPagesJSONArray(

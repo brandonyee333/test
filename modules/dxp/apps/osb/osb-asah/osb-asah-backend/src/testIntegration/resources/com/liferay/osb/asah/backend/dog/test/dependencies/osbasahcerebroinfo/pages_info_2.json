@@ -13,7 +13,6 @@
 		"directAccessDates": [
 			"${now-30d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-30d}",
 		"experimentId": "",
 		"firstEventDate": "${now-30d}",

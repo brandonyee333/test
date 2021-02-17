@@ -23,10 +23,15 @@
 				}
 			]
 		},
-		"engagementScore": 0.5232594891969709,
 		"id": "374790569167317525",
 		"individualSegmentIds": [
 			"366637689379787789"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-1d}"
+			}
 		]
 	},
 	{
@@ -53,10 +58,15 @@
 				}
 			]
 		},
-		"engagementScore": 0.4591914089860228,
 		"id": "374790572309620075",
 		"individualSegmentIds": [
 			"366637689379787789"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-1d}"
+			}
 		]
 	},
 	{
@@ -83,9 +93,14 @@
 				}
 			]
 		},
-		"engagementScore": 0.3885240478621732,
 		"id": "374790572703144534",
 		"individualSegmentIds": [
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-10d}"
+			}
 		]
 	},
 	{
@@ -112,10 +127,15 @@
 				}
 			]
 		},
-		"engagementScore": 0,
 		"id": "374790575409131096",
 		"individualSegmentIds": [
 			"366637689379787789"
+		],
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-100d}"
+			}
 		]
 	},
 	{
@@ -142,7 +162,6 @@
 				}
 			]
 		},
-		"engagementScore": 0,
 		"id": "386190546467211094",
 		"individualSegmentIds": [
 			"366637689379787789"

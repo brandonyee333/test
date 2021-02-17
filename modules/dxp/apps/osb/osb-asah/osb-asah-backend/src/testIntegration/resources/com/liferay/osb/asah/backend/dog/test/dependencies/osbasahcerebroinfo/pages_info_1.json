@@ -13,7 +13,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"experimentId": "",
 		"firstEventDate": "${now-1d}",
@@ -66,7 +65,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"experimentId": "10",
 		"firstEventDate": "${now-1d}",
@@ -109,7 +107,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"experimentId": "20",
 		"firstEventDate": "${now-1d}",
@@ -152,7 +149,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"experimentId": "20",
 		"firstEventDate": "${now-1d}",
@@ -195,7 +191,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"experimentId": "10",
 		"firstEventDate": "${now-1d}",
@@ -237,7 +232,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"firstEventDate": "${now-1d}",
 		"formSubmissions": 0,
@@ -278,7 +272,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"firstEventDate": "${now-1d}",
 		"formSubmissions": 0,
@@ -319,7 +312,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"firstEventDate": "${now-1d}",
 		"formSubmissions": 0,
@@ -365,7 +357,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"firstEventDate": "${now-1d}",
 		"formSubmissions": 0,
@@ -406,7 +397,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"firstEventDate": "${now-1d}",
 		"formSubmissions": 0,
@@ -447,7 +437,6 @@
 		"directAccessDates": [
 			"${now-6d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-6d}",
 		"firstEventDate": "${now-6d}",
 		"formSubmissions": 0,
@@ -488,7 +477,6 @@
 		"directAccessDates": [
 			"${now-21d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-21d}",
 		"firstEventDate": "${now-21d}",
 		"formSubmissions": 0,
@@ -529,7 +517,6 @@
 		"directAccessDates": [
 			"${now-27d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-27d}",
 		"firstEventDate": "${now-27d}",
 		"formSubmissions": 0,
@@ -570,7 +557,6 @@
 		"directAccessDates": [
 			"${now-75d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-75d}",
 		"firstEventDate": "${now-7d}",
 		"formSubmissions": 0,
@@ -611,7 +597,6 @@
 		"directAccessDates": [
 			"${now-160d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-160d}",
 		"firstEventDate": "${now-160d}",
 		"formSubmissions": 0,
@@ -652,7 +637,6 @@
 		"directAccessDates": [
 			"${now-361d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-361d}",
 		"firstEventDate": "${now-361d}",
 		"formSubmissions": 0,

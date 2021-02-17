@@ -12,7 +12,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 0,
 		"eventDate": "2019-09-21T13:00:00.000Z",
 		"exits": 0,
@@ -61,7 +60,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-10-16T09:00:00.000Z",
 		"exits": 1,
@@ -110,7 +108,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 0,
 		"eventDate": "2019-09-24T21:00:00.000Z",
 		"exits": 0,
@@ -159,7 +156,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-10-12T18:00:00.000Z",
 		"exits": 1,
@@ -207,7 +203,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 0,
 		"eventDate": "2019-09-18T00:00:00.000Z",
 		"exits": 1,
@@ -255,7 +250,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-09-17T21:00:00.000Z",
 		"exits": 0,
@@ -303,7 +297,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-09-24T23:00:00.000Z",
 		"exits": 1,
@@ -351,7 +344,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0.4,
 		"entrances": 1,
 		"eventDate": "2019-09-29T08:00:00.000Z",
 		"exits": 1,
@@ -400,7 +392,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-09-17T18:00:00.000Z",
 		"exits": 1,
@@ -448,7 +439,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-10-05T08:00:00.000Z",
 		"exits": 0,
@@ -496,7 +486,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 0,
 		"eventDate": "2019-10-01T15:00:00.000Z",
 		"exits": 0,
@@ -545,7 +534,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-09-19T12:00:00.000Z",
 		"exits": 0,
@@ -593,7 +581,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0.4,
 		"entrances": 1,
 		"eventDate": "2019-09-20T10:00:00.000Z",
 		"exits": 0,
@@ -643,7 +630,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0.4,
 		"entrances": 1,
 		"eventDate": "2019-09-16T23:00:00.000Z",
 		"exits": 1,
@@ -693,7 +679,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-10-01T08:00:00.000Z",
 		"exits": 1,
@@ -742,7 +727,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-09-17T09:00:00.000Z",
 		"exits": 1,
@@ -791,7 +775,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-09-22T03:00:00.000Z",
 		"exits": 0,
@@ -840,7 +823,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 0,
 		"eventDate": "2019-09-23T23:00:00.000Z",
 		"exits": 0,
@@ -888,7 +870,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 0,
 		"eventDate": "2019-10-06T09:00:00.000Z",
 		"exits": 0,
@@ -937,7 +918,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-10-16T13:00:00.000Z",
 		"exits": 1,
@@ -986,7 +966,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 0,
 		"eventDate": "2019-10-04T21:00:00.000Z",
 		"exits": 0,
@@ -1033,7 +1012,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-10-16T06:00:00.000Z",
 		"exits": 1,
@@ -1079,7 +1057,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 0,
 		"eventDate": "2019-10-14T05:00:00.000Z",
 		"exits": 0,
@@ -1125,7 +1102,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-10-16T01:00:00.000Z",
 		"exits": 1,
@@ -1171,7 +1147,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0,
 		"entrances": 1,
 		"eventDate": "2019-09-22T19:00:00.000Z",
 		"exits": 1,

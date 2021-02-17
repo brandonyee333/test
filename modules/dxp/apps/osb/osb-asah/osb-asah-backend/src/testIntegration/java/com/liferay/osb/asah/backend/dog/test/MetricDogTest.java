@@ -630,29 +630,6 @@ public class MetricDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
-	public void testSiteEngagementMetric() {
-		SiteMetric siteMetric = _metricDog.getAssetMetric(
-			_createSearchQuery(
-				"1", AssetType.SITE, null, TimeRange.LAST_7_DAYS, null),
-			new HashSet<String>() {
-				{
-					add(SiteMetricType.ENGAGEMENT.getName());
-				}
-			});
-
-		Assert.assertNotNull(siteMetric);
-
-		Metric engagementMetric = siteMetric.getEngagementMetric();
-
-		Assert.assertEquals(
-			0.09893977777777777, engagementMetric.getValue(), 0);
-	}
-
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages_info_1.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
-	@Test
 	public void testSiteVisitorsMetrics() {
 		SiteMetric siteMetric = _metricDog.getAssetMetric(
 			_createSearchQuery(

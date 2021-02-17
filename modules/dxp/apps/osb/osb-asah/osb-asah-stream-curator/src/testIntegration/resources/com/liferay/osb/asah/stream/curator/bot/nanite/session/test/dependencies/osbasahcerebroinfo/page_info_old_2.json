@@ -15,7 +15,6 @@
 			"2019-08-16T17:15:19.211Z",
 			"2019-08-16T17:22:34.714Z"
 		],
-		"engagementScore": 0.09677844444444444,
 		"entrances": 0,
 		"eventDate": "2019-08-16T17:00:00.000Z",
 		"exits": 0,
@@ -65,7 +64,6 @@
 		"directAccessDates": [
 			"2019-08-16T19:18:39.991Z"
 		],
-		"engagementScore": 0.014542444444444445,
 		"entrances": 1,
 		"eventDate": "2019-08-16T19:00:00.000Z",
 		"exits": 0,
@@ -116,7 +114,6 @@
 		"directAccess": 0,
 		"directAccessDates": [
 		],
-		"engagementScore": 0.0050606666666666664,
 		"entrances": 1,
 		"eventDate": "2019-08-16T19:00:00.000Z",
 		"exits": 0,

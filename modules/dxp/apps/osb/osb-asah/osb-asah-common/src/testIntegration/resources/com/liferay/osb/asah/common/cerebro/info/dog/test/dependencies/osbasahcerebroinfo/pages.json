@@ -12,7 +12,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"experimentId": "20",
 		"firstEventDate": "${now-1d}",
@@ -55,7 +54,6 @@
 		"directAccessDates": [
 			"${now-1d}"
 		],
-		"engagementScore": 0.09893977777777777,
 		"eventDate": "${now-1d}",
 		"experimentId": "10",
 		"firstEventDate": "${now-1d}",

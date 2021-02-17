@@ -7,9 +7,6 @@
 			"bounceRateMetric": {
 				"value": 0.0
 			},
-			"engagementMetric": {
-				"value": 0.0
-			},
 			"knownVisitorsMetric": {
 				"value": 1.0
 			},

@@ -53,12 +53,6 @@ public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 		String dayDateString = DateUtil.newDayDateString();
 		String individualSegmentId = RandomTestUtil.randomId();
 
-		faroInfoElasticsearchInvoker.add(
-			"engagements",
-			FaroInfoTestUtil.buildIndividualSegmentEngagementJSONObject(
-				dayDateString, individualSegmentId,
-				RandomUtils.nextDouble(0, 1)));
-
 		JSONObject assetJSONObject = FaroInfoTestUtil.buildPageAssetJSONObject(
 			dataSourceJSONObject.getString("id"));
 
@@ -90,21 +84,16 @@ public class DeleteIndividualSegmentTasksNaniteTest extends BaseNaniteTestCase {
 		_deleteIndividualSegmentTasksNanite.run(
 			JSONUtil.put("individualSegmentId", individualSegmentId));
 
-		for (String collectionName :
-				new String[] {"engagements", "visited-pages"}) {
-
-			Assert.assertFalse(
-				"Entries within " + collectionName + " related to the " +
-					"deleted individual segment should be deleted",
-				faroInfoElasticsearchInvoker.exists(
-					collectionName,
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("ownerId", individualSegmentId)
-					).filter(
-						QueryBuilders.termQuery(
-							"ownerType", "individual-segment")
-					)));
-		}
+		Assert.assertFalse(
+			"Entries within visited-pages related to the deleted individual " +
+				"segment should be deleted",
+			faroInfoElasticsearchInvoker.exists(
+				"visited-pages",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("ownerId", individualSegmentId)
+				).filter(
+					QueryBuilders.termQuery("ownerType", "individual-segment")
+				)));
 
 		for (String collectionName :
 				new String[] {"memberships", "membership-changes"}) {

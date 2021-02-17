@@ -14,7 +14,6 @@
 		"dataSourceId": "346306699042460013",
 		"dateCreated": "${today-1dT00:00:00.000Z}",
 		"dateModified": "${today-1dT00:00:00.000Z}",
-		"engagementScore": 0,
 		"id": "346306741766310654",
 		"individualCount": 16,
 		"organization": {
@@ -334,7 +333,6 @@
 		"dataSourceId": "346306699042460013",
 		"dateCreated": "${today-1dT00:00:00.000Z}",
 		"dateModified": "${today-1dT00:00:00.000Z}",
-		"engagementScore": 0,
 		"id": "346306745597466890",
 		"individualCount": 16,
 		"organization": {
@@ -668,7 +666,6 @@
 		"dataSourceId": "346306699042460013",
 		"dateCreated": "${today-1dT00:00:00.000Z}",
 		"dateModified": "${today-1dT00:00:00.000Z}",
-		"engagementScore": 0,
 		"id": "346306769708391202",
 		"individualCount": 16,
 		"organization": {
@@ -974,7 +971,6 @@
 		"dataSourceId": "346308771486495553",
 		"dateCreated": "${today-1dT00:00:00.000Z}",
 		"dateModified": "${today-1dT00:00:00.000Z}",
-		"engagementScore": 0,
 		"id": "346308947223203070",
 		"individualCount": 16,
 		"organization": {

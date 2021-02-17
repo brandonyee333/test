@@ -64,8 +64,6 @@ public class AccountDogTest {
 		Assert.assertEquals(
 			"2019-10-16T21:26:31.053Z",
 			DateUtil.toUTCString(account.getDateModified()));
-		Assert.assertEquals(
-			0.2659144400174847, account.getEngagementScore(), .01);
 		Assert.assertEquals("379649798552539340", account.getId());
 		Assert.assertEquals(13, account.getIndividualsCount());
 	}

@@ -8,9 +8,14 @@
 				}
 			]
 		},
-		"engagementScore": 0.5,
 		"firstEnrichmentDate": "${now-2d}",
-		"id": "1"
+		"id": "1",
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-2d}"
+			}
+		]
 	},
 	{
 		"dateCreated": "${now-25d}",
@@ -21,9 +26,14 @@
 				}
 			]
 		},
-		"engagementScore": 0.5,
 		"firstEnrichmentDate": "${now-4d}",
-		"id": "2"
+		"id": "2",
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-4d}"
+			}
+		]
 	},
 	{
 		"dateCreated": "${now-20d}",
@@ -46,9 +56,14 @@
 				}
 			]
 		},
-		"engagementScore": 0,
 		"firstEnrichmentDate": "${now-35d}",
-		"id": "4"
+		"id": "4",
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-35d}"
+			}
+		]
 	},
 	{
 		"dateCreated": "${now-10d}",
