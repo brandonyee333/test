@@ -21,11 +21,11 @@
 
 1. Connect to the MySQL server via the MySQL client.
 
-	1. ```docker exec -it testray-mysql mysql -utest -ptest```
+	1. `docker exec -it testray-mysql mysql -utest -ptest`
 
-	1. ```use lportal;```
+	1. `use lportal;`
 
-	1. ```show tables;```
+	1. `show tables;`
 
 		No tables exist because the database is empty.
 
@@ -66,7 +66,7 @@
 
 1. Verify databases were created. Go to your MySQL client.
 
-	1. ```show tables;```
+	1. `show tables;`
 
 		Many tables exist because the database was populated by Liferay.
 
@@ -89,9 +89,9 @@
 
 1. Verify that Liferay does not have the Testray modules.
 
-	1. ```docker exec -it testray-liferay bash```
+	1. `docker exec -it testray-liferay bash`
 
-	1. ```ls /opt/liferay/osgi/modules```
+	1. `ls /opt/liferay/osgi/modules`
 
 		No OSGi modules exist.
 
@@ -99,7 +99,7 @@
 
 	1. Go to ***modules/dxp/apps/osb/osb-testray***.
 
-	1. ```../../../../../gradlew deploy -Ddeploy.docker.container.id=testray-liferay```
+	1. `../../../../../gradlew deploy -Ddeploy.docker.container.id=testray-liferay`
 
 ## Set Up Testray
 
