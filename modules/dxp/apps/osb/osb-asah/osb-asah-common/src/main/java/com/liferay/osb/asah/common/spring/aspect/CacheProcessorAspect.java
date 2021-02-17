@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -100,7 +101,13 @@ public class CacheProcessorAspect {
 			Object key = _keyGenerator.generate(
 				proceedingJoinPoint.getTarget(), method, arguments);
 
-			Cache.ValueWrapper valueWrapper = _get(cacheable.cacheName(), key);
+			String cacheName = cacheable.cacheName();
+
+			if (StringUtils.isBlank(cacheName)) {
+				cacheName = method.getName();
+			}
+
+			Cache.ValueWrapper valueWrapper = _get(cacheName, key);
 
 			if (valueWrapper != null) {
 				return valueWrapper.get();
@@ -108,7 +115,7 @@ public class CacheProcessorAspect {
 
 			returnObject = proceedingJoinPoint.proceed();
 
-			_put(cacheable.cacheName(), key, returnObject);
+			_put(cacheName, key, returnObject);
 		}
 
 		return returnObject;
