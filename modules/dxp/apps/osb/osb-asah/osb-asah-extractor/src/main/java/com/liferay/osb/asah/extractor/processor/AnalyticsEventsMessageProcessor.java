@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
+import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
@@ -29,6 +30,7 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.Event;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -467,8 +469,14 @@ public class AnalyticsEventsMessageProcessor {
 				_eventDefinitionDog.getEventDefinitionByName(eventId);
 
 			if (eventDefinition == null) {
-				_eventDefinitionDog.addEventDefinition(
+				eventDefinition = _eventDefinitionDog.addEventDefinition(
 					null, null, eventId, "custom");
+			}
+
+			Long eventDefinitionId = eventDefinition.getId();
+
+			for (AnalyticsEvent analyticsEvent : entry.getValue()) {
+				_eventDog.addEvent(analyticsEvent, eventDefinitionId);
 			}
 		}
 	}
@@ -511,6 +519,9 @@ public class AnalyticsEventsMessageProcessor {
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
+
+	@Autowired
+	private EventDog _eventDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
