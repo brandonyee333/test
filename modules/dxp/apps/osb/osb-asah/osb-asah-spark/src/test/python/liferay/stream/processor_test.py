@@ -13,10 +13,13 @@ from liferay.stream.job import CuratorSparkJob
 from liferay.stream.processor import BlogDataFrameProcessor, \
 	DocumentLibraryDataFrameProcessor, \
 	FormDataFrameProcessor, \
-	JournalDataFrameProcessor
+	JournalDataFrameProcessor, \
+	PageReferrerDataFrameProcessor
+from liferay.stream.udf import AcquisitionChannelFunction
 
 from pyspark.sql import functions as F, \
 	types as T
+from pyspark.sql.functions import udf
 
 import pytest
 
@@ -37,6 +40,15 @@ def form_data_frame_processor(spark_application):
 @pytest.fixture
 def journal_data_frame_processor(spark_application):
 	return JournalDataFrameProcessor(0, CuratorSparkJob(spark_application))
+
+@pytest.fixture(scope='session')
+def page_referrer_data_frame_processor(spark_application):
+	AcquisitionChannelFunction(
+		spark_application.spark_session, 
+		search_host_names=['google.com'], social_host_names=['facebook.com']
+	)
+
+	return PageReferrerDataFrameProcessor(0, CuratorSparkJob(spark_application))
 
 def read_data_frame(file_name, spark_session, schema=None):
 	data_frame_reader = spark_session.read
@@ -368,3 +380,39 @@ def test_journal_data_frame_processor_filter(
 	assert len(actual_data_frame_rows) == 1
 
 	assert actual_data_frame_rows[0].applicationId == 'WebContent'
+
+def test_page_referrer_data_frame_processor_process(
+	page_referrer_data_frame_processor, spark_session
+):
+
+	actual_data_frame = page_referrer_data_frame_processor.process(
+		read_session_events_data_frame(
+			'page_referrer_data_frame_processor_process_input.json',
+			spark_session
+		),
+		write=False
+	).select(
+		'access', 'acquisition_channel', 'channelId', 'normalized_event_date',
+		'primaryKey', 'projectId', 'referrer', 'url', 'userId', 'variantId'
+	).sort(
+		['primaryKey']
+	)
+
+	expected_data_frame = read_data_frame(
+		'page_referrer_data_frame_processor_process_expected_output.json',
+		spark_session,
+		T.StructType([
+			T.StructField("access", T.LongType(), False),
+			T.StructField("acquisition_channel", T.StringType(), False),
+			T.StructField("channelId", T.StringType(), False),
+			T.StructField("normalized_event_date", T.TimestampType(), False),
+			T.StructField("primaryKey", T.StringType(), False),
+			T.StructField("projectId", T.StringType(), False),
+			T.StructField("referrer", T.StringType(), False),
+			T.StructField("url", T.StringType(), False),
+			T.StructField("userId", T.StringType(), False),
+			T.StructField("variantId", T.StringType(), False)
+		])
+	)
+
+	assert expected_data_frame.collect() == actual_data_frame.collect()

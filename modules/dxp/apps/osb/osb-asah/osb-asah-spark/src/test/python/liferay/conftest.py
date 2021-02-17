@@ -23,6 +23,8 @@ sys.path.insert(
 	os.path.dirname(os.path.abspath(__file__)) + '/../../../main/python'
 )
 
+os.environ['PYTHONPATH'] = ":".join(sys.path)
+
 @pytest.fixture(scope='session')
 def spark_application():
 	from liferay.common.configuration import Configuration
