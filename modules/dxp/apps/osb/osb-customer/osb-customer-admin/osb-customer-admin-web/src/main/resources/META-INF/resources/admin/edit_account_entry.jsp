@@ -233,7 +233,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 						if (postalAddresses != null) {
 							for (PostalAddress postalAddress : postalAddresses) {
-						%>
+					%>
 
 								<div>
 									<c:if test="<%= Validator.isNotNull(postalAddress.getAddressType()) %>">

@@ -386,18 +386,18 @@ if (portletTitleBasedNavigation) {
 									<aui:translation-manager availableLocales="<%= availableLocales %>" defaultLanguageId="<%= defaultLanguageId %>" id="translationManager" />
 
 							<%
-									List<DDMStructure> ddmStructures = dlFileEntryType.getDDMStructures();
+							List<DDMStructure> ddmStructures = dlFileEntryType.getDDMStructures();
 
-									for (DDMStructure ddmStructure : ddmStructures) {
-										com.liferay.dynamic.data.mapping.storage.DDMFormValues ddmFormValues = null;
+							for (DDMStructure ddmStructure : ddmStructures) {
+								com.liferay.dynamic.data.mapping.storage.DDMFormValues ddmFormValues = null;
 
-										try {
-											DLFileEntryMetadata fileEntryMetadata = DLFileEntryMetadataLocalServiceUtil.getFileEntryMetadata(ddmStructure.getStructureId(), fileVersionId);
+								try {
+									DLFileEntryMetadata fileEntryMetadata = DLFileEntryMetadataLocalServiceUtil.getFileEntryMetadata(ddmStructure.getStructureId(), fileVersionId);
 
-											ddmFormValues = dlEditFileEntryDisplayContext.getDDMFormValues(fileEntryMetadata.getDDMStorageId());
-										}
-										catch (Exception e) {
-										}
+									ddmFormValues = dlEditFileEntryDisplayContext.getDDMFormValues(fileEntryMetadata.getDDMStorageId());
+								}
+								catch (Exception e) {
+								}
 							%>
 
 										<c:if test="<%= !dlEditFileEntryDisplayContext.isDDMStructureVisible(ddmStructure) %>">
