@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -31,6 +32,7 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Event;
+import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -454,6 +456,29 @@ public class AnalyticsEventsMessageProcessor {
 		}
 	}
 
+	private void _storeEventAttributes(
+		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
+
+		Map<String, String> analyticsEventProperties =
+			analyticsEvent.getEventProperties();
+
+		for (Map.Entry<String, String> entry :
+				analyticsEventProperties.entrySet()) {
+
+			String propertyName = entry.getKey();
+
+			EventAttributeDefinition eventAttributeDefinition =
+				_eventAttributeDefinitionDog.getEventAttributeDefinitionByName(
+					propertyName);
+
+			if (eventAttributeDefinition == null) {
+				_eventAttributeDefinitionDog.addEventAttributeDefinition(
+					"String", null, null,
+					Collections.singleton(eventDefinitionId), propertyName);
+			}
+		}
+	}
+
 	private void _storeEvents(Set<AnalyticsEvent> analyticsEvents) {
 		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
 
@@ -477,6 +502,8 @@ public class AnalyticsEventsMessageProcessor {
 
 			for (AnalyticsEvent analyticsEvent : entry.getValue()) {
 				_eventDog.addEvent(analyticsEvent, eventDefinitionId);
+
+				_storeEventAttributes(analyticsEvent, eventDefinitionId);
 			}
 		}
 	}
@@ -516,6 +543,9 @@ public class AnalyticsEventsMessageProcessor {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
