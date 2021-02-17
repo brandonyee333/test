@@ -18,6 +18,7 @@ import com.liferay.osb.customer.account.entry.details.constants.EventConstants;
 import com.liferay.osb.customer.account.entry.details.service.EventLocalService;
 import com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.ticket.constants.TicketAttachmentConstants;
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
 import com.liferay.osb.customer.ticket.service.base.TicketAttachmentLocalServiceBaseImpl;
@@ -60,7 +61,7 @@ public class TicketAttachmentLocalServiceImpl
 	public TicketAttachment addTicketAttachment(
 			long userId, long accountEntryId, long zendeskTicketId,
 			String fileRepositoryId, String fileName, long fileSize, int type,
-			ServiceContext serviceContext)
+			boolean regionRestricted, ServiceContext serviceContext)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -77,10 +78,24 @@ public class TicketAttachmentLocalServiceImpl
 		ticketAttachment.setCreateDate(new Date());
 		ticketAttachment.setAccountEntryId(accountEntryId);
 		ticketAttachment.setZendeskTicketId(zendeskTicketId);
+
+		ZendeskUser zendeskUser =
+			_zendeskUserWebService.getZendeskUserByExternalId(user.getUuid());
+
+		if (zendeskUser.isEndUser()) {
+			ticketAttachment.setUserRole(
+				TicketAttachmentConstants.USER_ROLE_CUSTOMER);
+		}
+		else {
+			ticketAttachment.setUserRole(
+				TicketAttachmentConstants.USER_ROLE_LIFERAY);
+		}
+
 		ticketAttachment.setFileRepositoryId(fileRepositoryId);
 		ticketAttachment.setFileName(fileName);
 		ticketAttachment.setFileSize(fileSize);
 		ticketAttachment.setType(type);
+		ticketAttachment.setRegionRestricted(regionRestricted);
 
 		ticketAttachment = ticketAttachmentPersistence.update(ticketAttachment);
 
@@ -90,9 +105,6 @@ public class TicketAttachmentLocalServiceImpl
 
 		String zendeskTicketCommentBody = buildZendeskTicketCommentBody(
 			ticketAttachment, serviceContext);
-
-		ZendeskUser zendeskUser =
-			_zendeskUserWebService.getZendeskUserByExternalId(user.getUuid());
 
 		if (zendeskUser.isEndUser()) {
 			_zendeskTicketCommentWebService.addEndUserZendeskTicketComment(

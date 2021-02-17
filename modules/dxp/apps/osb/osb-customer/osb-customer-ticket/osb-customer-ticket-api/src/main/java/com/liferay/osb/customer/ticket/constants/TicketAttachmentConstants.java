@@ -23,4 +23,8 @@ public class TicketAttachmentConstants {
 
 	public static final int TYPE_REGULAR = 0;
 
+	public static final int USER_ROLE_CUSTOMER = 1;
+
+	public static final int USER_ROLE_LIFERAY = 2;
+
 }

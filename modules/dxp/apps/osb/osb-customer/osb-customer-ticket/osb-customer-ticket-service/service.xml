@@ -19,10 +19,12 @@
 
 		<column name="accountEntryId" type="long" />
 		<column name="zendeskTicketId" type="long" />
+		<column name="userRole" type="int" />
 		<column name="fileRepositoryId" type="String" />
 		<column name="fileName" type="String" />
 		<column name="fileSize" type="long" />
 		<column name="type" type="int" />
+		<column name="regionRestricted" type="boolean" />
 
 		<!-- Finder methods -->
 

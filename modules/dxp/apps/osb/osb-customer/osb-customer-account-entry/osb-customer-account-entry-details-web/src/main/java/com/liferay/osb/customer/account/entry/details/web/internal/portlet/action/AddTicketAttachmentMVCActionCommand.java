@@ -58,6 +58,8 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 		long fileSize = ParamUtil.getLong(actionRequest, "fileSize");
 		int type = ParamUtil.getInteger(actionRequest, "type");
 		String comment = ParamUtil.getString(actionRequest, "comment");
+		boolean regionRestricted = ParamUtil.getBoolean(
+			actionRequest, "regionRestricted", true);
 
 		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
 			zendeskTicketId);
@@ -76,7 +78,7 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 
 		_ticketAttachmentService.addTicketAttachment(
 			accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
-			fileSize, type, serviceContext);
+			fileSize, type, regionRestricted, serviceContext);
 	}
 
 	@Reference

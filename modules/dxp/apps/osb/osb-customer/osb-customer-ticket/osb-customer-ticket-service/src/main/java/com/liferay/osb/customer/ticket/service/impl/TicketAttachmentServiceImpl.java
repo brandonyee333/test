@@ -30,7 +30,7 @@ public class TicketAttachmentServiceImpl
 
 	public TicketAttachment addTicketAttachment(
 			long accountEntryId, long zendeskTicketId, String fileRepositoryId,
-			String fileName, long fileSize, int type,
+			String fileName, long fileSize, int type, boolean regionRestricted,
 			ServiceContext serviceContext)
 		throws PortalException {
 
@@ -40,7 +40,7 @@ public class TicketAttachmentServiceImpl
 
 		return ticketAttachmentLocalService.addTicketAttachment(
 			getUserId(), accountEntryId, zendeskTicketId, fileRepositoryId,
-			fileName, fileSize, type, serviceContext);
+			fileName, fileSize, type, regionRestricted, serviceContext);
 	}
 
 	public TicketAttachment getTicketAttachment(long ticketAttachmentId)
