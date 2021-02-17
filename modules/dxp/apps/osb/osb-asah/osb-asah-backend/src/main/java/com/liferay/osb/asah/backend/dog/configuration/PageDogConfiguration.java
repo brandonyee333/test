@@ -109,10 +109,6 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 			metricResolvers.add(_buildDirectAccessMetricResolver());
 		}
 
-		if (selectedMetrics.contains(PageMetricType.ENGAGEMENT.getName())) {
-			metricResolvers.add(_buildEngagementMetricResolver());
-		}
-
 		if (selectedMetrics.contains(PageMetricType.ENTRANCES.getName())) {
 			metricResolvers.add(_buildEntrancesMetricResolver());
 		}
@@ -275,17 +271,6 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 			PageMetricType.DIRECT_ACCESS);
 
 		builder.setterBiConsumer(PageMetric::setDirectAccessMetric);
-
-		return builder.build();
-	}
-
-	private MetricResolver _buildEngagementMetricResolver() {
-		MetricResolver.Builder builder = MetricResolver.builder(
-			PageMetricType.ENGAGEMENT);
-
-		builder.aggregate(_createEngagementAggregationBuilder());
-		builder.mapperFunction(this::_getEngagementAggregationValue);
-		builder.setterBiConsumer(PageMetric::setEngagementMetric);
 
 		return builder.build();
 	}
@@ -453,10 +438,6 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 		builder.aggregate(filterAggregationBuilder);
 	}
 
-	private AggregationBuilder _createEngagementAggregationBuilder() {
-		return _createAvgAggregationBuilder(PageMetricType.ENGAGEMENT);
-	}
-
 	private void _createExitRateAggregations(MetricResolver.Builder builder) {
 		builder.aggregate(
 			_createSumAggregationBuilder(
@@ -539,10 +520,6 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 			subaggregationName);
 
 		return DogUtil.getSingleValue(cardinality);
-	}
-
-	private Double _getEngagementAggregationValue(Aggregations aggregations) {
-		return getAvgAggregationValue(aggregations, PageMetricType.ENGAGEMENT);
 	}
 
 	private Double _getMaxScrollDepthAggregationValue(

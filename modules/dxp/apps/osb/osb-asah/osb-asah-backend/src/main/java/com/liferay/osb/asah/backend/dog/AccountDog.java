@@ -188,8 +188,6 @@ public class AccountDog {
 			_parseDate(accountJSONObject.getString("dateCreated")));
 		account.setDateModified(
 			_parseDate(accountJSONObject.getString("dateModified")));
-		account.setEngagementScore(
-			accountJSONObject.optDouble("engagementScore", 0));
 		account.setId(accountJSONObject.getString("id"));
 		account.setIndividualsCount(
 			accountJSONObject.optLong("individualCount", 0));

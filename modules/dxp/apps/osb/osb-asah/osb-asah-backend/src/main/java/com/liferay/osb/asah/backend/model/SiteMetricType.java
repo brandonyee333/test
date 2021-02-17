@@ -28,9 +28,6 @@ public enum SiteMetricType implements MetricType {
 		"anonymousVisitors", "anonymousVisitorsMetric",
 		TrendClassification.Order.ASC),
 	BOUNCE_RATE("bounce", "bounceRateMetric", TrendClassification.Order.DESC),
-	ENGAGEMENT(
-		"avgEngagementScore", "engagementScore", "engagementMetric",
-		TrendClassification.Order.ASC),
 	KNOWN_VISITORS(
 		"knownVisitors", "knownVisitorsMetric", TrendClassification.Order.ASC),
 	SESSION_DURATION(

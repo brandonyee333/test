@@ -34,9 +34,6 @@ public enum PageMetricType implements MetricType {
 	CLICK_THROUGH_RATE("ctaClicks", "ctrMetric", TrendClassification.Order.ASC),
 	DIRECT_ACCESS(
 		"directAccess", "directAccessMetric", TrendClassification.Order.ASC),
-	ENGAGEMENT(
-		"avgEngagementScore", "engagementScore", "engagementMetric",
-		TrendClassification.Order.ASC),
 	ENTRANCES("entrances", "entrancesMetric", TrendClassification.Order.DESC),
 	EXIT_RATE("exits", "exitRateMetric", TrendClassification.Order.DESC),
 	INDIRECT_ACCESS(

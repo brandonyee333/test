@@ -112,14 +112,6 @@
 			"href": "{url}/definitions/individual-attributes{?name}",
 			"templated": true
 		},
-		"engagement": {
-			"href": "{url}/engagements/{id}{?expand}",
-			"templated": true
-		},
-		"engagements": {
-			"href": "{url}/engagements{?accountId,apply,expand,filter,individualSegmentId,page,size,sort*}",
-			"templated": true
-		},
 		"field": {
 			"href": "{url}/fields/{id}",
 			"templated": true

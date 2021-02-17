@@ -46,7 +46,6 @@ public class SiteMetric implements AssetMetric {
 			Objects.equals(_bounceRateMetric, siteMetric._bounceRateMetric) &&
 			Objects.equals(_canonicalUrls, siteMetric._canonicalUrls) &&
 			Objects.equals(_dataSourceId, siteMetric._dataSourceId) &&
-			Objects.equals(_engagementMetric, siteMetric._engagementMetric) &&
 			Objects.equals(
 				_knownVisitorsMetric, siteMetric._knownVisitorsMetric) &&
 			Objects.equals(
@@ -111,10 +110,6 @@ public class SiteMetric implements AssetMetric {
 		return _visitorsMetric;
 	}
 
-	public Metric getEngagementMetric() {
-		return _engagementMetric;
-	}
-
 	public Metric getKnownVisitorsMetric() {
 		return _knownVisitorsMetric;
 	}
@@ -144,9 +139,9 @@ public class SiteMetric implements AssetMetric {
 	public int hashCode() {
 		return Objects.hash(
 			_anonymousVisitorsMetric, _assetId, _assetMetrics, _assetTitle,
-			_bounceRateMetric, _dataSourceId, _engagementMetric,
-			_knownVisitorsMetric, _sessionDurationMetric, _sessionsMetric,
-			_sessionsPerVisitorMetric, _visitorsMetric);
+			_bounceRateMetric, _dataSourceId, _knownVisitorsMetric,
+			_sessionDurationMetric, _sessionsMetric, _sessionsPerVisitorMetric,
+			_visitorsMetric);
 	}
 
 	public void setAnonymousVisitorsMetric(Metric anonymousVisitorsMetric) {
@@ -182,10 +177,6 @@ public class SiteMetric implements AssetMetric {
 		_dataSourceId = dataSourceId;
 	}
 
-	public void setEngagementMetric(Metric engagementMetric) {
-		_engagementMetric = engagementMetric;
-	}
-
 	public void setKnownVisitorsMetric(Metric knownVisitorsMetric) {
 		_knownVisitorsMetric = knownVisitorsMetric;
 	}
@@ -219,7 +210,6 @@ public class SiteMetric implements AssetMetric {
 	private Metric _bounceRateMetric = new Metric(SiteMetricType.BOUNCE_RATE);
 	private List<String> _canonicalUrls;
 	private String _dataSourceId;
-	private Metric _engagementMetric = new Metric(SiteMetricType.ENGAGEMENT);
 	private Metric _knownVisitorsMetric = new Metric(
 		SiteMetricType.KNOWN_VISITORS);
 	private Metric _sessionDurationMetric = new Metric(

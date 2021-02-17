@@ -231,12 +231,10 @@ public class InterestCompositionDog {
 			boolQueryBuilder, "channelIds", channelId);
 
 		if (active) {
-			boolQueryBuilder.filter(
-				QueryBuilders.rangeQuery(
-					"engagementScore"
-				).gt(
-					0
-				));
+
+			// FIXME: is there a substitute for engagementScore as an active
+			// criteria?
+
 		}
 
 		BoolQueryBuilderUtil.filterTerm(

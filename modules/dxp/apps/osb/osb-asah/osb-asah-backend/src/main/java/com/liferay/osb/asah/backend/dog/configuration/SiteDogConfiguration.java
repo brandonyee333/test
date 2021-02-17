@@ -83,10 +83,6 @@ public class SiteDogConfiguration extends BaseDogConfiguration {
 			metricResolvers.add(_buildBounceRateMetricResolver());
 		}
 
-		if (selectedMetrics.contains(SiteMetricType.ENGAGEMENT.getName())) {
-			metricResolvers.add(_buildEngagementMetricResolver());
-		}
-
 		if (selectedMetrics.contains(SiteMetricType.KNOWN_VISITORS.getName())) {
 			metricResolvers.add(_buildKnownVisitorsMetricResolver());
 		}
@@ -152,17 +148,6 @@ public class SiteDogConfiguration extends BaseDogConfiguration {
 			aggregations -> getBucketScriptAggregationValue(
 				aggregations, SiteMetricType.BOUNCE_RATE));
 		builder.setterBiConsumer(SiteMetric::setBounceRateMetric);
-
-		return builder.build();
-	}
-
-	private MetricResolver _buildEngagementMetricResolver() {
-		MetricResolver.Builder builder = MetricResolver.builder(
-			SiteMetricType.ENGAGEMENT);
-
-		builder.aggregate(_createEngagementAggregationBuilder());
-		builder.mapperFunction(this::_getEngagementAggregationValue);
-		builder.setterBiConsumer(SiteMetric::setEngagementMetric);
 
 		return builder.build();
 	}
@@ -260,10 +245,6 @@ public class SiteDogConfiguration extends BaseDogConfiguration {
 		builder.aggregate(
 			createDivisionPipelineAggregationBuilder(
 				SiteMetricType.BOUNCE_RATE, SiteMetricType.VIEWS));
-	}
-
-	private AggregationBuilder _createEngagementAggregationBuilder() {
-		return _createAvgAggregationBuilder(SiteMetricType.ENGAGEMENT);
 	}
 
 	private AggregationBuilder _createKnownIndividualsAggregationBuilder() {
@@ -397,10 +378,6 @@ public class SiteDogConfiguration extends BaseDogConfiguration {
 
 		return DogUtil.getSingleValue(
 			aggregations.get(siteMetricType.getAggregationName()));
-	}
-
-	private Double _getEngagementAggregationValue(Aggregations aggregations) {
-		return getAvgAggregationValue(aggregations, SiteMetricType.ENGAGEMENT);
 	}
 
 	private Double _getSessionDurationAggregationValue(

@@ -564,7 +564,6 @@ type PageMetric implements AssetMetric {
 	defaultMetric: Metric
 	directAccessMetric: Metric
 	dataSourceId: String
-	engagementMetric: Metric
 	entrancesMetric: Metric
 	exitRateMetric: Metric
 	indirectAccessMetric: Metric
@@ -1002,7 +1001,6 @@ type SiteMetric {
 	anonymousVisitorsMetric: Metric
 	assetMetrics: [AssetMetric]
 	bounceRateMetric: Metric
-	engagementMetric: Metric
 	knownVisitorsMetric: Metric
 	sessionDurationMetric: Metric
 	sessionsMetric: Metric

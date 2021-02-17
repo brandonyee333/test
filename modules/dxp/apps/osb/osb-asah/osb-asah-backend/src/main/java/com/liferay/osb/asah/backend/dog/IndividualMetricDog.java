@@ -98,23 +98,10 @@ public class IndividualMetricDog {
 		}
 
 		if (searchQueryContext.isActive() != null) {
-			if (searchQueryContext.isActive()) {
-				boolQueryBuilder.filter(
-					QueryBuilders.rangeQuery(
-						"engagementScore"
-					).gt(
-						0
-					));
-			}
-			else {
-				boolQueryBuilder.filter(
-					BoolQueryBuilderUtil.should(
-						QueryBuilders.termQuery("engagementScore", 0)
-					).should(
-						BoolQueryBuilderUtil.mustNot(
-							QueryBuilders.existsQuery("engagementScore"))
-					));
-			}
+
+			// FIXME: is there a substitute for engagementScore as an active
+			// criteria?
+
 		}
 
 		return _elasticsearchInvoker.count("individuals", boolQueryBuilder);

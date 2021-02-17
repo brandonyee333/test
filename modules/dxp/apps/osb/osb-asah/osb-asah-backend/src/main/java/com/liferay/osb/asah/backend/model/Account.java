@@ -44,7 +44,6 @@ public class Account {
 				_activeIndividualsCount, account._activeIndividualsCount) &&
 			Objects.equals(_dateCreated, account._dateCreated) &&
 			Objects.equals(_dateModified, account._dateModified) &&
-			Objects.equals(_engagementScore, account._engagementScore) &&
 			Objects.equals(_id, account._id) &&
 			Objects.equals(_individualsCount, account._individualsCount) &&
 			Objects.equals(_properties, account._properties)) {
@@ -83,10 +82,6 @@ public class Account {
 		return new Date(_dateModified.getTime());
 	}
 
-	public double getEngagementScore() {
-		return _engagementScore;
-	}
-
 	public String getId() {
 		return _id;
 	}
@@ -102,8 +97,8 @@ public class Account {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_activeIndividualsCount, _dateCreated, _dateModified,
-			_engagementScore, _id, _individualsCount, _properties);
+			_activeIndividualsCount, _dateCreated, _dateModified, _id,
+			_individualsCount, _properties);
 	}
 
 	public void setActiveIndividualsCount(long activeIndividualsCount) {
@@ -122,10 +117,6 @@ public class Account {
 		}
 	}
 
-	public void setEngagementScore(double engagementScore) {
-		_engagementScore = engagementScore;
-	}
-
 	public void setId(String id) {
 		_id = id;
 	}
@@ -141,7 +132,6 @@ public class Account {
 	private long _activeIndividualsCount;
 	private Date _dateCreated;
 	private Date _dateModified;
-	private double _engagementScore;
 	private String _id;
 	private long _individualsCount;
 	private Map<String, Object> _properties = new HashMap<>();

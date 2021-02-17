@@ -54,7 +54,6 @@ public class PageMetric implements AssetMetric {
 			Objects.equals(_dataSourceId, pageMetric._dataSourceId) &&
 			Objects.equals(
 				_directAccessMetric, pageMetric._directAccessMetric) &&
-			Objects.equals(_engagementMetric, pageMetric._engagementMetric) &&
 			Objects.equals(_entrancesMetric, pageMetric._entrancesMetric) &&
 			Objects.equals(_exitRateMetric, pageMetric._exitRateMetric) &&
 			Objects.equals(
@@ -142,10 +141,6 @@ public class PageMetric implements AssetMetric {
 		return _directAccessMetric;
 	}
 
-	public Metric getEngagementMetric() {
-		return _engagementMetric;
-	}
-
 	public Metric getEntrancesMetric() {
 		return _entrancesMetric;
 	}
@@ -192,10 +187,10 @@ public class PageMetric implements AssetMetric {
 		return Objects.hash(
 			_assetMetrics, _assetTitle, _avgTimeOnPageMetric, _bounceMetric,
 			_bounceRateMetric, _canonicalUrls, _ctpMetric, _ctrMetric,
-			_dataSourceId, _directAccessMetric, _engagementMetric,
-			_entrancesMetric, _exitRateMetric, _indirectAccessMetric,
-			_maxScrollDepthMetric, _readsMetric, _sessionsMetric,
-			_timeOnPageMetric, _urls, _viewsMetric, _visitorsMetric);
+			_dataSourceId, _directAccessMetric, _entrancesMetric,
+			_exitRateMetric, _indirectAccessMetric, _maxScrollDepthMetric,
+			_readsMetric, _sessionsMetric, _timeOnPageMetric, _urls,
+			_viewsMetric, _visitorsMetric);
 	}
 
 	@Override
@@ -265,10 +260,6 @@ public class PageMetric implements AssetMetric {
 
 	public void setDirectAccessMetric(Metric directAccessMetric) {
 		_directAccessMetric = directAccessMetric;
-	}
-
-	public void setEngagementMetric(Metric engagementMetric) {
-		_engagementMetric = engagementMetric;
 	}
 
 	public void setEntrancesMetric(Metric entrancesMetric) {
@@ -375,7 +366,6 @@ public class PageMetric implements AssetMetric {
 	private String _dataSourceId;
 	private Metric _directAccessMetric = new Metric(
 		PageMetricType.DIRECT_ACCESS);
-	private Metric _engagementMetric = new Metric(PageMetricType.ENGAGEMENT);
 	private Metric _entrancesMetric = new Metric(PageMetricType.ENTRANCES);
 	private Metric _exitRateMetric = new Metric(PageMetricType.EXIT_RATE);
 	private Metric _indirectAccessMetric = new Metric(
