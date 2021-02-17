@@ -44,6 +44,9 @@ public interface ElasticsearchIndexManager {
 
 	public void delete(String... indexNames);
 
+	public void deleteCollection(
+		String collectionName, WeDeployDataService weDeployDataService);
+
 	public boolean exists(String indexName);
 
 	public Map<String, String> getAliases(

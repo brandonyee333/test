@@ -42,9 +42,6 @@
 				"dateModified": {
 					"type": "date"
 				},
-				"engagementScore": {
-					"type": "double"
-				},
 				"id": {
 					"type": "keyword"
 				},

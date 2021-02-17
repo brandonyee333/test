@@ -31,9 +31,6 @@
 				"dateModified": {
 					"type": "date"
 				},
-				"engagementScore": {
-					"type": "double"
-				},
 				"filter": {
 					"type": "keyword"
 				},

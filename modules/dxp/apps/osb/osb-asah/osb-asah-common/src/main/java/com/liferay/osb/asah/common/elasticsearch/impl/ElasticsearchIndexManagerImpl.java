@@ -277,6 +277,25 @@ public class ElasticsearchIndexManagerImpl
 	}
 
 	@Override
+	public void deleteCollection(
+		String collectionName, WeDeployDataService weDeployDataService) {
+
+		String aliasName = ElasticsearchIndexUtil.getIndexAlias(
+			collectionName, weDeployDataService);
+
+		String indexName = ElasticsearchIndexUtil.getIndexName(
+			collectionName, weDeployDataService);
+
+		if (aliasExists(aliasName)) {
+			_deleteAlias(aliasName, indexName);
+		}
+
+		if (exists(indexName)) {
+			_deleteIndex(indexName);
+		}
+	}
+
+	@Override
 	public boolean exists(String indexName) {
 		IndicesAdminClient indicesAdminClient = _adminClient.indices();
 
@@ -560,6 +579,39 @@ public class ElasticsearchIndexManagerImpl
 				weDeployDataService, jsonArray.getString(i));
 
 			clear(indexAlias);
+		}
+	}
+
+	private void _deleteAlias(String aliasName, String indexName) {
+		if (_log.isInfoEnabled()) {
+			_log.info("Deleting alias " + aliasName);
+		}
+
+		IndicesAdminClient indicesAdminClient = _adminClient.indices();
+
+		try {
+			ClientUtil.waitForConnection(_client);
+
+			ActionFuture<AcknowledgedResponse> actionFuture =
+				indicesAdminClient.aliases(
+					new IndicesAliasesRequest() {
+						{
+							addAliasAction(
+								new AliasActions(AliasActions.Type.REMOVE) {
+									{
+										alias(aliasName);
+										index(indexName);
+									}
+								});
+						}
+					});
+
+			actionFuture.get();
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to delete alias " + aliasName);
+			}
 		}
 	}
 

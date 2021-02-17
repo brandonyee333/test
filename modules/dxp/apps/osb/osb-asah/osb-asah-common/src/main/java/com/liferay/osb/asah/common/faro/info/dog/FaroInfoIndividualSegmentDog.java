@@ -892,8 +892,8 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	};
 
 	private static final String[] _SHARED_ACCOUNT_FIELD_NAMES = {
-		"activeIndividualCount", "activitiesCount", "engagementScore",
-		"individualCount", "lastActivityDate"
+		"activeIndividualCount", "activitiesCount", "individualCount",
+		"lastActivityDate"
 	};
 
 	@Autowired

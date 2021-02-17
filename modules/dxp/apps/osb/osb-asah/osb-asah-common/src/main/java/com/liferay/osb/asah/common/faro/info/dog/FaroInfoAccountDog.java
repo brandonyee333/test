@@ -102,8 +102,6 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 			).put(
 				"dateModified", dateString
 			).put(
-				"engagementScore", 0
-			).put(
 				"individualCount", 0
 			).put(
 				"individualCounts", new JSONArray()

@@ -303,8 +303,6 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			QueryBuilders.termQuery("ownerType", "individual")
 		);
 
-		elasticsearchInvoker.delete("engagements", boolQueryBuilder);
-
 		elasticsearchInvoker.delete("fields", boolQueryBuilder);
 
 		elasticsearchInvoker.delete("interests", boolQueryBuilder);

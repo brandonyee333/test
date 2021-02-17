@@ -44,14 +44,6 @@ public class FaroInfoAssetDog extends BaseFaroInfoDog {
 
 		elasticsearchInvoker.delete("assets", assetId);
 
-		elasticsearchInvoker.delete(
-			"engagements",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("ownerId", assetId)
-			).filter(
-				QueryBuilders.termQuery("ownerType", "asset")
-			));
-
 		JSONArray keywordsJSONArray = assetJSONObject.optJSONArray("keywords");
 
 		if (keywordsJSONArray != null) {

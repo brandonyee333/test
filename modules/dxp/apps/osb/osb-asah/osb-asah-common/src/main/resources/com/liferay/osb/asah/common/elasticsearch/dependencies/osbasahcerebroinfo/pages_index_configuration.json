@@ -44,9 +44,6 @@
 				"directAccessDates": {
 					"type": "date"
 				},
-				"engagementScore": {
-					"type": "double"
-				},
 				"entrances": {
 					"type": "long"
 				},

@@ -166,9 +166,6 @@
 				"emailAddressHashed": {
 					"type": "keyword"
 				},
-				"engagementScore": {
-					"type": "double"
-				},
 				"firstEnrichmentDate": {
 					"type": "date"
 				},
