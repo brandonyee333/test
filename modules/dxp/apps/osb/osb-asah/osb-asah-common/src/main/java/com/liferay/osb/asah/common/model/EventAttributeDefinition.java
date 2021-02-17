@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.model;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -144,7 +145,7 @@ public class EventAttributeDefinition implements Persistable<Long> {
 	private String _displayName;
 
 	@Transient
-	private Set<Long> _eventDefinitionIds;
+	private Set<Long> _eventDefinitionIds = new HashSet<>();
 
 	@Transient
 	private Long _id;

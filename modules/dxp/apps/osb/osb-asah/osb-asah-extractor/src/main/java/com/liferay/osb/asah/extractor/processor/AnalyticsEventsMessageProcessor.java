@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -475,6 +476,16 @@ public class AnalyticsEventsMessageProcessor {
 				_eventAttributeDefinitionDog.addEventAttributeDefinition(
 					"String", null, null,
 					Collections.singleton(eventDefinitionId), propertyName);
+			}
+			else {
+				Set<Long> eventDefinitionIds = new HashSet<>(
+					eventAttributeDefinition.getEventDefinitionIds());
+
+				if (eventDefinitionIds.add(eventDefinitionId)) {
+					_eventAttributeDefinitionDog.patchEventAttributeDefinition(
+						null, null, null, eventAttributeDefinition.getId(),
+						eventDefinitionIds, null);
+				}
 			}
 		}
 	}
