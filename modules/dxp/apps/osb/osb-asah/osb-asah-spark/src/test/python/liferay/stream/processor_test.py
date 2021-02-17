@@ -23,6 +23,27 @@ from pyspark.sql.functions import udf
 
 import pytest
 
+def _assert_data_frames(
+	expected_data_frame, actual_data_frame, sort_column_names=['primaryKey']
+):
+	expected_columns = expected_data_frame.columns
+
+	expected_columns.sort()
+
+	expected_data_frame = expected_data_frame.select(
+		expected_columns
+	).sort(
+		sort_column_names
+	)
+
+	actual_data_frame = actual_data_frame.select(
+		expected_columns
+	).sort(
+		sort_column_names
+	)
+
+	assert expected_data_frame.collect() == actual_data_frame.collect()
+
 @pytest.fixture
 def blog_data_frame_processor(spark_application):
 	return BlogDataFrameProcessor(0, CuratorSparkJob(spark_application))
@@ -271,20 +292,20 @@ def test_form_data_frame_processor_calculate_page_metrics(
 		'form_data_frame_processor_calculate_page_metrics_expected_output.json',
 		spark_session,
 		T.StructType([
-			T.StructField("projectId", T.StringType(), False),
-			T.StructField("channelId", T.StringType(), False),
-			T.StructField("userId", T.StringType(), False),
+			T.StructField("abandonments", T.LongType(), False),
 			T.StructField("assetId", T.StringType(), False),
-			T.StructField("variantId", T.StringType(), False),
+			T.StructField("channelId", T.StringType(), False),
 			T.StructField("normalized_event_date", T.TimestampType(), False),
-			T.StructField("primaryKey", T.StringType(), False),
 			T.StructField("page_index", T.IntegerType(), False),
-			T.StructField("views", T.LongType(), False),
-			T.StructField("abandonments", T.LongType(), False)
+			T.StructField("primaryKey", T.StringType(), False),
+			T.StructField("projectId", T.StringType(), False),
+			T.StructField("userId", T.StringType(), False),
+			T.StructField("variantId", T.StringType(), False),
+			T.StructField("views", T.LongType(), False)
 		])
 	)
 
-	assert expected_data_frame.collect() == actual_data_frame.collect()
+	_assert_data_frames(expected_data_frame, actual_data_frame)
 
 def test_form_data_frame_processor_calculate_submission_time(
 	form_data_frame_processor, spark_session
@@ -336,21 +357,21 @@ def test_form_data_frame_processor_process(
 	expected_data_frame = read_data_frame(
 		'form_data_frame_processor_process_expected_output.json', spark_session,
 		T.StructType([
-			T.StructField("projectId", T.StringType(), False),
-			T.StructField("channelId", T.StringType(), False),
-			T.StructField("userId", T.StringType(), False),
+			T.StructField("abandonments", T.LongType(), False),
 			T.StructField("assetId", T.StringType(), False),
-			T.StructField("variantId", T.StringType(), False),
+			T.StructField("channelId", T.StringType(), False),
 			T.StructField("normalized_event_date", T.TimestampType(), False),
 			T.StructField("primaryKey", T.StringType(), False),
-			T.StructField("submissions", T.LongType(), False),
-			T.StructField("views", T.LongType(), False),
-			T.StructField("abandonments", T.LongType(), False),
+			T.StructField("projectId", T.StringType(), False),
 			T.StructField("submission_time", T.LongType(), False),
+			T.StructField("submissions", T.LongType(), False),
+			T.StructField("userId", T.StringType(), False),
+			T.StructField("variantId", T.StringType(), False),
+			T.StructField("views", T.LongType(), False)
 		])
 	)
 
-	assert expected_data_frame.collect() == actual_data_frame.collect()
+	_assert_data_frames(expected_data_frame, actual_data_frame)
 
 def test_journal_data_frame_processor_filter(
 		journal_data_frame_processor, spark_session
@@ -391,11 +412,6 @@ def test_page_referrer_data_frame_processor_process(
 			spark_session
 		),
 		write=False
-	).select(
-		'access', 'acquisition_channel', 'channelId', 'normalized_event_date',
-		'primaryKey', 'projectId', 'referrer', 'url', 'userId', 'variantId'
-	).sort(
-		['primaryKey']
 	)
 
 	expected_data_frame = read_data_frame(
@@ -415,4 +431,4 @@ def test_page_referrer_data_frame_processor_process(
 		])
 	)
 
-	assert expected_data_frame.collect() == actual_data_frame.collect()
+	_assert_data_frames(expected_data_frame, actual_data_frame)
