@@ -15,6 +15,10 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-release-tool:osb-customer-release-tool-api")
 }
 
+downloadLiferayModuleConfigGenerator {
+	enabled = false
+}
+
 processResources {
 	dependsOn packageRunWebpack
 }
