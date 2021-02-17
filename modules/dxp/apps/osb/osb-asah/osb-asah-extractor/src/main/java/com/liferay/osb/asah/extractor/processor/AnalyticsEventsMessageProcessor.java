@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
@@ -28,6 +29,7 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.storage.Storage;
@@ -53,6 +55,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -434,6 +438,8 @@ public class AnalyticsEventsMessageProcessor {
 		analyticsEvents.forEach(this::_sendAnalyticsEventMessage);
 
 		_analyticsEventsCounter.inc(analyticsEvents.size());
+
+		_storeEvents(analyticsEvents);
 	}
 
 	private void _sendAnalyticsEventMessage(AnalyticsEvent analyticsEvent) {
@@ -443,6 +449,27 @@ public class AnalyticsEventsMessageProcessor {
 			_messageBus.sendMessage(channel, analyticsEvent.toJSON());
 
 			_storage.write(analyticsEvent.toJSON());
+		}
+	}
+
+	private void _storeEvents(Set<AnalyticsEvent> analyticsEvents) {
+		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+		Map<String, List<AnalyticsEvent>> analyticsEventMap = stream.collect(
+			Collectors.groupingBy(AnalyticsEvent::getEventId));
+
+		for (Map.Entry<String, List<AnalyticsEvent>> entry :
+				analyticsEventMap.entrySet()) {
+
+			String eventId = entry.getKey();
+
+			EventDefinition eventDefinition =
+				_eventDefinitionDog.getEventDefinitionByName(eventId);
+
+			if (eventDefinition == null) {
+				_eventDefinitionDog.addEventDefinition(
+					null, null, eventId, "custom");
+			}
 		}
 	}
 
@@ -481,6 +508,9 @@ public class AnalyticsEventsMessageProcessor {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private EventDefinitionDog _eventDefinitionDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
