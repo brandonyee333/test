@@ -750,9 +750,8 @@ public class S3Store extends BaseStore {
 	}
 
 	protected void putObject(
-			long companyId, long repositoryId, String fileName,
-			String versionLabel, File file)
-		throws PortalException {
+		long companyId, long repositoryId, String fileName,
+		String versionLabel, File file) {
 
 		Upload upload = null;
 
@@ -779,16 +778,6 @@ public class S3Store extends BaseStore {
 
 			thread.interrupt();
 		}
-	}
-
-	@Reference(unbind = "-")
-	protected void setS3FileCache(S3FileCache s3FileCache) {
-		_s3FileCache = s3FileCache;
-	}
-
-	@Reference(unbind = "-")
-	protected void setS3KeyTransformer(S3KeyTransformer s3KeyTransformer) {
-		_s3KeyTransformer = s3KeyTransformer;
 	}
 
 	protected SystemException transform(
@@ -832,8 +821,13 @@ public class S3Store extends BaseStore {
 	private AmazonS3 _amazonS3;
 	private AWSCredentialsProvider _awsCredentialsProvider;
 	private String _bucketName;
+
+	@Reference
 	private S3FileCache _s3FileCache;
+
+	@Reference
 	private S3KeyTransformer _s3KeyTransformer;
+
 	private StorageClass _storageClass;
 	private TransferManager _transferManager;
 
