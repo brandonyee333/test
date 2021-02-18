@@ -21,6 +21,8 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +34,17 @@ public class EventDefinitionDog {
 
 	public EventDefinition addEventDefinition(
 		String description, String displayName, String name, String type) {
+
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException("Event name cannot be null");
+		}
+
+		String key = ProjectIdThreadLocal.getProjectId() + "#" + name;
+
+		if (_eventDefinitions.containsKey(key)) {
+			throw new IllegalArgumentException(
+				"Event name " + name + " already exists");
+		}
 
 		EventDefinition eventDefinition = new EventDefinition();
 

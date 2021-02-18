@@ -40,6 +40,18 @@ public class EventAttributeDefinitionDog {
 		String dataType, String description, String displayName,
 		Set<Long> eventDefinitionIds, String name) {
 
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException(
+				"Event attribute name cannot be null");
+		}
+
+		String key = ProjectIdThreadLocal.getProjectId() + "#" + name;
+
+		if (_eventAttributeDefinitionsByName.containsKey(key)) {
+			throw new IllegalArgumentException(
+				"Event attribute name " + name + " already exists");
+		}
+
 		EventAttributeDefinition eventAttributeDefinition =
 			new EventAttributeDefinition();
 
