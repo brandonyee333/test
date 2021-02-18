@@ -92,11 +92,16 @@ CREATE TABLE IF NOT EXISTS Event (
 
 CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
     id BIGSERIAL PRIMARY KEY,
-    eventDefinitionIds BIGINT[],
     dataType TEXT NOT NULL,
     description TEXT,
     displayName TEXT UNIQUE,
     name TEXT UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
+    eventAttributeDefinitionId BIGINT REFERENCES EventAttributeDefinition,
+    eventDefinitionId BIGINT REFERENCES EventDefinition,
+    PRIMARY KEY (eventAttributeDefinitionId, eventDefinitionId)
 );
 
 CREATE TABLE IF NOT EXISTS EventAttribute (

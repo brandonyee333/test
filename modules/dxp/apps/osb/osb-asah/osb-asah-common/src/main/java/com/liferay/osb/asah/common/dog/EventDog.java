@@ -52,7 +52,6 @@ public class EventDog {
 		event.setDataSourceId(dataSourceId);
 		event.setEventDate(eventDate);
 		event.setEventDefinitionId(eventDefinitionId);
-		event.setProjectId(projectId);
 		event.setUserId(userId);
 
 		return _eventRepository.save(event);

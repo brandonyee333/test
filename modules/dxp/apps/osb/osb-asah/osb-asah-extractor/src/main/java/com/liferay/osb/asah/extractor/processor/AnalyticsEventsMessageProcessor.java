@@ -55,7 +55,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -495,22 +494,12 @@ public class AnalyticsEventsMessageProcessor {
 					eventAttributeDefinition =
 						_eventAttributeDefinitionDog.
 							addEventAttributeDefinition(
-								"String", null, null,
-								Collections.singleton(eventDefinitionId),
+								"string", null, null, eventDefinitionId,
 								propertyName);
 				}
 				else {
-					Set<Long> eventDefinitionIds = new HashSet<>(
-						eventAttributeDefinition.getEventDefinitionIds());
-
-					if (eventDefinitionIds.add(eventDefinitionId)) {
-						eventAttributeDefinition =
-							_eventAttributeDefinitionDog.
-								patchEventAttributeDefinition(
-									null, null, null,
-									eventAttributeDefinition.getId(),
-									eventDefinitionIds, null);
-					}
+					_eventAttributeDefinitionDog.addEventDefinitionId(
+						eventDefinitionId, eventAttributeDefinition);
 				}
 
 				_eventAttributeDog.addEventAttribute(

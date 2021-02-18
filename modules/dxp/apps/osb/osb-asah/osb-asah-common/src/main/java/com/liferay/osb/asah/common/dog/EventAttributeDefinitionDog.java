@@ -15,11 +15,14 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -38,7 +41,7 @@ public class EventAttributeDefinitionDog {
 
 	public EventAttributeDefinition addEventAttributeDefinition(
 		String dataType, String description, String displayName,
-		Set<Long> eventDefinitionIds, String name) {
+		Long eventDefinitionId, String name) {
 
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException(
@@ -58,7 +61,14 @@ public class EventAttributeDefinitionDog {
 		eventAttributeDefinition.setDataType(dataType);
 		eventAttributeDefinition.setDescription(description);
 		eventAttributeDefinition.setDisplayName(displayName);
-		eventAttributeDefinition.setEventDefinitionIds(eventDefinitionIds);
+
+		EventDefinitionEventAttributeDefinition
+			eventDefinitionEventAttributeDefinition =
+				new EventDefinitionEventAttributeDefinition(eventDefinitionId);
+
+		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
+			Collections.singleton(eventDefinitionEventAttributeDefinition));
+
 		eventAttributeDefinition.setName(name);
 
 		eventAttributeDefinition = _eventAttributeDefinitionRepository.save(
@@ -72,6 +82,49 @@ public class EventAttributeDefinitionDog {
 		_eventAttributeDefinitionsByName.put(
 			ProjectIdThreadLocal.getProjectId() + "#" + name,
 			eventAttributeDefinition);
+
+		return eventAttributeDefinition;
+	}
+
+	public EventAttributeDefinition addEventDefinitionId(
+		Long eventDefinitionId,
+		EventAttributeDefinition eventAttributeDefinition) {
+
+		Set<EventDefinitionEventAttributeDefinition>
+			eventDefinitionEventAttributeDefinitions =
+				eventAttributeDefinition.
+					getEventDefinitionEventAttributeDefinitions();
+
+		boolean update = true;
+
+		for (EventDefinitionEventAttributeDefinition
+				eventDefinitionEventAttributeDefinition :
+					eventDefinitionEventAttributeDefinitions) {
+
+			Long eventDefinitionEventAttributeDefinitionId =
+				eventDefinitionEventAttributeDefinition.getEventDefinitionId();
+
+			if (eventDefinitionId.equals(
+					eventDefinitionEventAttributeDefinitionId)) {
+
+				update = false;
+
+				break;
+			}
+		}
+
+		if (update) {
+			eventDefinitionEventAttributeDefinitions = new HashSet<>(
+				eventAttributeDefinition.
+					getEventDefinitionEventAttributeDefinitions());
+
+			eventDefinitionEventAttributeDefinitions.add(
+				new EventDefinitionEventAttributeDefinition(eventDefinitionId));
+
+			patchEventAttributeDefinition(
+				null, null, null, eventAttributeDefinition.getId(),
+				eventDefinitionEventAttributeDefinitions, null);
+		}
 
 		return eventAttributeDefinition;
 	}
@@ -115,7 +168,9 @@ public class EventAttributeDefinitionDog {
 
 	public EventAttributeDefinition patchEventAttributeDefinition(
 		String dataType, String description, String displayName,
-		Long eventAttributeDefinitionId, Set<Long> eventDefinitionIds,
+		Long eventAttributeDefinitionId,
+		Set<EventDefinitionEventAttributeDefinition>
+			eventDefinitionEventAttributeDefinitions,
 		String name) {
 
 		EventAttributeDefinition eventAttributeDefinition =
@@ -137,8 +192,10 @@ public class EventAttributeDefinitionDog {
 			eventAttributeDefinition.setName(name);
 		}
 
-		if (eventDefinitionIds != null) {
-			eventAttributeDefinition.setEventDefinitionIds(eventDefinitionIds);
+		if (eventDefinitionEventAttributeDefinitions != null) {
+			eventAttributeDefinition.
+				setEventDefinitionEventAttributeDefinitions(
+					eventDefinitionEventAttributeDefinitions);
 		}
 
 		eventAttributeDefinition = _eventAttributeDefinitionRepository.save(

@@ -22,6 +22,7 @@ import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -30,8 +31,12 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class EventAttributeDefinition implements Persistable<Long> {
 
-	public void addEventDefinitionId(Long eventDefinitionId) {
-		_eventDefinitionIds.add(eventDefinitionId);
+	public void addEventDefinitionEventAttributeDefinition(
+		EventDefinitionEventAttributeDefinition
+			eventDefinitionEventAttributeDefinition) {
+
+		_eventDefinitionEventAttributeDefinitions.add(
+			eventDefinitionEventAttributeDefinition);
 	}
 
 	@Override
@@ -51,7 +56,8 @@ public class EventAttributeDefinition implements Persistable<Long> {
 			Objects.equals(_description, eventDefinition._description) &&
 			Objects.equals(_displayName, eventDefinition._displayName) &&
 			Objects.equals(
-				_eventDefinitionIds, eventDefinition._eventDefinitionIds) &&
+				_eventDefinitionEventAttributeDefinitions,
+				eventDefinition._eventDefinitionEventAttributeDefinitions) &&
 			Objects.equals(_id, eventDefinition._id) &&
 			Objects.equals(_name, eventDefinition._name)) {
 
@@ -77,8 +83,11 @@ public class EventAttributeDefinition implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Set<Long> getEventDefinitionIds() {
-		return _eventDefinitionIds;
+	@MappedCollection(idColumn = "eventattributedefinitionid")
+	public Set<EventDefinitionEventAttributeDefinition>
+		getEventDefinitionEventAttributeDefinitions() {
+
+		return _eventDefinitionEventAttributeDefinitions;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -95,8 +104,8 @@ public class EventAttributeDefinition implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_dataType, _description, _displayName, _eventDefinitionIds, _id,
-			_name);
+			_dataType, _description, _displayName,
+			_eventDefinitionEventAttributeDefinitions, _id, _name);
 	}
 
 	public boolean isNew() {
@@ -119,8 +128,12 @@ public class EventAttributeDefinition implements Persistable<Long> {
 		_displayName = displayName;
 	}
 
-	public void setEventDefinitionIds(Set<Long> eventDefinitionIds) {
-		_eventDefinitionIds = eventDefinitionIds;
+	public void setEventDefinitionEventAttributeDefinitions(
+		Set<EventDefinitionEventAttributeDefinition>
+			eventDefinitionEventAttributeDefinition) {
+
+		_eventDefinitionEventAttributeDefinitions =
+			eventDefinitionEventAttributeDefinition;
 	}
 
 	public void setId(Long id) {
@@ -145,7 +158,8 @@ public class EventAttributeDefinition implements Persistable<Long> {
 	private String _displayName;
 
 	@Transient
-	private Set<Long> _eventDefinitionIds = new HashSet<>();
+	private Set<EventDefinitionEventAttributeDefinition>
+		_eventDefinitionEventAttributeDefinitions = new HashSet<>();
 
 	@Transient
 	private Long _id;
