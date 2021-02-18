@@ -96,7 +96,7 @@ public class AutoSynchronizeAccountEntriesMessageListener
 			new AccountEntryLastZendeskAuditDateComparator());
 
 		for (AccountEntry accountEntry : accountEntries) {
-			if (Validator.isNotNull(accountEntry.getKoroneikiAccountKey())) {
+			if (Validator.isNull(accountEntry.getKoroneikiAccountKey())) {
 				continue;
 			}
 
