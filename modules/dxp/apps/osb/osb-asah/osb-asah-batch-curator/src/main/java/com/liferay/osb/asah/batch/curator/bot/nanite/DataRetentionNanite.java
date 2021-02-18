@@ -27,6 +27,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -74,16 +75,21 @@ public class DataRetentionNanite extends BaseNanite {
 				return null;
 			}
 		).setQueryBuilder(
-
-			// FIXME: is there a substitute for engagementScore as an active
-			// criteria? In this case maybe lastActivityDates
-
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					"dateCreated"
 				).lt(
 					dateString
 				)
+			).mustNot(
+				QueryBuilders.nestedQuery(
+					"lastActivityDates",
+					QueryBuilders.rangeQuery(
+						"lastActivityDates.lastActivityDate"
+					).gt(
+						dateString
+					),
+					ScoreMode.None)
 			).mustNot(
 				QueryBuilders.existsQuery("demographics.email")
 			)

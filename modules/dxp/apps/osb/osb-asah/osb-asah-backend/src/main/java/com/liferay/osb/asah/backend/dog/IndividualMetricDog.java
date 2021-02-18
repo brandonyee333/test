@@ -22,6 +22,7 @@ import com.liferay.osb.asah.backend.model.IndividualMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -33,6 +34,8 @@ import java.time.ZoneId;
 
 import java.util.Set;
 import java.util.function.BiConsumer;
+
+import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -98,10 +101,17 @@ public class IndividualMetricDog {
 		}
 
 		if (searchQueryContext.isActive() != null) {
+			LocalDateTime nowLocalDateTime = LocalDateTime.now();
 
-			// FIXME: is there a substitute for engagementScore as an active
-			// criteria?
-
+			boolQueryBuilder.filter(
+				QueryBuilders.nestedQuery(
+					"lastActivityDates",
+					QueryBuilders.rangeQuery(
+						"lastActivityDates.lastActivityDate"
+					).gt(
+						DateUtil.toUTCString(nowLocalDateTime.minusDays(30))
+					),
+					ScoreMode.None));
 		}
 
 		return _elasticsearchInvoker.count("individuals", boolQueryBuilder);

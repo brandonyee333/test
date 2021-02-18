@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
@@ -23,11 +24,14 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.Fuzziness;
@@ -231,10 +235,17 @@ public class InterestCompositionDog {
 			boolQueryBuilder, "channelIds", channelId);
 
 		if (active) {
+			LocalDateTime nowLocalDateTime = LocalDateTime.now();
 
-			// FIXME: is there a substitute for engagementScore as an active
-			// criteria?
-
+			boolQueryBuilder.filter(
+				QueryBuilders.nestedQuery(
+					"lastActivityDates",
+					QueryBuilders.rangeQuery(
+						"lastActivityDates.lastActivityDate"
+					).gt(
+						DateUtil.toUTCString(nowLocalDateTime.minusDays(30))
+					),
+					ScoreMode.None));
 		}
 
 		BoolQueryBuilderUtil.filterTerm(
