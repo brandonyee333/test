@@ -518,13 +518,16 @@ public class AnalyticsEventsMessageProcessor {
 					null, null, eventId, "custom");
 			}
 
-			Long eventDefinitionId = eventDefinition.getId();
+			if (eventDefinition != null) {
+				Long eventDefinitionId = eventDefinition.getId();
 
-			for (AnalyticsEvent analyticsEvent : entry.getValue()) {
-				Event event = _eventDog.addEvent(
-					analyticsEvent, eventDefinitionId);
+				for (AnalyticsEvent analyticsEvent : entry.getValue()) {
+					Event event = _eventDog.addEvent(
+						analyticsEvent, eventDefinitionId);
 
-				_storeEventAttributes(analyticsEvent, event, eventDefinitionId);
+					_storeEventAttributes(
+						analyticsEvent, event, eventDefinitionId);
+				}
 			}
 		}
 	}
