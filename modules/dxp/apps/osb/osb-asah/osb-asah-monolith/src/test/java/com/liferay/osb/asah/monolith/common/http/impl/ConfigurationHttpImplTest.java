@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.monolith.common.http.impl;
 
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
-import com.liferay.osb.asah.dxp.extractor.configuration.impl.DXPExtractorConfigurationManagerImpl;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
@@ -43,30 +42,18 @@ public class ConfigurationHttpImplTest {
 		_configurationHttp = new ConfigurationHttpImpl();
 
 		ReflectionTestUtils.setField(
-			_configurationHttp, "_dxpExtractorConfigurationManagerImpl",
-			_dxpExtractorConfigurationManagerImpl);
-		ReflectionTestUtils.setField(
 			_configurationHttp, "_salesforceConfigurationManagerImpl",
 			_salesforceConfigurationManagerImpl);
 	}
 
 	@Test
 	public void testAddConfiguration() {
-		JSONObject liferayDataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 		JSONObject salesforceDataSourceJSONObject =
 			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
 
 		_configurationHttp.addConfiguration(
-			liferayDataSourceJSONObject, "LIFERAY");
-		_configurationHttp.addConfiguration(
 			salesforceDataSourceJSONObject, "SALESFORCE");
 
-		Mockito.verify(
-			_dxpExtractorConfigurationManagerImpl
-		).addRuntimeConfiguration(
-			liferayDataSourceJSONObject.toString()
-		);
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).addRuntimeConfiguration(
@@ -81,21 +68,12 @@ public class ConfigurationHttpImplTest {
 
 	@Test
 	public void testDeleteConfiguration() {
-		JSONObject liferayDataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 		JSONObject salesforceDataSourceJSONObject =
 			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
 
 		_configurationHttp.deleteConfiguration(
-			liferayDataSourceJSONObject, "LIFERAY");
-		_configurationHttp.deleteConfiguration(
 			salesforceDataSourceJSONObject, "SALESFORCE");
 
-		Mockito.verify(
-			_dxpExtractorConfigurationManagerImpl
-		).deleteRuntimeConfiguration(
-			liferayDataSourceJSONObject.toString()
-		);
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).deleteRuntimeConfiguration(
@@ -106,36 +84,19 @@ public class ConfigurationHttpImplTest {
 	@Test
 	public void testGetState() {
 		Mockito.when(
-			_dxpExtractorConfigurationManagerImpl.getState(Mockito.anyString())
-		).thenReturn(
-			"CREDENTIALS_VALID"
-		);
-
-		Mockito.when(
 			_salesforceConfigurationManagerImpl.getState(Mockito.anyString())
 		).thenReturn(
 			"CREDENTIALS_VALID"
 		);
 
-		JSONObject liferayDataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 		JSONObject salesforceDataSourceJSONObject =
 			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
 
 		Assert.assertEquals(
 			"CREDENTIALS_VALID",
 			_configurationHttp.getState(
-				liferayDataSourceJSONObject, "LIFERAY"));
-		Assert.assertEquals(
-			"CREDENTIALS_VALID",
-			_configurationHttp.getState(
 				salesforceDataSourceJSONObject, "SALESFORCE"));
 
-		Mockito.verify(
-			_dxpExtractorConfigurationManagerImpl
-		).getState(
-			liferayDataSourceJSONObject.toString()
-		);
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).getState(
@@ -145,21 +106,12 @@ public class ConfigurationHttpImplTest {
 
 	@Test
 	public void testRefreshConfiguration() {
-		JSONObject liferayDataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 		JSONObject salesforceDataSourceJSONObject =
 			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
 
 		_configurationHttp.refreshConfiguration(
-			liferayDataSourceJSONObject, "LIFERAY");
-		_configurationHttp.refreshConfiguration(
 			salesforceDataSourceJSONObject, "SALESFORCE");
 
-		Mockito.verify(
-			_dxpExtractorConfigurationManagerImpl
-		).refresh(
-			liferayDataSourceJSONObject.toString()
-		);
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).refresh(
@@ -169,21 +121,12 @@ public class ConfigurationHttpImplTest {
 
 	@Test
 	public void testUpdateConfiguration() throws Exception {
-		JSONObject liferayDataSourceJSONObject =
-			FaroInfoTestUtil.buildLiferayDataSourceJSONObject();
 		JSONObject salesforceDataSourceJSONObject =
 			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
 
 		_configurationHttp.updateConfiguration(
-			liferayDataSourceJSONObject, "LIFERAY");
-		_configurationHttp.updateConfiguration(
 			salesforceDataSourceJSONObject, "SALESFORCE");
 
-		Mockito.verify(
-			_dxpExtractorConfigurationManagerImpl
-		).updateRuntimeConfiguration(
-			liferayDataSourceJSONObject.toString()
-		);
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).updateRuntimeConfiguration(
@@ -192,10 +135,6 @@ public class ConfigurationHttpImplTest {
 	}
 
 	private ConfigurationHttp _configurationHttp;
-
-	@Mock
-	private DXPExtractorConfigurationManagerImpl
-		_dxpExtractorConfigurationManagerImpl;
 
 	@Mock
 	private SalesforceExtractorConfigurationManagerImpl

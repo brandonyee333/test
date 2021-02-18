@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.dog.ChannelDog;
-import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.NanitesHttp;
@@ -92,10 +91,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 			if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
 				updateTokenDataSourceCredentials(dataSourceJSONObject);
-			}
-			else {
-				_dxpExtractorConfigurationDog.addConfiguration(
-					dataSourceJSONObject);
 			}
 		}
 		else if (Objects.equals(type, "SALESFORCE")) {
@@ -337,10 +332,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		if (type.equals("LIFERAY")) {
 			if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
 				updateTokenDataSourceCredentials(dataSourceJSONObject);
-			}
-			else {
-				_dxpExtractorConfigurationDog.updateConfiguration(
-					dataSourceJSONObject);
 			}
 		}
 		else if (type.equals("SALESFORCE")) {
@@ -763,9 +754,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private ChannelDog _channelDog;
-
-	@Autowired
-	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;

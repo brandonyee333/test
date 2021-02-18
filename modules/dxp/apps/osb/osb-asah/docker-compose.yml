@@ -69,28 +69,6 @@ services:
         volumes:
             - export:/export
             - temp:/temp
-    osbasahdxpextractor:
-        build:
-            args:
-                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
-                LABEL_VCS_REF: ${LABEL_VCS_REF}
-            context: ./osb-asah-dxp-extractor
-        container_name: osbasahdxpextractor
-        depends_on:
-            - osbasahupgrade
-        env_file:
-            - common.env
-            - local.env
-        environment:
-            - JAVA_OPTS=-Xmx256m
-        healthcheck:
-            interval: 10s
-            retries: 30
-            start_period: 120s
-            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
-        ports:
-            - "5009:5005"
-            - "8085:8080"
     osbasahextractor:
         build:
             args:

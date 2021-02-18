@@ -21,29 +21,6 @@ import org.springframework.http.ResponseEntity;
  */
 public interface DataSourceHttp {
 
-	public ResponseEntity<String> getDXPGroups(
-		String id, int end, String name, long parentGroupId, boolean site,
-		int start);
-
-	public ResponseEntity<String> getDXPGroups(String id, String json);
-
-	public ResponseEntity<String> getDXPOrganizations(
-		String id, int end, String name, long parentOrganizationId, int start);
-
-	public ResponseEntity<String> getDXPOrganizations(String id, String json);
-
-	public ResponseEntity<String> getDXPOwner(String json);
-
-	public ResponseEntity<String> getDXPUserGroups(
-		String id, int end, String name, int start);
-
-	public ResponseEntity<String> getDXPUserGroups(String id, String json);
-
-	public ResponseEntity<String> getDXPUsersFields(
-		String id, int end, int start);
-
-	public ResponseEntity<String> getDXPUsersTotal(String id, String json);
-
 	public ResponseEntity<String> getSalesforceAccountsFields(
 		String id, int end, int start);
 

@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.AssetEngagementScoresNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
@@ -35,14 +34,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 
 /**
  * @author Vishal Reddy
@@ -102,17 +96,6 @@ public class AssetEngagementScoresNaniteTest extends BaseNaniteTestCase {
 		_assetEngagementScoresNanite.run(dayAfterDayDateString);
 
 		_assertAssetEngagementScore(assetId, dayAfterDayDateString, 0, 0);
-	}
-
-	@TestConfiguration
-	public static class AssetEngagementScoresNaniteTestConfiguration {
-
-		@Bean
-		@Primary
-		public DXPExtractorConfigurationDog dxpExtractorConfigurationDog() {
-			return Mockito.mock(DXPExtractorConfigurationDog.class);
-		}
-
 	}
 
 	private void _assertAssetEngagementScore(

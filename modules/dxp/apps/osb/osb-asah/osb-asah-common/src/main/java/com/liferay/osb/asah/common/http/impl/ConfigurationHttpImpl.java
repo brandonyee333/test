@@ -74,10 +74,7 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 	}
 
 	private String _getURL(String providerType) {
-		if (providerType.equals("LIFERAY")) {
-			return ServiceConstants.URL_DXP_EXTRACTOR;
-		}
-		else if (providerType.equals("SALESFORCE")) {
+		if (providerType.equals("SALESFORCE")) {
 			return ServiceConstants.URL_SALESFORCE_EXTRACTOR;
 		}
 

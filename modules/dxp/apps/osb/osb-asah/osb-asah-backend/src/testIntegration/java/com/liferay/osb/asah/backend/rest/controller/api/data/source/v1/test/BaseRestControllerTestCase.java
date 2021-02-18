@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
-import com.liferay.osb.asah.batch.curator.bot.nanite.DXPIndividualsNanite;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
@@ -36,7 +35,6 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.web.server.LocalServerPort;
 
 /**
@@ -46,24 +44,6 @@ public abstract class BaseRestControllerTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		DXPIndividualsNanite dxpIndividualsNanite = new DXPIndividualsNanite();
-
-		_autowireCapableBeanFactory.autowireBeanProperties(
-			dxpIndividualsNanite, AutowireCapableBeanFactory.AUTOWIRE_NO,
-			false);
-
-		Class<?> clazz = dxpIndividualsNanite.getClass();
-
-		_autowireCapableBeanFactory.initializeBean(
-			dxpIndividualsNanite, clazz.getName());
-
-		dxpIndividualsNanite.run(
-			JSONUtil.put(
-				"dataSourceId", "331238757269547423"
-			).put(
-				"type", "reprocess"
-			));
-
 		_faroInfoMembershipDog.updateDynamicMemberships(
 			JSONUtil.put(
 				"filter", "(((demographics/age/value gt '50')))"
@@ -178,9 +158,6 @@ public abstract class BaseRestControllerTestCase {
 
 		return response.then();
 	}
-
-	@Autowired
-	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
 
 	@Autowired
 	private FaroInfoMembershipDog _faroInfoMembershipDog;

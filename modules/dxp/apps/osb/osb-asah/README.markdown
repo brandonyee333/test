@@ -39,10 +39,6 @@ This service exposes additional endpoints related to SEO features (integrates wi
 
 This service processes raw data into intelligent information using scheduled routines (e.g., once a day).
 
-### osb-asah-dxp-extractor
-
-This service extracts and saves raw data from a customer's Liferay DXP instance.
-
 ### osb-asah-extractor
 
 This service extracts and saves events from [osb-asah-queue](#osb-asah-queue).

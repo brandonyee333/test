@@ -92,32 +92,8 @@
 			"href": "{url}/data-sources/{id}/disconnect",
 			"templated": true
 		},
-		"data-source-dxp-groups": {
-			"href": "{url}/data-sources/{id}/dxp-groups/{?end,name,parentGroupId,site,start}",
-			"templated": true
-		},
-		"data-source-dxp-organizations": {
-			"href": "{url}/data-sources/{id}/dxp-organizations/{?end,name,parentOrganizationId,start}",
-			"templated": true
-		},
-		"data-source-dxp-user-groups": {
-			"href": "{url}/data-sources/{id}/dxp-user-groups{?end,name,start}",
-			"templated": true
-		},
-		"data-source-dxp-users-fields": {
-			"href": "{url}/data-sources/{id}/dxp-users/fields{?end,start}",
-			"templated": true
-		},
-		"data-source-dxp-users-total": {
-			"href": "{url}/data-sources/{id}/dxp-users/total",
-			"templated": true
-		},
 		"data-source-progress": {
 			"href": "{url}/data-sources/{id}/progress",
-			"templated": true
-		},
-		"data-source-refresh-liferay": {
-			"href": "{url}/data-sources/refresh-liferay",
 			"templated": true
 		},
 		"data-source-salesforce-accounts-fields": {

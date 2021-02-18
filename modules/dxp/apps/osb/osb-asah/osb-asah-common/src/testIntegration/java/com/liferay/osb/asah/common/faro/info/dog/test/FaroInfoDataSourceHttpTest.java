@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
@@ -765,9 +764,6 @@ public class FaroInfoDataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@MockBean
 	private ChannelHttp _channelHttp;
-
-	@MockBean
-	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;

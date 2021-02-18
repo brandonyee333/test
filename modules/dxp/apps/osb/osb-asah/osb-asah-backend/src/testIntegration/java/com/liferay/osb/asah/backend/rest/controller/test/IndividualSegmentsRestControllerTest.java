@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
@@ -37,14 +36,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Mockito;
-
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -411,28 +405,6 @@ public class IndividualSegmentsRestControllerTest {
 				jsonObject.getString("id"), jsonObject.toString()));
 
 		Assert.assertEquals("READY", responseJSONObject.getString("state"));
-	}
-
-	@TestConfiguration
-	public static class IndividualSegmentsRestControllerTestConfiguration {
-
-		@Bean
-		@Primary
-		public DXPExtractorConfigurationDog dxpExtractorConfigurationDog() {
-			DXPExtractorConfigurationDog dxpExtractorConfigurationDog =
-				Mockito.mock(DXPExtractorConfigurationDog.class);
-
-			Mockito.doAnswer(
-				invocation -> "CREDENTIALS_VALID"
-			).when(
-				dxpExtractorConfigurationDog
-			).getState(
-				Mockito.any(JSONObject.class)
-			);
-
-			return dxpExtractorConfigurationDog;
-		}
-
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)

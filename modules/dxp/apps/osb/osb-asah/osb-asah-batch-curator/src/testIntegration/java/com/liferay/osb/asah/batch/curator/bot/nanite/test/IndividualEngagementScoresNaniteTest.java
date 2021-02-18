@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualEngagementScoresNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
@@ -41,14 +40,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 
 /**
  * @author Michael Bowerman
@@ -775,17 +769,6 @@ public class IndividualEngagementScoresNaniteTest extends BaseNaniteTestCase {
 
 		Assert.assertEquals(
 			varietyScore, _computeVarietyScore(dayString), _DELTA);
-	}
-
-	@TestConfiguration
-	public static class IndividualEngagementScoresNaniteTestConfiguration {
-
-		@Bean
-		@Primary
-		public DXPExtractorConfigurationDog dxpExtractorConfigurationDog() {
-			return Mockito.mock(DXPExtractorConfigurationDog.class);
-		}
-
 	}
 
 	private JSONObject _addActivityGroup(int days) throws Exception {

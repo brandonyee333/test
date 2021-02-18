@@ -16,7 +16,6 @@ package com.liferay.osb.asah.monolith.common.http.impl;
 
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
-import com.liferay.osb.asah.dxp.extractor.configuration.impl.DXPExtractorConfigurationManagerImpl;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
 
 import org.json.JSONObject;
@@ -79,19 +78,12 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 	}
 
 	private ConfigurationManager _getConfigurationManager(String providerType) {
-		if (providerType.equals("LIFERAY")) {
-			return _dxpExtractorConfigurationManagerImpl;
-		}
-		else if (providerType.equals("SALESFORCE")) {
+		if (providerType.equals("SALESFORCE")) {
 			return _salesforceConfigurationManagerImpl;
 		}
 
 		throw new RuntimeException("Invalid data source type " + providerType);
 	}
-
-	@Autowired
-	private DXPExtractorConfigurationManagerImpl
-		_dxpExtractorConfigurationManagerImpl;
 
 	@Autowired
 	private SalesforceExtractorConfigurationManagerImpl

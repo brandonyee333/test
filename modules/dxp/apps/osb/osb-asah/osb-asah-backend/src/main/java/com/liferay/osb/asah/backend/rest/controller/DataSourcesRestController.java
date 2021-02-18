@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
@@ -25,7 +24,6 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
-import com.liferay.osb.asah.common.http.PortalPreferencesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.PatchResponse;
 import com.liferay.osb.asah.common.rest.response.PostResponse;
@@ -75,7 +73,6 @@ public class DataSourcesRestController extends BaseRestController {
 	@DeleteMapping("/{id}")
 	public void deleteDataSource(@PathVariable String id) throws Exception {
 		if (!ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
-			_dxpExtractorConfigurationDog.deleteConfiguration(id);
 			_salesforceExtractorConfigurationDog.deleteConfiguration(id);
 		}
 
@@ -164,97 +161,6 @@ public class DataSourcesRestController extends BaseRestController {
 			"data-source-transformations");
 	}
 
-	@GetMapping(params = "parentGroupId", value = "/{id}/dxp-groups")
-	public String getDXPGroups(
-			@PathVariable String id, @RequestParam(defaultValue = "20") int end,
-			@RequestParam(required = false) String name,
-			@RequestParam long parentGroupId, @RequestParam boolean site,
-			@RequestParam(defaultValue = "0") int start)
-		throws Exception {
-
-		return _exchange(
-			id,
-			() -> _dataSourceHttp.getDXPGroups(
-				id, end, name, parentGroupId, site, start));
-	}
-
-	@PostMapping(params = "!parentGroupId", value = "/{id}/dxp-groups")
-	public String getDXPGroups(
-			@PathVariable String id, @RequestBody String json)
-		throws Exception {
-
-		return _exchange(id, () -> _dataSourceHttp.getDXPGroups(id, json));
-	}
-
-	@GetMapping(
-		params = "parentOrganizationId", value = "/{id}/dxp-organizations"
-	)
-	public String getDXPOrganizations(
-			@PathVariable String id, @RequestParam(defaultValue = "20") int end,
-			@RequestParam(required = false) String name,
-			@RequestParam long parentOrganizationId,
-			@RequestParam(defaultValue = "0") int start)
-		throws Exception {
-
-		return _exchange(
-			id,
-			() -> _dataSourceHttp.getDXPOrganizations(
-				id, end, name, parentOrganizationId, start));
-	}
-
-	@PostMapping(
-		params = "!parentOrganizationId", value = "/{id}/dxp-organizations"
-	)
-	public String getDXPOrganizations(
-			@PathVariable String id, @RequestBody String json)
-		throws Exception {
-
-		return _exchange(
-			id, () -> _dataSourceHttp.getDXPOrganizations(id, json));
-	}
-
-	@GetMapping(params = "name", value = "/{id}/dxp-user-groups")
-	public String getDXPUserGroups(
-			@PathVariable String id, @RequestParam(defaultValue = "20") int end,
-			@RequestParam String name,
-			@RequestParam(defaultValue = "0") int start)
-		throws Exception {
-
-		return _exchange(
-			id, () -> _dataSourceHttp.getDXPUserGroups(id, end, name, start));
-	}
-
-	@PostMapping(params = "!name", value = "/{id}/dxp-user-groups")
-	public String getDXPUserGroups(
-			@PathVariable String id, @RequestBody String json)
-		throws Exception {
-
-		return _exchange(id, () -> _dataSourceHttp.getDXPUserGroups(id, json));
-	}
-
-	@GetMapping("/{id}/dxp-users/fields")
-	public String getDXPUsersFields(
-			@PathVariable String id, @RequestParam(defaultValue = "20") int end,
-			@RequestParam(defaultValue = "0") int start)
-		throws Exception {
-
-		return _exchange(
-			id, () -> _dataSourceHttp.getDXPUsersFields(id, end, start));
-	}
-
-	@GetMapping("/{id}/dxp-users/total")
-	public String getDXPUsersTotal(@PathVariable String id) throws Exception {
-		return getDXPUsersTotal(id, null);
-	}
-
-	@PostMapping("/{id}/dxp-users/total")
-	public String getDXPUsersTotal(
-			@PathVariable String id, @RequestBody(required = false) String json)
-		throws Exception {
-
-		return _exchange(id, () -> _dataSourceHttp.getDXPUsersTotal(id, json));
-	}
-
 	@GetMapping("/{id}/progress")
 	public String getProgress(@PathVariable String id) {
 		String type = _faroInfoDataSourceDog.getDataSourceType(
@@ -262,9 +168,6 @@ public class DataSourcesRestController extends BaseRestController {
 
 		if (type.equals("CSV")) {
 			return String.valueOf(_getCSVDataSourceProgressJSONObject(id));
-		}
-		else if (type.equals("LIFERAY")) {
-			return String.valueOf(_getLiferayDataSourceProgressJSONObject(id));
 		}
 		else if (type.equals("SALESFORCE")) {
 			return String.valueOf(
@@ -370,46 +273,6 @@ public class DataSourcesRestController extends BaseRestController {
 		return putResponse.respond();
 	}
 
-	@PostMapping("/refresh-liferay")
-	public String refreshLiferay() {
-		JSONArray responsesJSONArray = new JSONArray();
-
-		JSONArray dataSourcesJSONArray = faroInfoElasticsearchInvoker.get(
-			"data-sources",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("provider.type", "LIFERAY")
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			));
-
-		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
-			JSONObject dataSourceJSONObject =
-				dataSourcesJSONArray.getJSONObject(i);
-
-			int statusCode = 0;
-
-			try {
-				ResponseEntity<String> responseEntity =
-					_portalPreferencesHttp.updatePortalPreferences(
-						dataSourceJSONObject);
-
-				statusCode = responseEntity.getStatusCodeValue();
-			}
-			catch (HttpClientErrorException hcee) {
-				statusCode = hcee.getRawStatusCode();
-			}
-
-			responsesJSONArray.put(
-				JSONUtil.put(
-					"dataSourceId", dataSourceJSONObject.getString("id")
-				).put(
-					"statusCode", statusCode
-				));
-		}
-
-		return responsesJSONArray.toString();
-	}
-
 	private String _exchange(
 			String dataSourceId, Supplier<ResponseEntity<String>> supplier)
 		throws Exception {
@@ -476,166 +339,6 @@ public class DataSourcesRestController extends BaseRestController {
 		).put(
 			"status", status
 		);
-	}
-
-	private JSONObject _getLiferayDataSourceProgressJSONObject(
-		String dataSourceId) {
-
-		JSONObject dxpIndividualsNaniteRunLogJSONObject =
-			_runLogger.fetchLatestRunLogJSONObject(
-				dataSourceId, faroInfoElasticsearchInvoker,
-				"DXPIndividualsNanite");
-
-		if ((dxpIndividualsNaniteRunLogJSONObject != null) &&
-			dxpIndividualsNaniteRunLogJSONObject.optBoolean("reprocess")) {
-
-			String status = dxpIndividualsNaniteRunLogJSONObject.getString(
-				"status");
-
-			if (status.equals("STARTED")) {
-				return JSONUtil.put(
-					"dateRecorded", DateUtil.newDateString()
-				).put(
-					"processedOperations",
-					dxpIndividualsNaniteRunLogJSONObject.getInt(
-						"processedOperations")
-				).put(
-					"status", "IN_PROGRESS"
-				).put(
-					"totalOperations",
-					dxpRawElasticsearchInvoker.count(
-						"users",
-						QueryBuilders.termQuery(
-							"osbAsahDataSourceId", dataSourceId))
-				);
-			}
-		}
-
-		JSONObject dxpExtractorNaniteRunLogJSONObject =
-			_runLogger.fetchLatestRunLogJSONObject(
-				dataSourceId, dxpRawElasticsearchInvoker, "DXPExtractorNanite");
-
-		if (dxpExtractorNaniteRunLogJSONObject == null) {
-			return new JSONObject();
-		}
-
-		String dxpExtractorNaniteStatus =
-			dxpExtractorNaniteRunLogJSONObject.getString("status");
-
-		if (dxpExtractorNaniteStatus.equals("FAILED")) {
-			return JSONUtil.put(
-				"individuals",
-				JSONUtil.put(
-					"dateRecorded",
-					dxpExtractorNaniteRunLogJSONObject.getString("dateLogged")
-				).put(
-					"status", "FAILED"
-				));
-		}
-		else if (dxpExtractorNaniteStatus.equals("STARTED")) {
-			int totalOperations = dxpExtractorNaniteRunLogJSONObject.getInt(
-				"totalOperations");
-
-			long processedOperations = 0;
-
-			if (dxpExtractorNaniteRunLogJSONObject.getBoolean("initialRun")) {
-				processedOperations = dxpRawElasticsearchInvoker.count(
-					"users",
-					QueryBuilders.termQuery(
-						"osbAsahDataSourceId", dataSourceId));
-			}
-			else {
-				long count = dxpRawElasticsearchInvoker.count(
-					"audit-events",
-					QueryBuilders.termQuery(
-						"osbAsahDataSourceId", dataSourceId));
-
-				processedOperations = totalOperations - count;
-			}
-
-			return JSONUtil.put(
-				"individuals",
-				JSONUtil.put(
-					"dateRecorded", DateUtil.newDateString()
-				).put(
-					"processedOperations", processedOperations
-				).put(
-					"status", "IN_PROGRESS"
-				).put(
-					"totalOperations", totalOperations * 2
-				));
-		}
-
-		if (dxpIndividualsNaniteRunLogJSONObject == null) {
-			return JSONUtil.put(
-				"individuals",
-				JSONUtil.put(
-					"dateRecorded", DateUtil.newDateString()
-				).put(
-					"processedOperations", 1
-				).put(
-					"status", "IN_PROGRESS"
-				).put(
-					"totalOperations", 2
-				));
-		}
-
-		String dxpIndividualsNaniteStatus =
-			dxpIndividualsNaniteRunLogJSONObject.getString("status");
-
-		if (dxpIndividualsNaniteStatus.equals("STARTED")) {
-			int totalOperations =
-				2 *
-					dxpIndividualsNaniteRunLogJSONObject.getInt(
-						"totalOperations");
-
-			return JSONUtil.put(
-				"individuals",
-				JSONUtil.put(
-					"dateRecorded", DateUtil.newDateString()
-				).put(
-					"processedOperations",
-					totalOperations -
-						dxpRawElasticsearchInvoker.count(
-							"faro-audit-events",
-							QueryBuilders.termQuery(
-								"osbAsahDataSourceId", dataSourceId))
-				).put(
-					"status", "IN_PROGRESS"
-				).put(
-					"totalOperations", totalOperations
-				));
-		}
-
-		String dxpExtractorNaniteCompletedDateString =
-			dxpExtractorNaniteRunLogJSONObject.getString("dateLogged");
-		String dxpIndividualsNaniteEndDateString =
-			dxpIndividualsNaniteRunLogJSONObject.getString("dateLogged");
-
-		if (dxpIndividualsNaniteEndDateString.compareTo(
-				dxpExtractorNaniteCompletedDateString) <= 0) {
-
-			return JSONUtil.put(
-				"individuals",
-				JSONUtil.put(
-					"dateRecorded", DateUtil.newDateString()
-				).put(
-					"processedOperations", 1
-				).put(
-					"status", "IN_PROGRESS"
-				).put(
-					"totalOperations", 2
-				));
-		}
-
-		return JSONUtil.put(
-			"individuals",
-			JSONUtil.put(
-				"dateRecorded",
-				dxpIndividualsNaniteRunLogJSONObject.getString("dateLogged")
-			).put(
-				"status", dxpIndividualsNaniteStatus
-			));
 	}
 
 	private JSONObject _getSalesforceDataSourceAccountsProgressJSONObject(
@@ -1032,11 +735,7 @@ public class DataSourcesRestController extends BaseRestController {
 			return;
 		}
 
-		if (Objects.equals(type, "LIFERAY")) {
-			_dxpExtractorConfigurationDog.updateConfiguration(
-				newDataSourceJSONObject);
-		}
-		else if (Objects.equals(type, "SALESFORCE")) {
+		if (Objects.equals(type, "SALESFORCE")) {
 			_salesforceExtractorConfigurationDog.updateConfiguration(
 				newDataSourceJSONObject);
 		}
@@ -1196,16 +895,10 @@ public class DataSourcesRestController extends BaseRestController {
 	private DataSourceHttp _dataSourceHttp;
 
 	@Autowired
-	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
-
-	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
-
-	@Autowired
-	private PortalPreferencesHttp _portalPreferencesHttp;
 
 	@Autowired
 	private RunLogger _runLogger;

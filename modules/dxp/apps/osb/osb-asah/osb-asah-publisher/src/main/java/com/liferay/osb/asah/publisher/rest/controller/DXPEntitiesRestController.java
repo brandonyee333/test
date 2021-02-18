@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.publisher.rest.controller;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
-import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorUserDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
@@ -87,7 +86,7 @@ public class DXPEntitiesRestController {
 						String.valueOf(objectJSONObject.getLong("classPK"))
 					);
 
-					_dxpExtractorUserDog.processGenderField(objectJSONObject);
+					_processGenderField(objectJSONObject);
 
 					type = DXPEntityType.CLASS_NAME_USER;
 				}
@@ -125,13 +124,42 @@ public class DXPEntitiesRestController {
 		}
 	}
 
+	private JSONObject _processGenderField(JSONObject userJSONObject) {
+		if (userJSONObject == null) {
+			return null;
+		}
+
+		if (userJSONObject.has("male")) {
+			if (userJSONObject.getBoolean("male")) {
+				userJSONObject.put("gender", "male");
+			}
+			else {
+				userJSONObject.put("gender", "female");
+			}
+		}
+
+		JSONObject contactJSONObject = userJSONObject.optJSONObject("contact");
+
+		if (contactJSONObject == null) {
+			return userJSONObject;
+		}
+
+		if (contactJSONObject.has("male")) {
+			if (contactJSONObject.getBoolean("male")) {
+				contactJSONObject.put("gender", "male");
+			}
+			else {
+				contactJSONObject.put("gender", "female");
+			}
+		}
+
+		return userJSONObject;
+	}
+
 	private static final Histogram _eventRequestsHistogram =
 		PrometheusUtil.histogram(
 			"publisher_dxp_entity_request_seconds",
 			"The number of seconds taken to process the DXP entity requests");
-
-	@Autowired
-	private DXPExtractorUserDog _dxpExtractorUserDog;
 
 	@Autowired
 	private MessageBus _messageBus;
