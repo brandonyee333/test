@@ -61,10 +61,12 @@ public class TicketAttachmentWrapper
 		attributes.put("createDate", getCreateDate());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("zendeskTicketId", getZendeskTicketId());
+		attributes.put("userRole", getUserRole());
 		attributes.put("fileRepositoryId", getFileRepositoryId());
 		attributes.put("fileName", getFileName());
 		attributes.put("fileSize", getFileSize());
 		attributes.put("type", getType());
+		attributes.put("regionRestricted", isRegionRestricted());
 
 		return attributes;
 	}
@@ -107,6 +109,12 @@ public class TicketAttachmentWrapper
 			setZendeskTicketId(zendeskTicketId);
 		}
 
+		Integer userRole = (Integer)attributes.get("userRole");
+
+		if (userRole != null) {
+			setUserRole(userRole);
+		}
+
 		String fileRepositoryId = (String)attributes.get("fileRepositoryId");
 
 		if (fileRepositoryId != null) {
@@ -129,6 +137,12 @@ public class TicketAttachmentWrapper
 
 		if (type != null) {
 			setType(type);
+		}
+
+		Boolean regionRestricted = (Boolean)attributes.get("regionRestricted");
+
+		if (regionRestricted != null) {
+			setRegionRestricted(regionRestricted);
 		}
 	}
 
@@ -219,6 +233,16 @@ public class TicketAttachmentWrapper
 	}
 
 	/**
+	 * Returns the region restricted of this ticket attachment.
+	 *
+	 * @return the region restricted of this ticket attachment
+	 */
+	@Override
+	public boolean getRegionRestricted() {
+		return _ticketAttachment.getRegionRestricted();
+	}
+
+	/**
 	 * Returns the ticket attachment ID of this ticket attachment.
 	 *
 	 * @return the ticket attachment ID of this ticket attachment
@@ -259,6 +283,16 @@ public class TicketAttachmentWrapper
 	}
 
 	/**
+	 * Returns the user role of this ticket attachment.
+	 *
+	 * @return the user role of this ticket attachment
+	 */
+	@Override
+	public int getUserRole() {
+		return _ticketAttachment.getUserRole();
+	}
+
+	/**
 	 * Returns the user uuid of this ticket attachment.
 	 *
 	 * @return the user uuid of this ticket attachment
@@ -296,6 +330,16 @@ public class TicketAttachmentWrapper
 	@Override
 	public boolean isNew() {
 		return _ticketAttachment.isNew();
+	}
+
+	/**
+	 * Returns <code>true</code> if this ticket attachment is region restricted.
+	 *
+	 * @return <code>true</code> if this ticket attachment is region restricted; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isRegionRestricted() {
+		return _ticketAttachment.isRegionRestricted();
 	}
 
 	@Override
@@ -396,6 +440,16 @@ public class TicketAttachmentWrapper
 	}
 
 	/**
+	 * Sets whether this ticket attachment is region restricted.
+	 *
+	 * @param regionRestricted the region restricted of this ticket attachment
+	 */
+	@Override
+	public void setRegionRestricted(boolean regionRestricted) {
+		_ticketAttachment.setRegionRestricted(regionRestricted);
+	}
+
+	/**
 	 * Sets the ticket attachment ID of this ticket attachment.
 	 *
 	 * @param ticketAttachmentId the ticket attachment ID of this ticket attachment
@@ -433,6 +487,16 @@ public class TicketAttachmentWrapper
 	@Override
 	public void setUserName(String userName) {
 		_ticketAttachment.setUserName(userName);
+	}
+
+	/**
+	 * Sets the user role of this ticket attachment.
+	 *
+	 * @param userRole the user role of this ticket attachment
+	 */
+	@Override
+	public void setUserRole(int userRole) {
+		_ticketAttachment.setUserRole(userRole);
 	}
 
 	/**

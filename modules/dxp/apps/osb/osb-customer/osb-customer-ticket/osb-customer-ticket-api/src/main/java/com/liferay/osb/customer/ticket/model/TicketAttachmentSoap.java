@@ -37,10 +37,12 @@ public class TicketAttachmentSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setAccountEntryId(model.getAccountEntryId());
 		soapModel.setZendeskTicketId(model.getZendeskTicketId());
+		soapModel.setUserRole(model.getUserRole());
 		soapModel.setFileRepositoryId(model.getFileRepositoryId());
 		soapModel.setFileName(model.getFileName());
 		soapModel.setFileSize(model.getFileSize());
 		soapModel.setType(model.getType());
+		soapModel.setRegionRestricted(model.isRegionRestricted());
 
 		return soapModel;
 	}
@@ -150,6 +152,14 @@ public class TicketAttachmentSoap implements Serializable {
 		_zendeskTicketId = zendeskTicketId;
 	}
 
+	public int getUserRole() {
+		return _userRole;
+	}
+
+	public void setUserRole(int userRole) {
+		_userRole = userRole;
+	}
+
 	public String getFileRepositoryId() {
 		return _fileRepositoryId;
 	}
@@ -182,15 +192,29 @@ public class TicketAttachmentSoap implements Serializable {
 		_type = type;
 	}
 
+	public boolean getRegionRestricted() {
+		return _regionRestricted;
+	}
+
+	public boolean isRegionRestricted() {
+		return _regionRestricted;
+	}
+
+	public void setRegionRestricted(boolean regionRestricted) {
+		_regionRestricted = regionRestricted;
+	}
+
 	private long _ticketAttachmentId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
 	private long _accountEntryId;
 	private long _zendeskTicketId;
+	private int _userRole;
 	private String _fileRepositoryId;
 	private String _fileName;
 	private long _fileSize;
 	private int _type;
+	private boolean _regionRestricted;
 
 }

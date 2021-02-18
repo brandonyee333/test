@@ -55,7 +55,7 @@ public class TicketAttachmentServiceHttp {
 			addTicketAttachment(
 				HttpPrincipal httpPrincipal, long accountEntryId,
 				long zendeskTicketId, String fileRepositoryId, String fileName,
-				long fileSize, int type,
+				long fileSize, int type, boolean regionRestricted,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -66,7 +66,7 @@ public class TicketAttachmentServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountEntryId, zendeskTicketId, fileRepositoryId,
-				fileName, fileSize, type, serviceContext);
+				fileName, fileSize, type, regionRestricted, serviceContext);
 
 			Object returnObj = null;
 
@@ -145,7 +145,8 @@ public class TicketAttachmentServiceHttp {
 	private static final Class<?>[] _addTicketAttachmentParameterTypes0 =
 		new Class[] {
 			long.class, long.class, String.class, String.class, long.class,
-			int.class, com.liferay.portal.kernel.service.ServiceContext.class
+			int.class, boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _getTicketAttachmentParameterTypes1 =
 		new Class[] {long.class};

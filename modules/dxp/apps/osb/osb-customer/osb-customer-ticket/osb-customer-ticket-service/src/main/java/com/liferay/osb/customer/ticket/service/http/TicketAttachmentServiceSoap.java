@@ -65,7 +65,7 @@ public class TicketAttachmentServiceSoap {
 			addTicketAttachment(
 				long accountEntryId, long zendeskTicketId,
 				String fileRepositoryId, String fileName, long fileSize,
-				int type,
+				int type, boolean regionRestricted,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 
@@ -73,7 +73,7 @@ public class TicketAttachmentServiceSoap {
 			com.liferay.osb.customer.ticket.model.TicketAttachment returnValue =
 				TicketAttachmentServiceUtil.addTicketAttachment(
 					accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
-					fileSize, type, serviceContext);
+					fileSize, type, regionRestricted, serviceContext);
 
 			return com.liferay.osb.customer.ticket.model.TicketAttachmentSoap.
 				toSoapModel(returnValue);

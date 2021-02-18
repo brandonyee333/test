@@ -64,7 +64,7 @@ public class TicketAttachmentCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{ticketAttachmentId=");
 		sb.append(ticketAttachmentId);
@@ -78,6 +78,8 @@ public class TicketAttachmentCacheModel
 		sb.append(accountEntryId);
 		sb.append(", zendeskTicketId=");
 		sb.append(zendeskTicketId);
+		sb.append(", userRole=");
+		sb.append(userRole);
 		sb.append(", fileRepositoryId=");
 		sb.append(fileRepositoryId);
 		sb.append(", fileName=");
@@ -86,6 +88,8 @@ public class TicketAttachmentCacheModel
 		sb.append(fileSize);
 		sb.append(", type=");
 		sb.append(type);
+		sb.append(", regionRestricted=");
+		sb.append(regionRestricted);
 		sb.append("}");
 
 		return sb.toString();
@@ -114,6 +118,7 @@ public class TicketAttachmentCacheModel
 
 		ticketAttachmentImpl.setAccountEntryId(accountEntryId);
 		ticketAttachmentImpl.setZendeskTicketId(zendeskTicketId);
+		ticketAttachmentImpl.setUserRole(userRole);
 
 		if (fileRepositoryId == null) {
 			ticketAttachmentImpl.setFileRepositoryId("");
@@ -131,6 +136,7 @@ public class TicketAttachmentCacheModel
 
 		ticketAttachmentImpl.setFileSize(fileSize);
 		ticketAttachmentImpl.setType(type);
+		ticketAttachmentImpl.setRegionRestricted(regionRestricted);
 
 		ticketAttachmentImpl.resetOriginalValues();
 
@@ -148,12 +154,16 @@ public class TicketAttachmentCacheModel
 		accountEntryId = objectInput.readLong();
 
 		zendeskTicketId = objectInput.readLong();
+
+		userRole = objectInput.readInt();
 		fileRepositoryId = objectInput.readUTF();
 		fileName = objectInput.readUTF();
 
 		fileSize = objectInput.readLong();
 
 		type = objectInput.readInt();
+
+		regionRestricted = objectInput.readBoolean();
 	}
 
 	@Override
@@ -175,6 +185,8 @@ public class TicketAttachmentCacheModel
 
 		objectOutput.writeLong(zendeskTicketId);
 
+		objectOutput.writeInt(userRole);
+
 		if (fileRepositoryId == null) {
 			objectOutput.writeUTF("");
 		}
@@ -192,6 +204,8 @@ public class TicketAttachmentCacheModel
 		objectOutput.writeLong(fileSize);
 
 		objectOutput.writeInt(type);
+
+		objectOutput.writeBoolean(regionRestricted);
 	}
 
 	public long ticketAttachmentId;
@@ -200,9 +214,11 @@ public class TicketAttachmentCacheModel
 	public long createDate;
 	public long accountEntryId;
 	public long zendeskTicketId;
+	public int userRole;
 	public String fileRepositoryId;
 	public String fileName;
 	public long fileSize;
 	public int type;
+	public boolean regionRestricted;
 
 }

@@ -38,13 +38,13 @@ public class TicketAttachmentLocalServiceWrapper
 			addTicketAttachment(
 				long userId, long accountEntryId, long zendeskTicketId,
 				String fileRepositoryId, String fileName, long fileSize,
-				int type,
+				int type, boolean regionRestricted,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ticketAttachmentLocalService.addTicketAttachment(
 			userId, accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
-			fileSize, type, serviceContext);
+			fileSize, type, regionRestricted, serviceContext);
 	}
 
 	/**
@@ -131,14 +131,6 @@ public class TicketAttachmentLocalServiceWrapper
 
 		return _ticketAttachmentLocalService.deleteTicketAttachment(
 			ticketAttachment);
-	}
-
-	@Override
-	public void deleteTicketAttachments(long zendeskTicketId, int[] types)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_ticketAttachmentLocalService.deleteTicketAttachments(
-			zendeskTicketId, types);
 	}
 
 	@Override
@@ -309,6 +301,15 @@ public class TicketAttachmentLocalServiceWrapper
 			getTicketAttachments(int start, int end) {
 
 		return _ticketAttachmentLocalService.getTicketAttachments(start, end);
+	}
+
+	@Override
+	public java.util.List
+		<com.liferay.osb.customer.ticket.model.TicketAttachment>
+			getTicketAttachments(long zendeskTicketId, int[] types) {
+
+		return _ticketAttachmentLocalService.getTicketAttachments(
+			zendeskTicketId, types);
 	}
 
 	/**

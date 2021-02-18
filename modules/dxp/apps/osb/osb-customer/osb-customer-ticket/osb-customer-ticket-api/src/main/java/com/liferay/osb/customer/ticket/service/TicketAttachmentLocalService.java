@@ -64,7 +64,7 @@ public interface TicketAttachmentLocalService
 	public TicketAttachment addTicketAttachment(
 			long userId, long accountEntryId, long zendeskTicketId,
 			String fileRepositoryId, String fileName, long fileSize, int type,
-			ServiceContext serviceContext)
+			boolean regionRestricted, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -125,9 +125,6 @@ public interface TicketAttachmentLocalService
 	@Indexable(type = IndexableType.DELETE)
 	public TicketAttachment deleteTicketAttachment(
 		TicketAttachment ticketAttachment);
-
-	public void deleteTicketAttachments(long zendeskTicketId, int[] types)
-		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DynamicQuery dynamicQuery();
@@ -243,6 +240,10 @@ public interface TicketAttachmentLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketAttachment> getTicketAttachments(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketAttachment> getTicketAttachments(
+		long zendeskTicketId, int[] types);
 
 	/**
 	 * Returns the number of ticket attachments.

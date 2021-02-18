@@ -160,6 +160,20 @@ public interface TicketAttachmentModel extends BaseModel<TicketAttachment> {
 	public void setZendeskTicketId(long zendeskTicketId);
 
 	/**
+	 * Returns the user role of this ticket attachment.
+	 *
+	 * @return the user role of this ticket attachment
+	 */
+	public int getUserRole();
+
+	/**
+	 * Sets the user role of this ticket attachment.
+	 *
+	 * @param userRole the user role of this ticket attachment
+	 */
+	public void setUserRole(int userRole);
+
+	/**
 	 * Returns the file repository ID of this ticket attachment.
 	 *
 	 * @return the file repository ID of this ticket attachment
@@ -216,6 +230,27 @@ public interface TicketAttachmentModel extends BaseModel<TicketAttachment> {
 	 * @param type the type of this ticket attachment
 	 */
 	public void setType(int type);
+
+	/**
+	 * Returns the region restricted of this ticket attachment.
+	 *
+	 * @return the region restricted of this ticket attachment
+	 */
+	public boolean getRegionRestricted();
+
+	/**
+	 * Returns <code>true</code> if this ticket attachment is region restricted.
+	 *
+	 * @return <code>true</code> if this ticket attachment is region restricted; <code>false</code> otherwise
+	 */
+	public boolean isRegionRestricted();
+
+	/**
+	 * Sets whether this ticket attachment is region restricted.
+	 *
+	 * @param regionRestricted the region restricted of this ticket attachment
+	 */
+	public void setRegionRestricted(boolean regionRestricted);
 
 	@Override
 	public boolean isNew();

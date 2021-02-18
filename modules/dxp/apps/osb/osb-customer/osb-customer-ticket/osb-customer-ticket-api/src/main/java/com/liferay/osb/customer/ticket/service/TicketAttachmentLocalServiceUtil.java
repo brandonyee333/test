@@ -46,12 +46,13 @@ public class TicketAttachmentLocalServiceUtil {
 	public static TicketAttachment addTicketAttachment(
 			long userId, long accountEntryId, long zendeskTicketId,
 			String fileRepositoryId, String fileName, long fileSize, int type,
+			boolean regionRestricted,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException {
 
 		return getService().addTicketAttachment(
 			userId, accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
-			fileSize, type, serviceContext);
+			fileSize, type, regionRestricted, serviceContext);
 	}
 
 	/**
@@ -124,13 +125,6 @@ public class TicketAttachmentLocalServiceUtil {
 		TicketAttachment ticketAttachment) {
 
 		return getService().deleteTicketAttachment(ticketAttachment);
-	}
-
-	public static void deleteTicketAttachments(
-			long zendeskTicketId, int[] types)
-		throws PortalException {
-
-		getService().deleteTicketAttachments(zendeskTicketId, types);
 	}
 
 	public static DynamicQuery dynamicQuery() {
@@ -275,6 +269,12 @@ public class TicketAttachmentLocalServiceUtil {
 		int start, int end) {
 
 		return getService().getTicketAttachments(start, end);
+	}
+
+	public static List<TicketAttachment> getTicketAttachments(
+		long zendeskTicketId, int[] types) {
+
+		return getService().getTicketAttachments(zendeskTicketId, types);
 	}
 
 	/**

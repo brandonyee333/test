@@ -8,11 +8,13 @@
 		<field name="createDate" type="Date" />
 		<field name="accountEntryId" type="long" />
 		<field name="zendeskTicketId" type="long" />
+		<field name="userRole" type="int" />
 		<field name="fileRepositoryId" type="String" />
 		<field name="fileName" type="String">
 			<hint name="max-length">255</hint>
 		</field>
 		<field name="fileSize" type="long" />
 		<field name="type" type="int" />
+		<field name="regionRestricted" type="boolean" />
 	</model>
 </model-hints>

@@ -60,7 +60,7 @@ public interface TicketAttachmentService extends BaseService {
 	 */
 	public TicketAttachment addTicketAttachment(
 			long accountEntryId, long zendeskTicketId, String fileRepositoryId,
-			String fileName, long fileSize, int type,
+			String fileName, long fileSize, int type, boolean regionRestricted,
 			ServiceContext serviceContext)
 		throws PortalException;
 

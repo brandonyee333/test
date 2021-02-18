@@ -5,8 +5,10 @@ create table OSBCustomer_TicketAttachment (
 	createDate DATE null,
 	accountEntryId LONG,
 	zendeskTicketId LONG,
+	userRole INTEGER,
 	fileRepositoryId VARCHAR(75) null,
 	fileName VARCHAR(255) null,
 	fileSize LONG,
-	type_ INTEGER
+	type_ INTEGER,
+	regionRestricted BOOLEAN
 );

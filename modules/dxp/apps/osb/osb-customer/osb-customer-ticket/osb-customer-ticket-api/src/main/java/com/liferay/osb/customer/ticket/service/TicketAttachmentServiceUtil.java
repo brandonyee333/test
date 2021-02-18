@@ -38,13 +38,13 @@ public class TicketAttachmentServiceUtil {
 	 */
 	public static TicketAttachment addTicketAttachment(
 			long accountEntryId, long zendeskTicketId, String fileRepositoryId,
-			String fileName, long fileSize, int type,
+			String fileName, long fileSize, int type, boolean regionRestricted,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws PortalException {
 
 		return getService().addTicketAttachment(
 			accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
-			fileSize, type, serviceContext);
+			fileSize, type, regionRestricted, serviceContext);
 	}
 
 	/**

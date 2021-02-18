@@ -38,13 +38,13 @@ public class TicketAttachmentServiceWrapper
 			addTicketAttachment(
 				long accountEntryId, long zendeskTicketId,
 				String fileRepositoryId, String fileName, long fileSize,
-				int type,
+				int type, boolean regionRestricted,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ticketAttachmentService.addTicketAttachment(
 			accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
-			fileSize, type, serviceContext);
+			fileSize, type, regionRestricted, serviceContext);
 	}
 
 	/**

@@ -75,8 +75,9 @@ public class TicketAttachmentModelImpl
 		{"ticketAttachmentId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"accountEntryId", Types.BIGINT}, {"zendeskTicketId", Types.BIGINT},
-		{"fileRepositoryId", Types.VARCHAR}, {"fileName", Types.VARCHAR},
-		{"fileSize", Types.BIGINT}, {"type_", Types.INTEGER}
+		{"userRole", Types.INTEGER}, {"fileRepositoryId", Types.VARCHAR},
+		{"fileName", Types.VARCHAR}, {"fileSize", Types.BIGINT},
+		{"type_", Types.INTEGER}, {"regionRestricted", Types.BOOLEAN}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -89,14 +90,16 @@ public class TicketAttachmentModelImpl
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("accountEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("zendeskTicketId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userRole", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("fileRepositoryId", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("fileName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("fileSize", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("regionRestricted", Types.BOOLEAN);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSBCustomer_TicketAttachment (ticketAttachmentId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,accountEntryId LONG,zendeskTicketId LONG,fileRepositoryId VARCHAR(75) null,fileName VARCHAR(255) null,fileSize LONG,type_ INTEGER)";
+		"create table OSBCustomer_TicketAttachment (ticketAttachmentId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,accountEntryId LONG,zendeskTicketId LONG,userRole INTEGER,fileRepositoryId VARCHAR(75) null,fileName VARCHAR(255) null,fileSize LONG,type_ INTEGER,regionRestricted BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table OSBCustomer_TicketAttachment";
@@ -153,10 +156,12 @@ public class TicketAttachmentModelImpl
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setAccountEntryId(soapModel.getAccountEntryId());
 		model.setZendeskTicketId(soapModel.getZendeskTicketId());
+		model.setUserRole(soapModel.getUserRole());
 		model.setFileRepositoryId(soapModel.getFileRepositoryId());
 		model.setFileName(soapModel.getFileName());
 		model.setFileSize(soapModel.getFileSize());
 		model.setType(soapModel.getType());
+		model.setRegionRestricted(soapModel.isRegionRestricted());
 
 		return model;
 	}
@@ -457,6 +462,28 @@ public class TicketAttachmentModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"userRole",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getUserRole();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userRole",
+			new BiConsumer<TicketAttachment, Object>() {
+
+				@Override
+				public void accept(
+					TicketAttachment ticketAttachment, Object userRoleObject) {
+
+					ticketAttachment.setUserRole((Integer)userRoleObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"fileRepositoryId",
 			new Function<TicketAttachment, Object>() {
 
@@ -543,6 +570,30 @@ public class TicketAttachmentModelImpl
 					TicketAttachment ticketAttachment, Object typeObject) {
 
 					ticketAttachment.setType((Integer)typeObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"regionRestricted",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getRegionRestricted();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"regionRestricted",
+			new BiConsumer<TicketAttachment, Object>() {
+
+				@Override
+				public void accept(
+					TicketAttachment ticketAttachment,
+					Object regionRestrictedObject) {
+
+					ticketAttachment.setRegionRestricted(
+						(Boolean)regionRestrictedObject);
 				}
 
 			});
@@ -654,6 +705,17 @@ public class TicketAttachmentModelImpl
 
 	@JSON
 	@Override
+	public int getUserRole() {
+		return _userRole;
+	}
+
+	@Override
+	public void setUserRole(int userRole) {
+		_userRole = userRole;
+	}
+
+	@JSON
+	@Override
 	public String getFileRepositoryId() {
 		if (_fileRepositoryId == null) {
 			return "";
@@ -718,6 +780,23 @@ public class TicketAttachmentModelImpl
 		return _originalType;
 	}
 
+	@JSON
+	@Override
+	public boolean getRegionRestricted() {
+		return _regionRestricted;
+	}
+
+	@JSON
+	@Override
+	public boolean isRegionRestricted() {
+		return _regionRestricted;
+	}
+
+	@Override
+	public void setRegionRestricted(boolean regionRestricted) {
+		_regionRestricted = regionRestricted;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -760,10 +839,12 @@ public class TicketAttachmentModelImpl
 		ticketAttachmentImpl.setCreateDate(getCreateDate());
 		ticketAttachmentImpl.setAccountEntryId(getAccountEntryId());
 		ticketAttachmentImpl.setZendeskTicketId(getZendeskTicketId());
+		ticketAttachmentImpl.setUserRole(getUserRole());
 		ticketAttachmentImpl.setFileRepositoryId(getFileRepositoryId());
 		ticketAttachmentImpl.setFileName(getFileName());
 		ticketAttachmentImpl.setFileSize(getFileSize());
 		ticketAttachmentImpl.setType(getType());
+		ticketAttachmentImpl.setRegionRestricted(isRegionRestricted());
 
 		ticketAttachmentImpl.resetOriginalValues();
 
@@ -865,6 +946,8 @@ public class TicketAttachmentModelImpl
 
 		ticketAttachmentCacheModel.zendeskTicketId = getZendeskTicketId();
 
+		ticketAttachmentCacheModel.userRole = getUserRole();
+
 		ticketAttachmentCacheModel.fileRepositoryId = getFileRepositoryId();
 
 		String fileRepositoryId = ticketAttachmentCacheModel.fileRepositoryId;
@@ -884,6 +967,8 @@ public class TicketAttachmentModelImpl
 		ticketAttachmentCacheModel.fileSize = getFileSize();
 
 		ticketAttachmentCacheModel.type = getType();
+
+		ticketAttachmentCacheModel.regionRestricted = isRegionRestricted();
 
 		return ticketAttachmentCacheModel;
 	}
@@ -966,12 +1051,14 @@ public class TicketAttachmentModelImpl
 	private long _zendeskTicketId;
 	private long _originalZendeskTicketId;
 	private boolean _setOriginalZendeskTicketId;
+	private int _userRole;
 	private String _fileRepositoryId;
 	private String _fileName;
 	private long _fileSize;
 	private int _type;
 	private int _originalType;
 	private boolean _setOriginalType;
+	private boolean _regionRestricted;
 	private long _columnBitmask;
 	private TicketAttachment _escapedModel;
 

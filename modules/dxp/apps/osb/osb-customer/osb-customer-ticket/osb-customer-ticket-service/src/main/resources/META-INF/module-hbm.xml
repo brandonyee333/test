@@ -12,9 +12,11 @@
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="zendeskTicketId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userRole" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="fileRepositoryId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="fileName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="fileSize" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="regionRestricted" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 </hibernate-mapping>
