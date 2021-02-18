@@ -61,8 +61,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -438,14 +436,14 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setProjectId(analyticsEventsMessage.getProjectId());
 			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
+			_storeEvent(analyticsEvent);
+
 			analyticsEvents.add(analyticsEvent);
 		}
 
 		analyticsEvents.forEach(this::_sendAnalyticsEventMessage);
 
 		_analyticsEventsCounter.inc(analyticsEvents.size());
-
-		_storeEvents(analyticsEvents);
 	}
 
 	private void _sendAnalyticsEventMessage(AnalyticsEvent analyticsEvent) {
@@ -458,57 +456,9 @@ public class AnalyticsEventsMessageProcessor {
 		}
 	}
 
-	private void _storeEventAttributes(
-		AnalyticsEvent analyticsEvent, Event event, Long eventDefinitionId) {
-
-		Map<String, String> analyticsEventProperties =
-			analyticsEvent.getEventProperties();
-
-		for (Map.Entry<String, String> entry :
-				analyticsEventProperties.entrySet()) {
-
-			String propertyName = entry.getKey();
-
-			EventAttributeDefinition eventAttributeDefinition =
-				_eventAttributeDefinitionDog.getEventAttributeDefinitionByName(
-					propertyName);
-
-			if (eventAttributeDefinition == null) {
-				eventAttributeDefinition =
-					_eventAttributeDefinitionDog.addEventAttributeDefinition(
-						"String", null, null,
-						Collections.singleton(eventDefinitionId), propertyName);
-			}
-			else {
-				Set<Long> eventDefinitionIds = new HashSet<>(
-					eventAttributeDefinition.getEventDefinitionIds());
-
-				if (eventDefinitionIds.add(eventDefinitionId)) {
-					eventAttributeDefinition =
-						_eventAttributeDefinitionDog.
-							patchEventAttributeDefinition(
-								null, null, null,
-								eventAttributeDefinition.getId(),
-								eventDefinitionIds, null);
-				}
-			}
-
-			_eventAttributeDog.addEventAttribute(
-				eventAttributeDefinition.getId(), entry.getValue(),
-				event.getId());
-		}
-	}
-
-	private void _storeEvents(Set<AnalyticsEvent> analyticsEvents) {
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-		Map<String, List<AnalyticsEvent>> analyticsEventMap = stream.collect(
-			Collectors.groupingBy(AnalyticsEvent::getEventId));
-
-		for (Map.Entry<String, List<AnalyticsEvent>> entry :
-				analyticsEventMap.entrySet()) {
-
-			String eventId = entry.getKey();
+	private void _storeEvent(AnalyticsEvent analyticsEvent) {
+		try {
+			String eventId = analyticsEvent.getEventId();
 
 			EventDefinition eventDefinition =
 				_eventDefinitionDog.getEventDefinitionByName(eventId);
@@ -518,17 +468,58 @@ public class AnalyticsEventsMessageProcessor {
 					null, null, eventId, "custom");
 			}
 
-			if (eventDefinition != null) {
-				Long eventDefinitionId = eventDefinition.getId();
-
-				for (AnalyticsEvent analyticsEvent : entry.getValue()) {
-					Event event = _eventDog.addEvent(
-						analyticsEvent, eventDefinitionId);
-
-					_storeEventAttributes(
-						analyticsEvent, event, eventDefinitionId);
+			if (eventDefinition == null) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Skipping store event as event definition is null");
 				}
+
+				return;
 			}
+
+			Long eventDefinitionId = eventDefinition.getId();
+
+			Event event = _eventDog.addEvent(analyticsEvent, eventDefinitionId);
+
+			Map<String, String> eventProperties =
+				analyticsEvent.getEventProperties();
+
+			for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
+				String propertyName = entry.getKey();
+
+				EventAttributeDefinition eventAttributeDefinition =
+					_eventAttributeDefinitionDog.
+						getEventAttributeDefinitionByName(propertyName);
+
+				if (eventAttributeDefinition == null) {
+					eventAttributeDefinition =
+						_eventAttributeDefinitionDog.
+							addEventAttributeDefinition(
+								"String", null, null,
+								Collections.singleton(eventDefinitionId),
+								propertyName);
+				}
+				else {
+					Set<Long> eventDefinitionIds = new HashSet<>(
+						eventAttributeDefinition.getEventDefinitionIds());
+
+					if (eventDefinitionIds.add(eventDefinitionId)) {
+						eventAttributeDefinition =
+							_eventAttributeDefinitionDog.
+								patchEventAttributeDefinition(
+									null, null, null,
+									eventAttributeDefinition.getId(),
+									eventDefinitionIds, null);
+					}
+				}
+
+				_eventAttributeDog.addEventAttribute(
+					eventAttributeDefinition.getId(), entry.getValue(),
+					event.getId());
+			}
+		}
+		catch (Exception e) {
+			_log.error("Unable to store event", e);
 		}
 	}
 
