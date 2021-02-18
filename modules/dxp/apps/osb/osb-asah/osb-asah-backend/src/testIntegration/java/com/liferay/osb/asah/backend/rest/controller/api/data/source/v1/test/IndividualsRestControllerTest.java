@@ -24,6 +24,7 @@ import io.restassured.response.ValidatableResponse;
 
 import org.hamcrest.Matchers;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -64,6 +65,7 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 		name = "users", resourcePath = "users.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
+	@Ignore
 	@Test
 	public void testGetIndividuals() {
 		ValidatableResponse validatableResponse = getValidatableResponse(

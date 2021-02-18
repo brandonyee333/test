@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -70,6 +71,7 @@ public class IndividualSegmentsRestControllerTest
 		name = "users", resourcePath = "users.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)
+	@Ignore
 	@Test
 	public void testGetIndividualSegments() {
 		ValidatableResponse validatableResponse = getValidatableResponse(
