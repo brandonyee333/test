@@ -21,11 +21,21 @@ import com.liferay.portal.kernel.util.StringPool;
  */
 public class EventConstants {
 
+	public static final int TYPE_DELETE_ATTACHMENT = 3;
+
 	public static final int TYPE_DOWNLOAD_ATTACHMENT = 1;
 
+	public static final int TYPE_UPLOAD_ATTACHMENT = 2;
+
 	public static String getTypeLabel(long type) {
-		if (type == TYPE_DOWNLOAD_ATTACHMENT) {
+		if (type == TYPE_DELETE_ATTACHMENT) {
+			return "delete-attachment";
+		}
+		else if (type == TYPE_DOWNLOAD_ATTACHMENT) {
 			return "download-attachment";
+		}
+		else if (type == TYPE_UPLOAD_ATTACHMENT) {
+			return "upload-attachment";
 		}
 
 		return StringPool.BLANK;

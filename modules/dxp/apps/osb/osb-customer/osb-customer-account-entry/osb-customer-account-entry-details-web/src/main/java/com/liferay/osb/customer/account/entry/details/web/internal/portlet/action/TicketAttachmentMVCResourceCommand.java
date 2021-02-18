@@ -43,6 +43,7 @@ import javax.portlet.PortletURL;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
@@ -60,8 +61,13 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class TicketAttachmentMVCResourceCommand extends BaseMVCResourceCommand {
 
-	protected void addEvent(long userId, TicketAttachment ticketAttachment)
+	protected void addEvent(
+			ResourceRequest resourceRequest, long userId,
+			TicketAttachment ticketAttachment)
 		throws PortalException {
+
+		HttpServletRequest request = _portal.getHttpServletRequest(
+			resourceRequest);
 
 		long classNameId = _classNameLocalService.getClassNameId(
 			ZendeskTicket.class.getName());
@@ -73,7 +79,8 @@ public class TicketAttachmentMVCResourceCommand extends BaseMVCResourceCommand {
 			classNameId, ticketAttachment.getZendeskTicketId(),
 			EventConstants.TYPE_DOWNLOAD_ATTACHMENT, typeClassNameId,
 			ticketAttachment.getTicketAttachmentId(),
-			ticketAttachment.getFileName(), StringPool.BLANK, StringPool.BLANK);
+			ticketAttachment.getFileName(), StringPool.BLANK,
+			request.getRemoteAddr());
 	}
 
 	protected void doServeResource(
@@ -101,7 +108,9 @@ public class TicketAttachmentMVCResourceCommand extends BaseMVCResourceCommand {
 			if (downloadURL != null) {
 				response.sendRedirect(downloadURL);
 
-				addEvent(themeDisplay.getUserId(), ticketAttachment);
+				addEvent(
+					resourceRequest, themeDisplay.getUserId(),
+					ticketAttachment);
 			}
 			else {
 				throw new FileNotFoundException();

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.ticket.service.impl;
 
-import com.liferay.osb.customer.account.entry.details.constants.EventConstants;
-import com.liferay.osb.customer.account.entry.details.service.EventLocalService;
 import com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.ticket.constants.TicketAttachmentConstants;
@@ -120,29 +118,24 @@ public class TicketAttachmentLocalServiceImpl
 		return ticketAttachment;
 	}
 
-	public void deleteTicketAttachments(long zendeskTicketId, int[] types)
+	@Override
+	public TicketAttachment deleteTicketAttachment(long ticketAttachmentId)
 		throws PortalException {
 
-		long classNameId = classNameLocalService.getClassNameId(
-			ZendeskTicket.class.getName());
-		long typeClassNameId = classNameLocalService.getClassNameId(
-			TicketAttachment.class.getName());
+		TicketAttachment ticketAttachment =
+			ticketAttachmentPersistence.findByPrimaryKey(ticketAttachmentId);
 
-		List<TicketAttachment> ticketAttachments =
-			ticketAttachmentPersistence.findByZTI_T(zendeskTicketId, types);
+		_fileRepositoryWebService.deleteFile(
+			ticketAttachment.getFileRepositoryId(),
+			ticketAttachment.getFilePath());
 
-		for (TicketAttachment ticketAttachment : ticketAttachments) {
-			_fileRepositoryWebService.deleteFile(
-				ticketAttachment.getFileRepositoryId(),
-				ticketAttachment.getFilePath());
+		return ticketAttachmentPersistence.remove(ticketAttachment);
+	}
 
-			ticketAttachmentPersistence.remove(ticketAttachment);
+	public List<TicketAttachment> getTicketAttachments(
+		long zendeskTicketId, int[] types) {
 
-			_eventLocalService.deleteEvents(
-				classNameId, zendeskTicketId,
-				EventConstants.TYPE_DOWNLOAD_ATTACHMENT, typeClassNameId,
-				ticketAttachment.getTicketAttachmentId());
-		}
+		return ticketAttachmentPersistence.findByZTI_T(zendeskTicketId, types);
 	}
 
 	protected String buildZendeskTicketCommentBody(
@@ -231,9 +224,6 @@ public class TicketAttachmentLocalServiceImpl
 			throw new NoSuchZendeskTicketException();
 		}
 	}
-
-	@ServiceReference(type = EventLocalService.class)
-	private EventLocalService _eventLocalService;
 
 	@ServiceReference(type = FileRepositoryWebService.class)
 	private FileRepositoryWebService _fileRepositoryWebService;

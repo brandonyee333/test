@@ -14,7 +14,11 @@
 
 package com.liferay.osb.customer.account.entry.details.web.internal.messaging;
 
+import com.liferay.osb.customer.account.entry.details.constants.EventConstants;
+import com.liferay.osb.customer.account.entry.details.service.EventLocalService;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.ticket.constants.TicketAttachmentConstants;
+import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
@@ -33,8 +37,10 @@ import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 
 import java.text.Format;
@@ -94,9 +100,29 @@ public class CleanTicketAttachmentsMessageListener extends BaseMessageListener {
 						zendeskTicket.getZendeskTicketId());
 			}
 
-			_ticketAttachmentLocalService.deleteTicketAttachments(
-				zendeskTicket.getZendeskTicketId(),
-				new int[] {TicketAttachmentConstants.TYPE_REGULAR});
+			List<TicketAttachment> ticketAttachments =
+				_ticketAttachmentLocalService.getTicketAttachments(
+					zendeskTicket.getZendeskTicketId(),
+					new int[] {TicketAttachmentConstants.TYPE_REGULAR});
+
+			for (TicketAttachment ticketAttachment : ticketAttachments) {
+				_ticketAttachmentLocalService.deleteTicketAttachment(
+					ticketAttachment.getTicketAttachmentId());
+
+				long classNameId = _classNameLocalService.getClassNameId(
+					ZendeskTicket.class.getName());
+				long typeClassNameId = _classNameLocalService.getClassNameId(
+					TicketAttachment.class.getName());
+
+				_eventLocalService.addEvent(
+					OSBCustomerConstants.USER_DEFAULT_USER_ID, new Date(),
+					ticketAttachment.getAccountEntryId(), classNameId,
+					ticketAttachment.getZendeskTicketId(),
+					EventConstants.TYPE_DELETE_ATTACHMENT, typeClassNameId,
+					ticketAttachment.getTicketAttachmentId(),
+					ticketAttachment.getFileName(), StringPool.BLANK,
+					StringPool.BLANK);
+			}
 		}
 	}
 
@@ -134,7 +160,13 @@ public class CleanTicketAttachmentsMessageListener extends BaseMessageListener {
 	private static final Log _log = LogFactoryUtil.getLog(
 		CleanTicketAttachmentsMessageListener.class);
 
+	@Reference
+	private ClassNameLocalService _classNameLocalService;
+
 	private int _daysClosed;
+
+	@Reference
+	private EventLocalService _eventLocalService;
 
 	@Reference
 	private FastDateFormatFactory _fastDateFormatFactory;
