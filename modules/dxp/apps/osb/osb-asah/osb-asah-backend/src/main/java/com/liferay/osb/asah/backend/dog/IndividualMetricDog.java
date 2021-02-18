@@ -100,7 +100,9 @@ public class IndividualMetricDog {
 				QueryBuilders.existsQuery("demographics.email"));
 		}
 
-		if (searchQueryContext.isActive() != null) {
+		if ((searchQueryContext.isActive() != null) &&
+			searchQueryContext.isActive()) {
+
 			LocalDateTime nowLocalDateTime = LocalDateTime.now();
 
 			boolQueryBuilder.filter(

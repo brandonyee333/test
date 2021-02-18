@@ -12,7 +12,17 @@
 				}
 			]
 		},
-		"id": "101"
+		"id": "101",
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-400d}"
+			},
+			{
+				"channelId": "2",
+				"lastActivityDate": "${now-1d}"
+			}
+		]
 	},
 	{
 		"dateCreated": "${now-400d}",
@@ -20,7 +30,13 @@
 	},
 	{
 		"dateCreated": "${now-400d}",
-		"id": "103"
+		"id": "103",
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-400d}"
+			}
+		]
 	},
 	{
 		"dateCreated": "${now}",
@@ -31,10 +47,30 @@
 				}
 			]
 		},
-		"id": "104"
+		"id": "104",
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-100d}"
+			}
+		]
 	},
 	{
 		"dateCreated": "${now}",
-		"id": "105"
+		"id": "105",
+		"lastActivityDates": [
+			{
+				"channelId": "1",
+				"lastActivityDate": "${now-400d}"
+			},
+			{
+				"channelId": "2",
+				"lastActivityDate": "${now-1d}"
+			},
+			{
+				"channelId": "3",
+				"lastActivityDate": "${now-400d}"
+			}
+		]
 	}
 ]

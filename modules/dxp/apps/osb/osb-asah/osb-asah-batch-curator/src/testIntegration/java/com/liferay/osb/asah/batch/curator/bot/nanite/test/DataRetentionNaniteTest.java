@@ -59,7 +59,7 @@ public class DataRetentionNaniteTest extends BaseNaniteTestCase {
 		_dataRetentionNanite.run(null);
 
 		Assert.assertArrayEquals(
-			new String[] {"100", "101", "104", "105"},
+			new String[] {"101", "104", "105"},
 			JSONUtil.toStringArray(
 				faroInfoElasticsearchInvoker.get("individuals"), "id"));
 	}

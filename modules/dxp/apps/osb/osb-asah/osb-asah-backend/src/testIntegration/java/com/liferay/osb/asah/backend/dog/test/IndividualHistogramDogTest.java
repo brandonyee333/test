@@ -97,8 +97,8 @@ public class IndividualHistogramDogTest {
 			histogramMetrics.toString(), 30, histogramMetrics.size());
 
 		double[] expectedValues = {
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3,
-			3, 3, 3, 3, 3, 3, 3
+			1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4,
+			4, 4, 4, 4, 4, 5, 5
 		};
 
 		Assert.assertArrayEquals(
