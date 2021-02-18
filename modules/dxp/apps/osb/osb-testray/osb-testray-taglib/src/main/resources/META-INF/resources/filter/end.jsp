@@ -62,6 +62,8 @@
 				event.stopPropagation();
 
 				popover.toggle();
+				
+				document.getElementById('testrayFilterField').focus();
 
 				var boundingBox = popover.get('boundingBox');
 
