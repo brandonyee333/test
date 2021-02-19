@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
@@ -72,9 +71,7 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
 	public void deleteDataSource(@PathVariable String id) throws Exception {
-		if (!ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
-			_salesforceExtractorConfigurationDog.deleteConfiguration(id);
-		}
+		_salesforceExtractorConfigurationDog.deleteConfiguration(id);
 
 		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
 			"DeleteDataSourcesNanite",
@@ -721,9 +718,7 @@ public class DataSourcesRestController extends BaseRestController {
 		String type = _faroInfoDataSourceDog.getDataSourceType(
 			dataSourceJSONObject);
 
-		if (!Objects.equals(type, "LIFERAY") &&
-			!Objects.equals(type, "SALESFORCE")) {
-
+		if (!Objects.equals(type, "SALESFORCE")) {
 			return;
 		}
 
@@ -735,10 +730,8 @@ public class DataSourcesRestController extends BaseRestController {
 			return;
 		}
 
-		if (Objects.equals(type, "SALESFORCE")) {
-			_salesforceExtractorConfigurationDog.updateConfiguration(
-				newDataSourceJSONObject);
-		}
+		_salesforceExtractorConfigurationDog.updateConfiguration(
+			newDataSourceJSONObject);
 
 		_faroInfoDataSourceDog.updateDataSource(
 			dataSourceJSONObject.getString("id"), newDataSourceJSONObject);

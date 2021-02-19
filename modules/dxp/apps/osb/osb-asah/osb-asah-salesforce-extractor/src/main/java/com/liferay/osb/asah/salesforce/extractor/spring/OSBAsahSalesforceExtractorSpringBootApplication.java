@@ -14,11 +14,7 @@
 
 package com.liferay.osb.asah.salesforce.extractor.spring;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -31,21 +27,8 @@ public class OSBAsahSalesforceExtractorSpringBootApplication
 	extends OSBAsahSpringBootApplication {
 
 	public static void main(String[] args) {
-		if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Salesforce extractor cannot execute if multitenancy is " +
-						"enabled");
-			}
-
-			return;
-		}
-
 		SpringApplication.run(
 			OSBAsahSalesforceExtractorSpringBootApplication.class, args);
 	}
-
-	private static final Log _log = LogFactory.getLog(
-		OSBAsahSalesforceExtractorSpringBootApplication.class);
 
 }
