@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -60,38 +59,6 @@ public class EventAttributeDefinitionDog {
 
 		return _eventAttributeDefinitionRepository.save(
 			eventAttributeDefinition);
-	}
-
-	public EventAttributeDefinition addEventDefinitionId(
-		Long eventDefinitionId,
-		EventAttributeDefinition eventAttributeDefinition) {
-
-		for (EventDefinitionEventAttributeDefinition
-				eventDefinitionEventAttributeDefinition :
-					eventAttributeDefinition.
-						getEventDefinitionEventAttributeDefinitions()) {
-
-			Long eventDefinitionEventAttributeDefinitionId =
-				eventDefinitionEventAttributeDefinition.getEventDefinitionId();
-
-			if (eventDefinitionId.equals(
-					eventDefinitionEventAttributeDefinitionId)) {
-
-				return eventAttributeDefinition;
-			}
-		}
-
-		Set<EventDefinitionEventAttributeDefinition>
-			eventDefinitionEventAttributeDefinitions = new HashSet<>(
-				eventAttributeDefinition.
-					getEventDefinitionEventAttributeDefinitions());
-
-		eventDefinitionEventAttributeDefinitions.add(
-			new EventDefinitionEventAttributeDefinition(eventDefinitionId));
-
-		return updateEventAttributeDefinition(
-			null, null, null, eventAttributeDefinition.getId(),
-			eventDefinitionEventAttributeDefinitions, null);
 	}
 
 	public EventAttributeDefinition fetchEventAttributeDefinitionByName(

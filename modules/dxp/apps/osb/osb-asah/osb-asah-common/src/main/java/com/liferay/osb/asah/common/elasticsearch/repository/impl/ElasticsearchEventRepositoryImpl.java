@@ -34,53 +34,57 @@ public class ElasticsearchEventRepositoryImpl implements EventRepository {
 
 	@Override
 	public long count() {
-		return 0;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void delete(Event entity) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void deleteAll() {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void deleteAll(Iterable<? extends Event> entities) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void deleteById(Long aLong) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean existsById(Long aLong) {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Iterable<Event> findAll() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Iterable<Event> findAllById(Iterable<Long> longs) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Optional<Event> findById(Long aLong) {
-		return Optional.empty();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public <S extends Event> S save(S entity) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public <S extends Event> Iterable<S> saveAll(Iterable<S> entities) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 }

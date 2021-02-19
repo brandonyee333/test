@@ -18,8 +18,11 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.Event;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,15 +46,6 @@ public class AnalyticsEventStorageDog {
 			if (eventDefinition == null) {
 				eventDefinition = _eventDefinitionDog.addEventDefinition(
 					null, null, eventId, "custom");
-			}
-
-			if (eventDefinition == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Skipping store event as event definition is null");
-				}
-
-				return;
 			}
 
 			Long eventDefinitionId = eventDefinition.getId();

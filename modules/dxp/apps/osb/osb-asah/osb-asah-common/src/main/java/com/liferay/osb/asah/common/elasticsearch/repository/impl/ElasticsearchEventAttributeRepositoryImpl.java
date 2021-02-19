@@ -35,55 +35,59 @@ public class ElasticsearchEventAttributeRepositoryImpl
 
 	@Override
 	public long count() {
-		return 0;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void delete(EventAttribute entity) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void deleteAll() {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void deleteAll(Iterable<? extends EventAttribute> entities) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void deleteById(Long aLong) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean existsById(Long aLong) {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Iterable<EventAttribute> findAll() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Iterable<EventAttribute> findAllById(Iterable<Long> longs) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Optional<EventAttribute> findById(Long aLong) {
-		return Optional.empty();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public <S extends EventAttribute> S save(S entity) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public <S extends EventAttribute> Iterable<S> saveAll(
 		Iterable<S> entities) {
 
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 }
