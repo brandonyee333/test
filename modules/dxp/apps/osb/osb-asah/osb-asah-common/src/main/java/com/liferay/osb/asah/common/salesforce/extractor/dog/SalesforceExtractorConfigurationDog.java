@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.common.salesforce.extractor.dog;
 
-import com.liferay.osb.asah.common.configuration.dog.BaseConfigurationDog;
-import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
+import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
+import com.liferay.osb.asah.common.json.JSONUtil;
+
+import java.util.Objects;
 
 import org.json.JSONObject;
 
@@ -29,19 +32,98 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class SalesforceExtractorConfigurationDog extends BaseConfigurationDog {
+public class SalesforceExtractorConfigurationDog {
 
-	@Override
-	public void setUpDataSource(JSONObject dataSourceJSONObject) {
+	public JSONObject addConfiguration(JSONObject dataSourceJSONObject) {
+		String state = getState(dataSourceJSONObject);
+
+		dataSourceJSONObject.put("state", state);
+
+		try {
+			_addConfiguration(dataSourceJSONObject.toString());
+		}
+		catch (Exception e) {
+			dataSourceJSONObject.put("exceptionMessage", e.getMessage());
+		}
+
+		_updateConfiguration(dataSourceJSONObject, state);
+
+		return dataSourceJSONObject;
 	}
 
-	@Override
-	protected JSONObject buildConfigurationsJSONObject(
+	public void deleteConfiguration(String dataSourceId) {
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+
+		String type = _faroInfoDataSourceDog.getDataSourceType(
+			dataSourceJSONObject);
+
+		if (!Objects.equals(type, _getProviderType())) {
+			return;
+		}
+
+		_configurationHttp.deleteConfiguration(
+			JSONUtil.put("dataSourceId", dataSourceJSONObject.getString("id")),
+			_getProviderType());
+	}
+
+	public String getState(JSONObject dataSourceJSONObject) {
+		return _configurationHttp.getState(
+			dataSourceJSONObject, _getProviderType());
+	}
+
+	public JSONObject updateConfiguration(JSONObject dataSourceJSONObject) {
+		String state = getState(dataSourceJSONObject);
+
+		dataSourceJSONObject.put("state", state);
+
+		try {
+			_updateConfiguration(
+				dataSourceJSONObject.getString("id"), dataSourceJSONObject);
+		}
+		catch (Exception e) {
+			dataSourceJSONObject.put("exceptionMessage", e.getMessage());
+		}
+
+		_updateConfiguration(dataSourceJSONObject, state);
+
+		return dataSourceJSONObject;
+	}
+
+	private void _addConfiguration(String json) {
+		JSONObject dataSourceJSONObject = new JSONObject(json);
+
+		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
+			"provider");
+
+		String type = providerJSONObject.getString("type");
+
+		if (!Objects.equals(type, _getProviderType())) {
+			return;
+		}
+
+		JSONObject configurationsJSONObject = _buildConfigurationsJSONObject(
+			dataSourceJSONObject, providerJSONObject);
+
+		configurationsJSONObject.put(
+			"dataSourceId", dataSourceJSONObject.getString("id"));
+
+		_configurationHttp.addConfiguration(
+			configurationsJSONObject, _getProviderType());
+	}
+
+	private JSONObject _buildConfigurationsJSONObject(
 		JSONObject dataSourceJSONObject, JSONObject providerJSONObject) {
 
-		JSONObject configurationsJSONObject =
-			super.buildConfigurationsJSONObject(
-				dataSourceJSONObject, providerJSONObject);
+		JSONObject configurationsJSONObject = JSONUtil.put(
+			"credentials", dataSourceJSONObject.getJSONObject("credentials")
+		).put(
+			"dataSourceState", dataSourceJSONObject.getString("state")
+		).put(
+			"dataSourceStatus", dataSourceJSONObject.getString("status")
+		).put(
+			"url", dataSourceJSONObject.getString("url")
+		);
 
 		return configurationsJSONObject.put(
 			"accountsConfiguration",
@@ -52,8 +134,7 @@ public class SalesforceExtractorConfigurationDog extends BaseConfigurationDog {
 		);
 	}
 
-	@Override
-	protected JSONObject buildOAuthOwnerJSONObject(
+	private JSONObject _buildOAuthOwnerJSONObject(
 		JSONObject dataSourceJSONObject) {
 
 		ResponseEntity<String> responseEntity =
@@ -66,17 +147,75 @@ public class SalesforceExtractorConfigurationDog extends BaseConfigurationDog {
 		return null;
 	}
 
-	@Override
-	protected String getProviderType() {
+	private String _getProviderType() {
 		return "SALESFORCE";
 	}
 
-	@Override
-	protected String getURL() {
-		return ServiceConstants.URL_SALESFORCE_EXTRACTOR;
+	private void _updateConfiguration(
+		JSONObject dataSourceJSONObject, String state) {
+
+		if (!Objects.equals(state, "CREDENTIALS_VALID")) {
+			return;
+		}
+
+		JSONObject oAuthOwnerJSONObject = _buildOAuthOwnerJSONObject(
+			dataSourceJSONObject);
+
+		if (oAuthOwnerJSONObject == null) {
+			dataSourceJSONObject.put("state", "CREDENTIALS_INVALID");
+
+			try {
+				_updateConfiguration(
+					dataSourceJSONObject.getString("id"), dataSourceJSONObject);
+			}
+			catch (Exception e) {
+				dataSourceJSONObject.put("exceptionMessage", e.getMessage());
+			}
+		}
+		else {
+			JSONObject credentialsJSONObject =
+				dataSourceJSONObject.getJSONObject("credentials");
+
+			credentialsJSONObject.put("oAuthOwner", oAuthOwnerJSONObject);
+		}
+	}
+
+	private void _updateConfiguration(
+			String dataSourceId, JSONObject dataSourceJSONObject)
+		throws Exception {
+
+		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
+			"provider");
+
+		String type = providerJSONObject.getString("type");
+
+		if (!Objects.equals(type, _getProviderType())) {
+			return;
+		}
+
+		JSONObject configurationsJSONObject = _buildConfigurationsJSONObject(
+			dataSourceJSONObject, providerJSONObject);
+
+		configurationsJSONObject.put("dataSourceId", dataSourceId);
+
+		JSONObject existingDataSourceJSONObject =
+			_faroInfoDataSourceDog.getDataSourceJSONObject(dataSourceId);
+
+		configurationsJSONObject.put(
+			"existingDataSourceId",
+			existingDataSourceJSONObject.getString("id"));
+
+		_configurationHttp.updateConfiguration(
+			configurationsJSONObject, _getProviderType());
 	}
 
 	@Autowired
+	private ConfigurationHttp _configurationHttp;
+
+	@Autowired
 	private DataSourceHttp _dataSourceHttp;
+
+	@Autowired
+	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
 
 }
