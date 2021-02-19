@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceExtractorConfigurableBot;
+import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceConfigurableBot;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorNanite;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.SalesforceExtractorTestUtil;
 import com.liferay.osb.asah.salesforce.extractor.client.SalesforceBulkClientInvoker;
@@ -133,16 +133,13 @@ public class SalesforceExtractorNaniteTest {
 
 		@Bean
 		@Primary
-		public SalesforceExtractorConfigurableBot
-			salesforceExtractorConfigurableBot() {
+		public SalesforceConfigurableBot salesforceConfigurableBot() {
+			SalesforceConfigurableBot salesforceConfigurableBot =
+				new SalesforceConfigurableBot();
 
-			SalesforceExtractorConfigurableBot osbAsahSalesforceExtractorBot =
-				new SalesforceExtractorConfigurableBot();
+			salesforceConfigurableBot.setTableNames(new String[] {"Account"});
 
-			osbAsahSalesforceExtractorBot.setTableNames(
-				new String[] {"Account"});
-
-			return osbAsahSalesforceExtractorBot;
+			return salesforceConfigurableBot;
 		}
 
 		@Bean

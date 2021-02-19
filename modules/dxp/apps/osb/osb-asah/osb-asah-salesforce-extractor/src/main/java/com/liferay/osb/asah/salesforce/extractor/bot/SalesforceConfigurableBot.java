@@ -32,6 +32,7 @@ import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceEx
 import io.prometheus.client.Gauge;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -91,6 +92,12 @@ public class SalesforceConfigurableBot {
 		_resizeThreadPoolSize();
 
 		_monitorThreadPool();
+	}
+
+	public void setTableNames(String[] tableNames) {
+		if (tableNames != null) {
+			_tableNames = Arrays.copyOf(tableNames, tableNames.length);
+		}
 	}
 
 	protected List<Nanite> buildNanites(Configuration configuration) {
