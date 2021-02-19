@@ -18,9 +18,7 @@ from liferay.stream.processor import BlogDataFrameProcessor, \
 	PageReferrerDataFrameProcessor
 from liferay.stream.udf import AcquisitionChannelFunction
 
-from pyspark.sql import functions as F, \
-	types as T
-from pyspark.sql.functions import udf
+from pyspark.sql import types as T
 
 import pytest
 
