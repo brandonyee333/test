@@ -17,7 +17,10 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -46,12 +49,32 @@ public class EventAttributeDefinitionDog {
 		eventAttributeDefinition.setEventDefinitionIds(eventDefinitionIds);
 		eventAttributeDefinition.setName(name);
 
-		return _eventAttributeDefinitionRepository.save(
+		eventAttributeDefinition = _eventAttributeDefinitionRepository.save(
 			eventAttributeDefinition);
+
+		_eventAttributeDefinitionsById.put(
+			ProjectIdThreadLocal.getProjectId() + "#" +
+				eventAttributeDefinition.getId(),
+			eventAttributeDefinition);
+
+		_eventAttributeDefinitionsByName.put(
+			ProjectIdThreadLocal.getProjectId() + "#" + name,
+			eventAttributeDefinition);
+
+		return eventAttributeDefinition;
 	}
 
 	public EventAttributeDefinition getEventAttributeDefinition(
 		Long eventAttributeDefinitionId) {
+
+		EventAttributeDefinition eventAttributeDefinition =
+			_eventAttributeDefinitionsById.get(
+				ProjectIdThreadLocal.getProjectId() + "#" +
+					eventAttributeDefinitionId);
+
+		if (eventAttributeDefinition != null) {
+			return eventAttributeDefinition;
+		}
 
 		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
 			_eventAttributeDefinitionRepository.findById(
@@ -66,6 +89,14 @@ public class EventAttributeDefinitionDog {
 
 	public EventAttributeDefinition getEventAttributeDefinitionByName(
 		String name) {
+
+		EventAttributeDefinition eventAttributeDefinition =
+			_eventAttributeDefinitionsByName.get(
+				ProjectIdThreadLocal.getProjectId() + "#" + name);
+
+		if (eventAttributeDefinition != null) {
+			return eventAttributeDefinition;
+		}
 
 		return _eventAttributeDefinitionRepository.findByName(name);
 	}
@@ -98,6 +129,19 @@ public class EventAttributeDefinitionDog {
 			eventAttributeDefinition.setEventDefinitionIds(eventDefinitionIds);
 		}
 
+		eventAttributeDefinition = _eventAttributeDefinitionRepository.save(
+			eventAttributeDefinition);
+
+		_eventAttributeDefinitionsByName.put(
+			ProjectIdThreadLocal.getProjectId() + "#" +
+				eventAttributeDefinition.getName(),
+			eventAttributeDefinition);
+
+		_eventAttributeDefinitionsById.put(
+			ProjectIdThreadLocal.getProjectId() + "#" +
+				eventAttributeDefinition.getId(),
+			eventAttributeDefinition);
+
 		return _eventAttributeDefinitionRepository.save(
 			eventAttributeDefinition);
 	}
@@ -105,5 +149,10 @@ public class EventAttributeDefinitionDog {
 	@Autowired
 	private EventAttributeDefinitionRepository
 		_eventAttributeDefinitionRepository;
+
+	private final Map<String, EventAttributeDefinition>
+		_eventAttributeDefinitionsById = new HashMap<>();
+	private final Map<String, EventAttributeDefinition>
+		_eventAttributeDefinitionsByName = new HashMap<>();
 
 }

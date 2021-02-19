@@ -16,6 +16,10 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,14 +40,33 @@ public class EventDefinitionDog {
 		eventDefinition.setName(name);
 		eventDefinition.setType(type);
 
-		return _eventDefinitionRepository.save(eventDefinition);
+		eventDefinition = _eventDefinitionRepository.save(eventDefinition);
+
+		if (eventDefinition != null) {
+			_eventDefinitions.put(
+				ProjectIdThreadLocal.getProjectId() + "#" +
+					eventDefinition.getName(),
+				eventDefinition);
+		}
+
+		return eventDefinition;
 	}
 
 	public EventDefinition getEventDefinitionByName(String name) {
+		EventDefinition eventDefinition = _eventDefinitions.get(
+			ProjectIdThreadLocal.getProjectId() + "#" + name);
+
+		if (eventDefinition != null) {
+			return eventDefinition;
+		}
+
 		return _eventDefinitionRepository.findByName(name);
 	}
 
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
+
+	private final Map<String, EventDefinition> _eventDefinitions =
+		new HashMap<>();
 
 }
