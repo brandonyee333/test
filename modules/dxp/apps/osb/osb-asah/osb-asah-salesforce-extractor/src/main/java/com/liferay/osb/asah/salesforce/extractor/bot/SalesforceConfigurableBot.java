@@ -18,13 +18,20 @@ import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorIndividualsNanite;
+import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorNanite;
+import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
+import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
 
 import io.prometheus.client.Gauge;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -40,10 +47,11 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Brian Wing Shun Chan
@@ -94,15 +102,67 @@ public abstract class SalesforceConfigurableBot {
 		}
 	}
 
-	protected abstract List<Nanite> buildNanites(Configuration configuration);
+	protected List<Nanite> buildNanites(Configuration configuration) {
+		return new ArrayList<Nanite>() {
+			{
+				SalesforceExtractorConfiguration
+					salesforceExtractorConfiguration =
+						(SalesforceExtractorConfiguration)configuration;
+
+				// Optimal order
+
+				add(
+					new SalesforceExtractorNanite(
+						salesforceExtractorConfiguration, _tableNames));
+				add(
+					new SalesforceExtractorIndividualsNanite(
+						salesforceExtractorConfiguration));
+			}
+		};
+	}
 
 	protected abstract Configuration[] getConfigurations();
 
 	protected abstract ElasticsearchInvoker getElasticsearchInvoker();
 
-	protected abstract Configuration refreshConfiguration(
-			Configuration configuration)
-		throws Exception;
+	protected Configuration refreshConfiguration(Configuration configuration)
+		throws Exception {
+
+		SalesforceExtractorConfiguration salesforceExtractorConfiguration =
+			(SalesforceExtractorConfiguration)configuration;
+
+		JSONObject existingDataSourceJSONObject =
+			_faroInfoElasticsearchInvoker.get(
+				"data-sources",
+				salesforceExtractorConfiguration.getDataSourceId());
+
+		String newDataSourceJSON =
+			_salesforceExtractorConfigurationManagerImpl.refresh(
+				existingDataSourceJSONObject.toString());
+
+		JSONObject newDataSourceJSONObject = new JSONObject(newDataSourceJSON);
+
+		if (JSONUtil.equals(
+				existingDataSourceJSONObject, newDataSourceJSONObject)) {
+
+			return configuration;
+		}
+
+		_faroInfoElasticsearchInvoker.update(
+			"data-sources", newDataSourceJSONObject.getString("id"),
+			newDataSourceJSONObject);
+
+		JSONObject configurationsJSONObject =
+			_salesforceExtractorConfigurationManagerImpl.
+				buildConfigurationsJSONObject(newDataSourceJSONObject);
+
+		configurationsJSONObject.put(
+			"existingDataSourceId",
+			salesforceExtractorConfiguration.getDataSourceId());
+
+		return _salesforceExtractorConfigurationManagerImpl.updateConfiguration(
+			configurationsJSONObject.toString());
+	}
 
 	protected void runNanite(Configuration configuration, Nanite nanite)
 		throws Exception {
@@ -188,16 +248,24 @@ public abstract class SalesforceConfigurableBot {
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private ProjectDog _projectDog;
+
 	private final Map<Project, SalesforceBotRunnable> _salesforceBotRunnables =
 		new HashMap<>();
 
 	@Autowired
-	private ProjectDog _projectDog;
+	private SalesforceExtractorConfigurationManagerImpl
+		_salesforceExtractorConfigurationManagerImpl;
 
 	private final ScheduledExecutorService _scheduledExecutorService =
 		Executors.newScheduledThreadPool(1);
 	private final Map<Project, ScheduledFuture<?>> _scheduledProjects =
 		new HashMap<>();
+	private String[] _tableNames;
 	private final ThreadPoolExecutor _threadPoolExecutor =
 		(ThreadPoolExecutor)_scheduledExecutorService;
 
