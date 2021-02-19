@@ -31,6 +31,23 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = FileRepositoryManager.class)
 public class FileRepositoryManagerImpl implements FileRepositoryManager {
 
+	public FileRepository getDataRegionFileRepository(String dataRegion) {
+		for (String fileRepositoryId :
+				TicketConfigurationValues.FILE_REPOSITORY_IDS) {
+
+			FileRepository fileRepository = getFileRepository(fileRepositoryId);
+
+			if (ArrayUtil.contains(
+					fileRepository.getDataRegions(), dataRegion)) {
+
+				return fileRepository;
+			}
+		}
+
+		return getFileRepository(
+			TicketConfigurationValues.FILE_REPOSITORY_DEFAULT_ID);
+	}
+
 	public FileRepository getFileRepository(String fileRepositoryId) {
 		if (Validator.isNull(fileRepositoryId)) {
 			return null;
@@ -42,33 +59,11 @@ public class FileRepositoryManagerImpl implements FileRepositoryManager {
 		String name = TicketConfigurationUtil.get(
 			PortletPropsKeys.FILE_REPOSITORY_NAME,
 			new Filter(fileRepositoryId));
-		String[] supportRegions = TicketConfigurationUtil.getArray(
-			PortletPropsKeys.FILE_REPOSITORY_SUPPORT_REGIONS,
+		String[] dataRegions = TicketConfigurationUtil.getArray(
+			PortletPropsKeys.FILE_REPOSITORY_DATA_REGIONS,
 			new Filter(fileRepositoryId));
 
-		return new FileRepository(fileRepositoryId, name, host, supportRegions);
-	}
-
-	public FileRepository getSupportRegionFileRepository(String supportRegion) {
-		FileRepository defaultFileRepository = null;
-
-		for (String fileRepositoryId :
-				TicketConfigurationValues.FILE_REPOSITORY_IDS) {
-
-			FileRepository fileRepository = getFileRepository(fileRepositoryId);
-
-			if (ArrayUtil.contains(
-					fileRepository.getSupportRegions(), supportRegion)) {
-
-				return fileRepository;
-			}
-
-			if (defaultFileRepository == null) {
-				defaultFileRepository = fileRepository;
-			}
-		}
-
-		return defaultFileRepository;
+		return new FileRepository(fileRepositoryId, name, host, dataRegions);
 	}
 
 }

@@ -19,13 +19,16 @@ package com.liferay.osb.customer.ticket.configuration;
  */
 public class PortletPropsKeys {
 
+	public static final String FILE_REPOSITORY_DATA_REGIONS =
+		"file.repository.data.regions";
+
+	public static final String FILE_REPOSITORY_DEFAULT_ID =
+		"file.repository.default.id";
+
 	public static final String FILE_REPOSITORY_HOST = "file.repository.host";
 
 	public static final String FILE_REPOSITORY_IDS = "file.repository.ids";
 
 	public static final String FILE_REPOSITORY_NAME = "file.repository.name";
-
-	public static final String FILE_REPOSITORY_SUPPORT_REGIONS =
-		"file.repository.support.regions";
 
 }

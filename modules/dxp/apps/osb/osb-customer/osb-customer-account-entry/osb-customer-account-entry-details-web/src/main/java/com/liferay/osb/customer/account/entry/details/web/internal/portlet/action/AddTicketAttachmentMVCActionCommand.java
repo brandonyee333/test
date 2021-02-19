@@ -95,8 +95,8 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 		long fileSize = ParamUtil.getLong(actionRequest, "fileSize");
 		int type = ParamUtil.getInteger(actionRequest, "type");
 		String comment = ParamUtil.getString(actionRequest, "comment");
-		boolean regionRestricted = ParamUtil.getBoolean(
-			actionRequest, "regionRestricted", true);
+		boolean noPersonalData = ParamUtil.getBoolean(
+			actionRequest, "noPersonalData");
 
 		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
 			zendeskTicketId);
@@ -107,6 +107,12 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 
 		long accountEntryId = _zendeskMapperUtil.getAccountEntryId(
 			zendeskTicket.getZendeskOrganizationId());
+
+		boolean regionRestricted = true;
+
+		if (noPersonalData) {
+			regionRestricted = false;
+		}
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			TicketAttachment.class.getName(), actionRequest);

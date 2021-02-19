@@ -28,6 +28,9 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 public interface AccountEntryDetailsConfiguration {
 
+	@Meta.AD(name = "data-access-knowledge-base-article", required = false)
+	public String dataAccessKnowledgeBaseArticle();
+
 	@Meta.AD(
 		deflt = "https://liferaysupport1528999723.zendesk.com/agent/tickets/",
 		name = "zendesk-ticket-url", required = false

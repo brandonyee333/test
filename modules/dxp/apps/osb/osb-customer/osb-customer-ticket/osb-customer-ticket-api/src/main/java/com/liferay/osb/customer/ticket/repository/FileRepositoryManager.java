@@ -19,8 +19,8 @@ package com.liferay.osb.customer.ticket.repository;
  */
 public interface FileRepositoryManager {
 
-	public FileRepository getFileRepository(String fileRepositoryId);
+	public FileRepository getDataRegionFileRepository(String dataRegion);
 
-	public FileRepository getSupportRegionFileRepository(String supportRegion);
+	public FileRepository getFileRepository(String fileRepositoryId);
 
 }

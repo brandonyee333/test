@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import axios from 'axios';
+import {langSub} from '../helpers/language';
 
 import Resumable from '../third-party/resumable.nocsf';
 import {
@@ -16,7 +17,9 @@ import Button from './Button';
 export default class DynamicUploaderForm extends React.Component {
 	static propTypes = {
 		addTicketAttachmentURL: PropTypes.string.isRequired,
+		fileRepositoryName: PropTypes.string.isRequired,
 		generateTokenURL: PropTypes.string.isRequired,
+		knowledgeBaseArticle: PropTypes.string.isRequired,
 		uploadURL: PropTypes.string.isRequired
 	};
 
@@ -270,6 +273,15 @@ export default class DynamicUploaderForm extends React.Component {
 	render() {
 		const {namespace} = this.state;
 
+		const dataAccessInfoText = langSub(
+			Liferay.Language.get(
+				'please-note-that-the-location-of-the-server-to-which-the-file-will-be-uploaded-is-based-on-the-location-of-the-liferay-center-providing-support-to-your-company'
+			),
+			[
+				this.props.knowledgeBaseArticle
+			]
+		);
+
 		return (
 			<form ref={this.formRef} method="post" onSubmit={this.handleSubmit}>
 				<div className="row">
@@ -401,6 +413,35 @@ export default class DynamicUploaderForm extends React.Component {
 							/>
 						</div>
 					</div>
+				</div>
+
+				<Alert type="info">
+					<span>
+						{langSub(
+							Liferay.Language.get('your-file-will-be-uploaded-to-a-file-server-in-x'),
+							[this.props.fileRepositoryName]
+						)}
+					</span>
+
+					<div
+						dangerouslySetInnerHTML={{
+							__html: dataAccessInfoText
+						}}
+					/>
+				</Alert>
+
+				<div className="form-group">
+					<label>
+						<input
+							name={`${namespace}noPersonalData`}
+							type="checkbox"
+						/>{' '}
+						<span className="checkbox-label">
+							{
+								Liferay.Language.get('please-check-this-box-if-the-file-you-upload-does-not-contain-any-personal-data-and-therefore-can-be-uploaded-to-and-accessed-from-any-liferay-support-location-globally')
+							}
+						</span>
+					</label>
 				</div>
 
 				<div className="btn-row">

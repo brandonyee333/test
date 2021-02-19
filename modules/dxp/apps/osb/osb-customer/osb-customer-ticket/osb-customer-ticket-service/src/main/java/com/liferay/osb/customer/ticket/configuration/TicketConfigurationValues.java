@@ -19,6 +19,10 @@ package com.liferay.osb.customer.ticket.configuration;
  */
 public class TicketConfigurationValues {
 
+	public static final String FILE_REPOSITORY_DEFAULT_ID =
+		TicketConfigurationUtil.get(
+			PortletPropsKeys.FILE_REPOSITORY_DEFAULT_ID);
+
 	public static final String[] FILE_REPOSITORY_IDS =
 		TicketConfigurationUtil.getArray(PortletPropsKeys.FILE_REPOSITORY_IDS);
 

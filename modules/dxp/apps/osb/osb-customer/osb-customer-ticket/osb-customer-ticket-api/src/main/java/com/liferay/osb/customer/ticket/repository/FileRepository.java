@@ -30,21 +30,25 @@ public class FileRepository {
 
 		fileRepositoryProperties.fastLoad(properties);
 
+		_dataRegions = StringUtil.split(
+			fileRepositoryProperties.get("dataRegions"));
 		_fileRepositoryId = fileRepositoryProperties.get("fileRepositoryId");
 		_host = fileRepositoryProperties.get("host");
 		_name = fileRepositoryProperties.get("name");
-		_supportRegions = StringUtil.split(
-			fileRepositoryProperties.get("supportRegions"));
 	}
 
 	public FileRepository(
 		String fileRepositoryId, String name, String host,
-		String[] supportRegions) {
+		String[] dataRegions) {
 
 		_fileRepositoryId = fileRepositoryId;
 		_name = name;
 		_host = host;
-		_supportRegions = supportRegions;
+		_dataRegions = dataRegions;
+	}
+
+	public String[] getDataRegions() {
+		return _dataRegions;
 	}
 
 	public String getFileRepositoryId() {
@@ -59,13 +63,9 @@ public class FileRepository {
 		return _name;
 	}
 
-	public String[] getSupportRegions() {
-		return _supportRegions;
-	}
-
+	private final String[] _dataRegions;
 	private final String _fileRepositoryId;
 	private final String _host;
 	private final String _name;
-	private final String[] _supportRegions;
 
 }

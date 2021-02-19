@@ -21,7 +21,7 @@ Account koroneikiAccount = (Account)renderRequest.getAttribute(AccountEntryDetai
 
 long zendeskTicketId = ParamUtil.getLong(request, "zendeskTicketId");
 
-FileRepository fileRepository = fileRepositoryManager.getSupportRegionFileRepository(koroneikiAccount.getRegionAsString());
+FileRepository fileRepository = fileRepositoryManager.getDataRegionFileRepository(koroneikiAccount.getDataRegionAsString());
 %>
 
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/file_repository_token" var="generateTokenURL">
@@ -45,7 +45,9 @@ FileRepository fileRepository = fileRepositoryManager.getSupportRegionFileReposi
 		AccountDetails.AddTicketAttachment,
 		{
 			addTicketAttachmentURL: '<%= addTicketAttachmentURL %>',
+			fileRepositoryName: '<%= fileRepository.getName() %>',
 			generateTokenURL: '<%= generateTokenURL %>',
+			knowledgeBaseArticle: '<%= accountEntryDetailsConfiguration.dataAccessKnowledgeBaseArticle() %>',
 			uploadURL: '<%= fileRepositoryWebService.getUploadURL(fileRepository.getFileRepositoryId()) %>',
 			zendeskTicketId: '<%= String.valueOf(zendeskTicketId) %>',
 			zendeskTicketURL: '<%= accountEntryDetailsConfiguration.zendeskTicketURL() + zendeskTicketId %>'
