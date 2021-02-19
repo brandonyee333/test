@@ -59,6 +59,10 @@ import org.springframework.scheduling.annotation.Scheduled;
  */
 public abstract class SalesforceConfigurableBot {
 
+	public SalesforceBotRunnable getSalesforceBotRunnable(String projectId) {
+		return _salesforceBotRunnables.get(new Project(projectId));
+	}
+
 	public boolean isStop() {
 		Project project = new Project(ProjectIdThreadLocal.getProjectId());
 

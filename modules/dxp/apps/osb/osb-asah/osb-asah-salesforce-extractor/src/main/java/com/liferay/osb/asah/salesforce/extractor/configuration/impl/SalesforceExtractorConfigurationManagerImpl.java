@@ -14,24 +14,40 @@
 
 package com.liferay.osb.asah.salesforce.extractor.configuration.impl;
 
-import com.liferay.osb.asah.common.bot.ConfigurableBot;
 import com.liferay.osb.asah.common.configuration.Configuration;
-import com.liferay.osb.asah.common.configuration.impl.BaseConfigurationManagerImpl;
+import com.liferay.osb.asah.common.configuration.ConfigurationManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceExtractorConfigurableBot;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceBotRunnable;
+import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceConfigurableBot;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 import com.liferay.osb.asah.salesforce.extractor.oauth2.OAuth2Response;
 import com.liferay.osb.asah.salesforce.extractor.oauth2.SalesforceOAuth2Client;
 import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClient;
 import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClientImpl;
 
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.index.query.QueryBuilders;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,14 +56,53 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SalesforceExtractorConfigurationManagerImpl
-	extends BaseConfigurationManagerImpl {
+	implements ConfigurationManager {
 
 	@Override
+	public boolean addConfiguration(String json) {
+		Configuration configuration = null;
+
+		try {
+			configuration = _toConfiguration(json);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return false;
+		}
+
+		if (_configurations.containsKey(configuration.getDataSourceId())) {
+			_log.error(
+				"Duplicate configuration for data source " +
+					configuration.getDataSourceId());
+
+			return false;
+		}
+
+		_configurations.put(configuration.getDataSourceId(), configuration);
+
+		SalesforceBotRunnable salesforceBotRunnable =
+			_getSalesforceBotRunnable();
+
+		salesforceBotRunnable.stop(configuration.getDataSourceId(), null);
+
+		return true;
+	}
+
 	public JSONObject buildConfigurationsJSONObject(
 		JSONObject dataSourceJSONObject) {
 
-		JSONObject configurationsJSONObject =
-			super.buildConfigurationsJSONObject(dataSourceJSONObject);
+		JSONObject configurationsJSONObject = JSONUtil.put(
+			"credentials", dataSourceJSONObject.getJSONObject("credentials")
+		).put(
+			"dataSourceId", dataSourceJSONObject.getString("id")
+		).put(
+			"dataSourceState", dataSourceJSONObject.getString("state")
+		).put(
+			"dataSourceStatus", dataSourceJSONObject.getString("status")
+		).put(
+			"url", dataSourceJSONObject.getString("url")
+		);
 
 		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
 			"provider");
@@ -62,12 +117,31 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	@Override
+	public boolean deleteConfiguration(String json) {
+		JSONObject jsonObject = new JSONObject(json);
+
+		String dataSourceId = jsonObject.getString("dataSourceId");
+
+		Configuration configuration = _configurations.remove(dataSourceId);
+
+		if (configuration == null) {
+			return false;
+		}
+
+		SalesforceBotRunnable salesforceBotRunnable =
+			_getSalesforceBotRunnable();
+
+		salesforceBotRunnable.stop(dataSourceId, null);
+
+		return true;
+	}
+
+	@Override
 	public SalesforceExtractorConfiguration getConfiguration(
 		String dataSourceId) {
 
 		SalesforceExtractorConfiguration salesforceExtractorConfiguration =
-			(SalesforceExtractorConfiguration)super.getConfiguration(
-				dataSourceId);
+			(SalesforceExtractorConfiguration)_configurations.get(dataSourceId);
 
 		if (salesforceExtractorConfiguration instanceof
 				SalesforceExtractorConfigurationImpl) {
@@ -87,6 +161,21 @@ public class SalesforceExtractorConfigurationManagerImpl
 		}
 
 		return salesforceExtractorConfiguration;
+	}
+
+	@Override
+	public Configuration[] getConfigurations() {
+		Set<Map.Entry<String, Configuration>> set = _configurations.entrySet();
+
+		Stream<Map.Entry<String, Configuration>> stream = set.stream();
+
+		return stream.map(
+			entry -> entry.getValue()
+		).collect(
+			Collectors.toList()
+		).toArray(
+			new Configuration[0]
+		);
 	}
 
 	@Override
@@ -123,23 +212,146 @@ public class SalesforceExtractorConfigurationManagerImpl
 		return "CREDENTIALS_VALID";
 	}
 
-	@Override
-	protected Configuration buildConfiguration() {
-		return new SalesforceExtractorConfigurationImpl();
+	@PostConstruct
+	public void init() {
+		JSONArray dataSourcesJSONArray = _elasticsearchInvoker.get(
+			"data-sources",
+			QueryBuilders.termQuery("provider.type", "SALESFORCE"));
+
+		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
+			JSONObject dataSourceJSONObject =
+				dataSourcesJSONArray.getJSONObject(i);
+
+			try {
+				JSONObject configurationsJSONObject =
+					buildConfigurationsJSONObject(dataSourceJSONObject);
+
+				String dataSourceId = configurationsJSONObject.getString(
+					"dataSourceId");
+
+				Configuration configuration = _getInitializedConfiguration(
+					dataSourceId);
+
+				configuration.setDataSourceId(dataSourceId);
+				configuration.setDataSourceState(
+					dataSourceJSONObject.getString("state"));
+				configuration.setDataSourceStatus(
+					dataSourceJSONObject.getString("status"));
+
+				_setConfigurationAttributes(
+					configurationsJSONObject, configuration);
+
+				_configurations.put(
+					configuration.getDataSourceId(), configuration);
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to add configuration for data source " +
+							dataSourceJSONObject.getString("id"),
+						e);
+				}
+			}
+		}
 	}
 
 	@Override
-	protected ConfigurableBot getConfigurableBot() {
-		return _salesforceExtractorConfigurableBot;
+	public String refresh(String json) {
+		JSONObject dataSourceJSONObject = new JSONObject(json);
+
+		dataSourceJSONObject.put(
+			"state", getState(dataSourceJSONObject.toString()));
+
+		return dataSourceJSONObject.toString();
 	}
 
 	@Override
-	protected String getProviderType() {
-		return "SALESFORCE";
+	public Configuration updateConfiguration(String json) {
+		Configuration configuration = _toConfiguration(json);
+
+		String dataSourceId = configuration.getDataSourceId();
+
+		JSONObject jsonObject = new JSONObject(json);
+
+		String existingDataSourceId = jsonObject.getString(
+			"existingDataSourceId");
+
+		if (dataSourceId.equals(existingDataSourceId)) {
+			Configuration existingConfigurationImpl = _configurations.get(
+				existingDataSourceId);
+
+			if (existingConfigurationImpl == null) {
+				_log.error(
+					"Missing configuration for data source " +
+						existingDataSourceId);
+
+				return null;
+			}
+
+			if (configuration.equals(existingConfigurationImpl)) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Skip identical configuration for data source " +
+							dataSourceId);
+				}
+
+				return configuration;
+			}
+		}
+		else {
+			if (_configurations.containsKey(dataSourceId)) {
+				_log.error(
+					"Duplicate configuration for data source " + dataSourceId);
+
+				return configuration;
+			}
+
+			Configuration existingConfigurationImpl = _configurations.remove(
+				existingDataSourceId);
+
+			if (existingConfigurationImpl == null) {
+				_log.error(
+					"Missing configuration for data source " +
+						existingDataSourceId);
+
+				return null;
+			}
+		}
+
+		_configurations.put(dataSourceId, configuration);
+
+		SalesforceBotRunnable salesforceBotRunnable =
+			_getSalesforceBotRunnable();
+
+		if (Objects.equals(existingDataSourceId, dataSourceId)) {
+			salesforceBotRunnable.stop(null, null);
+		}
+		else {
+			salesforceBotRunnable.stop(existingDataSourceId, dataSourceId);
+		}
+
+		return configuration;
 	}
 
-	@Override
-	protected void setConfigurationAttributes(
+	private Configuration _getInitializedConfiguration(String dataSourceId) {
+		Configuration configuration =
+			new SalesforceExtractorConfigurationImpl();
+
+		_autowireCapableBeanFactory.autowireBeanProperties(
+			configuration, AutowireCapableBeanFactory.AUTOWIRE_NO, false);
+
+		_autowireCapableBeanFactory.initializeBean(
+			configuration, Configuration.class.getName() + "#" + dataSourceId);
+
+		return configuration;
+	}
+
+	private SalesforceBotRunnable _getSalesforceBotRunnable() {
+		return _salesforceConfigurableBot.getSalesforceBotRunnable(
+			ProjectIdThreadLocal.getProjectId());
+	}
+
+	private void _setConfigurationAttributes(
 		JSONObject configurationsJSONObject, Configuration configuration) {
 
 		SalesforceExtractorConfigurationImpl
@@ -201,6 +413,25 @@ public class SalesforceExtractorConfigurationManagerImpl
 		}
 	}
 
+	private Configuration _toConfiguration(String json) {
+		JSONObject jsonObject = new JSONObject(json);
+
+		String dataSourceId = jsonObject.getString("dataSourceId");
+
+		Configuration configuration = _getInitializedConfiguration(
+			dataSourceId);
+
+		configuration.setDataSourceId(dataSourceId);
+		configuration.setDataSourceState(
+			jsonObject.getString("dataSourceState"));
+		configuration.setDataSourceStatus(
+			jsonObject.getString("dataSourceStatus"));
+
+		_setConfigurationAttributes(jsonObject, configuration);
+
+		return configuration;
+	}
+
 	private boolean _validate(String json) {
 		JSONObject configurationsJSONObject = new JSONObject(json);
 
@@ -254,8 +485,16 @@ public class SalesforceExtractorConfigurationManagerImpl
 		SalesforceExtractorConfigurationManagerImpl.class);
 
 	@Autowired
-	private SalesforceExtractorConfigurableBot
-		_salesforceExtractorConfigurableBot;
+	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
+
+	private final Map<String, Configuration> _configurations =
+		new ConcurrentHashMap<>();
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private SalesforceConfigurableBot _salesforceConfigurableBot;
 
 	@Autowired
 	private SalesforceOAuth2Client _salesforceOAuth2Client;
