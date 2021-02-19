@@ -17,8 +17,6 @@ package com.liferay.osb.asah.salesforce.extractor.rest.controller;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
-import org.json.JSONArray;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,14 +39,6 @@ public class ConfigurationsRestController {
 		_configurationManager.deleteConfiguration(json);
 	}
 
-	@GetMapping
-	public String getConfigurations() {
-		JSONArray jsonArray = new JSONArray(
-			_configurationManager.getConfigurations());
-
-		return jsonArray.toString();
-	}
-
 	@GetMapping("/state")
 	public String getState(@RequestBody String json) {
 		return _configurationManager.getState(json);
@@ -60,7 +50,7 @@ public class ConfigurationsRestController {
 	}
 
 	@PutMapping
-	public void putConfiguration(@RequestBody String json) throws Exception {
+	public void putConfiguration(@RequestBody String json) {
 		_configurationManager.updateConfiguration(json);
 	}
 

@@ -68,8 +68,8 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 	}
 
 	@Override
-	public void updateConfiguration(JSONObject jsonObject, String providerType)
-		throws Exception {
+	public void updateConfiguration(
+		JSONObject jsonObject, String providerType) {
 
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
