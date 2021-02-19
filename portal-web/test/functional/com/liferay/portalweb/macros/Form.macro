@@ -172,7 +172,7 @@ definition {
 			fieldName = "${fieldName}",
 			fieldValue = "${fieldValue}");
 
-		AssertElementNotPresent(locator1 = "Button#SUBMIT_1");
+		AssertElementNotPresent(locator1 = "FormPortlet#SUBMIT_BUTTON");
 	}
 
 	macro save {
