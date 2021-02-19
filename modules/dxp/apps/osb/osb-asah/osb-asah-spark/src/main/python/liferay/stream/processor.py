@@ -633,6 +633,82 @@ class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			F.sum('views').alias('comments')
 		)
 
+class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
+
+	def _filter(self, analytics_events_data_frame):
+		return analytics_events_data_frame.filter(
+			"""
+				(applicationId = 'Page') AND
+				(context.url != '')
+			"""
+		)
+
+	def _get_asset_id_column(self):
+		return F.when(
+			F.col('context.canonicalUrl') != '',
+			F.col('context.canonicalUrl')
+		).otherwise(
+			F.col('context.url')
+		)
+
+	def _process(self, data_frame):
+		data_frame = data_frame.withColumn(
+			'cta_clicks',
+			F.when(
+				F.col("eventId") == 'ctaClicked',
+				F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'views',
+			F.when(
+				F.col("eventId") == 'pageViewed',
+				F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'reads',
+			F.when(
+				F.col("eventId") == 'pageRead',
+				F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		)
+
+		data_frame = data_frame.withColumn(
+			'direct_access',
+			F.when(
+				(F.col('views') == 1) & (F.col('context.referrer') == ''),
+				F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'indirect_access',
+			F.when(
+				(F.col('views') == 1) & (F.col('context.referrer') != ''),
+				F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).groupBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'normalized_event_date', 'primaryKey'
+		).agg(
+			F.sum('cta_clicks').alias('cta_clicks'),
+			F.sum('direct_access').alias('direct_access'),
+			F.sum('indirect_access').alias('indirect_access'),
+			F.sum('reads').alias('reads'),
+			F.sum('views').alias('views')
+		)
+
+		return data_frame.withColumnRenamed(
+			'assetId', 'url'
+		)
+
 class PageReferrerDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 	def _filter(self, analytics_events_data_frame):
