@@ -75,6 +75,9 @@ public class AnalyticsEventStorageDog {
 								propertyName);
 				}
 				else {
+					Long eventAttributeDefinitionId =
+						eventAttributeDefinition.getId();
+
 					Set<EventDefinitionEventAttributeDefinition>
 						eventDefinitionEventAttributeDefinitions =
 							eventAttributeDefinition.
@@ -90,13 +93,13 @@ public class AnalyticsEventStorageDog {
 						new EventDefinitionEventAttributeDefinition(
 							eventDefinitionId));
 
-					if (initialSize !=
-							eventDefinitionEventAttributeDefinitions.size()) {
+					if ((eventAttributeDefinitionId != null) &&
+						(initialSize !=
+							eventDefinitionEventAttributeDefinitions.size())) {
 
 						_eventAttributeDefinitionDog.
 							updateEventAttributeDefinition(
-								null, null, null,
-								eventAttributeDefinition.getId(),
+								null, null, null, eventAttributeDefinitionId,
 								eventDefinitionEventAttributeDefinitions, null);
 					}
 				}
