@@ -14,11 +14,8 @@
 
 package com.liferay.osb.asah.common.dxp;
 
-import com.liferay.osb.asah.common.oauth2.DXPOAuth2Client;
 import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.Http;
-
-import java.util.Map;
 
 import org.json.JSONObject;
 
@@ -28,7 +25,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 
 /**
@@ -89,41 +85,6 @@ public abstract class BaseDXPClient {
 		return new JSONObject(body);
 	}
 
-	protected String getPath(
-		String methodName, Map<String, Object> parameters) {
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(URL_JSONWS);
-		sb.append(methodName);
-
-		if ((parameters == null) || parameters.isEmpty()) {
-			return sb.toString();
-		}
-
-		sb.append(".");
-		sb.append(parameters.size());
-
-		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-			Object value = entry.getValue();
-
-			if (StringUtils.isEmpty(value)) {
-				continue;
-			}
-
-			sb.append("/");
-			sb.append(entry.getKey());
-			sb.append("/");
-			sb.append(value);
-		}
-
-		return sb.toString();
-	}
-
-	protected static final String URL_JSONWS = "/api/jsonws";
-
-	protected static final String URL_JSONWS_INVOKE = "/api/jsonws/invoke";
-
 	private ResponseEntity<String> _exchangeResponseEntity(
 		JSONObject credentialsJSONObject, String url, String path,
 		HttpMethod httpMethod, Object body) {
@@ -136,27 +97,6 @@ public abstract class BaseDXPClient {
 				new BasicAuthorizationInterceptor(
 					credentialsJSONObject.getString("login"),
 					credentialsJSONObject.getString("password")));
-		}
-		else if (type.equals("OAuth 1 Authentication")) {
-			return _http.exchangeResponseEntity(
-				url, path, httpMethod, body,
-				credentialsJSONObject.getString("oAuthAccessSecret"),
-				credentialsJSONObject.getString("oAuthAccessToken"),
-				credentialsJSONObject.getString("oAuthConsumerKey"),
-				credentialsJSONObject.getString("oAuthConsumerSecret"));
-		}
-		else if (type.equals("OAuth 2 Authentication")) {
-			try {
-				return _http.exchangeResponseEntity(
-					url, path, httpMethod, body,
-					_dxpOAuth2Client.getAccessToken(
-						url, credentialsJSONObject.getString("oAuthClientId"),
-						credentialsJSONObject.getString("oAuthClientSecret"),
-						credentialsJSONObject.getString("oAuthRefreshToken")));
-			}
-			catch (HttpClientErrorException hcee) {
-				return new ResponseEntity<>(hcee.getStatusCode());
-			}
 		}
 		else if (type.equals("Token Authentication")) {
 			HttpHeaders httpHeaders = new HttpHeaders() {
@@ -180,9 +120,6 @@ public abstract class BaseDXPClient {
 
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 	}
-
-	@Autowired
-	private DXPOAuth2Client _dxpOAuth2Client;
 
 	@Autowired
 	private Encryptor _encryptor;
