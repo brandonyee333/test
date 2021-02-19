@@ -91,21 +91,6 @@ public abstract class SalesforceConfigurableBot {
 		_monitorThreadPool();
 	}
 
-	public void stop() {
-		stop(null, null);
-	}
-
-	public void stop(String obsoleteDataSourceId, String staleDataSourceId) {
-		Project project = new Project(ProjectIdThreadLocal.getProjectId());
-
-		SalesforceBotRunnable salesforceBotRunnable =
-			_salesforceBotRunnables.get(project);
-
-		if (salesforceBotRunnable != null) {
-			salesforceBotRunnable.stop(obsoleteDataSourceId, staleDataSourceId);
-		}
-	}
-
 	protected List<Nanite> buildNanites(Configuration configuration) {
 		return new ArrayList<Nanite>() {
 			{
@@ -125,13 +110,7 @@ public abstract class SalesforceConfigurableBot {
 		};
 	}
 
-	protected abstract Configuration[] getConfigurations();
-
-	protected abstract ElasticsearchInvoker getElasticsearchInvoker();
-
-	protected Configuration refreshConfiguration(Configuration configuration)
-		throws Exception {
-
+	protected Configuration refreshConfiguration(Configuration configuration) {
 		SalesforceExtractorConfiguration salesforceExtractorConfiguration =
 			(SalesforceExtractorConfiguration)configuration;
 
