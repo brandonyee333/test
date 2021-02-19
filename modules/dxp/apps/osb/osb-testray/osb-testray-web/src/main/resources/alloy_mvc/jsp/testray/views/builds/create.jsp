@@ -315,7 +315,7 @@
 				/>
 			</portlet:renderURL>
 
-			<aui:button href="${viewTestrayBuildsURL}" value="cancel" />
+			<aui:button href="${redirect}" value="cancel" />
 		</aui:button-row>
 	</aui:form>
 </div>
