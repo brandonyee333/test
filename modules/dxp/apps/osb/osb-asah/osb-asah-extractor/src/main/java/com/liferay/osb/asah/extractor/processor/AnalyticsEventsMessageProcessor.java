@@ -435,8 +435,6 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvent.setProjectId(analyticsEventsMessage.getProjectId());
 			analyticsEvent.setUserId(analyticsEventsMessage.getUserId());
 
-			_storeEvent(analyticsEvent);
-
 			analyticsEvents.add(analyticsEvent);
 		}
 
@@ -453,6 +451,8 @@ public class AnalyticsEventsMessageProcessor {
 
 			_storage.write(analyticsEvent.toJSON());
 		}
+
+		_storeEvent(analyticsEvent);
 	}
 
 	private void _storeEvent(AnalyticsEvent analyticsEvent) {
