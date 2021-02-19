@@ -14,6 +14,7 @@ from liferay.stream.processor import BlogDataFrameProcessor, \
 	DocumentLibraryDataFrameProcessor, \
 	FormDataFrameProcessor, \
 	JournalDataFrameProcessor, \
+	PageDataFrameProcessor, \
 	PageReferrerDataFrameProcessor
 from liferay.stream.udf import AcquisitionChannelFunction
 
@@ -61,6 +62,10 @@ def form_data_frame_processor(spark_application):
 @pytest.fixture
 def journal_data_frame_processor(spark_application):
 	return JournalDataFrameProcessor(0, CuratorSparkJob(spark_application))
+
+@pytest.fixture
+def page_data_frame_processor(spark_application):
+	return PageDataFrameProcessor(0, CuratorSparkJob(spark_application))
 
 @pytest.fixture(scope='session')
 def page_referrer_data_frame_processor(spark_application):
@@ -401,6 +406,39 @@ def test_journal_data_frame_processor_filter(
 	assert len(actual_data_frame_rows) == 1
 
 	assert actual_data_frame_rows[0].applicationId == 'WebContent'
+
+def test_page_data_frame_processor_process(
+	page_data_frame_processor, spark_session
+):
+
+	actual_data_frame = page_data_frame_processor.process(
+		read_session_events_data_frame(
+			'page_data_frame_processor_process_input.json',
+			spark_session
+		),
+		write=False
+	)
+
+	expected_data_frame = read_data_frame(
+		'page_data_frame_processor_process_expected_output.json',
+		spark_session,
+		T.StructType([
+			T.StructField("channelId", T.StringType(), False),
+			T.StructField("cta_clicks", T.LongType(), False),
+			T.StructField("direct_access", T.LongType(), False),
+			T.StructField("indirect_access", T.LongType(), False),
+			T.StructField("normalized_event_date", T.TimestampType(), False),
+			T.StructField("primaryKey", T.StringType(), False),
+			T.StructField("projectId", T.StringType(), False),
+			T.StructField("reads", T.LongType(), False),
+			T.StructField("url", T.StringType(), False),
+			T.StructField("userId", T.StringType(), False),
+			T.StructField("variantId", T.StringType(), False),
+			T.StructField("views", T.LongType(), False)
+		])
+	)
+
+	_assert_data_frames(expected_data_frame, actual_data_frame)
 
 def test_page_referrer_data_frame_processor_process(
 	page_referrer_data_frame_processor, spark_session
