@@ -16,10 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,13 +35,6 @@ public class EventDefinitionDog {
 			throw new IllegalArgumentException("Event name cannot be null");
 		}
 
-		String key = ProjectIdThreadLocal.getProjectId() + "#" + name;
-
-		if (_eventDefinitions.containsKey(key)) {
-			throw new IllegalArgumentException(
-				"Event name " + name + " already exists");
-		}
-
 		EventDefinition eventDefinition = new EventDefinition();
 
 		eventDefinition.setDescription(description);
@@ -53,33 +42,14 @@ public class EventDefinitionDog {
 		eventDefinition.setName(name);
 		eventDefinition.setType(type);
 
-		eventDefinition = _eventDefinitionRepository.save(eventDefinition);
-
-		if (eventDefinition != null) {
-			_eventDefinitions.put(
-				ProjectIdThreadLocal.getProjectId() + "#" +
-					eventDefinition.getName(),
-				eventDefinition);
-		}
-
-		return eventDefinition;
+		return _eventDefinitionRepository.save(eventDefinition);
 	}
 
 	public EventDefinition fetchEventDefinitionByName(String name) {
-		EventDefinition eventDefinition = _eventDefinitions.get(
-			ProjectIdThreadLocal.getProjectId() + "#" + name);
-
-		if (eventDefinition != null) {
-			return eventDefinition;
-		}
-
 		return _eventDefinitionRepository.findByName(name);
 	}
 
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
-
-	private final Map<String, EventDefinition> _eventDefinitions =
-		new HashMap<>();
 
 }
