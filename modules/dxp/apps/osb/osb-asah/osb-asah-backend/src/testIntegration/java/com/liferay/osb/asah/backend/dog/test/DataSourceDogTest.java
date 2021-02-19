@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -30,6 +29,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 
 /**
  * @author André Miranda
@@ -79,7 +79,8 @@ public class DataSourceDogTest {
 	@Test
 	public void testGetFilteredDataSources() {
 		List<DataSource> dataSources = _dataSourceDog.getDataSources(
-			"Token Authentication", 1, Sort.desc("dateModified"), "LIFERAY");
+			"Token Authentication", 1, Sort.by(Sort.Order.desc("dateModified")),
+			"LIFERAY");
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 

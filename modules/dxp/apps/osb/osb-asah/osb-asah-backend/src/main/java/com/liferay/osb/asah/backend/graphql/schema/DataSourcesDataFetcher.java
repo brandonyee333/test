@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
@@ -27,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 /**
@@ -48,7 +48,10 @@ public class DataSourcesDataFetcher
 			"sort");
 
 		if (sortMap != null) {
-			sort = Sort.of(sortMap);
+			sort = Sort.by(
+				new Sort.Order(
+					Sort.Direction.fromString(sortMap.get("type")),
+					sortMap.get("column")));
 		}
 
 		return ListUtil.map(
