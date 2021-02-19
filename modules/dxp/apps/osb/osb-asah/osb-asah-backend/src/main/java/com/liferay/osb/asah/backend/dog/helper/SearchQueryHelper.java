@@ -30,6 +30,8 @@ import java.time.ZoneId;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -427,23 +429,43 @@ public class SearchQueryHelper {
 			return;
 		}
 
-		BoolQueryBuilder keywordsQueryBuilder = BoolQueryBuilderUtil.should(
-			QueryBuilders.queryStringQuery(
-				String.format(
-					"%s:*%s*", "title.search",
-					QueryUtil.escapeKeywords(keywords)))
-		).should(
-			QueryBuilders.matchQuery(
-				"title.search", keywords
-			).fuzziness(
-				Fuzziness.AUTO
-			)
-		);
+		BoolQueryBuilder keywordsQueryBuilder = QueryBuilders.boolQuery();
 
-		if (assetType == AssetType.PAGE) {
-			keywordsQueryBuilder.should(
-				QueryBuilders.wildcardQuery(
-					"url.search", "*" + keywords + "*"));
+		Matcher matcher = _pattern.matcher(keywords);
+
+		while (matcher.find()) {
+			String term = matcher.group(1);
+
+			if (term != null) {
+				keywordsQueryBuilder.should(
+					QueryBuilders.queryStringQuery(
+						String.format(
+							"%s:%s", "title.search",
+							StringUtils.wrap(
+								QueryUtil.escapeKeywords(term), "\""))));
+			}
+			else {
+				term = matcher.group(2);
+
+				keywordsQueryBuilder.should(
+					QueryBuilders.queryStringQuery(
+						String.format(
+							"%s:*%s*", "title.search",
+							QueryUtil.escapeKeywords(term)))
+				).should(
+					QueryBuilders.matchQuery(
+						"title.search", term
+					).fuzziness(
+						Fuzziness.AUTO
+					)
+				);
+			}
+
+			if (assetType == AssetType.PAGE) {
+				keywordsQueryBuilder.should(
+					QueryBuilders.wildcardQuery(
+						"url.search", "*" + term + "*"));
+			}
 		}
 
 		boolQueryBuilder.filter(keywordsQueryBuilder);
@@ -723,5 +745,8 @@ public class SearchQueryHelper {
 
 		return dateRangeAggregationBuilder;
 	}
+
+	private static final Pattern _pattern = Pattern.compile(
+		"\"([^\"]*)\"|(\\S+)");
 
 }
