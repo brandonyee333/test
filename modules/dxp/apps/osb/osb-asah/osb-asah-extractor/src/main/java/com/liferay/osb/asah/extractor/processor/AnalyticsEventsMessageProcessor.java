@@ -438,12 +438,12 @@ public class AnalyticsEventsMessageProcessor {
 			analyticsEvents.add(analyticsEvent);
 		}
 
-		analyticsEvents.forEach(this::_sendAnalyticsEventMessage);
+		analyticsEvents.forEach(this::_sendAndStoreAnalyticsEvent);
 
 		_analyticsEventsCounter.inc(analyticsEvents.size());
 	}
 
-	private void _sendAnalyticsEventMessage(AnalyticsEvent analyticsEvent) {
+	private void _sendAndStoreAnalyticsEvent(AnalyticsEvent analyticsEvent) {
 		for (Channel channel :
 				_analyticsEventsChannels.getChannels(analyticsEvent)) {
 
