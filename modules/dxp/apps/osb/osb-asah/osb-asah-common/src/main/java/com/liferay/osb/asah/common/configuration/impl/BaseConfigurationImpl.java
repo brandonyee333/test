@@ -41,7 +41,8 @@ public abstract class BaseConfigurationImpl implements Configuration {
 			Objects.equals(
 				_dataSourceState, baseConfigurationImpl._dataSourceState) &&
 			Objects.equals(
-				_dataSourceStatus, baseConfigurationImpl._dataSourceStatus)) {
+				_dataSourceStatus, baseConfigurationImpl._dataSourceStatus) &&
+			Objects.equals(_projectId, baseConfigurationImpl._projectId)) {
 
 			return true;
 		}
@@ -65,8 +66,14 @@ public abstract class BaseConfigurationImpl implements Configuration {
 	}
 
 	@Override
+	public String getProjectId() {
+		return _projectId;
+	}
+
+	@Override
 	public int hashCode() {
-		return Objects.hash(_dataSourceId, _dataSourceState, _dataSourceStatus);
+		return Objects.hash(
+			_dataSourceId, _dataSourceState, _dataSourceStatus, _projectId);
 	}
 
 	@Override
@@ -84,8 +91,14 @@ public abstract class BaseConfigurationImpl implements Configuration {
 		_dataSourceStatus = dataSourceStatus;
 	}
 
+	@Override
+	public void setProjectId(String projectId) {
+		_projectId = projectId;
+	}
+
 	private String _dataSourceId;
 	private String _dataSourceState;
 	private String _dataSourceStatus;
+	private String _projectId;
 
 }
