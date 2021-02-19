@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.Event;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
@@ -28,17 +27,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EventDog {
-
-	public Event addEvent(
-		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
-
-		return addEvent(
-			analyticsEvent.getId(), analyticsEvent.getApplicationId(),
-			Long.valueOf(analyticsEvent.getChannelId()),
-			analyticsEvent.getCreateDate(), analyticsEvent.getDataSourceId(),
-			analyticsEvent.getEventDate(), eventDefinitionId,
-			analyticsEvent.getUserId());
-	}
 
 	public Event addEvent(
 		String analyticsEventId, String applicationId, Long channelId,

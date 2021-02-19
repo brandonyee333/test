@@ -17,6 +17,7 @@ package com.liferay.osb.asah.extractor.processor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.dog.AnalyticsEventStorageDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventAttributeDog;
@@ -32,9 +33,6 @@ import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.AnalyticsEventsMessage;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.model.Event;
-import com.liferay.osb.asah.common.model.EventAttributeDefinition;
-import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.storage.Storage;
@@ -452,64 +450,7 @@ public class AnalyticsEventsMessageProcessor {
 			_storage.write(analyticsEvent.toJSON());
 		}
 
-		_storeEvent(analyticsEvent);
-	}
-
-	private void _storeEvent(AnalyticsEvent analyticsEvent) {
-		try {
-			String eventId = analyticsEvent.getEventId();
-
-			EventDefinition eventDefinition =
-				_eventDefinitionDog.fetchEventDefinitionByName(eventId);
-
-			if (eventDefinition == null) {
-				eventDefinition = _eventDefinitionDog.addEventDefinition(
-					null, null, eventId, "custom");
-			}
-
-			if (eventDefinition == null) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Skipping store event as event definition is null");
-				}
-
-				return;
-			}
-
-			Long eventDefinitionId = eventDefinition.getId();
-
-			Event event = _eventDog.addEvent(analyticsEvent, eventDefinitionId);
-
-			Map<String, String> eventProperties =
-				analyticsEvent.getEventProperties();
-
-			for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
-				String propertyName = entry.getKey();
-
-				EventAttributeDefinition eventAttributeDefinition =
-					_eventAttributeDefinitionDog.
-						fetchEventAttributeDefinitionByName(propertyName);
-
-				if (eventAttributeDefinition == null) {
-					eventAttributeDefinition =
-						_eventAttributeDefinitionDog.
-							addEventAttributeDefinition(
-								"string", null, null, eventDefinitionId,
-								propertyName);
-				}
-				else {
-					_eventAttributeDefinitionDog.addEventDefinitionId(
-						eventDefinitionId, eventAttributeDefinition);
-				}
-
-				_eventAttributeDog.addEventAttribute(
-					eventAttributeDefinition.getId(), entry.getValue(),
-					event.getId());
-			}
-		}
-		catch (Exception e) {
-			_log.error("Unable to store event", e);
-		}
+		_analyticsEventStorageDog.store(analyticsEvent);
 	}
 
 	private static final String[]
@@ -544,6 +485,9 @@ public class AnalyticsEventsMessageProcessor {
 		"${osb.asah.analytics.events.storage.path:/tmp/analytics_events.snappy.parquet}"
 	)
 	private String _analyticsEventsStoragePath;
+
+	@Autowired
+	private AnalyticsEventStorageDog _analyticsEventStorageDog;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
