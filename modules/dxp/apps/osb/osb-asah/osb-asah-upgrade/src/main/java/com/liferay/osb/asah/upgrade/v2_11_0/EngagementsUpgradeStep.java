@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade.v2_11_0;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
@@ -29,8 +30,9 @@ public class EngagementsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
-		_elasticsearchIndexManager.deleteCollection(
-			"engagements", WeDeployDataService.OSB_ASAH_FARO_INFO);
+		_elasticsearchIndexManager.delete(
+			ElasticsearchIndexUtil.getIndexName(
+				"engagements", WeDeployDataService.OSB_ASAH_FARO_INFO));
 	}
 
 	@Autowired
