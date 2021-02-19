@@ -52,12 +52,14 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Rachael Koestartyo
  */
-public abstract class SalesforceConfigurableBot {
+@Component
+public class SalesforceConfigurableBot {
 
 	public SalesforceBotRunnable getSalesforceBotRunnable(String projectId) {
 		return _salesforceBotRunnables.get(new Project(projectId));
