@@ -188,7 +188,9 @@ public abstract class SalesforceConfigurableBot {
 	private void _scheduleProjects(Collection<Project> projects) {
 		for (Project project : projects) {
 			SalesforceBotRunnable salesforceBotRunnable =
-				new SalesforceBotRunnable(this, project);
+				new SalesforceBotRunnable(
+					_salesforceExtractorConfigurationManagerImpl,
+					_salesforceRawElasticsearchInvoker, project, this);
 
 			_salesforceBotRunnables.put(project, salesforceBotRunnable);
 			_scheduledProjects.put(
@@ -243,6 +245,9 @@ public abstract class SalesforceConfigurableBot {
 	@Autowired
 	private SalesforceExtractorConfigurationManagerImpl
 		_salesforceExtractorConfigurationManagerImpl;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
+	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 	private final ScheduledExecutorService _scheduledExecutorService =
 		Executors.newScheduledThreadPool(1);

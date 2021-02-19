@@ -17,6 +17,7 @@ package com.liferay.osb.asah.salesforce.extractor.bot;
 import com.liferay.osb.asah.common.bot.exception.InterruptBotException;
 import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.configuration.Configuration;
+import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -31,14 +32,20 @@ import org.elasticsearch.index.query.QueryBuilders;
 /**
  * @author Brian Wing Shun Chan
  * @author André Miranda
+ * @author Rachael Koestartyo
  */
 public class SalesforceBotRunnable implements Runnable {
 
 	public SalesforceBotRunnable(
-		SalesforceConfigurableBot salesforceConfigurableBot, Project project) {
+		ConfigurationManager configurationManager,
+		ElasticsearchInvoker elasticsearchInvoker, Project project,
+		SalesforceConfigurableBot salesforceConfigurableBot) {
 
-		_salesforceConfigurableBot = salesforceConfigurableBot;
+		_configurationManager = configurationManager;
 		_project = project;
+		_salesforceConfigurableBot = salesforceConfigurableBot;
+
+		_salesforceRawElasticsearchInvoker = elasticsearchInvoker;
 	}
 
 	public boolean isStop() {
@@ -52,7 +59,7 @@ public class SalesforceBotRunnable implements Runnable {
 
 			if (_delay == 0) {
 				Configuration[] configurations =
-					_salesforceConfigurableBot.getConfigurations();
+					_configurationManager.getConfigurations(_project.getId());
 
 				for (Configuration configuration : configurations) {
 					try {
@@ -108,10 +115,7 @@ public class SalesforceBotRunnable implements Runnable {
 
 	private void _deleteOSBAsahMarker(String osbAsahDataSourceId) {
 		try {
-			ElasticsearchInvoker elasticsearchInvoker =
-				_salesforceConfigurableBot.getElasticsearchInvoker();
-
-			elasticsearchInvoker.delete(
+			_salesforceRawElasticsearchInvoker.delete(
 				"OSBAsahMarkers",
 				QueryBuilders.termQuery(
 					"osbAsahDataSourceId", osbAsahDataSourceId));
@@ -170,11 +174,13 @@ public class SalesforceBotRunnable implements Runnable {
 	private static final Log _log = LogFactory.getLog(
 		SalesforceBotRunnable.class);
 
+	private final ConfigurationManager _configurationManager;
 	private int _delay;
 	private String _obsoleteDataSourceId;
 	private final Project _project;
 	private boolean _running;
 	private final SalesforceConfigurableBot _salesforceConfigurableBot;
+	private final ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 	private String _staleDataSourceId;
 	private boolean _stop;
 
