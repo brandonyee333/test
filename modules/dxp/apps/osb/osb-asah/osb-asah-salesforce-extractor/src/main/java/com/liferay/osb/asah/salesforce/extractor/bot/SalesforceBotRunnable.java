@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.bot;
+package com.liferay.osb.asah.salesforce.extractor.bot;
 
 import com.liferay.osb.asah.common.bot.exception.InterruptBotException;
 import com.liferay.osb.asah.common.bot.nanite.Nanite;
@@ -32,12 +32,12 @@ import org.elasticsearch.index.query.QueryBuilders;
  * @author Brian Wing Shun Chan
  * @author André Miranda
  */
-public class BotRunnable implements Runnable {
+public class SalesforceBotRunnable implements Runnable {
 
-	public BotRunnable(
-		BaseConfigurableBot baseConfigurableBot, Project project) {
+	public SalesforceBotRunnable(
+		SalesforceConfigurableBot salesforceConfigurableBot, Project project) {
 
-		_baseConfigurableBot = baseConfigurableBot;
+		_salesforceConfigurableBot = salesforceConfigurableBot;
 		_project = project;
 	}
 
@@ -52,11 +52,11 @@ public class BotRunnable implements Runnable {
 
 			if (_delay == 0) {
 				Configuration[] configurations =
-					_baseConfigurableBot.getConfigurations();
+					_salesforceConfigurableBot.getConfigurations();
 
 				for (Configuration configuration : configurations) {
 					try {
-						_baseConfigurableBot.refreshConfiguration(
+						_salesforceConfigurableBot.refreshConfiguration(
 							configuration);
 					}
 					catch (Exception e) {
@@ -109,7 +109,7 @@ public class BotRunnable implements Runnable {
 	private void _deleteOSBAsahMarker(String osbAsahDataSourceId) {
 		try {
 			ElasticsearchInvoker elasticsearchInvoker =
-				_baseConfigurableBot.getElasticsearchInvoker();
+				_salesforceConfigurableBot.getElasticsearchInvoker();
 
 			elasticsearchInvoker.delete(
 				"OSBAsahMarkers",
@@ -146,11 +146,12 @@ public class BotRunnable implements Runnable {
 		try {
 			for (Configuration configuration : configurations) {
 				try {
-					List<Nanite> nanites = _baseConfigurableBot.buildNanites(
-						configuration);
+					List<Nanite> nanites =
+						_salesforceConfigurableBot.buildNanites(configuration);
 
 					for (Nanite nanite : nanites) {
-						_baseConfigurableBot.runNanite(configuration, nanite);
+						_salesforceConfigurableBot.runNanite(
+							configuration, nanite);
 					}
 				}
 				catch (InterruptBotException ibe) {
@@ -166,13 +167,14 @@ public class BotRunnable implements Runnable {
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(BotRunnable.class);
+	private static final Log _log = LogFactory.getLog(
+		SalesforceBotRunnable.class);
 
-	private final BaseConfigurableBot _baseConfigurableBot;
 	private int _delay;
 	private String _obsoleteDataSourceId;
 	private final Project _project;
 	private boolean _running;
+	private final SalesforceConfigurableBot _salesforceConfigurableBot;
 	private String _staleDataSourceId;
 	private boolean _stop;
 

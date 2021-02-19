@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.bot;
+package com.liferay.osb.asah.salesforce.extractor.bot;
 
 import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.configuration.Configuration;
@@ -43,19 +43,22 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Brian Wing Shun Chan
+ * @author Rachael Koestartyo
  */
-public abstract class BaseConfigurableBot implements ConfigurableBot {
+public abstract class SalesforceConfigurableBot {
 
 	public boolean isStop() {
 		Project project = new Project(ProjectIdThreadLocal.getProjectId());
 
-		BotRunnable botRunnable = _botRunnables.get(project);
+		SalesforceBotRunnable salesforceBotRunnable =
+			_salesforceBotRunnables.get(project);
 
-		if (botRunnable != null) {
-			return botRunnable.isStop();
+		if (salesforceBotRunnable != null) {
+			return salesforceBotRunnable.isStop();
 		}
 
 		return false;
@@ -80,14 +83,14 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 		stop(null, null);
 	}
 
-	@Override
 	public void stop(String obsoleteDataSourceId, String staleDataSourceId) {
 		Project project = new Project(ProjectIdThreadLocal.getProjectId());
 
-		BotRunnable botRunnable = _botRunnables.get(project);
+		SalesforceBotRunnable salesforceBotRunnable =
+			_salesforceBotRunnables.get(project);
 
-		if (botRunnable != null) {
-			botRunnable.stop(obsoleteDataSourceId, staleDataSourceId);
+		if (salesforceBotRunnable != null) {
+			salesforceBotRunnable.stop(obsoleteDataSourceId, staleDataSourceId);
 		}
 	}
 
@@ -141,13 +144,14 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 
 	private void _scheduleProjects(Collection<Project> projects) {
 		for (Project project : projects) {
-			BotRunnable botRunnable = new BotRunnable(this, project);
+			SalesforceBotRunnable salesforceBotRunnable =
+				new SalesforceBotRunnable(this, project);
 
-			_botRunnables.put(project, botRunnable);
+			_salesforceBotRunnables.put(project, salesforceBotRunnable);
 			_scheduledProjects.put(
 				project,
 				_scheduledExecutorService.scheduleWithFixedDelay(
-					botRunnable, 1, 1, TimeUnit.SECONDS));
+					salesforceBotRunnable, 1, 1, TimeUnit.SECONDS));
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Scheduled project " + project.getId());
@@ -162,7 +166,7 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 
 			scheduledFuture.cancel(false);
 
-			_botRunnables.remove(project);
+			_salesforceBotRunnables.remove(project);
 			_scheduledProjects.remove(project);
 
 			if (_log.isInfoEnabled()) {
@@ -172,7 +176,7 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		BaseConfigurableBot.class);
+		SalesforceConfigurableBot.class);
 
 	private static final Gauge _threadPoolActiveGauge = PrometheusUtil.gauge(
 		"extractor_thread_pool_active",
@@ -184,7 +188,8 @@ public abstract class BaseConfigurableBot implements ConfigurableBot {
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
 
-	private final Map<Project, BotRunnable> _botRunnables = new HashMap<>();
+	private final Map<Project, SalesforceBotRunnable> _salesforceBotRunnables =
+		new HashMap<>();
 
 	@Autowired
 	private ProjectDog _projectDog;
