@@ -15,7 +15,7 @@ jobs:
     include:
         - stage: "Analysis"
           script:
-              - ./gradlew checkSourceFormatting pmdMain pmdTest pmdTestIntegration spotbugsMain spotbugsTest spotbugsTestIntegration --configure-on-demand --parallel
+              - ./gradlew checkSourceFormatting pmdMain pmdTest pmdTestIntegration spotbugsMain spotbugsTest spotbugsTestIntegration --configure-on-demand --continue --parallel
         - stage: "Tests"
           after_script:
               - docker-compose -f docker-compose.integration-test.yml down
@@ -35,7 +35,7 @@ jobs:
               - sudo /etc/init.d/postgresql stop
               - docker-compose -f docker-compose.integration-test.yml up -d
           script:
-              - ./gradlew test --configure-on-demand --parallel
+              - ./gradlew test --configure-on-demand --continue --parallel
               - ./gradlew testIntegration --configure-on-demand --continue
               - ./gradlew jacocoTestCoverageVerification
 language: java
