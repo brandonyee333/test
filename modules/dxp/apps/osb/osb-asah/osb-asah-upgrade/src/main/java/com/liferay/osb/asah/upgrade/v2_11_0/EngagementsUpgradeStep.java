@@ -16,8 +16,11 @@ package com.liferay.osb.asah.upgrade.v2_11_0;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
+
+import org.elasticsearch.index.query.QueryBuilders;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,9 +36,26 @@ public class EngagementsUpgradeStep implements UpgradeStep {
 		_elasticsearchIndexManager.delete(
 			ElasticsearchIndexUtil.getIndexName(
 				"engagements", WeDeployDataService.OSB_ASAH_FARO_INFO));
+
+		_elasticsearchInvoker.deleteByQuery(
+			QueryBuilders.termsQuery("naniteClassName", _NANITE_CLASS_NAMES),
+			true, "run-logs");
+
+		for (String naniteClassName : _NANITE_CLASS_NAMES) {
+			_elasticsearchInvoker.delete("OSBAsahMarkers", naniteClassName);
+		}
 	}
+
+	private static final String[] _NANITE_CLASS_NAMES = {
+		"AccountEngagementScoresNanite", "AssetEngagementScoresNanite",
+		"IndividualEngagementScoresNanite",
+		"IndividualSegmentEngagementScoresNanite"
+	};
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 }

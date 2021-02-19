@@ -15,11 +15,14 @@
 package com.liferay.osb.asah.upgrade.v2_11_0.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.upgrade.spring.OSBAsahUpgradeSpringBootApplication;
 import com.liferay.osb.asah.upgrade.v2_11_0.EngagementsUpgradeStep;
+
+import org.elasticsearch.index.query.QueryBuilders;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -58,8 +61,39 @@ public class EngagementsUpgradeStepTest {
 				"test_osbasahfaroinfo_engagements"));
 	}
 
+	@ElasticsearchIndex(
+		name = "OSBAsahMarkers", resourcePath = "osbasahmarkers.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testDeleteMarkers() {
+		_engagementsUpgradeStep.upgrade("");
+
+		Assert.assertEquals(
+			2,
+			_elasticsearchInvoker.count(
+				"OSBAsahMarkers", QueryBuilders.matchAllQuery()));
+	}
+
+	@ElasticsearchIndex(
+		name = "run-logs", resourcePath = "run-logs.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testDeleteRunLogs() {
+		_engagementsUpgradeStep.upgrade("");
+
+		Assert.assertEquals(
+			2,
+			_elasticsearchInvoker.count(
+				"run-logs", QueryBuilders.matchAllQuery()));
+	}
+
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private EngagementsUpgradeStep _engagementsUpgradeStep;
