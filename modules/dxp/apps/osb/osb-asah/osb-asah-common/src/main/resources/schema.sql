@@ -79,6 +79,8 @@ CREATE TABLE IF NOT EXISTS EventDefinition (
     type TEXT NOT NULL
 );
 
+CREATE INDEX IF NOT EXISTS IX_EVENTDEFINITION_NAME ON EventDefinition (name);
+
 CREATE TABLE IF NOT EXISTS Event (
     id BIGSERIAL PRIMARY KEY,
 	analyticsEventId TEXT UNIQUE,
@@ -98,6 +100,8 @@ CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
     displayName TEXT UNIQUE,
     name TEXT UNIQUE
 );
+
+CREATE INDEX IF NOT EXISTS IX_EVENTATTRIBUTEDEFINITION_NAME ON EventAttributeDefinition (name);
 
 CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
     eventAttributeDefinitionId BIGINT REFERENCES EventAttributeDefinition,
