@@ -29,18 +29,6 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class Event implements Persistable<Long> {
 
-	public Event() {
-	}
-
-	public Event(AnalyticsEvent analyticsEvent) {
-		_applicationId = analyticsEvent.getApplicationId();
-		_channelId = Long.valueOf(analyticsEvent.getChannelId());
-		_createDate = analyticsEvent.getCreateDate();
-		_dataSourceId = analyticsEvent.getDataSourceId();
-		_eventDate = analyticsEvent.getEventDate();
-		_userId = analyticsEvent.getUserId();
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

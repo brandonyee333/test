@@ -121,12 +121,26 @@ public class EventAttributeDefinitionDog {
 			eventDefinitionEventAttributeDefinitions.add(
 				new EventDefinitionEventAttributeDefinition(eventDefinitionId));
 
-			patchEventAttributeDefinition(
+			updateEventAttributeDefinition(
 				null, null, null, eventAttributeDefinition.getId(),
 				eventDefinitionEventAttributeDefinitions, null);
 		}
 
 		return eventAttributeDefinition;
+	}
+
+	public EventAttributeDefinition fetchEventAttributeDefinitionByName(
+		String name) {
+
+		EventAttributeDefinition eventAttributeDefinition =
+			_eventAttributeDefinitionsByName.get(
+				ProjectIdThreadLocal.getProjectId() + "#" + name);
+
+		if (eventAttributeDefinition != null) {
+			return eventAttributeDefinition;
+		}
+
+		return _eventAttributeDefinitionRepository.findByName(name);
 	}
 
 	public EventAttributeDefinition getEventAttributeDefinition(
@@ -152,21 +166,7 @@ public class EventAttributeDefinitionDog {
 					eventAttributeDefinitionId));
 	}
 
-	public EventAttributeDefinition getEventAttributeDefinitionByName(
-		String name) {
-
-		EventAttributeDefinition eventAttributeDefinition =
-			_eventAttributeDefinitionsByName.get(
-				ProjectIdThreadLocal.getProjectId() + "#" + name);
-
-		if (eventAttributeDefinition != null) {
-			return eventAttributeDefinition;
-		}
-
-		return _eventAttributeDefinitionRepository.findByName(name);
-	}
-
-	public EventAttributeDefinition patchEventAttributeDefinition(
+	public EventAttributeDefinition updateEventAttributeDefinition(
 		String dataType, String description, String displayName,
 		Long eventAttributeDefinitionId,
 		Set<EventDefinitionEventAttributeDefinition>

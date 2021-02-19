@@ -65,7 +65,7 @@ public class EventDefinitionDog {
 		return eventDefinition;
 	}
 
-	public EventDefinition getEventDefinitionByName(String name) {
+	public EventDefinition fetchEventDefinitionByName(String name) {
 		EventDefinition eventDefinition = _eventDefinitions.get(
 			ProjectIdThreadLocal.getProjectId() + "#" + name);
 

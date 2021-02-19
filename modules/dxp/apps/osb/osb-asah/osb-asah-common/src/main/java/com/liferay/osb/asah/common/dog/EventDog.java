@@ -32,17 +32,18 @@ public class EventDog {
 	public Event addEvent(
 		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
 
-		Event event = new Event(analyticsEvent);
-
-		event.setEventDefinitionId(eventDefinitionId);
-
-		return _eventRepository.save(event);
+		return addEvent(
+			analyticsEvent.getApplicationId(),
+			Long.valueOf(analyticsEvent.getChannelId()),
+			analyticsEvent.getCreateDate(), analyticsEvent.getDataSourceId(),
+			analyticsEvent.getEventDate(), eventDefinitionId,
+			analyticsEvent.getUserId());
 	}
 
 	public Event addEvent(
 		String applicationId, Long channelId, Date createDate,
 		String dataSourceId, Date eventDate, Long eventDefinitionId,
-		String projectId, String userId) {
+		String userId) {
 
 		Event event = new Event();
 

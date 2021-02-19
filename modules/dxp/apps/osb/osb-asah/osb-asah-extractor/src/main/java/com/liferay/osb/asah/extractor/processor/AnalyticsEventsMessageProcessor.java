@@ -460,7 +460,7 @@ public class AnalyticsEventsMessageProcessor {
 			String eventId = analyticsEvent.getEventId();
 
 			EventDefinition eventDefinition =
-				_eventDefinitionDog.getEventDefinitionByName(eventId);
+				_eventDefinitionDog.fetchEventDefinitionByName(eventId);
 
 			if (eventDefinition == null) {
 				eventDefinition = _eventDefinitionDog.addEventDefinition(
@@ -488,7 +488,7 @@ public class AnalyticsEventsMessageProcessor {
 
 				EventAttributeDefinition eventAttributeDefinition =
 					_eventAttributeDefinitionDog.
-						getEventAttributeDefinitionByName(propertyName);
+						fetchEventAttributeDefinitionByName(propertyName);
 
 				if (eventAttributeDefinition == null) {
 					eventAttributeDefinition =
