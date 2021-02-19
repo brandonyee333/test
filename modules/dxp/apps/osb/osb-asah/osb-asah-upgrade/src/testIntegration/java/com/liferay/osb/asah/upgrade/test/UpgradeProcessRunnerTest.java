@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.test;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -29,6 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -45,6 +47,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahUpgradeSpringBootApplication.class)
 public class UpgradeProcessRunnerTest {
+
+	@Before
+	public void setUp() {
+		_elasticsearchIndexManager.delete(
+			"test1_osbasahfaroinfo_osbasahmarkers",
+			"test2_osbasahfaroinfo_osbasahmarkers");
+	}
 
 	@Test
 	public void testProjectId() throws Exception {
@@ -77,6 +86,9 @@ public class UpgradeProcessRunnerTest {
 		Assert.assertTrue(projectIds.contains("test1"));
 		Assert.assertTrue(projectIds.contains("test2"));
 	}
+
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@MockBean
 	private ProjectDog _projectDog;

@@ -44,6 +44,8 @@ public class EngagementsUpgradeStepTest {
 	)
 	@Test
 	public void testDeleteIndexAndAliasUpgrade() {
+		_elasticsearchInvoker.refresh();
+
 		Assert.assertTrue(
 			_elasticsearchIndexManager.aliasExists(
 				"test_osbasahfaroinfo_engagements_alias"));
