@@ -26,7 +26,7 @@
 
 		<portlet:renderURL var="viewTestrayBuildsURL">
 			<portlet:param name="controller" value="builds" />
-			<portlet:param name="action" value="index" />
+			<portlet:param name="action" value="${param.action}" />
 			<portlet:param name="testrayRoutineId" value="${testrayRoutine.testrayRoutineId}" />
 
 			<testray:filter-preference
