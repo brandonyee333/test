@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
-import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceExtractorConfigurableBot;
+import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceConfigurableBot;
 import com.liferay.osb.asah.salesforce.extractor.client.SalesforceBulkClientInvoker;
 import com.liferay.osb.asah.salesforce.extractor.client.SalesforcePartnerClientInvoker;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
@@ -521,7 +521,7 @@ public class SalesforceExtractorNanite implements Nanite {
 					xmlReader.setContentHandler(
 						new SalesforceBulkContentHandler(
 							describeSObjectResult, exceptions,
-							_salesforceExtractorConfigurableBot::isStop,
+							_salesforceConfigurableBot::isStop,
 							_salesforceExtractorConfiguration.getDataSourceId(),
 							(JSONArray jsonArray) -> {
 								try {
@@ -813,7 +813,7 @@ public class SalesforceExtractorNanite implements Nanite {
 	}
 
 	private void _throwNewInterruptBotException() {
-		if (_salesforceExtractorConfigurableBot.isStop()) {
+		if (_salesforceConfigurableBot.isStop()) {
 			throw new InterruptBotException();
 		}
 	}
@@ -861,8 +861,7 @@ public class SalesforceExtractorNanite implements Nanite {
 	private SalesforceBulkClientInvoker _salesforceBulkClientInvoker;
 
 	@Autowired
-	private SalesforceExtractorConfigurableBot
-		_salesforceExtractorConfigurableBot;
+	private SalesforceConfigurableBot _salesforceConfigurableBot;
 
 	private final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration;
