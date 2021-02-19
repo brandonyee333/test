@@ -18,6 +18,8 @@ import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceBotRunnable;
@@ -28,6 +30,7 @@ import com.liferay.osb.asah.salesforce.extractor.oauth2.SalesforceOAuth2Client;
 import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClient;
 import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClientImpl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -71,7 +74,10 @@ public class SalesforceExtractorConfigurationManagerImpl
 			return false;
 		}
 
-		if (_configurations.containsKey(configuration.getDataSourceId())) {
+		if (_configurations.containsKey(
+				configuration.getProjectId() + "_" +
+					configuration.getDataSourceId())) {
+
 			_log.error(
 				"Duplicate configuration for data source " +
 					configuration.getDataSourceId());
@@ -79,10 +85,13 @@ public class SalesforceExtractorConfigurationManagerImpl
 			return false;
 		}
 
-		_configurations.put(configuration.getDataSourceId(), configuration);
+		_configurations.put(
+			configuration.getProjectId() + "_" +
+				configuration.getDataSourceId(),
+			configuration);
 
-		SalesforceBotRunnable salesforceBotRunnable =
-			_getSalesforceBotRunnable();
+		SalesforceBotRunnable salesforceBotRunnable = _getSalesforceBotRunnable(
+			configuration.getProjectId());
 
 		salesforceBotRunnable.stop(configuration.getDataSourceId(), null);
 
@@ -122,14 +131,15 @@ public class SalesforceExtractorConfigurationManagerImpl
 
 		String dataSourceId = jsonObject.getString("dataSourceId");
 
-		Configuration configuration = _configurations.remove(dataSourceId);
+		Configuration configuration = _configurations.remove(
+			ProjectIdThreadLocal.getProjectId() + "_" + dataSourceId);
 
 		if (configuration == null) {
 			return false;
 		}
 
-		SalesforceBotRunnable salesforceBotRunnable =
-			_getSalesforceBotRunnable();
+		SalesforceBotRunnable salesforceBotRunnable = _getSalesforceBotRunnable(
+			configuration.getProjectId());
 
 		salesforceBotRunnable.stop(dataSourceId, null);
 
@@ -141,7 +151,8 @@ public class SalesforceExtractorConfigurationManagerImpl
 		String dataSourceId) {
 
 		SalesforceExtractorConfiguration salesforceExtractorConfiguration =
-			(SalesforceExtractorConfiguration)_configurations.get(dataSourceId);
+			(SalesforceExtractorConfiguration)_configurations.get(
+				ProjectIdThreadLocal.getProjectId() + "_" + dataSourceId);
 
 		if (salesforceExtractorConfiguration instanceof
 				SalesforceExtractorConfigurationImpl) {
@@ -164,12 +175,22 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	@Override
-	public Configuration[] getConfigurations() {
+	public Configuration[] getConfigurations(String projectId) {
 		Set<Map.Entry<String, Configuration>> set = _configurations.entrySet();
 
 		Stream<Map.Entry<String, Configuration>> stream = set.stream();
 
-		return stream.map(
+		return stream.filter(
+			entry -> {
+				String key = entry.getKey();
+
+				if (key.startsWith(projectId + "_")) {
+					return true;
+				}
+
+				return false;
+			}
+		).map(
 			entry -> entry.getValue()
 		).collect(
 			Collectors.toList()
@@ -213,44 +234,17 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	@PostConstruct
-	public void init() {
-		JSONArray dataSourcesJSONArray = _elasticsearchInvoker.get(
-			"data-sources",
-			QueryBuilders.termQuery("provider.type", "SALESFORCE"));
+	public void init() throws Exception {
+		List<Project> projects = _projectDog.getProjects();
 
-		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
-			JSONObject dataSourceJSONObject =
-				dataSourcesJSONArray.getJSONObject(i);
-
+		for (Project project : projects) {
 			try {
-				JSONObject configurationsJSONObject =
-					buildConfigurationsJSONObject(dataSourceJSONObject);
+				ProjectIdThreadLocal.setProjectId(project.getId());
 
-				String dataSourceId = configurationsJSONObject.getString(
-					"dataSourceId");
-
-				Configuration configuration = _getInitializedConfiguration(
-					dataSourceId);
-
-				configuration.setDataSourceId(dataSourceId);
-				configuration.setDataSourceState(
-					dataSourceJSONObject.getString("state"));
-				configuration.setDataSourceStatus(
-					dataSourceJSONObject.getString("status"));
-
-				_setConfigurationAttributes(
-					configurationsJSONObject, configuration);
-
-				_configurations.put(
-					configuration.getDataSourceId(), configuration);
+				_initConfigurations(project.getId());
 			}
-			catch (Exception e) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Unable to add configuration for data source " +
-							dataSourceJSONObject.getString("id"),
-						e);
-				}
+			finally {
+				ProjectIdThreadLocal.remove();
 			}
 		}
 	}
@@ -278,7 +272,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 
 		if (dataSourceId.equals(existingDataSourceId)) {
 			Configuration existingConfigurationImpl = _configurations.get(
-				existingDataSourceId);
+				configuration.getProjectId() + "_" + existingDataSourceId);
 
 			if (existingConfigurationImpl == null) {
 				_log.error(
@@ -299,7 +293,9 @@ public class SalesforceExtractorConfigurationManagerImpl
 			}
 		}
 		else {
-			if (_configurations.containsKey(dataSourceId)) {
+			if (_configurations.containsKey(
+					configuration.getProjectId() + "_" + dataSourceId)) {
+
 				_log.error(
 					"Duplicate configuration for data source " + dataSourceId);
 
@@ -307,7 +303,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 			}
 
 			Configuration existingConfigurationImpl = _configurations.remove(
-				existingDataSourceId);
+				configuration.getProjectId() + "_" + existingDataSourceId);
 
 			if (existingConfigurationImpl == null) {
 				_log.error(
@@ -318,10 +314,11 @@ public class SalesforceExtractorConfigurationManagerImpl
 			}
 		}
 
-		_configurations.put(dataSourceId, configuration);
+		_configurations.put(
+			configuration.getProjectId() + "_" + dataSourceId, configuration);
 
-		SalesforceBotRunnable salesforceBotRunnable =
-			_getSalesforceBotRunnable();
+		SalesforceBotRunnable salesforceBotRunnable = _getSalesforceBotRunnable(
+			configuration.getProjectId());
 
 		if (Objects.equals(existingDataSourceId, dataSourceId)) {
 			salesforceBotRunnable.stop(null, null);
@@ -346,9 +343,53 @@ public class SalesforceExtractorConfigurationManagerImpl
 		return configuration;
 	}
 
-	private SalesforceBotRunnable _getSalesforceBotRunnable() {
-		return _salesforceConfigurableBot.getSalesforceBotRunnable(
-			ProjectIdThreadLocal.getProjectId());
+	private SalesforceBotRunnable _getSalesforceBotRunnable(String projectId) {
+		return _salesforceConfigurableBot.getSalesforceBotRunnable(projectId);
+	}
+
+	private void _initConfigurations(String projectId) {
+		JSONArray dataSourcesJSONArray = _elasticsearchInvoker.get(
+			"data-sources",
+			QueryBuilders.termQuery("provider.type", "SALESFORCE"));
+
+		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
+			JSONObject dataSourceJSONObject =
+				dataSourcesJSONArray.getJSONObject(i);
+
+			try {
+				JSONObject configurationsJSONObject =
+					buildConfigurationsJSONObject(dataSourceJSONObject);
+
+				String dataSourceId = configurationsJSONObject.getString(
+					"dataSourceId");
+
+				Configuration configuration = _getInitializedConfiguration(
+					dataSourceId);
+
+				configuration.setDataSourceId(dataSourceId);
+				configuration.setDataSourceState(
+					dataSourceJSONObject.getString("state"));
+				configuration.setDataSourceStatus(
+					dataSourceJSONObject.getString("status"));
+				configuration.setProjectId(projectId);
+
+				_setConfigurationAttributes(
+					configurationsJSONObject, configuration);
+
+				_configurations.put(
+					configuration.getProjectId() + "_" +
+						configuration.getDataSourceId(),
+					configuration);
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to add configuration for data source " +
+							dataSourceJSONObject.getString("id"),
+						e);
+				}
+			}
+		}
 	}
 
 	private void _setConfigurationAttributes(
@@ -426,6 +467,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 			jsonObject.getString("dataSourceState"));
 		configuration.setDataSourceStatus(
 			jsonObject.getString("dataSourceStatus"));
+		configuration.setProjectId(ProjectIdThreadLocal.getProjectId());
 
 		_setConfigurationAttributes(jsonObject, configuration);
 
@@ -492,6 +534,9 @@ public class SalesforceExtractorConfigurationManagerImpl
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 	@Autowired
 	private SalesforceConfigurableBot _salesforceConfigurableBot;

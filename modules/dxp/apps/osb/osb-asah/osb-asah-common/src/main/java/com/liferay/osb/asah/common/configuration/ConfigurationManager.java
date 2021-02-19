@@ -26,12 +26,12 @@ public interface ConfigurationManager {
 
 	public Configuration getConfiguration(String dataSourceId);
 
-	public Configuration[] getConfigurations();
+	public Configuration[] getConfigurations(String projectId);
 
 	public String getState(String json);
 
 	public String refresh(String json);
 
-	public Configuration updateConfiguration(String json) throws Exception;
+	public Configuration updateConfiguration(String json);
 
 }
