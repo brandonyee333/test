@@ -81,8 +81,30 @@ public class AnalyticsEventStorageDog {
 								propertyName);
 				}
 				else {
-					_eventAttributeDefinitionDog.addEventDefinitionId(
-						eventDefinitionId, eventAttributeDefinition);
+					Set<EventDefinitionEventAttributeDefinition>
+						eventDefinitionEventAttributeDefinitions =
+							eventAttributeDefinition.
+								getEventDefinitionEventAttributeDefinitions();
+
+					eventDefinitionEventAttributeDefinitions = new HashSet<>(
+						eventDefinitionEventAttributeDefinitions);
+
+					int initialSize =
+						eventDefinitionEventAttributeDefinitions.size();
+
+					eventDefinitionEventAttributeDefinitions.add(
+						new EventDefinitionEventAttributeDefinition(
+							eventDefinitionId));
+
+					if (initialSize !=
+							eventDefinitionEventAttributeDefinitions.size()) {
+
+						_eventAttributeDefinitionDog.
+							updateEventAttributeDefinition(
+								null, null, null,
+								eventAttributeDefinition.getId(),
+								eventDefinitionEventAttributeDefinitions, null);
+					}
 				}
 
 				_eventAttributeDog.addEventAttribute(

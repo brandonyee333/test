@@ -51,13 +51,10 @@ public class EventAttributeDefinitionDog {
 		eventAttributeDefinition.setDataType(dataType);
 		eventAttributeDefinition.setDescription(description);
 		eventAttributeDefinition.setDisplayName(displayName);
-
-		EventDefinitionEventAttributeDefinition
-			eventDefinitionEventAttributeDefinition =
-				new EventDefinitionEventAttributeDefinition(eventDefinitionId);
-
 		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
-			Collections.singleton(eventDefinitionEventAttributeDefinition));
+			Collections.singleton(
+				new EventDefinitionEventAttributeDefinition(
+					eventDefinitionId)));
 
 		eventAttributeDefinition.setName(name);
 
@@ -69,16 +66,10 @@ public class EventAttributeDefinitionDog {
 		Long eventDefinitionId,
 		EventAttributeDefinition eventAttributeDefinition) {
 
-		Set<EventDefinitionEventAttributeDefinition>
-			eventDefinitionEventAttributeDefinitions =
-				eventAttributeDefinition.
-					getEventDefinitionEventAttributeDefinitions();
-
-		boolean update = true;
-
 		for (EventDefinitionEventAttributeDefinition
 				eventDefinitionEventAttributeDefinition :
-					eventDefinitionEventAttributeDefinitions) {
+					eventAttributeDefinition.
+						getEventDefinitionEventAttributeDefinitions()) {
 
 			Long eventDefinitionEventAttributeDefinitionId =
 				eventDefinitionEventAttributeDefinition.getEventDefinitionId();
@@ -86,26 +77,21 @@ public class EventAttributeDefinitionDog {
 			if (eventDefinitionId.equals(
 					eventDefinitionEventAttributeDefinitionId)) {
 
-				update = false;
-
-				break;
+				return eventAttributeDefinition;
 			}
 		}
 
-		if (update) {
+		Set<EventDefinitionEventAttributeDefinition>
 			eventDefinitionEventAttributeDefinitions = new HashSet<>(
 				eventAttributeDefinition.
 					getEventDefinitionEventAttributeDefinitions());
 
-			eventDefinitionEventAttributeDefinitions.add(
-				new EventDefinitionEventAttributeDefinition(eventDefinitionId));
+		eventDefinitionEventAttributeDefinitions.add(
+			new EventDefinitionEventAttributeDefinition(eventDefinitionId));
 
-			updateEventAttributeDefinition(
-				null, null, null, eventAttributeDefinition.getId(),
-				eventDefinitionEventAttributeDefinitions, null);
-		}
-
-		return eventAttributeDefinition;
+		return updateEventAttributeDefinition(
+			null, null, null, eventAttributeDefinition.getId(),
+			eventDefinitionEventAttributeDefinitions, null);
 	}
 
 	public EventAttributeDefinition fetchEventAttributeDefinitionByName(
