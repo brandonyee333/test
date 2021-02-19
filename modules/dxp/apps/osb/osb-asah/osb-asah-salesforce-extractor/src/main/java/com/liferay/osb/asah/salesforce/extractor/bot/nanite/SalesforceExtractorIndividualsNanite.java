@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 import com.liferay.osb.asah.salesforce.extractor.util.TimeUtil;
@@ -123,8 +124,9 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		}
 		catch (Exception e) {
 			_log.error(
-				"Unable to add audit event with JSON " +
-					auditEventJSONObject.toString(),
+				ProjectIdThreadLocal.getProjectId() +
+					": Unable to add audit event with JSON " +
+						auditEventJSONObject.toString(),
 				e);
 		}
 	}
@@ -459,7 +461,9 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			long time = System.currentTimeMillis();
 
 			if (_log.isInfoEnabled()) {
-				_log.info("Curate " + typeName);
+				_log.info(
+					ProjectIdThreadLocal.getProjectId() + ": Curate " +
+						typeName);
 			}
 
 			int processedCount = 0;
@@ -492,14 +496,15 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
-						"Curated " + processedCount + " " + typeName +
-							" records");
+						ProjectIdThreadLocal.getProjectId() + ": Curated " +
+							processedCount + " " + typeName + " records");
 				}
 			}
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Curated " + typeName + " in " + TimeUtil.format(time));
+					ProjectIdThreadLocal.getProjectId() + ": Curated " +
+						typeName + " in " + TimeUtil.format(time));
 			}
 		}
 	}

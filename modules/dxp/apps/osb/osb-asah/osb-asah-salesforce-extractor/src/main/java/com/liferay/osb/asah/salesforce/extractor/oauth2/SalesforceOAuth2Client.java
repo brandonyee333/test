@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.salesforce.extractor.oauth2;
 
 import com.liferay.osb.asah.common.oauth2.BaseOAuth2Client;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationImpl;
 
 import java.util.Objects;
@@ -70,7 +71,9 @@ public class SalesforceOAuth2Client extends BaseOAuth2Client {
 
 		if (StringUtils.isEmpty(responseJSON)) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to parse refreshed access token");
+				_log.warn(
+					ProjectIdThreadLocal.getProjectId() + ": Unable to parse " +
+						"refreshed access token");
 			}
 
 			throw new Exception();

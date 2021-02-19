@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.salesforce.extractor.client;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 import com.liferay.osb.asah.salesforce.extractor.util.TimeUtil;
 import com.liferay.petra.salesforce.client.bulk.SalesforceBulkClient;
@@ -80,7 +81,8 @@ public class SalesforceBulkClientInvoker
 		}
 
 		throw new Exception(
-			"Unable to get batch info for type " + typeName + " with " + soql);
+			ProjectIdThreadLocal.getProjectId() + ": Unable to get batch " +
+				"info for type " + typeName + " with " + soql);
 	}
 
 	public QueryResultList getQueryResultList(
@@ -121,7 +123,8 @@ public class SalesforceBulkClientInvoker
 				soql.getBytes(StandardCharsets.UTF_8))) {
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("SOQL: " + soql);
+				_log.debug(
+					ProjectIdThreadLocal.getProjectId() + ": SOQL: " + soql);
 			}
 
 			batchInfo = salesforceBulkClient.createBatchFromStream(
@@ -146,16 +149,22 @@ public class SalesforceBulkClientInvoker
 			while (elapsedTime < _TIMEOUT);
 		}
 		catch (Exception e) {
-			_log.error("Unable to get batch info", e);
+			_log.error(
+				ProjectIdThreadLocal.getProjectId() + ": Unable to get batch " +
+					"info",
+				e);
 		}
 		finally {
 			if (_log.isInfoEnabled()) {
 				if (batchInfo == null) {
-					_log.info("Batch time: " + TimeUtil.format(startTime));
+					_log.info(
+						ProjectIdThreadLocal.getProjectId() + ": Batch time: " +
+							TimeUtil.format(startTime));
 				}
 				else if (batchInfo.getState() == BatchStateEnum.Completed) {
 					_log.info(
-						"Completed batch time: " + TimeUtil.format(startTime));
+						ProjectIdThreadLocal.getProjectId() + ": Completed " +
+							"batch time: " + TimeUtil.format(startTime));
 				}
 			}
 		}

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.oauth2;
 
 import com.liferay.osb.asah.common.spring.http.client.OSBAsahResponseErrorHandler;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.Collections;
 
@@ -51,8 +52,8 @@ public abstract class BaseOAuth2Client {
 		try {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Obtaining refreshed access token for client ID " +
-						clientId);
+					ProjectIdThreadLocal.getProjectId() + ": Obtaining " +
+						"refreshed access token for client ID " + clientId);
 			}
 
 			responseEntity = restTemplate.postForEntity(
@@ -89,8 +90,9 @@ public abstract class BaseOAuth2Client {
 		if (responseEntity == null) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Unable to obtain refreshed access token because OAuth " +
-						"URL is not found");
+					ProjectIdThreadLocal.getProjectId() + ": Unable to " +
+						"obtain refreshed access token because OAuth URL is " +
+							"not found");
 			}
 
 			responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -98,9 +100,10 @@ public abstract class BaseOAuth2Client {
 		else if (responseEntity.getStatusCode() != HttpStatus.OK) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Unable to obtain refreshed access token due to invalid " +
-						"client ID, client secret, and/or refresh token, or " +
-							"insufficient permissions");
+					ProjectIdThreadLocal.getProjectId() + ": Unable to " +
+						"obtain refreshed access token due to invalid client " +
+							"ID, client secret, and/or refresh token, or " +
+								"insufficient permissions");
 			}
 
 			responseEntity = new ResponseEntity<>(
@@ -108,7 +111,9 @@ public abstract class BaseOAuth2Client {
 		}
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Refreshed access token");
+			_log.info(
+				ProjectIdThreadLocal.getProjectId() + ": Refreshed access " +
+					"token");
 		}
 
 		return responseEntity;

@@ -79,8 +79,8 @@ public class SalesforceExtractorConfigurationManagerImpl
 					configuration.getDataSourceId())) {
 
 			_log.error(
-				"Duplicate configuration for data source " +
-					configuration.getDataSourceId());
+				configuration.getProjectId() + ": Duplicate configuration " +
+					"for data source " + configuration.getDataSourceId());
 
 			return false;
 		}
@@ -164,7 +164,9 @@ public class SalesforceExtractorConfigurationManagerImpl
 			}
 			catch (Exception e) {
 				if (_log.isInfoEnabled()) {
-					_log.info("Unable to refresh OAuth token");
+					_log.info(
+						salesforceExtractorConfiguration.getProjectId() +
+							": Unable to refresh OAuth token");
 				}
 
 				return null;
@@ -276,8 +278,8 @@ public class SalesforceExtractorConfigurationManagerImpl
 
 			if (existingConfigurationImpl == null) {
 				_log.error(
-					"Missing configuration for data source " +
-						existingDataSourceId);
+					configuration.getProjectId() + ": Missing configuration " +
+						"for data source " + existingDataSourceId);
 
 				return null;
 			}
@@ -285,8 +287,8 @@ public class SalesforceExtractorConfigurationManagerImpl
 			if (configuration.equals(existingConfigurationImpl)) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
-						"Skip identical configuration for data source " +
-							dataSourceId);
+						configuration.getProjectId() + ": Skip identical " +
+							"configuration for data source " + dataSourceId);
 				}
 
 				return configuration;
@@ -297,7 +299,8 @@ public class SalesforceExtractorConfigurationManagerImpl
 					configuration.getProjectId() + "_" + dataSourceId)) {
 
 				_log.error(
-					"Duplicate configuration for data source " + dataSourceId);
+					configuration.getProjectId() + ": Duplicate " +
+						"configuration for data source " + dataSourceId);
 
 				return configuration;
 			}
@@ -307,8 +310,8 @@ public class SalesforceExtractorConfigurationManagerImpl
 
 			if (existingConfigurationImpl == null) {
 				_log.error(
-					"Missing configuration for data source " +
-						existingDataSourceId);
+					configuration.getProjectId() + ": Missing configuration " +
+						"for data source " + existingDataSourceId);
 
 				return null;
 			}
@@ -384,8 +387,8 @@ public class SalesforceExtractorConfigurationManagerImpl
 			catch (Exception e) {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
-						"Unable to add configuration for data source " +
-							dataSourceJSONObject.getString("id"),
+						projectId + ": Unable to add configuration for data " +
+							"source " + dataSourceJSONObject.getString("id"),
 						e);
 				}
 			}
@@ -448,7 +451,9 @@ public class SalesforceExtractorConfigurationManagerImpl
 			}
 			catch (Exception e) {
 				if (_log.isInfoEnabled()) {
-					_log.info("Unable to refresh OAuth token");
+					_log.info(
+						ProjectIdThreadLocal.getProjectId() + ": Unable to " +
+							"refresh OAuth token");
 				}
 			}
 		}

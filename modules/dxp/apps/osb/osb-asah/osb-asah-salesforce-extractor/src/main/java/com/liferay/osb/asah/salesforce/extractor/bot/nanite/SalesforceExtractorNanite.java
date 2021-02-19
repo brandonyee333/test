@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceConfigurableBot;
 import com.liferay.osb.asah.salesforce.extractor.client.SalesforceBulkClientInvoker;
@@ -111,10 +112,13 @@ public class SalesforceExtractorNanite implements Nanite {
 				"ACTIVE")) {
 
 			if (_log.isInfoEnabled()) {
+				String dataSourceId =
+					_salesforceExtractorConfiguration.getDataSourceId();
+
 				_log.info(
-					"Skipping nanite because data source " +
-						_salesforceExtractorConfiguration.getDataSourceId() +
-							" is not active");
+					ProjectIdThreadLocal.getProjectId() +
+						": Skipping nanite because data source " +
+							dataSourceId + " is not active");
 			}
 
 			return;
@@ -147,8 +151,9 @@ public class SalesforceExtractorNanite implements Nanite {
 		}
 		catch (Exception e) {
 			_log.error(
-				"Unable to populate audit events with JSON " +
-					auditEventJSONObject.toString(),
+				ProjectIdThreadLocal.getProjectId() +
+					" Unable to populate audit events with JSON " +
+						auditEventJSONObject.toString(),
 				e);
 		}
 	}
@@ -272,8 +277,9 @@ public class SalesforceExtractorNanite implements Nanite {
 							"osbAsahDataSourceId");
 
 					_log.info(
-						"Deleted table " + tableName + " for data source " +
-							osbAsahDataSourceId);
+						ProjectIdThreadLocal.getProjectId() + ": Deleted " +
+							"table " + tableName + " for data source " +
+								osbAsahDataSourceId);
 				}
 			}
 
@@ -354,7 +360,10 @@ public class SalesforceExtractorNanite implements Nanite {
 								ExceptionCode.INVALID_REPLICATION_DATE) {
 
 							if (_log.isDebugEnabled()) {
-								_log.debug(e, e);
+								_log.debug(
+									ProjectIdThreadLocal.getProjectId() + ": " +
+										e,
+									e);
 							}
 
 							return startDate;
@@ -401,7 +410,9 @@ public class SalesforceExtractorNanite implements Nanite {
 		}
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Fields changes detected");
+			_log.info(
+				ProjectIdThreadLocal.getProjectId() +
+					": Fields changes detected");
 		}
 
 		return true;
@@ -416,7 +427,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (!_isNewTable(describeSObjectResult, tablesJSONObject)) {
 			if (_log.isInfoEnabled()) {
-				_log.info("Skip populating " + describeSObjectResult.getName());
+				_log.info(
+					ProjectIdThreadLocal.getProjectId() + ": Skip populating " +
+						describeSObjectResult.getName());
 			}
 
 			return;
@@ -426,7 +439,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		try {
 			if (_log.isInfoEnabled()) {
-				_log.info("Populate " + describeSObjectResult.getName());
+				_log.info(
+					ProjectIdThreadLocal.getProjectId() + ": Populate " +
+						describeSObjectResult.getName());
 			}
 
 			List<Exception> exceptions = _processTable(
@@ -438,9 +453,10 @@ public class SalesforceExtractorNanite implements Nanite {
 					}
 					catch (Exception e) {
 						_log.error(
-							"Unable to populate " +
-								describeSObjectResult.getName() +
-									" with JSON " + jsonArray,
+							ProjectIdThreadLocal.getProjectId() +
+								": Unable to populate " +
+									describeSObjectResult.getName() +
+										" with JSON " + jsonArray,
 							e);
 
 						return e;
@@ -456,8 +472,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Populated " + describeSObjectResult.getName() + " in " +
-						TimeUtil.format(time));
+					ProjectIdThreadLocal.getProjectId() + ": Populated " +
+						describeSObjectResult.getName() + " in " +
+							TimeUtil.format(time));
 			}
 
 			JSONObject fieldsJSONObject = _toFieldsJSONObject(
@@ -485,7 +502,9 @@ public class SalesforceExtractorNanite implements Nanite {
 			}
 
 			_log.error(
-				"Unable to populate " + describeSObjectResult.getName(), e);
+				ProjectIdThreadLocal.getProjectId() + ": Unable to populate " +
+					describeSObjectResult.getName(),
+				e);
 		}
 	}
 
@@ -530,8 +549,9 @@ public class SalesforceExtractorNanite implements Nanite {
 								}
 								catch (Exception e) {
 									_log.error(
-										"Unable to populate audit events " +
-											"with JSON " + jsonArray,
+										ProjectIdThreadLocal.getProjectId() +
+											": Unable to populate audit " +
+												"events with JSON " + jsonArray,
 										e);
 
 									return e;
@@ -612,7 +632,9 @@ public class SalesforceExtractorNanite implements Nanite {
 			_deleteStaleTables(osbAsahMarkerJSONObject, tableNames);
 
 			if (_log.isInfoEnabled()) {
-				_log.info("Ran in " + TimeUtil.format(time));
+				_log.info(
+					ProjectIdThreadLocal.getProjectId() + ": Ran in " +
+						TimeUtil.format(time));
 			}
 
 			_runLogger.log(
@@ -656,7 +678,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (tableJSONObject == null) {
 			if (_log.isInfoEnabled()) {
-				_log.info("Skip syncing " + describeSObjectResult.getName());
+				_log.info(
+					ProjectIdThreadLocal.getProjectId() + ": Skip syncing " +
+						describeSObjectResult.getName());
 			}
 
 			return;
@@ -671,8 +695,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Sync " + describeSObjectResult.getName() + " since " +
-					DateUtil.toUTCString(startDate));
+				ProjectIdThreadLocal.getProjectId() + ": Sync " +
+					describeSObjectResult.getName() + " since " +
+						DateUtil.toUTCString(startDate));
 		}
 
 		GetUpdatedResult getUpdatedResult =
@@ -685,8 +710,9 @@ public class SalesforceExtractorNanite implements Nanite {
 		if (salesforceKeys.length > 0) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Update " + salesforceKeys.length + " records for " +
-						describeSObjectResult.getName());
+					ProjectIdThreadLocal.getProjectId() + ": Update " +
+						salesforceKeys.length + " records for " +
+							describeSObjectResult.getName());
 			}
 
 			int batchSize = SOQLUtil.getBatchSize(
@@ -716,9 +742,10 @@ public class SalesforceExtractorNanite implements Nanite {
 						}
 						catch (Exception e) {
 							_log.error(
-								"Unable to update " +
-									describeSObjectResult.getName() +
-										" with JSON " + jsonArray,
+								ProjectIdThreadLocal.getProjectId() +
+									": Unable to update " +
+										describeSObjectResult.getName() +
+											" with JSON " + jsonArray,
 								e);
 
 							return e;
@@ -750,9 +777,10 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Updated " + salesforceKeys.length + " records for " +
-					describeSObjectResult.getName() + " in " +
-						TimeUtil.format(endDate.getTime()));
+				ProjectIdThreadLocal.getProjectId() + ": Updated " +
+					salesforceKeys.length + " records for " +
+						describeSObjectResult.getName() + " in " +
+							TimeUtil.format(endDate.getTime()));
 		}
 
 		long lastSuccessfulDeletedTime = tableJSONObject.optLong(
@@ -769,8 +797,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Delete " + deletedRecords.length + " records from " +
-					describeSObjectResult.getName());
+				ProjectIdThreadLocal.getProjectId() + ": Delete " +
+					deletedRecords.length + " records from " +
+						describeSObjectResult.getName());
 		}
 
 		int deleteRecordsCount = 0;
@@ -793,8 +822,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Deleted " + deleteRecordsCount + " records from " +
-					describeSObjectResult.getName());
+				ProjectIdThreadLocal.getProjectId() + ": Deleted " +
+					deleteRecordsCount + " records from " +
+						describeSObjectResult.getName());
 		}
 
 		Calendar lastSuccessfulDeletedCalendar =

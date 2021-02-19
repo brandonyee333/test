@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.array.ArrayUtil;
 import com.liferay.osb.asah.common.bot.exception.InterruptBotException;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.salesforce.extractor.util.ElasticsearchPropertyUtil;
 import com.liferay.osb.asah.salesforce.extractor.util.SchemaUtil;
 
@@ -96,7 +97,9 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 		}
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Processed " + _count + " records");
+			_log.info(
+				ProjectIdThreadLocal.getProjectId() + ": Processed " + _count +
+					" records");
 		}
 	}
 
@@ -132,7 +135,8 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 					if (_log.isWarnEnabled()) {
 						StringBuilder sb = new StringBuilder();
 
-						sb.append("Unable to get field ");
+						sb.append(ProjectIdThreadLocal.getProjectId());
+						sb.append(": Unable to get field ");
 						sb.append(fieldName);
 						sb.append(" for type ");
 						sb.append(_typeName);
@@ -201,7 +205,9 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 				_jsonObjects.clear();
 
 				if (_log.isInfoEnabled()) {
-					_log.info("Processed " + _count + " records");
+					_log.info(
+						ProjectIdThreadLocal.getProjectId() + ": Processed " +
+							_count + " records");
 				}
 			}
 		}
