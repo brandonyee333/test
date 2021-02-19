@@ -33,7 +33,7 @@ public class EventDog {
 		AnalyticsEvent analyticsEvent, Long eventDefinitionId) {
 
 		return addEvent(
-			analyticsEvent.getApplicationId(),
+			analyticsEvent.getId(), analyticsEvent.getApplicationId(),
 			Long.valueOf(analyticsEvent.getChannelId()),
 			analyticsEvent.getCreateDate(), analyticsEvent.getDataSourceId(),
 			analyticsEvent.getEventDate(), eventDefinitionId,
@@ -41,12 +41,13 @@ public class EventDog {
 	}
 
 	public Event addEvent(
-		String applicationId, Long channelId, Date createDate,
-		String dataSourceId, Date eventDate, Long eventDefinitionId,
-		String userId) {
+		String analyticsEventId, String applicationId, Long channelId,
+		Date createDate, String dataSourceId, Date eventDate,
+		Long eventDefinitionId, String userId) {
 
 		Event event = new Event();
 
+		event.setAnalyticsEventId(analyticsEventId);
 		event.setApplicationId(applicationId);
 		event.setChannelId(channelId);
 		event.setCreateDate(createDate);

@@ -41,7 +41,8 @@ public class Event implements Persistable<Long> {
 
 		Event event = (Event)obj;
 
-		if (Objects.equals(_applicationId, event._applicationId) &&
+		if (Objects.equals(_analyticsEventId, event._analyticsEventId) &&
+			Objects.equals(_applicationId, event._applicationId) &&
 			Objects.equals(_channelId, event._channelId) &&
 			Objects.equals(_createDate, event._createDate) &&
 			Objects.equals(_dataSourceId, event._dataSourceId) &&
@@ -54,6 +55,11 @@ public class Event implements Persistable<Long> {
 		}
 
 		return false;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getAnalyticsEventId() {
+		return _analyticsEventId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -100,8 +106,8 @@ public class Event implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_applicationId, _channelId, _createDate, _dataSourceId, _eventDate,
-			_eventDefinitionId, _id, _userId);
+			_analyticsEventId, _applicationId, _channelId, _createDate,
+			_dataSourceId, _eventDate, _eventDefinitionId, _id, _userId);
 	}
 
 	public boolean isNew() {
@@ -110,6 +116,10 @@ public class Event implements Persistable<Long> {
 		}
 
 		return false;
+	}
+
+	public void setAnalyticsEventId(String analyticsEventId) {
+		_analyticsEventId = analyticsEventId;
 	}
 
 	public void setApplicationId(String applicationId) {
@@ -147,6 +157,9 @@ public class Event implements Persistable<Long> {
 	public void setUserId(String userId) {
 		_userId = userId;
 	}
+
+	@Transient
+	private String _analyticsEventId;
 
 	@Transient
 	private String _applicationId;

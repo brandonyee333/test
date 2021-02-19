@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS EventDefinition (
 
 CREATE TABLE IF NOT EXISTS Event (
     id BIGSERIAL PRIMARY KEY,
+	analyticsEventId TEXT UNIQUE,
     applicationId TEXT,
     channelId BIGINT NOT NULL REFERENCES Channel,
     createDate TIMESTAMPTZ,
