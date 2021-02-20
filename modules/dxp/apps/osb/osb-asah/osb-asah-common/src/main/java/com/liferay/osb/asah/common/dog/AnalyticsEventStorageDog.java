@@ -94,8 +94,8 @@ public class AnalyticsEventStorageDog {
 							eventDefinitionId));
 
 					if ((eventAttributeDefinitionId != null) &&
-						(initialSize !=
-							eventDefinitionEventAttributeDefinitions.size())) {
+						(eventDefinitionEventAttributeDefinitions.size() >
+							initialSize)) {
 
 						_eventAttributeDefinitionDog.
 							updateEventAttributeDefinition(
