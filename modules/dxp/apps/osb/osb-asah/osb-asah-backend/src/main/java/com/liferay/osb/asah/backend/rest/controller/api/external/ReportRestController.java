@@ -1455,7 +1455,8 @@ public class ReportRestController extends BaseRestController {
 			return Collections.synchronizedMap(_metricReports);
 		}
 
-		private Map<String, MetricReport> _metricReports = new HashMap<>();
+		private final Map<String, MetricReport> _metricReports =
+			new HashMap<>();
 
 	}
 
@@ -1499,10 +1500,11 @@ public class ReportRestController extends BaseRestController {
 			return _formPageMetric.getPageName();
 		}
 
-		private Map<String, FormFieldReport> _formFieldReports =
+		private final Map<String, FormFieldReport> _formFieldReports =
 			new HashMap<>();
 		private final FormPageMetric _formPageMetric;
-		private Map<String, MetricReport> _metricReports = new HashMap<>();
+		private final Map<String, MetricReport> _metricReports =
+			new HashMap<>();
 
 	}
 
@@ -1535,7 +1537,7 @@ public class ReportRestController extends BaseRestController {
 		}
 
 		private final String _formId;
-		private List<FormPageReport> _formPageReports = new ArrayList<>();
+		private final List<FormPageReport> _formPageReports = new ArrayList<>();
 		private final String _formTitle;
 
 	}
@@ -1574,7 +1576,7 @@ public class ReportRestController extends BaseRestController {
 			return _histogramBucketReports;
 		}
 
-		private List<HistogramBucketReport> _histogramBucketReports =
+		private final List<HistogramBucketReport> _histogramBucketReports =
 			new ArrayList<>();
 
 	}

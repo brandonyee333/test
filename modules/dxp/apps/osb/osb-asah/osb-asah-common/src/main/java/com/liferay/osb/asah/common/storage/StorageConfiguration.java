@@ -112,7 +112,7 @@ public class StorageConfiguration {
 
 		private static final long _DEFAULT_CHUNK_SIZE = 64 * 1024 * 1024;
 
-		private StorageConfiguration _storageConfiguration =
+		private final StorageConfiguration _storageConfiguration =
 			new StorageConfiguration();
 
 	}

@@ -278,7 +278,8 @@ public class InterestTopicsNanite extends BaseNanite {
 			);
 		}
 
-		private Queue<Map<String, Object>> _assetsQueue = new LinkedList<>();
+		private final Queue<Map<String, Object>> _assetsQueue =
+			new LinkedList<>();
 		private final Set<String> _blockedKeywords;
 		private long _currentCount;
 		private final ElasticsearchInvoker _elasticsearchInvoker;

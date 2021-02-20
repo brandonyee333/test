@@ -183,10 +183,10 @@ public class CustomScrollDepthDistributionVertex
 
 	private static final String _Q100_NAME = "_q100";
 
-	private DoubleVertex _q0DoubleVertex;
-	private DoubleVertex _q25DoubleVertex;
-	private DoubleVertex _q50DoubleVertex;
-	private DoubleVertex _q75DoubleVertex;
-	private DoubleVertex _q100DoubleVertex;
+	private final DoubleVertex _q0DoubleVertex;
+	private final DoubleVertex _q25DoubleVertex;
+	private final DoubleVertex _q50DoubleVertex;
+	private final DoubleVertex _q75DoubleVertex;
+	private final DoubleVertex _q100DoubleVertex;
 
 }

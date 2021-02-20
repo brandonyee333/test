@@ -537,8 +537,8 @@ public class InterestsRestController extends BaseRestController {
 		}
 
 		private final int _id;
-		private List<TopicTerm> _topicTerms = new ArrayList<>();
-		private double _weight;
+		private final List<TopicTerm> _topicTerms = new ArrayList<>();
+		private final double _weight;
 
 	}
 
@@ -550,7 +550,7 @@ public class InterestsRestController extends BaseRestController {
 		}
 
 		private final String _keyword;
-		private double _weight;
+		private final double _weight;
 
 	}
 
