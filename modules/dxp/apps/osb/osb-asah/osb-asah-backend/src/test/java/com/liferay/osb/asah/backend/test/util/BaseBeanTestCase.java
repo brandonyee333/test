@@ -255,7 +255,7 @@ public abstract class BaseBeanTestCase<T> {
 				put(Boolean.class, () -> Boolean.TRUE);
 				put(Byte.class, () -> Byte.valueOf((byte)0));
 				put(Character.class, () -> Character.valueOf((char)0));
-				put(Date.class, () -> new Date());
+				put(Date.class, Date::new);
 				put(Double.class, () -> Double.valueOf(0.0));
 				put(Float.class, () -> Float.valueOf(0.0F));
 				put(Integer.class, () -> Integer.valueOf(0));

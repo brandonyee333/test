@@ -256,13 +256,7 @@ public class CacheProcessorAspect {
 	}
 
 	private String _getCacheName(Map<String, Object> parameters) {
-		String cacheName = (String)parameters.get("collectionName");
-
-		if (cacheName == null) {
-			return null;
-		}
-
-		return cacheName;
+		return (String)parameters.get("collectionName");
 	}
 
 	private Object _getKey(Map<String, Object> parameters) {

@@ -39,7 +39,7 @@ public class MetricTest extends BaseBeanTestCase<Metric> {
 		super(
 			new HashMap<Class<?>, Supplier<?>>() {
 				{
-					put(MetricType.class, () -> new MockMetricType());
+					put(MetricType.class, MockMetricType::new);
 				}
 			},
 			Arrays.asList("getTrend"));

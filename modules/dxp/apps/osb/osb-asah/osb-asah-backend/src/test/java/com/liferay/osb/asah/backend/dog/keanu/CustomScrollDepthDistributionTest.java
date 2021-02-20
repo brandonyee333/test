@@ -104,15 +104,12 @@ public class CustomScrollDepthDistributionTest {
 
 			double outputDouble = outputTensor.getValue(0);
 
-			if (value < 0) {
+			if ((value < 0) || (value > 100)) {
 				Assert.assertEquals(outputDouble, Double.NEGATIVE_INFINITY, 1);
-			}
-			else if (value <= 100) {
-				Assert.assertTrue(
-					"Log probability is negative", outputDouble < 0);
 			}
 			else {
-				Assert.assertEquals(outputDouble, Double.NEGATIVE_INFINITY, 1);
+				Assert.assertTrue(
+					"Log probability is negative", outputDouble < 0);
 			}
 		}
 	}

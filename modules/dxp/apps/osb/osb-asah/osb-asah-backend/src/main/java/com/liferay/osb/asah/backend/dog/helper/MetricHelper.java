@@ -385,8 +385,6 @@ public class MetricHelper {
 			if (previousNumOfBins > currentNumOfBins) {
 				return true;
 			}
-
-			return false;
 		}
 		else if (Interval.MONTH.equals(interval)) {
 			int currentNumOfBins = _countMonths(
@@ -397,8 +395,6 @@ public class MetricHelper {
 			if (previousNumOfBins > currentNumOfBins) {
 				return true;
 			}
-
-			return false;
 		}
 
 		return false;
