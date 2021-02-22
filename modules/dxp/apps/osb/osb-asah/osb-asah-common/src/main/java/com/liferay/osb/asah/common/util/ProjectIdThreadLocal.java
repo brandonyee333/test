@@ -23,6 +23,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.slf4j.MDC;
+
 /**
  * @author Shinn Lok
  */
@@ -69,6 +71,8 @@ public class ProjectIdThreadLocal {
 
 	public static void remove() {
 		_projectId.remove();
+
+		MDC.remove("projectId");
 	}
 
 	public static void setProjectId(String projectId) {
@@ -77,6 +81,8 @@ public class ProjectIdThreadLocal {
 		}
 
 		_projectId.set(projectId);
+
+		MDC.put("projectId", projectId);
 	}
 
 	private static final Log _log = LogFactory.getLog(
