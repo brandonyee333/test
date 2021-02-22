@@ -40,9 +40,8 @@ public interface DataSourceRepository extends CrudRepository<DataSource, Long> {
 
 	public boolean existsByName(String name);
 
-	public boolean
-		existsByProviderTypeAndDataSourceSitesIsNotNullOrEnableAllSitesIsTrueOrSitesSelectedIsTrue(
-			@Param("providerType") String providerType);
+	public boolean existsByProviderType(
+		@Param("providerType") String providerType);
 
 	public List<DataSource> findAll(Pageable pageable);
 

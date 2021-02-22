@@ -75,10 +75,7 @@ public class ElasticsearchDataSourceRepositoryImpl
 	}
 
 	@Override
-	public boolean
-		existsByProviderTypeAndDataSourceSitesIsNotNullOrEnableAllSitesIsTrueOrSitesSelectedIsTrue(
-			String providerType) {
-
+	public boolean existsByProviderType(String providerType) {
 		return _faroInfoElasticsearchInvoker.exists(
 			getCollectionName(),
 			BoolQueryBuilderUtil.filter(

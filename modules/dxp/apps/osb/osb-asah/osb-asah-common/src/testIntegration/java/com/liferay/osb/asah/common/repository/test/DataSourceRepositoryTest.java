@@ -139,20 +139,16 @@ public class DataSourceRepositoryTest {
 	}
 
 	@Test
-	public void testExistsByProviderTypeAndDataSourceSitesIsNotNullOrEnableAllSitesIsTrueOrSitesSelectedIsTrue() {
+	public void testExistsByProviderType() {
 		Assert.assertFalse(
-			_dataSourceRepository.
-				existsByProviderTypeAndDataSourceSitesIsNotNullOrEnableAllSitesIsTrueOrSitesSelectedIsTrue(
-					"LIFERAY"));
+			_dataSourceRepository.existsByProviderType("LIFERAY"));
 
 		_dataSource.setEnableAllSites(true);
 
 		_dataSourceRepository.save(_dataSource);
 
 		Assert.assertTrue(
-			_dataSourceRepository.
-				existsByProviderTypeAndDataSourceSitesIsNotNullOrEnableAllSitesIsTrueOrSitesSelectedIsTrue(
-					"LIFERAY"));
+			_dataSourceRepository.existsByProviderType("LIFERAY"));
 
 		_dataSource.setEnableAllSites(false);
 		_dataSource.setSitesSelected(true);
@@ -160,9 +156,7 @@ public class DataSourceRepositoryTest {
 		_dataSourceRepository.save(_dataSource);
 
 		Assert.assertTrue(
-			_dataSourceRepository.
-				existsByProviderTypeAndDataSourceSitesIsNotNullOrEnableAllSitesIsTrueOrSitesSelectedIsTrue(
-					"LIFERAY"));
+			_dataSourceRepository.existsByProviderType("LIFERAY"));
 
 		DataSourceSite dataSourceSite = new DataSourceSite();
 
@@ -175,9 +169,7 @@ public class DataSourceRepositoryTest {
 		_dataSourceRepository.save(_dataSource);
 
 		Assert.assertTrue(
-			_dataSourceRepository.
-				existsByProviderTypeAndDataSourceSitesIsNotNullOrEnableAllSitesIsTrueOrSitesSelectedIsTrue(
-					"LIFERAY"));
+			_dataSourceRepository.existsByProviderType("LIFERAY"));
 	}
 
 	@Test

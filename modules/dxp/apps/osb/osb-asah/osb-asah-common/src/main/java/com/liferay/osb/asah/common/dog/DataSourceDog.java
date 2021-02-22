@@ -241,9 +241,7 @@ public class DataSourceDog {
 	}
 
 	public boolean isAnalyticsConfigured() {
-		return _dataSourceRepository.
-			existsByProviderTypeAndDataSourceSitesIsNotNullOrEnableAllSitesIsTrueOrSitesSelectedIsTrue(
-				"LIFERAY");
+		return _dataSourceRepository.existsByProviderType("LIFERAY");
 	}
 
 	public DataSource patchDataSource(DataSource dataSource) {
