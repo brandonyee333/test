@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Objects;
 
@@ -95,8 +96,7 @@ public class SalesforceExtractorConfigurationDog {
 
 		DataSourceDTO dataSourceDTO = _buildDataSourceDTO(dataSource);
 
-		dataSourceDTO.setDataSourceId(
-			Objects.toString(dataSource.getId(), null));
+		dataSourceDTO.setDataSourceId(StringUtil.get(dataSource.getId(), null));
 
 		_configurationHttp.addConfiguration(dataSourceDTO, _getProviderType());
 	}

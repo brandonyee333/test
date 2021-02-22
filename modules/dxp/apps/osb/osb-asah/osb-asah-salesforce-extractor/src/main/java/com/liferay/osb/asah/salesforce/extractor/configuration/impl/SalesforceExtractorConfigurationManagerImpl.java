@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceBotRunnable;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceConfigurableBot;
@@ -106,8 +107,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 			new DataSourceDTO.ProviderDTO.ContactsConfigurationDTO(dataSource));
 		dataSourceDTO.setCredentialDTO(
 			new DataSourceDTO.CredentialDTO(dataSource));
-		dataSourceDTO.setDataSourceId(
-			Objects.toString(dataSource.getId(), null));
+		dataSourceDTO.setDataSourceId(StringUtil.get(dataSource.getId(), null));
 		dataSourceDTO.setDataSourceState(dataSource.getState());
 		dataSourceDTO.setDataSourceStatus(dataSource.getStatus());
 		dataSourceDTO.setURL(dataSource.getURL());

@@ -22,11 +22,11 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -43,7 +43,7 @@ public class ChannelDTO {
 		_channelDataSourceDTOs = SetUtil.map(
 			channel.getChannelDataSources(), ChannelDataSourceDTO::new);
 		_createDate = channel.getCreateDate();
-		_id = Objects.toString(channel.getId(), null);
+		_id = StringUtil.get(channel.getId(), null);
 		_name = channel.getName();
 	}
 
@@ -117,7 +117,7 @@ public class ChannelDTO {
 		}
 
 		public ChannelDataSourceDTO(ChannelDataSource channelDataSource) {
-			_dataSourceId = Objects.toString(
+			_dataSourceId = StringUtil.get(
 				channelDataSource.getDataSourceId(), null);
 			_groupIds = SetUtil.map(
 				channelDataSource.getGroupIds(), String::valueOf);

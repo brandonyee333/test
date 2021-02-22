@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.model.DataSourceOrganization;
 import com.liferay.osb.asah.common.model.DataSourceSite;
 import com.liferay.osb.asah.common.model.DataSourceUserGroup;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -55,7 +56,7 @@ public class DataSourceDTO {
 			_authorDTO = authorDTO;
 		}
 
-		_channelId = Objects.toString(dataSource.getChannelId(), null);
+		_channelId = StringUtil.get(dataSource.getChannelId(), null);
 		_createDate = dataSource.getCreateDate();
 
 		CredentialDTO credentialDTO = new CredentialDTO(dataSource);
@@ -74,7 +75,7 @@ public class DataSourceDTO {
 
 		_faroBackendSecuritySignature =
 			dataSource.getFaroBackendSecuritySignature();
-		_id = Objects.toString(dataSource.getId(), null);
+		_id = StringUtil.get(dataSource.getId(), null);
 		_modifiedDate = dataSource.getModifiedDate();
 		_name = dataSource.getName();
 
@@ -333,7 +334,7 @@ public class DataSourceDTO {
 		}
 
 		public AuthorDTO(DataSource dataSource) {
-			_id = Objects.toString(dataSource.getAuthorId(), null);
+			_id = StringUtil.get(dataSource.getAuthorId(), null);
 			_name = dataSource.getAuthorName();
 		}
 
@@ -935,8 +936,7 @@ public class DataSourceDTO {
 
 				public SiteDTO(DataSourceSite dataSourceSite) {
 					_enableAllChildren = dataSourceSite.getEnableAllChildren();
-					_siteId = Objects.toString(
-						dataSourceSite.getSiteId(), null);
+					_siteId = StringUtil.get(dataSourceSite.getSiteId(), null);
 				}
 
 				@Override
