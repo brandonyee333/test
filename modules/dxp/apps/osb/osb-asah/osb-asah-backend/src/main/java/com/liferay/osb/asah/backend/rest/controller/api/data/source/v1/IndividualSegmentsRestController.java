@@ -103,8 +103,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@GetMapping(params = "!apply")
 	public String getIndividualSegments(
-			@RequestParam(name = "dataSourceId", required = false)
-				String dataSourceId,
+			@RequestParam(required = false) String dataSourceId,
 			@RequestParam(name = "filter", required = false)
 				String filterString,
 			@RequestParam(defaultValue = "0") int page,
