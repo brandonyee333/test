@@ -12,19 +12,12 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.model.Channel;
-import com.liferay.osb.asah.common.model.Event;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-
-import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,41 +33,37 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(properties = "osb.asah.postgresql.enabled=true")
-public class EventDogTest {
+public class EventDefinitionDogTest {
 
 	@Test
-	public void testAddEvent() {
-		Date date = DateUtil.newDayDate();
-
-		Channel channel = _channelDog.addChannel("Test Channel");
-
+	public void testAddDefinition() {
 		EventDefinition eventDefinition =
-			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", "Test Event", "testEvent", "custom");
 
-		Event event = _eventDog.addEvent(
-			"analyticsEventId", "Page", channel.getId(), date, "123456", date,
-			eventDefinition.getId(), "abcdef");
+		Assert.assertNotNull(eventDefinition);
 
-		Assert.assertEquals("analyticsEventId", event.getAnalyticsEventId());
-		Assert.assertEquals("Page", event.getApplicationId());
-		Assert.assertEquals(channel.getId(), event.getChannelId());
-		Assert.assertEquals(date, event.getCreateDate());
-		Assert.assertEquals("123456", event.getDataSourceId());
-		Assert.assertEquals(date, event.getEventDate());
 		Assert.assertEquals(
-			eventDefinition.getId(), event.getEventDefinitionId());
-		Assert.assertEquals("abcdef", event.getUserId());
+			"Testing an event", eventDefinition.getDescription());
+		Assert.assertEquals("Test Event", eventDefinition.getDisplayName());
+		Assert.assertNotNull(eventDefinition.getId());
+		Assert.assertEquals("testEvent", eventDefinition.getName());
+		Assert.assertEquals("custom", eventDefinition.getType());
+	}
 
-		Assert.assertNotNull(event.getId());
+	@Test
+	public void testFetchEventDefinitionByName() {
+		EventDefinition eventDefinition1 =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", "Test Event", "testEvent", "custom");
+
+		EventDefinition eventDefinition2 =
+			_eventDefinitionDog.fetchEventDefinitionByName("testEvent");
+
+		Assert.assertEquals(eventDefinition1, eventDefinition2);
 	}
 
 	@Autowired
-	private ChannelDog _channelDog;
-
-	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
-
-	@Autowired
-	private EventDog _eventDog;
 
 }

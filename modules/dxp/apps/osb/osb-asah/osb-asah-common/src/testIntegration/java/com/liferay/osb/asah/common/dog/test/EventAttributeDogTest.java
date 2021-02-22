@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
