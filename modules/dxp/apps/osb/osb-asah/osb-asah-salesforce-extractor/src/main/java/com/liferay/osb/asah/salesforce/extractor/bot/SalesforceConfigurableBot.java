@@ -52,6 +52,8 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -60,6 +62,8 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
+@EnableScheduling
+@Profile("!test")
 public class SalesforceConfigurableBot {
 
 	public SalesforceBotRunnable getSalesforceBotRunnable(String projectId) {
