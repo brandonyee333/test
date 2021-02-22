@@ -81,8 +81,9 @@ public class SalesforceBulkClientInvoker
 		}
 
 		throw new Exception(
-			ProjectIdThreadLocal.getProjectId() + ": Unable to get batch " +
-				"info for type " + typeName + " with " + soql);
+			String.format(
+				"%s: Unable to get batch info for type %s with %s",
+				ProjectIdThreadLocal.getProjectId(), typeName, soql));
 	}
 
 	public QueryResultList getQueryResultList(
@@ -124,7 +125,9 @@ public class SalesforceBulkClientInvoker
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					ProjectIdThreadLocal.getProjectId() + ": SOQL: " + soql);
+					String.format(
+						"%s: SOQL: %s", ProjectIdThreadLocal.getProjectId(),
+						soql));
 			}
 
 			batchInfo = salesforceBulkClient.createBatchFromStream(
@@ -150,21 +153,26 @@ public class SalesforceBulkClientInvoker
 		}
 		catch (Exception e) {
 			_log.error(
-				ProjectIdThreadLocal.getProjectId() + ": Unable to get batch " +
-					"info",
+				String.format(
+					"%s: Unable to get batch info",
+					ProjectIdThreadLocal.getProjectId()),
 				e);
 		}
 		finally {
 			if (_log.isInfoEnabled()) {
 				if (batchInfo == null) {
 					_log.info(
-						ProjectIdThreadLocal.getProjectId() + ": Batch time: " +
-							TimeUtil.format(startTime));
+						String.format(
+							"%s: Batch time: %s",
+							ProjectIdThreadLocal.getProjectId(),
+							TimeUtil.format(startTime)));
 				}
 				else if (batchInfo.getState() == BatchStateEnum.Completed) {
 					_log.info(
-						ProjectIdThreadLocal.getProjectId() + ": Completed " +
-							"batch time: " + TimeUtil.format(startTime));
+						String.format(
+							"%s: Completed batch time: %s",
+							ProjectIdThreadLocal.getProjectId(),
+							TimeUtil.format(startTime)));
 				}
 			}
 		}

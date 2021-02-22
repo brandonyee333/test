@@ -72,8 +72,9 @@ public class SalesforceOAuth2Client extends BaseOAuth2Client {
 		if (StringUtils.isEmpty(responseJSON)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					ProjectIdThreadLocal.getProjectId() + ": Unable to parse " +
-						"refreshed access token");
+					String.format(
+						"%s: Unable to parse refreshed access token",
+						ProjectIdThreadLocal.getProjectId()));
 			}
 
 			throw new Exception();

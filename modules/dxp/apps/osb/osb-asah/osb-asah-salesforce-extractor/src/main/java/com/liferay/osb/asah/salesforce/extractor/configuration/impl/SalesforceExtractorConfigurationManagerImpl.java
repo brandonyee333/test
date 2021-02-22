@@ -452,8 +452,9 @@ public class SalesforceExtractorConfigurationManagerImpl
 			catch (Exception e) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
-						ProjectIdThreadLocal.getProjectId() + ": Unable to " +
-							"refresh OAuth token");
+						String.format(
+							"%s: Unable to refresh OAuth token",
+							ProjectIdThreadLocal.getProjectId()));
 				}
 			}
 		}

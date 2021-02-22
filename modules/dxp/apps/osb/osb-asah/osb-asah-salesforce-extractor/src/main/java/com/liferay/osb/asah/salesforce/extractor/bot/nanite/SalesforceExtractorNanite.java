@@ -112,13 +112,12 @@ public class SalesforceExtractorNanite implements Nanite {
 				"ACTIVE")) {
 
 			if (_log.isInfoEnabled()) {
-				String dataSourceId =
-					_salesforceExtractorConfiguration.getDataSourceId();
-
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() +
-						": Skipping nanite because data source " +
-							dataSourceId + " is not active");
+					String.format(
+						"%s: Skipping nanite because data source %s is not " +
+							"active",
+						ProjectIdThreadLocal.getProjectId(),
+						_salesforceExtractorConfiguration.getDataSourceId()));
 			}
 
 			return;
@@ -151,9 +150,10 @@ public class SalesforceExtractorNanite implements Nanite {
 		}
 		catch (Exception e) {
 			_log.error(
-				ProjectIdThreadLocal.getProjectId() +
-					" Unable to populate audit events with JSON " +
-						auditEventJSONObject.toString(),
+				String.format(
+					"%s: Unable to populate audit events with JSON %s",
+					ProjectIdThreadLocal.getProjectId(),
+					auditEventJSONObject.toString()),
 				e);
 		}
 	}
@@ -277,9 +277,10 @@ public class SalesforceExtractorNanite implements Nanite {
 							"osbAsahDataSourceId");
 
 					_log.info(
-						ProjectIdThreadLocal.getProjectId() + ": Deleted " +
-							"table " + tableName + " for data source " +
-								osbAsahDataSourceId);
+						String.format(
+							"%s: Deleted table %s for data source %s" +
+								ProjectIdThreadLocal.getProjectId(),
+							tableName, osbAsahDataSourceId));
 				}
 			}
 
@@ -361,8 +362,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 							if (_log.isDebugEnabled()) {
 								_log.debug(
-									ProjectIdThreadLocal.getProjectId() + ": " +
-										e,
+									String.format(
+										"%s: %s",
+										ProjectIdThreadLocal.getProjectId(), e),
 									e);
 							}
 
@@ -411,8 +413,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				ProjectIdThreadLocal.getProjectId() +
-					": Fields changes detected");
+				String.format(
+					"%s: Fields changes detected",
+					ProjectIdThreadLocal.getProjectId()));
 		}
 
 		return true;
@@ -428,8 +431,10 @@ public class SalesforceExtractorNanite implements Nanite {
 		if (!_isNewTable(describeSObjectResult, tablesJSONObject)) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Skip populating " +
-						describeSObjectResult.getName());
+					String.format(
+						"%s: Skip populating %s",
+						ProjectIdThreadLocal.getProjectId(),
+						describeSObjectResult.getName()));
 			}
 
 			return;
@@ -440,8 +445,9 @@ public class SalesforceExtractorNanite implements Nanite {
 		try {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Populate " +
-						describeSObjectResult.getName());
+					String.format(
+						"%s: Populate %s", ProjectIdThreadLocal.getProjectId(),
+						describeSObjectResult.getName()));
 			}
 
 			List<Exception> exceptions = _processTable(
@@ -453,10 +459,10 @@ public class SalesforceExtractorNanite implements Nanite {
 					}
 					catch (Exception e) {
 						_log.error(
-							ProjectIdThreadLocal.getProjectId() +
-								": Unable to populate " +
-									describeSObjectResult.getName() +
-										" with JSON " + jsonArray,
+							String.format(
+								"%s: Unable to populate %s with JSON %s",
+								ProjectIdThreadLocal.getProjectId(),
+								describeSObjectResult.getName(), jsonArray),
 							e);
 
 						return e;
@@ -472,9 +478,11 @@ public class SalesforceExtractorNanite implements Nanite {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Populated " +
-						describeSObjectResult.getName() + " in " +
-							TimeUtil.format(time));
+					String.format(
+						"%s: Populated %s in %s",
+						ProjectIdThreadLocal.getProjectId(),
+						describeSObjectResult.getName(),
+						TimeUtil.format(time)));
 			}
 
 			JSONObject fieldsJSONObject = _toFieldsJSONObject(
@@ -502,8 +510,10 @@ public class SalesforceExtractorNanite implements Nanite {
 			}
 
 			_log.error(
-				ProjectIdThreadLocal.getProjectId() + ": Unable to populate " +
-					describeSObjectResult.getName(),
+				String.format(
+					"%s: Unable to populate %s",
+					ProjectIdThreadLocal.getProjectId(),
+					describeSObjectResult.getName()),
 				e);
 		}
 	}
@@ -549,9 +559,11 @@ public class SalesforceExtractorNanite implements Nanite {
 								}
 								catch (Exception e) {
 									_log.error(
-										ProjectIdThreadLocal.getProjectId() +
-											": Unable to populate audit " +
-												"events with JSON " + jsonArray,
+										String.format(
+											"%s: Unable to populate audit " +
+												"events with JSON %s",
+											ProjectIdThreadLocal.getProjectId(),
+											jsonArray),
 										e);
 
 									return e;
@@ -633,8 +645,9 @@ public class SalesforceExtractorNanite implements Nanite {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Ran in " +
-						TimeUtil.format(time));
+					String.format(
+						"%s: Ran in %s", ProjectIdThreadLocal.getProjectId(),
+						TimeUtil.format(time)));
 			}
 
 			_runLogger.log(
@@ -679,8 +692,10 @@ public class SalesforceExtractorNanite implements Nanite {
 		if (tableJSONObject == null) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Skip syncing " +
-						describeSObjectResult.getName());
+					String.format(
+						"%s: Skip syncing %s",
+						ProjectIdThreadLocal.getProjectId(),
+						describeSObjectResult.getName()));
 			}
 
 			return;
@@ -695,9 +710,10 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				ProjectIdThreadLocal.getProjectId() + ": Sync " +
-					describeSObjectResult.getName() + " since " +
-						DateUtil.toUTCString(startDate));
+				String.format(
+					"%s: Sync %s since %s", ProjectIdThreadLocal.getProjectId(),
+					describeSObjectResult.getName(),
+					DateUtil.toUTCString(startDate)));
 		}
 
 		GetUpdatedResult getUpdatedResult =
@@ -710,9 +726,11 @@ public class SalesforceExtractorNanite implements Nanite {
 		if (salesforceKeys.length > 0) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Update " +
-						salesforceKeys.length + " records for " +
-							describeSObjectResult.getName());
+					String.format(
+						"%s: Update %s records for %s",
+						ProjectIdThreadLocal.getProjectId(),
+						salesforceKeys.length,
+						describeSObjectResult.getName()));
 			}
 
 			int batchSize = SOQLUtil.getBatchSize(
@@ -742,10 +760,10 @@ public class SalesforceExtractorNanite implements Nanite {
 						}
 						catch (Exception e) {
 							_log.error(
-								ProjectIdThreadLocal.getProjectId() +
-									": Unable to update " +
-										describeSObjectResult.getName() +
-											" with JSON " + jsonArray,
+								String.format(
+									"%s: Unable to update %s with JSON %s",
+									ProjectIdThreadLocal.getProjectId(),
+									describeSObjectResult.getName(), jsonArray),
 								e);
 
 							return e;
@@ -777,10 +795,11 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				ProjectIdThreadLocal.getProjectId() + ": Updated " +
-					salesforceKeys.length + " records for " +
-						describeSObjectResult.getName() + " in " +
-							TimeUtil.format(endDate.getTime()));
+				String.format(
+					"%s: Updated %s records for %s in %s",
+					ProjectIdThreadLocal.getProjectId(), salesforceKeys.length,
+					describeSObjectResult.getName(),
+					TimeUtil.format(endDate.getTime())));
 		}
 
 		long lastSuccessfulDeletedTime = tableJSONObject.optLong(
@@ -797,9 +816,10 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				ProjectIdThreadLocal.getProjectId() + ": Delete " +
-					deletedRecords.length + " records from " +
-						describeSObjectResult.getName());
+				String.format(
+					"%s: Delete %s records from %s",
+					ProjectIdThreadLocal.getProjectId(), deletedRecords.length,
+					describeSObjectResult.getName()));
 		}
 
 		int deleteRecordsCount = 0;
@@ -822,9 +842,10 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				ProjectIdThreadLocal.getProjectId() + ": Deleted " +
-					deleteRecordsCount + " records from " +
-						describeSObjectResult.getName());
+				String.format(
+					"%s: Delete %s records from %s",
+					ProjectIdThreadLocal.getProjectId(), deleteRecordsCount,
+					describeSObjectResult.getName()));
 		}
 
 		Calendar lastSuccessfulDeletedCalendar =

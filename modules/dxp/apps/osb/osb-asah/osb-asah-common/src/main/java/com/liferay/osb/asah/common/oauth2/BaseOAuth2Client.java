@@ -52,8 +52,9 @@ public abstract class BaseOAuth2Client {
 		try {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Obtaining " +
-						"refreshed access token for client ID " + clientId);
+					String.format(
+						"%s: Obtaining refreshed access token for client ID %s",
+						ProjectIdThreadLocal.getProjectId(), clientId));
 			}
 
 			responseEntity = restTemplate.postForEntity(
@@ -90,9 +91,10 @@ public abstract class BaseOAuth2Client {
 		if (responseEntity == null) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Unable to " +
-						"obtain refreshed access token because OAuth URL is " +
-							"not found");
+					String.format(
+						"%s: Unable to obtain refreshed access token because " +
+							"OAuth URL is not found",
+						ProjectIdThreadLocal.getProjectId()));
 			}
 
 			responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -100,10 +102,11 @@ public abstract class BaseOAuth2Client {
 		else if (responseEntity.getStatusCode() != HttpStatus.OK) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Unable to " +
-						"obtain refreshed access token due to invalid client " +
-							"ID, client secret, and/or refresh token, or " +
-								"insufficient permissions");
+					String.format(
+						"%s: Unable to obtain refreshed access token due to " +
+							"invalid client ID, client secret, and/or" +
+								"refresh token, or insufficient permissions",
+						ProjectIdThreadLocal.getProjectId()));
 			}
 
 			responseEntity = new ResponseEntity<>(
@@ -112,8 +115,9 @@ public abstract class BaseOAuth2Client {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				ProjectIdThreadLocal.getProjectId() + ": Refreshed access " +
-					"token");
+				String.format(
+					"%s: Refreshed access token",
+					ProjectIdThreadLocal.getProjectId()));
 		}
 
 		return responseEntity;

@@ -98,8 +98,9 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				ProjectIdThreadLocal.getProjectId() + ": Processed " + _count +
-					" records");
+				String.format(
+					"%s: Processed %s records",
+					ProjectIdThreadLocal.getProjectId(), _count));
 		}
 	}
 
@@ -133,17 +134,12 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 
 				if (field == null) {
 					if (_log.isWarnEnabled()) {
-						StringBuilder sb = new StringBuilder();
-
-						sb.append(ProjectIdThreadLocal.getProjectId());
-						sb.append(": Unable to get field ");
-						sb.append(fieldName);
-						sb.append(" for type ");
-						sb.append(_typeName);
-						sb.append(" with value ");
-						sb.append(new String(entry.getValue()));
-
-						_log.warn(sb.toString());
+						_log.warn(
+							String.format(
+								"%s: Unable to get field %s for type %s with " +
+									"value %s",
+								ProjectIdThreadLocal.getProjectId(), fieldName,
+								_typeName, String.valueOf(entry.getValue())));
 					}
 
 					continue;
@@ -206,8 +202,9 @@ public class SalesforceBulkContentHandler extends DefaultHandler {
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
-						ProjectIdThreadLocal.getProjectId() + ": Processed " +
-							_count + " records");
+						String.format(
+							"%s: Processed %s records",
+							ProjectIdThreadLocal.getProjectId(), _count));
 				}
 			}
 		}

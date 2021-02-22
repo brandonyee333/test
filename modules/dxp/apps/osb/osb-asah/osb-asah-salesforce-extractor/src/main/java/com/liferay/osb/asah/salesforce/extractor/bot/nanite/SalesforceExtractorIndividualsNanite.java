@@ -124,9 +124,10 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		}
 		catch (Exception e) {
 			_log.error(
-				ProjectIdThreadLocal.getProjectId() +
-					": Unable to add audit event with JSON " +
-						auditEventJSONObject.toString(),
+				String.format(
+					"%s: Unable to add audit event with JSON %s",
+					ProjectIdThreadLocal.getProjectId(),
+					auditEventJSONObject.toString()),
 				e);
 		}
 	}
@@ -462,8 +463,9 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Curate " +
-						typeName);
+					String.format(
+						"%s: Curate %s", ProjectIdThreadLocal.getProjectId(),
+						typeName));
 			}
 
 			int processedCount = 0;
@@ -496,15 +498,19 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
-						ProjectIdThreadLocal.getProjectId() + ": Curated " +
-							processedCount + " " + typeName + " records");
+						String.format(
+							"%s: Curated %s %s records",
+							ProjectIdThreadLocal.getProjectId(), processedCount,
+							typeName));
 				}
 			}
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					ProjectIdThreadLocal.getProjectId() + ": Curated " +
-						typeName + " in " + TimeUtil.format(time));
+					String.format(
+						"%s: Curated %s in %s",
+						ProjectIdThreadLocal.getProjectId(), typeName,
+						TimeUtil.format(time)));
 			}
 		}
 	}
