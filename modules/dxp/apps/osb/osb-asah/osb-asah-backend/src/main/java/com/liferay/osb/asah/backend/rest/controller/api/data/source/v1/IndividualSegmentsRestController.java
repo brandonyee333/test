@@ -19,18 +19,23 @@ import com.liferay.osb.asah.backend.rest.response.MembershipChangesHistogramTran
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualSegmentsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.rest.response.PostResponse;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -364,17 +369,23 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			return queryBuilder;
 		}
 
-		JSONArray channelsJSONArray = faroInfoElasticsearchInvoker.get(
-			"channels",
-			QueryBuilders.termQuery("dataSources.id", dataSourceId));
+		List<Channel> channels = _channelDog.getChannels(
+			Long.valueOf(dataSourceId));
 
-		if (channelsJSONArray.length() == 0) {
+		if (channels.isEmpty()) {
 			return queryBuilder;
 		}
 
+		Stream<Channel> stream = channels.stream();
+
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termsQuery(
-				"channelId", JSONUtil.toStringArray(channelsJSONArray, "id")));
+				"channelId",
+				stream.map(
+					channel -> String.valueOf(channel.getId())
+				).collect(
+					Collectors.toList()
+				)));
 
 		if (queryBuilder == null) {
 			return boolQueryBuilder;
@@ -487,6 +498,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		IndividualSegmentsRestController.class);
+
+	@Autowired
+	private ChannelDog _channelDog;
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
