@@ -30,12 +30,11 @@ import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.rest.response.PostResponse;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -376,16 +375,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			return queryBuilder;
 		}
 
-		Stream<Channel> stream = channels.stream();
-
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termsQuery(
 				"channelId",
-				stream.map(
-					channel -> String.valueOf(channel.getId())
-				).collect(
-					Collectors.toList()
-				)));
+				ListUtil.map(
+					channels, channel -> String.valueOf(channel.getId()))));
 
 		if (queryBuilder == null) {
 			return boolQueryBuilder;
