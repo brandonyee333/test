@@ -239,7 +239,7 @@ public class RootRestController {
 			throw new HttpClientErrorException(responseEntity.getStatusCode());
 		}
 
-		return Optional.of(
+		return Optional.ofNullable(
 			responseEntity.getBody()
 		).map(
 			this::_readFirstCell
