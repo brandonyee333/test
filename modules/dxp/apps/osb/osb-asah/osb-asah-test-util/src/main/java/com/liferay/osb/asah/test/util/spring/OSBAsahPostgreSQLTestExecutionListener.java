@@ -64,12 +64,13 @@ public class OSBAsahPostgreSQLTestExecutionListener
 				null, connection.getSchema(), null, new String[] {"TABLE"});
 
 			while (tables.next()) {
-				PreparedStatement preparedStatement =
-					connection.prepareStatement(
-						"TRUNCATE TABLE " + tables.getString("TABLE_NAME") +
-							" CASCADE");
+				try (PreparedStatement preparedStatement =
+						connection.prepareStatement(
+							"TRUNCATE TABLE " + tables.getString("TABLE_NAME") +
+								" CASCADE")) {
 
-				preparedStatement.execute();
+					preparedStatement.execute();
+				}
 			}
 
 			DatabasePopulatorUtils.execute(
