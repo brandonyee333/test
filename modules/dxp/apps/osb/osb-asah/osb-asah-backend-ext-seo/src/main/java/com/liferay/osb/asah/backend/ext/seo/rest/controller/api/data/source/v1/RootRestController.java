@@ -52,6 +52,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -217,19 +218,23 @@ public class RootRestController {
 	private long _getOrganicSearchKeywordsTotalTraffic(
 		String database, String domain, String url) {
 
-		UriComponentsBuilder uriComponentsBuilder =
-			UriComponentsBuilder.fromHttpUrl("https://api.semrush.com/");
-
-		uriComponentsBuilder.queryParam("database", database);
-		uriComponentsBuilder.queryParam("display_filter", "+|Ur|Eq|" + url);
-		uriComponentsBuilder.queryParam("display_limit", 1);
-		uriComponentsBuilder.queryParam("domain", domain);
-		uriComponentsBuilder.queryParam("export_columns", "Tg");
-		uriComponentsBuilder.queryParam(
-			"key", _environment.getProperty("SEMRUSH_API_KEY", _semrushAPIKey));
-		uriComponentsBuilder.queryParam("type", "domain_organic_unique");
-
-		UriComponents uriComponents = uriComponentsBuilder.encode(
+		UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(
+			"https://api.semrush.com/"
+		).encode(
+		).queryParam(
+			"database", database
+		).queryParam(
+			"display_filter", "+|Ur|Eq|" + url
+		).queryParam(
+			"display_limit", 1
+		).queryParam(
+			"domain", domain
+		).queryParam(
+			"export_columns", "Tg"
+		).queryParam(
+			"key", _environment.getProperty("SEMRUSH_API_KEY", _semrushAPIKey)
+		).queryParam(
+			"type", "domain_organic_unique"
 		).build();
 
 		ResponseEntity<String> responseEntity = _http.exchangeResponseEntity(
@@ -253,20 +258,25 @@ public class RootRestController {
 	private List<SearchKeyword> _getSearchKeywords(
 		String database, int displayLimit, String type, String url) {
 
-		UriComponentsBuilder uriComponentsBuilder =
-			UriComponentsBuilder.fromHttpUrl("https://api.semrush.com/");
-
-		uriComponentsBuilder.queryParam("database", database);
-		uriComponentsBuilder.queryParam("display_filter", "+|Tg|Gt|0");
-		uriComponentsBuilder.queryParam("display_limit", displayLimit);
-		uriComponentsBuilder.queryParam("display_sort", "tg_desc");
-		uriComponentsBuilder.queryParam("export_columns", "Ph,Po,Nq,Tg");
-		uriComponentsBuilder.queryParam(
-			"key", _environment.getProperty("SEMRUSH_API_KEY", _semrushAPIKey));
-		uriComponentsBuilder.queryParam("type", type);
-		uriComponentsBuilder.queryParam("url", url);
-
-		UriComponents uriComponents = uriComponentsBuilder.encode(
+		UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(
+			"https://api.semrush.com/"
+		).encode(
+		).queryParam(
+			"database", database
+		).queryParam(
+			"display_filter", "+|Tg|Gt|0"
+		).queryParam(
+			"display_limit", displayLimit
+		).queryParam(
+			"display_sort", "tg_desc"
+		).queryParam(
+			"export_columns", "Ph,Po,Nq,Tg"
+		).queryParam(
+			"key", _environment.getProperty("SEMRUSH_API_KEY", _semrushAPIKey)
+		).queryParam(
+			"type", type
+		).queryParam(
+			"url", url
 		).build();
 
 		ResponseEntity<String> responseEntity = _http.exchangeResponseEntity(
