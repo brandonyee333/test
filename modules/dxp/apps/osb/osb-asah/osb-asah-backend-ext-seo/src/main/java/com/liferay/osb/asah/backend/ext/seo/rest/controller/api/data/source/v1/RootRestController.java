@@ -229,7 +229,8 @@ public class RootRestController {
 			"key", _environment.getProperty("SEMRUSH_API_KEY", _semrushAPIKey));
 		uriComponentsBuilder.queryParam("type", "domain_organic_unique");
 
-		UriComponents uriComponents = uriComponentsBuilder.build();
+		UriComponents uriComponents = uriComponentsBuilder.encode(
+		).build();
 
 		ResponseEntity<String> responseEntity = _http.exchangeResponseEntity(
 			uriComponents.toUriString(), null, HttpMethod.GET, null);
@@ -265,7 +266,8 @@ public class RootRestController {
 		uriComponentsBuilder.queryParam("type", type);
 		uriComponentsBuilder.queryParam("url", url);
 
-		UriComponents uriComponents = uriComponentsBuilder.build();
+		UriComponents uriComponents = uriComponentsBuilder.encode(
+		).build();
 
 		ResponseEntity<String> responseEntity = _http.exchangeResponseEntity(
 			uriComponents.toUriString(), null, HttpMethod.GET, null);
