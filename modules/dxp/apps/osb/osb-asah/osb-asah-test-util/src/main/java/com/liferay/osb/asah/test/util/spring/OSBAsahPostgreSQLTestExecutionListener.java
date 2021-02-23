@@ -15,13 +15,6 @@
 package com.liferay.osb.asah.test.util.spring;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.springframework.test.context.TestContext;
-import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 import java.io.IOException;
 
@@ -36,65 +29,72 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.test.context.TestContext;
+import org.springframework.test.context.support.AbstractTestExecutionListener;
+
 /**
  * @author Leslie Wong
  */
 @ConditionalOnProperty(
-    havingValue = "true", value = "osb.asah.postgresql.enabled"
+	havingValue = "true", value = "osb.asah.postgresql.enabled"
 )
 public class OSBAsahPostgreSQLTestExecutionListener
-    extends AbstractTestExecutionListener {
+	extends AbstractTestExecutionListener {
 
-    public OSBAsahPostgreSQLTestExecutionListener() {
-        if (!_isPostgreSQLUp()) {
-            throw new IllegalStateException(
-                "Integration test infrastructure is not up. Please run " +
-                    "\"docker-compose -f docker-compose.integration-test.yml " +
-                    "up -d\" from the root project directory.");
-        }
-    }
+	public OSBAsahPostgreSQLTestExecutionListener() {
+		if (!_isPostgreSQLUp()) {
+			throw new IllegalStateException(
+				"Integration test infrastructure is not up. Please run " +
+					"\"docker-compose -f docker-compose.integration-test.yml " +
+						"up -d\" from the root project directory.");
+		}
+	}
 
-    @Override
-    public void afterTestMethod(TestContext testContext) throws SQLException {
-        DatabaseMetaData metaData = _dataSource.getConnection().getMetaData();
+	@Override
+	public void afterTestMethod(TestContext testContext) throws SQLException {
+		try (Connection connection = _dataSource.getConnection()) {
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
-        try (Connection connection = _dataSource.getConnection()) {
-            ResultSet tables = metaData.getTables(
-                null, connection.getSchema(), null, new String[] { "TABLE" });
+			ResultSet tables = databaseMetaData.getTables(
+				null, connection.getSchema(), null, new String[] {"TABLE"});
 
-            while (tables.next()) {
-                PreparedStatement preparedStatement =
-                    connection.prepareStatement(
-                        "TRUNCATE TABLE " + tables.getString("TABLE_NAME") +
-                            " CASCADE");
+			while (tables.next()) {
+				PreparedStatement preparedStatement =
+					connection.prepareStatement(
+						"TRUNCATE TABLE " + tables.getString("TABLE_NAME") +
+							" CASCADE");
 
-                preparedStatement.execute();
-            }
+				preparedStatement.execute();
+			}
 
-            DatabasePopulatorUtils.execute(
-                new ResourceDatabasePopulator(
-                    new ClassPathResource("data.sql")),
-                _dataSource);
-        }
-    }
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("data.sql")),
+				_dataSource);
+		}
+	}
 
-    private boolean _isPostgreSQLUp() {
-        return _pingHost(
-            ServiceConstants.POSTGRESQL_SERVER_IP, 5432, 3000);
-    }
+	private boolean _isPostgreSQLUp() {
+		return _pingHost(ServiceConstants.POSTGRESQL_SERVER_IP, 5432, 3000);
+	}
 
-    private boolean _pingHost(String hostname, int port, int timeout) {
-        try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress(hostname, port), timeout);
+	private boolean _pingHost(String hostname, int port, int timeout) {
+		try (Socket socket = new Socket()) {
+			socket.connect(new InetSocketAddress(hostname, port), timeout);
 
-            return true;
-        }
-        catch (IOException ioe) {
-            return false;
-        }
-    }
+			return true;
+		}
+		catch (IOException ioe) {
+			return false;
+		}
+	}
 
-    @Autowired
-    private DataSource _dataSource;
+	@Autowired
+	private DataSource _dataSource;
 
 }

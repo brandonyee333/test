@@ -28,39 +28,41 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Leslie Wong
  */
 public class OSBAsahPostgreSQLSpring4ClassRunner
-    extends SpringJUnit4ClassRunner {
+	extends SpringJUnit4ClassRunner {
 
-    public OSBAsahPostgreSQLSpring4ClassRunner(Class<?> clazz) throws Exception {
-        super(clazz);
+	public OSBAsahPostgreSQLSpring4ClassRunner(Class<?> clazz)
+		throws Exception {
 
-        System.setProperty(
-            "spring.autoconfigure.exclude",
-            String.join(
-                ",", ManagementWebSecurityAutoConfiguration.class.getName(),
-                RedisAutoConfiguration.class.getName(),
-                RedisRepositoriesAutoConfiguration.class.getName(),
-                SecurityAutoConfiguration.class.getName()));
-        System.setProperty(
-            "spring.main.allow-bean-definition-overriding", "true");
-        System.setProperty("spring.profiles.active", "test");
+		super(clazz);
 
-        _registerOSBAsahTestExecutionListener();
-    }
+		System.setProperty(
+			"spring.autoconfigure.exclude",
+			String.join(
+				",", ManagementWebSecurityAutoConfiguration.class.getName(),
+				RedisAutoConfiguration.class.getName(),
+				RedisRepositoriesAutoConfiguration.class.getName(),
+				SecurityAutoConfiguration.class.getName()));
+		System.setProperty(
+			"spring.main.allow-bean-definition-overriding", "true");
+		System.setProperty("spring.profiles.active", "test");
 
-    private void _registerOSBAsahTestExecutionListener() {
-        TestContextManager testContextManager = getTestContextManager();
+		_registerOSBAsahTestExecutionListener();
+	}
 
-        TestContext testContext = testContextManager.getTestContext();
+	private void _registerOSBAsahTestExecutionListener() {
+		TestContextManager testContextManager = getTestContextManager();
 
-        ApplicationContext applicationContext =
-            testContext.getApplicationContext();
+		TestContext testContext = testContextManager.getTestContext();
 
-        AutowireCapableBeanFactory autowireCapableBeanFactory =
-            applicationContext.getAutowireCapableBeanFactory();
+		ApplicationContext applicationContext =
+			testContext.getApplicationContext();
 
-        testContextManager.registerTestExecutionListeners(
-            autowireCapableBeanFactory.createBean(
-                OSBAsahPostgreSQLTestExecutionListener.class));
-    }
+		AutowireCapableBeanFactory autowireCapableBeanFactory =
+			applicationContext.getAutowireCapableBeanFactory();
+
+		testContextManager.registerTestExecutionListeners(
+			autowireCapableBeanFactory.createBean(
+				OSBAsahPostgreSQLTestExecutionListener.class));
+	}
 
 }
