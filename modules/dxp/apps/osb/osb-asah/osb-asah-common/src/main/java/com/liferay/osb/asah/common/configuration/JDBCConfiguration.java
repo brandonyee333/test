@@ -40,7 +40,7 @@ import org.springframework.transaction.TransactionManager;
 @Configuration
 @EnableJdbcRepositories(
 	basePackages = "com.liferay.osb.asah.common.repository",
-	namedQueriesLocation = "classpath:com/liferay/osb/asah/common/repository/*.xml"
+	namedQueriesLocation = "classpath*:com/liferay/osb/asah/common/repository/*-sql.xml"
 )
 public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
