@@ -72,7 +72,7 @@ public class ProjectIdThreadLocal {
 	public static void remove() {
 		_projectId.remove();
 
-		MDC.remove("projectId");
+		MDC.remove("osbAsahProjectId");
 	}
 
 	public static void setProjectId(String projectId) {
@@ -82,7 +82,7 @@ public class ProjectIdThreadLocal {
 
 		_projectId.set(projectId);
 
-		MDC.put("projectId", projectId);
+		MDC.put("osbAsahProjectId", projectId);
 	}
 
 	private static final Log _log = LogFactory.getLog(
