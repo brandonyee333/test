@@ -15,7 +15,7 @@
 			}
 		],
 		"dateCreated": "${now-1h}",
-		"id": "abc",
+		"id": "12345",
 		"name": "channel1"
 	},
 	{
@@ -28,7 +28,7 @@
 			}
 		],
 		"dateCreated": "${now-1h}",
-		"id": "def",
+		"id": "67890",
 		"name": "channel2"
 	}
 ]

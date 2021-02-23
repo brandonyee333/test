@@ -4,7 +4,7 @@
 			"id": "20139",
 			"name": "Test Test"
 		},
-		"channelId": "abc",
+		"channelId": "12345",
 		"dateCreated": "2018-12-15T16:02:01.824Z",
 		"dateModified": "2018-12-15T16:02:01.824Z",
 		"filter": "(((demographics/age/value gt '50')))",
@@ -22,7 +22,7 @@
 			"id": "20139",
 			"name": "Test Test"
 		},
-		"channelId": "def",
+		"channelId": "67890",
 		"dateCreated": "2018-12-15T16:02:01.824Z",
 		"dateModified": "2018-12-15T16:02:01.824Z",
 		"filter": "(((demographics/age/value gt '90')))",
