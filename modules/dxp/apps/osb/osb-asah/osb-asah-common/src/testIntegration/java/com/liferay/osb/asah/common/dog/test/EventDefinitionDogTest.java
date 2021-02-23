@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,13 +25,15 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Leslie Wong
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
-@RunWith(OSBAsahSpringJUnit4ClassRunner.class)
+@DirtiesContext
+@RunWith(OSBAsahPostgreSQLSpring4ClassRunner.class)
 @SpringBootTest(properties = "osb.asah.postgresql.enabled=true")
 public class EventDefinitionDogTest {
 

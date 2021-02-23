@@ -46,10 +46,10 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
  * @author André Miranda
  * @author Marcellus Tavares
  */
-public class OSBAsahTestExecutionListener
+public class OSBAsahElasticsearchTestExecutionListener
 	extends AbstractTestExecutionListener {
 
-	public OSBAsahTestExecutionListener() {
+	public OSBAsahElasticsearchTestExecutionListener() {
 		if (!_isElasticsearchUp()) {
 			throw new IllegalStateException(
 				"Integration test infrastructure is not up. Please run " +
