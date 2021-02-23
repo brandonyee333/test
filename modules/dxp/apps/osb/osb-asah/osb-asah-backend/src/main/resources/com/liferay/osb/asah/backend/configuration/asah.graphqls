@@ -277,6 +277,18 @@ type EventAttributeDefinitionBag {
 	total: Int
 }
 
+type EventDefinition {
+	description: String
+	displayName: String
+	name: String
+	type: String
+}
+
+type EventDefinitionBag {
+	eventDefinitions: [EventDefinition]
+	total: Int
+}
+
 type Experiment {
 	channelId: String
 	createDate: String
@@ -750,11 +762,23 @@ type QueryType {
 		start: Int!
 	): AssetMetricBag
 
-    eventAttributeDefinitions(
+	eventAttributeDefinitions(
         keyword: String,
         page: Int!
         size: Int!
     ): EventAttributeDefinitionBag
+
+	eventDefinitions(
+		keyword: String,
+		page: Int!
+		size: Int!
+		eventType: String!
+	): EventDefinitionBag
+
+	eventDefinition(
+		name: String,
+		id: String
+	): EventDefinition
 
 	experiment(
 		experimentId: String!
