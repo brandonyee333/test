@@ -64,6 +64,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -310,49 +311,38 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	public JSONObject getEnvironmentConfigurationJSONObject() throws Exception {
-		Set<String> productEntryDisplayNames = new HashSet<>();
-
 		JSONArray productsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		Set<ListType> envCommerceVersions = new HashSet<>();
 		Set<ListType> envLFRVersions = new HashSet<>();
 		Set<Integer> enterpriseSearchEnvironments = new HashSet<>();
 
-		StringBundler sb = new StringBundler(3);
+		StringBundler sb = new StringBundler(5);
 
 		sb.append("accountKey eq '");
 		sb.append(_account.getKey());
-		sb.append("' and state eq 'active'");
+		sb.append("' and status eq '");
+		sb.append(String.valueOf(WorkflowConstants.STATUS_APPROVED));
+		sb.append("'");
 
-		List<ProductPurchase> productPurchases =
-			_productPurchaseWebService.search(sb.toString(), 1, 1000);
+		List<ProductPurchaseView> productPurchaseViews =
+			_productPurchaseViewWebService.getProductPurchaseViews(
+				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
 
-		for (ProductPurchase productPurchase : productPurchases) {
+		for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
+			Product product = productPurchaseView.getProduct();
+
 			ProductEntry productEntry =
 				ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(
-					productPurchase.getProductKey());
+					product.getKey());
 
 			if (productEntry.isEnterpriseSearch()) {
 				enterpriseSearchEnvironments.add(productEntry.getEnvironment());
 			}
-		}
-
-		for (ProductPurchase productPurchase : productPurchases) {
-			ProductEntry productEntry =
-				ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(
-					productPurchase.getProductKey());
 
 			if (!productEntry.isAccountEnvironments()) {
 				continue;
 			}
-
-			if (productEntryDisplayNames.contains(
-					productEntry.getDisplayName())) {
-
-				continue;
-			}
-
-			productEntryDisplayNames.add(productEntry.getDisplayName());
 
 			productsJSONArray.put(
 				getProductJSONObject(
