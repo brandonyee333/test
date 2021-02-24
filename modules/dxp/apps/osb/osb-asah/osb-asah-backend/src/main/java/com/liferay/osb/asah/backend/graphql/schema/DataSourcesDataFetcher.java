@@ -57,8 +57,8 @@ public class DataSourcesDataFetcher
 		return ListUtil.map(
 			_dataSourceDog.getDataSources(
 				dataFetchingEnvironment.getArgument("credentialsType"),
-				dataFetchingEnvironment.getArgument("size"), sort,
-				dataFetchingEnvironment.getArgument("type")),
+				dataFetchingEnvironment.getArgument("type"),
+				dataFetchingEnvironment.getArgument("size"), sort),
 			DataSourceDTO::new);
 	}
 

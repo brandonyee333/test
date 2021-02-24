@@ -79,8 +79,8 @@ public class DataSourceDogTest {
 	@Test
 	public void testGetFilteredDataSources() {
 		List<DataSource> dataSources = _dataSourceDog.getDataSources(
-			"Token Authentication", 1, Sort.by(Sort.Order.desc("dateModified")),
-			"LIFERAY");
+			"Token Authentication", "LIFERAY", 1,
+			Sort.by(Sort.Order.desc("dateModified")));
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 

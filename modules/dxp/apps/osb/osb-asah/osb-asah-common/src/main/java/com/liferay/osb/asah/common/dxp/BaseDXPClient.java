@@ -87,15 +87,15 @@ public abstract class BaseDXPClient {
 		DataSourceDTO.CredentialDTO credentialDTO, String url, String path,
 		HttpMethod httpMethod, Object body) {
 
-		String type = credentialDTO.getType();
+		String credentialType = credentialDTO.getCredentialType();
 
-		if (type.equals("Basic Authentication")) {
+		if (credentialType.equals("Basic Authentication")) {
 			return _http.exchangeResponseEntity(
 				url, path, httpMethod, body,
 				new BasicAuthorizationInterceptor(
 					credentialDTO.getLogin(), credentialDTO.getPassword()));
 		}
-		else if (type.equals("Token Authentication")) {
+		else if (credentialType.equals("Token Authentication")) {
 			HttpHeaders httpHeaders = new HttpHeaders() {
 				{
 					set(

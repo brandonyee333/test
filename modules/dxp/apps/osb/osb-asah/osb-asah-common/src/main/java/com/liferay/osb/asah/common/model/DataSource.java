@@ -63,6 +63,7 @@ public class DataSource implements Persistable<Long> {
 				_contactsLastSyncDate, dataSource._contactsLastSyncDate) &&
 			Objects.equals(_contactsSelected, dataSource._contactsSelected) &&
 			Objects.equals(_createDate, dataSource._createDate) &&
+			Objects.equals(_credentialType, dataSource._credentialType) &&
 			Objects.equals(
 				_dataSourceOrganizations,
 				dataSource._dataSourceOrganizations) &&
@@ -99,7 +100,6 @@ public class DataSource implements Persistable<Long> {
 			Objects.equals(_sitesSelected, dataSource._sitesSelected) &&
 			Objects.equals(_state, dataSource._state) &&
 			Objects.equals(_status, dataSource._status) &&
-			Objects.equals(_type, dataSource._type) &&
 			Objects.equals(_url, dataSource._url) &&
 			Objects.equals(_workspaceURL, dataSource._workspaceURL)) {
 
@@ -163,6 +163,11 @@ public class DataSource implements Persistable<Long> {
 		}
 
 		return new Date(_createDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getCredentialType() {
+		return _credentialType;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -324,11 +329,6 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getType() {
-		return _type;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getURL() {
 		return _url;
 	}
@@ -343,15 +343,15 @@ public class DataSource implements Persistable<Long> {
 		return Objects.hash(
 			_analyticslastSyncDate, _authorId, _authorName, _channelId,
 			_contactsLastSuccessfulAuditEventDate, _contactsLastSyncDate,
-			_contactsSelected, _createDate, _dataSourceOrganizations,
-			_dataSourceSites, _dataSourceUserGroups, _deletionDate,
-			_enableAllAccounts, _enableAllContacts, _enableAllLeads,
-			_enableAllSites, _faroBackendSecuritySignature, _id, _login,
-			_modifiedDate, _name, _oAuthAccessSecret, _oAuthAccessToken,
-			_oAuthClientId, _oAuthClientSecret, _oAuthConsumerKey,
-			_oAuthConsumerSecret, _oAuthOwnerEmailAddress, _oAuthOwnerName,
-			_oAuthRefreshToken, _password, _privateKey, _providerType,
-			_publicKey, _sitesSelected, _state, _status, _type, _url,
+			_contactsSelected, _createDate, _credentialType,
+			_dataSourceOrganizations, _dataSourceSites, _dataSourceUserGroups,
+			_deletionDate, _enableAllAccounts, _enableAllContacts,
+			_enableAllLeads, _enableAllSites, _faroBackendSecuritySignature,
+			_id, _login, _modifiedDate, _name, _oAuthAccessSecret,
+			_oAuthAccessToken, _oAuthClientId, _oAuthClientSecret,
+			_oAuthConsumerKey, _oAuthConsumerSecret, _oAuthOwnerEmailAddress,
+			_oAuthOwnerName, _oAuthRefreshToken, _password, _privateKey,
+			_providerType, _publicKey, _sitesSelected, _state, _status, _url,
 			_workspaceURL);
 	}
 
@@ -405,6 +405,10 @@ public class DataSource implements Persistable<Long> {
 		if (createDate != null) {
 			_createDate = new Date(createDate.getTime());
 		}
+	}
+
+	public void setCredentialType(String credentialType) {
+		_credentialType = credentialType;
 	}
 
 	public void setDataSourceOrganizations(
@@ -539,10 +543,6 @@ public class DataSource implements Persistable<Long> {
 		_status = status;
 	}
 
-	public void setType(String type) {
-		_type = type;
-	}
-
 	public void setURL(String url) {
 		_url = url;
 	}
@@ -574,6 +574,9 @@ public class DataSource implements Persistable<Long> {
 
 	@Transient
 	private Date _createDate;
+
+	@Transient
+	private String _credentialType;
 
 	@Transient
 	private Set<DataSourceOrganization> _dataSourceOrganizations =
@@ -665,9 +668,6 @@ public class DataSource implements Persistable<Long> {
 
 	@Transient
 	private String _status;
-
-	@Transient
-	private String _type;
 
 	@Transient
 	private String _url;

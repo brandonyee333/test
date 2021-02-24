@@ -196,13 +196,13 @@ public class SalesforceExtractorConfigurationManagerImpl
 			return "CREDENTIALS_INVALID";
 		}
 
-		String type = credentialDTO.getType();
+		String credentialType = credentialDTO.getCredentialType();
 
-		if (type.equals("Dummy Authentication")) {
+		if (credentialType.equals("Dummy Authentication")) {
 			return "DUMMY_CREDENTIALS";
 		}
 
-		if (!type.equals("OAuth 2 Authentication")) {
+		if (!credentialType.equals("OAuth 2 Authentication")) {
 			return "CREDENTIALS_INVALID";
 		}
 
@@ -376,15 +376,15 @@ public class SalesforceExtractorConfigurationManagerImpl
 		DataSourceDTO.CredentialDTO credentialDTO =
 			dataSourceDTO.getCredentialDTO();
 
-		String type = credentialDTO.getType();
+		String credentialType = credentialDTO.getCredentialType();
 
-		if (type.equals("Basic Authentication")) {
+		if (credentialType.equals("Basic Authentication")) {
 			salesforceExtractorConfigurationImpl.setSalesforcePassword(
 				credentialDTO.getPassword());
 			salesforceExtractorConfigurationImpl.setSalesforceUserName(
 				credentialDTO.getLogin());
 		}
-		else if (type.equals("OAuth 2 Authentication")) {
+		else if (credentialType.equals("OAuth 2 Authentication")) {
 			salesforceExtractorConfigurationImpl.setSalesforceOAuthClientId(
 				credentialDTO.getOAuthClientId());
 			salesforceExtractorConfigurationImpl.setSalesforceOAuthClientSecret(

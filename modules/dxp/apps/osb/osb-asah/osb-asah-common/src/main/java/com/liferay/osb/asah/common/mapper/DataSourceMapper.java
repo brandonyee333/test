@@ -177,7 +177,8 @@ public class DataSourceMapper extends Mapper<DataSource, DataSourceDTO> {
 			if (credentialsJSONObject.has("type") &&
 				!credentialsJSONObject.isNull("type")) {
 
-				dataSource.setType(credentialsJSONObject.getString("type"));
+				dataSource.setCredentialType(
+					credentialsJSONObject.getString("type"));
 			}
 		}
 

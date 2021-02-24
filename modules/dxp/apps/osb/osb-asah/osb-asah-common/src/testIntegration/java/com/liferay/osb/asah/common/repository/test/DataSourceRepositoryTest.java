@@ -47,11 +47,11 @@ public class DataSourceRepositoryTest {
 	public void setUp() {
 		DataSource dataSource = new DataSource("name");
 
+		dataSource.setCredentialType("Token Authentication");
 		dataSource.setFaroBackendSecuritySignature(
 			"faroBackendSecuritySignature");
 		dataSource.setProviderType("LIFERAY");
 		dataSource.setStatus("STARTED");
-		dataSource.setType("Token Authentication");
 
 		_dataSource = _dataSourceRepository.save(dataSource);
 	}
@@ -194,6 +194,28 @@ public class DataSourceRepositoryTest {
 	}
 
 	@Test
+	public void testFindByCredentialType() {
+		List<DataSource> dataSources =
+			_dataSourceRepository.findByCredentialType(
+				"Token Authentication", PageRequest.of(0, 1));
+
+		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+
+		_assertDataSource(dataSources.get(0));
+	}
+
+	@Test
+	public void testFindByCredentialTypeAndProviderType() {
+		List<DataSource> dataSources =
+			_dataSourceRepository.findByCredentialTypeAndProviderType(
+				"Token Authentication", "LIFERAY", PageRequest.of(0, 1));
+
+		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+
+		_assertDataSource(dataSources.get(0));
+	}
+
+	@Test
 	public void testFindById() {
 		Long id = _dataSource.getId();
 
@@ -239,27 +261,6 @@ public class DataSourceRepositoryTest {
 	}
 
 	@Test
-	public void testFindByProviderTypeAndType() {
-		List<DataSource> dataSources =
-			_dataSourceRepository.findByProviderTypeAndType(
-				"LIFERAY", "Token Authentication", PageRequest.of(0, 1));
-
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSource(dataSources.get(0));
-	}
-
-	@Test
-	public void testFindByType() {
-		List<DataSource> dataSources = _dataSourceRepository.findByType(
-			"Token Authentication", PageRequest.of(0, 1));
-
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSource(dataSources.get(0));
-	}
-
-	@Test
 	public void testSave() {
 		_assertDataSource(_dataSource);
 	}
@@ -276,12 +277,13 @@ public class DataSourceRepositoryTest {
 		Assert.assertNotNull(dataSource);
 		Assert.assertNotNull(dataSource.getId());
 		Assert.assertEquals(
+			"Token Authentication", dataSource.getCredentialType());
+		Assert.assertEquals(
 			"faroBackendSecuritySignature",
 			dataSource.getFaroBackendSecuritySignature());
 		Assert.assertEquals("name", dataSource.getName());
 		Assert.assertEquals("LIFERAY", dataSource.getProviderType());
 		Assert.assertEquals("STARTED", dataSource.getStatus());
-		Assert.assertEquals("Token Authentication", dataSource.getType());
 	}
 
 	private DataSource _dataSource;

@@ -210,12 +210,22 @@ public class DataSourceDog {
 		return _dataSourceRepository.findByProviderType(providerType);
 	}
 
-	public List<DataSource> getDataSources(
-		String type, Integer size, Sort sort, String providerType) {
+	public List<DataSource> getDataSources(String providerType, String status) {
+		return _dataSourceRepository.findByProviderTypeAndStatus(
+			providerType, status);
+	}
 
-		if ((providerType != null) && (type != null)) {
-			return _dataSourceRepository.findByProviderTypeAndType(
-				providerType, type, _getPageable(size, sort));
+	public List<DataSource> getDataSources(
+		String credentialType, String providerType, Integer size, Sort sort) {
+
+		if ((credentialType != null) && (providerType != null)) {
+			return _dataSourceRepository.findByCredentialTypeAndProviderType(
+				credentialType, providerType, _getPageable(size, sort));
+		}
+
+		if (credentialType != null) {
+			return _dataSourceRepository.findByCredentialType(
+				credentialType, _getPageable(size, sort));
 		}
 
 		if (providerType != null) {
@@ -223,17 +233,7 @@ public class DataSourceDog {
 				providerType, _getPageable(size, sort));
 		}
 
-		if (type != null) {
-			return _dataSourceRepository.findByType(
-				type, _getPageable(size, sort));
-		}
-
 		return _dataSourceRepository.findAll(_getPageable(size, sort));
-	}
-
-	public List<DataSource> getDataSources(String providerType, String status) {
-		return _dataSourceRepository.findByProviderTypeAndStatus(
-			providerType, status);
 	}
 
 	public boolean isAnalyticsConfigured() {
@@ -686,7 +686,9 @@ public class DataSourceDog {
 	}
 
 	private void _updateTokenDataSourceCredentials(DataSource dataSource) {
-		if (!Objects.equals(dataSource.getType(), "Token Authentication")) {
+		if (!Objects.equals(
+				dataSource.getCredentialType(), "Token Authentication")) {
+
 			return;
 		}
 
@@ -712,7 +714,7 @@ public class DataSourceDog {
 			}
 
 			if (Objects.equals(
-					dataSource.getType(), "OAuth 2 Authentication")) {
+					dataSource.getCredentialType(), "OAuth 2 Authentication")) {
 
 				_dataSourceRepository.save(dataSource);
 			}

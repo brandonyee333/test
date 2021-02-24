@@ -45,6 +45,12 @@ public interface DataSourceRepository extends CrudRepository<DataSource, Long> {
 
 	public List<DataSource> findAll(Pageable pageable);
 
+	public List<DataSource> findByCredentialType(
+		String credentialType, Pageable pageable);
+
+	public List<DataSource> findByCredentialTypeAndProviderType(
+		String credentialType, String providerType, Pageable pageable);
+
 	public List<DataSource> findByProviderType(String providerType);
 
 	public List<DataSource> findByProviderType(
@@ -52,10 +58,5 @@ public interface DataSourceRepository extends CrudRepository<DataSource, Long> {
 
 	public List<DataSource> findByProviderTypeAndStatus(
 		String providerType, String status);
-
-	public List<DataSource> findByProviderTypeAndType(
-		String providerType, String type, Pageable pageable);
-
-	public List<DataSource> findByType(String type, Pageable pageable);
 
 }

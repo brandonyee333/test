@@ -399,6 +399,7 @@ public class DataSourceDTO {
 		}
 
 		public CredentialDTO(DataSource dataSource) {
+			_credentialType = dataSource.getCredentialType();
 			_login = dataSource.getLogin();
 			_oAuthAccessSecret = dataSource.getOAuthAccessSecret();
 			_oAuthAccessToken = dataSource.getOAuthAccessToken();
@@ -417,7 +418,6 @@ public class DataSourceDTO {
 			_password = dataSource.getPassword();
 			_privateKey = dataSource.getPrivateKey();
 			_publicKey = dataSource.getPublicKey();
-			_type = dataSource.getType();
 		}
 
 		@Override
@@ -432,7 +432,9 @@ public class DataSourceDTO {
 
 			CredentialDTO credentialDTO = (CredentialDTO)obj;
 
-			if (Objects.equals(_login, credentialDTO._login) &&
+			if (Objects.equals(
+					_credentialType, credentialDTO._credentialType) &&
+				Objects.equals(_login, credentialDTO._login) &&
 				Objects.equals(
 					_oAuthAccessSecret, credentialDTO._oAuthAccessSecret) &&
 				Objects.equals(
@@ -449,13 +451,17 @@ public class DataSourceDTO {
 					_oAuthRefreshToken, credentialDTO._oAuthRefreshToken) &&
 				Objects.equals(_password, credentialDTO._password) &&
 				Objects.equals(_privateKey, credentialDTO._privateKey) &&
-				Objects.equals(_publicKey, credentialDTO._publicKey) &&
-				Objects.equals(_type, credentialDTO._type)) {
+				Objects.equals(_publicKey, credentialDTO._publicKey)) {
 
 				return true;
 			}
 
 			return false;
+		}
+
+		@JsonProperty("type")
+		public String getCredentialType() {
+			return _credentialType;
 		}
 
 		@JsonProperty("login")
@@ -518,23 +524,22 @@ public class DataSourceDTO {
 			return _publicKey;
 		}
 
-		@JsonProperty("type")
-		public String getType() {
-			return _type;
-		}
-
 		@Override
 		public int hashCode() {
 			return Objects.hash(
-				_login, _oAuthAccessSecret, _oAuthAccessToken, _oAuthClientId,
-				_oAuthClientSecret, _oAuthConsumerKey, _oAuthConsumerSecret,
-				_oAuthOwnerDTO, _oAuthRefreshToken, _password, _privateKey,
-				_publicKey, _type);
+				_credentialType, _login, _oAuthAccessSecret, _oAuthAccessToken,
+				_oAuthClientId, _oAuthClientSecret, _oAuthConsumerKey,
+				_oAuthConsumerSecret, _oAuthOwnerDTO, _oAuthRefreshToken,
+				_password, _privateKey, _publicKey);
 		}
 
 		@JsonIgnore
 		public boolean isEmpty() {
 			return equals(new CredentialDTO());
+		}
+
+		public void setCredentialType(String credentialType) {
+			_credentialType = credentialType;
 		}
 
 		public void setLogin(String login) {
@@ -583,10 +588,6 @@ public class DataSourceDTO {
 
 		public void setPublicKey(String publicKey) {
 			_publicKey = publicKey;
-		}
-
-		public void setType(String type) {
-			_type = type;
 		}
 
 		@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -655,6 +656,7 @@ public class DataSourceDTO {
 
 		}
 
+		private String _credentialType;
 		private String _login;
 		private String _oAuthAccessSecret;
 		private String _oAuthAccessToken;
@@ -667,7 +669,6 @@ public class DataSourceDTO {
 		private String _password;
 		private String _privateKey;
 		private String _publicKey;
-		private String _type;
 
 	}
 
@@ -699,7 +700,7 @@ public class DataSourceDTO {
 				_contactsConfigurationDTO = contactsConfigurationDTO;
 			}
 
-			_type = dataSource.getProviderType();
+			_providerType = dataSource.getProviderType();
 		}
 
 		@Override
@@ -723,7 +724,7 @@ public class DataSourceDTO {
 				Objects.equals(
 					_contactsConfigurationDTO,
 					providerDTO._contactsConfigurationDTO) &&
-				Objects.equals(_type, providerDTO._type)) {
+				Objects.equals(_providerType, providerDTO._providerType)) {
 
 				return true;
 			}
@@ -747,15 +748,15 @@ public class DataSourceDTO {
 		}
 
 		@JsonProperty("type")
-		public String getType() {
-			return _type;
+		public String getProviderType() {
+			return _providerType;
 		}
 
 		@Override
 		public int hashCode() {
 			return Objects.hash(
 				_accountsConfigurationDTO, _analyticsConfigurationDTO,
-				_contactsConfigurationDTO, _type);
+				_contactsConfigurationDTO, _providerType);
 		}
 
 		@JsonIgnore
@@ -781,8 +782,8 @@ public class DataSourceDTO {
 			_contactsConfigurationDTO = contactsConfigurationDTO;
 		}
 
-		public void setType(String type) {
-			_type = type;
+		public void setProviderType(String providerType) {
+			_providerType = providerType;
 		}
 
 		@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -1407,7 +1408,7 @@ public class DataSourceDTO {
 		private AccountsConfigurationDTO _accountsConfigurationDTO;
 		private AnalyticsConfigurationDTO _analyticsConfigurationDTO;
 		private ContactsConfigurationDTO _contactsConfigurationDTO;
-		private String _type;
+		private String _providerType;
 
 	}
 

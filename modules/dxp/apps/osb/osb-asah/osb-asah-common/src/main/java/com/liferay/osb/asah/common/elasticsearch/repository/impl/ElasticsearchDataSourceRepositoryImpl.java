@@ -99,50 +99,28 @@ public class ElasticsearchDataSourceRepositoryImpl
 	}
 
 	@Override
-	public List<DataSource> findByProviderType(String providerType) {
-		return toList(
-			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				QueryBuilders.termQuery(
-					"provider.type", providerType.toUpperCase())));
+	public List<DataSource> findByCredentialType(
+		String credentialType, Pageable pageable) {
+
+		return findByCredentialTypeAndProviderType(
+			credentialType, null, pageable);
 	}
 
 	@Override
-	public List<DataSource> findByProviderType(
-		String providerType, Pageable pageable) {
-
-		return findByProviderTypeAndType(providerType, null, pageable);
-	}
-
-	@Override
-	public List<DataSource> findByProviderTypeAndStatus(
-		String providerType, String status) {
-
-		return toList(
-			_faroInfoElasticsearchInvoker.get(
-				getCollectionName(),
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("provider.type", providerType)
-				).filter(
-					QueryBuilders.termQuery("status", status)
-				)));
-	}
-
-	@Override
-	public List<DataSource> findByProviderTypeAndType(
-		String providerType, String type, Pageable pageable) {
+	public List<DataSource> findByCredentialTypeAndProviderType(
+		String credentialType, String providerType, Pageable pageable) {
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		if (credentialType != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("credentials.type", credentialType));
+		}
 
 		if (providerType != null) {
 			boolQueryBuilder.filter(
 				QueryBuilders.termQuery(
 					"provider.type", providerType.toUpperCase()));
-		}
-
-		if (type != null) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("credentials.type", type));
 		}
 
 		return toList(
@@ -175,8 +153,34 @@ public class ElasticsearchDataSourceRepositoryImpl
 	}
 
 	@Override
-	public List<DataSource> findByType(String type, Pageable pageable) {
-		return findByProviderTypeAndType(null, type, pageable);
+	public List<DataSource> findByProviderType(String providerType) {
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				QueryBuilders.termQuery(
+					"provider.type", providerType.toUpperCase())));
+	}
+
+	@Override
+	public List<DataSource> findByProviderType(
+		String providerType, Pageable pageable) {
+
+		return findByCredentialTypeAndProviderType(
+			null, providerType, pageable);
+	}
+
+	@Override
+	public List<DataSource> findByProviderTypeAndStatus(
+		String providerType, String status) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("provider.type", providerType)
+				).filter(
+					QueryBuilders.termQuery("status", status)
+				)));
 	}
 
 	@Override

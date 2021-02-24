@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS DataSource (
 	contactsLastSyncDate TIMESTAMPTZ,
 	contactsSelected BOOLEAN,
 	createDate TIMESTAMPTZ,
+	credentialType TEXT,
 	deletionDate TIMESTAMPTZ,
 	enableAllAccounts BOOLEAN,
 	enableAllContacts BOOLEAN,
@@ -46,7 +47,6 @@ CREATE TABLE IF NOT EXISTS DataSource (
 	sitesSelected BOOLEAN,
 	state TEXT,
 	status TEXT,
-	type TEXT,
 	url TEXT,
 	workspaceURL TEXT
 );
