@@ -69,7 +69,7 @@ public abstract class Mapper<S, T> {
 					DeserializationContext deserializationContext)
 				throws IOException, JsonProcessingException {
 
-				return toEntity(jsonParser.readValueAs(JSONObject.class));
+				return toModel(jsonParser.readValueAs(JSONObject.class));
 			}
 
 		};
@@ -94,7 +94,7 @@ public abstract class Mapper<S, T> {
 
 	protected abstract T toDTO(S entity);
 
-	protected abstract S toEntity(JSONObject jsonObject);
+	protected abstract S toModel(JSONObject jsonObject);
 
 	protected Date toUTCDate(Object dateObject) {
 		String dateString = ObjectUtils.nullSafeToString(dateObject);

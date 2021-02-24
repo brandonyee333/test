@@ -41,7 +41,7 @@ public class DataSourceMapper extends Mapper<DataSource, DataSourceDTO> {
 	}
 
 	@Override
-	protected DataSource toEntity(JSONObject jsonObject) {
+	protected DataSource toModel(JSONObject jsonObject) {
 		DataSource dataSource = new DataSource();
 
 		if (jsonObject.has("author") && !jsonObject.isNull("author")) {

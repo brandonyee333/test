@@ -36,7 +36,7 @@ public class ChannelMapper extends Mapper<Channel, ChannelDTO> {
 	}
 
 	@Override
-	protected Channel toEntity(JSONObject jsonObject) {
+	protected Channel toModel(JSONObject jsonObject) {
 		Channel channel = new Channel();
 
 		if (jsonObject.has("dataSources") &&
