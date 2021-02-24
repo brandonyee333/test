@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
@@ -90,9 +89,7 @@ public class DataSourceDog {
 		else if (Objects.equals(providerType, "LIFERAY")) {
 			_addDefaultChannel(dataSource);
 
-			if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
-				updateTokenDataSourceCredentials(dataSource);
-			}
+			updateTokenDataSourceCredentials(dataSource);
 		}
 		else if (Objects.equals(providerType, "SALESFORCE")) {
 			_salesforceExtractorConfigurationDog.addConfiguration(dataSource);
@@ -290,9 +287,7 @@ public class DataSourceDog {
 		String providerType = dataSource.getProviderType();
 
 		if (providerType.equals("LIFERAY")) {
-			if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
-				updateTokenDataSourceCredentials(dataSource);
-			}
+			updateTokenDataSourceCredentials(dataSource);
 		}
 		else if (providerType.equals("SALESFORCE")) {
 			dataSource =
