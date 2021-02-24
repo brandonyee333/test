@@ -1440,6 +1440,8 @@ public class LicenseKeyModelImpl
 
 	@Override
 	public void setLicenseKeyId(long licenseKeyId) {
+		_columnBitmask = -1L;
+
 		_licenseKeyId = licenseKeyId;
 	}
 
@@ -2203,7 +2205,7 @@ public class LicenseKeyModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalActive) {
 			_setOriginalActive = true;

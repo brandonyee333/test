@@ -627,6 +627,8 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public void setOccurDate(Date occurDate) {
+		_columnBitmask = -1L;
+
 		_occurDate = occurDate;
 	}
 

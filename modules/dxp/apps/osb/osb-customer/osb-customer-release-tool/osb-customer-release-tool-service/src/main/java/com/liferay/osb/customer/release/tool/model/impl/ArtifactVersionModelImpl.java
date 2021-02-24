@@ -506,7 +506,7 @@ public class ArtifactVersionModelImpl
 
 	@Override
 	public void setGroup(String group) {
-		_columnBitmask |= GROUP_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (_originalGroup == null) {
 			_originalGroup = _group;
@@ -531,7 +531,7 @@ public class ArtifactVersionModelImpl
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (_originalName == null) {
 			_originalName = _name;

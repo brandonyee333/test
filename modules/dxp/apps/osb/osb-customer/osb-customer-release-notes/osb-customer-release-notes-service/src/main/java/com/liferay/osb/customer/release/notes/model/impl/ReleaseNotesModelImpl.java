@@ -473,6 +473,8 @@ public class ReleaseNotesModelImpl
 
 	@Override
 	public void setReleaseNotesId(long releaseNotesId) {
+		_columnBitmask = -1L;
+
 		_releaseNotesId = releaseNotesId;
 	}
 

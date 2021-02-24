@@ -425,6 +425,8 @@ public class AccountEntryLanguageModelImpl
 
 	@Override
 	public void setLanguageId(String languageId) {
+		_columnBitmask = -1L;
+
 		_languageId = languageId;
 	}
 
