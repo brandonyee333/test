@@ -33,6 +33,7 @@ import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * @author Inácio Nery
@@ -75,8 +76,13 @@ public abstract class BaseNaniteTestCase {
 
 		ReflectionTestUtils.setField(
 			nanite, "_cerebroInfoElasticsearchInvoker", elasticsearchInvoker);
-		ReflectionTestUtils.setField(
-			nanite, "_faroInfoElasticsearchInvoker", elasticsearchInvoker);
+
+		if (ReflectionUtils.findField(clazz, "_faroInfoElasticsearchInvoker") !=
+				null) {
+
+			ReflectionTestUtils.setField(
+				nanite, "_faroInfoElasticsearchInvoker", elasticsearchInvoker);
+		}
 
 		Mockito.when(
 			elasticsearchInvoker.get(
