@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.oauth2;
+package com.liferay.osb.asah.salesforce.extractor.oauth2;
 
 import com.liferay.osb.asah.common.spring.http.client.OSBAsahResponseErrorHandler;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;

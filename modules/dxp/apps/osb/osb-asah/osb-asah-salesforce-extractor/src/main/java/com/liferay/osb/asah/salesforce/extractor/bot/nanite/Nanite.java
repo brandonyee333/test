@@ -12,10 +12,13 @@
  *
  */
 
-package com.liferay.osb.asah.common.bot.exception;
+package com.liferay.osb.asah.salesforce.extractor.bot.nanite;
 
 /**
- * @author Vishal Reddy
+ * @author Brian Wing Shun Chan
  */
-public class InterruptBotException extends RuntimeException {
+public interface Nanite {
+
+	public void run() throws Exception;
+
 }

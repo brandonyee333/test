@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.salesforce.extractor.oauth2;
 
-import com.liferay.osb.asah.common.oauth2.BaseOAuth2Client;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationImpl;
 

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite;
 
-import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;

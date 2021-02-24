@@ -16,7 +16,6 @@ package com.liferay.osb.asah.salesforce.extractor.bot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -28,6 +27,7 @@ import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.salesforce.extractor.bot.nanite.Nanite;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorIndividualsNanite;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorNanite;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
