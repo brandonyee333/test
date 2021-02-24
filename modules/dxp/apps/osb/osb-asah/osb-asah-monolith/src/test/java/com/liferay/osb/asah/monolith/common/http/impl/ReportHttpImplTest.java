@@ -42,7 +42,6 @@ public class ReportHttpImplTest {
 
 		ReflectionTestUtils.setField(
 			_reportHttp, "_objectMapper", new ObjectMapper());
-
 		ReflectionTestUtils.setField(
 			_reportHttp, "_reportRestController", _reportRestController);
 	}

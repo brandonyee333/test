@@ -43,7 +43,6 @@ public class ExperimentHttpImplTest {
 		ReflectionTestUtils.setField(
 			_experimentHttp, "_experimentsRestController",
 			_experimentsRestController);
-
 		ReflectionTestUtils.setField(
 			_experimentHttp, "_objectMapper", new ObjectMapper());
 	}
