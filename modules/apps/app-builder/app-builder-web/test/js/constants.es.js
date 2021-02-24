@@ -650,7 +650,11 @@ export const dataLayoutBuilderConfig = {
 	context: {},
 	dataLayoutBuilderId:
 		'_com_liferay_journal_web_portlet_JournalPortlet_dataLayoutBuilder',
-	fieldTypes: [],
+	fieldTypes: [
+		{
+			name: 'Text',
+		},
+	],
 	localizable: true,
 	portletNamespace: 'com_liferay_journal_web_portlet_JournalPortlet',
 };
@@ -759,13 +763,6 @@ export const FORM_VIEW = {
 			getDDMFormFieldSettingsContext: jest
 				.fn()
 				.mockImplementation(() => ({pages: []})),
-			getFieldTypes: () => {
-				return [
-					{
-						name: 'Text',
-					},
-				];
-			},
 			getLayoutProvider: () => ({
 				getEvents: () => ({
 					fieldHovered: jest.fn(),

@@ -55,7 +55,9 @@ export const DataEngineFieldsSidebar = ({title}) => {
 		hasFocusedField;
 
 	const fieldTypes = sortFieldTypes(
-		dataLayoutBuilder.getFieldTypes().filter(({group}) => group === 'basic')
+		dataLayoutBuilder.props.fieldTypes.filter(
+			({group}) => group === 'basic'
+		)
 	);
 
 	return (
