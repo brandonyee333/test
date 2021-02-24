@@ -131,12 +131,15 @@ describe('EditFormView', () => {
 			},
 		};
 
-		dataLayoutBuilderProps = {
-			...dataLayoutBuilderProps,
-			getState: () => context,
+		const props = {
+			...dataLayoutBuilderProps.props,
+			appContext: [context],
 		};
 
-		setDataLayoutBuilderProps(dataLayoutBuilderProps);
+		setDataLayoutBuilderProps({
+			...dataLayoutBuilderProps,
+			props,
+		});
 
 		const {container, queryByText, rerender} = render(
 			<EditFormViewWrapper />
@@ -155,10 +158,7 @@ describe('EditFormView', () => {
 
 		context.dataDefinition.dataDefinitionFields[0].required = false;
 
-		setDataLayoutBuilderProps({
-			...dataLayoutBuilderProps,
-			getState: () => context,
-		});
+		setDataLayoutBuilderProps(dataLayoutBuilderProps);
 
 		rerender(<EditFormViewWrapper />);
 
