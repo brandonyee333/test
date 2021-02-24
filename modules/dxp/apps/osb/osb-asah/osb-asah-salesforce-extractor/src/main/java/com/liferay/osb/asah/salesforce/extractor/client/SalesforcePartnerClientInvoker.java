@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.salesforce.extractor.client;
 
-import com.liferay.osb.asah.common.array.ArrayUtil;
+import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationImpl;
 import com.liferay.osb.asah.salesforce.extractor.oauth2.SalesforceOAuth2Client;

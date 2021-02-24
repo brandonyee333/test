@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.array;
+package com.liferay.osb.asah.common.util;
 
 import org.junit.Assert;
 import org.junit.Test;

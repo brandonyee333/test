@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.array.ArrayUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Arrays;

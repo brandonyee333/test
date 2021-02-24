@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.array;
+package com.liferay.osb.asah.common.util;
 
 import java.lang.reflect.Array;
 

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.salesforce.extractor.util;
 
-import com.liferay.osb.asah.common.array.ArrayUtil;
+import com.liferay.osb.asah.common.util.ArrayUtil;
 
 import com.sforce.soap.partner.DescribeSObjectResult;
 

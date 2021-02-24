@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.salesforce.extractor.xml;
 
-import com.liferay.osb.asah.common.array.ArrayUtil;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.salesforce.extractor.bot.exception.InterruptBotException;
 import com.liferay.osb.asah.salesforce.extractor.util.ElasticsearchPropertyUtil;
