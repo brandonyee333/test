@@ -88,8 +88,7 @@ public class DataSourceDog {
 		}
 		else if (Objects.equals(providerType, "LIFERAY")) {
 			_addDefaultChannel(dataSource);
-
-			updateTokenDataSourceCredentials(dataSource);
+			_updateTokenDataSourceCredentials(dataSource);
 		}
 		else if (Objects.equals(providerType, "SALESFORCE")) {
 			_salesforceExtractorConfigurationDog.addConfiguration(dataSource);
@@ -287,12 +286,11 @@ public class DataSourceDog {
 		String providerType = dataSource.getProviderType();
 
 		if (providerType.equals("LIFERAY")) {
-			updateTokenDataSourceCredentials(dataSource);
+			_updateTokenDataSourceCredentials(dataSource);
 		}
 		else if (providerType.equals("SALESFORCE")) {
-			dataSource =
-				_salesforceExtractorConfigurationDog.updateConfiguration(
-					dataSource);
+			_salesforceExtractorConfigurationDog.updateConfiguration(
+				dataSource);
 		}
 
 		return _dataSourceRepository.save(dataSource);
@@ -319,45 +317,6 @@ public class DataSourceDog {
 		}
 
 		return dataSource;
-	}
-
-	public void updateTokenDataSourceCredentials(DataSource dataSource) {
-		if (!Objects.equals(dataSource.getType(), "Token Authentication")) {
-			return;
-		}
-
-		dataSource.setState("CREDENTIALS_VALID");
-		dataSource.setStatus("ACTIVE");
-
-		try {
-			if (StringUtils.isBlank(dataSource.getPrivateKey())) {
-				KeyPair keyPair = _encryptor.generateKeyPair();
-
-				dataSource.setPrivateKey(
-					_encryptor.encrypt(
-						dataSource.getURL(),
-						_encryptor.encode(keyPair.getPrivate())));
-				dataSource.setPublicKey(_encryptor.encode(keyPair.getPublic()));
-			}
-
-			if (StringUtils.isBlank(
-					dataSource.getFaroBackendSecuritySignature())) {
-
-				dataSource.setFaroBackendSecuritySignature(
-					String.valueOf(UUID.randomUUID()));
-			}
-
-			if (Objects.equals(
-					dataSource.getType(), "OAuth 2 Authentication")) {
-
-				_dataSourceRepository.save(dataSource);
-			}
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
 	}
 
 	private void _addDefaultChannel(DataSource dataSource) {
@@ -724,6 +683,45 @@ public class DataSourceDog {
 		}
 
 		return PageRequest.of(0, size, sort);
+	}
+
+	private void _updateTokenDataSourceCredentials(DataSource dataSource) {
+		if (!Objects.equals(dataSource.getType(), "Token Authentication")) {
+			return;
+		}
+
+		dataSource.setState("CREDENTIALS_VALID");
+		dataSource.setStatus("ACTIVE");
+
+		try {
+			if (StringUtils.isBlank(dataSource.getPrivateKey())) {
+				KeyPair keyPair = _encryptor.generateKeyPair();
+
+				dataSource.setPrivateKey(
+					_encryptor.encrypt(
+						dataSource.getURL(),
+						_encryptor.encode(keyPair.getPrivate())));
+				dataSource.setPublicKey(_encryptor.encode(keyPair.getPublic()));
+			}
+
+			if (StringUtils.isBlank(
+					dataSource.getFaroBackendSecuritySignature())) {
+
+				dataSource.setFaroBackendSecuritySignature(
+					String.valueOf(UUID.randomUUID()));
+			}
+
+			if (Objects.equals(
+					dataSource.getType(), "OAuth 2 Authentication")) {
+
+				_dataSourceRepository.save(dataSource);
+			}
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception, exception);
+			}
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(DataSourceDog.class);
