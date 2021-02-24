@@ -123,7 +123,8 @@ export default ({children, dataLayoutBuilder}) => {
 			fieldActions.splice(fieldActions.indexOf(duplicateAction), 1);
 		}
 
-		const provider = dataLayoutBuilder.getLayoutProvider();
+		const provider =
+			dataLayoutBuilder.formBuilderWithLayoutProvider.refs.layoutProvider;
 
 		provider.props = {
 			...provider.props,

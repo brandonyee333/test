@@ -120,7 +120,8 @@ class DataLayoutBuilder extends React.Component {
 	}
 
 	dispatch(event, payload) {
-		const layoutProvider = this.getLayoutProvider();
+		const layoutProvider = this.formBuilderWithLayoutProvider.refs
+			.layoutProvider;
 
 		if (layoutProvider && layoutProvider.dispatch) {
 			layoutProvider.dispatch(event, payload);
@@ -198,7 +199,8 @@ class DataLayoutBuilder extends React.Component {
 		const {availableLanguageIds, defaultLanguageId} = this.props;
 		const {availableLanguageIds: availableLanguageIdsState} = this.state;
 
-		const layoutProvider = this.getLayoutProvider();
+		const layoutProvider = this.formBuilderWithLayoutProvider.refs
+			.layoutProvider;
 		const {
 			props: {defaultLanguageId: layoutDefaultLanguageId},
 			state: {pages: layoutProviderPages, rules},
@@ -264,12 +266,6 @@ class DataLayoutBuilder extends React.Component {
 		});
 	}
 
-	getLayoutProvider() {
-		const {layoutProvider} = this.formBuilderWithLayoutProvider.refs;
-
-		return layoutProvider;
-	}
-
 	on(eventName, listener) {
 		this.eventEmitter.on(eventName, listener);
 	}
@@ -278,7 +274,8 @@ class DataLayoutBuilder extends React.Component {
 		editingLanguageId,
 		defaultLanguageId = themeDisplay.getDefaultLanguageId(),
 	}) {
-		const layoutProvider = this.getLayoutProvider();
+		const layoutProvider = this.formBuilderWithLayoutProvider.refs
+			.layoutProvider;
 		const availableLanguageIds = [
 			...new Set([
 				...layoutProvider.props.availableLanguageIds,
@@ -372,7 +369,7 @@ class DataLayoutBuilder extends React.Component {
 				availableLanguageIdsState ?? availableLanguageIds,
 			defaultLanguageId,
 			pages,
-			paginationMode: this.getLayoutProvider().getPaginationMode(),
+			paginationMode: this.formBuilderWithLayoutProvider.refs.layoutProvider.getPaginationMode(),
 			rules,
 		});
 
@@ -383,7 +380,8 @@ class DataLayoutBuilder extends React.Component {
 	}
 
 	_onLocaleChange(event) {
-		const layoutProvider = this.getLayoutProvider();
+		const layoutProvider = this.formBuilderWithLayoutProvider.refs
+			.layoutProvider;
 		const selectedLanguageId = event.item.getAttribute('data-value');
 		const {defaultLanguageId} = layoutProvider.props;
 

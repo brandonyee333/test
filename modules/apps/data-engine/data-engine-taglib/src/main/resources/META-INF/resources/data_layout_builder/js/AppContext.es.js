@@ -196,7 +196,9 @@ const setDataDefinitionFields = (
 	const {dataDefinitionFields} = dataDefinition;
 	const {dataLayoutPages} = dataLayout;
 
-	const {pages} = dataLayoutBuilder.getLayoutProvider().state;
+	const {
+		pages,
+	} = dataLayoutBuilder.formBuilderWithLayoutProvider.refs.layoutProvider.state;
 	const visitor = new PagesVisitor(pages);
 
 	const newFields = [];
@@ -227,7 +229,8 @@ const setDataDefinitionFields = (
 
 const setDataLayout = (dataLayout, dataLayoutBuilder) => {
 	const {dataLayoutFields, dataRules: rules} = dataLayout;
-	const layoutProvider = dataLayoutBuilder.getLayoutProvider();
+	const layoutProvider =
+		dataLayoutBuilder.formBuilderWithLayoutProvider.refs.layoutProvider;
 	const {
 		state: {pages},
 	} = layoutProvider;
@@ -447,9 +450,7 @@ const createReducer = (dataLayoutBuilder) => {
 					dataLayout: {
 						...state.dataLayout,
 						...dataLayout,
-						dataRules: dataLayoutBuilder
-							.getLayoutProvider()
-							.getRules(),
+						dataRules: dataLayoutBuilder.formBuilderWithLayoutProvider.refs.layoutProvider.getRules(),
 					},
 				};
 			}
