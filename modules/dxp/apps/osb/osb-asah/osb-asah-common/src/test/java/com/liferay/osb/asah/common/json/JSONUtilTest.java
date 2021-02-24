@@ -620,27 +620,6 @@ public class JSONUtilTest {
 	}
 
 	@Test
-	public void testToSet() throws Exception {
-		Assert.assertEquals(
-			new HashSet<Integer>(),
-			JSONUtil.toSet(null, jsonObject -> jsonObject.getInt("foo")));
-		Assert.assertEquals(
-			new HashSet<Integer>() {
-				{
-					add(1);
-					add(2);
-				}
-			},
-			JSONUtil.toSet(
-				JSONUtil.put(
-					JSONUtil.put("foo", "1")
-				).put(
-					JSONUtil.put("foo", "2")
-				),
-				jsonObject -> jsonObject.getInt("foo")));
-	}
-
-	@Test
 	public void testToStringArray() {
 		Assert.assertArrayEquals(new String[0], JSONUtil.toStringArray(null));
 		Assert.assertArrayEquals(
