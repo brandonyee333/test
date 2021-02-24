@@ -43,9 +43,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -190,15 +187,6 @@ public class ChannelDog extends BaseFaroInfoDog {
 		}
 
 		return channelNamesByGroupIds;
-	}
-
-	public List<Channel> getChannels() {
-		Iterable<Channel> channels = _channelRepository.findAll();
-
-		Stream<Channel> stream = StreamSupport.stream(
-			channels.spliterator(), false);
-
-		return stream.collect(Collectors.toList());
 	}
 
 	public List<Channel> getChannels(Long dataSourceId) {

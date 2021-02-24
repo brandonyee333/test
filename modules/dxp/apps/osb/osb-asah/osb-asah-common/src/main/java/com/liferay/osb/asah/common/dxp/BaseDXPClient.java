@@ -49,18 +49,6 @@ public abstract class BaseDXPClient {
 		throw new HttpClientErrorException(responseEntity.getStatusCode());
 	}
 
-	public JSONObject getJSONObject(DataSourceDTO dataSourceDTO, String path) {
-		ResponseEntity<String> responseEntity = _exchangeResponseEntity(
-			dataSourceDTO.getCredentialDTO(), dataSourceDTO.getURL(), path,
-			HttpMethod.GET, null);
-
-		if (responseEntity.getStatusCode() == HttpStatus.OK) {
-			return getBodyAsJSONObject(responseEntity.getBody());
-		}
-
-		throw new HttpClientErrorException(responseEntity.getStatusCode());
-	}
-
 	public JSONObject postJSONObject(
 		DataSourceDTO dataSourceDTO, String path, Object body) {
 

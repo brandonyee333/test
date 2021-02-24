@@ -38,21 +38,6 @@ import org.json.JSONObject;
  */
 public class FaroInfoIndividualUtil {
 
-	public static JSONArray getIndividualAccountNamesJSONArray(
-		ElasticsearchInvoker elasticsearchInvoker, String individualId) {
-
-		Map<String, JSONObject> individualAccountNamesJSONObjects =
-			getIndividualAccountNamesJSONObjects(
-				elasticsearchInvoker,
-				JSONUtil.put(
-					elasticsearchInvoker.fetch("individuals", individualId)));
-
-		JSONObject individualAccountNamesJSONObject =
-			individualAccountNamesJSONObjects.get(individualId);
-
-		return individualAccountNamesJSONObject.getJSONArray("account-names");
-	}
-
 	public static Map<String, JSONObject> getIndividualAccountNamesJSONObjects(
 		ElasticsearchInvoker elasticsearchInvoker,
 		JSONArray individualsJSONArray) {

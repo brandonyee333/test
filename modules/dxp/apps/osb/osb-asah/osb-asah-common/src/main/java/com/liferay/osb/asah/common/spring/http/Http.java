@@ -18,13 +18,9 @@ import com.liferay.osb.asah.common.spring.http.client.OSBAsahClientHttpRequestIn
 import com.liferay.osb.asah.common.spring.http.client.OSBAsahHttpComponentsClientHttpRequestFactory;
 import com.liferay.osb.asah.common.spring.http.client.OSBAsahResponseErrorHandler;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.UnknownHostException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,19 +35,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.retry.support.RetryTemplate;
-import org.springframework.security.oauth.common.signature.CoreOAuthSignatureMethodFactory;
-import org.springframework.security.oauth.common.signature.PlainTextSignatureMethod;
-import org.springframework.security.oauth.common.signature.SharedConsumerSecretImpl;
-import org.springframework.security.oauth.consumer.BaseProtectedResourceDetails;
-import org.springframework.security.oauth.consumer.OAuthConsumerToken;
-import org.springframework.security.oauth.consumer.OAuthSecurityContextHolder;
-import org.springframework.security.oauth.consumer.OAuthSecurityContextImpl;
-import org.springframework.security.oauth.consumer.client.CoreOAuthConsumerSupport;
-import org.springframework.security.oauth.consumer.client.OAuthRestTemplate;
-import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.resource.BaseOAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -74,42 +57,10 @@ public class Http {
 
 	public String exchange(
 		String url, String path, HttpMethod httpMethod, Object body,
-		BasicAuthorizationInterceptor basicAuthorizationInterceptor) {
-
-		ResponseEntity<String> responseEntity = exchangeResponseEntity(
-			url, path, httpMethod, body, basicAuthorizationInterceptor);
-
-		return responseEntity.getBody();
-	}
-
-	public String exchange(
-		String url, String path, HttpMethod httpMethod, Object body,
 		HttpHeaders httpHeaders) {
 
 		ResponseEntity<String> responseEntity = exchangeResponseEntity(
 			url, path, httpMethod, body, httpHeaders);
-
-		return responseEntity.getBody();
-	}
-
-	public String exchange(
-		String url, String path, HttpMethod httpMethod, Object body,
-		String oAuthAccessToken) {
-
-		ResponseEntity<String> responseEntity = exchangeResponseEntity(
-			url, path, httpMethod, body, oAuthAccessToken);
-
-		return responseEntity.getBody();
-	}
-
-	public String exchange(
-		String url, String path, HttpMethod httpMethod, Object body,
-		String oAuthAccessSecret, String oAuthAccessToken,
-		String oAuthConsumerKey, String oAuthConsumerSecret) {
-
-		ResponseEntity<String> responseEntity = exchangeResponseEntity(
-			url, path, httpMethod, body, oAuthAccessSecret, oAuthAccessToken,
-			oAuthConsumerKey, oAuthConsumerSecret);
 
 		return responseEntity.getBody();
 	}
@@ -188,81 +139,6 @@ public class Http {
 			_getHttpEntity(body, httpHeaders));
 	}
 
-	public ResponseEntity<String> exchangeResponseEntity(
-		String url, String path, HttpMethod httpMethod, Object body,
-		String oAuthAccessToken) {
-
-		OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(
-			new BaseOAuth2ProtectedResourceDetails(),
-			new DefaultOAuth2ClientContext(
-				new DefaultOAuth2AccessToken(oAuthAccessToken)));
-
-		_configureRestTemplate(oAuth2RestTemplate);
-
-		return _exchangeResponseEntity(
-			oAuth2RestTemplate, url, path, httpMethod,
-			_getHttpEntity(body, null));
-	}
-
-	public ResponseEntity<String> exchangeResponseEntity(
-		String url, String path, HttpMethod httpMethod, Object body,
-		String username, String password) {
-
-		return exchangeResponseEntity(
-			url, path, httpMethod, body,
-			new BasicAuthorizationInterceptor(username, password));
-	}
-
-	public ResponseEntity<String> exchangeResponseEntity(
-		String url, String path, HttpMethod httpMethod, Object body,
-		String oAuthAccessSecret, String oAuthAccessToken,
-		String oAuthConsumerKey, String oAuthConsumerSecret) {
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Get " + url);
-		}
-
-		OAuthConsumerToken oAuthConsumerToken = new OAuthConsumerToken() {
-			{
-				setAccessToken(true);
-				setResourceId("oAuthConsumerToken");
-				setSecret(oAuthAccessSecret);
-				setValue(oAuthAccessToken);
-			}
-		};
-
-		Map<String, OAuthConsumerToken> oAuthConsumerTokens =
-			new HashMap<String, OAuthConsumerToken>() {
-				{
-					put(oAuthConsumerToken.getResourceId(), oAuthConsumerToken);
-				}
-			};
-
-		OAuthSecurityContextHolder.setContext(
-			new OAuthSecurityContextImpl() {
-				{
-					setAccessTokens(oAuthConsumerTokens);
-				}
-			});
-
-		return _exchangeResponseEntity(
-			_getOAuthRestTemplate(
-				new BaseProtectedResourceDetails() {
-					{
-						setConsumerKey(oAuthConsumerKey);
-						setId("oAuthConsumerToken");
-						setSharedSecret(
-							new SharedConsumerSecretImpl(oAuthConsumerSecret));
-
-						if (_isSecure(url)) {
-							setSignatureMethod(
-								PlainTextSignatureMethod.SIGNATURE_NAME);
-						}
-					}
-				}),
-			url, path, httpMethod, _getHttpEntity(body, null));
-	}
-
 	private void _configureRestTemplate(RestTemplate restTemplate) {
 		List<ClientHttpRequestInterceptor> clientHttpRequestInterceptors =
 			restTemplate.getInterceptors();
@@ -309,36 +185,6 @@ public class Http {
 		}
 
 		return new HttpEntity<>(String.valueOf(body), httpHeaders);
-	}
-
-	private OAuthRestTemplate _getOAuthRestTemplate(
-		BaseProtectedResourceDetails baseProtectedResourceDetails) {
-
-		OAuthRestTemplate oAuthRestTemplate = new OAuthRestTemplate(
-			baseProtectedResourceDetails);
-
-		CoreOAuthConsumerSupport coreOAuthConsumerSupport =
-			new CoreOAuthConsumerSupport();
-
-		coreOAuthConsumerSupport.setSignatureFactory(
-			new CoreOAuthSignatureMethodFactory());
-
-		oAuthRestTemplate.setSupport(coreOAuthConsumerSupport);
-
-		_configureRestTemplate(oAuthRestTemplate);
-
-		return oAuthRestTemplate;
-	}
-
-	private boolean _isSecure(String urlString) {
-		try {
-			URL url = new URL(urlString);
-
-			return StringUtils.equalsIgnoreCase(url.getProtocol(), "https");
-		}
-		catch (MalformedURLException murle) {
-			return false;
-		}
 	}
 
 	private static final Log _log = LogFactory.getLog(Http.class);

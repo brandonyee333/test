@@ -72,12 +72,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		return activityJSONObject;
 	}
 
-	public long getActivitiesCount(JSONObject individualJSONObject) {
-		return elasticsearchInvoker.count(
-			"activities",
-			getEventsQueryBuilder(individualJSONObject.getString("id")));
-	}
-
 	public QueryBuilder getEventsQueryBuilder(String ownerId) {
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("ownerId", ownerId));

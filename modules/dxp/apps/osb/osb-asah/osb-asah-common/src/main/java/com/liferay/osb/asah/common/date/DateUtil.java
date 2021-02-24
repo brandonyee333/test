@@ -261,18 +261,6 @@ public class DateUtil {
 		return toUTCString(newEndOfDayDate(dateString));
 	}
 
-	public static String newEndOfDayLocalDateTimeString(
-			String dateString, ZoneId zoneId)
-		throws ParseException {
-
-		LocalDateTime localDateTime = toLocalDateTime(
-			toUTCDate(dateString), zoneId);
-
-		localDateTime = localDateTime.with(LocalTime.MAX);
-
-		return localDateTime.toString();
-	}
-
 	public static Date newEndOfMonthDate(String dateString) throws Exception {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
