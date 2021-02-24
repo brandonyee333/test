@@ -272,6 +272,12 @@ public class TicketAttachmentLocalServiceUtil {
 	}
 
 	public static List<TicketAttachment> getTicketAttachments(
+		long accountEntryId) {
+
+		return getService().getTicketAttachments(accountEntryId);
+	}
+
+	public static List<TicketAttachment> getTicketAttachments(
 		long zendeskTicketId, int[] types) {
 
 		return getService().getTicketAttachments(zendeskTicketId, types);
@@ -284,6 +290,17 @@ public class TicketAttachmentLocalServiceUtil {
 	 */
 	public static int getTicketAttachmentsCount() {
 		return getService().getTicketAttachmentsCount();
+	}
+
+	public static int getTicketAttachmentsCount(long accountEntryId) {
+		return getService().getTicketAttachmentsCount(accountEntryId);
+	}
+
+	public static TicketAttachment removeRegionRestriction(
+			long ticketAttachmentId)
+		throws PortalException {
+
+		return getService().removeRegionRestriction(ticketAttachmentId);
 	}
 
 	/**

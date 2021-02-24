@@ -86,12 +86,50 @@ public class TicketAttachmentServiceSoap {
 	}
 
 	public static com.liferay.osb.customer.ticket.model.TicketAttachmentSoap
+			deleteTicketAttachment(long ticketAttachmentId)
+		throws RemoteException {
+
+		try {
+			com.liferay.osb.customer.ticket.model.TicketAttachment returnValue =
+				TicketAttachmentServiceUtil.deleteTicketAttachment(
+					ticketAttachmentId);
+
+			return com.liferay.osb.customer.ticket.model.TicketAttachmentSoap.
+				toSoapModel(returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.customer.ticket.model.TicketAttachmentSoap
 			getTicketAttachment(long ticketAttachmentId)
 		throws RemoteException {
 
 		try {
 			com.liferay.osb.customer.ticket.model.TicketAttachment returnValue =
 				TicketAttachmentServiceUtil.getTicketAttachment(
+					ticketAttachmentId);
+
+			return com.liferay.osb.customer.ticket.model.TicketAttachmentSoap.
+				toSoapModel(returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.customer.ticket.model.TicketAttachmentSoap
+			removeRegionRestriction(long ticketAttachmentId)
+		throws RemoteException {
+
+		try {
+			com.liferay.osb.customer.ticket.model.TicketAttachment returnValue =
+				TicketAttachmentServiceUtil.removeRegionRestriction(
 					ticketAttachmentId);
 
 			return com.liferay.osb.customer.ticket.model.TicketAttachmentSoap.

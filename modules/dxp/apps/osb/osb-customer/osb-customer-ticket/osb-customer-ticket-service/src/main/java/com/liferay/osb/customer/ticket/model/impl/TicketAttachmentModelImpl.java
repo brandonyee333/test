@@ -105,10 +105,10 @@ public class TicketAttachmentModelImpl
 		"drop table OSBCustomer_TicketAttachment";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY ticketAttachment.ticketAttachmentId ASC";
+		" ORDER BY ticketAttachment.zendeskTicketId ASC, ticketAttachment.fileName ASC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY OSBCustomer_TicketAttachment.ticketAttachmentId ASC";
+		" ORDER BY OSBCustomer_TicketAttachment.zendeskTicketId ASC, OSBCustomer_TicketAttachment.fileName ASC";
 
 	public static final String DATA_SOURCE = "liferayDataSource";
 
@@ -131,11 +131,13 @@ public class TicketAttachmentModelImpl
 			"value.object.column.bitmask.enabled.com.liferay.osb.customer.ticket.model.TicketAttachment"),
 		true);
 
-	public static final long TYPE_COLUMN_BITMASK = 1L;
+	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 
-	public static final long ZENDESKTICKETID_COLUMN_BITMASK = 2L;
+	public static final long TYPE_COLUMN_BITMASK = 2L;
 
-	public static final long TICKETATTACHMENTID_COLUMN_BITMASK = 4L;
+	public static final long ZENDESKTICKETID_COLUMN_BITMASK = 4L;
+
+	public static final long FILENAME_COLUMN_BITMASK = 8L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -677,7 +679,19 @@ public class TicketAttachmentModelImpl
 
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
+		_columnBitmask |= ACCOUNTENTRYID_COLUMN_BITMASK;
+
+		if (!_setOriginalAccountEntryId) {
+			_setOriginalAccountEntryId = true;
+
+			_originalAccountEntryId = _accountEntryId;
+		}
+
 		_accountEntryId = accountEntryId;
+	}
+
+	public long getOriginalAccountEntryId() {
+		return _originalAccountEntryId;
 	}
 
 	@JSON
@@ -688,7 +702,7 @@ public class TicketAttachmentModelImpl
 
 	@Override
 	public void setZendeskTicketId(long zendeskTicketId) {
-		_columnBitmask |= ZENDESKTICKETID_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalZendeskTicketId) {
 			_setOriginalZendeskTicketId = true;
@@ -743,6 +757,8 @@ public class TicketAttachmentModelImpl
 
 	@Override
 	public void setFileName(String fileName) {
+		_columnBitmask = -1L;
+
 		_fileName = fileName;
 	}
 
@@ -853,17 +869,29 @@ public class TicketAttachmentModelImpl
 
 	@Override
 	public int compareTo(TicketAttachment ticketAttachment) {
-		long primaryKey = ticketAttachment.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		if (getZendeskTicketId() < ticketAttachment.getZendeskTicketId()) {
+			value = -1;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
+		else if (getZendeskTicketId() > ticketAttachment.getZendeskTicketId()) {
+			value = 1;
 		}
 		else {
-			return 0;
+			value = 0;
 		}
+
+		if (value != 0) {
+			return value;
+		}
+
+		value = getFileName().compareTo(ticketAttachment.getFileName());
+
+		if (value != 0) {
+			return value;
+		}
+
+		return 0;
 	}
 
 	@Override
@@ -905,6 +933,10 @@ public class TicketAttachmentModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_originalAccountEntryId = _accountEntryId;
+
+		_setOriginalAccountEntryId = false;
+
 		_originalZendeskTicketId = _zendeskTicketId;
 
 		_setOriginalZendeskTicketId = false;
@@ -1048,6 +1080,8 @@ public class TicketAttachmentModelImpl
 	private String _userName;
 	private Date _createDate;
 	private long _accountEntryId;
+	private long _originalAccountEntryId;
+	private boolean _setOriginalAccountEntryId;
 	private long _zendeskTicketId;
 	private long _originalZendeskTicketId;
 	private boolean _setOriginalZendeskTicketId;

@@ -64,6 +64,9 @@ public interface TicketAttachmentService extends BaseService {
 			ServiceContext serviceContext)
 		throws PortalException;
 
+	public TicketAttachment deleteTicketAttachment(long ticketAttachmentId)
+		throws PortalException;
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -73,6 +76,9 @@ public interface TicketAttachmentService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketAttachment getTicketAttachment(long ticketAttachmentId)
+		throws PortalException;
+
+	public TicketAttachment removeRegionRestriction(long ticketAttachmentId)
 		throws PortalException;
 
 }

@@ -47,6 +47,13 @@ public class TicketAttachmentServiceUtil {
 			fileSize, type, regionRestricted, serviceContext);
 	}
 
+	public static TicketAttachment deleteTicketAttachment(
+			long ticketAttachmentId)
+		throws PortalException {
+
+		return getService().deleteTicketAttachment(ticketAttachmentId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -60,6 +67,13 @@ public class TicketAttachmentServiceUtil {
 		throws PortalException {
 
 		return getService().getTicketAttachment(ticketAttachmentId);
+	}
+
+	public static TicketAttachment removeRegionRestriction(
+			long ticketAttachmentId)
+		throws PortalException {
+
+		return getService().removeRegionRestriction(ticketAttachmentId);
 	}
 
 	public static TicketAttachmentService getService() {

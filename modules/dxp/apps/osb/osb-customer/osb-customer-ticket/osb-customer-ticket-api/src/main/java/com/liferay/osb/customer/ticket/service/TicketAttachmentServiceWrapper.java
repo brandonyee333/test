@@ -47,6 +47,15 @@ public class TicketAttachmentServiceWrapper
 			fileSize, type, regionRestricted, serviceContext);
 	}
 
+	@Override
+	public com.liferay.osb.customer.ticket.model.TicketAttachment
+			deleteTicketAttachment(long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ticketAttachmentService.deleteTicketAttachment(
+			ticketAttachmentId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -63,6 +72,15 @@ public class TicketAttachmentServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ticketAttachmentService.getTicketAttachment(ticketAttachmentId);
+	}
+
+	@Override
+	public com.liferay.osb.customer.ticket.model.TicketAttachment
+			removeRegionRestriction(long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ticketAttachmentService.removeRegionRestriction(
+			ticketAttachmentId);
 	}
 
 	@Override

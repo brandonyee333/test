@@ -50,6 +50,150 @@ public interface TicketAttachmentPersistence
 		Set<Serializable> primaryKeys);
 
 	/**
+	 * Returns all the ticket attachments where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @return the matching ticket attachments
+	 */
+	public java.util.List<TicketAttachment> findByAccountEntryId(
+		long accountEntryId);
+
+	/**
+	 * Returns a range of all the ticket attachments where accountEntryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TicketAttachmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @return the range of matching ticket attachments
+	 */
+	public java.util.List<TicketAttachment> findByAccountEntryId(
+		long accountEntryId, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the ticket attachments where accountEntryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TicketAttachmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching ticket attachments
+	 */
+	public java.util.List<TicketAttachment> findByAccountEntryId(
+		long accountEntryId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<TicketAttachment>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the ticket attachments where accountEntryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TicketAttachmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching ticket attachments
+	 */
+	public java.util.List<TicketAttachment> findByAccountEntryId(
+		long accountEntryId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<TicketAttachment>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first ticket attachment in the ordered set where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ticket attachment
+	 * @throws NoSuchTicketAttachmentException if a matching ticket attachment could not be found
+	 */
+	public TicketAttachment findByAccountEntryId_First(
+			long accountEntryId,
+			com.liferay.portal.kernel.util.OrderByComparator<TicketAttachment>
+				orderByComparator)
+		throws NoSuchTicketAttachmentException;
+
+	/**
+	 * Returns the first ticket attachment in the ordered set where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ticket attachment, or <code>null</code> if a matching ticket attachment could not be found
+	 */
+	public TicketAttachment fetchByAccountEntryId_First(
+		long accountEntryId,
+		com.liferay.portal.kernel.util.OrderByComparator<TicketAttachment>
+			orderByComparator);
+
+	/**
+	 * Returns the last ticket attachment in the ordered set where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ticket attachment
+	 * @throws NoSuchTicketAttachmentException if a matching ticket attachment could not be found
+	 */
+	public TicketAttachment findByAccountEntryId_Last(
+			long accountEntryId,
+			com.liferay.portal.kernel.util.OrderByComparator<TicketAttachment>
+				orderByComparator)
+		throws NoSuchTicketAttachmentException;
+
+	/**
+	 * Returns the last ticket attachment in the ordered set where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ticket attachment, or <code>null</code> if a matching ticket attachment could not be found
+	 */
+	public TicketAttachment fetchByAccountEntryId_Last(
+		long accountEntryId,
+		com.liferay.portal.kernel.util.OrderByComparator<TicketAttachment>
+			orderByComparator);
+
+	/**
+	 * Returns the ticket attachments before and after the current ticket attachment in the ordered set where accountEntryId = &#63;.
+	 *
+	 * @param ticketAttachmentId the primary key of the current ticket attachment
+	 * @param accountEntryId the account entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next ticket attachment
+	 * @throws NoSuchTicketAttachmentException if a ticket attachment with the primary key could not be found
+	 */
+	public TicketAttachment[] findByAccountEntryId_PrevAndNext(
+			long ticketAttachmentId, long accountEntryId,
+			com.liferay.portal.kernel.util.OrderByComparator<TicketAttachment>
+				orderByComparator)
+		throws NoSuchTicketAttachmentException;
+
+	/**
+	 * Removes all the ticket attachments where accountEntryId = &#63; from the database.
+	 *
+	 * @param accountEntryId the account entry ID
+	 */
+	public void removeByAccountEntryId(long accountEntryId);
+
+	/**
+	 * Returns the number of ticket attachments where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @return the number of matching ticket attachments
+	 */
+	public int countByAccountEntryId(long accountEntryId);
+
+	/**
 	 * Returns all the ticket attachments where zendeskTicketId = &#63;.
 	 *
 	 * @param zendeskTicketId the zendesk ticket ID

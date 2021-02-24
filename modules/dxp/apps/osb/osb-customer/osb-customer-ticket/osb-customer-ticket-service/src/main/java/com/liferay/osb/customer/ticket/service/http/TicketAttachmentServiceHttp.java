@@ -98,6 +98,48 @@ public class TicketAttachmentServiceHttp {
 	}
 
 	public static com.liferay.osb.customer.ticket.model.TicketAttachment
+			deleteTicketAttachment(
+				HttpPrincipal httpPrincipal, long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				TicketAttachmentServiceUtil.class, "deleteTicketAttachment",
+				_deleteTicketAttachmentParameterTypes1);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, ticketAttachmentId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.osb.customer.ticket.model.TicketAttachment)
+				returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static com.liferay.osb.customer.ticket.model.TicketAttachment
 			getTicketAttachment(
 				HttpPrincipal httpPrincipal, long ticketAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -105,7 +147,49 @@ public class TicketAttachmentServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				TicketAttachmentServiceUtil.class, "getTicketAttachment",
-				_getTicketAttachmentParameterTypes1);
+				_getTicketAttachmentParameterTypes2);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, ticketAttachmentId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.osb.customer.ticket.model.TicketAttachment)
+				returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static com.liferay.osb.customer.ticket.model.TicketAttachment
+			removeRegionRestriction(
+				HttpPrincipal httpPrincipal, long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				TicketAttachmentServiceUtil.class, "removeRegionRestriction",
+				_removeRegionRestrictionParameterTypes3);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, ticketAttachmentId);
@@ -148,7 +232,11 @@ public class TicketAttachmentServiceHttp {
 			int.class, boolean.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _getTicketAttachmentParameterTypes1 =
+	private static final Class<?>[] _deleteTicketAttachmentParameterTypes1 =
+		new Class[] {long.class};
+	private static final Class<?>[] _getTicketAttachmentParameterTypes2 =
+		new Class[] {long.class};
+	private static final Class<?>[] _removeRegionRestrictionParameterTypes3 =
 		new Class[] {long.class};
 
 }

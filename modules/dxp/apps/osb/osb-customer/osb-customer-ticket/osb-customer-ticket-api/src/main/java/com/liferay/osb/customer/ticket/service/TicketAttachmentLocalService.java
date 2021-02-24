@@ -242,6 +242,9 @@ public interface TicketAttachmentLocalService
 	public List<TicketAttachment> getTicketAttachments(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketAttachment> getTicketAttachments(long accountEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketAttachment> getTicketAttachments(
 		long zendeskTicketId, int[] types);
 
@@ -252,6 +255,12 @@ public interface TicketAttachmentLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTicketAttachmentsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketAttachmentsCount(long accountEntryId);
+
+	public TicketAttachment removeRegionRestriction(long ticketAttachmentId)
+		throws PortalException;
 
 	/**
 	 * Updates the ticket attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

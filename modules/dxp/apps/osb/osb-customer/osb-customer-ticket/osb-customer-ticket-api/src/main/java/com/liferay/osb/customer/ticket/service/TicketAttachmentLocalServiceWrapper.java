@@ -306,6 +306,15 @@ public class TicketAttachmentLocalServiceWrapper
 	@Override
 	public java.util.List
 		<com.liferay.osb.customer.ticket.model.TicketAttachment>
+			getTicketAttachments(long accountEntryId) {
+
+		return _ticketAttachmentLocalService.getTicketAttachments(
+			accountEntryId);
+	}
+
+	@Override
+	public java.util.List
+		<com.liferay.osb.customer.ticket.model.TicketAttachment>
 			getTicketAttachments(long zendeskTicketId, int[] types) {
 
 		return _ticketAttachmentLocalService.getTicketAttachments(
@@ -320,6 +329,21 @@ public class TicketAttachmentLocalServiceWrapper
 	@Override
 	public int getTicketAttachmentsCount() {
 		return _ticketAttachmentLocalService.getTicketAttachmentsCount();
+	}
+
+	@Override
+	public int getTicketAttachmentsCount(long accountEntryId) {
+		return _ticketAttachmentLocalService.getTicketAttachmentsCount(
+			accountEntryId);
+	}
+
+	@Override
+	public com.liferay.osb.customer.ticket.model.TicketAttachment
+			removeRegionRestriction(long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ticketAttachmentLocalService.removeRegionRestriction(
+			ticketAttachmentId);
 	}
 
 	/**

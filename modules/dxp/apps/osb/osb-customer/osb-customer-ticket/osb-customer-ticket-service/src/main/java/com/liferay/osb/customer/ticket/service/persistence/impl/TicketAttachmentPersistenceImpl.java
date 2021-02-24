@@ -82,6 +82,521 @@ public class TicketAttachmentPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByAccountEntryId;
+	private FinderPath _finderPathWithoutPaginationFindByAccountEntryId;
+	private FinderPath _finderPathCountByAccountEntryId;
+
+	/**
+	 * Returns all the ticket attachments where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @return the matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByAccountEntryId(long accountEntryId) {
+		return findByAccountEntryId(
+			accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the ticket attachments where accountEntryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TicketAttachmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @return the range of matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByAccountEntryId(
+		long accountEntryId, int start, int end) {
+
+		return findByAccountEntryId(accountEntryId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the ticket attachments where accountEntryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TicketAttachmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByAccountEntryId(
+		long accountEntryId, int start, int end,
+		OrderByComparator<TicketAttachment> orderByComparator) {
+
+		return findByAccountEntryId(
+			accountEntryId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the ticket attachments where accountEntryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TicketAttachmentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByAccountEntryId(
+		long accountEntryId, int start, int end,
+		OrderByComparator<TicketAttachment> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByAccountEntryId;
+				finderArgs = new Object[] {accountEntryId};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByAccountEntryId;
+			finderArgs = new Object[] {
+				accountEntryId, start, end, orderByComparator
+			};
+		}
+
+		List<TicketAttachment> list = null;
+
+		if (useFinderCache) {
+			list = (List<TicketAttachment>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (TicketAttachment ticketAttachment : list) {
+					if (accountEntryId !=
+							ticketAttachment.getAccountEntryId()) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_TICKETATTACHMENT_WHERE);
+
+			sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(TicketAttachmentModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(accountEntryId);
+
+				list = (List<TicketAttachment>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first ticket attachment in the ordered set where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ticket attachment
+	 * @throws NoSuchTicketAttachmentException if a matching ticket attachment could not be found
+	 */
+	@Override
+	public TicketAttachment findByAccountEntryId_First(
+			long accountEntryId,
+			OrderByComparator<TicketAttachment> orderByComparator)
+		throws NoSuchTicketAttachmentException {
+
+		TicketAttachment ticketAttachment = fetchByAccountEntryId_First(
+			accountEntryId, orderByComparator);
+
+		if (ticketAttachment != null) {
+			return ticketAttachment;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("accountEntryId=");
+		sb.append(accountEntryId);
+
+		sb.append("}");
+
+		throw new NoSuchTicketAttachmentException(sb.toString());
+	}
+
+	/**
+	 * Returns the first ticket attachment in the ordered set where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ticket attachment, or <code>null</code> if a matching ticket attachment could not be found
+	 */
+	@Override
+	public TicketAttachment fetchByAccountEntryId_First(
+		long accountEntryId,
+		OrderByComparator<TicketAttachment> orderByComparator) {
+
+		List<TicketAttachment> list = findByAccountEntryId(
+			accountEntryId, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last ticket attachment in the ordered set where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ticket attachment
+	 * @throws NoSuchTicketAttachmentException if a matching ticket attachment could not be found
+	 */
+	@Override
+	public TicketAttachment findByAccountEntryId_Last(
+			long accountEntryId,
+			OrderByComparator<TicketAttachment> orderByComparator)
+		throws NoSuchTicketAttachmentException {
+
+		TicketAttachment ticketAttachment = fetchByAccountEntryId_Last(
+			accountEntryId, orderByComparator);
+
+		if (ticketAttachment != null) {
+			return ticketAttachment;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("accountEntryId=");
+		sb.append(accountEntryId);
+
+		sb.append("}");
+
+		throw new NoSuchTicketAttachmentException(sb.toString());
+	}
+
+	/**
+	 * Returns the last ticket attachment in the ordered set where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ticket attachment, or <code>null</code> if a matching ticket attachment could not be found
+	 */
+	@Override
+	public TicketAttachment fetchByAccountEntryId_Last(
+		long accountEntryId,
+		OrderByComparator<TicketAttachment> orderByComparator) {
+
+		int count = countByAccountEntryId(accountEntryId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<TicketAttachment> list = findByAccountEntryId(
+			accountEntryId, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the ticket attachments before and after the current ticket attachment in the ordered set where accountEntryId = &#63;.
+	 *
+	 * @param ticketAttachmentId the primary key of the current ticket attachment
+	 * @param accountEntryId the account entry ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next ticket attachment
+	 * @throws NoSuchTicketAttachmentException if a ticket attachment with the primary key could not be found
+	 */
+	@Override
+	public TicketAttachment[] findByAccountEntryId_PrevAndNext(
+			long ticketAttachmentId, long accountEntryId,
+			OrderByComparator<TicketAttachment> orderByComparator)
+		throws NoSuchTicketAttachmentException {
+
+		TicketAttachment ticketAttachment = findByPrimaryKey(
+			ticketAttachmentId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			TicketAttachment[] array = new TicketAttachmentImpl[3];
+
+			array[0] = getByAccountEntryId_PrevAndNext(
+				session, ticketAttachment, accountEntryId, orderByComparator,
+				true);
+
+			array[1] = ticketAttachment;
+
+			array[2] = getByAccountEntryId_PrevAndNext(
+				session, ticketAttachment, accountEntryId, orderByComparator,
+				false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected TicketAttachment getByAccountEntryId_PrevAndNext(
+		Session session, TicketAttachment ticketAttachment, long accountEntryId,
+		OrderByComparator<TicketAttachment> orderByComparator,
+		boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_TICKETATTACHMENT_WHERE);
+
+		sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(TicketAttachmentModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(accountEntryId);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						ticketAttachment)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<TicketAttachment> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the ticket attachments where accountEntryId = &#63; from the database.
+	 *
+	 * @param accountEntryId the account entry ID
+	 */
+	@Override
+	public void removeByAccountEntryId(long accountEntryId) {
+		for (TicketAttachment ticketAttachment :
+				findByAccountEntryId(
+					accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(ticketAttachment);
+		}
+	}
+
+	/**
+	 * Returns the number of ticket attachments where accountEntryId = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @return the number of matching ticket attachments
+	 */
+	@Override
+	public int countByAccountEntryId(long accountEntryId) {
+		FinderPath finderPath = _finderPathCountByAccountEntryId;
+
+		Object[] finderArgs = new Object[] {accountEntryId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_TICKETATTACHMENT_WHERE);
+
+			sb.append(_FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(accountEntryId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_ACCOUNTENTRYID_ACCOUNTENTRYID_2 =
+		"ticketAttachment.accountEntryId = ?";
+
 	private FinderPath _finderPathWithPaginationFindByZendeskTicketId;
 	private FinderPath _finderPathWithoutPaginationFindByZendeskTicketId;
 	private FinderPath _finderPathCountByZendeskTicketId;
@@ -1706,6 +2221,14 @@ public class TicketAttachmentPersistenceImpl
 		}
 		else if (isNew) {
 			Object[] args = new Object[] {
+				ticketAttachmentModelImpl.getAccountEntryId()
+			};
+
+			finderCache.removeResult(_finderPathCountByAccountEntryId, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByAccountEntryId, args);
+
+			args = new Object[] {
 				ticketAttachmentModelImpl.getZendeskTicketId()
 			};
 
@@ -1727,6 +2250,29 @@ public class TicketAttachmentPersistenceImpl
 				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 		else {
+			if ((ticketAttachmentModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByAccountEntryId.
+					 getColumnBitmask()) != 0) {
+
+				Object[] args = new Object[] {
+					ticketAttachmentModelImpl.getOriginalAccountEntryId()
+				};
+
+				finderCache.removeResult(
+					_finderPathCountByAccountEntryId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByAccountEntryId, args);
+
+				args = new Object[] {
+					ticketAttachmentModelImpl.getAccountEntryId()
+				};
+
+				finderCache.removeResult(
+					_finderPathCountByAccountEntryId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByAccountEntryId, args);
+			}
+
 			if ((ticketAttachmentModelImpl.getColumnBitmask() &
 				 _finderPathWithoutPaginationFindByZendeskTicketId.
 					 getColumnBitmask()) != 0) {
@@ -2206,6 +2752,32 @@ public class TicketAttachmentPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
+		_finderPathWithPaginationFindByAccountEntryId = new FinderPath(
+			TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			TicketAttachmentModelImpl.FINDER_CACHE_ENABLED,
+			TicketAttachmentImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByAccountEntryId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByAccountEntryId = new FinderPath(
+			TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			TicketAttachmentModelImpl.FINDER_CACHE_ENABLED,
+			TicketAttachmentImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAccountEntryId",
+			new String[] {Long.class.getName()},
+			TicketAttachmentModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK |
+			TicketAttachmentModelImpl.ZENDESKTICKETID_COLUMN_BITMASK |
+			TicketAttachmentModelImpl.FILENAME_COLUMN_BITMASK);
+
+		_finderPathCountByAccountEntryId = new FinderPath(
+			TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			TicketAttachmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAccountEntryId",
+			new String[] {Long.class.getName()});
+
 		_finderPathWithPaginationFindByZendeskTicketId = new FinderPath(
 			TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
 			TicketAttachmentModelImpl.FINDER_CACHE_ENABLED,
@@ -2222,7 +2794,8 @@ public class TicketAttachmentPersistenceImpl
 			TicketAttachmentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByZendeskTicketId",
 			new String[] {Long.class.getName()},
-			TicketAttachmentModelImpl.ZENDESKTICKETID_COLUMN_BITMASK);
+			TicketAttachmentModelImpl.ZENDESKTICKETID_COLUMN_BITMASK |
+			TicketAttachmentModelImpl.FILENAME_COLUMN_BITMASK);
 
 		_finderPathCountByZendeskTicketId = new FinderPath(
 			TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
@@ -2248,7 +2821,8 @@ public class TicketAttachmentPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByZTI_T",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			TicketAttachmentModelImpl.ZENDESKTICKETID_COLUMN_BITMASK |
-			TicketAttachmentModelImpl.TYPE_COLUMN_BITMASK);
+			TicketAttachmentModelImpl.TYPE_COLUMN_BITMASK |
+			TicketAttachmentModelImpl.FILENAME_COLUMN_BITMASK);
 
 		_finderPathCountByZTI_T = new FinderPath(
 			TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
