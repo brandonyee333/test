@@ -105,7 +105,7 @@ public class AnalyticsEventStorageDog {
 				}
 
 				_eventAttributeDog.addEventAttribute(
-					eventAttributeDefinition.getId(), entry.getValue(),
+					entry.getValue(), eventAttributeDefinition.getId(),
 					event.getId());
 			}
 		}

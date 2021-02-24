@@ -66,7 +66,7 @@ public class EventAttributeDogTest {
 				"viewDuration");
 
 		EventAttribute eventAttribute = _eventAttributeDog.addEventAttribute(
-			eventAttributeDefinition.getId(), "987654321", event.getId());
+			"987654321", eventAttributeDefinition.getId(), event.getId());
 
 		Assert.assertEquals(
 			eventAttributeDefinition.getId(),

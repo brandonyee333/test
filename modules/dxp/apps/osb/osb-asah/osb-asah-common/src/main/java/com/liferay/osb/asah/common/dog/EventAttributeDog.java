@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 public class EventAttributeDog {
 
 	public EventAttribute addEventAttribute(
-		Long eventAttributeDefinitionId, String attributeValue, Long eventId) {
+		String attributeValue, Long eventAttributeDefinitionId, Long eventId) {
 
 		EventAttribute eventAttribute = new EventAttribute();
 
