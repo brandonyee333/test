@@ -702,29 +702,15 @@ public class FaroInfoTestUtil {
 
 	public static JSONObject buildLiferayDataSourceJSONObject() {
 		return buildLiferayDataSourceJSONObject(
-			RandomTestUtil.selectRandom(
-				"Basic Authentication", "OAuth 1 Authentication",
-				"OAuth 2 Authentication"),
 			RandomTestUtil.randomMultipleWordString(5, 20),
 			RandomTestUtil.randomURL());
-	}
-
-	public static JSONObject buildLiferayDataSourceJSONObject(String url) {
-		return buildLiferayDataSourceJSONObject(
-			RandomTestUtil.selectRandom(
-				"Basic Authentication", "OAuth 1 Authentication",
-				"OAuth 2 Authentication"),
-			RandomTestUtil.randomMultipleWordString(5, 20), url);
 	}
 
 	public static JSONObject buildLiferayDataSourceJSONObject(
 		String name, String url) {
 
 		return buildLiferayDataSourceJSONObject(
-			RandomTestUtil.selectRandom(
-				"Basic Authentication", "OAuth 1 Authentication",
-				"OAuth 2 Authentication"),
-			name, url);
+			"Token Authentication", name, url);
 	}
 
 	public static JSONObject buildLiferayDataSourceJSONObject(
@@ -1094,9 +1080,6 @@ public class FaroInfoTestUtil {
 				RandomTestUtil.randomEmailAddress(),
 				RandomStringUtils.randomAlphanumeric(6, 10));
 		}
-		else if (type.equals("OAuth 1 Authentication")) {
-			return _getOAuth1CredentialsJSONObject();
-		}
 		else if (type.equals("OAuth 2 Authentication")) {
 			return _getOAuth2CredentialsJSONObject();
 		}
@@ -1113,27 +1096,6 @@ public class FaroInfoTestUtil {
 			"provider");
 
 		return providerJSONObject.getString("type");
-	}
-
-	private static JSONObject _getOAuth1CredentialsJSONObject() {
-		return JSONUtil.put(
-			"oAuthAccessSecret", RandomTestUtil.randomHexString(32)
-		).put(
-			"oAuthAccessToken", RandomTestUtil.randomHexString(32)
-		).put(
-			"oAuthConsumerKey", RandomTestUtil.randomUUID()
-		).put(
-			"oAuthConsumerSecret", RandomTestUtil.randomHexString(32)
-		).put(
-			"oAuthOwner",
-			JSONUtil.put(
-				"emailAddress", RandomTestUtil.randomEmailAddress()
-			).put(
-				"name", RandomTestUtil.randomFullName()
-			)
-		).put(
-			"type", "OAuth 1 Authentication"
-		);
 	}
 
 	private static JSONObject _getOAuth2CredentialsJSONObject() {
