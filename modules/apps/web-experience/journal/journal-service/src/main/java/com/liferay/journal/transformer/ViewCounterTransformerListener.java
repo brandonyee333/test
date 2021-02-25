@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.templateparser.BaseTransformerListener;
 import com.liferay.portal.kernel.templateparser.TransformerListener;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Map;
@@ -72,8 +71,7 @@ public class ViewCounterTransformerListener extends BaseTransformerListener {
 		return StringUtil.replace(s, _COUNTER_TOKEN, sb.toString());
 	}
 
-	private static final String _COUNTER_TOKEN =
-		StringPool.AT + "view_counter" + StringPool.AT;
+	private static final String _COUNTER_TOKEN = "@view_counter@";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ViewCounterTransformerListener.class);

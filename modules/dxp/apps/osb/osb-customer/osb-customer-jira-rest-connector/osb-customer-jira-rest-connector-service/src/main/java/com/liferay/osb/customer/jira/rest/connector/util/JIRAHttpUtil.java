@@ -134,7 +134,7 @@ public class JIRAHttpUtil {
 
 		options.addHeader("Authorization", _CREDENTIALS);
 
-		String contentType = "application" + StringPool.SLASH + "json";
+		String contentType = "application/json";
 
 		options.addHeader("Content-Type", contentType);
 

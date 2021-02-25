@@ -1592,8 +1592,8 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 
 			if (Validator.isNotNull(layoutURL)) {
 				return StringBundler.concat(
-					layoutURL, Portal.FRIENDLY_URL_SEPARATOR, "blogs",
-					StringPool.SLASH, String.valueOf(entry.getEntryId()));
+					layoutURL, Portal.FRIENDLY_URL_SEPARATOR, "blogs/",
+					String.valueOf(entry.getEntryId()));
 			}
 		}
 
@@ -1709,8 +1709,8 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			String layoutFullURL = serviceContext.getLayoutFullURL();
 
 			entryURL = StringBundler.concat(
-				layoutFullURL, Portal.FRIENDLY_URL_SEPARATOR, "blogs",
-				StringPool.SLASH, String.valueOf(entry.getEntryId()));
+				layoutFullURL, Portal.FRIENDLY_URL_SEPARATOR, "blogs/",
+				String.valueOf(entry.getEntryId()));
 		}
 
 		BlogsGroupServiceSettings blogsGroupServiceSettings =

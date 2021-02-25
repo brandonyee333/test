@@ -218,8 +218,7 @@ public class LoopEmailNotificationUtil {
 			LoopWebConfigurationValues.LOOP_EMAIL_NOTIFICATION_FROM_ADDRESS,
 			getCreatorName(
 				assetEntrySet.getCreatorClassNameId(),
-				assetEntrySet.getCreatorClassPK()) + StringPool.SPACE +
-					"(LOOP)");
+				assetEntrySet.getCreatorClassPK()) + " (LOOP)");
 		subscriptionSender.setHtmlFormat(true);
 		subscriptionSender.setMailId(
 			"loop_entry", parentAssetEntrySet.getAssetEntrySetId());

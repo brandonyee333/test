@@ -16,7 +16,6 @@ package com.liferay.osb.testray.taglib.servlet.taglib;
 
 import com.liferay.osb.testray.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.taglib.util.IncludeTag;
 
 import java.util.Date;
@@ -72,7 +71,7 @@ public class DateTag extends IncludeTag {
 
 	private String _getId() {
 		return PortalUtil.generateRandomKey(request, "testray_date") +
-			StringPool.UNDERLINE + "testrayDate";
+			"_testrayDate";
 	}
 
 	private static final String _PAGE = "/date/page.jsp";

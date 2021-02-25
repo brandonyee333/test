@@ -610,8 +610,7 @@ public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
 
 	protected static final String GROUP_FIELD = Field.USER_NAME;
 
-	protected static final String SORT_FIELD =
-		Field.USER_ID + StringPool.UNDERLINE + "sortable";
+	protected static final String SORT_FIELD = Field.USER_ID + "_sortable";
 
 	protected final GroupByRequestFactory groupByRequestFactory =
 		new GroupByRequestFactoryImpl();

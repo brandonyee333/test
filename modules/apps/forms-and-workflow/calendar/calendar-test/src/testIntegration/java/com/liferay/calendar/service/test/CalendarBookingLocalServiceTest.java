@@ -224,7 +224,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertNotNull(calendarBooking);
 
 		String mailMessageSubject =
-			"Calendar: Event Update for " + StringPool.QUOTE +
+			"Calendar: Event Update for \"" +
 				calendarBooking.getTitle(LocaleUtil.getSiteDefault()) +
 					StringPool.QUOTE;
 
@@ -242,7 +242,7 @@ public class CalendarBookingLocalServiceTest {
 		Assert.assertNotNull(calendarBooking);
 
 		mailMessageSubject =
-			"Calendar: Event Deletion for " + StringPool.QUOTE +
+			"Calendar: Event Deletion for \"" +
 				calendarBooking.getTitle(LocaleUtil.getSiteDefault()) +
 					StringPool.QUOTE;
 
@@ -844,7 +844,7 @@ public class CalendarBookingLocalServiceTest {
 				WorkflowConstants.ACTION_PUBLISH);
 
 		String mailMessageSubject =
-			"Calendar: Event Notification for " + StringPool.QUOTE +
+			"Calendar: Event Notification for \"" +
 				calendarBooking.getTitle(LocaleUtil.getSiteDefault()) +
 					StringPool.QUOTE;
 
@@ -1419,7 +1419,7 @@ public class CalendarBookingLocalServiceTest {
 		CalendarBookingLocalServiceUtil.checkCalendarBookings();
 
 		String mailMessageSubject =
-			"Calendar: Event Reminder for " + StringPool.QUOTE +
+			"Calendar: Event Reminder for \"" +
 				calendarBooking.getTitle(LocaleUtil.getSiteDefault()) +
 					StringPool.QUOTE;
 

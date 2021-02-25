@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.aop.AnnotationChainableMethodAdvice;
 import com.liferay.portal.spring.aop.ServiceBeanAopCacheManager;
 import com.liferay.portal.spring.aop.ServiceBeanMethodInvocation;
@@ -193,8 +192,7 @@ public class DynamicDataSourceAdviceTest {
 			Assert.assertSame(
 				_writeDataSource, _dynamicDataSourceTargetSource.getTarget());
 			Assert.assertEquals(
-				TestClass.class.getName() + StringPool.PERIOD + "method1",
-				_getCurrentMethod());
+				TestClass.class.getName() + ".method1", _getCurrentMethod());
 
 			_testMethod1 = true;
 		}
@@ -206,8 +204,7 @@ public class DynamicDataSourceAdviceTest {
 			Assert.assertSame(
 				_writeDataSource, _dynamicDataSourceTargetSource.getTarget());
 			Assert.assertEquals(
-				TestClass.class.getName() + StringPool.PERIOD + "method2",
-				_getCurrentMethod());
+				TestClass.class.getName() + ".method2", _getCurrentMethod());
 
 			_testMethod2 = true;
 		}
@@ -219,8 +216,7 @@ public class DynamicDataSourceAdviceTest {
 			Assert.assertSame(
 				_readDataSource, _dynamicDataSourceTargetSource.getTarget());
 			Assert.assertEquals(
-				TestClass.class.getName() + StringPool.PERIOD + "method3",
-				_getCurrentMethod());
+				TestClass.class.getName() + ".method3", _getCurrentMethod());
 
 			_testMethod3 = true;
 		}
@@ -233,8 +229,7 @@ public class DynamicDataSourceAdviceTest {
 			Assert.assertSame(
 				_writeDataSource, _dynamicDataSourceTargetSource.getTarget());
 			Assert.assertEquals(
-				TestClass.class.getName() + StringPool.PERIOD + "method4",
-				_getCurrentMethod());
+				TestClass.class.getName() + ".method4", _getCurrentMethod());
 
 			_testMethod4 = true;
 		}
@@ -247,8 +242,7 @@ public class DynamicDataSourceAdviceTest {
 			Assert.assertSame(
 				_writeDataSource, _dynamicDataSourceTargetSource.getTarget());
 			Assert.assertEquals(
-				TestClass.class.getName() + StringPool.PERIOD + "method5",
-				_getCurrentMethod());
+				TestClass.class.getName() + ".method5", _getCurrentMethod());
 
 			_testMethod5 = true;
 		}

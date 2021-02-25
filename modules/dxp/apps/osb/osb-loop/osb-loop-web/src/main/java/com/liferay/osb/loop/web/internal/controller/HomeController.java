@@ -355,7 +355,7 @@ public class HomeController extends LoopAlloyControllerImpl {
 	}
 
 	public void uiKit() {
-		render(controllerPath + StringPool.SLASH + "ui_kit");
+		render(controllerPath + "/ui_kit");
 	}
 
 	public void viewMarkdownHTML() throws Exception {
