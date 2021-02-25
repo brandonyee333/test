@@ -101,6 +101,11 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 			hikariDataSource);
 
 		DatabasePopulatorUtils.execute(
+			new ResourceDatabasePopulator(
+				true, true, null, new ClassPathResource("constraints.sql")),
+			hikariDataSource);
+
+		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(new ClassPathResource("indexes.sql")),
 			hikariDataSource);
 

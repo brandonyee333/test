@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS Channel (
 );
 
 CREATE TABLE IF NOT EXISTS ChannelDataSource (
-	channelId BIGINT REFERENCES Channel ON DELETE CASCADE,
+	channelId BIGINT,
 	dataSourceId BIGINT,
 	groupIds BIGINT [],
 	PRIMARY KEY (channelId, dataSourceId)
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS DataSource (
 	analyticslastSyncDate TIMESTAMPTZ,
 	authorId BIGINT,
 	authorName TEXT,
-	channelId BIGINT REFERENCES Channel ON DELETE CASCADE,
+	channelId BIGINT,
 	contactsLastSuccessfulAuditEventDate TIMESTAMPTZ,
 	contactsLastSyncDate TIMESTAMPTZ,
 	contactsSelected BOOLEAN,
@@ -52,64 +52,64 @@ CREATE TABLE IF NOT EXISTS DataSource (
 );
 
 CREATE TABLE IF NOT EXISTS DataSourceOrganization (
-	dataSourceId BIGINT REFERENCES DataSource ON DELETE CASCADE,
+	dataSourceId BIGINT,
 	enableAllChildren BOOLEAN,
 	organizationId BIGINT,
 	organizationIds BIGINT []
 );
 
 CREATE TABLE IF NOT EXISTS DataSourceSite (
-	dataSourceId BIGINT REFERENCES DataSource ON DELETE CASCADE,
+	dataSourceId BIGINT,
 	enableAllChildren BOOLEAN,
 	siteId BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS DataSourceUserGroup (
-	dataSourceId BIGINT REFERENCES DataSource ON DELETE CASCADE,
+	dataSourceId BIGINT,
 	enableAllChildren BOOLEAN,
 	userGroupId BIGINT,
 	userGroupIds BIGINT []
 );
 
 CREATE TABLE IF NOT EXISTS EventDefinition (
-    id BIGSERIAL PRIMARY KEY,
-    description TEXT,
-    displayName TEXT UNIQUE,
-    name TEXT UNIQUE,
-    type TEXT NOT NULL
+	id BIGSERIAL PRIMARY KEY,
+	description TEXT,
+	displayName TEXT UNIQUE,
+	name TEXT UNIQUE,
+	type TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Event (
-    id BIGSERIAL PRIMARY KEY,
+	id BIGSERIAL PRIMARY KEY,
 	analyticsEventId TEXT UNIQUE,
-    applicationId TEXT,
-    channelId BIGINT NOT NULL REFERENCES Channel,
-    createDate TIMESTAMPTZ,
-    dataSourceId TEXT,
-    eventDate TiMESTAMPTZ,
-    eventDefinitionId BIGINT REFERENCES EventDefinition,
-    userId TEXT
+	applicationId TEXT,
+	channelId BIGINT NOT NULL,
+	createDate TIMESTAMPTZ,
+	dataSourceId TEXT,
+	eventDate TiMESTAMPTZ,
+	eventDefinitionId BIGINT,
+	userId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
-    id BIGSERIAL PRIMARY KEY,
-    dataType TEXT NOT NULL,
-    description TEXT,
-    displayName TEXT UNIQUE,
-    name TEXT UNIQUE
+	id BIGSERIAL PRIMARY KEY,
+	dataType TEXT NOT NULL,
+	description TEXT,
+	displayName TEXT UNIQUE,
+	name TEXT UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
-    eventAttributeDefinitionId BIGINT REFERENCES EventAttributeDefinition,
-    eventDefinitionId BIGINT REFERENCES EventDefinition,
-    PRIMARY KEY (eventAttributeDefinitionId, eventDefinitionId)
+	eventAttributeDefinitionId BIGINT,
+	eventDefinitionId BIGINT,
+	PRIMARY KEY (eventAttributeDefinitionId, eventDefinitionId)
 );
 
 CREATE TABLE IF NOT EXISTS EventAttribute (
-    id BIGSERIAL PRIMARY KEY,
-    attributeValue TEXT,
-    eventAttributeDefinitionId BIGINT REFERENCES EventAttributeDefinition,
-    eventId BIGINT REFERENCES Event
+	id BIGSERIAL PRIMARY KEY,
+	attributeValue TEXT,
+	eventAttributeDefinitionId BIGINT,
+	eventId BIGINT REFERENCES Event
 );
 
 CREATE TABLE IF NOT EXISTS Preference (
