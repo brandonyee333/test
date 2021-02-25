@@ -17,7 +17,6 @@ package com.liferay.osb.customer.ticket.service.permission;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
@@ -117,16 +116,8 @@ public class TicketAttachmentPermissionChecker {
 						_contactRoleWebService.getTeamContactRoles(
 							team.getKey(), userUuid, 1, 100);
 
-					for (ContactRole contactRole : contactRoles) {
-						String contactRoleName = contactRole.getName();
-
-						if (contactRoleName.equals(
-								ContactRoleConstants.NAME_PARTNER_MANAGER) ||
-							contactRoleName.equals(
-								ContactRoleConstants.NAME_PARTNER_MEMBER)) {
-
-							return true;
-						}
+					if (!contactRoles.isEmpty()) {
+						return true;
 					}
 				}
 			}
