@@ -41,6 +41,11 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 	}
 
 	@Override
+	public Long countByType(String type) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public void delete(EventDefinition eventDefinition) {
 		throw new UnsupportedOperationException();
 	}
@@ -91,6 +96,11 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 
 	@Override
 	public EventDefinition findByName(String name) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<EventDefinition> findByType(Pageable pageable, String type) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -50,15 +50,25 @@ public class EventDefinitionDog {
 		return _eventDefinitionRepository.save(eventDefinition);
 	}
 
-	public Long countEventDefinitions() {
-		return _eventDefinitionRepository.count();
+	public Long countEventDefinitions(String eventType) {
+		return _eventDefinitionRepository.countByType(eventType);
 	}
 
 	public EventDefinition fetchEventDefinitionByName(String name) {
 		return _eventDefinitionRepository.findByName(name);
 	}
 
-	public List<EventDefinition> getEventDefinitions(int page, int size) {
+	public List<EventDefinition> getEventDefinitions(
+		String eventType, int page, int size) {
+
+		if (eventType != null) {
+			return _eventDefinitionRepository.findByType(
+				PageRequest.of(
+					page, size,
+					Sort.by(Collections.singletonList(Sort.Order.asc("name")))),
+				eventType);
+		}
+
 		return _eventDefinitionRepository.findAll(
 			PageRequest.of(
 				page, size,
