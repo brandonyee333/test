@@ -16,15 +16,18 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -60,7 +63,30 @@ public class EventDefinitionDog {
 	}
 
 	public EventDefinition fetchEventDefinitionByName(String name) {
-		return _eventDefinitionRepository.findByName(name);
+		Optional<EventDefinition> eventDefinitionOptional =
+			_eventDefinitionRepository.findByName(name);
+
+		return eventDefinitionOptional.orElseThrow(null);
+	}
+
+	public EventDefinition getEventDefinition(Long eventDefinitionId) {
+		Optional<EventDefinition> eventDefinitionOptional =
+			_eventDefinitionRepository.findById(eventDefinitionId);
+
+		return eventDefinitionOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no event definition with ID " + eventDefinitionId));
+	}
+
+	public EventDefinition getEventDefinitionByName(String name) {
+		Optional<EventDefinition> eventDefinitionOptional =
+			_eventDefinitionRepository.findByName(name);
+
+		return eventDefinitionOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no event definition with name " + name));
 	}
 
 	public List<EventDefinition> getEventDefinitions(

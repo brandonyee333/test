@@ -14,12 +14,15 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
+import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dto.EventDefinitionDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.EventDefinition;
 
+import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,14 +31,28 @@ import org.springframework.stereotype.Component;
 @Component
 @GraphQLTypeWiring(fieldName = "eventDefinition", typeName = "QueryType")
 public class EventDefinitionDataFetcher
-	extends BaseDataFetcher<EventDefinitionDTO> {
+	implements DataFetcher<EventDefinitionDTO> {
 
 	@Override
-	public EventDefinitionDTO get(
-		DataFetchingEnvironment dataFetchingEnvironment,
-		SearchQueryContext searchQueryContext) {
+	public EventDefinitionDTO get(DataFetchingEnvironment environment) {
+		int id = environment.getArgument("id");
+		String name = environment.getArgument("name");
 
-		return null;
+		EventDefinition eventDefinition;
+
+		if (name != null) {
+			eventDefinition = _eventDefinitionDog.getEventDefinitionByName(
+				name);
+		}
+		else {
+			eventDefinition = _eventDefinitionDog.getEventDefinition(
+				Long.valueOf(id));
+		}
+
+		return new EventDefinitionDTO(eventDefinition);
 	}
+
+	@Autowired
+	private EventDefinitionDog _eventDefinitionDog;
 
 }

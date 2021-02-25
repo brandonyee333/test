@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.model.EventDefinition;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +41,7 @@ public interface EventDefinitionRepository
 
 	public List<EventDefinition> findAll(Pageable pageable);
 
-	public EventDefinition findByName(String name);
+	public Optional<EventDefinition> findByName(String name);
 
 	public List<EventDefinition> findByNameContainingIgnoreCaseAndType(
 		String name, Pageable pageable, String type);

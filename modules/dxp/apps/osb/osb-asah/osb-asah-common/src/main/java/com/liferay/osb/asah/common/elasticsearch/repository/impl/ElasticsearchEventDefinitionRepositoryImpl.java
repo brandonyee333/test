@@ -102,7 +102,7 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 	}
 
 	@Override
-	public EventDefinition findByName(String name) {
+	public Optional<EventDefinition> findByName(String name) {
 		throw new UnsupportedOperationException();
 	}
 

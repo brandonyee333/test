@@ -770,9 +770,8 @@ type QueryType {
     ): EventAttributeDefinitionBag
 
 	eventDefinition(
-		id: String,
+		id: Int,
 		name: String
-        size: Int!
 	): EventDefinition
 
 	eventDefinitions(
