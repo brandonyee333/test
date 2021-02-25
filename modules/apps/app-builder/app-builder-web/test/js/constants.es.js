@@ -715,7 +715,8 @@ export const dataLayoutBuilderConfig = {
 		'_com_liferay_journal_web_portlet_JournalPortlet_dataLayoutBuilder',
 	fieldTypes: [
 		{
-			name: 'Text',
+			name: 'text',
+			settingsContext: {pages: []},
 		},
 	],
 	localizable: true,
@@ -774,9 +775,6 @@ export const FORM_VIEW = {
 					},
 				},
 			},
-			getDDMFormFieldSettingsContext: jest
-				.fn()
-				.mockImplementation(() => ({pages: []})),
 			on: jest.fn(),
 			onEditingLanguageIdChange: jest.fn(),
 			removeEventListener: jest.fn(),
