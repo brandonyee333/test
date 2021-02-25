@@ -47,6 +47,8 @@ class CommerceMLForecastScope(Enum):
 
 	COMMERCE_ACCOUNT = ('commerce-account', ['commerceAccountId'])
 
+	SKU = ('sku', ['sku'])
+
 	@property
 	def columns(self):
 		return self.value[1]

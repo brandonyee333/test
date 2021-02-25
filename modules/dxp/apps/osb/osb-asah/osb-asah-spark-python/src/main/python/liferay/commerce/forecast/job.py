@@ -32,9 +32,6 @@ class AccountCategoryForecastJSONDataFrameWriterSparkJob(BaseJSONDataFrameWriter
 			'AccountCategoryForecast', 'forecast_prediction'
 		)
 
-	def _pre_process(self, data_frame):
-		return data_frame.filter('forecast IS NOT NULL')
-
 class AccountForecastJSONDataFrameWriterSparkJob(BaseJSONDataFrameWriterSparkJob):
 
 	def __init__(self, spark_application):
@@ -46,9 +43,6 @@ class AccountForecastJSONDataFrameWriterSparkJob(BaseJSONDataFrameWriterSparkJob
 			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
 			'AccountForecast', 'forecast_prediction'
 		)
-
-	def _pre_process(self, data_frame):
-		return data_frame.filter('forecast IS NOT NULL')
 
 class ForecastDataPrepareSparkJob(BaseSparkJob):
 
@@ -240,3 +234,102 @@ class ForecastSparkJob(BaseSparkJob):
 		forecast_prediction.createOrReplaceTempView('forecast_prediction')
 
 		self.spark_session.catalog.cacheTable('forecast_prediction')
+
+class MergeHistorySparkJob(BaseSparkJob):
+
+	def __init__(
+		self, spark_application, period: CommerceMLForecastPeriod,
+		scope: CommerceMLForecastScope, target: CommerceMLForecastTarget
+	):
+		super(MergeHistorySparkJob, self).__init__(spark_application)
+
+		self._period = period
+		self._scope = scope
+		self._target = target
+
+	def _add_missing_columns(self, data_frame, column_set):
+		missing_column_names = list(column_set - set(data_frame.columns))
+
+		for column_name in missing_column_names:
+			if column_name == 'period':
+				data_frame = data_frame.withColumn(
+					'period', F.lit(self._period.label)
+				)
+			elif column_name == 'scope':
+				data_frame = data_frame.withColumn(
+					'scope', F.lit(self._scope.label)
+				)
+			elif column_name == 'target':
+				data_frame = data_frame.withColumn(
+					'target', F.lit(self._target.label)
+				)
+			else:
+				data_frame = data_frame.withColumn(column_name, F.lit(None))
+
+		return data_frame
+
+	def run(self):
+		forecast_data_frame = self.spark_session.table('forecast_data')
+
+		window_spec = Window.partitionBy(self._scope.columns)
+
+		window_spec = window_spec.orderBy(F.col('timestamp').desc())
+
+		order_forecast_data_frame = forecast_data_frame.withColumn(
+			'row_number',
+			F.row_number().over(window_spec)
+		)
+
+		forecast_data_history_length = self.spark_application_configuration.get(
+			'forecast.data.history.length'
+		)
+
+		forecast_data_frame = order_forecast_data_frame.filter(
+			'row_number <= {}'.format(forecast_data_history_length)
+		)
+
+		forecast_prediction_data_frame = self.spark_session.table(
+			'forecast_prediction'
+		)
+
+		column_set = set(
+			forecast_data_frame.columns +
+			forecast_prediction_data_frame.columns
+		)
+
+		forecast_data_frame = forecast_data_frame.withColumn(
+			'timestamp',
+			F.col('timestamp').cast('long') * 1000
+		)
+
+		forecast_data_frame = self._add_missing_columns(
+			data_frame=forecast_data_frame,
+			column_set=column_set
+		)
+
+		forecast_prediction_data_frame = self._add_missing_columns(
+			data_frame=forecast_prediction_data_frame,
+			column_set=column_set
+		)
+
+		forecast_prediction_data_frame = forecast_prediction_data_frame.unionByName(
+			forecast_data_frame
+		).orderBy(
+			self._scope.columns + ['timestamp']
+		)
+
+		forecast_prediction_data_frame.createOrReplaceTempView('forecast_prediction')
+
+		self.spark_session.catalog.cacheTable('forecast_prediction')
+
+class SkuForecastJSONDataFrameWriterSparkJob(BaseJSONDataFrameWriterSparkJob):
+
+	def __init__(self, spark_application):
+		super(
+			SkuForecastJSONDataFrameWriterSparkJob,
+			self
+		).__init__(
+			spark_application,
+			'com.liferay.headless.commerce.machine.learning.dto.v1_0.'
+			'SkuForecast', 'forecast_prediction'
+		)

@@ -10,4 +10,5 @@
 #
 
 from liferay.commerce.forecast.application import AccountCategoryForecastApplication, \
-	AccountForecastApplication
+	AccountForecastApplication, \
+	ProductDemandForecastApplication

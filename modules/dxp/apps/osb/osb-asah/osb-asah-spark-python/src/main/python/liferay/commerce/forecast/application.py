@@ -19,7 +19,9 @@ from liferay.commerce.forecast.job import AccountCategoryForecastJSONDataFrameWr
 	ForecastOrderJSONDataFrameReader, \
 	ForecastProductCategoryAugmentationSparkJob, \
 	ForecastProductJSONDataFrameReaderSparkJob, \
-	ForecastSparkJob
+	ForecastSparkJob, \
+	MergeHistorySparkJob, \
+	SkuForecastJSONDataFrameWriterSparkJob
 from liferay.common.spark import SparkJobPipeline
 
 class AccountCategoryForecastApplication(BaseCommerceSparkApplication):
@@ -54,6 +56,8 @@ class AccountCategoryForecastApplication(BaseCommerceSparkApplication):
 			ForecastSparkJob(self, self._period, self._scope, self._target)
 		)
 
+		jobs.append(MergeHistorySparkJob(self))
+
 		jobs.append(AccountCategoryForecastJSONDataFrameWriterSparkJob(self))
 
 		return SparkJobPipeline(jobs)
@@ -86,6 +90,42 @@ class AccountForecastApplication(BaseCommerceSparkApplication):
 			ForecastSparkJob(self, self._period, self._scope, self._target)
 		)
 
+		jobs.append(MergeHistorySparkJob(self))
+
 		jobs.append(AccountForecastJSONDataFrameWriterSparkJob(self))
+
+		return SparkJobPipeline(jobs)
+
+class ProductDemandForecastApplication(BaseCommerceSparkApplication):
+
+	def __init__(self):
+		super(ProductDemandForecastApplication, self).__init__()
+
+		self._period = CommerceMLForecastPeriod.MONTH
+		self._scope = CommerceMLForecastScope.SKU
+		self._target = CommerceMLForecastTarget.QUANTITY
+
+	def _create_spark_job_pipeline(self):
+		jobs = list()
+
+		jobs.append(
+			ForecastOrderJSONDataFrameReader(
+				self, self._period, self._scope, self._target
+			)
+		)
+
+		jobs.append(
+			ForecastDataPrepareSparkJob(
+				self, self._period, self._scope, self._target
+			)
+		)
+
+		jobs.append(
+			ForecastSparkJob(self, self._period, self._scope, self._target)
+		)
+
+		jobs.append(MergeHistorySparkJob(self))
+
+		jobs.append(SkuForecastJSONDataFrameWriterSparkJob(self))
 
 		return SparkJobPipeline(jobs)
