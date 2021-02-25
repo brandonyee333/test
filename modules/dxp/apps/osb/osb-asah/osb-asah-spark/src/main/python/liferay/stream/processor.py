@@ -635,6 +635,88 @@ class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
+	def _create_session_data_frame(self, analytics_events_data_frame):
+		session_data_frame = analytics_events_data_frame.withColumn(
+			'event_date',
+			F.to_timestamp(F.col('eventDate'))
+		).withColumn(
+			'normalized_event_date',
+			F.date_trunc('hour', 'event_date')
+		).withColumn(
+			'url',
+			F.when(
+				F.col('context.canonicalUrl') != '',
+				F.col('context.canonicalUrl')
+			).otherwise(
+				F.col('context.url')
+			)
+		).withColumn(
+			'interactions',
+			F.when(
+				F.col(
+					'eventId'
+				).isin(
+					[
+						'blogViewed', 'documentPreviewed', 'formViewed',
+						'pageLoaded', 'pageUnloaded', 'pageViewed',
+						'webContentViewed'
+					]
+				), F.lit(0)
+			).otherwise(
+				F.lit(1)
+			)
+		).withColumn(
+			'page_views',
+			F.when(
+				F.col('eventId') == 'pageViewed', F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		)
+
+		session_data_frame = session_data_frame.sort(
+			'normalized_event_date'
+		).groupby(
+			'projectId', 'channelId', 'sessionId'
+		).agg(
+			F.sum(
+				'interactions'
+			).alias(
+				'interactions'
+			),
+			F.sum(
+				'page_views'
+			).alias(
+				'page_views'
+			),
+			F.last(
+				F.col('normalized_event_date')
+			).alias(
+				'session_end_normalized_event_date'
+			),
+			F.first(
+				F.col('normalized_event_date')
+			).alias(
+				'session_start_normalized_event_date'
+			)
+		).withColumn(
+			'page_views', F.greatest(F.col('interactions'), F.col('page_views'))
+		).withColumn(
+			'bounced',
+			F.when(
+				(F.col('interactions') == 0) & (F.col('page_views') < 2),
+				F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).drop(
+			'interactions', 'page_views'
+		)
+
+		session_data_frame.createOrReplaceTempView(
+			'sessions'
+		)
+
 	def _filter(self, analytics_events_data_frame):
 		return analytics_events_data_frame.filter(
 			"""
@@ -650,6 +732,11 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		).otherwise(
 			F.col('context.url')
 		)
+
+	def _pre_process(self, data_frame):
+		self._create_session_data_frame(data_frame)
+
+		return super(PageDataFrameProcessor, self)._pre_process(data_frame)
 
 	def _process(self, data_frame):
 		window = Window.partitionBy(
@@ -761,6 +848,26 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			F.sum('indirect_access').alias('indirect_access'),
 			F.sum('reads').alias('reads'),
 			F.sum('views').alias('views')
+		)
+
+		session_data_frame = self._spark_job.spark_session.table(
+			'sessions'
+		).selectExpr(
+			'projectId', 'channelId', 'sessionId',
+			'session_end_normalized_event_date as normalized_event_date',
+			'bounced as bounces'
+		).filter(
+			F.col('bounces') == 1
+		)
+
+		data_frame = data_frame.join(
+			session_data_frame,
+			how='left',
+			on=[
+		 		'projectId', 'channelId', 'sessionId', 'normalized_event_date'
+		 	]
+		).fillna(
+			0, subset=['bounces']
 		)
 
 		return data_frame.withColumnRenamed(
