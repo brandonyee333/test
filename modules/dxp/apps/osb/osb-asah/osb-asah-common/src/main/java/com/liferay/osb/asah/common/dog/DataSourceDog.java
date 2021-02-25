@@ -302,7 +302,7 @@ public class DataSourceDog {
 
 		DataSource dataSource = getDataSource(dataSourceId);
 
-		Boolean oldContactsSelected = dataSource.getContactsSelected();
+		Boolean oldSitesSelected = dataSource.getSitesSelected();
 
 		if (contactsSelected != null) {
 			dataSource.setContactsSelected(contactsSelected);
@@ -314,7 +314,7 @@ public class DataSourceDog {
 
 		dataSource = _dataSourceRepository.save(dataSource);
 
-		if (dataSource.getSitesSelected() && !oldContactsSelected) {
+		if (dataSource.getSitesSelected() && !oldSitesSelected) {
 			_nanitesHttp.refreshAnalytics();
 
 			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
