@@ -23,4 +23,6 @@ public class AccountEntryDetailsWebKeys {
 
 	public static final String ACCOUNT_ENVIRONMENT = "ACCOUNT_ENVIRONMENT";
 
+	public static final String TICKET_ATTACHMENT = "TICKET_ATTACHMENT";
+
 }

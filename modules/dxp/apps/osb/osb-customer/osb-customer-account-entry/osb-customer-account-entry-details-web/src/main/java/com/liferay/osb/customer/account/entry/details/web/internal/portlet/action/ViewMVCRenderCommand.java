@@ -29,6 +29,7 @@ import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
@@ -87,7 +88,7 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 					_accountEntryLanguageLocalService, _auditEntryWebService,
 					_contactRoleWebService, _contactWebService,
 					_productPurchaseViewWebService, _productPurchaseWebService,
-					_teamWebService);
+					_teamWebService, _ticketAttachmentLocalService);
 
 			renderRequest.setAttribute(
 				AccountEntryViewDisplayContext.class.getName(),
@@ -157,5 +158,8 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 
 	@Reference
 	private TeamWebService _teamWebService;
+
+	@Reference
+	private TicketAttachmentLocalService _ticketAttachmentLocalService;
 
 }

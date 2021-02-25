@@ -29,7 +29,7 @@ portletURL.setParameter("koroneikiAccountKey", String.valueOf(koroneikiAccount.g
 
 PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project-details"), portletURL.toString(), null, false);
 
-String tabNames = "overview,team-members,liferay-contacts,offerings";
+String tabNames = "overview,team-members,liferay-contacts,offerings,attachments";
 
 if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
 	tabNames += ",source-code-access";
@@ -73,6 +73,9 @@ if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
 <liferay-ui:error exception="<%= DuplicateAccountEnvironmentException.class %>" message="please-provide-a-unique-environment-name" />
 
 <c:choose>
+	<c:when test='<%= tabs1.equals("attachments") %>'>
+		<liferay-util:include page="/account_entry_details/attachments.jsp" servletContext="<%= application %>" />
+	</c:when>
 	<c:when test='<%= tabs1.equals("liferay-contacts") %>'>
 		<liferay-util:include page="/account_entry_details/liferay_contacts.jsp" servletContext="<%= application %>" />
 	</c:when>

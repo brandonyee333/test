@@ -12,13 +12,19 @@
 	@import "_overview";
 	@import "_select-project";
 
+	h1 {
+		margin-bottom: $margin-default;
+	}
+
+	tr .splitter {
+		background-color: $color-divider;
+		height: auto;
+		padding: 0 0 0 12px;
+	}
+
 	.account-environments,
 	.source-code-access {
 		@import "_panel";
 		@import "_source-code-access-modal";
-	}
-
-	h1 {
-		margin-bottom: $margin-default;
 	}
 }

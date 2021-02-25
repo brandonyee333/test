@@ -132,10 +132,30 @@ public class TicketAttachmentLocalServiceImpl
 		return ticketAttachmentPersistence.remove(ticketAttachment);
 	}
 
+	public List<TicketAttachment> getTicketAttachments(long accountEntryId) {
+		return ticketAttachmentPersistence.findByAccountEntryId(accountEntryId);
+	}
+
 	public List<TicketAttachment> getTicketAttachments(
 		long zendeskTicketId, int[] types) {
 
 		return ticketAttachmentPersistence.findByZTI_T(zendeskTicketId, types);
+	}
+
+	public int getTicketAttachmentsCount(long accountEntryId) {
+		return ticketAttachmentPersistence.countByAccountEntryId(
+			accountEntryId);
+	}
+
+	public TicketAttachment removeRegionRestriction(long ticketAttachmentId)
+		throws PortalException {
+
+		TicketAttachment ticketAttachment =
+			ticketAttachmentPersistence.findByPrimaryKey(ticketAttachmentId);
+
+		ticketAttachment.setRegionRestricted(false);
+
+		return ticketAttachmentPersistence.update(ticketAttachment);
 	}
 
 	protected String buildZendeskTicketCommentBody(

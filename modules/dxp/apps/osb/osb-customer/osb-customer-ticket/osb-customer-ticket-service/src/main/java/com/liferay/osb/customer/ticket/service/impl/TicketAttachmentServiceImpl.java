@@ -43,6 +43,20 @@ public class TicketAttachmentServiceImpl
 			fileName, fileSize, type, regionRestricted, serviceContext);
 	}
 
+	public TicketAttachment deleteTicketAttachment(long ticketAttachmentId)
+		throws PortalException {
+
+		TicketAttachment ticketAttachment =
+			ticketAttachmentLocalService.getTicketAttachment(
+				ticketAttachmentId);
+
+		TicketAttachmentPermissionChecker.check(
+			getPermissionChecker(), ticketAttachment, TicketActionKeys.DELETE);
+
+		return ticketAttachmentLocalService.deleteTicketAttachment(
+			ticketAttachmentId);
+	}
+
 	public TicketAttachment getTicketAttachment(long ticketAttachmentId)
 		throws PortalException {
 
@@ -51,10 +65,23 @@ public class TicketAttachmentServiceImpl
 				ticketAttachmentId);
 
 		TicketAttachmentPermissionChecker.check(
-			getPermissionChecker(), ticketAttachment.getAccountEntryId(),
-			TicketActionKeys.VIEW);
+			getPermissionChecker(), ticketAttachment, TicketActionKeys.VIEW);
 
 		return ticketAttachment;
+	}
+
+	public TicketAttachment removeRegionRestriction(long ticketAttachmentId)
+		throws PortalException {
+
+		TicketAttachment ticketAttachment =
+			ticketAttachmentLocalService.getTicketAttachment(
+				ticketAttachmentId);
+
+		TicketAttachmentPermissionChecker.check(
+			getPermissionChecker(), ticketAttachment, TicketActionKeys.UPDATE);
+
+		return ticketAttachmentLocalService.removeRegionRestriction(
+			ticketAttachmentId);
 	}
 
 }

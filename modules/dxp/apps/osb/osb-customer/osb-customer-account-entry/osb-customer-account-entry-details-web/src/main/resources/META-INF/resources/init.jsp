@@ -27,6 +27,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.osb.customer.account.entry.details.web.internal.configuration.AccountEntryDetailsConfiguration" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
+page import="com.liferay.osb.customer.account.entry.details.web.internal.dao.search.TicketAttachmentResultRowSplitter" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntrySearchDisplayContext" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
 page import="com.liferay.osb.customer.admin.exception.AccountEnvironmentAttachmentSizeException" %><%@
@@ -46,9 +47,11 @@ page import="com.liferay.osb.customer.constants.OSBActionKeys" %><%@
 page import="com.liferay.osb.customer.github.configuration.GitHubConfigurationValues" %><%@
 page import="com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants" %><%@
 page import="com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException" %><%@
+page import="com.liferay.osb.customer.ticket.model.TicketAttachment" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepository" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryManager" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryWebService" %><%@
+page import="com.liferay.osb.customer.ticket.service.permission.TicketAttachmentPermissionChecker" %><%@
 page import="com.liferay.osb.customer.zendesk.exception.ZendeskTicketClosedException" %><%@
 page import="com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account" %><%@
@@ -62,14 +65,20 @@ page import="com.liferay.portal.kernel.json.JSONObject" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.model.Phone" %><%@
 page import="com.liferay.portal.kernel.model.User" %><%@
+page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
+page import="com.liferay.portal.kernel.security.permission.ActionKeys" %><%@
 page import="com.liferay.portal.kernel.service.UserLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
+page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
-page import="com.liferay.portal.kernel.util.Validator" %>
+page import="com.liferay.portal.kernel.util.TextFormatter" %><%@
+page import="com.liferay.portal.kernel.util.Validator" %><%@
+page import="com.liferay.portal.kernel.util.WebKeys" %><%@
+page import="com.liferay.taglib.search.ResultRow" %>
 
 <%@ page import="java.io.FileNotFoundException" %>
 
@@ -78,7 +87,9 @@ page import="java.text.Format" %>
 
 <%@ page import="java.util.List" %>
 
-<%@ page import="javax.portlet.PortletURL" %>
+<%@ page import="javax.portlet.PortletURL" %><%@
+page import="javax.portlet.ResourceURL" %><%@
+page import="javax.portlet.WindowState" %>
 
 <liferay-frontend:defineObjects />
 

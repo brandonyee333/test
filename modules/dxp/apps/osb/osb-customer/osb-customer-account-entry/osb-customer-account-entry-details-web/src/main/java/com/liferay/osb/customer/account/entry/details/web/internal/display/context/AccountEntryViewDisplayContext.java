@@ -43,6 +43,7 @@ import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.AuditEntry;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
@@ -98,7 +99,8 @@ public class AccountEntryViewDisplayContext {
 			ContactWebService contactWebService,
 			ProductPurchaseViewWebService productPurchaseViewWebService,
 			ProductPurchaseWebService productPurchaseWebService,
-			TeamWebService teamWebService)
+			TeamWebService teamWebService,
+			TicketAttachmentLocalService ticketAttachmentLocalService)
 		throws Exception {
 
 		_portletRequest = portletRequest;
@@ -112,6 +114,7 @@ public class AccountEntryViewDisplayContext {
 		_productPurchaseViewWebService = productPurchaseViewWebService;
 		_productPurchaseWebService = productPurchaseWebService;
 		_teamWebService = teamWebService;
+		_ticketAttachmentLocalService = ticketAttachmentLocalService;
 
 		_accountEntry = AccountEntryLocalServiceUtil.fetchKoroneikiAccountEntry(
 			_account.getKey());
@@ -476,6 +479,23 @@ public class AccountEntryViewDisplayContext {
 		}
 
 		return StringPool.BLANK;
+	}
+
+	public SearchContainer getTicketAttachmentsSearchContainer()
+		throws Exception {
+
+		SearchContainer searchContainer = new SearchContainer(
+			_portletRequest, _mimeResponse.createRenderURL(),
+			Collections.emptyList(), "no-attachments-were-found");
+
+		searchContainer.setResults(
+			_ticketAttachmentLocalService.getTicketAttachments(
+				_accountEntry.getAccountEntryId()));
+		searchContainer.setTotal(
+			_ticketAttachmentLocalService.getTicketAttachmentsCount(
+				_accountEntry.getAccountEntryId()));
+
+		return searchContainer;
 	}
 
 	public boolean isLiferayContractorOrg() {
@@ -902,6 +922,7 @@ public class AccountEntryViewDisplayContext {
 	private final ProductPurchaseWebService _productPurchaseWebService;
 	private final HttpServletRequest _request;
 	private final TeamWebService _teamWebService;
+	private final TicketAttachmentLocalService _ticketAttachmentLocalService;
 	private final User _user;
 
 }

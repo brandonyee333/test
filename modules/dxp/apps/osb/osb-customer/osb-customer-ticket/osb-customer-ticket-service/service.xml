@@ -26,8 +26,18 @@
 		<column name="type" type="int" />
 		<column name="regionRestricted" type="boolean" />
 
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="zendeskTicketId" />
+			<order-column name="fileName" />
+		</order>
+
 		<!-- Finder methods -->
 
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
 		<finder name="ZendeskTicketId" return-type="Collection">
 			<finder-column name="zendeskTicketId" />
 		</finder>

@@ -29,10 +29,10 @@ portletURL.setParameter("koroneikiAccountKey", String.valueOf(koroneikiAccount.g
 
 PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project-details"), portletURL.toString(), null, false);
 
-String tabNames = "overview,team-members,liferay-contacts,offerings,history";
+String tabNames = "overview,team-members,liferay-contacts,offerings,attachments,history";
 
 if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
-	tabNames = "overview,team-members,liferay-contacts,offerings,source-code-access,history";
+	tabNames = "overview,team-members,liferay-contacts,offerings,attachments,source-code-access,history";
 }
 %>
 
@@ -46,6 +46,9 @@ if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
 />
 
 <c:choose>
+	<c:when test='<%= tabs1.equals("attachments") %>'>
+		<liferay-util:include page="/account_entry_details/attachments.jsp" servletContext="<%= application %>" />
+	</c:when>
 	<c:when test='<%= tabs1.equals("history") %>'>
 		<liferay-util:include page="/account_entry_details/worker/history.jsp" servletContext="<%= application %>" />
 	</c:when>

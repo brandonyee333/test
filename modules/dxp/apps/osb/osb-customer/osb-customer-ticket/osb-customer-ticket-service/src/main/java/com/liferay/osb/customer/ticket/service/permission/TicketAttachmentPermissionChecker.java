@@ -20,6 +20,8 @@ import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.customer.ticket.constants.TicketActionKeys;
+import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
@@ -41,20 +43,47 @@ import org.osgi.service.component.annotations.Reference;
 public class TicketAttachmentPermissionChecker {
 
 	public static void check(
-			PermissionChecker permissionChecker, long accountEntryId,
-			String actionId)
+			PermissionChecker permissionChecker,
+			TicketAttachment ticketAttachment, String actionId)
 		throws PortalException {
 
-		if (!contains(permissionChecker, accountEntryId, actionId)) {
+		if (!contains(permissionChecker, ticketAttachment, actionId)) {
 			throw new PrincipalException.MustHavePermission(
 				permissionChecker, actionId);
 		}
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, long accountEntryId,
-			String actionId)
+			PermissionChecker permissionChecker,
+			TicketAttachment ticketAttachment, String actionId)
 		throws PortalException {
+
+		if (actionId.equals(TicketActionKeys.DELETE)) {
+			if (permissionChecker.isOmniadmin()) {
+				return true;
+			}
+
+			if (permissionChecker.getUserId() == ticketAttachment.getUserId()) {
+				return true;
+			}
+
+			return false;
+		}
+
+		if (actionId.equals(TicketActionKeys.UPDATE)) {
+			if ((permissionChecker.getUserId() ==
+					ticketAttachment.getUserId()) &&
+				ticketAttachment.isRegionRestricted()) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		if (ticketAttachment.isRegionRestricted()) {
+			return containsRegionRestricted(ticketAttachment);
+		}
 
 		if (_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),
@@ -67,7 +96,7 @@ public class TicketAttachmentPermissionChecker {
 		}
 
 		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
-			accountEntryId);
+			ticketAttachment.getAccountEntryId());
 
 		User user = permissionChecker.getUser();
 
@@ -90,6 +119,13 @@ public class TicketAttachmentPermissionChecker {
 		catch (Exception e) {
 			throw new PortalException(e);
 		}
+
+		return false;
+	}
+
+	protected static boolean containsRegionRestricted(
+			TicketAttachment ticketAttachment)
+		throws PortalException {
 
 		return false;
 	}
