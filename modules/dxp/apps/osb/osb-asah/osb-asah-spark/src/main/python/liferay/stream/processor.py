@@ -652,6 +652,42 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		)
 
 	def _process(self, data_frame):
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'sessionId'
+		).orderBy(
+			F.asc('eventDate')
+		)
+
+		data_frame = data_frame.withColumn(
+			'entry_url',
+			F.first(
+				F.col('assetId')
+			).over(
+				window.rowsBetween(Window.unboundedPreceding, Window.currentRow)
+			)
+		).withColumn(
+			'entry_url_normalized_event_date',
+			F.first(
+				F.col('normalized_event_date')
+			).over(
+				window.rowsBetween(Window.unboundedPreceding, Window.currentRow)
+			)
+		).withColumn(
+			'exit_url',
+			F.last(
+				F.col('assetId')
+			).over(
+				window.rowsBetween(Window.currentRow, Window.unboundedFollowing)
+			)
+		).withColumn(
+			'exit_url_normalized_event_date',
+			F.last(
+				F.col('normalized_event_date')
+			).over(
+				window.rowsBetween(Window.currentRow, Window.unboundedFollowing)
+			)
+		)
+
 		data_frame = data_frame.withColumn(
 			'cta_clicks',
 			F.when(
@@ -661,13 +697,33 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 				F.lit(0)
 			)
 		).withColumn(
-			'views',
+			'entrances',
 			F.when(
-				F.col("eventId") == 'pageViewed',
-				F.lit(1)
+				(
+					(F.col('assetId') == F.col('entry_url')) &
+					(
+						F.col('normalized_event_date') ==
+						F.col('entry_url_normalized_event_date')
+					)
+				), F.lit(1)
 			).otherwise(
 				F.lit(0)
 			)
+		).withColumn(
+			'exits',
+			F.when(
+				(
+					(F.col('assetId') == F.col('exit_url')) &
+					(
+						F.col('normalized_event_date') ==
+						F.col('exit_url_normalized_event_date')
+					)
+				), F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'views', F.lit(1)
 		).withColumn(
 			'reads',
 			F.when(
@@ -695,11 +751,13 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 				F.lit(0)
 			)
 		).groupBy(
-			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
-			'normalized_event_date', 'primaryKey'
+			'projectId', 'channelId', 'userId', 'sessionId', 'assetId',
+			'variantId', 'normalized_event_date', 'primaryKey'
 		).agg(
 			F.sum('cta_clicks').alias('cta_clicks'),
 			F.sum('direct_access').alias('direct_access'),
+			F.sum('entrances').alias('entrances'),
+			F.sum('exits').alias('exits'),
 			F.sum('indirect_access').alias('indirect_access'),
 			F.sum('reads').alias('reads'),
 			F.sum('views').alias('views')
