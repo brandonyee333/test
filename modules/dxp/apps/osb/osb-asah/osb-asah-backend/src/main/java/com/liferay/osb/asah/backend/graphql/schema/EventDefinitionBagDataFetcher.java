@@ -42,10 +42,12 @@ public class EventDefinitionBagDataFetcher
 	public ResultBag<EventDefinitionDTO> get(
 		DataFetchingEnvironment environment) {
 
+		String eventType = environment.getArgument("eventType");
+		String keyword = environment.getArgument("keyword");
+
 		List<EventDefinition> eventDefinitions =
 			_eventDefinitionDog.getEventDefinitions(
-				environment.getArgument("eventType"),
-				environment.getArgument("page"),
+				eventType, keyword, environment.getArgument("page"),
 				environment.getArgument("size"));
 
 		Stream<EventDefinition> stream = eventDefinitions.stream();
@@ -58,8 +60,7 @@ public class EventDefinitionBagDataFetcher
 
 		return new ResultBag<>(
 			eventDefinitionDTOs,
-			_eventDefinitionDog.countEventDefinitions(
-				environment.getArgument("eventType")));
+			_eventDefinitionDog.countEventDefinitions(eventType, keyword));
 	}
 
 	@Autowired

@@ -33,11 +33,17 @@ import org.springframework.stereotype.Repository;
 public interface EventDefinitionRepository
 	extends CrudRepository<EventDefinition, Long> {
 
+	public Long countByNameContainingIgnoreCaseAndType(
+		String name, String type);
+
 	public Long countByType(String type);
 
 	public List<EventDefinition> findAll(Pageable pageable);
 
 	public EventDefinition findByName(String name);
+
+	public List<EventDefinition> findByNameContainingIgnoreCaseAndType(
+		String name, Pageable pageable, String type);
 
 	public List<EventDefinition> findByType(Pageable pageable, String type);
 

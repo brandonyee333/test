@@ -41,6 +41,13 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 	}
 
 	@Override
+	public Long countByNameContainingIgnoreCaseAndType(
+		String name, String type) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public Long countByType(String type) {
 		throw new UnsupportedOperationException();
 	}
@@ -96,6 +103,13 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 
 	@Override
 	public EventDefinition findByName(String name) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<EventDefinition> findByNameContainingIgnoreCaseAndType(
+		String name, Pageable pageable, String type) {
+
 		throw new UnsupportedOperationException();
 	}
 
