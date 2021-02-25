@@ -21,6 +21,7 @@ import java.util.List;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -36,6 +37,9 @@ public interface EventAttributeDefinitionRepository
 	public Long countByNameContainingIgnoreCase(String name);
 
 	public List<EventAttributeDefinition> findAll(Pageable pageable);
+
+	public List<EventAttributeDefinition> findByEventDefinitionId(
+		@Param("eventDefinitionId") Long eventDefinitionId);
 
 	public EventAttributeDefinition findByName(String name);
 

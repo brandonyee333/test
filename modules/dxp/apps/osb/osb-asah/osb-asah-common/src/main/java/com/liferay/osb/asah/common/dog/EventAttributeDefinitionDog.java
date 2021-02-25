@@ -107,6 +107,14 @@ public class EventAttributeDefinitionDog {
 			PageRequest.of(page, size, Sort.by(Sort.Order.asc("name"))));
 	}
 
+	public List<EventAttributeDefinition>
+		getEventAttributeDefinitionsByEventDefinitionId(
+			Long eventDefinitionId) {
+
+		return _eventAttributeDefinitionRepository.findByEventDefinitionId(
+			eventDefinitionId);
+	}
+
 	public EventAttributeDefinition updateEventAttributeDefinition(
 		String dataType, String description, String displayName,
 		Long eventAttributeDefinitionId,

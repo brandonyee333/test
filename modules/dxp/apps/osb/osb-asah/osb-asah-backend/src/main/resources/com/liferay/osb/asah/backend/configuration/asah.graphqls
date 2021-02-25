@@ -278,6 +278,7 @@ type EventAttributeDefinitionBag {
 }
 
 type EventDefinition {
+	eventAttributeDefinitions: [EventAttributeDefinition]
 	description: String
 	displayName: String
 	name: String

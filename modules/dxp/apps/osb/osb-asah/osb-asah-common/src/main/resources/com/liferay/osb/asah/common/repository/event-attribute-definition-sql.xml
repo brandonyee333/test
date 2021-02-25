@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="EventAttributeDefinition.findByEventDefinitionId">
+		<![CDATA[
+			SELECT
+				EventAttributeDefinition.description,
+				EventAttributeDefinition.displayName,
+				EventAttributeDefinition.id,
+				EventAttributeDefinition.name,
+				EventAttributeDefinition.dataType
+			FROM
+				EventAttributeDefinition
+			JOIN
+				EventDefinitionEventAttributeDefinition ON
+					EventAttributeDefinition.id = EventDefinitionEventAttributeDefinition.eventAttributeDefinitionId
+			WHERE
+				EventDefinitionEventAttributeDefinition.eventDefinitionId = :eventDefinitionId
+			ORDER BY
+				EventAttributeDefinition.name
+		]]>
+	</entry>
+</properties>
