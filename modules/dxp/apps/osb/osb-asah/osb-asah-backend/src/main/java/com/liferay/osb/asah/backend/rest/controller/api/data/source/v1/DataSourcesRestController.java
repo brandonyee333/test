@@ -68,11 +68,21 @@ public class DataSourcesRestController {
 			@PathVariable Long id, @RequestBody String json)
 		throws Exception {
 
+		Boolean contactsSelected = null;
+		Boolean sitesSelected = null;
+
 		JSONObject detailJSONObject = new JSONObject(json);
 
+		if (detailJSONObject.has("contactsSelected")) {
+			contactsSelected = detailJSONObject.getBoolean("contactsSelected");
+		}
+
+		if (detailJSONObject.has("sitesSelected")) {
+			sitesSelected = detailJSONObject.getBoolean("sitesSelected");
+		}
+
 		DataSource dataSource = _dataSourceDog.updateDataSourceDetails(
-			id, detailJSONObject.optBoolean("contactsSelected"),
-			detailJSONObject.optBoolean("sitesSelected"));
+			id, contactsSelected, sitesSelected);
 
 		_sanitize(dataSource);
 
