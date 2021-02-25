@@ -17,9 +17,14 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 /**
@@ -45,8 +50,19 @@ public class EventDefinitionDog {
 		return _eventDefinitionRepository.save(eventDefinition);
 	}
 
+	public Long countEventDefinitions() {
+		return _eventDefinitionRepository.count();
+	}
+
 	public EventDefinition fetchEventDefinitionByName(String name) {
 		return _eventDefinitionRepository.findByName(name);
+	}
+
+	public List<EventDefinition> getEventDefinitions(int page, int size) {
+		return _eventDefinitionRepository.findAll(
+			PageRequest.of(
+				page, size,
+				Sort.by(Collections.singletonList(Sort.Order.asc("name")))));
 	}
 
 	@Autowired

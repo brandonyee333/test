@@ -17,9 +17,11 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -67,6 +69,11 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 
 	@Override
 	public Iterable<EventDefinition> findAll() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<EventDefinition> findAll(Pageable pageable) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -16,7 +16,10 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
 
+import java.util.List;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +32,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EventDefinitionRepository
 	extends CrudRepository<EventDefinition, Long> {
+
+	public List<EventDefinition> findAll(Pageable pageable);
 
 	public EventDefinition findByName(String name);
 
