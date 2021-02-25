@@ -717,12 +717,6 @@ public class DataSourceDog {
 				dataSource.setFaroBackendSecuritySignature(
 					String.valueOf(UUID.randomUUID()));
 			}
-
-			if (Objects.equals(
-					dataSource.getCredentialType(), "OAuth 2 Authentication")) {
-
-				_dataSourceRepository.save(dataSource);
-			}
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
