@@ -38,6 +38,10 @@ public class Individual {
 		_name = name;
 	}
 
+	public Map<String, String> getCustom() {
+		return _custom;
+	}
+
 	public Map<String, String> getDemographics() {
 		return _demographics;
 	}
@@ -62,6 +66,10 @@ public class Individual {
 		return _name;
 	}
 
+	public void setCustom(Map<String, String> custom) {
+		_custom = custom;
+	}
+
 	public void setDemographics(Map<String, String> demographics) {
 		_demographics = demographics;
 	}
@@ -74,6 +82,7 @@ public class Individual {
 		_individualSegmentIds = individualSegmentIds;
 	}
 
+	private Map<String, String> _custom = new HashMap<>();
 	private Map<String, String> _demographics = new HashMap<>();
 	private String _emailAddress;
 	private String _id;

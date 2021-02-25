@@ -338,6 +338,9 @@ public class IndividualDog {
 		JSONObject individualJSONObject = new JSONObject(
 			searchHit.getSourceAsMap());
 
+		individual.setCustom(
+			FaroInfoIndividualUtil.getIndividualCustom(
+				individualJSONObject.optJSONObject("custom")));
 		individual.setDemographics(
 			FaroInfoIndividualUtil.getIndividualDemographics(
 				individualJSONObject.optJSONObject("demographics")));

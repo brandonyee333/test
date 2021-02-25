@@ -149,6 +149,28 @@ public class FaroInfoIndividualUtil {
 		return individualAccountsJSONObjects;
 	}
 
+	public static Map<String, String> getIndividualCustom(
+		JSONObject customJSONObject) {
+
+		if (customJSONObject == null) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, String> custom = new HashMap<>();
+
+		for (String fieldName : customJSONObject.keySet()) {
+			Object fieldValue = _getFieldValue(customJSONObject, fieldName);
+
+			if (fieldValue == null) {
+				continue;
+			}
+
+			custom.put(fieldName, String.valueOf(fieldValue));
+		}
+
+		return custom;
+	}
+
 	public static Map<String, String> getIndividualDemographics(
 		JSONObject demographicsJSONObject) {
 
