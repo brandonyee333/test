@@ -772,7 +772,7 @@ public class DataSourcesRestController extends BaseRestController {
 								QueryBuilders.rangeQuery(
 									"endTime"
 								).gt(
-									analyticsLastSyncDate
+									DateUtil.toUTCString(analyticsLastSyncDate)
 								)
 							);
 
