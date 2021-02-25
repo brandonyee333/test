@@ -153,6 +153,10 @@ public class DataSource implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Boolean getContactsSelected() {
+		if (_contactsSelected == null) {
+			return false;
+		}
+
 		return _contactsSelected;
 	}
 
@@ -315,6 +319,10 @@ public class DataSource implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	public Boolean getSitesSelected() {
+		if (_sitesSelected == null) {
+			return false;
+		}
+
 		return _sitesSelected;
 	}
 
