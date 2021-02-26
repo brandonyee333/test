@@ -39,7 +39,7 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 	}
 
 	@Override
-	public void delete(EventAttributeDefinition entity) {
+	public void delete(EventAttributeDefinition eventAttributeDefinition) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -50,18 +50,19 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 
 	@Override
 	public void deleteAll(
-		Iterable<? extends EventAttributeDefinition> entities) {
+		Iterable<? extends EventAttributeDefinition>
+			eventAttributeDefinitions) {
 
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void deleteById(Long aLong) {
+	public void deleteById(Long eventAttributeDefinitionId) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean existsById(Long aLong) {
+	public boolean existsById(Long eventAttributeDefinitionId) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -72,13 +73,15 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 
 	@Override
 	public Iterable<EventAttributeDefinition> findAllById(
-		Iterable<Long> longs) {
+		Iterable<Long> eventAttributeDefinitionIds) {
 
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public Optional<EventAttributeDefinition> findById(Long aLong) {
+	public Optional<EventAttributeDefinition> findById(
+		Long eventAttributeDefinitionId) {
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -88,13 +91,15 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 	}
 
 	@Override
-	public <S extends EventAttributeDefinition> S save(S entity) {
+	public <S extends EventAttributeDefinition> S save(
+		S eventAttributeDefinition) {
+
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public <S extends EventAttributeDefinition> Iterable<S> saveAll(
-		Iterable<S> entities) {
+		Iterable<S> eventAttributeDefinitions) {
 
 		throw new UnsupportedOperationException();
 	}
