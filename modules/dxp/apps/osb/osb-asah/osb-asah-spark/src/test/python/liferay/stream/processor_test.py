@@ -405,6 +405,34 @@ def test_journal_data_frame_processor_filter(
 
 	assert actual_data_frame_rows[0].applicationId == 'WebContent'
 
+def test_page_data_frame_calculate_time_on_page(
+	page_data_frame_processor, spark_session
+):
+
+	actual_data_frame = page_data_frame_processor._calculate_time_on_page(
+		read_session_events_data_frame(
+			'page_data_frame_processor_calculate_time_on_page_input.json',
+			spark_session
+		)
+	)
+
+	expected_data_frame = read_data_frame(
+		'page_data_frame_processor_calculate_time_on_page_expected_output.json',
+		spark_session,
+		T.StructType([
+			T.StructField("channelId", T.StringType(), False),
+			T.StructField("normalized_event_date", T.TimestampType(), False),
+			T.StructField("primaryKey", T.StringType(), False),
+			T.StructField("projectId", T.StringType(), False),
+			T.StructField("time_on_page", T.LongType(), False),
+			T.StructField("url", T.StringType(), False),
+			T.StructField("userId", T.StringType(), False),
+			T.StructField("variantId", T.StringType(), False)
+		])
+	)
+
+	_assert_data_frames(expected_data_frame, actual_data_frame)
+
 def test_page_data_frame_processor_process(
 	page_data_frame_processor, spark_session
 ):

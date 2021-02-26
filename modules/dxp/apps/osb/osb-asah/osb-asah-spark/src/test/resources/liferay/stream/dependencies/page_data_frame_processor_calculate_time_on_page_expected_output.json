@@ -1,0 +1,32 @@
+[
+	{
+		"channelId": "420253908131944590",
+		"normalized_event_date": "2021-02-02T01:00:00.000Z",
+		"primaryKey": "7ec5b30bd0e90e9f250cd7e8f9c45c217feed1c3ecf94a1876d620402d7fbc83",
+		"projectId": "asah652a6babdba143d086a19db542781bc2",
+		"time_on_page": 184,
+		"url": "https://www.liferay.com/resources/case-studies",
+		"userId": "e6f892e0-5ed4-11eb-b60f-b31e5ee34838",
+		"variantId": ""
+	},
+	{
+		"channelId": "420253908131944590",
+		"normalized_event_date": "2021-02-02T01:00:00.000Z",
+		"primaryKey": "2feb48d5b6804ad453ad943c8313925a7b58fb5d2df71472b7b09385459ab286",
+		"projectId": "asah652a6babdba143d086a19db542781bc2",
+		"time_on_page": 2,
+		"url": "https://www.liferay.com/en/-/interview-with-bosch-manufacturing-expert-raghuram-joshi-1",
+		"userId": "e6f892e0-5ed4-11eb-b60f-b31e5ee34838",
+		"variantId": ""
+	},
+	{
+		"channelId": "420253908131944590",
+		"normalized_event_date": "2021-02-02T00:00:00.000Z",
+		"primaryKey": "a9120f2434bd82bf7371870d504a23e9de36b8ab83941a2153b9578eb3a51397",
+		"projectId": "asah652a6babdba143d086a19db542781bc2",
+		"time_on_page": 8,
+		"url": "https://www.liferay.com/resources/case-studies",
+		"userId": "e6f892e0-5ed4-11eb-b60f-b31e5ee34838",
+		"variantId": ""
+	}
+]
