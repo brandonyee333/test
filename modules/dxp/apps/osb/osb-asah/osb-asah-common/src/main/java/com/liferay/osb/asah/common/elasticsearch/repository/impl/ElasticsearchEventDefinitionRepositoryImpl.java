@@ -49,7 +49,9 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends EventDefinition> eventDefinitions) {
+	public void deleteAll(
+		Iterable<? extends EventDefinition> eventDefinitions) {
+
 		throw new UnsupportedOperationException();
 	}
 
