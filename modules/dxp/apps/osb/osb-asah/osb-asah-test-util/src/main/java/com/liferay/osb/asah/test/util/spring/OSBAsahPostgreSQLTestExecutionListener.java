@@ -60,14 +60,15 @@ public class OSBAsahPostgreSQLTestExecutionListener
 		try (Connection connection = _dataSource.getConnection()) {
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
-			ResultSet tables = databaseMetaData.getTables(
+			ResultSet resultSet = databaseMetaData.getTables(
 				null, connection.getSchema(), null, new String[] {"TABLE"});
 
-			while (tables.next()) {
+			while (resultSet.next()) {
 				try (PreparedStatement preparedStatement =
 						connection.prepareStatement(
-							"TRUNCATE TABLE " + tables.getString("TABLE_NAME") +
-								" CASCADE")) {
+							"TRUNCATE TABLE " +
+								resultSet.getString("TABLE_NAME") +
+									" CASCADE")) {
 
 					preparedStatement.execute();
 				}
