@@ -101,16 +101,17 @@ public class IndividualNanite implements Nanite {
 						null,
 						messageJSONObject.getString("emailAddressHashed"))) {
 
+					Long channelId = JSONUtil.optLong(
+						null, messageJSONObject, "channelId");
+
 					JSONObject individualJSONObject = _updateIndividual(
 						messageJSONObject.getJSONObject("analyticsData"),
-						messageJSONObject.getLong("channelId"),
-						messageJSONObject.getLong("dataSourceId"),
+						channelId, messageJSONObject.getLong("dataSourceId"),
 						messageJSONObject.getString("emailAddressHashed"),
 						messageJSONObject.getString("userId"));
 
 					_updatePagesAndAssets(
-						messageJSONObject.getLong("channelId"),
-						messageJSONObject.getLong("dataSourceId"),
+						channelId, messageJSONObject.getLong("dataSourceId"),
 						individualJSONObject,
 						messageJSONObject.getString("userId"));
 

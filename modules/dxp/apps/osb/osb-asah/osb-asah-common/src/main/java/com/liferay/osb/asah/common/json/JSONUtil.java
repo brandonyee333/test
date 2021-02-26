@@ -33,6 +33,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -191,6 +192,20 @@ public class JSONUtil {
 		}
 
 		return jsonObject;
+	}
+
+	public static Long optLong(
+		Long defaultValue, JSONObject jsonObject, String key) {
+
+		if (!jsonObject.has(key)) {
+			return defaultValue;
+		}
+
+		if (StringUtils.isBlank(jsonObject.optString(key))) {
+			return defaultValue;
+		}
+
+		return jsonObject.getLong(key);
 	}
 
 	public static JSONArray put(Object value) {
