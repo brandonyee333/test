@@ -18,10 +18,7 @@ import com.liferay.osb.asah.backend.dog.DashboardDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 
-import org.junit.Before;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author André Miranda
@@ -47,13 +44,6 @@ public class DashboardGraphQLRestControllerTest
 	@Override
 	public String getQueryPath() {
 		return "dashboard_query.graphql";
-	}
-
-	@Before
-	public void setUp() {
-		ReflectionTestUtils.setField(
-			_dashboardDog, "_cerebroInfoElasticsearchInvoker",
-			elasticsearchInvoker);
 	}
 
 	@Autowired
