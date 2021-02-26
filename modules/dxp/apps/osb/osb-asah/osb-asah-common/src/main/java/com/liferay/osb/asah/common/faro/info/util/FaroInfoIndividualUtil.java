@@ -149,14 +149,14 @@ public class FaroInfoIndividualUtil {
 		return individualAccountsJSONObjects;
 	}
 
-	public static Map<String, String> getIndividualCustom(
+	public static Map<String, String> getIndividualCustomFields(
 		JSONObject customJSONObject) {
 
 		if (customJSONObject == null) {
 			return Collections.emptyMap();
 		}
 
-		Map<String, String> custom = new HashMap<>();
+		Map<String, String> customFields = new HashMap<>();
 
 		for (String fieldName : customJSONObject.keySet()) {
 			Object fieldValue = _getFieldValue(customJSONObject, fieldName);
@@ -165,20 +165,20 @@ public class FaroInfoIndividualUtil {
 				continue;
 			}
 
-			custom.put(fieldName, String.valueOf(fieldValue));
+			customFields.put(fieldName, String.valueOf(fieldValue));
 		}
 
-		return custom;
+		return customFields;
 	}
 
-	public static Map<String, String> getIndividualDemographics(
+	public static Map<String, String> getIndividualDemographicFields(
 		JSONObject demographicsJSONObject) {
 
 		if (demographicsJSONObject == null) {
 			return Collections.emptyMap();
 		}
 
-		Map<String, String> demographics = new HashMap<>();
+		Map<String, String> demographicFields = new HashMap<>();
 
 		for (String fieldName : demographicsJSONObject.keySet()) {
 			Object fieldValue = _getFieldValue(
@@ -188,10 +188,10 @@ public class FaroInfoIndividualUtil {
 				continue;
 			}
 
-			demographics.put(fieldName, String.valueOf(fieldValue));
+			demographicFields.put(fieldName, String.valueOf(fieldValue));
 		}
 
-		return demographics;
+		return demographicFields;
 	}
 
 	public static String getIndividualEmail(JSONObject demographicsJSONObject) {

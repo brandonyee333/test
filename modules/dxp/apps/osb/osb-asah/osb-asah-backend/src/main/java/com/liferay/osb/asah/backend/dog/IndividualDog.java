@@ -339,10 +339,10 @@ public class IndividualDog {
 			searchHit.getSourceAsMap());
 
 		individual.setCustom(
-			FaroInfoIndividualUtil.getIndividualCustom(
+			FaroInfoIndividualUtil.getIndividualCustomFields(
 				individualJSONObject.optJSONObject("custom")));
 		individual.setDemographics(
-			FaroInfoIndividualUtil.getIndividualDemographics(
+			FaroInfoIndividualUtil.getIndividualDemographicFields(
 				individualJSONObject.optJSONObject("demographics")));
 		individual.setId(individualJSONObject.getString("id"));
 		individual.setIndividualSegmentIds(
