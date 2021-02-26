@@ -20,12 +20,15 @@ import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -60,6 +63,15 @@ public class EventAttributeDefinitionDog {
 			eventAttributeDefinition);
 	}
 
+	public Long countEventAttributeDefinitions(String name) {
+		if (name != null) {
+			return _eventAttributeDefinitionRepository.
+				countByNameContainingIgnoreCase(name);
+		}
+
+		return _eventAttributeDefinitionRepository.count();
+	}
+
 	public EventAttributeDefinition fetchEventAttributeDefinitionByName(
 		String name) {
 
@@ -78,6 +90,21 @@ public class EventAttributeDefinitionDog {
 				HttpStatus.BAD_REQUEST,
 				"There is no event attribute definition with ID " +
 					eventAttributeDefinitionId));
+	}
+
+	public List<EventAttributeDefinition> getEventAttributeDefinitions(
+		String name, int page, int size) {
+
+		if (name != null) {
+			return _eventAttributeDefinitionRepository.
+				findByNameContainingIgnoreCase(
+					name,
+					PageRequest.of(
+						page, size, Sort.by(Sort.Order.asc("name"))));
+		}
+
+		return _eventAttributeDefinitionRepository.findAll(
+			PageRequest.of(page, size, Sort.by(Sort.Order.asc("name"))));
 	}
 
 	public EventAttributeDefinition updateEventAttributeDefinition(

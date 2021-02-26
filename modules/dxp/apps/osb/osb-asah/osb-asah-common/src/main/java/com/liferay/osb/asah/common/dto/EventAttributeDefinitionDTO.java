@@ -1,0 +1,73 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+
+/**
+ * @author Leslie Wong
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonRootName("event-attribute-definition")
+public class EventAttributeDefinitionDTO {
+
+	public EventAttributeDefinitionDTO() {
+	}
+
+	public EventAttributeDefinitionDTO(
+		EventAttributeDefinition eventAttributeDefinition) {
+
+		_dataType = eventAttributeDefinition.getDataType();
+		_description = eventAttributeDefinition.getDescription();
+		_displayName = eventAttributeDefinition.getDisplayName();
+		_name = eventAttributeDefinition.getName();
+	}
+
+	@JsonProperty("dataType")
+	public String getDataType() {
+		return _dataType;
+	}
+
+	@JsonProperty("description")
+	public String getDescription() {
+		return _description;
+	}
+
+	@JsonProperty("displayName")
+	public String getDisplayName() {
+		return _displayName;
+	}
+
+	@JsonProperty("name")
+	public String getName() {
+		return _name;
+	}
+
+	@JsonProperty("sampleValue")
+	public String getSampleValue() {
+		return _sampleValue;
+	}
+
+	private String _dataType;
+	private String _description;
+	private String _displayName;
+	private String _name;
+	private String _sampleValue;
+
+}

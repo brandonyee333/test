@@ -17,9 +17,11 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -35,6 +37,11 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 
 	@Override
 	public long count() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Long countByNameContainingIgnoreCase(String name) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -72,6 +79,11 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 	}
 
 	@Override
+	public List<EventAttributeDefinition> findAll(Pageable pageable) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public Iterable<EventAttributeDefinition> findAllById(
 		Iterable<Long> eventAttributeDefinitionIds) {
 
@@ -87,6 +99,13 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 
 	@Override
 	public EventAttributeDefinition findByName(String name) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<EventAttributeDefinition> findByNameContainingIgnoreCase(
+		String name, Pageable pageable) {
+
 		throw new UnsupportedOperationException();
 	}
 
