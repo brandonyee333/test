@@ -1,0 +1,50 @@
+{
+	"data": {
+		"eventAttributeDefinitions": {
+			"__typename": "EventAttributeDefinitionBag",
+			"eventAttributeDefinitions": [
+				{
+					"__typename": "EventAttributeDefinition",
+					"dataType": "string",
+					"description": null,
+					"displayName": null,
+					"name": "articleId",
+					"sampleValue": null
+				},
+				{
+					"__typename": "EventAttributeDefinition",
+					"dataType": "string",
+					"description": null,
+					"displayName": null,
+					"name": "assetId",
+					"sampleValue": null
+				},
+				{
+					"__typename": "EventAttributeDefinition",
+					"dataType": "string",
+					"description": null,
+					"displayName": null,
+					"name": "commentId",
+					"sampleValue": null
+				},
+				{
+					"__typename": "EventAttributeDefinition",
+					"dataType": "string",
+					"description": null,
+					"displayName": null,
+					"name": "elementId",
+					"sampleValue": null
+				},
+				{
+					"__typename": "EventAttributeDefinition",
+					"dataType": "string",
+					"description": null,
+					"displayName": null,
+					"name": "entryId",
+					"sampleValue": null
+				}
+			],
+			"total": 10
+		}
+	}
+}

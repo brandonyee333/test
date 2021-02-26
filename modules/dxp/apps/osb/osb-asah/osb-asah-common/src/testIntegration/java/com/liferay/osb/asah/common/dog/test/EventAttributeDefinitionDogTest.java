@@ -24,7 +24,9 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -80,6 +82,21 @@ public class EventAttributeDefinitionDogTest {
 	}
 
 	@Test
+	public void testCountEventAttributeDefinitions() {
+		Assert.assertEquals(
+			Long.valueOf(30),
+			_eventAttributeDefinitionDog.countEventAttributeDefinitions(null));
+	}
+
+	@Test
+	public void testCountEventAttributeDefinitionsWithKeyword() {
+		Assert.assertEquals(
+			Long.valueOf(2),
+			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
+				"file"));
+	}
+
+	@Test
 	public void testFetchEventAttributeDefinitionByName() {
 		EventAttributeDefinition eventAttributeDefinition =
 			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
@@ -127,6 +144,67 @@ public class EventAttributeDefinitionDogTest {
 
 		Assert.assertEquals(
 			eventAttributeDefinition1, eventAttributeDefinition2);
+	}
+
+	@Test
+	public void testGetEventAttributeDefinitions() {
+		List<EventAttributeDefinition> eventAttributeDefinitions =
+			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
+				null, 0, 5);
+
+		Assert.assertFalse(eventAttributeDefinitions.isEmpty());
+
+		Map<String, String> eventAttributeDefinitionDataTypes =
+			new HashMap<String, String>() {
+				{
+					put("articleId", "string");
+					put("assetId", "string");
+					put("category", "string");
+					put("className", "string");
+					put("classPK", "string");
+				}
+			};
+
+		for (EventAttributeDefinition eventAttributeDefinition :
+				eventAttributeDefinitions) {
+
+			String name = eventAttributeDefinition.getName();
+
+			String dataType = eventAttributeDefinitionDataTypes.get(name);
+
+			Assert.assertNotNull(dataType);
+
+			Assert.assertEquals(
+				dataType, eventAttributeDefinition.getDataType());
+
+			eventAttributeDefinitionDataTypes.remove(name);
+		}
+
+		_assertEventAttributeDefinitions(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
+				null, 0, 5),
+			new HashMap<String, String>() {
+				{
+					put("articleId", "string");
+					put("assetId", "string");
+					put("category", "string");
+					put("className", "string");
+					put("classPK", "string");
+				}
+			});
+	}
+
+	@Test
+	public void testGetEventAttributeDefinitionsWithKeyword() {
+		_assertEventAttributeDefinitions(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
+				"page", 0, 3),
+			new HashMap<String, String>() {
+				{
+					put("page", "string");
+					put("pageLoadTime", "duration");
+				}
+			});
 	}
 
 	@Test
@@ -298,6 +376,34 @@ public class EventAttributeDefinitionDogTest {
 		Assert.assertNotEquals(
 			eventAttributeDefinition1.getName(),
 			eventAttributeDefinition2.getName());
+	}
+
+	private void _assertEventAttributeDefinitions(
+		List<EventAttributeDefinition> eventAttributeDefinitions,
+		Map<String, String> expectedEventDefinitionAttributeDataTypes) {
+
+		Assert.assertEquals(
+			eventAttributeDefinitions.toString(),
+			expectedEventDefinitionAttributeDataTypes.size(),
+			eventAttributeDefinitions.size());
+
+		for (EventAttributeDefinition eventAttributeDefinition :
+				eventAttributeDefinitions) {
+
+			String eventAttributeDefinitionName =
+				eventAttributeDefinition.getName();
+
+			String dataType = expectedEventDefinitionAttributeDataTypes.get(
+				eventAttributeDefinitionName);
+
+			Assert.assertNotNull(dataType);
+
+			Assert.assertEquals(
+				dataType, eventAttributeDefinition.getDataType());
+
+			expectedEventDefinitionAttributeDataTypes.remove(
+				eventAttributeDefinitionName);
+		}
 	}
 
 	@Autowired

@@ -1,0 +1,17 @@
+query EventAttributeDefinitions($keyword: String, $page: Int!, $size: Int!) {
+    eventAttributeDefinitions(keyword: $keyword, page: $page, size: $size) {
+        eventAttributeDefinitions {
+            ... on EventAttributeDefinition {
+                dataType
+                description
+                displayName
+                sampleValue
+                name
+                __typename
+            }
+            __typename
+        }
+        total
+        __typename
+    }
+}
