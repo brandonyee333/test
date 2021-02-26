@@ -421,8 +421,8 @@ def test_page_data_frame_processor_process(
 		'page_data_frame_processor_process_expected_output.json',
 		spark_session,
 		T.StructType([
-			T.StructField("channelId", T.StringType(), False),
 			T.StructField("bounces", T.LongType(), False),
+			T.StructField("channelId", T.StringType(), False),
 			T.StructField("cta_clicks", T.LongType(), False),
 			T.StructField("direct_access", T.LongType(), False),
 			T.StructField("entrances", T.LongType(), False),
