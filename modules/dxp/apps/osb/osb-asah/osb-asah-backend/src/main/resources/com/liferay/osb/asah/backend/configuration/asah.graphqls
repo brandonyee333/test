@@ -264,6 +264,19 @@ type DXPVariant {
 	uniqueVisitors: Int
 }
 
+type EventAttributeDefinition {
+	dataType: String
+	description: String
+	displayName: String
+	name: String
+	sampleValue: String
+}
+
+type EventAttributeDefinitionBag {
+	eventAttributeDefinitions: [EventAttributeDefinition]
+	total: Int
+}
+
 type Experiment {
 	channelId: String
 	createDate: String
@@ -736,6 +749,12 @@ type QueryType {
 		sort: Sort!,
 		start: Int!
 	): AssetMetricBag
+
+    eventAttributeDefinitions(
+        keyword: String,
+        page: Int!
+        size: Int!
+    ): EventAttributeDefinitionBag
 
 	experiment(
 		experimentId: String!
