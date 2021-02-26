@@ -71,14 +71,6 @@ CREATE TABLE IF NOT EXISTS DataSourceUserGroup (
 	userGroupIds BIGINT []
 );
 
-CREATE TABLE IF NOT EXISTS EventDefinition (
-	id BIGSERIAL PRIMARY KEY,
-	description TEXT,
-	displayName TEXT UNIQUE,
-	name TEXT UNIQUE,
-	type TEXT NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS Event (
 	id BIGSERIAL PRIMARY KEY,
 	analyticsEventId TEXT UNIQUE,
@@ -91,6 +83,13 @@ CREATE TABLE IF NOT EXISTS Event (
 	userId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS EventAttribute (
+	id BIGSERIAL PRIMARY KEY,
+	attributeValue TEXT,
+	eventAttributeDefinitionId BIGINT,
+	eventId BIGINT REFERENCES Event
+);
+
 CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
 	id BIGSERIAL PRIMARY KEY,
 	dataType TEXT NOT NULL,
@@ -99,17 +98,18 @@ CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
 	name TEXT UNIQUE
 );
 
+CREATE TABLE IF NOT EXISTS EventDefinition (
+	id BIGSERIAL PRIMARY KEY,
+	description TEXT,
+	displayName TEXT UNIQUE,
+	name TEXT UNIQUE,
+	type TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
 	eventAttributeDefinitionId BIGINT,
 	eventDefinitionId BIGINT,
 	PRIMARY KEY (eventAttributeDefinitionId, eventDefinitionId)
-);
-
-CREATE TABLE IF NOT EXISTS EventAttribute (
-	id BIGSERIAL PRIMARY KEY,
-	attributeValue TEXT,
-	eventAttributeDefinitionId BIGINT,
-	eventId BIGINT REFERENCES Event
 );
 
 CREATE TABLE IF NOT EXISTS Preference (
