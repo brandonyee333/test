@@ -40,8 +40,7 @@ public class EventAttributeDefinitionDog {
 		Long eventDefinitionId, String name) {
 
 		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException(
-				"Event attribute name cannot be null");
+			throw new IllegalArgumentException("Event attribute name is null");
 		}
 
 		EventAttributeDefinition eventAttributeDefinition =

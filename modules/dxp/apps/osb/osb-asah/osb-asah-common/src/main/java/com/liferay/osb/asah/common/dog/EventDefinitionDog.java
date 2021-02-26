@@ -32,7 +32,7 @@ public class EventDefinitionDog {
 		String description, String displayName, String name, String type) {
 
 		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException("Event name cannot be null");
+			throw new IllegalArgumentException("Event name is null");
 		}
 
 		EventDefinition eventDefinition = new EventDefinition();
