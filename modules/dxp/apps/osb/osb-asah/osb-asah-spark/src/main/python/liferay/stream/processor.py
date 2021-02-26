@@ -635,6 +635,100 @@ class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
+	def _calculate_time_on_page(self, analytics_events_data_frame):
+		data_frame = analytics_events_data_frame.withColumn(
+			'event_date',
+			F.to_timestamp(F.col('eventDate'))
+		).withColumn(
+			'normalized_event_date',
+			F.date_trunc('hour', 'event_date')
+		).withColumn(
+			'url',
+			F.when(
+				F.col('context.canonicalUrl') != '',
+				F.col('context.canonicalUrl')
+			).otherwise(
+				F.col('context.url')
+			)
+		)
+
+		data_frame = data_frame.filter(
+			"url != ''"
+		).filter(
+			F.col('eventId').isin(
+				[
+					'blogViewed', 'documentPreviewed', 'formViewed',
+					'pageLoaded', 'pageUnloaded',
+					'webContentViewed'
+				]
+			) == False
+		).fillna(
+			'', subset=['variantId']
+		)
+
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'userId', 'url', 'variantId',
+			'normalized_event_date'
+		).orderBy(
+			F.asc('eventDate')
+		).rowsBetween(
+			Window.unboundedPreceding, Window.currentRow - 1
+		)
+
+		data_frame = data_frame.withColumn(
+			'previous_page_viewed_event_date',
+			F.max(
+				F.when(
+					F.col("eventId") == 'pageViewed',
+					F.col("event_date")
+				)
+			).over(window)
+
+		).withColumn(
+			'delta',
+			F.col('event_date').cast('long') -
+			F.col('previous_page_viewed_event_date').cast('long')
+		)
+
+		data_frame = data_frame.filter(
+		 	F.col("previous_page_viewed_event_date").isNotNull()
+		).filter(
+			"eventId != 'pageViewed'"
+		)
+
+		data_frame = data_frame.withColumn(
+			'row',
+			F.row_number().over(
+				Window.partitionBy(
+					'projectId', 'channelId', 'userId', 'url', 'variantId',
+					'previous_page_viewed_event_date'
+				).orderBy(
+					F.desc('event_date')
+				)
+			)
+		).filter(
+			"row = 1"
+		)
+
+		data_frame = data_frame.groupby(
+			'projectId', 'channelId', 'userId', 'url', 'variantId',
+			'normalized_event_date'
+		).agg(
+			F.sum('delta').alias('time_on_page')
+		)
+
+		return data_frame.withColumn(
+			'primaryKey',
+			F.sha2(
+				F.concat_ws(
+					"#", F.col('projectId'), F.col('channelId'),
+					F.col('userId'), F.col('url'), F.col('variantId'),
+					F.col('normalized_event_date'),
+				),
+				256
+			)
+		)
+
 	def _create_session_data_frame(self, analytics_events_data_frame):
 		session_data_frame = analytics_events_data_frame.withColumn(
 			'event_date',
