@@ -63,6 +63,10 @@ public class IndividualDogTest {
 
 		Assert.assertEquals(5, individualResultBag.getTotal());
 		Assert.assertEquals(
+			SetUtil.of("123", "124", "125", "126", "127"),
+			_getIndividualsCustomFieldValues(
+				individualResultBag.getResults(), "client_id"));
+		Assert.assertEquals(
 			Collections.emptySet(),
 			_getIndividualsDemographicsFieldValues(
 				individualResultBag.getResults(), "email"));
@@ -185,6 +189,22 @@ public class IndividualDogTest {
 
 		Assert.assertEquals("1", individual.getId());
 		Assert.assertEquals("john@acme.com", individual.getEmailAddress());
+	}
+
+	private Set<String> _getIndividualsCustomFieldValues(
+		List<Individual> individuals, String fieldName) {
+
+		Stream<Individual> stream = individuals.stream();
+
+		return stream.map(
+			Individual::getCustom
+		).map(
+			customFieldsMap -> customFieldsMap.get(fieldName)
+		).filter(
+			fieldValue -> !Objects.isNull(fieldValue)
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	private Set<String> _getIndividualsDemographicsFieldValues(

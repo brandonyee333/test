@@ -3,6 +3,17 @@
 		"channelIds": [
 			"1"
 		],
+		"custom": {
+			"client_id": [
+				{
+					"context": "custom",
+					"fieldType": "Number",
+					"name": "client_id",
+					"ownerType": "individual",
+					"value": "123"
+				}
+			]
+		},
 		"demographics": {
 			"email": [
 				{
@@ -38,6 +49,17 @@
 		"channelIds": [
 			"1"
 		],
+		"custom": {
+			"client_id": [
+				{
+					"context": "custom",
+					"fieldType": "Number",
+					"name": "client_id",
+					"ownerType": "individual",
+					"value": "124"
+				}
+			]
+		},
 		"demographics": {
 			"email": [
 				{
@@ -73,6 +95,17 @@
 		"channelIds": [
 			"1"
 		],
+		"custom": {
+			"client_id": [
+				{
+					"context": "custom",
+					"fieldType": "Number",
+					"name": "client_id",
+					"ownerType": "individual",
+					"value": "125"
+				}
+			]
+		},
 		"demographics": {
 			"email": [
 				{
@@ -107,6 +140,17 @@
 		"channelIds": [
 			"1"
 		],
+		"custom": {
+			"client_id": [
+				{
+					"context": "custom",
+					"fieldType": "Number",
+					"name": "client_id",
+					"ownerType": "individual",
+					"value": "126"
+				}
+			]
+		},
 		"demographics": {
 			"email": [
 				{
@@ -142,6 +186,17 @@
 		"channelIds": [
 			"2"
 		],
+		"custom": {
+			"client_id": [
+				{
+					"context": "custom",
+					"fieldType": "Number",
+					"name": "client_id",
+					"ownerType": "individual",
+					"value": "127"
+				}
+			]
+		},
 		"demographics": {
 			"email": [
 				{
