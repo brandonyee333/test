@@ -19,6 +19,9 @@ import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +57,24 @@ public class EventDefinitionDogTest {
 	}
 
 	@Test
+	public void testCountEventDefinitions() {
+		Long count = _eventDefinitionDog.countEventDefinitions("default", null);
+
+		Assert.assertEquals(Long.valueOf(24), count);
+
+		count = _eventDefinitionDog.countEventDefinitions("custom", null);
+
+		Assert.assertEquals(Long.valueOf(0), count);
+	}
+
+	@Test
+	public void testCountEventDefinitionsWithKeyword() {
+		Assert.assertEquals(
+			Long.valueOf(4),
+			_eventDefinitionDog.countEventDefinitions("default", "page"));
+	}
+
+	@Test
 	public void testFetchEventDefinitionByName() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
@@ -63,6 +84,51 @@ public class EventDefinitionDogTest {
 			_eventDefinitionDog.fetchEventDefinitionByName("testEvent");
 
 		Assert.assertEquals(eventDefinition1, eventDefinition2);
+	}
+
+	@Test
+	public void testGetEventDefinitions() {
+		_assertEventDefinitions(
+			_eventDefinitionDog.getEventDefinitions("default", null, 0, 5),
+			new ArrayList<String>() {
+				{
+					add("assetClicked");
+					add("assetDownloaded");
+					add("assetDepthReached");
+					add("assetSubmitted");
+					add("assetViewed");
+				}
+			});
+	}
+
+	@Test
+	public void testGetEventDefinitionsWithKeyword() {
+		_assertEventDefinitions(
+			_eventDefinitionDog.getEventDefinitions("default", "field", 0, 5),
+			new ArrayList<String>() {
+				{
+					add("fieldBlurred");
+					add("fieldFocused");
+				}
+			});
+	}
+
+	private void _assertEventDefinitions(
+		List<EventDefinition> eventDefinitions,
+		List<String> expectedEventDefinitionNames) {
+
+		Assert.assertEquals(
+			eventDefinitions.toString(), expectedEventDefinitionNames.size(),
+			eventDefinitions.size());
+
+		for (EventDefinition eventDefinition : eventDefinitions) {
+			String eventDefinitionName = eventDefinition.getName();
+
+			Assert.assertTrue(
+				expectedEventDefinitionNames.contains(eventDefinitionName));
+
+			expectedEventDefinitionNames.remove(eventDefinitionName);
+		}
 	}
 
 	@Autowired

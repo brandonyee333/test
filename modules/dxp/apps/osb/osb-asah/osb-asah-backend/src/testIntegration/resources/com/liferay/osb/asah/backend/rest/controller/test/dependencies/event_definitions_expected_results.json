@@ -1,0 +1,31 @@
+{
+	"data": {
+		"eventDefinitions": {
+			"__typename": "EventDefinitionBag",
+			"eventDefinitions": [
+				{
+					"__typename": "EventDefinition",
+					"description": null,
+					"displayName": null,
+					"name": "assetClicked",
+					"type": "default"
+				},
+				{
+					"__typename": "EventDefinition",
+					"description": null,
+					"displayName": null,
+					"name": "assetDepthReached",
+					"type": "default"
+				},
+				{
+					"__typename": "EventDefinition",
+					"description": null,
+					"displayName": null,
+					"name": "assetDownloaded",
+					"type": "default"
+				}
+			],
+			"total": 5
+		}
+	}
+}

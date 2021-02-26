@@ -1,0 +1,15 @@
+query EventDefinitions($eventType: String!, $keyword: String, $page: Int!, $size: Int!) {
+    eventDefinitions(eventType: $eventType, keyword: $keyword, page: $page, size: $size) {
+        eventDefinitions {
+            ... on EventDefinition {
+                name
+                type
+                displayName
+                description
+                __typename
+            }
+        }
+        total
+        __typename
+    }
+}

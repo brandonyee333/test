@@ -1,0 +1,9 @@
+{
+	"operationName": "EventDefinitions",
+	"variables": {
+		"eventType": "default",
+		"keyword": "asset",
+		"page": 0,
+		"size": 3
+	}
+}
