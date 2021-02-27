@@ -163,6 +163,38 @@ public class EventAttributeDefinitionDogTest {
 	}
 
 	@Test
+	public void testGetEventAttributeDefinitionsByEventDefinitionId() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+
+		List<EventAttributeDefinition> eventAttributeDefinitions =
+			_eventAttributeDefinitionDog.
+				getEventAttributeDefinitionsByEventDefinitionId(
+					eventDefinition.getId());
+
+		Assert.assertEquals(
+			eventAttributeDefinitions.toString(), 3,
+			eventAttributeDefinitions.size());
+
+		List<String> expectedEventAttributeDefinitionNames =
+			new ArrayList<String>() {
+				{
+					add("formId");
+					add("page");
+					add("title");
+				}
+			};
+
+		for (EventAttributeDefinition eventAttributeDefinition :
+				eventAttributeDefinitions) {
+
+			Assert.assertTrue(
+				expectedEventAttributeDefinitionNames.remove(
+					eventAttributeDefinition.getName()));
+		}
+	}
+
+	@Test
 	public void testGetEventAttributeDefinitionsWithKeyword() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
