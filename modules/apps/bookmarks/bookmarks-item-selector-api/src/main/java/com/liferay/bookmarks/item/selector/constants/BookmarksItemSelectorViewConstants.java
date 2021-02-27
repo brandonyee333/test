@@ -14,9 +14,9 @@
 
 package com.liferay.bookmarks.item.selector.constants;
 
-/**
- * @author
- */
+
+@author
+
 public class BookmarksItemSelectorViewConstants {
 
     public static final String ITEM_SELECTOR_VIEW_KEY = "bookmarks-attachments";
