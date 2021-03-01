@@ -138,15 +138,12 @@ public class Log4jConfigUtil {
 		Map<String, LoggerConfig> loggerConfigs =
 			_centralizedConfiguration.getLoggers();
 
-		for (Map.Entry<String, LoggerConfig> loggerConfigEntry :
-				loggerConfigs.entrySet()) {
+		for (LoggerConfig loggerConfig : loggerConfigs.values()) {
+			String loggerConfigName = loggerConfig.getName();
 
-			LoggerConfig loggerConfig = loggerConfigEntry.getValue();
-
-			if (!_isRootLoggerConfig(loggerConfig)) {
+			if (Validator.isNotNull(loggerConfigName)) {
 				priorities.put(
-					loggerConfigEntry.getKey(),
-					String.valueOf(loggerConfig.getLevel()));
+					loggerConfigName, String.valueOf(loggerConfig.getLevel()));
 			}
 		}
 
@@ -186,14 +183,6 @@ public class Log4jConfigUtil {
 		return new ConfigurationSource(
 			new UnsyncByteArrayInputStream(
 				xmlContent.getBytes(StringPool.UTF8)));
-	}
-
-	private static boolean _isRootLoggerConfig(LoggerConfig loggerConfig) {
-		if (Validator.isBlank(loggerConfig.getName())) {
-			return true;
-		}
-
-		return false;
 	}
 
 	private static void _removeAppender(
