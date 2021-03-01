@@ -69,16 +69,14 @@ public class Log4jConfigUtil {
 				}
 
 				for (Element element : rootElement.elements()) {
-					for (Element childElement : element.elements()) {
-						_removeAppender(
-							element, childElement, "AppenderRef", "Appender",
-							removedAppenderNames);
+					_removeAppender(
+						element, "AppenderRef", "Appender",
+						removedAppenderNames);
 
-						if (Objects.equals("Logger", childElement.getName())) {
-							priorities.put(
-								childElement.attributeValue("name"),
-								childElement.attributeValue("level"));
-						}
+					for (Element childElement : element.elements("Logger")) {
+						priorities.put(
+							childElement.attributeValue("name"),
+							childElement.attributeValue("level"));
 					}
 				}
 
@@ -87,19 +85,16 @@ public class Log4jConfigUtil {
 					_getConfigurationSource(document));
 			}
 			else {
-				for (Element childElement : rootElement.elements()) {
-					_removeAppender(
-						rootElement, childElement, "appender-ref", "appender",
-						removedAppenderNames);
+				_removeAppender(
+					rootElement, "appender-ref", "appender",
+					removedAppenderNames);
 
-					if (Objects.equals("category", childElement.getName())) {
-						Element priorityElement = childElement.element(
-							"priority");
+				for (Element childElement : rootElement.elements("category")) {
+					Element priorityElement = childElement.element("priority");
 
-						priorities.put(
-							childElement.attributeValue("name"),
-							priorityElement.attributeValue("value"));
-					}
+					priorities.put(
+						childElement.attributeValue("name"),
+						priorityElement.attributeValue("value"));
 				}
 
 				abstractConfiguration =
@@ -202,27 +197,30 @@ public class Log4jConfigUtil {
 	}
 
 	private static void _removeAppender(
-		Element parentElement, Element element, String appenderRefTagName,
+		Element parentElement, String appenderRefTagName,
 		String appenderTagName, String... removedAppenderNames) {
 
 		if (removedAppenderNames.length == 0) {
 			return;
 		}
 
-		for (String appenderName : removedAppenderNames) {
-			if (Objects.equals(appenderTagName, element.getName()) &&
-				Objects.equals(appenderName, element.attributeValue("name"))) {
-
-				parentElement.remove(element);
-			}
-
-			for (Element childElement : element.elements()) {
-				if (Objects.equals(
-						appenderRefTagName, childElement.getName()) &&
+		for (Element element : parentElement.elements()) {
+			for (String appenderName : removedAppenderNames) {
+				if (Objects.equals(appenderTagName, element.getName()) &&
 					Objects.equals(
-						appenderName, childElement.attributeValue("ref"))) {
+						appenderName, element.attributeValue("name"))) {
 
-					element.remove(childElement);
+					parentElement.remove(element);
+				}
+
+				for (Element childElement : element.elements()) {
+					if (Objects.equals(
+							appenderRefTagName, childElement.getName()) &&
+						Objects.equals(
+							appenderName, childElement.attributeValue("ref"))) {
+
+						element.remove(childElement);
+					}
 				}
 			}
 		}
