@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -47,21 +48,17 @@ public class Log4jConfigUtil {
 	public static Map<String, String> configureLog4J(
 		String xmlContent, String... removedAppenderNames) {
 
-		Map<String, String> priorities = new HashMap<>();
-
-		Document document = null;
-
-		LoggerContext loggerContext =
-			_centralizedConfiguration.getLoggerContext();
-
-		AbstractConfiguration abstractConfiguration = null;
-
 		try {
 			SAXReader saxReader = new SAXReader();
 
-			document = saxReader.read(new UnsyncStringReader(xmlContent));
+			Document document = saxReader.read(
+				new UnsyncStringReader(xmlContent));
 
 			Element rootElement = document.getRootElement();
+
+			Map<String, String> priorities = new HashMap<>();
+
+			AbstractConfiguration abstractConfiguration;
 
 			if (Objects.equals("Configuration", rootElement.getName())) {
 				if (!GetterUtil.getBoolean(
@@ -86,7 +83,8 @@ public class Log4jConfigUtil {
 				}
 
 				abstractConfiguration = new XmlConfiguration(
-					loggerContext, _getConfigurationSource(document));
+					_centralizedConfiguration.getLoggerContext(),
+					_getConfigurationSource(document));
 			}
 			else {
 				for (Element childElement : rootElement.elements()) {
@@ -106,18 +104,19 @@ public class Log4jConfigUtil {
 
 				abstractConfiguration =
 					new org.apache.log4j.xml.XmlConfiguration(
-						loggerContext, _getConfigurationSource(document), 0);
+						_centralizedConfiguration.getLoggerContext(),
+						_getConfigurationSource(document), 0);
 			}
 
 			_centralizedConfiguration.addConfiguration(abstractConfiguration);
+
+			return priorities;
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
-
-			priorities.clear();
 		}
 
-		return priorities;
+		return Collections.emptyMap();
 	}
 
 	public static java.util.logging.Level getJDKLevel(String levelString) {
