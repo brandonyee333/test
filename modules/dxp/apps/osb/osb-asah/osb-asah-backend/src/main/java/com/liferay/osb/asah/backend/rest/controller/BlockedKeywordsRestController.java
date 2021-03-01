@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.response.embedded.BlockedKeywordEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
@@ -88,11 +87,7 @@ public class BlockedKeywordsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
 	public String getBlockedKeyword(@PathVariable String id) throws Exception {
-		return toItemGetResponse(
-			"blocked-keywords",
-			new BlockedKeywordEmbeddedJSONObjectCreator(
-				_dataSourceDog, faroInfoElasticsearchInvoker),
-			id);
+		return toItemGetResponse("blocked-keywords", id);
 	}
 
 	@GetMapping
@@ -112,10 +107,7 @@ public class BlockedKeywordsRestController extends BaseRestController {
 		}
 
 		return toCollectionGetResponse(
-			"blocked-keywords",
-			new BlockedKeywordEmbeddedJSONObjectCreator(
-				_dataSourceDog, faroInfoElasticsearchInvoker),
-			page, queryBuilder, size, sorts);
+			"blocked-keywords", null, page, queryBuilder, size, sorts);
 	}
 
 	@PostMapping
@@ -212,8 +204,6 @@ public class BlockedKeywordsRestController extends BaseRestController {
 		).map(
 			keyword -> JSONUtil.put(
 				"createDate", dateString
-			).put(
-				"dataSourceIds", new JSONArray()
 			).put(
 				"duplicate", false
 			).put(

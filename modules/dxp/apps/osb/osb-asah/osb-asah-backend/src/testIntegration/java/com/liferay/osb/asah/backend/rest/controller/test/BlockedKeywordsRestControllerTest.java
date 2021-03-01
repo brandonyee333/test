@@ -85,10 +85,6 @@ public class BlockedKeywordsRestControllerTest {
 		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@Test
 	public void testGetBlockedKeyword() throws Exception {
 		JSONAssert.assertEquals(
@@ -101,10 +97,6 @@ public class BlockedKeywordsRestControllerTest {
 
 	@ElasticsearchIndex(
 		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -135,10 +127,6 @@ public class BlockedKeywordsRestControllerTest {
 		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@Test
 	public void testGetBlockedKeywordsPagination() throws Exception {
 		JSONAssert.assertEquals(
@@ -155,10 +143,6 @@ public class BlockedKeywordsRestControllerTest {
 
 	@ElasticsearchIndex(
 		name = "blocked-keywords", resourcePath = "blocked_keywords.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "data-sources", resourcePath = "data_sources.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
