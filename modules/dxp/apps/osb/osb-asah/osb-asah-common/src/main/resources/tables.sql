@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS EventDefinition (
 CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
 	eventAttributeDefinitionId BIGINT,
 	eventDefinitionId BIGINT,
+	sampleValue TEXT,
 	PRIMARY KEY (eventAttributeDefinitionId, eventDefinitionId)
 );
 

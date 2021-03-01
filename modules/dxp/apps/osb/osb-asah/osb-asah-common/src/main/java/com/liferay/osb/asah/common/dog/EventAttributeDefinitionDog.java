@@ -40,7 +40,7 @@ public class EventAttributeDefinitionDog {
 
 	public EventAttributeDefinition addEventAttributeDefinition(
 		String dataType, String description, String displayName,
-		Long eventDefinitionId, String name) {
+		Long eventDefinitionId, String name, String sampleValue) {
 
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException("Event attribute name is null");
@@ -55,7 +55,7 @@ public class EventAttributeDefinitionDog {
 		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
 			Collections.singleton(
 				new EventDefinitionEventAttributeDefinition(
-					eventDefinitionId)));
+					eventDefinitionId, sampleValue)));
 
 		eventAttributeDefinition.setName(name);
 

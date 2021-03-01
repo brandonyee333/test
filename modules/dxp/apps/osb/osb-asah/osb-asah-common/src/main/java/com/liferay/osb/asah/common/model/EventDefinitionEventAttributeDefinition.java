@@ -29,8 +29,11 @@ public class EventDefinitionEventAttributeDefinition {
 	public EventDefinitionEventAttributeDefinition() {
 	}
 
-	public EventDefinitionEventAttributeDefinition(Long eventDefinitionId) {
+	public EventDefinitionEventAttributeDefinition(
+		Long eventDefinitionId, String sampleValue) {
+
 		_eventDefinitionId = eventDefinitionId;
+		_sampleValue = sampleValue;
 	}
 
 	@Override
@@ -49,7 +52,10 @@ public class EventDefinitionEventAttributeDefinition {
 
 		if (Objects.equals(
 				_eventDefinitionId,
-				eventDefinitionEventAttributeDefinition._eventDefinitionId)) {
+				eventDefinitionEventAttributeDefinition._eventDefinitionId) &&
+			Objects.equals(
+				_sampleValue,
+				eventDefinitionEventAttributeDefinition._sampleValue)) {
 
 			return true;
 		}
@@ -62,16 +68,28 @@ public class EventDefinitionEventAttributeDefinition {
 		return _eventDefinitionId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getSampleValue() {
+		return _sampleValue;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(_eventDefinitionId);
+		return Objects.hash(_eventDefinitionId, _sampleValue);
 	}
 
 	public void setEventDefinitionId(Long eventDefinitionId) {
 		_eventDefinitionId = eventDefinitionId;
 	}
 
+	public void setSampleValue(String sampleValue) {
+		_sampleValue = sampleValue;
+	}
+
 	@Transient
 	private Long _eventDefinitionId;
+
+	@Transient
+	private String _sampleValue;
 
 }

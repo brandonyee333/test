@@ -20,9 +20,10 @@ import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,7 +73,7 @@ public class AnalyticsEventStorageDog {
 						_eventAttributeDefinitionDog.
 							addEventAttributeDefinition(
 								"string", null, null, eventDefinitionId,
-								propertyName);
+								propertyName, entry.getValue());
 				}
 				else {
 					Long eventAttributeDefinitionId =
@@ -83,19 +84,22 @@ public class AnalyticsEventStorageDog {
 							eventAttributeDefinition.
 								getEventDefinitionEventAttributeDefinitions();
 
-					eventDefinitionEventAttributeDefinitions = new HashSet<>(
-						eventDefinitionEventAttributeDefinitions);
+					Stream<EventDefinitionEventAttributeDefinition> stream =
+						eventDefinitionEventAttributeDefinitions.stream();
 
-					int initialSize =
-						eventDefinitionEventAttributeDefinitions.size();
-
-					eventDefinitionEventAttributeDefinitions.add(
-						new EventDefinitionEventAttributeDefinition(
-							eventDefinitionId));
+					Set<Long> eventDefinitionIds = stream.map(
+						EventDefinitionEventAttributeDefinition::
+							getEventDefinitionId
+					).collect(
+						Collectors.toSet()
+					);
 
 					if ((eventAttributeDefinitionId != null) &&
-						(eventDefinitionEventAttributeDefinitions.size() >
-							initialSize)) {
+						!eventDefinitionIds.contains(eventDefinitionId)) {
+
+						eventDefinitionEventAttributeDefinitions.add(
+							new EventDefinitionEventAttributeDefinition(
+								eventDefinitionId, entry.getValue()));
 
 						_eventAttributeDefinitionDog.
 							updateEventAttributeDefinition(

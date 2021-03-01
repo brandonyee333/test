@@ -55,7 +55,7 @@ public class EventAttributeDefinitionDogTest {
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
 				"string", "Testing attribute definition",
 				"Test Attribute Defintion", eventDefinition.getId(),
-				"testAttributeDefinition");
+				"testAttributeDefinition", "testValue");
 
 		Assert.assertEquals("string", eventAttributeDefinition.getDataType());
 		Assert.assertEquals(
@@ -136,7 +136,7 @@ public class EventAttributeDefinitionDogTest {
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
 				"string", "Testing attribute definition",
 				"Test Attribute Defintion", eventDefinition.getId(),
-				"testAttributeDefinition");
+				"testAttributeDefinition", "testValue");
 
 		EventAttributeDefinition eventAttributeDefinition2 =
 			_eventAttributeDefinitionDog.getEventAttributeDefinition(
@@ -320,7 +320,7 @@ public class EventAttributeDefinitionDogTest {
 				null, null, null, eventAttributeDefinition1.getId(),
 				Collections.singleton(
 					new EventDefinitionEventAttributeDefinition(
-						eventDefinition.getId())),
+						eventDefinition.getId(), "testValue")),
 				null);
 
 		Assert.assertEquals(
