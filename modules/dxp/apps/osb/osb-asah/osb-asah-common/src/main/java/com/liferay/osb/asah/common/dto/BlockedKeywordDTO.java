@@ -39,7 +39,7 @@ public class BlockedKeywordDTO {
 	}
 
 	public BlockedKeywordDTO(BlockedKeyword blockedKeyword) {
-		this(blockedKeyword, false);
+		this(blockedKeyword, null);
 	}
 
 	public BlockedKeywordDTO(BlockedKeyword blockedKeyword, Boolean duplicate) {
