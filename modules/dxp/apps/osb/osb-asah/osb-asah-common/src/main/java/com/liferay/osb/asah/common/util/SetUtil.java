@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.util;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -41,12 +41,12 @@ public class SetUtil {
 		return stream.map(
 			mapperFunction
 		).collect(
-			Collectors.toSet()
+			Collectors.toCollection(LinkedHashSet::new)
 		);
 	}
 
 	public static <T> Set<T> of(T... elements) {
-		return new HashSet<>(Arrays.asList(elements));
+		return new LinkedHashSet<>(Arrays.asList(elements));
 	}
 
 }
