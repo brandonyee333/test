@@ -14,8 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.controller.BlockedKeywordsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dto.BlockedKeywordDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -26,7 +30,10 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+
+import org.apache.commons.lang3.BooleanUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,7 +62,7 @@ public class BlockedKeywordsRestControllerTest {
 	@Test
 	public void testDeleteBlockedKeywords() {
 		_blockedKeywordsRestController.deleteBlockedKeywords(
-			Arrays.asList("351238757269547424", "351238757269547425"));
+			Arrays.asList(351238757269547424L, 351238757269547425L));
 
 		Assert.assertFalse(
 			_elasticsearchInvoker.exists(
@@ -86,13 +93,16 @@ public class BlockedKeywordsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetBlockedKeyword() throws Exception {
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToString(
-				"dependencies/expected_blocked_keyword.json", this),
+	public void testGetBlockedKeyword() {
+		BlockedKeywordDTO blockedKeywordDTO =
 			_blockedKeywordsRestController.getBlockedKeyword(
-				"351238757269547424"),
-			false);
+				"351238757269547424");
+
+		Assert.assertEquals(
+			"2019-01-02T17:09:07.666Z",
+			DateUtil.toUTCString(blockedKeywordDTO.getCreateDate()));
+		Assert.assertEquals("351238757269547424", blockedKeywordDTO.getId());
+		Assert.assertEquals("liferay", blockedKeywordDTO.getKeyword());
 	}
 
 	@ElasticsearchIndex(
@@ -104,22 +114,28 @@ public class BlockedKeywordsRestControllerTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_filter.json", this),
-			_blockedKeywordsRestController.getBlockedKeywords(
-				"contains(keyword.raw, 'web')", 0, 2, null),
+			_objectMapper.convertValue(
+				_blockedKeywordsRestController.getBlockedKeywords(
+					"contains(keyword.raw, 'web')", 0, 2, null),
+				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_filter_number.json",
 				this),
-			_blockedKeywordsRestController.getBlockedKeywords(
-				"contains(keyword.raw, '1500')", 0, 1, null),
+			_objectMapper.convertValue(
+				_blockedKeywordsRestController.getBlockedKeywords(
+					"contains(keyword.raw, '1500')", 0, 1, null),
+				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_filter_number.json",
 				this),
-			_blockedKeywordsRestController.getBlockedKeywords(
-				"contains(keyword.raw, '1500s')", 0, 1, null),
+			_objectMapper.convertValue(
+				_blockedKeywordsRestController.getBlockedKeywords(
+					"contains(keyword.raw, '1500s')", 0, 1, null),
+				JSONObject.class),
 			false);
 	}
 
@@ -132,12 +148,18 @@ public class BlockedKeywordsRestControllerTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_page_0.json", this),
-			_blockedKeywordsRestController.getBlockedKeywords(null, 0, 2, null),
+			_objectMapper.convertValue(
+				_blockedKeywordsRestController.getBlockedKeywords(
+					null, 0, 2, null),
+				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_page_1.json", this),
-			_blockedKeywordsRestController.getBlockedKeywords(null, 1, 2, null),
+			_objectMapper.convertValue(
+				_blockedKeywordsRestController.getBlockedKeywords(
+					null, 1, 2, null),
+				JSONObject.class),
 			false);
 	}
 
@@ -150,41 +172,46 @@ public class BlockedKeywordsRestControllerTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_sort_date.json", this),
-			_blockedKeywordsRestController.getBlockedKeywords(
-				null, 0, 2, new String[] {"createDate,desc"}),
+			_objectMapper.convertValue(
+				_blockedKeywordsRestController.getBlockedKeywords(
+					null, 0, 2, new String[] {"createDate,desc"}),
+				JSONObject.class),
 			false);
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_sort_keyword.json",
 				this),
-			_blockedKeywordsRestController.getBlockedKeywords(
-				null, 0, 8, new String[] {"keyword.raw,asc"}),
+			_objectMapper.convertValue(
+				_blockedKeywordsRestController.getBlockedKeywords(
+					null, 0, 8, new String[] {"keyword.raw,asc"}),
+				JSONObject.class),
 			false);
 	}
 
 	@Test
-	public void testPostBlockedKeywords() throws Exception {
-		JSONObject responseJSONObject = new JSONObject(
+	public void testPostBlockedKeywords() {
+		BlockedKeywordDTO blockedKeywordDTO =
 			_blockedKeywordsRestController.postBlockedKeywords(
 				JSONUtil.put(
 					"keywords", JSONUtil.putAll("Liferay", "DXP", "Portal", " ")
-				).toString()));
+				).toString());
 
-		Assert.assertTrue(responseJSONObject.getBoolean("succeeded"));
+		Assert.assertTrue(blockedKeywordDTO.getSucceeded());
 
-		JSONArray blockedKeywordsJSONArray = responseJSONObject.getJSONArray(
-			"blocked-keywords");
+		List<BlockedKeywordDTO> blockedKeywordDTOs =
+			blockedKeywordDTO.getBlockedKeywordDTOs();
 
-		Assert.assertEquals(3, blockedKeywordsJSONArray.length());
+		Assert.assertEquals(
+			blockedKeywordDTOs.toString(), 3, blockedKeywordDTOs.size());
 
-		_assertBlockedKeyword(blockedKeywordsJSONArray, "liferay");
-		_assertBlockedKeyword(blockedKeywordsJSONArray, "dxp");
-		_assertBlockedKeyword(blockedKeywordsJSONArray, "portal");
+		_assertBlockedKeyword(blockedKeywordDTOs, "liferay");
+		_assertBlockedKeyword(blockedKeywordDTOs, "dxp");
+		_assertBlockedKeyword(blockedKeywordDTOs, "portal");
 	}
 
 	@Test
-	public void testPostEmptyBlockedKeywords() throws Exception {
+	public void testPostEmptyBlockedKeywords() {
 		try {
 			_blockedKeywordsRestController.postBlockedKeywords(
 				JSONUtil.put(
@@ -202,49 +229,44 @@ public class BlockedKeywordsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testPostExistingBlockedKeywords() throws Exception {
-		JSONObject jsonObject = new JSONObject(
+	public void testPostExistingBlockedKeywords() {
+		BlockedKeywordDTO blockedKeywordDTO =
 			_blockedKeywordsRestController.postBlockedKeywords(
 				JSONUtil.put(
 					"keywords", JSONUtil.putAll("Liferay", "AC", "Portal")
-				).toString()));
+				).toString());
 
-		JSONArray blockedKeywordsJSONArray = jsonObject.getJSONArray(
-			"blocked-keywords");
+		List<BlockedKeywordDTO> blockedKeywordDTOs =
+			blockedKeywordDTO.getBlockedKeywordDTOs();
 
-		Assert.assertEquals(3, blockedKeywordsJSONArray.length());
+		Assert.assertEquals(
+			blockedKeywordDTOs.toString(), 3, blockedKeywordDTOs.size());
 
-		Assert.assertFalse(_isDuplicate(blockedKeywordsJSONArray, "ac"));
-		Assert.assertTrue(_isDuplicate(blockedKeywordsJSONArray, "liferay"));
-		Assert.assertTrue(_isDuplicate(blockedKeywordsJSONArray, "portal"));
+		Assert.assertFalse(_isDuplicate(blockedKeywordDTOs, "ac"));
+		Assert.assertTrue(_isDuplicate(blockedKeywordDTOs, "liferay"));
+		Assert.assertTrue(_isDuplicate(blockedKeywordDTOs, "portal"));
 	}
 
 	private void _assertBlockedKeyword(
-		JSONArray blockedKeywordsJSONArray, String expectedKeyword) {
+		List<BlockedKeywordDTO> blockedKeywordDTOs, String expectedKeyword) {
 
-		JSONObject actualBlockedKeywordJSONObject = _getBlockedKeyword(
-			blockedKeywordsJSONArray, expectedKeyword);
+		BlockedKeywordDTO actualBlockedKeywordDTO = _getBlockedKeyword(
+			blockedKeywordDTOs, expectedKeyword);
 
 		Assert.assertNotNull(
-			"Blocked keyword not found", actualBlockedKeywordJSONObject);
+			"Blocked keyword not found", actualBlockedKeywordDTO);
 		Assert.assertEquals(
-			expectedKeyword,
-			actualBlockedKeywordJSONObject.getString("keyword"));
-		Assert.assertTrue(actualBlockedKeywordJSONObject.has("createDate"));
-		Assert.assertTrue(actualBlockedKeywordJSONObject.has("id"));
+			expectedKeyword, actualBlockedKeywordDTO.getKeyword());
+		Assert.assertTrue(actualBlockedKeywordDTO.getCreateDate() != null);
+		Assert.assertTrue(actualBlockedKeywordDTO.getId() != null);
 	}
 
-	private JSONObject _getBlockedKeyword(
-		JSONArray blockedKeywordsJSONArray, String keyword) {
+	private BlockedKeywordDTO _getBlockedKeyword(
+		List<BlockedKeywordDTO> blockedKeywordDTOs, String keyword) {
 
-		for (int i = 0; i < blockedKeywordsJSONArray.length(); i++) {
-			JSONObject blockedKeywordsJSONObject =
-				blockedKeywordsJSONArray.getJSONObject(i);
-
-			if (Objects.equals(
-					keyword, blockedKeywordsJSONObject.getString("keyword"))) {
-
-				return blockedKeywordsJSONObject;
+		for (BlockedKeywordDTO blockedKeywordDTO : blockedKeywordDTOs) {
+			if (Objects.equals(blockedKeywordDTO.getKeyword(), keyword)) {
+				return blockedKeywordDTO;
 			}
 		}
 
@@ -252,14 +274,14 @@ public class BlockedKeywordsRestControllerTest {
 	}
 
 	private boolean _isDuplicate(
-		JSONArray blockedKeywordsJSONArray, String keyword) {
+		List<BlockedKeywordDTO> blockedKeywordDTOs, String keyword) {
 
-		JSONObject jsonObject = _getBlockedKeyword(
-			blockedKeywordsJSONArray, keyword);
+		BlockedKeywordDTO blockedKeywordDTO = _getBlockedKeyword(
+			blockedKeywordDTOs, keyword);
 
-		Assert.assertNotNull("Blocked keyword not found", jsonObject);
+		Assert.assertNotNull("Blocked keyword not found", blockedKeywordDTO);
 
-		return jsonObject.getBoolean("duplicate");
+		return BooleanUtils.toBoolean(blockedKeywordDTO.getDuplicate());
 	}
 
 	@Autowired
@@ -267,5 +289,8 @@ public class BlockedKeywordsRestControllerTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
