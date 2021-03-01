@@ -1214,66 +1214,6 @@ public class DataSourcesRestControllerTest {
 		Assert.assertEquals(3, jsonArray.length());
 	}
 
-	@Test
-	public void testPutDataSource() throws Exception {
-		JSONObject dataSourceJSONObject = new JSONObject(
-			_dataSourcesRestController.postDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-					DataSourceDTO.class)));
-
-		dataSourceJSONObject.put(
-			"provider",
-			JSONUtil.put(
-				"analyticsConfiguration",
-				JSONUtil.put(
-					"enableAllSites", true
-				).put(
-					"lastSyncTime", DateUtil.newDateString()
-				).put(
-					"sites", new JSONArray()
-				)
-			).put(
-				"contactsConfiguration",
-				JSONUtil.put(
-					"enableAllContacts", true
-				).put(
-					"lastSuccessfulAuditEventTime", DateUtil.newDateString()
-				).put(
-					"lastSyncTime", DateUtil.newDateString()
-				).put(
-					"organizations", new JSONArray()
-				).put(
-					"userGroups", new JSONArray()
-				)
-			).put(
-				"type", "LIFERAY"
-			));
-
-		JSONObject newDataSourceJSONObject = new JSONObject(
-			_dataSourcesRestController.putDataSource(
-				dataSourceJSONObject.getString("id"),
-				_objectMapper.convertValue(
-					dataSourceJSONObject, DataSourceDTO.class)));
-
-		JSONObject providerJSONObject = newDataSourceJSONObject.getJSONObject(
-			"provider");
-
-		JSONObject analyticsConfigurationJSONObject =
-			providerJSONObject.getJSONObject("analyticsConfiguration");
-
-		Assert.assertFalse(
-			analyticsConfigurationJSONObject.has("lastSyncTime"));
-
-		JSONObject contactsConfigurationJSONObject =
-			providerJSONObject.getJSONObject("contactsConfiguration");
-
-		Assert.assertFalse(
-			contactsConfigurationJSONObject.has(
-				"lastSuccessfulAuditEventTime"));
-		Assert.assertFalse(contactsConfigurationJSONObject.has("lastSyncTime"));
-	}
-
 	private void _mock() {
 		Mockito.when(
 			_cacheManager.getCache(Mockito.anyString())
