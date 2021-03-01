@@ -19,10 +19,10 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -64,13 +64,11 @@ public class Log4jConfigUtil {
 			Element rootElement = document.getRootElement();
 
 			if (Objects.equals("Configuration", rootElement.getName())) {
-				if (!Objects.equals(
-						rootElement.attributeValue("strict"), "true")) {
+				if (!GetterUtil.getBoolean(
+						rootElement.attributeValue("strict"))) {
 
-					_log.error(
+					throw new Exception(
 						"<Configuration> strict attribute requires true");
-
-					return Collections.emptyMap();
 				}
 
 				for (Element element : rootElement.elements()) {
