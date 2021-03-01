@@ -148,38 +148,6 @@ public class EventAttributeDefinitionDogTest {
 
 	@Test
 	public void testGetEventAttributeDefinitions() {
-		List<EventAttributeDefinition> eventAttributeDefinitions =
-			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
-				null, 0, 5);
-
-		Assert.assertFalse(eventAttributeDefinitions.isEmpty());
-
-		Map<String, String> eventAttributeDefinitionDataTypes =
-			new HashMap<String, String>() {
-				{
-					put("articleId", "string");
-					put("assetId", "string");
-					put("category", "string");
-					put("className", "string");
-					put("classPK", "string");
-				}
-			};
-
-		for (EventAttributeDefinition eventAttributeDefinition :
-				eventAttributeDefinitions) {
-
-			String name = eventAttributeDefinition.getName();
-
-			String dataType = eventAttributeDefinitionDataTypes.get(name);
-
-			Assert.assertNotNull(dataType);
-
-			Assert.assertEquals(
-				dataType, eventAttributeDefinition.getDataType());
-
-			eventAttributeDefinitionDataTypes.remove(name);
-		}
-
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
 				null, 0, 5),
@@ -379,30 +347,23 @@ public class EventAttributeDefinitionDogTest {
 	}
 
 	private void _assertEventAttributeDefinitions(
-		List<EventAttributeDefinition> eventAttributeDefinitions,
+		List<EventAttributeDefinition> actualEventAttributeDefinitions,
 		Map<String, String> expectedEventDefinitionAttributeDataTypes) {
 
 		Assert.assertEquals(
-			eventAttributeDefinitions.toString(),
+			actualEventAttributeDefinitions.toString(),
 			expectedEventDefinitionAttributeDataTypes.size(),
-			eventAttributeDefinitions.size());
+			actualEventAttributeDefinitions.size());
 
-		for (EventAttributeDefinition eventAttributeDefinition :
-				eventAttributeDefinitions) {
+		for (EventAttributeDefinition actualEventAttributeDefinition :
+				actualEventAttributeDefinitions) {
 
-			String eventAttributeDefinitionName =
-				eventAttributeDefinition.getName();
-
-			String dataType = expectedEventDefinitionAttributeDataTypes.get(
-				eventAttributeDefinitionName);
-
-			Assert.assertNotNull(dataType);
+			String expectedDataType =
+				expectedEventDefinitionAttributeDataTypes.get(
+					actualEventAttributeDefinition.getName());
 
 			Assert.assertEquals(
-				dataType, eventAttributeDefinition.getDataType());
-
-			expectedEventDefinitionAttributeDataTypes.remove(
-				eventAttributeDefinitionName);
+				expectedDataType, actualEventAttributeDefinition.getDataType());
 		}
 	}
 
