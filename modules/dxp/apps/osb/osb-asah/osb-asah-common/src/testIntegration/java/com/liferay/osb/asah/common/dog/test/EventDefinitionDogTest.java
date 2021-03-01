@@ -114,20 +114,17 @@ public class EventDefinitionDogTest {
 	}
 
 	private void _assertEventDefinitions(
-		List<EventDefinition> eventDefinitions,
+		List<EventDefinition> actualEventDefinitions,
 		List<String> expectedEventDefinitionNames) {
 
 		Assert.assertEquals(
-			eventDefinitions.toString(), expectedEventDefinitionNames.size(),
-			eventDefinitions.size());
+			actualEventDefinitions.toString(),
+			expectedEventDefinitionNames.size(), actualEventDefinitions.size());
 
-		for (EventDefinition eventDefinition : eventDefinitions) {
-			String eventDefinitionName = eventDefinition.getName();
-
+		for (EventDefinition actualEventDefinition : actualEventDefinitions) {
 			Assert.assertTrue(
-				expectedEventDefinitionNames.contains(eventDefinitionName));
-
-			expectedEventDefinitionNames.remove(eventDefinitionName);
+				expectedEventDefinitionNames.contains(
+					actualEventDefinition.getName()));
 		}
 	}
 
