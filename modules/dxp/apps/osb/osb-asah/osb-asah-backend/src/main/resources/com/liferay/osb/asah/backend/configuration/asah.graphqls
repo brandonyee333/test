@@ -768,17 +768,18 @@ type QueryType {
         size: Int!
     ): EventAttributeDefinitionBag
 
-	eventDefinitions(
-		keyword: String,
-		page: Int!
-		size: Int!
-		eventType: String!
-	): EventDefinitionBag
-
 	eventDefinition(
-		name: String,
-		id: String
+		id: String,
+		name: String
+        size: Int!
 	): EventDefinition
+
+	eventDefinitions(
+		eventType: String!,
+		keyword: String,
+		page: Int!,
+		size: Int!
+	): EventDefinitionBag
 
 	experiment(
 		experimentId: String!
