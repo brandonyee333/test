@@ -116,8 +116,8 @@ public class DataSourceDTO {
 		return _contactsConfigurationDTO;
 	}
 
-	@JsonAlias("dateCreated")
-	@JsonProperty("createDate")
+	@JsonAlias("createDate")
+	@JsonProperty("dateCreated")
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -175,8 +175,8 @@ public class DataSourceDTO {
 		return _id;
 	}
 
-	@JsonAlias("dateModified")
-	@JsonProperty("modifiedDate")
+	@JsonAlias("modifiedDate")
+	@JsonProperty("dateModified")
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
