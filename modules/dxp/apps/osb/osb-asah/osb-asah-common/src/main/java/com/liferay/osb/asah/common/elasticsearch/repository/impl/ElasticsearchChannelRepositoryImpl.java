@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
-import com.google.api.client.util.Objects;
-
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
@@ -27,6 +25,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -158,7 +157,7 @@ public class ElasticsearchChannelRepositoryImpl
 
 				sb.append(order.getProperty());
 
-				if (Objects.equal(order.getProperty(), "name")) {
+				if (Objects.equals(order.getProperty(), "name")) {
 					sb.append(".sort");
 				}
 
