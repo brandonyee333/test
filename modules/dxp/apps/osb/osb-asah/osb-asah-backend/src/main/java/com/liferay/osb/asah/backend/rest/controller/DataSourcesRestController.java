@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.dto.PageDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -34,14 +33,8 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,8 +95,6 @@ public class DataSourcesRestController extends BaseRestController {
 	public String getDataSource(@PathVariable Long id) {
 		DataSource dataSource = _dataSourceDog.getDataSource(id);
 
-		_setLastSyncTime(dataSource);
-
 		_sanitize(dataSource);
 
 		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
@@ -127,8 +118,6 @@ public class DataSourcesRestController extends BaseRestController {
 		return _toPageDTO(
 			dataSourcesPage.map(
 				dataSource -> {
-					_setLastSyncTime(dataSource);
-
 					_sanitize(dataSource);
 
 					return dataSource;
@@ -196,7 +185,6 @@ public class DataSourcesRestController extends BaseRestController {
 		throws Exception {
 
 		_beforeAdd(dataSourceDTO);
-		_removeLastSyncTime(dataSourceDTO);
 
 		DataSource dataSource = _dataSourceDog.addDataSource(
 			_objectMapper.convertValue(dataSourceDTO, DataSource.class));
@@ -215,8 +203,6 @@ public class DataSourcesRestController extends BaseRestController {
 		dataSourceDTO.setId(id);
 
 		_beforeUpdate(dataSourceDTO);
-
-		_removeLastSyncTime(dataSourceDTO);
 
 		DataSource dataSource = _dataSourceDog.updateDataSourceConfiguration(
 			_objectMapper.convertValue(dataSourceDTO, DataSource.class));
@@ -688,122 +674,9 @@ public class DataSourcesRestController extends BaseRestController {
 		_dataSourceDog.updateDataSourceConfiguration(newDataSource);
 	}
 
-	private void _removeLastSyncTime(DataSourceDTO dataSourceDTO) {
-		DataSourceDTO.ProviderDTO providerDTO = dataSourceDTO.getProviderDTO();
-
-		DataSourceDTO.ProviderDTO.AnalyticsConfigurationDTO
-			analyticsConfigurationDTO =
-				providerDTO.getAnalyticsConfigurationDTO();
-
-		if (analyticsConfigurationDTO != null) {
-			analyticsConfigurationDTO.setLastSyncDate(null);
-		}
-
-		DataSourceDTO.ProviderDTO.ContactsConfigurationDTO
-			contactsConfigurationDTO =
-				providerDTO.getContactsConfigurationDTO();
-
-		if (contactsConfigurationDTO != null) {
-			contactsConfigurationDTO.setLastSuccessfulAuditEventDate(null);
-			contactsConfigurationDTO.setLastSyncDate(null);
-		}
-	}
-
 	private void _sanitize(DataSource dataSource) {
 		dataSource.setFaroBackendSecuritySignature(null);
 		dataSource.setPrivateKey(null);
-	}
-
-	private void _setLastSyncTime(DataSource dataSource) {
-		if (!Objects.equals(dataSource.getProviderType(), "LIFERAY")) {
-			return;
-		}
-
-		Long dataSourceId = dataSource.getId();
-
-		Date analyticsLastSyncDate = dataSource.getAnalyticsLastSyncDate();
-
-		if (analyticsLastSyncDate != null) {
-			JSONArray activitiesJSONArray = new JSONArray(
-				faroInfoElasticsearchInvoker.get(
-					"activities",
-					searchSourceBuilder -> {
-						BoolQueryBuilder boolQueryBuilder =
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery(
-									"dataSourceId",
-									String.valueOf(dataSourceId))
-							).filter(
-								QueryBuilders.rangeQuery(
-									"endTime"
-								).gt(
-									DateUtil.toUTCString(analyticsLastSyncDate)
-								)
-							);
-
-						searchSourceBuilder.query(boolQueryBuilder);
-
-						searchSourceBuilder.size(1);
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort(
-								"endTime", SortOrder.DESC));
-					}));
-
-			if (activitiesJSONArray.length() > 0) {
-				JSONObject activityJSONObject =
-					activitiesJSONArray.getJSONObject(0);
-
-				try {
-					dataSource.setAnalyticsLastSyncDate(
-						DateUtil.toUTCDate(
-							activityJSONObject.getString("endTime")));
-
-					_dataSourceDog.updateDataSource(dataSource);
-				}
-				catch (Exception exception) {
-					_log.error(exception);
-				}
-			}
-		}
-
-		Date contactsLastSyncDate = dataSource.getContactsLastSyncDate();
-
-		if (contactsLastSyncDate == null) {
-			return;
-		}
-
-		JSONObject dxpRawOSBAsahMarkersJSONObject =
-			dxpRawElasticsearchInvoker.fetch(
-				"OSBAsahMarkers",
-				QueryBuilders.termQuery(
-					"osbAsahDataSourceId", String.valueOf(dataSourceId)));
-
-		if (dxpRawOSBAsahMarkersJSONObject == null) {
-			return;
-		}
-
-		long lastSyncTime = dxpRawOSBAsahMarkersJSONObject.optLong(
-			"lastSyncTime");
-
-		if (lastSyncTime > 0) {
-			dataSource.setContactsLastSyncDate(new Date(lastSyncTime));
-		}
-
-		JSONObject lastSuccessfulAuditEventJSONObject =
-			dxpRawOSBAsahMarkersJSONObject.optJSONObject(
-				"lastSuccessfulAuditEvent");
-
-		if (lastSuccessfulAuditEventJSONObject == null) {
-			return;
-		}
-
-		long createDate = lastSuccessfulAuditEventJSONObject.optLong(
-			"createDate");
-
-		if (createDate > 0) {
-			dataSource.setContactsLastSuccessfulAuditEventDate(
-				new Date(createDate));
-		}
 	}
 
 	private PageDTO<DataSourceDTO> _toPageDTO(
@@ -815,9 +688,6 @@ public class DataSourcesRestController extends BaseRestController {
 			dataSourcesPage.getTotalElements(),
 			dataSourcesPage.getTotalPages());
 	}
-
-	private static final Log _log = LogFactory.getLog(
-		DataSourcesRestController.class);
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;

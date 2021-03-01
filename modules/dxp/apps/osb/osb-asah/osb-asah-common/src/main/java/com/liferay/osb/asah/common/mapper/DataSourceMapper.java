@@ -270,15 +270,6 @@ public class DataSourceMapper extends Mapper<DataSource, DataSourceDTO> {
 							"enableAllSites"));
 				}
 
-				if (analyticsConfigurationJSONObject.has("lastSyncTime") &&
-					!analyticsConfigurationJSONObject.isNull("lastSyncTime")) {
-
-					dataSource.setAnalyticsLastSyncDate(
-						toUTCDate(
-							analyticsConfigurationJSONObject.get(
-								"lastSyncTime")));
-				}
-
 				if (analyticsConfigurationJSONObject.has("sites") &&
 					!analyticsConfigurationJSONObject.isNull("sites")) {
 
@@ -334,26 +325,6 @@ public class DataSourceMapper extends Mapper<DataSource, DataSourceDTO> {
 					dataSource.setEnableAllLeads(
 						contactsConfigurationJSONObject.getBoolean(
 							"enableAllLeads"));
-				}
-
-				if (contactsConfigurationJSONObject.has(
-						"lastSuccessfulAuditEventTime") &&
-					!contactsConfigurationJSONObject.isNull(
-						"lastSuccessfulAuditEventTime")) {
-
-					dataSource.setContactsLastSuccessfulAuditEventDate(
-						toUTCDate(
-							contactsConfigurationJSONObject.get(
-								"lastSuccessfulAuditEventTime")));
-				}
-
-				if (contactsConfigurationJSONObject.has("lastSyncTime") &&
-					!contactsConfigurationJSONObject.isNull("lastSyncTime")) {
-
-					dataSource.setContactsLastSyncDate(
-						toUTCDate(
-							contactsConfigurationJSONObject.get(
-								"lastSyncTime")));
 				}
 
 				if (contactsConfigurationJSONObject.has("organizations") &&

@@ -50,12 +50,9 @@ CREATE TABLE IF NOT EXISTS DataExportTask (
 
 CREATE TABLE IF NOT EXISTS DataSource (
 	id BIGSERIAL PRIMARY KEY,
-	analyticslastSyncDate TIMESTAMPTZ,
 	authorId BIGINT,
 	authorName TEXT,
 	channelId BIGINT,
-	contactsLastSuccessfulAuditEventDate TIMESTAMPTZ,
-	contactsLastSyncDate TIMESTAMPTZ,
 	contactsSelected BOOLEAN,
 	createDate TIMESTAMPTZ,
 	credentialType TEXT,

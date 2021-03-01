@@ -16,13 +16,10 @@
 			"analyticsConfiguration": {
 				"analyticsKey": null,
 				"enableAllSites": true,
-				"lastSyncTime": null,
 				"sites": null
 			},
 			"contactsConfiguration": {
 				"enableAllContacts": true,
-				"lastSuccessfulAuditEventTime": null,
-				"lastSyncTime": null,
 				"organizations": null,
 				"userGroups": null
 			},
@@ -49,13 +46,10 @@
 			"analyticsConfiguration": {
 				"analyticsKey": null,
 				"enableAllSites": true,
-				"lastSyncTime": null,
 				"sites": null
 			},
 			"contactsConfiguration": {
 				"enableAllContacts": true,
-				"lastSuccessfulAuditEventTime": null,
-				"lastSyncTime": null,
 				"organizations": null,
 				"userGroups": null
 			},

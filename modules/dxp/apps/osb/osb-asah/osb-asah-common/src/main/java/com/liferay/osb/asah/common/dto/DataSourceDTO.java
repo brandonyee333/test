@@ -869,7 +869,6 @@ public class DataSourceDTO {
 
 			public AnalyticsConfigurationDTO(DataSource dataSource) {
 				_enableAllSites = dataSource.getEnableAllSites();
-				_lastSyncDate = dataSource.getAnalyticsLastSyncDate();
 
 				List<SiteDTO> siteDTOs = ListUtil.map(
 					dataSource.getDataSourceSites(), SiteDTO::new);
@@ -896,9 +895,6 @@ public class DataSourceDTO {
 						_enableAllSites,
 						analyticsConfigurationDTO._enableAllSites) &&
 					Objects.equals(
-						_lastSyncDate,
-						analyticsConfigurationDTO._lastSyncDate) &&
-					Objects.equals(
 						_siteDTOs, analyticsConfigurationDTO._siteDTOs)) {
 
 					return true;
@@ -912,20 +908,6 @@ public class DataSourceDTO {
 				return _enableAllSites;
 			}
 
-			@JsonAlias("lastSyncDate")
-			@JsonFormat(
-				pattern = DateUtil.PATTERN_ISO_8601,
-				shape = JsonFormat.Shape.STRING, timezone = "UTC"
-			)
-			@JsonProperty("lastSyncTime")
-			public Date getLastSyncDate() {
-				if (_lastSyncDate == null) {
-					return null;
-				}
-
-				return new Date(_lastSyncDate.getTime());
-			}
-
 			@JsonProperty("sites")
 			public List<SiteDTO> getSiteDTOs() {
 				return _siteDTOs;
@@ -933,7 +915,7 @@ public class DataSourceDTO {
 
 			@Override
 			public int hashCode() {
-				return Objects.hash(_enableAllSites, _lastSyncDate, _siteDTOs);
+				return Objects.hash(_enableAllSites, _siteDTOs);
 			}
 
 			@JsonIgnore
@@ -943,15 +925,6 @@ public class DataSourceDTO {
 
 			public void setEnableAllSites(Boolean enableAllSites) {
 				_enableAllSites = enableAllSites;
-			}
-
-			public void setLastSyncDate(Date lastSyncDate) {
-				if (lastSyncDate != null) {
-					_lastSyncDate = new Date(lastSyncDate.getTime());
-				}
-				else {
-					_lastSyncDate = null;
-				}
 			}
 
 			public void setSiteDTOs(List<SiteDTO> siteDTOs) {
@@ -1025,7 +998,6 @@ public class DataSourceDTO {
 			}
 
 			private Boolean _enableAllSites;
-			private Date _lastSyncDate;
 			private List<SiteDTO> _siteDTOs;
 
 		}
@@ -1039,9 +1011,6 @@ public class DataSourceDTO {
 			public ContactsConfigurationDTO(DataSource dataSource) {
 				_enableAllContacts = dataSource.getEnableAllContacts();
 				_enableAllLeads = dataSource.getEnableAllLeads();
-				_lastSuccessfulAuditEventDate =
-					dataSource.getContactsLastSuccessfulAuditEventDate();
-				_lastSyncDate = dataSource.getContactsLastSyncDate();
 
 				List<OrganizationDTO> organizationDTOs = ListUtil.map(
 					dataSource.getDataSourceOrganizations(),
@@ -1079,13 +1048,6 @@ public class DataSourceDTO {
 						_enableAllLeads,
 						contactsConfigurationDTO._enableAllLeads) &&
 					Objects.equals(
-						_lastSuccessfulAuditEventDate,
-						contactsConfigurationDTO.
-							_lastSuccessfulAuditEventDate) &&
-					Objects.equals(
-						_lastSyncDate,
-						contactsConfigurationDTO._lastSyncDate) &&
-					Objects.equals(
 						_organizationDTOs,
 						contactsConfigurationDTO._organizationDTOs) &&
 					Objects.equals(
@@ -1108,34 +1070,6 @@ public class DataSourceDTO {
 				return _enableAllLeads;
 			}
 
-			@JsonAlias("lastSuccessfulAuditEventDate")
-			@JsonFormat(
-				pattern = DateUtil.PATTERN_ISO_8601,
-				shape = JsonFormat.Shape.STRING, timezone = "UTC"
-			)
-			@JsonProperty("lastSuccessfulAuditEventTime")
-			public Date getLastSuccessfulAuditEventDate() {
-				if (_lastSuccessfulAuditEventDate == null) {
-					return null;
-				}
-
-				return new Date(_lastSuccessfulAuditEventDate.getTime());
-			}
-
-			@JsonAlias("lLastSyncDate")
-			@JsonFormat(
-				pattern = DateUtil.PATTERN_ISO_8601,
-				shape = JsonFormat.Shape.STRING, timezone = "UTC"
-			)
-			@JsonProperty("lastSyncTime")
-			public Date getLastSyncDate() {
-				if (_lastSyncDate == null) {
-					return null;
-				}
-
-				return new Date(_lastSyncDate.getTime());
-			}
-
 			@JsonProperty("organizations")
 			public List<OrganizationDTO> getOrganizationDTOs() {
 				return _organizationDTOs;
@@ -1149,9 +1083,8 @@ public class DataSourceDTO {
 			@Override
 			public int hashCode() {
 				return Objects.hash(
-					_enableAllContacts, _enableAllLeads,
-					_lastSuccessfulAuditEventDate, _lastSyncDate,
-					_organizationDTOs, _userGroupDTOs);
+					_enableAllContacts, _enableAllLeads, _organizationDTOs,
+					_userGroupDTOs);
 			}
 
 			@JsonIgnore
@@ -1165,27 +1098,6 @@ public class DataSourceDTO {
 
 			public void setEnableAllLeads(Boolean enableAllLeads) {
 				_enableAllLeads = enableAllLeads;
-			}
-
-			public void setLastSuccessfulAuditEventDate(
-				Date lastSuccessfulAuditEventDate) {
-
-				if (lastSuccessfulAuditEventDate != null) {
-					_lastSuccessfulAuditEventDate = new Date(
-						lastSuccessfulAuditEventDate.getTime());
-				}
-				else {
-					_lastSuccessfulAuditEventDate = null;
-				}
-			}
-
-			public void setLastSyncDate(Date lastSyncDate) {
-				if (lastSyncDate != null) {
-					_lastSyncDate = new Date(lastSyncDate.getTime());
-				}
-				else {
-					_lastSyncDate = null;
-				}
 			}
 
 			public void setOrganizationDTOs(
@@ -1371,8 +1283,6 @@ public class DataSourceDTO {
 
 			private Boolean _enableAllContacts;
 			private Boolean _enableAllLeads;
-			private Date _lastSuccessfulAuditEventDate;
-			private Date _lastSyncDate;
 			private List<OrganizationDTO> _organizationDTOs;
 			private List<UserGroupDTO> _userGroupDTOs;
 

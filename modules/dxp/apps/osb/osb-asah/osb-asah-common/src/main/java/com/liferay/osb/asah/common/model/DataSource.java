@@ -58,16 +58,9 @@ public class DataSource implements Persistable<Long> {
 
 		DataSource dataSource = (DataSource)obj;
 
-		if (Objects.equals(
-				_analyticslastSyncDate, dataSource._analyticslastSyncDate) &&
-			Objects.equals(_authorId, dataSource._authorId) &&
+		if (Objects.equals(_authorId, dataSource._authorId) &&
 			Objects.equals(_authorName, dataSource._authorName) &&
 			Objects.equals(_channelId, dataSource._channelId) &&
-			Objects.equals(
-				_contactsLastSuccessfulAuditEventDate,
-				dataSource._contactsLastSuccessfulAuditEventDate) &&
-			Objects.equals(
-				_contactsLastSyncDate, dataSource._contactsLastSyncDate) &&
 			Objects.equals(_contactsSelected, dataSource._contactsSelected) &&
 			Objects.equals(_createDate, dataSource._createDate) &&
 			Objects.equals(_credentialType, dataSource._credentialType) &&
@@ -117,15 +110,6 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Date getAnalyticsLastSyncDate() {
-		if (_analyticslastSyncDate == null) {
-			return null;
-		}
-
-		return new Date(_analyticslastSyncDate.getTime());
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getAuthorId() {
 		return _authorId;
 	}
@@ -138,24 +122,6 @@ public class DataSource implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public Long getChannelId() {
 		return _channelId;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Date getContactsLastSuccessfulAuditEventDate() {
-		if (_contactsLastSuccessfulAuditEventDate == null) {
-			return null;
-		}
-
-		return new Date(_contactsLastSuccessfulAuditEventDate.getTime());
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public Date getContactsLastSyncDate() {
-		if (_contactsLastSyncDate == null) {
-			return null;
-		}
-
-		return new Date(_contactsLastSyncDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -348,18 +314,16 @@ public class DataSource implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_analyticslastSyncDate, _authorId, _authorName, _channelId,
-			_contactsLastSuccessfulAuditEventDate, _contactsLastSyncDate,
-			_contactsSelected, _createDate, _credentialType,
-			_dataSourceOrganizations, _dataSourceSites, _dataSourceUserGroups,
-			_deletionDate, _enableAllAccounts, _enableAllContacts,
-			_enableAllLeads, _enableAllSites, _faroBackendSecuritySignature,
-			_id, _login, _modifiedDate, _name, _oAuthAccessSecret,
-			_oAuthAccessToken, _oAuthClientId, _oAuthClientSecret,
-			_oAuthConsumerKey, _oAuthConsumerSecret, _oAuthOwnerEmailAddress,
-			_oAuthOwnerName, _oAuthRefreshToken, _password, _privateKey,
-			_providerType, _publicKey, _sitesSelected, _state, _status, _url,
-			_workspaceURL);
+			_authorId, _authorName, _channelId, _contactsSelected, _createDate,
+			_credentialType, _dataSourceOrganizations, _dataSourceSites,
+			_dataSourceUserGroups, _deletionDate, _enableAllAccounts,
+			_enableAllContacts, _enableAllLeads, _enableAllSites,
+			_faroBackendSecuritySignature, _id, _login, _modifiedDate, _name,
+			_oAuthAccessSecret, _oAuthAccessToken, _oAuthClientId,
+			_oAuthClientSecret, _oAuthConsumerKey, _oAuthConsumerSecret,
+			_oAuthOwnerEmailAddress, _oAuthOwnerName, _oAuthRefreshToken,
+			_password, _privateKey, _providerType, _publicKey, _sitesSelected,
+			_state, _status, _url, _workspaceURL);
 	}
 
 	@Override
@@ -369,12 +333,6 @@ public class DataSource implements Persistable<Long> {
 		}
 
 		return false;
-	}
-
-	public void setAnalyticsLastSyncDate(Date analyticslastSyncDate) {
-		if (analyticslastSyncDate != null) {
-			_analyticslastSyncDate = new Date(analyticslastSyncDate.getTime());
-		}
 	}
 
 	public void setAuthorId(Long authorId) {
@@ -387,21 +345,6 @@ public class DataSource implements Persistable<Long> {
 
 	public void setChannelId(Long channelId) {
 		_channelId = channelId;
-	}
-
-	public void setContactsLastSuccessfulAuditEventDate(
-		Date contactsLastSuccessfulAuditEventDate) {
-
-		if (contactsLastSuccessfulAuditEventDate != null) {
-			_contactsLastSuccessfulAuditEventDate = new Date(
-				contactsLastSuccessfulAuditEventDate.getTime());
-		}
-	}
-
-	public void setContactsLastSyncDate(Date contactsLastSyncDate) {
-		if (contactsLastSyncDate != null) {
-			_contactsLastSyncDate = new Date(contactsLastSyncDate.getTime());
-		}
 	}
 
 	public void setContactsSelected(Boolean contactsSelected) {
@@ -559,9 +502,6 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	@Transient
-	private Date _analyticslastSyncDate;
-
-	@Transient
 	private Long _authorId;
 
 	@Transient
@@ -569,12 +509,6 @@ public class DataSource implements Persistable<Long> {
 
 	@Transient
 	private Long _channelId;
-
-	@Transient
-	private Date _contactsLastSuccessfulAuditEventDate;
-
-	@Transient
-	private Date _contactsLastSyncDate;
 
 	@Transient
 	private Boolean _contactsSelected;

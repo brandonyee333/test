@@ -112,9 +112,6 @@
 								"enableAllSites": {
 									"type": "boolean"
 								},
-								"lastSyncTime": {
-									"type": "date"
-								},
 								"sites": {
 									"properties": {
 										"enableAllChildren": {
@@ -134,12 +131,6 @@
 								},
 								"enableAllLeads": {
 									"type": "boolean"
-								},
-								"lastSuccessfulAuditEventTime": {
-									"type": "date"
-								},
-								"lastSyncTime": {
-									"type": "date"
 								},
 								"organizations": {
 									"properties": {
