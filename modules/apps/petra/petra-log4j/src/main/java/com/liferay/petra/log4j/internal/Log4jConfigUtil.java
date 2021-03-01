@@ -75,11 +75,9 @@ public class Log4jConfigUtil {
 
 				for (Element element : rootElement.elements()) {
 					for (Element childElement : element.elements()) {
-						for (String appenderName : removedAppenderNames) {
-							_removeAppender(
-								element, childElement, appenderName,
-								"AppenderRef", "Appender");
-						}
+						_removeAppender(
+							element, childElement, "AppenderRef", "Appender",
+							removedAppenderNames);
 
 						if (Objects.equals("Logger", childElement.getName())) {
 							priorities.put(
@@ -94,11 +92,9 @@ public class Log4jConfigUtil {
 			}
 			else {
 				for (Element childElement : rootElement.elements()) {
-					for (String appenderName : removedAppenderNames) {
-						_removeAppender(
-							rootElement, childElement, appenderName,
-							"appender-ref", "appender");
-					}
+					_removeAppender(
+						rootElement, childElement, "appender-ref", "appender",
+						removedAppenderNames);
 
 					if (Objects.equals("category", childElement.getName())) {
 						Element priorityElement = childElement.element(
@@ -209,21 +205,28 @@ public class Log4jConfigUtil {
 	}
 
 	private static void _removeAppender(
-		Element parentElement, Element element, String appenderName,
-		String appenderRefTagName, String appenderTagName) {
+		Element parentElement, Element element, String appenderRefTagName,
+		String appenderTagName, String... removedAppenderNames) {
 
-		if (Objects.equals(appenderTagName, element.getName()) &&
-			Objects.equals(appenderName, element.attributeValue("name"))) {
-
-			parentElement.remove(element);
+		if (removedAppenderNames.length == 0) {
+			return;
 		}
 
-		for (Element childElement : element.elements()) {
-			if (Objects.equals(appenderRefTagName, childElement.getName()) &&
-				Objects.equals(
-					appenderName, childElement.attributeValue("ref"))) {
+		for (String appenderName : removedAppenderNames) {
+			if (Objects.equals(appenderTagName, element.getName()) &&
+				Objects.equals(appenderName, element.attributeValue("name"))) {
 
-				element.remove(childElement);
+				parentElement.remove(element);
+			}
+
+			for (Element childElement : element.elements()) {
+				if (Objects.equals(
+						appenderRefTagName, childElement.getName()) &&
+					Objects.equals(
+						appenderName, childElement.attributeValue("ref"))) {
+
+					element.remove(childElement);
+				}
 			}
 		}
 	}
