@@ -484,10 +484,10 @@ public class ChannelDog extends BaseFaroInfoDog {
 			}
 
 			if (Objects.equals(properties[1], "asc")) {
-				Sort.Order.asc(property);
+				orders.add(Sort.Order.asc(property));
 			}
 			else {
-				Sort.Order.desc(property);
+				orders.add(Sort.Order.desc(property));
 			}
 		}
 
