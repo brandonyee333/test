@@ -37,7 +37,7 @@ public class TimeZoneMutationDataFetcher implements DataFetcher<String> {
 	public String get(DataFetchingEnvironment dataFetchingEnvironment) {
 		String value = dataFetchingEnvironment.getArgument("value");
 
-		_preferenceDog.addPreference("time-zone-id", value);
+		_preferenceDog.savePreference("time-zone-id", value);
 
 		_nanitesHttp.rescheduleNanites();
 

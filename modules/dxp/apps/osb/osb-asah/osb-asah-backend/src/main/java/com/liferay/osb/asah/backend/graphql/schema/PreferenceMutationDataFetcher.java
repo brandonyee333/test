@@ -45,7 +45,7 @@ public class PreferenceMutationDataFetcher implements DataFetcher<Preference> {
 
 		_validate(key, value);
 
-		return _preferenceDog.addPreference(key, value);
+		return _preferenceDog.savePreference(key, value);
 	}
 
 	private void _validate(String key, String value) {

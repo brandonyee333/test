@@ -30,10 +30,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class PreferenceDog {
 
-	public Preference addPreference(String key, String value) {
-		return _preferenceRepository.save(new Preference(key, value));
-	}
-
 	public Preference getPreference(String key) {
 		Preference preference = _preferenceRepository.findByKey(key);
 
@@ -42,6 +38,18 @@ public class PreferenceDog {
 		}
 
 		return preference;
+	}
+
+	public Preference savePreference(String key, String value) {
+		Preference preference = _preferenceRepository.findByKey(key);
+
+		if (preference == null) {
+			return _preferenceRepository.save(new Preference(key, value));
+		}
+
+		preference.setValue(value);
+
+		return _preferenceRepository.save(preference);
 	}
 
 	private static final Map<String, String> _defaultPreferences =

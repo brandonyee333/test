@@ -35,7 +35,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class PreferenceDogTest {
 
 	@Test
-	public void testAddPreference() {
+	public void testSavePreference() {
 		Preference preference = _preferenceDog.getPreference(
 			"data-retention-period");
 
@@ -45,7 +45,14 @@ public class PreferenceDogTest {
 		String dataRetentionPeriod = String.valueOf(
 			String.valueOf(7 * DateUtil.MONTH));
 
-		_preferenceDog.addPreference(
+		_preferenceDog.savePreference(
+			"data-retention-period", dataRetentionPeriod);
+
+		preference = _preferenceDog.getPreference("data-retention-period");
+
+		Assert.assertEquals(dataRetentionPeriod, preference.getValue());
+
+		_preferenceDog.savePreference(
 			"data-retention-period", dataRetentionPeriod);
 
 		preference = _preferenceDog.getPreference("data-retention-period");
