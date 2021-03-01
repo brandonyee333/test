@@ -74,16 +74,41 @@ public class Log4jConfigUtil {
 				}
 
 				for (Element element : rootElement.elements()) {
-					_setPrioritiesAndRemoveAppender(
-						element, priorities, removedAppenderNames);
+					for (Element childElement : element.elements()) {
+						for (String appenderName : removedAppenderNames) {
+							_removeAppender(
+								element, childElement, appenderName,
+								"AppenderRef", "Appender");
+						}
+
+						if (Objects.equals("Logger", childElement.getName())) {
+							priorities.put(
+								childElement.attributeValue("name"),
+								childElement.attributeValue("level"));
+						}
+					}
 				}
 
 				abstractConfiguration = new XmlConfiguration(
 					loggerContext, _getConfigurationSource(document));
 			}
 			else {
-				_setPrioritiesAndRemoveAppender(
-					rootElement, priorities, removedAppenderNames);
+				for (Element childElement : rootElement.elements()) {
+					for (String appenderName : removedAppenderNames) {
+						_removeAppender(
+							rootElement, childElement, appenderName,
+							"appender-ref", "appender");
+					}
+
+					if (Objects.equals("category", childElement.getName())) {
+						Element priorityElement = childElement.element(
+							"priority");
+
+						priorities.put(
+							childElement.attributeValue("name"),
+							priorityElement.attributeValue("value"));
+					}
+				}
 
 				abstractConfiguration =
 					new org.apache.log4j.xml.XmlConfiguration(
@@ -199,45 +224,6 @@ public class Log4jConfigUtil {
 					appenderName, childElement.attributeValue("ref"))) {
 
 				element.remove(childElement);
-			}
-		}
-	}
-
-	private static void _setPrioritiesAndRemoveAppender(
-		Element element, Map<String, String> priorities,
-		String... removedAppenderNames) {
-
-		boolean log4j1config = false;
-
-		if (Objects.equals("log4j:configuration", element.getName())) {
-			log4j1config = true;
-		}
-
-		for (Element childElement : element.elements()) {
-			for (String appenderName : removedAppenderNames) {
-				if (log4j1config) {
-					_removeAppender(
-						element, childElement, appenderName, "appender-ref",
-						"appender");
-				}
-				else {
-					_removeAppender(
-						element, childElement, appenderName, "AppenderRef",
-						"Appender");
-				}
-			}
-
-			if (Objects.equals("Logger", childElement.getName())) {
-				priorities.put(
-					childElement.attributeValue("name"),
-					childElement.attributeValue("level"));
-			}
-			else if (Objects.equals("category", childElement.getName())) {
-				Element priorityElement = childElement.element("priority");
-
-				priorities.put(
-					childElement.attributeValue("name"),
-					priorityElement.attributeValue("value"));
 			}
 		}
 	}
