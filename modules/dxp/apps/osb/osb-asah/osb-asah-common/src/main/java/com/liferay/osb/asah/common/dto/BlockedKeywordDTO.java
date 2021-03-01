@@ -1,0 +1,117 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.dto;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+import com.liferay.osb.asah.common.model.BlockedKeyword;
+import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
+
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.collections4.ListUtils;
+
+/**
+ * @author André Miranda
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonRootName("blocked-keywords")
+public class BlockedKeywordDTO {
+
+	public BlockedKeywordDTO() {
+	}
+
+	public BlockedKeywordDTO(BlockedKeyword blockedKeyword) {
+		this(blockedKeyword, false);
+	}
+
+	public BlockedKeywordDTO(BlockedKeyword blockedKeyword, Boolean duplicate) {
+		_duplicate = duplicate;
+
+		_createDate = blockedKeyword.getCreateDate();
+		_id = StringUtil.get(blockedKeyword.getId(), null);
+		_keyword = blockedKeyword.getKeyword();
+	}
+
+	public BlockedKeywordDTO(List<BlockedKeyword> blockedKeywords) {
+		_blockedKeywordDTOs = ListUtil.map(
+			blockedKeywords, BlockedKeywordDTO::new);
+	}
+
+	public BlockedKeywordDTO(
+		List<BlockedKeywordDTO> blockedKeywordDTOs, Boolean succeeded) {
+
+		_blockedKeywordDTOs = blockedKeywordDTOs;
+		_succeeded = succeeded;
+	}
+
+	public BlockedKeywordDTO(
+		List<BlockedKeywordDTO> duplicateBlockedKeywordDTOs,
+		List<BlockedKeyword> blockedKeywords) {
+
+		_blockedKeywordDTOs = ListUtils.union(
+			duplicateBlockedKeywordDTOs,
+			ListUtil.map(blockedKeywords, BlockedKeywordDTO::new));
+		_succeeded = true;
+	}
+
+	@JsonProperty("blocked-keywords")
+	public List<BlockedKeywordDTO> getBlockedKeywordDTOs() {
+		return _blockedKeywordDTOs;
+	}
+
+	@JsonAlias("dateCreated")
+	@JsonProperty("createDate")
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
+	}
+
+	@JsonProperty("duplicate")
+	public Boolean getDuplicate() {
+		return _duplicate;
+	}
+
+	@JsonProperty("id")
+	public String getId() {
+		return _id;
+	}
+
+	@JsonProperty("keyword")
+	public String getKeyword() {
+		return _keyword;
+	}
+
+	@JsonProperty("succeeded")
+	public Boolean getSucceeded() {
+		return _succeeded;
+	}
+
+	private List<BlockedKeywordDTO> _blockedKeywordDTOs;
+	private Date _createDate;
+	private Boolean _duplicate;
+	private String _id;
+	private String _keyword;
+	private Boolean _succeeded;
+
+}

@@ -14,12 +14,16 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
+import static org.springframework.data.domain.Sort.Order;
+
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -80,7 +84,41 @@ public class SortBuilderUtil {
 		return fieldSortBuilder.unmappedType(unmappedType);
 	}
 
+	public static List<Order> getOrders(String[] sorts) {
+		List<Pair<String, SortOrder>> sortOrderPairs = _getSortOrderPairs(
+			sorts);
+
+		if (sortOrderPairs.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		Stream<Pair<String, SortOrder>> stream = sortOrderPairs.stream();
+
+		return stream.map(
+			sortOrderPair -> {
+				if (sortOrderPair.getRight() == SortOrder.ASC) {
+					return Order.asc(sortOrderPair.getLeft());
+				}
+
+				return Order.desc(sortOrderPair.getLeft());
+			}
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	public static List<Pair<String, SortOrder>> getSortOrderPairs(
+		String[] sorts) {
+
+		List<Pair<String, SortOrder>> sortOrderPairs = _getSortOrderPairs(
+			sorts);
+
+		sortOrderPairs.add(Pair.of("id", SortOrder.ASC));
+
+		return sortOrderPairs;
+	}
+
+	private static List<Pair<String, SortOrder>> _getSortOrderPairs(
 		String[] sorts) {
 
 		if (sorts == null) {
@@ -121,8 +159,6 @@ public class SortBuilderUtil {
 				sortOrderPairs.add(Pair.of(fieldName, sortOrder));
 			}
 		}
-
-		sortOrderPairs.add(Pair.of("id", SortOrder.ASC));
 
 		return sortOrderPairs;
 	}
