@@ -24,9 +24,11 @@ import cc.mallet.types.IDSorter;
 import cc.mallet.types.Instance;
 import cc.mallet.types.InstanceList;
 
+import com.liferay.osb.asah.common.dog.BlockedKeywordDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.BlockedKeyword;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ import org.elasticsearch.search.SearchHits;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -145,6 +148,9 @@ public class InterestTopicsNanite extends BaseNanite {
 			new SerialPipes(_createPreprocessPipes()));
 
 		Iterator<Instance> instanceIterator = new InstanceIterator(
+			SetUtil.map(
+				_blockedKeywordDog.getBlockedKeywords(),
+				BlockedKeyword::getKeyword),
 			_faroInfoElasticsearchInvoker);
 
 		instanceList.addThruPipe(instanceIterator);
@@ -161,6 +167,9 @@ public class InterestTopicsNanite extends BaseNanite {
 	}
 
 	private static final String _SEPARATOR = "_SEPARATOR_";
+
+	@Autowired
+	private BlockedKeywordDog _blockedKeywordDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
@@ -185,12 +194,11 @@ public class InterestTopicsNanite extends BaseNanite {
 
 	private static class InstanceIterator implements Iterator<Instance> {
 
-		public InstanceIterator(ElasticsearchInvoker elasticsearchInvoker) {
-			_blockedKeywords = JSONUtil.toStringSet(
-				elasticsearchInvoker.get(
-					"blocked-keywords", QueryBuilders.matchAllQuery()),
-				"keyword");
+		public InstanceIterator(
+			Set<String> blockedKeywords,
+			ElasticsearchInvoker elasticsearchInvoker) {
 
+			_blockedKeywords = blockedKeywords;
 			_elasticsearchInvoker = elasticsearchInvoker;
 
 			_totalCount = elasticsearchInvoker.count(

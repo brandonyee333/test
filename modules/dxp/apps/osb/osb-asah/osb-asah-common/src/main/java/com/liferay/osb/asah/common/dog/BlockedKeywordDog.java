@@ -99,6 +99,10 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 				"There is no blocked keyword with ID " + blockedKeywordId));
 	}
 
+	public List<BlockedKeyword> getBlockedKeywords() {
+		return IterableUtils.toList(_blockedKeywordRepository.findAll());
+	}
+
 	public List<BlockedKeyword> getBlockedKeywords(Set<String> keywords) {
 		return _blockedKeywordRepository.findByKeywordIn(keywords);
 	}
