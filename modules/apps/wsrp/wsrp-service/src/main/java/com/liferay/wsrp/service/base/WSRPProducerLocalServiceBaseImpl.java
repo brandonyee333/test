@@ -51,11 +51,14 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.wsrp.model.WSRPProducer;
 import com.liferay.wsrp.service.WSRPProducerLocalService;
+import com.liferay.wsrp.service.WSRPProducerLocalServiceUtil;
 import com.liferay.wsrp.service.persistence.WSRPConsumerPersistence;
 import com.liferay.wsrp.service.persistence.WSRPConsumerPortletPersistence;
 import com.liferay.wsrp.service.persistence.WSRPProducerPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -79,7 +82,7 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WSRPProducerLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.wsrp.service.WSRPProducerLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WSRPProducerLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WSRPProducerLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -874,11 +877,15 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.wsrp.model.WSRPProducer", wsrpProducerLocalService);
+
+		_setLocalServiceUtilService(wsrpProducerLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.wsrp.model.WSRPProducer");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -920,6 +927,22 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		WSRPProducerLocalService wsrpProducerLocalService) {
+
+		try {
+			Field field = WSRPProducerLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, wsrpProducerLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

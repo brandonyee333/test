@@ -17,6 +17,7 @@ package com.liferay.osb.testray.service.base;
 import com.liferay.osb.testray.model.TestrayArchive;
 import com.liferay.osb.testray.model.TestrayArchiveCompressedDataBlobModel;
 import com.liferay.osb.testray.service.TestrayArchiveLocalService;
+import com.liferay.osb.testray.service.TestrayArchiveLocalServiceUtil;
 import com.liferay.osb.testray.service.persistence.TestrayArchivePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayAssignmentPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayBuildPersistence;
@@ -73,6 +74,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.sql.Blob;
 
 import java.util.List;
@@ -97,7 +100,7 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TestrayArchiveLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.testray.service.TestrayArchiveLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TestrayArchiveLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TestrayArchiveLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1485,11 +1488,15 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 
 			_useTempFile = true;
 		}
+
+		_setLocalServiceUtilService(testrayArchiveLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.testray.model.TestrayArchive");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1531,6 +1538,22 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		TestrayArchiveLocalService testrayArchiveLocalService) {
+
+		try {
+			Field field = TestrayArchiveLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayArchiveLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

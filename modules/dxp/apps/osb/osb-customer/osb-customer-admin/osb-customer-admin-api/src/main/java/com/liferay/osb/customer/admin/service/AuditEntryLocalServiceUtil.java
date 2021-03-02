@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.admin.model.AuditEntry;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for AuditEntry. This utility wraps
@@ -48,19 +54,17 @@ public class AuditEntryLocalServiceUtil {
 	 * @param auditEntry the audit entry
 	 * @return the audit entry that was added
 	 */
-	public static com.liferay.osb.customer.admin.model.AuditEntry addAuditEntry(
-		com.liferay.osb.customer.admin.model.AuditEntry auditEntry) {
-
+	public static AuditEntry addAuditEntry(AuditEntry auditEntry) {
 		return getService().addAuditEntry(auditEntry);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AuditEntry addAuditEntry(
+	public static AuditEntry addAuditEntry(
 			long userId, String userName, java.util.Date createDate,
 			long classNameId, long classPK, long auditSetId,
 			long fieldClassNameId, long fieldClassPK, int action, int field,
 			int visibility, String oldLabel, String oldValue, String newLabel,
 			String newValue, String description)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addAuditEntry(
 			userId, userName, createDate, classNameId, classPK, auditSetId,
@@ -68,14 +72,14 @@ public class AuditEntryLocalServiceUtil {
 			oldValue, newLabel, newValue, description);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AuditEntry addAuditEntry(
+	public static AuditEntry addAuditEntry(
 			long userId, String userName, java.util.Date createDate,
 			long classNameId, long classPK, long auditSetId,
 			long fieldClassNameId, long fieldClassPK, int action, int field,
 			int visibility, String oldLabel, String oldValue, String newLabel,
 			String newValue, String description, boolean i18n,
 			boolean trackChange)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addAuditEntry(
 			userId, userName, createDate, classNameId, classPK, auditSetId,
@@ -89,9 +93,7 @@ public class AuditEntryLocalServiceUtil {
 	 * @param auditEntryId the primary key for the new audit entry
 	 * @return the new audit entry
 	 */
-	public static com.liferay.osb.customer.admin.model.AuditEntry
-		createAuditEntry(long auditEntryId) {
-
+	public static AuditEntry createAuditEntry(long auditEntryId) {
 		return getService().createAuditEntry(auditEntryId);
 	}
 
@@ -105,10 +107,7 @@ public class AuditEntryLocalServiceUtil {
 	 * @param auditEntry the audit entry
 	 * @return the audit entry that was removed
 	 */
-	public static com.liferay.osb.customer.admin.model.AuditEntry
-		deleteAuditEntry(
-			com.liferay.osb.customer.admin.model.AuditEntry auditEntry) {
-
+	public static AuditEntry deleteAuditEntry(AuditEntry auditEntry) {
 		return getService().deleteAuditEntry(auditEntry);
 	}
 
@@ -123,9 +122,8 @@ public class AuditEntryLocalServiceUtil {
 	 * @return the audit entry that was removed
 	 * @throws PortalException if a audit entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.admin.model.AuditEntry
-			deleteAuditEntry(long auditEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuditEntry deleteAuditEntry(long auditEntryId)
+		throws PortalException {
 
 		return getService().deleteAuditEntry(auditEntryId);
 	}
@@ -133,17 +131,14 @@ public class AuditEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -153,9 +148,7 @@ public class AuditEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -171,9 +164,8 @@ public class AuditEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -191,10 +183,9 @@ public class AuditEntryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -206,9 +197,7 @@ public class AuditEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -220,15 +209,13 @@ public class AuditEntryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AuditEntry
-		fetchAuditEntry(long auditEntryId) {
-
+	public static AuditEntry fetchAuditEntry(long auditEntryId) {
 		return getService().fetchAuditEntry(auditEntryId);
 	}
 
@@ -238,9 +225,8 @@ public class AuditEntryLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AuditEntry> getAuditEntries(
-			java.util.Date createDate, long classNameId) {
+	public static List<AuditEntry> getAuditEntries(
+		java.util.Date createDate, long classNameId) {
 
 		return getService().getAuditEntries(createDate, classNameId);
 	}
@@ -256,16 +242,12 @@ public class AuditEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of audit entries (not inclusive)
 	 * @return the range of audit entries
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AuditEntry> getAuditEntries(
-			int start, int end) {
-
+	public static List<AuditEntry> getAuditEntries(int start, int end) {
 		return getService().getAuditEntries(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AuditEntry> getAuditEntries(
-			long classNameId, long classPK, int[] visibilities) {
+	public static List<AuditEntry> getAuditEntries(
+		long classNameId, long classPK, int[] visibilities) {
 
 		return getService().getAuditEntries(classNameId, classPK, visibilities);
 	}
@@ -286,17 +268,14 @@ public class AuditEntryLocalServiceUtil {
 	 * @return the audit entry
 	 * @throws PortalException if a audit entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.admin.model.AuditEntry getAuditEntry(
-			long auditEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuditEntry getAuditEntry(long auditEntryId)
+		throws PortalException {
 
 		return getService().getAuditEntry(auditEntryId);
 	}
 
-	public static java.util.List
-		<java.util.List<com.liferay.osb.customer.admin.model.AuditEntry>>
-			getAuditEntrySets(
-				long classNameId, long classPK, int[] visibilities) {
+	public static List<List<AuditEntry>> getAuditEntrySets(
+		long classNameId, long classPK, int[] visibilities) {
 
 		return getService().getAuditEntrySets(
 			classNameId, classPK, visibilities);
@@ -309,16 +288,15 @@ public class AuditEntryLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
-	public static com.liferay.osb.customer.admin.model.AuditEntry
-		getLastAuditEntry(long fieldClassNameId, long fieldClassPK, int field) {
+	public static AuditEntry getLastAuditEntry(
+		long fieldClassNameId, long fieldClassPK, int field) {
 
 		return getService().getLastAuditEntry(
 			fieldClassNameId, fieldClassPK, field);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AuditEntry
-		getLastAuditEntry(
-			long classNameId, long classPK, int field, int action) {
+	public static AuditEntry getLastAuditEntry(
+		long classNameId, long classPK, int field, int action) {
 
 		return getService().getLastAuditEntry(
 			classNameId, classPK, field, action);
@@ -344,9 +322,8 @@ public class AuditEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -361,33 +338,14 @@ public class AuditEntryLocalServiceUtil {
 	 * @param auditEntry the audit entry
 	 * @return the audit entry that was updated
 	 */
-	public static com.liferay.osb.customer.admin.model.AuditEntry
-		updateAuditEntry(
-			com.liferay.osb.customer.admin.model.AuditEntry auditEntry) {
-
+	public static AuditEntry updateAuditEntry(AuditEntry auditEntry) {
 		return getService().updateAuditEntry(auditEntry);
 	}
 
 	public static AuditEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AuditEntryLocalService, AuditEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AuditEntryLocalService.class);
-
-		ServiceTracker<AuditEntryLocalService, AuditEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AuditEntryLocalService, AuditEntryLocalService>(
-						bundle.getBundleContext(), AuditEntryLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AuditEntryLocalService _service;
 
 }

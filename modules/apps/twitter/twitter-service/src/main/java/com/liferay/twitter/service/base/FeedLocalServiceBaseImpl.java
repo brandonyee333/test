@@ -43,9 +43,12 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 import com.liferay.twitter.model.Feed;
 import com.liferay.twitter.service.FeedLocalService;
+import com.liferay.twitter.service.FeedLocalServiceUtil;
 import com.liferay.twitter.service.persistence.FeedPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -69,7 +72,7 @@ public abstract class FeedLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>FeedLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.twitter.service.FeedLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>FeedLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>FeedLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -554,11 +557,15 @@ public abstract class FeedLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.twitter.model.Feed", feedLocalService);
+
+		_setLocalServiceUtilService(feedLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.twitter.model.Feed");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -600,6 +607,22 @@ public abstract class FeedLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		FeedLocalService feedLocalService) {
+
+		try {
+			Field field = FeedLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, feedLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

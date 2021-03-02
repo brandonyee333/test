@@ -16,6 +16,7 @@ package com.liferay.osb.loop.service.base;
 
 import com.liferay.osb.loop.model.LoopTopicAssignment;
 import com.liferay.osb.loop.service.LoopTopicAssignmentLocalService;
+import com.liferay.osb.loop.service.LoopTopicAssignmentLocalServiceUtil;
 import com.liferay.osb.loop.service.persistence.LoopAuditEntryPersistence;
 import com.liferay.osb.loop.service.persistence.LoopDivisionPersistence;
 import com.liferay.osb.loop.service.persistence.LoopDivisionRelPersistence;
@@ -61,6 +62,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -83,7 +86,7 @@ public abstract class LoopTopicAssignmentLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LoopTopicAssignmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.service.LoopTopicAssignmentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LoopTopicAssignmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LoopTopicAssignmentLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1237,11 +1240,15 @@ public abstract class LoopTopicAssignmentLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.loop.model.LoopTopicAssignment",
 			loopTopicAssignmentLocalService);
+
+		_setLocalServiceUtilService(loopTopicAssignmentLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.loop.model.LoopTopicAssignment");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1284,6 +1291,23 @@ public abstract class LoopTopicAssignmentLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		LoopTopicAssignmentLocalService loopTopicAssignmentLocalService) {
+
+		try {
+			Field field =
+				LoopTopicAssignmentLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, loopTopicAssignmentLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

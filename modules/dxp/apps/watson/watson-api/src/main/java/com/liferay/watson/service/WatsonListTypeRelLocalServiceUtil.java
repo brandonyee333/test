@@ -14,9 +14,15 @@
 
 package com.liferay.watson.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.watson.model.WatsonListTypeRel;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WatsonListTypeRel. This utility wraps
@@ -48,9 +54,8 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @param watsonListTypeRel the watson list type rel
 	 * @return the watson list type rel that was added
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRel
-		addWatsonListTypeRel(
-			com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
+	public static WatsonListTypeRel addWatsonListTypeRel(
+		WatsonListTypeRel watsonListTypeRel) {
 
 		return getService().addWatsonListTypeRel(watsonListTypeRel);
 	}
@@ -61,8 +66,8 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @param watsonListTypeRelId the primary key for the new watson list type rel
 	 * @return the new watson list type rel
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRel
-		createWatsonListTypeRel(long watsonListTypeRelId) {
+	public static WatsonListTypeRel createWatsonListTypeRel(
+		long watsonListTypeRelId) {
 
 		return getService().createWatsonListTypeRel(watsonListTypeRelId);
 	}
@@ -70,10 +75,9 @@ public class WatsonListTypeRelLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -89,9 +93,9 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @return the watson list type rel that was removed
 	 * @throws PortalException if a watson list type rel with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRel
-			deleteWatsonListTypeRel(long watsonListTypeRelId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonListTypeRel deleteWatsonListTypeRel(
+			long watsonListTypeRelId)
+		throws PortalException {
 
 		return getService().deleteWatsonListTypeRel(watsonListTypeRelId);
 	}
@@ -106,16 +110,13 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @param watsonListTypeRel the watson list type rel
 	 * @return the watson list type rel that was removed
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRel
-		deleteWatsonListTypeRel(
-			com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
+	public static WatsonListTypeRel deleteWatsonListTypeRel(
+		WatsonListTypeRel watsonListTypeRel) {
 
 		return getService().deleteWatsonListTypeRel(watsonListTypeRel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -125,9 +126,7 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -143,9 +142,8 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -163,10 +161,9 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -178,9 +175,7 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -192,14 +187,14 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.watson.model.WatsonListTypeRel
-		fetchWatsonListTypeRel(long watsonListTypeRelId) {
+	public static WatsonListTypeRel fetchWatsonListTypeRel(
+		long watsonListTypeRelId) {
 
 		return getService().fetchWatsonListTypeRel(watsonListTypeRelId);
 	}
@@ -229,9 +224,8 @@ public class WatsonListTypeRelLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -243,9 +237,9 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @return the watson list type rel
 	 * @throws PortalException if a watson list type rel with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRel
-			getWatsonListTypeRel(long watsonListTypeRelId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonListTypeRel getWatsonListTypeRel(
+			long watsonListTypeRelId)
+		throws PortalException {
 
 		return getService().getWatsonListTypeRel(watsonListTypeRelId);
 	}
@@ -261,8 +255,8 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @param end the upper bound of the range of watson list type rels (not inclusive)
 	 * @return the range of watson list type rels
 	 */
-	public static java.util.List<com.liferay.watson.model.WatsonListTypeRel>
-		getWatsonListTypeRels(int start, int end) {
+	public static List<WatsonListTypeRel> getWatsonListTypeRels(
+		int start, int end) {
 
 		return getService().getWatsonListTypeRels(start, end);
 	}
@@ -286,37 +280,16 @@ public class WatsonListTypeRelLocalServiceUtil {
 	 * @param watsonListTypeRel the watson list type rel
 	 * @return the watson list type rel that was updated
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRel
-		updateWatsonListTypeRel(
-			com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
+	public static WatsonListTypeRel updateWatsonListTypeRel(
+		WatsonListTypeRel watsonListTypeRel) {
 
 		return getService().updateWatsonListTypeRel(watsonListTypeRel);
 	}
 
 	public static WatsonListTypeRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WatsonListTypeRelLocalService, WatsonListTypeRelLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WatsonListTypeRelLocalService.class);
-
-		ServiceTracker
-			<WatsonListTypeRelLocalService, WatsonListTypeRelLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<WatsonListTypeRelLocalService,
-						 WatsonListTypeRelLocalService>(
-							 bundle.getBundleContext(),
-							 WatsonListTypeRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonListTypeRelLocalService _service;
 
 }

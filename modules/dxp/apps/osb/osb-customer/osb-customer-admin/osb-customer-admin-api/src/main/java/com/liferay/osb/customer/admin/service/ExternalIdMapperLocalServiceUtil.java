@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.admin.model.ExternalIdMapper;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ExternalIdMapper. This utility wraps
@@ -48,17 +54,14 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @param externalIdMapper the external ID mapper
 	 * @return the external ID mapper that was added
 	 */
-	public static com.liferay.osb.customer.admin.model.ExternalIdMapper
-		addExternalIdMapper(
-			com.liferay.osb.customer.admin.model.ExternalIdMapper
-				externalIdMapper) {
+	public static ExternalIdMapper addExternalIdMapper(
+		ExternalIdMapper externalIdMapper) {
 
 		return getService().addExternalIdMapper(externalIdMapper);
 	}
 
-	public static com.liferay.osb.customer.admin.model.ExternalIdMapper
-		addExternalIdMapper(
-			long classNameId, long classPK, int type, String externalId) {
+	public static ExternalIdMapper addExternalIdMapper(
+		long classNameId, long classPK, int type, String externalId) {
 
 		return getService().addExternalIdMapper(
 			classNameId, classPK, type, externalId);
@@ -70,8 +73,8 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @param externalIdMapperId the primary key for the new external ID mapper
 	 * @return the new external ID mapper
 	 */
-	public static com.liferay.osb.customer.admin.model.ExternalIdMapper
-		createExternalIdMapper(long externalIdMapperId) {
+	public static ExternalIdMapper createExternalIdMapper(
+		long externalIdMapperId) {
 
 		return getService().createExternalIdMapper(externalIdMapperId);
 	}
@@ -86,10 +89,8 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @param externalIdMapper the external ID mapper
 	 * @return the external ID mapper that was removed
 	 */
-	public static com.liferay.osb.customer.admin.model.ExternalIdMapper
-		deleteExternalIdMapper(
-			com.liferay.osb.customer.admin.model.ExternalIdMapper
-				externalIdMapper) {
+	public static ExternalIdMapper deleteExternalIdMapper(
+		ExternalIdMapper externalIdMapper) {
 
 		return getService().deleteExternalIdMapper(externalIdMapper);
 	}
@@ -105,9 +106,9 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @return the external ID mapper that was removed
 	 * @throws PortalException if a external ID mapper with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.admin.model.ExternalIdMapper
-			deleteExternalIdMapper(long externalIdMapperId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalIdMapper deleteExternalIdMapper(
+			long externalIdMapperId)
+		throws PortalException {
 
 		return getService().deleteExternalIdMapper(externalIdMapperId);
 	}
@@ -125,17 +126,14 @@ public class ExternalIdMapperLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -145,9 +143,7 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -163,9 +159,8 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -183,10 +178,9 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -198,9 +192,7 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -212,14 +204,14 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.admin.model.ExternalIdMapper
-		fetchExternalIdMapper(long externalIdMapperId) {
+	public static ExternalIdMapper fetchExternalIdMapper(
+		long externalIdMapperId) {
 
 		return getService().fetchExternalIdMapper(externalIdMapperId);
 	}
@@ -237,9 +229,8 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @return the external ID mapper
 	 * @throws PortalException if a external ID mapper with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.admin.model.ExternalIdMapper
-			getExternalIdMapper(long externalIdMapperId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalIdMapper getExternalIdMapper(long externalIdMapperId)
+		throws PortalException {
 
 		return getService().getExternalIdMapper(externalIdMapperId);
 	}
@@ -255,24 +246,20 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @param end the upper bound of the range of external ID mappers (not inclusive)
 	 * @return the range of external ID mappers
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.ExternalIdMapper>
-			getExternalIdMappers(int start, int end) {
+	public static List<ExternalIdMapper> getExternalIdMappers(
+		int start, int end) {
 
 		return getService().getExternalIdMappers(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.ExternalIdMapper>
-			getExternalIdMappers(
-				long classNameId, int type, String externalId) {
+	public static List<ExternalIdMapper> getExternalIdMappers(
+		long classNameId, int type, String externalId) {
 
 		return getService().getExternalIdMappers(classNameId, type, externalId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.ExternalIdMapper>
-			getExternalIdMappers(long classNameId, long classPK, int type) {
+	public static List<ExternalIdMapper> getExternalIdMappers(
+		long classNameId, long classPK, int type) {
 
 		return getService().getExternalIdMappers(classNameId, classPK, type);
 	}
@@ -305,9 +292,8 @@ public class ExternalIdMapperLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -328,48 +314,25 @@ public class ExternalIdMapperLocalServiceUtil {
 	 * @param externalIdMapper the external ID mapper
 	 * @return the external ID mapper that was updated
 	 */
-	public static com.liferay.osb.customer.admin.model.ExternalIdMapper
-		updateExternalIdMapper(
-			com.liferay.osb.customer.admin.model.ExternalIdMapper
-				externalIdMapper) {
+	public static ExternalIdMapper updateExternalIdMapper(
+		ExternalIdMapper externalIdMapper) {
 
 		return getService().updateExternalIdMapper(externalIdMapper);
 	}
 
-	public static com.liferay.osb.customer.admin.model.ExternalIdMapper
-			updateExternalIdMapper(
-				long externalIdMapperId, long classNameId, long classPK,
-				int type, String externalId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalIdMapper updateExternalIdMapper(
+			long externalIdMapperId, long classNameId, long classPK, int type,
+			String externalId)
+		throws PortalException {
 
 		return getService().updateExternalIdMapper(
 			externalIdMapperId, classNameId, classPK, type, externalId);
 	}
 
 	public static ExternalIdMapperLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ExternalIdMapperLocalService, ExternalIdMapperLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ExternalIdMapperLocalService.class);
-
-		ServiceTracker
-			<ExternalIdMapperLocalService, ExternalIdMapperLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<ExternalIdMapperLocalService,
-						 ExternalIdMapperLocalService>(
-							 bundle.getBundleContext(),
-							 ExternalIdMapperLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ExternalIdMapperLocalService _service;
 
 }

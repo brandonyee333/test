@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.model.LoopUserNotificationEvent;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LoopUserNotificationEvent. This utility wraps
@@ -48,10 +54,8 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @param loopUserNotificationEvent the loop user notification event
 	 * @return the loop user notification event that was added
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationEvent
-		addLoopUserNotificationEvent(
-			com.liferay.osb.loop.model.LoopUserNotificationEvent
-				loopUserNotificationEvent) {
+	public static LoopUserNotificationEvent addLoopUserNotificationEvent(
+		LoopUserNotificationEvent loopUserNotificationEvent) {
 
 		return getService().addLoopUserNotificationEvent(
 			loopUserNotificationEvent);
@@ -63,8 +67,8 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @param loopUserNotificationEventId the primary key for the new loop user notification event
 	 * @return the new loop user notification event
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationEvent
-		createLoopUserNotificationEvent(long loopUserNotificationEventId) {
+	public static LoopUserNotificationEvent createLoopUserNotificationEvent(
+		long loopUserNotificationEventId) {
 
 		return getService().createLoopUserNotificationEvent(
 			loopUserNotificationEventId);
@@ -81,9 +85,9 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @return the loop user notification event that was removed
 	 * @throws PortalException if a loop user notification event with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationEvent
-			deleteLoopUserNotificationEvent(long loopUserNotificationEventId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopUserNotificationEvent deleteLoopUserNotificationEvent(
+			long loopUserNotificationEventId)
+		throws PortalException {
 
 		return getService().deleteLoopUserNotificationEvent(
 			loopUserNotificationEventId);
@@ -99,10 +103,8 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @param loopUserNotificationEvent the loop user notification event
 	 * @return the loop user notification event that was removed
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationEvent
-		deleteLoopUserNotificationEvent(
-			com.liferay.osb.loop.model.LoopUserNotificationEvent
-				loopUserNotificationEvent) {
+	public static LoopUserNotificationEvent deleteLoopUserNotificationEvent(
+		LoopUserNotificationEvent loopUserNotificationEvent) {
 
 		return getService().deleteLoopUserNotificationEvent(
 			loopUserNotificationEvent);
@@ -111,17 +113,14 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -131,9 +130,7 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -149,9 +146,8 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -169,10 +165,9 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -184,9 +179,7 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -198,14 +191,14 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.model.LoopUserNotificationEvent
-		fetchLoopUserNotificationEvent(long loopUserNotificationEventId) {
+	public static LoopUserNotificationEvent fetchLoopUserNotificationEvent(
+		long loopUserNotificationEventId) {
 
 		return getService().fetchLoopUserNotificationEvent(
 			loopUserNotificationEventId);
@@ -231,9 +224,9 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @return the loop user notification event
 	 * @throws PortalException if a loop user notification event with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationEvent
-			getLoopUserNotificationEvent(long loopUserNotificationEventId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopUserNotificationEvent getLoopUserNotificationEvent(
+			long loopUserNotificationEventId)
+		throws PortalException {
 
 		return getService().getLoopUserNotificationEvent(
 			loopUserNotificationEventId);
@@ -250,9 +243,8 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @param end the upper bound of the range of loop user notification events (not inclusive)
 	 * @return the range of loop user notification events
 	 */
-	public static java.util.List
-		<com.liferay.osb.loop.model.LoopUserNotificationEvent>
-			getLoopUserNotificationEvents(int start, int end) {
+	public static List<LoopUserNotificationEvent> getLoopUserNotificationEvents(
+		int start, int end) {
 
 		return getService().getLoopUserNotificationEvents(start, end);
 	}
@@ -278,9 +270,8 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -295,39 +286,17 @@ public class LoopUserNotificationEventLocalServiceUtil {
 	 * @param loopUserNotificationEvent the loop user notification event
 	 * @return the loop user notification event that was updated
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationEvent
-		updateLoopUserNotificationEvent(
-			com.liferay.osb.loop.model.LoopUserNotificationEvent
-				loopUserNotificationEvent) {
+	public static LoopUserNotificationEvent updateLoopUserNotificationEvent(
+		LoopUserNotificationEvent loopUserNotificationEvent) {
 
 		return getService().updateLoopUserNotificationEvent(
 			loopUserNotificationEvent);
 	}
 
 	public static LoopUserNotificationEventLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LoopUserNotificationEventLocalService,
-		 LoopUserNotificationEventLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LoopUserNotificationEventLocalService.class);
-
-		ServiceTracker
-			<LoopUserNotificationEventLocalService,
-			 LoopUserNotificationEventLocalService> serviceTracker =
-				new ServiceTracker
-					<LoopUserNotificationEventLocalService,
-					 LoopUserNotificationEventLocalService>(
-						 bundle.getBundleContext(),
-						 LoopUserNotificationEventLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LoopUserNotificationEventLocalService _service;
 
 }

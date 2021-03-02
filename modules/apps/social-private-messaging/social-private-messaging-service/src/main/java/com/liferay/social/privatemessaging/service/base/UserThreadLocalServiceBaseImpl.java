@@ -47,9 +47,12 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.social.privatemessaging.model.UserThread;
 import com.liferay.social.privatemessaging.service.UserThreadLocalService;
+import com.liferay.social.privatemessaging.service.UserThreadLocalServiceUtil;
 import com.liferay.social.privatemessaging.service.persistence.UserThreadPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -73,7 +76,7 @@ public abstract class UserThreadLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UserThreadLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.privatemessaging.service.UserThreadLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UserThreadLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UserThreadLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -739,11 +742,15 @@ public abstract class UserThreadLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.privatemessaging.model.UserThread",
 			userThreadLocalService);
+
+		_setLocalServiceUtilService(userThreadLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.privatemessaging.model.UserThread");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -785,6 +792,22 @@ public abstract class UserThreadLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		UserThreadLocalService userThreadLocalService) {
+
+		try {
+			Field field = UserThreadLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, userThreadLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

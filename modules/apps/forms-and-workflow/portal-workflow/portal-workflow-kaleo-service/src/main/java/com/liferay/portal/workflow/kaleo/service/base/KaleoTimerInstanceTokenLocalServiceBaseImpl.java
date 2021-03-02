@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken;
 import com.liferay.portal.workflow.kaleo.service.KaleoTimerInstanceTokenLocalService;
+import com.liferay.portal.workflow.kaleo.service.KaleoTimerInstanceTokenLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoActionPersistence;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoConditionPersistence;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoDefinitionPersistence;
@@ -61,6 +62,8 @@ import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTimerPersisten
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTransitionPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -84,7 +87,7 @@ public abstract class KaleoTimerInstanceTokenLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>KaleoTimerInstanceTokenLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.service.KaleoTimerInstanceTokenLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>KaleoTimerInstanceTokenLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>KaleoTimerInstanceTokenLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1267,11 +1270,15 @@ public abstract class KaleoTimerInstanceTokenLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken",
 			kaleoTimerInstanceTokenLocalService);
+
+		_setLocalServiceUtilService(kaleoTimerInstanceTokenLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1314,6 +1321,24 @@ public abstract class KaleoTimerInstanceTokenLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		KaleoTimerInstanceTokenLocalService
+			kaleoTimerInstanceTokenLocalService) {
+
+		try {
+			Field field =
+				KaleoTimerInstanceTokenLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, kaleoTimerInstanceTokenLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

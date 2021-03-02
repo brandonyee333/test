@@ -14,10 +14,6 @@
 
 package com.liferay.osb.customer.github.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for Collaborator. This utility wraps
  * <code>com.liferay.osb.customer.github.service.impl.CollaboratorServiceImpl</code> and is an
@@ -43,28 +39,14 @@ public class CollaboratorServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static CollaboratorService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<CollaboratorService, CollaboratorService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(CollaboratorService.class);
-
-		ServiceTracker<CollaboratorService, CollaboratorService>
-			serviceTracker =
-				new ServiceTracker<CollaboratorService, CollaboratorService>(
-					bundle.getBundleContext(), CollaboratorService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile CollaboratorService _service;
 
 }

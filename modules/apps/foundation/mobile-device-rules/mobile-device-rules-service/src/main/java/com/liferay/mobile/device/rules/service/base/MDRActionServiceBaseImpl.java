@@ -16,6 +16,7 @@ package com.liferay.mobile.device.rules.service.base;
 
 import com.liferay.mobile.device.rules.model.MDRAction;
 import com.liferay.mobile.device.rules.service.MDRActionService;
+import com.liferay.mobile.device.rules.service.MDRActionServiceUtil;
 import com.liferay.mobile.device.rules.service.persistence.MDRActionPersistence;
 import com.liferay.mobile.device.rules.service.persistence.MDRRuleGroupInstancePersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -30,6 +31,8 @@ import com.liferay.portal.kernel.service.persistence.SystemEventPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -51,7 +54,7 @@ public abstract class MDRActionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MDRActionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.mobile.device.rules.service.MDRActionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MDRActionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MDRActionServiceUtil</code>.
 	 */
 
 	/**
@@ -312,9 +315,11 @@ public abstract class MDRActionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(mdrActionService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -356,6 +361,20 @@ public abstract class MDRActionServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(MDRActionService mdrActionService) {
+		try {
+			Field field = MDRActionServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, mdrActionService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -14,9 +14,10 @@
 
 package com.liferay.shopping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.shopping.model.ShoppingCoupon;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for ShoppingCoupon. This utility wraps
@@ -37,7 +38,7 @@ public class ShoppingCouponServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCouponServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.shopping.model.ShoppingCoupon addCoupon(
+	public static ShoppingCoupon addCoupon(
 			String code, boolean autoCode, String name, String description,
 			int startDateMonth, int startDateDay, int startDateYear,
 			int startDateHour, int startDateMinute, int endDateMonth,
@@ -46,7 +47,7 @@ public class ShoppingCouponServiceUtil {
 			String limitSkus, double minOrder, double discount,
 			String discountType,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addCoupon(
 			code, autoCode, name, description, startDateMonth, startDateDay,
@@ -57,14 +58,13 @@ public class ShoppingCouponServiceUtil {
 	}
 
 	public static void deleteCoupon(long groupId, long couponId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteCoupon(groupId, couponId);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCoupon getCoupon(
-			long groupId, long couponId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCoupon getCoupon(long groupId, long couponId)
+		throws PortalException {
 
 		return getService().getCoupon(groupId, couponId);
 	}
@@ -78,18 +78,17 @@ public class ShoppingCouponServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<com.liferay.shopping.model.ShoppingCoupon>
-			search(
-				long groupId, long companyId, String code, boolean active,
-				String discountType, boolean andOperator, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ShoppingCoupon> search(
+			long groupId, long companyId, String code, boolean active,
+			String discountType, boolean andOperator, int start, int end)
+		throws PortalException {
 
 		return getService().search(
 			groupId, companyId, code, active, discountType, andOperator, start,
 			end);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCoupon updateCoupon(
+	public static ShoppingCoupon updateCoupon(
 			long couponId, String name, String description, int startDateMonth,
 			int startDateDay, int startDateYear, int startDateHour,
 			int startDateMinute, int endDateMonth, int endDateDay,
@@ -98,7 +97,7 @@ public class ShoppingCouponServiceUtil {
 			String limitSkus, double minOrder, double discount,
 			String discountType,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateCoupon(
 			couponId, name, description, startDateMonth, startDateDay,
@@ -109,25 +108,9 @@ public class ShoppingCouponServiceUtil {
 	}
 
 	public static ShoppingCouponService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<ShoppingCouponService, ShoppingCouponService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ShoppingCouponService.class);
-
-		ServiceTracker<ShoppingCouponService, ShoppingCouponService>
-			serviceTracker =
-				new ServiceTracker
-					<ShoppingCouponService, ShoppingCouponService>(
-						bundle.getBundleContext(), ShoppingCouponService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ShoppingCouponService _service;
 
 }

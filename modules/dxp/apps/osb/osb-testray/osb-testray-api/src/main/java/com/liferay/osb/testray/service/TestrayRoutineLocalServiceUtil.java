@@ -14,9 +14,15 @@
 
 package com.liferay.osb.testray.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.testray.model.TestrayRoutine;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for TestrayRoutine. This utility wraps
@@ -48,9 +54,8 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @param testrayRoutine the testray routine
 	 * @return the testray routine that was added
 	 */
-	public static com.liferay.osb.testray.model.TestrayRoutine
-		addTestrayRoutine(
-			com.liferay.osb.testray.model.TestrayRoutine testrayRoutine) {
+	public static TestrayRoutine addTestrayRoutine(
+		TestrayRoutine testrayRoutine) {
 
 		return getService().addTestrayRoutine(testrayRoutine);
 	}
@@ -61,19 +66,16 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @param testrayRoutineId the primary key for the new testray routine
 	 * @return the new testray routine
 	 */
-	public static com.liferay.osb.testray.model.TestrayRoutine
-		createTestrayRoutine(long testrayRoutineId) {
-
+	public static TestrayRoutine createTestrayRoutine(long testrayRoutineId) {
 		return getService().createTestrayRoutine(testrayRoutineId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -89,9 +91,8 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @return the testray routine that was removed
 	 * @throws PortalException if a testray routine with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayRoutine
-			deleteTestrayRoutine(long testrayRoutineId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayRoutine deleteTestrayRoutine(long testrayRoutineId)
+		throws PortalException {
 
 		return getService().deleteTestrayRoutine(testrayRoutineId);
 	}
@@ -106,16 +107,13 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @param testrayRoutine the testray routine
 	 * @return the testray routine that was removed
 	 */
-	public static com.liferay.osb.testray.model.TestrayRoutine
-		deleteTestrayRoutine(
-			com.liferay.osb.testray.model.TestrayRoutine testrayRoutine) {
+	public static TestrayRoutine deleteTestrayRoutine(
+		TestrayRoutine testrayRoutine) {
 
 		return getService().deleteTestrayRoutine(testrayRoutine);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -125,9 +123,7 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -143,9 +139,8 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -163,10 +158,9 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -178,9 +172,7 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -192,15 +184,13 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.testray.model.TestrayRoutine
-		fetchTestrayRoutine(long testrayRoutineId) {
-
+	public static TestrayRoutine fetchTestrayRoutine(long testrayRoutineId) {
 		return getService().fetchTestrayRoutine(testrayRoutineId);
 	}
 
@@ -229,9 +219,8 @@ public class TestrayRoutineLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -243,9 +232,8 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @return the testray routine
 	 * @throws PortalException if a testray routine with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayRoutine
-			getTestrayRoutine(long testrayRoutineId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayRoutine getTestrayRoutine(long testrayRoutineId)
+		throws PortalException {
 
 		return getService().getTestrayRoutine(testrayRoutineId);
 	}
@@ -261,9 +249,7 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @param end the upper bound of the range of testray routines (not inclusive)
 	 * @return the range of testray routines
 	 */
-	public static java.util.List<com.liferay.osb.testray.model.TestrayRoutine>
-		getTestrayRoutines(int start, int end) {
-
+	public static List<TestrayRoutine> getTestrayRoutines(int start, int end) {
 		return getService().getTestrayRoutines(start, end);
 	}
 
@@ -286,35 +272,16 @@ public class TestrayRoutineLocalServiceUtil {
 	 * @param testrayRoutine the testray routine
 	 * @return the testray routine that was updated
 	 */
-	public static com.liferay.osb.testray.model.TestrayRoutine
-		updateTestrayRoutine(
-			com.liferay.osb.testray.model.TestrayRoutine testrayRoutine) {
+	public static TestrayRoutine updateTestrayRoutine(
+		TestrayRoutine testrayRoutine) {
 
 		return getService().updateTestrayRoutine(testrayRoutine);
 	}
 
 	public static TestrayRoutineLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TestrayRoutineLocalService, TestrayRoutineLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			TestrayRoutineLocalService.class);
-
-		ServiceTracker<TestrayRoutineLocalService, TestrayRoutineLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<TestrayRoutineLocalService, TestrayRoutineLocalService>(
-						bundle.getBundleContext(),
-						TestrayRoutineLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TestrayRoutineLocalService _service;
 
 }

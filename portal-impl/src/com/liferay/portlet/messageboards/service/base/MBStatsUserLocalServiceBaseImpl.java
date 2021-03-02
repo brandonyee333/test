@@ -17,6 +17,7 @@ package com.liferay.portlet.messageboards.service.base;
 import com.liferay.counter.kernel.service.persistence.CounterPersistence;
 import com.liferay.message.boards.kernel.model.MBStatsUser;
 import com.liferay.message.boards.kernel.service.MBStatsUserLocalService;
+import com.liferay.message.boards.kernel.service.MBStatsUserLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.persistence.MBMessageFinder;
 import com.liferay.message.boards.kernel.service.persistence.MBMessagePersistence;
 import com.liferay.message.boards.kernel.service.persistence.MBStatsUserPersistence;
@@ -52,6 +53,8 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -74,7 +77,7 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MBStatsUserLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.message.boards.kernel.service.MBStatsUserLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MBStatsUserLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MBStatsUserLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -678,11 +681,15 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.message.boards.kernel.model.MBStatsUser",
 			mbStatsUserLocalService);
+
+		_setLocalServiceUtilService(mbStatsUserLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.message.boards.kernel.model.MBStatsUser");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -724,6 +731,22 @@ public abstract class MBStatsUserLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		MBStatsUserLocalService mbStatsUserLocalService) {
+
+		try {
+			Field field = MBStatsUserLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, mbStatsUserLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

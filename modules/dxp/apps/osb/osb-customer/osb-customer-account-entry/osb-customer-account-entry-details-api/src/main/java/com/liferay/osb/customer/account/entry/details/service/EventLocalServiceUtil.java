@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.account.entry.details.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.account.entry.details.model.Event;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for Event. This utility wraps
@@ -48,20 +54,16 @@ public class EventLocalServiceUtil {
 	 * @param event the event
 	 * @return the event that was added
 	 */
-	public static com.liferay.osb.customer.account.entry.details.model.Event
-		addEvent(
-			com.liferay.osb.customer.account.entry.details.model.Event event) {
-
+	public static Event addEvent(Event event) {
 		return getService().addEvent(event);
 	}
 
-	public static com.liferay.osb.customer.account.entry.details.model.Event
-			addEvent(
-				long userId, java.util.Date occurDate, long accountEntryId,
-				long classNameId, long classPK, int type, long typeClassNameId,
-				long typeClassPK, String title, String summary,
-				String additionalInfo)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Event addEvent(
+			long userId, java.util.Date occurDate, long accountEntryId,
+			long classNameId, long classPK, int type, long typeClassNameId,
+			long typeClassPK, String title, String summary,
+			String additionalInfo)
+		throws PortalException {
 
 		return getService().addEvent(
 			userId, occurDate, accountEntryId, classNameId, classPK, type,
@@ -74,9 +76,7 @@ public class EventLocalServiceUtil {
 	 * @param eventId the primary key for the new event
 	 * @return the new event
 	 */
-	public static com.liferay.osb.customer.account.entry.details.model.Event
-		createEvent(long eventId) {
-
+	public static Event createEvent(long eventId) {
 		return getService().createEvent(eventId);
 	}
 
@@ -90,10 +90,7 @@ public class EventLocalServiceUtil {
 	 * @param event the event
 	 * @return the event that was removed
 	 */
-	public static com.liferay.osb.customer.account.entry.details.model.Event
-		deleteEvent(
-			com.liferay.osb.customer.account.entry.details.model.Event event) {
-
+	public static Event deleteEvent(Event event) {
 		return getService().deleteEvent(event);
 	}
 
@@ -108,10 +105,7 @@ public class EventLocalServiceUtil {
 	 * @return the event that was removed
 	 * @throws PortalException if a event with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.account.entry.details.model.Event
-			deleteEvent(long eventId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Event deleteEvent(long eventId) throws PortalException {
 		return getService().deleteEvent(eventId);
 	}
 
@@ -126,17 +120,14 @@ public class EventLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -146,9 +137,7 @@ public class EventLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -164,9 +153,8 @@ public class EventLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -184,10 +172,9 @@ public class EventLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -199,9 +186,7 @@ public class EventLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -213,15 +198,13 @@ public class EventLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.account.entry.details.model.Event
-		fetchEvent(long eventId) {
-
+	public static Event fetchEvent(long eventId) {
 		return getService().fetchEvent(eventId);
 	}
 
@@ -238,10 +221,7 @@ public class EventLocalServiceUtil {
 	 * @return the event
 	 * @throws PortalException if a event with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.account.entry.details.model.Event
-			getEvent(long eventId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Event getEvent(long eventId) throws PortalException {
 		return getService().getEvent(eventId);
 	}
 
@@ -256,10 +236,7 @@ public class EventLocalServiceUtil {
 	 * @param end the upper bound of the range of events (not inclusive)
 	 * @return the range of events
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.account.entry.details.model.Event> getEvents(
-			int start, int end) {
-
+	public static List<Event> getEvents(int start, int end) {
 		return getService().getEvents(start, end);
 	}
 
@@ -291,9 +268,8 @@ public class EventLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -308,30 +284,14 @@ public class EventLocalServiceUtil {
 	 * @param event the event
 	 * @return the event that was updated
 	 */
-	public static com.liferay.osb.customer.account.entry.details.model.Event
-		updateEvent(
-			com.liferay.osb.customer.account.entry.details.model.Event event) {
-
+	public static Event updateEvent(Event event) {
 		return getService().updateEvent(event);
 	}
 
 	public static EventLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<EventLocalService, EventLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(EventLocalService.class);
-
-		ServiceTracker<EventLocalService, EventLocalService> serviceTracker =
-			new ServiceTracker<EventLocalService, EventLocalService>(
-				bundle.getBundleContext(), EventLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile EventLocalService _service;
 
 }

@@ -22,6 +22,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.message.boards.kernel.model.MBBan;
 import com.liferay.message.boards.kernel.service.MBBanLocalService;
+import com.liferay.message.boards.kernel.service.MBBanLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.persistence.MBBanPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -53,6 +54,8 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -75,7 +78,7 @@ public abstract class MBBanLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MBBanLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.message.boards.kernel.service.MBBanLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MBBanLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MBBanLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -657,11 +660,15 @@ public abstract class MBBanLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.message.boards.kernel.model.MBBan", mbBanLocalService);
+
+		_setLocalServiceUtilService(mbBanLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.message.boards.kernel.model.MBBan");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -703,6 +710,22 @@ public abstract class MBBanLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		MBBanLocalService mbBanLocalService) {
+
+		try {
+			Field field = MBBanLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, mbBanLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

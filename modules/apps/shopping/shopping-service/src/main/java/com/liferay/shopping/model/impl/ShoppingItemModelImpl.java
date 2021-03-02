@@ -1151,6 +1151,8 @@ public class ShoppingItemModelImpl
 
 	@Override
 	public void setItemId(long itemId) {
+		_columnBitmask = -1L;
+
 		_itemId = itemId;
 	}
 

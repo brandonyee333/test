@@ -14,9 +14,15 @@
 
 package com.liferay.journal.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.journal.model.JournalArticleImage;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for JournalArticleImage. This utility wraps
@@ -40,7 +46,7 @@ public class JournalArticleImageLocalServiceUtil {
 	public static void addArticleImageId(
 			long articleImageId, long groupId, String articleId, double version,
 			String elInstanceId, String elName, String languageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addArticleImageId(
 			articleImageId, groupId, articleId, version, elInstanceId, elName,
@@ -57,9 +63,8 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @param journalArticleImage the journal article image
 	 * @return the journal article image that was added
 	 */
-	public static com.liferay.journal.model.JournalArticleImage
-		addJournalArticleImage(
-			com.liferay.journal.model.JournalArticleImage journalArticleImage) {
+	public static JournalArticleImage addJournalArticleImage(
+		JournalArticleImage journalArticleImage) {
 
 		return getService().addJournalArticleImage(journalArticleImage);
 	}
@@ -70,15 +75,13 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @param articleImageId the primary key for the new journal article image
 	 * @return the new journal article image
 	 */
-	public static com.liferay.journal.model.JournalArticleImage
-		createJournalArticleImage(long articleImageId) {
+	public static JournalArticleImage createJournalArticleImage(
+		long articleImageId) {
 
 		return getService().createJournalArticleImage(articleImageId);
 	}
 
-	public static void deleteArticleImage(
-		com.liferay.journal.model.JournalArticleImage articleImage) {
-
+	public static void deleteArticleImage(JournalArticleImage articleImage) {
 		getService().deleteArticleImage(articleImage);
 	}
 
@@ -110,9 +113,8 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @param journalArticleImage the journal article image
 	 * @return the journal article image that was removed
 	 */
-	public static com.liferay.journal.model.JournalArticleImage
-		deleteJournalArticleImage(
-			com.liferay.journal.model.JournalArticleImage journalArticleImage) {
+	public static JournalArticleImage deleteJournalArticleImage(
+		JournalArticleImage journalArticleImage) {
 
 		return getService().deleteJournalArticleImage(journalArticleImage);
 	}
@@ -128,9 +130,9 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @return the journal article image that was removed
 	 * @throws PortalException if a journal article image with the primary key could not be found
 	 */
-	public static com.liferay.journal.model.JournalArticleImage
-			deleteJournalArticleImage(long articleImageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticleImage deleteJournalArticleImage(
+			long articleImageId)
+		throws PortalException {
 
 		return getService().deleteJournalArticleImage(articleImageId);
 	}
@@ -138,17 +140,14 @@ public class JournalArticleImageLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -158,9 +157,7 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -176,9 +173,8 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -196,10 +192,9 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -211,9 +206,7 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -225,14 +218,14 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.journal.model.JournalArticleImage
-		fetchJournalArticleImage(long articleImageId) {
+	public static JournalArticleImage fetchJournalArticleImage(
+		long articleImageId) {
 
 		return getService().fetchJournalArticleImage(articleImageId);
 	}
@@ -243,9 +236,8 @@ public class JournalArticleImageLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static com.liferay.journal.model.JournalArticleImage getArticleImage(
-			long articleImageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticleImage getArticleImage(long articleImageId)
+		throws PortalException {
 
 		return getService().getArticleImage(articleImageId);
 	}
@@ -267,14 +259,12 @@ public class JournalArticleImageLocalServiceUtil {
 			tempImage);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticleImage>
-		getArticleImages(long groupId) {
-
+	public static List<JournalArticleImage> getArticleImages(long groupId) {
 		return getService().getArticleImages(groupId);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticleImage>
-		getArticleImages(long groupId, String articleId, double version) {
+	public static List<JournalArticleImage> getArticleImages(
+		long groupId, String articleId, double version) {
 
 		return getService().getArticleImages(groupId, articleId, version);
 	}
@@ -297,9 +287,9 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @return the journal article image
 	 * @throws PortalException if a journal article image with the primary key could not be found
 	 */
-	public static com.liferay.journal.model.JournalArticleImage
-			getJournalArticleImage(long articleImageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticleImage getJournalArticleImage(
+			long articleImageId)
+		throws PortalException {
 
 		return getService().getJournalArticleImage(articleImageId);
 	}
@@ -315,8 +305,8 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @param end the upper bound of the range of journal article images (not inclusive)
 	 * @return the range of journal article images
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticleImage>
-		getJournalArticleImages(int start, int end) {
+	public static List<JournalArticleImage> getJournalArticleImages(
+		int start, int end) {
 
 		return getService().getJournalArticleImages(start, end);
 	}
@@ -342,9 +332,8 @@ public class JournalArticleImageLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -359,37 +348,16 @@ public class JournalArticleImageLocalServiceUtil {
 	 * @param journalArticleImage the journal article image
 	 * @return the journal article image that was updated
 	 */
-	public static com.liferay.journal.model.JournalArticleImage
-		updateJournalArticleImage(
-			com.liferay.journal.model.JournalArticleImage journalArticleImage) {
+	public static JournalArticleImage updateJournalArticleImage(
+		JournalArticleImage journalArticleImage) {
 
 		return getService().updateJournalArticleImage(journalArticleImage);
 	}
 
 	public static JournalArticleImageLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<JournalArticleImageLocalService, JournalArticleImageLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			JournalArticleImageLocalService.class);
-
-		ServiceTracker
-			<JournalArticleImageLocalService, JournalArticleImageLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<JournalArticleImageLocalService,
-						 JournalArticleImageLocalService>(
-							 bundle.getBundleContext(),
-							 JournalArticleImageLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile JournalArticleImageLocalService _service;
 
 }

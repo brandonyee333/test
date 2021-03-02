@@ -14,10 +14,6 @@
 
 package com.liferay.osb.email.blacklist.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for BounceableEmail. This utility wraps
  * <code>com.liferay.osb.email.blacklist.service.impl.BounceableEmailServiceImpl</code> and is an
@@ -43,7 +39,7 @@ public class BounceableEmailServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -56,7 +52,7 @@ public class BounceableEmailServiceUtil {
 	public static void sendBounceableEmail(
 			com.liferay.portal.kernel.util.SubscriptionSender
 				subscriptionSender)
-		throws Exception {
+		throws java.lang.Exception {
 
 		getService().sendBounceableEmail(subscriptionSender);
 	}
@@ -74,25 +70,9 @@ public class BounceableEmailServiceUtil {
 	}
 
 	public static BounceableEmailService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<BounceableEmailService, BounceableEmailService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(BounceableEmailService.class);
-
-		ServiceTracker<BounceableEmailService, BounceableEmailService>
-			serviceTracker =
-				new ServiceTracker
-					<BounceableEmailService, BounceableEmailService>(
-						bundle.getBundleContext(), BounceableEmailService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BounceableEmailService _service;
 
 }

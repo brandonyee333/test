@@ -730,6 +730,8 @@ public class MeetupsEntryModelImpl
 
 	@Override
 	public void setStartDate(Date startDate) {
+		_columnBitmask = -1L;
+
 		_startDate = startDate;
 	}
 

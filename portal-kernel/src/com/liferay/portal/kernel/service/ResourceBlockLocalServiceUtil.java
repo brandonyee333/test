@@ -14,7 +14,16 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.ResourceBlock;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service utility for ResourceBlock. This utility wraps
@@ -37,7 +46,7 @@ public class ResourceBlockLocalServiceUtil {
 	 */
 	public static void addCompanyScopePermission(
 			long companyId, String name, long roleId, String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addCompanyScopePermission(
 			companyId, name, roleId, actionId);
@@ -53,7 +62,7 @@ public class ResourceBlockLocalServiceUtil {
 	public static void addGroupScopePermission(
 			long companyId, long groupId, String name, long roleId,
 			String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addGroupScopePermission(
 			companyId, groupId, name, roleId, actionId);
@@ -70,7 +79,7 @@ public class ResourceBlockLocalServiceUtil {
 	public static void addIndividualScopePermission(
 			long companyId, long groupId, String name, long primKey,
 			long roleId, String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addIndividualScopePermission(
 			companyId, groupId, name, primKey, roleId, actionId);
@@ -80,7 +89,7 @@ public class ResourceBlockLocalServiceUtil {
 			long companyId, long groupId, String name,
 			com.liferay.portal.kernel.model.PermissionedModel permissionedModel,
 			long roleId, String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addIndividualScopePermission(
 			companyId, groupId, name, permissionedModel, roleId, actionId);
@@ -89,7 +98,7 @@ public class ResourceBlockLocalServiceUtil {
 	public static void addIndividualScopePermissions(
 			long companyId, long groupId, String name, long primKey,
 			long roleId, long actionIdsLong)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addIndividualScopePermissions(
 			companyId, groupId, name, primKey, roleId, actionIdsLong);
@@ -117,11 +126,10 @@ public class ResourceBlockLocalServiceUtil {
 	 permissions container
 	 * @return the new resource block
 	 */
-	public static com.liferay.portal.kernel.model.ResourceBlock
-		addResourceBlock(
-			long companyId, long groupId, String name, String permissionsHash,
-			com.liferay.portal.kernel.model.ResourceBlockPermissionsContainer
-				resourceBlockPermissionsContainer) {
+	public static ResourceBlock addResourceBlock(
+		long companyId, long groupId, String name, String permissionsHash,
+		com.liferay.portal.kernel.model.ResourceBlockPermissionsContainer
+			resourceBlockPermissionsContainer) {
 
 		return getService().addResourceBlock(
 			companyId, groupId, name, permissionsHash,
@@ -138,10 +146,7 @@ public class ResourceBlockLocalServiceUtil {
 	 * @param resourceBlock the resource block
 	 * @return the resource block that was added
 	 */
-	public static com.liferay.portal.kernel.model.ResourceBlock
-		addResourceBlock(
-			com.liferay.portal.kernel.model.ResourceBlock resourceBlock) {
-
+	public static ResourceBlock addResourceBlock(ResourceBlock resourceBlock) {
 		return getService().addResourceBlock(resourceBlock);
 	}
 
@@ -151,19 +156,16 @@ public class ResourceBlockLocalServiceUtil {
 	 * @param resourceBlockId the primary key for the new resource block
 	 * @return the new resource block
 	 */
-	public static com.liferay.portal.kernel.model.ResourceBlock
-		createResourceBlock(long resourceBlockId) {
-
+	public static ResourceBlock createResourceBlock(long resourceBlockId) {
 		return getService().createResourceBlock(resourceBlockId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -179,9 +181,8 @@ public class ResourceBlockLocalServiceUtil {
 	 * @return the resource block that was removed
 	 * @throws PortalException if a resource block with the primary key could not be found
 	 */
-	public static com.liferay.portal.kernel.model.ResourceBlock
-			deleteResourceBlock(long resourceBlockId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ResourceBlock deleteResourceBlock(long resourceBlockId)
+		throws PortalException {
 
 		return getService().deleteResourceBlock(resourceBlockId);
 	}
@@ -196,16 +197,13 @@ public class ResourceBlockLocalServiceUtil {
 	 * @param resourceBlock the resource block
 	 * @return the resource block that was removed
 	 */
-	public static com.liferay.portal.kernel.model.ResourceBlock
-		deleteResourceBlock(
-			com.liferay.portal.kernel.model.ResourceBlock resourceBlock) {
+	public static ResourceBlock deleteResourceBlock(
+		ResourceBlock resourceBlock) {
 
 		return getService().deleteResourceBlock(resourceBlock);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -215,9 +213,7 @@ public class ResourceBlockLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -233,9 +229,8 @@ public class ResourceBlockLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -253,10 +248,9 @@ public class ResourceBlockLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -268,9 +262,7 @@ public class ResourceBlockLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -282,15 +274,13 @@ public class ResourceBlockLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.kernel.model.ResourceBlock
-		fetchResourceBlock(long resourceBlockId) {
-
+	public static ResourceBlock fetchResourceBlock(long resourceBlockId) {
 		return getService().fetchResourceBlock(resourceBlockId);
 	}
 
@@ -301,34 +291,29 @@ public class ResourceBlockLocalServiceUtil {
 	}
 
 	public static long getActionId(String name, String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getActionId(name, actionId);
 	}
 
-	public static long getActionIds(
-			String name, java.util.List<String> actionIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static long getActionIds(String name, List<String> actionIds)
+		throws PortalException {
 
 		return getService().getActionIds(name, actionIds);
 	}
 
-	public static java.util.List<String> getActionIds(
-		String name, long actionIdsLong) {
-
+	public static List<String> getActionIds(String name, long actionIdsLong) {
 		return getService().getActionIds(name, actionIdsLong);
 	}
 
-	public static java.util.List<String> getCompanyScopePermissions(
-		com.liferay.portal.kernel.model.ResourceBlock resourceBlock,
-		long roleId) {
+	public static List<String> getCompanyScopePermissions(
+		ResourceBlock resourceBlock, long roleId) {
 
 		return getService().getCompanyScopePermissions(resourceBlock, roleId);
 	}
 
-	public static java.util.List<String> getGroupScopePermissions(
-		com.liferay.portal.kernel.model.ResourceBlock resourceBlock,
-		long roleId) {
+	public static List<String> getGroupScopePermissions(
+		ResourceBlock resourceBlock, long roleId) {
 
 		return getService().getGroupScopePermissions(resourceBlock, roleId);
 	}
@@ -351,14 +336,13 @@ public class ResourceBlockLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.model.PermissionedModel
 			getPermissionedModel(String name, long primKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getPermissionedModel(name, primKey);
 	}
 
-	public static java.util.List<String> getPermissions(
-		com.liferay.portal.kernel.model.ResourceBlock resourceBlock,
-		long roleId) {
+	public static List<String> getPermissions(
+		ResourceBlock resourceBlock, long roleId) {
 
 		return getService().getPermissions(resourceBlock, roleId);
 	}
@@ -366,9 +350,8 @@ public class ResourceBlockLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -380,25 +363,23 @@ public class ResourceBlockLocalServiceUtil {
 	 * @return the resource block
 	 * @throws PortalException if a resource block with the primary key could not be found
 	 */
-	public static com.liferay.portal.kernel.model.ResourceBlock
-			getResourceBlock(long resourceBlockId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ResourceBlock getResourceBlock(long resourceBlockId)
+		throws PortalException {
 
 		return getService().getResourceBlock(resourceBlockId);
 	}
 
-	public static com.liferay.portal.kernel.model.ResourceBlock
-			getResourceBlock(String name, long primKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ResourceBlock getResourceBlock(String name, long primKey)
+		throws PortalException {
 
 		return getService().getResourceBlock(name, primKey);
 	}
 
-	public static java.util.List<Long> getResourceBlockIds(
+	public static List<Long> getResourceBlockIds(
 			com.liferay.portal.kernel.security.permission.ResourceBlockIdsBag
 				resourceBlockIdsBag,
 			String name, String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getResourceBlockIds(
 			resourceBlockIdsBag, name, actionId);
@@ -424,9 +405,7 @@ public class ResourceBlockLocalServiceUtil {
 	 * @param end the upper bound of the range of resource blocks (not inclusive)
 	 * @return the range of resource blocks
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.ResourceBlock>
-		getResourceBlocks(int start, int end) {
-
+	public static List<ResourceBlock> getResourceBlocks(int start, int end) {
 		return getService().getResourceBlocks(start, end);
 	}
 
@@ -439,9 +418,9 @@ public class ResourceBlockLocalServiceUtil {
 		return getService().getResourceBlocksCount();
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Role> getRoles(
+	public static List<com.liferay.portal.kernel.model.Role> getRoles(
 			String name, long primKey, String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getRoles(name, primKey, actionId);
 	}
@@ -450,7 +429,7 @@ public class ResourceBlockLocalServiceUtil {
 			String name, long primKey, String actionId,
 			com.liferay.portal.kernel.security.permission.ResourceBlockIdsBag
 				resourceBlockIdsBag)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().hasPermission(
 			name, primKey, actionId, resourceBlockIdsBag);
@@ -462,7 +441,7 @@ public class ResourceBlockLocalServiceUtil {
 			String actionId,
 			com.liferay.portal.kernel.security.permission.ResourceBlockIdsBag
 				resourceBlockIdsBag)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().hasPermission(
 			name, permissionedModel, actionId, resourceBlockIdsBag);
@@ -480,7 +459,7 @@ public class ResourceBlockLocalServiceUtil {
 
 	public static void releasePermissionedModelResourceBlock(
 			String name, long primKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().releasePermissionedModelResourceBlock(name, primKey);
 	}
@@ -503,9 +482,7 @@ public class ResourceBlockLocalServiceUtil {
 	 *
 	 * @param resourceBlock the resource block
 	 */
-	public static void releaseResourceBlock(
-		com.liferay.portal.kernel.model.ResourceBlock resourceBlock) {
-
+	public static void releaseResourceBlock(ResourceBlock resourceBlock) {
 		getService().releaseResourceBlock(resourceBlock);
 	}
 
@@ -518,7 +495,7 @@ public class ResourceBlockLocalServiceUtil {
 
 	public static void removeAllGroupScopePermissions(
 			long companyId, String name, long roleId, String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().removeAllGroupScopePermissions(
 			companyId, name, roleId, actionId);
@@ -526,7 +503,7 @@ public class ResourceBlockLocalServiceUtil {
 
 	public static void removeCompanyScopePermission(
 			long companyId, String name, long roleId, String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().removeCompanyScopePermission(
 			companyId, name, roleId, actionId);
@@ -542,7 +519,7 @@ public class ResourceBlockLocalServiceUtil {
 	public static void removeGroupScopePermission(
 			long companyId, long groupId, String name, long roleId,
 			String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().removeGroupScopePermission(
 			companyId, groupId, name, roleId, actionId);
@@ -559,7 +536,7 @@ public class ResourceBlockLocalServiceUtil {
 	public static void removeIndividualScopePermission(
 			long companyId, long groupId, String name, long primKey,
 			long roleId, String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().removeIndividualScopePermission(
 			companyId, groupId, name, primKey, roleId, actionId);
@@ -569,7 +546,7 @@ public class ResourceBlockLocalServiceUtil {
 			long companyId, long groupId, String name,
 			com.liferay.portal.kernel.model.PermissionedModel permissionedModel,
 			long roleId, String actionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().removeIndividualScopePermission(
 			companyId, groupId, name, permissionedModel, roleId, actionId);
@@ -578,7 +555,7 @@ public class ResourceBlockLocalServiceUtil {
 	public static void removeIndividualScopePermissions(
 			long companyId, long groupId, String name, long primKey,
 			long roleId, long actionIdsLong)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().removeIndividualScopePermissions(
 			companyId, groupId, name, primKey, roleId, actionIdsLong);
@@ -594,9 +571,8 @@ public class ResourceBlockLocalServiceUtil {
 	}
 
 	public static void setCompanyScopePermissions(
-			long companyId, String name, long roleId,
-			java.util.List<String> actionIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			long companyId, String name, long roleId, List<String> actionIds)
+		throws PortalException {
 
 		getService().setCompanyScopePermissions(
 			companyId, name, roleId, actionIds);
@@ -611,8 +587,8 @@ public class ResourceBlockLocalServiceUtil {
 
 	public static void setGroupScopePermissions(
 			long companyId, long groupId, String name, long roleId,
-			java.util.List<String> actionIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			List<String> actionIds)
+		throws PortalException {
 
 		getService().setGroupScopePermissions(
 			companyId, groupId, name, roleId, actionIds);
@@ -628,8 +604,8 @@ public class ResourceBlockLocalServiceUtil {
 
 	public static void setIndividualScopePermissions(
 			long companyId, long groupId, String name, long primKey,
-			long roleId, java.util.List<String> actionIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			long roleId, List<String> actionIds)
+		throws PortalException {
 
 		getService().setIndividualScopePermissions(
 			companyId, groupId, name, primKey, roleId, actionIds);
@@ -638,7 +614,7 @@ public class ResourceBlockLocalServiceUtil {
 	public static void setIndividualScopePermissions(
 			long companyId, long groupId, String name, long primKey,
 			long roleId, long actionIdsLong)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().setIndividualScopePermissions(
 			companyId, groupId, name, primKey, roleId, actionIdsLong);
@@ -646,8 +622,8 @@ public class ResourceBlockLocalServiceUtil {
 
 	public static void setIndividualScopePermissions(
 			long companyId, long groupId, String name, long primKey,
-			java.util.Map<Long, String[]> roleIdsToActionIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			Map<Long, String[]> roleIdsToActionIds)
+		throws PortalException {
 
 		getService().setIndividualScopePermissions(
 			companyId, groupId, name, primKey, roleIdsToActionIds);
@@ -656,8 +632,8 @@ public class ResourceBlockLocalServiceUtil {
 	public static void setIndividualScopePermissions(
 			long companyId, long groupId, String name,
 			com.liferay.portal.kernel.model.PermissionedModel permissionedModel,
-			long roleId, java.util.List<String> actionIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			long roleId, List<String> actionIds)
+		throws PortalException {
 
 		getService().setIndividualScopePermissions(
 			companyId, groupId, name, permissionedModel, roleId, actionIds);
@@ -708,20 +684,18 @@ public class ResourceBlockLocalServiceUtil {
 	 * @param resourceBlock the resource block
 	 * @return the resource block that was updated
 	 */
-	public static com.liferay.portal.kernel.model.ResourceBlock
-		updateResourceBlock(
-			com.liferay.portal.kernel.model.ResourceBlock resourceBlock) {
+	public static ResourceBlock updateResourceBlock(
+		ResourceBlock resourceBlock) {
 
 		return getService().updateResourceBlock(resourceBlock);
 	}
 
-	public static com.liferay.portal.kernel.model.ResourceBlock
-		updateResourceBlockId(
-			long companyId, long groupId, String name,
-			com.liferay.portal.kernel.model.PermissionedModel permissionedModel,
-			String permissionsHash,
-			com.liferay.portal.kernel.model.ResourceBlockPermissionsContainer
-				resourceBlockPermissionsContainer) {
+	public static ResourceBlock updateResourceBlockId(
+		long companyId, long groupId, String name,
+		com.liferay.portal.kernel.model.PermissionedModel permissionedModel,
+		String permissionsHash,
+		com.liferay.portal.kernel.model.ResourceBlockPermissionsContainer
+			resourceBlockPermissionsContainer) {
 
 		return getService().updateResourceBlockId(
 			companyId, groupId, name, permissionedModel, permissionsHash,
@@ -730,20 +704,15 @@ public class ResourceBlockLocalServiceUtil {
 
 	public static void verifyResourceBlockId(
 			long companyId, String name, long primKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().verifyResourceBlockId(companyId, name, primKey);
 	}
 
 	public static ResourceBlockLocalService getService() {
-		if (_service == null) {
-			_service = (ResourceBlockLocalService)PortalBeanLocatorUtil.locate(
-				ResourceBlockLocalService.class.getName());
-		}
-
 		return _service;
 	}
 
-	private static ResourceBlockLocalService _service;
+	private static volatile ResourceBlockLocalService _service;
 
 }

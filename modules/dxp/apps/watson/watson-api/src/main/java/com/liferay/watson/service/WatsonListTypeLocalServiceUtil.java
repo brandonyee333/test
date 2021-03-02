@@ -14,9 +14,15 @@
 
 package com.liferay.watson.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.watson.model.WatsonListType;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WatsonListType. This utility wraps
@@ -48,8 +54,8 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @param watsonListType the watson list type
 	 * @return the watson list type that was added
 	 */
-	public static com.liferay.watson.model.WatsonListType addWatsonListType(
-		com.liferay.watson.model.WatsonListType watsonListType) {
+	public static WatsonListType addWatsonListType(
+		WatsonListType watsonListType) {
 
 		return getService().addWatsonListType(watsonListType);
 	}
@@ -60,19 +66,16 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @param watsonListTypeId the primary key for the new watson list type
 	 * @return the new watson list type
 	 */
-	public static com.liferay.watson.model.WatsonListType createWatsonListType(
-		long watsonListTypeId) {
-
+	public static WatsonListType createWatsonListType(long watsonListTypeId) {
 		return getService().createWatsonListType(watsonListTypeId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -88,9 +91,8 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @return the watson list type that was removed
 	 * @throws PortalException if a watson list type with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonListType deleteWatsonListType(
-			long watsonListTypeId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonListType deleteWatsonListType(long watsonListTypeId)
+		throws PortalException {
 
 		return getService().deleteWatsonListType(watsonListTypeId);
 	}
@@ -105,15 +107,13 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @param watsonListType the watson list type
 	 * @return the watson list type that was removed
 	 */
-	public static com.liferay.watson.model.WatsonListType deleteWatsonListType(
-		com.liferay.watson.model.WatsonListType watsonListType) {
+	public static WatsonListType deleteWatsonListType(
+		WatsonListType watsonListType) {
 
 		return getService().deleteWatsonListType(watsonListType);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -123,9 +123,7 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -141,9 +139,8 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -161,10 +158,9 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -176,9 +172,7 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -190,15 +184,13 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.watson.model.WatsonListType fetchWatsonListType(
-		long watsonListTypeId) {
-
+	public static WatsonListType fetchWatsonListType(long watsonListTypeId) {
 		return getService().fetchWatsonListType(watsonListTypeId);
 	}
 
@@ -227,9 +219,8 @@ public class WatsonListTypeLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -241,9 +232,8 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @return the watson list type
 	 * @throws PortalException if a watson list type with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonListType getWatsonListType(
-			long watsonListTypeId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonListType getWatsonListType(long watsonListTypeId)
+		throws PortalException {
 
 		return getService().getWatsonListType(watsonListTypeId);
 	}
@@ -259,9 +249,7 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @param end the upper bound of the range of watson list types (not inclusive)
 	 * @return the range of watson list types
 	 */
-	public static java.util.List<com.liferay.watson.model.WatsonListType>
-		getWatsonListTypes(int start, int end) {
-
+	public static List<WatsonListType> getWatsonListTypes(int start, int end) {
 		return getService().getWatsonListTypes(start, end);
 	}
 
@@ -284,34 +272,16 @@ public class WatsonListTypeLocalServiceUtil {
 	 * @param watsonListType the watson list type
 	 * @return the watson list type that was updated
 	 */
-	public static com.liferay.watson.model.WatsonListType updateWatsonListType(
-		com.liferay.watson.model.WatsonListType watsonListType) {
+	public static WatsonListType updateWatsonListType(
+		WatsonListType watsonListType) {
 
 		return getService().updateWatsonListType(watsonListType);
 	}
 
 	public static WatsonListTypeLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WatsonListTypeLocalService, WatsonListTypeLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WatsonListTypeLocalService.class);
-
-		ServiceTracker<WatsonListTypeLocalService, WatsonListTypeLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<WatsonListTypeLocalService, WatsonListTypeLocalService>(
-						bundle.getBundleContext(),
-						WatsonListTypeLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonListTypeLocalService _service;
 
 }

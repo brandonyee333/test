@@ -14,9 +14,15 @@
 
 package com.liferay.watson.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.watson.model.WatsonAddress;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WatsonAddress. This utility wraps
@@ -48,9 +54,7 @@ public class WatsonAddressLocalServiceUtil {
 	 * @param watsonAddress the watson address
 	 * @return the watson address that was added
 	 */
-	public static com.liferay.watson.model.WatsonAddress addWatsonAddress(
-		com.liferay.watson.model.WatsonAddress watsonAddress) {
-
+	public static WatsonAddress addWatsonAddress(WatsonAddress watsonAddress) {
 		return getService().addWatsonAddress(watsonAddress);
 	}
 
@@ -60,19 +64,16 @@ public class WatsonAddressLocalServiceUtil {
 	 * @param watsonAddressId the primary key for the new watson address
 	 * @return the new watson address
 	 */
-	public static com.liferay.watson.model.WatsonAddress createWatsonAddress(
-		long watsonAddressId) {
-
+	public static WatsonAddress createWatsonAddress(long watsonAddressId) {
 		return getService().createWatsonAddress(watsonAddressId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -88,9 +89,8 @@ public class WatsonAddressLocalServiceUtil {
 	 * @return the watson address that was removed
 	 * @throws PortalException if a watson address with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonAddress deleteWatsonAddress(
-			long watsonAddressId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonAddress deleteWatsonAddress(long watsonAddressId)
+		throws PortalException {
 
 		return getService().deleteWatsonAddress(watsonAddressId);
 	}
@@ -105,15 +105,13 @@ public class WatsonAddressLocalServiceUtil {
 	 * @param watsonAddress the watson address
 	 * @return the watson address that was removed
 	 */
-	public static com.liferay.watson.model.WatsonAddress deleteWatsonAddress(
-		com.liferay.watson.model.WatsonAddress watsonAddress) {
+	public static WatsonAddress deleteWatsonAddress(
+		WatsonAddress watsonAddress) {
 
 		return getService().deleteWatsonAddress(watsonAddress);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -123,9 +121,7 @@ public class WatsonAddressLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -141,9 +137,8 @@ public class WatsonAddressLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -161,10 +156,9 @@ public class WatsonAddressLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -176,9 +170,7 @@ public class WatsonAddressLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -190,15 +182,13 @@ public class WatsonAddressLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.watson.model.WatsonAddress fetchWatsonAddress(
-		long watsonAddressId) {
-
+	public static WatsonAddress fetchWatsonAddress(long watsonAddressId) {
 		return getService().fetchWatsonAddress(watsonAddressId);
 	}
 
@@ -227,9 +217,8 @@ public class WatsonAddressLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -241,9 +230,8 @@ public class WatsonAddressLocalServiceUtil {
 	 * @return the watson address
 	 * @throws PortalException if a watson address with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonAddress getWatsonAddress(
-			long watsonAddressId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonAddress getWatsonAddress(long watsonAddressId)
+		throws PortalException {
 
 		return getService().getWatsonAddress(watsonAddressId);
 	}
@@ -259,9 +247,7 @@ public class WatsonAddressLocalServiceUtil {
 	 * @param end the upper bound of the range of watson addresses (not inclusive)
 	 * @return the range of watson addresses
 	 */
-	public static java.util.List<com.liferay.watson.model.WatsonAddress>
-		getWatsonAddresses(int start, int end) {
-
+	public static List<WatsonAddress> getWatsonAddresses(int start, int end) {
 		return getService().getWatsonAddresses(start, end);
 	}
 
@@ -284,33 +270,16 @@ public class WatsonAddressLocalServiceUtil {
 	 * @param watsonAddress the watson address
 	 * @return the watson address that was updated
 	 */
-	public static com.liferay.watson.model.WatsonAddress updateWatsonAddress(
-		com.liferay.watson.model.WatsonAddress watsonAddress) {
+	public static WatsonAddress updateWatsonAddress(
+		WatsonAddress watsonAddress) {
 
 		return getService().updateWatsonAddress(watsonAddress);
 	}
 
 	public static WatsonAddressLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WatsonAddressLocalService, WatsonAddressLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WatsonAddressLocalService.class);
-
-		ServiceTracker<WatsonAddressLocalService, WatsonAddressLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<WatsonAddressLocalService, WatsonAddressLocalService>(
-						bundle.getBundleContext(),
-						WatsonAddressLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonAddressLocalService _service;
 
 }

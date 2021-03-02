@@ -28,7 +28,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition;
 import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionService;
+import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionServiceUtil;
 import com.liferay.portal.workflow.kaleo.designer.service.persistence.KaleoDraftDefinitionPersistence;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -50,7 +53,7 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>KaleoDraftDefinitionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>KaleoDraftDefinitionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>KaleoDraftDefinitionServiceUtil</code>.
 	 */
 
 	/**
@@ -291,9 +294,11 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(kaleoDraftDefinitionService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -336,6 +341,23 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		KaleoDraftDefinitionService kaleoDraftDefinitionService) {
+
+		try {
+			Field field =
+				KaleoDraftDefinitionServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, kaleoDraftDefinitionService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

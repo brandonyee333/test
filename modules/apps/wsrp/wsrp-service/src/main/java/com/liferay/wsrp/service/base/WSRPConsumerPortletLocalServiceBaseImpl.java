@@ -54,11 +54,14 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.wsrp.model.WSRPConsumerPortlet;
 import com.liferay.wsrp.service.WSRPConsumerPortletLocalService;
+import com.liferay.wsrp.service.WSRPConsumerPortletLocalServiceUtil;
 import com.liferay.wsrp.service.persistence.WSRPConsumerPersistence;
 import com.liferay.wsrp.service.persistence.WSRPConsumerPortletPersistence;
 import com.liferay.wsrp.service.persistence.WSRPProducerPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -82,7 +85,7 @@ public abstract class WSRPConsumerPortletLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WSRPConsumerPortletLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.wsrp.service.WSRPConsumerPortletLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WSRPConsumerPortletLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WSRPConsumerPortletLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1001,11 +1004,15 @@ public abstract class WSRPConsumerPortletLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.wsrp.model.WSRPConsumerPortlet",
 			wsrpConsumerPortletLocalService);
+
+		_setLocalServiceUtilService(wsrpConsumerPortletLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.wsrp.model.WSRPConsumerPortlet");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1048,6 +1055,23 @@ public abstract class WSRPConsumerPortletLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		WSRPConsumerPortletLocalService wsrpConsumerPortletLocalService) {
+
+		try {
+			Field field =
+				WSRPConsumerPortletLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, wsrpConsumerPortletLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

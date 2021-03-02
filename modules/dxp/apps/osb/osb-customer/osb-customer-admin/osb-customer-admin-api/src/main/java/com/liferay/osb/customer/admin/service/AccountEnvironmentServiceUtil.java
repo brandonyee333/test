@@ -14,9 +14,11 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.admin.model.AccountEnvironment;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the remote service utility for AccountEnvironment. This utility wraps
@@ -37,17 +39,15 @@ public class AccountEnvironmentServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountEnvironmentServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-			addAccountEnvironment(
-				long accountEntryId, long productEntryId, String name,
-				int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
-				int envLFR, int envCommerce, int envBrowser, int envCS,
-				String envSearch,
-				java.util.List
-					<com.liferay.portal.kernel.util.ObjectValuePair
-						<String, java.io.File>> files,
-				java.util.List<Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEnvironment addAccountEnvironment(
+			long accountEntryId, long productEntryId, String name, int envOS,
+			String envOSCustom, int envDB, int envJVM, int envAS, int envLFR,
+			int envCommerce, int envBrowser, int envCS, String envSearch,
+			List
+				<com.liferay.portal.kernel.util.ObjectValuePair
+					<String, java.io.File>> files,
+			List<Integer> types)
+		throws PortalException {
 
 		return getService().addAccountEnvironment(
 			accountEntryId, productEntryId, name, envOS, envOSCustom, envDB,
@@ -55,34 +55,30 @@ public class AccountEnvironmentServiceUtil {
 			files, types);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-			deleteAccountEnvironment(long accountEnvironmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEnvironment deleteAccountEnvironment(
+			long accountEnvironmentId)
+		throws PortalException {
 
 		return getService().deleteAccountEnvironment(accountEnvironmentId);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-			getAccountEnvironment(long accountEnvironmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEnvironment getAccountEnvironment(
+			long accountEnvironmentId)
+		throws PortalException {
 
 		return getService().getAccountEnvironment(accountEnvironmentId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountEnvironment>
-				getAccountEnvironments(long accountEntryId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<AccountEnvironment> getAccountEnvironments(
+			long accountEntryId)
+		throws PortalException {
 
 		return getService().getAccountEnvironments(accountEntryId);
 	}
 
-	public static java.util.Map
-		<String,
-		 java.util.List
-			 <com.liferay.osb.customer.admin.model.AccountEnvironment>>
-					getAccountEnvironmentsMap(long accountEntryId)
-				throws com.liferay.portal.kernel.exception.PortalException {
+	public static Map<String, List<AccountEnvironment>>
+			getAccountEnvironmentsMap(long accountEntryId)
+		throws PortalException {
 
 		return getService().getAccountEnvironmentsMap(accountEntryId);
 	}
@@ -96,17 +92,16 @@ public class AccountEnvironmentServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-			updateAccountEnvironment(
-				long accountEnvironmentId, long productEntryId, String name,
-				int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
-				int envLFR, int envCommerce, int envBrowser, int envCS,
-				String envSearch,
-				java.util.List
-					<com.liferay.portal.kernel.util.ObjectValuePair
-						<String, java.io.File>> files,
-				java.util.List<Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEnvironment updateAccountEnvironment(
+			long accountEnvironmentId, long productEntryId, String name,
+			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
+			int envLFR, int envCommerce, int envBrowser, int envCS,
+			String envSearch,
+			List
+				<com.liferay.portal.kernel.util.ObjectValuePair
+					<String, java.io.File>> files,
+			List<Integer> types)
+		throws PortalException {
 
 		return getService().updateAccountEnvironment(
 			accountEnvironmentId, productEntryId, name, envOS, envOSCustom,
@@ -115,26 +110,9 @@ public class AccountEnvironmentServiceUtil {
 	}
 
 	public static AccountEnvironmentService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AccountEnvironmentService, AccountEnvironmentService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AccountEnvironmentService.class);
-
-		ServiceTracker<AccountEnvironmentService, AccountEnvironmentService>
-			serviceTracker =
-				new ServiceTracker
-					<AccountEnvironmentService, AccountEnvironmentService>(
-						bundle.getBundleContext(),
-						AccountEnvironmentService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountEnvironmentService _service;
 
 }

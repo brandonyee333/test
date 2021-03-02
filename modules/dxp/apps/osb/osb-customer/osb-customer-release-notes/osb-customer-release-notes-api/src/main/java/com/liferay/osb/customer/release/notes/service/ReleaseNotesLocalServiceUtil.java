@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.release.notes.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.release.notes.model.ReleaseNotes;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ReleaseNotes. This utility wraps
@@ -37,9 +43,9 @@ public class ReleaseNotesLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.release.notes.service.impl.ReleaseNotesLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-			addReleaseNotes(long userId, String name, String jiraIssueKeys)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ReleaseNotes addReleaseNotes(
+			long userId, String name, String jiraIssueKeys)
+		throws PortalException {
 
 		return getService().addReleaseNotes(userId, name, jiraIssueKeys);
 	}
@@ -54,11 +60,7 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @param releaseNotes the release notes
 	 * @return the release notes that was added
 	 */
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-		addReleaseNotes(
-			com.liferay.osb.customer.release.notes.model.ReleaseNotes
-				releaseNotes) {
-
+	public static ReleaseNotes addReleaseNotes(ReleaseNotes releaseNotes) {
 		return getService().addReleaseNotes(releaseNotes);
 	}
 
@@ -68,19 +70,16 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @param releaseNotesId the primary key for the new release notes
 	 * @return the new release notes
 	 */
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-		createReleaseNotes(long releaseNotesId) {
-
+	public static ReleaseNotes createReleaseNotes(long releaseNotesId) {
 		return getService().createReleaseNotes(releaseNotesId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -96,9 +95,8 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @return the release notes that was removed
 	 * @throws PortalException if a release notes with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-			deleteReleaseNotes(long releaseNotesId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ReleaseNotes deleteReleaseNotes(long releaseNotesId)
+		throws PortalException {
 
 		return getService().deleteReleaseNotes(releaseNotesId);
 	}
@@ -113,17 +111,11 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @param releaseNotes the release notes
 	 * @return the release notes that was removed
 	 */
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-		deleteReleaseNotes(
-			com.liferay.osb.customer.release.notes.model.ReleaseNotes
-				releaseNotes) {
-
+	public static ReleaseNotes deleteReleaseNotes(ReleaseNotes releaseNotes) {
 		return getService().deleteReleaseNotes(releaseNotes);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -133,9 +125,7 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -151,9 +141,8 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -171,10 +160,9 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -186,9 +174,7 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -200,21 +186,17 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-		fetchReleaseNotes(long releaseNotesId) {
-
+	public static ReleaseNotes fetchReleaseNotes(long releaseNotesId) {
 		return getService().fetchReleaseNotes(releaseNotesId);
 	}
 
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-		fetchReleaseNotes(String name) {
-
+	public static ReleaseNotes fetchReleaseNotes(String name) {
 		return getService().fetchReleaseNotes(name);
 	}
 
@@ -243,9 +225,8 @@ public class ReleaseNotesLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -257,16 +238,14 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @return the release notes
 	 * @throws PortalException if a release notes with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-			getReleaseNotes(long releaseNotesId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ReleaseNotes getReleaseNotes(long releaseNotesId)
+		throws PortalException {
 
 		return getService().getReleaseNotes(releaseNotesId);
 	}
 
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-			getReleaseNotesByUuid(String uuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ReleaseNotes getReleaseNotesByUuid(String uuid)
+		throws PortalException {
 
 		return getService().getReleaseNotesByUuid(uuid);
 	}
@@ -282,10 +261,7 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @param end the upper bound of the range of release noteses (not inclusive)
 	 * @return the range of release noteses
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.release.notes.model.ReleaseNotes>
-			getReleaseNoteses(int start, int end) {
-
+	public static List<ReleaseNotes> getReleaseNoteses(int start, int end) {
 		return getService().getReleaseNoteses(start, end);
 	}
 
@@ -298,10 +274,7 @@ public class ReleaseNotesLocalServiceUtil {
 		return getService().getReleaseNotesesCount();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.release.notes.model.ReleaseNotes> search(
-			String name, int start, int end) {
-
+	public static List<ReleaseNotes> search(String name, int start, int end) {
 		return getService().search(name, start, end);
 	}
 
@@ -309,10 +282,9 @@ public class ReleaseNotesLocalServiceUtil {
 		return getService().searchCount(name);
 	}
 
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-			updateReleaseNotes(
-				long releaseNotesId, String name, String jiraIssueKeys)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ReleaseNotes updateReleaseNotes(
+			long releaseNotesId, String name, String jiraIssueKeys)
+		throws PortalException {
 
 		return getService().updateReleaseNotes(
 			releaseNotesId, name, jiraIssueKeys);
@@ -328,34 +300,14 @@ public class ReleaseNotesLocalServiceUtil {
 	 * @param releaseNotes the release notes
 	 * @return the release notes that was updated
 	 */
-	public static com.liferay.osb.customer.release.notes.model.ReleaseNotes
-		updateReleaseNotes(
-			com.liferay.osb.customer.release.notes.model.ReleaseNotes
-				releaseNotes) {
-
+	public static ReleaseNotes updateReleaseNotes(ReleaseNotes releaseNotes) {
 		return getService().updateReleaseNotes(releaseNotes);
 	}
 
 	public static ReleaseNotesLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ReleaseNotesLocalService, ReleaseNotesLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ReleaseNotesLocalService.class);
-
-		ServiceTracker<ReleaseNotesLocalService, ReleaseNotesLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ReleaseNotesLocalService, ReleaseNotesLocalService>(
-						bundle.getBundleContext(),
-						ReleaseNotesLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ReleaseNotesLocalService _service;
 
 }

@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.shopping.model.ShoppingOrder;
 import com.liferay.shopping.service.ShoppingOrderLocalService;
+import com.liferay.shopping.service.ShoppingOrderLocalServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingItemFieldPersistence;
 import com.liferay.shopping.service.persistence.ShoppingItemFinder;
 import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
@@ -51,6 +52,8 @@ import com.liferay.shopping.service.persistence.ShoppingOrderItemPersistence;
 import com.liferay.shopping.service.persistence.ShoppingOrderPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -74,7 +77,7 @@ public abstract class ShoppingOrderLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ShoppingOrderLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingOrderLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ShoppingOrderLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ShoppingOrderLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -735,11 +738,15 @@ public abstract class ShoppingOrderLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.shopping.model.ShoppingOrder",
 			shoppingOrderLocalService);
+
+		_setLocalServiceUtilService(shoppingOrderLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.shopping.model.ShoppingOrder");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -781,6 +788,22 @@ public abstract class ShoppingOrderLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ShoppingOrderLocalService shoppingOrderLocalService) {
+
+		try {
+			Field field = ShoppingOrderLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingOrderLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -14,9 +14,15 @@
 
 package com.liferay.osb.community.github.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.community.github.model.GitHubContributor;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for GitHubContributor. This utility wraps
@@ -48,10 +54,8 @@ public class GitHubContributorLocalServiceUtil {
 	 * @param gitHubContributor the git hub contributor
 	 * @return the git hub contributor that was added
 	 */
-	public static com.liferay.osb.community.github.model.GitHubContributor
-		addGitHubContributor(
-			com.liferay.osb.community.github.model.GitHubContributor
-				gitHubContributor) {
+	public static GitHubContributor addGitHubContributor(
+		GitHubContributor gitHubContributor) {
 
 		return getService().addGitHubContributor(gitHubContributor);
 	}
@@ -62,8 +66,8 @@ public class GitHubContributorLocalServiceUtil {
 	 * @param gitHubContributorId the primary key for the new git hub contributor
 	 * @return the new git hub contributor
 	 */
-	public static com.liferay.osb.community.github.model.GitHubContributor
-		createGitHubContributor(long gitHubContributorId) {
+	public static GitHubContributor createGitHubContributor(
+		long gitHubContributorId) {
 
 		return getService().createGitHubContributor(gitHubContributorId);
 	}
@@ -78,10 +82,8 @@ public class GitHubContributorLocalServiceUtil {
 	 * @param gitHubContributor the git hub contributor
 	 * @return the git hub contributor that was removed
 	 */
-	public static com.liferay.osb.community.github.model.GitHubContributor
-		deleteGitHubContributor(
-			com.liferay.osb.community.github.model.GitHubContributor
-				gitHubContributor) {
+	public static GitHubContributor deleteGitHubContributor(
+		GitHubContributor gitHubContributor) {
 
 		return getService().deleteGitHubContributor(gitHubContributor);
 	}
@@ -97,9 +99,9 @@ public class GitHubContributorLocalServiceUtil {
 	 * @return the git hub contributor that was removed
 	 * @throws PortalException if a git hub contributor with the primary key could not be found
 	 */
-	public static com.liferay.osb.community.github.model.GitHubContributor
-			deleteGitHubContributor(long gitHubContributorId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static GitHubContributor deleteGitHubContributor(
+			long gitHubContributorId)
+		throws PortalException {
 
 		return getService().deleteGitHubContributor(gitHubContributorId);
 	}
@@ -107,17 +109,14 @@ public class GitHubContributorLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -127,9 +126,7 @@ public class GitHubContributorLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -145,9 +142,8 @@ public class GitHubContributorLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -165,10 +161,9 @@ public class GitHubContributorLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -180,9 +175,7 @@ public class GitHubContributorLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -194,14 +187,14 @@ public class GitHubContributorLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.community.github.model.GitHubContributor
-		fetchGitHubContributor(long gitHubContributorId) {
+	public static GitHubContributor fetchGitHubContributor(
+		long gitHubContributorId) {
 
 		return getService().fetchGitHubContributor(gitHubContributorId);
 	}
@@ -219,9 +212,9 @@ public class GitHubContributorLocalServiceUtil {
 	 * @return the git hub contributor
 	 * @throws PortalException if a git hub contributor with the primary key could not be found
 	 */
-	public static com.liferay.osb.community.github.model.GitHubContributor
-			getGitHubContributor(long gitHubContributorId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static GitHubContributor getGitHubContributor(
+			long gitHubContributorId)
+		throws PortalException {
 
 		return getService().getGitHubContributor(gitHubContributorId);
 	}
@@ -237,9 +230,8 @@ public class GitHubContributorLocalServiceUtil {
 	 * @param end the upper bound of the range of git hub contributors (not inclusive)
 	 * @return the range of git hub contributors
 	 */
-	public static java.util.List
-		<com.liferay.osb.community.github.model.GitHubContributor>
-			getGitHubContributors(int start, int end) {
+	public static List<GitHubContributor> getGitHubContributors(
+		int start, int end) {
 
 		return getService().getGitHubContributors(start, end);
 	}
@@ -272,18 +264,15 @@ public class GitHubContributorLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.community.github.model.GitHubContributor>
-				getTopGitHubContributors(
-					long userId, String owner, String name, int count)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<GitHubContributor> getTopGitHubContributors(
+			long userId, String owner, String name, int count)
+		throws PortalException {
 
 		return getService().getTopGitHubContributors(
 			userId, owner, name, count);
@@ -299,38 +288,16 @@ public class GitHubContributorLocalServiceUtil {
 	 * @param gitHubContributor the git hub contributor
 	 * @return the git hub contributor that was updated
 	 */
-	public static com.liferay.osb.community.github.model.GitHubContributor
-		updateGitHubContributor(
-			com.liferay.osb.community.github.model.GitHubContributor
-				gitHubContributor) {
+	public static GitHubContributor updateGitHubContributor(
+		GitHubContributor gitHubContributor) {
 
 		return getService().updateGitHubContributor(gitHubContributor);
 	}
 
 	public static GitHubContributorLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<GitHubContributorLocalService, GitHubContributorLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			GitHubContributorLocalService.class);
-
-		ServiceTracker
-			<GitHubContributorLocalService, GitHubContributorLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<GitHubContributorLocalService,
-						 GitHubContributorLocalService>(
-							 bundle.getBundleContext(),
-							 GitHubContributorLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile GitHubContributorLocalService _service;
 
 }

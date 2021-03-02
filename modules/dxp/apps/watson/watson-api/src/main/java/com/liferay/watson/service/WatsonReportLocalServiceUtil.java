@@ -14,9 +14,15 @@
 
 package com.liferay.watson.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.watson.model.WatsonReport;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WatsonReport. This utility wraps
@@ -48,9 +54,7 @@ public class WatsonReportLocalServiceUtil {
 	 * @param watsonReport the watson report
 	 * @return the watson report that was added
 	 */
-	public static com.liferay.watson.model.WatsonReport addWatsonReport(
-		com.liferay.watson.model.WatsonReport watsonReport) {
-
+	public static WatsonReport addWatsonReport(WatsonReport watsonReport) {
 		return getService().addWatsonReport(watsonReport);
 	}
 
@@ -60,19 +64,16 @@ public class WatsonReportLocalServiceUtil {
 	 * @param watsonReportId the primary key for the new watson report
 	 * @return the new watson report
 	 */
-	public static com.liferay.watson.model.WatsonReport createWatsonReport(
-		long watsonReportId) {
-
+	public static WatsonReport createWatsonReport(long watsonReportId) {
 		return getService().createWatsonReport(watsonReportId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -88,9 +89,8 @@ public class WatsonReportLocalServiceUtil {
 	 * @return the watson report that was removed
 	 * @throws PortalException if a watson report with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonReport deleteWatsonReport(
-			long watsonReportId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonReport deleteWatsonReport(long watsonReportId)
+		throws PortalException {
 
 		return getService().deleteWatsonReport(watsonReportId);
 	}
@@ -105,15 +105,11 @@ public class WatsonReportLocalServiceUtil {
 	 * @param watsonReport the watson report
 	 * @return the watson report that was removed
 	 */
-	public static com.liferay.watson.model.WatsonReport deleteWatsonReport(
-		com.liferay.watson.model.WatsonReport watsonReport) {
-
+	public static WatsonReport deleteWatsonReport(WatsonReport watsonReport) {
 		return getService().deleteWatsonReport(watsonReport);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -123,9 +119,7 @@ public class WatsonReportLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -141,9 +135,8 @@ public class WatsonReportLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -161,10 +154,9 @@ public class WatsonReportLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -176,9 +168,7 @@ public class WatsonReportLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -190,15 +180,13 @@ public class WatsonReportLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.watson.model.WatsonReport fetchWatsonReport(
-		long watsonReportId) {
-
+	public static WatsonReport fetchWatsonReport(long watsonReportId) {
 		return getService().fetchWatsonReport(watsonReportId);
 	}
 
@@ -227,9 +215,8 @@ public class WatsonReportLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -241,9 +228,8 @@ public class WatsonReportLocalServiceUtil {
 	 * @return the watson report
 	 * @throws PortalException if a watson report with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonReport getWatsonReport(
-			long watsonReportId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonReport getWatsonReport(long watsonReportId)
+		throws PortalException {
 
 		return getService().getWatsonReport(watsonReportId);
 	}
@@ -259,9 +245,7 @@ public class WatsonReportLocalServiceUtil {
 	 * @param end the upper bound of the range of watson reports (not inclusive)
 	 * @return the range of watson reports
 	 */
-	public static java.util.List<com.liferay.watson.model.WatsonReport>
-		getWatsonReports(int start, int end) {
-
+	public static List<WatsonReport> getWatsonReports(int start, int end) {
 		return getService().getWatsonReports(start, end);
 	}
 
@@ -284,32 +268,14 @@ public class WatsonReportLocalServiceUtil {
 	 * @param watsonReport the watson report
 	 * @return the watson report that was updated
 	 */
-	public static com.liferay.watson.model.WatsonReport updateWatsonReport(
-		com.liferay.watson.model.WatsonReport watsonReport) {
-
+	public static WatsonReport updateWatsonReport(WatsonReport watsonReport) {
 		return getService().updateWatsonReport(watsonReport);
 	}
 
 	public static WatsonReportLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WatsonReportLocalService, WatsonReportLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(WatsonReportLocalService.class);
-
-		ServiceTracker<WatsonReportLocalService, WatsonReportLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<WatsonReportLocalService, WatsonReportLocalService>(
-						bundle.getBundleContext(),
-						WatsonReportLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonReportLocalService _service;
 
 }

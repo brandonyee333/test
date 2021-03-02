@@ -18,6 +18,7 @@ import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
 import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
 import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.calendar.service.CalendarBookingLocalService;
+import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
 import com.liferay.calendar.service.persistence.CalendarBookingFinder;
 import com.liferay.calendar.service.persistence.CalendarBookingPersistence;
 import com.liferay.calendar.service.persistence.CalendarFinder;
@@ -78,6 +79,8 @@ import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -100,7 +103,7 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>CalendarBookingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.calendar.service.CalendarBookingLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>CalendarBookingLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>CalendarBookingLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1419,11 +1422,15 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.calendar.model.CalendarBooking",
 			calendarBookingLocalService);
+
+		_setLocalServiceUtilService(calendarBookingLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.calendar.model.CalendarBooking");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1465,6 +1472,23 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		CalendarBookingLocalService calendarBookingLocalService) {
+
+		try {
+			Field field =
+				CalendarBookingLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, calendarBookingLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

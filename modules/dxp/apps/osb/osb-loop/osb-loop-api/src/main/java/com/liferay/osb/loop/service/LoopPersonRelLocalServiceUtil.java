@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.model.LoopPersonRel;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LoopPersonRel. This utility wraps
@@ -48,9 +54,7 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @param loopPersonRel the loop person rel
 	 * @return the loop person rel that was added
 	 */
-	public static com.liferay.osb.loop.model.LoopPersonRel addLoopPersonRel(
-		com.liferay.osb.loop.model.LoopPersonRel loopPersonRel) {
-
+	public static LoopPersonRel addLoopPersonRel(LoopPersonRel loopPersonRel) {
 		return getService().addLoopPersonRel(loopPersonRel);
 	}
 
@@ -60,9 +64,7 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @param loopPersonRelId the primary key for the new loop person rel
 	 * @return the new loop person rel
 	 */
-	public static com.liferay.osb.loop.model.LoopPersonRel createLoopPersonRel(
-		long loopPersonRelId) {
-
+	public static LoopPersonRel createLoopPersonRel(long loopPersonRelId) {
 		return getService().createLoopPersonRel(loopPersonRelId);
 	}
 
@@ -77,9 +79,8 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @return the loop person rel that was removed
 	 * @throws PortalException if a loop person rel with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopPersonRel deleteLoopPersonRel(
-			long loopPersonRelId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopPersonRel deleteLoopPersonRel(long loopPersonRelId)
+		throws PortalException {
 
 		return getService().deleteLoopPersonRel(loopPersonRelId);
 	}
@@ -94,8 +95,8 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @param loopPersonRel the loop person rel
 	 * @return the loop person rel that was removed
 	 */
-	public static com.liferay.osb.loop.model.LoopPersonRel deleteLoopPersonRel(
-		com.liferay.osb.loop.model.LoopPersonRel loopPersonRel) {
+	public static LoopPersonRel deleteLoopPersonRel(
+		LoopPersonRel loopPersonRel) {
 
 		return getService().deleteLoopPersonRel(loopPersonRel);
 	}
@@ -103,17 +104,14 @@ public class LoopPersonRelLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -123,9 +121,7 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -141,9 +137,8 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -161,10 +156,9 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -176,9 +170,7 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -190,15 +182,13 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.model.LoopPersonRel fetchLoopPersonRel(
-		long loopPersonRelId) {
-
+	public static LoopPersonRel fetchLoopPersonRel(long loopPersonRelId) {
 		return getService().fetchLoopPersonRel(loopPersonRelId);
 	}
 
@@ -222,9 +212,8 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @return the loop person rel
 	 * @throws PortalException if a loop person rel with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopPersonRel getLoopPersonRel(
-			long loopPersonRelId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopPersonRel getLoopPersonRel(long loopPersonRelId)
+		throws PortalException {
 
 		return getService().getLoopPersonRel(loopPersonRelId);
 	}
@@ -240,9 +229,7 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @param end the upper bound of the range of loop person rels (not inclusive)
 	 * @return the range of loop person rels
 	 */
-	public static java.util.List<com.liferay.osb.loop.model.LoopPersonRel>
-		getLoopPersonRels(int start, int end) {
-
+	public static List<LoopPersonRel> getLoopPersonRels(int start, int end) {
 		return getService().getLoopPersonRels(start, end);
 	}
 
@@ -267,9 +254,8 @@ public class LoopPersonRelLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -284,33 +270,16 @@ public class LoopPersonRelLocalServiceUtil {
 	 * @param loopPersonRel the loop person rel
 	 * @return the loop person rel that was updated
 	 */
-	public static com.liferay.osb.loop.model.LoopPersonRel updateLoopPersonRel(
-		com.liferay.osb.loop.model.LoopPersonRel loopPersonRel) {
+	public static LoopPersonRel updateLoopPersonRel(
+		LoopPersonRel loopPersonRel) {
 
 		return getService().updateLoopPersonRel(loopPersonRel);
 	}
 
 	public static LoopPersonRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LoopPersonRelLocalService, LoopPersonRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LoopPersonRelLocalService.class);
-
-		ServiceTracker<LoopPersonRelLocalService, LoopPersonRelLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LoopPersonRelLocalService, LoopPersonRelLocalService>(
-						bundle.getBundleContext(),
-						LoopPersonRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LoopPersonRelLocalService _service;
 
 }

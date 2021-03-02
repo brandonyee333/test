@@ -14,9 +14,15 @@
 
 package com.liferay.watson.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.watson.model.WatsonRelationshipAudit;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WatsonRelationshipAudit. This utility wraps
@@ -48,10 +54,8 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @param watsonRelationshipAudit the watson relationship audit
 	 * @return the watson relationship audit that was added
 	 */
-	public static com.liferay.watson.model.WatsonRelationshipAudit
-		addWatsonRelationshipAudit(
-			com.liferay.watson.model.WatsonRelationshipAudit
-				watsonRelationshipAudit) {
+	public static WatsonRelationshipAudit addWatsonRelationshipAudit(
+		WatsonRelationshipAudit watsonRelationshipAudit) {
 
 		return getService().addWatsonRelationshipAudit(watsonRelationshipAudit);
 	}
@@ -62,8 +66,8 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @param watsonRelationshipAuditId the primary key for the new watson relationship audit
 	 * @return the new watson relationship audit
 	 */
-	public static com.liferay.watson.model.WatsonRelationshipAudit
-		createWatsonRelationshipAudit(long watsonRelationshipAuditId) {
+	public static WatsonRelationshipAudit createWatsonRelationshipAudit(
+		long watsonRelationshipAuditId) {
 
 		return getService().createWatsonRelationshipAudit(
 			watsonRelationshipAuditId);
@@ -72,10 +76,9 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -91,9 +94,9 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @return the watson relationship audit that was removed
 	 * @throws PortalException if a watson relationship audit with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonRelationshipAudit
-			deleteWatsonRelationshipAudit(long watsonRelationshipAuditId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonRelationshipAudit deleteWatsonRelationshipAudit(
+			long watsonRelationshipAuditId)
+		throws PortalException {
 
 		return getService().deleteWatsonRelationshipAudit(
 			watsonRelationshipAuditId);
@@ -109,18 +112,14 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @param watsonRelationshipAudit the watson relationship audit
 	 * @return the watson relationship audit that was removed
 	 */
-	public static com.liferay.watson.model.WatsonRelationshipAudit
-		deleteWatsonRelationshipAudit(
-			com.liferay.watson.model.WatsonRelationshipAudit
-				watsonRelationshipAudit) {
+	public static WatsonRelationshipAudit deleteWatsonRelationshipAudit(
+		WatsonRelationshipAudit watsonRelationshipAudit) {
 
 		return getService().deleteWatsonRelationshipAudit(
 			watsonRelationshipAudit);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -130,9 +129,7 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -148,9 +145,8 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -168,10 +164,9 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -183,9 +178,7 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -197,14 +190,14 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.watson.model.WatsonRelationshipAudit
-		fetchWatsonRelationshipAudit(long watsonRelationshipAuditId) {
+	public static WatsonRelationshipAudit fetchWatsonRelationshipAudit(
+		long watsonRelationshipAuditId) {
 
 		return getService().fetchWatsonRelationshipAudit(
 			watsonRelationshipAuditId);
@@ -235,9 +228,8 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -249,9 +241,9 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @return the watson relationship audit
 	 * @throws PortalException if a watson relationship audit with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonRelationshipAudit
-			getWatsonRelationshipAudit(long watsonRelationshipAuditId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonRelationshipAudit getWatsonRelationshipAudit(
+			long watsonRelationshipAuditId)
+		throws PortalException {
 
 		return getService().getWatsonRelationshipAudit(
 			watsonRelationshipAuditId);
@@ -268,9 +260,8 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @param end the upper bound of the range of watson relationship audits (not inclusive)
 	 * @return the range of watson relationship audits
 	 */
-	public static java.util.List
-		<com.liferay.watson.model.WatsonRelationshipAudit>
-			getWatsonRelationshipAudits(int start, int end) {
+	public static List<WatsonRelationshipAudit> getWatsonRelationshipAudits(
+		int start, int end) {
 
 		return getService().getWatsonRelationshipAudits(start, end);
 	}
@@ -294,39 +285,17 @@ public class WatsonRelationshipAuditLocalServiceUtil {
 	 * @param watsonRelationshipAudit the watson relationship audit
 	 * @return the watson relationship audit that was updated
 	 */
-	public static com.liferay.watson.model.WatsonRelationshipAudit
-		updateWatsonRelationshipAudit(
-			com.liferay.watson.model.WatsonRelationshipAudit
-				watsonRelationshipAudit) {
+	public static WatsonRelationshipAudit updateWatsonRelationshipAudit(
+		WatsonRelationshipAudit watsonRelationshipAudit) {
 
 		return getService().updateWatsonRelationshipAudit(
 			watsonRelationshipAudit);
 	}
 
 	public static WatsonRelationshipAuditLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WatsonRelationshipAuditLocalService,
-		 WatsonRelationshipAuditLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WatsonRelationshipAuditLocalService.class);
-
-		ServiceTracker
-			<WatsonRelationshipAuditLocalService,
-			 WatsonRelationshipAuditLocalService> serviceTracker =
-				new ServiceTracker
-					<WatsonRelationshipAuditLocalService,
-					 WatsonRelationshipAuditLocalService>(
-						 bundle.getBundleContext(),
-						 WatsonRelationshipAuditLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonRelationshipAuditLocalService _service;
 
 }

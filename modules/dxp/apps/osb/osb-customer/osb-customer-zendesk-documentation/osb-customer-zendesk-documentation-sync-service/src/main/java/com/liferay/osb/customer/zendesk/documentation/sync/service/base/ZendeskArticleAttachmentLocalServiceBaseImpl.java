@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.documentation.sync.service.base;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalService;
+import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalServiceUtil;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskArticleAttachmentPersistence;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskArticlePersistence;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskCategoryPersistence;
@@ -49,6 +50,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -71,7 +74,7 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ZendeskArticleAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ZendeskArticleAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ZendeskArticleAttachmentLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -696,11 +699,15 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment",
 			zendeskArticleAttachmentLocalService);
+
+		_setLocalServiceUtilService(zendeskArticleAttachmentLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -743,6 +750,24 @@ public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ZendeskArticleAttachmentLocalService
+			zendeskArticleAttachmentLocalService) {
+
+		try {
+			Field field =
+				ZendeskArticleAttachmentLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, zendeskArticleAttachmentLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -656,6 +656,8 @@ public class KaleoTimerModelImpl
 
 	@Override
 	public void setKaleoTimerId(long kaleoTimerId) {
+		_columnBitmask = -1L;
+
 		_kaleoTimerId = kaleoTimerId;
 	}
 

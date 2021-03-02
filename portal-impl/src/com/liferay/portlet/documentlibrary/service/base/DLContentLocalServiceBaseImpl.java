@@ -18,6 +18,7 @@ import com.liferay.counter.kernel.service.persistence.CounterPersistence;
 import com.liferay.document.library.kernel.model.DLContent;
 import com.liferay.document.library.kernel.model.DLContentDataBlobModel;
 import com.liferay.document.library.kernel.service.DLContentLocalService;
+import com.liferay.document.library.kernel.service.DLContentLocalServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLContentPersistence;
 import com.liferay.petra.io.AutoDeleteFileInputStream;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -51,6 +52,8 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.sql.Blob;
 
 import java.util.List;
@@ -75,7 +78,7 @@ public abstract class DLContentLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLContentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLContentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLContentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLContentLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -492,11 +495,15 @@ public abstract class DLContentLocalServiceBaseImpl
 
 			_useTempFile = true;
 		}
+
+		_setLocalServiceUtilService(dlContentLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.document.library.kernel.model.DLContent");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -538,6 +545,22 @@ public abstract class DLContentLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		DLContentLocalService dlContentLocalService) {
+
+		try {
+			Field field = DLContentLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, dlContentLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.shopping.model.ShoppingCart;
 import com.liferay.shopping.service.ShoppingCartLocalService;
+import com.liferay.shopping.service.ShoppingCartLocalServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingCartPersistence;
 import com.liferay.shopping.service.persistence.ShoppingCouponFinder;
 import com.liferay.shopping.service.persistence.ShoppingCouponPersistence;
@@ -48,6 +49,8 @@ import com.liferay.shopping.service.persistence.ShoppingItemFinder;
 import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -71,7 +74,7 @@ public abstract class ShoppingCartLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ShoppingCartLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingCartLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ShoppingCartLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ShoppingCartLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -580,11 +583,15 @@ public abstract class ShoppingCartLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.shopping.model.ShoppingCart",
 			shoppingCartLocalService);
+
+		_setLocalServiceUtilService(shoppingCartLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.shopping.model.ShoppingCart");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -626,6 +633,22 @@ public abstract class ShoppingCartLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ShoppingCartLocalService shoppingCartLocalService) {
+
+		try {
+			Field field = ShoppingCartLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingCartLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

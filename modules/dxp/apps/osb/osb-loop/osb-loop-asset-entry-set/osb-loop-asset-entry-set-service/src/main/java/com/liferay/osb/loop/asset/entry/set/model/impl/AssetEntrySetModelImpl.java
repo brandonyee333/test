@@ -890,7 +890,7 @@ public class AssetEntrySetModelImpl
 
 	@Override
 	public void setCreateTime(long createTime) {
-		_columnBitmask |= CREATETIME_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalCreateTime) {
 			_setOriginalCreateTime = true;

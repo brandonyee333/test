@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.workflow.kaleo.model.KaleoTransition;
 import com.liferay.portal.workflow.kaleo.service.KaleoTransitionLocalService;
+import com.liferay.portal.workflow.kaleo.service.KaleoTransitionLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoActionPersistence;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoConditionPersistence;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoDefinitionPersistence;
@@ -61,6 +62,8 @@ import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTimerPersisten
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTransitionPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -84,7 +87,7 @@ public abstract class KaleoTransitionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>KaleoTransitionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.service.KaleoTransitionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>KaleoTransitionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>KaleoTransitionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1240,11 +1243,15 @@ public abstract class KaleoTransitionLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.workflow.kaleo.model.KaleoTransition",
 			kaleoTransitionLocalService);
+
+		_setLocalServiceUtilService(kaleoTransitionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.workflow.kaleo.model.KaleoTransition");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1286,6 +1293,23 @@ public abstract class KaleoTransitionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		KaleoTransitionLocalService kaleoTransitionLocalService) {
+
+		try {
+			Field field =
+				KaleoTransitionLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, kaleoTransitionLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

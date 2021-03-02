@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.watson.model.WatsonListTypeRel;
 import com.liferay.watson.service.WatsonListTypeRelLocalService;
+import com.liferay.watson.service.WatsonListTypeRelLocalServiceUtil;
 import com.liferay.watson.service.persistence.WatsonActivityAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonActivityPersistence;
 import com.liferay.watson.service.persistence.WatsonAddressAuditPersistence;
@@ -73,6 +74,8 @@ import com.liferay.watson.service.persistence.WatsonVehiclePersistence;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -95,7 +98,7 @@ public abstract class WatsonListTypeRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WatsonListTypeRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.service.WatsonListTypeRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WatsonListTypeRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WatsonListTypeRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1734,11 +1737,15 @@ public abstract class WatsonListTypeRelLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.watson.model.WatsonListTypeRel",
 			watsonListTypeRelLocalService);
+
+		_setLocalServiceUtilService(watsonListTypeRelLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.watson.model.WatsonListTypeRel");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1781,6 +1788,23 @@ public abstract class WatsonListTypeRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		WatsonListTypeRelLocalService watsonListTypeRelLocalService) {
+
+		try {
+			Field field =
+				WatsonListTypeRelLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonListTypeRelLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

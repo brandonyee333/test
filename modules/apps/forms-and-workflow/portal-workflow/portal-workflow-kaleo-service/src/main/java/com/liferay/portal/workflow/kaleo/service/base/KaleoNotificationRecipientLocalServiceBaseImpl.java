@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.workflow.kaleo.model.KaleoNotificationRecipient;
 import com.liferay.portal.workflow.kaleo.service.KaleoNotificationRecipientLocalService;
+import com.liferay.portal.workflow.kaleo.service.KaleoNotificationRecipientLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoActionPersistence;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoConditionPersistence;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoDefinitionPersistence;
@@ -62,6 +63,8 @@ import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTimerPersisten
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTransitionPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -85,7 +88,7 @@ public abstract class KaleoNotificationRecipientLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>KaleoNotificationRecipientLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.service.KaleoNotificationRecipientLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>KaleoNotificationRecipientLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>KaleoNotificationRecipientLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1308,11 +1311,15 @@ public abstract class KaleoNotificationRecipientLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.workflow.kaleo.model.KaleoNotificationRecipient",
 			kaleoNotificationRecipientLocalService);
+
+		_setLocalServiceUtilService(kaleoNotificationRecipientLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.workflow.kaleo.model.KaleoNotificationRecipient");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1355,6 +1362,24 @@ public abstract class KaleoNotificationRecipientLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		KaleoNotificationRecipientLocalService
+			kaleoNotificationRecipientLocalService) {
+
+		try {
+			Field field =
+				KaleoNotificationRecipientLocalServiceUtil.class.
+					getDeclaredField("_service");
+
+			field.setAccessible(true);
+
+			field.set(null, kaleoNotificationRecipientLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

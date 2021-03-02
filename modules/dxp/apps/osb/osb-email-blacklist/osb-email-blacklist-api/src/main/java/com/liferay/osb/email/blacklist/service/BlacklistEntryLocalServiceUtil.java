@@ -14,9 +14,15 @@
 
 package com.liferay.osb.email.blacklist.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.email.blacklist.model.BlacklistEntry;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for BlacklistEntry. This utility wraps
@@ -48,17 +54,14 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @param blacklistEntry the blacklist entry
 	 * @return the blacklist entry that was added
 	 */
-	public static com.liferay.osb.email.blacklist.model.BlacklistEntry
-		addBlacklistEntry(
-			com.liferay.osb.email.blacklist.model.BlacklistEntry
-				blacklistEntry) {
+	public static BlacklistEntry addBlacklistEntry(
+		BlacklistEntry blacklistEntry) {
 
 		return getService().addBlacklistEntry(blacklistEntry);
 	}
 
-	public static com.liferay.osb.email.blacklist.model.BlacklistEntry
-			addBlacklistEntry(String emailAddress)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static BlacklistEntry addBlacklistEntry(String emailAddress)
+		throws PortalException {
 
 		return getService().addBlacklistEntry(emailAddress);
 	}
@@ -69,9 +72,7 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @param blacklistEntryId the primary key for the new blacklist entry
 	 * @return the new blacklist entry
 	 */
-	public static com.liferay.osb.email.blacklist.model.BlacklistEntry
-		createBlacklistEntry(long blacklistEntryId) {
-
+	public static BlacklistEntry createBlacklistEntry(long blacklistEntryId) {
 		return getService().createBlacklistEntry(blacklistEntryId);
 	}
 
@@ -85,10 +86,8 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @param blacklistEntry the blacklist entry
 	 * @return the blacklist entry that was removed
 	 */
-	public static com.liferay.osb.email.blacklist.model.BlacklistEntry
-		deleteBlacklistEntry(
-			com.liferay.osb.email.blacklist.model.BlacklistEntry
-				blacklistEntry) {
+	public static BlacklistEntry deleteBlacklistEntry(
+		BlacklistEntry blacklistEntry) {
 
 		return getService().deleteBlacklistEntry(blacklistEntry);
 	}
@@ -104,9 +103,8 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @return the blacklist entry that was removed
 	 * @throws PortalException if a blacklist entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.email.blacklist.model.BlacklistEntry
-			deleteBlacklistEntry(long blacklistEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static BlacklistEntry deleteBlacklistEntry(long blacklistEntryId)
+		throws PortalException {
 
 		return getService().deleteBlacklistEntry(blacklistEntryId);
 	}
@@ -114,17 +112,14 @@ public class BlacklistEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -134,9 +129,7 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -152,9 +145,8 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -172,10 +164,9 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -187,9 +178,7 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -201,21 +190,17 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.email.blacklist.model.BlacklistEntry
-		fetchBlacklistEntry(long blacklistEntryId) {
-
+	public static BlacklistEntry fetchBlacklistEntry(long blacklistEntryId) {
 		return getService().fetchBlacklistEntry(blacklistEntryId);
 	}
 
-	public static com.liferay.osb.email.blacklist.model.BlacklistEntry
-		fetchBlacklistEntry(String emailAddress) {
-
+	public static BlacklistEntry fetchBlacklistEntry(String emailAddress) {
 		return getService().fetchBlacklistEntry(emailAddress);
 	}
 
@@ -236,10 +221,7 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of blacklist entries (not inclusive)
 	 * @return the range of blacklist entries
 	 */
-	public static java.util.List
-		<com.liferay.osb.email.blacklist.model.BlacklistEntry>
-			getBlacklistEntries(int start, int end) {
-
+	public static List<BlacklistEntry> getBlacklistEntries(int start, int end) {
 		return getService().getBlacklistEntries(start, end);
 	}
 
@@ -259,9 +241,8 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @return the blacklist entry
 	 * @throws PortalException if a blacklist entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.email.blacklist.model.BlacklistEntry
-			getBlacklistEntry(long blacklistEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static BlacklistEntry getBlacklistEntry(long blacklistEntryId)
+		throws PortalException {
 
 		return getService().getBlacklistEntry(blacklistEntryId);
 	}
@@ -285,9 +266,8 @@ public class BlacklistEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -302,36 +282,16 @@ public class BlacklistEntryLocalServiceUtil {
 	 * @param blacklistEntry the blacklist entry
 	 * @return the blacklist entry that was updated
 	 */
-	public static com.liferay.osb.email.blacklist.model.BlacklistEntry
-		updateBlacklistEntry(
-			com.liferay.osb.email.blacklist.model.BlacklistEntry
-				blacklistEntry) {
+	public static BlacklistEntry updateBlacklistEntry(
+		BlacklistEntry blacklistEntry) {
 
 		return getService().updateBlacklistEntry(blacklistEntry);
 	}
 
 	public static BlacklistEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<BlacklistEntryLocalService, BlacklistEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			BlacklistEntryLocalService.class);
-
-		ServiceTracker<BlacklistEntryLocalService, BlacklistEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<BlacklistEntryLocalService, BlacklistEntryLocalService>(
-						bundle.getBundleContext(),
-						BlacklistEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BlacklistEntryLocalService _service;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.documentation.sync.service.base;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService;
+import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalServiceUtil;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskArticleAttachmentPersistence;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskArticlePersistence;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskCategoryPersistence;
@@ -49,6 +50,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -71,7 +74,7 @@ public abstract class ZendeskSectionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ZendeskSectionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ZendeskSectionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ZendeskSectionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -666,11 +669,15 @@ public abstract class ZendeskSectionLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection",
 			zendeskSectionLocalService);
+
+		_setLocalServiceUtilService(zendeskSectionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -712,6 +719,22 @@ public abstract class ZendeskSectionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ZendeskSectionLocalService zendeskSectionLocalService) {
+
+		try {
+			Field field = ZendeskSectionLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, zendeskSectionLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

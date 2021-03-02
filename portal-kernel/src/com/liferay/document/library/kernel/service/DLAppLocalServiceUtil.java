@@ -14,7 +14,11 @@
 
 package com.liferay.document.library.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.io.InputStream;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for DLApp. This utility wraps
@@ -40,7 +44,7 @@ public class DLAppLocalServiceUtil {
 				long userId, long repositoryId, long folderId,
 				String sourceFileName, String mimeType, byte[] bytes,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addFileEntry(
 			userId, repositoryId, folderId, sourceFileName, mimeType, bytes,
@@ -83,7 +87,7 @@ public class DLAppLocalServiceUtil {
 				String sourceFileName, String mimeType, String title,
 				String description, String changeLog, byte[] bytes,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addFileEntry(
 			userId, repositoryId, folderId, sourceFileName, mimeType, title,
@@ -126,7 +130,7 @@ public class DLAppLocalServiceUtil {
 				String sourceFileName, String mimeType, String title,
 				String description, String changeLog, java.io.File file,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addFileEntry(
 			userId, repositoryId, folderId, sourceFileName, mimeType, title,
@@ -169,10 +173,9 @@ public class DLAppLocalServiceUtil {
 			addFileEntry(
 				long userId, long repositoryId, long folderId,
 				String sourceFileName, String mimeType, String title,
-				String description, String changeLog, java.io.InputStream is,
-				long size,
+				String description, String changeLog, InputStream is, long size,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addFileEntry(
 			userId, repositoryId, folderId, sourceFileName, mimeType, title,
@@ -217,7 +220,7 @@ public class DLAppLocalServiceUtil {
 				long userId, long repositoryId, long folderId,
 				long toFileEntryId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addFileShortcut(
 			userId, repositoryId, folderId, toFileEntryId, serviceContext);
@@ -241,7 +244,7 @@ public class DLAppLocalServiceUtil {
 			long userId, long repositoryId, long parentFolderId, String name,
 			String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addFolder(
 			userId, repositoryId, parentFolderId, name, description,
@@ -254,14 +257,12 @@ public class DLAppLocalServiceUtil {
 	 *
 	 * @param repositoryId the primary key of the data's repository
 	 */
-	public static void deleteAll(long repositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void deleteAll(long repositoryId) throws PortalException {
 		getService().deleteAll(repositoryId);
 	}
 
 	public static void deleteAllRepositories(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteAllRepositories(groupId);
 	}
@@ -272,7 +273,7 @@ public class DLAppLocalServiceUtil {
 	 * @param fileEntryId the primary key of the file entry
 	 */
 	public static void deleteFileEntry(long fileEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteFileEntry(fileEntryId);
 	}
@@ -306,7 +307,7 @@ public class DLAppLocalServiceUtil {
 	public static void deleteFileShortcut(
 			com.liferay.portal.kernel.repository.model.FileShortcut
 				fileShortcut)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteFileShortcut(fileShortcut);
 	}
@@ -318,7 +319,7 @@ public class DLAppLocalServiceUtil {
 	 * @param fileShortcutId the primary key of the file shortcut
 	 */
 	public static void deleteFileShortcut(long fileShortcutId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteFileShortcut(fileShortcutId);
 	}
@@ -330,7 +331,7 @@ public class DLAppLocalServiceUtil {
 	 * @param toFileEntryId the primary key of the associated file entry
 	 */
 	public static void deleteFileShortcuts(long toFileEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteFileShortcuts(toFileEntryId);
 	}
@@ -340,9 +341,7 @@ public class DLAppLocalServiceUtil {
 	 *
 	 * @param folderId the primary key of the folder
 	 */
-	public static void deleteFolder(long folderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void deleteFolder(long folderId) throws PortalException {
 		getService().deleteFolder(folderId);
 	}
 
@@ -354,7 +353,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.repository.model.FileEntry
 			getFileEntry(long fileEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getFileEntry(fileEntryId);
 	}
@@ -369,7 +368,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.repository.model.FileEntry
 			getFileEntry(long groupId, long folderId, String title)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getFileEntry(groupId, folderId, title);
 	}
@@ -383,7 +382,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.repository.model.FileEntry
 			getFileEntryByUuidAndGroupId(String uuid, long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getFileEntryByUuidAndGroupId(uuid, groupId);
 	}
@@ -396,9 +395,8 @@ public class DLAppLocalServiceUtil {
 	 * @param userId the primary key of the user
 	 * @return the file ranks from the user
 	 */
-	public static java.util.List
-		<com.liferay.document.library.kernel.model.DLFileRank> getFileRanks(
-			long repositoryId, long userId) {
+	public static List<com.liferay.document.library.kernel.model.DLFileRank>
+		getFileRanks(long repositoryId, long userId) {
 
 		return getService().getFileRanks(repositoryId, userId);
 	}
@@ -412,7 +410,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.repository.model.FileShortcut
 			getFileShortcut(long fileShortcutId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getFileShortcut(fileShortcutId);
 	}
@@ -425,7 +423,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.repository.model.FileVersion
 			getFileVersion(long fileVersionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getFileVersion(fileVersionId);
 	}
@@ -438,7 +436,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.repository.model.Folder getFolder(
 			long folderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getFolder(folderId);
 	}
@@ -453,7 +451,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.repository.model.Folder getFolder(
 			long repositoryId, long parentFolderId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getFolder(repositoryId, parentFolderId, name);
 	}
@@ -467,7 +465,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.repository.model.Folder
 			getMountFolder(long repositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getMountFolder(repositoryId);
 	}
@@ -494,7 +492,7 @@ public class DLAppLocalServiceUtil {
 			moveFileEntry(
 				long userId, long fileEntryId, long newFolderId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().moveFileEntry(
 			userId, fileEntryId, newFolderId, serviceContext);
@@ -503,7 +501,7 @@ public class DLAppLocalServiceUtil {
 	public static com.liferay.portal.kernel.repository.model.Folder moveFolder(
 			long userId, long folderId, long parentFolderId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().moveFolder(
 			userId, folderId, parentFolderId, serviceContext);
@@ -519,7 +517,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static void subscribeFileEntryType(
 			long userId, long groupId, long fileEntryTypeId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().subscribeFileEntryType(userId, groupId, fileEntryTypeId);
 	}
@@ -533,7 +531,7 @@ public class DLAppLocalServiceUtil {
 	 * @param folderId the primary key of the folder
 	 */
 	public static void subscribeFolder(long userId, long groupId, long folderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().subscribeFolder(userId, groupId, folderId);
 	}
@@ -548,7 +546,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static void unsubscribeFileEntryType(
 			long userId, long groupId, long fileEntryTypeId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().unsubscribeFileEntryType(userId, groupId, fileEntryTypeId);
 	}
@@ -563,7 +561,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static void unsubscribeFolder(
 			long userId, long groupId, long folderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().unsubscribeFolder(userId, groupId, folderId);
 	}
@@ -585,7 +583,7 @@ public class DLAppLocalServiceUtil {
 			com.liferay.portal.kernel.repository.model.FileVersion fileVersion,
 			long[] assetCategoryIds, String[] assetTagNames,
 			long[] assetLinkEntryIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().updateAsset(
 			userId, fileEntry, fileVersion, assetCategoryIds, assetTagNames,
@@ -632,7 +630,7 @@ public class DLAppLocalServiceUtil {
 				String mimeType, String title, String description,
 				String changeLog, boolean majorVersion, byte[] bytes,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateFileEntry(
 			userId, fileEntryId, sourceFileName, mimeType, title, description,
@@ -679,7 +677,7 @@ public class DLAppLocalServiceUtil {
 				String mimeType, String title, String description,
 				String changeLog, boolean majorVersion, java.io.File file,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateFileEntry(
 			userId, fileEntryId, sourceFileName, mimeType, title, description,
@@ -725,10 +723,10 @@ public class DLAppLocalServiceUtil {
 			updateFileEntry(
 				long userId, long fileEntryId, String sourceFileName,
 				String mimeType, String title, String description,
-				String changeLog, boolean majorVersion, java.io.InputStream is,
+				String changeLog, boolean majorVersion, InputStream is,
 				long size,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateFileEntry(
 			userId, fileEntryId, sourceFileName, mimeType, title, description,
@@ -773,7 +771,7 @@ public class DLAppLocalServiceUtil {
 				long userId, long fileShortcutId, long folderId,
 				long toFileEntryId,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateFileShortcut(
 			userId, fileShortcutId, folderId, toFileEntryId, serviceContext);
@@ -788,7 +786,7 @@ public class DLAppLocalServiceUtil {
 	 */
 	public static void updateFileShortcuts(
 			long oldToFileEntryId, long newToFileEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().updateFileShortcuts(oldToFileEntryId, newToFileEntryId);
 	}
@@ -800,7 +798,7 @@ public class DLAppLocalServiceUtil {
 	@Deprecated
 	public static void updateFileShortcuts(
 			long toRepositoryId, long oldToFileEntryId, long newToFileEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().updateFileShortcuts(
 			toRepositoryId, oldToFileEntryId, newToFileEntryId);
@@ -832,21 +830,16 @@ public class DLAppLocalServiceUtil {
 				long folderId, long parentFolderId, String name,
 				String description,
 				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateFolder(
 			folderId, parentFolderId, name, description, serviceContext);
 	}
 
 	public static DLAppLocalService getService() {
-		if (_service == null) {
-			_service = (DLAppLocalService)PortalBeanLocatorUtil.locate(
-				DLAppLocalService.class.getName());
-		}
-
 		return _service;
 	}
 
-	private static DLAppLocalService _service;
+	private static volatile DLAppLocalService _service;
 
 }

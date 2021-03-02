@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ZendeskArticleAttachment. This utility wraps
@@ -37,10 +43,9 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleAttachmentLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.customer.zendesk.documentation.sync.model.
-		ZendeskArticleAttachment addZendeskArticleAttachment(
-				long zendeskArticleId, String filePath, byte[] bytes)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static ZendeskArticleAttachment addZendeskArticleAttachment(
+			long zendeskArticleId, String filePath, byte[] bytes)
+		throws PortalException {
 
 		return getService().addZendeskArticleAttachment(
 			zendeskArticleId, filePath, bytes);
@@ -56,10 +61,8 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @param zendeskArticleAttachment the zendesk article attachment
 	 * @return the zendesk article attachment that was added
 	 */
-	public static com.liferay.osb.customer.zendesk.documentation.sync.model.
-		ZendeskArticleAttachment addZendeskArticleAttachment(
-			com.liferay.osb.customer.zendesk.documentation.sync.model.
-				ZendeskArticleAttachment zendeskArticleAttachment) {
+	public static ZendeskArticleAttachment addZendeskArticleAttachment(
+		ZendeskArticleAttachment zendeskArticleAttachment) {
 
 		return getService().addZendeskArticleAttachment(
 			zendeskArticleAttachment);
@@ -71,9 +74,8 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @param zendeskArticleAttachmentId the primary key for the new zendesk article attachment
 	 * @return the new zendesk article attachment
 	 */
-	public static com.liferay.osb.customer.zendesk.documentation.sync.model.
-		ZendeskArticleAttachment createZendeskArticleAttachment(
-			long zendeskArticleAttachmentId) {
+	public static ZendeskArticleAttachment createZendeskArticleAttachment(
+		long zendeskArticleAttachmentId) {
 
 		return getService().createZendeskArticleAttachment(
 			zendeskArticleAttachmentId);
@@ -82,10 +84,9 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -101,10 +102,9 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @return the zendesk article attachment that was removed
 	 * @throws PortalException if a zendesk article attachment with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.zendesk.documentation.sync.model.
-		ZendeskArticleAttachment deleteZendeskArticleAttachment(
-				long zendeskArticleAttachmentId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static ZendeskArticleAttachment deleteZendeskArticleAttachment(
+			long zendeskArticleAttachmentId)
+		throws PortalException {
 
 		return getService().deleteZendeskArticleAttachment(
 			zendeskArticleAttachmentId);
@@ -121,19 +121,15 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @return the zendesk article attachment that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.customer.zendesk.documentation.sync.model.
-		ZendeskArticleAttachment deleteZendeskArticleAttachment(
-				com.liferay.osb.customer.zendesk.documentation.sync.model.
-					ZendeskArticleAttachment zendeskArticleAttachment)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static ZendeskArticleAttachment deleteZendeskArticleAttachment(
+			ZendeskArticleAttachment zendeskArticleAttachment)
+		throws PortalException {
 
 		return getService().deleteZendeskArticleAttachment(
 			zendeskArticleAttachment);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -143,9 +139,7 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -161,9 +155,8 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -181,10 +174,9 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -196,9 +188,7 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -210,15 +200,14 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.zendesk.documentation.sync.model.
-		ZendeskArticleAttachment fetchZendeskArticleAttachment(
-			long zendeskArticleAttachmentId) {
+	public static ZendeskArticleAttachment fetchZendeskArticleAttachment(
+		long zendeskArticleAttachmentId) {
 
 		return getService().fetchZendeskArticleAttachment(
 			zendeskArticleAttachmentId);
@@ -249,9 +238,8 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -263,10 +251,9 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @return the zendesk article attachment
 	 * @throws PortalException if a zendesk article attachment with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.zendesk.documentation.sync.model.
-		ZendeskArticleAttachment getZendeskArticleAttachment(
-				long zendeskArticleAttachmentId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static ZendeskArticleAttachment getZendeskArticleAttachment(
+			long zendeskArticleAttachmentId)
+		throws PortalException {
 
 		return getService().getZendeskArticleAttachment(
 			zendeskArticleAttachmentId);
@@ -283,18 +270,14 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @param end the upper bound of the range of zendesk article attachments (not inclusive)
 	 * @return the range of zendesk article attachments
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskArticleAttachment> getZendeskArticleAttachments(
-				int start, int end) {
+	public static List<ZendeskArticleAttachment> getZendeskArticleAttachments(
+		int start, int end) {
 
 		return getService().getZendeskArticleAttachments(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskArticleAttachment> getZendeskArticleAttachments(
-				long zendeskArticleId) {
+	public static List<ZendeskArticleAttachment> getZendeskArticleAttachments(
+		long zendeskArticleId) {
 
 		return getService().getZendeskArticleAttachments(zendeskArticleId);
 	}
@@ -308,10 +291,9 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 		return getService().getZendeskArticleAttachmentsCount();
 	}
 
-	public static com.liferay.osb.customer.zendesk.documentation.sync.model.
-		ZendeskArticleAttachment updateZendeskArticleAttachment(
-				long zendeskArticleId, String filePath, byte[] bytes)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static ZendeskArticleAttachment updateZendeskArticleAttachment(
+			long zendeskArticleId, String filePath, byte[] bytes)
+		throws PortalException {
 
 		return getService().updateZendeskArticleAttachment(
 			zendeskArticleId, filePath, bytes);
@@ -327,39 +309,17 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * @param zendeskArticleAttachment the zendesk article attachment
 	 * @return the zendesk article attachment that was updated
 	 */
-	public static com.liferay.osb.customer.zendesk.documentation.sync.model.
-		ZendeskArticleAttachment updateZendeskArticleAttachment(
-			com.liferay.osb.customer.zendesk.documentation.sync.model.
-				ZendeskArticleAttachment zendeskArticleAttachment) {
+	public static ZendeskArticleAttachment updateZendeskArticleAttachment(
+		ZendeskArticleAttachment zendeskArticleAttachment) {
 
 		return getService().updateZendeskArticleAttachment(
 			zendeskArticleAttachment);
 	}
 
 	public static ZendeskArticleAttachmentLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ZendeskArticleAttachmentLocalService,
-		 ZendeskArticleAttachmentLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ZendeskArticleAttachmentLocalService.class);
-
-		ServiceTracker
-			<ZendeskArticleAttachmentLocalService,
-			 ZendeskArticleAttachmentLocalService> serviceTracker =
-				new ServiceTracker
-					<ZendeskArticleAttachmentLocalService,
-					 ZendeskArticleAttachmentLocalService>(
-						 bundle.getBundleContext(),
-						 ZendeskArticleAttachmentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ZendeskArticleAttachmentLocalService _service;
 
 }

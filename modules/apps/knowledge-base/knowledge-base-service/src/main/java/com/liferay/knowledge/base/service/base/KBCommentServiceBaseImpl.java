@@ -16,6 +16,7 @@ package com.liferay.knowledge.base.service.base;
 
 import com.liferay.knowledge.base.model.KBComment;
 import com.liferay.knowledge.base.service.KBCommentService;
+import com.liferay.knowledge.base.service.KBCommentServiceUtil;
 import com.liferay.knowledge.base.service.persistence.KBArticleFinder;
 import com.liferay.knowledge.base.service.persistence.KBArticlePersistence;
 import com.liferay.knowledge.base.service.persistence.KBCommentPersistence;
@@ -38,6 +39,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.ratings.kernel.service.persistence.RatingsEntryPersistence;
 import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -58,7 +61,7 @@ public abstract class KBCommentServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>KBCommentService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.knowledge.base.service.KBCommentServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>KBCommentService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>KBCommentServiceUtil</code>.
 	 */
 
 	/**
@@ -724,9 +727,11 @@ public abstract class KBCommentServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(kbCommentService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -768,6 +773,20 @@ public abstract class KBCommentServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(KBCommentService kbCommentService) {
+		try {
+			Field field = KBCommentServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, kbCommentService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

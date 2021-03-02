@@ -14,9 +14,15 @@
 
 package com.liferay.osb.community.doc.project.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.community.doc.project.model.DocProject;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for DocProject. This utility wraps
@@ -48,20 +54,16 @@ public class DocProjectLocalServiceUtil {
 	 * @param docProject the doc project
 	 * @return the doc project that was added
 	 */
-	public static com.liferay.osb.community.doc.project.model.DocProject
-		addDocProject(
-			com.liferay.osb.community.doc.project.model.DocProject docProject) {
-
+	public static DocProject addDocProject(DocProject docProject) {
 		return getService().addDocProject(docProject);
 	}
 
-	public static com.liferay.osb.community.doc.project.model.DocProject
-			addDocProject(
-				long userId, String name, String description,
-				String iconFileName, java.io.File iconFile, boolean unlisted,
-				String type, String typeSettings, int status,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static DocProject addDocProject(
+			long userId, String name, String description, String iconFileName,
+			java.io.File iconFile, boolean unlisted, String type,
+			String typeSettings, int status,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().addDocProject(
 			userId, name, description, iconFileName, iconFile, unlisted, type,
@@ -74,9 +76,7 @@ public class DocProjectLocalServiceUtil {
 	 * @param docProjectId the primary key for the new doc project
 	 * @return the new doc project
 	 */
-	public static com.liferay.osb.community.doc.project.model.DocProject
-		createDocProject(long docProjectId) {
-
+	public static DocProject createDocProject(long docProjectId) {
 		return getService().createDocProject(docProjectId);
 	}
 
@@ -91,11 +91,8 @@ public class DocProjectLocalServiceUtil {
 	 * @return the doc project that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.community.doc.project.model.DocProject
-			deleteDocProject(
-				com.liferay.osb.community.doc.project.model.DocProject
-					docProject)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static DocProject deleteDocProject(DocProject docProject)
+		throws PortalException {
 
 		return getService().deleteDocProject(docProject);
 	}
@@ -111,9 +108,8 @@ public class DocProjectLocalServiceUtil {
 	 * @return the doc project that was removed
 	 * @throws PortalException if a doc project with the primary key could not be found
 	 */
-	public static com.liferay.osb.community.doc.project.model.DocProject
-			deleteDocProject(long docProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static DocProject deleteDocProject(long docProjectId)
+		throws PortalException {
 
 		return getService().deleteDocProject(docProjectId);
 	}
@@ -121,17 +117,14 @@ public class DocProjectLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -141,9 +134,7 @@ public class DocProjectLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -159,9 +150,8 @@ public class DocProjectLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -179,10 +169,9 @@ public class DocProjectLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -194,9 +183,7 @@ public class DocProjectLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -208,15 +195,13 @@ public class DocProjectLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.community.doc.project.model.DocProject
-		fetchDocProject(long docProjectId) {
-
+	public static DocProject fetchDocProject(long docProjectId) {
 		return getService().fetchDocProject(docProjectId);
 	}
 
@@ -227,8 +212,8 @@ public class DocProjectLocalServiceUtil {
 	 * @param groupId the primary key of the group
 	 * @return the matching doc project, or <code>null</code> if a matching doc project could not be found
 	 */
-	public static com.liferay.osb.community.doc.project.model.DocProject
-		fetchDocProjectByUuidAndGroupId(String uuid, long groupId) {
+	public static DocProject fetchDocProjectByUuidAndGroupId(
+		String uuid, long groupId) {
 
 		return getService().fetchDocProjectByUuidAndGroupId(uuid, groupId);
 	}
@@ -246,15 +231,13 @@ public class DocProjectLocalServiceUtil {
 	 * @return the doc project
 	 * @throws PortalException if a doc project with the primary key could not be found
 	 */
-	public static com.liferay.osb.community.doc.project.model.DocProject
-			getDocProject(long docProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static DocProject getDocProject(long docProjectId)
+		throws PortalException {
 
 		return getService().getDocProject(docProjectId);
 	}
 
-	public static com.liferay.osb.community.doc.project.model.DocProject
-			getDocProjectByGroupId(long groupId)
+	public static DocProject getDocProjectByGroupId(long groupId)
 		throws com.liferay.osb.community.doc.project.exception.
 			NoSuchDocProjectException {
 
@@ -269,19 +252,18 @@ public class DocProjectLocalServiceUtil {
 	 * @return the matching doc project
 	 * @throws PortalException if a matching doc project could not be found
 	 */
-	public static com.liferay.osb.community.doc.project.model.DocProject
-			getDocProjectByUuidAndGroupId(String uuid, long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static DocProject getDocProjectByUuidAndGroupId(
+			String uuid, long groupId)
+		throws PortalException {
 
 		return getService().getDocProjectByUuidAndGroupId(uuid, groupId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.community.doc.project.model.DocProject> getDocProjects(
-				boolean unlisted, int status, int start, int end,
-				com.liferay.portal.kernel.util.OrderByComparator obc)
-			throws com.liferay.osb.community.doc.project.exception.
-				NoSuchDocProjectException {
+	public static List<DocProject> getDocProjects(
+			boolean unlisted, int status, int start, int end,
+			OrderByComparator obc)
+		throws com.liferay.osb.community.doc.project.exception.
+			NoSuchDocProjectException {
 
 		return getService().getDocProjects(unlisted, status, start, end, obc);
 	}
@@ -297,10 +279,7 @@ public class DocProjectLocalServiceUtil {
 	 * @param end the upper bound of the range of doc projects (not inclusive)
 	 * @return the range of doc projects
 	 */
-	public static java.util.List
-		<com.liferay.osb.community.doc.project.model.DocProject> getDocProjects(
-			int start, int end) {
-
+	public static List<DocProject> getDocProjects(int start, int end) {
 		return getService().getDocProjects(start, end);
 	}
 
@@ -311,9 +290,8 @@ public class DocProjectLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching doc projects, or an empty list if no matches were found
 	 */
-	public static java.util.List
-		<com.liferay.osb.community.doc.project.model.DocProject>
-			getDocProjectsByUuidAndCompanyId(String uuid, long companyId) {
+	public static List<DocProject> getDocProjectsByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().getDocProjectsByUuidAndCompanyId(uuid, companyId);
 	}
@@ -328,13 +306,9 @@ public class DocProjectLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the range of matching doc projects, or an empty list if no matches were found
 	 */
-	public static java.util.List
-		<com.liferay.osb.community.doc.project.model.DocProject>
-			getDocProjectsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
-				com.liferay.portal.kernel.util.OrderByComparator
-					<com.liferay.osb.community.doc.project.model.DocProject>
-						orderByComparator) {
+	public static List<DocProject> getDocProjectsByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DocProject> orderByComparator) {
 
 		return getService().getDocProjectsByUuidAndCompanyId(
 			uuid, companyId, start, end, orderByComparator);
@@ -376,9 +350,8 @@ public class DocProjectLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -386,7 +359,7 @@ public class DocProjectLocalServiceUtil {
 	public static void updateAsset(
 			long userId, long docProjectId, long[] assetCategoryIds,
 			String[] assetTagNames)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().updateAsset(
 			userId, docProjectId, assetCategoryIds, assetTagNames);
@@ -402,20 +375,16 @@ public class DocProjectLocalServiceUtil {
 	 * @param docProject the doc project
 	 * @return the doc project that was updated
 	 */
-	public static com.liferay.osb.community.doc.project.model.DocProject
-		updateDocProject(
-			com.liferay.osb.community.doc.project.model.DocProject docProject) {
-
+	public static DocProject updateDocProject(DocProject docProject) {
 		return getService().updateDocProject(docProject);
 	}
 
-	public static com.liferay.osb.community.doc.project.model.DocProject
-			updateDocProject(
-				long docProjectId, String name, String description,
-				String iconFileName, java.io.File iconFile, boolean unlisted,
-				String type, String typeSettings, int status,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static DocProject updateDocProject(
+			long docProjectId, String name, String description,
+			String iconFileName, java.io.File iconFile, boolean unlisted,
+			String type, String typeSettings, int status,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().updateDocProject(
 			docProjectId, name, description, iconFileName, iconFile, unlisted,
@@ -423,25 +392,9 @@ public class DocProjectLocalServiceUtil {
 	}
 
 	public static DocProjectLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<DocProjectLocalService, DocProjectLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DocProjectLocalService.class);
-
-		ServiceTracker<DocProjectLocalService, DocProjectLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<DocProjectLocalService, DocProjectLocalService>(
-						bundle.getBundleContext(), DocProjectLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DocProjectLocalService _service;
 
 }

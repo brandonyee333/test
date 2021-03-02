@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.watson.model.WatsonActivity;
 import com.liferay.watson.service.WatsonActivityLocalService;
+import com.liferay.watson.service.WatsonActivityLocalServiceUtil;
 import com.liferay.watson.service.persistence.WatsonActivityAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonActivityPersistence;
 import com.liferay.watson.service.persistence.WatsonAddressAuditPersistence;
@@ -73,6 +74,8 @@ import com.liferay.watson.service.persistence.WatsonVehiclePersistence;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -95,7 +98,7 @@ public abstract class WatsonActivityLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WatsonActivityLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.service.WatsonActivityLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WatsonActivityLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WatsonActivityLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1724,11 +1727,15 @@ public abstract class WatsonActivityLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.watson.model.WatsonActivity",
 			watsonActivityLocalService);
+
+		_setLocalServiceUtilService(watsonActivityLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.watson.model.WatsonActivity");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1770,6 +1777,22 @@ public abstract class WatsonActivityLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		WatsonActivityLocalService watsonActivityLocalService) {
+
+		try {
+			Field field = WatsonActivityLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonActivityLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

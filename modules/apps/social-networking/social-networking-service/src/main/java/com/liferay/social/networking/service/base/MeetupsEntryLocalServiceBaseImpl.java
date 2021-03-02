@@ -43,12 +43,15 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.social.networking.model.MeetupsEntry;
 import com.liferay.social.networking.service.MeetupsEntryLocalService;
+import com.liferay.social.networking.service.MeetupsEntryLocalServiceUtil;
 import com.liferay.social.networking.service.persistence.MeetupsEntryPersistence;
 import com.liferay.social.networking.service.persistence.MeetupsRegistrationPersistence;
 import com.liferay.social.networking.service.persistence.WallEntryFinder;
 import com.liferay.social.networking.service.persistence.WallEntryPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -72,7 +75,7 @@ public abstract class MeetupsEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MeetupsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.networking.service.MeetupsEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MeetupsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MeetupsEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -672,11 +675,15 @@ public abstract class MeetupsEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.networking.model.MeetupsEntry",
 			meetupsEntryLocalService);
+
+		_setLocalServiceUtilService(meetupsEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.networking.model.MeetupsEntry");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -718,6 +725,22 @@ public abstract class MeetupsEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		MeetupsEntryLocalService meetupsEntryLocalService) {
+
+		try {
+			Field field = MeetupsEntryLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, meetupsEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

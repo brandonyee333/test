@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.model.LoopDivisionRel;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LoopDivisionRel. This utility wraps
@@ -48,8 +54,8 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @param loopDivisionRel the loop division rel
 	 * @return the loop division rel that was added
 	 */
-	public static com.liferay.osb.loop.model.LoopDivisionRel addLoopDivisionRel(
-		com.liferay.osb.loop.model.LoopDivisionRel loopDivisionRel) {
+	public static LoopDivisionRel addLoopDivisionRel(
+		LoopDivisionRel loopDivisionRel) {
 
 		return getService().addLoopDivisionRel(loopDivisionRel);
 	}
@@ -60,8 +66,8 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @param loopDivisionRelId the primary key for the new loop division rel
 	 * @return the new loop division rel
 	 */
-	public static com.liferay.osb.loop.model.LoopDivisionRel
-		createLoopDivisionRel(long loopDivisionRelId) {
+	public static LoopDivisionRel createLoopDivisionRel(
+		long loopDivisionRelId) {
 
 		return getService().createLoopDivisionRel(loopDivisionRelId);
 	}
@@ -77,9 +83,8 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @return the loop division rel that was removed
 	 * @throws PortalException if a loop division rel with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopDivisionRel
-			deleteLoopDivisionRel(long loopDivisionRelId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopDivisionRel deleteLoopDivisionRel(long loopDivisionRelId)
+		throws PortalException {
 
 		return getService().deleteLoopDivisionRel(loopDivisionRelId);
 	}
@@ -94,9 +99,8 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @param loopDivisionRel the loop division rel
 	 * @return the loop division rel that was removed
 	 */
-	public static com.liferay.osb.loop.model.LoopDivisionRel
-		deleteLoopDivisionRel(
-			com.liferay.osb.loop.model.LoopDivisionRel loopDivisionRel) {
+	public static LoopDivisionRel deleteLoopDivisionRel(
+		LoopDivisionRel loopDivisionRel) {
 
 		return getService().deleteLoopDivisionRel(loopDivisionRel);
 	}
@@ -104,17 +108,14 @@ public class LoopDivisionRelLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -124,9 +125,7 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -142,9 +141,8 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -162,10 +160,9 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -177,9 +174,7 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -191,15 +186,13 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.model.LoopDivisionRel
-		fetchLoopDivisionRel(long loopDivisionRelId) {
-
+	public static LoopDivisionRel fetchLoopDivisionRel(long loopDivisionRelId) {
 		return getService().fetchLoopDivisionRel(loopDivisionRelId);
 	}
 
@@ -223,9 +216,8 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @return the loop division rel
 	 * @throws PortalException if a loop division rel with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopDivisionRel getLoopDivisionRel(
-			long loopDivisionRelId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopDivisionRel getLoopDivisionRel(long loopDivisionRelId)
+		throws PortalException {
 
 		return getService().getLoopDivisionRel(loopDivisionRelId);
 	}
@@ -241,8 +233,8 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @param end the upper bound of the range of loop division rels (not inclusive)
 	 * @return the range of loop division rels
 	 */
-	public static java.util.List<com.liferay.osb.loop.model.LoopDivisionRel>
-		getLoopDivisionRels(int start, int end) {
+	public static List<LoopDivisionRel> getLoopDivisionRels(
+		int start, int end) {
 
 		return getService().getLoopDivisionRels(start, end);
 	}
@@ -268,9 +260,8 @@ public class LoopDivisionRelLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -285,35 +276,16 @@ public class LoopDivisionRelLocalServiceUtil {
 	 * @param loopDivisionRel the loop division rel
 	 * @return the loop division rel that was updated
 	 */
-	public static com.liferay.osb.loop.model.LoopDivisionRel
-		updateLoopDivisionRel(
-			com.liferay.osb.loop.model.LoopDivisionRel loopDivisionRel) {
+	public static LoopDivisionRel updateLoopDivisionRel(
+		LoopDivisionRel loopDivisionRel) {
 
 		return getService().updateLoopDivisionRel(loopDivisionRel);
 	}
 
 	public static LoopDivisionRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LoopDivisionRelLocalService, LoopDivisionRelLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LoopDivisionRelLocalService.class);
-
-		ServiceTracker<LoopDivisionRelLocalService, LoopDivisionRelLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LoopDivisionRelLocalService, LoopDivisionRelLocalService>(
-						bundle.getBundleContext(),
-						LoopDivisionRelLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LoopDivisionRelLocalService _service;
 
 }

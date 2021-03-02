@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.model.LoopTopicAssignment;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LoopTopicAssignment. This utility wraps
@@ -48,10 +54,8 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @param loopTopicAssignment the loop topic assignment
 	 * @return the loop topic assignment that was added
 	 */
-	public static com.liferay.osb.loop.model.LoopTopicAssignment
-		addLoopTopicAssignment(
-			com.liferay.osb.loop.model.LoopTopicAssignment
-				loopTopicAssignment) {
+	public static LoopTopicAssignment addLoopTopicAssignment(
+		LoopTopicAssignment loopTopicAssignment) {
 
 		return getService().addLoopTopicAssignment(loopTopicAssignment);
 	}
@@ -62,8 +66,8 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @param loopTopicAssignmentId the primary key for the new loop topic assignment
 	 * @return the new loop topic assignment
 	 */
-	public static com.liferay.osb.loop.model.LoopTopicAssignment
-		createLoopTopicAssignment(long loopTopicAssignmentId) {
+	public static LoopTopicAssignment createLoopTopicAssignment(
+		long loopTopicAssignmentId) {
 
 		return getService().createLoopTopicAssignment(loopTopicAssignmentId);
 	}
@@ -79,9 +83,9 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @return the loop topic assignment that was removed
 	 * @throws PortalException if a loop topic assignment with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopTopicAssignment
-			deleteLoopTopicAssignment(long loopTopicAssignmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopTopicAssignment deleteLoopTopicAssignment(
+			long loopTopicAssignmentId)
+		throws PortalException {
 
 		return getService().deleteLoopTopicAssignment(loopTopicAssignmentId);
 	}
@@ -96,10 +100,8 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @param loopTopicAssignment the loop topic assignment
 	 * @return the loop topic assignment that was removed
 	 */
-	public static com.liferay.osb.loop.model.LoopTopicAssignment
-		deleteLoopTopicAssignment(
-			com.liferay.osb.loop.model.LoopTopicAssignment
-				loopTopicAssignment) {
+	public static LoopTopicAssignment deleteLoopTopicAssignment(
+		LoopTopicAssignment loopTopicAssignment) {
 
 		return getService().deleteLoopTopicAssignment(loopTopicAssignment);
 	}
@@ -107,17 +109,14 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -127,9 +126,7 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -145,9 +142,8 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -165,10 +161,9 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -180,9 +175,7 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -194,14 +187,14 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.model.LoopTopicAssignment
-		fetchLoopTopicAssignment(long loopTopicAssignmentId) {
+	public static LoopTopicAssignment fetchLoopTopicAssignment(
+		long loopTopicAssignmentId) {
 
 		return getService().fetchLoopTopicAssignment(loopTopicAssignmentId);
 	}
@@ -226,9 +219,9 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @return the loop topic assignment
 	 * @throws PortalException if a loop topic assignment with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopTopicAssignment
-			getLoopTopicAssignment(long loopTopicAssignmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopTopicAssignment getLoopTopicAssignment(
+			long loopTopicAssignmentId)
+		throws PortalException {
 
 		return getService().getLoopTopicAssignment(loopTopicAssignmentId);
 	}
@@ -244,8 +237,8 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @param end the upper bound of the range of loop topic assignments (not inclusive)
 	 * @return the range of loop topic assignments
 	 */
-	public static java.util.List<com.liferay.osb.loop.model.LoopTopicAssignment>
-		getLoopTopicAssignments(int start, int end) {
+	public static List<LoopTopicAssignment> getLoopTopicAssignments(
+		int start, int end) {
 
 		return getService().getLoopTopicAssignments(start, end);
 	}
@@ -271,9 +264,8 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -288,38 +280,16 @@ public class LoopTopicAssignmentLocalServiceUtil {
 	 * @param loopTopicAssignment the loop topic assignment
 	 * @return the loop topic assignment that was updated
 	 */
-	public static com.liferay.osb.loop.model.LoopTopicAssignment
-		updateLoopTopicAssignment(
-			com.liferay.osb.loop.model.LoopTopicAssignment
-				loopTopicAssignment) {
+	public static LoopTopicAssignment updateLoopTopicAssignment(
+		LoopTopicAssignment loopTopicAssignment) {
 
 		return getService().updateLoopTopicAssignment(loopTopicAssignment);
 	}
 
 	public static LoopTopicAssignmentLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LoopTopicAssignmentLocalService, LoopTopicAssignmentLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LoopTopicAssignmentLocalService.class);
-
-		ServiceTracker
-			<LoopTopicAssignmentLocalService, LoopTopicAssignmentLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<LoopTopicAssignmentLocalService,
-						 LoopTopicAssignmentLocalService>(
-							 bundle.getBundleContext(),
-							 LoopTopicAssignmentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LoopTopicAssignmentLocalService _service;
 
 }

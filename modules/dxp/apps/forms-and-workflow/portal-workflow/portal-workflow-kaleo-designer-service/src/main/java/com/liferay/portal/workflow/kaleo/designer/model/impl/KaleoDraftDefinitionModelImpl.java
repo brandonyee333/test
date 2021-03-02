@@ -920,7 +920,7 @@ public class KaleoDraftDefinitionModelImpl
 
 	@Override
 	public void setDraftVersion(int draftVersion) {
-		_columnBitmask |= DRAFTVERSION_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalDraftVersion) {
 			_setOriginalDraftVersion = true;

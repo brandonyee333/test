@@ -16,6 +16,7 @@ package com.liferay.osb.customer.admin.service.base;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.persistence.AccountAttachmentPersistence;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryLanguagePersistence;
@@ -58,6 +59,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -80,7 +83,7 @@ public abstract class AccountEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AccountEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AccountEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AccountEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1010,11 +1013,15 @@ public abstract class AccountEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.admin.model.AccountEntry",
 			accountEntryLocalService);
+
+		_setLocalServiceUtilService(accountEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.admin.model.AccountEntry");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1056,6 +1063,22 @@ public abstract class AccountEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		AccountEntryLocalService accountEntryLocalService) {
+
+		try {
+			Field field = AccountEntryLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, accountEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -18,6 +18,7 @@ import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryPersistence;
 import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet;
 import com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetService;
+import com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetServiceUtil;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetFinder;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikeFinder;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikePersistence;
@@ -35,6 +36,8 @@ import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -56,7 +59,7 @@ public abstract class AssetEntrySetServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetEntrySetService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetEntrySetService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetEntrySetServiceUtil</code>.
 	 */
 
 	/**
@@ -615,9 +618,11 @@ public abstract class AssetEntrySetServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(assetEntrySetService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -659,6 +664,22 @@ public abstract class AssetEntrySetServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		AssetEntrySetService assetEntrySetService) {
+
+		try {
+			Field field = AssetEntrySetServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, assetEntrySetService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

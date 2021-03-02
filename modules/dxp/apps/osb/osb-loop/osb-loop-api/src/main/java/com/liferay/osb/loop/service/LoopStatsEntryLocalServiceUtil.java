@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.model.LoopStatsEntry;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LoopStatsEntry. This utility wraps
@@ -48,8 +54,8 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @param loopStatsEntry the loop stats entry
 	 * @return the loop stats entry that was added
 	 */
-	public static com.liferay.osb.loop.model.LoopStatsEntry addLoopStatsEntry(
-		com.liferay.osb.loop.model.LoopStatsEntry loopStatsEntry) {
+	public static LoopStatsEntry addLoopStatsEntry(
+		LoopStatsEntry loopStatsEntry) {
 
 		return getService().addLoopStatsEntry(loopStatsEntry);
 	}
@@ -60,9 +66,7 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @param loopStatsEntryId the primary key for the new loop stats entry
 	 * @return the new loop stats entry
 	 */
-	public static com.liferay.osb.loop.model.LoopStatsEntry
-		createLoopStatsEntry(long loopStatsEntryId) {
-
+	public static LoopStatsEntry createLoopStatsEntry(long loopStatsEntryId) {
 		return getService().createLoopStatsEntry(loopStatsEntryId);
 	}
 
@@ -77,9 +81,8 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @return the loop stats entry that was removed
 	 * @throws PortalException if a loop stats entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopStatsEntry
-			deleteLoopStatsEntry(long loopStatsEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopStatsEntry deleteLoopStatsEntry(long loopStatsEntryId)
+		throws PortalException {
 
 		return getService().deleteLoopStatsEntry(loopStatsEntryId);
 	}
@@ -94,9 +97,8 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @param loopStatsEntry the loop stats entry
 	 * @return the loop stats entry that was removed
 	 */
-	public static com.liferay.osb.loop.model.LoopStatsEntry
-		deleteLoopStatsEntry(
-			com.liferay.osb.loop.model.LoopStatsEntry loopStatsEntry) {
+	public static LoopStatsEntry deleteLoopStatsEntry(
+		LoopStatsEntry loopStatsEntry) {
 
 		return getService().deleteLoopStatsEntry(loopStatsEntry);
 	}
@@ -104,17 +106,14 @@ public class LoopStatsEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -124,9 +123,7 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -142,9 +139,8 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -162,10 +158,9 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -177,9 +172,7 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -191,15 +184,13 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.model.LoopStatsEntry fetchLoopStatsEntry(
-		long loopStatsEntryId) {
-
+	public static LoopStatsEntry fetchLoopStatsEntry(long loopStatsEntryId) {
 		return getService().fetchLoopStatsEntry(loopStatsEntryId);
 	}
 
@@ -227,9 +218,7 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of loop stats entries (not inclusive)
 	 * @return the range of loop stats entries
 	 */
-	public static java.util.List<com.liferay.osb.loop.model.LoopStatsEntry>
-		getLoopStatsEntries(int start, int end) {
-
+	public static List<LoopStatsEntry> getLoopStatsEntries(int start, int end) {
 		return getService().getLoopStatsEntries(start, end);
 	}
 
@@ -249,9 +238,8 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @return the loop stats entry
 	 * @throws PortalException if a loop stats entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopStatsEntry getLoopStatsEntry(
-			long loopStatsEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopStatsEntry getLoopStatsEntry(long loopStatsEntryId)
+		throws PortalException {
 
 		return getService().getLoopStatsEntry(loopStatsEntryId);
 	}
@@ -268,9 +256,8 @@ public class LoopStatsEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -285,35 +272,16 @@ public class LoopStatsEntryLocalServiceUtil {
 	 * @param loopStatsEntry the loop stats entry
 	 * @return the loop stats entry that was updated
 	 */
-	public static com.liferay.osb.loop.model.LoopStatsEntry
-		updateLoopStatsEntry(
-			com.liferay.osb.loop.model.LoopStatsEntry loopStatsEntry) {
+	public static LoopStatsEntry updateLoopStatsEntry(
+		LoopStatsEntry loopStatsEntry) {
 
 		return getService().updateLoopStatsEntry(loopStatsEntry);
 	}
 
 	public static LoopStatsEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LoopStatsEntryLocalService, LoopStatsEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LoopStatsEntryLocalService.class);
-
-		ServiceTracker<LoopStatsEntryLocalService, LoopStatsEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LoopStatsEntryLocalService, LoopStatsEntryLocalService>(
-						bundle.getBundleContext(),
-						LoopStatsEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LoopStatsEntryLocalService _service;
 
 }

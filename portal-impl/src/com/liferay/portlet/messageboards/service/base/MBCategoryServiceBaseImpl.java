@@ -22,6 +22,7 @@ import com.liferay.counter.kernel.service.persistence.CounterPersistence;
 import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
 import com.liferay.message.boards.kernel.model.MBCategory;
 import com.liferay.message.boards.kernel.service.MBCategoryService;
+import com.liferay.message.boards.kernel.service.MBCategoryServiceUtil;
 import com.liferay.message.boards.kernel.service.persistence.MBCategoryFinder;
 import com.liferay.message.boards.kernel.service.persistence.MBCategoryPersistence;
 import com.liferay.message.boards.kernel.service.persistence.MBMailingListPersistence;
@@ -49,6 +50,8 @@ import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -69,7 +72,7 @@ public abstract class MBCategoryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MBCategoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.message.boards.kernel.service.MBCategoryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MBCategoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MBCategoryServiceUtil</code>.
 	 */
 
 	/**
@@ -1047,9 +1050,11 @@ public abstract class MBCategoryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(mbCategoryService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -1091,6 +1096,20 @@ public abstract class MBCategoryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(MBCategoryService mbCategoryService) {
+		try {
+			Field field = MBCategoryServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, mbCategoryService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,6 +16,7 @@ package com.liferay.osb.loop.asset.entry.set.service.base;
 
 import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike;
 import com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalService;
+import com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalServiceUtil;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetFinder;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikeFinder;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikePK;
@@ -50,6 +51,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -72,7 +75,7 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetEntrySetLikeLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetLikeLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetEntrySetLikeLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetEntrySetLikeLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -630,11 +633,15 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike",
 			assetEntrySetLikeLocalService);
+
+		_setLocalServiceUtilService(assetEntrySetLikeLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -677,6 +684,23 @@ public abstract class AssetEntrySetLikeLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		AssetEntrySetLikeLocalService assetEntrySetLikeLocalService) {
+
+		try {
+			Field field =
+				AssetEntrySetLikeLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, assetEntrySetLikeLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

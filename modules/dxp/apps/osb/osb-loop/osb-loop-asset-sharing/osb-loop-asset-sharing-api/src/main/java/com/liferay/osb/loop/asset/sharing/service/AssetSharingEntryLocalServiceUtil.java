@@ -14,9 +14,17 @@
 
 package com.liferay.osb.loop.asset.sharing.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides the local service utility for AssetSharingEntry. This utility wraps
@@ -39,7 +47,7 @@ public class AssetSharingEntryLocalServiceUtil {
 	 */
 	public static void addAssetSharingEntries(
 		long classNameId, long classPK,
-		java.util.Map<Long, java.util.Set<Long>> sharedToClassPKsMap) {
+		Map<Long, Set<Long>> sharedToClassPKsMap) {
 
 		getService().addAssetSharingEntries(
 			classNameId, classPK, sharedToClassPKsMap);
@@ -55,10 +63,8 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @param assetSharingEntry the asset sharing entry
 	 * @return the asset sharing entry that was added
 	 */
-	public static com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry
-		addAssetSharingEntry(
-			com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry
-				assetSharingEntry) {
+	public static AssetSharingEntry addAssetSharingEntry(
+		AssetSharingEntry assetSharingEntry) {
 
 		return getService().addAssetSharingEntry(assetSharingEntry);
 	}
@@ -77,10 +83,9 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @param assetSharingEntryPK the primary key for the new asset sharing entry
 	 * @return the new asset sharing entry
 	 */
-	public static com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry
-		createAssetSharingEntry(
-			com.liferay.osb.loop.asset.sharing.service.persistence.
-				AssetSharingEntryPK assetSharingEntryPK) {
+	public static AssetSharingEntry createAssetSharingEntry(
+		com.liferay.osb.loop.asset.sharing.service.persistence.
+			AssetSharingEntryPK assetSharingEntryPK) {
 
 		return getService().createAssetSharingEntry(assetSharingEntryPK);
 	}
@@ -101,10 +106,8 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @param assetSharingEntry the asset sharing entry
 	 * @return the asset sharing entry that was removed
 	 */
-	public static com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry
-		deleteAssetSharingEntry(
-			com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry
-				assetSharingEntry) {
+	public static AssetSharingEntry deleteAssetSharingEntry(
+		AssetSharingEntry assetSharingEntry) {
 
 		return getService().deleteAssetSharingEntry(assetSharingEntry);
 	}
@@ -120,11 +123,10 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @return the asset sharing entry that was removed
 	 * @throws PortalException if a asset sharing entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry
-			deleteAssetSharingEntry(
-				com.liferay.osb.loop.asset.sharing.service.persistence.
-					AssetSharingEntryPK assetSharingEntryPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetSharingEntry deleteAssetSharingEntry(
+			com.liferay.osb.loop.asset.sharing.service.persistence.
+				AssetSharingEntryPK assetSharingEntryPK)
+		throws PortalException {
 
 		return getService().deleteAssetSharingEntry(assetSharingEntryPK);
 	}
@@ -132,10 +134,9 @@ public class AssetSharingEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -147,9 +148,7 @@ public class AssetSharingEntryLocalServiceUtil {
 			sharedToClassNameId, sharedToClassPK);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -159,9 +158,7 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -177,9 +174,8 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -197,10 +193,9 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -212,9 +207,7 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -226,16 +219,15 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry
-		fetchAssetSharingEntry(
-			com.liferay.osb.loop.asset.sharing.service.persistence.
-				AssetSharingEntryPK assetSharingEntryPK) {
+	public static AssetSharingEntry fetchAssetSharingEntry(
+		com.liferay.osb.loop.asset.sharing.service.persistence.
+			AssetSharingEntryPK assetSharingEntryPK) {
 
 		return getService().fetchAssetSharingEntry(assetSharingEntryPK);
 	}
@@ -257,24 +249,20 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of asset sharing entries (not inclusive)
 	 * @return the range of asset sharing entries
 	 */
-	public static java.util.List
-		<com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry>
-			getAssetSharingEntries(int start, int end) {
+	public static List<AssetSharingEntry> getAssetSharingEntries(
+		int start, int end) {
 
 		return getService().getAssetSharingEntries(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry>
-			getAssetSharingEntries(long classNameId, long classPK) {
+	public static List<AssetSharingEntry> getAssetSharingEntries(
+		long classNameId, long classPK) {
 
 		return getService().getAssetSharingEntries(classNameId, classPK);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry>
-			getAssetSharingEntries(
-				long classNameId, long classPK, long sharedToClassNameId) {
+	public static List<AssetSharingEntry> getAssetSharingEntries(
+		long classNameId, long classPK, long sharedToClassNameId) {
 
 		return getService().getAssetSharingEntries(
 			classNameId, classPK, sharedToClassNameId);
@@ -296,11 +284,10 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @return the asset sharing entry
 	 * @throws PortalException if a asset sharing entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry
-			getAssetSharingEntry(
-				com.liferay.osb.loop.asset.sharing.service.persistence.
-					AssetSharingEntryPK assetSharingEntryPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetSharingEntry getAssetSharingEntry(
+			com.liferay.osb.loop.asset.sharing.service.persistence.
+				AssetSharingEntryPK assetSharingEntryPK)
+		throws PortalException {
 
 		return getService().getAssetSharingEntry(assetSharingEntryPK);
 	}
@@ -324,28 +311,22 @@ public class AssetSharingEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry>
-			getSharedToAssetSharingEntries(
-				long sharedToClassNameId, long sharedToClassPK, int start,
-				int end) {
+	public static List<AssetSharingEntry> getSharedToAssetSharingEntries(
+		long sharedToClassNameId, long sharedToClassPK, int start, int end) {
 
 		return getService().getSharedToAssetSharingEntries(
 			sharedToClassNameId, sharedToClassPK, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry>
-			getSharedToAssetSharingEntries(
-				long classNameId, long sharedToClassNameId,
-				long sharedToClassPK, int start, int end) {
+	public static List<AssetSharingEntry> getSharedToAssetSharingEntries(
+		long classNameId, long sharedToClassNameId, long sharedToClassPK,
+		int start, int end) {
 
 		return getService().getSharedToAssetSharingEntries(
 			classNameId, sharedToClassNameId, sharedToClassPK, start, end);
@@ -375,38 +356,16 @@ public class AssetSharingEntryLocalServiceUtil {
 	 * @param assetSharingEntry the asset sharing entry
 	 * @return the asset sharing entry that was updated
 	 */
-	public static com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry
-		updateAssetSharingEntry(
-			com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry
-				assetSharingEntry) {
+	public static AssetSharingEntry updateAssetSharingEntry(
+		AssetSharingEntry assetSharingEntry) {
 
 		return getService().updateAssetSharingEntry(assetSharingEntry);
 	}
 
 	public static AssetSharingEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AssetSharingEntryLocalService, AssetSharingEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetSharingEntryLocalService.class);
-
-		ServiceTracker
-			<AssetSharingEntryLocalService, AssetSharingEntryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<AssetSharingEntryLocalService,
-						 AssetSharingEntryLocalService>(
-							 bundle.getBundleContext(),
-							 AssetSharingEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetSharingEntryLocalService _service;
 
 }

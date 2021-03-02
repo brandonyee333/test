@@ -16,6 +16,7 @@ package com.liferay.osb.community.github.service.base;
 
 import com.liferay.osb.community.github.model.GitHubContributor;
 import com.liferay.osb.community.github.service.GitHubContributorLocalService;
+import com.liferay.osb.community.github.service.GitHubContributorLocalServiceUtil;
 import com.liferay.osb.community.github.service.persistence.GitHubContributorPersistence;
 import com.liferay.osb.community.github.service.persistence.GitHubRepositoryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -47,6 +48,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -69,7 +72,7 @@ public abstract class GitHubContributorLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>GitHubContributorLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.community.github.service.GitHubContributorLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>GitHubContributorLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>GitHubContributorLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -578,11 +581,15 @@ public abstract class GitHubContributorLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.community.github.model.GitHubContributor",
 			gitHubContributorLocalService);
+
+		_setLocalServiceUtilService(gitHubContributorLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.community.github.model.GitHubContributor");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -625,6 +632,23 @@ public abstract class GitHubContributorLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		GitHubContributorLocalService gitHubContributorLocalService) {
+
+		try {
+			Field field =
+				GitHubContributorLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, gitHubContributorLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

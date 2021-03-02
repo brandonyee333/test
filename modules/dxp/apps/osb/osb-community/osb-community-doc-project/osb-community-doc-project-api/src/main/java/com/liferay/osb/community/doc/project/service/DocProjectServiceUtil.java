@@ -14,9 +14,8 @@
 
 package com.liferay.osb.community.doc.project.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.community.doc.project.model.DocProject;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for DocProject. This utility wraps
@@ -37,13 +36,12 @@ public class DocProjectServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.community.doc.project.service.impl.DocProjectServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.community.doc.project.model.DocProject
-			addDocProject(
-				String name, String description, String iconFileName,
-				java.io.File iconFile, boolean unlisted, String type,
-				String typeSettings, int status,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static DocProject addDocProject(
+			String name, String description, String iconFileName,
+			java.io.File iconFile, boolean unlisted, String type,
+			String typeSettings, int status,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().addDocProject(
 			name, description, iconFileName, iconFile, unlisted, type,
@@ -59,13 +57,12 @@ public class DocProjectServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.community.doc.project.model.DocProject
-			updateDocProject(
-				long docProjectId, String name, String description,
-				String iconFileName, java.io.File iconFile, boolean unlisted,
-				String type, String typeSettings, int status,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static DocProject updateDocProject(
+			long docProjectId, String name, String description,
+			String iconFileName, java.io.File iconFile, boolean unlisted,
+			String type, String typeSettings, int status,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().updateDocProject(
 			docProjectId, name, description, iconFileName, iconFile, unlisted,
@@ -73,22 +70,9 @@ public class DocProjectServiceUtil {
 	}
 
 	public static DocProjectService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<DocProjectService, DocProjectService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(DocProjectService.class);
-
-		ServiceTracker<DocProjectService, DocProjectService> serviceTracker =
-			new ServiceTracker<DocProjectService, DocProjectService>(
-				bundle.getBundleContext(), DocProjectService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile DocProjectService _service;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.osb.customer.ticket.service.base;
 
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.service.TicketAttachmentService;
+import com.liferay.osb.customer.ticket.service.TicketAttachmentServiceUtil;
 import com.liferay.osb.customer.ticket.service.persistence.TicketAttachmentPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -29,6 +30,8 @@ import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -50,7 +53,7 @@ public abstract class TicketAttachmentServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TicketAttachmentService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.ticket.service.TicketAttachmentServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TicketAttachmentService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TicketAttachmentServiceUtil</code>.
 	 */
 
 	/**
@@ -288,9 +291,11 @@ public abstract class TicketAttachmentServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(ticketAttachmentService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -332,6 +337,22 @@ public abstract class TicketAttachmentServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		TicketAttachmentService ticketAttachmentService) {
+
+		try {
+			Field field = TicketAttachmentServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, ticketAttachmentService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

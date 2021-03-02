@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.watson.model.WatsonIncidentAudit;
 import com.liferay.watson.service.WatsonIncidentAuditLocalService;
+import com.liferay.watson.service.WatsonIncidentAuditLocalServiceUtil;
 import com.liferay.watson.service.persistence.WatsonActivityAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonActivityPersistence;
 import com.liferay.watson.service.persistence.WatsonAddressAuditPersistence;
@@ -73,6 +74,8 @@ import com.liferay.watson.service.persistence.WatsonVehiclePersistence;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -95,7 +98,7 @@ public abstract class WatsonIncidentAuditLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WatsonIncidentAuditLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.service.WatsonIncidentAuditLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WatsonIncidentAuditLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WatsonIncidentAuditLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1749,11 +1752,15 @@ public abstract class WatsonIncidentAuditLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.watson.model.WatsonIncidentAudit",
 			watsonIncidentAuditLocalService);
+
+		_setLocalServiceUtilService(watsonIncidentAuditLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.watson.model.WatsonIncidentAudit");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1796,6 +1803,23 @@ public abstract class WatsonIncidentAuditLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		WatsonIncidentAuditLocalService watsonIncidentAuditLocalService) {
+
+		try {
+			Field field =
+				WatsonIncidentAuditLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonIncidentAuditLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

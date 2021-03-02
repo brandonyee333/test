@@ -600,6 +600,8 @@ public class ShoppingOrderItemModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask = -1L;
+
 		_name = name;
 	}
 
@@ -615,6 +617,8 @@ public class ShoppingOrderItemModelImpl
 
 	@Override
 	public void setDescription(String description) {
+		_columnBitmask = -1L;
+
 		_description = description;
 	}
 

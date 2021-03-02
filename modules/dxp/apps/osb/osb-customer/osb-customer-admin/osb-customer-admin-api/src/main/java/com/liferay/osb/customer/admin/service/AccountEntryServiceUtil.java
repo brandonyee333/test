@@ -14,9 +14,10 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for AccountEntry. This utility wraps
@@ -37,51 +38,47 @@ public class AccountEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-			deleteAccountEntry(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEntry deleteAccountEntry(long accountEntryId)
+		throws PortalException {
 
 		return getService().deleteAccountEntry(accountEntryId);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-			fetchCorpProjectAccountEntry(String corpProjectUuid)
+	public static AccountEntry fetchCorpProjectAccountEntry(
+			String corpProjectUuid)
 		throws Exception {
 
 		return getService().fetchCorpProjectAccountEntry(corpProjectUuid);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-			fetchKoroneikiAccountEntry(String koroneikiAccountKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEntry fetchKoroneikiAccountEntry(
+			String koroneikiAccountKey)
+		throws PortalException {
 
 		return getService().fetchKoroneikiAccountEntry(koroneikiAccountKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountEntry> getAccountEntries(
-				String userUuid, long[] productEntryIds)
-			throws Exception {
+	public static List<AccountEntry> getAccountEntries(
+			String userUuid, long[] productEntryIds)
+		throws Exception {
 
 		return getService().getAccountEntries(userUuid, productEntryIds);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-			getAccountEntry(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEntry getAccountEntry(long accountEntryId)
+		throws PortalException {
 
 		return getService().getAccountEntry(accountEntryId);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-			getAccountEntryByCode(String code)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEntry getAccountEntryByCode(String code)
+		throws PortalException {
 
 		return getService().getAccountEntryByCode(code);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-			getCorpProjectAccountEntry(String corpProjectUuid)
+	public static AccountEntry getCorpProjectAccountEntry(
+			String corpProjectUuid)
 		throws Exception {
 
 		return getService().getCorpProjectAccountEntry(corpProjectUuid);
@@ -102,46 +99,32 @@ public class AccountEntryServiceUtil {
 		getService().syncToZendesk(koroneikiAccountKey);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-			updateInstructions(long accountEntryId, String instructions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEntry updateInstructions(
+			long accountEntryId, String instructions)
+		throws PortalException {
 
 		return getService().updateInstructions(accountEntryId, instructions);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-			updateInstructions(String koroneikiAccountKey, String instructions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEntry updateInstructions(
+			String koroneikiAccountKey, String instructions)
+		throws PortalException {
 
 		return getService().updateInstructions(
 			koroneikiAccountKey, instructions);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEntry
-			updateLanguageId(String koroneikiAccountKey, String languageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEntry updateLanguageId(
+			String koroneikiAccountKey, String languageId)
+		throws PortalException {
 
 		return getService().updateLanguageId(koroneikiAccountKey, languageId);
 	}
 
 	public static AccountEntryService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<AccountEntryService, AccountEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AccountEntryService.class);
-
-		ServiceTracker<AccountEntryService, AccountEntryService>
-			serviceTracker =
-				new ServiceTracker<AccountEntryService, AccountEntryService>(
-					bundle.getBundleContext(), AccountEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountEntryService _service;
 
 }

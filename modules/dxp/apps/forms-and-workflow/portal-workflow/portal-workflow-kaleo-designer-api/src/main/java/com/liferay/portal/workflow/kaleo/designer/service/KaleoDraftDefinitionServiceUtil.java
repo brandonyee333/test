@@ -14,9 +14,12 @@
 
 package com.liferay.portal.workflow.kaleo.designer.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the remote service utility for KaleoDraftDefinition. This utility wraps
@@ -58,15 +61,12 @@ public class KaleoDraftDefinitionServiceUtil {
 	 to create the Kaleo draft definition or if a portal exception
 	 occurred
 	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition
-				addKaleoDraftDefinition(
-					long userId, long groupId, String name,
-					java.util.Map<java.util.Locale, String> titleMap,
-					String content, int version, int draftVersion,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static KaleoDraftDefinition addKaleoDraftDefinition(
+			long userId, long groupId, String name,
+			Map<java.util.Locale, String> titleMap, String content, int version,
+			int draftVersion,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().addKaleoDraftDefinition(
 			userId, groupId, name, titleMap, content, version, draftVersion,
@@ -88,7 +88,7 @@ public class KaleoDraftDefinitionServiceUtil {
 	public static void deleteKaleoDraftDefinitions(
 			String name, int version,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteKaleoDraftDefinitions(name, version, serviceContext);
 	}
@@ -108,13 +108,10 @@ public class KaleoDraftDefinitionServiceUtil {
 	 to access the Kaleo draft definition or if a portal exception
 	 occurred
 	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition
-				getKaleoDraftDefinition(
-					String name, int version, int draftVersion,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static KaleoDraftDefinition getKaleoDraftDefinition(
+			String name, int version, int draftVersion,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().getKaleoDraftDefinition(
 			name, version, draftVersion, serviceContext);
@@ -126,10 +123,8 @@ public class KaleoDraftDefinitionServiceUtil {
 	 * @return the Kaleo draft definitions
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static java.util.List
-		<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition>
-				getKaleoDraftDefinitions()
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<KaleoDraftDefinition> getKaleoDraftDefinitions()
+		throws PortalException {
 
 		return getService().getKaleoDraftDefinitions();
 	}
@@ -147,13 +142,10 @@ public class KaleoDraftDefinitionServiceUtil {
 	 found or if the user did not have the required permissions to
 	 access the Kaleo draft definition
 	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition
-				getLatestKaleoDraftDefinition(
-					String name, int version,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static KaleoDraftDefinition getLatestKaleoDraftDefinition(
+			String name, int version,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().getLatestKaleoDraftDefinition(
 			name, version, serviceContext);
@@ -175,13 +167,10 @@ public class KaleoDraftDefinitionServiceUtil {
 	 comparator
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static java.util.List
-		<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition>
-				getLatestKaleoDraftDefinitions(
-					long companyId, int version, int start, int end,
-					com.liferay.portal.kernel.util.OrderByComparator
-						orderByComparator)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
+			long companyId, int version, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException {
 
 		return getService().getLatestKaleoDraftDefinitions(
 			companyId, version, start, end, orderByComparator);
@@ -204,14 +193,10 @@ public class KaleoDraftDefinitionServiceUtil {
 	 comparator
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static java.util.List
-		<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition>
-				getLatestKaleoDraftDefinitions(
-					long companyId, String keywords, int version, int start,
-					int end,
-					com.liferay.portal.kernel.util.OrderByComparator
-						orderByComparator)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
+			long companyId, String keywords, int version, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException {
 
 		return getService().getLatestKaleoDraftDefinitions(
 			companyId, keywords, version, start, end, orderByComparator);
@@ -244,15 +229,11 @@ public class KaleoDraftDefinitionServiceUtil {
 	 to publish the Kaleo draft definition or if a portal exception
 	 occurred
 	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition
-				publishKaleoDraftDefinition(
-					long userId, long groupId, String name,
-					java.util.Map<java.util.Locale, String> titleMap,
-					String content,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static KaleoDraftDefinition publishKaleoDraftDefinition(
+			long userId, long groupId, String name,
+			Map<java.util.Locale, String> titleMap, String content,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().publishKaleoDraftDefinition(
 			userId, groupId, name, titleMap, content, serviceContext);
@@ -277,42 +258,20 @@ public class KaleoDraftDefinitionServiceUtil {
 	 to update the Kaleo draft definition or if a portal exception
 	 occurred
 	 */
-	public static
-		com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition
-				updateKaleoDraftDefinition(
-					long userId, String name,
-					java.util.Map<java.util.Locale, String> titleMap,
-					String content, int version,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static KaleoDraftDefinition updateKaleoDraftDefinition(
+			long userId, String name, Map<java.util.Locale, String> titleMap,
+			String content, int version,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().updateKaleoDraftDefinition(
 			userId, name, titleMap, content, version, serviceContext);
 	}
 
 	public static KaleoDraftDefinitionService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<KaleoDraftDefinitionService, KaleoDraftDefinitionService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			KaleoDraftDefinitionService.class);
-
-		ServiceTracker<KaleoDraftDefinitionService, KaleoDraftDefinitionService>
-			serviceTracker =
-				new ServiceTracker
-					<KaleoDraftDefinitionService, KaleoDraftDefinitionService>(
-						bundle.getBundleContext(),
-						KaleoDraftDefinitionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile KaleoDraftDefinitionService _service;
 
 }

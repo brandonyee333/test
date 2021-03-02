@@ -14,10 +14,6 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for AccountAttachment. This utility wraps
  * <code>com.liferay.osb.customer.admin.service.impl.AccountAttachmentServiceImpl</code> and is an
@@ -43,30 +39,14 @@ public class AccountAttachmentServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static AccountAttachmentService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AccountAttachmentService, AccountAttachmentService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AccountAttachmentService.class);
-
-		ServiceTracker<AccountAttachmentService, AccountAttachmentService>
-			serviceTracker =
-				new ServiceTracker
-					<AccountAttachmentService, AccountAttachmentService>(
-						bundle.getBundleContext(),
-						AccountAttachmentService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountAttachmentService _service;
 
 }

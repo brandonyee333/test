@@ -17,6 +17,7 @@ package com.liferay.portlet.documentlibrary.service.base;
 import com.liferay.counter.kernel.service.persistence.CounterPersistence;
 import com.liferay.document.library.kernel.model.DLFileRank;
 import com.liferay.document.library.kernel.service.DLFileRankLocalService;
+import com.liferay.document.library.kernel.service.DLFileRankLocalServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileRankFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFileRankPersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFolderFinder;
@@ -49,6 +50,8 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -71,7 +74,7 @@ public abstract class DLFileRankLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLFileRankLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileRankLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLFileRankLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLFileRankLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -572,11 +575,15 @@ public abstract class DLFileRankLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.document.library.kernel.model.DLFileRank",
 			dlFileRankLocalService);
+
+		_setLocalServiceUtilService(dlFileRankLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.document.library.kernel.model.DLFileRank");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -618,6 +625,22 @@ public abstract class DLFileRankLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		DLFileRankLocalService dlFileRankLocalService) {
+
+		try {
+			Field field = DLFileRankLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, dlFileRankLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

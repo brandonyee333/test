@@ -16,6 +16,7 @@ package com.liferay.osb.loop.service.base;
 
 import com.liferay.osb.loop.model.LoopDivision;
 import com.liferay.osb.loop.service.LoopDivisionLocalService;
+import com.liferay.osb.loop.service.LoopDivisionLocalServiceUtil;
 import com.liferay.osb.loop.service.persistence.LoopAuditEntryPersistence;
 import com.liferay.osb.loop.service.persistence.LoopDivisionPersistence;
 import com.liferay.osb.loop.service.persistence.LoopDivisionRelPersistence;
@@ -62,6 +63,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -84,7 +87,7 @@ public abstract class LoopDivisionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LoopDivisionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.service.LoopDivisionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LoopDivisionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LoopDivisionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1256,11 +1259,15 @@ public abstract class LoopDivisionLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.loop.model.LoopDivision",
 			loopDivisionLocalService);
+
+		_setLocalServiceUtilService(loopDivisionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.loop.model.LoopDivision");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1302,6 +1309,22 @@ public abstract class LoopDivisionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		LoopDivisionLocalService loopDivisionLocalService) {
+
+		try {
+			Field field = LoopDivisionLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, loopDivisionLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

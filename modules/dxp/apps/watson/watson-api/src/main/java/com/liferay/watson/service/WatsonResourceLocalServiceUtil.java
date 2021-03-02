@@ -14,9 +14,15 @@
 
 package com.liferay.watson.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.watson.model.WatsonResource;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WatsonResource. This utility wraps
@@ -48,8 +54,8 @@ public class WatsonResourceLocalServiceUtil {
 	 * @param watsonResource the watson resource
 	 * @return the watson resource that was added
 	 */
-	public static com.liferay.watson.model.WatsonResource addWatsonResource(
-		com.liferay.watson.model.WatsonResource watsonResource) {
+	public static WatsonResource addWatsonResource(
+		WatsonResource watsonResource) {
 
 		return getService().addWatsonResource(watsonResource);
 	}
@@ -60,19 +66,16 @@ public class WatsonResourceLocalServiceUtil {
 	 * @param watsonResourceId the primary key for the new watson resource
 	 * @return the new watson resource
 	 */
-	public static com.liferay.watson.model.WatsonResource createWatsonResource(
-		long watsonResourceId) {
-
+	public static WatsonResource createWatsonResource(long watsonResourceId) {
 		return getService().createWatsonResource(watsonResourceId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -88,9 +91,8 @@ public class WatsonResourceLocalServiceUtil {
 	 * @return the watson resource that was removed
 	 * @throws PortalException if a watson resource with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonResource deleteWatsonResource(
-			long watsonResourceId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonResource deleteWatsonResource(long watsonResourceId)
+		throws PortalException {
 
 		return getService().deleteWatsonResource(watsonResourceId);
 	}
@@ -105,15 +107,13 @@ public class WatsonResourceLocalServiceUtil {
 	 * @param watsonResource the watson resource
 	 * @return the watson resource that was removed
 	 */
-	public static com.liferay.watson.model.WatsonResource deleteWatsonResource(
-		com.liferay.watson.model.WatsonResource watsonResource) {
+	public static WatsonResource deleteWatsonResource(
+		WatsonResource watsonResource) {
 
 		return getService().deleteWatsonResource(watsonResource);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -123,9 +123,7 @@ public class WatsonResourceLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -141,9 +139,8 @@ public class WatsonResourceLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -161,10 +158,9 @@ public class WatsonResourceLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -176,9 +172,7 @@ public class WatsonResourceLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -190,15 +184,13 @@ public class WatsonResourceLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.watson.model.WatsonResource fetchWatsonResource(
-		long watsonResourceId) {
-
+	public static WatsonResource fetchWatsonResource(long watsonResourceId) {
 		return getService().fetchWatsonResource(watsonResourceId);
 	}
 
@@ -227,9 +219,8 @@ public class WatsonResourceLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -241,9 +232,8 @@ public class WatsonResourceLocalServiceUtil {
 	 * @return the watson resource
 	 * @throws PortalException if a watson resource with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonResource getWatsonResource(
-			long watsonResourceId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonResource getWatsonResource(long watsonResourceId)
+		throws PortalException {
 
 		return getService().getWatsonResource(watsonResourceId);
 	}
@@ -259,9 +249,7 @@ public class WatsonResourceLocalServiceUtil {
 	 * @param end the upper bound of the range of watson resources (not inclusive)
 	 * @return the range of watson resources
 	 */
-	public static java.util.List<com.liferay.watson.model.WatsonResource>
-		getWatsonResources(int start, int end) {
-
+	public static List<WatsonResource> getWatsonResources(int start, int end) {
 		return getService().getWatsonResources(start, end);
 	}
 
@@ -284,34 +272,16 @@ public class WatsonResourceLocalServiceUtil {
 	 * @param watsonResource the watson resource
 	 * @return the watson resource that was updated
 	 */
-	public static com.liferay.watson.model.WatsonResource updateWatsonResource(
-		com.liferay.watson.model.WatsonResource watsonResource) {
+	public static WatsonResource updateWatsonResource(
+		WatsonResource watsonResource) {
 
 		return getService().updateWatsonResource(watsonResource);
 	}
 
 	public static WatsonResourceLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WatsonResourceLocalService, WatsonResourceLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WatsonResourceLocalService.class);
-
-		ServiceTracker<WatsonResourceLocalService, WatsonResourceLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<WatsonResourceLocalService, WatsonResourceLocalService>(
-						bundle.getBundleContext(),
-						WatsonResourceLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonResourceLocalService _service;
 
 }

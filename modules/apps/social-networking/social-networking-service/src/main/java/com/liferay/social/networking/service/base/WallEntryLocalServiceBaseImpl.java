@@ -44,12 +44,15 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 import com.liferay.social.networking.model.WallEntry;
 import com.liferay.social.networking.service.WallEntryLocalService;
+import com.liferay.social.networking.service.WallEntryLocalServiceUtil;
 import com.liferay.social.networking.service.persistence.MeetupsEntryPersistence;
 import com.liferay.social.networking.service.persistence.MeetupsRegistrationPersistence;
 import com.liferay.social.networking.service.persistence.WallEntryFinder;
 import com.liferay.social.networking.service.persistence.WallEntryPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -73,7 +76,7 @@ public abstract class WallEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WallEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.networking.service.WallEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WallEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WallEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -714,11 +717,15 @@ public abstract class WallEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.social.networking.model.WallEntry",
 			wallEntryLocalService);
+
+		_setLocalServiceUtilService(wallEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.networking.model.WallEntry");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -760,6 +767,22 @@ public abstract class WallEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		WallEntryLocalService wallEntryLocalService) {
+
+		try {
+			Field field = WallEntryLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, wallEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

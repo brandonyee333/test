@@ -14,9 +14,15 @@
 
 package com.liferay.osb.testray.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.testray.model.TestraySuite;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for TestraySuite. This utility wraps
@@ -44,16 +50,13 @@ public class TestraySuiteLocalServiceUtil {
 	}
 
 	public static void addTestrayCaseTestraySuite(
-		long testrayCaseId,
-		com.liferay.osb.testray.model.TestraySuite testraySuite) {
+		long testrayCaseId, TestraySuite testraySuite) {
 
 		getService().addTestrayCaseTestraySuite(testrayCaseId, testraySuite);
 	}
 
 	public static void addTestrayCaseTestraySuites(
-		long testrayCaseId,
-		java.util.List<com.liferay.osb.testray.model.TestraySuite>
-			testraySuites) {
+		long testrayCaseId, List<TestraySuite> testraySuites) {
 
 		getService().addTestrayCaseTestraySuites(testrayCaseId, testraySuites);
 	}
@@ -75,9 +78,7 @@ public class TestraySuiteLocalServiceUtil {
 	 * @param testraySuite the testray suite
 	 * @return the testray suite that was added
 	 */
-	public static com.liferay.osb.testray.model.TestraySuite addTestraySuite(
-		com.liferay.osb.testray.model.TestraySuite testraySuite) {
-
+	public static TestraySuite addTestraySuite(TestraySuite testraySuite) {
 		return getService().addTestraySuite(testraySuite);
 	}
 
@@ -91,19 +92,16 @@ public class TestraySuiteLocalServiceUtil {
 	 * @param testraySuiteId the primary key for the new testray suite
 	 * @return the new testray suite
 	 */
-	public static com.liferay.osb.testray.model.TestraySuite createTestraySuite(
-		long testraySuiteId) {
-
+	public static TestraySuite createTestraySuite(long testraySuiteId) {
 		return getService().createTestraySuite(testraySuiteId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -116,16 +114,13 @@ public class TestraySuiteLocalServiceUtil {
 	}
 
 	public static void deleteTestrayCaseTestraySuite(
-		long testrayCaseId,
-		com.liferay.osb.testray.model.TestraySuite testraySuite) {
+		long testrayCaseId, TestraySuite testraySuite) {
 
 		getService().deleteTestrayCaseTestraySuite(testrayCaseId, testraySuite);
 	}
 
 	public static void deleteTestrayCaseTestraySuites(
-		long testrayCaseId,
-		java.util.List<com.liferay.osb.testray.model.TestraySuite>
-			testraySuites) {
+		long testrayCaseId, List<TestraySuite> testraySuites) {
 
 		getService().deleteTestrayCaseTestraySuites(
 			testrayCaseId, testraySuites);
@@ -149,9 +144,8 @@ public class TestraySuiteLocalServiceUtil {
 	 * @return the testray suite that was removed
 	 * @throws PortalException if a testray suite with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestraySuite deleteTestraySuite(
-			long testraySuiteId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestraySuite deleteTestraySuite(long testraySuiteId)
+		throws PortalException {
 
 		return getService().deleteTestraySuite(testraySuiteId);
 	}
@@ -166,15 +160,11 @@ public class TestraySuiteLocalServiceUtil {
 	 * @param testraySuite the testray suite
 	 * @return the testray suite that was removed
 	 */
-	public static com.liferay.osb.testray.model.TestraySuite deleteTestraySuite(
-		com.liferay.osb.testray.model.TestraySuite testraySuite) {
-
+	public static TestraySuite deleteTestraySuite(TestraySuite testraySuite) {
 		return getService().deleteTestraySuite(testraySuite);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -184,9 +174,7 @@ public class TestraySuiteLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -202,9 +190,8 @@ public class TestraySuiteLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -222,10 +209,9 @@ public class TestraySuiteLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -237,9 +223,7 @@ public class TestraySuiteLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -251,15 +235,13 @@ public class TestraySuiteLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.testray.model.TestraySuite fetchTestraySuite(
-		long testraySuiteId) {
-
+	public static TestraySuite fetchTestraySuite(long testraySuiteId) {
 		return getService().fetchTestraySuite(testraySuiteId);
 	}
 
@@ -288,9 +270,8 @@ public class TestraySuiteLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -305,25 +286,22 @@ public class TestraySuiteLocalServiceUtil {
 		return getService().getTestrayCasePrimaryKeys(testraySuiteId);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestraySuite>
-		getTestrayCaseTestraySuites(long testrayCaseId) {
+	public static List<TestraySuite> getTestrayCaseTestraySuites(
+		long testrayCaseId) {
 
 		return getService().getTestrayCaseTestraySuites(testrayCaseId);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestraySuite>
-		getTestrayCaseTestraySuites(long testrayCaseId, int start, int end) {
+	public static List<TestraySuite> getTestrayCaseTestraySuites(
+		long testrayCaseId, int start, int end) {
 
 		return getService().getTestrayCaseTestraySuites(
 			testrayCaseId, start, end);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestraySuite>
-		getTestrayCaseTestraySuites(
-			long testrayCaseId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.osb.testray.model.TestraySuite>
-					orderByComparator) {
+	public static List<TestraySuite> getTestrayCaseTestraySuites(
+		long testrayCaseId, int start, int end,
+		OrderByComparator<TestraySuite> orderByComparator) {
 
 		return getService().getTestrayCaseTestraySuites(
 			testrayCaseId, start, end, orderByComparator);
@@ -340,9 +318,8 @@ public class TestraySuiteLocalServiceUtil {
 	 * @return the testray suite
 	 * @throws PortalException if a testray suite with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestraySuite getTestraySuite(
-			long testraySuiteId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestraySuite getTestraySuite(long testraySuiteId)
+		throws PortalException {
 
 		return getService().getTestraySuite(testraySuiteId);
 	}
@@ -358,9 +335,7 @@ public class TestraySuiteLocalServiceUtil {
 	 * @param end the upper bound of the range of testray suites (not inclusive)
 	 * @return the range of testray suites
 	 */
-	public static java.util.List<com.liferay.osb.testray.model.TestraySuite>
-		getTestraySuites(int start, int end) {
-
+	public static List<TestraySuite> getTestraySuites(int start, int end) {
 		return getService().getTestraySuites(start, end);
 	}
 
@@ -401,32 +376,14 @@ public class TestraySuiteLocalServiceUtil {
 	 * @param testraySuite the testray suite
 	 * @return the testray suite that was updated
 	 */
-	public static com.liferay.osb.testray.model.TestraySuite updateTestraySuite(
-		com.liferay.osb.testray.model.TestraySuite testraySuite) {
-
+	public static TestraySuite updateTestraySuite(TestraySuite testraySuite) {
 		return getService().updateTestraySuite(testraySuite);
 	}
 
 	public static TestraySuiteLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TestraySuiteLocalService, TestraySuiteLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TestraySuiteLocalService.class);
-
-		ServiceTracker<TestraySuiteLocalService, TestraySuiteLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<TestraySuiteLocalService, TestraySuiteLocalService>(
-						bundle.getBundleContext(),
-						TestraySuiteLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TestraySuiteLocalService _service;
 
 }

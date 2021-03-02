@@ -16,6 +16,7 @@ package com.liferay.osb.customer.release.notes.jira.service.base;
 
 import com.liferay.osb.customer.release.notes.jira.model.JIRAProject;
 import com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalService;
+import com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalServiceUtil;
 import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAComponentFinder;
 import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAComponentPersistence;
 import com.liferay.osb.customer.release.notes.jira.service.persistence.JIRAIssueFinder;
@@ -52,6 +53,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -74,7 +77,7 @@ public abstract class JIRAProjectLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>JIRAProjectLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>JIRAProjectLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>JIRAProjectLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -718,11 +721,15 @@ public abstract class JIRAProjectLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.release.notes.jira.model.JIRAProject",
 			jiraProjectLocalService);
+
+		_setLocalServiceUtilService(jiraProjectLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.release.notes.jira.model.JIRAProject");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -764,6 +771,22 @@ public abstract class JIRAProjectLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		JIRAProjectLocalService jiraProjectLocalService) {
+
+		try {
+			Field field = JIRAProjectLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, jiraProjectLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

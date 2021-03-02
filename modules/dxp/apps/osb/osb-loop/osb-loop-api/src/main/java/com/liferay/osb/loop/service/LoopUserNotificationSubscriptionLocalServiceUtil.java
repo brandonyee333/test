@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.model.LoopUserNotificationSubscription;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LoopUserNotificationSubscription. This utility wraps
@@ -48,10 +54,9 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @param loopUserNotificationSubscription the loop user notification subscription
 	 * @return the loop user notification subscription that was added
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationSubscription
+	public static LoopUserNotificationSubscription
 		addLoopUserNotificationSubscription(
-			com.liferay.osb.loop.model.LoopUserNotificationSubscription
-				loopUserNotificationSubscription) {
+			LoopUserNotificationSubscription loopUserNotificationSubscription) {
 
 		return getService().addLoopUserNotificationSubscription(
 			loopUserNotificationSubscription);
@@ -63,7 +68,7 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @param loopUserNotificationSubscriptionId the primary key for the new loop user notification subscription
 	 * @return the new loop user notification subscription
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationSubscription
+	public static LoopUserNotificationSubscription
 		createLoopUserNotificationSubscription(
 			long loopUserNotificationSubscriptionId) {
 
@@ -82,10 +87,10 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @return the loop user notification subscription that was removed
 	 * @throws PortalException if a loop user notification subscription with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationSubscription
+	public static LoopUserNotificationSubscription
 			deleteLoopUserNotificationSubscription(
 				long loopUserNotificationSubscriptionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().deleteLoopUserNotificationSubscription(
 			loopUserNotificationSubscriptionId);
@@ -101,10 +106,9 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @param loopUserNotificationSubscription the loop user notification subscription
 	 * @return the loop user notification subscription that was removed
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationSubscription
+	public static LoopUserNotificationSubscription
 		deleteLoopUserNotificationSubscription(
-			com.liferay.osb.loop.model.LoopUserNotificationSubscription
-				loopUserNotificationSubscription) {
+			LoopUserNotificationSubscription loopUserNotificationSubscription) {
 
 		return getService().deleteLoopUserNotificationSubscription(
 			loopUserNotificationSubscription);
@@ -113,17 +117,14 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -133,9 +134,7 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -151,9 +150,8 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -171,10 +169,9 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -186,9 +183,7 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -200,13 +195,13 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.model.LoopUserNotificationSubscription
+	public static LoopUserNotificationSubscription
 		fetchLoopUserNotificationSubscription(
 			long loopUserNotificationSubscriptionId) {
 
@@ -214,7 +209,7 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 			loopUserNotificationSubscriptionId);
 	}
 
-	public static com.liferay.osb.loop.model.LoopUserNotificationSubscription
+	public static LoopUserNotificationSubscription
 		fetchLoopUserNotificationSubscription(
 			long loopPersonId, long classNameId, long classPK,
 			int deliveryType) {
@@ -243,10 +238,10 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @return the loop user notification subscription
 	 * @throws PortalException if a loop user notification subscription with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationSubscription
+	public static LoopUserNotificationSubscription
 			getLoopUserNotificationSubscription(
 				long loopUserNotificationSubscriptionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getLoopUserNotificationSubscription(
 			loopUserNotificationSubscriptionId);
@@ -263,9 +258,8 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @param end the upper bound of the range of loop user notification subscriptions (not inclusive)
 	 * @return the range of loop user notification subscriptions
 	 */
-	public static java.util.List
-		<com.liferay.osb.loop.model.LoopUserNotificationSubscription>
-			getLoopUserNotificationSubscriptions(int start, int end) {
+	public static List<LoopUserNotificationSubscription>
+		getLoopUserNotificationSubscriptions(int start, int end) {
 
 		return getService().getLoopUserNotificationSubscriptions(start, end);
 	}
@@ -291,9 +285,8 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -308,40 +301,19 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 	 * @param loopUserNotificationSubscription the loop user notification subscription
 	 * @return the loop user notification subscription that was updated
 	 */
-	public static com.liferay.osb.loop.model.LoopUserNotificationSubscription
+	public static LoopUserNotificationSubscription
 		updateLoopUserNotificationSubscription(
-			com.liferay.osb.loop.model.LoopUserNotificationSubscription
-				loopUserNotificationSubscription) {
+			LoopUserNotificationSubscription loopUserNotificationSubscription) {
 
 		return getService().updateLoopUserNotificationSubscription(
 			loopUserNotificationSubscription);
 	}
 
 	public static LoopUserNotificationSubscriptionLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LoopUserNotificationSubscriptionLocalService,
-		 LoopUserNotificationSubscriptionLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LoopUserNotificationSubscriptionLocalService.class);
-
-		ServiceTracker
-			<LoopUserNotificationSubscriptionLocalService,
-			 LoopUserNotificationSubscriptionLocalService> serviceTracker =
-				new ServiceTracker
-					<LoopUserNotificationSubscriptionLocalService,
-					 LoopUserNotificationSubscriptionLocalService>(
-						 bundle.getBundleContext(),
-						 LoopUserNotificationSubscriptionLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LoopUserNotificationSubscriptionLocalService
+		_service;
 
 }

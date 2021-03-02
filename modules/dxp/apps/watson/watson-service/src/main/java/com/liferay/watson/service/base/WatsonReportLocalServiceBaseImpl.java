@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.watson.model.WatsonReport;
 import com.liferay.watson.service.WatsonReportLocalService;
+import com.liferay.watson.service.WatsonReportLocalServiceUtil;
 import com.liferay.watson.service.persistence.WatsonActivityAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonActivityPersistence;
 import com.liferay.watson.service.persistence.WatsonAddressAuditPersistence;
@@ -73,6 +74,8 @@ import com.liferay.watson.service.persistence.WatsonVehiclePersistence;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -95,7 +98,7 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WatsonReportLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.service.WatsonReportLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WatsonReportLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WatsonReportLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1723,11 +1726,15 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.watson.model.WatsonReport", watsonReportLocalService);
+
+		_setLocalServiceUtilService(watsonReportLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.watson.model.WatsonReport");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1769,6 +1776,22 @@ public abstract class WatsonReportLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		WatsonReportLocalService watsonReportLocalService) {
+
+		try {
+			Field field = WatsonReportLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonReportLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

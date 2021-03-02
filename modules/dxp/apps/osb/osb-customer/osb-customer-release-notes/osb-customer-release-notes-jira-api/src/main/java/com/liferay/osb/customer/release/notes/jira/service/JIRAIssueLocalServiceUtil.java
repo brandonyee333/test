@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.release.notes.jira.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.release.notes.jira.model.JIRAIssue;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for JIRAIssue. This utility wraps
@@ -48,11 +54,7 @@ public class JIRAIssueLocalServiceUtil {
 	 * @param jiraIssue the jira issue
 	 * @return the jira issue that was added
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-		addJIRAIssue(
-			com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-				jiraIssue) {
-
+	public static JIRAIssue addJIRAIssue(JIRAIssue jiraIssue) {
 		return getService().addJIRAIssue(jiraIssue);
 	}
 
@@ -62,9 +64,7 @@ public class JIRAIssueLocalServiceUtil {
 	 * @param jiraIssueId the primary key for the new jira issue
 	 * @return the new jira issue
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-		createJIRAIssue(long jiraIssueId) {
-
+	public static JIRAIssue createJIRAIssue(long jiraIssueId) {
 		return getService().createJIRAIssue(jiraIssueId);
 	}
 
@@ -78,11 +78,7 @@ public class JIRAIssueLocalServiceUtil {
 	 * @param jiraIssue the jira issue
 	 * @return the jira issue that was removed
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-		deleteJIRAIssue(
-			com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-				jiraIssue) {
-
+	public static JIRAIssue deleteJIRAIssue(JIRAIssue jiraIssue) {
 		return getService().deleteJIRAIssue(jiraIssue);
 	}
 
@@ -97,9 +93,8 @@ public class JIRAIssueLocalServiceUtil {
 	 * @return the jira issue that was removed
 	 * @throws PortalException if a jira issue with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-			deleteJIRAIssue(long jiraIssueId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JIRAIssue deleteJIRAIssue(long jiraIssueId)
+		throws PortalException {
 
 		return getService().deleteJIRAIssue(jiraIssueId);
 	}
@@ -107,17 +102,14 @@ public class JIRAIssueLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -127,9 +119,7 @@ public class JIRAIssueLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -145,9 +135,8 @@ public class JIRAIssueLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -165,10 +154,9 @@ public class JIRAIssueLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -180,9 +168,7 @@ public class JIRAIssueLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -194,15 +180,13 @@ public class JIRAIssueLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-		fetchJIRAIssue(long jiraIssueId) {
-
+	public static JIRAIssue fetchJIRAIssue(long jiraIssueId) {
 		return getService().fetchJIRAIssue(jiraIssueId);
 	}
 
@@ -219,10 +203,7 @@ public class JIRAIssueLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.release.notes.jira.model.JIRAIssue>
-			getIsRelatedToJIRAIssues(long jiraIssueId) {
-
+	public static List<JIRAIssue> getIsRelatedToJIRAIssues(long jiraIssueId) {
 		return getService().getIsRelatedToJIRAIssues(jiraIssueId);
 	}
 
@@ -233,16 +214,13 @@ public class JIRAIssueLocalServiceUtil {
 	 * @return the jira issue
 	 * @throws PortalException if a jira issue with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-			getJIRAIssue(long jiraIssueId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JIRAIssue getJIRAIssue(long jiraIssueId)
+		throws PortalException {
 
 		return getService().getJIRAIssue(jiraIssueId);
 	}
 
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-		getJIRAIssue(String jiraIssueKey) {
-
+	public static JIRAIssue getJIRAIssue(String jiraIssueKey) {
 		return getService().getJIRAIssue(jiraIssueKey);
 	}
 
@@ -257,17 +235,12 @@ public class JIRAIssueLocalServiceUtil {
 	 * @param end the upper bound of the range of jira issues (not inclusive)
 	 * @return the range of jira issues
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.release.notes.jira.model.JIRAIssue>
-			getJIRAIssues(int start, int end) {
-
+	public static List<JIRAIssue> getJIRAIssues(int start, int end) {
 		return getService().getJIRAIssues(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.release.notes.jira.model.JIRAIssue>
-				getJIRAIssues(String[] jiraIssueKeys)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<JIRAIssue> getJIRAIssues(String[] jiraIssueKeys)
+		throws PortalException {
 
 		return getService().getJIRAIssues(jiraIssueKeys);
 	}
@@ -281,16 +254,14 @@ public class JIRAIssueLocalServiceUtil {
 		return getService().getJIRAIssuesCount();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.release.notes.jira.model.JIRAIssue>
-			getJIRALabelJIRAIssues(String label, String jiraProjectKey) {
+	public static List<JIRAIssue> getJIRALabelJIRAIssues(
+		String label, String jiraProjectKey) {
 
 		return getService().getJIRALabelJIRAIssues(label, jiraProjectKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.release.notes.jira.model.JIRAIssue>
-			getJIRAProjectVersionJIRAIssues(long jiraProjectVersionId) {
+	public static List<JIRAIssue> getJIRAProjectVersionJIRAIssues(
+		long jiraProjectVersionId) {
 
 		return getService().getJIRAProjectVersionJIRAIssues(
 			jiraProjectVersionId);
@@ -308,9 +279,8 @@ public class JIRAIssueLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -325,34 +295,14 @@ public class JIRAIssueLocalServiceUtil {
 	 * @param jiraIssue the jira issue
 	 * @return the jira issue that was updated
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-		updateJIRAIssue(
-			com.liferay.osb.customer.release.notes.jira.model.JIRAIssue
-				jiraIssue) {
-
+	public static JIRAIssue updateJIRAIssue(JIRAIssue jiraIssue) {
 		return getService().updateJIRAIssue(jiraIssue);
 	}
 
 	public static JIRAIssueLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<JIRAIssueLocalService, JIRAIssueLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(JIRAIssueLocalService.class);
-
-		ServiceTracker<JIRAIssueLocalService, JIRAIssueLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<JIRAIssueLocalService, JIRAIssueLocalService>(
-						bundle.getBundleContext(), JIRAIssueLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile JIRAIssueLocalService _service;
 
 }

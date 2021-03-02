@@ -27,12 +27,15 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.shopping.model.ShoppingCoupon;
 import com.liferay.shopping.service.ShoppingCouponService;
+import com.liferay.shopping.service.ShoppingCouponServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingCategoryFinder;
 import com.liferay.shopping.service.persistence.ShoppingCategoryPersistence;
 import com.liferay.shopping.service.persistence.ShoppingCouponFinder;
 import com.liferay.shopping.service.persistence.ShoppingCouponPersistence;
 import com.liferay.shopping.service.persistence.ShoppingItemFinder;
 import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -54,7 +57,7 @@ public abstract class ShoppingCouponServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ShoppingCouponService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingCouponServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ShoppingCouponService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ShoppingCouponServiceUtil</code>.
 	 */
 
 	/**
@@ -393,9 +396,11 @@ public abstract class ShoppingCouponServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(shoppingCouponService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -437,6 +442,22 @@ public abstract class ShoppingCouponServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		ShoppingCouponService shoppingCouponService) {
+
+		try {
+			Field field = ShoppingCouponServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingCouponService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.model.LoopStream;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LoopStream. This utility wraps
@@ -48,9 +54,7 @@ public class LoopStreamLocalServiceUtil {
 	 * @param loopStream the loop stream
 	 * @return the loop stream that was added
 	 */
-	public static com.liferay.osb.loop.model.LoopStream addLoopStream(
-		com.liferay.osb.loop.model.LoopStream loopStream) {
-
+	public static LoopStream addLoopStream(LoopStream loopStream) {
 		return getService().addLoopStream(loopStream);
 	}
 
@@ -60,9 +64,7 @@ public class LoopStreamLocalServiceUtil {
 	 * @param loopStreamId the primary key for the new loop stream
 	 * @return the new loop stream
 	 */
-	public static com.liferay.osb.loop.model.LoopStream createLoopStream(
-		long loopStreamId) {
-
+	public static LoopStream createLoopStream(long loopStreamId) {
 		return getService().createLoopStream(loopStreamId);
 	}
 
@@ -77,9 +79,8 @@ public class LoopStreamLocalServiceUtil {
 	 * @return the loop stream that was removed
 	 * @throws PortalException if a loop stream with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopStream deleteLoopStream(
-			long loopStreamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopStream deleteLoopStream(long loopStreamId)
+		throws PortalException {
 
 		return getService().deleteLoopStream(loopStreamId);
 	}
@@ -94,26 +95,21 @@ public class LoopStreamLocalServiceUtil {
 	 * @param loopStream the loop stream
 	 * @return the loop stream that was removed
 	 */
-	public static com.liferay.osb.loop.model.LoopStream deleteLoopStream(
-		com.liferay.osb.loop.model.LoopStream loopStream) {
-
+	public static LoopStream deleteLoopStream(LoopStream loopStream) {
 		return getService().deleteLoopStream(loopStream);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -123,9 +119,7 @@ public class LoopStreamLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -141,9 +135,8 @@ public class LoopStreamLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -161,10 +154,9 @@ public class LoopStreamLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -176,9 +168,7 @@ public class LoopStreamLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -190,15 +180,13 @@ public class LoopStreamLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.model.LoopStream fetchLoopStream(
-		long loopStreamId) {
-
+	public static LoopStream fetchLoopStream(long loopStreamId) {
 		return getService().fetchLoopStream(loopStreamId);
 	}
 
@@ -222,9 +210,8 @@ public class LoopStreamLocalServiceUtil {
 	 * @return the loop stream
 	 * @throws PortalException if a loop stream with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopStream getLoopStream(
-			long loopStreamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopStream getLoopStream(long loopStreamId)
+		throws PortalException {
 
 		return getService().getLoopStream(loopStreamId);
 	}
@@ -240,9 +227,7 @@ public class LoopStreamLocalServiceUtil {
 	 * @param end the upper bound of the range of loop streams (not inclusive)
 	 * @return the range of loop streams
 	 */
-	public static java.util.List<com.liferay.osb.loop.model.LoopStream>
-		getLoopStreams(int start, int end) {
-
+	public static List<LoopStream> getLoopStreams(int start, int end) {
 		return getService().getLoopStreams(start, end);
 	}
 
@@ -267,9 +252,8 @@ public class LoopStreamLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -284,32 +268,14 @@ public class LoopStreamLocalServiceUtil {
 	 * @param loopStream the loop stream
 	 * @return the loop stream that was updated
 	 */
-	public static com.liferay.osb.loop.model.LoopStream updateLoopStream(
-		com.liferay.osb.loop.model.LoopStream loopStream) {
-
+	public static LoopStream updateLoopStream(LoopStream loopStream) {
 		return getService().updateLoopStream(loopStream);
 	}
 
 	public static LoopStreamLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LoopStreamLocalService, LoopStreamLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(LoopStreamLocalService.class);
-
-		ServiceTracker<LoopStreamLocalService, LoopStreamLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LoopStreamLocalService, LoopStreamLocalService>(
-						bundle.getBundleContext(), LoopStreamLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LoopStreamLocalService _service;
 
 }

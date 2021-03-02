@@ -21,6 +21,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.mobile.device.rules.model.MDRRule;
 import com.liferay.mobile.device.rules.service.MDRRuleLocalService;
+import com.liferay.mobile.device.rules.service.MDRRuleLocalServiceUtil;
 import com.liferay.mobile.device.rules.service.persistence.MDRRuleGroupFinder;
 import com.liferay.mobile.device.rules.service.persistence.MDRRuleGroupPersistence;
 import com.liferay.mobile.device.rules.service.persistence.MDRRulePersistence;
@@ -54,6 +55,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -76,7 +79,7 @@ public abstract class MDRRuleLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MDRRuleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.mobile.device.rules.service.MDRRuleLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MDRRuleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MDRRuleLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -691,11 +694,15 @@ public abstract class MDRRuleLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.mobile.device.rules.model.MDRRule",
 			mdrRuleLocalService);
+
+		_setLocalServiceUtilService(mdrRuleLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.mobile.device.rules.model.MDRRule");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -737,6 +744,22 @@ public abstract class MDRRuleLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		MDRRuleLocalService mdrRuleLocalService) {
+
+		try {
+			Field field = MDRRuleLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, mdrRuleLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -14,9 +14,8 @@
 
 package com.liferay.osb.customer.license.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.license.model.LicenseKeySet;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for LicenseKeySet. This utility wraps
@@ -37,16 +36,14 @@ public class LicenseKeySetServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.license.service.impl.LicenseKeySetServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			deleteLicenseKeySet(long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseKeySet deleteLicenseKeySet(long licenseKeySetId)
+		throws PortalException {
 
 		return getService().deleteLicenseKeySet(licenseKeySetId);
 	}
 
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			getLicenseKeySet(long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseKeySet getLicenseKeySet(long licenseKeySetId)
+		throws PortalException {
 
 		return getService().getLicenseKeySet(licenseKeySetId);
 	}
@@ -60,32 +57,17 @@ public class LicenseKeySetServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			updateLicenseKeySet(long licenseKeySetId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseKeySet updateLicenseKeySet(
+			long licenseKeySetId, String name)
+		throws PortalException {
 
 		return getService().updateLicenseKeySet(licenseKeySetId, name);
 	}
 
 	public static LicenseKeySetService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<LicenseKeySetService, LicenseKeySetService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(LicenseKeySetService.class);
-
-		ServiceTracker<LicenseKeySetService, LicenseKeySetService>
-			serviceTracker =
-				new ServiceTracker<LicenseKeySetService, LicenseKeySetService>(
-					bundle.getBundleContext(), LicenseKeySetService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LicenseKeySetService _service;
 
 }

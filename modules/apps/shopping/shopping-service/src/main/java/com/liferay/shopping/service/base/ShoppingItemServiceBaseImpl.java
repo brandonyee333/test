@@ -28,12 +28,15 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.shopping.model.ShoppingItem;
 import com.liferay.shopping.service.ShoppingItemService;
+import com.liferay.shopping.service.ShoppingItemServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingCategoryFinder;
 import com.liferay.shopping.service.persistence.ShoppingCategoryPersistence;
 import com.liferay.shopping.service.persistence.ShoppingItemFieldPersistence;
 import com.liferay.shopping.service.persistence.ShoppingItemFinder;
 import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
 import com.liferay.shopping.service.persistence.ShoppingItemPricePersistence;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -55,7 +58,7 @@ public abstract class ShoppingItemServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ShoppingItemService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingItemServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ShoppingItemService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ShoppingItemServiceUtil</code>.
 	 */
 
 	/**
@@ -478,9 +481,11 @@ public abstract class ShoppingItemServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(shoppingItemService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -522,6 +527,22 @@ public abstract class ShoppingItemServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		ShoppingItemService shoppingItemService) {
+
+		try {
+			Field field = ShoppingItemServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingItemService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

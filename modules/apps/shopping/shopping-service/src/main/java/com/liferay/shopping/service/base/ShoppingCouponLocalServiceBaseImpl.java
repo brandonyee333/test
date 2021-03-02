@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.shopping.model.ShoppingCoupon;
 import com.liferay.shopping.service.ShoppingCouponLocalService;
+import com.liferay.shopping.service.ShoppingCouponLocalServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingCategoryFinder;
 import com.liferay.shopping.service.persistence.ShoppingCategoryPersistence;
 import com.liferay.shopping.service.persistence.ShoppingCouponFinder;
@@ -49,6 +50,8 @@ import com.liferay.shopping.service.persistence.ShoppingItemFinder;
 import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -72,7 +75,7 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ShoppingCouponLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingCouponLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ShoppingCouponLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ShoppingCouponLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -605,11 +608,15 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.shopping.model.ShoppingCoupon",
 			shoppingCouponLocalService);
+
+		_setLocalServiceUtilService(shoppingCouponLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.shopping.model.ShoppingCoupon");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -651,6 +658,22 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ShoppingCouponLocalService shoppingCouponLocalService) {
+
+		try {
+			Field field = ShoppingCouponLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingCouponLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

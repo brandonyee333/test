@@ -14,9 +14,16 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.admin.model.AccountEnvironment;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service utility for AccountEnvironment. This utility wraps
@@ -48,25 +55,22 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @param accountEnvironment the account environment
 	 * @return the account environment that was added
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-		addAccountEnvironment(
-			com.liferay.osb.customer.admin.model.AccountEnvironment
-				accountEnvironment) {
+	public static AccountEnvironment addAccountEnvironment(
+		AccountEnvironment accountEnvironment) {
 
 		return getService().addAccountEnvironment(accountEnvironment);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-			addAccountEnvironment(
-				long userId, long accountEntryId, long productEntryId,
-				String name, int envOS, String envOSCustom, int envDB,
-				int envJVM, int envAS, int envLFR, int envCommerce,
-				int envBrowser, int envCS, String envSearch,
-				java.util.List
-					<com.liferay.portal.kernel.util.ObjectValuePair
-						<String, java.io.File>> files,
-				java.util.List<Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEnvironment addAccountEnvironment(
+			long userId, long accountEntryId, long productEntryId, String name,
+			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
+			int envLFR, int envCommerce, int envBrowser, int envCS,
+			String envSearch,
+			List
+				<com.liferay.portal.kernel.util.ObjectValuePair
+					<String, java.io.File>> files,
+			List<Integer> types)
+		throws PortalException {
 
 		return getService().addAccountEnvironment(
 			userId, accountEntryId, productEntryId, name, envOS, envOSCustom,
@@ -80,8 +84,8 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @param accountEnvironmentId the primary key for the new account environment
 	 * @return the new account environment
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-		createAccountEnvironment(long accountEnvironmentId) {
+	public static AccountEnvironment createAccountEnvironment(
+		long accountEnvironmentId) {
 
 		return getService().createAccountEnvironment(accountEnvironmentId);
 	}
@@ -96,10 +100,8 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @param accountEnvironment the account environment
 	 * @return the account environment that was removed
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-		deleteAccountEnvironment(
-			com.liferay.osb.customer.admin.model.AccountEnvironment
-				accountEnvironment) {
+	public static AccountEnvironment deleteAccountEnvironment(
+		AccountEnvironment accountEnvironment) {
 
 		return getService().deleteAccountEnvironment(accountEnvironment);
 	}
@@ -115,9 +117,9 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @return the account environment that was removed
 	 * @throws PortalException if a account environment with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-			deleteAccountEnvironment(long accountEnvironmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEnvironment deleteAccountEnvironment(
+			long accountEnvironmentId)
+		throws PortalException {
 
 		return getService().deleteAccountEnvironment(accountEnvironmentId);
 	}
@@ -125,17 +127,14 @@ public class AccountEnvironmentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -145,9 +144,7 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -163,9 +160,8 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -183,10 +179,9 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -198,9 +193,7 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -212,21 +205,20 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-		fetchAccountEnvironment(long accountEnvironmentId) {
+	public static AccountEnvironment fetchAccountEnvironment(
+		long accountEnvironmentId) {
 
 		return getService().fetchAccountEnvironment(accountEnvironmentId);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-		fetchAccountEnvironment(
-			long accountEntryId, long productEntryId, String name) {
+	public static AccountEnvironment fetchAccountEnvironment(
+		long accountEntryId, long productEntryId, String name) {
 
 		return getService().fetchAccountEnvironment(
 			accountEntryId, productEntryId, name);
@@ -239,9 +231,9 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @return the account environment
 	 * @throws PortalException if a account environment with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-			getAccountEnvironment(long accountEnvironmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEnvironment getAccountEnvironment(
+			long accountEnvironmentId)
+		throws PortalException {
 
 		return getService().getAccountEnvironment(accountEnvironmentId);
 	}
@@ -257,24 +249,21 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @param end the upper bound of the range of account environments (not inclusive)
 	 * @return the range of account environments
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountEnvironment>
-			getAccountEnvironments(int start, int end) {
+	public static List<AccountEnvironment> getAccountEnvironments(
+		int start, int end) {
 
 		return getService().getAccountEnvironments(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountEnvironment>
-				getAccountEnvironments(long accountEntryId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<AccountEnvironment> getAccountEnvironments(
+			long accountEntryId)
+		throws PortalException {
 
 		return getService().getAccountEnvironments(accountEntryId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountEnvironment>
-			getAccountEnvironments(long accountEntryId, long productEntryId) {
+	public static List<AccountEnvironment> getAccountEnvironments(
+		long accountEntryId, long productEntryId) {
 
 		return getService().getAccountEnvironments(
 			accountEntryId, productEntryId);
@@ -289,12 +278,9 @@ public class AccountEnvironmentLocalServiceUtil {
 		return getService().getAccountEnvironmentsCount();
 	}
 
-	public static java.util.Map
-		<String,
-		 java.util.List
-			 <com.liferay.osb.customer.admin.model.AccountEnvironment>>
-					getAccountEnvironmentsMap(long accountEntryId)
-				throws com.liferay.portal.kernel.exception.PortalException {
+	public static Map<String, List<AccountEnvironment>>
+			getAccountEnvironmentsMap(long accountEntryId)
+		throws PortalException {
 
 		return getService().getAccountEnvironmentsMap(accountEntryId);
 	}
@@ -324,9 +310,8 @@ public class AccountEnvironmentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -341,25 +326,22 @@ public class AccountEnvironmentLocalServiceUtil {
 	 * @param accountEnvironment the account environment
 	 * @return the account environment that was updated
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-		updateAccountEnvironment(
-			com.liferay.osb.customer.admin.model.AccountEnvironment
-				accountEnvironment) {
+	public static AccountEnvironment updateAccountEnvironment(
+		AccountEnvironment accountEnvironment) {
 
 		return getService().updateAccountEnvironment(accountEnvironment);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEnvironment
-			updateAccountEnvironment(
-				long userId, long accountEnvironmentId, long productEntryId,
-				String name, int envOS, String envOSCustom, int envDB,
-				int envJVM, int envAS, int envLFR, int envCommerce,
-				int envBrowser, int envCS, String envSearch,
-				java.util.List
-					<com.liferay.portal.kernel.util.ObjectValuePair
-						<String, java.io.File>> files,
-				java.util.List<Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEnvironment updateAccountEnvironment(
+			long userId, long accountEnvironmentId, long productEntryId,
+			String name, int envOS, String envOSCustom, int envDB, int envJVM,
+			int envAS, int envLFR, int envCommerce, int envBrowser, int envCS,
+			String envSearch,
+			List
+				<com.liferay.portal.kernel.util.ObjectValuePair
+					<String, java.io.File>> files,
+			List<Integer> types)
+		throws PortalException {
 
 		return getService().updateAccountEnvironment(
 			userId, accountEnvironmentId, productEntryId, name, envOS,
@@ -368,29 +350,9 @@ public class AccountEnvironmentLocalServiceUtil {
 	}
 
 	public static AccountEnvironmentLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AccountEnvironmentLocalService, AccountEnvironmentLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AccountEnvironmentLocalService.class);
-
-		ServiceTracker
-			<AccountEnvironmentLocalService, AccountEnvironmentLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<AccountEnvironmentLocalService,
-						 AccountEnvironmentLocalService>(
-							 bundle.getBundleContext(),
-							 AccountEnvironmentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountEnvironmentLocalService _service;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.osb.testray.service.base;
 
 import com.liferay.osb.testray.model.TestrayRequirement;
 import com.liferay.osb.testray.service.TestrayRequirementLocalService;
+import com.liferay.osb.testray.service.TestrayRequirementLocalServiceUtil;
 import com.liferay.osb.testray.service.persistence.TestrayArchivePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayAssignmentPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayBuildPersistence;
@@ -66,6 +67,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -88,7 +91,7 @@ public abstract class TestrayRequirementLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TestrayRequirementLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.testray.service.TestrayRequirementLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TestrayRequirementLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TestrayRequirementLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1599,11 +1602,15 @@ public abstract class TestrayRequirementLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.testray.model.TestrayRequirement",
 			testrayRequirementLocalService);
+
+		_setLocalServiceUtilService(testrayRequirementLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.testray.model.TestrayRequirement");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1646,6 +1653,23 @@ public abstract class TestrayRequirementLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		TestrayRequirementLocalService testrayRequirementLocalService) {
+
+		try {
+			Field field =
+				TestrayRequirementLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayRequirementLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

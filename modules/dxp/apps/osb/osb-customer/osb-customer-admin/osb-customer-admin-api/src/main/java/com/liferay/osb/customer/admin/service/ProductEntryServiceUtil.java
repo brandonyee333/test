@@ -14,10 +14,6 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for ProductEntry. This utility wraps
  * <code>com.liferay.osb.customer.admin.service.impl.ProductEntryServiceImpl</code> and is an
@@ -43,28 +39,14 @@ public class ProductEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ProductEntryService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<ProductEntryService, ProductEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ProductEntryService.class);
-
-		ServiceTracker<ProductEntryService, ProductEntryService>
-			serviceTracker =
-				new ServiceTracker<ProductEntryService, ProductEntryService>(
-					bundle.getBundleContext(), ProductEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductEntryService _service;
 
 }

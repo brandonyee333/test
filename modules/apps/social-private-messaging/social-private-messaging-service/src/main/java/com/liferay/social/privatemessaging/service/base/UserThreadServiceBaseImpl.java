@@ -33,7 +33,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.social.privatemessaging.model.UserThread;
 import com.liferay.social.privatemessaging.service.UserThreadService;
+import com.liferay.social.privatemessaging.service.UserThreadServiceUtil;
 import com.liferay.social.privatemessaging.service.persistence.UserThreadPersistence;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -55,7 +58,7 @@ public abstract class UserThreadServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>UserThreadService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.privatemessaging.service.UserThreadServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>UserThreadService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>UserThreadServiceUtil</code>.
 	 */
 
 	/**
@@ -608,9 +611,11 @@ public abstract class UserThreadServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(userThreadService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -652,6 +657,20 @@ public abstract class UserThreadServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(UserThreadService userThreadService) {
+		try {
+			Field field = UserThreadServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, userThreadService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

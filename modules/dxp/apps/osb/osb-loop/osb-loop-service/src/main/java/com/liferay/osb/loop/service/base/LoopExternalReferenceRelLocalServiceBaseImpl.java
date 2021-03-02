@@ -16,6 +16,7 @@ package com.liferay.osb.loop.service.base;
 
 import com.liferay.osb.loop.model.LoopExternalReferenceRel;
 import com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService;
+import com.liferay.osb.loop.service.LoopExternalReferenceRelLocalServiceUtil;
 import com.liferay.osb.loop.service.persistence.LoopAuditEntryPersistence;
 import com.liferay.osb.loop.service.persistence.LoopDivisionPersistence;
 import com.liferay.osb.loop.service.persistence.LoopDivisionRelPersistence;
@@ -61,6 +62,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -83,7 +86,7 @@ public abstract class LoopExternalReferenceRelLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LoopExternalReferenceRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.service.LoopExternalReferenceRelLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LoopExternalReferenceRelLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LoopExternalReferenceRelLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1245,11 +1248,15 @@ public abstract class LoopExternalReferenceRelLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.loop.model.LoopExternalReferenceRel",
 			loopExternalReferenceRelLocalService);
+
+		_setLocalServiceUtilService(loopExternalReferenceRelLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.loop.model.LoopExternalReferenceRel");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1292,6 +1299,24 @@ public abstract class LoopExternalReferenceRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		LoopExternalReferenceRelLocalService
+			loopExternalReferenceRelLocalService) {
+
+		try {
+			Field field =
+				LoopExternalReferenceRelLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, loopExternalReferenceRelLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

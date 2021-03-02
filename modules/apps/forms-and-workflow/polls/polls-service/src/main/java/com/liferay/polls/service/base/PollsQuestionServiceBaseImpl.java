@@ -16,6 +16,7 @@ package com.liferay.polls.service.base;
 
 import com.liferay.polls.model.PollsQuestion;
 import com.liferay.polls.service.PollsQuestionService;
+import com.liferay.polls.service.PollsQuestionServiceUtil;
 import com.liferay.polls.service.persistence.PollsChoicePersistence;
 import com.liferay.polls.service.persistence.PollsQuestionFinder;
 import com.liferay.polls.service.persistence.PollsQuestionPersistence;
@@ -32,6 +33,8 @@ import com.liferay.portal.kernel.service.persistence.SystemEventPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -53,7 +56,7 @@ public abstract class PollsQuestionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>PollsQuestionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.polls.service.PollsQuestionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>PollsQuestionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>PollsQuestionServiceUtil</code>.
 	 */
 
 	/**
@@ -416,9 +419,11 @@ public abstract class PollsQuestionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(pollsQuestionService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -460,6 +465,22 @@ public abstract class PollsQuestionServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		PollsQuestionService pollsQuestionService) {
+
+		try {
+			Field field = PollsQuestionServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, pollsQuestionService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

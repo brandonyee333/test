@@ -14,9 +14,10 @@
 
 package com.liferay.social.privatemessaging.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.social.privatemessaging.model.UserThread;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for UserThread. This utility wraps
@@ -39,7 +40,7 @@ public class UserThreadServiceUtil {
 	 */
 	public static com.liferay.message.boards.kernel.model.MBMessage
 			getLastThreadMessage(long mbThreadId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getLastThreadMessage(mbThreadId);
 	}
@@ -53,46 +54,31 @@ public class UserThreadServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List
-		<com.liferay.message.boards.kernel.model.MBMessage> getThreadMessages(
+	public static List<com.liferay.message.boards.kernel.model.MBMessage>
+			getThreadMessages(
 				long mbThreadId, int start, int end, boolean ascending)
-			throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getThreadMessages(
 			mbThreadId, start, end, ascending);
 	}
 
 	public static int getThreadMessagesCount(long mbThreadId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getThreadMessagesCount(mbThreadId);
 	}
 
-	public static java.util.List
-		<com.liferay.social.privatemessaging.model.UserThread>
-				getUserUserThreads(boolean deleted)
-			throws com.liferay.portal.kernel.security.auth.PrincipalException {
+	public static List<UserThread> getUserUserThreads(boolean deleted)
+		throws com.liferay.portal.kernel.security.auth.PrincipalException {
 
 		return getService().getUserUserThreads(deleted);
 	}
 
 	public static UserThreadService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<UserThreadService, UserThreadService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(UserThreadService.class);
-
-		ServiceTracker<UserThreadService, UserThreadService> serviceTracker =
-			new ServiceTracker<UserThreadService, UserThreadService>(
-				bundle.getBundleContext(), UserThreadService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile UserThreadService _service;
 
 }

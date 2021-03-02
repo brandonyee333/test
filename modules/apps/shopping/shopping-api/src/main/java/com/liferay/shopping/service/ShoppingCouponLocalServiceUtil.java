@@ -14,9 +14,15 @@
 
 package com.liferay.shopping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.shopping.model.ShoppingCoupon;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ShoppingCoupon. This utility wraps
@@ -37,7 +43,7 @@ public class ShoppingCouponLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCouponLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.shopping.model.ShoppingCoupon addCoupon(
+	public static ShoppingCoupon addCoupon(
 			long userId, String code, boolean autoCode, String name,
 			String description, int startDateMonth, int startDateDay,
 			int startDateYear, int startDateHour, int startDateMinute,
@@ -46,7 +52,7 @@ public class ShoppingCouponLocalServiceUtil {
 			String limitCategories, String limitSkus, double minOrder,
 			double discount, String discountType,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addCoupon(
 			userId, code, autoCode, name, description, startDateMonth,
@@ -66,8 +72,8 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @param shoppingCoupon the shopping coupon
 	 * @return the shopping coupon that was added
 	 */
-	public static com.liferay.shopping.model.ShoppingCoupon addShoppingCoupon(
-		com.liferay.shopping.model.ShoppingCoupon shoppingCoupon) {
+	public static ShoppingCoupon addShoppingCoupon(
+		ShoppingCoupon shoppingCoupon) {
 
 		return getService().addShoppingCoupon(shoppingCoupon);
 	}
@@ -78,21 +84,15 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @param couponId the primary key for the new shopping coupon
 	 * @return the new shopping coupon
 	 */
-	public static com.liferay.shopping.model.ShoppingCoupon
-		createShoppingCoupon(long couponId) {
-
+	public static ShoppingCoupon createShoppingCoupon(long couponId) {
 		return getService().createShoppingCoupon(couponId);
 	}
 
-	public static void deleteCoupon(long couponId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void deleteCoupon(long couponId) throws PortalException {
 		getService().deleteCoupon(couponId);
 	}
 
-	public static void deleteCoupon(
-		com.liferay.shopping.model.ShoppingCoupon coupon) {
-
+	public static void deleteCoupon(ShoppingCoupon coupon) {
 		getService().deleteCoupon(coupon);
 	}
 
@@ -103,10 +103,9 @@ public class ShoppingCouponLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -122,9 +121,8 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @return the shopping coupon that was removed
 	 * @throws PortalException if a shopping coupon with the primary key could not be found
 	 */
-	public static com.liferay.shopping.model.ShoppingCoupon
-			deleteShoppingCoupon(long couponId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCoupon deleteShoppingCoupon(long couponId)
+		throws PortalException {
 
 		return getService().deleteShoppingCoupon(couponId);
 	}
@@ -139,16 +137,13 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @param shoppingCoupon the shopping coupon
 	 * @return the shopping coupon that was removed
 	 */
-	public static com.liferay.shopping.model.ShoppingCoupon
-		deleteShoppingCoupon(
-			com.liferay.shopping.model.ShoppingCoupon shoppingCoupon) {
+	public static ShoppingCoupon deleteShoppingCoupon(
+		ShoppingCoupon shoppingCoupon) {
 
 		return getService().deleteShoppingCoupon(shoppingCoupon);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -158,9 +153,7 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -176,9 +169,8 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -196,10 +188,9 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -211,9 +202,7 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -225,15 +214,13 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCoupon fetchShoppingCoupon(
-		long couponId) {
-
+	public static ShoppingCoupon fetchShoppingCoupon(long couponId) {
 		return getService().fetchShoppingCoupon(couponId);
 	}
 
@@ -243,17 +230,13 @@ public class ShoppingCouponLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static com.liferay.shopping.model.ShoppingCoupon getCoupon(
-			long couponId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCoupon getCoupon(long couponId)
+		throws PortalException {
 
 		return getService().getCoupon(couponId);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCoupon getCoupon(
-			String code)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static ShoppingCoupon getCoupon(String code) throws PortalException {
 		return getService().getCoupon(code);
 	}
 
@@ -276,9 +259,8 @@ public class ShoppingCouponLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -290,9 +272,8 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @return the shopping coupon
 	 * @throws PortalException if a shopping coupon with the primary key could not be found
 	 */
-	public static com.liferay.shopping.model.ShoppingCoupon getShoppingCoupon(
-			long couponId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCoupon getShoppingCoupon(long couponId)
+		throws PortalException {
 
 		return getService().getShoppingCoupon(couponId);
 	}
@@ -308,9 +289,7 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @param end the upper bound of the range of shopping coupons (not inclusive)
 	 * @return the range of shopping coupons
 	 */
-	public static java.util.List<com.liferay.shopping.model.ShoppingCoupon>
-		getShoppingCoupons(int start, int end) {
-
+	public static List<ShoppingCoupon> getShoppingCoupons(int start, int end) {
 		return getService().getShoppingCoupons(start, end);
 	}
 
@@ -323,10 +302,9 @@ public class ShoppingCouponLocalServiceUtil {
 		return getService().getShoppingCouponsCount();
 	}
 
-	public static java.util.List<com.liferay.shopping.model.ShoppingCoupon>
-		search(
-			long groupId, long companyId, String code, boolean active,
-			String discountType, boolean andOperator, int start, int end) {
+	public static List<ShoppingCoupon> search(
+		long groupId, long companyId, String code, boolean active,
+		String discountType, boolean andOperator, int start, int end) {
 
 		return getService().search(
 			groupId, companyId, code, active, discountType, andOperator, start,
@@ -341,7 +319,7 @@ public class ShoppingCouponLocalServiceUtil {
 			groupId, companyId, code, active, discountType, andOperator);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCoupon updateCoupon(
+	public static ShoppingCoupon updateCoupon(
 			long userId, long couponId, String name, String description,
 			int startDateMonth, int startDateDay, int startDateYear,
 			int startDateHour, int startDateMinute, int endDateMonth,
@@ -350,7 +328,7 @@ public class ShoppingCouponLocalServiceUtil {
 			String limitSkus, double minOrder, double discount,
 			String discountType,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateCoupon(
 			userId, couponId, name, description, startDateMonth, startDateDay,
@@ -370,35 +348,16 @@ public class ShoppingCouponLocalServiceUtil {
 	 * @param shoppingCoupon the shopping coupon
 	 * @return the shopping coupon that was updated
 	 */
-	public static com.liferay.shopping.model.ShoppingCoupon
-		updateShoppingCoupon(
-			com.liferay.shopping.model.ShoppingCoupon shoppingCoupon) {
+	public static ShoppingCoupon updateShoppingCoupon(
+		ShoppingCoupon shoppingCoupon) {
 
 		return getService().updateShoppingCoupon(shoppingCoupon);
 	}
 
 	public static ShoppingCouponLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ShoppingCouponLocalService, ShoppingCouponLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ShoppingCouponLocalService.class);
-
-		ServiceTracker<ShoppingCouponLocalService, ShoppingCouponLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ShoppingCouponLocalService, ShoppingCouponLocalService>(
-						bundle.getBundleContext(),
-						ShoppingCouponLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ShoppingCouponLocalService _service;
 
 }

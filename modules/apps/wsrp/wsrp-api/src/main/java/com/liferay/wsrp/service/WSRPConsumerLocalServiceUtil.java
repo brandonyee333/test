@@ -14,9 +14,15 @@
 
 package com.liferay.wsrp.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.wsrp.model.WSRPConsumer;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WSRPConsumer. This utility wraps
@@ -37,12 +43,12 @@ public class WSRPConsumerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.wsrp.service.impl.WSRPConsumerLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.wsrp.model.WSRPConsumer addWSRPConsumer(
+	public static WSRPConsumer addWSRPConsumer(
 			long companyId, String adminPortletId, String name, String url,
 			String forwardCookies, String forwardHeaders,
 			String markupCharacterSets,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addWSRPConsumer(
 			companyId, adminPortletId, name, url, forwardCookies,
@@ -59,9 +65,7 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @param wsrpConsumer the wsrp consumer
 	 * @return the wsrp consumer that was added
 	 */
-	public static com.liferay.wsrp.model.WSRPConsumer addWSRPConsumer(
-		com.liferay.wsrp.model.WSRPConsumer wsrpConsumer) {
-
+	public static WSRPConsumer addWSRPConsumer(WSRPConsumer wsrpConsumer) {
 		return getService().addWSRPConsumer(wsrpConsumer);
 	}
 
@@ -71,19 +75,16 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @param wsrpConsumerId the primary key for the new wsrp consumer
 	 * @return the new wsrp consumer
 	 */
-	public static com.liferay.wsrp.model.WSRPConsumer createWSRPConsumer(
-		long wsrpConsumerId) {
-
+	public static WSRPConsumer createWSRPConsumer(long wsrpConsumerId) {
 		return getService().createWSRPConsumer(wsrpConsumerId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -99,9 +100,8 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @return the wsrp consumer that was removed
 	 * @throws PortalException if a wsrp consumer with the primary key could not be found
 	 */
-	public static com.liferay.wsrp.model.WSRPConsumer deleteWSRPConsumer(
-			long wsrpConsumerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WSRPConsumer deleteWSRPConsumer(long wsrpConsumerId)
+		throws PortalException {
 
 		return getService().deleteWSRPConsumer(wsrpConsumerId);
 	}
@@ -117,22 +117,19 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @return the wsrp consumer that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.wsrp.model.WSRPConsumer deleteWSRPConsumer(
-			com.liferay.wsrp.model.WSRPConsumer wsrpConsumer)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WSRPConsumer deleteWSRPConsumer(WSRPConsumer wsrpConsumer)
+		throws PortalException {
 
 		return getService().deleteWSRPConsumer(wsrpConsumer);
 	}
 
 	public static void deleteWSRPConsumers(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteWSRPConsumers(companyId);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -142,9 +139,7 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -160,9 +155,8 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -180,10 +174,9 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -195,9 +188,7 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -209,15 +200,13 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.wsrp.model.WSRPConsumer fetchWSRPConsumer(
-		long wsrpConsumerId) {
-
+	public static WSRPConsumer fetchWSRPConsumer(long wsrpConsumerId) {
 		return getService().fetchWSRPConsumer(wsrpConsumerId);
 	}
 
@@ -228,8 +217,8 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching wsrp consumer, or <code>null</code> if a matching wsrp consumer could not be found
 	 */
-	public static com.liferay.wsrp.model.WSRPConsumer
-		fetchWSRPConsumerByUuidAndCompanyId(String uuid, long companyId) {
+	public static WSRPConsumer fetchWSRPConsumerByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().fetchWSRPConsumerByUuidAndCompanyId(
 			uuid, companyId);
@@ -268,9 +257,8 @@ public class WSRPConsumerLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -282,16 +270,14 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @return the wsrp consumer
 	 * @throws PortalException if a wsrp consumer with the primary key could not be found
 	 */
-	public static com.liferay.wsrp.model.WSRPConsumer getWSRPConsumer(
-			long wsrpConsumerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WSRPConsumer getWSRPConsumer(long wsrpConsumerId)
+		throws PortalException {
 
 		return getService().getWSRPConsumer(wsrpConsumerId);
 	}
 
-	public static com.liferay.wsrp.model.WSRPConsumer getWSRPConsumer(
-			String wsrpConsumerUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WSRPConsumer getWSRPConsumer(String wsrpConsumerUuid)
+		throws PortalException {
 
 		return getService().getWSRPConsumer(wsrpConsumerUuid);
 	}
@@ -304,9 +290,9 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @return the matching wsrp consumer
 	 * @throws PortalException if a matching wsrp consumer could not be found
 	 */
-	public static com.liferay.wsrp.model.WSRPConsumer
-			getWSRPConsumerByUuidAndCompanyId(String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WSRPConsumer getWSRPConsumerByUuidAndCompanyId(
+			String uuid, long companyId)
+		throws PortalException {
 
 		return getService().getWSRPConsumerByUuidAndCompanyId(uuid, companyId);
 	}
@@ -322,14 +308,12 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @param end the upper bound of the range of wsrp consumers (not inclusive)
 	 * @return the range of wsrp consumers
 	 */
-	public static java.util.List<com.liferay.wsrp.model.WSRPConsumer>
-		getWSRPConsumers(int start, int end) {
-
+	public static List<WSRPConsumer> getWSRPConsumers(int start, int end) {
 		return getService().getWSRPConsumers(start, end);
 	}
 
-	public static java.util.List<com.liferay.wsrp.model.WSRPConsumer>
-		getWSRPConsumers(long companyId, int start, int end) {
+	public static List<WSRPConsumer> getWSRPConsumers(
+		long companyId, int start, int end) {
 
 		return getService().getWSRPConsumers(companyId, start, end);
 	}
@@ -347,12 +331,12 @@ public class WSRPConsumerLocalServiceUtil {
 		return getService().getWSRPConsumersCount(companyId);
 	}
 
-	public static com.liferay.wsrp.model.WSRPConsumer registerWSRPConsumer(
+	public static WSRPConsumer registerWSRPConsumer(
 			long wsrpConsumerId, String adminPortletId,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				registrationProperties,
 			String registrationHandle)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().registerWSRPConsumer(
 			wsrpConsumerId, adminPortletId, registrationProperties,
@@ -360,22 +344,22 @@ public class WSRPConsumerLocalServiceUtil {
 	}
 
 	public static void restartConsumer(long wsrpConsumerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().restartConsumer(wsrpConsumerId);
 	}
 
 	public static void updateServiceDescription(long wsrpConsumerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().updateServiceDescription(wsrpConsumerId);
 	}
 
-	public static com.liferay.wsrp.model.WSRPConsumer updateWSRPConsumer(
+	public static WSRPConsumer updateWSRPConsumer(
 			long wsrpConsumerId, String adminPortletId, String name, String url,
 			String forwardCookies, String forwardHeaders,
 			String markupCharacterSets)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateWSRPConsumer(
 			wsrpConsumerId, adminPortletId, name, url, forwardCookies,
@@ -392,32 +376,14 @@ public class WSRPConsumerLocalServiceUtil {
 	 * @param wsrpConsumer the wsrp consumer
 	 * @return the wsrp consumer that was updated
 	 */
-	public static com.liferay.wsrp.model.WSRPConsumer updateWSRPConsumer(
-		com.liferay.wsrp.model.WSRPConsumer wsrpConsumer) {
-
+	public static WSRPConsumer updateWSRPConsumer(WSRPConsumer wsrpConsumer) {
 		return getService().updateWSRPConsumer(wsrpConsumer);
 	}
 
 	public static WSRPConsumerLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WSRPConsumerLocalService, WSRPConsumerLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(WSRPConsumerLocalService.class);
-
-		ServiceTracker<WSRPConsumerLocalService, WSRPConsumerLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<WSRPConsumerLocalService, WSRPConsumerLocalService>(
-						bundle.getBundleContext(),
-						WSRPConsumerLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WSRPConsumerLocalService _service;
 
 }

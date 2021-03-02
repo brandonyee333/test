@@ -14,9 +14,8 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for AccountEnvironmentAttachment. This utility wraps
@@ -37,11 +36,9 @@ public class AccountEnvironmentAttachmentServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountEnvironmentAttachmentServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static
-		com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment
-				getAccountEnvironmentAttachment(
-					long accountEnvironmentAttachmentId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEnvironmentAttachment getAccountEnvironmentAttachment(
+			long accountEnvironmentAttachmentId)
+		throws PortalException {
 
 		return getService().getAccountEnvironmentAttachment(
 			accountEnvironmentAttachmentId);
@@ -57,29 +54,9 @@ public class AccountEnvironmentAttachmentServiceUtil {
 	}
 
 	public static AccountEnvironmentAttachmentService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AccountEnvironmentAttachmentService,
-		 AccountEnvironmentAttachmentService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AccountEnvironmentAttachmentService.class);
-
-		ServiceTracker
-			<AccountEnvironmentAttachmentService,
-			 AccountEnvironmentAttachmentService> serviceTracker =
-				new ServiceTracker
-					<AccountEnvironmentAttachmentService,
-					 AccountEnvironmentAttachmentService>(
-						 bundle.getBundleContext(),
-						 AccountEnvironmentAttachmentService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountEnvironmentAttachmentService _service;
 
 }

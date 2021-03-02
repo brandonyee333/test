@@ -16,6 +16,7 @@ package com.liferay.osb.testray.service.base;
 
 import com.liferay.osb.testray.model.TestrayTeam;
 import com.liferay.osb.testray.service.TestrayTeamLocalService;
+import com.liferay.osb.testray.service.TestrayTeamLocalServiceUtil;
 import com.liferay.osb.testray.service.persistence.TestrayArchivePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayAssignmentPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayBuildPersistence;
@@ -66,6 +67,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -88,7 +91,7 @@ public abstract class TestrayTeamLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TestrayTeamLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.testray.service.TestrayTeamLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TestrayTeamLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TestrayTeamLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1417,11 +1420,15 @@ public abstract class TestrayTeamLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.testray.model.TestrayTeam",
 			testrayTeamLocalService);
+
+		_setLocalServiceUtilService(testrayTeamLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.testray.model.TestrayTeam");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1463,6 +1470,22 @@ public abstract class TestrayTeamLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		TestrayTeamLocalService testrayTeamLocalService) {
+
+		try {
+			Field field = TestrayTeamLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayTeamLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -42,9 +42,12 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition;
 import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalService;
+import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.designer.service.persistence.KaleoDraftDefinitionPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -68,7 +71,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>KaleoDraftDefinitionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>KaleoDraftDefinitionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>KaleoDraftDefinitionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -554,11 +557,15 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition",
 			kaleoDraftDefinitionLocalService);
+
+		_setLocalServiceUtilService(kaleoDraftDefinitionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -601,6 +608,23 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService) {
+
+		try {
+			Field field =
+				KaleoDraftDefinitionLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, kaleoDraftDefinitionLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

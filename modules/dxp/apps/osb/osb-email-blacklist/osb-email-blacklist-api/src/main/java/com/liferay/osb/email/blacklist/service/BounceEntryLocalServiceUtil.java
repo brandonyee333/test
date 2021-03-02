@@ -14,9 +14,15 @@
 
 package com.liferay.osb.email.blacklist.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.email.blacklist.model.BounceEntry;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for BounceEntry. This utility wraps
@@ -48,18 +54,14 @@ public class BounceEntryLocalServiceUtil {
 	 * @param bounceEntry the bounce entry
 	 * @return the bounce entry that was added
 	 */
-	public static com.liferay.osb.email.blacklist.model.BounceEntry
-		addBounceEntry(
-			com.liferay.osb.email.blacklist.model.BounceEntry bounceEntry) {
-
+	public static BounceEntry addBounceEntry(BounceEntry bounceEntry) {
 		return getService().addBounceEntry(bounceEntry);
 	}
 
-	public static com.liferay.osb.email.blacklist.model.BounceEntry
-			addBounceEntry(
-				String emailAddress, java.util.Date bounceDate,
-				String bounceType, String bounceSubtype)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static BounceEntry addBounceEntry(
+			String emailAddress, java.util.Date bounceDate, String bounceType,
+			String bounceSubtype)
+		throws PortalException {
 
 		return getService().addBounceEntry(
 			emailAddress, bounceDate, bounceType, bounceSubtype);
@@ -71,9 +73,7 @@ public class BounceEntryLocalServiceUtil {
 	 * @param bounceEntryId the primary key for the new bounce entry
 	 * @return the new bounce entry
 	 */
-	public static com.liferay.osb.email.blacklist.model.BounceEntry
-		createBounceEntry(long bounceEntryId) {
-
+	public static BounceEntry createBounceEntry(long bounceEntryId) {
 		return getService().createBounceEntry(bounceEntryId);
 	}
 
@@ -87,10 +87,7 @@ public class BounceEntryLocalServiceUtil {
 	 * @param bounceEntry the bounce entry
 	 * @return the bounce entry that was removed
 	 */
-	public static com.liferay.osb.email.blacklist.model.BounceEntry
-		deleteBounceEntry(
-			com.liferay.osb.email.blacklist.model.BounceEntry bounceEntry) {
-
+	public static BounceEntry deleteBounceEntry(BounceEntry bounceEntry) {
 		return getService().deleteBounceEntry(bounceEntry);
 	}
 
@@ -105,9 +102,8 @@ public class BounceEntryLocalServiceUtil {
 	 * @return the bounce entry that was removed
 	 * @throws PortalException if a bounce entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.email.blacklist.model.BounceEntry
-			deleteBounceEntry(long bounceEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static BounceEntry deleteBounceEntry(long bounceEntryId)
+		throws PortalException {
 
 		return getService().deleteBounceEntry(bounceEntryId);
 	}
@@ -115,17 +111,14 @@ public class BounceEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -135,9 +128,7 @@ public class BounceEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -153,9 +144,8 @@ public class BounceEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -173,10 +163,9 @@ public class BounceEntryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -188,9 +177,7 @@ public class BounceEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -202,15 +189,13 @@ public class BounceEntryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.email.blacklist.model.BounceEntry
-		fetchBounceEntry(long bounceEntryId) {
-
+	public static BounceEntry fetchBounceEntry(long bounceEntryId) {
 		return getService().fetchBounceEntry(bounceEntryId);
 	}
 
@@ -220,11 +205,9 @@ public class BounceEntryLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.email.blacklist.model.BounceEntry> getBounceEntries(
-			java.util.Date bounceDateLT, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.osb.email.blacklist.model.BounceEntry> obc) {
+	public static List<BounceEntry> getBounceEntries(
+		java.util.Date bounceDateLT, int start, int end,
+		OrderByComparator<BounceEntry> obc) {
 
 		return getService().getBounceEntries(bounceDateLT, start, end, obc);
 	}
@@ -240,10 +223,7 @@ public class BounceEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of bounce entries (not inclusive)
 	 * @return the range of bounce entries
 	 */
-	public static java.util.List
-		<com.liferay.osb.email.blacklist.model.BounceEntry> getBounceEntries(
-			int start, int end) {
-
+	public static List<BounceEntry> getBounceEntries(int start, int end) {
 		return getService().getBounceEntries(start, end);
 	}
 
@@ -263,9 +243,8 @@ public class BounceEntryLocalServiceUtil {
 	 * @return the bounce entry
 	 * @throws PortalException if a bounce entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.email.blacklist.model.BounceEntry
-			getBounceEntry(long bounceEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static BounceEntry getBounceEntry(long bounceEntryId)
+		throws PortalException {
 
 		return getService().getBounceEntry(bounceEntryId);
 	}
@@ -289,9 +268,8 @@ public class BounceEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -306,33 +284,14 @@ public class BounceEntryLocalServiceUtil {
 	 * @param bounceEntry the bounce entry
 	 * @return the bounce entry that was updated
 	 */
-	public static com.liferay.osb.email.blacklist.model.BounceEntry
-		updateBounceEntry(
-			com.liferay.osb.email.blacklist.model.BounceEntry bounceEntry) {
-
+	public static BounceEntry updateBounceEntry(BounceEntry bounceEntry) {
 		return getService().updateBounceEntry(bounceEntry);
 	}
 
 	public static BounceEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<BounceEntryLocalService, BounceEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(BounceEntryLocalService.class);
-
-		ServiceTracker<BounceEntryLocalService, BounceEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<BounceEntryLocalService, BounceEntryLocalService>(
-						bundle.getBundleContext(),
-						BounceEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile BounceEntryLocalService _service;
 
 }

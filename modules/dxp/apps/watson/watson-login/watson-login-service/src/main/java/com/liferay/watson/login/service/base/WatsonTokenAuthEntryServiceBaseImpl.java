@@ -28,7 +28,10 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.watson.login.model.WatsonTokenAuthEntry;
 import com.liferay.watson.login.service.WatsonTokenAuthEntryService;
+import com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil;
 import com.liferay.watson.login.service.persistence.WatsonTokenAuthEntryPersistence;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -50,7 +53,7 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WatsonTokenAuthEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WatsonTokenAuthEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WatsonTokenAuthEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -291,9 +294,11 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(watsonTokenAuthEntryService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -336,6 +341,23 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		WatsonTokenAuthEntryService watsonTokenAuthEntryService) {
+
+		try {
+			Field field =
+				WatsonTokenAuthEntryServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonTokenAuthEntryService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

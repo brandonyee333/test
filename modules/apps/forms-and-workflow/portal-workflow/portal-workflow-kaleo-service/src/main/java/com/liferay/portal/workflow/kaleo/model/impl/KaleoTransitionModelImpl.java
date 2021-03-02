@@ -658,6 +658,8 @@ public class KaleoTransitionModelImpl
 
 	@Override
 	public void setKaleoTransitionId(long kaleoTransitionId) {
+		_columnBitmask = -1L;
+
 		_kaleoTransitionId = kaleoTransitionId;
 	}
 

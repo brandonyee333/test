@@ -16,6 +16,7 @@ package com.liferay.osb.customer.license.service.base;
 
 import com.liferay.osb.customer.license.model.LicenseKeySet;
 import com.liferay.osb.customer.license.service.LicenseKeySetService;
+import com.liferay.osb.customer.license.service.LicenseKeySetServiceUtil;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeyPersistence;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeySetPersistence;
@@ -31,6 +32,8 @@ import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -52,7 +55,7 @@ public abstract class LicenseKeySetServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LicenseKeySetService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.license.service.LicenseKeySetServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LicenseKeySetService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LicenseKeySetServiceUtil</code>.
 	 */
 
 	/**
@@ -374,9 +377,11 @@ public abstract class LicenseKeySetServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(licenseKeySetService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -418,6 +423,22 @@ public abstract class LicenseKeySetServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		LicenseKeySetService licenseKeySetService) {
+
+		try {
+			Field field = LicenseKeySetServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, licenseKeySetService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,6 +16,7 @@ package com.liferay.osb.loop.service.base;
 
 import com.liferay.osb.loop.model.LoopStatsEntry;
 import com.liferay.osb.loop.service.LoopStatsEntryLocalService;
+import com.liferay.osb.loop.service.LoopStatsEntryLocalServiceUtil;
 import com.liferay.osb.loop.service.persistence.LoopAuditEntryPersistence;
 import com.liferay.osb.loop.service.persistence.LoopDivisionPersistence;
 import com.liferay.osb.loop.service.persistence.LoopDivisionRelPersistence;
@@ -61,6 +62,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -83,7 +86,7 @@ public abstract class LoopStatsEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LoopStatsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.service.LoopStatsEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LoopStatsEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LoopStatsEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1212,11 +1215,15 @@ public abstract class LoopStatsEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.loop.model.LoopStatsEntry",
 			loopStatsEntryLocalService);
+
+		_setLocalServiceUtilService(loopStatsEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.loop.model.LoopStatsEntry");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1258,6 +1265,22 @@ public abstract class LoopStatsEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		LoopStatsEntryLocalService loopStatsEntryLocalService) {
+
+		try {
+			Field field = LoopStatsEntryLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, loopStatsEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

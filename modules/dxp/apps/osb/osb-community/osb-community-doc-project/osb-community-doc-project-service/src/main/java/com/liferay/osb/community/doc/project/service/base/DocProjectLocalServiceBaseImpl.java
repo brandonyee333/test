@@ -21,6 +21,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.osb.community.doc.project.model.DocProject;
 import com.liferay.osb.community.doc.project.service.DocProjectLocalService;
+import com.liferay.osb.community.doc.project.service.DocProjectLocalServiceUtil;
 import com.liferay.osb.community.doc.project.service.persistence.DocProjectPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -52,6 +53,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -74,7 +77,7 @@ public abstract class DocProjectLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DocProjectLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.community.doc.project.service.DocProjectLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DocProjectLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DocProjectLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -659,11 +662,15 @@ public abstract class DocProjectLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.community.doc.project.model.DocProject",
 			docProjectLocalService);
+
+		_setLocalServiceUtilService(docProjectLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.community.doc.project.model.DocProject");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -705,6 +712,22 @@ public abstract class DocProjectLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		DocProjectLocalService docProjectLocalService) {
+
+		try {
+			Field field = DocProjectLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, docProjectLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,6 +16,7 @@ package com.liferay.osb.community.meetup.service.base;
 
 import com.liferay.osb.community.meetup.model.MeetupGroup;
 import com.liferay.osb.community.meetup.service.MeetupGroupLocalService;
+import com.liferay.osb.community.meetup.service.MeetupGroupLocalServiceUtil;
 import com.liferay.osb.community.meetup.service.persistence.MeetupGroupPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -46,6 +47,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -68,7 +71,7 @@ public abstract class MeetupGroupLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MeetupGroupLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.community.meetup.service.MeetupGroupLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MeetupGroupLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MeetupGroupLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -524,11 +527,15 @@ public abstract class MeetupGroupLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.community.meetup.model.MeetupGroup",
 			meetupGroupLocalService);
+
+		_setLocalServiceUtilService(meetupGroupLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.community.meetup.model.MeetupGroup");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -570,6 +577,22 @@ public abstract class MeetupGroupLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		MeetupGroupLocalService meetupGroupLocalService) {
+
+		try {
+			Field field = MeetupGroupLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, meetupGroupLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

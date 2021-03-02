@@ -14,9 +14,15 @@
 
 package com.liferay.shopping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.shopping.model.ShoppingCategory;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ShoppingCategory. This utility wraps
@@ -37,10 +43,10 @@ public class ShoppingCategoryLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCategoryLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.shopping.model.ShoppingCategory addCategory(
+	public static ShoppingCategory addCategory(
 			long userId, long parentCategoryId, String name, String description,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addCategory(
 			userId, parentCategoryId, name, description, serviceContext);
@@ -49,7 +55,7 @@ public class ShoppingCategoryLocalServiceUtil {
 	public static void addCategoryResources(
 			long categoryId, boolean addGroupPermissions,
 			boolean addGuestPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addCategoryResources(
 			categoryId, addGroupPermissions, addGuestPermissions);
@@ -59,25 +65,25 @@ public class ShoppingCategoryLocalServiceUtil {
 			long categoryId,
 			com.liferay.portal.kernel.service.permission.ModelPermissions
 				modelPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addCategoryResources(categoryId, modelPermissions);
 	}
 
 	public static void addCategoryResources(
-			com.liferay.shopping.model.ShoppingCategory category,
-			boolean addGroupPermissions, boolean addGuestPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			ShoppingCategory category, boolean addGroupPermissions,
+			boolean addGuestPermissions)
+		throws PortalException {
 
 		getService().addCategoryResources(
 			category, addGroupPermissions, addGuestPermissions);
 	}
 
 	public static void addCategoryResources(
-			com.liferay.shopping.model.ShoppingCategory category,
+			ShoppingCategory category,
 			com.liferay.portal.kernel.service.permission.ModelPermissions
 				modelPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addCategoryResources(category, modelPermissions);
 	}
@@ -92,9 +98,8 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @param shoppingCategory the shopping category
 	 * @return the shopping category that was added
 	 */
-	public static com.liferay.shopping.model.ShoppingCategory
-		addShoppingCategory(
-			com.liferay.shopping.model.ShoppingCategory shoppingCategory) {
+	public static ShoppingCategory addShoppingCategory(
+		ShoppingCategory shoppingCategory) {
 
 		return getService().addShoppingCategory(shoppingCategory);
 	}
@@ -105,27 +110,20 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @param categoryId the primary key for the new shopping category
 	 * @return the new shopping category
 	 */
-	public static com.liferay.shopping.model.ShoppingCategory
-		createShoppingCategory(long categoryId) {
-
+	public static ShoppingCategory createShoppingCategory(long categoryId) {
 		return getService().createShoppingCategory(categoryId);
 	}
 
-	public static void deleteCategories(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void deleteCategories(long groupId) throws PortalException {
 		getService().deleteCategories(groupId);
 	}
 
-	public static void deleteCategory(long categoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void deleteCategory(long categoryId) throws PortalException {
 		getService().deleteCategory(categoryId);
 	}
 
-	public static void deleteCategory(
-			com.liferay.shopping.model.ShoppingCategory category)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static void deleteCategory(ShoppingCategory category)
+		throws PortalException {
 
 		getService().deleteCategory(category);
 	}
@@ -133,10 +131,9 @@ public class ShoppingCategoryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -152,9 +149,8 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @return the shopping category that was removed
 	 * @throws PortalException if a shopping category with the primary key could not be found
 	 */
-	public static com.liferay.shopping.model.ShoppingCategory
-			deleteShoppingCategory(long categoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCategory deleteShoppingCategory(long categoryId)
+		throws PortalException {
 
 		return getService().deleteShoppingCategory(categoryId);
 	}
@@ -169,16 +165,13 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @param shoppingCategory the shopping category
 	 * @return the shopping category that was removed
 	 */
-	public static com.liferay.shopping.model.ShoppingCategory
-		deleteShoppingCategory(
-			com.liferay.shopping.model.ShoppingCategory shoppingCategory) {
+	public static ShoppingCategory deleteShoppingCategory(
+		ShoppingCategory shoppingCategory) {
 
 		return getService().deleteShoppingCategory(shoppingCategory);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -188,9 +181,7 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -206,9 +197,8 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -226,10 +216,9 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -241,9 +230,7 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -255,15 +242,13 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCategory
-		fetchShoppingCategory(long categoryId) {
-
+	public static ShoppingCategory fetchShoppingCategory(long categoryId) {
 		return getService().fetchShoppingCategory(categoryId);
 	}
 
@@ -273,14 +258,12 @@ public class ShoppingCategoryLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static java.util.List<com.liferay.shopping.model.ShoppingCategory>
-		getCategories(long groupId) {
-
+	public static List<ShoppingCategory> getCategories(long groupId) {
 		return getService().getCategories(groupId);
 	}
 
-	public static java.util.List<com.liferay.shopping.model.ShoppingCategory>
-		getCategories(long groupId, long parentCategoryId, int start, int end) {
+	public static List<ShoppingCategory> getCategories(
+		long groupId, long parentCategoryId, int start, int end) {
 
 		return getService().getCategories(
 			groupId, parentCategoryId, start, end);
@@ -290,14 +273,13 @@ public class ShoppingCategoryLocalServiceUtil {
 		return getService().getCategoriesCount(groupId, parentCategoryId);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCategory getCategory(
-			long categoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCategory getCategory(long categoryId)
+		throws PortalException {
 
 		return getService().getCategory(categoryId);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCategory getCategory(
+	public static ShoppingCategory getCategory(
 		long groupId, String categoryName) {
 
 		return getService().getCategory(groupId, categoryName);
@@ -319,24 +301,21 @@ public class ShoppingCategoryLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<com.liferay.shopping.model.ShoppingCategory>
-			getParentCategories(long categoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ShoppingCategory> getParentCategories(long categoryId)
+		throws PortalException {
 
 		return getService().getParentCategories(categoryId);
 	}
 
-	public static java.util.List<com.liferay.shopping.model.ShoppingCategory>
-			getParentCategories(
-				com.liferay.shopping.model.ShoppingCategory category)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ShoppingCategory> getParentCategories(
+			ShoppingCategory category)
+		throws PortalException {
 
 		return getService().getParentCategories(category);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCategory getParentCategory(
-			com.liferay.shopping.model.ShoppingCategory category)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCategory getParentCategory(ShoppingCategory category)
+		throws PortalException {
 
 		return getService().getParentCategory(category);
 	}
@@ -344,9 +323,8 @@ public class ShoppingCategoryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -362,8 +340,8 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @param end the upper bound of the range of shopping categories (not inclusive)
 	 * @return the range of shopping categories
 	 */
-	public static java.util.List<com.liferay.shopping.model.ShoppingCategory>
-		getShoppingCategories(int start, int end) {
+	public static List<ShoppingCategory> getShoppingCategories(
+		int start, int end) {
 
 		return getService().getShoppingCategories(start, end);
 	}
@@ -384,24 +362,23 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @return the shopping category
 	 * @throws PortalException if a shopping category with the primary key could not be found
 	 */
-	public static com.liferay.shopping.model.ShoppingCategory
-			getShoppingCategory(long categoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCategory getShoppingCategory(long categoryId)
+		throws PortalException {
 
 		return getService().getShoppingCategory(categoryId);
 	}
 
 	public static void getSubcategoryIds(
-		java.util.List<Long> categoryIds, long groupId, long categoryId) {
+		List<Long> categoryIds, long groupId, long categoryId) {
 
 		getService().getSubcategoryIds(categoryIds, groupId, categoryId);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCategory updateCategory(
+	public static ShoppingCategory updateCategory(
 			long categoryId, long parentCategoryId, String name,
 			String description, boolean mergeWithParentCategory,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateCategory(
 			categoryId, parentCategoryId, name, description,
@@ -418,37 +395,16 @@ public class ShoppingCategoryLocalServiceUtil {
 	 * @param shoppingCategory the shopping category
 	 * @return the shopping category that was updated
 	 */
-	public static com.liferay.shopping.model.ShoppingCategory
-		updateShoppingCategory(
-			com.liferay.shopping.model.ShoppingCategory shoppingCategory) {
+	public static ShoppingCategory updateShoppingCategory(
+		ShoppingCategory shoppingCategory) {
 
 		return getService().updateShoppingCategory(shoppingCategory);
 	}
 
 	public static ShoppingCategoryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ShoppingCategoryLocalService, ShoppingCategoryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ShoppingCategoryLocalService.class);
-
-		ServiceTracker
-			<ShoppingCategoryLocalService, ShoppingCategoryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<ShoppingCategoryLocalService,
-						 ShoppingCategoryLocalService>(
-							 bundle.getBundleContext(),
-							 ShoppingCategoryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ShoppingCategoryLocalService _service;
 
 }

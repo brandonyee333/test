@@ -14,7 +14,8 @@
 
 package com.liferay.message.boards.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.message.boards.kernel.model.MBBan;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for MBBan. This utility wraps
@@ -35,10 +36,10 @@ public class MBBanServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portlet.messageboards.service.impl.MBBanServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.message.boards.kernel.model.MBBan addBan(
+	public static MBBan addBan(
 			long banUserId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addBan(banUserId, serviceContext);
 	}
@@ -46,7 +47,7 @@ public class MBBanServiceUtil {
 	public static void deleteBan(
 			long banUserId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteBan(banUserId, serviceContext);
 	}
@@ -61,14 +62,9 @@ public class MBBanServiceUtil {
 	}
 
 	public static MBBanService getService() {
-		if (_service == null) {
-			_service = (MBBanService)PortalBeanLocatorUtil.locate(
-				MBBanService.class.getName());
-		}
-
 		return _service;
 	}
 
-	private static MBBanService _service;
+	private static volatile MBBanService _service;
 
 }

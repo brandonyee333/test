@@ -27,10 +27,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.shopping.model.ShoppingCategory;
 import com.liferay.shopping.service.ShoppingCategoryService;
+import com.liferay.shopping.service.ShoppingCategoryServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingCategoryFinder;
 import com.liferay.shopping.service.persistence.ShoppingCategoryPersistence;
 import com.liferay.shopping.service.persistence.ShoppingItemFinder;
 import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -52,7 +55,7 @@ public abstract class ShoppingCategoryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ShoppingCategoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingCategoryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ShoppingCategoryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ShoppingCategoryServiceUtil</code>.
 	 */
 
 	/**
@@ -328,9 +331,11 @@ public abstract class ShoppingCategoryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(shoppingCategoryService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -372,6 +377,22 @@ public abstract class ShoppingCategoryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		ShoppingCategoryService shoppingCategoryService) {
+
+		try {
+			Field field = ShoppingCategoryServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingCategoryService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

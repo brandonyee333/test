@@ -524,6 +524,8 @@ public class ShoppingItemPriceModelImpl
 
 	@Override
 	public void setItemPriceId(long itemPriceId) {
+		_columnBitmask = -1L;
+
 		_itemPriceId = itemPriceId;
 	}
 
@@ -544,7 +546,7 @@ public class ShoppingItemPriceModelImpl
 
 	@Override
 	public void setItemId(long itemId) {
-		_columnBitmask |= ITEMID_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalItemId) {
 			_setOriginalItemId = true;

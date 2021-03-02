@@ -14,9 +14,15 @@
 
 package com.liferay.osb.testray.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.testray.model.TestrayRequirement;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for TestrayRequirement. This utility wraps
@@ -45,17 +51,14 @@ public class TestrayRequirementLocalServiceUtil {
 	}
 
 	public static void addTestrayCaseTestrayRequirement(
-		long testrayCaseId,
-		com.liferay.osb.testray.model.TestrayRequirement testrayRequirement) {
+		long testrayCaseId, TestrayRequirement testrayRequirement) {
 
 		getService().addTestrayCaseTestrayRequirement(
 			testrayCaseId, testrayRequirement);
 	}
 
 	public static void addTestrayCaseTestrayRequirements(
-		long testrayCaseId,
-		java.util.List<com.liferay.osb.testray.model.TestrayRequirement>
-			testrayRequirements) {
+		long testrayCaseId, List<TestrayRequirement> testrayRequirements) {
 
 		getService().addTestrayCaseTestrayRequirements(
 			testrayCaseId, testrayRequirements);
@@ -78,10 +81,8 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @param testrayRequirement the testray requirement
 	 * @return the testray requirement that was added
 	 */
-	public static com.liferay.osb.testray.model.TestrayRequirement
-		addTestrayRequirement(
-			com.liferay.osb.testray.model.TestrayRequirement
-				testrayRequirement) {
+	public static TestrayRequirement addTestrayRequirement(
+		TestrayRequirement testrayRequirement) {
 
 		return getService().addTestrayRequirement(testrayRequirement);
 	}
@@ -96,8 +97,8 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @param testrayRequirementId the primary key for the new testray requirement
 	 * @return the new testray requirement
 	 */
-	public static com.liferay.osb.testray.model.TestrayRequirement
-		createTestrayRequirement(long testrayRequirementId) {
+	public static TestrayRequirement createTestrayRequirement(
+		long testrayRequirementId) {
 
 		return getService().createTestrayRequirement(testrayRequirementId);
 	}
@@ -105,10 +106,9 @@ public class TestrayRequirementLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -121,17 +121,14 @@ public class TestrayRequirementLocalServiceUtil {
 	}
 
 	public static void deleteTestrayCaseTestrayRequirement(
-		long testrayCaseId,
-		com.liferay.osb.testray.model.TestrayRequirement testrayRequirement) {
+		long testrayCaseId, TestrayRequirement testrayRequirement) {
 
 		getService().deleteTestrayCaseTestrayRequirement(
 			testrayCaseId, testrayRequirement);
 	}
 
 	public static void deleteTestrayCaseTestrayRequirements(
-		long testrayCaseId,
-		java.util.List<com.liferay.osb.testray.model.TestrayRequirement>
-			testrayRequirements) {
+		long testrayCaseId, List<TestrayRequirement> testrayRequirements) {
 
 		getService().deleteTestrayCaseTestrayRequirements(
 			testrayCaseId, testrayRequirements);
@@ -155,9 +152,9 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @return the testray requirement that was removed
 	 * @throws PortalException if a testray requirement with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayRequirement
-			deleteTestrayRequirement(long testrayRequirementId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayRequirement deleteTestrayRequirement(
+			long testrayRequirementId)
+		throws PortalException {
 
 		return getService().deleteTestrayRequirement(testrayRequirementId);
 	}
@@ -172,17 +169,13 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @param testrayRequirement the testray requirement
 	 * @return the testray requirement that was removed
 	 */
-	public static com.liferay.osb.testray.model.TestrayRequirement
-		deleteTestrayRequirement(
-			com.liferay.osb.testray.model.TestrayRequirement
-				testrayRequirement) {
+	public static TestrayRequirement deleteTestrayRequirement(
+		TestrayRequirement testrayRequirement) {
 
 		return getService().deleteTestrayRequirement(testrayRequirement);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -192,9 +185,7 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -210,9 +201,8 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -230,10 +220,9 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -245,9 +234,7 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -259,14 +246,14 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.testray.model.TestrayRequirement
-		fetchTestrayRequirement(long testrayRequirementId) {
+	public static TestrayRequirement fetchTestrayRequirement(
+		long testrayRequirementId) {
 
 		return getService().fetchTestrayRequirement(testrayRequirementId);
 	}
@@ -296,9 +283,8 @@ public class TestrayRequirementLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -313,29 +299,22 @@ public class TestrayRequirementLocalServiceUtil {
 		return getService().getTestrayCasePrimaryKeys(testrayRequirementId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.testray.model.TestrayRequirement>
-			getTestrayCaseTestrayRequirements(long testrayCaseId) {
+	public static List<TestrayRequirement> getTestrayCaseTestrayRequirements(
+		long testrayCaseId) {
 
 		return getService().getTestrayCaseTestrayRequirements(testrayCaseId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.testray.model.TestrayRequirement>
-			getTestrayCaseTestrayRequirements(
-				long testrayCaseId, int start, int end) {
+	public static List<TestrayRequirement> getTestrayCaseTestrayRequirements(
+		long testrayCaseId, int start, int end) {
 
 		return getService().getTestrayCaseTestrayRequirements(
 			testrayCaseId, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.testray.model.TestrayRequirement>
-			getTestrayCaseTestrayRequirements(
-				long testrayCaseId, int start, int end,
-				com.liferay.portal.kernel.util.OrderByComparator
-					<com.liferay.osb.testray.model.TestrayRequirement>
-						orderByComparator) {
+	public static List<TestrayRequirement> getTestrayCaseTestrayRequirements(
+		long testrayCaseId, int start, int end,
+		OrderByComparator<TestrayRequirement> orderByComparator) {
 
 		return getService().getTestrayCaseTestrayRequirements(
 			testrayCaseId, start, end, orderByComparator);
@@ -355,9 +334,9 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @return the testray requirement
 	 * @throws PortalException if a testray requirement with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayRequirement
-			getTestrayRequirement(long testrayRequirementId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayRequirement getTestrayRequirement(
+			long testrayRequirementId)
+		throws PortalException {
 
 		return getService().getTestrayRequirement(testrayRequirementId);
 	}
@@ -373,9 +352,8 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @param end the upper bound of the range of testray requirements (not inclusive)
 	 * @return the range of testray requirements
 	 */
-	public static java.util.List
-		<com.liferay.osb.testray.model.TestrayRequirement>
-			getTestrayRequirements(int start, int end) {
+	public static List<TestrayRequirement> getTestrayRequirements(
+		int start, int end) {
 
 		return getService().getTestrayRequirements(start, end);
 	}
@@ -419,38 +397,16 @@ public class TestrayRequirementLocalServiceUtil {
 	 * @param testrayRequirement the testray requirement
 	 * @return the testray requirement that was updated
 	 */
-	public static com.liferay.osb.testray.model.TestrayRequirement
-		updateTestrayRequirement(
-			com.liferay.osb.testray.model.TestrayRequirement
-				testrayRequirement) {
+	public static TestrayRequirement updateTestrayRequirement(
+		TestrayRequirement testrayRequirement) {
 
 		return getService().updateTestrayRequirement(testrayRequirement);
 	}
 
 	public static TestrayRequirementLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TestrayRequirementLocalService, TestrayRequirementLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			TestrayRequirementLocalService.class);
-
-		ServiceTracker
-			<TestrayRequirementLocalService, TestrayRequirementLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<TestrayRequirementLocalService,
-						 TestrayRequirementLocalService>(
-							 bundle.getBundleContext(),
-							 TestrayRequirementLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TestrayRequirementLocalService _service;
 
 }

@@ -19,6 +19,7 @@ import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
 import com.liferay.asset.kernel.service.persistence.AssetLinkPersistence;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.BlogsEntryService;
+import com.liferay.blogs.kernel.service.BlogsEntryServiceUtil;
 import com.liferay.blogs.kernel.service.persistence.BlogsEntryFinder;
 import com.liferay.blogs.kernel.service.persistence.BlogsEntryPersistence;
 import com.liferay.blogs.kernel.service.persistence.BlogsStatsUserFinder;
@@ -50,6 +51,8 @@ import com.liferay.ratings.kernel.service.persistence.RatingsStatsFinder;
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -70,7 +73,7 @@ public abstract class BlogsEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BlogsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.blogs.kernel.service.BlogsEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>BlogsEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>BlogsEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -1113,9 +1116,11 @@ public abstract class BlogsEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(blogsEntryService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -1157,6 +1162,20 @@ public abstract class BlogsEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(BlogsEntryService blogsEntryService) {
+		try {
+			Field field = BlogsEntryServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, blogsEntryService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

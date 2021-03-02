@@ -16,6 +16,7 @@ package com.liferay.osb.testray.service.base;
 
 import com.liferay.osb.testray.model.TestrayFactorCategory;
 import com.liferay.osb.testray.service.TestrayFactorCategoryLocalService;
+import com.liferay.osb.testray.service.TestrayFactorCategoryLocalServiceUtil;
 import com.liferay.osb.testray.service.persistence.TestrayArchivePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayAssignmentPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayBuildPersistence;
@@ -66,6 +67,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -88,7 +91,7 @@ public abstract class TestrayFactorCategoryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TestrayFactorCategoryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.testray.service.TestrayFactorCategoryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TestrayFactorCategoryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TestrayFactorCategoryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1442,11 +1445,15 @@ public abstract class TestrayFactorCategoryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.testray.model.TestrayFactorCategory",
 			testrayFactorCategoryLocalService);
+
+		_setLocalServiceUtilService(testrayFactorCategoryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.testray.model.TestrayFactorCategory");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1489,6 +1496,23 @@ public abstract class TestrayFactorCategoryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		TestrayFactorCategoryLocalService testrayFactorCategoryLocalService) {
+
+		try {
+			Field field =
+				TestrayFactorCategoryLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayFactorCategoryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

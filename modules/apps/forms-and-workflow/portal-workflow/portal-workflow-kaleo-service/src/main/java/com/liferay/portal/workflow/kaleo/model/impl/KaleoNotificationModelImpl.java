@@ -688,6 +688,8 @@ public class KaleoNotificationModelImpl
 
 	@Override
 	public void setKaleoNotificationId(long kaleoNotificationId) {
+		_columnBitmask = -1L;
+
 		_kaleoNotificationId = kaleoNotificationId;
 	}
 

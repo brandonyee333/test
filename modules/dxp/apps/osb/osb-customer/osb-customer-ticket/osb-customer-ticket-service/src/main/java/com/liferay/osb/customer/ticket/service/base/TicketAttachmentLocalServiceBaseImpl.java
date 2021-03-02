@@ -16,6 +16,7 @@ package com.liferay.osb.customer.ticket.service.base;
 
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService;
+import com.liferay.osb.customer.ticket.service.TicketAttachmentLocalServiceUtil;
 import com.liferay.osb.customer.ticket.service.persistence.TicketAttachmentPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -46,6 +47,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -68,7 +71,7 @@ public abstract class TicketAttachmentLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TicketAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.ticket.service.TicketAttachmentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TicketAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TicketAttachmentLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -533,11 +536,15 @@ public abstract class TicketAttachmentLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.ticket.model.TicketAttachment",
 			ticketAttachmentLocalService);
+
+		_setLocalServiceUtilService(ticketAttachmentLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.ticket.model.TicketAttachment");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -579,6 +586,23 @@ public abstract class TicketAttachmentLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		TicketAttachmentLocalService ticketAttachmentLocalService) {
+
+		try {
+			Field field =
+				TicketAttachmentLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, ticketAttachmentLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

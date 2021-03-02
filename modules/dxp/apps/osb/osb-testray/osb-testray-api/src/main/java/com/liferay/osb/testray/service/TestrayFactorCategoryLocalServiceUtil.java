@@ -14,9 +14,15 @@
 
 package com.liferay.osb.testray.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.testray.model.TestrayFactorCategory;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for TestrayFactorCategory. This utility wraps
@@ -48,10 +54,8 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @param testrayFactorCategory the testray factor category
 	 * @return the testray factor category that was added
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorCategory
-		addTestrayFactorCategory(
-			com.liferay.osb.testray.model.TestrayFactorCategory
-				testrayFactorCategory) {
+	public static TestrayFactorCategory addTestrayFactorCategory(
+		TestrayFactorCategory testrayFactorCategory) {
 
 		return getService().addTestrayFactorCategory(testrayFactorCategory);
 	}
@@ -62,8 +66,8 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @param testrayFactorCategoryId the primary key for the new testray factor category
 	 * @return the new testray factor category
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorCategory
-		createTestrayFactorCategory(long testrayFactorCategoryId) {
+	public static TestrayFactorCategory createTestrayFactorCategory(
+		long testrayFactorCategoryId) {
 
 		return getService().createTestrayFactorCategory(
 			testrayFactorCategoryId);
@@ -72,10 +76,9 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -91,9 +94,9 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @return the testray factor category that was removed
 	 * @throws PortalException if a testray factor category with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorCategory
-			deleteTestrayFactorCategory(long testrayFactorCategoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayFactorCategory deleteTestrayFactorCategory(
+			long testrayFactorCategoryId)
+		throws PortalException {
 
 		return getService().deleteTestrayFactorCategory(
 			testrayFactorCategoryId);
@@ -109,17 +112,13 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @param testrayFactorCategory the testray factor category
 	 * @return the testray factor category that was removed
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorCategory
-		deleteTestrayFactorCategory(
-			com.liferay.osb.testray.model.TestrayFactorCategory
-				testrayFactorCategory) {
+	public static TestrayFactorCategory deleteTestrayFactorCategory(
+		TestrayFactorCategory testrayFactorCategory) {
 
 		return getService().deleteTestrayFactorCategory(testrayFactorCategory);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -129,9 +128,7 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -147,9 +144,8 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -167,10 +163,9 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -182,9 +177,7 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -196,14 +189,14 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.testray.model.TestrayFactorCategory
-		fetchTestrayFactorCategory(long testrayFactorCategoryId) {
+	public static TestrayFactorCategory fetchTestrayFactorCategory(
+		long testrayFactorCategoryId) {
 
 		return getService().fetchTestrayFactorCategory(testrayFactorCategoryId);
 	}
@@ -233,9 +226,8 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -251,9 +243,8 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @param end the upper bound of the range of testray factor categories (not inclusive)
 	 * @return the range of testray factor categories
 	 */
-	public static java.util.List
-		<com.liferay.osb.testray.model.TestrayFactorCategory>
-			getTestrayFactorCategories(int start, int end) {
+	public static List<TestrayFactorCategory> getTestrayFactorCategories(
+		int start, int end) {
 
 		return getService().getTestrayFactorCategories(start, end);
 	}
@@ -274,9 +265,9 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @return the testray factor category
 	 * @throws PortalException if a testray factor category with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorCategory
-			getTestrayFactorCategory(long testrayFactorCategoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayFactorCategory getTestrayFactorCategory(
+			long testrayFactorCategoryId)
+		throws PortalException {
 
 		return getService().getTestrayFactorCategory(testrayFactorCategoryId);
 	}
@@ -291,38 +282,16 @@ public class TestrayFactorCategoryLocalServiceUtil {
 	 * @param testrayFactorCategory the testray factor category
 	 * @return the testray factor category that was updated
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorCategory
-		updateTestrayFactorCategory(
-			com.liferay.osb.testray.model.TestrayFactorCategory
-				testrayFactorCategory) {
+	public static TestrayFactorCategory updateTestrayFactorCategory(
+		TestrayFactorCategory testrayFactorCategory) {
 
 		return getService().updateTestrayFactorCategory(testrayFactorCategory);
 	}
 
 	public static TestrayFactorCategoryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TestrayFactorCategoryLocalService, TestrayFactorCategoryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			TestrayFactorCategoryLocalService.class);
-
-		ServiceTracker
-			<TestrayFactorCategoryLocalService,
-			 TestrayFactorCategoryLocalService> serviceTracker =
-				new ServiceTracker
-					<TestrayFactorCategoryLocalService,
-					 TestrayFactorCategoryLocalService>(
-						 bundle.getBundleContext(),
-						 TestrayFactorCategoryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TestrayFactorCategoryLocalService _service;
 
 }

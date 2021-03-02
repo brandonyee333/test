@@ -40,11 +40,14 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.shopping.model.ShoppingItemPrice;
 import com.liferay.shopping.service.ShoppingItemPriceLocalService;
+import com.liferay.shopping.service.ShoppingItemPriceLocalServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingItemFinder;
 import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
 import com.liferay.shopping.service.persistence.ShoppingItemPricePersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -68,7 +71,7 @@ public abstract class ShoppingItemPriceLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ShoppingItemPriceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingItemPriceLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ShoppingItemPriceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ShoppingItemPriceLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -487,11 +490,15 @@ public abstract class ShoppingItemPriceLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.shopping.model.ShoppingItemPrice",
 			shoppingItemPriceLocalService);
+
+		_setLocalServiceUtilService(shoppingItemPriceLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.shopping.model.ShoppingItemPrice");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -534,6 +541,23 @@ public abstract class ShoppingItemPriceLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ShoppingItemPriceLocalService shoppingItemPriceLocalService) {
+
+		try {
+			Field field =
+				ShoppingItemPriceLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingItemPriceLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

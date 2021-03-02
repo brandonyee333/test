@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.release.tool.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.release.tool.model.ArtifactVersion;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ArtifactVersion. This utility wraps
@@ -48,18 +54,15 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @param artifactVersion the artifact version
 	 * @return the artifact version that was added
 	 */
-	public static com.liferay.osb.customer.release.tool.model.ArtifactVersion
-		addArtifactVersion(
-			com.liferay.osb.customer.release.tool.model.ArtifactVersion
-				artifactVersion) {
+	public static ArtifactVersion addArtifactVersion(
+		ArtifactVersion artifactVersion) {
 
 		return getService().addArtifactVersion(artifactVersion);
 	}
 
-	public static com.liferay.osb.customer.release.tool.model.ArtifactVersion
-		addArtifactVersion(
-			long releaseAssetCategoryId, int owner, int repository,
-			String group, String name, String version, String packaging) {
+	public static ArtifactVersion addArtifactVersion(
+		long releaseAssetCategoryId, int owner, int repository, String group,
+		String name, String version, String packaging) {
 
 		return getService().addArtifactVersion(
 			releaseAssetCategoryId, owner, repository, group, name, version,
@@ -72,8 +75,8 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @param artifactVersionId the primary key for the new artifact version
 	 * @return the new artifact version
 	 */
-	public static com.liferay.osb.customer.release.tool.model.ArtifactVersion
-		createArtifactVersion(long artifactVersionId) {
+	public static ArtifactVersion createArtifactVersion(
+		long artifactVersionId) {
 
 		return getService().createArtifactVersion(artifactVersionId);
 	}
@@ -88,10 +91,8 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @param artifactVersion the artifact version
 	 * @return the artifact version that was removed
 	 */
-	public static com.liferay.osb.customer.release.tool.model.ArtifactVersion
-		deleteArtifactVersion(
-			com.liferay.osb.customer.release.tool.model.ArtifactVersion
-				artifactVersion) {
+	public static ArtifactVersion deleteArtifactVersion(
+		ArtifactVersion artifactVersion) {
 
 		return getService().deleteArtifactVersion(artifactVersion);
 	}
@@ -107,9 +108,8 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @return the artifact version that was removed
 	 * @throws PortalException if a artifact version with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.release.tool.model.ArtifactVersion
-			deleteArtifactVersion(long artifactVersionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ArtifactVersion deleteArtifactVersion(long artifactVersionId)
+		throws PortalException {
 
 		return getService().deleteArtifactVersion(artifactVersionId);
 	}
@@ -117,17 +117,14 @@ public class ArtifactVersionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -137,9 +134,7 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -155,9 +150,8 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -175,10 +169,9 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -190,9 +183,7 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -204,15 +195,13 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.release.tool.model.ArtifactVersion
-		fetchArtifactVersion(long artifactVersionId) {
-
+	public static ArtifactVersion fetchArtifactVersion(long artifactVersionId) {
 		return getService().fetchArtifactVersion(artifactVersionId);
 	}
 
@@ -229,20 +218,19 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @return the artifact version
 	 * @throws PortalException if a artifact version with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.release.tool.model.ArtifactVersion
-			getArtifactVersion(long artifactVersionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ArtifactVersion getArtifactVersion(long artifactVersionId)
+		throws PortalException {
 
 		return getService().getArtifactVersion(artifactVersionId);
 	}
 
-	public static java.util.List
+	public static List
 		<com.liferay.osb.customer.release.tool.model.ArtifactVersionRange>
 				getArtifactVersionRanges(
 					long fromReleaseAssetCategoryId,
 					long toReleaseAssetCategoryId, int[] owners,
 					String keywords, boolean changesOnly)
-			throws com.liferay.portal.kernel.exception.PortalException {
+			throws PortalException {
 
 		return getService().getArtifactVersionRanges(
 			fromReleaseAssetCategoryId, toReleaseAssetCategoryId, owners,
@@ -260,9 +248,8 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @param end the upper bound of the range of artifact versions (not inclusive)
 	 * @return the range of artifact versions
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.release.tool.model.ArtifactVersion>
-			getArtifactVersions(int start, int end) {
+	public static List<ArtifactVersion> getArtifactVersions(
+		int start, int end) {
 
 		return getService().getArtifactVersions(start, end);
 	}
@@ -295,9 +282,8 @@ public class ArtifactVersionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -312,36 +298,16 @@ public class ArtifactVersionLocalServiceUtil {
 	 * @param artifactVersion the artifact version
 	 * @return the artifact version that was updated
 	 */
-	public static com.liferay.osb.customer.release.tool.model.ArtifactVersion
-		updateArtifactVersion(
-			com.liferay.osb.customer.release.tool.model.ArtifactVersion
-				artifactVersion) {
+	public static ArtifactVersion updateArtifactVersion(
+		ArtifactVersion artifactVersion) {
 
 		return getService().updateArtifactVersion(artifactVersion);
 	}
 
 	public static ArtifactVersionLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ArtifactVersionLocalService, ArtifactVersionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ArtifactVersionLocalService.class);
-
-		ServiceTracker<ArtifactVersionLocalService, ArtifactVersionLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ArtifactVersionLocalService, ArtifactVersionLocalService>(
-						bundle.getBundleContext(),
-						ArtifactVersionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ArtifactVersionLocalService _service;
 
 }

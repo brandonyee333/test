@@ -16,6 +16,7 @@ package com.liferay.osb.customer.license.service.base;
 
 import com.liferay.osb.customer.license.model.LicenseKeySet;
 import com.liferay.osb.customer.license.service.LicenseKeySetLocalService;
+import com.liferay.osb.customer.license.service.LicenseKeySetLocalServiceUtil;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeyPersistence;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeySetPersistence;
@@ -48,6 +49,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -70,7 +73,7 @@ public abstract class LicenseKeySetLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LicenseKeySetLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.license.service.LicenseKeySetLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LicenseKeySetLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LicenseKeySetLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -590,11 +593,15 @@ public abstract class LicenseKeySetLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.license.model.LicenseKeySet",
 			licenseKeySetLocalService);
+
+		_setLocalServiceUtilService(licenseKeySetLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.license.model.LicenseKeySet");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -636,6 +643,22 @@ public abstract class LicenseKeySetLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		LicenseKeySetLocalService licenseKeySetLocalService) {
+
+		try {
+			Field field = LicenseKeySetLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, licenseKeySetLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

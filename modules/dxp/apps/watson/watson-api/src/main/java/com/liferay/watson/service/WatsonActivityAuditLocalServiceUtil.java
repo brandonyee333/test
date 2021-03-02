@@ -14,9 +14,15 @@
 
 package com.liferay.watson.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.watson.model.WatsonActivityAudit;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WatsonActivityAudit. This utility wraps
@@ -48,9 +54,8 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @param watsonActivityAudit the watson activity audit
 	 * @return the watson activity audit that was added
 	 */
-	public static com.liferay.watson.model.WatsonActivityAudit
-		addWatsonActivityAudit(
-			com.liferay.watson.model.WatsonActivityAudit watsonActivityAudit) {
+	public static WatsonActivityAudit addWatsonActivityAudit(
+		WatsonActivityAudit watsonActivityAudit) {
 
 		return getService().addWatsonActivityAudit(watsonActivityAudit);
 	}
@@ -61,8 +66,8 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @param watsonActivityAuditId the primary key for the new watson activity audit
 	 * @return the new watson activity audit
 	 */
-	public static com.liferay.watson.model.WatsonActivityAudit
-		createWatsonActivityAudit(long watsonActivityAuditId) {
+	public static WatsonActivityAudit createWatsonActivityAudit(
+		long watsonActivityAuditId) {
 
 		return getService().createWatsonActivityAudit(watsonActivityAuditId);
 	}
@@ -70,10 +75,9 @@ public class WatsonActivityAuditLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -89,9 +93,9 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @return the watson activity audit that was removed
 	 * @throws PortalException if a watson activity audit with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonActivityAudit
-			deleteWatsonActivityAudit(long watsonActivityAuditId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonActivityAudit deleteWatsonActivityAudit(
+			long watsonActivityAuditId)
+		throws PortalException {
 
 		return getService().deleteWatsonActivityAudit(watsonActivityAuditId);
 	}
@@ -106,16 +110,13 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @param watsonActivityAudit the watson activity audit
 	 * @return the watson activity audit that was removed
 	 */
-	public static com.liferay.watson.model.WatsonActivityAudit
-		deleteWatsonActivityAudit(
-			com.liferay.watson.model.WatsonActivityAudit watsonActivityAudit) {
+	public static WatsonActivityAudit deleteWatsonActivityAudit(
+		WatsonActivityAudit watsonActivityAudit) {
 
 		return getService().deleteWatsonActivityAudit(watsonActivityAudit);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -125,9 +126,7 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -143,9 +142,8 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -163,10 +161,9 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -178,9 +175,7 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -192,14 +187,14 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.watson.model.WatsonActivityAudit
-		fetchWatsonActivityAudit(long watsonActivityAuditId) {
+	public static WatsonActivityAudit fetchWatsonActivityAudit(
+		long watsonActivityAuditId) {
 
 		return getService().fetchWatsonActivityAudit(watsonActivityAuditId);
 	}
@@ -229,9 +224,8 @@ public class WatsonActivityAuditLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -243,9 +237,9 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @return the watson activity audit
 	 * @throws PortalException if a watson activity audit with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonActivityAudit
-			getWatsonActivityAudit(long watsonActivityAuditId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonActivityAudit getWatsonActivityAudit(
+			long watsonActivityAuditId)
+		throws PortalException {
 
 		return getService().getWatsonActivityAudit(watsonActivityAuditId);
 	}
@@ -261,8 +255,8 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @param end the upper bound of the range of watson activity audits (not inclusive)
 	 * @return the range of watson activity audits
 	 */
-	public static java.util.List<com.liferay.watson.model.WatsonActivityAudit>
-		getWatsonActivityAudits(int start, int end) {
+	public static List<WatsonActivityAudit> getWatsonActivityAudits(
+		int start, int end) {
 
 		return getService().getWatsonActivityAudits(start, end);
 	}
@@ -286,37 +280,16 @@ public class WatsonActivityAuditLocalServiceUtil {
 	 * @param watsonActivityAudit the watson activity audit
 	 * @return the watson activity audit that was updated
 	 */
-	public static com.liferay.watson.model.WatsonActivityAudit
-		updateWatsonActivityAudit(
-			com.liferay.watson.model.WatsonActivityAudit watsonActivityAudit) {
+	public static WatsonActivityAudit updateWatsonActivityAudit(
+		WatsonActivityAudit watsonActivityAudit) {
 
 		return getService().updateWatsonActivityAudit(watsonActivityAudit);
 	}
 
 	public static WatsonActivityAuditLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WatsonActivityAuditLocalService, WatsonActivityAuditLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WatsonActivityAuditLocalService.class);
-
-		ServiceTracker
-			<WatsonActivityAuditLocalService, WatsonActivityAuditLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<WatsonActivityAuditLocalService,
-						 WatsonActivityAuditLocalService>(
-							 bundle.getBundleContext(),
-							 WatsonActivityAuditLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonActivityAuditLocalService _service;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.osb.customer.admin.service.base;
 
 import com.liferay.osb.customer.admin.model.AccountEntryLanguage;
 import com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalService;
+import com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.persistence.AccountAttachmentPersistence;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryLanguagePersistence;
@@ -56,6 +57,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -78,7 +81,7 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AccountEntryLanguageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AccountEntryLanguageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AccountEntryLanguageLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -949,11 +952,15 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.admin.model.AccountEntryLanguage",
 			accountEntryLanguageLocalService);
+
+		_setLocalServiceUtilService(accountEntryLanguageLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.admin.model.AccountEntryLanguage");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -996,6 +1003,23 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		AccountEntryLanguageLocalService accountEntryLanguageLocalService) {
+
+		try {
+			Field field =
+				AccountEntryLanguageLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, accountEntryLanguageLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

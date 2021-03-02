@@ -14,9 +14,10 @@
 
 package com.liferay.osb.loop.token.auth.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.token.auth.model.TokenAuthEntry;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for TokenAuthEntry. This utility wraps
@@ -37,23 +38,20 @@ public class TokenAuthEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.loop.token.auth.service.impl.TokenAuthEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-			addTokenAuthEntry(String device)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TokenAuthEntry addTokenAuthEntry(String device)
+		throws PortalException {
 
 		return getService().addTokenAuthEntry(device);
 	}
 
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-			deleteTokenAuthEntry(long tokenAuthEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TokenAuthEntry deleteTokenAuthEntry(long tokenAuthEntryId)
+		throws PortalException {
 
 		return getService().deleteTokenAuthEntry(tokenAuthEntryId);
 	}
 
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-			deleteTokenAuthEntry(String token)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TokenAuthEntry deleteTokenAuthEntry(String token)
+		throws PortalException {
 
 		return getService().deleteTokenAuthEntry(token);
 	}
@@ -67,34 +65,16 @@ public class TokenAuthEntryServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.token.auth.model.TokenAuthEntry>
-				getTokenAuthEntries(int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<TokenAuthEntry> getTokenAuthEntries(int start, int end)
+		throws PortalException {
 
 		return getService().getTokenAuthEntries(start, end);
 	}
 
 	public static TokenAuthEntryService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<TokenAuthEntryService, TokenAuthEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TokenAuthEntryService.class);
-
-		ServiceTracker<TokenAuthEntryService, TokenAuthEntryService>
-			serviceTracker =
-				new ServiceTracker
-					<TokenAuthEntryService, TokenAuthEntryService>(
-						bundle.getBundleContext(), TokenAuthEntryService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TokenAuthEntryService _service;
 
 }

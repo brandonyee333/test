@@ -16,6 +16,7 @@ package com.liferay.osb.customer.admin.service.base;
 
 import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
+import com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.persistence.AccountAttachmentPersistence;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryLanguagePersistence;
@@ -56,6 +57,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -78,7 +81,7 @@ public abstract class ProductEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ProductEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ProductEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ProductEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -925,11 +928,15 @@ public abstract class ProductEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.admin.model.ProductEntry",
 			productEntryLocalService);
+
+		_setLocalServiceUtilService(productEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.admin.model.ProductEntry");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -971,6 +978,22 @@ public abstract class ProductEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ProductEntryLocalService productEntryLocalService) {
+
+		try {
+			Field field = ProductEntryLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, productEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

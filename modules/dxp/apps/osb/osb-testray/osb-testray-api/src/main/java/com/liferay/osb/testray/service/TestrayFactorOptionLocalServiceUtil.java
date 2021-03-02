@@ -14,9 +14,15 @@
 
 package com.liferay.osb.testray.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.testray.model.TestrayFactorOption;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for TestrayFactorOption. This utility wraps
@@ -48,10 +54,8 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @param testrayFactorOption the testray factor option
 	 * @return the testray factor option that was added
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorOption
-		addTestrayFactorOption(
-			com.liferay.osb.testray.model.TestrayFactorOption
-				testrayFactorOption) {
+	public static TestrayFactorOption addTestrayFactorOption(
+		TestrayFactorOption testrayFactorOption) {
 
 		return getService().addTestrayFactorOption(testrayFactorOption);
 	}
@@ -62,8 +66,8 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @param testrayFactorOptionId the primary key for the new testray factor option
 	 * @return the new testray factor option
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorOption
-		createTestrayFactorOption(long testrayFactorOptionId) {
+	public static TestrayFactorOption createTestrayFactorOption(
+		long testrayFactorOptionId) {
 
 		return getService().createTestrayFactorOption(testrayFactorOptionId);
 	}
@@ -71,10 +75,9 @@ public class TestrayFactorOptionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -90,9 +93,9 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @return the testray factor option that was removed
 	 * @throws PortalException if a testray factor option with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorOption
-			deleteTestrayFactorOption(long testrayFactorOptionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayFactorOption deleteTestrayFactorOption(
+			long testrayFactorOptionId)
+		throws PortalException {
 
 		return getService().deleteTestrayFactorOption(testrayFactorOptionId);
 	}
@@ -107,17 +110,13 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @param testrayFactorOption the testray factor option
 	 * @return the testray factor option that was removed
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorOption
-		deleteTestrayFactorOption(
-			com.liferay.osb.testray.model.TestrayFactorOption
-				testrayFactorOption) {
+	public static TestrayFactorOption deleteTestrayFactorOption(
+		TestrayFactorOption testrayFactorOption) {
 
 		return getService().deleteTestrayFactorOption(testrayFactorOption);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -127,9 +126,7 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -145,9 +142,8 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -165,10 +161,9 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -180,9 +175,7 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -194,14 +187,14 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.testray.model.TestrayFactorOption
-		fetchTestrayFactorOption(long testrayFactorOptionId) {
+	public static TestrayFactorOption fetchTestrayFactorOption(
+		long testrayFactorOptionId) {
 
 		return getService().fetchTestrayFactorOption(testrayFactorOptionId);
 	}
@@ -231,9 +224,8 @@ public class TestrayFactorOptionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -245,9 +237,9 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @return the testray factor option
 	 * @throws PortalException if a testray factor option with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorOption
-			getTestrayFactorOption(long testrayFactorOptionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayFactorOption getTestrayFactorOption(
+			long testrayFactorOptionId)
+		throws PortalException {
 
 		return getService().getTestrayFactorOption(testrayFactorOptionId);
 	}
@@ -263,9 +255,8 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @param end the upper bound of the range of testray factor options (not inclusive)
 	 * @return the range of testray factor options
 	 */
-	public static java.util.List
-		<com.liferay.osb.testray.model.TestrayFactorOption>
-			getTestrayFactorOptions(int start, int end) {
+	public static List<TestrayFactorOption> getTestrayFactorOptions(
+		int start, int end) {
 
 		return getService().getTestrayFactorOptions(start, end);
 	}
@@ -289,38 +280,16 @@ public class TestrayFactorOptionLocalServiceUtil {
 	 * @param testrayFactorOption the testray factor option
 	 * @return the testray factor option that was updated
 	 */
-	public static com.liferay.osb.testray.model.TestrayFactorOption
-		updateTestrayFactorOption(
-			com.liferay.osb.testray.model.TestrayFactorOption
-				testrayFactorOption) {
+	public static TestrayFactorOption updateTestrayFactorOption(
+		TestrayFactorOption testrayFactorOption) {
 
 		return getService().updateTestrayFactorOption(testrayFactorOption);
 	}
 
 	public static TestrayFactorOptionLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TestrayFactorOptionLocalService, TestrayFactorOptionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			TestrayFactorOptionLocalService.class);
-
-		ServiceTracker
-			<TestrayFactorOptionLocalService, TestrayFactorOptionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<TestrayFactorOptionLocalService,
-						 TestrayFactorOptionLocalService>(
-							 bundle.getBundleContext(),
-							 TestrayFactorOptionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TestrayFactorOptionLocalService _service;
 
 }

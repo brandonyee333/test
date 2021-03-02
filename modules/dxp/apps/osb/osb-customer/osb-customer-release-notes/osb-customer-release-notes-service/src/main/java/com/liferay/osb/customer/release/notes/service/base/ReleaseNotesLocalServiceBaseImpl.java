@@ -16,6 +16,7 @@ package com.liferay.osb.customer.release.notes.service.base;
 
 import com.liferay.osb.customer.release.notes.model.ReleaseNotes;
 import com.liferay.osb.customer.release.notes.service.ReleaseNotesLocalService;
+import com.liferay.osb.customer.release.notes.service.ReleaseNotesLocalServiceUtil;
 import com.liferay.osb.customer.release.notes.service.persistence.ReleaseNotesPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -46,6 +47,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -68,7 +71,7 @@ public abstract class ReleaseNotesLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ReleaseNotesLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.release.notes.service.ReleaseNotesLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ReleaseNotesLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ReleaseNotesLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -524,11 +527,15 @@ public abstract class ReleaseNotesLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.release.notes.model.ReleaseNotes",
 			releaseNotesLocalService);
+
+		_setLocalServiceUtilService(releaseNotesLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.release.notes.model.ReleaseNotes");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -570,6 +577,22 @@ public abstract class ReleaseNotesLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ReleaseNotesLocalService releaseNotesLocalService) {
+
+		try {
+			Field field = ReleaseNotesLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, releaseNotesLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

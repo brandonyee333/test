@@ -14,7 +14,15 @@
 
 package com.liferay.message.boards.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.message.boards.kernel.model.MBDiscussion;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for MBDiscussion. This utility wraps
@@ -35,12 +43,11 @@ public class MBDiscussionLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.portlet.messageboards.service.impl.MBDiscussionLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-			addDiscussion(
-				long userId, long groupId, long classNameId, long classPK,
-				long threadId,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MBDiscussion addDiscussion(
+			long userId, long groupId, long classNameId, long classPK,
+			long threadId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().addDiscussion(
 			userId, groupId, classNameId, classPK, threadId, serviceContext);
@@ -51,11 +58,10 @@ public class MBDiscussionLocalServiceUtil {
 	 #addDiscussion(long, long, long, long, long, ServiceContext)}
 	 */
 	@Deprecated
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-			addDiscussion(
-				long userId, long classNameId, long classPK, long threadId,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MBDiscussion addDiscussion(
+			long userId, long classNameId, long classPK, long threadId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().addDiscussion(
 			userId, classNameId, classPK, threadId, serviceContext);
@@ -71,10 +77,7 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param mbDiscussion the message boards discussion
 	 * @return the message boards discussion that was added
 	 */
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-		addMBDiscussion(
-			com.liferay.message.boards.kernel.model.MBDiscussion mbDiscussion) {
-
+	public static MBDiscussion addMBDiscussion(MBDiscussion mbDiscussion) {
 		return getService().addMBDiscussion(mbDiscussion);
 	}
 
@@ -84,9 +87,7 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param discussionId the primary key for the new message boards discussion
 	 * @return the new message boards discussion
 	 */
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-		createMBDiscussion(long discussionId) {
-
+	public static MBDiscussion createMBDiscussion(long discussionId) {
 		return getService().createMBDiscussion(discussionId);
 	}
 
@@ -101,9 +102,8 @@ public class MBDiscussionLocalServiceUtil {
 	 * @return the message boards discussion that was removed
 	 * @throws PortalException if a message boards discussion with the primary key could not be found
 	 */
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-			deleteMBDiscussion(long discussionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MBDiscussion deleteMBDiscussion(long discussionId)
+		throws PortalException {
 
 		return getService().deleteMBDiscussion(discussionId);
 	}
@@ -118,27 +118,21 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param mbDiscussion the message boards discussion
 	 * @return the message boards discussion that was removed
 	 */
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-		deleteMBDiscussion(
-			com.liferay.message.boards.kernel.model.MBDiscussion mbDiscussion) {
-
+	public static MBDiscussion deleteMBDiscussion(MBDiscussion mbDiscussion) {
 		return getService().deleteMBDiscussion(mbDiscussion);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -148,9 +142,7 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -166,9 +158,8 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -186,10 +177,9 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -201,9 +191,7 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -215,27 +203,21 @@ public class MBDiscussionLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-		fetchDiscussion(long discussionId) {
-
+	public static MBDiscussion fetchDiscussion(long discussionId) {
 		return getService().fetchDiscussion(discussionId);
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-		fetchDiscussion(String className, long classPK) {
-
+	public static MBDiscussion fetchDiscussion(String className, long classPK) {
 		return getService().fetchDiscussion(className, classPK);
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-		fetchMBDiscussion(long discussionId) {
-
+	public static MBDiscussion fetchMBDiscussion(long discussionId) {
 		return getService().fetchMBDiscussion(discussionId);
 	}
 
@@ -246,15 +228,13 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param groupId the primary key of the group
 	 * @return the matching message boards discussion, or <code>null</code> if a matching message boards discussion could not be found
 	 */
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-		fetchMBDiscussionByUuidAndGroupId(String uuid, long groupId) {
+	public static MBDiscussion fetchMBDiscussionByUuidAndGroupId(
+		String uuid, long groupId) {
 
 		return getService().fetchMBDiscussionByUuidAndGroupId(uuid, groupId);
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-		fetchThreadDiscussion(long threadId) {
-
+	public static MBDiscussion fetchThreadDiscussion(long threadId) {
 		return getService().fetchThreadDiscussion(threadId);
 	}
 
@@ -264,16 +244,14 @@ public class MBDiscussionLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-			getDiscussion(long discussionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MBDiscussion getDiscussion(long discussionId)
+		throws PortalException {
 
 		return getService().getDiscussion(discussionId);
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-			getDiscussion(String className, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MBDiscussion getDiscussion(String className, long classPK)
+		throws PortalException {
 
 		return getService().getDiscussion(className, classPK);
 	}
@@ -300,9 +278,8 @@ public class MBDiscussionLocalServiceUtil {
 	 * @return the message boards discussion
 	 * @throws PortalException if a message boards discussion with the primary key could not be found
 	 */
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-			getMBDiscussion(long discussionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MBDiscussion getMBDiscussion(long discussionId)
+		throws PortalException {
 
 		return getService().getMBDiscussion(discussionId);
 	}
@@ -315,9 +292,9 @@ public class MBDiscussionLocalServiceUtil {
 	 * @return the matching message boards discussion
 	 * @throws PortalException if a matching message boards discussion could not be found
 	 */
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-			getMBDiscussionByUuidAndGroupId(String uuid, long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MBDiscussion getMBDiscussionByUuidAndGroupId(
+			String uuid, long groupId)
+		throws PortalException {
 
 		return getService().getMBDiscussionByUuidAndGroupId(uuid, groupId);
 	}
@@ -333,10 +310,7 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param end the upper bound of the range of message boards discussions (not inclusive)
 	 * @return the range of message boards discussions
 	 */
-	public static java.util.List
-		<com.liferay.message.boards.kernel.model.MBDiscussion> getMBDiscussions(
-			int start, int end) {
-
+	public static List<MBDiscussion> getMBDiscussions(int start, int end) {
 		return getService().getMBDiscussions(start, end);
 	}
 
@@ -347,9 +321,8 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching message boards discussions, or an empty list if no matches were found
 	 */
-	public static java.util.List
-		<com.liferay.message.boards.kernel.model.MBDiscussion>
-			getMBDiscussionsByUuidAndCompanyId(String uuid, long companyId) {
+	public static List<MBDiscussion> getMBDiscussionsByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().getMBDiscussionsByUuidAndCompanyId(uuid, companyId);
 	}
@@ -364,13 +337,9 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the range of matching message boards discussions, or an empty list if no matches were found
 	 */
-	public static java.util.List
-		<com.liferay.message.boards.kernel.model.MBDiscussion>
-			getMBDiscussionsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
-				com.liferay.portal.kernel.util.OrderByComparator
-					<com.liferay.message.boards.kernel.model.MBDiscussion>
-						orderByComparator) {
+	public static List<MBDiscussion> getMBDiscussionsByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<MBDiscussion> orderByComparator) {
 
 		return getService().getMBDiscussionsByUuidAndCompanyId(
 			uuid, companyId, start, end, orderByComparator);
@@ -397,30 +366,28 @@ public class MBDiscussionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-			getThreadDiscussion(long threadId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MBDiscussion getThreadDiscussion(long threadId)
+		throws PortalException {
 
 		return getService().getThreadDiscussion(threadId);
 	}
 
 	public static void subscribeDiscussion(
 			long userId, long groupId, String className, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().subscribeDiscussion(userId, groupId, className, classPK);
 	}
 
 	public static void unsubscribeDiscussion(
 			long userId, String className, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().unsubscribeDiscussion(userId, className, classPK);
 	}
@@ -435,22 +402,14 @@ public class MBDiscussionLocalServiceUtil {
 	 * @param mbDiscussion the message boards discussion
 	 * @return the message boards discussion that was updated
 	 */
-	public static com.liferay.message.boards.kernel.model.MBDiscussion
-		updateMBDiscussion(
-			com.liferay.message.boards.kernel.model.MBDiscussion mbDiscussion) {
-
+	public static MBDiscussion updateMBDiscussion(MBDiscussion mbDiscussion) {
 		return getService().updateMBDiscussion(mbDiscussion);
 	}
 
 	public static MBDiscussionLocalService getService() {
-		if (_service == null) {
-			_service = (MBDiscussionLocalService)PortalBeanLocatorUtil.locate(
-				MBDiscussionLocalService.class.getName());
-		}
-
 		return _service;
 	}
 
-	private static MBDiscussionLocalService _service;
+	private static volatile MBDiscussionLocalService _service;
 
 }

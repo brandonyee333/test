@@ -14,10 +14,6 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for AuditEntry. This utility wraps
  * <code>com.liferay.osb.customer.admin.service.impl.AuditEntryServiceImpl</code> and is an
@@ -43,27 +39,14 @@ public class AuditEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static AuditEntryService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<AuditEntryService, AuditEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AuditEntryService.class);
-
-		ServiceTracker<AuditEntryService, AuditEntryService> serviceTracker =
-			new ServiceTracker<AuditEntryService, AuditEntryService>(
-				bundle.getBundleContext(), AuditEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AuditEntryService _service;
 
 }

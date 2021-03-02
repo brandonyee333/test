@@ -22,6 +22,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.message.boards.kernel.model.MBDiscussion;
 import com.liferay.message.boards.kernel.service.MBDiscussionLocalService;
+import com.liferay.message.boards.kernel.service.MBDiscussionLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.persistence.MBDiscussionPersistence;
 import com.liferay.message.boards.kernel.service.persistence.MBMailingListPersistence;
 import com.liferay.message.boards.kernel.service.persistence.MBMessageFinder;
@@ -61,6 +62,8 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -83,7 +86,7 @@ public abstract class MBDiscussionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MBDiscussionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.message.boards.kernel.service.MBDiscussionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MBDiscussionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MBDiscussionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -917,11 +920,15 @@ public abstract class MBDiscussionLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.message.boards.kernel.model.MBDiscussion",
 			mbDiscussionLocalService);
+
+		_setLocalServiceUtilService(mbDiscussionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.message.boards.kernel.model.MBDiscussion");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -963,6 +970,22 @@ public abstract class MBDiscussionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		MBDiscussionLocalService mbDiscussionLocalService) {
+
+		try {
+			Field field = MBDiscussionLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, mbDiscussionLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

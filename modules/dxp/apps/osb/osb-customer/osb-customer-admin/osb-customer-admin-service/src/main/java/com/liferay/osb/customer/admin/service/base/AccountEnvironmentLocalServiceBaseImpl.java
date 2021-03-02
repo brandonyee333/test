@@ -16,6 +16,7 @@ package com.liferay.osb.customer.admin.service.base;
 
 import com.liferay.osb.customer.admin.model.AccountEnvironment;
 import com.liferay.osb.customer.admin.service.AccountEnvironmentLocalService;
+import com.liferay.osb.customer.admin.service.AccountEnvironmentLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.persistence.AccountAttachmentPersistence;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryLanguagePersistence;
@@ -57,6 +58,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -79,7 +82,7 @@ public abstract class AccountEnvironmentLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AccountEnvironmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AccountEnvironmentLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AccountEnvironmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AccountEnvironmentLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -987,11 +990,15 @@ public abstract class AccountEnvironmentLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.admin.model.AccountEnvironment",
 			accountEnvironmentLocalService);
+
+		_setLocalServiceUtilService(accountEnvironmentLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.admin.model.AccountEnvironment");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1034,6 +1041,23 @@ public abstract class AccountEnvironmentLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		AccountEnvironmentLocalService accountEnvironmentLocalService) {
+
+		try {
+			Field field =
+				AccountEnvironmentLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, accountEnvironmentLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

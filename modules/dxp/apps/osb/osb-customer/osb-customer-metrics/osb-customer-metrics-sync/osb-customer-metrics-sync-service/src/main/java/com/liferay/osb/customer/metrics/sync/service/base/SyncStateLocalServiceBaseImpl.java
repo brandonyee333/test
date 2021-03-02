@@ -16,6 +16,7 @@ package com.liferay.osb.customer.metrics.sync.service.base;
 
 import com.liferay.osb.customer.metrics.sync.model.SyncState;
 import com.liferay.osb.customer.metrics.sync.service.SyncStateLocalService;
+import com.liferay.osb.customer.metrics.sync.service.SyncStateLocalServiceUtil;
 import com.liferay.osb.customer.metrics.sync.service.persistence.SyncStatePersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -46,6 +47,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -68,7 +71,7 @@ public abstract class SyncStateLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>SyncStateLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.metrics.sync.service.SyncStateLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>SyncStateLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>SyncStateLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -519,11 +522,15 @@ public abstract class SyncStateLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.metrics.sync.model.SyncState",
 			syncStateLocalService);
+
+		_setLocalServiceUtilService(syncStateLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.metrics.sync.model.SyncState");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -565,6 +572,22 @@ public abstract class SyncStateLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		SyncStateLocalService syncStateLocalService) {
+
+		try {
+			Field field = SyncStateLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, syncStateLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -16,6 +16,7 @@ package com.liferay.osb.customer.release.tool.service.base;
 
 import com.liferay.osb.customer.release.tool.model.ArtifactVersion;
 import com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalService;
+import com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalServiceUtil;
 import com.liferay.osb.customer.release.tool.service.persistence.ArtifactVersionFinder;
 import com.liferay.osb.customer.release.tool.service.persistence.ArtifactVersionPersistence;
 import com.liferay.osb.customer.release.tool.service.persistence.JIRAComponentPersistence;
@@ -48,6 +49,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -70,7 +73,7 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ArtifactVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ArtifactVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ArtifactVersionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -594,11 +597,15 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.customer.release.tool.model.ArtifactVersion",
 			artifactVersionLocalService);
+
+		_setLocalServiceUtilService(artifactVersionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.release.tool.model.ArtifactVersion");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -640,6 +647,23 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ArtifactVersionLocalService artifactVersionLocalService) {
+
+		try {
+			Field field =
+				ArtifactVersionLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, artifactVersionLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

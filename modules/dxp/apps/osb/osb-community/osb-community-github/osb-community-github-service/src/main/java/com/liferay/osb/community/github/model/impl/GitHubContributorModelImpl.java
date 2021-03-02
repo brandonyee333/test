@@ -670,6 +670,8 @@ public class GitHubContributorModelImpl
 
 	@Override
 	public void setContributions(int contributions) {
+		_columnBitmask = -1L;
+
 		_contributions = contributions;
 	}
 

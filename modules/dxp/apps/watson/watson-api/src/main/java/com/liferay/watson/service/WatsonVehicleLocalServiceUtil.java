@@ -14,9 +14,15 @@
 
 package com.liferay.watson.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.watson.model.WatsonVehicle;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WatsonVehicle. This utility wraps
@@ -48,9 +54,7 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @param watsonVehicle the watson vehicle
 	 * @return the watson vehicle that was added
 	 */
-	public static com.liferay.watson.model.WatsonVehicle addWatsonVehicle(
-		com.liferay.watson.model.WatsonVehicle watsonVehicle) {
-
+	public static WatsonVehicle addWatsonVehicle(WatsonVehicle watsonVehicle) {
 		return getService().addWatsonVehicle(watsonVehicle);
 	}
 
@@ -60,19 +64,16 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @param watsonVehicleId the primary key for the new watson vehicle
 	 * @return the new watson vehicle
 	 */
-	public static com.liferay.watson.model.WatsonVehicle createWatsonVehicle(
-		long watsonVehicleId) {
-
+	public static WatsonVehicle createWatsonVehicle(long watsonVehicleId) {
 		return getService().createWatsonVehicle(watsonVehicleId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -88,9 +89,8 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @return the watson vehicle that was removed
 	 * @throws PortalException if a watson vehicle with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonVehicle deleteWatsonVehicle(
-			long watsonVehicleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonVehicle deleteWatsonVehicle(long watsonVehicleId)
+		throws PortalException {
 
 		return getService().deleteWatsonVehicle(watsonVehicleId);
 	}
@@ -105,15 +105,13 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @param watsonVehicle the watson vehicle
 	 * @return the watson vehicle that was removed
 	 */
-	public static com.liferay.watson.model.WatsonVehicle deleteWatsonVehicle(
-		com.liferay.watson.model.WatsonVehicle watsonVehicle) {
+	public static WatsonVehicle deleteWatsonVehicle(
+		WatsonVehicle watsonVehicle) {
 
 		return getService().deleteWatsonVehicle(watsonVehicle);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -123,9 +121,7 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -141,9 +137,8 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -161,10 +156,9 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -176,9 +170,7 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -190,15 +182,13 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.watson.model.WatsonVehicle fetchWatsonVehicle(
-		long watsonVehicleId) {
-
+	public static WatsonVehicle fetchWatsonVehicle(long watsonVehicleId) {
 		return getService().fetchWatsonVehicle(watsonVehicleId);
 	}
 
@@ -227,9 +217,8 @@ public class WatsonVehicleLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -241,9 +230,8 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @return the watson vehicle
 	 * @throws PortalException if a watson vehicle with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonVehicle getWatsonVehicle(
-			long watsonVehicleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonVehicle getWatsonVehicle(long watsonVehicleId)
+		throws PortalException {
 
 		return getService().getWatsonVehicle(watsonVehicleId);
 	}
@@ -259,9 +247,7 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @param end the upper bound of the range of watson vehicles (not inclusive)
 	 * @return the range of watson vehicles
 	 */
-	public static java.util.List<com.liferay.watson.model.WatsonVehicle>
-		getWatsonVehicles(int start, int end) {
-
+	public static List<WatsonVehicle> getWatsonVehicles(int start, int end) {
 		return getService().getWatsonVehicles(start, end);
 	}
 
@@ -284,33 +270,16 @@ public class WatsonVehicleLocalServiceUtil {
 	 * @param watsonVehicle the watson vehicle
 	 * @return the watson vehicle that was updated
 	 */
-	public static com.liferay.watson.model.WatsonVehicle updateWatsonVehicle(
-		com.liferay.watson.model.WatsonVehicle watsonVehicle) {
+	public static WatsonVehicle updateWatsonVehicle(
+		WatsonVehicle watsonVehicle) {
 
 		return getService().updateWatsonVehicle(watsonVehicle);
 	}
 
 	public static WatsonVehicleLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WatsonVehicleLocalService, WatsonVehicleLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WatsonVehicleLocalService.class);
-
-		ServiceTracker<WatsonVehicleLocalService, WatsonVehicleLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<WatsonVehicleLocalService, WatsonVehicleLocalService>(
-						bundle.getBundleContext(),
-						WatsonVehicleLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonVehicleLocalService _service;
 
 }

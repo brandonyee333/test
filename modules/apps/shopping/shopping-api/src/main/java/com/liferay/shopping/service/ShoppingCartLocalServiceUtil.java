@@ -14,9 +14,16 @@
 
 package com.liferay.shopping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.shopping.model.ShoppingCart;
+
+import java.io.Serializable;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service utility for ShoppingCart. This utility wraps
@@ -48,9 +55,7 @@ public class ShoppingCartLocalServiceUtil {
 	 * @param shoppingCart the shopping cart
 	 * @return the shopping cart that was added
 	 */
-	public static com.liferay.shopping.model.ShoppingCart addShoppingCart(
-		com.liferay.shopping.model.ShoppingCart shoppingCart) {
-
+	public static ShoppingCart addShoppingCart(ShoppingCart shoppingCart) {
 		return getService().addShoppingCart(shoppingCart);
 	}
 
@@ -60,9 +65,7 @@ public class ShoppingCartLocalServiceUtil {
 	 * @param cartId the primary key for the new shopping cart
 	 * @return the new shopping cart
 	 */
-	public static com.liferay.shopping.model.ShoppingCart createShoppingCart(
-		long cartId) {
-
+	public static ShoppingCart createShoppingCart(long cartId) {
 		return getService().createShoppingCart(cartId);
 	}
 
@@ -73,10 +76,9 @@ public class ShoppingCartLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -92,9 +94,8 @@ public class ShoppingCartLocalServiceUtil {
 	 * @return the shopping cart that was removed
 	 * @throws PortalException if a shopping cart with the primary key could not be found
 	 */
-	public static com.liferay.shopping.model.ShoppingCart deleteShoppingCart(
-			long cartId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCart deleteShoppingCart(long cartId)
+		throws PortalException {
 
 		return getService().deleteShoppingCart(cartId);
 	}
@@ -109,9 +110,7 @@ public class ShoppingCartLocalServiceUtil {
 	 * @param shoppingCart the shopping cart
 	 * @return the shopping cart that was removed
 	 */
-	public static com.liferay.shopping.model.ShoppingCart deleteShoppingCart(
-		com.liferay.shopping.model.ShoppingCart shoppingCart) {
-
+	public static ShoppingCart deleteShoppingCart(ShoppingCart shoppingCart) {
 		return getService().deleteShoppingCart(shoppingCart);
 	}
 
@@ -119,9 +118,7 @@ public class ShoppingCartLocalServiceUtil {
 		getService().deleteUserCarts(userId);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -131,9 +128,7 @@ public class ShoppingCartLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -149,9 +144,8 @@ public class ShoppingCartLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -169,10 +163,9 @@ public class ShoppingCartLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -184,9 +177,7 @@ public class ShoppingCartLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -198,15 +189,13 @@ public class ShoppingCartLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.shopping.model.ShoppingCart fetchShoppingCart(
-		long cartId) {
-
+	public static ShoppingCart fetchShoppingCart(long cartId) {
 		return getService().fetchShoppingCart(cartId);
 	}
 
@@ -216,9 +205,8 @@ public class ShoppingCartLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static com.liferay.shopping.model.ShoppingCart getCart(
-			long userId, long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCart getCart(long userId, long groupId)
+		throws PortalException {
 
 		return getService().getCart(userId, groupId);
 	}
@@ -230,9 +218,8 @@ public class ShoppingCartLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
-	public static java.util.Map
-		<com.liferay.shopping.model.ShoppingCartItem, Integer> getItems(
-			long groupId, String itemIds) {
+	public static Map<com.liferay.shopping.model.ShoppingCartItem, Integer>
+		getItems(long groupId, String itemIds) {
 
 		return getService().getItems(groupId, itemIds);
 	}
@@ -249,9 +236,8 @@ public class ShoppingCartLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -263,9 +249,8 @@ public class ShoppingCartLocalServiceUtil {
 	 * @return the shopping cart
 	 * @throws PortalException if a shopping cart with the primary key could not be found
 	 */
-	public static com.liferay.shopping.model.ShoppingCart getShoppingCart(
-			long cartId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingCart getShoppingCart(long cartId)
+		throws PortalException {
 
 		return getService().getShoppingCart(cartId);
 	}
@@ -281,9 +266,7 @@ public class ShoppingCartLocalServiceUtil {
 	 * @param end the upper bound of the range of shopping carts (not inclusive)
 	 * @return the range of shopping carts
 	 */
-	public static java.util.List<com.liferay.shopping.model.ShoppingCart>
-		getShoppingCarts(int start, int end) {
-
+	public static List<ShoppingCart> getShoppingCarts(int start, int end) {
 		return getService().getShoppingCarts(start, end);
 	}
 
@@ -296,10 +279,10 @@ public class ShoppingCartLocalServiceUtil {
 		return getService().getShoppingCartsCount();
 	}
 
-	public static com.liferay.shopping.model.ShoppingCart updateCart(
+	public static ShoppingCart updateCart(
 			long userId, long groupId, String itemIds, String couponCodes,
 			int altShipping, boolean insure)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateCart(
 			userId, groupId, itemIds, couponCodes, altShipping, insure);
@@ -315,32 +298,14 @@ public class ShoppingCartLocalServiceUtil {
 	 * @param shoppingCart the shopping cart
 	 * @return the shopping cart that was updated
 	 */
-	public static com.liferay.shopping.model.ShoppingCart updateShoppingCart(
-		com.liferay.shopping.model.ShoppingCart shoppingCart) {
-
+	public static ShoppingCart updateShoppingCart(ShoppingCart shoppingCart) {
 		return getService().updateShoppingCart(shoppingCart);
 	}
 
 	public static ShoppingCartLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ShoppingCartLocalService, ShoppingCartLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ShoppingCartLocalService.class);
-
-		ServiceTracker<ShoppingCartLocalService, ShoppingCartLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ShoppingCartLocalService, ShoppingCartLocalService>(
-						bundle.getBundleContext(),
-						ShoppingCartLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ShoppingCartLocalService _service;
 
 }

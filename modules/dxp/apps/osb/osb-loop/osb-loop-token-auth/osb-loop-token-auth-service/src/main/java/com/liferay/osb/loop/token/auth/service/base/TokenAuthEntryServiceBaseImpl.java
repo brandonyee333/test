@@ -16,6 +16,7 @@ package com.liferay.osb.loop.token.auth.service.base;
 
 import com.liferay.osb.loop.token.auth.model.TokenAuthEntry;
 import com.liferay.osb.loop.token.auth.service.TokenAuthEntryService;
+import com.liferay.osb.loop.token.auth.service.TokenAuthEntryServiceUtil;
 import com.liferay.osb.loop.token.auth.service.persistence.TokenAuthEntryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -29,6 +30,8 @@ import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -50,7 +53,7 @@ public abstract class TokenAuthEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TokenAuthEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.token.auth.service.TokenAuthEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TokenAuthEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TokenAuthEntryServiceUtil</code>.
 	 */
 
 	/**
@@ -288,9 +291,11 @@ public abstract class TokenAuthEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(tokenAuthEntryService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -332,6 +337,22 @@ public abstract class TokenAuthEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		TokenAuthEntryService tokenAuthEntryService) {
+
+		try {
+			Field field = TokenAuthEntryServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, tokenAuthEntryService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -14,9 +14,16 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.admin.model.AccountAttachment;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.InputStream;
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for AccountAttachment. This utility wraps
@@ -48,35 +55,30 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @param accountAttachment the account attachment
 	 * @return the account attachment that was added
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountAttachment
-		addAccountAttachment(
-			com.liferay.osb.customer.admin.model.AccountAttachment
-				accountAttachment) {
+	public static AccountAttachment addAccountAttachment(
+		AccountAttachment accountAttachment) {
 
 		return getService().addAccountAttachment(accountAttachment);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountAttachment
-			addAccountAttachment(
-				long userId, long accountEntryId, long accountProjectId,
-				com.liferay.portal.kernel.util.ObjectValuePair
-					<String, java.io.File> fileOVP,
-				int type)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountAttachment addAccountAttachment(
+			long userId, long accountEntryId, long accountProjectId,
+			com.liferay.portal.kernel.util.ObjectValuePair<String, java.io.File>
+				fileOVP,
+			int type)
+		throws PortalException {
 
 		return getService().addAccountAttachment(
 			userId, accountEntryId, accountProjectId, fileOVP, type);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountAttachment>
-				addAccountAttachments(
-					long userId, long accountEntryId, long accountProjectId,
-					java.util.List
-						<com.liferay.portal.kernel.util.ObjectValuePair
-							<String, java.io.File>> files,
-					java.util.List<Integer> types)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<AccountAttachment> addAccountAttachments(
+			long userId, long accountEntryId, long accountProjectId,
+			List
+				<com.liferay.portal.kernel.util.ObjectValuePair
+					<String, java.io.File>> files,
+			List<Integer> types)
+		throws PortalException {
 
 		return getService().addAccountAttachments(
 			userId, accountEntryId, accountProjectId, files, types);
@@ -88,8 +90,8 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @param accountAttachmentId the primary key for the new account attachment
 	 * @return the new account attachment
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountAttachment
-		createAccountAttachment(long accountAttachmentId) {
+	public static AccountAttachment createAccountAttachment(
+		long accountAttachmentId) {
 
 		return getService().createAccountAttachment(accountAttachmentId);
 	}
@@ -105,11 +107,9 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @return the account attachment that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountAttachment
-			deleteAccountAttachment(
-				com.liferay.osb.customer.admin.model.AccountAttachment
-					accountAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountAttachment deleteAccountAttachment(
+			AccountAttachment accountAttachment)
+		throws PortalException {
 
 		return getService().deleteAccountAttachment(accountAttachment);
 	}
@@ -125,16 +125,16 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @return the account attachment that was removed
 	 * @throws PortalException if a account attachment with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountAttachment
-			deleteAccountAttachment(long accountAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountAttachment deleteAccountAttachment(
+			long accountAttachmentId)
+		throws PortalException {
 
 		return getService().deleteAccountAttachment(accountAttachmentId);
 	}
 
 	public static void deleteAccountAttachments(
 			long accountEntryId, long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteAccountAttachments(accountEntryId, accountProjectId);
 	}
@@ -142,17 +142,14 @@ public class AccountAttachmentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -162,9 +159,7 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -180,9 +175,8 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -200,10 +194,9 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -215,9 +208,7 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -229,14 +220,14 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountAttachment
-		fetchAccountAttachment(long accountAttachmentId) {
+	public static AccountAttachment fetchAccountAttachment(
+		long accountAttachmentId) {
 
 		return getService().fetchAccountAttachment(accountAttachmentId);
 	}
@@ -248,9 +239,9 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @return the account attachment
 	 * @throws PortalException if a account attachment with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountAttachment
-			getAccountAttachment(long accountAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountAttachment getAccountAttachment(
+			long accountAttachmentId)
+		throws PortalException {
 
 		return getService().getAccountAttachment(accountAttachmentId);
 	}
@@ -266,32 +257,27 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @param end the upper bound of the range of account attachments (not inclusive)
 	 * @return the range of account attachments
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountAttachment>
-			getAccountAttachments(int start, int end) {
+	public static List<AccountAttachment> getAccountAttachments(
+		int start, int end) {
 
 		return getService().getAccountAttachments(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountAttachment>
-			getAccountAttachments(long accountEntryId) {
+	public static List<AccountAttachment> getAccountAttachments(
+		long accountEntryId) {
 
 		return getService().getAccountAttachments(accountEntryId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountAttachment>
-			getAccountAttachments(long accountEntryId, long accountProjectId) {
+	public static List<AccountAttachment> getAccountAttachments(
+		long accountEntryId, long accountProjectId) {
 
 		return getService().getAccountAttachments(
 			accountEntryId, accountProjectId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountAttachment>
-			getAccountAttachments(
-				long accountEntryId, long accountProjectId, int type) {
+	public static List<AccountAttachment> getAccountAttachments(
+		long accountEntryId, long accountProjectId, int type) {
 
 		return getService().getAccountAttachments(
 			accountEntryId, accountProjectId, type);
@@ -312,10 +298,9 @@ public class AccountAttachmentLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static java.io.InputStream getFileAsStream(
-			com.liferay.osb.customer.admin.model.AccountAttachment
-				accountAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static InputStream getFileAsStream(
+			AccountAttachment accountAttachment)
+		throws PortalException {
 
 		return getService().getFileAsStream(accountAttachment);
 	}
@@ -339,9 +324,8 @@ public class AccountAttachmentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -356,38 +340,16 @@ public class AccountAttachmentLocalServiceUtil {
 	 * @param accountAttachment the account attachment
 	 * @return the account attachment that was updated
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountAttachment
-		updateAccountAttachment(
-			com.liferay.osb.customer.admin.model.AccountAttachment
-				accountAttachment) {
+	public static AccountAttachment updateAccountAttachment(
+		AccountAttachment accountAttachment) {
 
 		return getService().updateAccountAttachment(accountAttachment);
 	}
 
 	public static AccountAttachmentLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AccountAttachmentLocalService, AccountAttachmentLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AccountAttachmentLocalService.class);
-
-		ServiceTracker
-			<AccountAttachmentLocalService, AccountAttachmentLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<AccountAttachmentLocalService,
-						 AccountAttachmentLocalService>(
-							 bundle.getBundleContext(),
-							 AccountAttachmentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountAttachmentLocalService _service;
 
 }

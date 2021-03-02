@@ -26,6 +26,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.service.MBThreadLocalService;
+import com.liferay.message.boards.kernel.service.MBThreadLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.persistence.MBCategoryFinder;
 import com.liferay.message.boards.kernel.service.persistence.MBCategoryPersistence;
 import com.liferay.message.boards.kernel.service.persistence.MBMessageFinder;
@@ -78,6 +79,8 @@ import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -100,7 +103,7 @@ public abstract class MBThreadLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MBThreadLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.message.boards.kernel.service.MBThreadLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MBThreadLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MBThreadLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1311,11 +1314,15 @@ public abstract class MBThreadLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.message.boards.kernel.model.MBThread",
 			mbThreadLocalService);
+
+		_setLocalServiceUtilService(mbThreadLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.message.boards.kernel.model.MBThread");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1357,6 +1364,22 @@ public abstract class MBThreadLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		MBThreadLocalService mbThreadLocalService) {
+
+		try {
+			Field field = MBThreadLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, mbThreadLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

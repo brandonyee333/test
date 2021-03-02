@@ -14,9 +14,7 @@
 
 package com.liferay.contacts.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for Entry. This utility wraps
@@ -50,28 +48,16 @@ public class EntryServiceUtil {
 	public static com.liferay.portal.kernel.json.JSONArray
 			searchUsersAndContacts(
 				long companyId, String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().searchUsersAndContacts(
 			companyId, keywords, start, end);
 	}
 
 	public static EntryService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<EntryService, EntryService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(EntryService.class);
-
-		ServiceTracker<EntryService, EntryService> serviceTracker =
-			new ServiceTracker<EntryService, EntryService>(
-				bundle.getBundleContext(), EntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile EntryService _service;
 
 }

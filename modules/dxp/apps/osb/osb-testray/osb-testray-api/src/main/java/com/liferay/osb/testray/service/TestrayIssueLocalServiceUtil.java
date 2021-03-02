@@ -14,9 +14,15 @@
 
 package com.liferay.osb.testray.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.testray.model.TestrayIssue;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for TestrayIssue. This utility wraps
@@ -45,17 +51,14 @@ public class TestrayIssueLocalServiceUtil {
 	}
 
 	public static void addTestrayCaseResultTestrayIssue(
-		long testrayCaseResultId,
-		com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
+		long testrayCaseResultId, TestrayIssue testrayIssue) {
 
 		getService().addTestrayCaseResultTestrayIssue(
 			testrayCaseResultId, testrayIssue);
 	}
 
 	public static void addTestrayCaseResultTestrayIssues(
-		long testrayCaseResultId,
-		java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-			testrayIssues) {
+		long testrayCaseResultId, List<TestrayIssue> testrayIssues) {
 
 		getService().addTestrayCaseResultTestrayIssues(
 			testrayCaseResultId, testrayIssues);
@@ -78,9 +81,7 @@ public class TestrayIssueLocalServiceUtil {
 	 * @param testrayIssue the testray issue
 	 * @return the testray issue that was added
 	 */
-	public static com.liferay.osb.testray.model.TestrayIssue addTestrayIssue(
-		com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
-
+	public static TestrayIssue addTestrayIssue(TestrayIssue testrayIssue) {
 		return getService().addTestrayIssue(testrayIssue);
 	}
 
@@ -92,17 +93,14 @@ public class TestrayIssueLocalServiceUtil {
 	}
 
 	public static void addTestraySubtaskTestrayIssue(
-		long testraySubtaskId,
-		com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
+		long testraySubtaskId, TestrayIssue testrayIssue) {
 
 		getService().addTestraySubtaskTestrayIssue(
 			testraySubtaskId, testrayIssue);
 	}
 
 	public static void addTestraySubtaskTestrayIssues(
-		long testraySubtaskId,
-		java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-			testrayIssues) {
+		long testraySubtaskId, List<TestrayIssue> testrayIssues) {
 
 		getService().addTestraySubtaskTestrayIssues(
 			testraySubtaskId, testrayIssues);
@@ -131,19 +129,16 @@ public class TestrayIssueLocalServiceUtil {
 	 * @param testrayIssueId the primary key for the new testray issue
 	 * @return the new testray issue
 	 */
-	public static com.liferay.osb.testray.model.TestrayIssue createTestrayIssue(
-		long testrayIssueId) {
-
+	public static TestrayIssue createTestrayIssue(long testrayIssueId) {
 		return getService().createTestrayIssue(testrayIssueId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -156,17 +151,14 @@ public class TestrayIssueLocalServiceUtil {
 	}
 
 	public static void deleteTestrayCaseResultTestrayIssue(
-		long testrayCaseResultId,
-		com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
+		long testrayCaseResultId, TestrayIssue testrayIssue) {
 
 		getService().deleteTestrayCaseResultTestrayIssue(
 			testrayCaseResultId, testrayIssue);
 	}
 
 	public static void deleteTestrayCaseResultTestrayIssues(
-		long testrayCaseResultId,
-		java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-			testrayIssues) {
+		long testrayCaseResultId, List<TestrayIssue> testrayIssues) {
 
 		getService().deleteTestrayCaseResultTestrayIssues(
 			testrayCaseResultId, testrayIssues);
@@ -190,9 +182,8 @@ public class TestrayIssueLocalServiceUtil {
 	 * @return the testray issue that was removed
 	 * @throws PortalException if a testray issue with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayIssue deleteTestrayIssue(
-			long testrayIssueId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayIssue deleteTestrayIssue(long testrayIssueId)
+		throws PortalException {
 
 		return getService().deleteTestrayIssue(testrayIssueId);
 	}
@@ -207,9 +198,7 @@ public class TestrayIssueLocalServiceUtil {
 	 * @param testrayIssue the testray issue
 	 * @return the testray issue that was removed
 	 */
-	public static com.liferay.osb.testray.model.TestrayIssue deleteTestrayIssue(
-		com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
-
+	public static TestrayIssue deleteTestrayIssue(TestrayIssue testrayIssue) {
 		return getService().deleteTestrayIssue(testrayIssue);
 	}
 
@@ -221,17 +210,14 @@ public class TestrayIssueLocalServiceUtil {
 	}
 
 	public static void deleteTestraySubtaskTestrayIssue(
-		long testraySubtaskId,
-		com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
+		long testraySubtaskId, TestrayIssue testrayIssue) {
 
 		getService().deleteTestraySubtaskTestrayIssue(
 			testraySubtaskId, testrayIssue);
 	}
 
 	public static void deleteTestraySubtaskTestrayIssues(
-		long testraySubtaskId,
-		java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-			testrayIssues) {
+		long testraySubtaskId, List<TestrayIssue> testrayIssues) {
 
 		getService().deleteTestraySubtaskTestrayIssues(
 			testraySubtaskId, testrayIssues);
@@ -244,9 +230,7 @@ public class TestrayIssueLocalServiceUtil {
 			testraySubtaskId, testrayIssueIds);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -256,9 +240,7 @@ public class TestrayIssueLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -274,9 +256,8 @@ public class TestrayIssueLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -294,10 +275,9 @@ public class TestrayIssueLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -309,9 +289,7 @@ public class TestrayIssueLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -323,15 +301,13 @@ public class TestrayIssueLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.testray.model.TestrayIssue fetchTestrayIssue(
-		long testrayIssueId) {
-
+	public static TestrayIssue fetchTestrayIssue(long testrayIssueId) {
 		return getService().fetchTestrayIssue(testrayIssueId);
 	}
 
@@ -360,9 +336,8 @@ public class TestrayIssueLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -377,27 +352,23 @@ public class TestrayIssueLocalServiceUtil {
 		return getService().getTestrayCaseResultPrimaryKeys(testrayIssueId);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-		getTestrayCaseResultTestrayIssues(long testrayCaseResultId) {
+	public static List<TestrayIssue> getTestrayCaseResultTestrayIssues(
+		long testrayCaseResultId) {
 
 		return getService().getTestrayCaseResultTestrayIssues(
 			testrayCaseResultId);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-		getTestrayCaseResultTestrayIssues(
-			long testrayCaseResultId, int start, int end) {
+	public static List<TestrayIssue> getTestrayCaseResultTestrayIssues(
+		long testrayCaseResultId, int start, int end) {
 
 		return getService().getTestrayCaseResultTestrayIssues(
 			testrayCaseResultId, start, end);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-		getTestrayCaseResultTestrayIssues(
-			long testrayCaseResultId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.osb.testray.model.TestrayIssue>
-					orderByComparator) {
+	public static List<TestrayIssue> getTestrayCaseResultTestrayIssues(
+		long testrayCaseResultId, int start, int end,
+		OrderByComparator<TestrayIssue> orderByComparator) {
 
 		return getService().getTestrayCaseResultTestrayIssues(
 			testrayCaseResultId, start, end, orderByComparator);
@@ -417,9 +388,8 @@ public class TestrayIssueLocalServiceUtil {
 	 * @return the testray issue
 	 * @throws PortalException if a testray issue with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayIssue getTestrayIssue(
-			long testrayIssueId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayIssue getTestrayIssue(long testrayIssueId)
+		throws PortalException {
 
 		return getService().getTestrayIssue(testrayIssueId);
 	}
@@ -435,9 +405,7 @@ public class TestrayIssueLocalServiceUtil {
 	 * @param end the upper bound of the range of testray issues (not inclusive)
 	 * @return the range of testray issues
 	 */
-	public static java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-		getTestrayIssues(int start, int end) {
-
+	public static List<TestrayIssue> getTestrayIssues(int start, int end) {
 		return getService().getTestrayIssues(start, end);
 	}
 
@@ -460,26 +428,22 @@ public class TestrayIssueLocalServiceUtil {
 		return getService().getTestraySubtaskPrimaryKeys(testrayIssueId);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-		getTestraySubtaskTestrayIssues(long testraySubtaskId) {
+	public static List<TestrayIssue> getTestraySubtaskTestrayIssues(
+		long testraySubtaskId) {
 
 		return getService().getTestraySubtaskTestrayIssues(testraySubtaskId);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-		getTestraySubtaskTestrayIssues(
-			long testraySubtaskId, int start, int end) {
+	public static List<TestrayIssue> getTestraySubtaskTestrayIssues(
+		long testraySubtaskId, int start, int end) {
 
 		return getService().getTestraySubtaskTestrayIssues(
 			testraySubtaskId, start, end);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayIssue>
-		getTestraySubtaskTestrayIssues(
-			long testraySubtaskId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.osb.testray.model.TestrayIssue>
-					orderByComparator) {
+	public static List<TestrayIssue> getTestraySubtaskTestrayIssues(
+		long testraySubtaskId, int start, int end,
+		OrderByComparator<TestrayIssue> orderByComparator) {
 
 		return getService().getTestraySubtaskTestrayIssues(
 			testraySubtaskId, start, end, orderByComparator);
@@ -543,32 +507,14 @@ public class TestrayIssueLocalServiceUtil {
 	 * @param testrayIssue the testray issue
 	 * @return the testray issue that was updated
 	 */
-	public static com.liferay.osb.testray.model.TestrayIssue updateTestrayIssue(
-		com.liferay.osb.testray.model.TestrayIssue testrayIssue) {
-
+	public static TestrayIssue updateTestrayIssue(TestrayIssue testrayIssue) {
 		return getService().updateTestrayIssue(testrayIssue);
 	}
 
 	public static TestrayIssueLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TestrayIssueLocalService, TestrayIssueLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TestrayIssueLocalService.class);
-
-		ServiceTracker<TestrayIssueLocalService, TestrayIssueLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<TestrayIssueLocalService, TestrayIssueLocalService>(
-						bundle.getBundleContext(),
-						TestrayIssueLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TestrayIssueLocalService _service;
 
 }

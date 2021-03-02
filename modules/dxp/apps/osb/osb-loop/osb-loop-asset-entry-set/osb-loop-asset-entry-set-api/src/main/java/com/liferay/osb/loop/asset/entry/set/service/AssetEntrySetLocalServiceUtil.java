@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.asset.entry.set.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for AssetEntrySet. This utility wraps
@@ -48,22 +54,17 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @param assetEntrySet the asset entry set
 	 * @return the asset entry set that was added
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-		addAssetEntrySet(
-			com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-				assetEntrySet) {
-
+	public static AssetEntrySet addAssetEntrySet(AssetEntrySet assetEntrySet) {
 		return getService().addAssetEntrySet(assetEntrySet);
 	}
 
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-			addAssetEntrySet(
-				long userId, long parentAssetEntrySetId, long classNameId,
-				long classPK, long creatorClassNameId, long creatorClassPK,
-				com.liferay.portal.kernel.json.JSONObject payloadJSONObject,
-				boolean privateAssetEntrySet, long stickyTime, String title,
-				int type, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetEntrySet addAssetEntrySet(
+			long userId, long parentAssetEntrySetId, long classNameId,
+			long classPK, long creatorClassNameId, long creatorClassPK,
+			com.liferay.portal.kernel.json.JSONObject payloadJSONObject,
+			boolean privateAssetEntrySet, long stickyTime, String title,
+			int type, int status)
+		throws PortalException {
 
 		return getService().addAssetEntrySet(
 			userId, parentAssetEntrySetId, classNameId, classPK,
@@ -73,7 +74,7 @@ public class AssetEntrySetLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.json.JSONObject addFileAttachment(
 			long userId, java.io.File file)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addFileAttachment(userId, file);
 	}
@@ -84,9 +85,7 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @param assetEntrySetId the primary key for the new asset entry set
 	 * @return the new asset entry set
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-		createAssetEntrySet(long assetEntrySetId) {
-
+	public static AssetEntrySet createAssetEntrySet(long assetEntrySetId) {
 		return getService().createAssetEntrySet(assetEntrySetId);
 	}
 
@@ -101,11 +100,8 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @return the asset entry set that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-			deleteAssetEntrySet(
-				com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-					assetEntrySet)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetEntrySet deleteAssetEntrySet(AssetEntrySet assetEntrySet)
+		throws PortalException {
 
 		return getService().deleteAssetEntrySet(assetEntrySet);
 	}
@@ -121,9 +117,8 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @return the asset entry set that was removed
 	 * @throws PortalException if a asset entry set with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-			deleteAssetEntrySet(long assetEntrySetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetEntrySet deleteAssetEntrySet(long assetEntrySetId)
+		throws PortalException {
 
 		return getService().deleteAssetEntrySet(assetEntrySetId);
 	}
@@ -131,17 +126,14 @@ public class AssetEntrySetLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -151,9 +143,7 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -169,9 +159,8 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -189,10 +178,9 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -204,9 +192,7 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -218,20 +204,18 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-		fetchAssetEntrySet(long assetEntrySetId) {
-
+	public static AssetEntrySet fetchAssetEntrySet(long assetEntrySetId) {
 		return getService().fetchAssetEntrySet(assetEntrySetId);
 	}
 
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-		fetchAssetEntrySet(long classNameId, long classPK, String title) {
+	public static AssetEntrySet fetchAssetEntrySet(
+		long classNameId, long classPK, String title) {
 
 		return getService().fetchAssetEntrySet(classNameId, classPK, title);
 	}
@@ -249,9 +233,8 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @return the asset entry set
 	 * @throws PortalException if a asset entry set with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-			getAssetEntrySet(long assetEntrySetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetEntrySet getAssetEntrySet(long assetEntrySetId)
+		throws PortalException {
 
 		return getService().getAssetEntrySet(assetEntrySetId);
 	}
@@ -267,16 +250,12 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @param end the upper bound of the range of asset entry sets (not inclusive)
 	 * @return the range of asset entry sets
 	 */
-	public static java.util.List
-		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet>
-			getAssetEntrySets(int start, int end) {
-
+	public static List<AssetEntrySet> getAssetEntrySets(int start, int end) {
 		return getService().getAssetEntrySets(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet>
-			getAssetEntrySets(long classNameId, long classPK) {
+	public static List<AssetEntrySet> getAssetEntrySets(
+		long classNameId, long classPK) {
 
 		return getService().getAssetEntrySets(classNameId, classPK);
 	}
@@ -296,9 +275,8 @@ public class AssetEntrySetLocalServiceUtil {
 		return getService().getAssetEntrySetsCount(classNameId, classPK, type);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet>
-			getChildAssetEntrySets(long parentAssetEntrySetId) {
+	public static List<AssetEntrySet> getChildAssetEntrySets(
+		long parentAssetEntrySetId) {
 
 		return getService().getChildAssetEntrySets(parentAssetEntrySetId);
 	}
@@ -314,27 +292,19 @@ public class AssetEntrySetLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet>
-				getNewChildAssetEntrySets(
-					long createTime, long parentAssetEntrySetId, int start,
-					int end,
-					com.liferay.portal.kernel.util.OrderByComparator
-						orderByComparator)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<AssetEntrySet> getNewChildAssetEntrySets(
+			long createTime, long parentAssetEntrySetId, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException {
 
 		return getService().getNewChildAssetEntrySets(
 			createTime, parentAssetEntrySetId, start, end, orderByComparator);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet>
-				getOldChildAssetEntrySets(
-					long createTime, long parentAssetEntrySetId, int start,
-					int end,
-					com.liferay.portal.kernel.util.OrderByComparator
-						orderByComparator)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<AssetEntrySet> getOldChildAssetEntrySets(
+			long createTime, long parentAssetEntrySetId, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException {
 
 		return getService().getOldChildAssetEntrySets(
 			createTime, parentAssetEntrySetId, start, end, orderByComparator);
@@ -352,30 +322,29 @@ public class AssetEntrySetLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-			likeAssetEntrySet(long userId, long assetEntrySetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetEntrySet likeAssetEntrySet(
+			long userId, long assetEntrySetId)
+		throws PortalException {
 
 		return getService().likeAssetEntrySet(userId, assetEntrySetId);
 	}
 
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-			unlikeAssetEntrySet(long userId, long assetEntrySetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetEntrySet unlikeAssetEntrySet(
+			long userId, long assetEntrySetId)
+		throws PortalException {
 
 		return getService().unlikeAssetEntrySet(userId, assetEntrySetId);
 	}
 
 	public static void updateAssetEntry(
 			long assetEntrySetId, String[] assetTagNames)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().updateAssetEntry(assetEntrySetId, assetTagNames);
 	}
@@ -390,21 +359,18 @@ public class AssetEntrySetLocalServiceUtil {
 	 * @param assetEntrySet the asset entry set
 	 * @return the asset entry set that was updated
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-		updateAssetEntrySet(
-			com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-				assetEntrySet) {
+	public static AssetEntrySet updateAssetEntrySet(
+		AssetEntrySet assetEntrySet) {
 
 		return getService().updateAssetEntrySet(assetEntrySet);
 	}
 
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
-			updateAssetEntrySet(
-				long assetEntrySetId,
-				com.liferay.portal.kernel.json.JSONObject payloadJSONObject,
-				boolean privateAssetEntrySet, long stickyTime, String title,
-				int type, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetEntrySet updateAssetEntrySet(
+			long assetEntrySetId,
+			com.liferay.portal.kernel.json.JSONObject payloadJSONObject,
+			boolean privateAssetEntrySet, long stickyTime, String title,
+			int type, int status)
+		throws PortalException {
 
 		return getService().updateAssetEntrySet(
 			assetEntrySetId, payloadJSONObject, privateAssetEntrySet,
@@ -412,26 +378,9 @@ public class AssetEntrySetLocalServiceUtil {
 	}
 
 	public static AssetEntrySetLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AssetEntrySetLocalService, AssetEntrySetLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetEntrySetLocalService.class);
-
-		ServiceTracker<AssetEntrySetLocalService, AssetEntrySetLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AssetEntrySetLocalService, AssetEntrySetLocalService>(
-						bundle.getBundleContext(),
-						AssetEntrySetLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetEntrySetLocalService _service;
 
 }

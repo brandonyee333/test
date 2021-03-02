@@ -407,7 +407,7 @@ public class BounceEntryModelImpl
 
 	@Override
 	public void setBounceDate(Date bounceDate) {
-		_columnBitmask |= BOUNCEDATE_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (_originalBounceDate == null) {
 			_originalBounceDate = _bounceDate;

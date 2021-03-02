@@ -1501,7 +1501,7 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setArticleId(String articleId) {
-		_columnBitmask |= ARTICLEID_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (_originalArticleId == null) {
 			_originalArticleId = _articleId;
@@ -1522,7 +1522,7 @@ public class JournalArticleModelImpl
 
 	@Override
 	public void setVersion(double version) {
-		_columnBitmask |= VERSION_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalVersion) {
 			_setOriginalVersion = true;

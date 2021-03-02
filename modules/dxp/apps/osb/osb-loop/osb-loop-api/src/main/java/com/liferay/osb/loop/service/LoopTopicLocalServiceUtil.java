@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.model.LoopTopic;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LoopTopic. This utility wraps
@@ -37,9 +43,9 @@ public class LoopTopicLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.loop.service.impl.LoopTopicLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.loop.model.LoopTopic addLoopTopic(
+	public static LoopTopic addLoopTopic(
 			long userId, String name, String description)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addLoopTopic(userId, name, description);
 	}
@@ -54,9 +60,7 @@ public class LoopTopicLocalServiceUtil {
 	 * @param loopTopic the loop topic
 	 * @return the loop topic that was added
 	 */
-	public static com.liferay.osb.loop.model.LoopTopic addLoopTopic(
-		com.liferay.osb.loop.model.LoopTopic loopTopic) {
-
+	public static LoopTopic addLoopTopic(LoopTopic loopTopic) {
 		return getService().addLoopTopic(loopTopic);
 	}
 
@@ -66,9 +70,7 @@ public class LoopTopicLocalServiceUtil {
 	 * @param loopTopicId the primary key for the new loop topic
 	 * @return the new loop topic
 	 */
-	public static com.liferay.osb.loop.model.LoopTopic createLoopTopic(
-		long loopTopicId) {
-
+	public static LoopTopic createLoopTopic(long loopTopicId) {
 		return getService().createLoopTopic(loopTopicId);
 	}
 
@@ -83,9 +85,8 @@ public class LoopTopicLocalServiceUtil {
 	 * @return the loop topic that was removed
 	 * @throws PortalException if a loop topic with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopTopic deleteLoopTopic(
-			long loopTopicId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopTopic deleteLoopTopic(long loopTopicId)
+		throws PortalException {
 
 		return getService().deleteLoopTopic(loopTopicId);
 	}
@@ -100,26 +101,21 @@ public class LoopTopicLocalServiceUtil {
 	 * @param loopTopic the loop topic
 	 * @return the loop topic that was removed
 	 */
-	public static com.liferay.osb.loop.model.LoopTopic deleteLoopTopic(
-		com.liferay.osb.loop.model.LoopTopic loopTopic) {
-
+	public static LoopTopic deleteLoopTopic(LoopTopic loopTopic) {
 		return getService().deleteLoopTopic(loopTopic);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -129,9 +125,7 @@ public class LoopTopicLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -147,9 +141,8 @@ public class LoopTopicLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -167,10 +160,9 @@ public class LoopTopicLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -182,9 +174,7 @@ public class LoopTopicLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -196,21 +186,17 @@ public class LoopTopicLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.model.LoopTopic fetchLoopTopic(
-		long loopTopicId) {
-
+	public static LoopTopic fetchLoopTopic(long loopTopicId) {
 		return getService().fetchLoopTopic(loopTopicId);
 	}
 
-	public static com.liferay.osb.loop.model.LoopTopic fetchLoopTopic(
-		long companyId, String name) {
-
+	public static LoopTopic fetchLoopTopic(long companyId, String name) {
 		return getService().fetchLoopTopic(companyId, name);
 	}
 
@@ -234,16 +220,14 @@ public class LoopTopicLocalServiceUtil {
 	 * @return the loop topic
 	 * @throws PortalException if a loop topic with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.model.LoopTopic getLoopTopic(
-			long loopTopicId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopTopic getLoopTopic(long loopTopicId)
+		throws PortalException {
 
 		return getService().getLoopTopic(loopTopicId);
 	}
 
-	public static com.liferay.osb.loop.model.LoopTopic getLoopTopic(
-			long companyId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LoopTopic getLoopTopic(long companyId, String name)
+		throws PortalException {
 
 		return getService().getLoopTopic(companyId, name);
 	}
@@ -259,9 +243,7 @@ public class LoopTopicLocalServiceUtil {
 	 * @param end the upper bound of the range of loop topics (not inclusive)
 	 * @return the range of loop topics
 	 */
-	public static java.util.List<com.liferay.osb.loop.model.LoopTopic>
-		getLoopTopics(int start, int end) {
-
+	public static List<LoopTopic> getLoopTopics(int start, int end) {
 		return getService().getLoopTopics(start, end);
 	}
 
@@ -286,9 +268,8 @@ public class LoopTopicLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -299,7 +280,7 @@ public class LoopTopicLocalServiceUtil {
 
 	public static void updateLoopTopic(
 			long userId, String name, String description)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().updateLoopTopic(userId, name, description);
 	}
@@ -314,32 +295,14 @@ public class LoopTopicLocalServiceUtil {
 	 * @param loopTopic the loop topic
 	 * @return the loop topic that was updated
 	 */
-	public static com.liferay.osb.loop.model.LoopTopic updateLoopTopic(
-		com.liferay.osb.loop.model.LoopTopic loopTopic) {
-
+	public static LoopTopic updateLoopTopic(LoopTopic loopTopic) {
 		return getService().updateLoopTopic(loopTopic);
 	}
 
 	public static LoopTopicLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<LoopTopicLocalService, LoopTopicLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(LoopTopicLocalService.class);
-
-		ServiceTracker<LoopTopicLocalService, LoopTopicLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LoopTopicLocalService, LoopTopicLocalService>(
-						bundle.getBundleContext(), LoopTopicLocalService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LoopTopicLocalService _service;
 
 }

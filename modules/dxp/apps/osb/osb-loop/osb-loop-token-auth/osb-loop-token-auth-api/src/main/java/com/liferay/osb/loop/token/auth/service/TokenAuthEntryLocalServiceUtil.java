@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.token.auth.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.token.auth.model.TokenAuthEntry;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for TokenAuthEntry. This utility wraps
@@ -37,9 +43,8 @@ public class TokenAuthEntryLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.loop.token.auth.service.impl.TokenAuthEntryLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-			addTokenAuthEntry(long userId, String device)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TokenAuthEntry addTokenAuthEntry(long userId, String device)
+		throws PortalException {
 
 		return getService().addTokenAuthEntry(userId, device);
 	}
@@ -54,10 +59,8 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @param tokenAuthEntry the token auth entry
 	 * @return the token auth entry that was added
 	 */
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-		addTokenAuthEntry(
-			com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-				tokenAuthEntry) {
+	public static TokenAuthEntry addTokenAuthEntry(
+		TokenAuthEntry tokenAuthEntry) {
 
 		return getService().addTokenAuthEntry(tokenAuthEntry);
 	}
@@ -68,19 +71,16 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @param tokenAuthEntryId the primary key for the new token auth entry
 	 * @return the new token auth entry
 	 */
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-		createTokenAuthEntry(long tokenAuthEntryId) {
-
+	public static TokenAuthEntry createTokenAuthEntry(long tokenAuthEntryId) {
 		return getService().createTokenAuthEntry(tokenAuthEntryId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -96,9 +96,8 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @return the token auth entry that was removed
 	 * @throws PortalException if a token auth entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-			deleteTokenAuthEntry(long tokenAuthEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TokenAuthEntry deleteTokenAuthEntry(long tokenAuthEntryId)
+		throws PortalException {
 
 		return getService().deleteTokenAuthEntry(tokenAuthEntryId);
 	}
@@ -113,17 +112,13 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @param tokenAuthEntry the token auth entry
 	 * @return the token auth entry that was removed
 	 */
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-		deleteTokenAuthEntry(
-			com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-				tokenAuthEntry) {
+	public static TokenAuthEntry deleteTokenAuthEntry(
+		TokenAuthEntry tokenAuthEntry) {
 
 		return getService().deleteTokenAuthEntry(tokenAuthEntry);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -133,9 +128,7 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -151,9 +144,8 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -171,10 +163,9 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -186,9 +177,7 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -200,15 +189,13 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-		fetchTokenAuthEntry(long tokenAuthEntryId) {
-
+	public static TokenAuthEntry fetchTokenAuthEntry(long tokenAuthEntryId) {
 		return getService().fetchTokenAuthEntry(tokenAuthEntryId);
 	}
 
@@ -237,9 +224,8 @@ public class TokenAuthEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -255,31 +241,21 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of token auth entries (not inclusive)
 	 * @return the range of token auth entries
 	 */
-	public static java.util.List
-		<com.liferay.osb.loop.token.auth.model.TokenAuthEntry>
-			getTokenAuthEntries(int start, int end) {
-
+	public static List<TokenAuthEntry> getTokenAuthEntries(int start, int end) {
 		return getService().getTokenAuthEntries(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.token.auth.model.TokenAuthEntry>
-				getTokenAuthEntries(
-					int start, int end,
-					com.liferay.portal.kernel.util.OrderByComparator
-						orderByComparator)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<TokenAuthEntry> getTokenAuthEntries(
+			int start, int end, OrderByComparator orderByComparator)
+		throws PortalException {
 
 		return getService().getTokenAuthEntries(start, end, orderByComparator);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.token.auth.model.TokenAuthEntry>
-				getTokenAuthEntries(
-					long userId, int start, int end,
-					com.liferay.portal.kernel.util.OrderByComparator
-						orderByComparator)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<TokenAuthEntry> getTokenAuthEntries(
+			long userId, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException {
 
 		return getService().getTokenAuthEntries(
 			userId, start, end, orderByComparator);
@@ -305,22 +281,20 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @return the token auth entry
 	 * @throws PortalException if a token auth entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-			getTokenAuthEntry(long tokenAuthEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TokenAuthEntry getTokenAuthEntry(long tokenAuthEntryId)
+		throws PortalException {
 
 		return getService().getTokenAuthEntry(tokenAuthEntryId);
 	}
 
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-			getTokenAuthEntry(String token)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TokenAuthEntry getTokenAuthEntry(String token)
+		throws PortalException {
 
 		return getService().getTokenAuthEntry(token);
 	}
 
 	public static void updateLoginDate(long tokenAuthEntryId, String loginIP)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().updateLoginDate(tokenAuthEntryId, loginIP);
 	}
@@ -335,36 +309,16 @@ public class TokenAuthEntryLocalServiceUtil {
 	 * @param tokenAuthEntry the token auth entry
 	 * @return the token auth entry that was updated
 	 */
-	public static com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-		updateTokenAuthEntry(
-			com.liferay.osb.loop.token.auth.model.TokenAuthEntry
-				tokenAuthEntry) {
+	public static TokenAuthEntry updateTokenAuthEntry(
+		TokenAuthEntry tokenAuthEntry) {
 
 		return getService().updateTokenAuthEntry(tokenAuthEntry);
 	}
 
 	public static TokenAuthEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TokenAuthEntryLocalService, TokenAuthEntryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			TokenAuthEntryLocalService.class);
-
-		ServiceTracker<TokenAuthEntryLocalService, TokenAuthEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<TokenAuthEntryLocalService, TokenAuthEntryLocalService>(
-						bundle.getBundleContext(),
-						TokenAuthEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TokenAuthEntryLocalService _service;
 
 }

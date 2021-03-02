@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.watson.model.WatsonHistoryAudit;
 import com.liferay.watson.service.WatsonHistoryAuditLocalService;
+import com.liferay.watson.service.WatsonHistoryAuditLocalServiceUtil;
 import com.liferay.watson.service.persistence.WatsonActivityAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonActivityPersistence;
 import com.liferay.watson.service.persistence.WatsonAddressAuditPersistence;
@@ -73,6 +74,8 @@ import com.liferay.watson.service.persistence.WatsonVehiclePersistence;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -95,7 +98,7 @@ public abstract class WatsonHistoryAuditLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WatsonHistoryAuditLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.service.WatsonHistoryAuditLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WatsonHistoryAuditLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WatsonHistoryAuditLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1742,11 +1745,15 @@ public abstract class WatsonHistoryAuditLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.watson.model.WatsonHistoryAudit",
 			watsonHistoryAuditLocalService);
+
+		_setLocalServiceUtilService(watsonHistoryAuditLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.watson.model.WatsonHistoryAudit");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1789,6 +1796,23 @@ public abstract class WatsonHistoryAuditLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		WatsonHistoryAuditLocalService watsonHistoryAuditLocalService) {
+
+		try {
+			Field field =
+				WatsonHistoryAuditLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonHistoryAuditLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

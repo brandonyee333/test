@@ -16,6 +16,7 @@ package com.liferay.osb.customer.license.service.base;
 
 import com.liferay.osb.customer.license.model.LicenseKey;
 import com.liferay.osb.customer.license.service.LicenseKeyService;
+import com.liferay.osb.customer.license.service.LicenseKeyServiceUtil;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeyPersistence;
 import com.liferay.osb.customer.license.service.persistence.LicenseKeySetPersistence;
@@ -32,6 +33,8 @@ import com.liferay.portal.kernel.service.persistence.ListTypePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -53,7 +56,7 @@ public abstract class LicenseKeyServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LicenseKeyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.license.service.LicenseKeyServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LicenseKeyService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LicenseKeyServiceUtil</code>.
 	 */
 
 	/**
@@ -438,9 +441,11 @@ public abstract class LicenseKeyServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(licenseKeyService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -482,6 +487,20 @@ public abstract class LicenseKeyServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(LicenseKeyService licenseKeyService) {
+		try {
+			Field field = LicenseKeyServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, licenseKeyService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

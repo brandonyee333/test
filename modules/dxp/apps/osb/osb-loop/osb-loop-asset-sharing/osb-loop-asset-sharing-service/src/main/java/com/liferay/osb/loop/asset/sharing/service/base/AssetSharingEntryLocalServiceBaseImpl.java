@@ -16,6 +16,7 @@ package com.liferay.osb.loop.asset.sharing.service.base;
 
 import com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry;
 import com.liferay.osb.loop.asset.sharing.service.AssetSharingEntryLocalService;
+import com.liferay.osb.loop.asset.sharing.service.AssetSharingEntryLocalServiceUtil;
 import com.liferay.osb.loop.asset.sharing.service.persistence.AssetSharingEntryPK;
 import com.liferay.osb.loop.asset.sharing.service.persistence.AssetSharingEntryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -47,6 +48,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -69,7 +72,7 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AssetSharingEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.loop.asset.sharing.service.AssetSharingEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AssetSharingEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AssetSharingEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -543,11 +546,15 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry",
 			assetSharingEntryLocalService);
+
+		_setLocalServiceUtilService(assetSharingEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -590,6 +597,23 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		AssetSharingEntryLocalService assetSharingEntryLocalService) {
+
+		try {
+			Field field =
+				AssetSharingEntryLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, assetSharingEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

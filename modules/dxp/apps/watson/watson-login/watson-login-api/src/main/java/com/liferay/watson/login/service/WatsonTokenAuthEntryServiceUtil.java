@@ -14,10 +14,6 @@
 
 package com.liferay.watson.login.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for WatsonTokenAuthEntry. This utility wraps
  * <code>com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl</code> and is an
@@ -43,32 +39,14 @@ public class WatsonTokenAuthEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static WatsonTokenAuthEntryService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WatsonTokenAuthEntryService, WatsonTokenAuthEntryService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WatsonTokenAuthEntryService.class);
-
-		ServiceTracker<WatsonTokenAuthEntryService, WatsonTokenAuthEntryService>
-			serviceTracker =
-				new ServiceTracker
-					<WatsonTokenAuthEntryService, WatsonTokenAuthEntryService>(
-						bundle.getBundleContext(),
-						WatsonTokenAuthEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonTokenAuthEntryService _service;
 
 }

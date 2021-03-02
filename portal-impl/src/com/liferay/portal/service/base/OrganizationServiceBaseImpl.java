@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.OrganizationService;
+import com.liferay.portal.kernel.service.OrganizationServiceUtil;
 import com.liferay.portal.kernel.service.persistence.AddressPersistence;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.CountryPersistence;
@@ -55,6 +56,8 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.WebsitePersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -75,7 +78,7 @@ public abstract class OrganizationServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>OrganizationService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.OrganizationServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>OrganizationService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>OrganizationServiceUtil</code>.
 	 */
 
 	/**
@@ -1426,9 +1429,11 @@ public abstract class OrganizationServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(organizationService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -1470,6 +1475,22 @@ public abstract class OrganizationServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		OrganizationService organizationService) {
+
+		try {
+			Field field = OrganizationServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, organizationService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

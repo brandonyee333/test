@@ -14,9 +14,15 @@
 
 package com.liferay.osb.testray.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.testray.model.TestrayComponent;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for TestrayComponent. This utility wraps
@@ -45,17 +51,14 @@ public class TestrayComponentLocalServiceUtil {
 	}
 
 	public static void addTestrayCaseTestrayComponent(
-		long testrayCaseId,
-		com.liferay.osb.testray.model.TestrayComponent testrayComponent) {
+		long testrayCaseId, TestrayComponent testrayComponent) {
 
 		getService().addTestrayCaseTestrayComponent(
 			testrayCaseId, testrayComponent);
 	}
 
 	public static void addTestrayCaseTestrayComponents(
-		long testrayCaseId,
-		java.util.List<com.liferay.osb.testray.model.TestrayComponent>
-			testrayComponents) {
+		long testrayCaseId, List<TestrayComponent> testrayComponents) {
 
 		getService().addTestrayCaseTestrayComponents(
 			testrayCaseId, testrayComponents);
@@ -78,9 +81,8 @@ public class TestrayComponentLocalServiceUtil {
 	 * @param testrayComponent the testray component
 	 * @return the testray component that was added
 	 */
-	public static com.liferay.osb.testray.model.TestrayComponent
-		addTestrayComponent(
-			com.liferay.osb.testray.model.TestrayComponent testrayComponent) {
+	public static TestrayComponent addTestrayComponent(
+		TestrayComponent testrayComponent) {
 
 		return getService().addTestrayComponent(testrayComponent);
 	}
@@ -95,8 +97,8 @@ public class TestrayComponentLocalServiceUtil {
 	 * @param testrayComponentId the primary key for the new testray component
 	 * @return the new testray component
 	 */
-	public static com.liferay.osb.testray.model.TestrayComponent
-		createTestrayComponent(long testrayComponentId) {
+	public static TestrayComponent createTestrayComponent(
+		long testrayComponentId) {
 
 		return getService().createTestrayComponent(testrayComponentId);
 	}
@@ -104,10 +106,9 @@ public class TestrayComponentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -120,17 +121,14 @@ public class TestrayComponentLocalServiceUtil {
 	}
 
 	public static void deleteTestrayCaseTestrayComponent(
-		long testrayCaseId,
-		com.liferay.osb.testray.model.TestrayComponent testrayComponent) {
+		long testrayCaseId, TestrayComponent testrayComponent) {
 
 		getService().deleteTestrayCaseTestrayComponent(
 			testrayCaseId, testrayComponent);
 	}
 
 	public static void deleteTestrayCaseTestrayComponents(
-		long testrayCaseId,
-		java.util.List<com.liferay.osb.testray.model.TestrayComponent>
-			testrayComponents) {
+		long testrayCaseId, List<TestrayComponent> testrayComponents) {
 
 		getService().deleteTestrayCaseTestrayComponents(
 			testrayCaseId, testrayComponents);
@@ -154,9 +152,9 @@ public class TestrayComponentLocalServiceUtil {
 	 * @return the testray component that was removed
 	 * @throws PortalException if a testray component with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayComponent
-			deleteTestrayComponent(long testrayComponentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayComponent deleteTestrayComponent(
+			long testrayComponentId)
+		throws PortalException {
 
 		return getService().deleteTestrayComponent(testrayComponentId);
 	}
@@ -171,16 +169,13 @@ public class TestrayComponentLocalServiceUtil {
 	 * @param testrayComponent the testray component
 	 * @return the testray component that was removed
 	 */
-	public static com.liferay.osb.testray.model.TestrayComponent
-		deleteTestrayComponent(
-			com.liferay.osb.testray.model.TestrayComponent testrayComponent) {
+	public static TestrayComponent deleteTestrayComponent(
+		TestrayComponent testrayComponent) {
 
 		return getService().deleteTestrayComponent(testrayComponent);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -190,9 +185,7 @@ public class TestrayComponentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -208,9 +201,8 @@ public class TestrayComponentLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -228,10 +220,9 @@ public class TestrayComponentLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -243,9 +234,7 @@ public class TestrayComponentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -257,14 +246,14 @@ public class TestrayComponentLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.testray.model.TestrayComponent
-		fetchTestrayComponent(long testrayComponentId) {
+	public static TestrayComponent fetchTestrayComponent(
+		long testrayComponentId) {
 
 		return getService().fetchTestrayComponent(testrayComponentId);
 	}
@@ -294,9 +283,8 @@ public class TestrayComponentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -311,26 +299,22 @@ public class TestrayComponentLocalServiceUtil {
 		return getService().getTestrayCasePrimaryKeys(testrayComponentId);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayComponent>
-		getTestrayCaseTestrayComponents(long testrayCaseId) {
+	public static List<TestrayComponent> getTestrayCaseTestrayComponents(
+		long testrayCaseId) {
 
 		return getService().getTestrayCaseTestrayComponents(testrayCaseId);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayComponent>
-		getTestrayCaseTestrayComponents(
-			long testrayCaseId, int start, int end) {
+	public static List<TestrayComponent> getTestrayCaseTestrayComponents(
+		long testrayCaseId, int start, int end) {
 
 		return getService().getTestrayCaseTestrayComponents(
 			testrayCaseId, start, end);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayComponent>
-		getTestrayCaseTestrayComponents(
-			long testrayCaseId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.osb.testray.model.TestrayComponent>
-					orderByComparator) {
+	public static List<TestrayComponent> getTestrayCaseTestrayComponents(
+		long testrayCaseId, int start, int end,
+		OrderByComparator<TestrayComponent> orderByComparator) {
 
 		return getService().getTestrayCaseTestrayComponents(
 			testrayCaseId, start, end, orderByComparator);
@@ -347,9 +331,8 @@ public class TestrayComponentLocalServiceUtil {
 	 * @return the testray component
 	 * @throws PortalException if a testray component with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayComponent
-			getTestrayComponent(long testrayComponentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayComponent getTestrayComponent(long testrayComponentId)
+		throws PortalException {
 
 		return getService().getTestrayComponent(testrayComponentId);
 	}
@@ -365,8 +348,8 @@ public class TestrayComponentLocalServiceUtil {
 	 * @param end the upper bound of the range of testray components (not inclusive)
 	 * @return the range of testray components
 	 */
-	public static java.util.List<com.liferay.osb.testray.model.TestrayComponent>
-		getTestrayComponents(int start, int end) {
+	public static List<TestrayComponent> getTestrayComponents(
+		int start, int end) {
 
 		return getService().getTestrayComponents(start, end);
 	}
@@ -408,37 +391,16 @@ public class TestrayComponentLocalServiceUtil {
 	 * @param testrayComponent the testray component
 	 * @return the testray component that was updated
 	 */
-	public static com.liferay.osb.testray.model.TestrayComponent
-		updateTestrayComponent(
-			com.liferay.osb.testray.model.TestrayComponent testrayComponent) {
+	public static TestrayComponent updateTestrayComponent(
+		TestrayComponent testrayComponent) {
 
 		return getService().updateTestrayComponent(testrayComponent);
 	}
 
 	public static TestrayComponentLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TestrayComponentLocalService, TestrayComponentLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			TestrayComponentLocalService.class);
-
-		ServiceTracker
-			<TestrayComponentLocalService, TestrayComponentLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<TestrayComponentLocalService,
-						 TestrayComponentLocalService>(
-							 bundle.getBundleContext(),
-							 TestrayComponentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TestrayComponentLocalService _service;
 
 }

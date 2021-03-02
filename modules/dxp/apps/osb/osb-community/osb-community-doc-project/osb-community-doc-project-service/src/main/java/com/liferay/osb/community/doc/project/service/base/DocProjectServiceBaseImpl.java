@@ -16,6 +16,7 @@ package com.liferay.osb.community.doc.project.service.base;
 
 import com.liferay.osb.community.doc.project.model.DocProject;
 import com.liferay.osb.community.doc.project.service.DocProjectService;
+import com.liferay.osb.community.doc.project.service.DocProjectServiceUtil;
 import com.liferay.osb.community.doc.project.service.persistence.DocProjectPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -29,6 +30,8 @@ import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -50,7 +53,7 @@ public abstract class DocProjectServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DocProjectService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.community.doc.project.service.DocProjectServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DocProjectService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DocProjectServiceUtil</code>.
 	 */
 
 	/**
@@ -286,9 +289,11 @@ public abstract class DocProjectServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(docProjectService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -330,6 +335,20 @@ public abstract class DocProjectServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(DocProjectService docProjectService) {
+		try {
+			Field field = DocProjectServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, docProjectService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -14,9 +14,15 @@
 
 package com.liferay.osb.community.github.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.community.github.model.GitHubRepository;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for GitHubRepository. This utility wraps
@@ -48,10 +54,8 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @param gitHubRepository the git hub repository
 	 * @return the git hub repository that was added
 	 */
-	public static com.liferay.osb.community.github.model.GitHubRepository
-		addGitHubRepository(
-			com.liferay.osb.community.github.model.GitHubRepository
-				gitHubRepository) {
+	public static GitHubRepository addGitHubRepository(
+		GitHubRepository gitHubRepository) {
 
 		return getService().addGitHubRepository(gitHubRepository);
 	}
@@ -62,8 +66,8 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @param gitHubRepositoryId the primary key for the new git hub repository
 	 * @return the new git hub repository
 	 */
-	public static com.liferay.osb.community.github.model.GitHubRepository
-		createGitHubRepository(long gitHubRepositoryId) {
+	public static GitHubRepository createGitHubRepository(
+		long gitHubRepositoryId) {
 
 		return getService().createGitHubRepository(gitHubRepositoryId);
 	}
@@ -78,10 +82,8 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @param gitHubRepository the git hub repository
 	 * @return the git hub repository that was removed
 	 */
-	public static com.liferay.osb.community.github.model.GitHubRepository
-		deleteGitHubRepository(
-			com.liferay.osb.community.github.model.GitHubRepository
-				gitHubRepository) {
+	public static GitHubRepository deleteGitHubRepository(
+		GitHubRepository gitHubRepository) {
 
 		return getService().deleteGitHubRepository(gitHubRepository);
 	}
@@ -97,16 +99,16 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @return the git hub repository that was removed
 	 * @throws PortalException if a git hub repository with the primary key could not be found
 	 */
-	public static com.liferay.osb.community.github.model.GitHubRepository
-			deleteGitHubRepository(long gitHubRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static GitHubRepository deleteGitHubRepository(
+			long gitHubRepositoryId)
+		throws PortalException {
 
 		return getService().deleteGitHubRepository(gitHubRepositoryId);
 	}
 
-	public static com.liferay.osb.community.github.model.GitHubRepository
-			deleteGitHubRepository(String owner, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static GitHubRepository deleteGitHubRepository(
+			String owner, String name)
+		throws PortalException {
 
 		return getService().deleteGitHubRepository(owner, name);
 	}
@@ -114,17 +116,14 @@ public class GitHubRepositoryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -134,9 +133,7 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -152,9 +149,8 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -172,10 +168,9 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -187,9 +182,7 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -201,14 +194,14 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.community.github.model.GitHubRepository
-		fetchGitHubRepository(long gitHubRepositoryId) {
+	public static GitHubRepository fetchGitHubRepository(
+		long gitHubRepositoryId) {
 
 		return getService().fetchGitHubRepository(gitHubRepositoryId);
 	}
@@ -230,9 +223,8 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @param end the upper bound of the range of git hub repositories (not inclusive)
 	 * @return the range of git hub repositories
 	 */
-	public static java.util.List
-		<com.liferay.osb.community.github.model.GitHubRepository>
-			getGitHubRepositories(int start, int end) {
+	public static List<GitHubRepository> getGitHubRepositories(
+		int start, int end) {
 
 		return getService().getGitHubRepositories(start, end);
 	}
@@ -253,16 +245,15 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @return the git hub repository
 	 * @throws PortalException if a git hub repository with the primary key could not be found
 	 */
-	public static com.liferay.osb.community.github.model.GitHubRepository
-			getGitHubRepository(long gitHubRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static GitHubRepository getGitHubRepository(long gitHubRepositoryId)
+		throws PortalException {
 
 		return getService().getGitHubRepository(gitHubRepositoryId);
 	}
 
-	public static com.liferay.osb.community.github.model.GitHubRepository
-			getGitHubRepository(long userId, String owner, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static GitHubRepository getGitHubRepository(
+			long userId, String owner, String name)
+		throws PortalException {
 
 		return getService().getGitHubRepository(userId, owner, name);
 	}
@@ -286,9 +277,8 @@ public class GitHubRepositoryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -303,44 +293,20 @@ public class GitHubRepositoryLocalServiceUtil {
 	 * @param gitHubRepository the git hub repository
 	 * @return the git hub repository that was updated
 	 */
-	public static com.liferay.osb.community.github.model.GitHubRepository
-		updateGitHubRepository(
-			com.liferay.osb.community.github.model.GitHubRepository
-				gitHubRepository) {
+	public static GitHubRepository updateGitHubRepository(
+		GitHubRepository gitHubRepository) {
 
 		return getService().updateGitHubRepository(gitHubRepository);
 	}
 
-	public static void updateGitHubRepositoryCache()
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void updateGitHubRepositoryCache() throws PortalException {
 		getService().updateGitHubRepositoryCache();
 	}
 
 	public static GitHubRepositoryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<GitHubRepositoryLocalService, GitHubRepositoryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			GitHubRepositoryLocalService.class);
-
-		ServiceTracker
-			<GitHubRepositoryLocalService, GitHubRepositoryLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<GitHubRepositoryLocalService,
-						 GitHubRepositoryLocalService>(
-							 bundle.getBundleContext(),
-							 GitHubRepositoryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile GitHubRepositoryLocalService _service;
 
 }

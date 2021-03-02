@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.watson.model.WatsonRelationshipAudit;
 import com.liferay.watson.service.WatsonRelationshipAuditLocalService;
+import com.liferay.watson.service.WatsonRelationshipAuditLocalServiceUtil;
 import com.liferay.watson.service.persistence.WatsonActivityAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonActivityPersistence;
 import com.liferay.watson.service.persistence.WatsonAddressAuditPersistence;
@@ -73,6 +74,8 @@ import com.liferay.watson.service.persistence.WatsonVehiclePersistence;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -95,7 +98,7 @@ public abstract class WatsonRelationshipAuditLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>WatsonRelationshipAuditLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.service.WatsonRelationshipAuditLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>WatsonRelationshipAuditLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>WatsonRelationshipAuditLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1757,11 +1760,15 @@ public abstract class WatsonRelationshipAuditLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.watson.model.WatsonRelationshipAudit",
 			watsonRelationshipAuditLocalService);
+
+		_setLocalServiceUtilService(watsonRelationshipAuditLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.watson.model.WatsonRelationshipAudit");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1804,6 +1811,24 @@ public abstract class WatsonRelationshipAuditLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		WatsonRelationshipAuditLocalService
+			watsonRelationshipAuditLocalService) {
+
+		try {
+			Field field =
+				WatsonRelationshipAuditLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, watsonRelationshipAuditLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

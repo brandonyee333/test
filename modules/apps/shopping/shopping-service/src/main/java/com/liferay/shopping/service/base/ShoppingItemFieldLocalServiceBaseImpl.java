@@ -40,9 +40,12 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.shopping.model.ShoppingItemField;
 import com.liferay.shopping.service.ShoppingItemFieldLocalService;
+import com.liferay.shopping.service.ShoppingItemFieldLocalServiceUtil;
 import com.liferay.shopping.service.persistence.ShoppingItemFieldPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
@@ -66,7 +69,7 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ShoppingItemFieldLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingItemFieldLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ShoppingItemFieldLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ShoppingItemFieldLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -424,11 +427,15 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.shopping.model.ShoppingItemField",
 			shoppingItemFieldLocalService);
+
+		_setLocalServiceUtilService(shoppingItemFieldLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.shopping.model.ShoppingItemField");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -471,6 +478,23 @@ public abstract class ShoppingItemFieldLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ShoppingItemFieldLocalService shoppingItemFieldLocalService) {
+
+		try {
+			Field field =
+				ShoppingItemFieldLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, shoppingItemFieldLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

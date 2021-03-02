@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.admin.model.AccountEntryLanguage;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for AccountEntryLanguage. This utility wraps
@@ -48,10 +54,8 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @param accountEntryLanguage the account entry language
 	 * @return the account entry language that was added
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEntryLanguage
-		addAccountEntryLanguage(
-			com.liferay.osb.customer.admin.model.AccountEntryLanguage
-				accountEntryLanguage) {
+	public static AccountEntryLanguage addAccountEntryLanguage(
+		AccountEntryLanguage accountEntryLanguage) {
 
 		return getService().addAccountEntryLanguage(accountEntryLanguage);
 	}
@@ -62,8 +66,8 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @param accountEntryLanguageId the primary key for the new account entry language
 	 * @return the new account entry language
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEntryLanguage
-		createAccountEntryLanguage(long accountEntryLanguageId) {
+	public static AccountEntryLanguage createAccountEntryLanguage(
+		long accountEntryLanguageId) {
 
 		return getService().createAccountEntryLanguage(accountEntryLanguageId);
 	}
@@ -78,10 +82,8 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @param accountEntryLanguage the account entry language
 	 * @return the account entry language that was removed
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEntryLanguage
-		deleteAccountEntryLanguage(
-			com.liferay.osb.customer.admin.model.AccountEntryLanguage
-				accountEntryLanguage) {
+	public static AccountEntryLanguage deleteAccountEntryLanguage(
+		AccountEntryLanguage accountEntryLanguage) {
 
 		return getService().deleteAccountEntryLanguage(accountEntryLanguage);
 	}
@@ -97,9 +99,9 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @return the account entry language that was removed
 	 * @throws PortalException if a account entry language with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEntryLanguage
-			deleteAccountEntryLanguage(long accountEntryLanguageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEntryLanguage deleteAccountEntryLanguage(
+			long accountEntryLanguageId)
+		throws PortalException {
 
 		return getService().deleteAccountEntryLanguage(accountEntryLanguageId);
 	}
@@ -107,17 +109,14 @@ public class AccountEntryLanguageLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -127,9 +126,7 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -145,9 +142,8 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -165,10 +161,9 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -180,9 +175,7 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -194,14 +187,14 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.admin.model.AccountEntryLanguage
-		fetchAccountEntryLanguage(long accountEntryLanguageId) {
+	public static AccountEntryLanguage fetchAccountEntryLanguage(
+		long accountEntryLanguageId) {
 
 		return getService().fetchAccountEntryLanguage(accountEntryLanguageId);
 	}
@@ -213,9 +206,9 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @return the account entry language
 	 * @throws PortalException if a account entry language with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEntryLanguage
-			getAccountEntryLanguage(long accountEntryLanguageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountEntryLanguage getAccountEntryLanguage(
+			long accountEntryLanguageId)
+		throws PortalException {
 
 		return getService().getAccountEntryLanguage(accountEntryLanguageId);
 	}
@@ -231,16 +224,14 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @param end the upper bound of the range of account entry languages (not inclusive)
 	 * @return the range of account entry languages
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountEntryLanguage>
-			getAccountEntryLanguages(int start, int end) {
+	public static List<AccountEntryLanguage> getAccountEntryLanguages(
+		int start, int end) {
 
 		return getService().getAccountEntryLanguages(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.admin.model.AccountEntryLanguage>
-			getAccountEntryLanguages(long accountEntryId) {
+	public static List<AccountEntryLanguage> getAccountEntryLanguages(
+		long accountEntryId) {
 
 		return getService().getAccountEntryLanguages(accountEntryId);
 	}
@@ -279,9 +270,8 @@ public class AccountEntryLanguageLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -302,38 +292,16 @@ public class AccountEntryLanguageLocalServiceUtil {
 	 * @param accountEntryLanguage the account entry language
 	 * @return the account entry language that was updated
 	 */
-	public static com.liferay.osb.customer.admin.model.AccountEntryLanguage
-		updateAccountEntryLanguage(
-			com.liferay.osb.customer.admin.model.AccountEntryLanguage
-				accountEntryLanguage) {
+	public static AccountEntryLanguage updateAccountEntryLanguage(
+		AccountEntryLanguage accountEntryLanguage) {
 
 		return getService().updateAccountEntryLanguage(accountEntryLanguage);
 	}
 
 	public static AccountEntryLanguageLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AccountEntryLanguageLocalService, AccountEntryLanguageLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AccountEntryLanguageLocalService.class);
-
-		ServiceTracker
-			<AccountEntryLanguageLocalService, AccountEntryLanguageLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<AccountEntryLanguageLocalService,
-						 AccountEntryLanguageLocalService>(
-							 bundle.getBundleContext(),
-							 AccountEntryLanguageLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountEntryLanguageLocalService _service;
 
 }

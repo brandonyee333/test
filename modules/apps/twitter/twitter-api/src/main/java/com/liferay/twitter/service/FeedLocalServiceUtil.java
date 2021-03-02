@@ -14,9 +14,15 @@
 
 package com.liferay.twitter.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.twitter.model.Feed;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for Feed. This utility wraps
@@ -48,9 +54,7 @@ public class FeedLocalServiceUtil {
 	 * @param feed the feed
 	 * @return the feed that was added
 	 */
-	public static com.liferay.twitter.model.Feed addFeed(
-		com.liferay.twitter.model.Feed feed) {
-
+	public static Feed addFeed(Feed feed) {
 		return getService().addFeed(feed);
 	}
 
@@ -60,7 +64,7 @@ public class FeedLocalServiceUtil {
 	 * @param feedId the primary key for the new feed
 	 * @return the new feed
 	 */
-	public static com.liferay.twitter.model.Feed createFeed(long feedId) {
+	public static Feed createFeed(long feedId) {
 		return getService().createFeed(feedId);
 	}
 
@@ -74,9 +78,7 @@ public class FeedLocalServiceUtil {
 	 * @param feed the feed
 	 * @return the feed that was removed
 	 */
-	public static com.liferay.twitter.model.Feed deleteFeed(
-		com.liferay.twitter.model.Feed feed) {
-
+	public static Feed deleteFeed(Feed feed) {
 		return getService().deleteFeed(feed);
 	}
 
@@ -91,26 +93,21 @@ public class FeedLocalServiceUtil {
 	 * @return the feed that was removed
 	 * @throws PortalException if a feed with the primary key could not be found
 	 */
-	public static com.liferay.twitter.model.Feed deleteFeed(long feedId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Feed deleteFeed(long feedId) throws PortalException {
 		return getService().deleteFeed(feedId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -120,9 +117,7 @@ public class FeedLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -138,9 +133,8 @@ public class FeedLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -158,10 +152,9 @@ public class FeedLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -173,9 +166,7 @@ public class FeedLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -187,13 +178,13 @@ public class FeedLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.twitter.model.Feed fetchFeed(long feedId) {
+	public static Feed fetchFeed(long feedId) {
 		return getService().fetchFeed(feedId);
 	}
 
@@ -210,9 +201,7 @@ public class FeedLocalServiceUtil {
 	 * @return the feed
 	 * @throws PortalException if a feed with the primary key could not be found
 	 */
-	public static com.liferay.twitter.model.Feed getFeed(long feedId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Feed getFeed(long feedId) throws PortalException {
 		return getService().getFeed(feedId);
 	}
 
@@ -227,9 +216,7 @@ public class FeedLocalServiceUtil {
 	 * @param end the upper bound of the range of feeds (not inclusive)
 	 * @return the range of feeds
 	 */
-	public static java.util.List<com.liferay.twitter.model.Feed> getFeeds(
-		int start, int end) {
-
+	public static List<Feed> getFeeds(int start, int end) {
 		return getService().getFeeds(start, end);
 	}
 
@@ -261,9 +248,8 @@ public class FeedLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -278,15 +264,11 @@ public class FeedLocalServiceUtil {
 	 * @param feed the feed
 	 * @return the feed that was updated
 	 */
-	public static com.liferay.twitter.model.Feed updateFeed(
-		com.liferay.twitter.model.Feed feed) {
-
+	public static Feed updateFeed(Feed feed) {
 		return getService().updateFeed(feed);
 	}
 
-	public static void updateFeed(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void updateFeed(long userId) throws PortalException {
 		getService().updateFeed(userId);
 	}
 
@@ -299,22 +281,9 @@ public class FeedLocalServiceUtil {
 	}
 
 	public static FeedLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<FeedLocalService, FeedLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(FeedLocalService.class);
-
-		ServiceTracker<FeedLocalService, FeedLocalService> serviceTracker =
-			new ServiceTracker<FeedLocalService, FeedLocalService>(
-				bundle.getBundleContext(), FeedLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile FeedLocalService _service;
 
 }

@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.GroupService;
+import com.liferay.portal.kernel.service.GroupServiceUtil;
 import com.liferay.portal.kernel.service.persistence.AccountPersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
@@ -81,6 +82,8 @@ import com.liferay.social.kernel.service.persistence.SocialActivitySettingPersis
 import com.liferay.social.kernel.service.persistence.SocialRequestPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -100,7 +103,7 @@ public abstract class GroupServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>GroupService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.kernel.service.GroupServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>GroupService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>GroupServiceUtil</code>.
 	 */
 
 	/**
@@ -2838,9 +2841,11 @@ public abstract class GroupServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(groupService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -2882,6 +2887,19 @@ public abstract class GroupServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(GroupService groupService) {
+		try {
+			Field field = GroupServiceUtil.class.getDeclaredField("_service");
+
+			field.setAccessible(true);
+
+			field.set(null, groupService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

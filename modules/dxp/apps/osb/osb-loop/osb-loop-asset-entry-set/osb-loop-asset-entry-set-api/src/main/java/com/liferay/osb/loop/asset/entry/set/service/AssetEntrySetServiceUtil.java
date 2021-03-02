@@ -14,9 +14,7 @@
 
 package com.liferay.osb.loop.asset.entry.set.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for AssetEntrySet. This utility wraps
@@ -39,7 +37,7 @@ public class AssetEntrySetServiceUtil {
 	 */
 	public static com.liferay.portal.kernel.json.JSONObject addFileAttachment(
 			java.io.File file)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addFileAttachment(file);
 	}
@@ -54,24 +52,9 @@ public class AssetEntrySetServiceUtil {
 	}
 
 	public static AssetEntrySetService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<AssetEntrySetService, AssetEntrySetService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AssetEntrySetService.class);
-
-		ServiceTracker<AssetEntrySetService, AssetEntrySetService>
-			serviceTracker =
-				new ServiceTracker<AssetEntrySetService, AssetEntrySetService>(
-					bundle.getBundleContext(), AssetEntrySetService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetEntrySetService _service;
 
 }

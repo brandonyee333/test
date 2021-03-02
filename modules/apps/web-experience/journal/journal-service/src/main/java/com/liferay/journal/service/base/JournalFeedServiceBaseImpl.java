@@ -17,6 +17,7 @@ package com.liferay.journal.service.base;
 import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
 import com.liferay.journal.model.JournalFeed;
 import com.liferay.journal.service.JournalFeedService;
+import com.liferay.journal.service.JournalFeedServiceUtil;
 import com.liferay.journal.service.persistence.JournalFeedFinder;
 import com.liferay.journal.service.persistence.JournalFeedPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -32,6 +33,8 @@ import com.liferay.portal.kernel.service.persistence.SystemEventPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -53,7 +56,7 @@ public abstract class JournalFeedServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>JournalFeedService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.journal.service.JournalFeedServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>JournalFeedService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>JournalFeedServiceUtil</code>.
 	 */
 
 	/**
@@ -416,9 +419,11 @@ public abstract class JournalFeedServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(journalFeedService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -460,6 +465,20 @@ public abstract class JournalFeedServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(JournalFeedService journalFeedService) {
+		try {
+			Field field = JournalFeedServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, journalFeedService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

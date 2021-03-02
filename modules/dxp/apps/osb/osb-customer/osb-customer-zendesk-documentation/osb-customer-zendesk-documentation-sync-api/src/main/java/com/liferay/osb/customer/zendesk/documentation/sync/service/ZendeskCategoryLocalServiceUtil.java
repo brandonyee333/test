@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ZendeskCategory. This utility wraps
@@ -37,13 +43,10 @@ public class ZendeskCategoryLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskCategoryLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory addZendeskCategory(
-					String documentationKey, String documentationOriginalURL,
-					String articleLabels, long remoteId,
-					long remoteUserSegmentId)
-				throws com.liferay.portal.kernel.exception.PortalException {
+	public static ZendeskCategory addZendeskCategory(
+			String documentationKey, String documentationOriginalURL,
+			String articleLabels, long remoteId, long remoteUserSegmentId)
+		throws PortalException {
 
 		return getService().addZendeskCategory(
 			documentationKey, documentationOriginalURL, articleLabels, remoteId,
@@ -60,11 +63,8 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @param zendeskCategory the zendesk category
 	 * @return the zendesk category that was added
 	 */
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory addZendeskCategory(
-				com.liferay.osb.customer.zendesk.documentation.sync.model.
-					ZendeskCategory zendeskCategory) {
+	public static ZendeskCategory addZendeskCategory(
+		ZendeskCategory zendeskCategory) {
 
 		return getService().addZendeskCategory(zendeskCategory);
 	}
@@ -75,9 +75,8 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @param zendeskCategoryId the primary key for the new zendesk category
 	 * @return the new zendesk category
 	 */
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory createZendeskCategory(long zendeskCategoryId) {
+	public static ZendeskCategory createZendeskCategory(
+		long zendeskCategoryId) {
 
 		return getService().createZendeskCategory(zendeskCategoryId);
 	}
@@ -85,10 +84,9 @@ public class ZendeskCategoryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -104,10 +102,8 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @return the zendesk category that was removed
 	 * @throws PortalException if a zendesk category with the primary key could not be found
 	 */
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory deleteZendeskCategory(long zendeskCategoryId)
-				throws com.liferay.portal.kernel.exception.PortalException {
+	public static ZendeskCategory deleteZendeskCategory(long zendeskCategoryId)
+		throws PortalException {
 
 		return getService().deleteZendeskCategory(zendeskCategoryId);
 	}
@@ -122,18 +118,13 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @param zendeskCategory the zendesk category
 	 * @return the zendesk category that was removed
 	 */
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory deleteZendeskCategory(
-				com.liferay.osb.customer.zendesk.documentation.sync.model.
-					ZendeskCategory zendeskCategory) {
+	public static ZendeskCategory deleteZendeskCategory(
+		ZendeskCategory zendeskCategory) {
 
 		return getService().deleteZendeskCategory(zendeskCategory);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -143,9 +134,7 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -161,9 +150,8 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -181,10 +169,9 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -196,9 +183,7 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -210,22 +195,18 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory fetchZendeskCategory(long zendeskCategoryId) {
-
+	public static ZendeskCategory fetchZendeskCategory(long zendeskCategoryId) {
 		return getService().fetchZendeskCategory(zendeskCategoryId);
 	}
 
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory fetchZendeskCategory(String documentationKey) {
+	public static ZendeskCategory fetchZendeskCategory(
+		String documentationKey) {
 
 		return getService().fetchZendeskCategory(documentationKey);
 	}
@@ -255,9 +236,8 @@ public class ZendeskCategoryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -273,9 +253,8 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @param end the upper bound of the range of zendesk categories (not inclusive)
 	 * @return the range of zendesk categories
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory> getZendeskCategories(int start, int end) {
+	public static List<ZendeskCategory> getZendeskCategories(
+		int start, int end) {
 
 		return getService().getZendeskCategories(start, end);
 	}
@@ -296,21 +275,17 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @return the zendesk category
 	 * @throws PortalException if a zendesk category with the primary key could not be found
 	 */
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory getZendeskCategory(long zendeskCategoryId)
-				throws com.liferay.portal.kernel.exception.PortalException {
+	public static ZendeskCategory getZendeskCategory(long zendeskCategoryId)
+		throws PortalException {
 
 		return getService().getZendeskCategory(zendeskCategoryId);
 	}
 
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory updateZendeskCategory(
-					long zendeskCategoryId, String documentationKey,
-					String documentationOriginalURL, String articleLabels,
-					long remoteUserSegmentId)
-				throws com.liferay.portal.kernel.exception.PortalException {
+	public static ZendeskCategory updateZendeskCategory(
+			long zendeskCategoryId, String documentationKey,
+			String documentationOriginalURL, String articleLabels,
+			long remoteUserSegmentId)
+		throws PortalException {
 
 		return getService().updateZendeskCategory(
 			zendeskCategoryId, documentationKey, documentationOriginalURL,
@@ -327,37 +302,16 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * @param zendeskCategory the zendesk category
 	 * @return the zendesk category that was updated
 	 */
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.
-			ZendeskCategory updateZendeskCategory(
-				com.liferay.osb.customer.zendesk.documentation.sync.model.
-					ZendeskCategory zendeskCategory) {
+	public static ZendeskCategory updateZendeskCategory(
+		ZendeskCategory zendeskCategory) {
 
 		return getService().updateZendeskCategory(zendeskCategory);
 	}
 
 	public static ZendeskCategoryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ZendeskCategoryLocalService, ZendeskCategoryLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ZendeskCategoryLocalService.class);
-
-		ServiceTracker<ZendeskCategoryLocalService, ZendeskCategoryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ZendeskCategoryLocalService, ZendeskCategoryLocalService>(
-						bundle.getBundleContext(),
-						ZendeskCategoryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ZendeskCategoryLocalService _service;
 
 }

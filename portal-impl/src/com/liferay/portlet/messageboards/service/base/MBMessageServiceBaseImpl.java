@@ -25,6 +25,7 @@ import com.liferay.counter.kernel.service.persistence.CounterPersistence;
 import com.liferay.expando.kernel.service.persistence.ExpandoRowPersistence;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.MBMessageService;
+import com.liferay.message.boards.kernel.service.MBMessageServiceUtil;
 import com.liferay.message.boards.kernel.service.persistence.MBCategoryFinder;
 import com.liferay.message.boards.kernel.service.persistence.MBCategoryPersistence;
 import com.liferay.message.boards.kernel.service.persistence.MBDiscussionPersistence;
@@ -55,6 +56,8 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsFinder;
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -75,7 +78,7 @@ public abstract class MBMessageServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MBMessageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.message.boards.kernel.service.MBMessageServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MBMessageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MBMessageServiceUtil</code>.
 	 */
 
 	/**
@@ -1351,9 +1354,11 @@ public abstract class MBMessageServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(mbMessageService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -1395,6 +1400,20 @@ public abstract class MBMessageServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(MBMessageService mbMessageService) {
+		try {
+			Field field = MBMessageServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, mbMessageService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

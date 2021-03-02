@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.release.notes.jira.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.release.notes.jira.model.JIRAProject;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for JIRAProject. This utility wraps
@@ -48,11 +54,7 @@ public class JIRAProjectLocalServiceUtil {
 	 * @param jiraProject the jira project
 	 * @return the jira project that was added
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-		addJIRAProject(
-			com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-				jiraProject) {
-
+	public static JIRAProject addJIRAProject(JIRAProject jiraProject) {
 		return getService().addJIRAProject(jiraProject);
 	}
 
@@ -62,9 +64,7 @@ public class JIRAProjectLocalServiceUtil {
 	 * @param jiraProjectId the primary key for the new jira project
 	 * @return the new jira project
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-		createJIRAProject(long jiraProjectId) {
-
+	public static JIRAProject createJIRAProject(long jiraProjectId) {
 		return getService().createJIRAProject(jiraProjectId);
 	}
 
@@ -78,11 +78,7 @@ public class JIRAProjectLocalServiceUtil {
 	 * @param jiraProject the jira project
 	 * @return the jira project that was removed
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-		deleteJIRAProject(
-			com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-				jiraProject) {
-
+	public static JIRAProject deleteJIRAProject(JIRAProject jiraProject) {
 		return getService().deleteJIRAProject(jiraProject);
 	}
 
@@ -97,9 +93,8 @@ public class JIRAProjectLocalServiceUtil {
 	 * @return the jira project that was removed
 	 * @throws PortalException if a jira project with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-			deleteJIRAProject(long jiraProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JIRAProject deleteJIRAProject(long jiraProjectId)
+		throws PortalException {
 
 		return getService().deleteJIRAProject(jiraProjectId);
 	}
@@ -107,17 +102,14 @@ public class JIRAProjectLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -127,9 +119,7 @@ public class JIRAProjectLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -145,9 +135,8 @@ public class JIRAProjectLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -165,10 +154,9 @@ public class JIRAProjectLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -180,9 +168,7 @@ public class JIRAProjectLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -194,15 +180,13 @@ public class JIRAProjectLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-		fetchJIRAProject(long jiraProjectId) {
-
+	public static JIRAProject fetchJIRAProject(long jiraProjectId) {
 		return getService().fetchJIRAProject(jiraProjectId);
 	}
 
@@ -226,16 +210,14 @@ public class JIRAProjectLocalServiceUtil {
 	 * @return the jira project
 	 * @throws PortalException if a jira project with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-			getJIRAProject(long jiraProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JIRAProject getJIRAProject(long jiraProjectId)
+		throws PortalException {
 
 		return getService().getJIRAProject(jiraProjectId);
 	}
 
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-			getJIRAProject(String key)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JIRAProject getJIRAProject(String key)
+		throws PortalException {
 
 		return getService().getJIRAProject(key);
 	}
@@ -251,10 +233,7 @@ public class JIRAProjectLocalServiceUtil {
 	 * @param end the upper bound of the range of jira projects (not inclusive)
 	 * @return the range of jira projects
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.release.notes.jira.model.JIRAProject>
-			getJIRAProjects(int start, int end) {
-
+	public static List<JIRAProject> getJIRAProjects(int start, int end) {
 		return getService().getJIRAProjects(start, end);
 	}
 
@@ -279,9 +258,8 @@ public class JIRAProjectLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -296,34 +274,14 @@ public class JIRAProjectLocalServiceUtil {
 	 * @param jiraProject the jira project
 	 * @return the jira project that was updated
 	 */
-	public static com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-		updateJIRAProject(
-			com.liferay.osb.customer.release.notes.jira.model.JIRAProject
-				jiraProject) {
-
+	public static JIRAProject updateJIRAProject(JIRAProject jiraProject) {
 		return getService().updateJIRAProject(jiraProject);
 	}
 
 	public static JIRAProjectLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<JIRAProjectLocalService, JIRAProjectLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(JIRAProjectLocalService.class);
-
-		ServiceTracker<JIRAProjectLocalService, JIRAProjectLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<JIRAProjectLocalService, JIRAProjectLocalService>(
-						bundle.getBundleContext(),
-						JIRAProjectLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile JIRAProjectLocalService _service;
 
 }

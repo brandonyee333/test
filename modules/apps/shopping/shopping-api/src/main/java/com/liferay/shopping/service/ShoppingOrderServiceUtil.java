@@ -14,9 +14,8 @@
 
 package com.liferay.shopping.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.shopping.model.ShoppingOrder;
 
 /**
  * Provides the remote service utility for ShoppingOrder. This utility wraps
@@ -41,7 +40,7 @@ public class ShoppingOrderServiceUtil {
 			long groupId, String number, String ppTxnId, String ppPaymentStatus,
 			double ppPaymentGross, String ppReceiverEmail, String ppPayerEmail,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().completeOrder(
 			groupId, number, ppTxnId, ppPaymentStatus, ppPaymentGross,
@@ -49,14 +48,13 @@ public class ShoppingOrderServiceUtil {
 	}
 
 	public static void deleteOrder(long groupId, long orderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteOrder(groupId, orderId);
 	}
 
-	public static com.liferay.shopping.model.ShoppingOrder getOrder(
-			long groupId, long orderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ShoppingOrder getOrder(long groupId, long orderId)
+		throws PortalException {
 
 		return getService().getOrder(groupId, orderId);
 	}
@@ -73,22 +71,22 @@ public class ShoppingOrderServiceUtil {
 	public static void sendEmail(
 			long groupId, long orderId, String emailType,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().sendEmail(groupId, orderId, emailType, serviceContext);
 	}
 
-	public static com.liferay.shopping.model.ShoppingOrder updateOrder(
+	public static ShoppingOrder updateOrder(
 			long groupId, long orderId, String ppTxnId, String ppPaymentStatus,
 			double ppPaymentGross, String ppReceiverEmail, String ppPayerEmail)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateOrder(
 			groupId, orderId, ppTxnId, ppPaymentStatus, ppPaymentGross,
 			ppReceiverEmail, ppPayerEmail);
 	}
 
-	public static com.liferay.shopping.model.ShoppingOrder updateOrder(
+	public static ShoppingOrder updateOrder(
 			long groupId, long orderId, String billingFirstName,
 			String billingLastName, String billingEmailAddress,
 			String billingCompany, String billingStreet, String billingCity,
@@ -100,7 +98,7 @@ public class ShoppingOrderServiceUtil {
 			String shippingZip, String shippingCountry, String shippingPhone,
 			String ccName, String ccType, String ccNumber, int ccExpMonth,
 			int ccExpYear, String ccVerNumber, String comments)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateOrder(
 			groupId, orderId, billingFirstName, billingLastName,
@@ -113,24 +111,9 @@ public class ShoppingOrderServiceUtil {
 	}
 
 	public static ShoppingOrderService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<ShoppingOrderService, ShoppingOrderService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ShoppingOrderService.class);
-
-		ServiceTracker<ShoppingOrderService, ShoppingOrderService>
-			serviceTracker =
-				new ServiceTracker<ShoppingOrderService, ShoppingOrderService>(
-					bundle.getBundleContext(), ShoppingOrderService.class,
-					null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ShoppingOrderService _service;
 
 }

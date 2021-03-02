@@ -17,6 +17,7 @@ package com.liferay.portlet.messageboards.service.base;
 import com.liferay.counter.kernel.service.persistence.CounterPersistence;
 import com.liferay.message.boards.kernel.model.MBBan;
 import com.liferay.message.boards.kernel.service.MBBanService;
+import com.liferay.message.boards.kernel.service.MBBanServiceUtil;
 import com.liferay.message.boards.kernel.service.persistence.MBBanPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -30,6 +31,8 @@ import com.liferay.portal.kernel.service.persistence.SystemEventPersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
+
+import java.lang.reflect.Field;
 
 import javax.sql.DataSource;
 
@@ -50,7 +53,7 @@ public abstract class MBBanServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MBBanService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.message.boards.kernel.service.MBBanServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MBBanService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MBBanServiceUtil</code>.
 	 */
 
 	/**
@@ -275,9 +278,11 @@ public abstract class MBBanServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(mbBanService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -319,6 +324,19 @@ public abstract class MBBanServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(MBBanService mbBanService) {
+		try {
+			Field field = MBBanServiceUtil.class.getDeclaredField("_service");
+
+			field.setAccessible(true);
+
+			field.set(null, mbBanService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

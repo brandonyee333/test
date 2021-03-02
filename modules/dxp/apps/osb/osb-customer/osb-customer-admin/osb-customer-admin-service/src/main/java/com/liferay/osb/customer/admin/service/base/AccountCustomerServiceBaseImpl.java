@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.admin.service.base;
 
 import com.liferay.osb.customer.admin.service.AccountCustomerService;
+import com.liferay.osb.customer.admin.service.AccountCustomerServiceUtil;
 import com.liferay.osb.customer.admin.service.persistence.AccountAttachmentPersistence;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryLanguagePersistence;
@@ -41,6 +42,8 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -61,7 +64,7 @@ public abstract class AccountCustomerServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AccountCustomerService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AccountCustomerServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AccountCustomerService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AccountCustomerServiceUtil</code>.
 	 */
 
 	/**
@@ -938,9 +941,11 @@ public abstract class AccountCustomerServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(accountCustomerService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -974,6 +979,22 @@ public abstract class AccountCustomerServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		AccountCustomerService accountCustomerService) {
+
+		try {
+			Field field = AccountCustomerServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, accountCustomerService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

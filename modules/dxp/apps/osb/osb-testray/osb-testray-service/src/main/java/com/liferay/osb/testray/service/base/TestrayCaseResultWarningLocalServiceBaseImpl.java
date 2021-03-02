@@ -16,6 +16,7 @@ package com.liferay.osb.testray.service.base;
 
 import com.liferay.osb.testray.model.TestrayCaseResultWarning;
 import com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService;
+import com.liferay.osb.testray.service.TestrayCaseResultWarningLocalServiceUtil;
 import com.liferay.osb.testray.service.persistence.TestrayArchivePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayAssignmentPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayBuildPersistence;
@@ -66,6 +67,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -88,7 +91,7 @@ public abstract class TestrayCaseResultWarningLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TestrayCaseResultWarningLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.testray.service.TestrayCaseResultWarningLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TestrayCaseResultWarningLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TestrayCaseResultWarningLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1450,11 +1453,15 @@ public abstract class TestrayCaseResultWarningLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.testray.model.TestrayCaseResultWarning",
 			testrayCaseResultWarningLocalService);
+
+		_setLocalServiceUtilService(testrayCaseResultWarningLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.testray.model.TestrayCaseResultWarning");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1497,6 +1504,24 @@ public abstract class TestrayCaseResultWarningLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		TestrayCaseResultWarningLocalService
+			testrayCaseResultWarningLocalService) {
+
+		try {
+			Field field =
+				TestrayCaseResultWarningLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayCaseResultWarningLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

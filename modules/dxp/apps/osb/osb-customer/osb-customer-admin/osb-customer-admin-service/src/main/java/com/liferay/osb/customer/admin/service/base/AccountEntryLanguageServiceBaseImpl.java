@@ -16,6 +16,7 @@ package com.liferay.osb.customer.admin.service.base;
 
 import com.liferay.osb.customer.admin.model.AccountEntryLanguage;
 import com.liferay.osb.customer.admin.service.AccountEntryLanguageService;
+import com.liferay.osb.customer.admin.service.AccountEntryLanguageServiceUtil;
 import com.liferay.osb.customer.admin.service.persistence.AccountAttachmentPersistence;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryLanguagePersistence;
@@ -40,6 +41,8 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
 /**
@@ -60,7 +63,7 @@ public abstract class AccountEntryLanguageServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AccountEntryLanguageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AccountEntryLanguageServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AccountEntryLanguageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AccountEntryLanguageServiceUtil</code>.
 	 */
 
 	/**
@@ -877,9 +880,11 @@ public abstract class AccountEntryLanguageServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		_setServiceUtilService(accountEntryLanguageService);
 	}
 
 	public void destroy() {
+		_setServiceUtilService(null);
 	}
 
 	/**
@@ -922,6 +927,23 @@ public abstract class AccountEntryLanguageServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		AccountEntryLanguageService accountEntryLanguageService) {
+
+		try {
+			Field field =
+				AccountEntryLanguageServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, accountEntryLanguageService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

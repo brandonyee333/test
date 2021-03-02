@@ -14,7 +14,11 @@
 
 package com.liferay.trash.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.trash.kernel.model.TrashEntry;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for TrashEntry. This utility wraps
@@ -42,9 +46,7 @@ public class TrashEntryServiceUtil {
 	 *
 	 * @param groupId the primary key of the group
 	 */
-	public static void deleteEntries(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void deleteEntries(long groupId) throws PortalException {
 		getService().deleteEntries(groupId);
 	}
 
@@ -53,9 +55,7 @@ public class TrashEntryServiceUtil {
 	 *
 	 * @param entryIds the primary keys of the trash entries
 	 */
-	public static void deleteEntries(long[] entryIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void deleteEntries(long[] entryIds) throws PortalException {
 		getService().deleteEntries(entryIds);
 	}
 
@@ -70,9 +70,7 @@ public class TrashEntryServiceUtil {
 	 *
 	 * @param entryId the primary key of the trash entry
 	 */
-	public static void deleteEntry(long entryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void deleteEntry(long entryId) throws PortalException {
 		getService().deleteEntry(entryId);
 	}
 
@@ -89,7 +87,7 @@ public class TrashEntryServiceUtil {
 	 * @param classPK the primary key of the entity
 	 */
 	public static void deleteEntry(String className, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteEntry(className, classPK);
 	}
@@ -120,16 +118,13 @@ public class TrashEntryServiceUtil {
 	 <code>obc</code>
 	 */
 	public static com.liferay.trash.kernel.model.TrashEntryList getEntries(
-			long groupId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.trash.kernel.model.TrashEntry> obc)
+			long groupId, int start, int end, OrderByComparator<TrashEntry> obc)
 		throws com.liferay.portal.kernel.security.auth.PrincipalException {
 
 		return getService().getEntries(groupId, start, end, obc);
 	}
 
-	public static java.util.List<com.liferay.trash.kernel.model.TrashEntry>
-			getEntries(long groupId, String className)
+	public static List<TrashEntry> getEntries(long groupId, String className)
 		throws com.liferay.portal.kernel.security.auth.PrincipalException {
 
 		return getService().getEntries(groupId, className);
@@ -176,16 +171,13 @@ public class TrashEntryServiceUtil {
 	public static void moveEntry(
 			String className, long classPK, long destinationContainerModelId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().moveEntry(
 			className, classPK, destinationContainerModelId, serviceContext);
 	}
 
-	public static com.liferay.trash.kernel.model.TrashEntry restoreEntry(
-			long entryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static TrashEntry restoreEntry(long entryId) throws PortalException {
 		return getService().restoreEntry(entryId);
 	}
 
@@ -223,37 +215,31 @@ public class TrashEntryServiceUtil {
 	 (optionally <code>null</code>)
 	 * @return the restored trash entry
 	 */
-	public static com.liferay.trash.kernel.model.TrashEntry restoreEntry(
+	public static TrashEntry restoreEntry(
 			long entryId, long overrideClassPK, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().restoreEntry(entryId, overrideClassPK, name);
 	}
 
-	public static com.liferay.trash.kernel.model.TrashEntry restoreEntry(
-			String className, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TrashEntry restoreEntry(String className, long classPK)
+		throws PortalException {
 
 		return getService().restoreEntry(className, classPK);
 	}
 
-	public static com.liferay.trash.kernel.model.TrashEntry restoreEntry(
+	public static TrashEntry restoreEntry(
 			String className, long classPK, long overrideClassPK, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().restoreEntry(
 			className, classPK, overrideClassPK, name);
 	}
 
 	public static TrashEntryService getService() {
-		if (_service == null) {
-			_service = (TrashEntryService)PortalBeanLocatorUtil.locate(
-				TrashEntryService.class.getName());
-		}
-
 		return _service;
 	}
 
-	private static TrashEntryService _service;
+	private static volatile TrashEntryService _service;
 
 }

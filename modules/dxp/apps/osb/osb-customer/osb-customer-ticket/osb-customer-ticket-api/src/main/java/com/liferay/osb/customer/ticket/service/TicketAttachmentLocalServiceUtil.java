@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.ticket.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.ticket.model.TicketAttachment;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for TicketAttachment. This utility wraps
@@ -37,13 +43,11 @@ public class TicketAttachmentLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.ticket.service.impl.TicketAttachmentLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.customer.ticket.model.TicketAttachment
-			addTicketAttachment(
-				long userId, long accountEntryId, long zendeskTicketId,
-				String fileRepositoryId, String fileName, long fileSize,
-				int type,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TicketAttachment addTicketAttachment(
+			long userId, long accountEntryId, long zendeskTicketId,
+			String fileRepositoryId, String fileName, long fileSize, int type,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().addTicketAttachment(
 			userId, accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
@@ -60,10 +64,8 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @param ticketAttachment the ticket attachment
 	 * @return the ticket attachment that was added
 	 */
-	public static com.liferay.osb.customer.ticket.model.TicketAttachment
-		addTicketAttachment(
-			com.liferay.osb.customer.ticket.model.TicketAttachment
-				ticketAttachment) {
+	public static TicketAttachment addTicketAttachment(
+		TicketAttachment ticketAttachment) {
 
 		return getService().addTicketAttachment(ticketAttachment);
 	}
@@ -74,8 +76,8 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @param ticketAttachmentId the primary key for the new ticket attachment
 	 * @return the new ticket attachment
 	 */
-	public static com.liferay.osb.customer.ticket.model.TicketAttachment
-		createTicketAttachment(long ticketAttachmentId) {
+	public static TicketAttachment createTicketAttachment(
+		long ticketAttachmentId) {
 
 		return getService().createTicketAttachment(ticketAttachmentId);
 	}
@@ -83,10 +85,9 @@ public class TicketAttachmentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -102,9 +103,9 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @return the ticket attachment that was removed
 	 * @throws PortalException if a ticket attachment with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.ticket.model.TicketAttachment
-			deleteTicketAttachment(long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TicketAttachment deleteTicketAttachment(
+			long ticketAttachmentId)
+		throws PortalException {
 
 		return getService().deleteTicketAttachment(ticketAttachmentId);
 	}
@@ -119,24 +120,20 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @param ticketAttachment the ticket attachment
 	 * @return the ticket attachment that was removed
 	 */
-	public static com.liferay.osb.customer.ticket.model.TicketAttachment
-		deleteTicketAttachment(
-			com.liferay.osb.customer.ticket.model.TicketAttachment
-				ticketAttachment) {
+	public static TicketAttachment deleteTicketAttachment(
+		TicketAttachment ticketAttachment) {
 
 		return getService().deleteTicketAttachment(ticketAttachment);
 	}
 
 	public static void deleteTicketAttachments(
 			long zendeskTicketId, int[] types)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteTicketAttachments(zendeskTicketId, types);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -146,9 +143,7 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -164,9 +159,8 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -184,10 +178,9 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -199,9 +192,7 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -213,14 +204,14 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.ticket.model.TicketAttachment
-		fetchTicketAttachment(long ticketAttachmentId) {
+	public static TicketAttachment fetchTicketAttachment(
+		long ticketAttachmentId) {
 
 		return getService().fetchTicketAttachment(ticketAttachmentId);
 	}
@@ -250,9 +241,8 @@ public class TicketAttachmentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -264,9 +254,8 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @return the ticket attachment
 	 * @throws PortalException if a ticket attachment with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.ticket.model.TicketAttachment
-			getTicketAttachment(long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TicketAttachment getTicketAttachment(long ticketAttachmentId)
+		throws PortalException {
 
 		return getService().getTicketAttachment(ticketAttachmentId);
 	}
@@ -282,9 +271,8 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @param end the upper bound of the range of ticket attachments (not inclusive)
 	 * @return the range of ticket attachments
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.ticket.model.TicketAttachment>
-			getTicketAttachments(int start, int end) {
+	public static List<TicketAttachment> getTicketAttachments(
+		int start, int end) {
 
 		return getService().getTicketAttachments(start, end);
 	}
@@ -308,38 +296,16 @@ public class TicketAttachmentLocalServiceUtil {
 	 * @param ticketAttachment the ticket attachment
 	 * @return the ticket attachment that was updated
 	 */
-	public static com.liferay.osb.customer.ticket.model.TicketAttachment
-		updateTicketAttachment(
-			com.liferay.osb.customer.ticket.model.TicketAttachment
-				ticketAttachment) {
+	public static TicketAttachment updateTicketAttachment(
+		TicketAttachment ticketAttachment) {
 
 		return getService().updateTicketAttachment(ticketAttachment);
 	}
 
 	public static TicketAttachmentLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TicketAttachmentLocalService, TicketAttachmentLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			TicketAttachmentLocalService.class);
-
-		ServiceTracker
-			<TicketAttachmentLocalService, TicketAttachmentLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<TicketAttachmentLocalService,
-						 TicketAttachmentLocalService>(
-							 bundle.getBundleContext(),
-							 TicketAttachmentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TicketAttachmentLocalService _service;
 
 }

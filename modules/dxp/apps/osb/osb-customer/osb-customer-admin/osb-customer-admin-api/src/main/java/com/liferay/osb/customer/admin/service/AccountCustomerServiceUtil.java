@@ -14,9 +14,9 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for AccountCustomer. This utility wraps
@@ -37,16 +37,16 @@ public class AccountCustomerServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountCustomerServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.User>
+	public static List<com.liferay.portal.kernel.model.User>
 			getCorpProjectAccountCustomerUsers(String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getCorpProjectAccountCustomerUsers(corpProjectUuid);
 	}
 
-	public static java.util.List<String> getCorpProjectAccountCustomerUUIDs(
+	public static List<String> getCorpProjectAccountCustomerUUIDs(
 			String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getCorpProjectAccountCustomerUUIDs(corpProjectUuid);
 	}
@@ -61,25 +61,9 @@ public class AccountCustomerServiceUtil {
 	}
 
 	public static AccountCustomerService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AccountCustomerService, AccountCustomerService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AccountCustomerService.class);
-
-		ServiceTracker<AccountCustomerService, AccountCustomerService>
-			serviceTracker =
-				new ServiceTracker
-					<AccountCustomerService, AccountCustomerService>(
-						bundle.getBundleContext(), AccountCustomerService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountCustomerService _service;
 
 }

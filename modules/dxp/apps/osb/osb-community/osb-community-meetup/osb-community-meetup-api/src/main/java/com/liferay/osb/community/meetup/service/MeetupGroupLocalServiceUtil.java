@@ -14,9 +14,15 @@
 
 package com.liferay.osb.community.meetup.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.community.meetup.model.MeetupGroup;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for MeetupGroup. This utility wraps
@@ -48,19 +54,15 @@ public class MeetupGroupLocalServiceUtil {
 	 * @param meetupGroup the meetup group
 	 * @return the meetup group that was added
 	 */
-	public static com.liferay.osb.community.meetup.model.MeetupGroup
-		addMeetupGroup(
-			com.liferay.osb.community.meetup.model.MeetupGroup meetupGroup) {
-
+	public static MeetupGroup addMeetupGroup(MeetupGroup meetupGroup) {
 		return getService().addMeetupGroup(meetupGroup);
 	}
 
-	public static com.liferay.osb.community.meetup.model.MeetupGroup
-			addMeetupGroup(
-				String name, String city, int memberCount, String description,
-				String url,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MeetupGroup addMeetupGroup(
+			String name, String city, int memberCount, String description,
+			String url,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().addMeetupGroup(
 			name, city, memberCount, description, url, serviceContext);
@@ -72,9 +74,7 @@ public class MeetupGroupLocalServiceUtil {
 	 * @param meetupGroupId the primary key for the new meetup group
 	 * @return the new meetup group
 	 */
-	public static com.liferay.osb.community.meetup.model.MeetupGroup
-		createMeetupGroup(long meetupGroupId) {
-
+	public static MeetupGroup createMeetupGroup(long meetupGroupId) {
 		return getService().createMeetupGroup(meetupGroupId);
 	}
 
@@ -89,9 +89,8 @@ public class MeetupGroupLocalServiceUtil {
 	 * @return the meetup group that was removed
 	 * @throws PortalException if a meetup group with the primary key could not be found
 	 */
-	public static com.liferay.osb.community.meetup.model.MeetupGroup
-			deleteMeetupGroup(long meetupGroupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MeetupGroup deleteMeetupGroup(long meetupGroupId)
+		throws PortalException {
 
 		return getService().deleteMeetupGroup(meetupGroupId);
 	}
@@ -106,33 +105,25 @@ public class MeetupGroupLocalServiceUtil {
 	 * @param meetupGroup the meetup group
 	 * @return the meetup group that was removed
 	 */
-	public static com.liferay.osb.community.meetup.model.MeetupGroup
-		deleteMeetupGroup(
-			com.liferay.osb.community.meetup.model.MeetupGroup meetupGroup) {
-
+	public static MeetupGroup deleteMeetupGroup(MeetupGroup meetupGroup) {
 		return getService().deleteMeetupGroup(meetupGroup);
 	}
 
-	public static void deleteMeetupGroups()
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void deleteMeetupGroups() throws PortalException {
 		getService().deleteMeetupGroups();
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -142,9 +133,7 @@ public class MeetupGroupLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -160,9 +149,8 @@ public class MeetupGroupLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -180,10 +168,9 @@ public class MeetupGroupLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -195,9 +182,7 @@ public class MeetupGroupLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -209,15 +194,13 @@ public class MeetupGroupLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.community.meetup.model.MeetupGroup
-		fetchMeetupGroup(long meetupGroupId) {
-
+	public static MeetupGroup fetchMeetupGroup(long meetupGroupId) {
 		return getService().fetchMeetupGroup(meetupGroupId);
 	}
 
@@ -241,9 +224,8 @@ public class MeetupGroupLocalServiceUtil {
 	 * @return the meetup group
 	 * @throws PortalException if a meetup group with the primary key could not be found
 	 */
-	public static com.liferay.osb.community.meetup.model.MeetupGroup
-			getMeetupGroup(long meetupGroupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static MeetupGroup getMeetupGroup(long meetupGroupId)
+		throws PortalException {
 
 		return getService().getMeetupGroup(meetupGroupId);
 	}
@@ -259,10 +241,7 @@ public class MeetupGroupLocalServiceUtil {
 	 * @param end the upper bound of the range of meetup groups (not inclusive)
 	 * @return the range of meetup groups
 	 */
-	public static java.util.List
-		<com.liferay.osb.community.meetup.model.MeetupGroup> getMeetupGroups(
-			int start, int end) {
-
+	public static List<MeetupGroup> getMeetupGroups(int start, int end) {
 		return getService().getMeetupGroups(start, end);
 	}
 
@@ -287,9 +266,8 @@ public class MeetupGroupLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -304,33 +282,14 @@ public class MeetupGroupLocalServiceUtil {
 	 * @param meetupGroup the meetup group
 	 * @return the meetup group that was updated
 	 */
-	public static com.liferay.osb.community.meetup.model.MeetupGroup
-		updateMeetupGroup(
-			com.liferay.osb.community.meetup.model.MeetupGroup meetupGroup) {
-
+	public static MeetupGroup updateMeetupGroup(MeetupGroup meetupGroup) {
 		return getService().updateMeetupGroup(meetupGroup);
 	}
 
 	public static MeetupGroupLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<MeetupGroupLocalService, MeetupGroupLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(MeetupGroupLocalService.class);
-
-		ServiceTracker<MeetupGroupLocalService, MeetupGroupLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<MeetupGroupLocalService, MeetupGroupLocalService>(
-						bundle.getBundleContext(),
-						MeetupGroupLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile MeetupGroupLocalService _service;
 
 }

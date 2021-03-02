@@ -14,10 +14,6 @@
 
 package com.liferay.osb.customer.admin.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for AccountEntryLanguage. This utility wraps
  * <code>com.liferay.osb.customer.admin.service.impl.AccountEntryLanguageServiceImpl</code> and is an
@@ -43,32 +39,14 @@ public class AccountEntryLanguageServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static AccountEntryLanguageService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AccountEntryLanguageService, AccountEntryLanguageService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AccountEntryLanguageService.class);
-
-		ServiceTracker<AccountEntryLanguageService, AccountEntryLanguageService>
-			serviceTracker =
-				new ServiceTracker
-					<AccountEntryLanguageService, AccountEntryLanguageService>(
-						bundle.getBundleContext(),
-						AccountEntryLanguageService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountEntryLanguageService _service;
 
 }

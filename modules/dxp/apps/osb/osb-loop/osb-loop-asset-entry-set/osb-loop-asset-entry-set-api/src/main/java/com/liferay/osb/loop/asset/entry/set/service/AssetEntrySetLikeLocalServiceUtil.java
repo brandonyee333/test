@@ -14,9 +14,15 @@
 
 package com.liferay.osb.loop.asset.entry.set.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for AssetEntrySetLike. This utility wraps
@@ -48,10 +54,8 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @param assetEntrySetLike the asset entry set like
 	 * @return the asset entry set like that was added
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-		addAssetEntrySetLike(
-			com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-				assetEntrySetLike) {
+	public static AssetEntrySetLike addAssetEntrySetLike(
+		AssetEntrySetLike assetEntrySetLike) {
 
 		return getService().addAssetEntrySetLike(assetEntrySetLike);
 	}
@@ -62,10 +66,9 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @param assetEntrySetLikePK the primary key for the new asset entry set like
 	 * @return the new asset entry set like
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-		createAssetEntrySetLike(
-			com.liferay.osb.loop.asset.entry.set.service.persistence.
-				AssetEntrySetLikePK assetEntrySetLikePK) {
+	public static AssetEntrySetLike createAssetEntrySetLike(
+		com.liferay.osb.loop.asset.entry.set.service.persistence.
+			AssetEntrySetLikePK assetEntrySetLikePK) {
 
 		return getService().createAssetEntrySetLike(assetEntrySetLikePK);
 	}
@@ -80,10 +83,8 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @param assetEntrySetLike the asset entry set like
 	 * @return the asset entry set like that was removed
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-		deleteAssetEntrySetLike(
-			com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-				assetEntrySetLike) {
+	public static AssetEntrySetLike deleteAssetEntrySetLike(
+		AssetEntrySetLike assetEntrySetLike) {
 
 		return getService().deleteAssetEntrySetLike(assetEntrySetLike);
 	}
@@ -99,11 +100,10 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @return the asset entry set like that was removed
 	 * @throws PortalException if a asset entry set like with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-			deleteAssetEntrySetLike(
-				com.liferay.osb.loop.asset.entry.set.service.persistence.
-					AssetEntrySetLikePK assetEntrySetLikePK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetEntrySetLike deleteAssetEntrySetLike(
+			com.liferay.osb.loop.asset.entry.set.service.persistence.
+				AssetEntrySetLikePK assetEntrySetLikePK)
+		throws PortalException {
 
 		return getService().deleteAssetEntrySetLike(assetEntrySetLikePK);
 	}
@@ -115,17 +115,14 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -135,9 +132,7 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -153,9 +148,8 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -173,10 +167,9 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -188,9 +181,7 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -202,23 +193,21 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-		fetchAssetEntrySetLike(
-			com.liferay.osb.loop.asset.entry.set.service.persistence.
-				AssetEntrySetLikePK assetEntrySetLikePK) {
+	public static AssetEntrySetLike fetchAssetEntrySetLike(
+		com.liferay.osb.loop.asset.entry.set.service.persistence.
+			AssetEntrySetLikePK assetEntrySetLikePK) {
 
 		return getService().fetchAssetEntrySetLike(assetEntrySetLikePK);
 	}
 
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-		fetchAssetEntrySetLike(
-			long assetEntrySetId, long classNameId, long classPK) {
+	public static AssetEntrySetLike fetchAssetEntrySetLike(
+		long assetEntrySetId, long classNameId, long classPK) {
 
 		return getService().fetchAssetEntrySetLike(
 			assetEntrySetId, classNameId, classPK);
@@ -237,11 +226,10 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @return the asset entry set like
 	 * @throws PortalException if a asset entry set like with the primary key could not be found
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-			getAssetEntrySetLike(
-				com.liferay.osb.loop.asset.entry.set.service.persistence.
-					AssetEntrySetLikePK assetEntrySetLikePK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AssetEntrySetLike getAssetEntrySetLike(
+			com.liferay.osb.loop.asset.entry.set.service.persistence.
+				AssetEntrySetLikePK assetEntrySetLikePK)
+		throws PortalException {
 
 		return getService().getAssetEntrySetLike(assetEntrySetLikePK);
 	}
@@ -261,18 +249,15 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @param end the upper bound of the range of asset entry set likes (not inclusive)
 	 * @return the range of asset entry set likes
 	 */
-	public static java.util.List
-		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike>
-			getAssetEntrySetLikes(int start, int end) {
+	public static List<AssetEntrySetLike> getAssetEntrySetLikes(
+		int start, int end) {
 
 		return getService().getAssetEntrySetLikes(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike>
-			getAssetEntrySetLikes(
-				long assetEntrySetId, long classNameId, long classPK, int start,
-				int end) {
+	public static List<AssetEntrySetLike> getAssetEntrySetLikes(
+		long assetEntrySetId, long classNameId, long classPK, int start,
+		int end) {
 
 		return getService().getAssetEntrySetLikes(
 			assetEntrySetId, classNameId, classPK, start, end);
@@ -306,9 +291,8 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -323,38 +307,16 @@ public class AssetEntrySetLikeLocalServiceUtil {
 	 * @param assetEntrySetLike the asset entry set like
 	 * @return the asset entry set like that was updated
 	 */
-	public static com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-		updateAssetEntrySetLike(
-			com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike
-				assetEntrySetLike) {
+	public static AssetEntrySetLike updateAssetEntrySetLike(
+		AssetEntrySetLike assetEntrySetLike) {
 
 		return getService().updateAssetEntrySetLike(assetEntrySetLike);
 	}
 
 	public static AssetEntrySetLikeLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AssetEntrySetLikeLocalService, AssetEntrySetLikeLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AssetEntrySetLikeLocalService.class);
-
-		ServiceTracker
-			<AssetEntrySetLikeLocalService, AssetEntrySetLikeLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<AssetEntrySetLikeLocalService,
-						 AssetEntrySetLikeLocalService>(
-							 bundle.getBundleContext(),
-							 AssetEntrySetLikeLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AssetEntrySetLikeLocalService _service;
 
 }

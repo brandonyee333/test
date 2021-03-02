@@ -16,6 +16,7 @@ package com.liferay.osb.testray.service.base;
 
 import com.liferay.osb.testray.model.TestrayCaseResult;
 import com.liferay.osb.testray.service.TestrayCaseResultLocalService;
+import com.liferay.osb.testray.service.TestrayCaseResultLocalServiceUtil;
 import com.liferay.osb.testray.service.persistence.TestrayArchivePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayAssignmentPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayBuildPersistence;
@@ -66,6 +67,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -88,7 +91,7 @@ public abstract class TestrayCaseResultLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TestrayCaseResultLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.testray.service.TestrayCaseResultLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TestrayCaseResultLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TestrayCaseResultLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -1758,11 +1761,15 @@ public abstract class TestrayCaseResultLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.testray.model.TestrayCaseResult",
 			testrayCaseResultLocalService);
+
+		_setLocalServiceUtilService(testrayCaseResultLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.testray.model.TestrayCaseResult");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -1805,6 +1812,23 @@ public abstract class TestrayCaseResultLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		TestrayCaseResultLocalService testrayCaseResultLocalService) {
+
+		try {
+			Field field =
+				TestrayCaseResultLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, testrayCaseResultLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

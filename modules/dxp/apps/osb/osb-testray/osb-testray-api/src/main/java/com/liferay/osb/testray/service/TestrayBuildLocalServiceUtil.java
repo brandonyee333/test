@@ -14,9 +14,15 @@
 
 package com.liferay.osb.testray.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.testray.model.TestrayBuild;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for TestrayBuild. This utility wraps
@@ -48,9 +54,7 @@ public class TestrayBuildLocalServiceUtil {
 	 * @param testrayBuild the testray build
 	 * @return the testray build that was added
 	 */
-	public static com.liferay.osb.testray.model.TestrayBuild addTestrayBuild(
-		com.liferay.osb.testray.model.TestrayBuild testrayBuild) {
-
+	public static TestrayBuild addTestrayBuild(TestrayBuild testrayBuild) {
 		return getService().addTestrayBuild(testrayBuild);
 	}
 
@@ -61,16 +65,13 @@ public class TestrayBuildLocalServiceUtil {
 	}
 
 	public static void addTestrayCaseTestrayBuild(
-		long testrayCaseId,
-		com.liferay.osb.testray.model.TestrayBuild testrayBuild) {
+		long testrayCaseId, TestrayBuild testrayBuild) {
 
 		getService().addTestrayCaseTestrayBuild(testrayCaseId, testrayBuild);
 	}
 
 	public static void addTestrayCaseTestrayBuilds(
-		long testrayCaseId,
-		java.util.List<com.liferay.osb.testray.model.TestrayBuild>
-			testrayBuilds) {
+		long testrayCaseId, List<TestrayBuild> testrayBuilds) {
 
 		getService().addTestrayCaseTestrayBuilds(testrayCaseId, testrayBuilds);
 	}
@@ -92,19 +93,16 @@ public class TestrayBuildLocalServiceUtil {
 	 * @param testrayBuildId the primary key for the new testray build
 	 * @return the new testray build
 	 */
-	public static com.liferay.osb.testray.model.TestrayBuild createTestrayBuild(
-		long testrayBuildId) {
-
+	public static TestrayBuild createTestrayBuild(long testrayBuildId) {
 		return getService().createTestrayBuild(testrayBuildId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -120,9 +118,8 @@ public class TestrayBuildLocalServiceUtil {
 	 * @return the testray build that was removed
 	 * @throws PortalException if a testray build with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayBuild deleteTestrayBuild(
-			long testrayBuildId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayBuild deleteTestrayBuild(long testrayBuildId)
+		throws PortalException {
 
 		return getService().deleteTestrayBuild(testrayBuildId);
 	}
@@ -137,9 +134,7 @@ public class TestrayBuildLocalServiceUtil {
 	 * @param testrayBuild the testray build
 	 * @return the testray build that was removed
 	 */
-	public static com.liferay.osb.testray.model.TestrayBuild deleteTestrayBuild(
-		com.liferay.osb.testray.model.TestrayBuild testrayBuild) {
-
+	public static TestrayBuild deleteTestrayBuild(TestrayBuild testrayBuild) {
 		return getService().deleteTestrayBuild(testrayBuild);
 	}
 
@@ -151,16 +146,13 @@ public class TestrayBuildLocalServiceUtil {
 	}
 
 	public static void deleteTestrayCaseTestrayBuild(
-		long testrayCaseId,
-		com.liferay.osb.testray.model.TestrayBuild testrayBuild) {
+		long testrayCaseId, TestrayBuild testrayBuild) {
 
 		getService().deleteTestrayCaseTestrayBuild(testrayCaseId, testrayBuild);
 	}
 
 	public static void deleteTestrayCaseTestrayBuilds(
-		long testrayCaseId,
-		java.util.List<com.liferay.osb.testray.model.TestrayBuild>
-			testrayBuilds) {
+		long testrayCaseId, List<TestrayBuild> testrayBuilds) {
 
 		getService().deleteTestrayCaseTestrayBuilds(
 			testrayCaseId, testrayBuilds);
@@ -173,9 +165,7 @@ public class TestrayBuildLocalServiceUtil {
 			testrayCaseId, testrayBuildIds);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -185,9 +175,7 @@ public class TestrayBuildLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -203,9 +191,8 @@ public class TestrayBuildLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -223,10 +210,9 @@ public class TestrayBuildLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -238,9 +224,7 @@ public class TestrayBuildLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -252,15 +236,13 @@ public class TestrayBuildLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.testray.model.TestrayBuild fetchTestrayBuild(
-		long testrayBuildId) {
-
+	public static TestrayBuild fetchTestrayBuild(long testrayBuildId) {
 		return getService().fetchTestrayBuild(testrayBuildId);
 	}
 
@@ -289,9 +271,8 @@ public class TestrayBuildLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -303,9 +284,8 @@ public class TestrayBuildLocalServiceUtil {
 	 * @return the testray build
 	 * @throws PortalException if a testray build with the primary key could not be found
 	 */
-	public static com.liferay.osb.testray.model.TestrayBuild getTestrayBuild(
-			long testrayBuildId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TestrayBuild getTestrayBuild(long testrayBuildId)
+		throws PortalException {
 
 		return getService().getTestrayBuild(testrayBuildId);
 	}
@@ -321,9 +301,7 @@ public class TestrayBuildLocalServiceUtil {
 	 * @param end the upper bound of the range of testray builds (not inclusive)
 	 * @return the range of testray builds
 	 */
-	public static java.util.List<com.liferay.osb.testray.model.TestrayBuild>
-		getTestrayBuilds(int start, int end) {
-
+	public static List<TestrayBuild> getTestrayBuilds(int start, int end) {
 		return getService().getTestrayBuilds(start, end);
 	}
 
@@ -346,25 +324,22 @@ public class TestrayBuildLocalServiceUtil {
 		return getService().getTestrayCasePrimaryKeys(testrayBuildId);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayBuild>
-		getTestrayCaseTestrayBuilds(long testrayCaseId) {
+	public static List<TestrayBuild> getTestrayCaseTestrayBuilds(
+		long testrayCaseId) {
 
 		return getService().getTestrayCaseTestrayBuilds(testrayCaseId);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayBuild>
-		getTestrayCaseTestrayBuilds(long testrayCaseId, int start, int end) {
+	public static List<TestrayBuild> getTestrayCaseTestrayBuilds(
+		long testrayCaseId, int start, int end) {
 
 		return getService().getTestrayCaseTestrayBuilds(
 			testrayCaseId, start, end);
 	}
 
-	public static java.util.List<com.liferay.osb.testray.model.TestrayBuild>
-		getTestrayCaseTestrayBuilds(
-			long testrayCaseId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.osb.testray.model.TestrayBuild>
-					orderByComparator) {
+	public static List<TestrayBuild> getTestrayCaseTestrayBuilds(
+		long testrayCaseId, int start, int end,
+		OrderByComparator<TestrayBuild> orderByComparator) {
 
 		return getService().getTestrayCaseTestrayBuilds(
 			testrayCaseId, start, end, orderByComparator);
@@ -402,32 +377,14 @@ public class TestrayBuildLocalServiceUtil {
 	 * @param testrayBuild the testray build
 	 * @return the testray build that was updated
 	 */
-	public static com.liferay.osb.testray.model.TestrayBuild updateTestrayBuild(
-		com.liferay.osb.testray.model.TestrayBuild testrayBuild) {
-
+	public static TestrayBuild updateTestrayBuild(TestrayBuild testrayBuild) {
 		return getService().updateTestrayBuild(testrayBuild);
 	}
 
 	public static TestrayBuildLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TestrayBuildLocalService, TestrayBuildLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TestrayBuildLocalService.class);
-
-		ServiceTracker<TestrayBuildLocalService, TestrayBuildLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<TestrayBuildLocalService, TestrayBuildLocalService>(
-						bundle.getBundleContext(),
-						TestrayBuildLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TestrayBuildLocalService _service;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.osb.email.blacklist.service.base;
 
 import com.liferay.osb.email.blacklist.model.BounceEntry;
 import com.liferay.osb.email.blacklist.service.BounceEntryLocalService;
+import com.liferay.osb.email.blacklist.service.BounceEntryLocalServiceUtil;
 import com.liferay.osb.email.blacklist.service.persistence.BlacklistEntryPersistence;
 import com.liferay.osb.email.blacklist.service.persistence.BounceEntryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -47,6 +48,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -69,7 +72,7 @@ public abstract class BounceEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BounceEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.email.blacklist.service.BounceEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>BounceEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>BounceEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -568,11 +571,15 @@ public abstract class BounceEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.email.blacklist.model.BounceEntry",
 			bounceEntryLocalService);
+
+		_setLocalServiceUtilService(bounceEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.email.blacklist.model.BounceEntry");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -614,6 +621,22 @@ public abstract class BounceEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		BounceEntryLocalService bounceEntryLocalService) {
+
+		try {
+			Field field = BounceEntryLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, bounceEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

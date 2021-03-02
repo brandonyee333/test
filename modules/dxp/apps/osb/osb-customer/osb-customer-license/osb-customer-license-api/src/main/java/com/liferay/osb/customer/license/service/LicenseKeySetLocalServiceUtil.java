@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.license.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.license.model.LicenseKeySet;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LicenseKeySet. This utility wraps
@@ -48,25 +54,20 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @param licenseKeySet the license key set
 	 * @return the license key set that was added
 	 */
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-		addLicenseKeySet(
-			com.liferay.osb.customer.license.model.LicenseKeySet
-				licenseKeySet) {
-
+	public static LicenseKeySet addLicenseKeySet(LicenseKeySet licenseKeySet) {
 		return getService().addLicenseKeySet(licenseKeySet);
 	}
 
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			addLicenseKeySet(long userId, long accountEntryId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseKeySet addLicenseKeySet(
+			long userId, long accountEntryId, String name)
+		throws PortalException {
 
 		return getService().addLicenseKeySet(userId, accountEntryId, name);
 	}
 
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			addLicenseKeySet(
-				long userId, String koroneikiAccountKey, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseKeySet addLicenseKeySet(
+			long userId, String koroneikiAccountKey, String name)
+		throws PortalException {
 
 		return getService().addLicenseKeySet(userId, koroneikiAccountKey, name);
 	}
@@ -77,9 +78,7 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @param licenseKeySetId the primary key for the new license key set
 	 * @return the new license key set
 	 */
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-		createLicenseKeySet(long licenseKeySetId) {
-
+	public static LicenseKeySet createLicenseKeySet(long licenseKeySetId) {
 		return getService().createLicenseKeySet(licenseKeySetId);
 	}
 
@@ -94,11 +93,8 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @return the license key set that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			deleteLicenseKeySet(
-				com.liferay.osb.customer.license.model.LicenseKeySet
-					licenseKeySet)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseKeySet deleteLicenseKeySet(LicenseKeySet licenseKeySet)
+		throws PortalException {
 
 		return getService().deleteLicenseKeySet(licenseKeySet);
 	}
@@ -114,9 +110,8 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @return the license key set that was removed
 	 * @throws PortalException if a license key set with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			deleteLicenseKeySet(long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseKeySet deleteLicenseKeySet(long licenseKeySetId)
+		throws PortalException {
 
 		return getService().deleteLicenseKeySet(licenseKeySetId);
 	}
@@ -124,17 +119,14 @@ public class LicenseKeySetLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -144,9 +136,7 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -162,9 +152,8 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -182,10 +171,9 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -197,9 +185,7 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -211,22 +197,18 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-		fetchLicenseKeySet(long licenseKeySetId) {
-
+	public static LicenseKeySet fetchLicenseKeySet(long licenseKeySetId) {
 		return getService().fetchLicenseKeySet(licenseKeySetId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.license.model.LicenseKeySet>
-			getAccountEntryLicenseKeySets(
-				long accountEntryId, int start, int end) {
+	public static List<LicenseKeySet> getAccountEntryLicenseKeySets(
+		long accountEntryId, int start, int end) {
 
 		return getService().getAccountEntryLicenseKeySets(
 			accountEntryId, start, end);
@@ -256,9 +238,8 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @return the license key set
 	 * @throws PortalException if a license key set with the primary key could not be found
 	 */
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			getLicenseKeySet(long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseKeySet getLicenseKeySet(long licenseKeySetId)
+		throws PortalException {
 
 		return getService().getLicenseKeySet(licenseKeySetId);
 	}
@@ -274,10 +255,7 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @param end the upper bound of the range of license key sets (not inclusive)
 	 * @return the range of license key sets
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.license.model.LicenseKeySet>
-			getLicenseKeySets(int start, int end) {
-
+	public static List<LicenseKeySet> getLicenseKeySets(int start, int end) {
 		return getService().getLicenseKeySets(start, end);
 	}
 
@@ -302,9 +280,8 @@ public class LicenseKeySetLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -319,42 +296,23 @@ public class LicenseKeySetLocalServiceUtil {
 	 * @param licenseKeySet the license key set
 	 * @return the license key set that was updated
 	 */
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-		updateLicenseKeySet(
-			com.liferay.osb.customer.license.model.LicenseKeySet
-				licenseKeySet) {
+	public static LicenseKeySet updateLicenseKeySet(
+		LicenseKeySet licenseKeySet) {
 
 		return getService().updateLicenseKeySet(licenseKeySet);
 	}
 
-	public static com.liferay.osb.customer.license.model.LicenseKeySet
-			updateLicenseKeySet(long licenseKeySetId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseKeySet updateLicenseKeySet(
+			long licenseKeySetId, String name)
+		throws PortalException {
 
 		return getService().updateLicenseKeySet(licenseKeySetId, name);
 	}
 
 	public static LicenseKeySetLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LicenseKeySetLocalService, LicenseKeySetLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LicenseKeySetLocalService.class);
-
-		ServiceTracker<LicenseKeySetLocalService, LicenseKeySetLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LicenseKeySetLocalService, LicenseKeySetLocalService>(
-						bundle.getBundleContext(),
-						LicenseKeySetLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LicenseKeySetLocalService _service;
 
 }

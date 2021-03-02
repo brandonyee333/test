@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.release.notes.jira.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.release.notes.jira.model.JIRAComponent;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for JIRAComponent. This utility wraps
@@ -48,12 +54,7 @@ public class JIRAComponentLocalServiceUtil {
 	 * @param jiraComponent the jira component
 	 * @return the jira component that was added
 	 */
-	public static
-		com.liferay.osb.customer.release.notes.jira.model.JIRAComponent
-			addJIRAComponent(
-				com.liferay.osb.customer.release.notes.jira.model.JIRAComponent
-					jiraComponent) {
-
+	public static JIRAComponent addJIRAComponent(JIRAComponent jiraComponent) {
 		return getService().addJIRAComponent(jiraComponent);
 	}
 
@@ -63,10 +64,7 @@ public class JIRAComponentLocalServiceUtil {
 	 * @param jiraComponentId the primary key for the new jira component
 	 * @return the new jira component
 	 */
-	public static
-		com.liferay.osb.customer.release.notes.jira.model.JIRAComponent
-			createJIRAComponent(long jiraComponentId) {
-
+	public static JIRAComponent createJIRAComponent(long jiraComponentId) {
 		return getService().createJIRAComponent(jiraComponentId);
 	}
 
@@ -80,11 +78,8 @@ public class JIRAComponentLocalServiceUtil {
 	 * @param jiraComponent the jira component
 	 * @return the jira component that was removed
 	 */
-	public static
-		com.liferay.osb.customer.release.notes.jira.model.JIRAComponent
-			deleteJIRAComponent(
-				com.liferay.osb.customer.release.notes.jira.model.JIRAComponent
-					jiraComponent) {
+	public static JIRAComponent deleteJIRAComponent(
+		JIRAComponent jiraComponent) {
 
 		return getService().deleteJIRAComponent(jiraComponent);
 	}
@@ -100,10 +95,8 @@ public class JIRAComponentLocalServiceUtil {
 	 * @return the jira component that was removed
 	 * @throws PortalException if a jira component with the primary key could not be found
 	 */
-	public static
-		com.liferay.osb.customer.release.notes.jira.model.JIRAComponent
-				deleteJIRAComponent(long jiraComponentId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static JIRAComponent deleteJIRAComponent(long jiraComponentId)
+		throws PortalException {
 
 		return getService().deleteJIRAComponent(jiraComponentId);
 	}
@@ -111,17 +104,14 @@ public class JIRAComponentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -131,9 +121,7 @@ public class JIRAComponentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -149,9 +137,8 @@ public class JIRAComponentLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -169,10 +156,9 @@ public class JIRAComponentLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -184,9 +170,7 @@ public class JIRAComponentLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -198,16 +182,13 @@ public class JIRAComponentLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static
-		com.liferay.osb.customer.release.notes.jira.model.JIRAComponent
-			fetchJIRAComponent(long jiraComponentId) {
-
+	public static JIRAComponent fetchJIRAComponent(long jiraComponentId) {
 		return getService().fetchJIRAComponent(jiraComponentId);
 	}
 
@@ -231,10 +212,8 @@ public class JIRAComponentLocalServiceUtil {
 	 * @return the jira component
 	 * @throws PortalException if a jira component with the primary key could not be found
 	 */
-	public static
-		com.liferay.osb.customer.release.notes.jira.model.JIRAComponent
-				getJIRAComponent(long jiraComponentId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static JIRAComponent getJIRAComponent(long jiraComponentId)
+		throws PortalException {
 
 		return getService().getJIRAComponent(jiraComponentId);
 	}
@@ -250,10 +229,7 @@ public class JIRAComponentLocalServiceUtil {
 	 * @param end the upper bound of the range of jira components (not inclusive)
 	 * @return the range of jira components
 	 */
-	public static java.util.List
-		<com.liferay.osb.customer.release.notes.jira.model.JIRAComponent>
-			getJIRAComponents(int start, int end) {
-
+	public static List<JIRAComponent> getJIRAComponents(int start, int end) {
 		return getService().getJIRAComponents(start, end);
 	}
 
@@ -266,9 +242,8 @@ public class JIRAComponentLocalServiceUtil {
 		return getService().getJIRAComponentsCount();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.customer.release.notes.jira.model.JIRAComponent>
-			getJIRAIssueJIRAComponents(long jiraIssueId) {
+	public static List<JIRAComponent> getJIRAIssueJIRAComponents(
+		long jiraIssueId) {
 
 		return getService().getJIRAIssueJIRAComponents(jiraIssueId);
 	}
@@ -285,9 +260,8 @@ public class JIRAComponentLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -302,36 +276,16 @@ public class JIRAComponentLocalServiceUtil {
 	 * @param jiraComponent the jira component
 	 * @return the jira component that was updated
 	 */
-	public static
-		com.liferay.osb.customer.release.notes.jira.model.JIRAComponent
-			updateJIRAComponent(
-				com.liferay.osb.customer.release.notes.jira.model.JIRAComponent
-					jiraComponent) {
+	public static JIRAComponent updateJIRAComponent(
+		JIRAComponent jiraComponent) {
 
 		return getService().updateJIRAComponent(jiraComponent);
 	}
 
 	public static JIRAComponentLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<JIRAComponentLocalService, JIRAComponentLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			JIRAComponentLocalService.class);
-
-		ServiceTracker<JIRAComponentLocalService, JIRAComponentLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<JIRAComponentLocalService, JIRAComponentLocalService>(
-						bundle.getBundleContext(),
-						JIRAComponentLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile JIRAComponentLocalService _service;
 
 }

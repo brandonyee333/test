@@ -16,6 +16,7 @@ package com.liferay.osb.email.blacklist.service.base;
 
 import com.liferay.osb.email.blacklist.model.BlacklistEntry;
 import com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService;
+import com.liferay.osb.email.blacklist.service.BlacklistEntryLocalServiceUtil;
 import com.liferay.osb.email.blacklist.service.persistence.BlacklistEntryPersistence;
 import com.liferay.osb.email.blacklist.service.persistence.BounceEntryPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -48,6 +49,8 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -70,7 +73,7 @@ public abstract class BlacklistEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>BlacklistEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.email.blacklist.service.BlacklistEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>BlacklistEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>BlacklistEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -610,11 +613,15 @@ public abstract class BlacklistEntryLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.email.blacklist.model.BlacklistEntry",
 			blacklistEntryLocalService);
+
+		_setLocalServiceUtilService(blacklistEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.email.blacklist.model.BlacklistEntry");
+
+		_setLocalServiceUtilService(null);
 	}
 
 	/**
@@ -656,6 +663,22 @@ public abstract class BlacklistEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		BlacklistEntryLocalService blacklistEntryLocalService) {
+
+		try {
+			Field field = BlacklistEntryLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, blacklistEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

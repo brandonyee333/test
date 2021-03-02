@@ -14,9 +14,8 @@
 
 package com.liferay.osb.customer.ticket.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.customer.ticket.model.TicketAttachment;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for TicketAttachment. This utility wraps
@@ -37,13 +36,11 @@ public class TicketAttachmentServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.ticket.service.impl.TicketAttachmentServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.customer.ticket.model.TicketAttachment
-			addTicketAttachment(
-				long accountEntryId, long zendeskTicketId,
-				String fileRepositoryId, String fileName, long fileSize,
-				int type,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TicketAttachment addTicketAttachment(
+			long accountEntryId, long zendeskTicketId, String fileRepositoryId,
+			String fileName, long fileSize, int type,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().addTicketAttachment(
 			accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
@@ -59,33 +56,16 @@ public class TicketAttachmentServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.customer.ticket.model.TicketAttachment
-			getTicketAttachment(long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TicketAttachment getTicketAttachment(long ticketAttachmentId)
+		throws PortalException {
 
 		return getService().getTicketAttachment(ticketAttachmentId);
 	}
 
 	public static TicketAttachmentService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TicketAttachmentService, TicketAttachmentService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TicketAttachmentService.class);
-
-		ServiceTracker<TicketAttachmentService, TicketAttachmentService>
-			serviceTracker =
-				new ServiceTracker
-					<TicketAttachmentService, TicketAttachmentService>(
-						bundle.getBundleContext(),
-						TicketAttachmentService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TicketAttachmentService _service;
 
 }

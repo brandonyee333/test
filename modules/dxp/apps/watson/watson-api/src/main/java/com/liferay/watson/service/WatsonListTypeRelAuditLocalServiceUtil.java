@@ -14,9 +14,15 @@
 
 package com.liferay.watson.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.watson.model.WatsonListTypeRelAudit;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WatsonListTypeRelAudit. This utility wraps
@@ -48,10 +54,8 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @param watsonListTypeRelAudit the watson list type rel audit
 	 * @return the watson list type rel audit that was added
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRelAudit
-		addWatsonListTypeRelAudit(
-			com.liferay.watson.model.WatsonListTypeRelAudit
-				watsonListTypeRelAudit) {
+	public static WatsonListTypeRelAudit addWatsonListTypeRelAudit(
+		WatsonListTypeRelAudit watsonListTypeRelAudit) {
 
 		return getService().addWatsonListTypeRelAudit(watsonListTypeRelAudit);
 	}
@@ -62,8 +66,8 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @param watsonListTypeRelAuditId the primary key for the new watson list type rel audit
 	 * @return the new watson list type rel audit
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRelAudit
-		createWatsonListTypeRelAudit(long watsonListTypeRelAuditId) {
+	public static WatsonListTypeRelAudit createWatsonListTypeRelAudit(
+		long watsonListTypeRelAuditId) {
 
 		return getService().createWatsonListTypeRelAudit(
 			watsonListTypeRelAuditId);
@@ -72,10 +76,9 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -91,9 +94,9 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @return the watson list type rel audit that was removed
 	 * @throws PortalException if a watson list type rel audit with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRelAudit
-			deleteWatsonListTypeRelAudit(long watsonListTypeRelAuditId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonListTypeRelAudit deleteWatsonListTypeRelAudit(
+			long watsonListTypeRelAuditId)
+		throws PortalException {
 
 		return getService().deleteWatsonListTypeRelAudit(
 			watsonListTypeRelAuditId);
@@ -109,18 +112,14 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @param watsonListTypeRelAudit the watson list type rel audit
 	 * @return the watson list type rel audit that was removed
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRelAudit
-		deleteWatsonListTypeRelAudit(
-			com.liferay.watson.model.WatsonListTypeRelAudit
-				watsonListTypeRelAudit) {
+	public static WatsonListTypeRelAudit deleteWatsonListTypeRelAudit(
+		WatsonListTypeRelAudit watsonListTypeRelAudit) {
 
 		return getService().deleteWatsonListTypeRelAudit(
 			watsonListTypeRelAudit);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -130,9 +129,7 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -148,9 +145,8 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -168,10 +164,9 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -183,9 +178,7 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -197,14 +190,14 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.watson.model.WatsonListTypeRelAudit
-		fetchWatsonListTypeRelAudit(long watsonListTypeRelAuditId) {
+	public static WatsonListTypeRelAudit fetchWatsonListTypeRelAudit(
+		long watsonListTypeRelAuditId) {
 
 		return getService().fetchWatsonListTypeRelAudit(
 			watsonListTypeRelAuditId);
@@ -235,9 +228,8 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -249,9 +241,9 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @return the watson list type rel audit
 	 * @throws PortalException if a watson list type rel audit with the primary key could not be found
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRelAudit
-			getWatsonListTypeRelAudit(long watsonListTypeRelAuditId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static WatsonListTypeRelAudit getWatsonListTypeRelAudit(
+			long watsonListTypeRelAuditId)
+		throws PortalException {
 
 		return getService().getWatsonListTypeRelAudit(watsonListTypeRelAuditId);
 	}
@@ -267,9 +259,8 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @param end the upper bound of the range of watson list type rel audits (not inclusive)
 	 * @return the range of watson list type rel audits
 	 */
-	public static java.util.List
-		<com.liferay.watson.model.WatsonListTypeRelAudit>
-			getWatsonListTypeRelAudits(int start, int end) {
+	public static List<WatsonListTypeRelAudit> getWatsonListTypeRelAudits(
+		int start, int end) {
 
 		return getService().getWatsonListTypeRelAudits(start, end);
 	}
@@ -293,39 +284,17 @@ public class WatsonListTypeRelAuditLocalServiceUtil {
 	 * @param watsonListTypeRelAudit the watson list type rel audit
 	 * @return the watson list type rel audit that was updated
 	 */
-	public static com.liferay.watson.model.WatsonListTypeRelAudit
-		updateWatsonListTypeRelAudit(
-			com.liferay.watson.model.WatsonListTypeRelAudit
-				watsonListTypeRelAudit) {
+	public static WatsonListTypeRelAudit updateWatsonListTypeRelAudit(
+		WatsonListTypeRelAudit watsonListTypeRelAudit) {
 
 		return getService().updateWatsonListTypeRelAudit(
 			watsonListTypeRelAudit);
 	}
 
 	public static WatsonListTypeRelAuditLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WatsonListTypeRelAuditLocalService, WatsonListTypeRelAuditLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WatsonListTypeRelAuditLocalService.class);
-
-		ServiceTracker
-			<WatsonListTypeRelAuditLocalService,
-			 WatsonListTypeRelAuditLocalService> serviceTracker =
-				new ServiceTracker
-					<WatsonListTypeRelAuditLocalService,
-					 WatsonListTypeRelAuditLocalService>(
-						 bundle.getBundleContext(),
-						 WatsonListTypeRelAuditLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WatsonListTypeRelAuditLocalService _service;
 
 }
