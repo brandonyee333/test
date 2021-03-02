@@ -767,7 +767,7 @@ definition {
 
 		UserBar.gotoDashboard();
 
-		Navigator.gotoPage(pageName = "Documents and Media");
+		Navigator._gotoPage(pageName = "Documents and Media");
 
 		DMDocument.viewPG(dmDocumentTitle = "Document txt Title");
 
