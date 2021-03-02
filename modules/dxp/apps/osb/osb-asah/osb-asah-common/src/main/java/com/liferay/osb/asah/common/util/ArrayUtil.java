@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.util;
 
 import java.lang.reflect.Array;
 
+import java.util.Objects;
+
 /**
  * @author Brian Wing Shun Chan
  */
@@ -39,6 +41,20 @@ public class ArrayUtil {
 		}
 
 		return newArray;
+	}
+
+	public static boolean contains(Object[] array, Object value) {
+		if (isEmpty(array)) {
+			return false;
+		}
+
+		for (Object object : array) {
+			if (Objects.equals(value, object)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static boolean isEmpty(Object[] array) {
