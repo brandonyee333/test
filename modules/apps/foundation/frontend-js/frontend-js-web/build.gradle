@@ -16,7 +16,7 @@ task buildSvg4everybody(type: Copy)
 
 String jqueryPluginsFormVersion = "3.51"
 String jQueryVersion = "3.5.1"
-String lexiconVersion = "1.0.30"
+String lexiconVersion = "1.0.31"
 String lodashVersion = "4.17.19"
 
 File jsDestinationDir = file("tmp/META-INF/resources")
