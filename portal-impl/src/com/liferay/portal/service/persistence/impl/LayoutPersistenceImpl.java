@@ -17781,7 +17781,7 @@ public class LayoutPersistenceImpl
 		ctStrictColumnNames.add("layoutPrototypeUuid");
 		ctStrictColumnNames.add("layoutPrototypeLinkEnabled");
 		ctStrictColumnNames.add("sourcePrototypeLayoutUuid");
-		ctStrictColumnNames.add("publishDate");
+		ctMergeColumnNames.add("publishDate");
 		ctStrictColumnNames.add("lastPublishDate");
 		ctStrictColumnNames.add("status");
 		ctStrictColumnNames.add("statusByUserId");
