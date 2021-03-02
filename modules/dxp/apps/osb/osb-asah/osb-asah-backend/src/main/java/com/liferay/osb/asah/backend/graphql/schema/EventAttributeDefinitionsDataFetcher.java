@@ -57,7 +57,8 @@ public class EventAttributeDefinitionsDataFetcher
 			eventAttributeDefinitions.stream();
 
 		return stream.map(
-			EventAttributeDefinitionDTO::new
+			eventAttributeDefinition -> new EventAttributeDefinitionDTO(
+				eventAttributeDefinition, eventDefinitionId)
 		).collect(
 			Collectors.toList()
 		);

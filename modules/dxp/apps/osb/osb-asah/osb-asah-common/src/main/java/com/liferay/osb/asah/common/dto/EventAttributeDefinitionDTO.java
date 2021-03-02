@@ -19,6 +19,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
+
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Leslie Wong
@@ -38,6 +42,34 @@ public class EventAttributeDefinitionDTO {
 		_displayName = eventAttributeDefinition.getDisplayName();
 		_id = String.valueOf(eventAttributeDefinition.getId());
 		_name = eventAttributeDefinition.getName();
+	}
+
+	public EventAttributeDefinitionDTO(
+		EventAttributeDefinition eventAttributeDefinition,
+		Long eventDefinitionId) {
+
+		this(eventAttributeDefinition);
+
+		Set<EventDefinitionEventAttributeDefinition>
+			eventDefinitionEventAttributeDefinitions =
+				eventAttributeDefinition.
+					getEventDefinitionEventAttributeDefinitions();
+
+		for (EventDefinitionEventAttributeDefinition
+				eventDefinitionEventAttributeDefinition :
+					eventDefinitionEventAttributeDefinitions) {
+
+			if (Objects.equals(
+					eventDefinitionId,
+					eventDefinitionEventAttributeDefinition.
+						getEventDefinitionId())) {
+
+				_sampleValue =
+					eventDefinitionEventAttributeDefinition.getSampleValue();
+
+				break;
+			}
+		}
 	}
 
 	@JsonProperty("dataType")
