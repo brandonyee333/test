@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.util;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.ArrayUtil;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,7 +36,14 @@ public class Validator {
 		if (isDateDayMonthYear(value) || isDateMonthDayYear(value) ||
 			isDateYearDayMonth(value) || isDateYearMonthDay(value)) {
 
-			return true;
+			try {
+				if (DateUtil.getLocalDateTime(value) != null) {
+					return true;
+				}
+			}
+			catch (Exception exception) {
+				return false;
+			}
 		}
 
 		return false;
