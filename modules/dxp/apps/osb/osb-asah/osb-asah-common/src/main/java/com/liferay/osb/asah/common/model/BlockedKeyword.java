@@ -33,7 +33,7 @@ public class BlockedKeyword implements Persistable<Long> {
 	}
 
 	public BlockedKeyword(Date createDate, String keyword) {
-		_createDate = createDate;
+		_createDate = new Date(createDate.getTime());
 		_keyword = keyword;
 	}
 
