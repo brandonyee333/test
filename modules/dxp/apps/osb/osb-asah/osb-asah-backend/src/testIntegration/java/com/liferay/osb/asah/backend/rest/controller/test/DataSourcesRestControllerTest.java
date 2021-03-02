@@ -295,26 +295,6 @@ public class DataSourcesRestControllerTest {
 	}
 
 	@Test
-	public void testGetDataSourceTransformations() throws Exception {
-		_dataSourcesRestController.postDataSource(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
-				DataSourceDTO.class));
-
-		JSONObject dataSourceTransformationsJSONObject = new JSONObject(
-			_dataSourcesRestController.getDataSourceTransformations(
-				"groupby((provider/type))/contains(('LIFERAY'))", null, 0, 10));
-
-		JSONObject embeddedJSONObject =
-			dataSourceTransformationsJSONObject.getJSONObject("_embedded");
-
-		JSONArray dataSourceTransformationsJSONArray =
-			embeddedJSONObject.getJSONArray("data-source-transformations");
-
-		Assert.assertEquals(1, dataSourceTransformationsJSONArray.length());
-	}
-
-	@Test
 	public void testGetSalesforceAccountsFields() throws Exception {
 		JSONObject salesforceDataSourceJSONObject =
 			_faroInfoElasticsearchInvoker.add(

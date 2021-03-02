@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
@@ -147,23 +146,6 @@ public class DataSourcesRestController extends BaseRestController {
 				}));
 
 		return responseJSONObject.toString();
-	}
-
-	@GetMapping(params = "apply")
-	public String getDataSourceTransformations(
-			@RequestParam String apply,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
-
-		return toTransformationGetResponse(
-			"data-sources", page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			null, null,
-			new TermsAggregationTransformationJSONArrayFunction(apply, null),
-			"data-source-transformations");
 	}
 
 	@GetMapping("/{id}/progress")
