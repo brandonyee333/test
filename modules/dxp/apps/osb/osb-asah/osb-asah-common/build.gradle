@@ -47,6 +47,7 @@ dependencies {
 	compile group: "org.elasticsearch.client", name: "elasticsearch-rest-high-level-client", version: "7.9.2"
 	compile group: "org.elasticsearch.client", name: "transport", version: "7.9.2"
 	compile group: "org.elasticsearch.client", name: "x-pack-transport", version: "7.9.2"
+	compile group: "org.jooq", name: "jooq", version: "3.14.8"
 	compile group: "org.json", name: "json"
 	compile group: "org.postgresql", name: "postgresql", version: "42.2.18"
 	compile group: "org.springframework.boot", name: "spring-boot-starter-actuator"

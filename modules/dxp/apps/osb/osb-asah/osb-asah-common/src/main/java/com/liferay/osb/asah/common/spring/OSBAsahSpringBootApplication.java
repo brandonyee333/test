@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jooq.JooqAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,6 +34,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @SpringBootApplication(
 	exclude = {
+		JooqAutoConfiguration.class,
 		ManagementWebSecurityAutoConfiguration.class,
 		MetricsAutoConfiguration.class, SecurityAutoConfiguration.class,
 		UserDetailsServiceAutoConfiguration.class
