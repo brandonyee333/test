@@ -51,6 +51,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,9 +64,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -194,6 +197,23 @@ public class DataSourceDog {
 	public List<DataSource> getDataSources(List<Long> dataSourceIds) {
 		return IterableUtils.toList(
 			_dataSourceRepository.findAllById(dataSourceIds));
+	}
+
+	public Page<DataSource> getDataSources(
+		List<Long> channelIds, String credentialType, List<String> names,
+		String providerType, List<String> searchNames, List<String> states,
+		Boolean url, Boolean workspaceURL, int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_dataSourceRepository.searchDataSources(
+				channelIds, credentialType, names, providerType, searchNames,
+				states, url, workspaceURL, pageRequest),
+			pageRequest,
+			() -> _dataSourceRepository.countDataSources(
+				channelIds, credentialType, names, providerType, searchNames,
+				states, url, workspaceURL));
 	}
 
 	public List<DataSource> getDataSources(String providerType) {
@@ -678,6 +698,38 @@ public class DataSourceDog {
 		}
 
 		return PageRequest.of(0, size, sort);
+	}
+
+	private Sort _getSort(String[] sorts) {
+		if (ArrayUtils.isEmpty(sorts)) {
+			return Sort.by(Sort.Order.asc("id"));
+		}
+
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (int i = 0; i < (sorts.length - 1); i = i + 2) {
+			String sort = sorts[i];
+
+			if (sort.contains("credentials")) {
+				sort = "credentialType";
+			}
+
+			if (sort.contains("dateCreated")) {
+				sort = "createDate";
+			}
+			else if (sort.contains("provider")) {
+				sort = "providerType";
+			}
+
+			if (Objects.equals(sorts[i + 1], "asc")) {
+				orders.add(Sort.Order.asc(sort));
+			}
+			else {
+				orders.add(Sort.Order.desc(sort));
+			}
+		}
+
+		return Sort.by(orders);
 	}
 
 	private void _updateTokenDataSourceCredentials(DataSource dataSource) {

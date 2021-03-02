@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.model.DataSourceOrganization;
 import com.liferay.osb.asah.common.model.DataSourceSite;
 import com.liferay.osb.asah.common.model.DataSourceUserGroup;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Date;
@@ -91,6 +92,10 @@ public class DataSourceDTO {
 		_workspaceURL = dataSource.getWorkspaceURL();
 	}
 
+	public DataSourceDTO(List<DataSource> dataSources) {
+		_dataSourceDTOs = SetUtil.map(dataSources, DataSourceDTO::new);
+	}
+
 	@JsonProperty("accountsConfiguration")
 	public AccountsConfigurationDTO getAccountsConfigurationDTO() {
 		return _accountsConfigurationDTO;
@@ -129,6 +134,11 @@ public class DataSourceDTO {
 	@JsonProperty("credentials")
 	public CredentialDTO getCredentialDTO() {
 		return _credentialDTO;
+	}
+
+	@JsonProperty("data-sources")
+	public Set<DataSourceDTO> getDataSourceDTOs() {
+		return _dataSourceDTOs;
 	}
 
 	@JsonProperty("dataSourceId")
@@ -1419,6 +1429,7 @@ public class DataSourceDTO {
 	private ContactsConfigurationDTO _contactsConfigurationDTO;
 	private Date _createDate;
 	private CredentialDTO _credentialDTO;
+	private Set<DataSourceDTO> _dataSourceDTOs;
 	private String _dataSourceId;
 	private String _dataSourceState;
 	private String _dataSourceStatus;

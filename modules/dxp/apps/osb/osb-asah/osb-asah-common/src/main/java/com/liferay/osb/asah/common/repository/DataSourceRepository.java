@@ -33,6 +33,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DataSourceRepository extends CrudRepository<DataSource, Long> {
 
+	public long countDataSources(
+		List<Long> channelIds, String credentialType, List<String> names,
+		String providerType, List<String> searchNames, List<String> states,
+		Boolean url, Boolean workspaceURL);
+
 	public boolean existsByFaroBackendSecuritySignature(
 		String faroBackendSecuritySignature);
 
@@ -58,5 +63,10 @@ public interface DataSourceRepository extends CrudRepository<DataSource, Long> {
 
 	public List<DataSource> findByProviderTypeAndStatus(
 		String providerType, String status);
+
+	public List<DataSource> searchDataSources(
+		List<Long> channelIds, String credentialType, List<String> names,
+		String providerType, List<String> searchNames, List<String> states,
+		Boolean url, Boolean workspaceURL, Pageable pageable);
 
 }

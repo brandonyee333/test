@@ -19,9 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
+import com.liferay.osb.asah.common.dto.PageDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
@@ -29,8 +29,13 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
+import com.liferay.osb.asah.common.util.ListUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -45,6 +50,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -112,7 +118,7 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	@GetMapping(params = "!apply")
-	public String getDataSources(
+	public PageDTO<DataSourceDTO> getDataSources(
 			@RequestParam(name = "filter", required = false)
 				String filterString,
 			@RequestParam(defaultValue = "0") int page,
@@ -120,32 +126,26 @@ public class DataSourcesRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		JSONObject responseJSONObject = new JSONObject(
-			toCollectionGetResponse(
-				"data-sources", null, page,
-				FilterStringToQueryBuilderConverter.convert(filterString), size,
-				sorts));
+		Page<DataSource> dataSources = _dataSourceDog.getDataSources(
+			ListUtil.map(
+				_getValues(filterString, "channelId", false), Long::valueOf),
+			_getValue(filterString, "credentials/type"),
+			_getValues(filterString, "name", false),
+			_getValue(filterString, "provider/type"),
+			_getValues(filterString, "name", true),
+			_getValues(filterString, "state", false),
+			_isNull(filterString, "url"), _isNull(filterString, "workspaceURL"),
+			page, size, sorts);
 
-		JSONObject embeddedJSONObject = responseJSONObject.getJSONObject(
-			"_embedded");
-
-		embeddedJSONObject.put(
-			"data-sources",
-			JSONUtil.toJSONArray(
-				JSONUtil.toList(
-					embeddedJSONObject.getJSONArray("data-sources"),
-					jsonObject -> _objectMapper.convertValue(
-						jsonObject, DataSource.class)),
+		return _toPageDTO(
+			dataSources.map(
 				dataSource -> {
 					_setLastSyncTime(dataSource);
 
 					_sanitize(dataSource);
 
-					return _objectMapper.convertValue(
-						dataSource, JSONObject.class);
+					return dataSource;
 				}));
-
-		return responseJSONObject.toString();
 	}
 
 	@GetMapping("/{id}/progress")
@@ -154,10 +154,10 @@ public class DataSourcesRestController extends BaseRestController {
 
 		String providerType = dataSource.getProviderType();
 
-		if (providerType.equals("CSV")) {
+		if (Objects.equals(providerType, "CSV")) {
 			return String.valueOf(_getCSVDataSourceProgressJSONObject(id));
 		}
-		else if (providerType.equals("SALESFORCE")) {
+		else if (Objects.equals(providerType, "SALESFORCE")) {
 			return String.valueOf(
 				_getSalesforceDataSourceProgressJSONObject(id));
 		}
@@ -682,6 +682,86 @@ public class DataSourcesRestController extends BaseRestController {
 		);
 	}
 
+	private String _getValue(String filter, String key) {
+		List<String> values = _getValues(filter, key, false);
+
+		if ((values == null) || values.isEmpty()) {
+			return null;
+		}
+
+		return values.get(0);
+	}
+
+	private List<String> _getValues(String filter, List<String> keys) {
+		if (filter == null) {
+			return null;
+		}
+
+		List<String> values = new ArrayList<>();
+
+		for (String key : keys) {
+			while (filter.contains(key)) {
+				int keyIndex = filter.indexOf(key);
+
+				int valueIndex = keyIndex + key.length();
+
+				String value = filter.substring(valueIndex);
+
+				if (value.indexOf("'") == 0) {
+					value = value.substring(value.indexOf("'") + 1);
+
+					value = value.substring(0, value.indexOf("'"));
+
+					values.add(value);
+
+					valueIndex += value.length() + 2;
+				}
+				else if (value.indexOf("null") == 0) {
+					values.add("null");
+
+					valueIndex += 5;
+				}
+				else if (value.indexOf("[") == 0) {
+					value = value.substring(value.indexOf("[") + 1);
+
+					value = value.substring(0, value.indexOf("]"));
+
+					Collections.addAll(values, value.split(","));
+
+					valueIndex += value.length() + 2;
+				}
+
+				filter = filter.replace(
+					filter.substring(keyIndex, valueIndex), "");
+			}
+		}
+
+		if (values.isEmpty()) {
+			return null;
+		}
+
+		return values;
+	}
+
+	private List<String> _getValues(String filter, String key, boolean search) {
+		if (search) {
+			return _getValues(filter, Arrays.asList("contains(" + key + ","));
+		}
+
+		return _getValues(
+			filter, Arrays.asList(" " + key + " eq ", "(" + key + " eq "));
+	}
+
+	private boolean _isNull(String filter, String key) {
+		List<String> values = _getValues(filter, key, false);
+
+		if ((values == null) || values.isEmpty()) {
+			return false;
+		}
+
+		return true;
+	}
+
 	private void _refreshConfiguration(DataSource dataSource) throws Exception {
 		String providerType = dataSource.getProviderType();
 
@@ -730,9 +810,7 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private void _setLastSyncTime(DataSource dataSource) {
-		String providerType = dataSource.getProviderType();
-
-		if (!providerType.equals("LIFERAY")) {
+		if (!Objects.equals(dataSource.getProviderType(), "LIFERAY")) {
 			return;
 		}
 
@@ -821,6 +899,13 @@ public class DataSourcesRestController extends BaseRestController {
 			dataSource.setContactsLastSuccessfulAuditEventDate(
 				new Date(createDate));
 		}
+	}
+
+	private PageDTO<DataSourceDTO> _toPageDTO(Page<DataSource> dataSources) {
+		return new PageDTO<>(
+			"_embedded", new DataSourceDTO(dataSources.getContent()),
+			dataSources.getNumber(), dataSources.getSize(),
+			dataSources.getTotalElements(), dataSources.getTotalPages());
 	}
 
 	private static final Log _log = LogFactory.getLog(

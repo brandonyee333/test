@@ -173,8 +173,9 @@ public class DataSourcesRestControllerTest {
 					dataSourceJSONObject, DataSourceDTO.class));
 		}
 
-		JSONObject responseJSONObject = new JSONObject(
-			_dataSourcesRestController.getDataSources(null, 0, 10, null));
+		JSONObject responseJSONObject = _objectMapper.convertValue(
+			_dataSourcesRestController.getDataSources(null, 0, 10, null),
+			JSONObject.class);
 
 		JSONArray dataSourcesJSONArray = (JSONArray)responseJSONObject.query(
 			"/_embedded/data-sources");
@@ -277,8 +278,9 @@ public class DataSourcesRestControllerTest {
 				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
 				DataSourceDTO.class));
 
-		JSONObject dataSourcesJSONObject = new JSONObject(
-			_dataSourcesRestController.getDataSources(null, 0, 20, null));
+		JSONObject dataSourcesJSONObject = _objectMapper.convertValue(
+			_dataSourcesRestController.getDataSources(null, 0, 20, null),
+			JSONObject.class);
 
 		JSONObject embeddedJSONObject = dataSourcesJSONObject.getJSONObject(
 			"_embedded");
