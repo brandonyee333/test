@@ -96,7 +96,7 @@ public class BlockedKeywordsRestControllerTest {
 	public void testGetBlockedKeyword() {
 		BlockedKeywordDTO blockedKeywordDTO =
 			_blockedKeywordsRestController.getBlockedKeyword(
-				"351238757269547424");
+				351238757269547424L);
 
 		Assert.assertEquals(
 			"2019-01-02T17:09:07.666Z",

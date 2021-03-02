@@ -59,9 +59,8 @@ public class BlockedKeywordsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}")
-	public BlockedKeywordDTO getBlockedKeyword(@PathVariable String id) {
-		return new BlockedKeywordDTO(
-			_blockedKeywordDog.getBlockedKeyword(Long.valueOf(id)));
+	public BlockedKeywordDTO getBlockedKeyword(@PathVariable Long id) {
+		return new BlockedKeywordDTO(_blockedKeywordDog.getBlockedKeyword(id));
 	}
 
 	@GetMapping
