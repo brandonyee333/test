@@ -121,16 +121,8 @@ public class TicketEntryPermissionChecker {
 						_contactRoleWebService.getTeamContactRoles(
 							team.getKey(), userUuid, 1, 100);
 
-					for (ContactRole contactRole : contactRoles) {
-						String contactRoleName = contactRole.getName();
-
-						if (contactRoleName.equals(
-								ContactRoleConstants.NAME_PARTNER_MANAGER) ||
-							contactRoleName.equals(
-								ContactRoleConstants.NAME_PARTNER_MEMBER)) {
-
-							return true;
-						}
+					if (!contactRoles.isEmpty()) {
+						return true;
 					}
 				}
 			}
