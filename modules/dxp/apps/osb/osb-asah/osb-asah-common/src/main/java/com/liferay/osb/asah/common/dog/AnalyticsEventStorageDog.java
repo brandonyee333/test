@@ -18,8 +18,9 @@ import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.EventAttribute;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionType;
+import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
+import com.liferay.osb.asah.common.util.Validator;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -69,8 +70,9 @@ public class AnalyticsEventStorageDog {
 					eventAttributeDefinition =
 						_eventAttributeDefinitionDog.
 							addEventAttributeDefinition(
-								"string", null, null, eventDefinitionId,
-								propertyName, entry.getValue());
+								_getDataType(propertyName, entry.getValue()),
+								null, null, eventDefinitionId, propertyName,
+								entry.getValue());
 				}
 				else {
 					Long eventAttributeDefinitionId =
@@ -114,6 +116,32 @@ public class AnalyticsEventStorageDog {
 		catch (Exception e) {
 			_log.error("Unable to store event", e);
 		}
+	}
+
+	private String _getDataType(String propertyName, String value) {
+		if (Validator.isBoolean(value)) {
+			return "boolean";
+		}
+
+		if (Validator.isDate(value)) {
+			return "date";
+		}
+
+		String lowerCasePropertyName = propertyName.toLowerCase();
+
+		if ((lowerCasePropertyName.contains("duration") ||
+			lowerCasePropertyName.contains("interval") ||
+			lowerCasePropertyName.contains("time")) &&
+			Validator.isNumber(value)) {
+
+			return "duration";
+		}
+
+		if (Validator.isDouble(value) || Validator.isNumber(value)) {
+			return "number";
+		}
+
+		return "string";
 	}
 
 	private Set<Long> _getEventDefinitionIds(
