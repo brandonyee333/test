@@ -764,10 +764,10 @@ type QueryType {
 	): AssetMetricBag
 
 	eventAttributeDefinitions(
-        keyword: String,
-        page: Int!
-        size: Int!
-    ): EventAttributeDefinitionBag
+		keyword: String,
+		page: Int!
+		size: Int!
+	): EventAttributeDefinitionBag
 
 	eventDefinition(
 		displayName: String,
