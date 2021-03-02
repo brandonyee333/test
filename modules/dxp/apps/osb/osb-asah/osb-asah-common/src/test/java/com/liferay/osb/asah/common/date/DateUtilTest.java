@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.date;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -155,6 +156,176 @@ public class DateUtilTest {
 			14,
 			DateUtil.getDeltaWeeks(
 				LocalDate.of(2019, 12, 3), LocalDate.of(2020, 3, 1)));
+	}
+
+	@Test
+	public void testGetISOFormat() {
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("ddMMyyyy")),
+			String.valueOf(DateUtil.getISOFormat("ddMMyyyy", "31122020", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("ddMMyyyy'T'HHmm")),
+			String.valueOf(
+				DateUtil.getISOFormat("ddMMyyyy", "31122020T0930", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("ddMMyyyy'T'HHmmss")),
+			String.valueOf(
+				DateUtil.getISOFormat("ddMMyyyy", "31122020T093000", "")));
+		Assert.assertEquals(
+			String.valueOf(
+				DateTimeFormatter.ofPattern("ddMMyyyy'T'HHmmssSSS'Z'")),
+			String.valueOf(
+				DateUtil.getISOFormat("ddMMyyyy", "31122020T093000000", "Z")));
+		Assert.assertEquals(
+			String.valueOf(
+				DateTimeFormatter.ofPattern("ddMMyyyy'T'HHmmssSSS'Z'")),
+			String.valueOf(
+				DateUtil.getISOFormat("ddMMyyyy", "31122020T093000000", "Z")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("ddMMyyyy'T'HHmmssZZ")),
+			String.valueOf(
+				DateUtil.getISOFormat("ddMMyyyy", "31122020T093000", "+0900")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("ddMMyyyyHHmm")),
+			String.valueOf(
+				DateUtil.getISOFormat("ddMMyyyy", "311220200930", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("ddMMyyyyHHmmss")),
+			String.valueOf(
+				DateUtil.getISOFormat("ddMMyyyy", "31122020093000", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("MMddyyyy")),
+			String.valueOf(DateUtil.getISOFormat("MMddyyyy", "12312020", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("MMddyyyy'T'HHmm")),
+			String.valueOf(
+				DateUtil.getISOFormat("MMddyyyy", "12312020T0930", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("MMddyyyy'T'HHmmss")),
+			String.valueOf(
+				DateUtil.getISOFormat("MMddyyyy", "12312020T093000", "")));
+		Assert.assertEquals(
+			String.valueOf(
+				DateTimeFormatter.ofPattern("MMddyyyy'T'HHmmssSSS'Z'")),
+			String.valueOf(
+				DateUtil.getISOFormat("MMddyyyy", "12312020T093000000", "Z")));
+		Assert.assertEquals(
+			String.valueOf(
+				DateTimeFormatter.ofPattern("MMddyyyy'T'HHmmssSSS'Z'")),
+			String.valueOf(
+				DateUtil.getISOFormat("MMddyyyy", "12312020T093000000", "Z")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("MMddyyyy'T'HHmmssZZ")),
+			String.valueOf(
+				DateUtil.getISOFormat("MMddyyyy", "12312020T093000", "+0900")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("MMddyyyyHHmm")),
+			String.valueOf(
+				DateUtil.getISOFormat("MMddyyyy", "123120200930", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("MMddyyyyHHmmss")),
+			String.valueOf(
+				DateUtil.getISOFormat("MMddyyyy", "12312020093000", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyddMM")),
+			String.valueOf(DateUtil.getISOFormat("yyyyddMM", "20203112", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyddMM'T'HHmm")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyddMM", "20203112T0930", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyddMM'T'HHmmss")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyddMM", "20203112T093000", "")));
+		Assert.assertEquals(
+			String.valueOf(
+				DateTimeFormatter.ofPattern("yyyyddMM'T'HHmmssSSS'Z'")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyddMM", "20203112T093000000", "Z")));
+		Assert.assertEquals(
+			String.valueOf(
+				DateTimeFormatter.ofPattern("yyyyddMM'T'HHmmssSSS'Z'")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyddMM", "20203112T093000000", "Z")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyddMM'T'HHmmssZZ")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyddMM", "20203112T093000", "+0900")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyddMMHHmm")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyddMM", "202031120930", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyddMMHHmmss")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyddMM", "20203112093000", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyMMdd")),
+			String.valueOf(DateUtil.getISOFormat("yyyyMMdd", "20201231", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyMMdd", "20201231T0930", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyMMdd", "20201231T093000", "")));
+		Assert.assertEquals(
+			String.valueOf(
+				DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmssSSS'Z'")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyMMdd", "20201231T093000000", "Z")));
+		Assert.assertEquals(
+			String.valueOf(
+				DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmssSSS'Z'")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyMMdd", "20201231T093000000", "Z")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmssZZ")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyMMdd", "20201231T093000", "+0900")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyMMddHHmm")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyMMdd", "202012310930", "")));
+		Assert.assertEquals(
+			String.valueOf(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")),
+			String.valueOf(
+				DateUtil.getISOFormat("yyyyMMdd", "20201231093000", "")));
+	}
+
+	@Test
+	public void testGetLocalDateTime() {
+		Assert.assertEquals(
+			"2020-12-31T00:00",
+			String.valueOf(DateUtil.getLocalDateTime("12-31-2020")));
+		Assert.assertEquals(
+			"2020-12-31T09:30",
+			String.valueOf(
+				DateUtil.getLocalDateTime("12-31-2020T09:30:00.000Z")));
+		Assert.assertEquals(
+			"2020-12-31T09:30",
+			String.valueOf(DateUtil.getLocalDateTime("12312020 09:30+12:00")));
+		Assert.assertEquals(
+			"2020-12-31T09:30:00.100",
+			String.valueOf(
+				DateUtil.getLocalDateTime("12-31-2020T09:30:00.100Z")));
+	}
+
+	@Test
+	public void testGetTimeOffsetIndex() {
+		Assert.assertEquals(
+			19, DateUtil.getTimeOffsetIndex("2020 12 31 09:30:00-09:00"));
+		Assert.assertEquals(
+			19, DateUtil.getTimeOffsetIndex("2020-12-31T09:30:00+09:00"));
+		Assert.assertEquals(
+			19, DateUtil.getTimeOffsetIndex("2020-12-31T09:30:00-09:00"));
+		Assert.assertEquals(
+			19, DateUtil.getTimeOffsetIndex("2020/12/31T09:30:00-09:00"));
+		Assert.assertEquals(
+			21, DateUtil.getTimeOffsetIndex("20201231T09:30:00.000Z"));
+		Assert.assertEquals(
+			23, DateUtil.getTimeOffsetIndex("2020-12-31T09:30:00.000Z"));
 	}
 
 	@Test

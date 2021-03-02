@@ -35,6 +35,12 @@ public class ArrayUtilTest {
 	}
 
 	@Test
+	public void testContains() {
+		Assert.assertFalse(ArrayUtil.contains(new String[] {"a", "b"}, "c"));
+		Assert.assertTrue(ArrayUtil.contains(new String[] {"a", "b"}, "a"));
+	}
+
+	@Test
 	public void testIsEmptyObjectArray() {
 		Assert.assertFalse(ArrayUtil.isEmpty(new Object[] {"test"}));
 		Assert.assertTrue(ArrayUtil.isEmpty(new Object[0]));
