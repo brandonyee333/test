@@ -36,6 +36,7 @@ public class EventAttributeDefinitionDTO {
 		_dataType = eventAttributeDefinition.getDataType();
 		_description = eventAttributeDefinition.getDescription();
 		_displayName = eventAttributeDefinition.getDisplayName();
+		_id = String.valueOf(eventAttributeDefinition.getId());
 		_name = eventAttributeDefinition.getName();
 	}
 
@@ -54,6 +55,11 @@ public class EventAttributeDefinitionDTO {
 		return _displayName;
 	}
 
+	@JsonProperty("id")
+	public String getId() {
+		return _id;
+	}
+
 	@JsonProperty("name")
 	public String getName() {
 		return _name;
@@ -67,6 +73,7 @@ public class EventAttributeDefinitionDTO {
 	private String _dataType;
 	private String _description;
 	private String _displayName;
+	private String _id;
 	private String _name;
 	private String _sampleValue;
 

@@ -46,7 +46,7 @@ public class EventAttributeDefinitionsDataFetcher
 
 		EventDefinitionDTO eventDefinitionDTO = environment.getSource();
 
-		Long eventDefinitionId = eventDefinitionDTO.getId();
+		Long eventDefinitionId = Long.valueOf(eventDefinitionDTO.getId());
 
 		List<EventAttributeDefinition> eventAttributeDefinitions =
 			_eventAttributeDefinitionDog.

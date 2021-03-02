@@ -268,6 +268,7 @@ type EventAttributeDefinition {
 	dataType: String
 	description: String
 	displayName: String
+	id: String
 	name: String
 	sampleValue: String
 }
@@ -281,6 +282,7 @@ type EventDefinition {
 	eventAttributeDefinitions: [EventAttributeDefinition]
 	description: String
 	displayName: String
+	id: String
 	name: String
 	type: String
 }

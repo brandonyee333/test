@@ -33,7 +33,7 @@ public class EventDefinitionDTO {
 	public EventDefinitionDTO(EventDefinition eventDefinition) {
 		_description = eventDefinition.getDescription();
 		_displayName = eventDefinition.getDisplayName();
-		_id = eventDefinition.getId();
+		_id = String.valueOf(eventDefinition.getId());
 		_name = eventDefinition.getName();
 		_type = eventDefinition.getType();
 	}
@@ -49,7 +49,7 @@ public class EventDefinitionDTO {
 	}
 
 	@JsonProperty("id")
-	public Long getId() {
+	public String getId() {
 		return _id;
 	}
 
@@ -65,7 +65,7 @@ public class EventDefinitionDTO {
 
 	private String _description;
 	private String _displayName;
-	private Long _id;
+	private String _id;
 	private String _name;
 	private String _type;
 
