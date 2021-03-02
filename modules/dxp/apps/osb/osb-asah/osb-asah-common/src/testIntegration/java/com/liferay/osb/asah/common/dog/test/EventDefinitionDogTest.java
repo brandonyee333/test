@@ -17,13 +17,10 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hamcrest.CoreMatchers;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -78,6 +75,18 @@ public class EventDefinitionDogTest {
 	}
 
 	@Test
+	public void testFetchEventDefinitionByDisplayName() {
+		EventDefinition eventDefinition1 =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", "Test Event", "testEvent", "custom");
+
+		EventDefinition eventDefinition2 =
+			_eventDefinitionDog.fetchEventDefinitionByDisplayName("Test Event");
+
+		Assert.assertEquals(eventDefinition1, eventDefinition2);
+	}
+
+	@Test
 	public void testFetchEventDefinitionByName() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
@@ -99,46 +108,6 @@ public class EventDefinitionDogTest {
 			_eventDefinitionDog.getEventDefinition(eventDefinition1.getId());
 
 		Assert.assertEquals(eventDefinition1, eventDefinition2);
-	}
-
-	@Test
-	public void testGetEventDefinitionByName() {
-		EventDefinition eventDefinition1 =
-			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", "testEvent", "custom");
-
-		EventDefinition eventDefinition2 =
-			_eventDefinitionDog.getEventDefinitionByName("testEvent");
-
-		Assert.assertEquals(eventDefinition1, eventDefinition2);
-	}
-
-	@Test
-	public void testGetEventDefinitionByNameFailed() {
-		try {
-			_eventDefinitionDog.getEventDefinitionByName("nonExistentEvent");
-
-			Assert.fail();
-		}
-		catch (Exception e) {
-			Throwable throwable = e;
-
-			while (throwable.getCause() != null) {
-				throwable = throwable.getCause();
-			}
-
-			Class<?> clazz = throwable.getClass();
-
-			Assert.assertEquals(
-				"Expected innermost throwable to be of type OSBAsahException " +
-					", but was " + clazz.getName(),
-				clazz, OSBAsahException.class);
-
-			Assert.assertThat(
-				e.getMessage(),
-				CoreMatchers.containsString(
-					"There is no event definition with name"));
-		}
 	}
 
 	@Test

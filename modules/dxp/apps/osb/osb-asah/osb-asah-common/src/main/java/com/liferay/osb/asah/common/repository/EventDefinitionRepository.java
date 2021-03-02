@@ -41,6 +41,8 @@ public interface EventDefinitionRepository
 
 	public List<EventDefinition> findAll(Pageable pageable);
 
+	public Optional<EventDefinition> findByDisplayName(String displayName);
+
 	public Optional<EventDefinition> findByName(String name);
 
 	public List<EventDefinition> findByNameContainingIgnoreCaseAndType(

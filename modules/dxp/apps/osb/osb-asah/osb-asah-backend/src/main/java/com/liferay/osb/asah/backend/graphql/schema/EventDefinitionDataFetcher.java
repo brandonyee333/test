@@ -18,11 +18,15 @@ import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dto.EventDefinitionDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -35,18 +39,31 @@ public class EventDefinitionDataFetcher
 
 	@Override
 	public EventDefinitionDTO get(DataFetchingEnvironment environment) {
-		int id = environment.getArgument("id");
-		String name = environment.getArgument("name");
+		String displayName = environment.getArgument("displayName");
 
-		EventDefinition eventDefinition;
-
-		if (name != null) {
-			eventDefinition = _eventDefinitionDog.getEventDefinitionByName(
-				name);
+		if (StringUtils.isNotEmpty(displayName)) {
+			return _toEventDefinitionDTO(
+				_eventDefinitionDog.fetchEventDefinitionByDisplayName(
+					environment.getArgument("displayName")));
 		}
-		else {
-			eventDefinition = _eventDefinitionDog.getEventDefinition(
-				Long.valueOf(id));
+
+		Integer id = environment.getArgument("id");
+
+		if (id != null) {
+			return _toEventDefinitionDTO(
+				_eventDefinitionDog.getEventDefinition(id.longValue()));
+		}
+
+		throw new OSBAsahException(
+			HttpStatus.BAD_REQUEST,
+			"Request was made without display name or id");
+	}
+
+	private EventDefinitionDTO _toEventDefinitionDTO(
+		EventDefinition eventDefinition) {
+
+		if (eventDefinition == null) {
+			return new EventDefinitionDTO();
 		}
 
 		return new EventDefinitionDTO(eventDefinition);

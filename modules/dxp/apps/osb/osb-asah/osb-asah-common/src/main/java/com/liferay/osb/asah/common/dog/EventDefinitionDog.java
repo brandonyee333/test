@@ -62,6 +62,15 @@ public class EventDefinitionDog {
 		return _eventDefinitionRepository.countByType(eventType);
 	}
 
+	public EventDefinition fetchEventDefinitionByDisplayName(
+		String displayName) {
+
+		Optional<EventDefinition> eventDefinitionOptional =
+			_eventDefinitionRepository.findByDisplayName(displayName);
+
+		return eventDefinitionOptional.orElseThrow(null);
+	}
+
 	public EventDefinition fetchEventDefinitionByName(String name) {
 		Optional<EventDefinition> eventDefinitionOptional =
 			_eventDefinitionRepository.findByName(name);
@@ -77,16 +86,6 @@ public class EventDefinitionDog {
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no event definition with ID " + eventDefinitionId));
-	}
-
-	public EventDefinition getEventDefinitionByName(String name) {
-		Optional<EventDefinition> eventDefinitionOptional =
-			_eventDefinitionRepository.findByName(name);
-
-		return eventDefinitionOptional.orElseThrow(
-			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"There is no event definition with name " + name));
 	}
 
 	public List<EventDefinition> getEventDefinitions(

@@ -97,6 +97,11 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 	}
 
 	@Override
+	public Optional<EventDefinition> findByDisplayName(String displayName) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public Optional<EventDefinition> findById(Long eventDefinitionId) {
 		throw new UnsupportedOperationException();
 	}
