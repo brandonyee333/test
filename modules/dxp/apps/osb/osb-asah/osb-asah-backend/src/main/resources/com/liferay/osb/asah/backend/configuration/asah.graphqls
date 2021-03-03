@@ -279,9 +279,9 @@ type EventAttributeDefinitionBag {
 }
 
 type EventDefinition {
-	eventAttributeDefinitions: [EventAttributeDefinition]
 	description: String
 	displayName: String
+	eventAttributeDefinitions: [EventAttributeDefinition]
 	id: String
 	name: String
 	type: String

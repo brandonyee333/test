@@ -5,11 +5,11 @@
 	<entry key="EventAttributeDefinition.findByEventDefinitionId">
 		<![CDATA[
 			SELECT
+				EventAttributeDefinition.dataType,
 				EventAttributeDefinition.description,
 				EventAttributeDefinition.displayName,
 				EventAttributeDefinition.id,
-				EventAttributeDefinition.name,
-				EventAttributeDefinition.dataType
+				EventAttributeDefinition.name
 			FROM
 				EventAttributeDefinition
 			JOIN
