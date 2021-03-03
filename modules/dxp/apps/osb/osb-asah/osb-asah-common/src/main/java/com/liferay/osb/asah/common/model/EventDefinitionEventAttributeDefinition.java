@@ -24,7 +24,8 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Leslie Wong
  */
 @Table
-public class EventDefinitionEventAttributeDefinition {
+public class EventDefinitionEventAttributeDefinition
+	implements Comparable<EventDefinitionEventAttributeDefinition> {
 
 	public EventDefinitionEventAttributeDefinition() {
 	}
@@ -34,6 +35,15 @@ public class EventDefinitionEventAttributeDefinition {
 
 		_eventDefinitionId = eventDefinitionId;
 		_sampleValue = sampleValue;
+	}
+
+	@Override
+	public int compareTo(
+		EventDefinitionEventAttributeDefinition
+			eventDefinitionEventAttributeDefinition) {
+
+		return _eventDefinitionId.compareTo(
+			eventDefinitionEventAttributeDefinition.getEventDefinitionId());
 	}
 
 	@Override
