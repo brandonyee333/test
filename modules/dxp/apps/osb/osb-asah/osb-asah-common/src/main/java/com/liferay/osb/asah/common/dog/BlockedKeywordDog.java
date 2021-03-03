@@ -14,15 +14,14 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.dto.BlockedKeywordDTO;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.model.BlockedKeyword;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -49,40 +48,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class BlockedKeywordDog extends BaseFaroInfoDog {
 
-	public BlockedKeywordDTO addBlockedKeywords(Set<String> keywords) {
-		Stream<String> stream = keywords.stream();
-
-		keywords = stream.map(
-			String::trim
-		).map(
-			String::toLowerCase
-		).filter(
-			StringUtils::isNotEmpty
-		).collect(
-			Collectors.toSet()
-		);
+	public List<BlockedKeyword> addBlockedKeywords(Set<String> keywords) {
+		keywords = _normalizeKeywords(keywords);
 
 		if (keywords.isEmpty()) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST, "Empty keywords");
 		}
 
-		List<BlockedKeywordDTO> duplicateBlockedKeywordDTOs = ListUtil.map(
-			getBlockedKeywords(keywords),
-			blockedKeyword -> new BlockedKeywordDTO(blockedKeyword, true));
+		List<BlockedKeyword> missingBlockedKeywords =
+			_createMissingBlockedKeywords(
+				getBlockedKeywords(keywords), keywords);
 
-		List<BlockedKeyword> blockedKeywords = _createBlockedKeywords(
-			duplicateBlockedKeywordDTOs, keywords);
-
-		if (blockedKeywords.isEmpty()) {
-			return new BlockedKeywordDTO(duplicateBlockedKeywordDTOs, false);
+		if (missingBlockedKeywords.isEmpty()) {
+			return Collections.emptyList();
 		}
 
-		blockedKeywords = IterableUtils.toList(
-			_blockedKeywordRepository.saveAll(blockedKeywords));
-
-		return new BlockedKeywordDTO(
-			duplicateBlockedKeywordDTOs, blockedKeywords);
+		return IterableUtils.toList(
+			_blockedKeywordRepository.saveAll(missingBlockedKeywords));
 	}
 
 	public void deleteBlockedKeywords(List<Long> blockedKeywordIds) {
@@ -105,7 +88,8 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 	}
 
 	public List<BlockedKeyword> getBlockedKeywords(Set<String> keywords) {
-		return _blockedKeywordRepository.findByKeywordIn(keywords);
+		return _blockedKeywordRepository.findByKeywordIn(
+			_normalizeKeywords(keywords));
 	}
 
 	public Page<BlockedKeyword> getBlockedKeywords(
@@ -128,19 +112,18 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 			PageRequest.of(page, size, sort), _blockedKeywordRepository::count);
 	}
 
-	private List<BlockedKeyword> _createBlockedKeywords(
-		List<BlockedKeywordDTO> duplicateBlockedKeywordDTOs,
-		Set<String> keywords) {
+	private List<BlockedKeyword> _createMissingBlockedKeywords(
+		List<BlockedKeyword> existingBlockedKeywords, Set<String> newKeywords) {
 
 		Date date = new Date();
 
-		Set<String> duplicateKeywords = SetUtil.map(
-			duplicateBlockedKeywordDTOs, BlockedKeywordDTO::getKeyword);
+		Set<String> existingKeywords = SetUtil.map(
+			existingBlockedKeywords, BlockedKeyword::getKeyword);
 
-		Stream<String> keywordsStream = keywords.stream();
+		Stream<String> stream = newKeywords.stream();
 
-		return keywordsStream.filter(
-			keyword -> !duplicateKeywords.contains(keyword)
+		return stream.filter(
+			keyword -> !existingKeywords.contains(keyword)
 		).map(
 			keyword -> new BlockedKeyword(date, keyword)
 		).collect(
@@ -170,6 +153,20 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 		}
 
 		return Sort.by(orders);
+	}
+
+	private Set<String> _normalizeKeywords(Set<String> keywords) {
+		Stream<String> stream = keywords.stream();
+
+		return stream.map(
+			String::trim
+		).map(
+			String::toLowerCase
+		).filter(
+			StringUtils::isNotEmpty
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	@Autowired

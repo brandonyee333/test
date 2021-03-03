@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.model.BlockedKeyword;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -82,8 +83,17 @@ public class BlockedKeywordsRestController extends BaseRestController {
 	public BlockedKeywordDTO postBlockedKeywords(@RequestBody String json) {
 		JSONObject jsonObject = new JSONObject(json);
 
-		return _blockedKeywordDog.addBlockedKeywords(
-			JSONUtil.toStringSet(jsonObject.getJSONArray("keywords")));
+		Set<String> keywords = JSONUtil.toStringSet(
+			jsonObject.getJSONArray("keywords"));
+
+		List<BlockedKeyword> duplicatedBlockedKeywords =
+			_blockedKeywordDog.getBlockedKeywords(keywords);
+
+		List<BlockedKeyword> addedBlockedKeywords =
+			_blockedKeywordDog.addBlockedKeywords(keywords);
+
+		return new BlockedKeywordDTO(
+			duplicatedBlockedKeywords, addedBlockedKeywords);
 	}
 
 	private PageDTO<BlockedKeywordDTO> _toPageDTO(

@@ -57,20 +57,18 @@ public class BlockedKeywordDTO {
 	}
 
 	public BlockedKeywordDTO(
-		List<BlockedKeywordDTO> blockedKeywordDTOs, Boolean succeeded) {
-
-		_blockedKeywordDTOs = blockedKeywordDTOs;
-		_succeeded = succeeded;
-	}
-
-	public BlockedKeywordDTO(
-		List<BlockedKeywordDTO> duplicateBlockedKeywordDTOs,
-		List<BlockedKeyword> blockedKeywords) {
+		List<BlockedKeyword> duplicateBlockedKeywords,
+		List<BlockedKeyword> addedBlockedKeywords) {
 
 		_blockedKeywordDTOs = ListUtils.union(
-			duplicateBlockedKeywordDTOs,
-			ListUtil.map(blockedKeywords, BlockedKeywordDTO::new));
-		_succeeded = true;
+			ListUtil.map(
+				duplicateBlockedKeywords,
+				blockedKeyword -> new BlockedKeywordDTO(blockedKeyword, true)),
+			ListUtil.map(
+				addedBlockedKeywords,
+				blockedKeyword -> new BlockedKeywordDTO(
+					blockedKeyword, false)));
+		_succeeded = !addedBlockedKeywords.isEmpty();
 	}
 
 	@JsonProperty("blocked-keywords")
