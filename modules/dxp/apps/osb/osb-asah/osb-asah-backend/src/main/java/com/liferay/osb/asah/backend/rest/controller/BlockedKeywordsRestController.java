@@ -90,7 +90,7 @@ public class BlockedKeywordsRestController extends BaseRestController {
 			_blockedKeywordDog.getBlockedKeywords(keywords);
 
 		List<BlockedKeyword> addedBlockedKeywords =
-			_blockedKeywordDog.addBlockedKeywords(keywords);
+			_blockedKeywordDog.addMissingBlockedKeywords(keywords);
 
 		return new BlockedKeywordDTO(
 			duplicatedBlockedKeywords, addedBlockedKeywords);

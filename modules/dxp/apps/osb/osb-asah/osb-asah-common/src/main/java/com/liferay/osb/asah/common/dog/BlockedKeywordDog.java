@@ -48,7 +48,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class BlockedKeywordDog extends BaseFaroInfoDog {
 
-	public List<BlockedKeyword> addBlockedKeywords(Set<String> keywords) {
+	public List<BlockedKeyword> addMissingBlockedKeywords(
+		Set<String> keywords) {
+
 		keywords = _normalizeKeywords(keywords);
 
 		if (keywords.isEmpty()) {
@@ -136,7 +138,7 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 		// TODO: make the frontend pass "keyword" without ".raw" and move this
 		// method to ElasticsearchBlockedKeywordRepositoryImpl
 
-		if (_isPostgreSQLEnabled && (sorts != null)) {
+		if (_postgreSQLEnabled && (sorts != null)) {
 			for (int i = 0; i < sorts.length; i++) {
 				sorts[i] = sorts[i].replace(".raw", "");
 			}
@@ -144,11 +146,11 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 
 		List<Sort.Order> orders = SortBuilderUtil.getOrders(sorts);
 
-		if (orders.isEmpty()) {
-			if (_isPostgreSQLEnabled) {
-				return Sort.by(Sort.Order.asc("keyword"));
-			}
+		if (_postgreSQLEnabled && orders.isEmpty()) {
+			return Sort.by(Sort.Order.asc("keyword"));
+		}
 
+		if (!_postgreSQLEnabled && orders.isEmpty()) {
 			return Sort.by(Sort.Order.asc("keyword.raw"));
 		}
 
@@ -173,6 +175,6 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 	private BlockedKeywordRepository _blockedKeywordRepository;
 
 	@Value("${osb.asah.postgresql.enabled:false}")
-	private boolean _isPostgreSQLEnabled;
+	private boolean _postgreSQLEnabled;
 
 }
