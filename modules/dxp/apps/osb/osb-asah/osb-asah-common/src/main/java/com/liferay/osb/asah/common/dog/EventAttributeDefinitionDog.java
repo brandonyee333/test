@@ -72,6 +72,15 @@ public class EventAttributeDefinitionDog {
 		return _eventAttributeDefinitionRepository.count();
 	}
 
+	public EventAttributeDefinition fetchEventAttributeDefinitionByDisplayName(
+		String displayName) {
+
+		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
+			_eventAttributeDefinitionRepository.findByDisplayName(displayName);
+
+		return eventAttributeDefinitionOptional.orElse(null);
+	}
+
 	public EventAttributeDefinition fetchEventAttributeDefinitionByName(
 		String name) {
 

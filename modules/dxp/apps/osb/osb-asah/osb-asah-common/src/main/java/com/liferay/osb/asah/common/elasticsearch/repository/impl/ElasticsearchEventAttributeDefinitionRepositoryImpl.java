@@ -90,6 +90,13 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public Optional<EventAttributeDefinition> findByDisplayName(
+		String displayName) {
+
+		throw new UnsupportedOperationException();
+	}
+
 	public List<EventAttributeDefinition> findByEventDefinitionId(
 		Long eventDefinitionId) {
 

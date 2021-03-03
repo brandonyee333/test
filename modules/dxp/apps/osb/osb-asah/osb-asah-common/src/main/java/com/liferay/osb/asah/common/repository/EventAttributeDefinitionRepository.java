@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,9 @@ public interface EventAttributeDefinitionRepository
 	public Long countByNameContainingIgnoreCase(String name);
 
 	public List<EventAttributeDefinition> findAll(Pageable pageable);
+
+	public Optional<EventAttributeDefinition> findByDisplayName(
+		String displayName);
 
 	public List<EventAttributeDefinition> findByEventDefinitionId(
 		@Param("eventDefinitionId") Long eventDefinitionId);

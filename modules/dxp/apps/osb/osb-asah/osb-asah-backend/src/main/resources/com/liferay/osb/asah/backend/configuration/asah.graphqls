@@ -765,6 +765,11 @@ type QueryType {
 		start: Int!
 	): AssetMetricBag
 
+	eventAttributeDefinition(
+		displayName: String,
+		id: String
+	): EventAttributeDefinition
+
 	eventAttributeDefinitions(
 		keyword: String,
 		page: Int!
