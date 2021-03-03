@@ -68,14 +68,14 @@ public class EventDefinitionDog {
 		Optional<EventDefinition> eventDefinitionOptional =
 			_eventDefinitionRepository.findByDisplayName(displayName);
 
-		return eventDefinitionOptional.orElseThrow(null);
+		return eventDefinitionOptional.orElse(null);
 	}
 
 	public EventDefinition fetchEventDefinitionByName(String name) {
 		Optional<EventDefinition> eventDefinitionOptional =
 			_eventDefinitionRepository.findByName(name);
 
-		return eventDefinitionOptional.orElseThrow(null);
+		return eventDefinitionOptional.orElse(null);
 	}
 
 	public EventDefinition getEventDefinition(Long eventDefinitionId) {
