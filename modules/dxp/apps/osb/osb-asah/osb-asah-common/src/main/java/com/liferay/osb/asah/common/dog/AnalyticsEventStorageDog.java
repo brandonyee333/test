@@ -15,11 +15,12 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.common.model.Event;
+import com.liferay.osb.asah.common.model.EventAttribute;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,12 +52,7 @@ public class AnalyticsEventStorageDog {
 
 			Long eventDefinitionId = eventDefinition.getId();
 
-			Event event = _eventDog.addEvent(
-				analyticsEvent.getId(), analyticsEvent.getApplicationId(),
-				Long.valueOf(analyticsEvent.getChannelId()),
-				analyticsEvent.getCreateDate(),
-				analyticsEvent.getDataSourceId(), analyticsEvent.getEventDate(),
-				eventDefinitionId, analyticsEvent.getUserId());
+			Set<EventAttribute> eventAttributes = new HashSet<>();
 
 			Map<String, String> eventProperties =
 				analyticsEvent.getEventProperties();
@@ -101,10 +97,22 @@ public class AnalyticsEventStorageDog {
 					}
 				}
 
-				_eventAttributeDog.addEventAttribute(
-					entry.getValue(), eventAttributeDefinition.getId(),
-					event.getId());
+				EventAttribute eventAttribute = new EventAttribute();
+
+				eventAttribute.setAttributeValue(entry.getValue());
+				eventAttribute.setEventAttributeDefinitionId(
+					eventAttributeDefinition.getId());
+
+				eventAttributes.add(eventAttribute);
 			}
+
+			_eventDog.addEvent(
+				analyticsEvent.getId(), analyticsEvent.getApplicationId(),
+				Long.valueOf(analyticsEvent.getChannelId()),
+				analyticsEvent.getCreateDate(),
+				analyticsEvent.getDataSourceId(), eventAttributes,
+				analyticsEvent.getEventDate(), eventDefinitionId,
+				analyticsEvent.getUserId());
 		}
 		catch (Exception e) {
 			_log.error("Unable to store event", e);
@@ -130,9 +138,6 @@ public class AnalyticsEventStorageDog {
 
 	@Autowired
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
-
-	@Autowired
-	private EventAttributeDog _eventAttributeDog;
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;

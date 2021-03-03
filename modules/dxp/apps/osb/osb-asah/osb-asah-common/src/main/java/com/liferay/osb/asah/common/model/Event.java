@@ -15,12 +15,15 @@
 package com.liferay.osb.asah.common.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -28,6 +31,10 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table
 public class Event implements Persistable<Long> {
+
+	public void addEventAttribute(EventAttribute eventAttribute) {
+		_eventAttributes.add(eventAttribute);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -47,6 +54,7 @@ public class Event implements Persistable<Long> {
 			Objects.equals(_createDate, event._createDate) &&
 			Objects.equals(_dataSourceId, event._dataSourceId) &&
 			Objects.equals(_eventDate, event._eventDate) &&
+			Objects.equals(_eventAttributes, event._eventAttributes) &&
 			Objects.equals(_eventDefinitionId, event._eventDefinitionId) &&
 			Objects.equals(_id, event._id) &&
 			Objects.equals(_userId, event._userId)) {
@@ -87,6 +95,12 @@ public class Event implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@MappedCollection(idColumn = "eventid")
+	public Set<EventAttribute> getEventAttributes() {
+		return _eventAttributes;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Date getEventDate() {
 		if (_eventDate == null) {
 			return null;
@@ -115,7 +129,8 @@ public class Event implements Persistable<Long> {
 	public int hashCode() {
 		return Objects.hash(
 			_analyticsEventId, _applicationId, _channelId, _createDate,
-			_dataSourceId, _eventDate, _eventDefinitionId, _id, _userId);
+			_dataSourceId, _eventAttributes, _eventDate, _eventDefinitionId,
+			_id, _userId);
 	}
 
 	public boolean isNew() {
@@ -146,6 +161,10 @@ public class Event implements Persistable<Long> {
 
 	public void setDataSourceId(String dataSourceId) {
 		_dataSourceId = dataSourceId;
+	}
+
+	public void setEventAttributes(Set<EventAttribute> eventAttributes) {
+		_eventAttributes = eventAttributes;
 	}
 
 	public void setEventDate(Date eventDate) {
@@ -184,6 +203,9 @@ public class Event implements Persistable<Long> {
 
 	@Transient
 	private String _dataSourceId;
+
+	@Transient
+	private Set<EventAttribute> _eventAttributes = new HashSet<>();
 
 	@Transient
 	private Date _eventDate;

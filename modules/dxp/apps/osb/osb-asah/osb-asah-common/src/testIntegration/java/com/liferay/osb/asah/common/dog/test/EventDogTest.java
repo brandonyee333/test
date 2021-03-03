@@ -16,14 +16,18 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
+import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.Event;
+import com.liferay.osb.asah.common.model.EventAttribute;
+import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 
+import java.util.Collections;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -54,8 +58,8 @@ public class EventDogTest {
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
 
 		Event event = _eventDog.addEvent(
-			"analyticsEventId", "Page", channel.getId(), date, "123456", date,
-			eventDefinition.getId(), "abcdef");
+			"analyticsEventId", "Page", channel.getId(), date, "123456",
+			Collections.emptySet(), date, eventDefinition.getId(), "abcdef");
 
 		Assert.assertEquals("analyticsEventId", event.getAnalyticsEventId());
 		Assert.assertEquals("Page", event.getApplicationId());
@@ -70,8 +74,44 @@ public class EventDogTest {
 		Assert.assertNotNull(event.getId());
 	}
 
+	@Test
+	public void testAddEventWithAttribute() {
+		Channel channel = _channelDog.addChannel("Test Channel");
+
+		Date date = DateUtil.newDayDate();
+
+		EventAttributeDefinition eventAttributeDefinition =
+			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
+				"viewDuration");
+
+		EventAttribute eventAttribute = new EventAttribute();
+
+		eventAttribute.setAttributeValue("987654321");
+		eventAttribute.setEventAttributeDefinitionId(
+			eventAttributeDefinition.getId());
+
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
+
+		Event event = _eventDog.addEvent(
+			"analyticsEventId", "Page", channel.getId(), date, "dataSourceId",
+			Collections.singleton(eventAttribute), date,
+			eventDefinition.getId(), "abcdef");
+
+		Assert.assertEquals(
+			eventAttributeDefinition.getId(),
+			eventAttribute.getEventAttributeDefinitionId());
+		Assert.assertEquals("987654321", eventAttribute.getAttributeValue());
+		Assert.assertEquals(event.getId(), eventAttribute.getEventId());
+
+		Assert.assertNotNull(eventAttribute.getId());
+	}
+
 	@Autowired
 	private ChannelDog _channelDog;
+
+	@Autowired
+	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
