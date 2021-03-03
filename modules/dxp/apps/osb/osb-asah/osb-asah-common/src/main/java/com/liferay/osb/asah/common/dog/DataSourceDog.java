@@ -49,8 +49,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -188,22 +188,12 @@ public class DataSourceDog {
 	}
 
 	public List<DataSource> getDataSources() {
-		Iterable<DataSource> dataSources = _dataSourceRepository.findAll();
-
-		Stream<DataSource> stream = StreamSupport.stream(
-			dataSources.spliterator(), false);
-
-		return stream.collect(Collectors.toList());
+		return IterableUtils.toList(_dataSourceRepository.findAll());
 	}
 
 	public List<DataSource> getDataSources(List<Long> dataSourceIds) {
-		Iterable<DataSource> dataSources = _dataSourceRepository.findAllById(
-			dataSourceIds);
-
-		Stream<DataSource> stream = StreamSupport.stream(
-			dataSources.spliterator(), false);
-
-		return stream.collect(Collectors.toList());
+		return IterableUtils.toList(
+			_dataSourceRepository.findAllById(dataSourceIds));
 	}
 
 	public List<DataSource> getDataSources(String providerType) {
