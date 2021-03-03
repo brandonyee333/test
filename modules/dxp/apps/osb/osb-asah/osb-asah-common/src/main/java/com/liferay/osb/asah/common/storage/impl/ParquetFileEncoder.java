@@ -29,7 +29,11 @@ import org.json.JSONObject;
  */
 public class ParquetFileEncoder implements FileEncoder {
 
-	public ParquetFileEncoder(String pathString, Schema schema) {
+	public ParquetFileEncoder(
+		JSONAvroTransformer jsonAvroTransformer, String pathString,
+		Schema schema) {
+
+		_jsonAvroTransformer = jsonAvroTransformer;
 		_pathString = pathString;
 		_schema = schema;
 	}
@@ -64,8 +68,7 @@ public class ParquetFileEncoder implements FileEncoder {
 		_parquetWriter = builder.build();
 	}
 
-	private final JSONAvroTransformer _jsonAvroTransformer =
-		new JSONAvroTransformer();
+	private final JSONAvroTransformer _jsonAvroTransformer;
 	private ParquetWriter<GenericRecord> _parquetWriter;
 	private final String _pathString;
 	private final Schema _schema;

@@ -35,7 +35,12 @@ import org.apache.commons.logging.LogFactory;
  */
 public class LocalStorage implements Storage {
 
-	public LocalStorage(StorageConfiguration storageConfiguration) {
+	public LocalStorage(
+		JSONAvroTransformer jsonAvroTransformer,
+		StorageConfiguration storageConfiguration) {
+
+		_jsonAvroTransformer = jsonAvroTransformer;
+
 		_storageConfiguration = storageConfiguration;
 
 		if (_log.isInfoEnabled()) {
@@ -218,7 +223,7 @@ public class LocalStorage implements Storage {
 		}
 		else {
 			_fileEncoder = new ParquetFileEncoder(
-				_storageConfiguration.getPath(),
+				_jsonAvroTransformer, _storageConfiguration.getPath(),
 				_storageConfiguration.getFileSchema());
 		}
 
@@ -259,6 +264,7 @@ public class LocalStorage implements Storage {
 
 	private FileEncoder _fileEncoder;
 	private GoogleStorageArchiver _googleStorageArchiver;
+	private final JSONAvroTransformer _jsonAvroTransformer;
 	private final StorageConfiguration _storageConfiguration;
 
 }
