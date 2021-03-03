@@ -25,8 +25,11 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -167,31 +170,27 @@ public class EventAttributeDefinitionDogTest {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
 
-		List<EventAttributeDefinition> eventAttributeDefinitions =
+		List<EventAttributeDefinition> actualEventAttributeDefinitions =
 			_eventAttributeDefinitionDog.
 				getEventAttributeDefinitionsByEventDefinitionId(
 					eventDefinition.getId());
 
-		Assert.assertEquals(
-			eventAttributeDefinitions.toString(), 3,
-			eventAttributeDefinitions.size());
+		Stream<EventAttributeDefinition> stream =
+			actualEventAttributeDefinitions.stream();
 
-		List<String> expectedEventAttributeDefinitionNames =
-			new ArrayList<String>() {
+		Assert.assertEquals(
+			new HashSet<String>() {
 				{
 					add("formId");
 					add("page");
 					add("title");
 				}
-			};
-
-		for (EventAttributeDefinition eventAttributeDefinition :
-				eventAttributeDefinitions) {
-
-			Assert.assertTrue(
-				expectedEventAttributeDefinitionNames.remove(
-					eventAttributeDefinition.getName()));
-		}
+			},
+			stream.map(
+				EventAttributeDefinition::getName
+			).collect(
+				Collectors.toSet()
+			));
 	}
 
 	@Test

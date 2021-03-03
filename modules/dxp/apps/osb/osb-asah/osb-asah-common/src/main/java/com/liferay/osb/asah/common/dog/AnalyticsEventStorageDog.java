@@ -84,15 +84,8 @@ public class AnalyticsEventStorageDog {
 							eventAttributeDefinition.
 								getEventDefinitionEventAttributeDefinitions();
 
-					Stream<EventDefinitionEventAttributeDefinition> stream =
-						eventDefinitionEventAttributeDefinitions.stream();
-
-					Set<Long> eventDefinitionIds = stream.map(
-						EventDefinitionEventAttributeDefinition::
-							getEventDefinitionId
-					).collect(
-						Collectors.toSet()
-					);
+					Set<Long> eventDefinitionIds = _getEventDefinitionIds(
+						eventDefinitionEventAttributeDefinitions);
 
 					if ((eventAttributeDefinitionId != null) &&
 						!eventDefinitionIds.contains(eventDefinitionId)) {
@@ -116,6 +109,20 @@ public class AnalyticsEventStorageDog {
 		catch (Exception e) {
 			_log.error("Unable to store event", e);
 		}
+	}
+
+	private Set<Long> _getEventDefinitionIds(
+		Set<EventDefinitionEventAttributeDefinition>
+			eventDefinitionEventAttributeDefinitions) {
+
+		Stream<EventDefinitionEventAttributeDefinition> stream =
+			eventDefinitionEventAttributeDefinitions.stream();
+
+		return stream.map(
+			EventDefinitionEventAttributeDefinition::getEventDefinitionId
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	private static final Log _log = LogFactory.getLog(
