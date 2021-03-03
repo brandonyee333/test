@@ -773,7 +773,7 @@ type QueryType {
 
 	eventDefinition(
 		displayName: String,
-		id: Int
+		id: String
 	): EventDefinition
 
 	eventDefinitions(

@@ -47,11 +47,11 @@ public class EventDefinitionDataFetcher
 					environment.getArgument("displayName")));
 		}
 
-		Integer id = environment.getArgument("id");
+		String id = environment.getArgument("id");
 
-		if (id != null) {
+		if (StringUtils.isNotEmpty(id)) {
 			return _toEventDefinitionDTO(
-				_eventDefinitionDog.getEventDefinition(id.longValue()));
+				_eventDefinitionDog.getEventDefinition(Long.valueOf(id)));
 		}
 
 		throw new OSBAsahException(
