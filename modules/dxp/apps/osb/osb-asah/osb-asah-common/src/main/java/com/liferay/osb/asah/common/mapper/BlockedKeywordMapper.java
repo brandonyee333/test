@@ -41,12 +41,6 @@ public class BlockedKeywordMapper
 			blockedKeyword.setCreateDate(
 				toUTCDate(jsonObject.get("createDate")));
 		}
-		else if (jsonObject.has("dateCreated") &&
-				 !jsonObject.isNull("dateCreated")) {
-
-			blockedKeyword.setCreateDate(
-				toUTCDate(jsonObject.get("dateCreated")));
-		}
 
 		if (jsonObject.has("id") && !jsonObject.isNull("id")) {
 			blockedKeyword.setId(jsonObject.getLong("id"));

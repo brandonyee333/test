@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.dto;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -79,7 +78,6 @@ public class BlockedKeywordDTO {
 		return _blockedKeywordDTOs;
 	}
 
-	@JsonAlias("dateCreated")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
