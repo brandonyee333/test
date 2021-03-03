@@ -56,7 +56,7 @@ public class EventDefinitionDataFetcher
 
 		throw new OSBAsahException(
 			HttpStatus.BAD_REQUEST,
-			"Request was made without display name or id");
+			"Request was made without display name or ID");
 	}
 
 	private EventDefinitionDTO _toEventDefinitionDTO(
