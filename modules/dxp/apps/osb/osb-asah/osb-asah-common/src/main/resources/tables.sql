@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS Event (
 	channelId BIGINT NOT NULL,
 	createDate TIMESTAMPTZ,
 	dataSourceId TEXT,
-	eventDate TiMESTAMPTZ,
+	eventDate TIMESTAMPTZ,
 	eventDefinitionId BIGINT,
 	userId TEXT
 );
