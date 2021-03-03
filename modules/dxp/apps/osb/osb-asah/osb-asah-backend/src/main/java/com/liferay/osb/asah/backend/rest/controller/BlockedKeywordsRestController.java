@@ -71,7 +71,7 @@ public class BlockedKeywordsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		// FIXME: update faro to stop using filterString
+		// FIXME: Remove filterString usage
 
 		String keyword = StringUtils.substringBetween(filterString, "'", "'");
 

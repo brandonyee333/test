@@ -135,8 +135,7 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 
 	private Sort _getSort(String[] sorts) {
 
-		// TODO: make the frontend pass "keyword" without ".raw" and move this
-		// method to ElasticsearchBlockedKeywordRepositoryImpl
+		// TODO: Remove ".raw" field names references
 
 		if (_postgreSQLEnabled && (sorts != null)) {
 			for (int i = 0; i < sorts.length; i++) {
