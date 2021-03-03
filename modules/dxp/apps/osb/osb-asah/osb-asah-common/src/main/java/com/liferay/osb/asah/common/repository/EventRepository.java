@@ -15,9 +15,13 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.model.Event;
+import com.liferay.osb.asah.common.model.EventAttributeValue;
+
+import java.util.List;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -28,4 +32,9 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public interface EventRepository extends CrudRepository<Event, Long> {
+
+	public List<EventAttributeValue> findDistinctAttributeValues(
+		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
+		@Param("size") int size);
+
 }

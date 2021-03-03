@@ -16,9 +16,11 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.Event;
 import com.liferay.osb.asah.common.model.EventAttribute;
+import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,13 @@ public class EventDog {
 		event.setUserId(userId);
 
 		return _eventRepository.save(event);
+	}
+
+	public List<EventAttributeValue> getRecentEventAttributeValues(
+		Long eventAttributeDefinitionId, int size) {
+
+		return _eventRepository.findDistinctAttributeValues(
+			eventAttributeDefinitionId, size);
 	}
 
 	@Autowired

@@ -15,8 +15,10 @@
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.model.Event;
+import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.repository.EventRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -74,6 +76,13 @@ public class ElasticsearchEventRepositoryImpl implements EventRepository {
 
 	@Override
 	public Optional<Event> findById(Long eventId) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<EventAttributeValue> findDistinctAttributeValues(
+		Long eventAttributeDefinitionId, int size) {
+
 		throw new UnsupportedOperationException();
 	}
 
