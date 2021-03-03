@@ -270,12 +270,18 @@ type EventAttributeDefinition {
 	displayName: String
 	id: String
 	name: String
+	recentValues: [EventAttributeValue]
 	sampleValue: String
 }
 
 type EventAttributeDefinitionBag {
 	eventAttributeDefinitions: [EventAttributeDefinition]
 	total: Int
+}
+
+type EventAttributeValue {
+	lastSeenDate: String
+	value: String
 }
 
 type EventDefinition {
