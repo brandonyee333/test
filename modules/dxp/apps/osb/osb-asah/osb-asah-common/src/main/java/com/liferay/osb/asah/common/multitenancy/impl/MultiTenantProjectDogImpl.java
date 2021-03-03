@@ -27,6 +27,9 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -45,12 +48,20 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 	}
 
 	@Override
-	public void addProject(Project project) throws Exception {
+	public void addProject(Project project) {
 		_elasticsearchInvoker.add(
 			"projects", _objectMapper.convertValue(project, JSONObject.class));
 
-		_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
-			project.getId());
+		try {
+			_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
+				project.getId());
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to create Snapshot Lifecycle Policy for project " +
+					project.getId(),
+				e);
+		}
 
 		ProjectIdThreadLocal.forProject(
 			project, _nanitesHttp::rescheduleNanites);
@@ -73,6 +84,9 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 			new TypeReference<List<Project>>() {
 			});
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		MultiTenantProjectDogImpl.class);
 
 	private final ElasticsearchInvoker _elasticsearchInvoker;
 
