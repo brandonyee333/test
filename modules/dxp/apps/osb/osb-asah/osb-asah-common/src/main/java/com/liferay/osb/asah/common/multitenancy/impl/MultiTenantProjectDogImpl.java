@@ -58,7 +58,7 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 		}
 		catch (Exception e) {
 			_log.error(
-				"Unable to create Snapshot Lifecycle Policy for project " +
+				"Unable to create snapshot lifecycle policy for project " +
 					project.getId(),
 				e);
 		}
