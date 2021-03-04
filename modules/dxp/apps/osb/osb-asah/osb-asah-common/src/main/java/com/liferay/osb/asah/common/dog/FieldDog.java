@@ -14,12 +14,15 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Field;
@@ -62,12 +65,12 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class FieldDog extends BaseFaroInfoDog {
+public class FieldDog {
 
 	public JSONObject addOwnerJSONObject(
 		String collectionName, JSONObject ownerJSONObject, String... contexts) {
 
-		ownerJSONObject = elasticsearchInvoker.add(
+		ownerJSONObject = _elasticsearchInvoker.add(
 			collectionName, ownerJSONObject);
 
 		String ownerId = ownerJSONObject.getString("id");
@@ -178,8 +181,8 @@ public class FieldDog extends BaseFaroInfoDog {
 			String uniqueIdContext, String uniqueIdFieldName)
 		throws Exception {
 
-		String dataSourceId = String.valueOf(dataSource.getId());
-		String ownerId = ownerJSONObject.getString("id");
+		Long dataSourceId = dataSource.getId();
+		Long ownerId = ownerJSONObject.getLong("id");
 		Map<String, List<JSONObject>> multiValueFieldsMap = new HashMap<>();
 
 		JSONArray newFieldsJSONArray = _buildFieldsJSONArray(
@@ -205,32 +208,37 @@ public class FieldDog extends BaseFaroInfoDog {
 				multiValueFieldsJSONObjects.add(newFieldJSONObject);
 			}
 			else if (oldFieldsJSONArray.length() == 0) {
-				elasticsearchInvoker.add("fields", newFieldJSONObject);
+				_fieldRepository.save(
+					_objectMapper.convertValue(
+						newFieldJSONObject, Field.class));
 			}
 			else if (_isAllowMultiple(
 						context, dataSourceId, fieldName, ownerType)) {
 
-				JSONObject oldFieldJSONObject = elasticsearchInvoker.fetch(
-					"fields",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("context", context)
-					).filter(
-						QueryBuilders.termQuery("dataSourceId", dataSourceId)
-					).filter(
-						QueryBuilders.termQuery("name", fieldName)
-					).filter(
-						QueryBuilders.termQuery("ownerId", ownerId)
-					).filter(
-						QueryBuilders.termQuery("ownerType", ownerType)
-					));
+				Field oldField =
+					_fieldRepository.
+						findFirstByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
+							context, dataSourceId, fieldName, ownerId,
+							ownerType);
 
-				if (oldFieldJSONObject == null) {
-					elasticsearchInvoker.add("fields", newFieldJSONObject);
+				if (oldField == null) {
+					_fieldRepository.save(
+						_objectMapper.convertValue(
+							newFieldJSONObject, Field.class));
 				}
 				else {
-					elasticsearchInvoker.update(
-						"fields", oldFieldJSONObject.getString("id"),
-						newFieldJSONObject);
+					JSONObject oldFieldJSONObject = _objectMapper.convertValue(
+						oldField, JSONObject.class);
+
+					for (String key : JSONObject.getNames(newFieldJSONObject)) {
+						oldFieldJSONObject.put(
+							key, newFieldJSONObject.get(key));
+					}
+
+					oldField = _objectMapper.convertValue(
+						oldFieldJSONObject, Field.class);
+
+					_fieldRepository.save(oldField);
 				}
 			}
 			else {
@@ -241,9 +249,14 @@ public class FieldDog extends BaseFaroInfoDog {
 						context, dataSourceId, newFieldJSONObject,
 						oldFieldJSONObject, ownerType)) {
 
-					elasticsearchInvoker.update(
-						"fields", oldFieldJSONObject.getString("id"),
-						newFieldJSONObject);
+					for (String key : JSONObject.getNames(newFieldJSONObject)) {
+						oldFieldJSONObject.put(
+							key, newFieldJSONObject.get(key));
+					}
+
+					_fieldRepository.save(
+						_objectMapper.convertValue(
+							oldFieldJSONObject, Field.class));
 				}
 				else {
 					iterator.remove();
@@ -274,18 +287,22 @@ public class FieldDog extends BaseFaroInfoDog {
 	}
 
 	private void _addFields(JSONObject contextJSONObject) {
-		JSONArray fieldsJSONArray = new JSONArray();
+		List<Field> fields = new ArrayList<>();
 
 		for (String fieldName : contextJSONObject.keySet()) {
 			JSONArray nameFieldsJSONArray = contextJSONObject.getJSONArray(
 				fieldName);
 
 			for (int i = 0; i < nameFieldsJSONArray.length(); i++) {
-				fieldsJSONArray.put(nameFieldsJSONArray.getJSONObject(i));
+				JSONObject fieldJSONObject = nameFieldsJSONArray.getJSONObject(
+					i);
+
+				fields.add(
+					_objectMapper.convertValue(fieldJSONObject, Field.class));
 			}
 		}
 
-		elasticsearchInvoker.add("fields", fieldsJSONArray);
+		_fieldRepository.saveAll(fields);
 	}
 
 	private JSONObject _buildContextJSONObject(JSONArray fieldsJSONArray) {
@@ -341,7 +358,7 @@ public class FieldDog extends BaseFaroInfoDog {
 
 	private JSONArray _buildFieldsJSONArray(
 			String context, JSONObject dataJSONObject, DataSource dataSource,
-			String ownerId, String ownerType)
+			Long ownerId, String ownerType)
 		throws Exception {
 
 		JSONArray fieldsJSONArray = new JSONArray();
@@ -349,10 +366,10 @@ public class FieldDog extends BaseFaroInfoDog {
 		JSONObject fieldsJSONObject = getFieldsJSONObject(
 			context, dataJSONObject, dataSource);
 
-		String dataSourceId = String.valueOf(dataSource.getId());
+		Long dataSourceId = dataSource.getId();
 
 		JSONArray fieldMappingsJSONArray = _getFieldMappingsJSONArray(
-			context, dataSourceId, ownerType);
+			context, String.valueOf(dataSourceId), ownerType);
 
 		for (int i = 0; i < fieldMappingsJSONArray.length(); i++) {
 			JSONObject fieldMappingJSONObject =
@@ -362,7 +379,8 @@ public class FieldDog extends BaseFaroInfoDog {
 				fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
 
 			String dataSourceFieldName =
-				dataSourceFieldNamesJSONObject.optString(dataSourceId, null);
+				dataSourceFieldNamesJSONObject.optString(
+					String.valueOf(dataSourceId), null);
 
 			Object value = fieldsJSONObject.opt(dataSourceFieldName);
 
@@ -383,8 +401,9 @@ public class FieldDog extends BaseFaroInfoDog {
 			if (value instanceof List) {
 				for (Object currentValue : (List<?>)value) {
 					JSONObject fieldJSONObject = _buildFieldJSONObject(
-						context, dataSourceId, dataSource.getName(), fieldType,
-						modifiedDateString, fieldName, ownerId, ownerType,
+						context, String.valueOf(dataSourceId),
+						dataSource.getName(), fieldType, modifiedDateString,
+						fieldName, String.valueOf(ownerId), ownerType,
 						dataSourceFieldName, currentValue);
 
 					fieldsJSONArray.put(fieldJSONObject);
@@ -392,9 +411,10 @@ public class FieldDog extends BaseFaroInfoDog {
 			}
 			else {
 				JSONObject fieldJSONObject = _buildFieldJSONObject(
-					context, dataSourceId, dataSource.getName(), fieldType,
-					modifiedDateString, fieldName, ownerId, ownerType,
-					dataSourceFieldName, value);
+					context, String.valueOf(dataSourceId), dataSource.getName(),
+					fieldType, modifiedDateString, fieldName,
+					String.valueOf(ownerId), ownerType, dataSourceFieldName,
+					value);
 
 				fieldsJSONArray.put(fieldJSONObject);
 			}
@@ -487,7 +507,7 @@ public class FieldDog extends BaseFaroInfoDog {
 		String providerType = dataSource.getProviderType();
 
 		if (providerType.equals("CSV")) {
-			return elasticsearchInvoker.fetch(
+			return _elasticsearchInvoker.fetch(
 				"csv-individuals",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
@@ -541,7 +561,7 @@ public class FieldDog extends BaseFaroInfoDog {
 	private JSONArray _getFieldMappingsJSONArray(
 		String context, String dataSourceId, String ownerType) {
 
-		return elasticsearchInvoker.get(
+		return _elasticsearchInvoker.get(
 			"field-mappings",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("context", context)
@@ -557,7 +577,7 @@ public class FieldDog extends BaseFaroInfoDog {
 		String context, String dataSourceId, String fieldName,
 		String ownerType) {
 
-		return elasticsearchInvoker.get(
+		return _elasticsearchInvoker.get(
 			"field-mappings",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("context", context)
@@ -572,19 +592,20 @@ public class FieldDog extends BaseFaroInfoDog {
 	}
 
 	private JSONArray _getFieldsJSONArray(
-		String context, String name, String ownerId, String ownerType) {
+		String context, String name, Long ownerId, String ownerType) {
 
-		return elasticsearchInvoker.get(
-			"fields",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("context", context)
-			).filter(
-				QueryBuilders.termQuery("name", name)
-			).filter(
-				QueryBuilders.termQuery("ownerId", ownerId)
-			).filter(
-				QueryBuilders.termQuery("ownerType", ownerType)
-			));
+		JSONArray fieldsJSONArray = new JSONArray();
+
+		List<Field> fields =
+			_fieldRepository.findByContextAndNameAndOwnerIdAndOwnerType(
+				context, name, ownerId, ownerType);
+
+		for (Field field : fields) {
+			fieldsJSONArray.put(
+				_objectMapper.convertValue(field, JSONObject.class));
+		}
+
+		return fieldsJSONArray;
 	}
 
 	private String _getModifiedDateString(
@@ -622,7 +643,7 @@ public class FieldDog extends BaseFaroInfoDog {
 	}
 
 	private JSONArray _getNewFieldsJSONArray(
-			String context, String fieldName, String ownerId, String ownerType,
+			String context, String fieldName, Long ownerId, String ownerType,
 			String uniqueIdContext, String uniqueIdFieldName)
 		throws Exception {
 
@@ -716,8 +737,9 @@ public class FieldDog extends BaseFaroInfoDog {
 					JSONObject fieldJSONObject = _buildFieldJSONObject(
 						context, dataSourceId, dataSource.getName(), fieldType,
 						modifiedDateString,
-						fieldMappingJSONObject.getString("fieldName"), ownerId,
-						ownerType, dataSourceFieldName, currentValue);
+						fieldMappingJSONObject.getString("fieldName"),
+						String.valueOf(ownerId), ownerType, dataSourceFieldName,
+						currentValue);
 
 					newFieldsJSONArray.put(fieldJSONObject);
 				}
@@ -726,8 +748,9 @@ public class FieldDog extends BaseFaroInfoDog {
 				JSONObject fieldJSONObject = _buildFieldJSONObject(
 					context, dataSourceId, dataSource.getName(), fieldType,
 					modifiedDateString,
-					fieldMappingJSONObject.getString("fieldName"), ownerId,
-					ownerType, dataSourceFieldName, value);
+					fieldMappingJSONObject.getString("fieldName"),
+					String.valueOf(ownerId), ownerType, dataSourceFieldName,
+					value);
 
 				if (_isAllowMultiple(
 						fieldMappingJSONObject.getJSONObject("strategy"))) {
@@ -736,7 +759,8 @@ public class FieldDog extends BaseFaroInfoDog {
 				}
 				else if ((newFieldsJSONArray.length() == 0) ||
 						 _isUpdateField(
-							 context, dataSourceId, fieldJSONObject,
+							 context, Long.valueOf(dataSourceId),
+							 fieldJSONObject,
 							 newFieldsJSONArray.getJSONObject(0), ownerType)) {
 
 					newFieldsJSONArray.put(0, fieldJSONObject);
@@ -766,21 +790,19 @@ public class FieldDog extends BaseFaroInfoDog {
 	}
 
 	private boolean _isAllowMultiple(
-		String context, String dataSourceId, String fieldName,
-		String ownerType) {
+		String context, Long dataSourceId, String fieldName, String ownerType) {
 
 		JSONObject strategyJSONObject = _getStrategyJSONObject(
-			context, dataSourceId, fieldName, ownerType);
+			context, String.valueOf(dataSourceId), fieldName, ownerType);
 
 		return _isAllowMultiple(strategyJSONObject);
 	}
 
 	private boolean _isMultiValueField(
-		String context, String dataSourceId, String fieldName,
-		String ownerType) {
+		String context, Long dataSourceId, String fieldName, String ownerType) {
 
 		JSONArray fieldMappingsJSONArray = _getFieldMappingsJSONArray(
-			context, dataSourceId, fieldName, ownerType);
+			context, String.valueOf(dataSourceId), fieldName, ownerType);
 
 		JSONObject fieldMappingJSONObject =
 			fieldMappingsJSONArray.getJSONObject(0);
@@ -795,12 +817,13 @@ public class FieldDog extends BaseFaroInfoDog {
 	}
 
 	private boolean _isUpdateField(
-		String context, String dataSourceId, JSONObject newFieldJSONObject,
+		String context, Long dataSourceId, JSONObject newFieldJSONObject,
 		JSONObject oldFieldJSONObject, String ownerType) {
 
-		String oldDataSourceId = oldFieldJSONObject.getString("dataSourceId");
+		String oldDataSourceId = String.valueOf(
+			oldFieldJSONObject.get("dataSourceId"));
 
-		if (dataSourceId.equals(oldDataSourceId)) {
+		if (oldDataSourceId.equals(String.valueOf(dataSourceId))) {
 			return true;
 		}
 		else if (newFieldJSONObject.opt("value") == null) {
@@ -808,8 +831,8 @@ public class FieldDog extends BaseFaroInfoDog {
 		}
 
 		JSONObject fieldMappingStrategyJSONObject = _getStrategyJSONObject(
-			context, dataSourceId, oldFieldJSONObject.getString("name"),
-			ownerType);
+			context, String.valueOf(dataSourceId),
+			oldFieldJSONObject.getString("name"), ownerType);
 
 		if (Objects.equals(
 				fieldMappingStrategyJSONObject.getString("key"),
@@ -847,8 +870,8 @@ public class FieldDog extends BaseFaroInfoDog {
 	}
 
 	private JSONObject _mergeContextJSONObject(
-		String context, String dataSourceId, JSONArray newFieldsJSONArray,
-		String ownerId, String ownerType) {
+		String context, Long dataSourceId, JSONArray newFieldsJSONArray,
+		Long ownerId, String ownerType) {
 
 		List<String> newSingleFieldNames = new ArrayList<>();
 
@@ -860,32 +883,19 @@ public class FieldDog extends BaseFaroInfoDog {
 			if (!_isAllowMultiple(
 					context, dataSourceId, newFieldName, ownerType)) {
 
-				newSingleFieldNames.add(newFieldJSONObject.getString("name"));
+				newSingleFieldNames.add(newFieldName);
 			}
 		}
 
-		// Skip JavaParser, will fix
+		List<Field> oldFields =
+			_fieldRepository.
+				findByContextAndDataSourceIdNotAndNameNotInAndOwnerIdAndOwnerType(
+					context, dataSourceId, newSingleFieldNames, ownerId,
+					ownerType);
 
-		JSONArray oldFieldsJSONArray = elasticsearchInvoker.get(
-			"fields",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("context", context)
-			).filter(
-				QueryBuilders.boolQuery(
-				).mustNot(
-					QueryBuilders.termQuery("dataSourceId", dataSourceId)
-				)
-			).filter(
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.termsQuery("name", newSingleFieldNames))
-			).filter(
-				QueryBuilders.termQuery("ownerId", ownerId)
-			).filter(
-				QueryBuilders.termQuery("ownerType", ownerType)
-			));
-
-		for (int i = 0; i < oldFieldsJSONArray.length(); i++) {
-			JSONObject oldFieldJSONObject = oldFieldsJSONArray.getJSONObject(i);
+		for (Field oldField : oldFields) {
+			JSONObject oldFieldJSONObject = _objectMapper.convertValue(
+				oldField, JSONObject.class);
 
 			oldFieldJSONObject.remove("id");
 
@@ -898,7 +908,7 @@ public class FieldDog extends BaseFaroInfoDog {
 	private void _replaceOrDeleteOldFields(
 			String context, Set<String> multiValueFieldNames,
 			JSONObject newContextJSONObject, JSONObject oldContextJSONObject,
-			String ownerId, String ownerType, String uniqueIdContext,
+			Long ownerId, String ownerType, String uniqueIdContext,
 			String uniqueIdFieldName)
 		throws Exception {
 
@@ -947,16 +957,23 @@ public class FieldDog extends BaseFaroInfoDog {
 					oldFieldsJSONArray.optJSONObject(i);
 
 				if (newFieldJSONObject == null) {
-					elasticsearchInvoker.delete(
-						"fields", oldFieldJSONObject.getString("id"));
+					_fieldRepository.deleteById(
+						oldFieldJSONObject.getLong("id"));
 				}
 				else if (oldFieldJSONObject == null) {
-					elasticsearchInvoker.add("fields", newFieldJSONObject);
+					_fieldRepository.save(
+						_objectMapper.convertValue(
+							newFieldJSONObject, Field.class));
 				}
 				else {
-					elasticsearchInvoker.update(
-						"fields", oldFieldJSONObject.getString("id"),
-						newFieldJSONObject);
+					for (String key : JSONObject.getNames(newFieldJSONObject)) {
+						oldFieldJSONObject.put(
+							key, newFieldJSONObject.get(key));
+					}
+
+					_fieldRepository.save(
+						_objectMapper.convertValue(
+							oldFieldJSONObject, Field.class));
 				}
 			}
 
@@ -981,37 +998,36 @@ public class FieldDog extends BaseFaroInfoDog {
 			}
 		}
 
-		elasticsearchInvoker.update(
+		_elasticsearchInvoker.update(
 			collectionName, ownerId, JSONUtil.put(context, contextJSONObject));
 
 		return contextJSONObject;
 	}
 
 	private void _updateMultiValueFields(
-		String context, String dataSourceId,
-		Map<String, List<JSONObject>> multiValueFieldsMap, String ownerId,
+		String context, Long dataSourceId,
+		Map<String, List<JSONObject>> multiValueFieldsMap, Long ownerId,
 		String ownerType) {
 
 		for (Map.Entry<String, List<JSONObject>> entry :
 				multiValueFieldsMap.entrySet()) {
 
-			elasticsearchInvoker.delete(
-				"fields",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("context", context)
-				).filter(
-					QueryBuilders.termQuery("dataSourceId", dataSourceId)
-				).filter(
-					QueryBuilders.termQuery("name", entry.getKey())
-				).filter(
-					QueryBuilders.termQuery("ownerId", ownerId)
-				).filter(
-					QueryBuilders.termQuery("ownerType", ownerType)
-				));
+			_fieldRepository.deleteAll(
+				_fieldRepository.
+					findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
+						context, dataSourceId, entry.getKey(), ownerId,
+						ownerType));
+
+			List<Field> newFields = new ArrayList<>();
 
 			for (JSONObject newFieldJSONObject : entry.getValue()) {
-				elasticsearchInvoker.add("fields", newFieldJSONObject);
+				Field newField = _objectMapper.convertValue(
+					newFieldJSONObject, Field.class);
+
+				newFields.add(newField);
 			}
+
+			_fieldRepository.saveAll(newFields);
 		}
 	}
 
@@ -1023,11 +1039,17 @@ public class FieldDog extends BaseFaroInfoDog {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
+
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 	@Autowired
 	private FieldRepository _fieldRepository;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	private final Parser _parser = new Parser();
 
