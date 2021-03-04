@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.util;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.util.ArrayUtil;
 
 import org.apache.commons.lang.StringUtils;
 
