@@ -21,10 +21,12 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * @author Leslie Wong
@@ -45,16 +47,19 @@ public class EventAttributeDefinitionDTO {
 		_id = String.valueOf(eventAttributeDefinition.getId());
 		_name = eventAttributeDefinition.getName();
 
-		Set<EventDefinitionEventAttributeDefinition>
-			eventDefinitionEventAttributeDefinitions = new TreeSet<>(
+		List<EventDefinitionEventAttributeDefinition>
+			eventDefinitionEventAttributeDefinitions = new ArrayList<>(
 				eventAttributeDefinition.
 					getEventDefinitionEventAttributeDefinitions());
 
-		Iterator<EventDefinitionEventAttributeDefinition> iterator =
-			eventDefinitionEventAttributeDefinitions.iterator();
+		Collections.sort(
+			eventDefinitionEventAttributeDefinitions,
+			Comparator.comparing(
+				EventDefinitionEventAttributeDefinition::getEventDefinitionId));
 
 		EventDefinitionEventAttributeDefinition
-			eventDefinitionEventAttributeDefinition = iterator.next();
+			eventDefinitionEventAttributeDefinition =
+				eventDefinitionEventAttributeDefinitions.get(0);
 
 		_sampleValue = eventDefinitionEventAttributeDefinition.getSampleValue();
 	}
