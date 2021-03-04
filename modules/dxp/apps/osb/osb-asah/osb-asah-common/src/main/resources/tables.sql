@@ -119,6 +119,20 @@ CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
 	PRIMARY KEY (eventAttributeDefinitionId, eventDefinitionId)
 );
 
+CREATE TABLE IF NOT EXISTS Field (
+    context TEXT,
+	dataSourceId BIGINT,
+	dataSourceName TEXT,
+	fieldType TEXT,
+	id BIGSERIAL PRIMARY KEY,
+    modifiedDate TIMESTAMPTZ,
+	name TEXT,
+	ownerId BIGINT,
+	ownerType TEXT,
+	sourceName TEXT,
+	value TEXT
+);
+
 CREATE TABLE IF NOT EXISTS Preference (
 	id BIGSERIAL PRIMARY KEY,
 	key TEXT UNIQUE,
