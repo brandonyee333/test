@@ -7,14 +7,14 @@
 					"__typename": "EventDefinition",
 					"description": null,
 					"displayName": null,
-					"name": "assetClicked",
+					"name": "assetViewed",
 					"type": "default"
 				},
 				{
 					"__typename": "EventDefinition",
 					"description": null,
 					"displayName": null,
-					"name": "assetDepthReached",
+					"name": "assetSubmitted",
 					"type": "default"
 				},
 				{

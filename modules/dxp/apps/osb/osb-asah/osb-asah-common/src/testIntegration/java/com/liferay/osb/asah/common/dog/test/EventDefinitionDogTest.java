@@ -121,7 +121,8 @@ public class EventDefinitionDogTest {
 	@Test
 	public void testGetEventDefinitions() {
 		_assertEventDefinitions(
-			_eventDefinitionDog.getEventDefinitions("default", null, 0, 5),
+			_eventDefinitionDog.getEventDefinitions(
+				"default", null, 0, 5, "name", "ASC"),
 			new ArrayList<String>() {
 				{
 					add("assetClicked");
@@ -136,7 +137,8 @@ public class EventDefinitionDogTest {
 	@Test
 	public void testGetEventDefinitionsWithKeyword() {
 		_assertEventDefinitions(
-			_eventDefinitionDog.getEventDefinitions("default", "field", 0, 5),
+			_eventDefinitionDog.getEventDefinitions(
+				"default", "field", 0, 5, "name", "ASC"),
 			new ArrayList<String>() {
 				{
 					add("fieldBlurred");

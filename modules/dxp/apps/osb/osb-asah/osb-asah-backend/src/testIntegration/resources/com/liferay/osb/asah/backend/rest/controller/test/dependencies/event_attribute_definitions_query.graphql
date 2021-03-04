@@ -1,5 +1,5 @@
-query EventAttributeDefinitions($keyword: String, $page: Int!, $size: Int!) {
-    eventAttributeDefinitions(keyword: $keyword, page: $page, size: $size) {
+query EventAttributeDefinitions($keyword: String, $page: Int!, $size: Int!, $sort: Sort!) {
+    eventAttributeDefinitions(keyword: $keyword, page: $page, size: $size, sort: $sort) {
         eventAttributeDefinitions {
             ... on EventAttributeDefinition {
                 dataType

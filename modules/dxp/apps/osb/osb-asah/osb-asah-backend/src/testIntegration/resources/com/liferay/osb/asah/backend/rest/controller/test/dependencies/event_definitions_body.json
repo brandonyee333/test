@@ -4,6 +4,10 @@
 		"eventType": "default",
 		"keyword": "asset",
 		"page": 0,
-		"size": 3
+		"size": 3,
+		"sort": {
+			"column": "name",
+			"type": "DESC"
+		}
 	}
 }

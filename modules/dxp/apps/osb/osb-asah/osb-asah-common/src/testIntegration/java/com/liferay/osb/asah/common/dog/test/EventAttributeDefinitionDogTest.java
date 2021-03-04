@@ -178,7 +178,7 @@ public class EventAttributeDefinitionDogTest {
 	public void testGetEventAttributeDefinitions() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
-				null, 0, 5),
+				null, 0, 5, "name", "ASC"),
 			new HashMap<String, String>() {
 				{
 					put("articleId", "string");
@@ -222,7 +222,7 @@ public class EventAttributeDefinitionDogTest {
 	public void testGetEventAttributeDefinitionsWithKeyword() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
-				"page", 0, 3),
+				"page", 0, 3, "name", "ASC"),
 			new HashMap<String, String>() {
 				{
 					put("page", "string");

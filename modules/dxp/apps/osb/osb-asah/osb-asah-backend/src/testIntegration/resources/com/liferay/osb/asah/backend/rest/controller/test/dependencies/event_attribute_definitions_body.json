@@ -3,6 +3,10 @@
 	"variables": {
 		"keyword": "id",
 		"page": 0,
-		"size": 5
+		"size": 5,
+		"sort": {
+			"column": "name",
+			"type": "ASC"
+		}
 	}
 }
