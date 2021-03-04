@@ -24,8 +24,6 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,14 +64,10 @@ public class BlockedKeywordsRestController extends BaseRestController {
 
 	@GetMapping
 	public PageDTO<BlockedKeywordDTO> getBlockedKeywords(
-		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(required = false) String keyword,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
-
-		// FIXME: Remove filterString usage
-
-		String keyword = StringUtils.substringBetween(filterString, "'", "'");
 
 		return _toPageDTO(
 			_blockedKeywordDog.getBlockedKeywords(keyword, page, size, sorts));

@@ -61,7 +61,7 @@
 			"templated": true
 		},
 		"blocked-keywords": {
-			"href": "{url}/blocked-keywords/{?filter,page,size,sort*}",
+			"href": "{url}/blocked-keywords/{?keyword,page,size,sort*}",
 			"templated": true
 		},
 		"bulk": {

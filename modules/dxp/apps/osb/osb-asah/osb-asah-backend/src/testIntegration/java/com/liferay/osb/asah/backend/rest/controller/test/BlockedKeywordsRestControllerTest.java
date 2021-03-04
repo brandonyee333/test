@@ -116,7 +116,7 @@ public class BlockedKeywordsRestControllerTest {
 				"dependencies/expected_blocked_keywords_filter.json", this),
 			_objectMapper.convertValue(
 				_blockedKeywordsRestController.getBlockedKeywords(
-					"contains(keyword.raw, 'web')", 0, 2, null),
+					"web", 0, 2, null),
 				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
@@ -125,7 +125,7 @@ public class BlockedKeywordsRestControllerTest {
 				this),
 			_objectMapper.convertValue(
 				_blockedKeywordsRestController.getBlockedKeywords(
-					"contains(keyword.raw, '1500')", 0, 1, null),
+					"1500", 0, 1, null),
 				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
@@ -134,7 +134,7 @@ public class BlockedKeywordsRestControllerTest {
 				this),
 			_objectMapper.convertValue(
 				_blockedKeywordsRestController.getBlockedKeywords(
-					"contains(keyword.raw, '1500s')", 0, 1, null),
+					"1500", 0, 1, null),
 				JSONObject.class),
 			false);
 	}
