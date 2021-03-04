@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
@@ -57,7 +57,7 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class FaroInfoFieldDog extends BaseFaroInfoDog {
+public class FieldDog extends BaseFaroInfoDog {
 
 	public JSONObject addOwnerJSONObject(
 		String collectionName, JSONObject ownerJSONObject, String... contexts) {
@@ -994,7 +994,7 @@ public class FaroInfoFieldDog extends BaseFaroInfoDog {
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(FaroInfoFieldDog.class);
+	private static final Log _log = LogFactory.getLog(FieldDog.class);
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
