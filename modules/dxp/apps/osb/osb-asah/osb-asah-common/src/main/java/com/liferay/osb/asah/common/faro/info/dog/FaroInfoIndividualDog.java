@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -113,7 +114,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				"emailAddressHashed", DigestUtils.sha256Hex(emailAddress));
 		}
 
-		individualJSONObject = _faroInfoFieldDog.addOwnerJSONObject(
+		individualJSONObject = _fieldDog.addOwnerJSONObject(
 			"individuals", individualJSONObject, "custom", "demographics");
 
 		if (updateMemberships) {
@@ -177,7 +178,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			String dataId, JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
-		JSONObject contextJSONObject = _faroInfoFieldDog.buildContextJSONObject(
+		JSONObject contextJSONObject = _fieldDog.buildContextJSONObject(
 			"demographics", dataJSONObject, dataSource, "individual");
 
 		if (contextJSONObject.optJSONArray("email") == null) {
@@ -214,7 +215,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			"activitiesCount", 0
 		).put(
 			"custom",
-			_faroInfoFieldDog.buildContextJSONObject(
+			_fieldDog.buildContextJSONObject(
 				"custom", dataJSONObject, dataSource, "individual")
 		).put(
 			"dataSourceAccountPKs", dataSourceAccountPKsJSONArray
@@ -561,10 +562,10 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		JSONObject previousDemographicsJSONObject = new JSONObject(
 			individualJSONObject, new String[] {"demographics"});
 
-		individualJSONObject = _faroInfoFieldDog.updateContextFields(
+		individualJSONObject = _fieldDog.updateContextFields(
 			"custom", dataJSONObject, dataSource, individualJSONObject,
 			"individual", "demographics", "email");
-		individualJSONObject = _faroInfoFieldDog.updateContextFields(
+		individualJSONObject = _fieldDog.updateContextFields(
 			"demographics", dataJSONObject, dataSource, individualJSONObject,
 			"individual", "demographics", "email");
 
@@ -592,7 +593,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 		_setFirstEnrichmentDate(individualId, partialIndividualJSONObject);
 
-		JSONObject fieldsJSONObject = _faroInfoFieldDog.getFieldsJSONObject(
+		JSONObject fieldsJSONObject = _fieldDog.getFieldsJSONObject(
 			"demographics", dataJSONObject, dataSource);
 
 		if ((fieldsJSONObject.names() != null) &&
@@ -789,12 +790,12 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
-	private FaroInfoFieldDog _faroInfoFieldDog;
-
-	@Autowired
 	private FaroInfoMembershipDog _faroInfoMembershipDog;
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+
+	@Autowired
+	private FieldDog _fieldDog;
 
 }

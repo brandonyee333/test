@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 
@@ -37,7 +38,7 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 
 		JSONObject organizationJSONObject = JSONUtil.put(
 			"custom",
-			_faroInfoFieldDog.buildContextJSONObject(
+			_fieldDog.buildContextJSONObject(
 				"custom", dataJSONObject, dataSource, "organization")
 		).put(
 			"dataSourceId", String.valueOf(dataSource.getId())
@@ -59,7 +60,7 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 			"type", dataJSONObject.optString("type")
 		);
 
-		return _faroInfoFieldDog.addOwnerJSONObject(
+		return _fieldDog.addOwnerJSONObject(
 			"organizations", organizationJSONObject, "organization");
 	}
 
@@ -104,7 +105,7 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 			"type", dataJSONObject.optString("type")
 		);
 
-		organizationJSONObject = _faroInfoFieldDog.updateContextFields(
+		organizationJSONObject = _fieldDog.updateContextFields(
 			"custom", dataJSONObject, dataSource, organizationJSONObject,
 			"organization", null, null);
 
@@ -127,9 +128,9 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 	}
 
 	@Autowired
-	private FaroInfoFieldDog _faroInfoFieldDog;
+	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+	private FieldDog _fieldDog;
 
 }

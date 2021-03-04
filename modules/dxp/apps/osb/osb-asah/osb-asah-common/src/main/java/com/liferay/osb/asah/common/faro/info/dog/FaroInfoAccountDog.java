@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
@@ -39,7 +40,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 	public JSONObject addAccount(JSONObject accountJSONObject)
 		throws Exception {
 
-		accountJSONObject = _faroInfoFieldDog.addOwnerJSONObject(
+		accountJSONObject = _fieldDog.addOwnerJSONObject(
 			"accounts", accountJSONObject, "organization");
 
 		String dateCreated = accountJSONObject.getString("dateCreated");
@@ -84,7 +85,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 			JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
-		JSONObject contextJSONObject = _faroInfoFieldDog.buildContextJSONObject(
+		JSONObject contextJSONObject = _fieldDog.buildContextJSONObject(
 			"organization", dataJSONObject, dataSource, "account");
 
 		String dateString = DateUtil.newDateString();
@@ -181,7 +182,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 		throws Exception {
 
 		return replaceAccount(
-			_faroInfoFieldDog.updateContextFields(
+			_fieldDog.updateContextFields(
 				"organization", dataJSONObject, dataSource, accountJSONObject,
 				"account", null, null));
 	}
@@ -212,12 +213,12 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 	private static final Log _log = LogFactory.getLog(FaroInfoAccountDog.class);
 
 	@Autowired
-	private FaroInfoFieldDog _faroInfoFieldDog;
-
-	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+
+	@Autowired
+	private FieldDog _fieldDog;
 
 }
