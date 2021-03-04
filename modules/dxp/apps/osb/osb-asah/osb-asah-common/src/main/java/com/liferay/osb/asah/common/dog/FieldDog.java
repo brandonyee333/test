@@ -859,8 +859,9 @@ public class FieldDog {
 
 		String newModifiedDateString = newFieldJSONObject.getString(
 			"dateModified");
-		String oldModifiedDateString = oldFieldJSONObject.getString(
-			"dateModified");
+		String oldModifiedDateString = oldFieldJSONObject.optString(
+			"dateModified",
+			String.valueOf(oldFieldJSONObject.get("modifiedDate")));
 
 		if (newModifiedDateString.compareTo(oldModifiedDateString) > 0) {
 			return true;
