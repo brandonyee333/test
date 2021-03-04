@@ -107,16 +107,16 @@ public class ElasticsearchBlockedKeywordRepositoryImpl
 						).findFirst(
 						).ifPresent(
 							sort -> {
-								SortOrder sortOrder = SortOrder.ASC;
-
-								if (sort.isDescending()) {
-									sortOrder = SortOrder.DESC;
-								}
-
 								String property = sort.getProperty();
 
 								if (Objects.equals(property, "keyword")) {
 									property = "keyword.raw";
+								}
+
+								SortOrder sortOrder = SortOrder.ASC;
+
+								if (sort.isDescending()) {
+									sortOrder = SortOrder.DESC;
 								}
 
 								searchSourceBuilder.sort(
