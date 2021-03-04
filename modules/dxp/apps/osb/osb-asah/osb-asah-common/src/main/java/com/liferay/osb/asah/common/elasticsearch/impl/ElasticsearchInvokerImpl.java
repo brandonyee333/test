@@ -118,8 +118,14 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 			jsonObject = new JSONObject(jsonObject.toString());
 
-			String id = jsonObject.optString(
-				"id", _timeOrderedUuidGenerator.generateId());
+			String id = null;
+
+			if (jsonObject.has("id") && (jsonObject.get("id") != null)) {
+				id = String.valueOf(jsonObject.get("id"));
+			}
+			else {
+				id = _timeOrderedUuidGenerator.generateId();
+			}
 
 			IndexRequestBuilder indexRequestBuilder = _client.prepareIndex(
 				indexAlias, collectionName, id);
@@ -230,7 +236,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public boolean delete(String collectionName, JSONObject jsonObject) {
-		return delete(collectionName, jsonObject.getString("id"));
+		return delete(collectionName, String.valueOf(jsonObject.get("id")));
 	}
 
 	@Override
@@ -507,7 +513,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 	public JSONObject replace(String collectionName, JSONObject jsonObject) {
 		IndexRequestBuilder indexRequestBuilder = _client.prepareIndex(
 			getIndexAlias(collectionName), collectionName,
-			jsonObject.getString("id"));
+			String.valueOf(jsonObject.get("id")));
 
 		indexRequestBuilder.setRefreshPolicy(
 			WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -529,10 +535,11 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONObject save(String collectionName, JSONObject jsonObject) {
-		String id = jsonObject.optString("id", null);
+		Object id = jsonObject.opt("id");
 
 		if (id != null) {
-			JSONObject existingJSONObject = fetch(collectionName, id);
+			JSONObject existingJSONObject = fetch(
+				collectionName, String.valueOf(id));
 
 			if (existingJSONObject != null) {
 				return replace(collectionName, jsonObject);
@@ -600,7 +607,8 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONObject update(String collectionName, JSONObject jsonObject) {
-		return update(collectionName, jsonObject.getString("id"), jsonObject);
+		return update(
+			collectionName, String.valueOf(jsonObject.get("id")), jsonObject);
 	}
 
 	@Override
