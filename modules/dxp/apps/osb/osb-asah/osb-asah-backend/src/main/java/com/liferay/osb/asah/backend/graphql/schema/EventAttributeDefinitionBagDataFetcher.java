@@ -45,11 +45,11 @@ public class EventAttributeDefinitionBagDataFetcher
 
 	@Override
 	public ResultBag<EventAttributeDefinitionDTO> get(
-		DataFetchingEnvironment environment) {
+		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		String keyword = environment.getArgument("keyword");
+		String keyword = dataFetchingEnvironment.getArgument("keyword");
 
-		Map<String, String> sort = environment.getArgument("sort");
+		Map<String, String> sort = dataFetchingEnvironment.getArgument("sort");
 
 		String sortColumn = sort.get("column");
 
@@ -61,8 +61,9 @@ public class EventAttributeDefinitionBagDataFetcher
 
 		List<EventAttributeDefinition> eventDefinitions =
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
-				keyword, environment.getArgument("page"),
-				environment.getArgument("size"), sortColumn, sort.get("type"));
+				keyword, dataFetchingEnvironment.getArgument("page"),
+				dataFetchingEnvironment.getArgument("size"), sortColumn,
+				sort.get("type"));
 
 		Stream<EventAttributeDefinition> stream = eventDefinitions.stream();
 

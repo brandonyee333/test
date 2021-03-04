@@ -42,9 +42,10 @@ public class EventAttributeDefinitionsDataFetcher
 
 	@Override
 	public List<EventAttributeDefinitionDTO> get(
-		DataFetchingEnvironment environment) {
+		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		EventDefinitionDTO eventDefinitionDTO = environment.getSource();
+		EventDefinitionDTO eventDefinitionDTO =
+			dataFetchingEnvironment.getSource();
 
 		Long eventDefinitionId = Long.valueOf(eventDefinitionDTO.getId());
 

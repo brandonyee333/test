@@ -38,16 +38,18 @@ public class EventDefinitionDataFetcher
 	implements DataFetcher<EventDefinitionDTO> {
 
 	@Override
-	public EventDefinitionDTO get(DataFetchingEnvironment environment) {
-		String displayName = environment.getArgument("displayName");
+	public EventDefinitionDTO get(
+		DataFetchingEnvironment dataFetchingEnvironment) {
+
+		String displayName = dataFetchingEnvironment.getArgument("displayName");
 
 		if (StringUtils.isNotEmpty(displayName)) {
 			return _toEventDefinitionDTO(
 				_eventDefinitionDog.fetchEventDefinitionByDisplayName(
-					environment.getArgument("displayName")));
+					dataFetchingEnvironment.getArgument("displayName")));
 		}
 
-		String id = environment.getArgument("id");
+		String id = dataFetchingEnvironment.getArgument("id");
 
 		if (StringUtils.isNotEmpty(id)) {
 			return _toEventDefinitionDTO(
