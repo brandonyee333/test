@@ -63,7 +63,7 @@ public class EventDefinitionDataFetcher
 		EventDefinition eventDefinition) {
 
 		if (eventDefinition == null) {
-			return new EventDefinitionDTO();
+			return null;
 		}
 
 		return new EventDefinitionDTO(eventDefinition);

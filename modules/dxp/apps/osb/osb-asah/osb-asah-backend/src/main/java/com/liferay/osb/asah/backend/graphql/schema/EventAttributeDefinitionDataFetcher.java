@@ -68,7 +68,7 @@ public class EventAttributeDefinitionDataFetcher
 		EventAttributeDefinition eventAttributeDefinition) {
 
 		if (eventAttributeDefinition == null) {
-			return new EventAttributeDefinitionDTO();
+			return null;
 		}
 
 		return new EventAttributeDefinitionDTO(eventAttributeDefinition);
