@@ -18,11 +18,13 @@ import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.Field;
+import com.liferay.osb.asah.common.repository.FieldRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.math.BigDecimal;
@@ -36,6 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,10 +54,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Michael Bowerman
+ * @author Rachael Koestartyo
  */
 @Component
 public class FieldDog extends BaseFaroInfoDog {
@@ -93,6 +98,18 @@ public class FieldDog extends BaseFaroInfoDog {
 			context, dataJSONObject, dataSource, null, ownerType);
 
 		return _buildContextJSONObject(fieldsJSONArray);
+	}
+
+	public void deleteField(Long id) {
+		_fieldRepository.deleteById(id);
+	}
+
+	public Field getField(Long id) {
+		Optional<Field> fieldOptional = _fieldRepository.findById(id);
+
+		return fieldOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST, "There is no field with ID " + id));
 	}
 
 	public JSONObject getFieldsJSONObject(
@@ -250,6 +267,10 @@ public class FieldDog extends BaseFaroInfoDog {
 		).put(
 			"dateModified", DateUtil.newDateString()
 		);
+	}
+
+	public Field updateField(Field field) {
+		return _fieldRepository.save(field);
 	}
 
 	private void _addFields(JSONObject contextJSONObject) {
@@ -1004,6 +1025,9 @@ public class FieldDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
 
 	private final Parser _parser = new Parser();
 

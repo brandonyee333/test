@@ -14,9 +14,17 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.dog.FieldDog;
+import com.liferay.osb.asah.common.dto.FieldDTO;
+import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.model.Field;
+
+import org.json.JSONObject;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,12 +44,14 @@ public class FieldsRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
 	public void deleteField(@PathVariable String id) {
-		faroInfoElasticsearchInvoker.delete("fields", id);
+		_fieldDog.deleteField(Long.valueOf(id));
 	}
 
 	@GetMapping("/{id}")
-	public String getField(@PathVariable String id) throws Exception {
-		return toItemGetResponse("fields", id);
+	public FieldDTO getField(@PathVariable String id) throws Exception {
+		Field field = _fieldDog.getField(Long.valueOf(id));
+
+		return new FieldDTO(field);
 	}
 
 	@GetMapping(params = "!apply")
@@ -77,10 +87,23 @@ public class FieldsRestController extends BaseRestController {
 	}
 
 	@PutMapping("/{id}")
-	public String putField(@PathVariable String id, @RequestBody String json)
+	public String putField(
+			@PathVariable String id, @RequestBody FieldDTO fieldDTO)
 		throws Exception {
 
-		return toPutResponse("fields", id, json);
+		Field field = _fieldDog.updateField(
+			_objectMapper.convertValue(fieldDTO, Field.class));
+
+		JSONObject fieldJSONObject = _objectMapper.convertValue(
+			field, JSONObject.class);
+
+		return fieldJSONObject.toString();
 	}
+
+	@Autowired
+	private FieldDog _fieldDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
