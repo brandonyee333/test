@@ -76,14 +76,21 @@ public class EventDefinitionDogTest {
 
 	@Test
 	public void testFetchEventDefinitionByDisplayName() {
-		EventDefinition eventDefinition1 =
+		EventDefinition expectedEventDefinition =
 			_eventDefinitionDog.addEventDefinition(
 				"Testing an event", "Test Event", "testEvent", "custom");
 
-		EventDefinition eventDefinition2 =
-			_eventDefinitionDog.fetchEventDefinitionByDisplayName("Test Event");
+		Assert.assertEquals(
+			expectedEventDefinition,
+			_eventDefinitionDog.fetchEventDefinitionByDisplayName(
+				"Test Event"));
+	}
 
-		Assert.assertEquals(eventDefinition1, eventDefinition2);
+	@Test
+	public void testFetchEventDefinitionByDisplayNameNonExistent() {
+		Assert.assertNull(
+			_eventDefinitionDog.fetchEventDefinitionByDisplayName(
+				"Does Not Exist"));
 	}
 
 	@Test

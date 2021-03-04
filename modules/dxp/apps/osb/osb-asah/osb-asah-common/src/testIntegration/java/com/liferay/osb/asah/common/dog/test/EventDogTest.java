@@ -23,12 +23,16 @@ import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.Event;
 import com.liferay.osb.asah.common.model.EventAttribute;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -102,9 +106,59 @@ public class EventDogTest {
 			eventAttributeDefinition.getId(),
 			eventAttribute.getEventAttributeDefinitionId());
 		Assert.assertEquals("987654321", eventAttribute.getAttributeValue());
-		Assert.assertEquals(event.getId(), eventAttribute.getEventId());
+
+		Set<EventAttribute> eventAttributes = event.getEventAttributes();
+
+		Assert.assertEquals(
+			eventAttributes.toString(), 1, eventAttributes.size());
 
 		Assert.assertNotNull(eventAttribute.getId());
+	}
+
+	@Test
+	public void testGetRecentEventAttributeValues() {
+		Date date = DateUtil.newDayDate();
+
+		EventAttributeDefinition eventAttributeDefinition =
+			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
+				"viewDuration");
+
+		EventAttribute eventAttribute1 = new EventAttribute();
+
+		eventAttribute1.setAttributeValue("testValue1");
+		eventAttribute1.setEventAttributeDefinitionId(
+			eventAttributeDefinition.getId());
+
+		EventAttribute eventAttribute2 = new EventAttribute();
+
+		eventAttribute2.setAttributeValue("testValue2");
+		eventAttribute2.setEventAttributeDefinitionId(
+			eventAttributeDefinition.getId());
+
+		Channel channel = _channelDog.addChannel("Test Channel");
+
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
+
+		_eventDog.addEvent(
+			"analyticsEventId", "Page", channel.getId(), date, "dataSourceId",
+			new HashSet<EventAttribute>() {
+				{
+					add(eventAttribute1);
+					add(eventAttribute2);
+				}
+			},
+			date, eventDefinition.getId(), "userId");
+
+		Assert.assertEquals(
+			new ArrayList<EventAttributeValue>() {
+				{
+					add(new EventAttributeValue("testValue1", date));
+					add(new EventAttributeValue("testValue2", date));
+				}
+			},
+			_eventDog.getRecentEventAttributeValues(
+				eventAttributeDefinition.getId(), 2));
 	}
 
 	@Autowired

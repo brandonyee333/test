@@ -1,0 +1,36 @@
+{
+	"data": {
+		"eventDefinition": {
+			"__typename": "EventDefinition",
+			"description": "Added an item to shopping cart",
+			"displayName": "Added To Cart",
+			"eventAttributeDefinitions": [
+				{
+					"__typename": "EventAttributeDefinition",
+					"dataType": "number",
+					"description": null,
+					"displayName": "Item Price",
+					"name": "itemPrice",
+					"sampleValue": "1500.00"
+				},
+				{
+					"__typename": "EventAttributeDefinition",
+					"dataType": "number",
+					"description": null,
+					"displayName": "Quantity",
+					"name": "quantity",
+					"sampleValue": "7"
+				},
+				{
+					"__typename": "EventAttributeDefinition",
+					"dataType": "string",
+					"description": null,
+					"displayName": "Item Name",
+					"name": "itemName",
+					"sampleValue": "laptop"
+				}
+			],
+			"name": "addedToCart"
+		}
+	}
+}

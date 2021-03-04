@@ -1,0 +1,16 @@
+query EventDefinition($displayName: String, $id: String) {
+    eventDefinition(displayName: $displayName, id: $id) {
+        description
+        displayName
+        eventAttributeDefinitions {
+            dataType
+            description
+            displayName
+            name
+            sampleValue
+            __typename
+        }
+        name
+        __typename
+    }
+}

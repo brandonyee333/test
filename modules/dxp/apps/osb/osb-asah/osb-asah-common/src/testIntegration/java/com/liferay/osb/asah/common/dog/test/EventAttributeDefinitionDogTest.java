@@ -100,6 +100,31 @@ public class EventAttributeDefinitionDogTest {
 	}
 
 	@Test
+	public void testFetchEventAttributeDefinitionByDisplayName() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", "Test Event", "testEvent", "custom");
+
+		EventAttributeDefinition expectedEventAttributeDefinition =
+			_eventAttributeDefinitionDog.addEventAttributeDefinition(
+				"string", null, "Test Event Attribute", eventDefinition.getId(),
+				"testEventAttribute", "Sample Value");
+
+		Assert.assertEquals(
+			expectedEventAttributeDefinition,
+			_eventAttributeDefinitionDog.
+				fetchEventAttributeDefinitionByDisplayName(
+					"Test Event Attribute"));
+	}
+
+	@Test
+	public void testFetchEventAttributeDefinitionByDisplayNameNonExistent() {
+		Assert.assertNull(
+			_eventAttributeDefinitionDog.
+				fetchEventAttributeDefinitionByDisplayName("Does Not Exist"));
+	}
+
+	@Test
 	public void testFetchEventAttributeDefinitionByName() {
 		EventAttributeDefinition eventAttributeDefinition =
 			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(

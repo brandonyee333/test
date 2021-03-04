@@ -1,0 +1,6 @@
+{
+	"operationName": "EventDefinition",
+	"variables": {
+		"displayName": "Added To Cart"
+	}
+}

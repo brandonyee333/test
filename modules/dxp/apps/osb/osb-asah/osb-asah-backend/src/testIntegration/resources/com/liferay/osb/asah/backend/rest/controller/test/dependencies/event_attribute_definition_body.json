@@ -1,0 +1,6 @@
+{
+	"operationName": "EventAttributeDefinition",
+	"variables": {
+		"displayName": "Item Price"
+	}
+}

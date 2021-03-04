@@ -1,0 +1,13 @@
+query EventAttributeDefinition($displayName: String, $id: String) {
+	eventAttributeDefinition(displayName: $displayName, id: $id) {
+		dataType
+		description
+		displayName
+		name
+		recentValues {
+			lastSeenDate
+			value
+		}
+		sampleValue
+	}
+}
