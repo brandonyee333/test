@@ -144,6 +144,46 @@ public class EventDefinitionDogTest {
 			});
 	}
 
+	@Test
+	public void testUpdateEventDefinitionDescription() {
+		EventDefinition eventDefinition1 =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+
+		EventDefinition eventDefinition2 =
+			_eventDefinitionDog.updateEventDefinition(
+				"Viewed a page", null, eventDefinition1.getId());
+
+		Assert.assertNotEquals(
+			eventDefinition1.getDescription(),
+			eventDefinition2.getDescription());
+		Assert.assertEquals(
+			eventDefinition1.getDisplayName(),
+			eventDefinition2.getDisplayName());
+		Assert.assertEquals(eventDefinition1.getId(), eventDefinition2.getId());
+		Assert.assertEquals(
+			eventDefinition1.getType(), eventDefinition2.getType());
+	}
+
+	@Test
+	public void testUpdateEventDefinitionDisplayName() {
+		EventDefinition eventDefinition1 =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+
+		EventDefinition eventDefinition2 =
+			_eventDefinitionDog.updateEventDefinition(
+				null, "Page Viewed", eventDefinition1.getId());
+
+		Assert.assertEquals(
+			eventDefinition1.getDescription(),
+			eventDefinition2.getDescription());
+		Assert.assertNotEquals(
+			eventDefinition1.getDisplayName(),
+			eventDefinition2.getDisplayName());
+		Assert.assertEquals(eventDefinition1.getId(), eventDefinition2.getId());
+		Assert.assertEquals(
+			eventDefinition1.getType(), eventDefinition2.getType());
+	}
+
 	private void _assertEventDefinitions(
 		List<EventDefinition> actualEventDefinitions,
 		List<String> expectedEventDefinitionNames) {
