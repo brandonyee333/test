@@ -12,11 +12,13 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.FieldDog;
+import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -41,12 +43,16 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class FaroInfoFieldDogTest extends BaseFaroInfoDogTestCase {
+public class FieldDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		_dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
-			"data-sources", FaroInfoTestUtil.buildCSVDataSourceJSONObject());
+		_dataSourceJSONObject = _objectMapper.convertValue(
+			_dataSourceDog.addDataSource(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildCSVDataSourceJSONObject(),
+					DataSource.class)),
+			JSONObject.class);
 
 		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
@@ -125,7 +131,7 @@ public class FaroInfoFieldDogTest extends BaseFaroInfoDogTestCase {
 	private void _testDateField(Object date, String expectedDateString)
 		throws Exception {
 
-		JSONObject contextJSONObject = _faroInfoFieldDog.buildContextJSONObject(
+		JSONObject contextJSONObject = _fieldDog.buildContextJSONObject(
 			"demographics",
 			FaroInfoTestUtil.buildCSVIndividualJSONObject(
 				_dataSourceJSONObject.getString("id"),
@@ -149,10 +155,13 @@ public class FaroInfoFieldDogTest extends BaseFaroInfoDogTestCase {
 			actualDateString.startsWith(expectedDateString));
 	}
 
+	@Autowired
+	private DataSourceDog _dataSourceDog;
+
 	private JSONObject _dataSourceJSONObject;
 
 	@Autowired
-	private FaroInfoFieldDog _faroInfoFieldDog;
+	private FieldDog _fieldDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
