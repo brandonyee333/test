@@ -31,14 +31,6 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 public class EventAttributeDefinition implements Persistable<Long> {
 
-	public void addEventDefinitionEventAttributeDefinition(
-		EventDefinitionEventAttributeDefinition
-			eventDefinitionEventAttributeDefinition) {
-
-		_eventDefinitionEventAttributeDefinitions.add(
-			eventDefinitionEventAttributeDefinition);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
