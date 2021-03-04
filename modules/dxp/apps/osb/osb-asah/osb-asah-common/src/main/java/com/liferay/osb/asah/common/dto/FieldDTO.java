@@ -1,0 +1,123 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.dto;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+import com.liferay.osb.asah.common.model.Field;
+import com.liferay.osb.asah.common.util.StringUtil;
+
+import java.util.Date;
+
+/**
+ * @author Rachael Koestartyo
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonRootName("fields")
+public class FieldDTO {
+
+	public FieldDTO() {
+	}
+
+	public FieldDTO(Field field) {
+		_context = field.getContext();
+		_dataSourceId = StringUtil.get(field.getDataSourceId(), null);
+		_dataSourceName = field.getDataSourceName();
+		_fieldType = field.getFieldType();
+		_id = StringUtil.get(field.getId(), null);
+		_modifiedDate = field.getModifiedDate();
+		_name = field.getName();
+		_ownerId = StringUtil.get(field.getOwnerId(), null);
+		_ownerType = field.getOwnerType();
+		_sourceName = field.getSourceName();
+		_value = field.getValue();
+	}
+
+	@JsonProperty("context")
+	public String getContext() {
+		return _context;
+	}
+
+	@JsonProperty("dataSourceId")
+	public String getDataSourceId() {
+		return _dataSourceId;
+	}
+
+	@JsonProperty("dataSourceName")
+	public String getDataSourceName() {
+		return _dataSourceName;
+	}
+
+	@JsonProperty("fieldType")
+	public String getFieldType() {
+		return _fieldType;
+	}
+
+	@JsonProperty("id")
+	public String getId() {
+		return _id;
+	}
+
+	@JsonAlias("modifiedDate")
+	@JsonProperty("dateModified")
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
+	@JsonProperty("name")
+	public String getName() {
+		return _name;
+	}
+
+	@JsonProperty("ownerId")
+	public String getOwnerId() {
+		return _ownerId;
+	}
+
+	@JsonProperty("ownerType")
+	public String getOwnerType() {
+		return _ownerType;
+	}
+
+	@JsonProperty("sourceName")
+	public String getSourceName() {
+		return _sourceName;
+	}
+
+	@JsonProperty("value")
+	public String getValue() {
+		return _value;
+	}
+
+	private String _context;
+	private String _dataSourceId;
+	private String _dataSourceName;
+	private String _fieldType;
+	private String _id;
+	private Date _modifiedDate;
+	private String _name;
+	private String _ownerId;
+	private String _ownerType;
+	private String _sourceName;
+	private String _value;
+
+}
