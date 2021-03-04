@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.test.util.spring;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;
 
 import java.io.IOException;
 
@@ -27,10 +28,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.util.Objects;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -81,6 +85,35 @@ public class OSBAsahPostgreSQLTestExecutionListener
 		}
 	}
 
+	@Override
+	public void beforeTestClass(TestContext testContext) {
+		Class<?> clazz = testContext.getTestClass();
+
+		PostgreSQLTables[] postgreSQLTables = clazz.getAnnotationsByType(
+			PostgreSQLTables.class);
+
+		if (postgreSQLTables.length == 0) {
+			return;
+		}
+		else if (postgreSQLTables.length > 1) {
+			throw new IllegalArgumentException(
+				"Only 1 PostgreSQLTables annotation allowed");
+		}
+
+		_prepareTables(clazz, postgreSQLTables[0]);
+	}
+
+	@Override
+	public void beforeTestMethod(TestContext testContext) {
+		PostgreSQLTables postgreSQLTables =
+			AnnotatedElementUtils.getMergedAnnotation(
+				testContext.getTestMethod(), PostgreSQLTables.class);
+
+		if (postgreSQLTables != null) {
+			_prepareTables(testContext.getTestClass(), postgreSQLTables);
+		}
+	}
+
 	private boolean _isPostgreSQLUp() {
 		return _pingHost(ServiceConstants.POSTGRESQL_SERVER_IP, 5432, 3000);
 	}
@@ -93,6 +126,19 @@ public class OSBAsahPostgreSQLTestExecutionListener
 		}
 		catch (IOException ioe) {
 			return false;
+		}
+	}
+
+	private void _prepareTables(
+		Class<?> clazz, PostgreSQLTables postgreSQLTables) {
+
+		if (!Objects.equals(postgreSQLTables.resourcePath(), "")) {
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource(
+						"dependencies/" + postgreSQLTables.resourcePath(),
+						clazz)),
+				_dataSource);
 		}
 	}
 
