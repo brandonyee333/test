@@ -109,6 +109,22 @@ public class EventDefinitionDog {
 			eventType);
 	}
 
+	public EventDefinition updateEventDefinition(
+		String description, String displayName, Long eventDefinitionId) {
+
+		EventDefinition eventDefinition = getEventDefinition(eventDefinitionId);
+
+		if (StringUtils.isNotBlank(description)) {
+			eventDefinition.setDescription(description);
+		}
+
+		if (StringUtils.isNotBlank(displayName)) {
+			eventDefinition.setDisplayName(displayName);
+		}
+
+		return _eventDefinitionRepository.save(eventDefinition);
+	}
+
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
 
