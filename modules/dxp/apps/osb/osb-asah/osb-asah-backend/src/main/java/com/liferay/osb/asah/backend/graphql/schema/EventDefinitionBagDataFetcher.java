@@ -20,18 +20,15 @@ import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -48,16 +45,6 @@ public class EventDefinitionBagDataFetcher
 
 		String eventType = dataFetchingEnvironment.getArgument("eventType");
 		String keyword = dataFetchingEnvironment.getArgument("keyword");
-
-		Map<String, String> sort = dataFetchingEnvironment.getArgument("sort");
-
-		String sortColumn = sort.get("column");
-
-		if (!sortColumn.equals("name") && !sortColumn.equals("displayName")) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"Unable to sort event definitions by " + sortColumn);
-		}
 
 		List<EventDefinition> eventDefinitions =
 			_eventDefinitionDog.getEventDefinitions(

@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -104,6 +105,8 @@ public class EventAttributeDefinitionDog {
 	public List<EventAttributeDefinition> getEventAttributeDefinitions(
 		String name, int page, int size, Sort sort) {
 
+		_validate(sort);
+
 		if (name != null) {
 			return _eventAttributeDefinitionRepository.
 				findByNameContainingIgnoreCase(
@@ -156,6 +159,18 @@ public class EventAttributeDefinitionDog {
 
 		return _eventAttributeDefinitionRepository.save(
 			eventAttributeDefinition);
+	}
+
+	private void _validate(Sort sort) {
+		String sortColumn = sort.getColumn();
+
+		if (!Objects.equals(sortColumn, "name") &&
+			!Objects.equals(sortColumn, "displayName")) {
+
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"Unable to sort event attribute definitions by " + sortColumn);
+		}
 	}
 
 	@Autowired
