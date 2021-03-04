@@ -102,18 +102,18 @@ public class EventAttributeDefinitionDog {
 	}
 
 	public List<EventAttributeDefinition> getEventAttributeDefinitions(
-		String name, int page, int size) {
+		String name, int page, int size, String sortColumn, String sortType) {
+
+		Sort sort = Sort.by(Sort.Direction.valueOf(sortType), sortColumn);
 
 		if (name != null) {
 			return _eventAttributeDefinitionRepository.
 				findByNameContainingIgnoreCase(
-					name,
-					PageRequest.of(
-						page, size, Sort.by(Sort.Order.asc("name"))));
+					name, PageRequest.of(page, size, sort));
 		}
 
 		return _eventAttributeDefinitionRepository.findAll(
-			PageRequest.of(page, size, Sort.by(Sort.Order.asc("name"))));
+			PageRequest.of(page, size, sort));
 	}
 
 	public List<EventAttributeDefinition>

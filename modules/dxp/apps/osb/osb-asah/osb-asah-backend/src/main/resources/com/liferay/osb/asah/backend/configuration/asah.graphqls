@@ -791,8 +791,9 @@ type QueryType {
 
 	eventAttributeDefinitions(
 		keyword: String,
-		page: Int!
-		size: Int!
+		page: Int!,
+		size: Int!,
+		sort: Sort!
 	): EventAttributeDefinitionBag
 
 	eventDefinition(
@@ -804,7 +805,8 @@ type QueryType {
 		eventType: String!,
 		keyword: String,
 		page: Int!,
-		size: Int!
+		size: Int!,
+		sort: Sort!
 	): EventDefinitionBag
 
 	experiment(

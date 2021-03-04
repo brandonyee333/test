@@ -24,6 +24,7 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,10 +47,13 @@ public class EventAttributeDefinitionBagDataFetcher
 
 		String keyword = environment.getArgument("keyword");
 
+		Map<String, String> sort = environment.getArgument("sort");
+
 		List<EventAttributeDefinition> eventDefinitions =
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
 				keyword, environment.getArgument("page"),
-				environment.getArgument("size"));
+				environment.getArgument("size"), sort.get("column"),
+				sort.get("type"));
 
 		Stream<EventAttributeDefinition> stream = eventDefinitions.stream();
 

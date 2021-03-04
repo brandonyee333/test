@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,24 +88,19 @@ public class EventDefinitionDog {
 	}
 
 	public List<EventDefinition> getEventDefinitions(
-		String eventType, String keyword, int page, int size) {
+		String eventType, String keyword, int page, int size, String sortColumn,
+		String sortType) {
+
+		Sort sort = Sort.by(Sort.Direction.valueOf(sortType), sortColumn);
 
 		if (keyword != null) {
 			return _eventDefinitionRepository.
 				findByNameContainingIgnoreCaseAndType(
-					keyword,
-					PageRequest.of(
-						page, size,
-						Sort.by(
-							Collections.singletonList(Sort.Order.asc("name")))),
-					eventType);
+					keyword, PageRequest.of(page, size, sort), eventType);
 		}
 
 		return _eventDefinitionRepository.findByType(
-			PageRequest.of(
-				page, size,
-				Sort.by(Collections.singletonList(Sort.Order.asc("name")))),
-			eventType);
+			PageRequest.of(page, size, sort), eventType);
 	}
 
 	public EventDefinition updateEventDefinition(
