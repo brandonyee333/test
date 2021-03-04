@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.rest.response.PostResponse;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
+import com.liferay.osb.asah.common.spring.annotation.SuppressErrorLogging;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.Iterator;
@@ -40,6 +41,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -70,6 +72,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndividualSegmentsRestController extends BaseRestController {
 
 	@GetMapping(params = "!apply", value = "/{id}/individuals")
+	@SuppressErrorLogging(ResourceNotFoundException.class)
 	public String getIndividuals(
 			@PathVariable String id,
 			@RequestParam(name = "filter", required = false)
