@@ -556,6 +556,19 @@ type MutationType {
 		value: String!
 	): String
 
+	updateEventAttributeDefinition(
+		dataType: String
+		description: String
+		displayName: String
+		eventAttributeDefinitionId: String!
+	): EventAttributeDefinition
+
+	updateEventDefinition(
+		description: String
+		displayName: String
+		eventDefinitionId: String!
+	): EventDefinition
+
 	updateJob(
 		jobId: String!
 		name: String!
