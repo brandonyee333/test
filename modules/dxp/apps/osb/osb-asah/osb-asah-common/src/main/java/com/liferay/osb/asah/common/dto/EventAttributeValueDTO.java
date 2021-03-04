@@ -34,7 +34,6 @@ public class EventAttributeValueDTO {
 	public EventAttributeValueDTO(EventAttributeValue eventAttributeValue) {
 		_lastSeenDate = DateUtil.toUTCString(
 			eventAttributeValue.getLastSeenDate());
-
 		_value = eventAttributeValue.getAttributeValue();
 	}
 
