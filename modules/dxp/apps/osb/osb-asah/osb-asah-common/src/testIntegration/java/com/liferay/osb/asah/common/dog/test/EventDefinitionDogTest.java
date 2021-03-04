@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -122,7 +123,7 @@ public class EventDefinitionDogTest {
 	public void testGetEventDefinitions() {
 		_assertEventDefinitions(
 			_eventDefinitionDog.getEventDefinitions(
-				"default", null, 0, 5, "name", "ASC"),
+				"default", null, 0, 5, Sort.asc("name")),
 			new ArrayList<String>() {
 				{
 					add("assetClicked");
@@ -138,7 +139,7 @@ public class EventDefinitionDogTest {
 	public void testGetEventDefinitionsWithKeyword() {
 		_assertEventDefinitions(
 			_eventDefinitionDog.getEventDefinitions(
-				"default", "field", 0, 5, "name", "ASC"),
+				"default", "field", 0, 5, Sort.asc("name")),
 			new ArrayList<String>() {
 				{
 					add("fieldBlurred");

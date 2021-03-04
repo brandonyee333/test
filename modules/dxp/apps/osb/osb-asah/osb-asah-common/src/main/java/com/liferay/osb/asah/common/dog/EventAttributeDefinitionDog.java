@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
@@ -28,7 +29,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -102,9 +102,7 @@ public class EventAttributeDefinitionDog {
 	}
 
 	public List<EventAttributeDefinition> getEventAttributeDefinitions(
-		String name, int page, int size, String sortColumn, String sortType) {
-
-		Sort sort = Sort.by(Sort.Direction.valueOf(sortType), sortColumn);
+		String name, int page, int size, Sort sort) {
 
 		if (name != null) {
 			return _eventAttributeDefinitionRepository.

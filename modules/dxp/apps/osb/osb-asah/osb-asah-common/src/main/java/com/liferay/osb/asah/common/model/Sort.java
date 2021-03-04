@@ -14,12 +14,18 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
+
+import java.util.Collections;
 import java.util.Map;
 
 /**
  * @author Marcellus Tavares
  */
-public class Sort {
+@SuppressFBWarnings(
+	{"EQ_DOESNT_OVERRIDE_EQUALS", "NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"}
+)
+public class Sort extends org.springframework.data.domain.Sort {
 
 	public static Sort asc(String column) {
 		return new Sort(column, "asc");
@@ -34,6 +40,10 @@ public class Sort {
 	}
 
 	public Sort(String column, String type) {
+		super(
+			Collections.singletonList(
+				new Order(Direction.valueOf(type), column)));
+
 		_column = column;
 		_type = type.toUpperCase();
 	}

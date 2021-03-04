@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dto.EventDefinitionDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import graphql.schema.DataFetcher;
@@ -61,8 +62,8 @@ public class EventDefinitionBagDataFetcher
 		List<EventDefinition> eventDefinitions =
 			_eventDefinitionDog.getEventDefinitions(
 				eventType, keyword, dataFetchingEnvironment.getArgument("page"),
-				dataFetchingEnvironment.getArgument("size"), sortColumn,
-				sort.get("type"));
+				dataFetchingEnvironment.getArgument("size"),
+				Sort.of(dataFetchingEnvironment.getArgument("sort")));
 
 		Stream<EventDefinition> stream = eventDefinitions.stream();
 

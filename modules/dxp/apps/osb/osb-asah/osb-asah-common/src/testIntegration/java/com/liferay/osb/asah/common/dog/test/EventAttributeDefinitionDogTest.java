@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 
@@ -178,7 +179,7 @@ public class EventAttributeDefinitionDogTest {
 	public void testGetEventAttributeDefinitions() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
-				null, 0, 5, "name", "ASC"),
+				null, 0, 5, Sort.asc("name")),
 			new HashMap<String, String>() {
 				{
 					put("articleId", "string");
@@ -222,7 +223,7 @@ public class EventAttributeDefinitionDogTest {
 	public void testGetEventAttributeDefinitionsWithKeyword() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
-				"page", 0, 3, "name", "ASC"),
+				"page", 0, 3, Sort.asc("name")),
 			new HashMap<String, String>() {
 				{
 					put("page", "string");
