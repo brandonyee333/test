@@ -140,8 +140,19 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 	public <S extends T> S save(S entity) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
-		JSONObject jsonObject = elasticsearchInvoker.add(
-			getCollectionName(), toJSONObject(entity));
+		JSONObject jsonObject = null;
+
+		if ((entity.getId() != null) &&
+			elasticsearchInvoker.exists(
+				getCollectionName(), String.valueOf(entity.getId()))) {
+
+			jsonObject = elasticsearchInvoker.update(
+				getCollectionName(), toJSONObject(entity));
+		}
+		else {
+			jsonObject = elasticsearchInvoker.add(
+				getCollectionName(), toJSONObject(entity));
+		}
 
 		return (S)toEntity(jsonObject);
 	}
