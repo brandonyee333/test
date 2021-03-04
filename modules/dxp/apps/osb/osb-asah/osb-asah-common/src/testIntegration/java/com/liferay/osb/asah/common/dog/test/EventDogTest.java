@@ -88,11 +88,8 @@ public class EventDogTest {
 			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
 				"viewDuration");
 
-		EventAttribute eventAttribute = new EventAttribute();
-
-		eventAttribute.setAttributeValue("987654321");
-		eventAttribute.setEventAttributeDefinitionId(
-			eventAttributeDefinition.getId());
+		EventAttribute eventAttribute = new EventAttribute(
+			"987654321", eventAttributeDefinition.getId());
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
@@ -123,19 +120,9 @@ public class EventDogTest {
 			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
 				"viewDuration");
 
-		EventAttribute eventAttribute1 = new EventAttribute();
-
-		eventAttribute1.setAttributeValue("testValue1");
-		eventAttribute1.setEventAttributeDefinitionId(
-			eventAttributeDefinition.getId());
-
-		EventAttribute eventAttribute2 = new EventAttribute();
-
-		eventAttribute2.setAttributeValue("testValue2");
-		eventAttribute2.setEventAttributeDefinitionId(
-			eventAttributeDefinition.getId());
-
 		Channel channel = _channelDog.addChannel("Test Channel");
+
+		Long eventAttributeDefinitionId = eventAttributeDefinition.getId();
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");
@@ -144,8 +131,12 @@ public class EventDogTest {
 			"analyticsEventId", "Page", channel.getId(), date, "dataSourceId",
 			new HashSet<EventAttribute>() {
 				{
-					add(eventAttribute1);
-					add(eventAttribute2);
+					add(
+						new EventAttribute(
+							"testValue1", eventAttributeDefinitionId));
+					add(
+						new EventAttribute(
+							"testValue2", eventAttributeDefinitionId));
 				}
 			},
 			date, eventDefinition.getId(), "userId");

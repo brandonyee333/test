@@ -97,13 +97,9 @@ public class AnalyticsEventStorageDog {
 					}
 				}
 
-				EventAttribute eventAttribute = new EventAttribute();
-
-				eventAttribute.setAttributeValue(entry.getValue());
-				eventAttribute.setEventAttributeDefinitionId(
-					eventAttributeDefinition.getId());
-
-				eventAttributes.add(eventAttribute);
+				eventAttributes.add(
+					new EventAttribute(
+						entry.getValue(), eventAttributeDefinition.getId()));
 			}
 
 			_eventDog.addEvent(
