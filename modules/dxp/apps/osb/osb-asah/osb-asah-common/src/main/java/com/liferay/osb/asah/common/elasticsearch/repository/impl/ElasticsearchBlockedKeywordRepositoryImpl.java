@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -112,9 +113,15 @@ public class ElasticsearchBlockedKeywordRepositoryImpl
 									sortOrder = SortOrder.DESC;
 								}
 
+								String property = sort.getProperty();
+
+								if (Objects.equals(property, "keyword")) {
+									property = "keyword.raw";
+								}
+
 								searchSourceBuilder.sort(
 									SortBuilderUtil.fieldSort(
-										sort.getProperty(), sortOrder));
+										property, sortOrder));
 							}
 						);
 					})));
