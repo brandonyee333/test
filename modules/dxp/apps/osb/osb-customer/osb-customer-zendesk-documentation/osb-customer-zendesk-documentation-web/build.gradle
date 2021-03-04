@@ -1,3 +1,7 @@
+compileJSP {
+	enabled = false
+}
+
 dependencies {
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	compileOnly group: "com.liferay", name: "com.liferay.application.list.api", version: "2.0.0"
@@ -19,4 +23,8 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk-documentation:osb-customer-zendesk-documentation-sync-service")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk:osb-customer-zendesk-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk:osb-customer-zendesk-web-service-api")
+}
+
+generateJSPJava {
+	enabled = false
 }

@@ -1,3 +1,7 @@
+compileJSP {
+	enabled = false
+}
+
 dependencies {
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	compileOnly group: "com.liferay", name: "com.liferay.frontend.taglib", version: "2.0.0"
@@ -22,6 +26,10 @@ dependencies {
 }
 
 downloadLiferayModuleConfigGenerator {
+	enabled = false
+}
+
+generateJSPJava {
 	enabled = false
 }
 

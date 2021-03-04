@@ -1,3 +1,7 @@
+compileJSP {
+	enabled = false
+}
+
 dependencies {
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	compileOnly group: "com.liferay", name: "com.liferay.dynamic.data.mapping.api", version: "3.0.0"
@@ -16,6 +20,10 @@ dependencies {
 }
 
 downloadLiferayModuleConfigGenerator {
+	enabled = false
+}
+
+generateJSPJava {
 	enabled = false
 }
 

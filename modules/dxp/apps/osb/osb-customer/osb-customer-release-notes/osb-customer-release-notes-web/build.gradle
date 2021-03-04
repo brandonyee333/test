@@ -1,3 +1,7 @@
+compileJSP {
+	enabled = false
+}
+
 dependencies {
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.6.0"
@@ -9,4 +13,8 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-release-notes:osb-customer-release-notes-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-release-notes:osb-customer-release-notes-jira-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-release-notes:osb-customer-release-notes-service")
+}
+
+generateJSPJava {
+	enabled = false
 }
