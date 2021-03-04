@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,19 +150,15 @@ public class EventDefinitionDogTest {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
 
+		String newDescription = RandomTestUtil.randomString();
+
+		eventDefinition1.setDescription(newDescription);
+
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.updateEventDefinition(
-				"Viewed a page", null, eventDefinition1.getId());
+				newDescription, null, eventDefinition1.getId());
 
-		Assert.assertNotEquals(
-			eventDefinition1.getDescription(),
-			eventDefinition2.getDescription());
-		Assert.assertEquals(
-			eventDefinition1.getDisplayName(),
-			eventDefinition2.getDisplayName());
-		Assert.assertEquals(eventDefinition1.getId(), eventDefinition2.getId());
-		Assert.assertEquals(
-			eventDefinition1.getType(), eventDefinition2.getType());
+		Assert.assertEquals(eventDefinition1, eventDefinition2);
 	}
 
 	@Test
@@ -169,19 +166,15 @@ public class EventDefinitionDogTest {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
 
+		String newDisplayName = RandomTestUtil.randomString();
+
+		eventDefinition1.setDisplayName(newDisplayName);
+
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.updateEventDefinition(
-				null, "Page Viewed", eventDefinition1.getId());
+				null, newDisplayName, eventDefinition1.getId());
 
-		Assert.assertEquals(
-			eventDefinition1.getDescription(),
-			eventDefinition2.getDescription());
-		Assert.assertNotEquals(
-			eventDefinition1.getDisplayName(),
-			eventDefinition2.getDisplayName());
-		Assert.assertEquals(eventDefinition1.getId(), eventDefinition2.getId());
-		Assert.assertEquals(
-			eventDefinition1.getType(), eventDefinition2.getType());
+		Assert.assertEquals(eventDefinition1, eventDefinition2);
 	}
 
 	private void _assertEventDefinitions(
