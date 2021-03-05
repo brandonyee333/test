@@ -17,23 +17,7 @@ package com.liferay.alloy.mvc.sample.service.impl;
 import com.liferay.alloy.mvc.sample.service.base.TodoItemLocalServiceBaseImpl;
 
 /**
- * The implementation of the todo item local service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.alloy.mvc.sample.service.TodoItemLocalService</code> interface.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
- *
  * @author Brian Wing Shun Chan
- * @see TodoItemLocalServiceBaseImpl
  */
 public class TodoItemLocalServiceImpl extends TodoItemLocalServiceBaseImpl {
-
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Use <code>com.liferay.alloy.mvc.sample.service.TodoItemLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.alloy.mvc.sample.service.TodoItemLocalServiceUtil</code>.
-	 */
 }
