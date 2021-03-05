@@ -823,10 +823,11 @@ public class FieldDog {
 		String context, Long dataSourceId, JSONObject newFieldJSONObject,
 		JSONObject oldFieldJSONObject, String ownerType) {
 
+		String newDataSourceId = String.valueOf(dataSourceId);
 		String oldDataSourceId = String.valueOf(
 			oldFieldJSONObject.get("dataSourceId"));
 
-		if (oldDataSourceId.equals(String.valueOf(dataSourceId))) {
+		if (oldDataSourceId.equals(newDataSourceId)) {
 			return true;
 		}
 		else if (newFieldJSONObject.opt("value") == null) {
@@ -834,8 +835,8 @@ public class FieldDog {
 		}
 
 		JSONObject fieldMappingStrategyJSONObject = _getStrategyJSONObject(
-			context, String.valueOf(dataSourceId),
-			oldFieldJSONObject.getString("name"), ownerType);
+			context, newDataSourceId, oldFieldJSONObject.getString("name"),
+			ownerType);
 
 		if (Objects.equals(
 				fieldMappingStrategyJSONObject.getString("key"),
@@ -847,13 +848,13 @@ public class FieldDog {
 			String configurationDataSourceId =
 				configurationJSONObject.getString("dataSourceId");
 
-			if (!configurationDataSourceId.equals(dataSourceId) &&
+			if (!configurationDataSourceId.equals(newDataSourceId) &&
 				configurationDataSourceId.equals(oldDataSourceId)) {
 
 				return false;
 			}
 
-			if (configurationDataSourceId.equals(dataSourceId) &&
+			if (configurationDataSourceId.equals(newDataSourceId) &&
 				!configurationDataSourceId.equals(oldDataSourceId)) {
 
 				return true;
