@@ -18,14 +18,12 @@ import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dto.EventAttributeDefinitionDTO;
 import com.liferay.osb.asah.common.dto.EventAttributeValueDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.EventAttributeValue;
 
+import com.liferay.osb.asah.common.util.ListUtil;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,18 +45,10 @@ public class EventAttributeValuesDataFetcher
 		EventAttributeDefinitionDTO eventAttributeDefinitionDTO =
 			environment.getSource();
 
-		List<EventAttributeValue> recentEventAttributeValues =
+		return ListUtil.map(
 			_eventDog.getRecentEventAttributeValues(
-				Long.valueOf(eventAttributeDefinitionDTO.getId()), 10);
-
-		Stream<EventAttributeValue> stream =
-			recentEventAttributeValues.stream();
-
-		return stream.map(
-			EventAttributeValueDTO::new
-		).collect(
-			Collectors.toList()
-		);
+				Long.valueOf(eventAttributeDefinitionDTO.getId()), 10),
+			EventAttributeValueDTO::new);
 	}
 
 	@Autowired
