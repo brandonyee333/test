@@ -40,18 +40,18 @@ def test_form_data_frame_processor_calculate_field_metrics(
 		'form_data_frame_processor_calculate_field_metrics_expected_output.json',
 		spark_session,
 		T.StructType([
-			T.StructField("projectId", T.StringType(), False),
-			T.StructField("channelId", T.StringType(), False),
-			T.StructField("userId", T.StringType(), False),
-			T.StructField("assetId", T.StringType(), False),
-			T.StructField("variantId", T.StringType(), False),
-			T.StructField("normalized_event_date", T.TimestampType(), False),
-			T.StructField("primaryKey", T.StringType(), False),
-			T.StructField("page_index", T.IntegerType(), False),
-			T.StructField("field_name", T.StringType(), False),
-			T.StructField("abandonments", T.LongType(), False),
-			T.StructField("interaction_duration", T.LongType(), False),
-			T.StructField("interactions", T.LongType(), False)
+			T.StructField('projectId', T.StringType(), False),
+			T.StructField('channelId', T.StringType(), False),
+			T.StructField('userId', T.StringType(), False),
+			T.StructField('assetId', T.StringType(), False),
+			T.StructField('variantId', T.StringType(), False),
+			T.StructField('normalized_event_date', T.TimestampType(), False),
+			T.StructField('primaryKey', T.StringType(), False),
+			T.StructField('page_index', T.IntegerType(), False),
+			T.StructField('field_name', T.StringType(), False),
+			T.StructField('abandonments', T.LongType(), False),
+			T.StructField('interaction_duration', T.LongType(), False),
+			T.StructField('interactions', T.LongType(), False)
 		])
 	)
 
@@ -76,16 +76,16 @@ def test_form_data_frame_processor_calculate_page_metrics(
 		'form_data_frame_processor_calculate_page_metrics_expected_output.json',
 		spark_session,
 		T.StructType([
-			T.StructField("abandonments", T.LongType(), False),
-			T.StructField("assetId", T.StringType(), False),
-			T.StructField("channelId", T.StringType(), False),
-			T.StructField("normalized_event_date", T.TimestampType(), False),
-			T.StructField("page_index", T.IntegerType(), False),
-			T.StructField("primaryKey", T.StringType(), False),
-			T.StructField("projectId", T.StringType(), False),
-			T.StructField("userId", T.StringType(), False),
-			T.StructField("variantId", T.StringType(), False),
-			T.StructField("views", T.LongType(), False)
+			T.StructField('abandonments', T.LongType(), False),
+			T.StructField('assetId', T.StringType(), False),
+			T.StructField('channelId', T.StringType(), False),
+			T.StructField('normalized_event_date', T.TimestampType(), False),
+			T.StructField('page_index', T.IntegerType(), False),
+			T.StructField('primaryKey', T.StringType(), False),
+			T.StructField('projectId', T.StringType(), False),
+			T.StructField('userId', T.StringType(), False),
+			T.StructField('variantId', T.StringType(), False),
+			T.StructField('views', T.LongType(), False)
 		])
 	)
 
@@ -141,17 +141,17 @@ def test_form_data_frame_processor_process(
 	expected_data_frame = test_util.read_data_frame(
 		'form_data_frame_processor_process_expected_output.json', spark_session,
 		T.StructType([
-			T.StructField("abandonments", T.LongType(), False),
-			T.StructField("assetId", T.StringType(), False),
-			T.StructField("channelId", T.StringType(), False),
-			T.StructField("normalized_event_date", T.TimestampType(), False),
-			T.StructField("primaryKey", T.StringType(), False),
-			T.StructField("projectId", T.StringType(), False),
-			T.StructField("submission_time", T.LongType(), False),
-			T.StructField("submissions", T.LongType(), False),
-			T.StructField("userId", T.StringType(), False),
-			T.StructField("variantId", T.StringType(), False),
-			T.StructField("views", T.LongType(), False)
+			T.StructField('abandonments', T.LongType(), False),
+			T.StructField('assetId', T.StringType(), False),
+			T.StructField('channelId', T.StringType(), False),
+			T.StructField('normalized_event_date', T.TimestampType(), False),
+			T.StructField('primaryKey', T.StringType(), False),
+			T.StructField('projectId', T.StringType(), False),
+			T.StructField('submission_time', T.LongType(), False),
+			T.StructField('submissions', T.LongType(), False),
+			T.StructField('userId', T.StringType(), False),
+			T.StructField('variantId', T.StringType(), False),
+			T.StructField('views', T.LongType(), False)
 		])
 	)
 

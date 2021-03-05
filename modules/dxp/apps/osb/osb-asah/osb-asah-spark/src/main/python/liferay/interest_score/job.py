@@ -161,7 +161,7 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 				self._get_job_parameter('startDate'),
 				self._get_job_parameter('endDate'))
 		).withColumn(
-			"event_date", F.explode(F.col("event_date"))
+			'event_date', F.explode(F.col('event_date'))
 		)
 
 		distinct_user_id_keyword_data_frame = \
@@ -220,13 +220,13 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 		])
 		chunker.setOutputCol(f'{column_name}_chunk')
 		chunker.setRegexParsers([
-			"<NNP>+",
-			"<JJ>*<NN>+",
-			"<JJ>*<NNS>+",
-			"<JJ>*<NNS><NNP>",
-			"<JJ>*<NNP>+",
-			"<JJ>*<NN>*<NNS>+",
-			"<JJ>*<NN>*<NNP>+"
+			'<NNP>+',
+			'<JJ>*<NN>+',
+			'<JJ>*<NNS>+',
+			'<JJ>*<NNS><NNP>',
+			'<JJ>*<NNP>+',
+			'<JJ>*<NN>*<NNS>+',
+			'<JJ>*<NN>*<NNP>+'
 		])
 
 		return chunker
@@ -270,7 +270,7 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 
 		normalizer.setInputCols([f'{column_name}_token'])
 		normalizer.setOutputCol(f'{column_name}_normalized')
-		normalizer.setCleanupPatterns(["[^\w\d\s]"])
+		normalizer.setCleanupPatterns(['[^\w\d\s]'])
 
 		return normalizer
 

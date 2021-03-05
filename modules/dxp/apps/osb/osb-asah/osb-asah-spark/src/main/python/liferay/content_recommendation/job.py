@@ -51,7 +51,7 @@ class GenerateItemsSparkJob(BaseSparkJob):
 	def run(self):
 		items_data_frame = self.spark_session.table(
 			'user_item_interactions'
-		).select(col('ITEM_ID').alias("itemId")).distinct()
+		).select(col('ITEM_ID').alias('itemId')).distinct()
 
 		self._update_job_run_items_dataset_count(items_data_frame)
 
@@ -196,7 +196,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 			return expression
 
 	def _get_filter_expresssions(self):
-		expressions = ['(eventId = "pageUnloaded")']
+		expressions = ["(eventId = 'pageUnloaded')"]
 
 		job_parameters = json.loads(self.spark_application_args.job_parameters)
 
@@ -210,7 +210,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 					self._get_expression(parameter.get('value'), False)
 				)
 
-		return " AND ".join(expressions)
+		return ' AND '.join(expressions)
 
 	def _get_maximum_days_delta(self):
 		return self._run_data_periods_days_delta.get(
@@ -223,7 +223,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		analytics_events_data_frame = data_frame_reader.json(
 			self._get_analytics_events_paths_filtered()
 		).withColumn(
-			'days_delta', datediff(current_date(), expr("to_date(eventDate)"))
+			'days_delta', datediff(current_date(), expr('to_date(eventDate)'))
 		).withColumn(
 			'interactions',
 			count('userId').over(Window.partitionBy('userId'))
@@ -302,7 +302,7 @@ class WriteDataframeSparkJob(BaseSparkJob):
 
 		data_frame_writer.format(
 			self._output_format
-		).mode('overwrite').option("header", "True").save(
+		).mode('overwrite').option('header', 'True').save(
 			'{}/{}/{}/{}'.format(
 				self.spark_application_configuration.get('aws.storage.path'),
 				self.spark_application_args.lcp_project_id,

@@ -40,8 +40,8 @@ def spark_application():
 		def _create_spark_conf(self):
 			spark_conf = SparkConf()
 
-			spark_conf.setAppName("test")
-			spark_conf.setMaster("local")
+			spark_conf.setAppName('test')
+			spark_conf.setMaster('local')
 
 			spark_conf.set('spark.sql.session.timeZone', 'UTC')
 

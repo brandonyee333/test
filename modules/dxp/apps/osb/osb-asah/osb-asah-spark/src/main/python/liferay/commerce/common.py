@@ -95,7 +95,7 @@ class BaseJSONDataFrameReaderSparkJob(BaseSparkJob):
 	def _get_bucket_path(self):
 		configuration = self.spark_application_configuration
 
-		bucket_path = "{}/{}/{}/{}/".format(
+		bucket_path = '{}/{}/{}/{}/'.format(
 			configuration.get('google.storage.bucket'),
 			self.spark_application.args.lcp_project_id,
 			configuration.get('dataSourceId'), self.file_pattern
@@ -127,7 +127,7 @@ class BaseJSONDataFrameReaderSparkJob(BaseSparkJob):
 			bucket_path = bucket_path[:-len('_SUCCESS')]
 
 		self.spark_application.log.info(
-			"Loading data from: {}".format(bucket_path)
+			'Loading data from: {}'.format(bucket_path)
 		)
 
 		return bucket_path
@@ -159,7 +159,7 @@ class BaseJSONDataFrameWriterSparkJob(BaseSparkJob):
 	def _get_bucket_path(self):
 		configuration = self.spark_application_configuration
 
-		return "{}/{}/{}/{}/".format(
+		return '{}/{}/{}/{}/'.format(
 			configuration.get('google.storage.bucket'),
 			self.spark_application.args.lcp_project_id,
 			configuration.get('dataSourceId'), self.target_folder

@@ -40,15 +40,15 @@ class ForecastUDFHelper(object):
 	def _get_parallel_count(self):
 		# number of threads to use in parallel regions
 
-		num_threads = self._configuration.get("OMP_NUM_THREADS", None)
+		num_threads = self._configuration.get('OMP_NUM_THREADS', None)
 
 		# number of thread used by OpenBLAS
 
 		num_threads = self._configuration.get(
-			"OPENBLAS_NUM_THREADS", num_threads
+			'OPENBLAS_NUM_THREADS', num_threads
 		)
 
-		num_threads = self._configuration.get("MKL_NUM_THREADS", num_threads)
+		num_threads = self._configuration.get('MKL_NUM_THREADS', num_threads)
 
 		cpu_count = os.cpu_count()
 

@@ -25,7 +25,7 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		).withColumn(
 			'interactions',
 			F.when(
-				F.col("eventId") == 'fieldFocused',
+				F.col('eventId') == 'fieldFocused',
 				F.lit(1)
 			).otherwise(
 				F.lit(0)
@@ -33,7 +33,7 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		).withColumn(
 			'interaction_duration',
 			F.when(
-				F.col("eventId") == 'fieldBlurred',
+				F.col('eventId') == 'fieldBlurred',
 				F.col('eventProperties.focusDuration').cast('long')
 			).otherwise(
 				F.lit(0)
@@ -43,7 +43,7 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			F.coalesce(
 				F.col('eventProperties.page'), F.lit(0)
 			).cast(
-				"integer"
+				'integer'
 			)
 		)
 
@@ -59,7 +59,7 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			'abandonments',
 			F.min(
 				F.when(
-					F.col("eventId") == 'formSubmitted',
+					F.col('eventId') == 'formSubmitted',
 					F.lit(0)
 				).otherwise(
 					F.lit(1)
@@ -80,7 +80,7 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		).withColumn(
 			'abandonments',
 			F.when(
-				F.col("row_number") == 1,
+				F.col('row_number') == 1,
 				F.col('abandonments')
 			).otherwise(
 				F.lit(0)
@@ -106,14 +106,14 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			F.coalesce(
 				F.col('eventProperties.page'), F.lit(0)
 			).cast(
-				"integer"
+				'integer'
 			)
 		).withColumn(
 			'views', F.lit(1)
 		).withColumn(
 			'submissions',
 			F.when(
-				F.col("eventId") == 'formSubmitted',
+				F.col('eventId') == 'formSubmitted',
 				F.lit(1)
 			).otherwise(
 				F.lit(0)
@@ -164,8 +164,8 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			'previous_form_viewed_event_date',
 			F.max(
 				F.when(
-					F.col("eventId") == 'formViewed',
-					F.col("event_date")
+					F.col('eventId') == 'formViewed',
+					F.col('event_date')
 				)
 			).over(window)
 		)
@@ -174,8 +174,8 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 		data_frame = data_frame.withColumn(
 			'previous_form_viewed_to_submit_event_delta',
-			F.col("event_date").cast('long') -
-			F.col("previous_form_viewed_event_date").cast('long')
+			F.col('event_date').cast('long') -
+			F.col('previous_form_viewed_event_date').cast('long')
 		)
 
 		window = Window.partitionBy(

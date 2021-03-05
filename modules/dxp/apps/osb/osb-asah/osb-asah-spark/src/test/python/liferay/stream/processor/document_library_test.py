@@ -42,9 +42,9 @@ def test_document_library_data_frame_processor_filter(
 		(
 			'Comment', 'posted',
 			{
-				"className":
-					"com.liferay.document.library.kernel.model.DLFileEntry",
-				"classPK": "16527262828"
+				'className':
+					'com.liferay.document.library.kernel.model.DLFileEntry',
+				'classPK': '16527262828'
 			 }
 		),
 		(
@@ -59,27 +59,27 @@ def test_document_library_data_frame_processor_filter(
 		(
 			'Ratings', 'VOTE',
 			{
-				"className":
-					"com.liferay.document.library.kernel.model.DLFileEntry",
-				"classPK": "16527262828",
-				"score": 3,
+				'className':
+					'com.liferay.document.library.kernel.model.DLFileEntry',
+				'classPK': '16527262828',
+				'score': 3,
 			}
 		),
 		(
 			'Ratings', 'VOTE',
 			{
-				"className":
-					"com.liferay.document.library.kernel.model.DLFileEntry",
-				"score": 2,
-				"ratingType": "stars"
+				'className':
+					'com.liferay.document.library.kernel.model.DLFileEntry',
+				'score': 2,
+				'ratingType': 'stars'
 			}
 		),
 		(
 			'Ratings', 'VOTE',
 			{
-				"className":
-					"com.liferay.document.library.kernel.model.DLFileEntry",
-				"ratingType": "thumbs"
+				'className':
+					'com.liferay.document.library.kernel.model.DLFileEntry',
+				'ratingType': 'thumbs'
 			}
 		)
 	]

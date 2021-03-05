@@ -61,8 +61,8 @@ class LanguageDetectorPolyglotWrapper(Transformer):
 
 	def _transform(self, data_frame):
 		schema = ArrayType(StructType([
-			StructField("annotatorType", StringType(), False),
-			StructField("begin", IntegerType(), False),
+			StructField('annotatorType', StringType(), False),
+			StructField('begin', IntegerType(), False),
 			StructField('end', IntegerType(), False),
 			StructField('result', StringType(), False),
 			StructField(

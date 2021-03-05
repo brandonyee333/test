@@ -28,7 +28,7 @@ class CommerceMLForecastPeriod(Enum):
 				return item
 
 		raise ValueError(
-			"{} is not a valid {} label".format(label, cls.__name__)
+			'{} is not a valid {} label'.format(label, cls.__name__)
 		)
 
 	@property
@@ -58,7 +58,7 @@ class CommerceMLForecastScope(Enum):
 				return item
 
 		raise ValueError(
-			"{} is not a valid {} label".format(label, cls.__name__)
+			'{} is not a valid {} label'.format(label, cls.__name__)
 		)
 
 	@property
@@ -86,5 +86,5 @@ class CommerceMLForecastTarget(Enum):
 				return item
 
 		raise ValueError(
-			"{} is not a valid {} label".format(label, cls.__name__)
+			'{} is not a valid {} label'.format(label, cls.__name__)
 		)

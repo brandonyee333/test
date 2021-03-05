@@ -60,8 +60,8 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			'previous_page_viewed_event_date',
 			F.max(
 				F.when(
-					F.col("eventId") == 'pageViewed',
-					F.col("event_date")
+					F.col('eventId') == 'pageViewed',
+					F.col('event_date')
 				)
 			).over(window)
 
@@ -72,7 +72,7 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		)
 
 		data_frame = data_frame.filter(
-		 	F.col("previous_page_viewed_event_date").isNotNull()
+		 	F.col('previous_page_viewed_event_date').isNotNull()
 		).filter(
 			"eventId != 'pageViewed'"
 		)
@@ -88,7 +88,7 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 				)
 			)
 		).filter(
-			"row = 1"
+			'row = 1'
 		)
 
 		data_frame = data_frame.groupby(
@@ -102,7 +102,7 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			'primaryKey',
 			F.sha2(
 				F.concat_ws(
-					"#", F.col('projectId'), F.col('channelId'),
+					'#', F.col('projectId'), F.col('channelId'),
 					F.col('userId'), F.col('url'), F.col('variantId'),
 					F.col('normalized_event_date'),
 				),
@@ -253,7 +253,7 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		data_frame = data_frame.withColumn(
 			'cta_clicks',
 			F.when(
-				F.col("eventId") == 'ctaClicked',
+				F.col('eventId') == 'ctaClicked',
 				F.lit(1)
 			).otherwise(
 				F.lit(0)
@@ -289,7 +289,7 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		).withColumn(
 			'reads',
 			F.when(
-				F.col("eventId") == 'pageRead',
+				F.col('eventId') == 'pageRead',
 				F.lit(1)
 			).otherwise(
 				F.lit(0)

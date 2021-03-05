@@ -31,8 +31,8 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			'previous_blog_viewed_event_date',
 			F.max(
 				F.when(
-					F.col("eventId") == 'blogViewed',
-					F.col("event_date")
+					F.col('eventId') == 'blogViewed',
+					F.col('event_date')
 				)
 			).over(window)
 		)
@@ -41,8 +41,8 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 		data_frame = data_frame.withColumn(
 			'previous_blog_viewed_to_current_event_delta',
-			F.col("event_date").cast('long') -
-			F.col("previous_blog_viewed_event_date").cast('long')
+			F.col('event_date').cast('long') -
+			F.col('previous_blog_viewed_event_date').cast('long')
 		)
 
 		window = Window.partitionBy(
@@ -62,7 +62,7 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		data_frame = data_frame.withColumn(
 			'last_blog_event_date',
 			F.max(
-				F.col("event_date")
+				F.col('event_date')
 			).over(
 				Window.partitionBy(
 					'projectId', 'channelId', 'userId', 'assetId', 'variantId'
@@ -115,7 +115,7 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 					)
 				)	
 			""".format(
-				class_name = 'com.liferay.blogs.model.BlogsEntry'
+				class_name='com.liferay.blogs.model.BlogsEntry'
 			)
 		)
 
@@ -132,7 +132,7 @@ class BlogDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			data_frame
 		)
 
-		data_frame.filter(
+		data_frame = data_frame.filter(
 			"applicationId != 'Ratings'"
 		).withColumn(
 			'clicks',

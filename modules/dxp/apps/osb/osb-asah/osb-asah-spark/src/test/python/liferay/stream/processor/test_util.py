@@ -39,7 +39,7 @@ def read_data_frame(file_name, spark_session, schema=None):
 		data_frame_reader = data_frame_reader.schema(schema)\
 
 	return data_frame_reader.option(
-		"multiLine", "true"
+		'multiLine', 'true'
 	).json(
 		'resources/liferay/stream/processor/dependencies/{}'.format(file_name)
 	)
@@ -48,21 +48,21 @@ def read_session_events_data_frame(file_name, spark_session):
 	return read_data_frame(
 		file_name, spark_session,
 		T.StructType([
-			T.StructField("applicationId", T.StringType(), False),
-			T.StructField("channelId", T.StringType(), False),
+			T.StructField('applicationId', T.StringType(), False),
+			T.StructField('channelId', T.StringType(), False),
 			T.StructField(
-				"context",
+				'context',
 				T.MapType(T.StringType(), T.StringType(), True), True
 			),
-			T.StructField("eventDate", T.StringType(), False),
-			T.StructField("eventId", T.StringType(), False),
+			T.StructField('eventDate', T.StringType(), False),
+			T.StructField('eventId', T.StringType(), False),
 			T.StructField(
-				"eventProperties",
+				'eventProperties',
 				T.MapType(T.StringType(), T.StringType(), True), True
 			),
-			T.StructField("projectId", T.StringType(), False),
-			T.StructField("sessionId", T.StringType(), True),
-			T.StructField("userId", T.StringType(), False),
-			T.StructField("variantId", T.StringType(), True)
+			T.StructField('projectId', T.StringType(), False),
+			T.StructField('sessionId', T.StringType(), True),
+			T.StructField('userId', T.StringType(), False),
+			T.StructField('variantId', T.StringType(), True)
 		])
 	)

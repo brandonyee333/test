@@ -39,7 +39,7 @@ class AnalyticsEventsDataFrameProcessor(object):
 			'row_number',
 			F.row_number().over(window)
 		).filter(
-			"row_number = 1"
+			'row_number = 1'
 		)
 
 		return data_frame.withColumn(
@@ -71,7 +71,7 @@ class AnalyticsEventsDataFrameProcessor(object):
 			'primaryKey',
 			F.sha2(
 				F.concat_ws(
-					"#", F.col('projectId'), F.col('channelId'),
+					'#', F.col('projectId'), F.col('channelId'),
 					F.col('userId'), F.col('assetId'), F.col('variantId'),
 					F.col('normalized_event_date'),
 				),
