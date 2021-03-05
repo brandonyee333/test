@@ -10,7 +10,12 @@
 #
 
 from liferay.common.spark import BaseSparkJob
-from liferay.stream.processor import JournalDataFrameProcessor
+from liferay.stream.processor.blog import BlogDataFrameProcessor
+from liferay.stream.processor.document_library import DocumentLibraryDataFrameProcessor
+from liferay.stream.processor.form import FormDataFrameProcessor
+from liferay.stream.processor.journal import JournalDataFrameProcessor
+from liferay.stream.processor.page import PageDataFrameProcessor, \
+	PageReferrerDataFrameProcessor
 
 from pyspark.sql import types as T
 
@@ -19,7 +24,18 @@ class CuratorSparkJob(BaseSparkJob):
 	def _process_batch(self, analytics_events_data_frame, batch_id):
 		analytics_events_data_frame.persist()
 
-		for processor in [JournalDataFrameProcessor(batch_id, self)]:
+		processors = [
+			BlogDataFrameProcessor(batch_id, 'blogs', self),
+			DocumentLibraryDataFrameProcessor(
+				batch_id, 'document-libraries', self
+			),
+			FormDataFrameProcessor(batch_id, 'forms', self),
+			JournalDataFrameProcessor(batch_id, 'journals', self),
+			PageDataFrameProcessor(batch_id, 'pages', self),
+			PageReferrerDataFrameProcessor(batch_id, 'page-referrers', self),
+		]
+
+		for processor in processors:
 			processor.process(analytics_events_data_frame)
 
 		analytics_events_data_frame.unpersist()
