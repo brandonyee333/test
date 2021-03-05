@@ -34,11 +34,13 @@ class OSBAsahStreamCuratorApplication(BaseSparkApplication):
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(
 			usage='{} liferay.stream.OSBAsahStreamCuratorApplication '
-			'--configuration <Configuration Path> '.format(sys.argv[0])
+			'-configuration <Configuration Path> '
+			'-region <Region> '.format(sys.argv[0])
 		)
 
 		argument_parser.add_argument('application')
 		argument_parser.add_argument('-configuration', required=True)
+		argument_parser.add_argument('-region', required=True)
 
 		return argument_parser
 
