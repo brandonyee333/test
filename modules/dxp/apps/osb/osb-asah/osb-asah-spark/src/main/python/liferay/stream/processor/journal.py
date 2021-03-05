@@ -33,6 +33,6 @@ class JournalDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		).groupBy(
 			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
 			'normalized_event_date'
-		).sum(
-			F.sum('views').alias('comments')
+		).agg(
+			F.sum('views').alias('views')
 		)
