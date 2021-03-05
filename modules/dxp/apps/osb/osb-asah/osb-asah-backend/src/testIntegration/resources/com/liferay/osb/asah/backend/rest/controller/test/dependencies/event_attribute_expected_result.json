@@ -1,21 +1,21 @@
 {
 	"data": {
 		"eventAttributeDefinition": {
-			"dataType": "number",
+			"dataType": "NUMBER",
 			"description": null,
 			"displayName": "Item Price",
 			"name": "itemPrice",
 			"recentValues": [
 				{
 					"lastSeenDate": "2021-03-03T18:12:12.000Z",
-					"value": "$275.00"
+					"value": "275.00"
 				},
 				{
 					"lastSeenDate": "2021-03-03T18:12:00.000Z",
-					"value": "$150.00"
+					"value": "150.00"
 				}
 			],
-			"sampleValue": "$150.00"
+			"sampleValue": "150.00"
 		}
 	}
 }

@@ -17,9 +17,10 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.EventAttribute;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.model.EventAttributeDefinitionDataType;
 import com.liferay.osb.asah.common.model.EventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinitionType;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
+import com.liferay.osb.asah.common.model.EventDefinitionType;
 import com.liferay.osb.asah.common.util.Validator;
 
 import java.util.HashSet;
@@ -70,7 +71,8 @@ public class AnalyticsEventStorageDog {
 					eventAttributeDefinition =
 						_eventAttributeDefinitionDog.
 							addEventAttributeDefinition(
-								_getDataType(propertyName, entry.getValue()),
+								_getEventAttributeDefinitionDataType(
+									propertyName, entry.getValue()),
 								null, null, eventDefinitionId, propertyName,
 								entry.getValue());
 				}
@@ -118,13 +120,16 @@ public class AnalyticsEventStorageDog {
 		}
 	}
 
-	private String _getDataType(String propertyName, String value) {
+	private EventAttributeDefinitionDataType
+		_getEventAttributeDefinitionDataType(
+			String propertyName, String value) {
+
 		if (Validator.isBoolean(value)) {
-			return "boolean";
+			return EventAttributeDefinitionDataType.BOOLEAN;
 		}
 
 		if (Validator.isDate(value)) {
-			return "date";
+			return EventAttributeDefinitionDataType.DATE;
 		}
 
 		String lowerCasePropertyName = propertyName.toLowerCase();
@@ -134,14 +139,14 @@ public class AnalyticsEventStorageDog {
 			 lowerCasePropertyName.contains("time")) &&
 			Validator.isNumber(value)) {
 
-			return "duration";
+			return EventAttributeDefinitionDataType.DURATION;
 		}
 
 		if (Validator.isDouble(value) || Validator.isNumber(value)) {
-			return "number";
+			return EventAttributeDefinitionDataType.NUMBER;
 		}
 
-		return "string";
+		return EventAttributeDefinitionDataType.STRING;
 	}
 
 	private Set<Long> _getEventDefinitionIds(

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dto.EventAttributeDefinitionDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -40,7 +41,8 @@ public class UpdateEventAttributeDefinitionMutationDataFetcher
 
 		return new EventAttributeDefinitionDTO(
 			_eventAttributeDefinitionDog.updateEventAttributeDefinition(
-				environment.getArgument("dataType"),
+				EventAttributeDefinition.DataType.valueOf(
+					environment.getArgument("dataType")),
 				environment.getArgument("description"),
 				environment.getArgument("displayName"),
 				Long.valueOf(

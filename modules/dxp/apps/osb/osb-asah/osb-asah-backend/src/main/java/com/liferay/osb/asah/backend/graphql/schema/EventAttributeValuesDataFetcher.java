@@ -18,8 +18,8 @@ import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dto.EventAttributeDefinitionDTO;
 import com.liferay.osb.asah.common.dto.EventAttributeValueDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-
 import com.liferay.osb.asah.common.util.ListUtil;
+
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 

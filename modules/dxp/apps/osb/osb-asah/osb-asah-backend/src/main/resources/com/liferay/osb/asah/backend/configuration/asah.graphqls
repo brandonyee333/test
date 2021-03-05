@@ -27,6 +27,14 @@ enum DataControlTaskType {
 	UNSUPPRESS
 }
 
+enum EventAttributeDefinitionDataType {
+	BOOLEAN
+	DATE
+	DURATION
+	NUMBER
+	STRING
+}
+
 enum EventDefinitionType {
 	ALL
 	CUSTOM
@@ -271,7 +279,7 @@ type DXPVariant {
 }
 
 type EventAttributeDefinition {
-	dataType: String
+	dataType: EventAttributeDefinitionDataType
 	description: String
 	displayName: String
 	id: String
@@ -563,7 +571,7 @@ type MutationType {
 	): String
 
 	updateEventAttributeDefinition(
-		dataType: String
+		dataType: EventAttributeDefinitionDataType
 		description: String
 		displayName: String
 		eventAttributeDefinitionId: String!

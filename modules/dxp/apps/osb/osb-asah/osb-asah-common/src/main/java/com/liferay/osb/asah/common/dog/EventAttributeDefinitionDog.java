@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.model.EventAttributeDefinitionDataType;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
@@ -40,8 +41,9 @@ import org.springframework.stereotype.Component;
 public class EventAttributeDefinitionDog {
 
 	public EventAttributeDefinition addEventAttributeDefinition(
-		String dataType, String description, String displayName,
-		Long eventDefinitionId, String name, String sampleValue) {
+		EventAttributeDefinitionDataType eventAttributeDefinitionDataType,
+		String description, String displayName, Long eventDefinitionId,
+		String name, String sampleValue) {
 
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException("Event attribute name is null");
@@ -50,7 +52,7 @@ public class EventAttributeDefinitionDog {
 		EventAttributeDefinition eventAttributeDefinition =
 			new EventAttributeDefinition();
 
-		eventAttributeDefinition.setDataType(dataType);
+		eventAttributeDefinition.setDataType(eventAttributeDefinitionDataType);
 		eventAttributeDefinition.setDescription(description);
 		eventAttributeDefinition.setDisplayName(displayName);
 		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
@@ -126,8 +128,8 @@ public class EventAttributeDefinitionDog {
 	}
 
 	public EventAttributeDefinition updateEventAttributeDefinition(
-		String dataType, String description, String displayName,
-		Long eventAttributeDefinitionId,
+		EventAttributeDefinitionDataType dataType, String description,
+		String displayName, Long eventAttributeDefinitionId,
 		Set<EventDefinitionEventAttributeDefinition>
 			eventDefinitionEventAttributeDefinitions,
 		String name) {
@@ -135,7 +137,7 @@ public class EventAttributeDefinitionDog {
 		EventAttributeDefinition eventAttributeDefinition =
 			getEventAttributeDefinition(eventAttributeDefinitionId);
 
-		if (StringUtils.isNotBlank(dataType)) {
+		if (dataType != null) {
 			eventAttributeDefinition.setDataType(dataType);
 		}
 

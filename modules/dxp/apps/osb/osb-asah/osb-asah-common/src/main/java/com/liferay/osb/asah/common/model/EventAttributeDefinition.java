@@ -60,7 +60,7 @@ public class EventAttributeDefinition implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getDataType() {
+	public EventAttributeDefinitionDataType getDataType() {
 		return _dataType;
 	}
 
@@ -110,7 +110,7 @@ public class EventAttributeDefinition implements Persistable<Long> {
 		return false;
 	}
 
-	public void setDataType(String dataType) {
+	public void setDataType(EventAttributeDefinitionDataType dataType) {
 		_dataType = dataType;
 	}
 
@@ -143,7 +143,7 @@ public class EventAttributeDefinition implements Persistable<Long> {
 	}
 
 	@Transient
-	private String _dataType;
+	private EventAttributeDefinitionDataType _dataType;
 
 	@Transient
 	private String _description;

@@ -5,7 +5,7 @@
 			"eventAttributeDefinitions": [
 				{
 					"__typename": "EventAttributeDefinition",
-					"dataType": "string",
+					"dataType": "STRING",
 					"description": null,
 					"displayName": null,
 					"name": "articleId",
@@ -13,7 +13,7 @@
 				},
 				{
 					"__typename": "EventAttributeDefinition",
-					"dataType": "string",
+					"dataType": "STRING",
 					"description": null,
 					"displayName": null,
 					"name": "assetId",
@@ -21,7 +21,7 @@
 				},
 				{
 					"__typename": "EventAttributeDefinition",
-					"dataType": "string",
+					"dataType": "STRING",
 					"description": null,
 					"displayName": null,
 					"name": "commentId",
@@ -29,7 +29,7 @@
 				},
 				{
 					"__typename": "EventAttributeDefinition",
-					"dataType": "string",
+					"dataType": "STRING",
 					"description": null,
 					"displayName": null,
 					"name": "elementId",
@@ -37,7 +37,7 @@
 				},
 				{
 					"__typename": "EventAttributeDefinition",
-					"dataType": "string",
+					"dataType": "STRING",
 					"description": null,
 					"displayName": null,
 					"name": "entryId",

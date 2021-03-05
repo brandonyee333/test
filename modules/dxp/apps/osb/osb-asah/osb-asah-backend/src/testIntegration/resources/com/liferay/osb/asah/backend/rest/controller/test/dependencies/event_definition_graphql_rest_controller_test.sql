@@ -1,6 +1,6 @@
-INSERT INTO EventAttributeDefinition(dataType, displayName, name) VALUES('number', 'Item Price', 'itemPrice');
-INSERT INTO EventAttributeDefinition(dataType, displayName, name) VALUES('number', 'Quantity', 'quantity');
-INSERT INTO EventAttributeDefinition(dataType, displayName, name) VALUES('string', 'Item Name', 'itemName');
+INSERT INTO EventAttributeDefinition(dataType, displayName, name) VALUES('NUMBER', 'Item Price', 'itemPrice');
+INSERT INTO EventAttributeDefinition(dataType, displayName, name) VALUES('NUMBER', 'Quantity', 'quantity');
+INSERT INTO EventAttributeDefinition(dataType, displayName, name) VALUES('STRING', 'Item Name', 'itemName');
 
 INSERT INTO EventDefinition(description, displayName, name, type) VALUES('Added an item to shopping cart', 'Added To Cart', 'addedToCart', 'CUSTOM');
 INSERT INTO EventDefinition(description, displayName, name, type) VALUES('Saved item to wish list', 'Save To List', 'savedToList', 'CUSTOM');

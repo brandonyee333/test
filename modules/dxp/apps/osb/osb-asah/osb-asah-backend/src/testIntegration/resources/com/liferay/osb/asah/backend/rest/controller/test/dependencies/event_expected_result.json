@@ -7,7 +7,7 @@
 			"eventAttributeDefinitions": [
 				{
 					"__typename": "EventAttributeDefinition",
-					"dataType": "number",
+					"dataType": "NUMBER",
 					"description": null,
 					"displayName": "Item Price",
 					"name": "itemPrice",
@@ -15,7 +15,7 @@
 				},
 				{
 					"__typename": "EventAttributeDefinition",
-					"dataType": "number",
+					"dataType": "NUMBER",
 					"description": null,
 					"displayName": "Quantity",
 					"name": "quantity",
@@ -23,7 +23,7 @@
 				},
 				{
 					"__typename": "EventAttributeDefinition",
-					"dataType": "string",
+					"dataType": "STRING",
 					"description": null,
 					"displayName": "Item Name",
 					"name": "itemName",

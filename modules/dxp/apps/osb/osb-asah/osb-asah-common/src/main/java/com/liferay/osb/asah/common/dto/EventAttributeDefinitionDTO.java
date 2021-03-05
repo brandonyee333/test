@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.model.EventAttributeDefinitionDataType;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class EventAttributeDefinitionDTO {
 	}
 
 	@JsonProperty("dataType")
-	public String getDataType() {
+	public EventAttributeDefinitionDataType getDataType() {
 		return _dataType;
 	}
 
@@ -122,7 +123,7 @@ public class EventAttributeDefinitionDTO {
 		return _sampleValue;
 	}
 
-	private String _dataType;
+	private EventAttributeDefinitionDataType _dataType;
 	private String _description;
 	private String _displayName;
 	private String _id;

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.model.EventAttributeDefinitionDataType;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionType;
@@ -58,11 +59,14 @@ public class EventAttributeDefinitionDogTest {
 
 		EventAttributeDefinition eventAttributeDefinition =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
-				"string", "Testing attribute definition",
-				"Test Attribute Defintion", eventDefinition.getId(),
-				"testAttributeDefinition", "testValue");
+				EventAttributeDefinitionDataType.STRING,
+				"Testing attribute definition", "Test Attribute Defintion",
+				eventDefinition.getId(), "testAttributeDefinition",
+				"testValue");
 
-		Assert.assertEquals("string", eventAttributeDefinition.getDataType());
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.STRING.toString(),
+			eventAttributeDefinition.getDataType());
 		Assert.assertEquals(
 			"Testing attribute definition",
 			eventAttributeDefinition.getDescription());
@@ -110,7 +114,8 @@ public class EventAttributeDefinitionDogTest {
 
 		EventAttributeDefinition expectedEventAttributeDefinition =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
-				"string", null, "Test Event Attribute", eventDefinition.getId(),
+				EventAttributeDefinitionDataType.STRING, null,
+				"Test Event Attribute", eventDefinition.getId(),
 				"testEventAttribute", "Sample Value");
 
 		Assert.assertEquals(
@@ -135,7 +140,9 @@ public class EventAttributeDefinitionDogTest {
 
 		Assert.assertNotNull(eventAttributeDefinition);
 
-		Assert.assertEquals("duration", eventAttributeDefinition.getDataType());
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.DURATION.toString(),
+			eventAttributeDefinition.getDataType());
 		Assert.assertNull(eventAttributeDefinition.getDescription());
 		Assert.assertNull(eventAttributeDefinition.getDisplayName());
 
@@ -165,9 +172,10 @@ public class EventAttributeDefinitionDogTest {
 
 		EventAttributeDefinition eventAttributeDefinition1 =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
-				"string", "Testing attribute definition",
-				"Test Attribute Defintion", eventDefinition.getId(),
-				"testAttributeDefinition", "testValue");
+				EventAttributeDefinitionDataType.STRING,
+				"Testing attribute definition", "Test Attribute Defintion",
+				eventDefinition.getId(), "testAttributeDefinition",
+				"testValue");
 
 		EventAttributeDefinition eventAttributeDefinition2 =
 			_eventAttributeDefinitionDog.getEventAttributeDefinition(
@@ -182,13 +190,13 @@ public class EventAttributeDefinitionDogTest {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
 				null, 0, 5, Sort.asc("name")),
-			new HashMap<String, String>() {
+			new HashMap<String, EventAttributeDefinitionDataType>() {
 				{
-					put("articleId", "string");
-					put("assetId", "string");
-					put("category", "string");
-					put("className", "string");
-					put("classPK", "string");
+					put("articleId", EventAttributeDefinitionDataType.STRING);
+					put("assetId", EventAttributeDefinitionDataType.STRING);
+					put("category", EventAttributeDefinitionDataType.STRING);
+					put("className", EventAttributeDefinitionDataType.STRING);
+					put("classPK", EventAttributeDefinitionDataType.STRING);
 				}
 			});
 	}
@@ -226,10 +234,12 @@ public class EventAttributeDefinitionDogTest {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
 				"page", 0, 3, Sort.asc("name")),
-			new HashMap<String, String>() {
+			new HashMap<String, EventAttributeDefinitionDataType>() {
 				{
-					put("page", "string");
-					put("pageLoadTime", "duration");
+					put("page", EventAttributeDefinitionDataType.STRING);
+					put(
+						"pageLoadTime",
+						EventAttributeDefinitionDataType.DURATION);
 				}
 			});
 	}
@@ -242,8 +252,8 @@ public class EventAttributeDefinitionDogTest {
 
 		EventAttributeDefinition eventAttributeDefinition2 =
 			_eventAttributeDefinitionDog.updateEventAttributeDefinition(
-				"string", null, null, eventAttributeDefinition1.getId(), null,
-				null);
+				EventAttributeDefinitionDataType.STRING, null, null,
+				eventAttributeDefinition1.getId(), null, null);
 
 		Assert.assertNotEquals(
 			eventAttributeDefinition1.getDataType(),
@@ -407,7 +417,8 @@ public class EventAttributeDefinitionDogTest {
 
 	private void _assertEventAttributeDefinitions(
 		List<EventAttributeDefinition> actualEventAttributeDefinitions,
-		Map<String, String> expectedEventDefinitionAttributeDataTypes) {
+		Map<String, EventAttributeDefinitionDataType>
+			expectedEventDefinitionAttributeDataTypes) {
 
 		Assert.assertEquals(
 			actualEventAttributeDefinitions.toString(),
@@ -417,12 +428,13 @@ public class EventAttributeDefinitionDogTest {
 		for (EventAttributeDefinition actualEventAttributeDefinition :
 				actualEventAttributeDefinitions) {
 
-			String expectedDataType =
+			EventAttributeDefinitionDataType expectedDataType =
 				expectedEventDefinitionAttributeDataTypes.get(
 					actualEventAttributeDefinition.getName());
 
 			Assert.assertEquals(
-				expectedDataType, actualEventAttributeDefinition.getDataType());
+				expectedDataType.toString(),
+				actualEventAttributeDefinition.getDataType());
 		}
 	}
 
