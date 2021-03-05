@@ -42,7 +42,7 @@ public class Sort extends org.springframework.data.domain.Sort {
 	public Sort(String column, String type) {
 		super(
 			Collections.singletonList(
-				new Order(Direction.valueOf(type), column)));
+				new Order(Direction.valueOf(type.toUpperCase()), column)));
 
 		_column = column;
 		_type = type.toUpperCase();
