@@ -22,8 +22,6 @@ import com.liferay.osb.asah.common.dto.FieldDTO;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.model.Field;
 
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,9 +47,7 @@ public class FieldsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
 	public FieldDTO getField(@PathVariable String id) throws Exception {
-		Field field = _fieldDog.getField(Long.valueOf(id));
-
-		return new FieldDTO(field);
+		return new FieldDTO(_fieldDog.getField(Long.valueOf(id)));
 	}
 
 	@GetMapping(params = "!apply")
@@ -87,17 +83,15 @@ public class FieldsRestController extends BaseRestController {
 	}
 
 	@PutMapping("/{id}")
-	public String putField(
+	public FieldDTO putField(
 			@PathVariable String id, @RequestBody FieldDTO fieldDTO)
 		throws Exception {
 
 		Field field = _fieldDog.updateField(
+			Long.valueOf(id),
 			_objectMapper.convertValue(fieldDTO, Field.class));
 
-		JSONObject fieldJSONObject = _objectMapper.convertValue(
-			field, JSONObject.class);
-
-		return fieldJSONObject.toString();
+		return new FieldDTO(field);
 	}
 
 	@Autowired
