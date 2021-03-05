@@ -41,8 +41,8 @@ class CuratorSparkJob(BaseSparkJob):
 				T.StructField("userId", T.StringType(), False),
 				T.StructField("variantId", T.StringType(), True)
 			])
-		).json(
-			'{}/**/analytics_events.json'.format(
+		).parquet(
+			'{}-{}/**/user_session_events.snappy.parquet'.format(
 				self.spark_application_configuration.get(
 					'google.storage.path.session-events'
 				),
