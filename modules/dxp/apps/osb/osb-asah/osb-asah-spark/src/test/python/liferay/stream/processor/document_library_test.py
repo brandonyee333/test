@@ -18,7 +18,7 @@ import test_util
 @pytest.fixture
 def document_library_data_frame_processor(spark_application):
 	return DocumentLibraryDataFrameProcessor(
-		0, CuratorSparkJob(spark_application)
+		0, 'document-libraries', CuratorSparkJob(spark_application)
 	)
 
 def test_document_library_data_frame_processor_filter(

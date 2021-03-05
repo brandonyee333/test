@@ -16,7 +16,9 @@ import pytest
 
 @pytest.fixture
 def journal_data_frame_processor(spark_application):
-	return JournalDataFrameProcessor(0, CuratorSparkJob(spark_application))
+	return JournalDataFrameProcessor(
+		0, 'journals', CuratorSparkJob(spark_application)
+	)
 
 def test_journal_data_frame_processor_filter(
 	journal_data_frame_processor, spark_session

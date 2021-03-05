@@ -22,7 +22,9 @@ from pyspark.sql import types as T
 
 @pytest.fixture
 def page_data_frame_processor(spark_application):
-	return PageDataFrameProcessor(0, CuratorSparkJob(spark_application))
+	return PageDataFrameProcessor(
+		0, 'pages', CuratorSparkJob(spark_application)
+	)
 
 @pytest.fixture(scope='session')
 def page_referrer_data_frame_processor(spark_application):
@@ -31,7 +33,9 @@ def page_referrer_data_frame_processor(spark_application):
 		search_host_names=['google.com'], social_host_names=['facebook.com']
 	)
 
-	return PageReferrerDataFrameProcessor(0, CuratorSparkJob(spark_application))
+	return PageReferrerDataFrameProcessor(
+		0, 'page-referrers', CuratorSparkJob(spark_application)
+	)
 
 def test_page_data_frame_calculate_time_on_page(
 	page_data_frame_processor, spark_session

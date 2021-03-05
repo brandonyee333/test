@@ -19,7 +19,9 @@ from pyspark.sql import types as T
 
 @pytest.fixture
 def form_data_frame_processor(spark_application):
-	return FormDataFrameProcessor(0, CuratorSparkJob(spark_application))
+	return FormDataFrameProcessor(
+		0, 'forms', CuratorSparkJob(spark_application)
+	)
 
 def test_form_data_frame_processor_calculate_field_metrics(
 	form_data_frame_processor, spark_session

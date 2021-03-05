@@ -17,7 +17,9 @@ import test_util
 
 @pytest.fixture
 def blog_data_frame_processor(spark_application):
-	return BlogDataFrameProcessor(0, CuratorSparkJob(spark_application))
+	return BlogDataFrameProcessor(
+		0, 'blogs', CuratorSparkJob(spark_application)
+	)
 
 def test_blog_data_frame_processor_calculate_read_time(
 	blog_data_frame_processor, spark_session
