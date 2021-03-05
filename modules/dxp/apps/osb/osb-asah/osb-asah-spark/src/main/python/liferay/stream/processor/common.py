@@ -15,6 +15,9 @@ from abc import ABCMeta, \
 from pyspark.sql import Window, \
 	functions as F
 
+import logging
+import time
+
 class AnalyticsEventsDataFrameProcessor(object):
 
 	__metaclass__ = ABCMeta
@@ -23,6 +26,16 @@ class AnalyticsEventsDataFrameProcessor(object):
 		self._batch_id = batch_id
 		self._processor_name = processor_name
 		self._spark_job = spark_job
+
+		self.log = self._initialize_logging()
+
+	def _initialize_logging(self):
+		logging.basicConfig(
+			format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+			level=logging.INFO
+		)
+
+		return logging.getLogger(self.__class__.__name__)
 
 	def _calculate_rating_score(self, data_frame):
 		data_frame = data_frame.filter(
@@ -85,6 +98,14 @@ class AnalyticsEventsDataFrameProcessor(object):
 		return data_frame
 
 	def _write(self, output_data_frame):
+		self.log.info(
+			'Start writing {}, batch {}'.format(
+				self._processor_name, self._batch_id
+			)
+		)
+
+		start_time = time.time()
+
 		data_frame_writer = output_data_frame.write
 
 		data_frame_writer.json(
@@ -97,7 +118,18 @@ class AnalyticsEventsDataFrameProcessor(object):
 			)
 		)
 
+		self.log.info(
+			'Wrote {}, batch {} in {} seconds'.format(
+				self._processor_name, self._batch_id,
+				(time.time() - start_time)
+			)
+		)
+
 	def process(self, analytics_events_data_frame, write=True):
+		self.log.info('Start processing {}'.format(self._processor_name))
+
+		start_time = time.time()
+
 		data_frame = self._filter(analytics_events_data_frame)
 
 		data_frame = self._pre_process(data_frame)
@@ -106,5 +138,11 @@ class AnalyticsEventsDataFrameProcessor(object):
 
 		if write:
 			self._write(data_frame)
+
+		self.log.info(
+			'Processed {} in {} seconds'.format(
+				self._processor_name, (time.time() - start_time)
+			)
+		)
 
 		return data_frame
