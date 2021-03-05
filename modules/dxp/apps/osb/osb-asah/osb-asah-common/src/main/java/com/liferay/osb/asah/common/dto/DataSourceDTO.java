@@ -44,7 +44,7 @@ import java.util.Set;
 /**
  * @author Inácio Nery
  */
-@GraphQLType
+@GraphQLType("DataSource")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName("data-sources")
 public class DataSourceDTO {
