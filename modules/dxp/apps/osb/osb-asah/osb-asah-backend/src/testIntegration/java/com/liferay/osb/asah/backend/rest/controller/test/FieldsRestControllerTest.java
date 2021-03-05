@@ -14,8 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.controller.FieldsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.dog.FieldDog;
+import com.liferay.osb.asah.common.dto.FieldDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -46,9 +50,12 @@ public class FieldsRestControllerTest {
 	@Test
 	public void testGetField() throws Exception {
 		JSONAssert.assertEquals(
-			_elasticsearchInvoker.fetch("fields", "357046433509858076"),
-			new JSONObject(
-				_fieldsRestController.getField("357046433509858076")),
+			_objectMapper.convertValue(
+				new FieldDTO(_fieldDog.getField(357046433509858076L)),
+				JSONObject.class),
+			_objectMapper.convertValue(
+				_fieldsRestController.getField("357046433509858076"),
+				JSONObject.class),
 			false);
 	}
 
@@ -84,6 +91,12 @@ public class FieldsRestControllerTest {
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
+	private FieldDog _fieldDog;
+
+	@Autowired
 	private FieldsRestController _fieldsRestController;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

@@ -550,7 +550,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		JSONObject emailJSONObject = emailJSONArray.getJSONObject(0);
 
 		Assert.assertEquals(
-			dataSourceId1, emailJSONObject.getString("dataSourceId"));
+			dataSourceId1, String.valueOf(emailJSONObject.get("dataSourceId")));
 
 		Assert.assertEquals(
 			"Data source deletion should not count towards individual " +
