@@ -120,12 +120,12 @@ CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
 );
 
 CREATE TABLE IF NOT EXISTS Field (
-    context TEXT,
+	id BIGSERIAL PRIMARY KEY,
+	context TEXT,
 	dataSourceId BIGINT,
 	dataSourceName TEXT,
 	fieldType TEXT,
-	id BIGSERIAL PRIMARY KEY,
-    modifiedDate TIMESTAMPTZ,
+	modifiedDate TIMESTAMPTZ,
 	name TEXT,
 	ownerId BIGINT,
 	ownerType TEXT,

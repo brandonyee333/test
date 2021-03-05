@@ -103,16 +103,17 @@ public class FieldDog {
 		return _buildContextJSONObject(fieldsJSONArray);
 	}
 
-	public void deleteField(Long id) {
-		_fieldRepository.deleteById(id);
+	public void deleteField(Long fieldId) {
+		_fieldRepository.deleteById(fieldId);
 	}
 
-	public Field getField(Long id) {
-		Optional<Field> fieldOptional = _fieldRepository.findById(id);
+	public Field getField(Long fieldId) {
+		Optional<Field> fieldOptional = _fieldRepository.findById(fieldId);
 
 		return fieldOptional.orElseThrow(
 			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST, "There is no field with ID " + id));
+				HttpStatus.BAD_REQUEST,
+				"There is no field with ID " + fieldId));
 	}
 
 	public JSONObject getFieldsJSONObject(
@@ -282,7 +283,9 @@ public class FieldDog {
 		);
 	}
 
-	public Field updateField(Field field) {
+	public Field updateField(Long fieldId, Field field) {
+		field.setId(fieldId);
+
 		return _fieldRepository.save(field);
 	}
 
