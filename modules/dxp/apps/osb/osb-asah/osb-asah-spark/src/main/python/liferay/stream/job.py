@@ -31,6 +31,10 @@ class CuratorSparkJob(BaseSparkJob):
 			T.StructType([
 				T.StructField("applicationId", T.StringType(), False),
 				T.StructField("channelId", T.StringType(), False),
+				T.StructField(
+					"context",
+					T.MapType(T.StringType(), T.StringType(), True), True
+				),
 				T.StructField("eventDate", T.StringType(), False),
 				T.StructField("eventId", T.StringType(), False),
 				T.StructField(
@@ -38,6 +42,7 @@ class CuratorSparkJob(BaseSparkJob):
 					T.MapType(T.StringType(), T.StringType(), True), True
 				),
 				T.StructField("projectId", T.StringType(), False),
+				T.StructField("sessionId", T.StringType(), False),
 				T.StructField("userId", T.StringType(), False),
 				T.StructField("variantId", T.StringType(), True)
 			])
