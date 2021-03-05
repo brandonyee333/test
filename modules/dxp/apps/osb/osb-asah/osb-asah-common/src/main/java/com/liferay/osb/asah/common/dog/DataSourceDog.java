@@ -33,6 +33,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.security.KeyPair;
@@ -261,19 +262,7 @@ public class DataSourceDog {
 
 		DataSource existingDataSource = getDataSource(id);
 
-		JSONObject existingDataSourceJSONObject = _objectMapper.convertValue(
-			existingDataSource, JSONObject.class);
-
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			dataSource, JSONObject.class);
-
-		for (String key : JSONObject.getNames(dataSourceJSONObject)) {
-			existingDataSourceJSONObject.put(
-				key, dataSourceJSONObject.get(key));
-		}
-
-		existingDataSource = _objectMapper.convertValue(
-			existingDataSourceJSONObject, DataSource.class);
+		BeanUtils.copyProperties(dataSource, existingDataSource);
 
 		return updateDataSourceConfiguration(existingDataSource);
 	}
