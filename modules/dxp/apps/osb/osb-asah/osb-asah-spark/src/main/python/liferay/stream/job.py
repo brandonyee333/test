@@ -44,8 +44,9 @@ class CuratorSparkJob(BaseSparkJob):
 		).json(
 			'{}/**/analytics_events.json'.format(
 				self.spark_application_configuration.get(
-					'google.storage.path.analytics-events'
-				)
+					'google.storage.path.session-events'
+				),
+				self.spark_application.args.region
 			)
 		)
 
@@ -59,8 +60,11 @@ class CuratorSparkJob(BaseSparkJob):
 			self._process_batch
 		).option(
 			'checkpointLocation',
-			self.spark_application_configuration.get(
-				'google.storage.path.stream-curator-checkpoint'
+			'{}-{}/'.format(
+				self.spark_application_configuration.get(
+					'google.storage.path.stream-curator-checkpoint'
+				),
+				self.spark_application.args.region
 			)
 		).outputMode(
 			'append'

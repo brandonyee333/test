@@ -19,8 +19,9 @@ class AnalyticsEventsDataFrameProcessor(object):
 
 	__metaclass__ = ABCMeta
 
-	def __init__(self, batch_id, spark_job):
+	def __init__(self, batch_id, processor_name, spark_job):
 		self._batch_id = batch_id
+		self._processor_name = processor_name
 		self._spark_job = spark_job
 
 	def _calculate_rating_score(self, data_frame):
@@ -87,11 +88,12 @@ class AnalyticsEventsDataFrameProcessor(object):
 		data_frame_writer = output_data_frame.write
 
 		data_frame_writer.json(
-			'{}/journal/{}'.format(
+			'{}-{}/{}/{}'.format(
 				self._spark_job.spark_application_configuration.get(
 					'google.storage.path.stream-curator-output'
 				),
-				self._batch_id
+				self._spark_job.spark_application.args.region,
+				self._processor_name, self._batch_id
 			)
 		)
 
