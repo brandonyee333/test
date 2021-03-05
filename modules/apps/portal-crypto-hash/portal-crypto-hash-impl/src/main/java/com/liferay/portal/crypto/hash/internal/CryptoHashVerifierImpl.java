@@ -22,29 +22,11 @@ import com.liferay.portal.crypto.hash.spi.CryptoHashProviderResponse;
 
 import java.security.MessageDigest;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Arthur Chan
  * @author Carlos Sierra Andrés
  */
 public class CryptoHashVerifierImpl implements CryptoHashVerifier {
-
-	public CryptoHashProvider getCryptoHashProvider(
-		String cryptoHashProviderName) {
-
-		return _cryptoHashProviders.get(cryptoHashProviderName);
-	}
-
-	public void register(CryptoHashProvider cryptoHashProvider) {
-		_cryptoHashProviders.put(
-			cryptoHashProvider.getCryptoHashProviderName(), cryptoHashProvider);
-	}
-
-	public void unregister(String cryptoHashProviderName) {
-		_cryptoHashProviders.remove(cryptoHashProviderName);
-	}
 
 	@Override
 	public boolean verify(
@@ -55,8 +37,9 @@ public class CryptoHashVerifierImpl implements CryptoHashVerifier {
 		for (CryptoHashVerificationContext cryptoHashVerificationContext :
 				cryptoHashVerificationContexts) {
 
-			CryptoHashProvider cryptoHashProvider = _cryptoHashProviders.get(
-				cryptoHashVerificationContext.getCryptoHashProviderName());
+			CryptoHashProvider cryptoHashProvider =
+				CryptoHashProviderRegistry.getCryptoHashProvider(
+					cryptoHashVerificationContext.getCryptoHashProviderName());
 
 			CryptoHashProviderResponse cryptoHashProviderResponse =
 				cryptoHashProvider.generate(
@@ -67,8 +50,5 @@ public class CryptoHashVerifierImpl implements CryptoHashVerifier {
 
 		return MessageDigest.isEqual(input, hash);
 	}
-
-	private final Map<String, CryptoHashProvider> _cryptoHashProviders =
-		new HashMap<>();
 
 }

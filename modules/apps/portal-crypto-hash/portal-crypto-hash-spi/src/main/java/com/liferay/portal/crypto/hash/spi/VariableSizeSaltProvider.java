@@ -12,22 +12,24 @@
  * details.
  */
 
-package com.liferay.portal.crypto.hash;
+package com.liferay.portal.crypto.hash.spi;
 
-import com.liferay.portal.crypto.hash.exception.CryptoHashException;
-
-import org.osgi.annotation.versioning.ProviderType;
+import com.liferay.portal.kernel.security.SecureRandomUtil;
 
 /**
- * @author Arthur Chan
  * @author Carlos Sierra Andrés
+ * @author Arthur Chan
  */
-@ProviderType
-public interface CryptoHashGenerator {
+public interface VariableSizeSaltProvider {
 
-	public CryptoHashResponse generate(
-			byte[] input,
-			CryptoHashGenerationContext cryptoHashGenerationContext)
-		throws CryptoHashException;
+	public default byte[] generateSalt(int size) {
+		byte[] salt = new byte[size];
+
+		for (int i = 0; i < size; ++i) {
+			salt[i] = SecureRandomUtil.nextByte();
+		}
+
+		return salt;
+	}
 
 }
