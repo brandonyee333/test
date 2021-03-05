@@ -27,6 +27,12 @@ enum DataControlTaskType {
 	UNSUPPRESS
 }
 
+enum EventDefinitionType {
+	ALL
+	CUSTOM
+	DEFAULT
+}
+
 enum JobRunStatus {
 	COMPLETED
 	FAILED
@@ -290,7 +296,7 @@ type EventDefinition {
 	eventAttributeDefinitions: [EventAttributeDefinition]
 	id: String
 	name: String
-	type: String
+	type: EventDefinitionType
 }
 
 type EventDefinitionBag {
@@ -802,7 +808,7 @@ type QueryType {
 	): EventDefinition
 
 	eventDefinitions(
-		eventType: String!,
+		eventType: EventDefinitionType!,
 		keyword: String,
 		page: Int!,
 		size: Int!,
