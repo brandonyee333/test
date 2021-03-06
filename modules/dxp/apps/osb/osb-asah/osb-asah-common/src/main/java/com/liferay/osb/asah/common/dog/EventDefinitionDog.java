@@ -27,7 +27,6 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -58,14 +57,8 @@ public class EventDefinitionDog {
 	public Long countEventDefinitions(
 		EventDefinitionType eventDefinitionType, String keyword) {
 
-		if (keyword != null) {
-			return _eventDefinitionRepository.
-				countByNameContainingIgnoreCaseAndType(
-					keyword, eventDefinitionType.toString());
-		}
-
-		return _eventDefinitionRepository.countByType(
-			eventDefinitionType.toString());
+		return _eventDefinitionRepository.countEventDefinitions(
+			eventDefinitionType, keyword);
 	}
 
 	public EventDefinition fetchEventDefinitionByDisplayName(
@@ -100,15 +93,8 @@ public class EventDefinitionDog {
 
 		_validate(sort);
 
-		if (keyword != null) {
-			return _eventDefinitionRepository.
-				findByNameContainingIgnoreCaseAndType(
-					keyword, PageRequest.of(page, size, sort),
-					eventDefinitionType.toString());
-		}
-
-		return _eventDefinitionRepository.findByType(
-			PageRequest.of(page, size, sort), eventDefinitionType.toString());
+		return _eventDefinitionRepository.searchEventDefinitions(
+			eventDefinitionType, keyword, page, size, sort);
 	}
 
 	public EventDefinition updateEventDefinition(

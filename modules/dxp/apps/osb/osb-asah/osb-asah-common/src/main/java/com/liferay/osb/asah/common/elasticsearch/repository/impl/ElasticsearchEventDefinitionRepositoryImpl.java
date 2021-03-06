@@ -15,6 +15,8 @@
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.model.EventDefinitionType;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 
 import java.util.List;
@@ -41,14 +43,9 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 	}
 
 	@Override
-	public Long countByNameContainingIgnoreCaseAndType(
-		String name, String type) {
+	public Long countEventDefinitions(
+		EventDefinitionType eventDefinitionType, String keyword) {
 
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Long countByType(String type) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -112,18 +109,6 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 	}
 
 	@Override
-	public List<EventDefinition> findByNameContainingIgnoreCaseAndType(
-		String name, Pageable pageable, String type) {
-
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public List<EventDefinition> findByType(Pageable pageable, String type) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public <S extends EventDefinition> S save(S eventDefinition) {
 		throw new UnsupportedOperationException();
 	}
@@ -131,6 +116,14 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 	@Override
 	public <S extends EventDefinition> Iterable<S> saveAll(
 		Iterable<S> eventDefinitions) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<EventDefinition> searchEventDefinitions(
+		EventDefinitionType eventDefinitionType, String keyword, int page,
+		int size, Sort sort) {
 
 		throw new UnsupportedOperationException();
 	}

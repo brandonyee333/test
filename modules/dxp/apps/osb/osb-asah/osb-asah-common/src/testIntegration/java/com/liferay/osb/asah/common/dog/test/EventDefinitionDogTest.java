@@ -57,7 +57,8 @@ public class EventDefinitionDogTest {
 		Assert.assertEquals("Test Event", eventDefinition.getDisplayName());
 		Assert.assertNotNull(eventDefinition.getId());
 		Assert.assertEquals("testEvent", eventDefinition.getName());
-		Assert.assertEquals("custom", eventDefinition.getEventDefinitionType());
+		Assert.assertEquals(
+			EventDefinitionType.CUSTOM, eventDefinition.getType());
 	}
 
 	@Test

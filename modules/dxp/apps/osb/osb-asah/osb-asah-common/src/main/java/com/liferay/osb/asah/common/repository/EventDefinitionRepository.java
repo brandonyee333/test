@@ -15,6 +15,8 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.model.EventDefinitionType;
+import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,10 +36,8 @@ import org.springframework.stereotype.Repository;
 public interface EventDefinitionRepository
 	extends CrudRepository<EventDefinition, Long> {
 
-	public Long countByNameContainingIgnoreCaseAndType(
-		String name, String type);
-
-	public Long countByType(String type);
+	public Long countEventDefinitions(
+		EventDefinitionType eventDefinitionType, String keyword);
 
 	public List<EventDefinition> findAll(Pageable pageable);
 
@@ -45,9 +45,8 @@ public interface EventDefinitionRepository
 
 	public Optional<EventDefinition> findByName(String name);
 
-	public List<EventDefinition> findByNameContainingIgnoreCaseAndType(
-		String name, Pageable pageable, String type);
-
-	public List<EventDefinition> findByType(Pageable pageable, String type);
+	public List<EventDefinition> searchEventDefinitions(
+		EventDefinitionType eventDefinitionType, String keyword, int page,
+		int size, Sort sort);
 
 }

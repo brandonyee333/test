@@ -53,14 +53,24 @@ public class BeanUtils {
 					field.setAccessible(true);
 
 					try {
-						if (value instanceof Array) {
-							Array array = (Array)value;
+						Class<?> clazz = field.getType();
 
-							value = new LinkedHashSet<>(
-								Arrays.asList((Long[])array.getArray()));
+						if (clazz.isEnum()) {
+							field.set(
+								target,
+								Enum.valueOf(
+									(Class<Enum>)clazz, value.toString()));
 						}
+						else {
+							if (value instanceof Array) {
+								Array array = (Array)value;
 
-						field.set(target, value);
+								value = new LinkedHashSet<>(
+									Arrays.asList((Long[])array.getArray()));
+							}
+
+							field.set(target, value);
+						}
 					}
 					catch (Exception exception) {
 						_log.error(exception, exception);
