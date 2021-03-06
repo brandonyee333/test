@@ -26,7 +26,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = {"exchange=is_entity_exchange", "queue=is_osb_customer_queue"},
+	property = {
+		"exchange=is_entity_exchange", "exclusive=true",
+		"queue=is_osb_customer_queue"
+	},
 	service = LegacyConsumer.class
 )
 public class LegacyConsumer extends BaseConsumer {

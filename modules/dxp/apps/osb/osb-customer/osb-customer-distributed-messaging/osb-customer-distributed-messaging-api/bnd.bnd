@@ -8,6 +8,7 @@ Export-Package:\
 	com.liferay.osb.distributed.messaging.rabbitmq.connector,\
 	com.liferay.osb.distributed.messaging.rabbitmq.connector.broker,\
 	com.liferay.osb.distributed.messaging.rabbitmq.connector.consumer,\
+	com.liferay.osb.distributed.messaging.rabbitmq.connector.messaging,\
 	com.liferay.osb.distributed.messaging.subscribing,\
 	com.liferay.osb.distributed.messaging.subscribing.router
 -dsannotations-options: inherit

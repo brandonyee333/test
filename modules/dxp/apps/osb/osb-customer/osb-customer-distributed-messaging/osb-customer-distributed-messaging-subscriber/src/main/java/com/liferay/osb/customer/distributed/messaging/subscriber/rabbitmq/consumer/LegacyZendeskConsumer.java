@@ -26,7 +26,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = {"exchange=is_zendesk_exchange", "queue=is_zendesk_queue"},
+	property = {
+		"exchange=is_zendesk_exchange", "exclusive=true",
+		"queue=is_zendesk_queue"
+	},
 	service = LegacyZendeskConsumer.class
 )
 public class LegacyZendeskConsumer extends BaseConsumer {

@@ -1,5 +1,7 @@
 dependencies {
 	compileInclude fileTree(dir: "lib-distributed-messaging", include: "*.jar")
+
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.28.0"
 }
 
 deployDependencies {

@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"exchange=koroneiki_exchange", "queue=is_koroneiki_customer_queue",
-		"routing.key=koroneiki.account.contactrole.assigned",
+		"exclusive=true", "routing.key=koroneiki.account.contactrole.assigned",
 		"routing.key=koroneiki.account.contactrole.unassigned",
 		"routing.key=koroneiki.account.create",
 		"routing.key=koroneiki.account.delete",
