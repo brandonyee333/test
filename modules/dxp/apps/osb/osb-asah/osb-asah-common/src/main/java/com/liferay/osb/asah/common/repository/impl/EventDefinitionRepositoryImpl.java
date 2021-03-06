@@ -105,7 +105,9 @@ public class EventDefinitionRepositoryImpl {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if (eventDefinitionType != null) {
+		if ((eventDefinitionType != null) &&
+			!eventDefinitionType.equals(EventDefinitionType.ALL)) {
+
 			Field<Object> field = DSL.field("type");
 
 			conditions.add(field.in(eventDefinitionType.toString()));
