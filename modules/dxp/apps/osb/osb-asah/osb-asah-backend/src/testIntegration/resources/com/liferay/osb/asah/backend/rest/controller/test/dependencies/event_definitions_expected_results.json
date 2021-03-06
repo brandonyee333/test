@@ -8,21 +8,21 @@
 					"description": null,
 					"displayName": null,
 					"name": "assetViewed",
-					"type": "default"
+					"type": "DEFAULT"
 				},
 				{
 					"__typename": "EventDefinition",
 					"description": null,
 					"displayName": null,
 					"name": "assetSubmitted",
-					"type": "default"
+					"type": "DEFAULT"
 				},
 				{
 					"__typename": "EventDefinition",
 					"description": null,
 					"displayName": null,
 					"name": "assetDownloaded",
-					"type": "default"
+					"type": "DEFAULT"
 				}
 			],
 			"total": 5

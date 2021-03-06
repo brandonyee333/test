@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.model.EventDefinitionType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -37,7 +38,8 @@ import org.springframework.stereotype.Component;
 public class EventDefinitionDog {
 
 	public EventDefinition addEventDefinition(
-		String description, String displayName, String name, String type) {
+		String description, String displayName,
+		EventDefinitionType eventDefinitionType, String name) {
 
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException("Event name is null");
@@ -48,18 +50,22 @@ public class EventDefinitionDog {
 		eventDefinition.setDescription(description);
 		eventDefinition.setDisplayName(displayName);
 		eventDefinition.setName(name);
-		eventDefinition.setType(type);
+		eventDefinition.setType(eventDefinitionType);
 
 		return _eventDefinitionRepository.save(eventDefinition);
 	}
 
-	public Long countEventDefinitions(String eventType, String keyword) {
+	public Long countEventDefinitions(
+		EventDefinitionType eventDefinitionType, String keyword) {
+
 		if (keyword != null) {
 			return _eventDefinitionRepository.
-				countByNameContainingIgnoreCaseAndType(keyword, eventType);
+				countByNameContainingIgnoreCaseAndType(
+					keyword, eventDefinitionType.toString());
 		}
 
-		return _eventDefinitionRepository.countByType(eventType);
+		return _eventDefinitionRepository.countByType(
+			eventDefinitionType.toString());
 	}
 
 	public EventDefinition fetchEventDefinitionByDisplayName(
@@ -89,18 +95,20 @@ public class EventDefinitionDog {
 	}
 
 	public List<EventDefinition> getEventDefinitions(
-		String eventType, String keyword, int page, int size, Sort sort) {
+		EventDefinitionType eventDefinitionType, String keyword, int page,
+		int size, Sort sort) {
 
 		_validate(sort);
 
 		if (keyword != null) {
 			return _eventDefinitionRepository.
 				findByNameContainingIgnoreCaseAndType(
-					keyword, PageRequest.of(page, size, sort), eventType);
+					keyword, PageRequest.of(page, size, sort),
+					eventDefinitionType.toString());
 		}
 
 		return _eventDefinitionRepository.findByType(
-			PageRequest.of(page, size, sort), eventType);
+			PageRequest.of(page, size, sort), eventDefinitionType.toString());
 	}
 
 	public EventDefinition updateEventDefinition(

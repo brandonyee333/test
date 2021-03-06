@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dto.EventDefinitionDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.model.EventDefinitionType;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 
@@ -43,12 +44,14 @@ public class EventDefinitionBagDataFetcher
 	public ResultBag<EventDefinitionDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		String eventType = dataFetchingEnvironment.getArgument("eventType");
+		EventDefinitionType eventDefinitionType = EventDefinitionType.valueOf(
+			dataFetchingEnvironment.getArgument("eventType"));
 		String keyword = dataFetchingEnvironment.getArgument("keyword");
 
 		List<EventDefinition> eventDefinitions =
 			_eventDefinitionDog.getEventDefinitions(
-				eventType, keyword, dataFetchingEnvironment.getArgument("page"),
+				eventDefinitionType, keyword,
+				dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
 				Sort.of(dataFetchingEnvironment.getArgument("sort")));
 
@@ -62,7 +65,8 @@ public class EventDefinitionBagDataFetcher
 
 		return new ResultBag<>(
 			eventDefinitionDTOs,
-			_eventDefinitionDog.countEventDefinitions(eventType, keyword));
+			_eventDefinitionDog.countEventDefinitions(
+				eventDefinitionType, keyword));
 	}
 
 	@Autowired

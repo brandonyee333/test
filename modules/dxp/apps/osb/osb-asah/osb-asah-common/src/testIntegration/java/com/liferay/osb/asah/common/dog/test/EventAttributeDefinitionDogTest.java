@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
+import com.liferay.osb.asah.common.model.EventDefinitionType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
@@ -104,7 +105,8 @@ public class EventAttributeDefinitionDogTest {
 	public void testFetchEventAttributeDefinitionByDisplayName() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", "testEvent", "custom");
+				"Testing an event", "Test Event", EventDefinitionType.CUSTOM,
+				"testEvent");
 
 		EventAttributeDefinition expectedEventAttributeDefinition =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(

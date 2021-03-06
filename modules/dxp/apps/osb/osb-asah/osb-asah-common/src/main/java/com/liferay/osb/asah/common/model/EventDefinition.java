@@ -42,9 +42,10 @@ public class EventDefinition implements Persistable<Long> {
 
 		if (Objects.equals(_description, eventDefinition._description) &&
 			Objects.equals(_displayName, eventDefinition._displayName) &&
+			Objects.equals(
+				_eventDefinitionType, eventDefinition._eventDefinitionType) &&
 			Objects.equals(_id, eventDefinition._id) &&
-			Objects.equals(_name, eventDefinition._name) &&
-			Objects.equals(_type, eventDefinition._type)) {
+			Objects.equals(_name, eventDefinition._name)) {
 
 			return true;
 		}
@@ -74,13 +75,14 @@ public class EventDefinition implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getType() {
-		return _type;
+	public EventDefinitionType getType() {
+		return _eventDefinitionType;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_description, _displayName, _id, _name, _type);
+		return Objects.hash(
+			_description, _displayName, _eventDefinitionType, _id, _name);
 	}
 
 	public boolean isNew() {
@@ -111,8 +113,8 @@ public class EventDefinition implements Persistable<Long> {
 		_name = name;
 	}
 
-	public void setType(String type) {
-		_type = type;
+	public void setType(EventDefinitionType eventDefinitionType) {
+		_eventDefinitionType = eventDefinitionType;
 	}
 
 	@Transient
@@ -122,6 +124,9 @@ public class EventDefinition implements Persistable<Long> {
 	private String _displayName;
 
 	@Transient
+	private EventDefinitionType _eventDefinitionType;
+
+	@Transient
 	private Long _id;
 
 	@Transient
@@ -129,8 +134,5 @@ public class EventDefinition implements Persistable<Long> {
 
 	@Transient
 	private String _name;
-
-	@Transient
-	private String _type;
 
 }

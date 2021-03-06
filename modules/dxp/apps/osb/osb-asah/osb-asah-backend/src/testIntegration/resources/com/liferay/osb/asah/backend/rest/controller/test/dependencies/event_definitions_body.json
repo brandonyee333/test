@@ -1,7 +1,7 @@
 {
 	"operationName": "EventDefinitions",
 	"variables": {
-		"eventType": "default",
+		"eventType": "DEFAULT",
 		"keyword": "asset",
 		"page": 0,
 		"size": 3,
