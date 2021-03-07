@@ -21,13 +21,14 @@
 <portlet:actionURL var="updateTodoItemURL">
 	<portlet:param name="controller" value="todo_items" />
 	<portlet:param name="action" value="update" />
+	<portlet:param name="id" value="${todoItem.todoItemId}" />
 </portlet:actionURL>
 
 <aui:form action="${updateTodoItemURL}" method="post">
 	<portlet:renderURL var="viewTodoItemURL">
 		<portlet:param name="controller" value="todo_items" />
 		<portlet:param name="action" value="view" />
-		<portlet:param name="todoItemId" value="${todoItem.todoItemId}" />
+		<portlet:param name="id" value="${todoItem.todoItemId}" />
 	</portlet:renderURL>
 
 	<aui:input name="redirect" type="hidden" value="${viewTodoItemURL}" />
@@ -62,7 +63,7 @@
 		<portlet:actionURL var="deleteTodoItemURL">
 			<portlet:param name="controller" value="todo_items" />
 			<portlet:param name="action" value="delete" />
-			<portlet:param name="todoItemId" value="${todoItem.todoItemId}" />
+			<portlet:param name="id" value="${todoItem.todoItemId}" />
 			<portlet:param name="redirect" value="${todoListURL}" />
 		</portlet:actionURL>
 

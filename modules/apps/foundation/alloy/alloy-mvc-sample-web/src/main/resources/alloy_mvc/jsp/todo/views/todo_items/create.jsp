@@ -21,6 +21,7 @@
 <portlet:actionURL var="addTodoItemURL">
 	<portlet:param name="controller" value="todo_items" />
 	<portlet:param name="action" value="add" />
+	<portlet:param name="todoListId" value="${param.todoListId}" />
 </portlet:actionURL>
 
 <aui:form action="${addTodoItemURL}" method="post">

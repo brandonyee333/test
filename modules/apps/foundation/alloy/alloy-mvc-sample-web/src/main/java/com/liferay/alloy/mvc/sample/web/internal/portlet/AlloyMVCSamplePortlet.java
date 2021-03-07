@@ -29,6 +29,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
+		"com.liferay.portlet.display-category=category.tools",
+		"com.liferay.portlet.requires-namespaced-parameters=false",
 		"javax.portlet.display-name=Alloy MVC Sample",
 		"javax.portlet.info.keywords=Alloy MVC Sample",
 		"javax.portlet.info.short-title=Alloy MVC Sample",
