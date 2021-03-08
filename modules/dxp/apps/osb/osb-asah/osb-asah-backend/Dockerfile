@@ -13,9 +13,6 @@ ARG LABEL_VCS_REF
 
 CMD ["sh", "-c", "java ${JAVA_OPTS} ${JAVA_OPTS_EXT} -XshowSettings:vm -XX:+PrintCommandLineFlags org.springframework.boot.loader.JarLauncher"]
 
-ENV LABEL_BUILD_DATE=${LABEL_BUILD_DATE}
-ENV LABEL_VCS_REF=${LABEL_VCS_REF}
-
 EXPOSE 8080
 
 USER root
@@ -25,5 +22,8 @@ WORKDIR /root
 COPY --from=builder /builder/dependencies/ .
 COPY --from=builder /builder/snapshot-dependencies/ .
 COPY --from=builder /builder/spring-boot-loader/ .
+
+ENV LABEL_BUILD_DATE=${LABEL_BUILD_DATE}
+ENV LABEL_VCS_REF=${LABEL_VCS_REF}
 
 COPY --from=builder /builder/application .
