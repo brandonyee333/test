@@ -26,6 +26,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface CacheEvict {
 
+	boolean allProjects() default false;
+
 	boolean evictAll() default false;
 
 	String[] value() default {};

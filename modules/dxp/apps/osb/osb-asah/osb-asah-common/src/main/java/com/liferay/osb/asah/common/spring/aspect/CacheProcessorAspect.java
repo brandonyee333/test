@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.spring.aspect;
 
+import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -125,7 +126,9 @@ public class CacheProcessorAspect {
 		returning = "returnObject",
 		value = "@annotation(com.liferay.osb.asah.common.spring.annotation.CacheEvict)"
 	)
-	public void processCacheEvict(JoinPoint joinPoint, Object returnObject) {
+	public void processCacheEvict(JoinPoint joinPoint, Object returnObject)
+		throws Exception {
+
 		if (_cacheManager == null) {
 			return;
 		}
@@ -143,8 +146,13 @@ public class CacheProcessorAspect {
 			return;
 		}
 		else if (!ArrayUtils.isEmpty(cacheEvict.value())) {
-			for (String cacheName : cacheEvict.value()) {
-				_clear(cacheName);
+			if (cacheEvict.allProjects()) {
+				ProjectIdThreadLocal.forProjects(
+					_projectDog.getProjects(),
+					() -> _clear(cacheEvict.value()));
+			}
+			else {
+				_clear(cacheEvict.value());
 			}
 
 			return;
@@ -200,17 +208,19 @@ public class CacheProcessorAspect {
 		_put(cacheName, key, String.valueOf(returnObject));
 	}
 
-	private void _clear(String cacheName) {
-		Cache cache = _getCache(cacheName);
+	private void _clear(String[] cacheNames) {
+		for (String cacheName : cacheNames) {
+			Cache cache = _getCache(cacheName);
 
-		if (cache == null) {
-			return;
-		}
+			if (cache == null) {
+				return;
+			}
 
-		cache.clear();
+			cache.clear();
 
-		if (_log.isInfoEnabled()) {
-			_log.info("Cache cleared: " + cache.getName());
+			if (_log.isInfoEnabled()) {
+				_log.info("Cache cleared: " + cache.getName());
+			}
 		}
 	}
 
@@ -350,5 +360,8 @@ public class CacheProcessorAspect {
 
 	@Autowired
 	private KeyGenerator _keyGenerator;
+
+	@Autowired
+	private ProjectDog _projectDog;
 
 }
