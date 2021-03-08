@@ -20,7 +20,6 @@ USER root
 WORKDIR /root
 
 COPY --from=builder /builder/dependencies/ .
-COPY --from=builder /builder/snapshot-dependencies/ .
 COPY --from=builder /builder/spring-boot-loader/ .
 
 ENV LABEL_BUILD_DATE=${LABEL_BUILD_DATE}
