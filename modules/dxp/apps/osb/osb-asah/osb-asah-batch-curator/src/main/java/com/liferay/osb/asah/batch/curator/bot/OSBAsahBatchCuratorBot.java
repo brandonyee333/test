@@ -57,7 +57,8 @@ import org.springframework.stereotype.Component;
 public class OSBAsahBatchCuratorBot {
 
 	@CacheEvict(
-		{
+		allProjects = true,
+		value = {
 			"getActivityTransformations", "getGraphQLExecutionResult",
 			"getMembershipChangeTransformations"
 		}
