@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.util.BeanUtils;
+
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,6 +37,10 @@ public class DataSourceUserGroup {
 		_enableAllChildren = enableAllChildren;
 		_userGroupId = userGroupId;
 		_userGroupIds = userGroupIds;
+	}
+
+	public DataSourceUserGroup(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
 	}
 
 	@Override

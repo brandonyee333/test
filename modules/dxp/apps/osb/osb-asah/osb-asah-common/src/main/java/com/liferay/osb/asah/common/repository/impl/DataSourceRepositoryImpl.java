@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.DataSourceOrganization;
 import com.liferay.osb.asah.common.model.DataSourceSite;
 import com.liferay.osb.asah.common.model.DataSourceUserGroup;
-import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,33 +83,22 @@ public class DataSourceRepositoryImpl {
 
 		SelectSelectStep<Record> select = _dslContext.select();
 
-		return _getDataSources(
-			Stream.of(
-				select.from(
-					"DataSource"
-				).where(
-					_getConditions(
-						channelIds, credentialType, names, providerType,
-						searchNames, states, url, workspaceURL)
-				).orderBy(
-					_getSortFields(pageable.getSort())
-				).limit(
-					pageable.getPageSize()
-				).offset(
-					pageable.getOffset()
-				).fetchMaps()
-			).flatMap(
-				List<Map<String, Object>>::stream
+		return _populateDataSources(
+			select.from(
+				"DataSource"
+			).where(
+				_getConditions(
+					channelIds, credentialType, names, providerType,
+					searchNames, states, url, workspaceURL)
+			).orderBy(
+				_getSortFields(pageable.getSort())
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
 			).map(
-				map -> {
-					DataSource dataSource = new DataSource();
-
-					BeanUtils.copyProperties(map, dataSource);
-
-					return dataSource;
-				}
-			).collect(
-				Collectors.toMap(DataSource::getId, Function.identity())
+				record -> new DataSource(record.intoMap())
 			));
 	}
 
@@ -185,20 +173,6 @@ public class DataSourceRepositoryImpl {
 		return conditions;
 	}
 
-	private List<DataSource> _getDataSources(
-		Map<Long, DataSource> dataSources) {
-
-		if (dataSources.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		_populateDataSourceOrganizations(dataSources);
-		_populateDataSourceSite(dataSources);
-		_populateDataSourceUserGroup(dataSources);
-
-		return new ArrayList<>(dataSources.values());
-	}
-
 	private Collection<SortField<?>> _getSortFields(Sort sort) {
 		Collection<SortField<?>> sortFields = new ArrayList<>();
 
@@ -221,97 +195,97 @@ public class DataSourceRepositoryImpl {
 	}
 
 	private void _populateDataSourceOrganizations(
-		Map<Long, DataSource> dataSources) {
+		Map<Long, DataSource> dataSourcesById) {
 
 		SelectSelectStep<Record> select = _dslContext.select();
 
 		Field<Object> field = DSL.field("dataSourceId");
 
-		Stream.of(
-			select.from(
-				"DataSourceOrganization"
-			).where(
-				field.in(dataSources.keySet())
-			).fetchMaps()
-		).flatMap(
-			List<Map<String, Object>>::stream
+		select.from(
+			"DataSourceOrganization"
+		).where(
+			field.in(dataSourcesById.keySet())
+		).fetch(
 		).forEach(
-			map -> {
-				DataSource dataSource = dataSources.get(
-					map.get("datasourceid"));
+			record -> {
+				DataSource dataSource = dataSourcesById.get(
+					record.get("datasourceid"));
 
 				Set<DataSourceOrganization> dataSourceOrganizations =
 					dataSource.getDataSourceOrganizations();
 
-				DataSourceOrganization dataSourceOrganization =
-					new DataSourceOrganization();
-
-				BeanUtils.copyProperties(map, dataSourceOrganization);
-
-				dataSourceOrganizations.add(dataSourceOrganization);
+				dataSourceOrganizations.add(
+					new DataSourceOrganization(record.intoMap()));
 			}
 		);
 	}
 
-	private void _populateDataSourceSite(Map<Long, DataSource> dataSources) {
+	private List<DataSource> _populateDataSources(
+		List<DataSource> dataSources) {
+
+		if (dataSources.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		Stream<DataSource> stream = dataSources.stream();
+
+		Map<Long, DataSource> dataSourcesById = stream.collect(
+			Collectors.toMap(DataSource::getId, Function.identity()));
+
+		_populateDataSourceOrganizations(dataSourcesById);
+		_populateDataSourceSite(dataSourcesById);
+		_populateDataSourceUserGroup(dataSourcesById);
+
+		return new ArrayList<>(dataSourcesById.values());
+	}
+
+	private void _populateDataSourceSite(
+		Map<Long, DataSource> dataSourcesById) {
+
 		SelectSelectStep<Record> select = _dslContext.select();
 
 		Field<Object> field = DSL.field("dataSourceId");
 
-		Stream.of(
-			select.from(
-				"DataSourceSite"
-			).where(
-				field.in(dataSources.keySet())
-			).fetchMaps()
-		).flatMap(
-			List<Map<String, Object>>::stream
+		select.from(
+			"DataSourceSite"
+		).where(
+			field.in(dataSourcesById.keySet())
+		).fetch(
 		).forEach(
-			map -> {
-				DataSource dataSource = dataSources.get(
-					map.get("datasourceid"));
+			record -> {
+				DataSource dataSource = dataSourcesById.get(
+					record.get("datasourceid"));
 
 				Set<DataSourceSite> dataSourceSites =
 					dataSource.getDataSourceSites();
 
-				DataSourceSite dataSourceSite = new DataSourceSite();
-
-				BeanUtils.copyProperties(map, dataSourceSite);
-
-				dataSourceSites.add(dataSourceSite);
+				dataSourceSites.add(new DataSourceSite(record.intoMap()));
 			}
 		);
 	}
 
 	private void _populateDataSourceUserGroup(
-		Map<Long, DataSource> dataSources) {
+		Map<Long, DataSource> dataSourcesById) {
 
 		SelectSelectStep<Record> select = _dslContext.select();
 
 		Field<Object> field = DSL.field("dataSourceId");
 
-		Stream.of(
-			select.from(
-				"DataSourceOrganization"
-			).where(
-				field.in(dataSources.keySet())
-			).fetchMaps()
-		).flatMap(
-			List<Map<String, Object>>::stream
+		select.from(
+			"DataSourceOrganization"
+		).where(
+			field.in(dataSourcesById.keySet())
+		).fetch(
 		).forEach(
-			map -> {
-				DataSource dataSource = dataSources.get(
-					map.get("datasourceid"));
+			record -> {
+				DataSource dataSource = dataSourcesById.get(
+					record.get("datasourceid"));
 
 				Set<DataSourceUserGroup> dataSourceUserGroups =
 					dataSource.getDataSourceUserGroups();
 
-				DataSourceUserGroup dataSourceUserGroup =
-					new DataSourceUserGroup();
-
-				BeanUtils.copyProperties(map, dataSourceUserGroup);
-
-				dataSourceUserGroups.add(dataSourceUserGroup);
+				dataSourceUserGroups.add(
+					new DataSourceUserGroup(record.intoMap()));
 			}
 		);
 	}

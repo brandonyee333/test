@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.util.BeanUtils;
+
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
@@ -30,6 +33,10 @@ public class DataSourceSite {
 	public DataSourceSite(Boolean enableAllChildren, Long siteId) {
 		_enableAllChildren = enableAllChildren;
 		_siteId = siteId;
+	}
+
+	public DataSourceSite(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
 	}
 
 	@Override

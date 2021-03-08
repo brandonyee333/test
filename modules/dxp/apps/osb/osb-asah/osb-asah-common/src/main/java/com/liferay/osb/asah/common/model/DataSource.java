@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.util.BeanUtils;
+
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,6 +36,10 @@ import org.springframework.data.relational.core.mapping.Table;
 public class DataSource implements Persistable<Long> {
 
 	public DataSource() {
+	}
+
+	public DataSource(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
 	}
 
 	public DataSource(String name) {
