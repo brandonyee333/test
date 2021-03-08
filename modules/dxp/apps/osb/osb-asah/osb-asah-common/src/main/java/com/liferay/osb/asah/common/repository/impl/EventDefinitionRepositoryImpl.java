@@ -17,13 +17,9 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionType;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -73,30 +69,19 @@ public class EventDefinitionRepositoryImpl {
 
 		Field<?> field = DSL.field(sort.getColumn());
 
-		return Stream.of(
-			select.from(
-				"EventDefinition"
-			).where(
-				_getConditions(eventDefinitionType, keyword)
-			).orderBy(
-				field.sort(SortOrder.valueOf(sort.getType()))
-			).limit(
-				size
-			).offset(
-				page * size
-			).fetchMaps()
-		).flatMap(
-			List<Map<String, Object>>::stream
+		return select.from(
+			"EventDefinition"
+		).where(
+			_getConditions(eventDefinitionType, keyword)
+		).orderBy(
+			field.sort(SortOrder.valueOf(sort.getType()))
+		).limit(
+			size
+		).offset(
+			page * size
+		).fetch(
 		).map(
-			map -> {
-				EventDefinition eventDefinition = new EventDefinition();
-
-				BeanUtils.copyProperties(map, eventDefinition);
-
-				return eventDefinition;
-			}
-		).collect(
-			Collectors.toList()
+			record -> new EventDefinition(record.intoMap())
 		);
 	}
 

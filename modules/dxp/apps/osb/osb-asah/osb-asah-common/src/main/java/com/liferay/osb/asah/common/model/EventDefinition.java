@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.util.BeanUtils;
+
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
@@ -27,6 +30,13 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table
 public class EventDefinition implements Persistable<Long> {
+
+	public EventDefinition() {
+	}
+
+	public EventDefinition(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
