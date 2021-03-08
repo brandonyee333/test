@@ -6,7 +6,7 @@ cache:
         - $HOME/.gradle/caches/
         - $HOME/.gradle/wrapper/
     timeout: 600
-dist: trusty
+dist: bionic
 env:
     global:
         - _JAVA_OPTIONS=-Xmx3g
@@ -32,13 +32,12 @@ jobs:
                 docker logout &&
                 cd ..
           before_script:
-              - sudo /etc/init.d/postgresql stop
               - docker-compose -f docker-compose.integration-test.yml up -d
           script:
               - ./gradlew test --configure-on-demand --continue --parallel
               - ./gradlew testIntegration --configure-on-demand --continue
               - ./gradlew jacocoTestCoverageVerification
 language: java
+os: linux
 services:
     - docker
-sudo: required
