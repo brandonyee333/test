@@ -26,9 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,11 +34,13 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
  */
-public abstract class BaseDataSourceRepositoryTestCase {
+public abstract class BaseDataSourceRepositoryTestCase
+	extends BaseRepositoryTestCase<DataSource> {
 
 	@Before
 	public void setUp() {
@@ -122,16 +122,6 @@ public abstract class BaseDataSourceRepositoryTestCase {
 		dataSource3.setWorkspaceURL("");
 
 		_dataSources.add(_dataSourceRepository.save(dataSource3));
-	}
-
-	@After
-	public void tearDown() {
-		_dataSourceRepository.deleteAll();
-	}
-
-	@Test
-	public void testCount() {
-		Assert.assertEquals(3, _dataSourceRepository.count());
 	}
 
 	@Test
@@ -233,51 +223,10 @@ public abstract class BaseDataSourceRepositoryTestCase {
 	}
 
 	@Test
-	public void testDelete() {
-		_dataSourceRepository.delete(_dataSources.get(0));
-
-		Assert.assertEquals(2, _dataSourceRepository.count());
-	}
-
-	@Test
-	public void testDeleteAll1() {
-		_dataSourceRepository.deleteAll();
-
-		Assert.assertEquals(0, _dataSourceRepository.count());
-	}
-
-	@Test
-	public void testDeleteAll2() {
-		_dataSourceRepository.deleteAll(_dataSources);
-
-		Assert.assertEquals(0, _dataSourceRepository.count());
-	}
-
-	@Test
-	public void testDeleteById() {
-		DataSource dataSource = _dataSources.get(0);
-
-		Long id = dataSource.getId();
-
-		Assert.assertNotNull(id);
-
-		_dataSourceRepository.deleteById(id);
-
-		Assert.assertEquals(2, _dataSourceRepository.count());
-	}
-
-	@Test
 	public void testExistsByFaroBackendSecuritySignature() {
 		Assert.assertTrue(
 			_dataSourceRepository.existsByFaroBackendSecuritySignature(
 				"faroBackendSecuritySignature"));
-	}
-
-	@Test
-	public void testExistsById() {
-		DataSource dataSource = _dataSources.get(0);
-
-		Assert.assertTrue(_dataSourceRepository.existsById(dataSource.getId()));
 	}
 
 	@Test
@@ -338,27 +287,15 @@ public abstract class BaseDataSourceRepositoryTestCase {
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 	}
 
+	@Override
 	@Test
-	public void testFindAll1() {
-		Assert.assertEquals(_dataSources, _dataSourceRepository.findAll());
-	}
+	public void testFindAll() {
+		super.testFindAll();
 
-	@Test
-	public void testFindAll2() {
 		Assert.assertEquals(
 			_dataSources,
 			_dataSourceRepository.findAll(
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id")))));
-	}
-
-	@Test
-	public void testFindAllById() {
-		DataSource dataSource = _dataSources.get(0);
-
-		Assert.assertEquals(
-			Arrays.asList(dataSource),
-			_dataSourceRepository.findAllById(
-				Arrays.asList(dataSource.getId())));
 	}
 
 	@Test
@@ -370,7 +307,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 	}
 
 	@Test
@@ -382,23 +319,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
-	}
-
-	@Test
-	public void testFindById() {
-		DataSource dataSource = _dataSources.get(0);
-
-		Long id = dataSource.getId();
-
-		Assert.assertNotNull(id);
-
-		Optional<DataSource> dataSourceOptional =
-			_dataSourceRepository.findById(id);
-
-		Assert.assertTrue(dataSourceOptional.isPresent());
-
-		_assertDataSource(dataSourceOptional.get());
+		assertModel(dataSources.get(0));
 	}
 
 	@Test
@@ -408,7 +329,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 	}
 
 	@Test
@@ -418,7 +339,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 	}
 
 	@Test
@@ -429,20 +350,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
-	}
-
-	@Test
-	public void testSave() {
-		DataSource dataSource = _dataSources.get(0);
-
-		_assertDataSource(dataSource);
-	}
-
-	@Test
-	public void testSaveAll() {
-		Assert.assertEquals(
-			_dataSources, _dataSourceRepository.saveAll(_dataSources));
+		assertModel(dataSources.get(0));
 	}
 
 	@Test
@@ -453,7 +361,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 3, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			Arrays.asList(1L), null, null, null, null, null, null, null,
@@ -461,7 +369,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, "Token Authentication", null, null, null, null, null, null,
@@ -469,7 +377,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, Arrays.asList("Liferay Brazil"), null, null, null, null,
@@ -477,7 +385,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, null, "LIFERAY", null, null, null, null,
@@ -485,7 +393,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, null, null, Arrays.asList("Liferay", "Brazil"), null,
@@ -493,7 +401,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, null, null, null, Arrays.asList("READY"), null, null,
@@ -501,7 +409,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, null, null, null, null, true, null,
@@ -509,7 +417,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, null, null, null, null, null, true,
@@ -517,7 +425,7 @@ public abstract class BaseDataSourceRepositoryTestCase {
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		_assertDataSource(dataSources.get(0));
+		assertModel(dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			Arrays.asList(1L, 2L), null, null, null, null, null, null, null,
@@ -569,7 +477,8 @@ public abstract class BaseDataSourceRepositoryTestCase {
 		Assert.assertEquals(dataSources.toString(), 3, dataSources.size());
 	}
 
-	private void _assertDataSource(DataSource dataSource) {
+	@Override
+	protected void assertModel(DataSource dataSource) {
 		Assert.assertNotNull(dataSource);
 		Assert.assertNotNull(dataSource.getId());
 
@@ -594,6 +503,16 @@ public abstract class BaseDataSourceRepositoryTestCase {
 		Assert.assertEquals(
 			expectedDataSource.getStatus(), dataSource.getStatus());
 		Assert.assertEquals(expectedDataSource.getURL(), dataSource.getURL());
+	}
+
+	@Override
+	protected CrudRepository<DataSource, Long> getCrudRepository() {
+		return _dataSourceRepository;
+	}
+
+	@Override
+	protected List<DataSource> getModels() {
+		return _dataSources;
 	}
 
 	@Autowired

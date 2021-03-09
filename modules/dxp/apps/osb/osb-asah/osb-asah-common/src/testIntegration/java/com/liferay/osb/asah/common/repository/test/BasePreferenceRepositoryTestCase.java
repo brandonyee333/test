@@ -17,21 +17,21 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Inácio Nery
  */
-public abstract class BasePreferenceRepositoryTestCase {
+public abstract class BasePreferenceRepositoryTestCase
+	extends BaseRepositoryTestCase<Preference> {
 
 	@Before
 	public void setUp() {
@@ -39,68 +39,26 @@ public abstract class BasePreferenceRepositoryTestCase {
 			new Preference("key", "value"));
 	}
 
-	@After
-	public void tearDown() {
-		_preferenceRepository.deleteAll();
-	}
-
-	@Test
-	public void testCount() {
-		Assert.assertEquals(1, _preferenceRepository.count());
-	}
-
-	@Test
-	public void testDelete() {
-		_preferenceRepository.delete(_preference);
-
-		Assert.assertEquals(0, _preferenceRepository.count());
-	}
-
-	@Test
-	public void testDeleteAll1() {
-		_preferenceRepository.deleteAll();
-
-		Assert.assertEquals(0, _preferenceRepository.count());
-	}
-
-	@Test
-	public void testDeleteAll2() {
-		Iterable<Preference> preferences = new ArrayList<>(
-			Arrays.asList(_preference));
-
-		_preferenceRepository.deleteAll(preferences);
-
-		Assert.assertEquals(0, _preferenceRepository.count());
-	}
-
-	@Test
-	public void testFindAll() {
-		Assert.assertEquals(
-			Arrays.asList(_preference), _preferenceRepository.findAll());
-	}
-
 	@Test
 	public void testFindByKey() {
-		_assertPreference(_preferenceRepository.findByKey("key"));
+		assertModel(_preferenceRepository.findByKey("key"));
 	}
 
-	@Test
-	public void testSave() {
-		_assertPreference(_preference);
-	}
-
-	@Test
-	public void testSaveAll() {
-		List<Preference> preferences = Arrays.asList(_preference);
-
-		Assert.assertEquals(
-			preferences, _preferenceRepository.saveAll(preferences));
-	}
-
-	private void _assertPreference(Preference preference) {
+	@Override
+	protected void assertModel(Preference preference) {
 		Assert.assertNotNull(preference);
 		Assert.assertEquals("key", preference.getKey());
 		Assert.assertEquals("value", preference.getValue());
+	}
+
+	@Override
+	protected CrudRepository<Preference, Long> getCrudRepository() {
+		return _preferenceRepository;
+	}
+
+	@Override
+	protected List<Preference> getModels() {
+		return Collections.singletonList(_preference);
 	}
 
 	private Preference _preference;

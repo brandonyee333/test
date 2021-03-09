@@ -17,6 +17,8 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.test.context.ContextConfiguration;
@@ -28,4 +30,33 @@ import org.springframework.test.context.ContextConfiguration;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class ElasticsearchPreferenceRepositoryTest
 	extends BasePreferenceRepositoryTestCase {
+
+	@Ignore
+	@Override
+	@Test
+	public void testDeleteById() {
+		super.testDeleteById();
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testExistsById() {
+		super.testExistsById();
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testFindAllById() {
+		super.testFindAllById();
+	}
+
+	@Ignore
+	@Override
+	@Test
+	public void testFindById() {
+		super.testFindById();
+	}
+
 }
