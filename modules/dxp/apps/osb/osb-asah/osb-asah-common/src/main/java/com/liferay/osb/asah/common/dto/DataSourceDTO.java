@@ -15,11 +15,13 @@
 package com.liferay.osb.asah.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.AccountsConfigurationDTO;
 import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.AnalyticsConfigurationDTO;
 import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.ContactsConfigurationDTO;
@@ -122,6 +124,10 @@ public class DataSourceDTO {
 	}
 
 	@JsonAlias("createDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
 	@JsonProperty("dateCreated")
 	public Date getCreateDate() {
 		if (_createDate == null) {
@@ -156,6 +162,10 @@ public class DataSourceDTO {
 		return _dataSourceStatus;
 	}
 
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
 	@JsonProperty("deletionDate")
 	public Date getDeletionDate() {
 		if (_deletionDate == null) {
@@ -186,6 +196,10 @@ public class DataSourceDTO {
 	}
 
 	@JsonAlias("modifiedDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
 	@JsonProperty("dateModified")
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
@@ -898,6 +912,11 @@ public class DataSourceDTO {
 				return _enableAllSites;
 			}
 
+			@JsonAlias("lastSyncDate")
+			@JsonFormat(
+				pattern = DateUtil.PATTERN_ISO_8601,
+				shape = JsonFormat.Shape.STRING, timezone = "UTC"
+			)
 			@JsonProperty("lastSyncTime")
 			public Date getLastSyncDate() {
 				if (_lastSyncDate == null) {
@@ -1089,6 +1108,11 @@ public class DataSourceDTO {
 				return _enableAllLeads;
 			}
 
+			@JsonAlias("lastSuccessfulAuditEventDate")
+			@JsonFormat(
+				pattern = DateUtil.PATTERN_ISO_8601,
+				shape = JsonFormat.Shape.STRING, timezone = "UTC"
+			)
 			@JsonProperty("lastSuccessfulAuditEventTime")
 			public Date getLastSuccessfulAuditEventDate() {
 				if (_lastSuccessfulAuditEventDate == null) {
@@ -1098,6 +1122,11 @@ public class DataSourceDTO {
 				return new Date(_lastSuccessfulAuditEventDate.getTime());
 			}
 
+			@JsonAlias("lLastSyncDate")
+			@JsonFormat(
+				pattern = DateUtil.PATTERN_ISO_8601,
+				shape = JsonFormat.Shape.STRING, timezone = "UTC"
+			)
 			@JsonProperty("lastSyncTime")
 			public Date getLastSyncDate() {
 				if (_lastSyncDate == null) {

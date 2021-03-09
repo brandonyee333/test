@@ -15,10 +15,12 @@
 package com.liferay.osb.asah.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -81,6 +83,10 @@ public class ChannelDTO {
 	}
 
 	@JsonAlias("dateCreated")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
 	@JsonProperty("createDate")
 	public Date getCreateDate() {
 		if (_createDate == null) {
