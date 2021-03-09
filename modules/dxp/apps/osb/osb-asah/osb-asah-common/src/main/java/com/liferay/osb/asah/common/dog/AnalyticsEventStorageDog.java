@@ -132,17 +132,15 @@ public class AnalyticsEventStorageDog {
 			return EventAttributeDefinitionDataType.DATE;
 		}
 
-		String lowerCasePropertyName = propertyName.toLowerCase();
-
-		if ((lowerCasePropertyName.contains("duration") ||
-			 lowerCasePropertyName.contains("interval") ||
-			 lowerCasePropertyName.contains("time")) &&
-			Validator.isNumber(value)) {
-
-			return EventAttributeDefinitionDataType.DURATION;
-		}
-
 		if (Validator.isNumber(value)) {
+			String lowerCasePropertyName = propertyName.toLowerCase();
+
+			if (lowerCasePropertyName.contains("duration") &&
+				!value.startsWith("-")) {
+
+				return EventAttributeDefinitionDataType.DURATION;
+			}
+
 			return EventAttributeDefinitionDataType.NUMBER;
 		}
 
