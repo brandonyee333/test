@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.controller.ActivityGroupsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -48,9 +50,10 @@ public class ActivityGroupsRestControllerTest {
 		JSONAssert.assertEquals(
 			_elasticsearchInvoker.fetch(
 				"activity-groups", "348853726639670821"),
-			new JSONObject(
+			_objectMapper.convertValue(
 				_activityGroupsRestController.getActivityGroup(
-					"348853726639670821")),
+					348853726639670821L),
+				JSONObject.class),
 			false);
 	}
 
@@ -67,19 +70,21 @@ public class ActivityGroupsRestControllerTest {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_activity_groups.json", this),
-			new JSONObject(
+			_objectMapper.convertValue(
 				_activityGroupsRestController.getActivityGroups(
-					null, null, null, 0, 20, null)),
+					null, null, null, 0, 20, null),
+				JSONObject.class),
 			true);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_activity_groups_expand_filter.json",
 				this),
-			new JSONObject(
+			_objectMapper.convertValue(
 				_activityGroupsRestController.getActivityGroups(
 					"activities,activities-count",
 					"((userId eq 'db1ed215-9ed2-46a4-90de-535604c02c65'))",
-					null, 0, 20, null)),
+					null, 0, 20, null),
+				JSONObject.class),
 			true);
 	}
 
@@ -88,5 +93,8 @@ public class ActivityGroupsRestControllerTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

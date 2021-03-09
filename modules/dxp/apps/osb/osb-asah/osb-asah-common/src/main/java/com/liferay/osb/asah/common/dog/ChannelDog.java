@@ -120,7 +120,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 		_deleteAssets(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 		_deleteData(
-			channelIds, elasticsearchInvoker, "activities", "activity-groups",
+			channelIds, elasticsearchInvoker, "activities",
 			"individual-segments");
 		_deleteData(
 			channelIds, _cerebroInfoElasticsearchInvoker, "blog-clicks",
@@ -130,6 +130,8 @@ public class ChannelDog extends BaseFaroInfoDog {
 			"user-sessions");
 		_deleteIndividualReferences(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
+
+		_activityGroupDog.deleteActivityGroups(new HashSet<>(channelIds));
 	}
 
 	public void deleteChannels(
@@ -565,6 +567,9 @@ public class ChannelDog extends BaseFaroInfoDog {
 	private static final String _CHANNEL_TYPE_MULTIPLE = "multiple";
 
 	private static final Log _log = LogFactory.getLog(ChannelDog.class);
+
+	@Autowired
+	private ActivityGroupDog _activityGroupDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

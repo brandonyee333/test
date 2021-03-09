@@ -200,7 +200,7 @@ public class IndividualActivityFieldsNaniteTest {
 				FaroInfoTestUtil.buildActivityJSONObject(
 					activityGroupJSONObject, assetJSONObject, channelId,
 					eventId, new String[0]),
-				applicationId, eventId, individualJSONObject.getString("id"));
+				applicationId, eventId, individualJSONObject.getLong("id"));
 		}
 	}
 

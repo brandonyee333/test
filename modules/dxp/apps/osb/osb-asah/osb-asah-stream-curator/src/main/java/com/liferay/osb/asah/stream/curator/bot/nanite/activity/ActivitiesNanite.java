@@ -16,6 +16,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
@@ -25,6 +26,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.model.ActivityGroup;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -38,6 +40,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -70,7 +73,7 @@ public class ActivitiesNanite implements Nanite {
 
 	public void addActivityJSONObject(
 			JSONObject activityJSONObject, String applicationId, String eventId,
-			String ownerId)
+			Long ownerId)
 		throws Exception {
 
 		_faroInfoActivityDog.addActivity(activityJSONObject);
@@ -81,7 +84,7 @@ public class ActivitiesNanite implements Nanite {
 				JSONUtil.put(
 					"channelId", activityJSONObject.get("channelId")
 				).put(
-					"ownerId", ownerId
+					"ownerId", String.valueOf(ownerId)
 				).put(
 					"projectId", ProjectIdThreadLocal.getProjectId()
 				).toString());
@@ -140,7 +143,7 @@ public class ActivitiesNanite implements Nanite {
 			String applicationId = analyticsEvent.getApplicationId();
 
 			_addActivityJSONObject(
-				_addActivityGroupJSONObject(analyticsEvent), analyticsEvent,
+				_addActivityGroup(analyticsEvent), analyticsEvent,
 				applicationId, _dataSourceAssetPKFieldNames.get(applicationId));
 		}
 		catch (Exception e) {
@@ -157,75 +160,38 @@ public class ActivitiesNanite implements Nanite {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	protected ElasticsearchInvoker faroInfoElasticsearchInvoker;
 
-	private JSONObject _addActivityGroupJSONObject(
-		AnalyticsEvent analyticsEvent) {
-
+	private ActivityGroup _addActivityGroup(AnalyticsEvent analyticsEvent) {
 		String channelId = analyticsEvent.getChannelId();
 		String dataSourceId = analyticsEvent.getDataSourceId();
-		String eventDateString = DateUtil.toUTCString(
-			analyticsEvent.getEventDate());
 
 		LocalDateTime eventLocalDateTime = DateUtil.toLocalDateTime(
 			analyticsEvent.getEventDate(), _timeZoneDog.getZoneId());
 
-		String dayUTCString = DateUtil.toUTCString(
+		Date dayDate = DateUtil.toUTCDate(
 			eventLocalDateTime.with(LocalTime.MIDNIGHT));
 
 		String userId = analyticsEvent.getUserId();
 
-		JSONObject activityGroupJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"activity-groups",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("activityType", "BROWSE")
-			).filter(
-				QueryBuilders.termQuery("channelId", channelId)
-			).filter(
-				QueryBuilders.termQuery("dataSourceId", dataSourceId)
-			).filter(
-				QueryBuilders.termQuery("day", dayUTCString)
-			).filter(
-				QueryBuilders.termQuery("userId", userId)
-			));
+		ActivityGroup activityGroup = _activityGroupDog.fetchActivityGroup(
+			"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
+			dayDate, userId);
 
-		if (activityGroupJSONObject != null) {
-			faroInfoElasticsearchInvoker.update(
-				"activity-groups", activityGroupJSONObject.getString("id"),
-				JSONUtil.put(
-					"endTime", eventDateString
-				).put(
-					"endTimeLocal", eventLocalDateTime
-				));
-
-			return activityGroupJSONObject;
+		if (activityGroup != null) {
+			return _activityGroupDog.updatedActivityGroup(
+				activityGroup.getId(), analyticsEvent.getEventDate(),
+				DateUtil.toUTCDate(eventLocalDateTime));
 		}
 
-		return faroInfoElasticsearchInvoker.add(
-			"activity-groups",
-			JSONUtil.put(
-				"activityType", "BROWSE"
-			).put(
-				"channelId", channelId
-			).put(
-				"dataSourceId", dataSourceId
-			).put(
-				"day", dayUTCString
-			).put(
-				"endTime", eventDateString
-			).put(
-				"endTimeLocal", eventLocalDateTime
-			).put(
-				"ownerId", _getOwnerId(analyticsEvent)
-			).put(
-				"startTime", eventDateString
-			).put(
-				"startTimeLocal", eventLocalDateTime
-			).put(
-				"userId", userId
-			));
+		return _activityGroupDog.addActivityGroup(
+			"BROWSE", Long.valueOf(channelId), Long.valueOf(dataSourceId),
+			dayDate, analyticsEvent.getEventDate(),
+			DateUtil.toUTCDate(eventLocalDateTime), _getOwnerId(analyticsEvent),
+			analyticsEvent.getEventDate(),
+			DateUtil.toUTCDate(eventLocalDateTime), userId);
 	}
 
 	private void _addActivityJSONObject(
-			JSONObject activityGroupJSONObject, AnalyticsEvent analyticsEvent,
+			ActivityGroup activityGroup, AnalyticsEvent analyticsEvent,
 			String applicationId, String dataSourceAssetPKFieldName)
 		throws Exception {
 
@@ -291,8 +257,6 @@ public class ActivitiesNanite implements Nanite {
 		String dayUTCString = DateUtil.toUTCString(
 			eventLocalDateTime.with(LocalTime.MIDNIGHT));
 
-		String ownerId = activityGroupJSONObject.getString("ownerId");
-
 		JSONObject activityJSONObject = JSONUtil.put(
 			"activityKey", applicationId + "#" + eventId + "#" + assetId
 		).put(
@@ -316,11 +280,11 @@ public class ActivitiesNanite implements Nanite {
 		).put(
 			"eventProperties", _getEventPropertiesJSONObject(analyticsEvent)
 		).put(
-			"groupId", activityGroupJSONObject.get("id")
+			"groupId", String.valueOf(activityGroup.getId())
 		).put(
 			"object", objectJSONObject
 		).put(
-			"ownerId", ownerId
+			"ownerId", String.valueOf(activityGroup.getOwnerId())
 		).put(
 			"startTime", eventDateString
 		).put(
@@ -329,14 +293,16 @@ public class ActivitiesNanite implements Nanite {
 			"userId", analyticsEvent.getUserId()
 		);
 
-		String sessionId = _getSessionId(analyticsEvent, ownerId);
+		String sessionId = _getSessionId(
+			analyticsEvent, activityGroup.getOwnerId());
 
 		if (sessionId != null) {
 			activityJSONObject.put("sessionId", sessionId);
 		}
 
 		addActivityJSONObject(
-			activityJSONObject, applicationId, eventId, ownerId);
+			activityJSONObject, applicationId, eventId,
+			activityGroup.getOwnerId());
 	}
 
 	private JSONObject _getAssetJSONObject(
@@ -583,13 +549,13 @@ public class ActivitiesNanite implements Nanite {
 		return MapUtil.getString(analyticsEvent.getContext(), "title");
 	}
 
-	private String _getOwnerId(AnalyticsEvent analyticsEvent) {
+	private Long _getOwnerId(AnalyticsEvent analyticsEvent) {
 		String ownerId = analyticsEvent.getIndividualId();
 
 		if ((ownerId != null) &&
 			_faroInfoElasticsearchInvoker.exists("individuals", ownerId)) {
 
-			return ownerId;
+			return Long.valueOf(ownerId);
 		}
 
 		JSONObject individualJSONObject =
@@ -598,7 +564,7 @@ public class ActivitiesNanite implements Nanite {
 				analyticsEvent.getUserId());
 
 		if (individualJSONObject != null) {
-			return individualJSONObject.getString("id");
+			return individualJSONObject.getLong("id");
 		}
 
 		throw new IllegalStateException(
@@ -645,9 +611,7 @@ public class ActivitiesNanite implements Nanite {
 		return eventPropertiesJSONObject.optString("pageViewActivityId", null);
 	}
 
-	private String _getSessionId(
-		AnalyticsEvent analyticsEvent, String ownerId) {
-
+	private String _getSessionId(AnalyticsEvent analyticsEvent, Long ownerId) {
 		JSONObject userSessionJSONObject =
 			_cerebroInfoElasticsearchInvoker.fetch(
 				"user-sessions",
@@ -664,7 +628,8 @@ public class ActivitiesNanite implements Nanite {
 						DateUtil.toUTCString(analyticsEvent.getEventDate())
 					)
 				).filter(
-					QueryBuilders.termQuery("individualId", ownerId)
+					QueryBuilders.termQuery(
+						"individualId", String.valueOf(ownerId))
 				).filter(
 					QueryBuilders.rangeQuery(
 						"lastEventDate"
@@ -702,6 +667,9 @@ public class ActivitiesNanite implements Nanite {
 				put("WebContent", "articleId");
 			}
 		};
+
+	@Autowired
+	private ActivityGroupDog _activityGroupDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

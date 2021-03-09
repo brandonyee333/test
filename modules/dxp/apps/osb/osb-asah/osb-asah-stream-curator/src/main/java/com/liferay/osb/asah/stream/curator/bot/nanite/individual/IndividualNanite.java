@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.individual;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
@@ -258,14 +259,8 @@ public class IndividualNanite implements Nanite {
 			QueryBuilders.termQuery("userId", userId)
 		).iterate();
 
-		_faroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.termQuery("userId", userId), true,
-			new Script(
-				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-				"ctx._source.ownerId = params.ownerId",
-				Collections.singletonMap(
-					"ownerId", individualJSONObject.getString("id"))),
-			"activity-groups");
+		_activityGroupDog.updateActivityGroup(
+			individualJSONObject.getLong("id"), userId);
 	}
 
 	private JSONObject _updateIndividual(
@@ -426,6 +421,9 @@ public class IndividualNanite implements Nanite {
 		PrometheusUtil.counter(
 			"stream_curator_identity_messages_count",
 			"The number of identity messages processed");
+
+	@Autowired
+	private ActivityGroupDog _activityGroupDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;

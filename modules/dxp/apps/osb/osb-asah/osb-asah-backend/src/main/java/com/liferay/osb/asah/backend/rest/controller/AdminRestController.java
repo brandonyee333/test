@@ -24,10 +24,12 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.ActivityGroup;
 import com.liferay.osb.asah.common.model.BlockedKeyword;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Preference;
+import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -94,7 +96,10 @@ public class AdminRestController extends BaseRestController {
 		@PathVariable String collectionName,
 		@PathVariable String weDeployDataServiceName) {
 
-		if (collectionName.equals("blocked-keywords")) {
+		if (collectionName.equals("activity-groups")) {
+			_activityGroupRepository.deleteAll();
+		}
+		else if (collectionName.equals("blocked-keywords")) {
 			_blockedKeywordRepository.deleteAll();
 		}
 		else if (collectionName.equals("channels")) {
@@ -155,7 +160,10 @@ public class AdminRestController extends BaseRestController {
 		@PathVariable String weDeployDataServiceName,
 		@RequestBody String json) {
 
-		if (collectionName.equals("blocked-keywords")) {
+		if (collectionName.equals("activity-groups")) {
+			_addActivityGroups(new JSONArray(json));
+		}
+		else if (collectionName.equals("blocked-keywords")) {
 			_addBlockedKeywords(new JSONArray(json));
 		}
 		else if (collectionName.equals("channels")) {
@@ -202,6 +210,17 @@ public class AdminRestController extends BaseRestController {
 			QueryBuilders.termsQuery("id", JSONUtil.toStringList(jsonArray)));
 
 		_nanitesHttp.run(jsonArray);
+	}
+
+	private void _addActivityGroups(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			ActivityGroup activityGroup = _objectMapper.convertValue(
+				jsonArray.getJSONObject(i), ActivityGroup.class);
+
+			activityGroup.setIsNew(true);
+
+			_activityGroupRepository.save(activityGroup);
+		}
 	}
 
 	private void _addBlockedKeywords(JSONArray jsonArray) {
@@ -326,6 +345,9 @@ public class AdminRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		AdminRestController.class);
+
+	@Autowired
+	private ActivityGroupRepository _activityGroupRepository;
 
 	@Autowired
 	private BlockedKeywordRepository _blockedKeywordRepository;
