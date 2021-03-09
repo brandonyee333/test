@@ -57,7 +57,7 @@ public class DataSourceRepositoryImpl {
 		_dslContext = dslContext;
 	}
 
-	public Long countDataSources(
+	public long countDataSources(
 		List<Long> channelIds, String credentialType, List<String> names,
 		String providerType, List<String> searchNames, List<String> states,
 		Boolean url, Boolean workspaceURL) {
@@ -71,8 +71,10 @@ public class DataSourceRepositoryImpl {
 			_getConditions(
 				channelIds, credentialType, names, providerType, searchNames,
 				states, url, workspaceURL)
-		).fetchOne(
+		).fetchOptional(
 			0, Long.class
+		).orElse(
+			0L
 		);
 	}
 

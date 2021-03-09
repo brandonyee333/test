@@ -35,7 +35,7 @@ import org.springframework.stereotype.Repository;
 public interface EventAttributeDefinitionRepository
 	extends CrudRepository<EventAttributeDefinition, Long> {
 
-	public Long countByNameContainingIgnoreCase(String name);
+	public long countByNameContainingIgnoreCase(String name);
 
 	public List<EventAttributeDefinition> findAll(Pageable pageable);
 

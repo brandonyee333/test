@@ -41,7 +41,7 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 	}
 
 	@Override
-	public Long countByNameContainingIgnoreCase(String name) {
+	public long countByNameContainingIgnoreCase(String name) {
 		throw new UnsupportedOperationException();
 	}
 

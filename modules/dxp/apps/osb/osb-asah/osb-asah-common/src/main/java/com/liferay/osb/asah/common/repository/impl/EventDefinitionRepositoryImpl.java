@@ -46,7 +46,7 @@ public class EventDefinitionRepositoryImpl {
 		_dslContext = dslContext;
 	}
 
-	public Long countEventDefinitions(
+	public long countEventDefinitions(
 		EventDefinitionType eventDefinitionType, String keyword) {
 
 		SelectSelectStep<Record1<Integer>> selectCount =
@@ -56,8 +56,10 @@ public class EventDefinitionRepositoryImpl {
 			"EventDefinition"
 		).where(
 			_getConditions(eventDefinitionType, keyword)
-		).fetchOne(
+		).fetchOptional(
 			0, Long.class
+		).orElse(
+			0L
 		);
 	}
 

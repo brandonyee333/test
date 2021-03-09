@@ -43,7 +43,7 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 	}
 
 	@Override
-	public Long countEventDefinitions(
+	public long countEventDefinitions(
 		EventDefinitionType eventDefinitionType, String keyword) {
 
 		throw new UnsupportedOperationException();

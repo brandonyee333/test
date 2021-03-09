@@ -36,7 +36,7 @@ import org.springframework.stereotype.Repository;
 public interface EventDefinitionRepository
 	extends CrudRepository<EventDefinition, Long> {
 
-	public Long countEventDefinitions(
+	public long countEventDefinitions(
 		EventDefinitionType eventDefinitionType, String keyword);
 
 	public List<EventDefinition> findAll(Pageable pageable);
