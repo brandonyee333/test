@@ -194,7 +194,6 @@ public class GraphQLConfiguration {
 		_wireGraphQLTypesProperties(
 			builder,
 			_scanAnnotatedGraphQLTypes("com.liferay.osb.asah.backend"));
-
 		_wireGraphQLTypesProperties(
 			builder,
 			_scanAnnotatedGraphQLTypes("com.liferay.osb.asah.common.dto"));
