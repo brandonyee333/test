@@ -17,11 +17,9 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.model.EventAttribute;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
-import com.liferay.osb.asah.common.model.EventAttributeDefinitionDataType;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionType;
-import com.liferay.osb.asah.common.util.Validator;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -72,8 +70,6 @@ public class AnalyticsEventStorageDog {
 					eventAttributeDefinition =
 						_eventAttributeDefinitionDog.
 							addEventAttributeDefinition(
-								_getEventAttributeDefinitionDataType(
-									propertyName, propertyValue),
 								null, null, eventDefinitionId, propertyName,
 								propertyValue);
 				}
@@ -119,33 +115,6 @@ public class AnalyticsEventStorageDog {
 		catch (Exception e) {
 			_log.error("Unable to store event", e);
 		}
-	}
-
-	private EventAttributeDefinitionDataType
-		_getEventAttributeDefinitionDataType(
-			String propertyName, String propertyValue) {
-
-		if (Validator.isBoolean(propertyValue)) {
-			return EventAttributeDefinitionDataType.BOOLEAN;
-		}
-
-		if (Validator.isDate(propertyValue)) {
-			return EventAttributeDefinitionDataType.DATE;
-		}
-
-		if (Validator.isNumber(propertyValue)) {
-			String lowerCasePropertyName = propertyName.toLowerCase();
-
-			if (lowerCasePropertyName.contains("duration") &&
-				!propertyValue.startsWith("-")) {
-
-				return EventAttributeDefinitionDataType.DURATION;
-			}
-
-			return EventAttributeDefinitionDataType.NUMBER;
-		}
-
-		return EventAttributeDefinitionDataType.STRING;
 	}
 
 	private Set<Long> _getEventDefinitionIds(

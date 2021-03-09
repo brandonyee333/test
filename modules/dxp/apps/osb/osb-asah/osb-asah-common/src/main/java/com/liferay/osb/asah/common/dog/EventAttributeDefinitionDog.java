@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.Validator;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +42,6 @@ import org.springframework.stereotype.Component;
 public class EventAttributeDefinitionDog {
 
 	public EventAttributeDefinition addEventAttributeDefinition(
-		EventAttributeDefinitionDataType eventAttributeDefinitionDataType,
 		String description, String displayName, Long eventDefinitionId,
 		String name, String sampleValue) {
 
@@ -52,7 +52,8 @@ public class EventAttributeDefinitionDog {
 		EventAttributeDefinition eventAttributeDefinition =
 			new EventAttributeDefinition();
 
-		eventAttributeDefinition.setDataType(eventAttributeDefinitionDataType);
+		eventAttributeDefinition.setDataType(
+			_getEventAttributeDefinitionDataType(name, sampleValue));
 		eventAttributeDefinition.setDescription(description);
 		eventAttributeDefinition.setDisplayName(displayName);
 		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
@@ -161,6 +162,33 @@ public class EventAttributeDefinitionDog {
 
 		return _eventAttributeDefinitionRepository.save(
 			eventAttributeDefinition);
+	}
+
+	private EventAttributeDefinitionDataType
+		_getEventAttributeDefinitionDataType(
+			String propertyName, String propertyValue) {
+
+		if (Validator.isBoolean(propertyValue)) {
+			return EventAttributeDefinitionDataType.BOOLEAN;
+		}
+
+		if (Validator.isDate(propertyValue)) {
+			return EventAttributeDefinitionDataType.DATE;
+		}
+
+		if (Validator.isNumber(propertyValue)) {
+			String lowerCasePropertyName = propertyName.toLowerCase();
+
+			if (lowerCasePropertyName.contains("duration") &&
+				!propertyValue.startsWith("-")) {
+
+				return EventAttributeDefinitionDataType.DURATION;
+			}
+
+			return EventAttributeDefinitionDataType.NUMBER;
+		}
+
+		return EventAttributeDefinitionDataType.STRING;
 	}
 
 	private void _validate(Sort sort) {
