@@ -20,7 +20,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * @author Rachael Koestartyo
@@ -42,50 +42,11 @@ public class Validator {
 		}
 	}
 
-	public static boolean isDigit(char c) {
-		int x = c;
-
-		if ((x >= _DIGIT_BEGIN) && (x <= _DIGIT_END)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public static boolean isDouble(String value) {
-		if (StringUtils.isBlank(value)) {
-			return false;
-		}
-
-		try {
-			Double.parseDouble(value.trim());
-
-			return true;
-		}
-		catch (NumberFormatException numberFormatException) {
-			return false;
-		}
-	}
-
 	public static boolean isNumber(String value) {
-		if (StringUtils.isBlank(value)) {
-			return false;
-		}
-
-		for (char c : value.toCharArray()) {
-			if (!isDigit(c)) {
-				return false;
-			}
-		}
-
-		return true;
+		return NumberUtils.isParsable(value);
 	}
 
 	private static final String[] _BOOLEANS = {"false", "true"};
-
-	private static final int _DIGIT_BEGIN = 48;
-
-	private static final int _DIGIT_END = 57;
 
 	private static final DateFormat _dateFormat = new SimpleDateFormat(
 		DateUtil.PATTERN_ISO_8601);

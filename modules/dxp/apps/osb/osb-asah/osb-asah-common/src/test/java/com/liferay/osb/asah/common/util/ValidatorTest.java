@@ -58,32 +58,14 @@ public class ValidatorTest {
 	}
 
 	@Test
-	public void testIsDigit() {
-		Assert.assertFalse(Validator.isDigit('$'));
-		Assert.assertFalse(Validator.isDigit('&'));
-
-		for (int x = 48; x <= 57; x++) {
-			Assert.assertTrue(Validator.isDigit((char)x));
-		}
-	}
-
-	@Test
-	public void testIsDouble() {
-		Assert.assertFalse(Validator.isDouble("$59.00"));
-		Assert.assertFalse(Validator.isDouble("123,456.789"));
-		Assert.assertFalse(Validator.isDouble("123.456.789"));
-		Assert.assertFalse(Validator.isDouble("double"));
-		Assert.assertTrue(Validator.isDouble(".9348234"));
-		Assert.assertTrue(Validator.isDouble("1234324234.56"));
-		Assert.assertTrue(Validator.isDouble("3.14"));
-	}
-
-	@Test
 	public void testIsNumber() {
 		Assert.assertFalse(Validator.isNumber("123a"));
 		Assert.assertFalse(Validator.isNumber("abc"));
 		Assert.assertTrue(Validator.isNumber("00000000000"));
 		Assert.assertTrue(Validator.isNumber("30293094040"));
+		Assert.assertTrue(Validator.isNumber("30293094040"));
+		Assert.assertTrue(Validator.isNumber("-1234"));
+		Assert.assertTrue(Validator.isNumber("1234.95"));
 	}
 
 }

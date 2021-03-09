@@ -142,7 +142,7 @@ public class AnalyticsEventStorageDog {
 			return EventAttributeDefinitionDataType.DURATION;
 		}
 
-		if (Validator.isDouble(value) || Validator.isNumber(value)) {
+		if (Validator.isNumber(value)) {
 			return EventAttributeDefinitionDataType.NUMBER;
 		}
 
