@@ -168,6 +168,12 @@ public class EventAttributeDefinitionDog {
 		_getEventAttributeDefinitionDataType(
 			String propertyName, String propertyValue) {
 
+		if (StringUtils.isEmpty(propertyValue)) {
+			throw new IllegalArgumentException(
+				"Unable to determine data type of null value for property" +
+					propertyName);
+		}
+
 		if (Validator.isBoolean(propertyValue)) {
 			return EventAttributeDefinitionDataType.BOOLEAN;
 		}
