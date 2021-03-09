@@ -41,20 +41,20 @@ public class ValidatorTest {
 		Assert.assertFalse(Validator.isDate("2020-33-39T10:00:00Z"));
 		Assert.assertFalse(Validator.isDate("2020.12.12T09:20:00.000Z"));
 		Assert.assertFalse(Validator.isDate("23429348239483"));
-		Assert.assertTrue(Validator.isDate("01-01-2020"));
-		Assert.assertTrue(Validator.isDate("12-31-2020"));
-		Assert.assertTrue(Validator.isDate("12-31-2020T09:30:00Z"));
-		Assert.assertTrue(Validator.isDate("12/31/2020"));
-		Assert.assertTrue(Validator.isDate("12/31/2020T09:30:00Z"));
-		Assert.assertTrue(Validator.isDate("13-12-2020"));
-		Assert.assertTrue(Validator.isDate("2020 12 31 09:30:10+0130"));
-		Assert.assertTrue(Validator.isDate("2020 12 31T09:30:00.100Z"));
-		Assert.assertTrue(Validator.isDate("2020-01-01"));
+		Assert.assertFalse(Validator.isDate("01-01-2020"));
+		Assert.assertFalse(Validator.isDate("12-31-2020"));
+		Assert.assertFalse(Validator.isDate("12-31-2020T09:30:00Z"));
+		Assert.assertFalse(Validator.isDate("12/31/2020"));
+		Assert.assertFalse(Validator.isDate("12/31/2020T09:30:00Z"));
+		Assert.assertFalse(Validator.isDate("13-12-2020"));
+		Assert.assertFalse(Validator.isDate("2020 12 31 09:30:10+0130"));
+		Assert.assertFalse(Validator.isDate("2020 12 31T09:30:00.100Z"));
+		Assert.assertFalse(Validator.isDate("2020-01-01"));
+		Assert.assertFalse(Validator.isDate("20200101"));
+		Assert.assertFalse(Validator.isDate("20201231T09:30:00.100Z"));
+		Assert.assertFalse(Validator.isDate("31-12-2020T09:30:00Z"));
 		Assert.assertTrue(Validator.isDate("2020-12-31T09:30:00.000Z"));
 		Assert.assertTrue(Validator.isDate("2020-12-31T09:30:00.100Z"));
-		Assert.assertTrue(Validator.isDate("20200101"));
-		Assert.assertTrue(Validator.isDate("20201231T09:30:00.100Z"));
-		Assert.assertTrue(Validator.isDate("31-12-2020T09:30:00Z"));
 	}
 
 	@Test

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.date;
 
-import com.liferay.osb.asah.common.util.Validator;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,14 +27,11 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Brian Wing Shun Chan
@@ -175,127 +170,6 @@ public class DateUtil {
 		}
 
 		return deltaWeeks;
-	}
-
-	public static DateTimeFormatter getISOFormat(
-		String datePattern, String dateString, String timeOffset) {
-
-		String pattern = "";
-
-		if (dateString.length() == 8) {
-			pattern = datePattern;
-		}
-		else if (dateString.length() == 12) {
-			pattern = datePattern + "HHmm";
-		}
-		else if (dateString.length() == 13) {
-			pattern = datePattern + "'T'HHmm";
-		}
-		else if (dateString.length() == 14) {
-			pattern = datePattern + "HHmmss";
-		}
-		else if (dateString.length() == 15) {
-			pattern = datePattern + "'T'HHmmss";
-		}
-		else if (dateString.length() == 17) {
-			pattern = datePattern + "HHmmssSSS";
-		}
-		else if (dateString.length() == 18) {
-			pattern = datePattern + "'T'HHmmssSSS";
-		}
-
-		if ((dateString.length() > 8) && !StringUtils.isBlank(timeOffset)) {
-			if (StringUtils.equals(timeOffset, "Z")) {
-				pattern = pattern + "'Z'";
-			}
-			else {
-				if (timeOffset.length() == 5) {
-					pattern = pattern + "ZZ";
-				}
-				else if (timeOffset.length() == 6) {
-					pattern = pattern + "ZZZ";
-				}
-			}
-		}
-
-		return DateTimeFormatter.ofPattern(pattern);
-	}
-
-	public static LocalDateTime getLocalDateTime(String dateString) {
-		String modifiedDateString = dateString;
-
-		String timeOffset = "";
-
-		int timeOffsetIndex = getTimeOffsetIndex(modifiedDateString);
-
-		if (timeOffsetIndex > -1) {
-			timeOffset = modifiedDateString.substring(timeOffsetIndex);
-
-			timeOffset = timeOffset.replaceAll(":", "");
-
-			modifiedDateString = modifiedDateString.substring(
-				0, timeOffsetIndex);
-		}
-
-		modifiedDateString = modifiedDateString.replaceAll("[-/:. ]", "");
-
-		DateTimeFormatter dateTimeFormatter = null;
-
-		if (Validator.isDateDayMonthYear(dateString)) {
-			dateTimeFormatter = getISOFormat(
-				"ddMMyyyy", modifiedDateString, timeOffset);
-		}
-		else if (Validator.isDateMonthDayYear(dateString)) {
-			dateTimeFormatter = getISOFormat(
-				"MMddyyyy", modifiedDateString, timeOffset);
-		}
-		else if (Validator.isDateYearDayMonth(dateString)) {
-			dateTimeFormatter = getISOFormat(
-				"yyyyddMM", modifiedDateString, timeOffset);
-		}
-		else if (Validator.isDateYearMonthDay(dateString)) {
-			dateTimeFormatter = getISOFormat(
-				"yyyyMMdd", modifiedDateString, timeOffset);
-		}
-
-		try {
-			TemporalAccessor temporalAccessor = dateTimeFormatter.parseBest(
-				modifiedDateString + timeOffset, ZonedDateTime::from,
-				LocalDateTime::from, LocalDate::from);
-
-			if (temporalAccessor instanceof ZonedDateTime) {
-				ZonedDateTime zonedDateTime = (ZonedDateTime)temporalAccessor;
-
-				return zonedDateTime.toLocalDateTime();
-			}
-			else if (temporalAccessor instanceof LocalDateTime) {
-				return (LocalDateTime)temporalAccessor;
-			}
-			else if (temporalAccessor instanceof LocalDate) {
-				LocalDate localDate = (LocalDate)temporalAccessor;
-
-				return localDate.atTime(LocalTime.MIDNIGHT);
-			}
-		}
-		catch (Exception exception) {
-			throw exception;
-		}
-
-		return null;
-	}
-
-	public static int getTimeOffsetIndex(String value) {
-		int timeOffsetIndex = value.indexOf("Z");
-
-		if (timeOffsetIndex == -1) {
-			timeOffsetIndex = value.indexOf("+");
-		}
-
-		if (timeOffsetIndex == -1) {
-			timeOffsetIndex = value.indexOf("-", 8);
-		}
-
-		return timeOffsetIndex;
 	}
 
 	public static String minusMinutes(
