@@ -62,6 +62,7 @@ public class AnalyticsEventStorageDog {
 
 			for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
 				String propertyName = entry.getKey();
+				String propertyValue = entry.getValue();
 
 				EventAttributeDefinition eventAttributeDefinition =
 					_eventAttributeDefinitionDog.
@@ -72,9 +73,9 @@ public class AnalyticsEventStorageDog {
 						_eventAttributeDefinitionDog.
 							addEventAttributeDefinition(
 								_getEventAttributeDefinitionDataType(
-									propertyName, entry.getValue()),
+									propertyName, propertyValue),
 								null, null, eventDefinitionId, propertyName,
-								entry.getValue());
+								propertyValue);
 				}
 				else {
 					Long eventAttributeDefinitionId =
@@ -93,7 +94,7 @@ public class AnalyticsEventStorageDog {
 
 						eventDefinitionEventAttributeDefinitions.add(
 							new EventDefinitionEventAttributeDefinition(
-								eventDefinitionId, entry.getValue()));
+								eventDefinitionId, propertyValue));
 
 						_eventAttributeDefinitionDog.
 							updateEventAttributeDefinition(
@@ -104,7 +105,7 @@ public class AnalyticsEventStorageDog {
 
 				eventAttributes.add(
 					new EventAttribute(
-						entry.getValue(), eventAttributeDefinition.getId()));
+						propertyValue, eventAttributeDefinition.getId()));
 			}
 
 			_eventDog.addEvent(
@@ -122,21 +123,21 @@ public class AnalyticsEventStorageDog {
 
 	private EventAttributeDefinitionDataType
 		_getEventAttributeDefinitionDataType(
-			String propertyName, String value) {
+			String propertyName, String propertyValue) {
 
-		if (Validator.isBoolean(value)) {
+		if (Validator.isBoolean(propertyValue)) {
 			return EventAttributeDefinitionDataType.BOOLEAN;
 		}
 
-		if (Validator.isDate(value)) {
+		if (Validator.isDate(propertyValue)) {
 			return EventAttributeDefinitionDataType.DATE;
 		}
 
-		if (Validator.isNumber(value)) {
+		if (Validator.isNumber(propertyValue)) {
 			String lowerCasePropertyName = propertyName.toLowerCase();
 
 			if (lowerCasePropertyName.contains("duration") &&
-				!value.startsWith("-")) {
+				!propertyValue.startsWith("-")) {
 
 				return EventAttributeDefinitionDataType.DURATION;
 			}
