@@ -1,3 +1,17 @@
+CREATE TABLE IF NOT EXISTS ActivityGroup (
+	id BIGSERIAL PRIMARY KEY,
+	activityType TEXT,
+	channelId BIGINT,
+	dataSourceId BIGINT,
+	dayDate TIMESTAMPTZ,
+	endDate TIMESTAMPTZ,
+	endLocalDate TIMESTAMPTZ,
+	ownerId BIGINT,
+	startDate TIMESTAMPTZ,
+	startLocalDate TIMESTAMPTZ,
+	userId TEXT
+);
+
 CREATE TABLE IF NOT EXISTS BlockedKeyword (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
