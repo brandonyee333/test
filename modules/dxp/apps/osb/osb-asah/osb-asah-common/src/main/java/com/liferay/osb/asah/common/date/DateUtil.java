@@ -342,6 +342,12 @@ public class DateUtil {
 		return dateFormat.format(new Date(Long.parseLong(dateString)));
 	}
 
+	public static Date toUTCDate(LocalDateTime localDateTime) {
+		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
+
+		return Date.from(zonedDateTime.toInstant());
+	}
+
 	public static Date toUTCDate(String dateString) throws ParseException {
 		DateFormat dateFormat = _newSimpleDateFormat();
 
