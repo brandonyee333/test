@@ -80,6 +80,7 @@ public class EventAttribute implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
+	@Override
 	public Long getId() {
 		return _id;
 	}
@@ -90,6 +91,7 @@ public class EventAttribute implements Persistable<Long> {
 			_eventAttributeDefinitionId, _attributeValue, _eventId, _id);
 	}
 
+	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {
 			return true;

@@ -97,6 +97,7 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public List<EventAttributeDefinition> findByEventDefinitionId(
 		Long eventDefinitionId) {
 

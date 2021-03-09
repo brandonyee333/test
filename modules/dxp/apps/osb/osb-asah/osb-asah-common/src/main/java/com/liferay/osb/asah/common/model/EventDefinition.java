@@ -74,6 +74,7 @@ public class EventDefinition implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
+	@Override
 	public Long getId() {
 		return _id;
 	}
@@ -93,6 +94,7 @@ public class EventDefinition implements Persistable<Long> {
 		return Objects.hash(_description, _displayName, _type, _id, _name);
 	}
 
+	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {
 			return true;
