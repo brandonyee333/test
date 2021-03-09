@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
@@ -790,9 +788,6 @@ public class DataSourceDog {
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceElasticsearchInvoker;
