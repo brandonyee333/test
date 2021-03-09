@@ -104,24 +104,6 @@ public class ActivityGroupsRestController extends BaseRestController {
 		return responseJSONObject.toString();
 	}
 
-	@GetMapping(params = "apply")
-	public String getActivityGroupTransformations(
-			@RequestParam String apply,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
-
-		return toTransformationGetResponse(
-			"activity-groups", page,
-			FilterStringToQueryBuilderConverter.convert(
-				filterString, _faroInfoActivitiesFilterStringConverterHelper),
-			size, null, null,
-			new TermsAggregationTransformationJSONArrayFunction(apply, null),
-			"activity-group-transformations");
-	}
-
 	private void _addExpansion(
 			JSONArray activityGroupsJSONArray, String expand,
 			String filterString)

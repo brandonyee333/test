@@ -83,27 +83,6 @@ public class ActivityGroupsRestControllerTest {
 			true);
 	}
 
-	@ElasticsearchIndex(
-		name = "activities", resourcePath = "activities.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@ElasticsearchIndex(
-		name = "activity-groups", resourcePath = "activity_groups.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@Test
-	public void testGetActivityGroupTransformations() throws Exception {
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToJSONObject(
-				"dependencies/expected_activity_group_transformations.json",
-				this),
-			new JSONObject(
-				_activityGroupsRestController.getActivityGroupTransformations(
-					"groupby((activityType))", "activityType eq 'BROWSE'", 0,
-					20)),
-			true);
-	}
-
 	@Autowired
 	private ActivityGroupsRestController _activityGroupsRestController;
 
