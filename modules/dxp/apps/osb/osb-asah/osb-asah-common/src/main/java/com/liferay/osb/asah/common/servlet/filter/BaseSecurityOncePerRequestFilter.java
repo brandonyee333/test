@@ -132,7 +132,7 @@ public abstract class BaseSecurityOncePerRequestFilter
 		}
 
 		if (ServiceConstants.isInternalServiceURL(
-				ServletRequestUtil.getOriginalURL(httpServletRequest))) {
+				ServletRequestUtil.getURL(httpServletRequest))) {
 
 			return true;
 		}

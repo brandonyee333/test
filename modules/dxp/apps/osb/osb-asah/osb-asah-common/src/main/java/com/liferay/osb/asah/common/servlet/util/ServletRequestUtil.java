@@ -22,20 +22,15 @@ import javax.servlet.http.HttpServletRequest;
 public class ServletRequestUtil {
 
 	public static String getOriginalURL(HttpServletRequest httpServletRequest) {
-		StringBuilder sb = new StringBuilder();
+		return _getURL(
+			_getScheme(httpServletRequest), _getServerName(httpServletRequest),
+			_getServerPort(httpServletRequest));
+	}
 
-		sb.append(_getScheme(httpServletRequest));
-		sb.append("://");
-		sb.append(_getServerName(httpServletRequest));
-
-		int serverPort = _getServerPort(httpServletRequest);
-
-		if (serverPort > 0) {
-			sb.append(":");
-			sb.append(serverPort);
-		}
-
-		return sb.toString();
+	public static String getURL(HttpServletRequest httpServletRequest) {
+		return _getURL(
+			httpServletRequest.getScheme(), httpServletRequest.getServerName(),
+			httpServletRequest.getServerPort());
 	}
 
 	private static String _getScheme(HttpServletRequest httpServletRequest) {
@@ -62,22 +57,30 @@ public class ServletRequestUtil {
 	}
 
 	private static int _getServerPort(HttpServletRequest httpServletRequest) {
-		int serverPort = 0;
-
 		String forwardedPort = httpServletRequest.getHeader("X-Forwarded-Port");
 
 		if (forwardedPort != null) {
-			serverPort = Integer.parseInt(forwardedPort);
-		}
-		else {
-			serverPort = httpServletRequest.getServerPort();
+			return Integer.parseInt(forwardedPort);
 		}
 
-		if ((serverPort == 80) || (serverPort == 443)) {
-			return -1;
+		return httpServletRequest.getServerPort();
+	}
+
+	private static String _getURL(
+		String scheme, String serverName, int serverPort) {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(scheme);
+		sb.append("://");
+		sb.append(serverName);
+
+		if ((serverPort != 80) && (serverPort != 443)) {
+			sb.append(":");
+			sb.append(serverPort);
 		}
 
-		return serverPort;
+		return sb.toString();
 	}
 
 }
