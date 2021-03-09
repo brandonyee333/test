@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.rest.controller.util.FilterUtil;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
@@ -29,13 +30,8 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
-import com.liferay.osb.asah.common.util.ListUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -117,7 +113,7 @@ public class DataSourcesRestController extends BaseRestController {
 		return dataSourceJSONObject.toString();
 	}
 
-	@GetMapping(params = "!apply")
+	@GetMapping
 	public PageDTO<DataSourceDTO> getDataSources(
 			@RequestParam(name = "filter", required = false)
 				String filterString,
@@ -127,15 +123,15 @@ public class DataSourcesRestController extends BaseRestController {
 		throws Exception {
 
 		Page<DataSource> dataSources = _dataSourceDog.getDataSources(
-			ListUtil.map(
-				_getValues(filterString, "channelId", false), Long::valueOf),
-			_getValue(filterString, "credentials/type"),
-			_getValues(filterString, "name", false),
-			_getValue(filterString, "provider/type"),
-			_getValues(filterString, "name", true),
-			_getValues(filterString, "state", false),
-			_isNull(filterString, "url"), _isNull(filterString, "workspaceURL"),
-			page, size, sorts);
+			FilterUtil.getLongValues(filterString, "channelId", false),
+			FilterUtil.getString(filterString, "credentials/type"),
+			FilterUtil.getStringValues(filterString, "name", false),
+			FilterUtil.getString(filterString, "provider/type"),
+			FilterUtil.getStringValues(filterString, "name", true),
+			FilterUtil.getStringValues(filterString, "state", false),
+			FilterUtil.getBoolean(filterString, "url"),
+			FilterUtil.getBoolean(filterString, "workspaceURL"), page, size,
+			sorts);
 
 		return _toPageDTO(
 			dataSources.map(
@@ -680,86 +676,6 @@ public class DataSourcesRestController extends BaseRestController {
 		).put(
 			"totalOperations", totalOperations * totalOperationsMultiplier
 		);
-	}
-
-	private String _getValue(String filter, String key) {
-		List<String> values = _getValues(filter, key, false);
-
-		if ((values == null) || values.isEmpty()) {
-			return null;
-		}
-
-		return values.get(0);
-	}
-
-	private List<String> _getValues(String filter, List<String> keys) {
-		if (filter == null) {
-			return null;
-		}
-
-		List<String> values = new ArrayList<>();
-
-		for (String key : keys) {
-			while (filter.contains(key)) {
-				int keyIndex = filter.indexOf(key);
-
-				int valueIndex = keyIndex + key.length();
-
-				String value = filter.substring(valueIndex);
-
-				if (value.indexOf("'") == 0) {
-					value = value.substring(value.indexOf("'") + 1);
-
-					value = value.substring(0, value.indexOf("'"));
-
-					values.add(value);
-
-					valueIndex += value.length() + 2;
-				}
-				else if (value.indexOf("null") == 0) {
-					values.add("null");
-
-					valueIndex += 5;
-				}
-				else if (value.indexOf("[") == 0) {
-					value = value.substring(value.indexOf("[") + 1);
-
-					value = value.substring(0, value.indexOf("]"));
-
-					Collections.addAll(values, value.split(","));
-
-					valueIndex += value.length() + 2;
-				}
-
-				filter = filter.replace(
-					filter.substring(keyIndex, valueIndex), "");
-			}
-		}
-
-		if (values.isEmpty()) {
-			return null;
-		}
-
-		return values;
-	}
-
-	private List<String> _getValues(String filter, String key, boolean search) {
-		if (search) {
-			return _getValues(filter, Arrays.asList("contains(" + key + ","));
-		}
-
-		return _getValues(
-			filter, Arrays.asList(" " + key + " eq ", "(" + key + " eq "));
-	}
-
-	private boolean _isNull(String filter, String key) {
-		List<String> values = _getValues(filter, key, false);
-
-		if ((values == null) || values.isEmpty()) {
-			return false;
-		}
-
-		return true;
 	}
 
 	private void _refreshConfiguration(DataSource dataSource) throws Exception {
