@@ -81,7 +81,7 @@ public class ProjectIdThreadLocal {
 			_log.debug("setProjectId " + projectId);
 		}
 
-		if ((projectId == null) || !projectId.matches(_PROJECT_ID_REGEX)) {
+		if ((projectId == null) || !projectId.matches("^[0-9A-Za-z]+$")) {
 			throw new InvalidProjectIdException();
 		}
 
@@ -89,8 +89,6 @@ public class ProjectIdThreadLocal {
 
 		MDC.put("osbAsahProjectId", projectId);
 	}
-
-	private static final String _PROJECT_ID_REGEX = "^[0-9A-Za-z]+$";
 
 	private static final Log _log = LogFactory.getLog(
 		ProjectIdThreadLocal.class);
