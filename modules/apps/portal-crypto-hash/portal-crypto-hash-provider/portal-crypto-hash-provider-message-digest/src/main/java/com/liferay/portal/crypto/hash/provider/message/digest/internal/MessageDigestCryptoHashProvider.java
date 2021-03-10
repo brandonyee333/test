@@ -22,32 +22,42 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * @author Arthur Chan
  */
 public class MessageDigestCryptoHashProvider implements CryptoHashProvider {
 
-	public MessageDigestCryptoHashProvider() throws NoSuchAlgorithmException {
+	public MessageDigestCryptoHashProvider(String cryptoHashProviderFactoryName)
+		throws NoSuchAlgorithmException {
+
+		_cryptoHashProviderFactoryName = cryptoHashProviderFactoryName;
+
 		_messageDigest = MessageDigest.getInstance("SHA-256");
+	}
+
+	public MessageDigestCryptoHashProvider(
+			String cryptoHashProviderFactoryName,
+			Map<String, ?> cryptoHashProviderProperties)
+		throws NoSuchAlgorithmException {
+
+		_cryptoHashProviderFactoryName = cryptoHashProviderFactoryName;
+
+		_messageDigest = MessageDigest.getInstance(
+			(String)cryptoHashProviderProperties.get("algorithm"));
 	}
 
 	@Override
 	public CryptoHashProviderResponse generate(byte[] salt, byte[] input) {
 		return new CryptoHashProviderResponse(
-			_CRYPTO_HASH_PROVIDER_NAME,
+			_cryptoHashProviderFactoryName,
 			Collections.singletonMap(
 				"algorithm", _messageDigest.getAlgorithm()),
 			_messageDigest.digest(ArrayUtil.append(salt, input)));
 	}
 
-	@Override
-	public String getCryptoHashProviderName() {
-		return _CRYPTO_HASH_PROVIDER_NAME;
-	}
-
-	private static final String _CRYPTO_HASH_PROVIDER_NAME = "MessageDigest";
-
+	private final String _cryptoHashProviderFactoryName;
 	private final MessageDigest _messageDigest;
 
 }
