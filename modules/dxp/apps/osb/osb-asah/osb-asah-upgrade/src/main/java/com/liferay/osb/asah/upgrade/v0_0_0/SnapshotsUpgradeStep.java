@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.upgrade.v0_0_0;
 
-import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,12 +39,12 @@ public class SnapshotsUpgradeStep implements UpgradeStep {
 
 		try {
 			_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
-				ServiceConstants.LCP_PROJECT_ID);
+				ProjectIdThreadLocal.getProjectId());
 		}
 		catch (Exception e) {
 			_log.error(
 				"Unable to create snapshot lifecycle policy for project " +
-					ServiceConstants.LCP_PROJECT_ID,
+					ProjectIdThreadLocal.getProjectId(),
 				e);
 		}
 	}
