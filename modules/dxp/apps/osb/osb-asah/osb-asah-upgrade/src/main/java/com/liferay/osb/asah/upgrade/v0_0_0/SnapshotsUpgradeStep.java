@@ -19,6 +19,8 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,9 +37,20 @@ public class SnapshotsUpgradeStep implements UpgradeStep {
 			return;
 		}
 
-		_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
-			ServiceConstants.LCP_PROJECT_ID);
+		try {
+			_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
+				ServiceConstants.LCP_PROJECT_ID);
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to create snapshot lifecycle policy for project " +
+					ServiceConstants.LCP_PROJECT_ID,
+				e);
+		}
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		SnapshotsUpgradeStep.class);
 
 	@Autowired
 	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;
