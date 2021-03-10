@@ -12,6 +12,14 @@ CREATE TABLE IF NOT EXISTS ActivityGroup (
 	userId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS AsahTask (
+	id BIGSERIAL PRIMARY KEY,
+	className TEXT,
+	context TEXT,
+	cronExpression TEXT,
+	projectId TEXT
+);
+
 CREATE TABLE IF NOT EXISTS BlockedKeyword (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
