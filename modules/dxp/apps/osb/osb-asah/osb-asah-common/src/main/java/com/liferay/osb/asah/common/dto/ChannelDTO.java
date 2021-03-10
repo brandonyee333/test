@@ -35,7 +35,7 @@ import java.util.Set;
  * @author Inácio Nery
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonRootName("channel")
+@JsonRootName("channels")
 public class ChannelDTO {
 
 	public ChannelDTO() {
