@@ -226,10 +226,7 @@ public class HotDeployImpl implements HotDeploy {
 				_log.info("Deploying " + servletContextName + " from queue");
 			}
 
-			for (int i = 0; i < _hotDeployListeners.size(); i++) {
-				HotDeployListener hotDeployListener = _hotDeployListeners.get(
-					i);
-
+			for (HotDeployListener hotDeployListener : _hotDeployListeners) {
 				PortletClassLoaderUtil.setServletContextName(
 					hotDeployEvent.getServletContextName());
 
