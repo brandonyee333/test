@@ -19,14 +19,16 @@ import com.liferay.portal.crypto.hash.spi.CryptoHashProviderResponse;
 
 import java.nio.charset.StandardCharsets;
 
-import java.util.HashMap;
-
 import jodd.crypt.BCrypt;
 
 /**
  * @author Arthur Chan
  */
 public class BCryptCryptoHashProvider implements CryptoHashProvider {
+
+	public BCryptCryptoHashProvider(String cryptoHashProviderFactoryName) {
+		_cryptoHashProviderFactoryName = cryptoHashProviderFactoryName;
+	}
 
 	@Override
 	public CryptoHashProviderResponse generate(byte[] salt, byte[] input) {
@@ -35,7 +37,7 @@ public class BCryptCryptoHashProvider implements CryptoHashProvider {
 			new String(salt, StandardCharsets.US_ASCII));
 
 		return new CryptoHashProviderResponse(
-			_CRYPTO_HASH_PROVIDER_NAME, new HashMap<>(),
+			_cryptoHashProviderFactoryName, null,
 			hashedPassword.getBytes(StandardCharsets.US_ASCII));
 	}
 
@@ -46,11 +48,6 @@ public class BCryptCryptoHashProvider implements CryptoHashProvider {
 		return salt.getBytes(StandardCharsets.US_ASCII);
 	}
 
-	@Override
-	public String getCryptoHashProviderName() {
-		return _CRYPTO_HASH_PROVIDER_NAME;
-	}
-
-	private static final String _CRYPTO_HASH_PROVIDER_NAME = "BCrypt";
+	private final String _cryptoHashProviderFactoryName;
 
 }
