@@ -40,6 +40,7 @@
 		"id": "310746568901734556",
 		"individualId": "345085958344987904",
 		"normalizedEventDate": 1531094400000,
+		"projectId": "test",
 		"userId": "07061c40-830b-11e8-b113-594c830c2d34"
 	},
 	{
@@ -82,6 +83,7 @@
 		"id": "310746568901734557",
 		"individualId": "345085958344987904",
 		"normalizedEventDate": 1531094400000,
+		"projectId": "test",
 		"userId": "07061c40-830b-11e8-b113-594c830c2d34"
 	},
 	{
@@ -125,6 +127,7 @@
 		"id": "310746568901734558",
 		"individualId": "345085958344987904",
 		"normalizedEventDate": 1531094400000,
+		"projectId": "test",
 		"userId": "07061c40-830b-11e8-b113-594c830c2d34"
 	}
 ]

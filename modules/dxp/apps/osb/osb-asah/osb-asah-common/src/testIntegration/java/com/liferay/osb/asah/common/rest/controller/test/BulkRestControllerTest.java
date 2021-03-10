@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.rest.controller.test;
 
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -81,6 +82,8 @@ public class BulkRestControllerTest {
 						))))
 		).contentType(
 			"application/json"
+		).header(
+			HeaderConstants.PROJECT_ID, "test"
 		);
 
 		requestSpecification.port(_serverPort);
