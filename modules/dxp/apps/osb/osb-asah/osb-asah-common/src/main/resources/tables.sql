@@ -31,6 +31,15 @@ CREATE TABLE IF NOT EXISTS ChannelDataSource (
 	PRIMARY KEY (channelId, dataSourceId)
 );
 
+CREATE TABLE IF NOT EXISTS DataExportTask (
+	id BIGSERIAL PRIMARY KEY,
+	completedDate TIMESTAMPTZ,
+	createDate TIMESTAMPTZ,
+	startedDate TIMESTAMPTZ,
+	status TEXT,
+	type TEXT
+);
+
 CREATE TABLE IF NOT EXISTS DataSource (
 	id BIGSERIAL PRIMARY KEY,
 	analyticslastSyncDate TIMESTAMPTZ,
