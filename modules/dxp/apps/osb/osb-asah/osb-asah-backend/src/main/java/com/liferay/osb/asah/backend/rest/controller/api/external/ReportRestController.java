@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.backend.dog.AccountDog;
 import com.liferay.osb.asah.backend.dog.ActivityDog;
-import com.liferay.osb.asah.backend.dog.DataExportTaskDog;
 import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.IndividualDog;
@@ -58,6 +57,7 @@ import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.model.DataExportTaskStatus;
 import com.liferay.osb.asah.common.model.DataExportTaskType;
