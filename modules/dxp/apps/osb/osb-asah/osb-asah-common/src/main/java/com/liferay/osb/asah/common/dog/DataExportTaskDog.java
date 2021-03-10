@@ -14,31 +14,22 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static com.liferay.osb.asah.common.model.DataExportTask.Status;
+import static com.liferay.osb.asah.common.model.DataExportTask.Type;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.DataExportTask;
-import com.liferay.osb.asah.common.model.DataExportTaskStatus;
-import com.liferay.osb.asah.common.model.DataExportTaskType;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.repository.DataExportTaskRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.io.File;
-import java.io.IOException;
 
 import java.util.Date;
-
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortOrder;
-
-import org.json.JSONObject;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -48,72 +39,57 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataExportTaskDog {
 
-	public DataExportTask addDataExportTask(String dataExportTaskTypeValue) {
+	public DataExportTask addDataExportTask(Type type) {
 		DataExportTask dataExportTask = new DataExportTask();
 
-		dataExportTask.setCreatedDate(new Date());
-		dataExportTask.setDataExportTaskStatus(DataExportTaskStatus.PENDING);
-		dataExportTask.setDataExportTaskType(
-			DataExportTaskType.valueOf(dataExportTaskTypeValue));
+		dataExportTask.setCreateDate(new Date());
+		dataExportTask.setStatus(Status.PENDING);
+		dataExportTask.setType(type);
 
-		JSONObject dataExportTaskJSONObject = _faroInfoElasticsearchInvoker.add(
-			"data-export-tasks",
-			_objectMapper.convertValue(dataExportTask, JSONObject.class));
-
-		dataExportTask.setId(dataExportTaskJSONObject.optString("id"));
-
-		return dataExportTask;
+		return _dataExportTaskRepository.save(dataExportTask);
 	}
 
-	public DataExportTask fetchLastDataExportTask(
-		String dataExportTaskTypeValue) {
-
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		DataExportTaskType dataExportTaskType = DataExportTaskType.valueOf(
-			dataExportTaskTypeValue);
-
-		searchSourceBuilder.query(
-			QueryBuilders.termQuery("type", dataExportTaskType.toString()));
-
-		searchSourceBuilder.size(1);
-		searchSourceBuilder.sort(
-			SortBuilderUtil.fieldSort("id", SortOrder.DESC));
-
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"data-export-tasks", _faroInfoElasticsearchInvoker,
-			searchSourceBuilder);
-
-		if (!HitsUtil.hasHits(searchHits)) {
-			return null;
-		}
-
-		SearchHit searchHit = searchHits.getAt(0);
-
-		try {
-			return _objectMapper.readValue(
-				searchHit.getSourceAsString(), DataExportTask.class);
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to process search request", ioe);
-		}
+	public DataExportTask fetchLastDataExportTask(Type type) {
+		return _dataExportTaskRepository.findFirstByTypeOrderByIdDesc(type);
 	}
 
-	public File getDataExportTaskFile(String dataExportTaskId) {
+	public DataExportTask getDataExportTask(Long dataExportTaskId) {
+		Optional<DataExportTask> dataExportTaskOptional =
+			_dataExportTaskRepository.findById(dataExportTaskId);
+
+		return dataExportTaskOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no data export task with ID " + dataExportTaskId));
+	}
+
+	public File getDataExportTaskFile(Long dataExportTaskId) {
 		return new File(_exportPath + "/" + dataExportTaskId + ".json");
 	}
 
+	public List<DataExportTask> getDataExportTasks(Status status) {
+		return _dataExportTaskRepository.findByStatus(status);
+	}
+
+	public DataExportTask updateDataExportTask(
+		Long dataExportTaskId, Status status) {
+
+		DataExportTask dataExportTask = getDataExportTask(dataExportTaskId);
+
+		if (status == Status.COMPLETED) {
+			dataExportTask.setCompletedDate(new Date());
+		}
+		else if (status == Status.RUNNING) {
+			dataExportTask.setStartedDate(new Date());
+		}
+
+		return _dataExportTaskRepository.save(dataExportTask);
+	}
+
 	@Autowired
-	private DataDog _dataDog;
+	private DataExportTaskRepository _dataExportTaskRepository;
 
 	@Value("${osb.asah.batch.curator.data.export.path:/export}")
 	private String _exportPath;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }
