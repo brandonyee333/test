@@ -15,11 +15,11 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.PutResponse;
@@ -74,7 +74,7 @@ public class IndividualSegmentsRestController
 			@PathVariable String id, @PathVariable String individualId)
 		throws Exception {
 
-		_faroInfoMembershipDog.deactivateMembership(
+		_membershipDog.deactivateMembership(
 			DateUtil.newDateString(), individualId, id);
 	}
 
@@ -211,6 +211,6 @@ public class IndividualSegmentsRestController
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
 	@Autowired
-	private FaroInfoMembershipDog _faroInfoMembershipDog;
+	private MembershipDog _membershipDog;
 
 }

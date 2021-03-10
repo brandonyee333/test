@@ -20,11 +20,11 @@ import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformation
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualSegmentsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.ChannelDog;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.rest.response.PostResponse;
@@ -285,7 +285,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 					onBeforeAdd(jsonObject);
 
 					JSONObject responseJSONObject =
-						_faroInfoMembershipDog.addMembership(jsonObject);
+						_membershipDog.addMembership(jsonObject);
 
 					onBeforeReturn(responseJSONObject);
 
@@ -314,8 +314,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 					return null;
 				}
 
-				JSONArray responseJSONArray =
-					_faroInfoMembershipDog.addMemberships(jsonArray);
+				JSONArray responseJSONArray = _membershipDog.addMemberships(
+					jsonArray);
 
 				for (int i = 0; i < jsonArray.length(); i++) {
 					onBeforeReturn(jsonArray.getJSONObject(i));
@@ -337,7 +337,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			}
 
 			private boolean _isMember(String individualId, String id) {
-				if (_faroInfoMembershipDog.isMember(individualId, id)) {
+				if (_membershipDog.isMember(individualId, id)) {
 					if (_log.isWarnEnabled()) {
 						_log.warn(
 							"Not adding membership because individual " +
@@ -507,6 +507,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		_faroInfoIndividualsFilterStringConverterHelper;
 
 	@Autowired
-	private FaroInfoMembershipDog _faroInfoMembershipDog;
+	private MembershipDog _membershipDog;
 
 }

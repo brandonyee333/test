@@ -12,10 +12,11 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
+import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -47,7 +48,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
+public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddMembershipWithActiveStatusAndAnonymousIndividual()
@@ -85,7 +86,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 			"status", "ACTIVE"
 		);
 
-		JSONObject membershipJSONObject = _faroInfoMembershipDog.addMembership(
+		JSONObject membershipJSONObject = _membershipDog.addMembership(
 			newMembershipJSONObject);
 
 		Assert.assertNotNull(membershipJSONObject);
@@ -137,7 +138,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddMembershipWithInactiveStatus() throws Exception {
-		JSONObject membershipJSONObject = _faroInfoMembershipDog.addMembership(
+		JSONObject membershipJSONObject = _membershipDog.addMembership(
 			JSONUtil.put("status", "INACTIVE"));
 
 		Assert.assertNotNull(membershipJSONObject);
@@ -156,9 +157,8 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testBuildIndividualsQueryBuilder() throws Exception {
-		QueryBuilder queryBuilder =
-			_faroInfoMembershipDog.buildIndividualsQueryBuilder(
-				null, "(((demographics/age/value gt '50')))", false);
+		QueryBuilder queryBuilder = _membershipDog.buildIndividualsQueryBuilder(
+			null, "(((demographics/age/value gt '50')))", false);
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -193,7 +193,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 				)),
 			new JSONObject(queryBuilder.toString()), false);
 
-		queryBuilder = _faroInfoMembershipDog.buildIndividualsQueryBuilder(
+		queryBuilder = _membershipDog.buildIndividualsQueryBuilder(
 			null, "(((demographics/age/value gt '50')))", true);
 
 		JSONAssert.assertEquals(
@@ -217,7 +217,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 								)))))),
 			new JSONObject(queryBuilder.toString()), false);
 
-		queryBuilder = _faroInfoMembershipDog.buildIndividualsQueryBuilder(
+		queryBuilder = _membershipDog.buildIndividualsQueryBuilder(
 			"1234", "(((demographics/age/value gt '50')))", true);
 
 		JSONAssert.assertEquals(
@@ -270,7 +270,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testDeactivateMembershipWithIndividuals() throws Exception {
 		Assert.assertNotNull(
-			_faroInfoMembershipDog.deactivateMembership(
+			_membershipDog.deactivateMembership(
 				"2019-02-11T20:26:53.218Z", "338486041327913341",
 				"338511398116723458"));
 
@@ -352,7 +352,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 		throws Exception {
 
 		Assert.assertNotNull(
-			_faroInfoMembershipDog.deactivateMembership(
+			_membershipDog.deactivateMembership(
 				"2019-02-11T20:26:53.218Z", "338486041327913339",
 				"338511398116723457"));
 
@@ -426,7 +426,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testGetIndividualSegmentIndividualIds() {
 		List<String> individualSegmentIndividualIds =
-			_faroInfoMembershipDog.getIndividualSegmentIndividualIds(
+			_membershipDog.getIndividualSegmentIndividualIds(
 				faroInfoElasticsearchInvoker.get(
 					"individual-segments", "338511398116723458"));
 
@@ -446,10 +446,9 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testIsMember() {
 		Assert.assertFalse(
-			_faroInfoMembershipDog.isMember(
-				"noIndividualId", "noIndividualSegmentId"));
+			_membershipDog.isMember("noIndividualId", "noIndividualSegmentId"));
 		Assert.assertTrue(
-			_faroInfoMembershipDog.isMember(
+			_membershipDog.isMember(
 				"338486041327913341", "338511398116723458"));
 	}
 
@@ -467,7 +466,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(1, individualSegmentIdsJSONArray.length());
 
-		_faroInfoMembershipDog.removeIndividualSegmentId(
+		_membershipDog.removeIndividualSegmentId(
 			individualJSONObject, "338511398116723458");
 
 		individualJSONObject = faroInfoElasticsearchInvoker.fetch(
@@ -489,7 +488,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 				"individualSegmentIds", new JSONArray()
 			));
 
-		_faroInfoMembershipDog.updateDynamicAddMemberships(
+		_membershipDog.updateDynamicAddMemberships(
 			true,
 			faroInfoElasticsearchInvoker.add(
 				"individual-segments",
@@ -534,7 +533,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 				"status", "ACTIVE"
 			));
 
-		_faroInfoMembershipDog.updateDynamicMemberships(
+		_membershipDog.updateDynamicMemberships(
 			faroInfoElasticsearchInvoker.fetch(
 				"individual-segments", "338511451975440187"),
 			"2019-02-11T20:26:53.218Z");
@@ -549,7 +548,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 		faroInfoElasticsearchInvoker.delete(
 			"individuals", individualJSONObject);
 
-		_faroInfoMembershipDog.updateDynamicMemberships(
+		_membershipDog.updateDynamicMemberships(
 			faroInfoElasticsearchInvoker.fetch(
 				"individual-segments", "338511398116723458"),
 			"2019-02-11T20:26:53.218Z");
@@ -580,7 +579,7 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testUpdateDynamicRemoveMemberships() throws Exception {
-		_faroInfoMembershipDog.updateDynamicRemoveMemberships(
+		_membershipDog.updateDynamicRemoveMemberships(
 			faroInfoElasticsearchInvoker.fetch(
 				"individual-segments", "338511398116723458"),
 			"2019-02-11T20:26:53.218Z");
@@ -602,6 +601,6 @@ public class FaroInfoMembershipDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Autowired
-	private FaroInfoMembershipDog _faroInfoMembershipDog;
+	private MembershipDog _membershipDog;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
@@ -859,7 +860,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		}
 
 		List<String> individualIds =
-			_faroInfoMembershipDog.getIndividualSegmentIndividualIds(
+			_membershipDog.getIndividualSegmentIndividualIds(
 				individualSegmentJSONObject);
 
 		for (String individualId : individualIds) {
@@ -876,7 +877,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 			if ((channelIdsJSONArray != null) &&
 				!JSONUtil.hasValue(channelIdsJSONArray, channelId)) {
 
-				_faroInfoMembershipDog.deactivateMembership(
+				_membershipDog.deactivateMembership(
 					DateUtil.newDateString(), individualId,
 					individualSegmentJSONObject.getString("id"));
 			}
@@ -913,9 +914,9 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
 	@Autowired
-	private FaroInfoMembershipDog _faroInfoMembershipDog;
+	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+	private MembershipDog _membershipDog;
 
 }

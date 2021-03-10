@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -258,7 +258,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			return;
 		}
 
-		_faroInfoMembershipDog.updateDynamicMemberships(
+		_membershipDog.updateDynamicMemberships(
 			individualSegmentJSONObject, dateModified);
 
 		_faroInfoIndividualSegmentDog.updateIndividualSegment(
@@ -275,7 +275,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 				"individual-segments", faroInfoElasticsearchInvoker,
 				individualSegmentJSONObject -> {
 					try {
-						_faroInfoMembershipDog.updateDynamicAddMemberships(
+						_membershipDog.updateDynamicAddMemberships(
 							true, individualSegmentJSONObject, dateModified);
 					}
 					catch (Exception e) {
@@ -298,7 +298,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 				"individual-segments", faroInfoElasticsearchInvoker,
 				individualSegmentJSONObject -> {
 					try {
-						_faroInfoMembershipDog.updateDynamicRemoveMemberships(
+						_membershipDog.updateDynamicRemoveMemberships(
 							individualSegmentJSONObject, dateModified);
 					}
 					catch (Exception e) {
@@ -379,13 +379,13 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			individualSegmentJSONObject.getString("id"));
 
 		if (newMember && !oldMember) {
-			_faroInfoMembershipDog.addMembership(
+			_membershipDog.addMembership(
 				baseMembershipJSONObject.put(
 					"individualSegmentId",
 					individualSegmentJSONObject.getString("id")));
 		}
 		else if (!newMember && oldMember) {
-			_faroInfoMembershipDog.deactivateMembership(
+			_membershipDog.deactivateMembership(
 				dateModified, individualJSONObject.getString("id"),
 				individualSegmentJSONObject.getString("id"));
 		}
@@ -399,6 +399,6 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		_faroInfoIndividualsFilterStringConverterHelper;
 
 	@Autowired
-	private FaroInfoMembershipDog _faroInfoMembershipDog;
+	private MembershipDog _membershipDog;
 
 }

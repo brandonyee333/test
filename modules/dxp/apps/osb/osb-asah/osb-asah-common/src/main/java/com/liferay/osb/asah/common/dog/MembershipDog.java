@@ -12,11 +12,13 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -43,7 +45,7 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class FaroInfoMembershipDog extends BaseFaroInfoDog {
+public class MembershipDog extends BaseFaroInfoDog {
 
 	public JSONObject addMembership(JSONObject membershipJSONObject)
 		throws Exception {

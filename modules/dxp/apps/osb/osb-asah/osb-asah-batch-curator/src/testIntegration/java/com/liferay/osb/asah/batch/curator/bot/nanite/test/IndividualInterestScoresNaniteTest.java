@@ -19,8 +19,8 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.NaniteTestConfiguration;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -215,20 +215,16 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 		String individualId = _individualJSONObject.getString("id");
 
 		Assert.assertTrue(
-			_faroInfoMembershipDog.isMember(
-				individualId, individualSegment1Id));
+			_membershipDog.isMember(individualId, individualSegment1Id));
 		Assert.assertFalse(
-			_faroInfoMembershipDog.isMember(
-				individualId, individualSegment2Id));
+			_membershipDog.isMember(individualId, individualSegment2Id));
 
 		_individualInterestScoresNanite.run((JSONObject)null);
 
 		Assert.assertFalse(
-			_faroInfoMembershipDog.isMember(
-				individualId, individualSegment1Id));
+			_membershipDog.isMember(individualId, individualSegment1Id));
 		Assert.assertTrue(
-			_faroInfoMembershipDog.isMember(
-				individualId, individualSegment2Id));
+			_membershipDog.isMember(individualId, individualSegment2Id));
 	}
 
 	@Test
@@ -398,12 +394,12 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 	private String _dataSourceId;
 
 	@Autowired
-	private FaroInfoMembershipDog _faroInfoMembershipDog;
-
-	@Autowired
 	private IndividualInterestScoresNanite _individualInterestScoresNanite;
 
 	private JSONObject _individualJSONObject;
+
+	@Autowired
+	private MembershipDog _membershipDog;
 
 	@Autowired
 	private UpdateDynamicMembershipsNanite _updateDynamicMembershipsNanite;

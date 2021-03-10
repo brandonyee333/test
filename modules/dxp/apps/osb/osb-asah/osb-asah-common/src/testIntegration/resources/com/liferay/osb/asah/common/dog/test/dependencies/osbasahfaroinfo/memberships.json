@@ -1,0 +1,65 @@
+[
+	{
+		"dateCreated": "2019-02-11T20:26:53.218Z",
+		"dateModified": "2019-02-11T20:26:53.218Z",
+		"dateRemoved": null,
+		"id": "338511398389279305",
+		"individualId": "338486041327913339",
+		"individualSegmentId": "338511398116723457",
+		"status": "ACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:26:53.218Z",
+		"dateModified": "2019-02-11T20:26:53.218Z",
+		"dateRemoved": "2019-02-11T20:26:53.218Z",
+		"id": "338511398389279306",
+		"individualId": "338486041327913339",
+		"individualSegmentId": "338511398116723457",
+		"status": "INACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:26:53.215Z",
+		"dateModified": "2019-02-11T20:26:53.215Z",
+		"dateRemoved": null,
+		"id": "338511398389279307",
+		"individualId": "338486037253283140",
+		"individualSegmentId": "338511398116723458",
+		"status": "ACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:26:53.218Z",
+		"dateModified": "2019-02-11T20:26:53.218Z",
+		"dateRemoved": null,
+		"id": "338511398389279308",
+		"individualId": "338486041327913341",
+		"individualSegmentId": "338511398116723458",
+		"status": "ACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:26:53.221Z",
+		"dateModified": "2019-02-11T20:27:36.615Z",
+		"dateRemoved": "2019-02-11T20:27:36.615Z",
+		"id": "338511398389279310",
+		"individualId": "338486039084349956",
+		"individualSegmentId": "338511398116723458",
+		"status": "INACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:27:18.882Z",
+		"dateModified": "2019-02-11T20:27:18.882Z",
+		"dateRemoved": null,
+		"id": "338511452214945319",
+		"individualId": "338486044983457832",
+		"individualSegmentId": "338511451975440187",
+		"status": "ACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:27:18.892Z",
+		"dateModified": "2019-02-11T20:27:47.590Z",
+		"dateRemoved": "2019-02-11T20:27:47.590Z",
+		"id": "338511452214945320",
+		"individualId": "338486040159673751",
+		"individualSegmentId": "338511451975440187",
+		"status": "INACTIVE"
+	}
+]

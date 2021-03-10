@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 
 import org.apache.commons.logging.Log;
@@ -62,7 +62,7 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 		JSONArrayIterator.of(
 			"individuals", faroInfoElasticsearchInvoker,
 			jsonObject -> {
-				faroInfoMembershipDog.removeIndividualSegmentId(
+				membershipDog.removeIndividualSegmentId(
 					jsonObject, individualSegmentId);
 
 				return null;
@@ -81,6 +81,6 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 	}
 
 	@Autowired
-	protected FaroInfoMembershipDog faroInfoMembershipDog;
+	protected MembershipDog membershipDog;
 
 }

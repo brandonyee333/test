@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.FieldDog;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -316,7 +317,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			JSONObject activeMembershipJSONObject =
 				activeMembershipsJSONArray.getJSONObject(i);
 
-			_faroInfoMembershipDog.deactivateMembership(
+			_membershipDog.deactivateMembership(
 				deletionDateString, individualId,
 				activeMembershipJSONObject.getString("individualSegmentId"));
 		}
@@ -790,12 +791,12 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
-	private FaroInfoMembershipDog _faroInfoMembershipDog;
-
-	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
 	private FieldDog _fieldDog;
+
+	@Autowired
+	private MembershipDog _membershipDog;
 
 }
