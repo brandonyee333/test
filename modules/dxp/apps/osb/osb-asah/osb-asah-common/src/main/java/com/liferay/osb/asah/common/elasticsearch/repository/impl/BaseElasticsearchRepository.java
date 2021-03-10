@@ -199,6 +199,8 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 		);
 	}
 
+	protected static final int ELASTICSEARCH_MAX_SIZE = 10000;
+
 	@Autowired
 	private ObjectMapper _objectMapper;
 
