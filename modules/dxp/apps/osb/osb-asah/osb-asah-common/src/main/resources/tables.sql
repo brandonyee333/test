@@ -156,6 +156,16 @@ CREATE TABLE IF NOT EXISTS Field (
 	value TEXT
 );
 
+CREATE TABLE IF NOT EXISTS Membership (
+	id BIGSERIAL PRIMARY KEY,
+	createDate TIMESTAMPTZ,
+	individualId BIGINT,
+	individualSegmentId BIGINT,
+	modifiedDate TIMESTAMPTZ,
+	removedDate TIMESTAMPTZ,
+	status TEXT
+);
+
 CREATE TABLE IF NOT EXISTS Preference (
 	id BIGSERIAL PRIMARY KEY,
 	key TEXT UNIQUE,
