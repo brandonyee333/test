@@ -34,6 +34,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.hamcrest.CoreMatchers;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -139,7 +141,7 @@ public class EventAttributeDefinitionDogTest {
 		Assert.assertNotNull(eventAttributeDefinition);
 
 		Assert.assertEquals(
-			EventAttributeDefinitionDataType.DURATION.toString(),
+			EventAttributeDefinitionDataType.DURATION,
 			eventAttributeDefinition.getDataType());
 		Assert.assertNull(eventAttributeDefinition.getDescription());
 		Assert.assertNull(eventAttributeDefinition.getDisplayName());
@@ -180,6 +182,128 @@ public class EventAttributeDefinitionDogTest {
 
 		Assert.assertEquals(
 			eventAttributeDefinition1, eventAttributeDefinition2);
+	}
+
+	@Test
+	public void testGetEventAttributeDefinitionDataTypeBoolean() {
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.BOOLEAN,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "FALSE"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.BOOLEAN,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "False"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.BOOLEAN,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "false"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.BOOLEAN,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "TRUE"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.BOOLEAN,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "True"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.BOOLEAN,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "true"));
+		Assert.assertNotEquals(
+			EventAttributeDefinitionDataType.BOOLEAN,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "maybe"));
+		Assert.assertNotEquals(
+			EventAttributeDefinitionDataType.BOOLEAN,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "no"));
+		Assert.assertNotEquals(
+			EventAttributeDefinitionDataType.BOOLEAN,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "yes"));
+	}
+
+	@Test
+	public void testGetEventAttributeDefinitionDataTypeDate() {
+		Assert.assertNotEquals(
+			EventAttributeDefinitionDataType.DATE,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "2020-12-12T09:20:00.Z"));
+		Assert.assertNotEquals(
+			EventAttributeDefinitionDataType.DATE,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "12/31/2020T09:30:00Z"));
+		Assert.assertNotEquals(
+			EventAttributeDefinitionDataType.DATE,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "2020 12 31 09:30:10+0130"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.DATE,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "2020-12-31T09:30:00.000Z"));
+	}
+
+	@Test
+	public void testGetEventAttributeDefinitionDataTypeDuration() {
+		Assert.assertNotEquals(
+			EventAttributeDefinitionDataType.DURATION,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "10000"));
+		Assert.assertNotEquals(
+			EventAttributeDefinitionDataType.DURATION,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"viewDuration", "-10000"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.DURATION,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"viewDuration", "10000"));
+	}
+
+	@Test
+	public void testGetEventAttributeDefinitionDataTypeNull() {
+		try {
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", null);
+		}
+		catch (Exception e) {
+			Assert.assertThat(
+				e.getMessage(),
+				CoreMatchers.containsString(
+					"Unable to determine data type of null value"));
+		}
+	}
+
+	@Test
+	public void testGetEventAttributeDefinitionDataTypeNumber() {
+		Assert.assertNotEquals(
+			EventAttributeDefinitionDataType.NUMBER,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "123a"));
+		Assert.assertNotEquals(
+			EventAttributeDefinitionDataType.NUMBER,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "abc"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.NUMBER,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "00000000000"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.NUMBER,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "30293094040"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.NUMBER,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "30293094040"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.NUMBER,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "-1234"));
+		Assert.assertEquals(
+			EventAttributeDefinitionDataType.NUMBER,
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+				"name", "1234.95"));
 	}
 
 	@Test
@@ -430,8 +554,7 @@ public class EventAttributeDefinitionDogTest {
 					actualEventAttributeDefinition.getName());
 
 			Assert.assertEquals(
-				expectedDataType.toString(),
-				actualEventAttributeDefinition.getDataType());
+				expectedDataType, actualEventAttributeDefinition.getDataType());
 		}
 	}
 

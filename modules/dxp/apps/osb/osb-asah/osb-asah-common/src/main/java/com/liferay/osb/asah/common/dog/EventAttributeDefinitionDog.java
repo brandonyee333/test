@@ -14,13 +14,18 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventAttributeDefinitionDataType;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-import com.liferay.osb.asah.common.util.Validator;
+import com.liferay.osb.asah.common.util.ArrayUtil;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +34,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +59,7 @@ public class EventAttributeDefinitionDog {
 			new EventAttributeDefinition();
 
 		eventAttributeDefinition.setDataType(
-			_getEventAttributeDefinitionDataType(name, sampleValue));
+			getEventAttributeDefinitionDataType(name, sampleValue));
 		eventAttributeDefinition.setDescription(description);
 		eventAttributeDefinition.setDisplayName(displayName);
 		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
@@ -103,6 +109,38 @@ public class EventAttributeDefinitionDog {
 				HttpStatus.BAD_REQUEST,
 				"There is no event attribute definition with ID " +
 					eventAttributeDefinitionId));
+	}
+
+	public EventAttributeDefinitionDataType getEventAttributeDefinitionDataType(
+		String propertyName, String propertyValue) {
+
+		if (StringUtils.isEmpty(propertyValue)) {
+			throw new IllegalArgumentException(
+				"Unable to determine data type of null value for property " +
+					propertyName);
+		}
+
+		if (_isBoolean(propertyValue)) {
+			return EventAttributeDefinitionDataType.BOOLEAN;
+		}
+
+		if (_isDate(propertyValue)) {
+			return EventAttributeDefinitionDataType.DATE;
+		}
+
+		if (NumberUtils.isParsable(propertyValue)) {
+			String lowerCasePropertyName = propertyName.toLowerCase();
+
+			if (lowerCasePropertyName.contains("duration") &&
+				!propertyValue.startsWith("-")) {
+
+				return EventAttributeDefinitionDataType.DURATION;
+			}
+
+			return EventAttributeDefinitionDataType.NUMBER;
+		}
+
+		return EventAttributeDefinitionDataType.STRING;
 	}
 
 	public List<EventAttributeDefinition> getEventAttributeDefinitions(
@@ -164,37 +202,22 @@ public class EventAttributeDefinitionDog {
 			eventAttributeDefinition);
 	}
 
-	private EventAttributeDefinitionDataType
-		_getEventAttributeDefinitionDataType(
-			String propertyName, String propertyValue) {
+	private boolean _isBoolean(String value) {
+		return ArrayUtil.contains(_BOOLEANS, value.toLowerCase());
+	}
 
-		if (StringUtils.isEmpty(propertyValue)) {
-			throw new IllegalArgumentException(
-				"Unable to determine data type of null value for property" +
-					propertyName);
+	private boolean _isDate(String value) {
+		try {
+			DateFormat dateFormat = new SimpleDateFormat(
+				DateUtil.PATTERN_ISO_8601);
+
+			dateFormat.parse(value);
+
+			return true;
 		}
-
-		if (Validator.isBoolean(propertyValue)) {
-			return EventAttributeDefinitionDataType.BOOLEAN;
+		catch (ParseException parseException) {
+			return false;
 		}
-
-		if (Validator.isDate(propertyValue)) {
-			return EventAttributeDefinitionDataType.DATE;
-		}
-
-		if (Validator.isNumber(propertyValue)) {
-			String lowerCasePropertyName = propertyName.toLowerCase();
-
-			if (lowerCasePropertyName.contains("duration") &&
-				!propertyValue.startsWith("-")) {
-
-				return EventAttributeDefinitionDataType.DURATION;
-			}
-
-			return EventAttributeDefinitionDataType.NUMBER;
-		}
-
-		return EventAttributeDefinitionDataType.STRING;
 	}
 
 	private void _validate(Sort sort) {
@@ -208,6 +231,8 @@ public class EventAttributeDefinitionDog {
 				"Unable to sort event attribute definitions by " + sortColumn);
 		}
 	}
+
+	private static final String[] _BOOLEANS = {"false", "true"};
 
 	@Autowired
 	private EventAttributeDefinitionRepository
