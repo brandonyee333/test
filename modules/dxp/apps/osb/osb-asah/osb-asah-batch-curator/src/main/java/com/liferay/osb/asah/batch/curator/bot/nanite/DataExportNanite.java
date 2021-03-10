@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import static com.liferay.osb.asah.common.model.DataExportTask.Status;
+import static com.liferay.osb.asah.common.model.DataExportTask.Type;
+
 import com.fasterxml.jackson.core.JsonFactory;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.AccountDataExporter;
@@ -21,21 +24,19 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.IndividualDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SegmentDataExporter;
-import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.ReportHttp;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.model.DataExportTaskStatus;
-import com.liferay.osb.asah.common.model.DataExportTaskType;
+import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -51,15 +52,10 @@ public class DataExportNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		JSONArrayIterator.of(
-			"data-export-tasks", faroInfoElasticsearchInvoker,
-			this::_runDataExportTask
-		).setQueryBuilder(
-			QueryBuilders.termQuery(
-				"status", DataExportTaskStatus.PENDING.toString())
-		).setStopOnExceptions(
-			false
-		).iterate();
+		List<DataExportTask> dataExportTasks =
+			_dataExportTaskDog.getDataExportTasks(Status.PENDING);
+
+		dataExportTasks.forEach(this::_runDataExportTask);
 	}
 
 	@Override
@@ -68,22 +64,22 @@ public class DataExportNanite extends BaseNanite {
 	}
 
 	private DataExporter _createDataExporter(
-			DataExportTaskType dataExportTaskType, OutputStream outputStream)
+			OutputStream outputStream, Type type)
 		throws Exception {
 
-		if (dataExportTaskType == DataExportTaskType.ACCOUNT) {
+		if (type == Type.ACCOUNT) {
 			return new AccountDataExporter(
 				_jsonFactory, outputStream, _reportHttp);
 		}
-		else if (dataExportTaskType == DataExportTaskType.INDIVIDUAL) {
+		else if (type == Type.INDIVIDUAL) {
 			return new IndividualDataExporter(
 				_jsonFactory, outputStream, _reportHttp);
 		}
-		else if (dataExportTaskType == DataExportTaskType.PAGE) {
+		else if (type == Type.PAGE) {
 			return new PageDataExporter(
 				_jsonFactory, outputStream, _cerebroInfoElasticsearchInvoker);
 		}
-		else if (dataExportTaskType == DataExportTaskType.SEGMENT) {
+		else if (type == Type.SEGMENT) {
 			return new SegmentDataExporter(
 				_jsonFactory, outputStream, _reportHttp);
 		}
@@ -91,59 +87,38 @@ public class DataExportNanite extends BaseNanite {
 		throw new IllegalArgumentException("Invalid data export task type");
 	}
 
-	private JSONObject _runDataExportTask(JSONObject dataExportTaskJSONObject) {
-		_updateDataExportTaskStatus(
-			dataExportTaskJSONObject, DataExportTaskStatus.RUNNING);
+	private void _runDataExportTask(DataExportTask dataExportTask) {
+		_dataExportTaskDog.updateDataExportTask(
+			dataExportTask.getId(), Status.RUNNING);
 
 		try (OutputStream outputStream = new FileOutputStream(
-				_exportPath + "/" + dataExportTaskJSONObject.getString("id") +
-					".json")) {
+				_exportPath + "/" + dataExportTask.getId() + ".json")) {
 
 			DataExporter dataExporter = _createDataExporter(
-				DataExportTaskType.valueOf(
-					dataExportTaskJSONObject.getString("type")),
-				outputStream);
+				outputStream, dataExportTask.getType());
 
 			dataExporter.export();
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			_updateDataExportTaskStatus(
-				dataExportTaskJSONObject, DataExportTaskStatus.ERROR);
+			_dataExportTaskDog.updateDataExportTask(
+				dataExportTask.getId(), Status.ERROR);
 
-			return dataExportTaskJSONObject;
+			return;
 		}
 
-		_updateDataExportTaskStatus(
-			dataExportTaskJSONObject, DataExportTaskStatus.COMPLETED);
-
-		return dataExportTaskJSONObject;
-	}
-
-	private void _updateDataExportTaskStatus(
-		JSONObject dataExportTaskJSONObject,
-		DataExportTaskStatus dataExportTaskStatus) {
-
-		if (dataExportTaskStatus == DataExportTaskStatus.COMPLETED) {
-			dataExportTaskJSONObject.put(
-				"completedDate", DateUtil.newUTCDateString());
-		}
-		else if (dataExportTaskStatus == DataExportTaskStatus.RUNNING) {
-			dataExportTaskJSONObject.put(
-				"startedDate", DateUtil.newUTCDateString());
-		}
-
-		dataExportTaskJSONObject.put("status", dataExportTaskStatus.toString());
-
-		faroInfoElasticsearchInvoker.update(
-			"data-export-tasks", dataExportTaskJSONObject);
+		_dataExportTaskDog.updateDataExportTask(
+			dataExportTask.getId(), Status.COMPLETED);
 	}
 
 	private static final Log _log = LogFactory.getLog(DataExportNanite.class);
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
+
+	@Autowired
+	private DataExportTaskDog _dataExportTaskDog;
 
 	@Value("${osb.asah.batch.curator.data.export.path:/export}")
 	private String _exportPath;

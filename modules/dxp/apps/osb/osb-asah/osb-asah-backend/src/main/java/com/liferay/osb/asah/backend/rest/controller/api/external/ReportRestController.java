@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.external;
 
+import static com.liferay.osb.asah.common.model.DataExportTask.Status;
+import static com.liferay.osb.asah.common.model.DataExportTask.Type;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -58,9 +61,8 @@ import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
+import com.liferay.osb.asah.common.dto.DataExportTaskDTO;
 import com.liferay.osb.asah.common.model.DataExportTask;
-import com.liferay.osb.asah.common.model.DataExportTaskStatus;
-import com.liferay.osb.asah.common.model.DataExportTaskType;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -203,19 +205,20 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@GetMapping("/export/{type}")
-	public ResponseEntity getDataExportTask(@PathVariable String type) {
+	public ResponseEntity<DataExportTaskDTO> getDataExportTask(
+		@PathVariable String type) {
+
 		DataExportTask dataExportTask =
 			_dataExportTaskDog.fetchLastDataExportTask(
-				StringUtils.upperCase(type));
+				Type.valueOf(StringUtils.upperCase(type)));
 
 		if (dataExportTask == null) {
 			return _addDataExportTask(type);
 		}
 
-		DataExportTaskStatus dataExportTaskStatus =
-			dataExportTask.getDataExportTaskStatus();
+		Status status = dataExportTask.getStatus();
 
-		if (dataExportTaskStatus == DataExportTaskStatus.ERROR) {
+		if (status == Status.ERROR) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					String.format(
@@ -227,10 +230,9 @@ public class ReportRestController extends BaseRestController {
 			return _addDataExportTask(type);
 		}
 
-		if ((dataExportTaskStatus == DataExportTaskStatus.PENDING) ||
-			(dataExportTaskStatus == DataExportTaskStatus.RUNNING)) {
-
-			return _buildAcceptedResponseEntity(dataExportTask);
+		if ((status == Status.PENDING) || (status == Status.RUNNING)) {
+			return _buildAcceptedResponseEntity(
+				new DataExportTaskDTO(dataExportTask));
 		}
 
 		long elapsedCompletedTime = DateUtil.getDeltaMilliseconds(
@@ -240,23 +242,25 @@ public class ReportRestController extends BaseRestController {
 			return _addDataExportTask(type);
 		}
 
-		return _buildAcceptedResponseEntity(dataExportTask);
+		return _buildAcceptedResponseEntity(
+			new DataExportTaskDTO(dataExportTask));
 	}
 
 	@GetMapping("/export/{type}/file")
-	public ResponseEntity getDataExportTaskFile(@PathVariable String type) {
+	public ResponseEntity<FileSystemResource> getDataExportTaskFile(
+		@PathVariable String type) {
+
 		DataExportTask dataExportTask =
 			_dataExportTaskDog.fetchLastDataExportTask(
-				StringUtils.upperCase(type));
+				Type.valueOf(StringUtils.upperCase(type)));
 
 		if (dataExportTask == null) {
 			return _buildBadRequestResponseEntity();
 		}
 
-		DataExportTaskStatus dataExportTaskStatus =
-			dataExportTask.getDataExportTaskStatus();
+		Status status = dataExportTask.getStatus();
 
-		if (dataExportTaskStatus != DataExportTaskStatus.COMPLETED) {
+		if (status != Status.COMPLETED) {
 			return _buildBadRequestResponseEntity();
 		}
 
@@ -264,12 +268,8 @@ public class ReportRestController extends BaseRestController {
 
 		bodyBuilder.contentType(MediaType.APPLICATION_OCTET_STREAM);
 
-		DataExportTaskType dataExportTaskType =
-			dataExportTask.getDataExportTaskType();
-
 		String fileName = String.format(
-			"%s-data-%s.json",
-			StringUtils.lowerCase(dataExportTaskType.toString()),
+			"%s-data-%s.json", StringUtils.lowerCase(type),
 			DateUtil.toUTCString(dataExportTask.getCompletedDate()));
 
 		bodyBuilder.header(
@@ -758,9 +758,11 @@ public class ReportRestController extends BaseRestController {
 			this::_toSegmentEntityModel);
 	}
 
-	private ResponseEntity _addDataExportTask(String type) {
+	private ResponseEntity<DataExportTaskDTO> _addDataExportTask(String type) {
 		return _buildAcceptedResponseEntity(
-			_dataExportTaskDog.addDataExportTask(StringUtils.upperCase(type)));
+			new DataExportTaskDTO(
+				_dataExportTaskDog.addDataExportTask(
+					Type.valueOf(StringUtils.upperCase(type)))));
 	}
 
 	private <T> ResponseEntity<T> _buildAcceptedResponseEntity(T body) {
@@ -770,7 +772,9 @@ public class ReportRestController extends BaseRestController {
 		return bodyBuilder.body(body);
 	}
 
-	private ResponseEntity _buildBadRequestResponseEntity() {
+	private ResponseEntity<FileSystemResource>
+		_buildBadRequestResponseEntity() {
+
 		ResponseEntity.BodyBuilder bodyBuilder = ResponseEntity.status(
 			HttpStatus.SC_BAD_REQUEST);
 
