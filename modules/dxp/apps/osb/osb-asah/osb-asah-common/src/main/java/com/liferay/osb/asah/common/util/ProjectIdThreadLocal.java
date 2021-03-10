@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.util;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.multitenancy.exception.InvalidProjectIdException;
 
 import java.util.Collections;
 import java.util.List;
@@ -80,10 +81,16 @@ public class ProjectIdThreadLocal {
 			_log.debug("setProjectId " + projectId);
 		}
 
+		if ((projectId == null) || !projectId.matches(_PROJECT_ID_REGEX)) {
+			throw new InvalidProjectIdException();
+		}
+
 		_projectId.set(projectId);
 
 		MDC.put("osbAsahProjectId", projectId);
 	}
+
+	private static final String _PROJECT_ID_REGEX = "^[0-9A-Za-z]+$";
 
 	private static final Log _log = LogFactory.getLog(
 		ProjectIdThreadLocal.class);

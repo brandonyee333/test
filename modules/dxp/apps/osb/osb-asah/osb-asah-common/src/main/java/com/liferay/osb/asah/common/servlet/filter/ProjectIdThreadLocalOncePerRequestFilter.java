@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.servlet.filter;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.multitenancy.exception.InvalidProjectIdException;
 import com.liferay.osb.asah.common.servlet.util.ServletRequestUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
@@ -77,6 +78,10 @@ public class ProjectIdThreadLocalOncePerRequestFilter
 			ProjectIdThreadLocal.setProjectId(projectId);
 
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
+		}
+		catch (InvalidProjectIdException ipie) {
+			httpServletResponse.sendError(
+				HttpServletResponse.SC_BAD_REQUEST, "INVALID_PROJECT_ID");
 		}
 		finally {
 			ProjectIdThreadLocal.remove();
