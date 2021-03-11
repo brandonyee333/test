@@ -275,19 +275,19 @@ public class ActivityGroupsRestController extends BaseRestController {
 	}
 
 	private PageDTO<ActivityGroupDTO> _toPageDTO(
-		Page<ActivityGroup> activityGroups) {
-
-		return _toPageDTO(
-			new ActivityGroupDTO(activityGroups.getContent()), activityGroups);
-	}
-
-	private PageDTO<ActivityGroupDTO> _toPageDTO(
 		ActivityGroupDTO activityGroupDTO, Page<ActivityGroup> activityGroups) {
 
 		return new PageDTO<>(
 			"_embedded", activityGroupDTO, activityGroups.getNumber(),
 			activityGroups.getSize(), activityGroups.getTotalElements(),
 			activityGroups.getTotalPages());
+	}
+
+	private PageDTO<ActivityGroupDTO> _toPageDTO(
+		Page<ActivityGroup> activityGroups) {
+
+		return _toPageDTO(
+			new ActivityGroupDTO(activityGroups.getContent()), activityGroups);
 	}
 
 	private static final Log _log = LogFactory.getLog(

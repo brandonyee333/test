@@ -62,37 +62,30 @@ public abstract class BaseActivityGroupRepositoryTestCase
 			1,
 			_activityGroupRepository.countActivityGroups(
 				null, null, null, null));
-
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				12L, null, null, null));
-
 		Assert.assertEquals(
 			0,
 			_activityGroupRepository.countActivityGroups(
 				34L, null, null, null));
-
 		Assert.assertEquals(
 			0,
 			_activityGroupRepository.countActivityGroups(
 				null, _activityGroup.getDayDate(), null, null));
-
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				null, new Date(), _activityGroup.getDayDate(), null));
-
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				null, null, _activityGroup.getDayDate(), null));
-
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
 				null, null, null, 56L));
-
 		Assert.assertEquals(
 			0,
 			_activityGroupRepository.countActivityGroups(
@@ -128,7 +121,6 @@ public abstract class BaseActivityGroupRepositoryTestCase
 
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
-
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
@@ -137,7 +129,6 @@ public abstract class BaseActivityGroupRepositoryTestCase
 
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
-
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
@@ -160,7 +151,6 @@ public abstract class BaseActivityGroupRepositoryTestCase
 
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
-
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
@@ -169,7 +159,6 @@ public abstract class BaseActivityGroupRepositoryTestCase
 
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
-
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
@@ -178,7 +167,6 @@ public abstract class BaseActivityGroupRepositoryTestCase
 
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
-
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
@@ -194,7 +182,6 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertTrue(
 			_activityGroupRepository.updateOwnerId(
 				90L, "347780e0-7a66-11e8-a0fc-8356dd2944fd"));
-
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
