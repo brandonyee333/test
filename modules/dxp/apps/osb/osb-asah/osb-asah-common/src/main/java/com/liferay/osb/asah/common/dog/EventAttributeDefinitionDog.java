@@ -116,8 +116,7 @@ public class EventAttributeDefinitionDog {
 
 		if (StringUtils.isEmpty(propertyValue)) {
 			throw new IllegalArgumentException(
-				"Unable to determine data type of null value for property " +
-					propertyName);
+				"Unable to determine data type for property " + propertyName);
 		}
 
 		if (_isBoolean(propertyValue)) {

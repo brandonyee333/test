@@ -34,8 +34,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.hamcrest.CoreMatchers;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -260,18 +258,10 @@ public class EventAttributeDefinitionDogTest {
 				"viewDuration", "10000"));
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetEventAttributeDefinitionDataTypeNull() {
-		try {
-			_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
-				"name", null);
-		}
-		catch (Exception e) {
-			Assert.assertThat(
-				e.getMessage(),
-				CoreMatchers.containsString(
-					"Unable to determine data type of null value"));
-		}
+		_eventAttributeDefinitionDog.getEventAttributeDefinitionDataType(
+			"name", null);
 	}
 
 	@Test
