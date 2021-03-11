@@ -13,7 +13,8 @@ from liferay.common.spark import BaseSparkJob
 from liferay.stream.processor.blog import BlogDataFrameProcessor
 from liferay.stream.processor.document_library import DocumentLibraryDataFrameProcessor
 from liferay.stream.processor.form import FormDataFrameProcessor, \
-	FormFieldDataFrameProcessor
+	FormFieldDataFrameProcessor, \
+	FormPageDataFrameProcessor
 from liferay.stream.processor.journal import JournalDataFrameProcessor
 from liferay.stream.processor.page import PageDataFrameProcessor, \
 	PageReferrerDataFrameProcessor
@@ -32,6 +33,7 @@ class CuratorSparkJob(BaseSparkJob):
 			),
 			FormDataFrameProcessor(batch_id, 'forms', self),
 			FormFieldDataFrameProcessor(batch_id, 'form-fields', self),
+			FormPageDataFrameProcessor(batch_id, 'form-pages', self),
 			JournalDataFrameProcessor(batch_id, 'journals', self),
 			PageDataFrameProcessor(batch_id, 'pages', self),
 			PageReferrerDataFrameProcessor(batch_id, 'page-referrers', self),
