@@ -142,14 +142,14 @@ def test_form_page_data_frame_processor_process(
 
 	actual_data_frame = form_page_data_frame_processor.process(
 		test_util.read_session_events_data_frame(
-			'form_data_frame_processor_calculate_page_metrics_input.json',
+			'form_page_data_frame_processor_process_input.json',
 			spark_session
 		),
 		write=False
 	)
 
 	expected_data_frame = test_util.read_data_frame(
-		'form_data_frame_processor_calculate_page_metrics_expected_output.json',
+		'form_page_data_frame_processor_process_expected_output.json',
 		spark_session,
 		T.StructType([
 			T.StructField('abandonments', T.LongType(), False),
