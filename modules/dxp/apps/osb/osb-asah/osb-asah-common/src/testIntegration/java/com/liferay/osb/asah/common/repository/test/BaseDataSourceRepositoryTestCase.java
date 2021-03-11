@@ -48,12 +48,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		dataSource1.setCredentialType("Token Authentication");
 
-		Channel channel1 = new Channel("Liferay Brazil");
-
-		channel1.setId(1L);
-		channel1.setIsNew(true);
-
-		channel1 = _channelRepository.save(channel1);
+		Channel channel1 = _addChannel(1, "Liferay Brazil");
 
 		dataSource1.setChannelId(channel1.getId());
 
@@ -82,18 +77,11 @@ public abstract class BaseDataSourceRepositoryTestCase
 		dataSource1.setStatus("STARTED");
 		dataSource1.setURL("");
 
-		_dataSources.add(_dataSourceRepository.save(dataSource1));
-
 		DataSource dataSource2 = new DataSource("Liferay USA");
 
 		dataSource2.setCredentialType("Basic Authentication");
 
-		Channel channel2 = new Channel("Liferay USA");
-
-		channel2.setId(2L);
-		channel2.setIsNew(true);
-
-		channel2 = _channelRepository.save(channel2);
+		Channel channel2 = _addChannel(2, "Liferay USA");
 
 		dataSource2.setChannelId(channel2.getId());
 
@@ -102,18 +90,11 @@ public abstract class BaseDataSourceRepositoryTestCase
 		dataSource2.setURL("http://portal:8080");
 		dataSource2.setWorkspaceURL("http://localhost:8080/workspace/10000");
 
-		_dataSources.add(_dataSourceRepository.save(dataSource2));
-
 		DataSource dataSource3 = new DataSource("Third Party");
 
 		dataSource3.setCredentialType("OAuth 2 Authentication");
 
-		Channel channel3 = new Channel("Third Party");
-
-		channel3.setId(3L);
-		channel3.setIsNew(true);
-
-		channel3 = _channelRepository.save(channel3);
+		Channel channel3 = _addChannel(3, "Third Party");
 
 		dataSource3.setChannelId(channel3.getId());
 
@@ -121,7 +102,9 @@ public abstract class BaseDataSourceRepositoryTestCase
 		dataSource3.setState("CREDENTIALS_INVALID");
 		dataSource3.setWorkspaceURL("");
 
-		_dataSources.add(_dataSourceRepository.save(dataSource3));
+		setUpRepository(dataSource1, dataSource2, dataSource3);
+
+		_dataSources = new ArrayList<>(entityModels);
 	}
 
 	@Test
@@ -256,19 +239,19 @@ public abstract class BaseDataSourceRepositoryTestCase
 		Assert.assertFalse(
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 
-		DataSource dataSource = _dataSources.get(0);
+		DataSource dataSource1 = _dataSources.get(0);
 
-		dataSource.setEnableAllSites(true);
+		dataSource1.setEnableAllSites(true);
 
-		_dataSourceRepository.save(dataSource);
+		_dataSourceRepository.save(dataSource1);
 
 		Assert.assertTrue(
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 
-		dataSource.setEnableAllSites(false);
-		dataSource.setSitesSelected(true);
+		dataSource1.setEnableAllSites(false);
+		dataSource1.setSitesSelected(true);
 
-		_dataSourceRepository.save(dataSource);
+		_dataSourceRepository.save(dataSource1);
 
 		Assert.assertTrue(
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
@@ -277,21 +260,18 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		dataSourceSite.setSiteId(1L);
 
-		dataSource.setDataSourceSites(Collections.singleton(dataSourceSite));
+		dataSource1.setDataSourceSites(Collections.singleton(dataSourceSite));
 
-		dataSource.setSitesSelected(false);
+		dataSource1.setSitesSelected(false);
 
-		_dataSourceRepository.save(dataSource);
+		_dataSourceRepository.save(dataSource1);
 
 		Assert.assertTrue(
 			_dataSourceRepository.existsByProviderType("LIFERAY"));
 	}
 
-	@Override
 	@Test
 	public void testFindAll() {
-		super.testFindAll();
-
 		Assert.assertEquals(
 			_dataSources,
 			_dataSourceRepository.findAll(
@@ -307,7 +287,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 	}
 
 	@Test
@@ -319,7 +299,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 	}
 
 	@Test
@@ -329,7 +309,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 	}
 
 	@Test
@@ -339,7 +319,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 	}
 
 	@Test
@@ -350,7 +330,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 	}
 
 	@Test
@@ -361,7 +341,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 3, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			Arrays.asList(1L), null, null, null, null, null, null, null,
@@ -369,7 +349,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, "Token Authentication", null, null, null, null, null, null,
@@ -377,7 +357,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, Arrays.asList("Liferay Brazil"), null, null, null, null,
@@ -385,7 +365,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, null, "LIFERAY", null, null, null, null,
@@ -393,7 +373,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, null, null, Arrays.asList("Liferay", "Brazil"), null,
@@ -401,7 +381,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, null, null, null, Arrays.asList("READY"), null, null,
@@ -409,7 +389,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, null, null, null, null, true, null,
@@ -417,7 +397,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			null, null, null, null, null, null, null, true,
@@ -425,7 +405,7 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
 
-		assertModel(dataSources.get(0));
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
 
 		dataSources = _dataSourceRepository.searchDataSources(
 			Arrays.asList(1L, 2L), null, null, null, null, null, null, null,
@@ -478,41 +458,44 @@ public abstract class BaseDataSourceRepositoryTestCase
 	}
 
 	@Override
-	protected void assertModel(DataSource dataSource) {
-		Assert.assertNotNull(dataSource);
-		Assert.assertNotNull(dataSource.getId());
-
-		DataSource expectedDataSource = _dataSources.get(0);
-
-		Assert.assertEquals(
-			expectedDataSource.getChannelId(), dataSource.getChannelId());
-		Assert.assertEquals(
-			expectedDataSource.getCredentialType(),
-			dataSource.getCredentialType());
-		Assert.assertEquals(
-			expectedDataSource.getDataSourceOrganizations(),
-			dataSource.getDataSourceOrganizations());
-		Assert.assertEquals(
-			expectedDataSource.getFaroBackendSecuritySignature(),
-			dataSource.getFaroBackendSecuritySignature());
-		Assert.assertEquals(expectedDataSource.getName(), dataSource.getName());
-		Assert.assertEquals(
-			expectedDataSource.getProviderType(), dataSource.getProviderType());
-		Assert.assertEquals(
-			expectedDataSource.getState(), dataSource.getState());
-		Assert.assertEquals(
-			expectedDataSource.getStatus(), dataSource.getStatus());
-		Assert.assertEquals(expectedDataSource.getURL(), dataSource.getURL());
-	}
-
-	@Override
 	protected CrudRepository<DataSource, Long> getCrudRepository() {
 		return _dataSourceRepository;
 	}
 
-	@Override
-	protected List<DataSource> getModels() {
-		return _dataSources;
+	private Channel _addChannel(long id, String name) {
+		Channel channel = new Channel(name);
+
+		channel.setId(id);
+		channel.setIsNew(true);
+
+		return _channelRepository.save(channel);
+	}
+
+	private void _assertDataSourceEquals(
+		DataSource expectedDataSource, DataSource actualDataSource) {
+
+		Assert.assertEquals(
+			expectedDataSource.getChannelId(), actualDataSource.getChannelId());
+		Assert.assertEquals(
+			expectedDataSource.getCredentialType(),
+			actualDataSource.getCredentialType());
+		Assert.assertEquals(
+			expectedDataSource.getDataSourceOrganizations(),
+			actualDataSource.getDataSourceOrganizations());
+		Assert.assertEquals(
+			expectedDataSource.getFaroBackendSecuritySignature(),
+			actualDataSource.getFaroBackendSecuritySignature());
+		Assert.assertEquals(
+			expectedDataSource.getName(), actualDataSource.getName());
+		Assert.assertEquals(
+			expectedDataSource.getProviderType(),
+			actualDataSource.getProviderType());
+		Assert.assertEquals(
+			expectedDataSource.getState(), actualDataSource.getState());
+		Assert.assertEquals(
+			expectedDataSource.getStatus(), actualDataSource.getStatus());
+		Assert.assertEquals(
+			expectedDataSource.getURL(), actualDataSource.getURL());
 	}
 
 	@Autowired
@@ -521,6 +504,6 @@ public abstract class BaseDataSourceRepositoryTestCase
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
 
-	private final List<DataSource> _dataSources = new ArrayList<>();
+	private List<DataSource> _dataSources;
 
 }

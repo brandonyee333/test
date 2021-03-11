@@ -40,7 +40,9 @@ public abstract class BaseChannelRepositoryTestCase
 
 	@Before
 	public void setUp() {
-		_channel = _channelRepository.save(new Channel("name"));
+		setUpRepository(new Channel("name"));
+
+		_channel = entityModels.get(0);
 	}
 
 	@Test
@@ -78,8 +80,6 @@ public abstract class BaseChannelRepositoryTestCase
 	@Override
 	@Test
 	public void testFindAll() {
-		super.testFindAll();
-
 		Assert.assertEquals(
 			Arrays.asList(_channel),
 			_channelRepository.findAll(PageRequest.of(0, 1)));
@@ -143,24 +143,12 @@ public abstract class BaseChannelRepositoryTestCase
 
 		Assert.assertEquals(channels.toString(), 1, channels.size());
 
-		assertModel(channels.get(0));
-	}
-
-	@Override
-	protected void assertModel(Channel channel) {
-		Assert.assertNotNull(channel);
-		Assert.assertNotNull(channel.getId());
-		Assert.assertEquals("name", channel.getName());
+		Assert.assertEquals(_channel, channels.get(0));
 	}
 
 	@Override
 	protected CrudRepository<Channel, Long> getCrudRepository() {
 		return _channelRepository;
-	}
-
-	@Override
-	protected List<Channel> getModels() {
-		return Collections.singletonList(_channel);
 	}
 
 	private Channel _channel;

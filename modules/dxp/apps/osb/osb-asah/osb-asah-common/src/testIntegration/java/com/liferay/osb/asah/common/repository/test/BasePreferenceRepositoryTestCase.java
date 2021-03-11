@@ -17,9 +17,6 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,33 +32,19 @@ public abstract class BasePreferenceRepositoryTestCase
 
 	@Before
 	public void setUp() {
-		_preference = _preferenceRepository.save(
-			new Preference("key", "value"));
+		setUpRepository(new Preference("key", "value"));
 	}
 
 	@Test
 	public void testFindByKey() {
-		assertModel(_preferenceRepository.findByKey("key"));
-	}
-
-	@Override
-	protected void assertModel(Preference preference) {
-		Assert.assertNotNull(preference);
-		Assert.assertEquals("key", preference.getKey());
-		Assert.assertEquals("value", preference.getValue());
+		Assert.assertEquals(
+			entityModels.get(0), _preferenceRepository.findByKey("key"));
 	}
 
 	@Override
 	protected CrudRepository<Preference, Long> getCrudRepository() {
 		return _preferenceRepository;
 	}
-
-	@Override
-	protected List<Preference> getModels() {
-		return Collections.singletonList(_preference);
-	}
-
-	private Preference _preference;
 
 	@Autowired
 	private PreferenceRepository _preferenceRepository;

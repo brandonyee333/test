@@ -51,7 +51,9 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		activityGroup.setStartLocalDate(new Date());
 		activityGroup.setUserId("347780e0-7a66-11e8-a0fc-8356dd2944fd");
 
-		_activityGroup = _activityGroupRepository.save(activityGroup);
+		setUpRepository(activityGroup);
+
+		_activityGroup = entityModels.get(0);
 	}
 
 	@Test
@@ -107,7 +109,8 @@ public abstract class BaseActivityGroupRepositoryTestCase
 
 	@Test
 	public void testFindByActivityTypeAndChannelIdAndDataSourceIdAndDayDateAndUserId() {
-		assertModel(
+		Assert.assertEquals(
+			_activityGroup,
 			_activityGroupRepository.
 				findByActivityTypeAndChannelIdAndDataSourceIdAndDayDateAndUserId(
 					_activityGroup.getActivityType(),
@@ -126,7 +129,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
 
-		assertModel(activityGroups.get(0));
+		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			12L, null, null, null,
@@ -135,7 +138,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
 
-		assertModel(activityGroups.get(0));
+		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			34L, null, null, null,
@@ -158,7 +161,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
 
-		assertModel(activityGroups.get(0));
+		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			null, null, _activityGroup.getDayDate(), null,
@@ -167,7 +170,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
 
-		assertModel(activityGroups.get(0));
+		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			null, null, null, 56L,
@@ -176,7 +179,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
 
-		assertModel(activityGroups.get(0));
+		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
 			null, null, null, 78L,
@@ -199,40 +202,8 @@ public abstract class BaseActivityGroupRepositoryTestCase
 	}
 
 	@Override
-	protected void assertModel(ActivityGroup activityGroup) {
-		Assert.assertNotNull(activityGroup);
-		Assert.assertNotNull(activityGroup.getId());
-		Assert.assertEquals(
-			_activityGroup.getActivityType(), activityGroup.getActivityType());
-		Assert.assertEquals(
-			_activityGroup.getChannelId(), activityGroup.getChannelId());
-		Assert.assertEquals(
-			_activityGroup.getDataSourceId(), activityGroup.getDataSourceId());
-		Assert.assertEquals(
-			_activityGroup.getDayDate(), activityGroup.getDayDate());
-		Assert.assertEquals(
-			_activityGroup.getEndDate(), activityGroup.getEndDate());
-		Assert.assertEquals(
-			_activityGroup.getEndLocalDate(), activityGroup.getEndLocalDate());
-		Assert.assertEquals(
-			_activityGroup.getOwnerId(), activityGroup.getOwnerId());
-		Assert.assertEquals(
-			_activityGroup.getStartDate(), activityGroup.getStartDate());
-		Assert.assertEquals(
-			_activityGroup.getStartLocalDate(),
-			activityGroup.getStartLocalDate());
-		Assert.assertEquals(
-			_activityGroup.getUserId(), activityGroup.getUserId());
-	}
-
-	@Override
 	protected CrudRepository<ActivityGroup, Long> getCrudRepository() {
 		return _activityGroupRepository;
-	}
-
-	@Override
-	protected List<ActivityGroup> getModels() {
-		return Collections.singletonList(_activityGroup);
 	}
 
 	private ActivityGroup _activityGroup;

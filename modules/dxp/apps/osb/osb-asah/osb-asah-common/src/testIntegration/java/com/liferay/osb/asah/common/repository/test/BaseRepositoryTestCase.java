@@ -16,8 +16,11 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.util.ListUtil;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import org.apache.commons.collections4.IterableUtils;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -40,24 +43,18 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 
 	@Test
 	public void testCount() {
-		List<T> models = getModels();
-
 		CrudRepository<T, Long> crudRepository = getCrudRepository();
 
-		Assert.assertEquals(models.size(), crudRepository.count());
+		Assert.assertEquals(entityModels.size(), crudRepository.count());
 	}
 
 	@Test
 	public void testDelete() {
-		List<T> models = getModels();
-
-		T model = models.get(0);
-
 		CrudRepository<T, Long> crudRepository = getCrudRepository();
 
-		crudRepository.delete(model);
+		crudRepository.delete(entityModels.get(0));
 
-		Assert.assertEquals(models.size() - 1, crudRepository.count());
+		Assert.assertEquals(entityModels.size() - 1, crudRepository.count());
 	}
 
 	@Test
@@ -73,16 +70,14 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 	public void testDeleteAll2() {
 		CrudRepository<T, Long> crudRepository = getCrudRepository();
 
-		crudRepository.deleteAll(getModels());
+		crudRepository.deleteAll(entityModels);
 
 		Assert.assertEquals(0, crudRepository.count());
 	}
 
 	@Test
 	public void testDeleteById() {
-		List<T> models = getModels();
-
-		T model = models.get(0);
+		T model = entityModels.get(0);
 
 		Long id = model.getId();
 
@@ -92,14 +87,12 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 
 		crudRepository.deleteById(id);
 
-		Assert.assertEquals(models.size() - 1, crudRepository.count());
+		Assert.assertEquals(entityModels.size() - 1, crudRepository.count());
 	}
 
 	@Test
 	public void testExistsById() {
-		List<T> models = getModels();
-
-		T model = models.get(0);
+		T model = entityModels.get(0);
 
 		CrudRepository<T, Long> crudRepository = getCrudRepository();
 
@@ -110,7 +103,7 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 	public void testFindAll() {
 		CrudRepository<T, Long> crudRepository = getCrudRepository();
 
-		Assert.assertEquals(getModels(), crudRepository.findAll());
+		Assert.assertEquals(entityModels, crudRepository.findAll());
 	}
 
 	@Test
@@ -118,15 +111,13 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 		CrudRepository<T, Long> crudRepository = getCrudRepository();
 
 		Assert.assertEquals(
-			getModels(),
-			crudRepository.findAllById(ListUtil.map(getModels(), T::getId)));
+			entityModels,
+			crudRepository.findAllById(ListUtil.map(entityModels, T::getId)));
 	}
 
 	@Test
 	public void testFindById() {
-		List<T> models = getModels();
-
-		T model = models.get(0);
+		T model = entityModels.get(0);
 
 		Long id = model.getId();
 
@@ -137,28 +128,32 @@ public abstract class BaseRepositoryTestCase<T extends Persistable<Long>> {
 		Optional<T> modelOptional = crudRepository.findById(id);
 
 		Assert.assertTrue(modelOptional.isPresent());
-
-		assertModel(modelOptional.get());
 	}
 
 	@Test
 	public void testSave() {
-		List<T> models = getModels();
+		CrudRepository<T, Long> crudRepository = getCrudRepository();
 
-		assertModel(models.get(0));
+		Assert.assertEquals(
+			entityModels.get(0), crudRepository.save(entityModels.get(0)));
 	}
 
 	@Test
 	public void testSaveAll() {
 		CrudRepository<T, Long> crudRepository = getCrudRepository();
 
-		Assert.assertEquals(getModels(), crudRepository.saveAll(getModels()));
+		Assert.assertEquals(entityModels, crudRepository.saveAll(entityModels));
 	}
-
-	protected abstract void assertModel(T model);
 
 	protected abstract CrudRepository<T, Long> getCrudRepository();
 
-	protected abstract List<T> getModels();
+	protected void setUpRepository(T... entityModels) {
+		CrudRepository<T, Long> crudRepository = getCrudRepository();
+
+		this.entityModels = IterableUtils.toList(
+			crudRepository.saveAll(Arrays.asList(entityModels)));
+	}
+
+	protected List<T> entityModels;
 
 }
