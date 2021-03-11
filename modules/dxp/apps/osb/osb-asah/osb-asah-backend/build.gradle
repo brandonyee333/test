@@ -20,7 +20,6 @@ dependencies {
 	compile group: "io.improbable", name: "keanu", version: "0.0.26"
 	compile group: "org.everit.json", name: "org.everit.json.schema", version: "1.5.1"
 	compile group: "org.springframework.boot", name: "spring-boot-starter-hateoas"
-	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-backend-ext-alfa")
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-backend-ext-seo")
 	compile project(configuration: "default", path: ":dxp:apps:osb:osb-asah:osb-asah-common")
 
