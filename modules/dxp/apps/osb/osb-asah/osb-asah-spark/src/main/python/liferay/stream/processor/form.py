@@ -16,90 +16,6 @@ from pyspark.sql import Window, \
 
 class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
-	def _calculate_field_metrics(self, data_frame):
-		form_field_data_frame = data_frame.withColumn(
-			'field_name',
-			F.coalesce(
-				F.col('eventProperties.fieldName'), F.lit('unknown')
-			)
-		).withColumn(
-			'interactions',
-			F.when(
-				F.col('eventId') == 'fieldFocused',
-				F.lit(1)
-			).otherwise(
-				F.lit(0)
-			)
-		).withColumn(
-			'interaction_duration',
-			F.when(
-				F.col('eventId') == 'fieldBlurred',
-				F.col('eventProperties.focusDuration').cast('long')
-			).otherwise(
-				F.lit(0)
-			)
-		).withColumn(
-			'page_index',
-			F.coalesce(
-				F.col('eventProperties.page'), F.lit(0)
-			).cast(
-				'integer'
-			)
-		)
-
-		window = Window.partitionBy(
-			'projectId', 'channelId', 'userId', 'assetId', 'variantId'
-		).orderBy(
-			F.asc('event_date')
-		).rowsBetween(
-			Window.currentRow + 1, Window.unboundedFollowing
-		)
-
-		form_field_data_frame = form_field_data_frame.withColumn(
-			'abandonments',
-			F.min(
-				F.when(
-					F.col('eventId') == 'formSubmitted',
-					F.lit(0)
-				).otherwise(
-					F.lit(1)
-				)
-			).over(window)
-		).fillna(1)
-
-		window = Window.partitionBy(
-			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
-			'page_index',
-		).orderBy(
-			F.desc('event_date')
-		)
-
-		form_field_data_frame = form_field_data_frame.withColumn(
-			'row_number',
-			F.row_number().over(window)
-		).withColumn(
-			'abandonments',
-			F.when(
-				F.col('row_number') == 1,
-				F.col('abandonments')
-			).otherwise(
-				F.lit(0)
-			)
-		)
-
-		form_field_data_frame = form_field_data_frame.filter(
-			F.col('eventId').isin(['fieldBlurred', 'fieldFocused'])
-		)
-
-		return form_field_data_frame.groupBy(
-			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
-			'normalized_event_date', 'primaryKey', 'page_index', 'field_name'
-		).agg(
-			F.sum('abandonments').alias('abandonments'),
-			F.sum('interaction_duration').alias('interaction_duration'),
-			F.sum('interactions').alias('interactions')
-		)
-
 	def _calculate_page_metrics(self, data_frame):
 		form_page_data_frame = data_frame.withColumn(
 			'page_index',
@@ -265,3 +181,107 @@ class FormDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			],
 			how='left'
 		).fillna(0)
+
+class FormFieldDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
+
+	def _filter(self, analytics_events_data_frame):
+		return analytics_events_data_frame.filter(
+			"""
+				(applicationId = 'Form') AND
+				(
+					(eventId = 'fieldBlurred') OR
+					(eventId = 'fieldFocused') OR
+					(eventId = 'formSubmitted') OR
+					(eventId = 'formViewed') OR
+					(eventId = 'pageViewed')
+				) AND
+				(eventProperties.formId != '')
+			"""
+		)
+
+	def _get_asset_id_column(self):
+		return F.col('eventProperties.formId')
+
+	def _process(self, data_frame):
+		data_frame = data_frame.withColumn(
+			'field_name',
+			F.coalesce(
+				F.col('eventProperties.fieldName'), F.lit('unknown')
+			)
+		).withColumn(
+			'interactions',
+			F.when(
+				F.col('eventId') == 'fieldFocused',
+				F.lit(1)
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'interaction_duration',
+			F.when(
+				F.col('eventId') == 'fieldBlurred',
+				F.col('eventProperties.focusDuration').cast('long')
+			).otherwise(
+				F.lit(0)
+			)
+		).withColumn(
+			'page_index',
+			F.coalesce(
+				F.col('eventProperties.page'), F.lit(0)
+			).cast(
+				'integer'
+			)
+		)
+
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId'
+		).orderBy(
+			F.asc('event_date')
+		).rowsBetween(
+			Window.currentRow + 1, Window.unboundedFollowing
+		)
+
+		data_frame = data_frame.withColumn(
+			'abandonments',
+			F.min(
+				F.when(
+					F.col('eventId') == 'formSubmitted',
+					F.lit(0)
+				).otherwise(
+					F.lit(1)
+				)
+			).over(window)
+		).fillna(1)
+
+		window = Window.partitionBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'page_index',
+		).orderBy(
+			F.desc('event_date')
+		)
+
+		data_frame = data_frame.withColumn(
+			'row_number',
+			F.row_number().over(window)
+		).withColumn(
+			'abandonments',
+			F.when(
+				F.col('row_number') == 1,
+				F.col('abandonments')
+			).otherwise(
+				F.lit(0)
+			)
+		)
+
+		data_frame = data_frame.filter(
+			F.col('eventId').isin(['fieldBlurred', 'fieldFocused'])
+		)
+
+		return data_frame.groupBy(
+			'projectId', 'channelId', 'userId', 'assetId', 'variantId',
+			'normalized_event_date', 'primaryKey', 'page_index', 'field_name'
+		).agg(
+			F.sum('abandonments').alias('abandonments'),
+			F.sum('interaction_duration').alias('interaction_duration'),
+			F.sum('interactions').alias('interactions')
+		)
