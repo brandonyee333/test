@@ -113,8 +113,8 @@ public class ActivityGroupsRestController extends BaseRestController {
 			_addExpansion(activityGroupDTOs, expand, expandFilterString);
 
 			return _toPageDTO(
-				activityGroups,
-				new ActivityGroupDTO(activityGroupDTOs.values()));
+				new ActivityGroupDTO(activityGroupDTOs.values()),
+				activityGroups);
 		}
 
 		return _toPageDTO(activityGroups);
@@ -278,11 +278,11 @@ public class ActivityGroupsRestController extends BaseRestController {
 		Page<ActivityGroup> activityGroups) {
 
 		return _toPageDTO(
-			activityGroups, new ActivityGroupDTO(activityGroups.getContent()));
+			new ActivityGroupDTO(activityGroups.getContent()), activityGroups);
 	}
 
 	private PageDTO<ActivityGroupDTO> _toPageDTO(
-		Page<ActivityGroup> activityGroups, ActivityGroupDTO activityGroupDTO) {
+		ActivityGroupDTO activityGroupDTO, Page<ActivityGroup> activityGroups) {
 
 		return new PageDTO<>(
 			"_embedded", activityGroupDTO, activityGroups.getNumber(),
