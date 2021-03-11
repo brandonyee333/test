@@ -20,6 +20,7 @@ import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -42,9 +43,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class NanitesRestController {
 
 	@PostMapping
-	public void post(@RequestBody String osbAsahTaskJSON) {
-		_osbAsahTaskManager.executeOSBAsahTask(
-			false, new JSONObject(osbAsahTaskJSON));
+	public void post(@RequestBody AsahTask asahTask) {
+		_osbAsahTaskManager.executeOSBAsahTask(asahTask, false);
 	}
 
 	@PostMapping("/analytics")
@@ -72,15 +72,13 @@ public class NanitesRestController {
 	}
 
 	@PostMapping("/schedule")
-	public void schedule(@RequestBody String osbAsahTaskJSON) {
-		_osbAsahTaskManager.scheduleOSBAsahTask(
-			new JSONObject(osbAsahTaskJSON));
+	public void schedule(@RequestBody AsahTask asahTask) {
+		_osbAsahTaskManager.scheduleOSBAsahTask(asahTask);
 	}
 
 	@PostMapping("/unschedule")
-	public void unschedule(@RequestBody String osbAsahTaskJSON) {
-		_osbAsahTaskManager.unscheduleOSBAsahTask(
-			new JSONObject(osbAsahTaskJSON));
+	public void unschedule(@RequestBody AsahTask asahTask) {
+		_osbAsahTaskManager.unscheduleOSBAsahTask(asahTask);
 	}
 
 	@Autowired

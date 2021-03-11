@@ -20,6 +20,7 @@ import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskScheduler;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -50,7 +51,7 @@ public class OSBAsahTaskManagerTest {
 	)
 	@Test
 	public void testDeleteOSBAsahTask() {
-		_osbAsahTaskManager.deleteOSBAsahTask("450553576847486527");
+		_osbAsahTaskManager.deleteOSBAsahTask(450553576847486527L);
 
 		Assert.assertEquals(
 			3,
@@ -60,15 +61,11 @@ public class OSBAsahTaskManagerTest {
 
 	@Test
 	public void testExecuteOSBAsahTask1() {
-		_osbAsahTaskManager.executeOSBAsahTask(
-			false,
-			JSONUtil.put(
-				"className", "DataControlNanite"
-			).put(
-				"id", "450553576847486527"
-			).put(
-				"projectId", "test"
-			));
+		AsahTask asahTask = new AsahTask("DataControlNanite", null, "test");
+
+		asahTask.setId(450553576847486527L);
+
+		_osbAsahTaskManager.executeOSBAsahTask(asahTask, false);
 
 		ArgumentCaptor<OSBAsahTaskRunnable> argumentCaptor =
 			ArgumentCaptor.forClass(OSBAsahTaskRunnable.class);
@@ -92,15 +89,12 @@ public class OSBAsahTaskManagerTest {
 
 	@Test
 	public void testExecuteOSBAsahTask2() {
-		_osbAsahTaskManager.executeOSBAsahTask(
-			false,
-			JSONUtil.put(
-				"className", "UpdateDynamicMembershipsNanite"
-			).put(
-				"id", "450553576847486528"
-			).put(
-				"projectId", "test"
-			));
+		AsahTask asahTask = new AsahTask(
+			"UpdateDynamicMembershipsNanite", null, "test");
+
+		asahTask.setId(450553576847486528L);
+
+		_osbAsahTaskManager.executeOSBAsahTask(asahTask, false);
 
 		ArgumentCaptor<OSBAsahTaskRunnable> argumentCaptor =
 			ArgumentCaptor.forClass(OSBAsahTaskRunnable.class);
@@ -140,7 +134,7 @@ public class OSBAsahTaskManagerTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testScheduleOSBAsahTaskFail() {
 		_osbAsahTaskManager.scheduleOSBAsahTask(
-			JSONUtil.put("className", "Foo"));
+			new AsahTask("Foo", null, null));
 	}
 
 	@ElasticsearchIndex(

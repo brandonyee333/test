@@ -17,6 +17,7 @@ package com.liferay.osb.asah.monolith.common.http.impl;
 import com.liferay.osb.asah.batch.curator.rest.controller.NanitesRestController;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 
+import com.liferay.osb.asah.common.model.AsahTask;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -46,14 +47,14 @@ public class NanitesHttpImplTest {
 
 	@Test
 	public void testExecuteOSBAsahTask() {
-		JSONObject jsonObject = new JSONObject();
+		AsahTask asahTask = new AsahTask("Foo", null, "test");
 
-		_nanitesHttp.executeOSBAsahTask(jsonObject);
+		_nanitesHttp.executeOSBAsahTask(asahTask);
 
 		Mockito.verify(
 			_nanitesRestController
 		).post(
-			jsonObject.toString()
+			asahTask
 		);
 	}
 
@@ -99,27 +100,27 @@ public class NanitesHttpImplTest {
 
 	@Test
 	public void testScheduleOSBAsahTask() {
-		JSONObject jsonObject = new JSONObject();
+		AsahTask asahTask = new AsahTask("Foo", null, "test");
 
-		_nanitesHttp.scheduleOSBAsahTask(jsonObject);
+		_nanitesHttp.scheduleOSBAsahTask(asahTask);
 
 		Mockito.verify(
 			_nanitesRestController
 		).schedule(
-			jsonObject.toString()
+			asahTask
 		);
 	}
 
 	@Test
 	public void testUnscheduleOSBAsahTask() {
-		JSONObject jsonObject = new JSONObject();
+		AsahTask asahTask = new AsahTask("Foo", null, "test");
 
-		_nanitesHttp.unscheduleOSBAsahTask(jsonObject);
+		_nanitesHttp.unscheduleOSBAsahTask(asahTask);
 
 		Mockito.verify(
 			_nanitesRestController
 		).unschedule(
-			jsonObject.toString()
+			asahTask
 		);
 	}
 

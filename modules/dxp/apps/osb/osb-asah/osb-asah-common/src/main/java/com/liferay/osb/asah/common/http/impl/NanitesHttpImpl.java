@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.http.impl;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.http.NanitesHttp;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
 
@@ -34,10 +35,10 @@ import org.springframework.stereotype.Component;
 public class NanitesHttpImpl implements NanitesHttp {
 
 	@Override
-	public void executeOSBAsahTask(JSONObject jsonObject) {
+	public void executeOSBAsahTask(AsahTask asahTask) {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR, "/nanites", HttpMethod.POST,
-			jsonObject.toString());
+			asahTask);
 	}
 
 	@Override
@@ -69,17 +70,17 @@ public class NanitesHttpImpl implements NanitesHttp {
 	}
 
 	@Override
-	public void scheduleOSBAsahTask(JSONObject jsonObject) {
+	public void scheduleOSBAsahTask(AsahTask asahTask) {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR, "/nanites/schedule",
-			HttpMethod.POST, jsonObject.toString());
+			HttpMethod.POST, asahTask);
 	}
 
 	@Override
-	public void unscheduleOSBAsahTask(JSONObject jsonObject) {
+	public void unscheduleOSBAsahTask(AsahTask asahTask) {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR, "/nanites/unschedule",
-			HttpMethod.POST, jsonObject.toString());
+			HttpMethod.POST, asahTask);
 	}
 
 	@Autowired

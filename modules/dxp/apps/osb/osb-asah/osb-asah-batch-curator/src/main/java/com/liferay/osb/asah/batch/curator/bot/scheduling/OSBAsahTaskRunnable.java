@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.scheduling;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.Arrays;
@@ -34,19 +35,17 @@ import org.json.JSONObject;
 public class OSBAsahTaskRunnable implements Runnable {
 
 	public OSBAsahTaskRunnable(
-		boolean force, JSONObject osbAsahTaskJSONObject,
+		AsahTask asahTask, boolean force,
 		OSBAsahTaskManager osbAsahTaskManager) {
 
 		_force = force;
 		_osbAsahTaskManager = osbAsahTaskManager;
 
-		_contextJSONObject = osbAsahTaskJSONObject.optJSONObject("context");
-		_naniteClassNames = new String[] {
-			osbAsahTaskJSONObject.getString("className")
-		};
-		_osbAsahTaskId = osbAsahTaskJSONObject.optString("id");
+		_asahTaskId = asahTask.getId();
+		_contextJSONObject = new JSONObject(asahTask.getContext());
+		_naniteClassNames = new String[] {asahTask.getClassName()};
 
-		_projectId = osbAsahTaskJSONObject.optString("projectId");
+		_projectId = asahTask.getProjectId();
 
 		if (StringUtils.isBlank(_projectId)) {
 			if (_log.isWarnEnabled()) {
@@ -60,10 +59,9 @@ public class OSBAsahTaskRunnable implements Runnable {
 	}
 
 	public OSBAsahTaskRunnable(
-		JSONObject osbAsahTaskJSONObject,
-		OSBAsahTaskManager osbAsahTaskManager) {
+		AsahTask asahTask, OSBAsahTaskManager osbAsahTaskManager) {
 
-		this(false, osbAsahTaskJSONObject, osbAsahTaskManager);
+		this(asahTask, false, osbAsahTaskManager);
 	}
 
 	public OSBAsahTaskRunnable(
@@ -76,15 +74,15 @@ public class OSBAsahTaskRunnable implements Runnable {
 
 		_contextJSONObject = null;
 		_force = false;
-		_osbAsahTaskId = null;
+		_asahTaskId = null;
 	}
 
 	public String[] getNaniteClassNames() {
 		return Arrays.copyOf(_naniteClassNames, _naniteClassNames.length);
 	}
 
-	public String getOSBAsahTaskId() {
-		return _osbAsahTaskId;
+	public Long getOSBAsahTaskId() {
+		return _asahTaskId;
 	}
 
 	public String getProjectId() {
@@ -116,7 +114,7 @@ public class OSBAsahTaskRunnable implements Runnable {
 				 nanite.isLogRunEnabled()) &&
 				_osbAsahTaskManager.checkNanite(naniteClassName)) {
 
-				_osbAsahTaskManager.deleteOSBAsahTask(_osbAsahTaskId);
+				_osbAsahTaskManager.deleteOSBAsahTask(_asahTaskId);
 
 				continue;
 			}
@@ -130,17 +128,17 @@ public class OSBAsahTaskRunnable implements Runnable {
 
 				nanite.logCompleted(
 					_contextJSONObject, System.currentTimeMillis() - start,
-					_osbAsahTaskId);
+					String.valueOf(_asahTaskId));
 			}
 			catch (Exception e) {
 				_log.error(e, e);
 
 				nanite.logFailed(
 					_contextJSONObject, System.currentTimeMillis() - start,
-					_osbAsahTaskId, e);
+					String.valueOf(_asahTaskId), e);
 			}
 			finally {
-				_osbAsahTaskManager.deleteOSBAsahTask(_osbAsahTaskId);
+				_osbAsahTaskManager.deleteOSBAsahTask(_asahTaskId);
 			}
 		}
 	}
@@ -151,7 +149,7 @@ public class OSBAsahTaskRunnable implements Runnable {
 	private final JSONObject _contextJSONObject;
 	private final boolean _force;
 	private final String[] _naniteClassNames;
-	private final String _osbAsahTaskId;
+	private final Long _asahTaskId;
 	private final OSBAsahTaskManager _osbAsahTaskManager;
 	private String _projectId;
 

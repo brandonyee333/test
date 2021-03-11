@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
+import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.repository.AsahTaskRepository;
@@ -67,7 +68,29 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 		return _asahTaskRepository.findByCronExpressionIsNotNull();
 	}
 
+	public AsahTask scheduleAsahTask(AsahTask asahTask) {
+		asahTask = addAsahTask(asahTask);
+
+		if (asahTask.getCronExpression() == null) {
+			_nanitesHttp.executeOSBAsahTask(asahTask);
+		}
+		else {
+			_nanitesHttp.scheduleOSBAsahTask(asahTask);
+		}
+
+		return asahTask;
+	}
+
+	public void unscheduleAsahTask(AsahTask asahTask) {
+		_nanitesHttp.unscheduleOSBAsahTask(asahTask);
+
+		deleteAsahTask(asahTask);
+	}
+
 	@Autowired
 	private AsahTaskRepository _asahTaskRepository;
+
+	@Autowired
+	private NanitesHttp _nanitesHttp;
 
 }

@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.batch.curator.bot.scheduling;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
@@ -65,40 +65,30 @@ public class OSBAsahTaskManager {
 		return false;
 	}
 
-	public void deleteOSBAsahTask(String osbAsahTaskId) {
-		if (osbAsahTaskId != null) {
-			_elasticsearchInvoker.delete("OSBAsahTasks", osbAsahTaskId);
-		}
+	public void deleteOSBAsahTask(Long asahTaskId) {
+		_asahTaskDog.deleteAsahTaskById(asahTaskId);
 	}
 
-	public void executeOSBAsahTask(
-		boolean force, JSONObject osbAsahTaskJSONObject) {
+	public void executeOSBAsahTask(AsahTask asahTask, boolean force) {
+		if (Objects.equals(
+			asahTask.getClassName(), "UpdateDynamicMembershipsNanite")) {
 
-		String className = osbAsahTaskJSONObject.getString("className");
-
-		if (className.equals("UpdateDynamicMembershipsNanite")) {
 			_osbAsahTaskScheduler.executeUpdateDynamicMembershipsNanite(
-				new OSBAsahTaskRunnable(false, osbAsahTaskJSONObject, this));
+				new OSBAsahTaskRunnable(asahTask, false, this));
 		}
 		else {
 			_osbAsahTaskScheduler.execute(
-				new OSBAsahTaskRunnable(force, osbAsahTaskJSONObject, this));
+				new OSBAsahTaskRunnable(asahTask, force, this));
 		}
 	}
 
 	public void executeOSBAsahTasks() {
 		try {
-			JSONArrayIterator.of(
-				"OSBAsahTasks", _elasticsearchInvoker,
-				osbAsahTaskJSONObject -> {
-					executeOSBAsahTask(true, osbAsahTaskJSONObject);
+			List<AsahTask> asahTasks = _asahTaskDog.getImmediateAsahTasks();
 
-					return null;
-				}
-			).setQueryBuilder(
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.existsQuery("cronExpression"))
-			).iterate();
+			for (AsahTask asahTask : asahTasks) {
+				executeOSBAsahTask(asahTask, true);
+			}
 		}
 		catch (Exception e) {
 			_log.error("Unable to run existing tasks on startup", e);
@@ -120,26 +110,17 @@ public class OSBAsahTaskManager {
 
 	public void removeOSBAsahTasks() {
 		try {
-			JSONArrayIterator.of(
-				"OSBAsahTasks", _elasticsearchInvoker,
-				osbAsahTaskJSONObject -> {
-					unscheduleOSBAsahTask(osbAsahTaskJSONObject);
+			List<AsahTask> asahTasks = _asahTaskDog.getScheduledAsahTasks();
 
-					return null;
-				}
-			).setQueryBuilder(
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.existsQuery("cronExpression"))
-			).setStopOnExceptions(
-				false
-			).iterate();
+			for (AsahTask asahTask : asahTasks) {
+				unscheduleOSBAsahTask(asahTask);
+			}
 		}
 		catch (Exception e) {
 			_log.error("Unable to unschedule existing tasks", e);
 		}
 
-		_elasticsearchInvoker.delete(
-			"OSBAsahTasks", QueryBuilders.matchAllQuery());
+		_asahTaskDog.deleteAllAsahTask();
 	}
 
 	public void runNanites(String... naniteClassNames) {
@@ -163,56 +144,49 @@ public class OSBAsahTaskManager {
 		}
 	}
 
-	public void scheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
-		String className = osbAsahTaskJSONObject.getString("className");
-
-		Nanite nanite = getNanite(className);
+	public void scheduleOSBAsahTask(AsahTask asahTask) {
+		Nanite nanite = getNanite(asahTask.getClassName());
 
 		if (nanite == null) {
 			throw new IllegalArgumentException(
-				"Unable to schedule nanite with class name " + className);
+				"Unable to schedule nanite with class name " +
+					asahTask.getClassName());
 		}
-
-		String cronExpression = osbAsahTaskJSONObject.getString(
-			"cronExpression");
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				String.format(
 					"Scheduling task %s according cron expression %s",
-					osbAsahTaskJSONObject, cronExpression));
+					asahTask.getId(), asahTask.getCronExpression()));
 		}
 
 		_osbAsahTaskScheduler.schedule(
-			cronExpression,
-			new OSBAsahTaskRunnable(osbAsahTaskJSONObject, this),
-			osbAsahTaskJSONObject.getString("id"));
+			asahTask.getCronExpression(),
+			new OSBAsahTaskRunnable(asahTask, this),
+			String.valueOf(asahTask.getId()));
 	}
 
 	public void scheduleOSBAsahTasks() {
 		try {
-			JSONArrayIterator.of(
-				"OSBAsahTasks", _elasticsearchInvoker,
-				osbAsahTaskJSONObject -> {
-					scheduleOSBAsahTask(osbAsahTaskJSONObject);
+			List<AsahTask> asahTasks = _asahTaskDog.getScheduledAsahTasks();
 
-					return null;
-				}
-			).setQueryBuilder(
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.existsQuery("cronExpression"))
-			).iterate();
+			for (AsahTask asahTask : asahTasks) {
+				scheduleOSBAsahTask(asahTask);
+			}
 		}
 		catch (Exception e) {
 			_log.error("Unable to schedule existing tasks on startup", e);
 		}
 	}
 
-	public void unscheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
-		_osbAsahTaskScheduler.unschedule(osbAsahTaskJSONObject.getString("id"));
+	public void unscheduleOSBAsahTask(AsahTask asahTask) {
+		_osbAsahTaskScheduler.unschedule(String.valueOf(asahTask.getId()));
 	}
 
 	private static final Log _log = LogFactory.getLog(OSBAsahTaskManager.class);
+
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
