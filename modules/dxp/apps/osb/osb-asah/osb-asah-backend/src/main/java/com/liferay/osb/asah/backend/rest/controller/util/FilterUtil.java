@@ -29,8 +29,8 @@ import java.util.List;
  */
 public class FilterUtil {
 
-	public static Boolean getBoolean(String filter, String key) {
-		List<String> values = getStringValues(filter, key, false);
+	public static Boolean getBoolean(String filterString, String key) {
+		List<String> values = getStringValues(filterString, key, false);
 
 		if ((values == null) || values.isEmpty()) {
 			return false;
@@ -39,9 +39,10 @@ public class FilterUtil {
 		return true;
 	}
 
-	public static Date getEndDate(String filter, String key) {
+	public static Date getEndDate(String filterString, String key) {
 		List<String> values = _getValues(
-			filter, Arrays.asList(" " + key + " lt ", "(" + key + " lt "));
+			filterString,
+			Arrays.asList(" " + key + " lt ", "(" + key + " lt "));
 
 		if ((values == null) || values.isEmpty()) {
 			return null;
@@ -50,8 +51,8 @@ public class FilterUtil {
 		return Date.from(Instant.parse(values.get(0)));
 	}
 
-	public static Long getLong(String filter, String key) {
-		List<String> values = getStringValues(filter, key, false);
+	public static Long getLong(String filterString, String key) {
+		List<String> values = getStringValues(filterString, key, false);
 
 		if ((values == null) || values.isEmpty()) {
 			return null;
@@ -61,24 +62,27 @@ public class FilterUtil {
 	}
 
 	public static List<Long> getLongValues(
-		String filter, String key, boolean search) {
+		String filterString, String key, boolean search) {
 
 		List<String> values;
 
 		if (search) {
-			values = _getValues(filter, Arrays.asList("contains(" + key + ","));
+			values = _getValues(
+				filterString, Arrays.asList("contains(" + key + ","));
 		}
 		else {
 			values = _getValues(
-				filter, Arrays.asList(" " + key + " eq ", "(" + key + " eq "));
+				filterString,
+				Arrays.asList(" " + key + " eq ", "(" + key + " eq "));
 		}
 
 		return ListUtil.map(values, Long::valueOf);
 	}
 
-	public static Date getStartDate(String filter, String key) {
+	public static Date getStartDate(String filterString, String key) {
 		List<String> values = _getValues(
-			filter, Arrays.asList(" " + key + " ge ", "(" + key + " ge "));
+			filterString,
+			Arrays.asList(" " + key + " ge ", "(" + key + " ge "));
 
 		if ((values == null) || values.isEmpty()) {
 			return null;
@@ -87,8 +91,8 @@ public class FilterUtil {
 		return Date.from(Instant.parse(values.get(0)));
 	}
 
-	public static String getString(String filter, String key) {
-		List<String> values = getStringValues(filter, key, false);
+	public static String getString(String filterString, String key) {
+		List<String> values = getStringValues(filterString, key, false);
 
 		if ((values == null) || values.isEmpty()) {
 			return null;
@@ -98,30 +102,34 @@ public class FilterUtil {
 	}
 
 	public static List<String> getStringValues(
-		String filter, String key, boolean search) {
+		String filterString, String key, boolean search) {
 
 		if (search) {
-			return _getValues(filter, Arrays.asList("contains(" + key + ","));
+			return _getValues(
+				filterString, Arrays.asList("contains(" + key + ","));
 		}
 
 		return _getValues(
-			filter, Arrays.asList(" " + key + " eq ", "(" + key + " eq "));
+			filterString,
+			Arrays.asList(" " + key + " eq ", "(" + key + " eq "));
 	}
 
-	private static List<String> _getValues(String filter, List<String> keys) {
-		if (filter == null) {
+	private static List<String> _getValues(
+		String filterString, List<String> keys) {
+
+		if (filterString == null) {
 			return null;
 		}
 
 		List<String> values = new ArrayList<>();
 
 		for (String key : keys) {
-			while (filter.contains(key)) {
-				int keyIndex = filter.indexOf(key);
+			while (filterString.contains(key)) {
+				int keyIndex = filterString.indexOf(key);
 
 				int valueIndex = keyIndex + key.length();
 
-				String value = filter.substring(valueIndex);
+				String value = filterString.substring(valueIndex);
 
 				if (value.indexOf("'") == 0) {
 					value = value.substring(value.indexOf("'") + 1);
@@ -147,8 +155,8 @@ public class FilterUtil {
 					valueIndex += value.length() + 2;
 				}
 
-				filter = filter.replace(
-					filter.substring(keyIndex, valueIndex), "");
+				filterString = filterString.replace(
+					filterString.substring(keyIndex, valueIndex), "");
 			}
 		}
 
