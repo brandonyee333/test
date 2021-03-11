@@ -14,9 +14,12 @@
 
 package com.liferay.osb.customer.admin.internal.messaging;
 
+import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
@@ -113,26 +116,45 @@ public class SyncNewActiveProductPurchaseMessageListener
 
 			accountKeys.add(productPurchase.getAccountKey());
 
+			Account account = _accountWebService.getAccount(
+				productPurchase.getAccountKey());
+
 			AccountEntry accountEntry =
 				_accountEntryLocalService.fetchKoroneikiAccountEntry(
 					productPurchase.getAccountKey());
-
-			if (accountEntry == null) {
-				return;
-			}
-
-			Account account = _accountWebService.getAccount(
-				productPurchase.getAccountKey());
 
 			List<ProductPurchase> curProductPurchases =
 				_accountReader.getProductPurchases(
 					productPurchase.getAccountKey());
 
-			_accountEntryLocalService.updateAccountEntry(
-				accountEntry.getAccountEntryId(),
-				_accountReader.getSupportEndDate(curProductPurchases),
-				_accountReader.getTicketSupportEndDate(curProductPurchases),
-				_accountReader.getStatus(account));
+			if (accountEntry == null) {
+				if (!_accountReader.isSyncAccount(curProductPurchases)) {
+					return;
+				}
+
+				_accountEntryLocalService.addAccountEntry(
+					OSBCustomerConstants.USER_DEFAULT_USER_ID, account.getKey(),
+					_accountReader.getDossieraAccountKey(
+						account.getExternalLinks()),
+					_accountReader.getCorpProjectUuid(
+						account.getExternalLinks()),
+					_accountReader.getCorpProjectId(account.getExternalLinks()),
+					account.getName(), account.getCode(), null,
+					_accountReader.getSupportEndDate(curProductPurchases),
+					_accountReader.getTicketSupportEndDate(curProductPurchases),
+					_accountReader.getStatus(account),
+					new String[] {
+						AccountEntryConstants.getLanguageId(
+							account.getLanguage())
+					});
+			}
+			else {
+				_accountEntryLocalService.updateAccountEntry(
+					accountEntry.getAccountEntryId(),
+					_accountReader.getSupportEndDate(curProductPurchases),
+					_accountReader.getTicketSupportEndDate(curProductPurchases),
+					_accountReader.getStatus(account));
+			}
 		}
 
 		_lastSyncDate = now;
