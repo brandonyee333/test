@@ -82,7 +82,7 @@ public class ActivityGroupDog {
 		return activityGroupOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
-				"There is no activityGroup with ID " + activityGroupId));
+				"There is no activity group with ID " + activityGroupId));
 	}
 
 	public Page<ActivityGroup> searchActivityGroups(
