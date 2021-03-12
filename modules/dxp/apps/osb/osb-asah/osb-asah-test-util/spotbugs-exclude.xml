@@ -1,0 +1,7 @@
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="UNENCRYPTED_SOCKET"/>
+        <Class name="com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListener"/>
+        <Method name="_pingHost" />
+    </Match>
+</FindBugsFilter>

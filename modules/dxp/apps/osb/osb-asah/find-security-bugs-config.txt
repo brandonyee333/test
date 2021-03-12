@@ -1,0 +1,14 @@
+java/io/File.<init>(Ljava/lang/String;)V:0#1,2
+java/nio/file/Paths.get(Ljava/lang/String;[Ljava/lang/String;)Ljava/nio/file/Path;:0,1
+java/nio/file/Path.toString()Ljava/lang/String;:0
+
+com/liferay/osb/asah/common/storage/StorageFactory.getStorage(Lcom/liferay/osb/asah/common/storage/StorageConfiguration;)Lcom/liferay/osb/asah/common/storage/Storage;:0
+com/liferay/osb/asah/common/storage/StorageConfiguration.builder(Ljava/lang/String;)Lcom/liferay/osb/asah/common/storage/StorageConfiguration$Builder;:0
+com/liferay/osb/asah/common/storage/StorageConfiguration.getPath()Ljava/lang/String;:0
+
+com/liferay/osb/asah/common/storage/StorageConfiguration$Builder.<init>(Ljava/lang/String;)V:0#1,2
+com/liferay/osb/asah/common/storage/StorageConfiguration$Builder.build()Lcom/liferay/osb/asah/common/storage/StorageConfiguration;:0
+
+com/liferay/osb/asah/common/util/ProjectIdThreadLocal.getProjectId()Ljava/lang/String;:SAFE
+
+org/apache/commons/lang3/StringUtils.replace(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;:0,2

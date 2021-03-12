@@ -1,0 +1,2 @@
+com/liferay/osb/asah/extractor/processor/AnalyticsEventsMessageProcessor._analyticsEventsStoragePath:SAFE
+com/liferay/osb/asah/extractor/processor/AnalyticsEventsMessageProcessor._analyticsEventsBucket:SAFE

@@ -1,0 +1,5 @@
+com/liferay/osb/asah/batch/curator/bot/nanite/DataExportNanite._exportPath:SAFE
+org/json/JSONObject.getString("id"):SAFE@com/liferay/osb/asah/batch/curator/bot/nanite/DataControlNanite
+org/json/JSONObject.getString("id"):SAFE@com/liferay/osb/asah/batch/curator/bot/nanite/DataExportNanite
+com/liferay/osb/asah/batch/curator/bot/nanite/DataControlNanite._exportPathName:SAFE
+com/liferay/osb/asah/batch/curator/bot/nanite/DeleteTempFilesNanite._tempPathName:SAFE

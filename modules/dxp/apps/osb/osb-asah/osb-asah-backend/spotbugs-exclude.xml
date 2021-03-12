@@ -1,0 +1,13 @@
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="CRLF_INJECTION_LOGS"/>
+    </Match>
+    <Match>
+        <Bug pattern="REDOS"/>
+        <Class name="com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction"/>
+    </Match>
+    <Match>
+        <Bug pattern="WEAK_MESSAGE_DIGEST_SHA1"/>
+        <Class name="com.liferay.osb.asah.backend.rest.controller.api.external.RecommendationRestController"/>
+    </Match>
+</FindBugsFilter>

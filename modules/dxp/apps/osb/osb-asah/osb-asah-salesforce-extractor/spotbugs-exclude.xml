@@ -1,0 +1,7 @@
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="XXE_XMLREADER"/>
+        <Class name="com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorNanite"/>
+        <Method name="_processTable" />
+    </Match>
+</FindBugsFilter>
