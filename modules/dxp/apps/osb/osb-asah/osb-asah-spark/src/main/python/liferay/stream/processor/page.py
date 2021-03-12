@@ -346,11 +346,32 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		 	]
 		).fillna(
 			0, subset=['bounces']
-		)
-
-		return data_frame.withColumnRenamed(
+		).withColumnRenamed(
 			'assetId', 'url'
 		)
+
+		session_data_frame.unpersist()
+
+		page_with_time_on_page_data_frame = self._spark_job.spark_session.table(
+			'page_time_on_page'
+		)
+
+		page_with_time_on_page_data_frame.show(truncate=False)
+
+		data_frame = data_frame.join(
+			page_with_time_on_page_data_frame,
+			how='left',
+			on=[
+				'projectId', 'channelId', 'userId', 'sessionId', 'url',
+				'variantId', 'normalized_event_date', 'primaryKey'
+			]
+		).fillna(
+			0, subset=['time_on_page']
+		)
+
+		page_with_time_on_page_data_frame.unpersist()
+
+		return data_frame
 
 class PageReferrerDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
