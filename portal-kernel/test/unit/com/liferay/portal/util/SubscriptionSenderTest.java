@@ -14,8 +14,6 @@
 
 package com.liferay.portal.util;
 
-import com.liferay.portal.kernel.bean.BeanLocator;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Subscription;
@@ -34,8 +32,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
-
-import java.lang.reflect.Field;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -100,8 +96,6 @@ public class SubscriptionSenderTest extends PowerMockito {
 			false
 		);
 
-		PortalBeanLocatorUtil.setBeanLocator(_beanLocator);
-
 		PortalUUIDUtil portalUUIDUtil = new PortalUUIDUtil();
 
 		PortalUUID portalUUID = mock(PortalUUID.class);
@@ -120,18 +114,9 @@ public class SubscriptionSenderTest extends PowerMockito {
 	@After
 	public void tearDown() {
 		for (Class<?> serviceUtilClass : _serviceUtilClasses) {
-			try {
-				Field field = serviceUtilClass.getDeclaredField("_service");
-
-				field.setAccessible(true);
-
-				field.set(serviceUtilClass, null);
-			}
-			catch (Exception e) {
-			}
+			ReflectionTestUtil.setFieldValue(
+				serviceUtilClass, "_service", null);
 		}
-
-		PortalBeanLocatorUtil.reset();
 	}
 
 	@Test
@@ -243,18 +228,14 @@ public class SubscriptionSenderTest extends PowerMockito {
 
 		_serviceUtilClasses.add(serviceUtilClass);
 
-		T service = mock(serviceClass);
+		T serviceMock = mock(serviceClass);
 
-		when(
-			_beanLocator.locate(Mockito.eq(serviceClass.getName()))
-		).thenReturn(
-			service
-		);
+		ReflectionTestUtil.setFieldValue(
+			serviceUtilClass, "_service", serviceMock);
 
-		return service;
+		return serviceMock;
 	}
 
-	private final BeanLocator _beanLocator = mock(BeanLocator.class);
 	private final List<Class<?>> _serviceUtilClasses = new ArrayList<>();
 
 }
