@@ -31,6 +31,18 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			).otherwise(
 				F.col('context.url')
 			)
+		).withColumn(
+			'primaryKey',
+			F.sha2(
+				F.concat_ws(
+					'#', F.col('projectId'), F.col('channelId'),
+					F.col('userId'), F.col('url'), F.col('variantId'),
+					F.col('normalized_event_date'),
+				),
+				256
+			)
+		).fillna(
+			'', subset=['variantId']
 		)
 
 		data_frame = data_frame.filter(
@@ -43,8 +55,6 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 					'webContentViewed'
 				]
 			) == False
-		).fillna(
-			'', subset=['variantId']
 		)
 
 		window = Window.partitionBy(
@@ -98,16 +108,6 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			F.sum('delta').alias('time_on_page')
 		)
 
-		return data_frame.withColumn(
-			'primaryKey',
-			F.sha2(
-				F.concat_ws(
-					'#', F.col('projectId'), F.col('channelId'),
-					F.col('userId'), F.col('url'), F.col('variantId'),
-					F.col('normalized_event_date'),
-				),
-				256
-			)
 		)
 
 	def _create_session_data_frame(self, analytics_events_data_frame):
