@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.text.Format;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -64,7 +65,6 @@ public class SyncNewActiveProductPurchaseMessageListener
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_lastSyncDate = new Date();
 		_dateFormat = _fastDateFormatFactory.getSimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
 
@@ -89,12 +89,16 @@ public class SyncNewActiveProductPurchaseMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		Date now = new Date();
+		Calendar calendar = Calendar.getInstance();
+
+		Date now = calendar.getTime();
+
+		calendar.add(Calendar.DATE, -1);
 
 		StringBundler sb = new StringBundler(4);
 
 		sb.append("supportLifeStartDate ge ");
-		sb.append(_dateFormat.format(_lastSyncDate));
+		sb.append(_dateFormat.format(calendar.getTime()));
 		sb.append(" and supportLifeStartDate le ");
 		sb.append(_dateFormat.format(now));
 
@@ -156,8 +160,6 @@ public class SyncNewActiveProductPurchaseMessageListener
 					_accountReader.getStatus(account));
 			}
 		}
-
-		_lastSyncDate = now;
 	}
 
 	@Reference
@@ -173,8 +175,6 @@ public class SyncNewActiveProductPurchaseMessageListener
 
 	@Reference
 	private FastDateFormatFactory _fastDateFormatFactory;
-
-	private Date _lastSyncDate;
 
 	@Reference
 	private ProductPurchaseViewWebService _productPurchaseViewWebService;
