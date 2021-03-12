@@ -389,7 +389,9 @@ class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob)
 
 		for specification_data_frame in specification_data_frames:
 			product_specification_data_frame = product_specification_data_frame.join(
-				specification_data_frame, on=['id'], how='left_outer'
+				specification_data_frame,
+				how='left_outer',
+				on=['id']
 			)
 
 		return product_specification_data_frame
@@ -408,8 +410,8 @@ class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob)
 
 		return products_data_frame.join(
 			self._get_product_specifications_data_frame(product_data_frame),
-			on=["id"],
-			how='left_outer'
+			how='left_outer',
+			on=["id"]
 		).withColumnRenamed("id", 'entryClassPK')
 
 class ProductContentPipelineSparkJob(BaseSparkJob):

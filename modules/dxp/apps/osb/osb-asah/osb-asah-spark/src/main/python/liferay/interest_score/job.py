@@ -70,8 +70,8 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 
 		return keyword_count_data_frame.join(
 			total_keywords_count_data_frame,
-			on=['event_date'],
-			how='left'
+			how='left',
+			on=['event_date']
 		)
 
 	def _get_user_keyword_count_with_totals_data_frame(
@@ -97,8 +97,8 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 
 		return user_keyword_count_data_frame.join(
 			user_total_keyword_count_data_frame,
-			on=['userId', 'event_date'],
-			how='inner'
+			how='inner',
+			on=['userId', 'event_date']
 		)
 
 	def _weighted_average(self, column, offsets, weights, window):
@@ -141,8 +141,8 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 		daily_logscores_data_frame = \
 			user_keyword_counts_with_totals_data_frame.join(
 				keyword_count_with_totals_data_frame,
-				on=['event_date', 'keyword'],
-				how='left'
+				how='left',
+				on=['event_date', 'keyword']
 			)
 
 		daily_logscores_data_frame = daily_logscores_data_frame.withColumn(

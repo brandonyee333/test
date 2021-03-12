@@ -97,9 +97,9 @@ class DocumentLibraryDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 		return data_frame.join(
 			data_frame_with_rating_score,
+			how='left',
 			on=[
 				'projectId', 'channelId', 'userId', 'assetId', 'variantId',
 				'normalized_event_date', 'primaryKey'
-			],
-			how='left'
+			]
 		).fillna(0)
