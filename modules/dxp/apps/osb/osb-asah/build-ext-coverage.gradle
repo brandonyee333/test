@@ -49,6 +49,27 @@ allprojects {
 	}
 
 	tasks.withType(SpotBugsTask) {
+		dependencies {
+			spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.11.0'
+		}
+
+		String customConfigFile = rootDir.toString() + "/find-security-bugs-config.txt"
+
+		if (FileUtil.exists(project, "find-security-bugs-false-positives.txt")) {
+			customConfigFile += File.pathSeparator + projectDir + "/find-security-bugs-false-positives.txt";
+		}
+
+		String pathTraversalDetector = rootDir.toString() + "/find-security-bugs-PathTraversalDetector-PATH_TRAVERSAL_OUT.txt|PATH_TRAVERSAL_OUT"
+
+		jvmArgs = [
+			"-Dfindsecbugs.taint.customconfigfile=" + customConfigFile,
+			"-Dfindsecbugs.injection.customconfigfile.PathTraversalDetector=" + pathTraversalDetector
+		]
+
+		if (FileUtil.exists(project, "spotbugs-exclude.xml")) {
+			excludeFilter = file("spotbugs-exclude.xml")
+		}
+
 		File reportFile = null
 
 		reports {
