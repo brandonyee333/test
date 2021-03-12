@@ -58,7 +58,7 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		)
 
 		window = Window.partitionBy(
-			'projectId', 'channelId', 'userId', 'url', 'variantId',
+			'projectId', 'channelId', 'userId', 'sessionId', 'url', 'variantId',
 			'normalized_event_date'
 		).orderBy(
 			F.asc('eventDate')
@@ -91,8 +91,8 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			'row',
 			F.row_number().over(
 				Window.partitionBy(
-					'projectId', 'channelId', 'userId', 'url', 'variantId',
-					'previous_page_viewed_event_date'
+					'projectId', 'channelId', 'userId', 'sessionId', 'url',
+					'variantId', 'previous_page_viewed_event_date'
 				).orderBy(
 					F.desc('event_date')
 				)
@@ -102,8 +102,8 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		)
 
 		data_frame = data_frame.groupby(
-			'projectId', 'channelId', 'userId', 'url', 'variantId',
-			'normalized_event_date'
+			'projectId', 'channelId', 'userId', 'sessionId', 'url', 'variantId',
+			'normalized_event_date', 'primaryKey'
 		).agg(
 			F.sum('delta').alias('time_on_page')
 		)
