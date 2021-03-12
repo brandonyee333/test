@@ -208,10 +208,9 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			F.col('context.url')
 		)
 
-	def _pre_process(self, data_frame):
-		self._create_session_data_frame(data_frame)
-
-		return super(PageDataFrameProcessor, self)._pre_process(data_frame)
+	def _pre_filter(self, analytics_events_data_frame):
+		self._create_session_data_frame(analytics_events_data_frame)
+		self._calculate_time_on_page(analytics_events_data_frame)
 
 	def _process(self, data_frame):
 		window = Window.partitionBy(
