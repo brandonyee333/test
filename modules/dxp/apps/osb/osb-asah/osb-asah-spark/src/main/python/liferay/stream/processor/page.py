@@ -108,7 +108,11 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			F.sum('delta').alias('time_on_page')
 		)
 
+		data_frame.createOrReplaceTempView(
+			'page_time_on_page'
 		)
+
+		return data_frame
 
 	def _create_session_data_frame(self, analytics_events_data_frame):
 		session_data_frame = analytics_events_data_frame.withColumn(
