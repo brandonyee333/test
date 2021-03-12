@@ -50,7 +50,7 @@ allprojects {
 
 	tasks.withType(SpotBugsTask) {
 		dependencies {
-			spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.11.0'
+			spotbugsPlugins group: "com.h3xstream.findsecbugs", name: "findsecbugs-plugin", version: "1.11.0"
 		}
 
 		String customConfigFile = rootDir.toString() + "/find-security-bugs-config.txt"
