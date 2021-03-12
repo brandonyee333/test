@@ -71,6 +71,9 @@ class AnalyticsEventsDataFrameProcessor(object):
 	def _get_asset_id_column(self):
 		return
 
+	def _pre_filter(self, analytics_events_data_frame):
+		pass
+
 	def _pre_process(self, data_frame):
 		return data_frame.withColumn(
 			'assetId', self._get_asset_id_column()
@@ -129,6 +132,8 @@ class AnalyticsEventsDataFrameProcessor(object):
 		self.log.info('Start processing {}'.format(self._processor_name))
 
 		start_time = time.time()
+
+		self._pre_filter(analytics_events_data_frame)
 
 		data_frame = self._filter(analytics_events_data_frame)
 
