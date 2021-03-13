@@ -11,6 +11,7 @@ Export-Package:\
 	com.liferay.document.library.external.video,\
 	com.liferay.document.library.external.video.provider,\
 	com.liferay.document.library.external.video.resolver,\
+	com.liferay.document.library.item.selector.criterion,\
 	com.liferay.document.library.model,\
 	com.liferay.document.library.portlet.toolbar.contributor,\
 	com.liferay.document.library.preview,\
