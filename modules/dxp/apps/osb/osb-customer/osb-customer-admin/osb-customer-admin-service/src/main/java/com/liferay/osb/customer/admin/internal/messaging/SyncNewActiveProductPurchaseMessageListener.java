@@ -93,7 +93,7 @@ public class SyncNewActiveProductPurchaseMessageListener
 
 		Date now = calendar.getTime();
 
-		calendar.add(Calendar.HOUR, -1);
+		calendar.add(Calendar.HOUR, -2);
 
 		StringBundler sb = new StringBundler(4);
 
