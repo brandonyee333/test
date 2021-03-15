@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import org.json.JSONArray;
@@ -38,7 +39,7 @@ public class FaroInfoCSVIndividualDog extends BaseFaroInfoDog {
 		JSONObject csvIndividualJSONObject =
 			csvIndividualsJSONArray.getJSONObject(0);
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"CSVIndividualsNanite",
 			JSONUtil.put(
 				"dataSourceId",
@@ -49,6 +50,6 @@ public class FaroInfoCSVIndividualDog extends BaseFaroInfoDog {
 	}
 
 	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+	private AsahTaskDog _asahTaskDog;
 
 }

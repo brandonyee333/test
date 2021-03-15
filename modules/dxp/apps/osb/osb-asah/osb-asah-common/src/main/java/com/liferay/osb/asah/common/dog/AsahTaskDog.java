@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.repository.AsahTaskRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -24,6 +23,8 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import java.util.List;
 import java.util.Optional;
 
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -79,6 +80,28 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 		}
 
 		return asahTask;
+	}
+
+	public AsahTask scheduleAsahTask(
+		String className, JSONObject contextJSONObject) {
+
+		return scheduleAsahTask(
+			new AsahTask(
+				className, contextJSONObject.toString(),
+				ProjectIdThreadLocal.getProjectId()));
+	}
+
+	public AsahTask scheduleAsahTask(
+		String className, JSONObject contextJSONObject, String cronExpression) {
+
+		return scheduleAsahTask(
+			new AsahTask(
+				className, contextJSONObject.toString(), cronExpression,
+				ProjectIdThreadLocal.getProjectId()));
+	}
+
+	public void unscheduleAsahTask(Long asahTaskId) {
+		unscheduleAsahTask(new AsahTask(asahTaskId));
 	}
 
 	public void unscheduleAsahTask(AsahTask asahTask) {

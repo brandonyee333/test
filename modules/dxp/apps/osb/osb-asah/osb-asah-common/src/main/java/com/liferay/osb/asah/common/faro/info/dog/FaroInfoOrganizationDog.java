@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
@@ -71,7 +72,7 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 
 		elasticsearchInvoker.delete("organizations", organizationJSONObject);
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"dateModified", DateUtil.newDateString()
@@ -112,7 +113,7 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 		organizationJSONObject = elasticsearchInvoker.update(
 			"organizations", organizationJSONObject);
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"dateModified", DateUtil.newDateString()
@@ -128,7 +129,7 @@ public class FaroInfoOrganizationDog extends BaseFaroInfoDog {
 	}
 
 	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
 	private FieldDog _fieldDog;

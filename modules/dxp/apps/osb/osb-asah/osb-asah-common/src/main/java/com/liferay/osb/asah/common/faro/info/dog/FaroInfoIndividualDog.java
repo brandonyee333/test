@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -131,7 +132,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			"individuals", individualJSONObject, "custom", "demographics");
 
 		if (updateMemberships) {
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+			_asahTaskDog.scheduleAsahTask(
 				"UpdateDynamicMembershipsNanite",
 				JSONUtil.put(
 					"dateModified",
@@ -870,7 +871,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 		String individualId = individualJSONObject.getString("id");
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"dateModified", individualJSONObject.getString("dateModified")
@@ -1013,6 +1014,9 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		"membership_queue_size",
 		"The number of memberships queued to be processed");
 
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
@@ -1027,9 +1031,6 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
 	private FieldDog _fieldDog;

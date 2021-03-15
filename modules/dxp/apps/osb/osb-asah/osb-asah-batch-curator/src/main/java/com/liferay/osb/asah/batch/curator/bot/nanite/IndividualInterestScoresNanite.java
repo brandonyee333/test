@@ -18,10 +18,10 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.arm.InterestScoreArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.URLArm;
 import com.liferay.osb.asah.batch.curator.bot.nanite.model.KeywordInfo;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -144,7 +144,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 	protected void afterOSBAsahMarkerUpdated(
 		String lastSuccessfulDayDateString) {
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"addFilter", "contains(filter, 'interests.filter(')"
@@ -562,10 +562,10 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		IndividualInterestScoresNanite.class);
 
 	@Autowired
-	private FaroInfoInterestDog _faroInfoInterestDog;
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+	private FaroInfoInterestDog _faroInfoInterestDog;
 
 	@Autowired
 	private InterestScoreArm _interestScoreArm;

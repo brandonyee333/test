@@ -14,12 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.dto.PageDTO;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
@@ -62,13 +62,13 @@ public class ChannelsRestController extends BaseRestController {
 
 	@PostMapping("/clear")
 	public void clearChannel(@RequestBody List<String> ids) {
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"ClearChannelsNanite", JSONUtil.put("channelIds", ids));
 	}
 
 	@DeleteMapping
 	public void deleteChannels(@RequestBody List<String> ids) {
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"DeleteChannelsNanite", JSONUtil.put("channelIds", ids));
 	}
 
@@ -156,12 +156,12 @@ public class ChannelsRestController extends BaseRestController {
 	}
 
 	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
 	private ChannelDog _channelDog;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 }

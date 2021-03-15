@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -316,7 +315,7 @@ public class DataSourceDog {
 
 			_nanitesHttp.refreshAnalytics();
 
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+			_asahTaskDog.scheduleAsahTask(
 				"IndividualSegmentActivityFieldsNanite", null);
 		}
 
@@ -758,6 +757,9 @@ public class DataSourceDog {
 	private static final Log _log = LogFactory.getLog(DataSourceDog.class);
 
 	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
 	private ChannelDog _channelDog;
 
 	@Autowired
@@ -783,9 +785,6 @@ public class DataSourceDog {
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;

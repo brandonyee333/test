@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -112,12 +113,12 @@ public class FaroInfoAssetDog extends BaseFaroInfoDog {
 	}
 
 	private void _addOSBAsahTask(String className, String dayDateString) {
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			className, JSONUtil.put("reprocessDay", dayDateString));
 	}
 
 	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

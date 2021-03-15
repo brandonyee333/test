@@ -15,12 +15,12 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -309,7 +309,7 @@ public class FieldMappingsRestController extends BaseRestController {
 			return;
 		}
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			naniteClassName,
 			JSONUtil.put(
 				"dataSourceId", String.valueOf(dataSourceId)
@@ -322,6 +322,9 @@ public class FieldMappingsRestController extends BaseRestController {
 		FieldMappingsRestController.class);
 
 	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
 	private DataSourceDog _dataSourceDog;
 
 	@Autowired
@@ -329,9 +332,6 @@ public class FieldMappingsRestController extends BaseRestController {
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	private final Map<String, String> _naniteClassNames =
 		new HashMap<String, String>() {

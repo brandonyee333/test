@@ -15,11 +15,11 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.session.arm;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchDump;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.UserSession;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -104,7 +104,7 @@ public class FinalizeUserSessionArm {
 		_cerebroInfoElasticsearchInvoker.update(
 			"user-sessions", userSession.getId(), partialUserSessionJSONObject);
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"dateModified", DateUtil.newDateString()
@@ -725,14 +725,14 @@ public class FinalizeUserSessionArm {
 	private static final Pattern _pattern = Pattern.compile(
 		"\\[(?<title>[^]]+)] \\[(?<url>[^]]+)]");
 
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	private Storage _storage;
 

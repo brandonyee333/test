@@ -18,11 +18,12 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.StaleDynamicIndividualSegme
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -388,15 +389,17 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 				return null;
 			}
 		).when(
-			_faroInfoOSBAsahTaskDog
-		).addOSBAsahTask(
-			Mockito.eq("UpdateDynamicMembershipsNanite"),
-			Mockito.any(JSONObject.class)
+			_asahTaskDog
+		).scheduleAsahTask(
+			Mockito.any(AsahTask.class)
 		);
 	}
 
 	private static final Pattern _individualSegmentActivityFilterPattern =
 		Pattern.compile(".*activities/([\\w]+) eq.*");
+
+	@Mock
+	private AsahTaskDog _asahTaskDog;
 
 	private JSONObject _assetJSONObject;
 	private JSONObject _dataSourceJSONObject;
@@ -406,9 +409,6 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Mock
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	private JSONObject _individualJSONObject;
 

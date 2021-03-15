@@ -14,12 +14,13 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.liferay.osb.asah.common.model.AsahTask;
 import org.json.JSONObject;
 
 import org.mockito.Mockito;
@@ -44,9 +45,8 @@ public class NaniteTestConfiguration {
 	@Bean
 	@Lazy
 	@Primary
-	public FaroInfoOSBAsahTaskDog faroInfoOSBAsahTaskDog() {
-		FaroInfoOSBAsahTaskDog faroInfoOSBAsahTaskDog = Mockito.mock(
-			FaroInfoOSBAsahTaskDog.class);
+	public AsahTaskDog asahTaskDog() {
+		AsahTaskDog asahTaskDog = Mockito.mock(AsahTaskDog.class);
 
 		Mockito.doAnswer(
 			invocation -> {
@@ -83,12 +83,12 @@ public class NaniteTestConfiguration {
 				return null;
 			}
 		).when(
-			faroInfoOSBAsahTaskDog
-		).addOSBAsahTask(
-			Mockito.anyString(), Mockito.any(JSONObject.class)
+			asahTaskDog
+		).scheduleAsahTask(
+			Mockito.any(AsahTask.class)
 		);
 
-		return faroInfoOSBAsahTaskDog;
+		return asahTaskDog;
 	}
 
 	private final List<Nanite> _nanites;

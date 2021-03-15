@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Date;
@@ -68,7 +68,7 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 			}
 		}
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"dateModified", DateUtil.newDayDateString()
@@ -96,6 +96,6 @@ public class StaleDynamicIndividualSegmentsNanite extends BaseNanite {
 	};
 
 	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+	private AsahTaskDog _asahTaskDog;
 
 }

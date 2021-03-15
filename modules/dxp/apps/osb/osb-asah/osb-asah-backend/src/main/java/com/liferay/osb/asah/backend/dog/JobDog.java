@@ -27,13 +27,14 @@ import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -276,7 +277,7 @@ public class JobDog {
 
 		Job job = getJob(id);
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			_jobTypeNaniteMap.get(job.getJobType()),
 			JSONUtil.put(
 				"job", _objectMapper.convertValue(job, JSONObject.class)
@@ -514,14 +515,13 @@ public class JobDog {
 			return;
 		}
 
-		JSONObject osbAsahTaskJSONObject =
-			_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
+		AsahTask asahTask = _asahTaskDog.scheduleAsahTask(
 				_jobTypeNaniteMap.get(job.getJobType()),
 				JSONUtil.put(
 					"job", _objectMapper.convertValue(job, JSONObject.class)),
 				jobRunFrequency.getCronExpression());
 
-		job.setOSBAsahTaskId(osbAsahTaskJSONObject.getString("id"));
+		job.setOSBAsahTaskId(String.valueOf(asahTask.getId()));
 	}
 
 	private void _unscheduleOSBAsahTask(Job job) {
@@ -531,16 +531,16 @@ public class JobDog {
 			return;
 		}
 
-		_faroInfoOSBAsahTaskDog.unscheduleOSBAsahTask(osbAsahTaskId);
+		_asahTaskDog.unscheduleAsahTask(Long.valueOf(osbAsahTaskId));
 
 		job.setOSBAsahTaskId("");
 	}
 
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	private ElasticsearchRepository<Job> _jobElasticsearchRepository;
 	private ElasticsearchRepository<JobRun> _jobRunElasticsearchRepository;

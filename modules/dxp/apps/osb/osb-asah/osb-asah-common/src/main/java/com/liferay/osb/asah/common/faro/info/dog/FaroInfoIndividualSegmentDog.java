@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -105,7 +106,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	public void deleteIndividualSegment(String individualSegmentId) {
 		elasticsearchInvoker.delete("individual-segments", individualSegmentId);
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"DeleteIndividualSegmentTasksNanite",
 			JSONUtil.put("individualSegmentId", individualSegmentId));
 	}
@@ -283,7 +284,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				individualSegmentJSONObject.getString("segmentType"),
 				"DYNAMIC")) {
 
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+			_asahTaskDog.scheduleAsahTask(
 				"UpdateDynamicMembershipsNanite",
 				JSONUtil.put(
 					"dateModified",
@@ -936,6 +937,9 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	};
 
 	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
 	private ChannelDog _channelDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
@@ -949,9 +953,6 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;

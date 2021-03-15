@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -66,7 +67,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 				"status", "INACTIVE"
 			));
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"addFilter",
@@ -130,7 +131,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 			elasticsearchInvoker.delete(
 				"individual-segments", individualSegmentId);
 
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+			_asahTaskDog.scheduleAsahTask(
 				"DeleteIndividualSegmentTasksNanite",
 				JSONUtil.put("individualSegmentId", individualSegmentId));
 		}
@@ -142,7 +143,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 
 		elasticsearchInvoker.delete("accounts", accountId);
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"addFilter", "contains(filter, 'accounts.filterByCount(')"
@@ -159,7 +160,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 		accountJSONObject = elasticsearchInvoker.replace(
 			"accounts", accountJSONObject);
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"addFilter",
@@ -193,7 +194,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 		JSONObject accountJSONObject = elasticsearchInvoker.update(
 			"accounts", accountId, partialAccountJSONObject);
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"addFilter",
@@ -213,10 +214,10 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 	private static final Log _log = LogFactory.getLog(FaroInfoAccountDog.class);
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
 	@Autowired
 	private FieldDog _fieldDog;

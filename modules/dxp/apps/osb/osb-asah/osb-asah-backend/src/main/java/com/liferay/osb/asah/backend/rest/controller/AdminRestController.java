@@ -16,11 +16,11 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -204,7 +204,7 @@ public class AdminRestController extends BaseRestController {
 			jsonObject = new JSONObject(json);
 		}
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(className, jsonObject);
+		_asahTaskDog.scheduleAsahTask(className, jsonObject);
 	}
 
 	@PostMapping("/nanites")
@@ -369,6 +369,9 @@ public class AdminRestController extends BaseRestController {
 	private ActivityGroupRepository _activityGroupRepository;
 
 	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
 	private BlockedKeywordRepository _blockedKeywordRepository;
 
 	@Autowired
@@ -388,9 +391,6 @@ public class AdminRestController extends BaseRestController {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
 	private MembershipRepository _membershipRepository;

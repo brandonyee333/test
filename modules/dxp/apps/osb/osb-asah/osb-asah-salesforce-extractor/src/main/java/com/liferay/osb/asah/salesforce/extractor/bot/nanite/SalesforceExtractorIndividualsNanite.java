@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -81,7 +81,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 				_salesforceExtractorConfiguration.getDataSourceId(), this,
 				"COMPLETED", _elasticsearchInvoker);
 
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+			_asahTaskDog.scheduleAsahTask(
 				"SalesforceIndividualsNanite",
 				JSONUtil.put(
 					"dataSourceId",
@@ -517,11 +517,11 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	private static final Log _log = LogFactory.getLog(
 		SalesforceExtractorIndividualsNanite.class);
 
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	private final TermQueryBuilder _osbAsahDataSourceIdTermQueryBuilder;
 

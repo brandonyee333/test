@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -40,8 +40,7 @@ public class FaroInfoOSBAsahTaskDogTest {
 
 	@Test
 	public void test() {
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
-			"TestNanite", JSONUtil.put("foo", "bar"));
+		_asahTaskDog.scheduleAsahTask("TestNanite", JSONUtil.put("foo", "bar"));
 
 		JSONArray osbAsahTasksJSONArray = _elasticsearchInvoker.get(
 			"OSBAsahTasks");
@@ -60,10 +59,10 @@ public class FaroInfoOSBAsahTaskDogTest {
 		Assert.assertEquals("bar", contextJSONObject.getString("foo"));
 	}
 
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 }

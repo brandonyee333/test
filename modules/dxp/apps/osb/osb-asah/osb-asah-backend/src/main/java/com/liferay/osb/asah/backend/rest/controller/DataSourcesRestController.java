@@ -18,12 +18,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.rest.controller.util.FilterUtil;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.dto.PageDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -81,7 +81,7 @@ public class DataSourcesRestController extends BaseRestController {
 		dataSource.setDeletionDate(new Date());
 		dataSource.setState("IN_PROGRESS_DELETING");
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"DeleteDataSourcesNanite",
 			_objectMapper.convertValue(
 				_dataSourceDog.updateDataSource(dataSource), JSONObject.class));
@@ -831,6 +831,9 @@ public class DataSourcesRestController extends BaseRestController {
 		DataSourcesRestController.class);
 
 	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
 	private ConfigurationHttp _configurationHttp;
 
 	@Autowired
@@ -838,9 +841,6 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@Autowired
 	private DataSourceHttp _dataSourceHttp;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

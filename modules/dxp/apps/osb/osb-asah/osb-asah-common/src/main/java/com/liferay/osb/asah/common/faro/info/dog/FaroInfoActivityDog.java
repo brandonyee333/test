@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -55,7 +56,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			return activityJSONObject;
 		}
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"dateModified", DateUtil.newDateString()
@@ -121,7 +122,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			return;
 		}
 
-		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
 			JSONUtil.put(
 				"dateModified", DateUtil.newDateString()
@@ -147,9 +148,9 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		};
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
 }

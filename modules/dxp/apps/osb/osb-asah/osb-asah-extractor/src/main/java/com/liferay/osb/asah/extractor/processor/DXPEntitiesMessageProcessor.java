@@ -15,13 +15,13 @@
 package com.liferay.osb.asah.extractor.processor;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOrganizationDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -244,7 +244,7 @@ public class DXPEntitiesMessageProcessor {
 		}
 
 		if (!dxpEntityType.isUser()) {
-			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+			_asahTaskDog.scheduleAsahTask(
 				"UpdateDynamicMembershipsNanite",
 				JSONUtil.put(
 					queryBuilderName,
@@ -495,6 +495,9 @@ public class DXPEntitiesMessageProcessor {
 		"extractor_dxp_entities_count", "The number of extracted DXP entities");
 
 	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
 	private DataSourceDog _dataSourceDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
@@ -514,9 +517,6 @@ public class DXPEntitiesMessageProcessor {
 
 	@Autowired
 	private FaroInfoOrganizationDog _faroInfoOrganizationDog;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
 	private FaroInfoSuppressionDog _faroInfoSuppressionDog;

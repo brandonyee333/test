@@ -31,6 +31,10 @@ public class AsahTask implements Persistable<Long> {
 	public AsahTask() {
 	}
 
+	public AsahTask(Long id) {
+		_id = id;
+	}
+
 	public AsahTask(String className, String context, String projectId) {
 		_className = className;
 		_context = context;
