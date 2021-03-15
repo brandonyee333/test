@@ -63,7 +63,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			JSONUtil.put("id", "123"), _salesforceDataSource);
 
 		_assertAccountIndividualSegment();
-		_assertOSBAsahTaskIndividualSegmentContext();
+		_assertAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 	}
 
@@ -77,7 +77,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			));
 
 		_assertAccountIndividualSegment();
-		_assertOSBAsahTaskIndividualSegmentContext();
+		_assertAsahTaskIndividualSegmentContext();
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			JSONUtil.put("id", "123"), _salesforceDataSource);
 
 		_assertAccountIndividualSegment();
-		_assertOSBAsahTaskIndividualSegmentContext();
+		_assertAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
 		faroInfoElasticsearchInvoker.delete(
@@ -99,17 +99,17 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(0, individualSegmentsJSONArray.length());
 
-		JSONArray osbAsahTasksJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray asahTasksJSONArray = faroInfoElasticsearchInvoker.get(
 			"OSBAsahTasks",
 			QueryBuilders.termQuery(
 				"className", "DeleteIndividualSegmentTasksNanite"));
 
-		Assert.assertEquals(1, osbAsahTasksJSONArray.length());
+		Assert.assertEquals(1, asahTasksJSONArray.length());
 
-		JSONObject osbAsahTaskJSONObject = osbAsahTasksJSONArray.getJSONObject(
+		JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(
 			0);
 
-		JSONObject contextJSONObject = osbAsahTaskJSONObject.getJSONObject(
+		JSONObject contextJSONObject = asahTaskJSONObject.getJSONObject(
 			"context");
 
 		Assert.assertNotNull(
@@ -129,7 +129,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			JSONUtil.put("id", "123"), _salesforceDataSource);
 
 		_assertAccountIndividualSegment();
-		_assertOSBAsahTaskIndividualSegmentContext();
+		_assertAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
 		faroInfoElasticsearchInvoker.delete(
@@ -153,7 +153,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			JSONUtil.put("id", "123"), _salesforceDataSource);
 
 		_assertAccountIndividualSegment();
-		_assertOSBAsahTaskIndividualSegmentContext();
+		_assertAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
 		faroInfoElasticsearchInvoker.delete(
@@ -178,7 +178,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			JSONUtil.put("id", "123"), _salesforceDataSource);
 
 		_assertAccountIndividualSegment();
-		_assertOSBAsahTaskIndividualSegmentContext();
+		_assertAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
 		faroInfoElasticsearchInvoker.delete(
@@ -240,15 +240,14 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			"INACTIVE", individualSegmentJSONObject.getString("status"));
 	}
 
-	private void _assertOSBAsahTaskIndividualSegmentContext() {
-		JSONArray osbAsahTasksJSONArray = faroInfoElasticsearchInvoker.get(
+	private void _assertAsahTaskIndividualSegmentContext() {
+		JSONArray asahTasksJSONArray = faroInfoElasticsearchInvoker.get(
 			"OSBAsahTasks");
 
-		for (int i = 0; i < osbAsahTasksJSONArray.length(); i++) {
-			JSONObject osbAsahTaskJSONObject =
-				osbAsahTasksJSONArray.getJSONObject(i);
+		for (int i = 0; i < asahTasksJSONArray.length(); i++) {
+			JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(i);
 
-			JSONObject contextJSONObject = osbAsahTaskJSONObject.getJSONObject(
+			JSONObject contextJSONObject = asahTaskJSONObject.getJSONObject(
 				"context");
 
 			Assert.assertNotNull(contextJSONObject.getString("dateModified"));
@@ -262,17 +261,16 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	private void _assertOSBTasksContextAfterUpdate(String addFilter) {
-		JSONArray osbAsahTasksJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray asahTasksJSONArray = faroInfoElasticsearchInvoker.get(
 			"OSBAsahTasks",
 			QueryBuilders.termQuery(
 				"className", "UpdateDynamicMembershipsNanite"));
 
-		Assert.assertEquals(1, osbAsahTasksJSONArray.length());
+		Assert.assertEquals(1, asahTasksJSONArray.length());
 
-		JSONObject osbAsahTaskJSONObject = osbAsahTasksJSONArray.getJSONObject(
-			0);
+		JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(0);
 
-		JSONObject contextJSONObject = osbAsahTaskJSONObject.getJSONObject(
+		JSONObject contextJSONObject = asahTaskJSONObject.getJSONObject(
 			"context");
 
 		Assert.assertEquals(

@@ -36,24 +36,24 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class FaroInfoOSBAsahTaskDogTest {
+public class AsahTaskDogTest {
 
 	@Test
 	public void test() {
 		_asahTaskDog.scheduleAsahTask("TestNanite", JSONUtil.put("foo", "bar"));
 
-		JSONArray osbAsahTasksJSONArray = _elasticsearchInvoker.get(
+		JSONArray asahTasksJSONArray = _elasticsearchInvoker.get(
 			"OSBAsahTasks");
 
-		Assert.assertEquals(1, osbAsahTasksJSONArray.length());
+		Assert.assertEquals(1, asahTasksJSONArray.length());
 
-		JSONObject osbAsahTaskJSONObject = osbAsahTasksJSONArray.getJSONObject(
+		JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(
 			0);
 
 		Assert.assertEquals(
-			"TestNanite", osbAsahTaskJSONObject.getString("className"));
+			"TestNanite", asahTaskJSONObject.getString("className"));
 
-		JSONObject contextJSONObject = osbAsahTaskJSONObject.getJSONObject(
+		JSONObject contextJSONObject = asahTaskJSONObject.getJSONObject(
 			"context");
 
 		Assert.assertEquals("bar", contextJSONObject.getString("foo"));

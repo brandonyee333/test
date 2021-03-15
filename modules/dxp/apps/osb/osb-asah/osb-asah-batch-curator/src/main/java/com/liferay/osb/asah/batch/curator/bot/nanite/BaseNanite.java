@@ -42,14 +42,14 @@ public abstract class BaseNanite implements Nanite {
 
 	@Override
 	public void logCompleted(
-		JSONObject contextJSONObject, long duration, String osbAsahTaskId) {
+		String asahTaskId, JSONObject contextJSONObject, long duration) {
 
 		if (isLogRunEnabled()) {
-			if (!StringUtil.isNull(osbAsahTaskId)) {
+			if (!StringUtil.isNull(asahTaskId)) {
 				_runLogger.log(
 					null, this, false, "COMPLETED",
 					faroInfoElasticsearchInvoker, "OSBAsahTaskId",
-					osbAsahTaskId);
+					asahTaskId);
 			}
 			else {
 				_runLogger.log(
@@ -81,14 +81,14 @@ public abstract class BaseNanite implements Nanite {
 
 	@Override
 	public void logFailed(
-		JSONObject contextJSONObject, long duration, String osbAsahTaskId,
+		String asahTaskId, JSONObject contextJSONObject, long duration,
 		Throwable throwable) {
 
 		if (isLogRunEnabled()) {
-			if (!StringUtil.isNull(osbAsahTaskId)) {
+			if (!StringUtil.isNull(asahTaskId)) {
 				_runLogger.log(
 					null, this, false, "FAILED", faroInfoElasticsearchInvoker,
-					"OSBAsahTaskId", osbAsahTaskId, "failureReason",
+					"OSBAsahTaskId", asahTaskId, "failureReason",
 					ExceptionUtils.getStackTrace(throwable));
 			}
 			else {

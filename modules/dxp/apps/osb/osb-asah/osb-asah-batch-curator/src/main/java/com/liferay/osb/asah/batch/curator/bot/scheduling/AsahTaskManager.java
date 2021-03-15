@@ -34,8 +34,6 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ import org.springframework.util.ClassUtils;
  * @author André Miranda
  */
 @Component
-public class OSBAsahTaskManager {
+public class AsahTaskManager {
 
 	public boolean checkNanite(String naniteClassName) {
 		JSONObject latestRunLogJSONObject =
@@ -65,29 +63,29 @@ public class OSBAsahTaskManager {
 		return false;
 	}
 
-	public void deleteOSBAsahTask(Long asahTaskId) {
+	public void deleteAsahTask(Long asahTaskId) {
 		_asahTaskDog.deleteAsahTaskById(asahTaskId);
 	}
 
-	public void executeOSBAsahTask(AsahTask asahTask, boolean force) {
+	public void executeAsahTask(AsahTask asahTask, boolean force) {
 		if (Objects.equals(
-			asahTask.getClassName(), "UpdateDynamicMembershipsNanite")) {
+				asahTask.getClassName(), "UpdateDynamicMembershipsNanite")) {
 
-			_osbAsahTaskScheduler.executeUpdateDynamicMembershipsNanite(
-				new OSBAsahTaskRunnable(asahTask, false, this));
+			_asahTaskScheduler.executeUpdateDynamicMembershipsNanite(
+				new AsahTaskRunnable(asahTask, false, this));
 		}
 		else {
-			_osbAsahTaskScheduler.execute(
-				new OSBAsahTaskRunnable(asahTask, force, this));
+			_asahTaskScheduler.execute(
+				new AsahTaskRunnable(asahTask, force, this));
 		}
 	}
 
-	public void executeOSBAsahTasks() {
+	public void executeAsahTasks() {
 		try {
 			List<AsahTask> asahTasks = _asahTaskDog.getImmediateAsahTasks();
 
 			for (AsahTask asahTask : asahTasks) {
-				executeOSBAsahTask(asahTask, true);
+				executeAsahTask(asahTask, true);
 			}
 		}
 		catch (Exception e) {
@@ -108,12 +106,12 @@ public class OSBAsahTaskManager {
 		}
 	}
 
-	public void removeOSBAsahTasks() {
+	public void removeAsahTasks() {
 		try {
 			List<AsahTask> asahTasks = _asahTaskDog.getScheduledAsahTasks();
 
 			for (AsahTask asahTask : asahTasks) {
-				unscheduleOSBAsahTask(asahTask);
+				unscheduleAsahTask(asahTask);
 			}
 		}
 		catch (Exception e) {
@@ -124,8 +122,8 @@ public class OSBAsahTaskManager {
 	}
 
 	public void runNanites(String... naniteClassNames) {
-		_osbAsahTaskScheduler.execute(
-			new OSBAsahTaskRunnable(
+		_asahTaskScheduler.execute(
+			new AsahTaskRunnable(
 				this, ProjectIdThreadLocal.getProjectId(), naniteClassNames));
 	}
 
@@ -134,8 +132,8 @@ public class OSBAsahTaskManager {
 			List<Project> projects = _projectDog.getProjects();
 
 			for (Project project : projects) {
-				_osbAsahTaskScheduler.execute(
-					new OSBAsahTaskRunnable(
+				_asahTaskScheduler.execute(
+					new AsahTaskRunnable(
 						this, project.getId(), naniteClassNames));
 			}
 		}
@@ -144,7 +142,7 @@ public class OSBAsahTaskManager {
 		}
 	}
 
-	public void scheduleOSBAsahTask(AsahTask asahTask) {
+	public void scheduleAsahTask(AsahTask asahTask) {
 		Nanite nanite = getNanite(asahTask.getClassName());
 
 		if (nanite == null) {
@@ -160,18 +158,18 @@ public class OSBAsahTaskManager {
 					asahTask.getId(), asahTask.getCronExpression()));
 		}
 
-		_osbAsahTaskScheduler.schedule(
+		_asahTaskScheduler.schedule(
 			asahTask.getCronExpression(),
-			new OSBAsahTaskRunnable(asahTask, this),
+			new AsahTaskRunnable(asahTask, this),
 			String.valueOf(asahTask.getId()));
 	}
 
-	public void scheduleOSBAsahTasks() {
+	public void scheduleAsahTasks() {
 		try {
 			List<AsahTask> asahTasks = _asahTaskDog.getScheduledAsahTasks();
 
 			for (AsahTask asahTask : asahTasks) {
-				scheduleOSBAsahTask(asahTask);
+				scheduleAsahTask(asahTask);
 			}
 		}
 		catch (Exception e) {
@@ -179,14 +177,17 @@ public class OSBAsahTaskManager {
 		}
 	}
 
-	public void unscheduleOSBAsahTask(AsahTask asahTask) {
-		_osbAsahTaskScheduler.unschedule(String.valueOf(asahTask.getId()));
+	public void unscheduleAsahTask(AsahTask asahTask) {
+		_asahTaskScheduler.unschedule(String.valueOf(asahTask.getId()));
 	}
 
-	private static final Log _log = LogFactory.getLog(OSBAsahTaskManager.class);
+	private static final Log _log = LogFactory.getLog(AsahTaskManager.class);
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private AsahTaskScheduler _asahTaskScheduler;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
@@ -195,9 +196,6 @@ public class OSBAsahTaskManager {
 	private List<Nanite> _nanites;
 
 	private final Map<String, Nanite> _nanitesMap = new HashMap<>();
-
-	@Autowired
-	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
 
 	@Autowired
 	private ProjectDog _projectDog;

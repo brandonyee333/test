@@ -73,7 +73,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		individualSegmentJSONObject = elasticsearchInvoker.add(
 			"individual-segments", _setState(individualSegmentJSONObject));
 
-		_addOSBAsahTask(individualSegmentJSONObject);
+		_addAsahTask(individualSegmentJSONObject);
 
 		return individualSegmentJSONObject;
 	}
@@ -201,7 +201,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 			elasticsearchInvoker.replace(
 				"individual-segments", _setState(individualSegmentJSONObject));
 
-			_addOSBAsahTask(individualSegmentJSONObject);
+			_addAsahTask(individualSegmentJSONObject);
 		}
 
 		return individualSegmentJSONObject;
@@ -279,7 +279,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		return activityKey.substring(activityKey.lastIndexOf("#") + 1);
 	}
 
-	private void _addOSBAsahTask(JSONObject individualSegmentJSONObject) {
+	private void _addAsahTask(JSONObject individualSegmentJSONObject) {
 		if (Objects.equals(
 				individualSegmentJSONObject.getString("segmentType"),
 				"DYNAMIC")) {
@@ -879,7 +879,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				individualSegmentJSONObject.getString("id"),
 				_setState(partialIndividualSegmentJSONObject));
 
-			_addOSBAsahTask(individualSegmentJSONObject);
+			_addAsahTask(individualSegmentJSONObject);
 		}
 
 		return individualSegmentJSONObject;
@@ -893,7 +893,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				individualSegmentJSONObject.getString("segmentType"),
 				"DYNAMIC")) {
 
-			_addOSBAsahTask(individualSegmentJSONObject);
+			_addAsahTask(individualSegmentJSONObject);
 
 			return;
 		}

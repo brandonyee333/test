@@ -39,7 +39,7 @@ import org.springframework.test.context.ContextConfiguration;
 public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
-	public void testAddActivityTriggersAddsOSBAsahTask() throws Exception {
+	public void testAddActivityTriggersAddsAsahTask() throws Exception {
 		JSONObject dataSourceJSONObject = faroInfoElasticsearchInvoker.add(
 			"data-sources",
 			FaroInfoTestUtil.buildLiferayDataSourceJSONObject());

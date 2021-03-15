@@ -63,10 +63,10 @@ public class FaroInfoCSVIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		_assertIds(csvIndividualsJSONArray);
 
-		JSONArray osbAsahTasksJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray asahTasksJSONArray = faroInfoElasticsearchInvoker.get(
 			"OSBAsahTasks");
 
-		Assert.assertEquals(1, osbAsahTasksJSONArray.length());
+		Assert.assertEquals(1, asahTasksJSONArray.length());
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -80,9 +80,9 @@ public class FaroInfoCSVIndividualDogTest extends BaseFaroInfoDogTestCase {
 						"type", "reprocess"
 					)
 				)),
-			osbAsahTasksJSONArray, false);
+			asahTasksJSONArray, false);
 
-		_assertIds(osbAsahTasksJSONArray);
+		_assertIds(asahTasksJSONArray);
 	}
 
 	private void _assertIds(JSONArray jsonArray) {

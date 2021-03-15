@@ -57,6 +57,11 @@ public class Job {
 		return false;
 	}
 
+	@JsonProperty("osbAsahTaskId")
+	public String getAsahTaskId() {
+		return _asahTaskId;
+	}
+
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -113,16 +118,15 @@ public class Job {
 		return _name;
 	}
 
-	@JsonProperty("osbAsahTaskId")
-	public String getOSBAsahTaskId() {
-		return _osbAsahTaskId;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(
 			_createdDate, _id, _jobParameters, _jobRunDataPeriod,
 			_jobRunFrequency, _jobType, _lastUpdatedDate, _name);
+	}
+
+	public void setAsahTaskId(String asahTaskId) {
+		_asahTaskId = asahTaskId;
 	}
 
 	public void setCreatedDate(Date createdDate) {
@@ -161,10 +165,6 @@ public class Job {
 		_name = name;
 	}
 
-	public void setOSBAsahTaskId(String osbAsahTaskId) {
-		_osbAsahTaskId = osbAsahTaskId;
-	}
-
 	protected boolean equalsJob(Job job) {
 		if (Objects.equals(_createdDate, job._createdDate) &&
 			Objects.equals(_id, job._id) &&
@@ -181,6 +181,7 @@ public class Job {
 		return false;
 	}
 
+	private String _asahTaskId;
 	private Date _createdDate;
 	private String _id;
 	private List<JobParameter> _jobParameters = new ArrayList<>();
@@ -189,6 +190,5 @@ public class Job {
 	private JobType _jobType;
 	private Date _lastUpdatedDate;
 	private String _name;
-	private String _osbAsahTaskId;
 
 }

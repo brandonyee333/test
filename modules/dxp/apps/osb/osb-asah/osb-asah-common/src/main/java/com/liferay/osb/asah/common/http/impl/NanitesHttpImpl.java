@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -35,7 +34,7 @@ import org.springframework.stereotype.Component;
 public class NanitesHttpImpl implements NanitesHttp {
 
 	@Override
-	public void executeOSBAsahTask(AsahTask asahTask) {
+	public void executeAsahTask(AsahTask asahTask) {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR, "/nanites", HttpMethod.POST,
 			asahTask);
@@ -70,14 +69,14 @@ public class NanitesHttpImpl implements NanitesHttp {
 	}
 
 	@Override
-	public void scheduleOSBAsahTask(AsahTask asahTask) {
+	public void scheduleAsahTask(AsahTask asahTask) {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR, "/nanites/schedule",
 			HttpMethod.POST, asahTask);
 	}
 
 	@Override
-	public void unscheduleOSBAsahTask(AsahTask asahTask) {
+	public void unscheduleAsahTask(AsahTask asahTask) {
 		_http.exchangeIfUp(
 			ServiceConstants.URL_BATCH_CURATOR, "/nanites/unschedule",
 			HttpMethod.POST, asahTask);

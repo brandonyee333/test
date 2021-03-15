@@ -71,7 +71,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		faroInfoElasticsearchInvoker.delete("field-mappings", id);
 
-		_addReprocessOSBAsahTask(fieldMappingJSONObject);
+		_addReprocessAsahTask(fieldMappingJSONObject);
 	}
 
 	@GetMapping("/{id}")
@@ -153,7 +153,7 @@ public class FieldMappingsRestController extends BaseRestController {
 		_faroInfoIndividualSegmentDog.disableDynamicIndividualSegments(
 			null, deletedFieldMappingIds);
 
-		_addReprocessOSBAsahTask(
+		_addReprocessAsahTask(
 			Long.valueOf(dataSourceId),
 			fieldMappingJSONObject.getString("ownerType"));
 
@@ -232,7 +232,7 @@ public class FieldMappingsRestController extends BaseRestController {
 		_faroInfoIndividualSegmentDog.disableDynamicIndividualSegments(
 			null, deletedFieldMappingIds);
 
-		_addReprocessOSBAsahTask(Long.valueOf(dataSourceId), ownerType);
+		_addReprocessAsahTask(Long.valueOf(dataSourceId), ownerType);
 
 		return responseJSONArray.toString();
 	}
@@ -253,7 +253,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		String responseJSON = toPostResponse("field-mappings", json);
 
-		_addReprocessOSBAsahTask(new JSONObject(responseJSON));
+		_addReprocessAsahTask(new JSONObject(responseJSON));
 
 		return responseJSON;
 	}
@@ -265,25 +265,25 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		String responseJSON = toPutResponse("field-mappings", id, json);
 
-		_addReprocessOSBAsahTask(new JSONObject(responseJSON));
+		_addReprocessAsahTask(new JSONObject(responseJSON));
 
 		return responseJSON;
 	}
 
-	private void _addReprocessOSBAsahTask(JSONObject fieldMappingJSONObject)
+	private void _addReprocessAsahTask(JSONObject fieldMappingJSONObject)
 		throws Exception {
 
 		JSONObject dataSourceFieldNamesJSONObject =
 			fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
 
 		for (String dataSourceId : dataSourceFieldNamesJSONObject.keySet()) {
-			_addReprocessOSBAsahTask(
+			_addReprocessAsahTask(
 				Long.valueOf(dataSourceId),
 				fieldMappingJSONObject.getString("ownerType"));
 		}
 	}
 
-	private void _addReprocessOSBAsahTask(Long dataSourceId, String ownerType)
+	private void _addReprocessAsahTask(Long dataSourceId, String ownerType)
 		throws Exception {
 
 		DataSource dataSource = _dataSourceDog.getDataSource(dataSourceId);

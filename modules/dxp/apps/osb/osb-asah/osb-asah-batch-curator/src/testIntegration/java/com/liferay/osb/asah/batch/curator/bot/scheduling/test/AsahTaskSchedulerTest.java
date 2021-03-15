@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.scheduling.test;
 
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskScheduler;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -40,10 +40,10 @@ import org.springframework.scheduling.support.CronTrigger;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-public class OSBAsahTaskSchedulerTest {
+public class AsahTaskSchedulerTest {
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		Mockito.when(
 			_threadPoolTaskScheduler.schedule(
 				Mockito.any(Runnable.class), Mockito.any(Trigger.class))
@@ -57,7 +57,7 @@ public class OSBAsahTaskSchedulerTest {
 		Runnable runnable = () -> {
 		};
 
-		_osbAsahTaskScheduler.schedule(
+		_asahTaskScheduler.schedule(
 			"0 0 0 * * ?", runnable, "450553576847486528");
 
 		Mockito.verify(
@@ -67,7 +67,7 @@ public class OSBAsahTaskSchedulerTest {
 		);
 
 		Map<String, ScheduledFuture<?>> scheduledFuturesMap =
-			_osbAsahTaskScheduler.getScheduledFuturesMap();
+			_asahTaskScheduler.getScheduledFuturesMap();
 
 		Assert.assertEquals(
 			scheduledFuturesMap.toString(), 1, scheduledFuturesMap.size());
@@ -77,7 +77,7 @@ public class OSBAsahTaskSchedulerTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testScheduleFail() {
-		_osbAsahTaskScheduler.schedule(
+		_asahTaskScheduler.schedule(
 			"",
 			() -> {
 			},
@@ -86,19 +86,19 @@ public class OSBAsahTaskSchedulerTest {
 
 	@Test
 	public void testUnschedule() {
-		_osbAsahTaskScheduler.schedule(
+		_asahTaskScheduler.schedule(
 			"0 0 0 * * ?",
 			() -> {
 			},
 			"450553576847486528");
 
 		Map<String, ScheduledFuture<?>> scheduledFuturesMap =
-			_osbAsahTaskScheduler.getScheduledFuturesMap();
+			_asahTaskScheduler.getScheduledFuturesMap();
 
 		ScheduledFuture<?> scheduledFuture = scheduledFuturesMap.get(
 			"450553576847486528");
 
-		_osbAsahTaskScheduler.unschedule("450553576847486528");
+		_asahTaskScheduler.unschedule("450553576847486528");
 
 		Assert.assertEquals(
 			scheduledFuturesMap.toString(), 0, scheduledFuturesMap.size());
@@ -112,11 +112,11 @@ public class OSBAsahTaskSchedulerTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testUnscheduleFail() {
-		_osbAsahTaskScheduler.unschedule(null);
+		_asahTaskScheduler.unschedule(null);
 	}
 
 	@Autowired
-	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
+	private AsahTaskScheduler _asahTaskScheduler;
 
 	@MockBean
 	private ThreadPoolTaskScheduler _threadPoolTaskScheduler;

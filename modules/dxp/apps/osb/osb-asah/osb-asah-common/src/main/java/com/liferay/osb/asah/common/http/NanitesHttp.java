@@ -15,15 +15,15 @@
 package com.liferay.osb.asah.common.http;
 
 import com.liferay.osb.asah.common.model.AsahTask;
+
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * @author Shinn Lok
  */
 public interface NanitesHttp {
 
-	public void executeOSBAsahTask(AsahTask asahTask);
+	public void executeAsahTask(AsahTask asahTask);
 
 	public void refreshAnalytics();
 
@@ -33,8 +33,8 @@ public interface NanitesHttp {
 
 	public void run(JSONArray jsonArray);
 
-	public void scheduleOSBAsahTask(AsahTask asahTask);
+	public void scheduleAsahTask(AsahTask asahTask);
 
-	public void unscheduleOSBAsahTask(AsahTask asahTask);
+	public void unscheduleAsahTask(AsahTask asahTask);
 
 }

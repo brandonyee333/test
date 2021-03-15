@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class DeleteActivityNaniteOSBAsahTasksUpgradeStep
+public class DeleteActivityNaniteAsahTasksUpgradeStep
 	implements UpgradeStep {
 
 	@Override

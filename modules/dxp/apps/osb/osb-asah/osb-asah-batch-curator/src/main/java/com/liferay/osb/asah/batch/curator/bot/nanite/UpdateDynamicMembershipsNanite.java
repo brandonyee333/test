@@ -55,7 +55,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 	@Override
 	public void logCompleted(
-		JSONObject contextJSONObject, long duration, String osbAsahTaskId) {
+		String asahTaskId, JSONObject contextJSONObject, long duration) {
 	}
 
 	@Override

@@ -100,7 +100,7 @@ public class JobDog {
 
 		job = _jobElasticsearchRepository.add(job);
 
-		_scheduleOSBAsahTask(job);
+		_scheduleAsahTask(job);
 
 		if (runNow) {
 			runJob(job.getId(), jobRunDataPeriod);
@@ -305,7 +305,7 @@ public class JobDog {
 		job.setJobRunFrequency(jobRunFrequency);
 		job.setJobRunDataPeriod(jobRunDataPeriod);
 
-		_rescheduleOSBAsahTask(job, oldJobRunFrequency);
+		_rescheduleAsahTask(job, oldJobRunFrequency);
 
 		job = _jobElasticsearchRepository.update(id, job);
 
@@ -407,7 +407,7 @@ public class JobDog {
 	private boolean _deleteJob(String id) {
 		Job job = _jobElasticsearchRepository.get(id);
 
-		_unscheduleOSBAsahTask(job);
+		_unscheduleAsahTask(job);
 
 		BulkByScrollResponse bulkByScrollResponse =
 			_jobRunElasticsearchRepository.deleteByQuery(
@@ -494,7 +494,7 @@ public class JobDog {
 			_objectMapper);
 	}
 
-	private void _rescheduleOSBAsahTask(
+	private void _rescheduleAsahTask(
 		Job job, JobRunFrequency oldJobRunFrequency) {
 
 		JobRunFrequency newJobRunFrequency = job.getJobRunFrequency();
@@ -503,12 +503,12 @@ public class JobDog {
 			return;
 		}
 
-		_unscheduleOSBAsahTask(job);
+		_unscheduleAsahTask(job);
 
-		_scheduleOSBAsahTask(job);
+		_scheduleAsahTask(job);
 	}
 
-	private void _scheduleOSBAsahTask(Job job) {
+	private void _scheduleAsahTask(Job job) {
 		JobRunFrequency jobRunFrequency = job.getJobRunFrequency();
 
 		if (jobRunFrequency == JobRunFrequency.MANUAL) {
@@ -516,24 +516,24 @@ public class JobDog {
 		}
 
 		AsahTask asahTask = _asahTaskDog.scheduleAsahTask(
-				_jobTypeNaniteMap.get(job.getJobType()),
-				JSONUtil.put(
-					"job", _objectMapper.convertValue(job, JSONObject.class)),
-				jobRunFrequency.getCronExpression());
+			_jobTypeNaniteMap.get(job.getJobType()),
+			JSONUtil.put(
+				"job", _objectMapper.convertValue(job, JSONObject.class)),
+			jobRunFrequency.getCronExpression());
 
-		job.setOSBAsahTaskId(String.valueOf(asahTask.getId()));
+		job.setAsahTaskId(String.valueOf(asahTask.getId()));
 	}
 
-	private void _unscheduleOSBAsahTask(Job job) {
-		String osbAsahTaskId = job.getOSBAsahTaskId();
+	private void _unscheduleAsahTask(Job job) {
+		String asahTaskId = job.getAsahTaskId();
 
-		if (StringUtils.isBlank(osbAsahTaskId)) {
+		if (StringUtils.isBlank(asahTaskId)) {
 			return;
 		}
 
-		_asahTaskDog.unscheduleAsahTask(Long.valueOf(osbAsahTaskId));
+		_asahTaskDog.unscheduleAsahTask(Long.valueOf(asahTaskId));
 
-		job.setOSBAsahTaskId("");
+		job.setAsahTaskId("");
 	}
 
 	@Autowired

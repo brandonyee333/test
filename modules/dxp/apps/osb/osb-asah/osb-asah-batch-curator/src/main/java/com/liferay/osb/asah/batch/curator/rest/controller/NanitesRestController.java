@@ -16,7 +16,7 @@ package com.liferay.osb.asah.batch.curator.rest.controller;
 
 import com.liferay.osb.asah.batch.curator.bot.OSBAsahBatchCuratorBot;
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -44,7 +43,7 @@ public class NanitesRestController {
 
 	@PostMapping
 	public void post(@RequestBody AsahTask asahTask) {
-		_osbAsahTaskManager.executeOSBAsahTask(asahTask, false);
+		_asahTaskManager.executeAsahTask(asahTask, false);
 	}
 
 	@PostMapping("/analytics")
@@ -67,19 +66,22 @@ public class NanitesRestController {
 
 	@PostMapping("/run")
 	public void run(@RequestBody String json) {
-		_osbAsahTaskManager.runNanites(
+		_asahTaskManager.runNanites(
 			JSONUtil.toStringArray(new JSONArray(json)));
 	}
 
 	@PostMapping("/schedule")
 	public void schedule(@RequestBody AsahTask asahTask) {
-		_osbAsahTaskManager.scheduleOSBAsahTask(asahTask);
+		_asahTaskManager.scheduleAsahTask(asahTask);
 	}
 
 	@PostMapping("/unschedule")
 	public void unschedule(@RequestBody AsahTask asahTask) {
-		_osbAsahTaskManager.unscheduleOSBAsahTask(asahTask);
+		_asahTaskManager.unscheduleAsahTask(asahTask);
 	}
+
+	@Autowired
+	private AsahTaskManager _asahTaskManager;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
@@ -93,8 +95,5 @@ public class NanitesRestController {
 
 	@Autowired
 	private OSBAsahBatchCuratorBot _osbAsahBatchCuratorBot;
-
-	@Autowired
-	private OSBAsahTaskManager _osbAsahTaskManager;
 
 }

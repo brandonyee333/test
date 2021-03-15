@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.batch.curator.bot;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskScheduler;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -69,7 +69,7 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.HOUR * 6)
 	public void curateExperiments() {
-		_osbAsahTaskManager.runNanitesForAllProjects("ExperimentNanite");
+		_asahTaskManager.runNanitesForAllProjects("ExperimentNanite");
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
@@ -88,7 +88,7 @@ public class OSBAsahBatchCuratorBot {
 			projectId,
 			() -> {
 				_unscheduleNanites();
-				_osbAsahTaskManager.removeOSBAsahTasks();
+				_asahTaskManager.removeAsahTasks();
 			});
 	}
 
@@ -120,12 +120,12 @@ public class OSBAsahBatchCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runDataControlTasks() {
-		_osbAsahTaskManager.runNanitesForAllProjects("DataControlNanite");
+		_asahTaskManager.runNanitesForAllProjects("DataControlNanite");
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runDataExportTasks() {
-		_osbAsahTaskManager.runNanitesForAllProjects("DataExportNanite");
+		_asahTaskManager.runNanitesForAllProjects("DataExportNanite");
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
@@ -150,7 +150,7 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	private Runnable _getDataRetentionRunnable() {
-		return () -> _osbAsahTaskManager.runNanites("DataRetentionNanite");
+		return () -> _asahTaskManager.runNanites("DataRetentionNanite");
 	}
 
 	private Runnable _getDeleteDXPBatchEntitiesRunnable() {
@@ -163,21 +163,21 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	private Runnable _getDeleteTempFilesRunnable() {
-		return () -> _osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
+		return () -> _asahTaskManager.runNanites("DeleteTempFilesNanite");
 	}
 
 	private Runnable _getInterestsRunnable() {
 		return () -> {
-			_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
+			_asahTaskManager.runNanites("InterestThresholdScoreNanite");
 
-			_osbAsahTaskManager.runNanites("InterestTopicsNanite");
+			_asahTaskManager.runNanites("InterestTopicsNanite");
 
-			_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
+			_asahTaskManager.runNanites("IndividualInterestScoresNanite");
 		};
 	}
 
 	private Runnable _getStaleDynamicIndividualSegmentsRunnable() {
-		return () -> _osbAsahTaskManager.runNanites(
+		return () -> _asahTaskManager.runNanites(
 			"StaleDynamicIndividualSegmentsNanite");
 	}
 
@@ -192,21 +192,21 @@ public class OSBAsahBatchCuratorBot {
 				"ctx._source.status = 'INTERRUPTED'", Collections.emptyMap()),
 			"run-logs");
 
-		_osbAsahTaskManager.runNanites("DataRetentionNanite");
+		_asahTaskManager.runNanites("DataRetentionNanite");
 
-		_osbAsahTaskManager.runNanites("DeleteTempFilesNanite");
+		_asahTaskManager.runNanites("DeleteTempFilesNanite");
 
-		_osbAsahTaskManager.runNanites("InterestThresholdScoreNanite");
+		_asahTaskManager.runNanites("InterestThresholdScoreNanite");
 
-		_osbAsahTaskManager.runNanites("InterestTopicsNanite");
+		_asahTaskManager.runNanites("InterestTopicsNanite");
 
-		_osbAsahTaskManager.runNanites("IndividualInterestScoresNanite");
+		_asahTaskManager.runNanites("IndividualInterestScoresNanite");
 
-		_osbAsahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
+		_asahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
 
-		_osbAsahTaskManager.executeOSBAsahTasks();
+		_asahTaskManager.executeAsahTasks();
 
-		_osbAsahTaskManager.scheduleOSBAsahTasks();
+		_asahTaskManager.scheduleAsahTasks();
 
 		_scheduleNanites();
 	}
@@ -222,7 +222,7 @@ public class OSBAsahBatchCuratorBot {
 
 		String timeZoneId = _timeZoneDog.getTimeZoneId();
 
-		_osbAsahTaskScheduler.schedule(
+		_asahTaskScheduler.schedule(
 			new CronTrigger(cronExpression, TimeZone.getTimeZone(timeZoneId)),
 			runnable, scopedScheduledTaskId);
 
@@ -256,7 +256,7 @@ public class OSBAsahBatchCuratorBot {
 				_log.info(scheduledTask + " unscheduled");
 			}
 
-			_osbAsahTaskScheduler.unschedule(scheduledTask);
+			_asahTaskScheduler.unschedule(scheduledTask);
 		}
 
 		_scheduledTasks.remove(projectId);
@@ -264,6 +264,12 @@ public class OSBAsahBatchCuratorBot {
 
 	private static final Log _log = LogFactory.getLog(
 		OSBAsahBatchCuratorBot.class);
+
+	@Autowired
+	private AsahTaskManager _asahTaskManager;
+
+	@Autowired
+	private AsahTaskScheduler _asahTaskScheduler;
 
 	@Autowired(required = false)
 	@Qualifier("contentRecommendationDataSolutionNaniteRunnable")
@@ -286,12 +292,6 @@ public class OSBAsahBatchCuratorBot {
 	@Autowired
 	private IndividualSegmentActivityFieldsNanite
 		_individualSegmentActivityFieldsNanite;
-
-	@Autowired
-	private OSBAsahTaskManager _osbAsahTaskManager;
-
-	@Autowired
-	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
 
 	@Autowired
 	private ProjectDog _projectDog;

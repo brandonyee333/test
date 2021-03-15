@@ -65,10 +65,10 @@ public class CSVIndividualsRestControllerTest {
 
 		_assertIds(csvIndividualsJSONArray);
 
-		JSONArray osbAsahTasksJSONArray = _elasticsearchInvoker.get(
+		JSONArray asahTasksJSONArray = _elasticsearchInvoker.get(
 			"OSBAsahTasks");
 
-		Assert.assertEquals(1, osbAsahTasksJSONArray.length());
+		Assert.assertEquals(1, asahTasksJSONArray.length());
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -82,9 +82,9 @@ public class CSVIndividualsRestControllerTest {
 						"type", "reprocess"
 					)
 				)),
-			osbAsahTasksJSONArray, false);
+			asahTasksJSONArray, false);
 
-		_assertIds(osbAsahTasksJSONArray);
+		_assertIds(asahTasksJSONArray);
 	}
 
 	private void _assertIds(JSONArray jsonArray) {

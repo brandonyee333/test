@@ -14,12 +14,11 @@
 
 package com.liferay.osb.asah.batch.curator.bot.scheduling.test;
 
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskManager;
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskRunnable;
-import com.liferay.osb.asah.batch.curator.bot.scheduling.OSBAsahTaskScheduler;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskRunnable;
+import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -43,15 +42,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBatchCuratorSpringBootApplication.class)
-public class OSBAsahTaskManagerTest {
+public class AsahTaskManagerTest {
 
 	@ElasticsearchIndex(
 		name = "OSBAsahTasks", resourcePath = "osbasahtasks.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testDeleteOSBAsahTask() {
-		_osbAsahTaskManager.deleteOSBAsahTask(450553576847486527L);
+	public void testDeleteAsahTask() {
+		_asahTaskManager.deleteAsahTask(450553576847486527L);
 
 		Assert.assertEquals(
 			3,
@@ -60,60 +59,60 @@ public class OSBAsahTaskManagerTest {
 	}
 
 	@Test
-	public void testExecuteOSBAsahTask1() {
+	public void testExecuteAsahTask1() {
 		AsahTask asahTask = new AsahTask("DataControlNanite", null, "test");
 
 		asahTask.setId(450553576847486527L);
 
-		_osbAsahTaskManager.executeOSBAsahTask(asahTask, false);
+		_asahTaskManager.executeAsahTask(asahTask, false);
 
-		ArgumentCaptor<OSBAsahTaskRunnable> argumentCaptor =
-			ArgumentCaptor.forClass(OSBAsahTaskRunnable.class);
+		ArgumentCaptor<AsahTaskRunnable> argumentCaptor =
+			ArgumentCaptor.forClass(AsahTaskRunnable.class);
 
 		Mockito.verify(
-			_osbAsahTaskScheduler, Mockito.times(1)
+			_asahTaskScheduler, Mockito.times(1)
 		).execute(
 			argumentCaptor.capture()
 		);
 
-		OSBAsahTaskRunnable osbAsahTaskRunnable = argumentCaptor.getValue();
+		AsahTaskRunnable asahTaskRunnable = argumentCaptor.getValue();
 
 		Assert.assertArrayEquals(
 			new String[] {"DataControlNanite"},
-			osbAsahTaskRunnable.getNaniteClassNames());
+			asahTaskRunnable.getNaniteClassNames());
 		Assert.assertEquals(
-			"450553576847486527", osbAsahTaskRunnable.getOSBAsahTaskId());
-		Assert.assertEquals("test", osbAsahTaskRunnable.getProjectId());
-		Assert.assertFalse(osbAsahTaskRunnable.isForce());
+			"450553576847486527", asahTaskRunnable.getAsahTaskId());
+		Assert.assertEquals("test", asahTaskRunnable.getProjectId());
+		Assert.assertFalse(asahTaskRunnable.isForce());
 	}
 
 	@Test
-	public void testExecuteOSBAsahTask2() {
+	public void testExecuteAsahTask2() {
 		AsahTask asahTask = new AsahTask(
 			"UpdateDynamicMembershipsNanite", null, "test");
 
 		asahTask.setId(450553576847486528L);
 
-		_osbAsahTaskManager.executeOSBAsahTask(asahTask, false);
+		_asahTaskManager.executeAsahTask(asahTask, false);
 
-		ArgumentCaptor<OSBAsahTaskRunnable> argumentCaptor =
-			ArgumentCaptor.forClass(OSBAsahTaskRunnable.class);
+		ArgumentCaptor<AsahTaskRunnable> argumentCaptor =
+			ArgumentCaptor.forClass(AsahTaskRunnable.class);
 
 		Mockito.verify(
-			_osbAsahTaskScheduler, Mockito.times(1)
+			_asahTaskScheduler, Mockito.times(1)
 		).executeUpdateDynamicMembershipsNanite(
 			argumentCaptor.capture()
 		);
 
-		OSBAsahTaskRunnable osbAsahTaskRunnable = argumentCaptor.getValue();
+		AsahTaskRunnable asahTaskRunnable = argumentCaptor.getValue();
 
 		Assert.assertArrayEquals(
 			new String[] {"UpdateDynamicMembershipsNanite"},
-			osbAsahTaskRunnable.getNaniteClassNames());
+			asahTaskRunnable.getNaniteClassNames());
 		Assert.assertEquals(
-			"450553576847486528", osbAsahTaskRunnable.getOSBAsahTaskId());
-		Assert.assertEquals("test", osbAsahTaskRunnable.getProjectId());
-		Assert.assertFalse(osbAsahTaskRunnable.isForce());
+			"450553576847486528", asahTaskRunnable.getAsahTaskId());
+		Assert.assertEquals("test", asahTaskRunnable.getProjectId());
+		Assert.assertFalse(asahTaskRunnable.isForce());
 	}
 
 	@ElasticsearchIndex(
@@ -121,19 +120,19 @@ public class OSBAsahTaskManagerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testExecuteOSBAsahTasks() {
-		_osbAsahTaskManager.executeOSBAsahTasks();
+	public void testExecuteAsahTasks() {
+		_asahTaskManager.executeAsahTasks();
 
 		Mockito.verify(
-			_osbAsahTaskScheduler, Mockito.times(3)
+			_asahTaskScheduler, Mockito.times(3)
 		).execute(
-			Mockito.any(OSBAsahTaskRunnable.class)
+			Mockito.any(AsahTaskRunnable.class)
 		);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testScheduleOSBAsahTaskFail() {
-		_osbAsahTaskManager.scheduleOSBAsahTask(
+	public void testScheduleAsahTaskFail() {
+		_asahTaskManager.scheduleAsahTask(
 			new AsahTask("Foo", null, null));
 	}
 
@@ -142,37 +141,37 @@ public class OSBAsahTaskManagerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testScheduleOSBAsahTasks() {
-		_osbAsahTaskManager.scheduleOSBAsahTasks();
+	public void testScheduleAsahTasks() {
+		_asahTaskManager.scheduleAsahTasks();
 
-		ArgumentCaptor<OSBAsahTaskRunnable> argumentCaptor =
-			ArgumentCaptor.forClass(OSBAsahTaskRunnable.class);
+		ArgumentCaptor<AsahTaskRunnable> argumentCaptor =
+			ArgumentCaptor.forClass(AsahTaskRunnable.class);
 
 		Mockito.verify(
-			_osbAsahTaskScheduler, Mockito.times(1)
+			_asahTaskScheduler, Mockito.times(1)
 		).schedule(
 			Mockito.eq("0 0 0 * * ?"), argumentCaptor.capture(),
 			Mockito.eq("450553576847486530")
 		);
 
-		OSBAsahTaskRunnable osbAsahTaskRunnable = argumentCaptor.getValue();
+		AsahTaskRunnable asahTaskRunnable = argumentCaptor.getValue();
 
 		Assert.assertArrayEquals(
 			new String[] {"DataControlNanite"},
-			osbAsahTaskRunnable.getNaniteClassNames());
+			asahTaskRunnable.getNaniteClassNames());
 		Assert.assertEquals(
-			"450553576847486530", osbAsahTaskRunnable.getOSBAsahTaskId());
-		Assert.assertEquals("test", osbAsahTaskRunnable.getProjectId());
-		Assert.assertFalse(osbAsahTaskRunnable.isForce());
+			"450553576847486530", asahTaskRunnable.getAsahTaskId());
+		Assert.assertEquals("test", asahTaskRunnable.getProjectId());
+		Assert.assertFalse(asahTaskRunnable.isForce());
 	}
+
+	@Autowired
+	private AsahTaskManager _asahTaskManager;
+
+	@MockBean
+	private AsahTaskScheduler _asahTaskScheduler;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private OSBAsahTaskManager _osbAsahTaskManager;
-
-	@MockBean
-	private OSBAsahTaskScheduler _osbAsahTaskScheduler;
 
 }

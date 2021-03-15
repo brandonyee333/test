@@ -32,14 +32,14 @@ import org.json.JSONObject;
  * @author Leslie Wong
  * @author André Miranda
  */
-public class OSBAsahTaskRunnable implements Runnable {
+public class AsahTaskRunnable implements Runnable {
 
-	public OSBAsahTaskRunnable(
+	public AsahTaskRunnable(
 		AsahTask asahTask, boolean force,
-		OSBAsahTaskManager osbAsahTaskManager) {
+		AsahTaskManager asahTaskManager) {
 
 		_force = force;
-		_osbAsahTaskManager = osbAsahTaskManager;
+		_asahTaskManager = asahTaskManager;
 
 		_asahTaskId = asahTask.getId();
 		_contextJSONObject = new JSONObject(asahTask.getContext());
@@ -58,17 +58,17 @@ public class OSBAsahTaskRunnable implements Runnable {
 		}
 	}
 
-	public OSBAsahTaskRunnable(
-		AsahTask asahTask, OSBAsahTaskManager osbAsahTaskManager) {
+	public AsahTaskRunnable(
+		AsahTask asahTask, AsahTaskManager asahTaskManager) {
 
-		this(asahTask, false, osbAsahTaskManager);
+		this(asahTask, false, asahTaskManager);
 	}
 
-	public OSBAsahTaskRunnable(
-		OSBAsahTaskManager osbAsahTaskManager, String projectId,
+	public AsahTaskRunnable(
+		AsahTaskManager asahTaskManager, String projectId,
 		String... naniteClassNames) {
 
-		_osbAsahTaskManager = osbAsahTaskManager;
+		_asahTaskManager = asahTaskManager;
 		_projectId = projectId;
 		_naniteClassNames = naniteClassNames;
 
@@ -81,7 +81,7 @@ public class OSBAsahTaskRunnable implements Runnable {
 		return Arrays.copyOf(_naniteClassNames, _naniteClassNames.length);
 	}
 
-	public Long getOSBAsahTaskId() {
+	public Long getAsahTaskId() {
 		return _asahTaskId;
 	}
 
@@ -100,7 +100,7 @@ public class OSBAsahTaskRunnable implements Runnable {
 
 	private void _run() {
 		for (String naniteClassName : _naniteClassNames) {
-			Nanite nanite = _osbAsahTaskManager.getNanite(naniteClassName);
+			Nanite nanite = _asahTaskManager.getNanite(naniteClassName);
 
 			if (nanite == null) {
 				_log.error(
@@ -112,9 +112,9 @@ public class OSBAsahTaskRunnable implements Runnable {
 			if (((!_force &&
 				  (nanite instanceof IndividualSegmentActivityFieldsNanite)) ||
 				 nanite.isLogRunEnabled()) &&
-				_osbAsahTaskManager.checkNanite(naniteClassName)) {
+				_asahTaskManager.checkNanite(naniteClassName)) {
 
-				_osbAsahTaskManager.deleteOSBAsahTask(_asahTaskId);
+				_asahTaskManager.deleteAsahTask(_asahTaskId);
 
 				continue;
 			}
@@ -127,30 +127,30 @@ public class OSBAsahTaskRunnable implements Runnable {
 				nanite.run(_contextJSONObject);
 
 				nanite.logCompleted(
-					_contextJSONObject, System.currentTimeMillis() - start,
-					String.valueOf(_asahTaskId));
+					String.valueOf(_asahTaskId), _contextJSONObject,
+					System.currentTimeMillis() - start);
 			}
 			catch (Exception e) {
 				_log.error(e, e);
 
 				nanite.logFailed(
-					_contextJSONObject, System.currentTimeMillis() - start,
-					String.valueOf(_asahTaskId), e);
+					String.valueOf(_asahTaskId), _contextJSONObject,
+					System.currentTimeMillis() - start, e);
 			}
 			finally {
-				_osbAsahTaskManager.deleteOSBAsahTask(_asahTaskId);
+				_asahTaskManager.deleteAsahTask(_asahTaskId);
 			}
 		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		OSBAsahTaskRunnable.class);
+		AsahTaskRunnable.class);
 
+	private final Long _asahTaskId;
 	private final JSONObject _contextJSONObject;
 	private final boolean _force;
 	private final String[] _naniteClassNames;
-	private final Long _asahTaskId;
-	private final OSBAsahTaskManager _osbAsahTaskManager;
+	private final AsahTaskManager _asahTaskManager;
 	private String _projectId;
 
 }

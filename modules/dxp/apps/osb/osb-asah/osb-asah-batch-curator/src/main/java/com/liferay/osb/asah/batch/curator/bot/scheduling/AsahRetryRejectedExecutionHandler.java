@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Shinn Lok
  * @author André Miranda
  */
-public class OSBAsahRetryRejectedExecutionHandler
+public class AsahRetryRejectedExecutionHandler
 	implements RejectedExecutionHandler {
 
 	@Override
@@ -46,6 +46,6 @@ public class OSBAsahRetryRejectedExecutionHandler
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		OSBAsahRetryRejectedExecutionHandler.class);
+		AsahRetryRejectedExecutionHandler.class);
 
 }

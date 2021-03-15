@@ -33,17 +33,17 @@ import org.springframework.stereotype.Component;
  * @author André Miranda
  */
 @Component
-public class OSBAsahTaskScheduler {
+public class AsahTaskScheduler {
 
-	public void execute(OSBAsahTaskRunnable osbAsahTaskRunnable) {
-		_threadPoolTaskExecutor.execute(osbAsahTaskRunnable);
+	public void execute(AsahTaskRunnable asahTaskRunnable) {
+		_threadPoolTaskExecutor.execute(asahTaskRunnable);
 	}
 
 	public void executeUpdateDynamicMembershipsNanite(
-		OSBAsahTaskRunnable osbAsahTaskRunnable) {
+		AsahTaskRunnable asahTaskRunnable) {
 
 		_updateDynamicMembershipsNaniteThreadPoolTaskExecutor.execute(
-			osbAsahTaskRunnable);
+			asahTaskRunnable);
 	}
 
 	public Map<String, ScheduledFuture<?>> getScheduledFuturesMap() {
@@ -69,13 +69,13 @@ public class OSBAsahTaskScheduler {
 		schedule(new CronTrigger(cronExpression), runnable, scheduledTaskId);
 	}
 
-	public void unschedule(String scheduledTaskId) {
+	public void unschedule(String scheduledAsahTaskId) {
 		ScheduledFuture<?> scheduledFuture = _scheduledFuturesMap.remove(
-			scheduledTaskId);
+			scheduledAsahTaskId);
 
 		if (scheduledFuture == null) {
 			throw new IllegalArgumentException(
-				"Unable to unschedule task " + scheduledTaskId);
+				"Unable to unschedule task " + scheduledAsahTaskId);
 		}
 
 		scheduledFuture.cancel(false);
@@ -94,6 +94,6 @@ public class OSBAsahTaskScheduler {
 			new ThreadPoolExecutor(
 				1, 1, 0, TimeUnit.MILLISECONDS,
 				new ArrayBlockingQueue<>(100000),
-				new OSBAsahRetryRejectedExecutionHandler());
+				new AsahRetryRejectedExecutionHandler());
 
 }
