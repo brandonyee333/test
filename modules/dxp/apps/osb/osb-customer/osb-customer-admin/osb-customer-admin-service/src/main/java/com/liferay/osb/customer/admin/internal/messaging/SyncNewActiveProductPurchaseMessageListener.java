@@ -73,7 +73,7 @@ public class SyncNewActiveProductPurchaseMessageListener
 		String className = clazz.getName();
 
 		Trigger trigger = _triggerFactory.createTrigger(
-			className, className, null, null, 1, TimeUnit.DAY);
+			className, className, null, null, 1, TimeUnit.HOUR);
 
 		SchedulerEntry schedulerEntry = new SchedulerEntryImpl(
 			className, trigger);
@@ -93,7 +93,7 @@ public class SyncNewActiveProductPurchaseMessageListener
 
 		Date now = calendar.getTime();
 
-		calendar.add(Calendar.DATE, -1);
+		calendar.add(Calendar.HOUR, -1);
 
 		StringBundler sb = new StringBundler(4);
 
@@ -109,10 +109,8 @@ public class SyncNewActiveProductPurchaseMessageListener
 		Set<String> accountKeys = new HashSet<>();
 
 		for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
-			ProductPurchase[] productPurchases =
-				productPurchaseView.getProductPurchases();
-
-			ProductPurchase productPurchase = productPurchases[0];
+			ProductPurchase productPurchase =
+				productPurchaseView.getProductPurchases()[0];
 
 			if (accountKeys.contains(productPurchase.getAccountKey())) {
 				continue;
