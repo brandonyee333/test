@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
-import static com.liferay.osb.asah.common.model.DataExportTask.Status;
-import static com.liferay.osb.asah.common.model.DataExportTask.Type;
-
 import com.fasterxml.jackson.core.JsonFactory;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.AccountDataExporter;
@@ -53,7 +50,8 @@ public class DataExportNanite extends BaseNanite {
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
 		List<DataExportTask> dataExportTasks =
-			_dataExportTaskDog.getDataExportTasks(Status.PENDING);
+			_dataExportTaskDog.getDataExportTasks(
+				DataExportTask.Status.PENDING);
 
 		dataExportTasks.forEach(this::_runDataExportTask);
 	}
@@ -64,22 +62,22 @@ public class DataExportNanite extends BaseNanite {
 	}
 
 	private DataExporter _createDataExporter(
-			OutputStream outputStream, Type type)
+			OutputStream outputStream, DataExportTask.Type type)
 		throws Exception {
 
-		if (type == Type.ACCOUNT) {
+		if (type == DataExportTask.Type.ACCOUNT) {
 			return new AccountDataExporter(
 				_jsonFactory, outputStream, _reportHttp);
 		}
-		else if (type == Type.INDIVIDUAL) {
+		else if (type == DataExportTask.Type.INDIVIDUAL) {
 			return new IndividualDataExporter(
 				_jsonFactory, outputStream, _reportHttp);
 		}
-		else if (type == Type.PAGE) {
+		else if (type == DataExportTask.Type.PAGE) {
 			return new PageDataExporter(
 				_jsonFactory, outputStream, _cerebroInfoElasticsearchInvoker);
 		}
-		else if (type == Type.SEGMENT) {
+		else if (type == DataExportTask.Type.SEGMENT) {
 			return new SegmentDataExporter(
 				_jsonFactory, outputStream, _reportHttp);
 		}
@@ -89,7 +87,7 @@ public class DataExportNanite extends BaseNanite {
 
 	private void _runDataExportTask(DataExportTask dataExportTask) {
 		_dataExportTaskDog.updateDataExportTask(
-			dataExportTask.getId(), Status.RUNNING);
+			dataExportTask.getId(), DataExportTask.Status.RUNNING);
 
 		try (OutputStream outputStream = new FileOutputStream(
 				_exportPath + "/" + dataExportTask.getId() + ".json")) {
@@ -103,13 +101,13 @@ public class DataExportNanite extends BaseNanite {
 			_log.error(exception, exception);
 
 			_dataExportTaskDog.updateDataExportTask(
-				dataExportTask.getId(), Status.ERROR);
+				dataExportTask.getId(), DataExportTask.Status.ERROR);
 
 			return;
 		}
 
 		_dataExportTaskDog.updateDataExportTask(
-			dataExportTask.getId(), Status.COMPLETED);
+			dataExportTask.getId(), DataExportTask.Status.COMPLETED);
 	}
 
 	private static final Log _log = LogFactory.getLog(DataExportNanite.class);

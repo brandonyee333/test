@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import static com.liferay.osb.asah.common.model.DataExportTask.Status;
-import static com.liferay.osb.asah.common.model.DataExportTask.Type;
-
 import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.repository.DataExportTaskRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -39,17 +36,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataExportTaskDog {
 
-	public DataExportTask addDataExportTask(Type type) {
+	public DataExportTask addDataExportTask(DataExportTask.Type type) {
 		DataExportTask dataExportTask = new DataExportTask();
 
 		dataExportTask.setCreateDate(new Date());
-		dataExportTask.setStatus(Status.PENDING);
+		dataExportTask.setStatus(DataExportTask.Status.PENDING);
 		dataExportTask.setType(type);
 
 		return _dataExportTaskRepository.save(dataExportTask);
 	}
 
-	public DataExportTask fetchLastDataExportTask(Type type) {
+	public DataExportTask fetchLastDataExportTask(DataExportTask.Type type) {
 		return _dataExportTaskRepository.findFirstByTypeOrderByIdDesc(type);
 	}
 
@@ -67,19 +64,21 @@ public class DataExportTaskDog {
 		return new File(_exportPath + "/" + dataExportTaskId + ".json");
 	}
 
-	public List<DataExportTask> getDataExportTasks(Status status) {
+	public List<DataExportTask> getDataExportTasks(
+		DataExportTask.Status status) {
+
 		return _dataExportTaskRepository.findByStatus(status);
 	}
 
 	public DataExportTask updateDataExportTask(
-		Long dataExportTaskId, Status status) {
+		Long dataExportTaskId, DataExportTask.Status status) {
 
 		DataExportTask dataExportTask = getDataExportTask(dataExportTaskId);
 
-		if (status == Status.COMPLETED) {
+		if (status == DataExportTask.Status.COMPLETED) {
 			dataExportTask.setCompletedDate(new Date());
 		}
-		else if (status == Status.RUNNING) {
+		else if (status == DataExportTask.Status.RUNNING) {
 			dataExportTask.setStartedDate(new Date());
 		}
 

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
-import static org.springframework.data.domain.Sort.Order;
-
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
@@ -32,6 +30,8 @@ import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.NestedSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+
+import org.springframework.data.domain.Sort.Order;
 
 /**
  * @author Shinn Lok

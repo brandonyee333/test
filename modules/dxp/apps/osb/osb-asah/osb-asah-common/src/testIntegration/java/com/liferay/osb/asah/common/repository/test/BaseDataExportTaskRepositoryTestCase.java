@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import static com.liferay.osb.asah.common.model.DataExportTask.Status;
-import static com.liferay.osb.asah.common.model.DataExportTask.Type;
-
 import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.repository.DataExportTaskRepository;
 
@@ -43,16 +40,16 @@ public abstract class BaseDataExportTaskRepositoryTestCase
 		dataExportTask1.setCompletedDate(new Date());
 		dataExportTask1.setCreateDate(new Date());
 		dataExportTask1.setStartedDate(new Date());
-		dataExportTask1.setStatus(Status.COMPLETED);
-		dataExportTask1.setType(Type.PAGE);
+		dataExportTask1.setStatus(DataExportTask.Status.COMPLETED);
+		dataExportTask1.setType(DataExportTask.Type.PAGE);
 
 		DataExportTask dataExportTask2 = new DataExportTask();
 
 		dataExportTask2.setCompletedDate(new Date());
 		dataExportTask2.setCreateDate(new Date());
 		dataExportTask2.setStartedDate(new Date());
-		dataExportTask2.setStatus(Status.ERROR);
-		dataExportTask2.setType(Type.PAGE);
+		dataExportTask2.setStatus(DataExportTask.Status.ERROR);
+		dataExportTask2.setType(DataExportTask.Type.PAGE);
 
 		setUpRepository(dataExportTask1, dataExportTask2);
 	}
@@ -60,7 +57,8 @@ public abstract class BaseDataExportTaskRepositoryTestCase
 	@Test
 	public void testFindByStatus() {
 		List<DataExportTask> dataExportTasks =
-			_dataExportTaskRepository.findByStatus(Status.COMPLETED);
+			_dataExportTaskRepository.findByStatus(
+				DataExportTask.Status.COMPLETED);
 
 		Assert.assertEquals(
 			dataExportTasks.toString(), 1, dataExportTasks.size());
@@ -71,7 +69,8 @@ public abstract class BaseDataExportTaskRepositoryTestCase
 	@Test
 	public void testFindFirstByTypeOrderByIdDesc() {
 		DataExportTask dataExportTask =
-			_dataExportTaskRepository.findFirstByTypeOrderByIdDesc(Type.PAGE);
+			_dataExportTaskRepository.findFirstByTypeOrderByIdDesc(
+				DataExportTask.Type.PAGE);
 
 		Assert.assertEquals(entityModels.get(1), dataExportTask);
 	}

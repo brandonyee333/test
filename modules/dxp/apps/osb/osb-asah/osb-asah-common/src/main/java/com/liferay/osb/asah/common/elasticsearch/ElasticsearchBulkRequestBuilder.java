@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.elasticsearch;
 
-import static org.elasticsearch.action.support.WriteRequest.RefreshPolicy;
-
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 
 import java.util.Map;
@@ -133,7 +131,7 @@ public class ElasticsearchBulkRequestBuilder {
 	}
 
 	public ElasticsearchBulkRequestBuilder refreshPolicy(
-		RefreshPolicy refreshPolicy) {
+		WriteRequest.RefreshPolicy refreshPolicy) {
 
 		_refreshPolicy = refreshPolicy;
 

@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
-import static com.liferay.osb.asah.common.model.DataExportTask.Status;
-import static com.liferay.osb.asah.common.model.DataExportTask.Type;
-
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.DataExportTask;
@@ -45,7 +42,7 @@ public class ElasticsearchDataExportTaskRepositoryImpl
 	implements DataExportTaskRepository {
 
 	@Override
-	public List<DataExportTask> findByStatus(Status status) {
+	public List<DataExportTask> findByStatus(DataExportTask.Status status) {
 		return toList(
 			_faroInfoElasticsearchInvoker.get(
 				getCollectionName(),
@@ -53,7 +50,9 @@ public class ElasticsearchDataExportTaskRepositoryImpl
 	}
 
 	@Override
-	public DataExportTask findFirstByTypeOrderByIdDesc(Type type) {
+	public DataExportTask findFirstByTypeOrderByIdDesc(
+		DataExportTask.Type type) {
+
 		return Optional.ofNullable(
 			_faroInfoElasticsearchInvoker.fetch(
 				getCollectionName(),

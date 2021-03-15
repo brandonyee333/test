@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import static com.liferay.osb.asah.common.model.DataExportTask.Status;
-import static com.liferay.osb.asah.common.model.DataExportTask.Type;
-
 import com.liferay.osb.asah.common.model.DataExportTask;
 
 import java.util.List;
@@ -35,8 +32,9 @@ import org.springframework.stereotype.Repository;
 public interface DataExportTaskRepository
 	extends CrudRepository<DataExportTask, Long> {
 
-	public List<DataExportTask> findByStatus(Status status);
+	public List<DataExportTask> findByStatus(DataExportTask.Status status);
 
-	public DataExportTask findFirstByTypeOrderByIdDesc(Type type);
+	public DataExportTask findFirstByTypeOrderByIdDesc(
+		DataExportTask.Type type);
 
 }

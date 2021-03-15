@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.mapper;
 
-import static com.liferay.osb.asah.common.model.DataExportTask.Status;
-import static com.liferay.osb.asah.common.model.DataExportTask.Type;
-
 import com.liferay.osb.asah.common.dto.DataExportTaskDTO;
 import com.liferay.osb.asah.common.model.DataExportTask;
 
@@ -71,11 +68,12 @@ public class DataExportTaskMapper
 
 		if (jsonObject.has("status") && !jsonObject.isNull("status")) {
 			dataExportTask.setStatus(
-				Status.valueOf(jsonObject.getString("status")));
+				DataExportTask.Status.valueOf(jsonObject.getString("status")));
 		}
 
 		if (jsonObject.has("type") && !jsonObject.isNull("type")) {
-			dataExportTask.setType(Type.valueOf(jsonObject.getString("type")));
+			dataExportTask.setType(
+				DataExportTask.Type.valueOf(jsonObject.getString("type")));
 		}
 
 		return dataExportTask;
