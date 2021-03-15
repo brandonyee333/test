@@ -217,35 +217,38 @@ JSONArray samlSloRequestInfosJSONArray = samlSloContextJSONObject.getJSONArray("
 		checkStatus: function () {
 			var instance = this;
 
-			A.io.request('/?p_p_id=com_liferay_saml_web_internal_portlet_SamlPortlet&p_p_lifecycle=2&p_p_state=maximized&p_p_mode=view&p_p_resource_id=/saml/send_saml_slo_request_infos', {
-				dataType: 'JSON',
-				method: 'POST',
-				on: {
-					success: function (event) {
-						var logoutPending = false;
+			A.io.request(
+				'/?p_p_id=com_liferay_saml_web_internal_portlet_SamlPortlet&p_p_lifecycle=2&p_p_state=maximized&p_p_mode=view&p_p_resource_id=/saml/send_saml_slo_request_infos',
+				{
+					dataType: 'JSON',
+					method: 'POST',
+					on: {
+						success: function (event) {
+							var logoutPending = false;
 
-						this.get('responseData.samlSloRequestInfos').forEach(
-							(item, index, collection) => {
-								logoutPending |= item.status < 2;
+							this.get('responseData.samlSloRequestInfos').forEach(
+								(item, index, collection) => {
+									logoutPending |= item.status < 2;
 
-								instance.updateStatus(item);
-							}
-						);
-
-						if (logoutPending) {
-							setTimeout(A.bind('checkStatus', instance), 1000);
-						}
-						else {
-							instance._completeSignOut.show();
-
-							instance.finishTimeout = setTimeout(
-								A.bind('finishLogout', instance),
-								5000
+									instance.updateStatus(item);
+								}
 							);
-						}
+
+							if (logoutPending) {
+								setTimeout(A.bind('checkStatus', instance), 1000);
+							}
+							else {
+								instance._completeSignOut.show();
+
+								instance.finishTimeout = setTimeout(
+									A.bind('finishLogout', instance),
+									5000
+								);
+							}
+						},
 					},
-				},
-			});
+				}
+			);
 		},
 
 		clearFinishTimeout: function () {
@@ -257,7 +260,8 @@ JSONArray samlSloRequestInfosJSONArray = samlSloContextJSONObject.getJSONArray("
 		finishLogout: function () {
 			detachHandlers();
 
-			location.href = '/?p_p_id=com_liferay_saml_web_internal_portlet_SamlPortlet&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_com_liferay_saml_web_internal_portlet_SamlPortlet_mvcRenderCommandName=/saml/slo_logout&_com_liferay_saml_web_internal_portlet_SamlPortlet_cmd=finish';
+			location.href =
+				'/?p_p_id=com_liferay_saml_web_internal_portlet_SamlPortlet&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_com_liferay_saml_web_internal_portlet_SamlPortlet_mvcRenderCommandName=/saml/slo_logout&_com_liferay_saml_web_internal_portlet_SamlPortlet_cmd=finish';
 		},
 
 		retryLogout: function (entityId) {
@@ -277,7 +281,11 @@ JSONArray samlSloRequestInfosJSONArray = samlSloContextJSONObject.getJSONArray("
 
 				entityNode
 					.one('iframe')
-					.set('src', '/?p_p_id=com_liferay_saml_web_internal_portlet_SamlPortlet&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_com_liferay_saml_web_internal_portlet_SamlPortlet_mvcRenderCommandName=/saml/slo_sp_status&_com_liferay_saml_web_internal_portlet_SamlPortlet_entityId=' + entityId);
+					.set(
+						'src',
+						'/?p_p_id=com_liferay_saml_web_internal_portlet_SamlPortlet&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_com_liferay_saml_web_internal_portlet_SamlPortlet_mvcRenderCommandName=/saml/slo_sp_status&_com_liferay_saml_web_internal_portlet_SamlPortlet_entityId=' +
+							entityId
+					);
 				instance.checkStatus();
 			}
 		},
