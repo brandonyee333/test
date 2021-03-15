@@ -27,10 +27,6 @@ As another example, these services serve the data of an Analytics Cloud customer
 
 This service exposes endpoints to the [Faro frontend](https://github.com/liferay/com-liferay-osb-faro-private) and Liferay Portal.
 
-### osb-asah-backend-ext-alfa
-
-This template service is used as a reference to create modules that provide additional endpoints.
-
 ### osb-asah-backend-ext-seo
 
 This service exposes additional endpoints related to SEO features (integrates with [SEMrush](https://www.semrush.com/)).
