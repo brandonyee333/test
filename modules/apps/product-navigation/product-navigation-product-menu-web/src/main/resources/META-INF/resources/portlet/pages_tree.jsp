@@ -44,13 +44,15 @@ LayoutsTreeDisplayContext layoutsTreeDisplayContext = new LayoutsTreeDisplayCont
 			containerElement="span"
 		>
 			<a class="{cssClass}" data-regular-url="{regularURL}" data-url="{url}" data-uuid="{uuid}" href="{url}" id="{id}" title="{title}">
-				<span class="mr-1 list-icon {type}-layout">
-					<aui:icon image="list" markupView="lexicon" />
+				<span class="c-inner" tabindex="-1">
+					<span class="mr-1 list-icon {type}-layout">
+						<aui:icon image="list" markupView="lexicon" />
+					</span>
+					<span class="mr-1 page-icon {type}-layout">
+						<aui:icon image="page" markupView="lexicon" />
+					</span>
+					{label}
 				</span>
-				<span class="mr-1 page-icon {type}-layout">
-					<aui:icon image="page" markupView="lexicon" />
-				</span>
-				{label}
 			</a>
 
 			<span class="d-sm-block dropdown pages-tree-dropdown text-right">
