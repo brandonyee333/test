@@ -74,7 +74,6 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 					F.col('event_date')
 				)
 			).over(window)
-
 		).withColumn(
 			'delta',
 			F.col('event_date').cast('long') -
@@ -355,8 +354,6 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		page_with_time_on_page_data_frame = self._spark_job.spark_session.table(
 			'page_time_on_page'
 		)
-
-		page_with_time_on_page_data_frame.show(truncate=False)
 
 		data_frame = data_frame.join(
 			page_with_time_on_page_data_frame,
