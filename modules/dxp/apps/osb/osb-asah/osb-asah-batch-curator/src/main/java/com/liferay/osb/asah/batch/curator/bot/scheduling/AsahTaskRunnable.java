@@ -35,8 +35,13 @@ import org.json.JSONObject;
 public class AsahTaskRunnable implements Runnable {
 
 	public AsahTaskRunnable(
-		AsahTask asahTask, boolean force,
-		AsahTaskManager asahTaskManager) {
+		AsahTask asahTask, AsahTaskManager asahTaskManager) {
+
+		this(asahTask, false, asahTaskManager);
+	}
+
+	public AsahTaskRunnable(
+		AsahTask asahTask, boolean force, AsahTaskManager asahTaskManager) {
 
 		_force = force;
 		_asahTaskManager = asahTaskManager;
@@ -59,12 +64,6 @@ public class AsahTaskRunnable implements Runnable {
 	}
 
 	public AsahTaskRunnable(
-		AsahTask asahTask, AsahTaskManager asahTaskManager) {
-
-		this(asahTask, false, asahTaskManager);
-	}
-
-	public AsahTaskRunnable(
 		AsahTaskManager asahTaskManager, String projectId,
 		String... naniteClassNames) {
 
@@ -77,12 +76,12 @@ public class AsahTaskRunnable implements Runnable {
 		_asahTaskId = null;
 	}
 
-	public String[] getNaniteClassNames() {
-		return Arrays.copyOf(_naniteClassNames, _naniteClassNames.length);
-	}
-
 	public Long getAsahTaskId() {
 		return _asahTaskId;
+	}
+
+	public String[] getNaniteClassNames() {
+		return Arrays.copyOf(_naniteClassNames, _naniteClassNames.length);
 	}
 
 	public String getProjectId() {
@@ -143,14 +142,13 @@ public class AsahTaskRunnable implements Runnable {
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		AsahTaskRunnable.class);
+	private static final Log _log = LogFactory.getLog(AsahTaskRunnable.class);
 
 	private final Long _asahTaskId;
+	private final AsahTaskManager _asahTaskManager;
 	private final JSONObject _contextJSONObject;
 	private final boolean _force;
 	private final String[] _naniteClassNames;
-	private final AsahTaskManager _asahTaskManager;
 	private String _projectId;
 
 }

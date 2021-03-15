@@ -16,21 +16,18 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.repository.AsahTaskRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
-import org.json.JSONArray;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
+
+import org.elasticsearch.index.query.QueryBuilders;
+
+import org.json.JSONArray;
+
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author André Miranda
@@ -51,8 +48,9 @@ public class ElasticsearchAsahTaskRepositoryImpl
 				_faroInfoElasticsearchInvoker.get(
 					getCollectionName(),
 					searchSourceBuilder -> {
-						searchSourceBuilder.query(BoolQueryBuilderUtil.filter(
-							QueryBuilders.existsQuery("cronExpression")));
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								QueryBuilders.existsQuery("cronExpression")));
 						searchSourceBuilder.size(ELASTICSEARCH_MAX_SIZE);
 					})));
 	}
@@ -64,8 +62,9 @@ public class ElasticsearchAsahTaskRepositoryImpl
 				_faroInfoElasticsearchInvoker.get(
 					getCollectionName(),
 					searchSourceBuilder -> {
-						searchSourceBuilder.query(BoolQueryBuilderUtil.mustNot(
-							QueryBuilders.existsQuery("cronExpression")));
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.mustNot(
+								QueryBuilders.existsQuery("cronExpression")));
 						searchSourceBuilder.size(ELASTICSEARCH_MAX_SIZE);
 					})));
 	}

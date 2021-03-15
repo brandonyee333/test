@@ -132,8 +132,7 @@ public class AsahTaskManagerTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testScheduleAsahTaskFail() {
-		_asahTaskManager.scheduleAsahTask(
-			new AsahTask("Foo", null, null));
+		_asahTaskManager.scheduleAsahTask(new AsahTask("Foo", null, null));
 	}
 
 	@ElasticsearchIndex(

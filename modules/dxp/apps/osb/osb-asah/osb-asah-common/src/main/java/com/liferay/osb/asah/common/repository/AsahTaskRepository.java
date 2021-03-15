@@ -16,11 +16,11 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.model.AsahTask;
 
+import java.util.List;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * @author André Miranda
@@ -34,4 +34,5 @@ public interface AsahTaskRepository extends CrudRepository<AsahTask, Long> {
 	public List<AsahTask> findByCronExpressionIsNotNull();
 
 	public List<AsahTask> findByCronExpressionIsNull();
+
 }

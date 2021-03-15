@@ -47,8 +47,7 @@ public class AsahTaskDogTest {
 
 		Assert.assertEquals(1, asahTasksJSONArray.length());
 
-		JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(
-			0);
+		JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(0);
 
 		Assert.assertEquals(
 			"TestNanite", asahTaskJSONObject.getString("className"));

@@ -106,8 +106,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(1, asahTasksJSONArray.length());
 
-		JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(
-			0);
+		JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(0);
 
 		JSONObject contextJSONObject = asahTaskJSONObject.getJSONObject(
 			"context");
@@ -212,6 +211,26 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		_assertIndividualSegmentJSONObject(individualSegmentJSONObject);
 	}
 
+	private void _assertAsahTaskIndividualSegmentContext() {
+		JSONArray asahTasksJSONArray = faroInfoElasticsearchInvoker.get(
+			"OSBAsahTasks");
+
+		for (int i = 0; i < asahTasksJSONArray.length(); i++) {
+			JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(i);
+
+			JSONObject contextJSONObject = asahTaskJSONObject.getJSONObject(
+				"context");
+
+			Assert.assertNotNull(contextJSONObject.getString("dateModified"));
+
+			if (contextJSONObject.has("individualSegmentJSONObject")) {
+				_assertIndividualSegmentJSONObject(
+					contextJSONObject.optJSONObject(
+						"individualSegmentJSONObject"));
+			}
+		}
+	}
+
 	private void _assertIndividualSegmentJSONObject(
 		JSONObject individualSegmentJSONObject) {
 
@@ -238,26 +257,6 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			"DYNAMIC", individualSegmentJSONObject.getString("segmentType"));
 		Assert.assertEquals(
 			"INACTIVE", individualSegmentJSONObject.getString("status"));
-	}
-
-	private void _assertAsahTaskIndividualSegmentContext() {
-		JSONArray asahTasksJSONArray = faroInfoElasticsearchInvoker.get(
-			"OSBAsahTasks");
-
-		for (int i = 0; i < asahTasksJSONArray.length(); i++) {
-			JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(i);
-
-			JSONObject contextJSONObject = asahTaskJSONObject.getJSONObject(
-				"context");
-
-			Assert.assertNotNull(contextJSONObject.getString("dateModified"));
-
-			if (contextJSONObject.has("individualSegmentJSONObject")) {
-				_assertIndividualSegmentJSONObject(
-					contextJSONObject.optJSONObject(
-						"individualSegmentJSONObject"));
-			}
-		}
 	}
 
 	private void _assertOSBTasksContextAfterUpdate(String addFilter) {

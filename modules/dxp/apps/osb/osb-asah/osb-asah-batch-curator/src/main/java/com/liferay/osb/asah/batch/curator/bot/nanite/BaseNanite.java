@@ -48,8 +48,7 @@ public abstract class BaseNanite implements Nanite {
 			if (!StringUtil.isNull(asahTaskId)) {
 				_runLogger.log(
 					null, this, false, "COMPLETED",
-					faroInfoElasticsearchInvoker, "OSBAsahTaskId",
-					asahTaskId);
+					faroInfoElasticsearchInvoker, "OSBAsahTaskId", asahTaskId);
 			}
 			else {
 				_runLogger.log(

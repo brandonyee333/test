@@ -15,12 +15,12 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.model.AsahTask;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.liferay.osb.asah.common.model.AsahTask;
 import org.json.JSONObject;
 
 import org.mockito.Mockito;

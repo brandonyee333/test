@@ -159,8 +159,7 @@ public class AsahTaskManager {
 		}
 
 		_asahTaskScheduler.schedule(
-			asahTask.getCronExpression(),
-			new AsahTaskRunnable(asahTask, this),
+			asahTask.getCronExpression(), new AsahTaskRunnable(asahTask, this),
 			String.valueOf(asahTask.getId()));
 	}
 

@@ -83,8 +83,7 @@ public class FaroInfoAssetDog extends BaseFaroInfoDog {
 			}
 		}
 
-		_addAsahTask(
-			"IndividualInterestScoresNanite", deletionDayDateString);
+		_addAsahTask("IndividualInterestScoresNanite", deletionDayDateString);
 	}
 
 	public List<String> getKeywords() {
