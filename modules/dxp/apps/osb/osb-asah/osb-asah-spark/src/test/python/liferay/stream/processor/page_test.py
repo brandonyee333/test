@@ -37,19 +37,19 @@ def page_referrer_data_frame_processor(spark_application):
 		0, 'page-referrers', CuratorSparkJob(spark_application)
 	)
 
-def test_page_data_frame_calculate_time_on_page(
+def test_page_data_frame_create_page_time_on_page_data_frame(
 	page_data_frame_processor, spark_session
 ):
 
-	actual_data_frame = page_data_frame_processor._calculate_time_on_page(
+	actual_data_frame = page_data_frame_processor._create_page_time_on_page_data_frame(
 		test_util.read_session_events_data_frame(
-			'page_data_frame_processor_calculate_time_on_page_input.json',
+			'page_data_frame_processor_create_page_time_on_page_data_frame_input.json',
 			spark_session
 		)
 	)
 
 	expected_data_frame = test_util.read_data_frame(
-		'page_data_frame_processor_calculate_time_on_page_expected_output.json',
+		'page_data_frame_processor_create_page_time_on_page_data_frame_expected_output.json',
 		spark_session,
 		T.StructType([
 			T.StructField('channelId', T.StringType(), False),

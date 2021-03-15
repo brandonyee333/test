@@ -16,7 +16,7 @@ from pyspark.sql import Window, \
 
 class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
-	def _calculate_time_on_page(self, analytics_events_data_frame):
+	def _create_page_time_on_page_data_frame(self, analytics_events_data_frame):
 		data_frame = analytics_events_data_frame.withColumn(
 			'event_date',
 			F.to_timestamp(F.col('eventDate'))
@@ -212,8 +212,8 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 		)
 
 	def _pre_filter(self, analytics_events_data_frame):
+		self._create_page_time_on_page_data_frame(analytics_events_data_frame)
 		self._create_session_data_frame(analytics_events_data_frame)
-		self._calculate_time_on_page(analytics_events_data_frame)
 
 	def _process(self, data_frame):
 		window = Window.partitionBy(
@@ -351,12 +351,12 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 
 		session_data_frame.unpersist()
 
-		page_with_time_on_page_data_frame = self._spark_job.spark_session.table(
+		page_time_on_page_data_frame = self._spark_job.spark_session.table(
 			'page_time_on_page'
 		)
 
 		data_frame = data_frame.join(
-			page_with_time_on_page_data_frame,
+			page_time_on_page_data_frame,
 			how='left',
 			on=[
 				'projectId', 'channelId', 'userId', 'sessionId', 'url',
@@ -366,7 +366,7 @@ class PageDataFrameProcessor(AnalyticsEventsDataFrameProcessor):
 			0, subset=['time_on_page']
 		)
 
-		page_with_time_on_page_data_frame.unpersist()
+		page_time_on_page_data_frame.unpersist()
 
 		return data_frame
 
