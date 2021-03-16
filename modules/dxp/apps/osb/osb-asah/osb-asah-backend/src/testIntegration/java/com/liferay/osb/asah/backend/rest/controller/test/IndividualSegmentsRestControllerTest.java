@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -249,9 +251,10 @@ public class IndividualSegmentsRestControllerTest {
 
 		// Does not include anonymous users
 
-		membershipChangesJSONObject = new JSONObject(
+		membershipChangesJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.getMemberships(
-				"327968823603500677", null, 0, 20, null));
+				327968823603500677L, null, 0, 20, null),
+			JSONObject.class);
 
 		embeddedJSONObject = membershipChangesJSONObject.getJSONObject(
 			"_embedded");
@@ -287,9 +290,10 @@ public class IndividualSegmentsRestControllerTest {
 
 		// Include anonymous users
 
-		JSONObject membershipsJSONObject = new JSONObject(
+		JSONObject membershipsJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.getMemberships(
-				"327968823603500666", null, 0, 20, null));
+				327968823603500666L, null, 0, 20, null),
+			JSONObject.class);
 
 		JSONObject embeddedJSONObject = membershipsJSONObject.getJSONObject(
 			"_embedded");
@@ -301,9 +305,10 @@ public class IndividualSegmentsRestControllerTest {
 
 		// Does not include anonymous users
 
-		membershipsJSONObject = new JSONObject(
+		membershipsJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.getMemberships(
-				"327968823603500677", null, 0, 20, null));
+				327968823603500677L, null, 0, 20, null),
+			JSONObject.class);
 
 		embeddedJSONObject = membershipsJSONObject.getJSONObject("_embedded");
 
@@ -388,7 +393,7 @@ public class IndividualSegmentsRestControllerTest {
 
 		JSONObject responseJSONObject = new JSONObject(
 			_individualSegmentsRestController.putIndividualSegment(
-				jsonObject.getString("id"), jsonObject.toString()));
+				jsonObject.getLong("id"), jsonObject.toString()));
 
 		Assert.assertEquals(
 			"IN_PROGRESS", responseJSONObject.getString("state"));
@@ -402,7 +407,7 @@ public class IndividualSegmentsRestControllerTest {
 
 		JSONObject responseJSONObject = new JSONObject(
 			_individualSegmentsRestController.putIndividualSegment(
-				jsonObject.getString("id"), jsonObject.toString()));
+				jsonObject.getLong("id"), jsonObject.toString()));
 
 		Assert.assertEquals("READY", responseJSONObject.getString("state"));
 	}
@@ -415,5 +420,8 @@ public class IndividualSegmentsRestControllerTest {
 
 	@Autowired
 	private IndividualSegmentsRestController _individualSegmentsRestController;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

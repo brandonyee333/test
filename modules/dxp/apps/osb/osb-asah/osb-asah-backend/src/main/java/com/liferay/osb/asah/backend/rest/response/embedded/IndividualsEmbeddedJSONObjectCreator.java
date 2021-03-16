@@ -17,10 +17,12 @@ package com.liferay.osb.asah.backend.rest.response.embedded;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.embedded.BaseEmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,11 +46,12 @@ public class IndividualsEmbeddedJSONObjectCreator
 
 	public IndividualsEmbeddedJSONObjectCreator(
 		DataSourceDog dataSourceDog, ElasticsearchInvoker elasticsearchInvoker,
-		String expand, ObjectMapper objectMapper) {
+		String expand, MembershipDog membershipDog, ObjectMapper objectMapper) {
 
 		_dataSourceDog = dataSourceDog;
 		_elasticsearchInvoker = elasticsearchInvoker;
 		_expand = expand;
+		_membershipDog = membershipDog;
 		_objectMapper = objectMapper;
 	}
 
@@ -127,24 +130,14 @@ public class IndividualsEmbeddedJSONObjectCreator
 			JSONObject individualJSONObject =
 				individualsJSONArray.getJSONObject(i);
 
-			List<String> individualSegmentIds = JSONUtil.toStringList(
-				new JSONArray(
-					_elasticsearchInvoker.get(
-						"memberships",
-						searchSourceBuilder -> {
-							searchSourceBuilder.fetchSource(
-								"individualSegmentId", null);
-							searchSourceBuilder.query(
-								QueryBuilders.termQuery(
-									"individualId",
-									individualJSONObject.getString("id")));
-							searchSourceBuilder.size(20);
-						})),
-				"individualSegmentId");
+			List<Long> individualSegmentIds =
+				_membershipDog.getIndividualSegmentIds(
+					individualJSONObject.getLong("id"));
 
 			JSONArray individualSegmentsJSONArray = _elasticsearchInvoker.get(
 				"individual-segments",
-				QueryBuilders.termsQuery("id", individualSegmentIds));
+				QueryBuilders.termsQuery(
+					"id", ListUtil.map(individualSegmentIds, String::valueOf)));
 
 			individualSegmentJSONObjects.put(
 				individualJSONObject.getString("id"),
@@ -161,6 +154,7 @@ public class IndividualsEmbeddedJSONObjectCreator
 	private final DataSourceDog _dataSourceDog;
 	private final ElasticsearchInvoker _elasticsearchInvoker;
 	private final String _expand;
+	private final MembershipDog _membershipDog;
 	private final ObjectMapper _objectMapper;
 
 }

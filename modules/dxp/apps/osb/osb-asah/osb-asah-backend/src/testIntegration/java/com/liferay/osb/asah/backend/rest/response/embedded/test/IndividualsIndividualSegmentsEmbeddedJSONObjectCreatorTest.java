@@ -14,7 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.response.embedded.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsIndividualSegmentsEmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
@@ -28,6 +31,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -49,7 +53,8 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreatorTest {
 	public void testActiveMembershipReturned() throws Exception {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsIndividualSegmentsEmbeddedJSONObjectCreator(
-				_elasticsearchInvoker, "active-membership", "123");
+				_elasticsearchInvoker, "active-membership", "123",
+				_membershipDog, _objectMapper);
 
 		JSONObject individualIndividualSegmentJSONObject =
 			embeddedJSONObjectCreator.create("910");
@@ -70,12 +75,19 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreatorTest {
 	public void testInactiveMembershipNotReturned() throws Exception {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsIndividualSegmentsEmbeddedJSONObjectCreator(
-				_elasticsearchInvoker, "active-membership", "456");
+				_elasticsearchInvoker, "active-membership", "456",
+				_membershipDog, _objectMapper);
 
 		Assert.assertNull(embeddedJSONObjectCreator.create("910"));
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private MembershipDog _membershipDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

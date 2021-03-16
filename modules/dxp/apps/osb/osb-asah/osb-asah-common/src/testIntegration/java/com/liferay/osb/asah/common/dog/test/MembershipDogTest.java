@@ -14,20 +14,22 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Membership;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -86,10 +88,11 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 			"status", "ACTIVE"
 		);
 
-		JSONObject membershipJSONObject = _membershipDog.addMembership(
-			newMembershipJSONObject);
+		Membership membership = _membershipDog.addMembership(
+			_objectMapper.convertValue(
+				newMembershipJSONObject, Membership.class));
 
-		Assert.assertNotNull(membershipJSONObject);
+		Assert.assertNotNull(membership);
 
 		JSONArray membershipsJSONArray = faroInfoElasticsearchInvoker.get(
 			"memberships");
@@ -100,7 +103,7 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 			newMembershipJSONObject, membershipsJSONArray.getJSONObject(0),
 			false);
 
-		_assertIds(membershipJSONObject);
+		Assert.assertNotNull(membership.getId());
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -138,10 +141,11 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddMembershipWithInactiveStatus() throws Exception {
-		JSONObject membershipJSONObject = _membershipDog.addMembership(
-			JSONUtil.put("status", "INACTIVE"));
+		Membership membership = _membershipDog.addMembership(
+			_objectMapper.convertValue(
+				JSONUtil.put("status", "INACTIVE"), Membership.class));
 
-		Assert.assertNotNull(membershipJSONObject);
+		Assert.assertNotNull(membership);
 
 		JSONArray membershipsJSONArray = faroInfoElasticsearchInvoker.get(
 			"memberships");
@@ -152,7 +156,7 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 			JSONUtil.put("status", "INACTIVE"),
 			membershipsJSONArray.getJSONObject(0), false);
 
-		_assertIds(membershipJSONObject);
+		Assert.assertNotNull(membership.getId());
 	}
 
 	@ElasticsearchIndex(
@@ -173,10 +177,10 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testDeactivateMembershipWithIndividuals() throws Exception {
-		Assert.assertNotNull(
-			_membershipDog.deactivateMembership(
-				"2019-02-11T20:26:53.218Z", "338486041327913341",
-				"338511398116723458"));
+		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.218Z");
+
+		_membershipDog.deactivateMembership(
+			deletionDate, 338486041327913341L, 338511398116723458L);
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -255,10 +259,10 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 	public void testDeactivateMembershipWithoutKnownIndividuals()
 		throws Exception {
 
-		Assert.assertNotNull(
-			_membershipDog.deactivateMembership(
-				"2019-02-11T20:26:53.218Z", "338486041327913339",
-				"338511398116723457"));
+		Date deletionDate = DateUtil.toUTCDate("2019-02-11T20:26:53.218Z");
+
+		_membershipDog.deactivateMembership(
+			deletionDate, 338486041327913339L, 338511398116723457L);
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -329,18 +333,12 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testGetIndividualSegmentIndividualIds() {
-		List<String> individualSegmentIndividualIds =
-			_membershipDog.getIndividualSegmentIndividualIds(
-				faroInfoElasticsearchInvoker.get(
-					"individual-segments", "338511398116723458"));
+		List<Long> individualIds = _membershipDog.getActiveIndividualIds(
+			338511398116723458L);
 
-		Assert.assertEquals(
-			individualSegmentIndividualIds.toString(), 2,
-			individualSegmentIndividualIds.size());
-		Assert.assertTrue(
-			individualSegmentIndividualIds.contains("338486037253283140"));
-		Assert.assertTrue(
-			individualSegmentIndividualIds.contains("338486041327913341"));
+		Assert.assertEquals(individualIds.toString(), 2, individualIds.size());
+		Assert.assertTrue(individualIds.contains(338486037253283140L));
+		Assert.assertTrue(individualIds.contains(338486041327913341L));
 	}
 
 	@ElasticsearchIndex(
@@ -349,18 +347,15 @@ public class MembershipDogTest extends BaseFaroInfoDogTestCase {
 	)
 	@Test
 	public void testIsMember() {
-		Assert.assertFalse(
-			_membershipDog.isMember("noIndividualId", "noIndividualSegmentId"));
+		Assert.assertFalse(_membershipDog.isMember(0L, 0L));
 		Assert.assertTrue(
-			_membershipDog.isMember(
-				"338486041327913341", "338511398116723458"));
-	}
-
-	private void _assertIds(JSONObject jsonObject) {
-		Assert.assertTrue(StringUtils.isNotBlank(jsonObject.getString("id")));
+			_membershipDog.isMember(338486041327913341L, 338511398116723458L));
 	}
 
 	@Autowired
 	private MembershipDog _membershipDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

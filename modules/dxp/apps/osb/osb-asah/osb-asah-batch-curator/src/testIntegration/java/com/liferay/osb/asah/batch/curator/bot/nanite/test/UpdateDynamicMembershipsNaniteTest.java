@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
@@ -21,6 +23,7 @@ import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Membership;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -119,12 +122,12 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 				activityGroup2JSONObject, assetJSONObject, "pageUnloaded",
 				new String[] {"viewDuration", "1000"}));
 
-		String individualSegmentId = _updateDynamicMemberships(
+		Long individualSegmentId = _updateDynamicMemberships(
 			"(((activities/ever eq 'Page#pageViewed#" +
 				assetJSONObject.getString("id") + "')))");
 
-		String individual1Id = individual1JSONObject.getString("id");
-		String individual2Id = individual2JSONObject.getString("id");
+		Long individual1Id = individual1JSONObject.getLong("id");
+		Long individual2Id = individual2JSONObject.getLong("id");
 
 		Assert.assertTrue(
 			_membershipDog.isMember(individual1Id, individualSegmentId));
@@ -184,15 +187,17 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		String dayDateString = DateUtil.newDayDateString();
 
-		String individual1Id = individual1JSONObject.getString("id");
-		String individual2Id = individual2JSONObject.getString("id");
+		Long individual1Id = individual1JSONObject.getLong("id");
+		Long individual2Id = individual2JSONObject.getLong("id");
 
 		_addIndividualInterests(
 			dayDateString,
 			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				assetJSONObject, dayDateString, individual1Id, 0.5, 20),
+				assetJSONObject, dayDateString, String.valueOf(individual1Id),
+				0.5, 20),
 			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				assetJSONObject, dayDateString, individual2Id, 0.1, 4));
+				assetJSONObject, dayDateString, String.valueOf(individual2Id),
+				0.1, 4));
 
 		JSONArray keywordsJSONArray = assetJSONObject.getJSONArray("keywords");
 
@@ -214,11 +219,11 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			"type", "nanite"
 		);
 
-		String individualSegmentId = _updateDynamicMemberships(
+		Long individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''" + keyword + "'') and " +
 				"(score eq ''true'')')");
 
-		String individual3Id = individual3JSONObject.getString("id");
+		Long individual3Id = individual3JSONObject.getLong("id");
 
 		Assert.assertTrue(
 			_membershipDog.isMember(individual1Id, individualSegmentId));
@@ -267,15 +272,17 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			FaroInfoTestUtil.buildIndividualJSONObject(
 				"1", dataSourceJSONObject));
 
-		String individual1Id = individual1JSONObject.getString("id");
-		String individual2Id = individual2JSONObject.getString("id");
+		Long individual1Id = individual1JSONObject.getLong("id");
+		Long individual2Id = individual2JSONObject.getLong("id");
 
 		_addIndividualInterests(
 			dayDateString,
 			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				assetJSONObject, dayDateString, individual1Id, 0.5, 20),
+				assetJSONObject, dayDateString, String.valueOf(individual1Id),
+				0.5, 20),
 			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
-				assetJSONObject, dayDateString, individual2Id, 0.1, 4));
+				assetJSONObject, dayDateString, String.valueOf(individual2Id),
+				0.1, 4));
 
 		faroInfoElasticsearchInvoker.add(
 			"OSBAsahMarkers",
@@ -290,7 +297,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			"type", "nanite"
 		);
 
-		String individualSegmentId = _updateDynamicMemberships(
+		Long individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
 				"''false'')')");
 
@@ -338,7 +345,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 				assetJSONObject, dayDateString,
 				individualJSONObject.getString("id"), 0.5, 20));
 
-		String individualSegmentId = _updateDynamicMemberships(
+		Long individualSegmentId = _updateDynamicMemberships(
 			"interests.filter(filter='(name eq ''test'') and (score eq " +
 				"''true'')')");
 
@@ -348,7 +355,8 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 				"memberships",
 				BoolQueryBuilderUtil.filter(
 					QueryBuilders.termQuery(
-						"individualSegmentId", individualSegmentId))));
+						"individualSegmentId",
+						String.valueOf(individualSegmentId)))));
 	}
 
 	@Test
@@ -390,8 +398,8 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		Assert.assertFalse(
 			_membershipDog.isMember(
-				individualJSONObject.getString("id"),
-				individualSegmentJSONObject.getString("id")));
+				individualJSONObject.getLong("id"),
+				individualSegmentJSONObject.getLong("id")));
 
 		JSONObject contextJSONObject = JSONUtil.put(
 			"addQueryBuilder",
@@ -407,8 +415,8 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		Assert.assertTrue(
 			_membershipDog.isMember(
-				individualJSONObject.getString("id"),
-				individualSegmentJSONObject.getString("id")));
+				individualJSONObject.getLong("id"),
+				individualSegmentJSONObject.getLong("id")));
 
 		individualJSONObject = faroInfoElasticsearchInvoker.update(
 			"individuals",
@@ -428,8 +436,8 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		Assert.assertFalse(
 			_membershipDog.isMember(
-				individualJSONObject.getString("id"),
-				individualSegmentJSONObject.getString("id")));
+				individualJSONObject.getLong("id"),
+				individualSegmentJSONObject.getLong("id")));
 	}
 
 	@Test
@@ -454,13 +462,17 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 			false);
 
 		_membershipDog.addMembership(
-			FaroInfoTestUtil.buildMembershipJSONObject(
-				individual1JSONObject.getString("id"),
-				individualSegmentJSONObject.getString("id")));
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildMembershipJSONObject(
+					individual1JSONObject.getString("id"),
+					individualSegmentJSONObject.getString("id")),
+				Membership.class));
 		_membershipDog.addMembership(
-			FaroInfoTestUtil.buildMembershipJSONObject(
-				individual2JSONObject.getString("id"),
-				individualSegmentJSONObject.getString("id")));
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildMembershipJSONObject(
+					individual2JSONObject.getString("id"),
+					individualSegmentJSONObject.getString("id")),
+				Membership.class));
 
 		faroInfoElasticsearchInvoker.add(
 			"OSBAsahTasks",
@@ -472,13 +484,10 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		_updateDynamicMembershipsNanite.run(individualSegmentJSONObject);
 
-		List<String> individualSegmentIndividualIds =
-			_membershipDog.getIndividualSegmentIndividualIds(
-				individualSegmentJSONObject);
+		List<Long> individualIds = _membershipDog.getActiveIndividualIds(
+			individualSegmentJSONObject.getLong("id"));
 
-		Assert.assertEquals(
-			individualSegmentIndividualIds.toString(), 1,
-			individualSegmentIndividualIds.size());
+		Assert.assertEquals(individualIds.toString(), 1, individualIds.size());
 	}
 
 	@Test
@@ -518,8 +527,8 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		Assert.assertFalse(
 			_membershipDog.isMember(
-				individualJSONObject.getString("id"),
-				individualSegmentJSONObject.getString("id")));
+				individualJSONObject.getLong("id"),
+				individualSegmentJSONObject.getLong("id")));
 
 		JSONObject contextJSONObject = JSONUtil.put(
 			"addQueryBuilder",
@@ -534,8 +543,8 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		Assert.assertTrue(
 			_membershipDog.isMember(
-				individualJSONObject.getString("id"),
-				individualSegmentJSONObject.getString("id")));
+				individualJSONObject.getLong("id"),
+				individualSegmentJSONObject.getLong("id")));
 
 		individualJSONObject = faroInfoElasticsearchInvoker.update(
 			"individuals",
@@ -554,8 +563,8 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 		Assert.assertFalse(
 			_membershipDog.isMember(
-				individualJSONObject.getString("id"),
-				individualSegmentJSONObject.getString("id")));
+				individualJSONObject.getLong("id"),
+				individualSegmentJSONObject.getLong("id")));
 	}
 
 	@Test
@@ -672,7 +681,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 		);
 	}
 
-	private String _updateDynamicMemberships(String filter) throws Exception {
+	private Long _updateDynamicMemberships(String filter) throws Exception {
 		JSONObject individualSegmentJSONObject =
 			faroInfoElasticsearchInvoker.add(
 				"individual-segments",
@@ -682,7 +691,7 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 		_updateDynamicMembershipsNanite.run(
 			_getContextJSONObject(individualSegmentJSONObject));
 
-		return individualSegmentJSONObject.getString("id");
+		return individualSegmentJSONObject.getLong("id");
 	}
 
 	@Autowired
@@ -690,6 +699,9 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private MembershipDog _membershipDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private UpdateDynamicMembershipsNanite _updateDynamicMembershipsNanite;

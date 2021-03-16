@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
@@ -60,7 +61,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
 				_dataSourceDog, _elasticsearchInvoker, "account-names",
-				_objectMapper);
+				_membershipDog, _objectMapper);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"346468649722790279");
@@ -97,7 +98,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
 				_dataSourceDog, _elasticsearchInvoker, "accounts",
-				_objectMapper);
+				_membershipDog, _objectMapper);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"346468649722790279");
@@ -121,7 +122,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
 				_dataSourceDog, _elasticsearchInvoker, "data-sources",
-				_objectMapper);
+				_membershipDog, _objectMapper);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"123");
@@ -149,7 +150,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
 				_dataSourceDog, _elasticsearchInvoker, "individual-segments",
-				_objectMapper);
+				_membershipDog, _objectMapper);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"123");
@@ -165,6 +166,9 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private MembershipDog _membershipDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

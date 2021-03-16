@@ -69,8 +69,7 @@ public class DataRetentionNanite extends BaseNanite {
 			"individuals", faroInfoElasticsearchInvoker,
 			individualJSONObject -> {
 				_faroInfoIndividualDog.deleteIndividual(
-					DateUtil.newDateString(),
-					individualJSONObject.getString("id"));
+					new Date(), individualJSONObject.getString("id"));
 
 				return null;
 			}

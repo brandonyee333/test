@@ -28,11 +28,13 @@ import com.liferay.osb.asah.common.model.ActivityGroup;
 import com.liferay.osb.asah.common.model.BlockedKeyword;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.Membership;
 import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -108,6 +110,9 @@ public class AdminRestController extends BaseRestController {
 		else if (collectionName.equals("data-sources")) {
 			_dataSourceRepository.deleteAll();
 		}
+		else if (collectionName.equals("memberships")) {
+			_membershipRepository.deleteAll();
+		}
 		else if (collectionName.equals("preferences")) {
 			_preferenceRepository.deleteAll();
 		}
@@ -173,6 +178,9 @@ public class AdminRestController extends BaseRestController {
 			_addDataSources(new JSONArray(json));
 
 			_nanitesHttp.refreshAnalytics();
+		}
+		else if (collectionName.equals("memberships")) {
+			_addMemberships(new JSONArray(json));
 		}
 		else if (collectionName.equals("preferences")) {
 			_addPreferences(new JSONArray(json));
@@ -253,6 +261,17 @@ public class AdminRestController extends BaseRestController {
 			dataSource.setIsNew(true);
 
 			_dataSourceRepository.save(dataSource);
+		}
+	}
+
+	private void _addMemberships(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			Membership membership = _objectMapper.convertValue(
+				jsonArray.getJSONObject(i), Membership.class);
+
+			membership.setIsNew(true);
+
+			_membershipRepository.save(membership);
 		}
 	}
 
@@ -372,6 +391,9 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+
+	@Autowired
+	private MembershipRepository _membershipRepository;
 
 	private Schema _naniteListSchema;
 

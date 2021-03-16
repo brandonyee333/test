@@ -25,7 +25,9 @@ import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +78,7 @@ public class IndividualsRestController extends BaseRestController {
 				"individuals",
 				new IndividualsEmbeddedJSONObjectCreator(
 					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
-					_objectMapper),
+					_membershipDog, _objectMapper),
 				id);
 		}
 
@@ -107,7 +109,7 @@ public class IndividualsRestController extends BaseRestController {
 			if (StringUtils.isEmpty(expand)) {
 				return toCollectionGetResponse(
 					"individuals", null, page,
-					_membershipDog.buildIndividualsQueryBuilder(
+					_faroInfoIndividualDog.buildIndividualsQueryBuilder(
 						null, filterString, includeAnonymousUsers),
 					size, sorts);
 			}
@@ -116,9 +118,9 @@ public class IndividualsRestController extends BaseRestController {
 				"individuals",
 				new IndividualsEmbeddedJSONObjectCreator(
 					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
-					_objectMapper),
+					_membershipDog, _objectMapper),
 				page,
-				_membershipDog.buildIndividualsQueryBuilder(
+				_faroInfoIndividualDog.buildIndividualsQueryBuilder(
 					null, filterString, includeAnonymousUsers),
 				size, sorts);
 		}
@@ -167,7 +169,7 @@ public class IndividualsRestController extends BaseRestController {
 		if (StringUtils.isEmpty(expand)) {
 			responseJSON = toCollectionGetResponse(
 				"individuals", null, fieldSortBuilders, page,
-				_membershipDog.buildIndividualsQueryBuilder(
+				_faroInfoIndividualDog.buildIndividualsQueryBuilder(
 					channelId, filterString, includeAnonymousUsers),
 				size, newSorts.toArray(new String[0]));
 		}
@@ -176,9 +178,9 @@ public class IndividualsRestController extends BaseRestController {
 				"individuals",
 				new IndividualsEmbeddedJSONObjectCreator(
 					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
-					_objectMapper),
+					_membershipDog, _objectMapper),
 				fieldSortBuilders, page,
-				_membershipDog.buildIndividualsQueryBuilder(
+				_faroInfoIndividualDog.buildIndividualsQueryBuilder(
 					channelId, filterString, includeAnonymousUsers),
 				size, newSorts.toArray(new String[0]));
 		}
@@ -203,26 +205,12 @@ public class IndividualsRestController extends BaseRestController {
 		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
 			filterString);
 
-		List<String> individualSegmentIds = JSONUtil.toStringList(
-			new JSONArray(
-				faroInfoElasticsearchInvoker.get(
-					"memberships",
-					searchSourceBuilder -> {
-						searchSourceBuilder.fetchSource(
-							"individualSegmentId", null);
-						searchSourceBuilder.query(
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery("individualId", id)
-							).filter(
-								QueryBuilders.termQuery("status", "ACTIVE")
-							));
-						searchSourceBuilder.sort(
-							SortBuilderUtil.fieldSort("individualSegmentId"));
-					})),
-			"individualSegmentId");
+		List<Long> individualSegmentIds =
+			_membershipDog.getActiveIndividualSegmentIds(Long.valueOf(id));
 
 		QueryBuilder individualSegmentIdsQueryBuilder =
-			QueryBuilders.termsQuery("id", individualSegmentIds);
+			QueryBuilders.termsQuery(
+				"id", ListUtil.map(individualSegmentIds, String::valueOf));
 
 		if (queryBuilder == null) {
 			queryBuilder = individualSegmentIdsQueryBuilder;
@@ -238,7 +226,8 @@ public class IndividualsRestController extends BaseRestController {
 		return toCollectionGetResponse(
 			"individual-segments",
 			new IndividualsIndividualSegmentsEmbeddedJSONObjectCreator(
-				faroInfoElasticsearchInvoker, expand, id),
+				faroInfoElasticsearchInvoker, expand, id, _membershipDog,
+				_objectMapper),
 			page, queryBuilder, size, sorts);
 	}
 
@@ -256,7 +245,7 @@ public class IndividualsRestController extends BaseRestController {
 
 		return toTransformationGetResponse(
 			"individuals", page,
-			_membershipDog.buildIndividualsQueryBuilder(
+			_faroInfoIndividualDog.buildIndividualsQueryBuilder(
 				channelId, filterString, includeAnonymousUsers),
 			size, null, null,
 			new TermsAggregationTransformationJSONArrayFunction(apply, null),
@@ -326,6 +315,9 @@ public class IndividualsRestController extends BaseRestController {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
+
+	@Autowired
+	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;

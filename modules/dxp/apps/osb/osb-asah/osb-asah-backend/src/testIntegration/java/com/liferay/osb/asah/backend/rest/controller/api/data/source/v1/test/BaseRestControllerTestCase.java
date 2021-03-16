@@ -15,8 +15,7 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import io.restassured.RestAssured;
@@ -27,6 +26,7 @@ import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hamcrest.Matcher;
@@ -44,13 +44,13 @@ public abstract class BaseRestControllerTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		_membershipDog.updateDynamicMemberships(
+		_faroInfoIndividualDog.updateDynamicMemberships(
 			JSONUtil.put(
 				"filter", "(((demographics/age/value gt '50')))"
 			).put(
 				"id", "327968823603500655"
 			),
-			DateUtil.newDateString());
+			new Date());
 	}
 
 	protected ValidatableResponse getValidatableResponse(
@@ -160,7 +160,7 @@ public abstract class BaseRestControllerTestCase {
 	}
 
 	@Autowired
-	private MembershipDog _membershipDog;
+	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@LocalServerPort
 	private int _serverPort;

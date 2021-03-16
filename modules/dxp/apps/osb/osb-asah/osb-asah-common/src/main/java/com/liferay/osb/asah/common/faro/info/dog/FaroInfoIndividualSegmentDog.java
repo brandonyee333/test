@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -30,6 +29,7 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -168,6 +168,13 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		return referencedAssetIds;
 	}
 
+	public boolean isIncludeAnonymousUsers(Long individualSegmentId) {
+		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
+			"individual-segments", String.valueOf(individualSegmentId));
+
+		return individualSegmentJSONObject.optBoolean("includeAnonymousUsers");
+	}
+
 	public JSONObject replaceIndividualSegment(
 			JSONObject individualSegmentJSONObject)
 		throws Exception {
@@ -218,39 +225,35 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	}
 
 	public JSONObject updateIndividualSegment(
-			String individualSegmentId,
+			long individualCount, Long individualSegmentId,
+			long knownIndividualCount)
+		throws Exception {
+
+		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
+			"individual-segments", String.valueOf(individualSegmentId));
+
+		return _updateIndividualSegment(
+			individualSegmentJSONObject,
+			JSONUtil.put(
+				"anonymousIndividualCount",
+				individualCount - knownIndividualCount
+			).put(
+				"individualCount", individualCount
+			).put(
+				"knownIndividualCount", knownIndividualCount
+			));
+	}
+
+	public JSONObject updateIndividualSegment(
+			Long individualSegmentId,
 			JSONObject partialIndividualSegmentJSONObject)
 		throws Exception {
 
 		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
-			"individual-segments", individualSegmentId);
+			"individual-segments", String.valueOf(individualSegmentId));
 
-		_updateAccount(
+		return _updateIndividualSegment(
 			individualSegmentJSONObject, partialIndividualSegmentJSONObject);
-
-		if ((_getModifiedFieldValue(
-				individualSegmentJSONObject, "filter",
-				partialIndividualSegmentJSONObject) == null) &&
-			(_getModifiedFieldValue(
-				individualSegmentJSONObject, "includeAnonymousUsers",
-				partialIndividualSegmentJSONObject) == null)) {
-
-			individualSegmentJSONObject = elasticsearchInvoker.update(
-				"individual-segments", individualSegmentId,
-				partialIndividualSegmentJSONObject);
-		}
-		else {
-			_faroInfoIndividualSegmentDog.setReferencedFields(
-				partialIndividualSegmentJSONObject);
-
-			individualSegmentJSONObject = elasticsearchInvoker.update(
-				"individual-segments", individualSegmentId,
-				_setState(partialIndividualSegmentJSONObject));
-
-			_addOSBAsahTask(individualSegmentJSONObject);
-		}
-
-		return individualSegmentJSONObject;
 	}
 
 	private static String _getAssetId(String[] terms) {
@@ -359,8 +362,8 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 			"individual-segments", elasticsearchInvoker,
 			individualSegmentJSONObject -> {
 				try {
-					updateIndividualSegment(
-						individualSegmentJSONObject.getString("id"),
+					_updateIndividualSegment(
+						individualSegmentJSONObject,
 						JSONUtil.put("state", "DISABLED"));
 				}
 				catch (Exception e) {
@@ -846,6 +849,41 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		}
 	}
 
+	private JSONObject _updateIndividualSegment(
+			JSONObject individualSegmentJSONObject,
+			JSONObject partialIndividualSegmentJSONObject)
+		throws Exception {
+
+		_updateAccount(
+			individualSegmentJSONObject, partialIndividualSegmentJSONObject);
+
+		if ((_getModifiedFieldValue(
+				individualSegmentJSONObject, "filter",
+				partialIndividualSegmentJSONObject) == null) &&
+			(_getModifiedFieldValue(
+				individualSegmentJSONObject, "includeAnonymousUsers",
+				partialIndividualSegmentJSONObject) == null)) {
+
+			individualSegmentJSONObject = elasticsearchInvoker.update(
+				"individual-segments",
+				individualSegmentJSONObject.getString("id"),
+				partialIndividualSegmentJSONObject);
+		}
+		else {
+			_faroInfoIndividualSegmentDog.setReferencedFields(
+				partialIndividualSegmentJSONObject);
+
+			individualSegmentJSONObject = elasticsearchInvoker.update(
+				"individual-segments",
+				individualSegmentJSONObject.getString("id"),
+				_setState(partialIndividualSegmentJSONObject));
+
+			_addOSBAsahTask(individualSegmentJSONObject);
+		}
+
+		return individualSegmentJSONObject;
+	}
+
 	private void _updateMemberships(
 			String channelId, JSONObject individualSegmentJSONObject)
 		throws Exception {
@@ -859,13 +897,12 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 			return;
 		}
 
-		List<String> individualIds =
-			_membershipDog.getIndividualSegmentIndividualIds(
-				individualSegmentJSONObject);
+		List<Long> individualIds = _membershipDog.getActiveIndividualIds(
+			individualSegmentJSONObject.getLong("id"));
 
-		for (String individualId : individualIds) {
+		for (Long individualId : individualIds) {
 			JSONObject individualJSONObject = elasticsearchInvoker.fetch(
-				"individuals", individualId);
+				"individuals", String.valueOf(individualId));
 
 			if (individualJSONObject == null) {
 				continue;
@@ -878,8 +915,8 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				!JSONUtil.hasValue(channelIdsJSONArray, channelId)) {
 
 				_membershipDog.deactivateMembership(
-					DateUtil.newDateString(), individualId,
-					individualSegmentJSONObject.getString("id"));
+					new Date(), individualId,
+					individualSegmentJSONObject.getLong("id"));
 			}
 		}
 	}

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.google.api.client.util.Objects;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -26,6 +27,10 @@ import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
+
+import java.text.ParseException;
+
+import java.util.Date;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -78,7 +83,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	}
 
 	protected void delete(
-			String dataSourceId, String deletionDateString, String emailAddress)
+			String dataSourceId, Date deletionDate, String emailAddress)
 		throws Exception {
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
@@ -99,7 +104,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 			if (individualPKsJSONArray.length() > 0) {
 				_faroInfoIndividualDog.deleteIndividual(
-					deletionDateString, individualJSONObject.getString("id"));
+					deletionDate, individualJSONObject.getString("id"));
 			}
 
 			return;
@@ -118,8 +123,14 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		return null;
 	}
 
-	protected String getAuditEventDate(JSONObject auditEventJSONObject) {
-		return auditEventJSONObject.getString("dateCreated");
+	protected Date getAuditEventDate(JSONObject auditEventJSONObject) {
+		try {
+			return DateUtil.toUTCDate(
+				auditEventJSONObject.getString("dateCreated"));
+		}
+		catch (ParseException pe) {
+			return null;
+		}
 	}
 
 	protected String getAuditEventEmail(JSONObject auditEventJSONObject) {

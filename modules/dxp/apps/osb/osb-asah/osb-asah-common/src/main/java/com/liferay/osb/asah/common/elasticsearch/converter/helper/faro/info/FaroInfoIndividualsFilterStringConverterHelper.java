@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
@@ -22,6 +23,7 @@ import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBu
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -248,14 +250,14 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			queryBuilder
 		).iterate();
 
-		List<String> individualSegmentIds = new ArrayList<>(
+		List<Long> individualSegmentIds = new ArrayList<>(
 			individualSegmentNames.size());
 
 		JSONArrayIterator.of(
 			"individual-segments", _faroInfoElasticsearchInvoker,
 			individualSegmentJSONObject -> {
 				individualSegmentIds.add(
-					individualSegmentJSONObject.getString("id"));
+					individualSegmentJSONObject.getLong("id"));
 
 				return null;
 			}
@@ -267,46 +269,12 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			)
 		).iterate();
 
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			"memberships",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"individualIds"
-					).field(
-						"individualId"
-					).minDocCount(
-						minDocCount
-					).order(
-						BucketOrder.compound(
-							BucketOrder.count(checkEqualityOnly),
-							BucketOrder.key(true))
-					).size(
-						Integer.MAX_VALUE
-					));
-
-				searchSourceBuilder.query(
-					QueryBuilders.termsQuery(
-						"individualSegmentId", individualSegmentIds));
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		Terms terms = aggregations.get("individualIds");
-
-		List<String> individualIds = new ArrayList<>();
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			if (checkEqualityOnly && (bucket.getDocCount() > value)) {
-				break;
-			}
-
-			individualIds.add(bucket.getKeyAsString());
-		}
+		List<Long> individualIds = _membershipDog.getIndividualIds(
+			individualSegmentIds, value, minDocCount, checkEqualityOnly);
 
 		QueryBuilder accountsFilterByCountFunctionQueryBuilder =
-			QueryBuilders.termsQuery("id", individualIds);
+			QueryBuilders.termsQuery(
+				"id", ListUtil.map(individualIds, String::valueOf));
 
 		if (negate) {
 			return BoolQueryBuilderUtil.mustNot(
@@ -983,5 +951,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	@Autowired
 	private FaroInfoSessionsFilterStringConverterHelper
 		_faroInfoSessionsFilterStringConverterHelper;
+
+	@Autowired
+	private MembershipDog _membershipDog;
 
 }

@@ -16,11 +16,13 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.rest.response.NumbersDistributionTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +51,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -442,48 +445,15 @@ public class AccountsRestController extends BaseRestController {
 		return boolQueryBuilder;
 	}
 
-	private List<String> _getIndividualSegmentIds(
-		JSONObject individualSegmentJSONObject) {
-
-		List<String> individualSegmentIds = new ArrayList<>();
-
-		List<String> individualIds = JSONUtil.toStringList(
+	private List<Long> _getIndividualSegmentIds(String individualSegmentId) {
+		List<Long> individualIds = JSONUtil.toLongList(
 			faroInfoElasticsearchInvoker.get(
 				"individuals",
 				QueryBuilders.termQuery(
-					"individualSegmentIds",
-					individualSegmentJSONObject.getString("id"))),
+					"individualSegmentIds", individualSegmentId)),
 			"id");
 
-		SearchResponse searchResponse = faroInfoElasticsearchInvoker.search(
-			"memberships",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"individualSegmentIds"
-					).field(
-						"individualSegmentId"
-					).size(
-						Integer.MAX_VALUE
-					));
-				searchSourceBuilder.query(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termsQuery("individualId", individualIds)
-					).filter(
-						QueryBuilders.termQuery("status", "ACTIVE")
-					));
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		Terms terms = aggregations.get("individualSegmentIds");
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			individualSegmentIds.add(bucket.getKeyAsString());
-		}
-
-		return individualSegmentIds;
+		return _membershipDog.getActiveIndividualSegmentIds(individualIds);
 	}
 
 	private QueryBuilder _getIndividualSegmentsQueryBuilder(
@@ -506,7 +476,11 @@ public class AccountsRestController extends BaseRestController {
 		}
 
 		QueryBuilder queryBuilder = QueryBuilders.termsQuery(
-			"id", _getIndividualSegmentIds(individualSegmentJSONObject));
+			"id",
+			ListUtil.map(
+				_getIndividualSegmentIds(
+					individualSegmentJSONObject.getString("id")),
+				String::valueOf));
 
 		if (StringUtils.isEmpty(filterString)) {
 			return queryBuilder;
@@ -518,5 +492,8 @@ public class AccountsRestController extends BaseRestController {
 			FilterStringToQueryBuilderConverter.convert(filterString)
 		);
 	}
+
+	@Autowired
+	private MembershipDog _membershipDog;
 
 }

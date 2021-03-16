@@ -14,12 +14,13 @@
 
 package com.liferay.osb.asah.backend.rest.response;
 
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,8 +62,10 @@ public class VisitedPagesTransformationJSONArrayFunction
 	implements TransformationJSONArrayFunction {
 
 	public VisitedPagesTransformationJSONArrayFunction(
-		String ownerId, String ownerType, boolean visitedPages) {
+		MembershipDog membershipDog, String ownerId, String ownerType,
+		boolean visitedPages) {
 
+		_membershipDog = membershipDog;
 		_ownerId = ownerId;
 		_ownerType = ownerType;
 		_visitedPages = visitedPages;
@@ -113,27 +116,13 @@ public class VisitedPagesTransformationJSONArrayFunction
 						"id");
 				}
 
-				Set<String> individualIds = new HashSet<>();
-
-				JSONArrayIterator.of(
-					"memberships", elasticsearchInvoker,
-					membershipJSONObject -> {
-						individualIds.add(
-							membershipJSONObject.getString("individualId"));
-
-						return null;
-					}
-				).setQueryBuilder(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(
-							"individualSegmentId", individualSegmentId)
-					).filter(
-						QueryBuilders.termQuery("status", "ACTIVE")
-					)
-				).iterate();
+				List<Long> individualIds =
+					_membershipDog.getActiveIndividualIds(
+						Long.valueOf(individualSegmentId));
 
 				boolQueryBuilder.filter(
-					QueryBuilders.termsQuery("ownerId", individualIds)
+					QueryBuilders.termsQuery(
+						"ownerId", ListUtil.map(individualIds, String::valueOf))
 				).filter(
 					QueryBuilders.termQuery("ownerType", "individual")
 				);
@@ -480,6 +469,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 	private static final Pattern _pattern = Pattern.compile(
 		"\\[(?<title>[^]]+)] \\[(?<url>[^]]+)]");
 
+	private final MembershipDog _membershipDog;
 	private final String _ownerId;
 	private final String _ownerType;
 	private long _totalElements;

@@ -131,7 +131,8 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 
 		if (!individualSegmentJSONObject.has("activitiesCount")) {
 			_faroInfoIndividualSegmentDog.updateIndividualSegment(
-				individualSegmentId, JSONUtil.put("activitiesCount", 0));
+				Long.valueOf(individualSegmentId),
+				JSONUtil.put("activitiesCount", 0));
 		}
 
 		boolean includeAnonymousUsers = individualSegmentJSONObject.optBoolean(

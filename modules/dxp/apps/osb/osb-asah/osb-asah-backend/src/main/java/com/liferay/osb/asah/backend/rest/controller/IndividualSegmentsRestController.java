@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
@@ -24,6 +23,7 @@ import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.PutResponse;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,11 +71,10 @@ public class IndividualSegmentsRestController
 
 	@DeleteMapping("/{id}/memberships/{individualId}")
 	public void deleteIndividual(
-			@PathVariable String id, @PathVariable String individualId)
+			@PathVariable Long id, @PathVariable Long individualId)
 		throws Exception {
 
-		_membershipDog.deactivateMembership(
-			DateUtil.newDateString(), individualId, id);
+		_membershipDog.deactivateMembership(new Date(), individualId, id);
 	}
 
 	@DeleteMapping("/{id}")
@@ -132,7 +131,7 @@ public class IndividualSegmentsRestController
 
 	@PutMapping("/{id}")
 	public String putIndividualSegment(
-			@PathVariable String id, @RequestBody String json)
+			@PathVariable Long id, @RequestBody String json)
 		throws Exception {
 
 		PutResponse putResponse = new PutResponse() {

@@ -14,20 +14,21 @@
 
 package com.liferay.osb.asah.backend.rest.response.embedded;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Membership;
 import com.liferay.osb.asah.common.rest.response.embedded.BaseEmbeddedJSONObjectCreator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,11 +41,14 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreator
 
 	public IndividualsIndividualSegmentsEmbeddedJSONObjectCreator(
 		ElasticsearchInvoker elasticsearchInvoker, String expand,
-		String individualId) {
+		String individualId, MembershipDog membershipDog,
+		ObjectMapper objectMapper) {
 
 		_elasticsearchInvoker = elasticsearchInvoker;
 		_expand = expand;
 		_individualId = individualId;
+		_membershipDog = membershipDog;
+		_objectMapper = objectMapper;
 	}
 
 	@Override
@@ -77,29 +81,18 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreator
 
 		Map<String, JSONObject> membershipJSONObjects = new HashMap<>();
 
-		Set<String> individualSegmentIds = JSONUtil.toStringSet(
+		List<Long> individualSegmentIds = JSONUtil.toLongList(
 			individualSegmentsJSONArray, "id");
 
-		JSONArray membershipsJSONArray = _elasticsearchInvoker.get(
-			"memberships",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("individualId", _individualId)
-			).filter(
-				QueryBuilders.termsQuery(
-					"individualSegmentId", individualSegmentIds)
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			));
+		List<Membership> memberships = _membershipDog.getActiveMemberships(
+			Long.valueOf(_individualId), individualSegmentIds);
 
 		Map<String, JSONObject> individualSegmentJSONObjects = new HashMap<>();
 
-		for (int i = 0; i < membershipsJSONArray.length(); i++) {
-			JSONObject membershipJSONObject =
-				membershipsJSONArray.getJSONObject(i);
-
+		for (Membership membership : memberships) {
 			individualSegmentJSONObjects.put(
-				membershipJSONObject.getString("individualSegmentId"),
-				membershipJSONObject);
+				String.valueOf(membership.getIndividualSegmentId()),
+				_objectMapper.convertValue(membership, JSONObject.class));
 		}
 
 		for (int i = 0; i < individualSegmentsJSONArray.length(); i++) {
@@ -138,5 +131,7 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreator
 	private final ElasticsearchInvoker _elasticsearchInvoker;
 	private final String _expand;
 	private final String _individualId;
+	private final MembershipDog _membershipDog;
+	private final ObjectMapper _objectMapper;
 
 }

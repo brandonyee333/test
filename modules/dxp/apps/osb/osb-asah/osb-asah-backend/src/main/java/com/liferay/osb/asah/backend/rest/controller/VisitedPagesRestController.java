@@ -15,10 +15,12 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.rest.response.VisitedPagesTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,8 +55,11 @@ public class VisitedPagesRestController extends BaseRestController {
 			FilterStringToQueryBuilderConverter.convert(filterString), size,
 			Collections.singletonMap("title", "name"), sorts,
 			new VisitedPagesTransformationJSONArrayFunction(
-				ownerId, ownerType, visitedPages),
+				_membershipDog, ownerId, ownerType, visitedPages),
 			"visited-pages-transformation");
 	}
+
+	@Autowired
+	private MembershipDog _membershipDog;
 
 }

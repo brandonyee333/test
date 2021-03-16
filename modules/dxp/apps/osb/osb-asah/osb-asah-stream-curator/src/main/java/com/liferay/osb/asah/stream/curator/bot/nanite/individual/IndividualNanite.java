@@ -36,6 +36,7 @@ import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import io.prometheus.client.Counter;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -234,8 +235,7 @@ public class IndividualNanite implements Nanite {
 			knownIndividualJSONObject, false);
 
 		_faroInfoIndividualDog.deleteIndividual(
-			DateUtil.newDateString(),
-			anonymousIndividualJSONObject.getString("id"));
+			new Date(), anonymousIndividualJSONObject.getString("id"));
 	}
 
 	private void _updateActivitiesAndActivityGroups(

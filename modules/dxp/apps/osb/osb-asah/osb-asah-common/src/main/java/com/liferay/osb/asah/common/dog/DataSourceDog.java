@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
@@ -394,8 +393,7 @@ public class DataSourceDog {
 
 					if (dataSourceIndividualPKsJSONArray.length() == 1) {
 						_faroInfoIndividualDog.deleteIndividual(
-							DateUtil.toUTCString(deletionDate),
-							individualJSONObject.getString("id"));
+							deletionDate, individualJSONObject.getString("id"));
 					}
 					else {
 						_faroInfoIndividualDog.removeDataSourceIndividualPKs(

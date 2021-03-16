@@ -1017,7 +1017,7 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 
 		individualSegmentJSONObject =
 			_faroInfoIndividualSegmentDog.updateIndividualSegment(
-				individualSegmentJSONObject.getString("id"),
+				individualSegmentJSONObject.getLong("id"),
 				JSONUtil.put("filter", updateFilter));
 
 		_assertSameContents(

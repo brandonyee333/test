@@ -207,12 +207,10 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 		_updateDynamicMembershipsNanite.run(
 			_getContextJSONObject(individualSegment2JSONObject));
 
-		String individualSegment1Id = individualSegment1JSONObject.getString(
-			"id");
-		String individualSegment2Id = individualSegment2JSONObject.getString(
-			"id");
+		Long individualSegment1Id = individualSegment1JSONObject.getLong("id");
+		Long individualSegment2Id = individualSegment2JSONObject.getLong("id");
 
-		String individualId = _individualJSONObject.getString("id");
+		Long individualId = _individualJSONObject.getLong("id");
 
 		Assert.assertTrue(
 			_membershipDog.isMember(individualId, individualSegment1Id));

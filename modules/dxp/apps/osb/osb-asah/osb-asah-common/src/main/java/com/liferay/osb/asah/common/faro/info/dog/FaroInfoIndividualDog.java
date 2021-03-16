@@ -361,7 +361,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			QueryBuilders.existsQuery("demographics.email"));
 	}
 
-	public void deleteIndividual(String deletionDateString, String individualId)
+	public void deleteIndividual(Date deletionDate, String individualId)
 		throws Exception {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
@@ -376,22 +376,8 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 		elasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
-		JSONArray activeMembershipsJSONArray = elasticsearchInvoker.get(
-			"memberships",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("individualId", individualId)
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			));
-
-		for (int i = 0; i < activeMembershipsJSONArray.length(); i++) {
-			JSONObject activeMembershipJSONObject =
-				activeMembershipsJSONArray.getJSONObject(i);
-
-			_membershipDog.deactivateMembership(
-				deletionDateString, individualId,
-				activeMembershipJSONObject.getString("individualSegmentId"));
-		}
+		_membershipDog.deactivateMemberships(
+			deletionDate, Long.valueOf(individualId));
 
 		elasticsearchInvoker.updateByQueryWithRetry(
 			QueryBuilders.termQuery("individualId", individualId), true,
@@ -777,7 +763,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		}
 
 		if (demographicsJSONObject.optJSONArray("email") == null) {
-			deleteIndividual(DateUtil.newDateString(), individualId);
+			deleteIndividual(new Date(), individualId);
 
 			return null;
 		}
