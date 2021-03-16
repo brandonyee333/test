@@ -22,6 +22,8 @@ import com.maxmind.geoip.regionName;
  */
 public class IPInfo {
 
+	public static final IPInfo LOCAL_NETWORK = new IPInfo("Local Network");
+
 	public IPInfo(Location location) {
 		_city = location.city;
 		_country = location.countryName;
@@ -39,6 +41,12 @@ public class IPInfo {
 
 	public String getRegion() {
 		return _region;
+	}
+
+	private IPInfo(String location) {
+		_city = location;
+		_country = location;
+		_region = location;
 	}
 
 	private final String _city;

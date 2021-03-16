@@ -25,6 +25,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import java.util.zip.GZIPInputStream;
 
 import javax.annotation.PostConstruct;
@@ -52,6 +55,19 @@ public class IPGeocoder {
 
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("Unable to get IP info for " + ipAddress);
+		}
+
+		try {
+			InetAddress inetAddress = InetAddress.getByName(ipAddress);
+
+			if (inetAddress.isLoopbackAddress() ||
+				inetAddress.isSiteLocalAddress()) {
+
+				return IPInfo.LOCAL_NETWORK;
+			}
+		}
+		catch (UnknownHostException e) {
+			return null;
 		}
 
 		return null;
