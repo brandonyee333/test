@@ -14,24 +14,28 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipChangeDog;
-import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Membership;
+import com.liferay.osb.asah.common.repository.MembershipRepository;
+import com.liferay.osb.asah.common.util.ListUtil;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.apache.commons.lang3.ArrayUtils;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -41,240 +45,297 @@ import org.springframework.stereotype.Component;
 @Component
 public class MembershipDog extends BaseFaroInfoDog {
 
-	public JSONObject addMembership(JSONObject membershipJSONObject)
+	public Membership addMembership(
+			Date createDate, Long individualId, Long individualSegmentId,
+			Date modifiedDate, String status)
 		throws Exception {
 
-		membershipJSONObject = elasticsearchInvoker.add(
-			"memberships", membershipJSONObject);
+		Membership membership = new Membership();
 
-		String status = membershipJSONObject.getString("status");
+		membership.setCreateDate(createDate);
+		membership.setIndividualId(individualId);
+		membership.setIndividualSegmentId(individualSegmentId);
+		membership.setModifiedDate(createDate);
+		membership.setStatus(status);
+
+		return addMembership(membership);
+	}
+
+	public Membership addMembership(Membership membership) throws Exception {
+		membership = _membershipRepository.save(membership);
+
+		String status = membership.getStatus();
 
 		if (!status.equals("ACTIVE")) {
-			return membershipJSONObject;
+			return membership;
 		}
 
-		JSONObject individualJSONObject = elasticsearchInvoker.fetch(
-			"individuals", membershipJSONObject.getString("individualId"));
+		JSONObject individualJSONObject =
+			_faroInfoIndividualDog.addIndividualSegmentId(
+				membership.getIndividualId(),
+				membership.getIndividualSegmentId());
 
 		if (individualJSONObject == null) {
 			return null;
 		}
 
-		String individualSegmentId = membershipJSONObject.getString(
-			"individualSegmentId");
-
-		_faroInfoIndividualDog.addIndividualSegmentId(
-			individualJSONObject, individualSegmentId);
-
-		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
-			"individual-segments", individualSegmentId);
-
 		long knownIndividualCount =
-			_faroInfoIndividualDog.getKnownIndividualCount(individualSegmentId);
+			_faroInfoIndividualDog.getKnownIndividualCount(
+				membership.getIndividualSegmentId());
 
 		long individualCount = 0;
 
-		if (individualSegmentJSONObject.optBoolean("includeAnonymousUsers")) {
-			individualCount = _getIndividualCount(individualSegmentId);
+		if (_faroInfoIndividualSegmentDog.isIncludeAnonymousUsers(
+				membership.getIndividualSegmentId())) {
+
+			individualCount = _getIndividualCount(
+				membership.getIndividualSegmentId());
 		}
 		else {
 			individualCount = knownIndividualCount;
 		}
 
-		_updateIndividualSegment(
-			individualCount, individualSegmentId, knownIndividualCount);
+		_faroInfoIndividualSegmentDog.updateIndividualSegment(
+			individualCount, membership.getIndividualSegmentId(),
+			knownIndividualCount);
 
 		_faroInfoMembershipChangeDog.addMembershipChange(
-			membershipJSONObject, individualJSONObject, individualCount,
+			membership, individualJSONObject, individualCount,
 			knownIndividualCount, "ADDED");
 
-		return membershipJSONObject;
+		return membership;
 	}
 
-	public JSONArray addMemberships(JSONArray membershipsJSONArray)
+	public List<Membership> addMemberships(List<Membership> memberships)
 		throws Exception {
 
-		boolean succeeded = elasticsearchInvoker.add(
-			"memberships", membershipsJSONArray);
-
-		if (!succeeded) {
-			throw new Exception(
-				"Unable to add memberships " + membershipsJSONArray);
+		if (memberships.isEmpty()) {
+			return memberships;
 		}
 
-		if (membershipsJSONArray.length() == 0) {
-			return membershipsJSONArray;
-		}
+		_membershipRepository.saveAll(memberships);
 
-		JSONObject membershipJSONObject = membershipsJSONArray.getJSONObject(0);
-
-		String individualSegmentId = membershipJSONObject.getString(
-			"individualSegmentId");
+		Membership membership = memberships.get(0);
 
 		_faroInfoIndividualDog.addIndividualSegmentIds(
-			JSONUtil.toStringList(membershipsJSONArray, "individualId"),
-			individualSegmentId);
+			ListUtil.map(memberships, Membership::getIndividualId),
+			membership.getIndividualSegmentId());
 
-		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
-			"individual-segments", individualSegmentId);
-
-		boolean includeAnonymousUsers = individualSegmentJSONObject.optBoolean(
-			"includeAnonymousUsers");
+		boolean includeAnonymousUsers =
+			_faroInfoIndividualSegmentDog.isIncludeAnonymousUsers(
+				membership.getIndividualSegmentId());
 
 		long knownIndividualCount =
-			_faroInfoIndividualDog.getKnownIndividualCount(individualSegmentId);
+			_faroInfoIndividualDog.getKnownIndividualCount(
+				membership.getIndividualSegmentId());
 
 		long individualCount = 0;
 
 		if (includeAnonymousUsers) {
-			individualCount = _getIndividualCount(individualSegmentId);
+			individualCount = _getIndividualCount(
+				membership.getIndividualSegmentId());
 		}
 		else {
 			individualCount = knownIndividualCount;
 		}
 
-		_updateIndividualSegment(
-			individualCount, individualSegmentId, knownIndividualCount);
+		_faroInfoIndividualSegmentDog.updateIndividualSegment(
+			individualCount, membership.getIndividualSegmentId(),
+			knownIndividualCount);
 
-		_addMembershipChanges(
-			membershipsJSONArray, includeAnonymousUsers,
-			individualCount - membershipsJSONArray.length(),
+		_faroInfoMembershipChangeDog.addMembershipChanges(
+			memberships, includeAnonymousUsers,
+			individualCount - memberships.size(),
 			knownIndividualCount -
 				_faroInfoIndividualDog.getKnownIndividualCount(
-					membershipsJSONArray));
+					ListUtil.map(memberships, Membership::getIndividualId)));
 
-		return membershipsJSONArray;
+		return memberships;
 	}
 
-	public JSONObject deactivateMembership(
-			String dateString, String individualId, String individualSegmentId)
+	public void deactivateMembership(
+			Date deletionDate, Long individualId, Long individualSegmentId)
 		throws Exception {
 
-		JSONObject membershipJSONObject = elasticsearchInvoker.fetch(
-			"memberships",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("individualId", individualId)
-			).filter(
-				QueryBuilders.termQuery(
-					"individualSegmentId", individualSegmentId)
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			));
+		deactivateMembership(
+			deletionDate,
+			_membershipRepository.
+				findByIndividualIdAndIndividualSegmentIdAndStatus(
+					individualId, individualSegmentId, "ACTIVE"));
+	}
 
-		if (membershipJSONObject == null) {
-			return null;
+	public void deactivateMembership(Date deletionDate, Membership membership)
+		throws Exception {
+
+		if (membership == null) {
+			return;
 		}
 
-		membershipJSONObject = elasticsearchInvoker.update(
-			"memberships", membershipJSONObject.getString("id"),
-			JSONUtil.put(
-				"dateModified", dateString
-			).put(
-				"dateRemoved", dateString
-			).put(
-				"status", "INACTIVE"
-			));
+		membership.setModifiedDate(deletionDate);
+		membership.setRemovedDate(deletionDate);
+		membership.setStatus("INACTIVE");
 
-		JSONObject individualJSONObject = elasticsearchInvoker.fetch(
-			"individuals", individualId);
+		membership = _membershipRepository.save(membership);
 
-		if (individualJSONObject != null) {
+		JSONObject individualJSONObject =
 			_faroInfoIndividualDog.removeIndividualSegmentId(
-				individualJSONObject, individualSegmentId);
-		}
+				membership.getIndividualId(),
+				membership.getIndividualSegmentId());
+
+		boolean includeAnonymousUsers =
+			_faroInfoIndividualSegmentDog.isIncludeAnonymousUsers(
+				membership.getIndividualSegmentId());
+
+		long knownIndividualCount =
+			_faroInfoIndividualDog.getKnownIndividualCount(
+				membership.getIndividualSegmentId());
 
 		long individualCount = 0;
-		long knownIndividualCount = 0;
 
-		JSONObject individualSegmentJSONObject = elasticsearchInvoker.fetch(
-			"individual-segments", individualSegmentId);
-
-		if (individualSegmentJSONObject != null) {
-			knownIndividualCount = _faroInfoIndividualDog.getKnownIndividualCount(
-				individualSegmentId);
-
-			if (individualSegmentJSONObject.optBoolean(
-					"includeAnonymousUsers")) {
-
-				individualCount = _getIndividualCount(individualSegmentId);
-			}
-			else {
-				individualCount = knownIndividualCount;
-			}
-
-			_updateIndividualSegment(
-				individualCount, individualSegmentId, knownIndividualCount);
+		if (includeAnonymousUsers) {
+			individualCount = _getIndividualCount(
+				membership.getIndividualSegmentId());
+		}
+		else {
+			individualCount = knownIndividualCount;
 		}
 
+		_faroInfoIndividualSegmentDog.updateIndividualSegment(
+			individualCount, membership.getIndividualSegmentId(),
+			knownIndividualCount);
+
 		if (individualJSONObject == null) {
-			_faroInfoMembershipChangeDog.addMembershipChangeForDeletedIndividual(
-				membershipJSONObject, individualId, individualCount,
-				knownIndividualCount);
+			_faroInfoMembershipChangeDog.
+				addMembershipChangeForDeletedIndividual(
+					membership, membership.getIndividualId(), individualCount,
+					knownIndividualCount);
 		}
 		else {
 			_faroInfoMembershipChangeDog.addMembershipChange(
-				membershipJSONObject, individualJSONObject, individualCount,
+				membership, individualJSONObject, individualCount,
 				knownIndividualCount, "REMOVED");
 		}
-
-		return membershipJSONObject;
 	}
 
-	public List<String> getIndividualSegmentIndividualIds(
-		JSONObject individualSegmentJSONObject) {
-
-		JSONArray membershipsJSONArray = elasticsearchInvoker.get(
-			"memberships",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery(
-					"individualSegmentId",
-					individualSegmentJSONObject.getString("id"))
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			));
-
-		return JSONUtil.toStringList(membershipsJSONArray, "individualId");
-	}
-
-	public boolean isMember(String individualId, String individualSegmentId) {
-		return elasticsearchInvoker.exists(
-			"memberships",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("individualId", individualId)
-			).filter(
-				QueryBuilders.termQuery(
-					"individualSegmentId", individualSegmentId)
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			));
-	}
-
-	private long _getIndividualCount(String individualSegmentId) {
-		return elasticsearchInvoker.count(
-			"memberships",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery(
-					"individualSegmentId", individualSegmentId)
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			));
-	}
-
-	private void _updateIndividualSegment(
-			long individualCount, String individualSegmentId,
-			long knownIndividualCount)
+	public void deactivateMemberships(Date deletionDate, Long individualId)
 		throws Exception {
 
-		_faroInfoIndividualSegmentDog.updateIndividualSegment(
-			individualSegmentId,
-			JSONUtil.put(
-				"anonymousIndividualCount",
-				individualCount - knownIndividualCount
-			).put(
-				"individualCount", individualCount
-			).put(
-				"knownIndividualCount", knownIndividualCount
-			));
+		for (Membership membership :
+				_membershipRepository.findByIndividualIdAndStatus(
+					individualId, "ACTIVE")) {
+
+			deactivateMembership(deletionDate, membership);
+		}
+	}
+
+	public void deleteMembership(Long individualSegmentId) {
+		_membershipRepository.deleteByIndividualSegmentId(individualSegmentId);
+	}
+
+	public List<Long> getActiveIndividualIds(Long individualSegmentId) {
+		return _membershipRepository.
+			findIndividualIdByIndividualSegmentIdAndStatus(
+				individualSegmentId, "ACTIVE");
+	}
+
+	public List<Long> getActiveIndividualSegmentIds(List<Long> individualIds) {
+		return _membershipRepository.
+			findIndividualSegmentIdByIndividualIdInAndStatus(
+				individualIds, "ACTIVE");
+	}
+
+	public List<Long> getActiveIndividualSegmentIds(Long individualId) {
+		return _membershipRepository.
+			findIndividualSegmentIdByIndividualIdAndStatus(
+				individualId, "ACTIVE");
+	}
+
+	public List<Membership> getActiveMemberships(
+		Long individualId, List<Long> individualSegmentIds) {
+
+		return _membershipRepository.
+			findByIndividualIdAndIndividualSegmentIdInAndStatus(
+				individualId, individualSegmentIds, "ACTIVE");
+	}
+
+	public List<Long> getIndividualIds(
+		List<Long> individualSegmentIds, int max, int min, boolean ascending) {
+
+		return _membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+			individualSegmentIds, max, min, ascending);
+	}
+
+	public List<Long> getIndividualSegmentIds(Long individualId) {
+		return _membershipRepository.findTop20IndividualSegmentIdByIndividualId(
+			individualId);
+	}
+
+	public Page<Membership> getMemberships(
+		List<Long> individualIds, Long individualSegmentId, String status,
+		int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_membershipRepository.
+				findByIndividualIdInAndIndividualSegmentIdAndStatus(
+					individualIds, individualSegmentId, status, pageRequest),
+			pageRequest,
+			() ->
+				_membershipRepository.
+					countByIndividualIdInAndIndividualSegmentIdAndStatus(
+						individualIds, individualSegmentId, status));
+	}
+
+	public List<Membership> getMemberships(
+		Long individualSegmentId, String status) {
+
+		return _membershipRepository.findByIndividualSegmentIdAndStatus(
+			individualSegmentId, status);
+	}
+
+	public Page<Membership> getMemberships(
+		Long individualSegmentId, String status, int page, int size,
+		String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_membershipRepository.findByIndividualSegmentIdAndStatus(
+				individualSegmentId, status, pageRequest),
+			pageRequest,
+			() -> _membershipRepository.countByIndividualSegmentIdAndStatus(
+				individualSegmentId, status));
+	}
+
+	public boolean isMember(Long individualId, Long individualSegmentId) {
+		return _membershipRepository.
+			existsByIndividualIdAndIndividualSegmentIdAndStatus(
+				individualId, individualSegmentId, "ACTIVE");
+	}
+
+	private long _getIndividualCount(Long individualSegmentId) {
+		return _membershipRepository.countByIndividualSegmentIdAndStatus(
+			individualSegmentId, "ACTIVE");
+	}
+
+	private Sort _getSort(String[] sorts) {
+		if (ArrayUtils.isEmpty(sorts)) {
+			return Sort.by(Sort.Order.desc("id"));
+		}
+
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (int i = 0; i < (sorts.length - 1); i = i + 2) {
+			if (Objects.equals(sorts[i + 1], "asc")) {
+				orders.add(Sort.Order.asc(sorts[i]));
+			}
+			else {
+				orders.add(Sort.Order.desc(sorts[i]));
+			}
+		}
+
+		return Sort.by(orders);
 	}
 
 	@Autowired
@@ -285,4 +346,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoMembershipChangeDog _faroInfoMembershipChangeDog;
+
+	@Autowired
+	private MembershipRepository _membershipRepository;
+
 }
