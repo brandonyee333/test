@@ -27,6 +27,10 @@ import com.liferay.osb.asah.common.date.DateUtil;
 
 import java.io.IOException;
 
+import java.text.ParseException;
+
+import java.time.LocalDateTime;
+
 import java.util.Date;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -106,8 +110,13 @@ public abstract class Mapper<S, T> {
 		try {
 			return DateUtil.toUTCDate(dateString);
 		}
-		catch (Exception exception) {
-			_log.error(exception);
+		catch (ParseException parseException) {
+			try {
+				return DateUtil.toUTCDate(LocalDateTime.parse(dateString));
+			}
+			catch (Exception exception) {
+				_log.error(exception);
+			}
 		}
 
 		return null;
