@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.IOException;
 
+import java.util.List;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -39,6 +41,11 @@ import org.osgi.service.component.annotations.Reference;
 	service = LegacyZendeskEventMessageBroker.class
 )
 public class LegacyZendeskEventMessageBroker extends BaseMessageBroker {
+
+	@Override
+	public void publish(String topic, List<Message> messages)
+		throws IOException {
+	}
 
 	@Override
 	public void publish(String topic, Message message) throws IOException {

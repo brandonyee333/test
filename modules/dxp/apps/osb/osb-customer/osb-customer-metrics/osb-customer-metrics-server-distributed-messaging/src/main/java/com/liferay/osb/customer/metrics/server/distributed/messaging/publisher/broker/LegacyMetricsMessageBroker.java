@@ -15,8 +15,13 @@
 package com.liferay.osb.customer.metrics.server.distributed.messaging.publisher.broker;
 
 import com.liferay.osb.customer.metrics.server.distributed.messaging.rabbitmq.connector.LegacyConnection;
+import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.rabbitmq.connector.Connection;
 import com.liferay.osb.distributed.messaging.rabbitmq.connector.broker.BaseMessageBroker;
+
+import java.io.IOException;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -32,6 +37,11 @@ import org.osgi.service.component.annotations.Reference;
 	service = LegacyMetricsMessageBroker.class
 )
 public class LegacyMetricsMessageBroker extends BaseMessageBroker {
+
+	@Override
+	public void publish(String topic, List<Message> messages)
+		throws IOException {
+	}
 
 	@Override
 	protected Connection getConnection() {
