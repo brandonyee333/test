@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipChangeDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -83,7 +84,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 		_updateIndividualSegment(
 			individualCount, individualSegmentId, knownIndividualCount);
 
-		_addMembershipChange(
+		_faroInfoMembershipChangeDog.addMembershipChange(
 			membershipJSONObject, individualJSONObject, individualCount,
 			knownIndividualCount, "ADDED");
 
@@ -206,12 +207,12 @@ public class MembershipDog extends BaseFaroInfoDog {
 		}
 
 		if (individualJSONObject == null) {
-			_addMembershipChangeForDeletedIndividual(
+			_faroInfoMembershipChangeDog.addMembershipChangeForDeletedIndividual(
 				membershipJSONObject, individualId, individualCount,
 				knownIndividualCount);
 		}
 		else {
-			_addMembershipChange(
+			_faroInfoMembershipChangeDog.addMembershipChange(
 				membershipJSONObject, individualJSONObject, individualCount,
 				knownIndividualCount, "REMOVED");
 		}
@@ -248,158 +249,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 			));
 	}
 
-	private void _addMembershipChange(
-		JSONObject membershipJSONObject, JSONObject individualJSONObject,
-		long individualsCount, long knownIndividualsCount, String operation) {
-
-		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
-			"demographics");
-
-		elasticsearchInvoker.add(
-			"membership-changes",
-			JSONUtil.put(
-				"dateChanged", membershipJSONObject.getString("dateModified")
-			).put(
-				"dateFirst", membershipJSONObject.getString("dateCreated")
-			).put(
-				"individualDeleted", false
-			).put(
-				"individualEmail",
-				FaroInfoIndividualUtil.getIndividualEmail(
-					demographicsJSONObject)
-			).put(
-				"individualId", membershipJSONObject.getString("individualId")
-			).put(
-				"individualName",
-				FaroInfoIndividualUtil.getIndividualName(demographicsJSONObject)
-			).put(
-				"individualsCount", individualsCount
-			).put(
-				"individualSegmentId",
-				membershipJSONObject.getString("individualSegmentId")
-			).put(
-				"knownIndividualsCount", knownIndividualsCount
-			).put(
-				"operation", operation
-			));
-	}
-
-	private void _addMembershipChangeForDeletedIndividual(
-		JSONObject membershipJSONObject, String individualId,
-		long individualsCount, long knownIndividualsCount) {
-
-		String individualEmail = null;
-		String individualName = null;
-
-		JSONArray membershipChangesJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
-				"membership-changes",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						QueryBuilders.termQuery("individualId", individualId));
-					searchSourceBuilder.size(1);
-				}));
-
-		if (membershipChangesJSONArray.length() > 0) {
-			JSONObject membershipChangeJSONObject =
-				membershipChangesJSONArray.getJSONObject(0);
-
-			individualEmail = membershipChangeJSONObject.optString(
-				"individualEmail", null);
-			individualName = membershipChangeJSONObject.optString(
-				"individualName", null);
-		}
-
-		elasticsearchInvoker.add(
-			"membership-changes",
-			JSONUtil.put(
-				"dateChanged", membershipJSONObject.getString("dateModified")
-			).put(
-				"dateFirst", membershipJSONObject.getString("dateCreated")
-			).put(
-				"individualDeleted", true
-			).put(
-				"individualEmail", individualEmail
-			).put(
-				"individualId", individualId
-			).put(
-				"individualName", individualName
-			).put(
-				"individualsCount", individualsCount
-			).put(
-				"individualSegmentId",
-				membershipJSONObject.getString("individualSegmentId")
-			).put(
-				"knownIndividualsCount", knownIndividualsCount
-			).put(
-				"operation", "REMOVED"
-			));
-	}
-
-	private void _addMembershipChanges(
-		JSONArray membershipsJSONArray, boolean includeAnonymousUsers,
-		long individualsCount, long knownIndividualsCount) {
-
-		JSONArray membershipChangesJSONArray = new JSONArray();
-
-		for (int i = 0; i < membershipsJSONArray.length(); i++) {
-			JSONObject membershipJSONObject =
-				membershipsJSONArray.getJSONObject(i);
-
-			String individualId = membershipJSONObject.getString(
-				"individualId");
-
-			JSONObject individualJSONObject = elasticsearchInvoker.get(
-				"individuals", individualId);
-
-			JSONObject demographicsJSONObject =
-				individualJSONObject.optJSONObject("demographics");
-
-			String individualEmail = FaroInfoIndividualUtil.getIndividualEmail(
-				demographicsJSONObject);
-
-			if (individualEmail != null) {
-				knownIndividualsCount++;
-			}
-
-			if (includeAnonymousUsers ||
-				(!includeAnonymousUsers && (individualEmail != null))) {
-
-				individualsCount++;
-			}
-
-			membershipChangesJSONArray.put(
-				JSONUtil.put(
-					"dateChanged",
-					membershipJSONObject.getString("dateModified")
-				).put(
-					"dateFirst", membershipJSONObject.getString("dateCreated")
-				).put(
-					"individualDeleted", false
-				).put(
-					"individualEmail", individualEmail
-				).put(
-					"individualId", individualId
-				).put(
-					"individualName",
-					FaroInfoIndividualUtil.getIndividualName(
-						demographicsJSONObject)
-				).put(
-					"individualsCount", individualsCount
-				).put(
-					"individualSegmentId",
-					membershipJSONObject.getString("individualSegmentId")
-				).put(
-					"knownIndividualsCount", knownIndividualsCount
-				).put(
-					"operation", "ADDED"
-				));
-		}
-
-		elasticsearchInvoker.add(
-			"membership-changes", membershipChangesJSONArray);
-	}
-
 	private long _getIndividualCount(String individualSegmentId) {
 		return elasticsearchInvoker.count(
 			"memberships",
@@ -433,4 +282,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+
+	@Autowired
+	private FaroInfoMembershipChangeDog _faroInfoMembershipChangeDog;
 }
