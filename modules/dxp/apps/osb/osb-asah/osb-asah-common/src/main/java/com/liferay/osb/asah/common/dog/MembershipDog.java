@@ -15,19 +15,12 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
 
-import io.prometheus.client.Counter;
-import io.prometheus.client.Gauge;
-
-import java.util.Iterator;
 import java.util.List;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -69,13 +62,14 @@ public class MembershipDog extends BaseFaroInfoDog {
 		String individualSegmentId = membershipJSONObject.getString(
 			"individualSegmentId");
 
-		_addIndividualSegmentId(individualJSONObject, individualSegmentId);
+		_faroInfoIndividualDog.addIndividualSegmentId(
+			individualJSONObject, individualSegmentId);
 
 		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
 			"individual-segments", individualSegmentId);
 
-		long knownIndividualCount = _getKnownIndividualCount(
-			individualSegmentId);
+		long knownIndividualCount =
+			_faroInfoIndividualDog.getKnownIndividualCount(individualSegmentId);
 
 		long individualCount = 0;
 
@@ -116,7 +110,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 		String individualSegmentId = membershipJSONObject.getString(
 			"individualSegmentId");
 
-		_addIndividualSegmentIds(
+		_faroInfoIndividualDog.addIndividualSegmentIds(
 			JSONUtil.toStringList(membershipsJSONArray, "individualId"),
 			individualSegmentId);
 
@@ -126,8 +120,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 		boolean includeAnonymousUsers = individualSegmentJSONObject.optBoolean(
 			"includeAnonymousUsers");
 
-		long knownIndividualCount = _getKnownIndividualCount(
-			individualSegmentId);
+		long knownIndividualCount =
+			_faroInfoIndividualDog.getKnownIndividualCount(individualSegmentId);
 
 		long individualCount = 0;
 
@@ -145,39 +139,10 @@ public class MembershipDog extends BaseFaroInfoDog {
 			membershipsJSONArray, includeAnonymousUsers,
 			individualCount - membershipsJSONArray.length(),
 			knownIndividualCount -
-				_getKnownIndividualCount(membershipsJSONArray));
+				_faroInfoIndividualDog.getKnownIndividualCount(
+					membershipsJSONArray));
 
 		return membershipsJSONArray;
-	}
-
-	public QueryBuilder buildIndividualsQueryBuilder(
-			String channelId, String filterString,
-			boolean includeAnonymousUsers)
-		throws Exception {
-
-		BoolQueryBuilder boolQueryBuilder = null;
-
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString, _faroInfoIndividualsFilterStringConverterHelper);
-
-		if (queryBuilder == null) {
-			boolQueryBuilder = new BoolQueryBuilder();
-		}
-		else {
-			boolQueryBuilder = BoolQueryBuilderUtil.filter(queryBuilder);
-		}
-
-		if (channelId != null) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("channelIds", channelId));
-		}
-
-		if (includeAnonymousUsers) {
-			return boolQueryBuilder;
-		}
-
-		return boolQueryBuilder.filter(
-			QueryBuilders.existsQuery("demographics.email"));
 	}
 
 	public JSONObject deactivateMembership(
@@ -213,7 +178,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			"individuals", individualId);
 
 		if (individualJSONObject != null) {
-			removeIndividualSegmentId(
+			_faroInfoIndividualDog.removeIndividualSegmentId(
 				individualJSONObject, individualSegmentId);
 		}
 
@@ -224,7 +189,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			"individual-segments", individualSegmentId);
 
 		if (individualSegmentJSONObject != null) {
-			knownIndividualCount = _getKnownIndividualCount(
+			knownIndividualCount = _faroInfoIndividualDog.getKnownIndividualCount(
 				individualSegmentId);
 
 			if (individualSegmentJSONObject.optBoolean(
@@ -281,99 +246,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 			).filter(
 				QueryBuilders.termQuery("status", "ACTIVE")
 			));
-	}
-
-	public void removeIndividualSegmentId(
-		JSONObject individualJSONObject, String individualSegmentId) {
-
-		JSONArray individualSegmentIdsJSONArray =
-			individualJSONObject.getJSONArray("individualSegmentIds");
-
-		Iterator<Object> iterator = individualSegmentIdsJSONArray.iterator();
-
-		while (iterator.hasNext()) {
-			if (individualSegmentId.equals(String.valueOf(iterator.next()))) {
-				iterator.remove();
-
-				break;
-			}
-		}
-
-		elasticsearchInvoker.update(
-			"individuals", individualJSONObject.getString("id"),
-			JSONUtil.put(
-				"individualSegmentIds", individualSegmentIdsJSONArray));
-	}
-
-	public void updateDynamicAddMemberships(
-			boolean checkMemberExists, JSONObject individualSegmentJSONObject,
-			String modifiedDateString)
-		throws Exception {
-
-		_updateDynamicAddMemberships(
-			checkMemberExists, individualSegmentJSONObject.getString("id"),
-			modifiedDateString,
-			buildIndividualsQueryBuilder(
-				individualSegmentJSONObject.optString("channelId", null),
-				individualSegmentJSONObject.getString("filter"),
-				individualSegmentJSONObject.optBoolean(
-					"includeAnonymousUsers")));
-	}
-
-	public void updateDynamicMemberships(
-			JSONObject individualSegmentJSONObject, String modifiedDateString)
-		throws Exception {
-
-		String individualSegmentId = individualSegmentJSONObject.getString(
-			"id");
-		QueryBuilder queryBuilder = buildIndividualsQueryBuilder(
-			individualSegmentJSONObject.optString("channelId", null),
-			individualSegmentJSONObject.getString("filter"),
-			individualSegmentJSONObject.optBoolean("includeAnonymousUsers"));
-
-		_updateDynamicAddMemberships(
-			true, individualSegmentId, modifiedDateString, queryBuilder);
-		_updateDynamicRemoveMemberships(
-			individualSegmentId, modifiedDateString, queryBuilder);
-	}
-
-	public void updateDynamicRemoveMemberships(
-			JSONObject individualSegmentJSONObject, String modifiedDateString)
-		throws Exception {
-
-		_updateDynamicRemoveMemberships(
-			individualSegmentJSONObject.getString("id"), modifiedDateString,
-			buildIndividualsQueryBuilder(
-				individualSegmentJSONObject.optString("channelId", null),
-				individualSegmentJSONObject.getString("filter"),
-				individualSegmentJSONObject.optBoolean(
-					"includeAnonymousUsers")));
-	}
-
-	private void _addIndividualSegmentId(
-		JSONObject individualJSONObject, String individualSegmentId) {
-
-		JSONArray individualSegmentIdsJSONArray =
-			individualJSONObject.getJSONArray("individualSegmentIds");
-
-		individualSegmentIdsJSONArray.put(individualSegmentId);
-
-		elasticsearchInvoker.update(
-			"individuals", individualJSONObject.getString("id"),
-			JSONUtil.put(
-				"individualSegmentIds", individualSegmentIdsJSONArray));
-	}
-
-	private void _addIndividualSegmentIds(
-		List<String> individualIds, String individualSegmentId) {
-
-		JSONArray individualsJSONArray = elasticsearchInvoker.get(
-			"individuals", QueryBuilders.termsQuery("id", individualIds));
-
-		for (int i = 0; i < individualsJSONArray.length(); i++) {
-			_addIndividualSegmentId(
-				individualsJSONArray.getJSONObject(i), individualSegmentId);
-		}
 	}
 
 	private void _addMembershipChange(
@@ -539,127 +411,6 @@ public class MembershipDog extends BaseFaroInfoDog {
 			));
 	}
 
-	private long _getKnownIndividualCount(JSONArray membershipsJSONArray) {
-		return elasticsearchInvoker.count(
-			"individuals",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.existsQuery("demographics.email")
-			).filter(
-				QueryBuilders.termsQuery(
-					"id",
-					JSONUtil.toStringSet(membershipsJSONArray, "individualId"))
-			));
-	}
-
-	private long _getKnownIndividualCount(String individualSegmentId) {
-		return elasticsearchInvoker.count(
-			"individuals",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.existsQuery("demographics.email")
-			).filter(
-				QueryBuilders.termQuery(
-					"individualSegmentIds", individualSegmentId)
-			));
-	}
-
-	private void _monitorProcessedCount(int count) {
-		_processedCounter.inc(count);
-	}
-
-	private void _monitorQueueSize(long size) {
-		_queueSizeGauge.set(size);
-	}
-
-	private void _updateDynamicAddMemberships(
-			boolean checkMemberExists, String individualSegmentId,
-			String modifiedDateString, QueryBuilder queryBuilder)
-		throws Exception {
-
-		JSONObject membershipJSONObject = JSONUtil.put(
-			"dateCreated", modifiedDateString
-		).put(
-			"dateModified", modifiedDateString
-		).put(
-			"individualSegmentId", individualSegmentId
-		).put(
-			"status", "ACTIVE"
-		);
-
-		JSONArrayIterator.of(
-			"individuals", elasticsearchInvoker,
-			individualObject -> {
-				try {
-					String individualId = individualObject.getString("id");
-
-					if (checkMemberExists &&
-						isMember(individualId, individualSegmentId)) {
-
-						return null;
-					}
-
-					membershipJSONObject.put("individualId", individualId);
-
-					addMembership(membershipJSONObject);
-				}
-				catch (Exception e) {
-					return e;
-				}
-
-				return null;
-			}
-		).setMonitoringConsumers(
-			this::_monitorProcessedCount, this::_monitorQueueSize
-		).setQueryBuilder(
-			queryBuilder
-		).iterate();
-	}
-
-	private void _updateDynamicRemoveMemberships(
-			String individualSegmentId, String modifiedDateString,
-			QueryBuilder queryBuilder)
-		throws Exception {
-
-		JSONArrayIterator.of(
-			"memberships", elasticsearchInvoker,
-			membershipJSONObject -> {
-				try {
-					String individualId = membershipJSONObject.getString(
-						"individualId");
-
-					// Skip JavaParser, will fix
-
-					if (elasticsearchInvoker.exists(
-							"individuals",
-							BoolQueryBuilderUtil.filter(
-								queryBuilder
-							).filter(
-								QueryBuilders.termQuery("id", individualId)
-							))) {
-
-						return null;
-					}
-
-					deactivateMembership(
-						modifiedDateString, individualId, individualSegmentId);
-				}
-				catch (Exception e) {
-					return e;
-				}
-
-				return null;
-			}
-		).setMonitoringConsumers(
-			this::_monitorProcessedCount, this::_monitorQueueSize
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery(
-					"individualSegmentId", individualSegmentId)
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			)
-		).iterate();
-	}
-
 	private void _updateIndividualSegment(
 			long individualCount, String individualSegmentId,
 			long knownIndividualCount)
@@ -677,17 +428,9 @@ public class MembershipDog extends BaseFaroInfoDog {
 			));
 	}
 
-	private static final Counter _processedCounter = PrometheusUtil.counter(
-		"membership_processed_count", "The number of memberships processed");
-	private static final Gauge _queueSizeGauge = PrometheusUtil.gauge(
-		"membership_queue_size",
-		"The number of memberships queued to be processed");
+	@Autowired
+	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
-	private FaroInfoIndividualsFilterStringConverterHelper
-		_faroInfoIndividualsFilterStringConverterHelper;
-
 }
