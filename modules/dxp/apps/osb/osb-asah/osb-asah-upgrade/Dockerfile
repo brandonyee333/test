@@ -19,8 +19,8 @@ USER root
 
 WORKDIR /root
 
-COPY --from=builder /builder/dependencies/ .
-COPY --from=builder /builder/spring-boot-loader/ .
+COPY --from=builder /builder/dependencies .
+COPY --from=builder /builder/spring-boot-loader .
 
 ENV LABEL_BUILD_DATE=${LABEL_BUILD_DATE}
 ENV LABEL_VCS_REF=${LABEL_VCS_REF}
