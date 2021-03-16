@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinitionType;
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public class EventDefinitionRepositoryImpl {
 	}
 
 	public long countEventDefinitions(
-		EventDefinitionType eventDefinitionType, String keyword) {
+		String keyword, EventDefinition.Type type) {
 
 		SelectSelectStep<Record1<Integer>> selectCount =
 			_dslContext.selectCount();
@@ -55,7 +54,7 @@ public class EventDefinitionRepositoryImpl {
 		return selectCount.from(
 			"EventDefinition"
 		).where(
-			_getConditions(eventDefinitionType, keyword)
+			_getConditions(keyword, type)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -64,8 +63,8 @@ public class EventDefinitionRepositoryImpl {
 	}
 
 	public List<EventDefinition> searchEventDefinitions(
-		EventDefinitionType eventDefinitionType, String keyword, int page,
-		int size, Sort sort) {
+		String keyword, int page, int size, Sort sort,
+		EventDefinition.Type type) {
 
 		SelectSelectStep<Record> select = _dslContext.select();
 
@@ -74,7 +73,7 @@ public class EventDefinitionRepositoryImpl {
 		return select.from(
 			"EventDefinition"
 		).where(
-			_getConditions(eventDefinitionType, keyword)
+			_getConditions(keyword, type)
 		).orderBy(
 			field.sort(SortOrder.valueOf(sort.getType()))
 		).limit(
@@ -88,16 +87,14 @@ public class EventDefinitionRepositoryImpl {
 	}
 
 	private List<Condition> _getConditions(
-		EventDefinitionType eventDefinitionType, String keyword) {
+		String keyword, EventDefinition.Type type) {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if ((eventDefinitionType != null) &&
-			!eventDefinitionType.equals(EventDefinitionType.ALL)) {
-
+		if ((type != null) && !type.equals(EventDefinition.Type.ALL)) {
 			Field<Object> field = DSL.field("type");
 
-			conditions.add(field.in(eventDefinitionType.toString()));
+			conditions.add(field.in(type.toString()));
 		}
 
 		if (StringUtils.isNotEmpty(keyword)) {

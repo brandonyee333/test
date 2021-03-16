@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinitionType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -37,8 +36,8 @@ import org.springframework.stereotype.Component;
 public class EventDefinitionDog {
 
 	public EventDefinition addEventDefinition(
-		String description, String displayName,
-		EventDefinitionType eventDefinitionType, String name) {
+		String description, String displayName, String name,
+		EventDefinition.Type type) {
 
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException("Event name is null");
@@ -49,16 +48,15 @@ public class EventDefinitionDog {
 		eventDefinition.setDescription(description);
 		eventDefinition.setDisplayName(displayName);
 		eventDefinition.setName(name);
-		eventDefinition.setType(eventDefinitionType);
+		eventDefinition.setType(type);
 
 		return _eventDefinitionRepository.save(eventDefinition);
 	}
 
 	public Long countEventDefinitions(
-		EventDefinitionType eventDefinitionType, String keyword) {
+		String keyword, EventDefinition.Type type) {
 
-		return _eventDefinitionRepository.countEventDefinitions(
-			eventDefinitionType, keyword);
+		return _eventDefinitionRepository.countEventDefinitions(keyword, type);
 	}
 
 	public EventDefinition fetchEventDefinitionByDisplayName(
@@ -88,13 +86,13 @@ public class EventDefinitionDog {
 	}
 
 	public List<EventDefinition> getEventDefinitions(
-		EventDefinitionType eventDefinitionType, String keyword, int page,
-		int size, Sort sort) {
+		String keyword, int page, int size, Sort sort,
+		EventDefinition.Type type) {
 
 		_validate(sort);
 
 		return _eventDefinitionRepository.searchEventDefinitions(
-			eventDefinitionType, keyword, page, size, sort);
+			keyword, page, size, sort, type);
 	}
 
 	public EventDefinition updateEventDefinition(

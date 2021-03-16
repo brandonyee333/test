@@ -85,7 +85,7 @@ public class EventDefinition implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public EventDefinitionType getType() {
+	public Type getType() {
 		return _type;
 	}
 
@@ -123,8 +123,14 @@ public class EventDefinition implements Persistable<Long> {
 		_name = name;
 	}
 
-	public void setType(EventDefinitionType eventDefinitionType) {
-		_type = eventDefinitionType;
+	public void setType(Type type) {
+		_type = type;
+	}
+
+	public static enum Type {
+
+		ALL, CUSTOM, DEFAULT
+
 	}
 
 	@Transient
@@ -143,6 +149,6 @@ public class EventDefinition implements Persistable<Long> {
 	private String _name;
 
 	@Transient
-	private EventDefinitionType _type;
+	private Type _type;
 
 }

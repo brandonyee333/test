@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.model.EventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinitionType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
@@ -47,8 +46,8 @@ public class EventDefinitionDogTest {
 	public void testAddDefinition() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", EventDefinitionType.CUSTOM,
-				"testEvent");
+				"Testing an event", "Test Event", "testEvent",
+				EventDefinition.Type.CUSTOM);
 
 		Assert.assertNotNull(eventDefinition);
 
@@ -58,18 +57,18 @@ public class EventDefinitionDogTest {
 		Assert.assertNotNull(eventDefinition.getId());
 		Assert.assertEquals("testEvent", eventDefinition.getName());
 		Assert.assertEquals(
-			EventDefinitionType.CUSTOM, eventDefinition.getType());
+			EventDefinition.Type.CUSTOM, eventDefinition.getType());
 	}
 
 	@Test
 	public void testCountEventDefinitions() {
 		Long count = _eventDefinitionDog.countEventDefinitions(
-			EventDefinitionType.DEFAULT, null);
+			null, EventDefinition.Type.DEFAULT);
 
 		Assert.assertEquals(Long.valueOf(24), count);
 
 		count = _eventDefinitionDog.countEventDefinitions(
-			EventDefinitionType.CUSTOM, null);
+			null, EventDefinition.Type.CUSTOM);
 
 		Assert.assertEquals(Long.valueOf(0), count);
 	}
@@ -79,15 +78,15 @@ public class EventDefinitionDogTest {
 		Assert.assertEquals(
 			Long.valueOf(4),
 			_eventDefinitionDog.countEventDefinitions(
-				EventDefinitionType.DEFAULT, "page"));
+				"page", EventDefinition.Type.DEFAULT));
 	}
 
 	@Test
 	public void testFetchEventDefinitionByDisplayName() {
 		EventDefinition expectedEventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", EventDefinitionType.CUSTOM,
-				"testEvent");
+				"Testing an event", "Test Event", "testEvent",
+				EventDefinition.Type.CUSTOM);
 
 		Assert.assertEquals(
 			expectedEventDefinition,
@@ -106,8 +105,8 @@ public class EventDefinitionDogTest {
 	public void testFetchEventDefinitionByName() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", EventDefinitionType.CUSTOM,
-				"testEvent");
+				"Testing an event", "Test Event", "testEvent",
+				EventDefinition.Type.CUSTOM);
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.fetchEventDefinitionByName("testEvent");
@@ -119,8 +118,8 @@ public class EventDefinitionDogTest {
 	public void testGetEventDefinition() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", EventDefinitionType.CUSTOM,
-				"testEvent");
+				"Testing an event", "Test Event", "testEvent",
+				EventDefinition.Type.CUSTOM);
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.getEventDefinition(eventDefinition1.getId());
@@ -132,7 +131,7 @@ public class EventDefinitionDogTest {
 	public void testGetEventDefinitions() {
 		_assertEventDefinitions(
 			_eventDefinitionDog.getEventDefinitions(
-				EventDefinitionType.DEFAULT, null, 0, 5, Sort.asc("name")),
+				null, 0, 5, Sort.asc("name"), EventDefinition.Type.DEFAULT),
 			new ArrayList<String>() {
 				{
 					add("assetClicked");
@@ -148,7 +147,7 @@ public class EventDefinitionDogTest {
 	public void testGetEventDefinitionsWithKeyword() {
 		_assertEventDefinitions(
 			_eventDefinitionDog.getEventDefinitions(
-				EventDefinitionType.DEFAULT, "field", 0, 5, Sort.asc("name")),
+				"field", 0, 5, Sort.asc("name"), EventDefinition.Type.DEFAULT),
 			new ArrayList<String>() {
 				{
 					add("fieldBlurred");

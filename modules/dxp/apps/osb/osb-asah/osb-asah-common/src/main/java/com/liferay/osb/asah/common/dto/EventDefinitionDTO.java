@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinitionType;
 
 /**
  * @author Leslie Wong
@@ -60,7 +59,7 @@ public class EventDefinitionDTO {
 	}
 
 	@JsonProperty("type")
-	public EventDefinitionType getType() {
+	public EventDefinition.Type getType() {
 		return _type;
 	}
 
@@ -68,6 +67,6 @@ public class EventDefinitionDTO {
 	private String _displayName;
 	private String _id;
 	private String _name;
-	private EventDefinitionType _type;
+	private EventDefinition.Type _type;
 
 }
