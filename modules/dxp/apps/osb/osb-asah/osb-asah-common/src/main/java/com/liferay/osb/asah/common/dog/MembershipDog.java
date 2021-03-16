@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoMembershipChangeDog;
 import com.liferay.osb.asah.common.model.Membership;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
@@ -85,7 +84,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 
 		long individualCount = 0;
 
-		if (_faroInfoIndividualSegmentDog.isIncludeAnonymousUsers(
+		if (_segmentDog.isIncludeAnonymousUsers(
 				membership.getIndividualSegmentId())) {
 
 			individualCount = _getIndividualCount(
@@ -95,7 +94,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualCount = knownIndividualCount;
 		}
 
-		_faroInfoIndividualSegmentDog.updateIndividualSegment(
+		_segmentDog.updateIndividualSegment(
 			individualCount, membership.getIndividualSegmentId(),
 			knownIndividualCount);
 
@@ -121,9 +120,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 			ListUtil.map(memberships, Membership::getIndividualId),
 			membership.getIndividualSegmentId());
 
-		boolean includeAnonymousUsers =
-			_faroInfoIndividualSegmentDog.isIncludeAnonymousUsers(
-				membership.getIndividualSegmentId());
+		boolean includeAnonymousUsers = _segmentDog.isIncludeAnonymousUsers(
+			membership.getIndividualSegmentId());
 
 		long knownIndividualCount =
 			_faroInfoIndividualDog.getKnownIndividualCount(
@@ -139,7 +137,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualCount = knownIndividualCount;
 		}
 
-		_faroInfoIndividualSegmentDog.updateIndividualSegment(
+		_segmentDog.updateIndividualSegment(
 			individualCount, membership.getIndividualSegmentId(),
 			knownIndividualCount);
 
@@ -182,9 +180,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 				membership.getIndividualId(),
 				membership.getIndividualSegmentId());
 
-		boolean includeAnonymousUsers =
-			_faroInfoIndividualSegmentDog.isIncludeAnonymousUsers(
-				membership.getIndividualSegmentId());
+		boolean includeAnonymousUsers = _segmentDog.isIncludeAnonymousUsers(
+			membership.getIndividualSegmentId());
 
 		long knownIndividualCount =
 			_faroInfoIndividualDog.getKnownIndividualCount(
@@ -200,7 +197,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualCount = knownIndividualCount;
 		}
 
-		_faroInfoIndividualSegmentDog.updateIndividualSegment(
+		_segmentDog.updateIndividualSegment(
 			individualCount, membership.getIndividualSegmentId(),
 			knownIndividualCount);
 
@@ -342,12 +339,12 @@ public class MembershipDog extends BaseFaroInfoDog {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
 	private FaroInfoMembershipChangeDog _faroInfoMembershipChangeDog;
 
 	@Autowired
 	private MembershipRepository _membershipRepository;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

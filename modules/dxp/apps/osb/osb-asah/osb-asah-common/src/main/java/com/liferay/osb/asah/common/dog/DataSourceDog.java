@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -548,7 +547,7 @@ public class DataSourceDog {
 				"dataSourceFieldNames." + String.valueOf(dataSourceId))
 		).iterate();
 
-		_faroInfoIndividualSegmentDog.disableDynamicIndividualSegments(
+		_segmentDog.disableDynamicIndividualSegments(
 			dataSourceId, disabledFieldMappingIds);
 	}
 
@@ -784,9 +783,6 @@ public class DataSourceDog {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
 	private NanitesHttp _nanitesHttp;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
@@ -795,5 +791,8 @@ public class DataSourceDog {
 	@Autowired
 	private SalesforceExtractorConfigurationDog
 		_salesforceExtractorConfigurationDog;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

@@ -17,11 +17,11 @@ package com.liferay.osb.asah.extractor.processor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOrganizationDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
@@ -339,7 +339,7 @@ public class DXPEntitiesMessageProcessor {
 
 		if (action.equalsIgnoreCase("delete") && (jsonObject != null)) {
 			try {
-				_faroInfoIndividualSegmentDog.disableDynamicIndividualSegments(
+				_segmentDog.disableDynamicIndividualSegments(
 					dxpEntityType, jsonObject.getString("id"));
 			}
 			catch (Exception e) {
@@ -513,9 +513,6 @@ public class DXPEntitiesMessageProcessor {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
 	private FaroInfoOrganizationDog _faroInfoOrganizationDog;
 
 	@Autowired
@@ -523,5 +520,8 @@ public class DXPEntitiesMessageProcessor {
 
 	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

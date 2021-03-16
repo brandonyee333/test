@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.faro.info.dog;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
@@ -46,7 +47,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 
 		String dateCreated = accountJSONObject.getString("dateCreated");
 
-		_faroInfoIndividualSegmentDog.addIndividualSegment(
+		_segmentDog.addIndividualSegment(
 			JSONUtil.put(
 				"activitiesCount", 0
 			).put(
@@ -217,9 +218,9 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+	private FieldDog _fieldDog;
 
 	@Autowired
-	private FieldDog _fieldDog;
+	private SegmentDog _segmentDog;
 
 }

@@ -18,11 +18,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -360,7 +360,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				"Text"));
 
 		JSONObject individualSegmentJSONObject =
-			_faroInfoIndividualSegmentDog.addIndividualSegment(
+			_segmentDog.addIndividualSegment(
 				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
 					"(((demographics/givenName/value ne null)))"));
 
@@ -396,7 +396,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				dataSourceJSONObject.getString("id")));
 
 		JSONObject individualSegmentJSONObject =
-			_faroInfoIndividualSegmentDog.addIndividualSegment(
+			_segmentDog.addIndividualSegment(
 				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
 					"activities/ever eq 'page#pageViewed#" +
 						assetJSONObject.getString("id") + "'"));
@@ -899,9 +899,6 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
 	private ObjectMapper _objectMapper;
 
 	@MockBean
@@ -910,5 +907,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -130,7 +130,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 		}
 
 		if (!individualSegmentJSONObject.has("activitiesCount")) {
-			_faroInfoIndividualSegmentDog.updateIndividualSegment(
+			_segmentDog.updateIndividualSegment(
 				Long.valueOf(individualSegmentId),
 				JSONUtil.put("activitiesCount", 0));
 		}
@@ -153,7 +153,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 			return;
 		}
 
-		_faroInfoIndividualSegmentDog.replaceIndividualSegment(
+		_segmentDog.replaceIndividualSegment(
 			individualSegmentJSONObject.put(
 				"activitiesCount", activitiesCount
 			).put(
@@ -313,10 +313,9 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 		IndividualSegmentActivityFieldsNanite.class);
 
 	private final Map<String, Boolean> _analyticsConfigured = new HashMap<>();
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	private final ReentrantLock _reentrantLock = new ReentrantLock();
+	private SegmentDog _segmentDog;
 
 }

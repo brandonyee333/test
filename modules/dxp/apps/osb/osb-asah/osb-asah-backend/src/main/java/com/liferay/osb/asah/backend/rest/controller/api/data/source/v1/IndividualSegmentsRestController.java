@@ -25,10 +25,10 @@ import com.liferay.osb.asah.backend.rest.response.embedded.IndividualSegmentsEmb
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.Membership;
@@ -226,7 +226,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		if (!_faroInfoIndividualSegmentDog.isIncludeAnonymousUsers(id)) {
+		if (!_segmentDog.isIncludeAnonymousUsers(id)) {
 			List<Long> individualIds = new ArrayList<>();
 
 			SearchResponse searchResponse = faroInfoElasticsearchInvoker.search(
@@ -276,8 +276,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@Override
 			protected JSONObject invokeElasticsearch(JSONObject jsonObject) {
 				try {
-					return _faroInfoIndividualSegmentDog.addIndividualSegment(
-						jsonObject);
+					return _segmentDog.addIndividualSegment(jsonObject);
 				}
 				catch (Exception e) {
 					throw new RuntimeException(e);
@@ -502,9 +501,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	private ChannelDog _channelDog;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
 
@@ -513,5 +509,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

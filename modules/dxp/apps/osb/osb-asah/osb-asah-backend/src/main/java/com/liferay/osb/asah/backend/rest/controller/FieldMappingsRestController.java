@@ -17,10 +17,11 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -150,7 +151,7 @@ public class FieldMappingsRestController extends BaseRestController {
 				"field-mappings", id, fieldMappingJSONObject.toString());
 		}
 
-		_faroInfoIndividualSegmentDog.disableDynamicIndividualSegments(
+		_segmentDog.disableDynamicIndividualSegments(
 			null, deletedFieldMappingIds);
 
 		_addReprocessAsahTask(
@@ -229,7 +230,7 @@ public class FieldMappingsRestController extends BaseRestController {
 			}
 		}
 
-		_faroInfoIndividualSegmentDog.disableDynamicIndividualSegments(
+		_segmentDog.disableDynamicIndividualSegments(
 			null, deletedFieldMappingIds);
 
 		_addReprocessAsahTask(Long.valueOf(dataSourceId), ownerType);
@@ -331,7 +332,7 @@ public class FieldMappingsRestController extends BaseRestController {
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	private final Map<String, String> _naniteClassNames =
 		new HashMap<String, String>() {
@@ -340,5 +341,8 @@ public class FieldMappingsRestController extends BaseRestController {
 				put("LIFERAY#individual", "DXPIndividualsNanite");
 			}
 		};
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

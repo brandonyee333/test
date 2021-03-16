@@ -19,9 +19,9 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNan
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -282,7 +282,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 		for (String duration : durations) {
 			JSONObject individualSegmentJSONObject =
-				_faroInfoIndividualSegmentDog.addIndividualSegment(
+				_segmentDog.addIndividualSegment(
 					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
 						"1",
 						"(((activities/" + duration + " eq 'Page#pageViewed#" +
@@ -313,7 +313,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 
 		for (String duration : durations) {
 			JSONObject individualSegmentJSONObject =
-				_faroInfoIndividualSegmentDog.addIndividualSegment(
+				_segmentDog.addIndividualSegment(
 					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
 						"1",
 						"(sessions.filter(filter='(context/country eq ''" +
@@ -407,10 +407,11 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
-	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
 
 	private JSONObject _individualJSONObject;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 	@Autowired
 	@InjectMocks

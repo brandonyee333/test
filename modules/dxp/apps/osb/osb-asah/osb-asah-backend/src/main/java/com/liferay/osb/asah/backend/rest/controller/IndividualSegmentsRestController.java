@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.PutResponse;
@@ -66,7 +66,7 @@ public class IndividualSegmentsRestController
 			@PathVariable String channelId, @PathVariable String id)
 		throws Exception {
 
-		_faroInfoIndividualSegmentDog.assignChannel(channelId, id);
+		_segmentDog.assignChannel(channelId, id);
 	}
 
 	@DeleteMapping("/{id}/memberships/{individualId}")
@@ -79,7 +79,7 @@ public class IndividualSegmentsRestController
 
 	@DeleteMapping("/{id}")
 	public void deleteIndividualSegment(@PathVariable String id) {
-		_faroInfoIndividualSegmentDog.deleteIndividualSegment(id);
+		_segmentDog.deleteIndividualSegment(id);
 	}
 
 	@GetMapping("/{id}/accounts")
@@ -140,8 +140,7 @@ public class IndividualSegmentsRestController
 			protected JSONObject invokeElasticsearch(JSONObject jsonObject)
 				throws Exception {
 
-				return _faroInfoIndividualSegmentDog.updateIndividualSegment(
-					id, jsonObject);
+				return _segmentDog.updateIndividualSegment(id, jsonObject);
 			}
 
 			@Override
@@ -207,9 +206,9 @@ public class IndividualSegmentsRestController
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+	private MembershipDog _membershipDog;
 
 	@Autowired
-	private MembershipDog _membershipDog;
+	private SegmentDog _segmentDog;
 
 }

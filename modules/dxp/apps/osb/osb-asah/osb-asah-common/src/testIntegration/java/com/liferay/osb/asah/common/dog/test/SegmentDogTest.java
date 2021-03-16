@@ -12,13 +12,14 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
+import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
@@ -51,7 +52,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
+public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
 	public void setUp() throws Exception {
@@ -926,7 +927,7 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 		throws Exception {
 
 		JSONObject individualSegmentJSONObject =
-			_faroInfoIndividualSegmentDog.addIndividualSegment(
+			_segmentDog.addIndividualSegment(
 				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
 					filterString));
 
@@ -958,7 +959,7 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 		throws Exception {
 
 		JSONObject individualSegmentJSONObject =
-			_faroInfoIndividualSegmentDog.addIndividualSegment(
+			_segmentDog.addIndividualSegment(
 				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
 					filterString));
 
@@ -1042,10 +1043,9 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 				expectedAddReferencedFieldMappingIds,
 				expectedAddReferencedOrganizationIds, addFilter);
 
-		individualSegmentJSONObject =
-			_faroInfoIndividualSegmentDog.updateIndividualSegment(
-				individualSegmentJSONObject.getLong("id"),
-				JSONUtil.put("filter", updateFilter));
+		individualSegmentJSONObject = _segmentDog.updateIndividualSegment(
+			individualSegmentJSONObject.getLong("id"),
+			JSONUtil.put("filter", updateFilter));
 
 		_assertSameContents(
 			individualSegmentJSONObject.getJSONArray(
@@ -1091,9 +1091,6 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
-	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
 	private final JSONObject _fieldMappingNameIds = new JSONObject();
 	private final JSONObject _liferayDataSourceAssetIdsJSONObject =
 		new JSONObject();
@@ -1103,5 +1100,8 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

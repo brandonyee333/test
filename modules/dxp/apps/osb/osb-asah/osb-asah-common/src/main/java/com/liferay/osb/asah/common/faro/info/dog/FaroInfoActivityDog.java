@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.faro.info.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
@@ -46,8 +47,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		activityJSONObject = elasticsearchInvoker.add(
 			"activities", activityJSONObject);
 
-		Set<String> referencedAssetIds =
-			_faroInfoIndividualSegmentDog.getReferencedAssetIds();
+		Set<String> referencedAssetIds = _segmentDog.getReferencedAssetIds();
 
 		JSONObject objectJSONObject = activityJSONObject.getJSONObject(
 			"object");
@@ -112,8 +112,7 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			"activities", activityJSONObject.getString("id"),
 			JSONUtil.put("ownerId", individualJSONObject.getString("id")));
 
-		Set<String> referencedAssetIds =
-			_faroInfoIndividualSegmentDog.getReferencedAssetIds();
+		Set<String> referencedAssetIds = _segmentDog.getReferencedAssetIds();
 
 		JSONObject objectJSONObject = activityJSONObject.getJSONObject(
 			"object");
@@ -151,6 +150,6 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+	private SegmentDog _segmentDog;
 
 }

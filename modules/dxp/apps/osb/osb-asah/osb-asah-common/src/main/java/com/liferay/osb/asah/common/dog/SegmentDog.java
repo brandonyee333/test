@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.ChannelDog;
@@ -20,6 +20,10 @@ import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
+import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
@@ -61,14 +65,13 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
+public class SegmentDog extends BaseFaroInfoDog {
 
 	public JSONObject addIndividualSegment(
 			JSONObject individualSegmentJSONObject)
 		throws Exception {
 
-		_faroInfoIndividualSegmentDog.setReferencedFields(
-			individualSegmentJSONObject);
+		_segmentDog.setReferencedFields(individualSegmentJSONObject);
 
 		individualSegmentJSONObject = elasticsearchInvoker.add(
 			"individual-segments", _setState(individualSegmentJSONObject));
@@ -195,8 +198,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				"individual-segments", individualSegmentJSONObject);
 		}
 		else {
-			_faroInfoIndividualSegmentDog.setReferencedFields(
-				individualSegmentJSONObject);
+			_segmentDog.setReferencedFields(individualSegmentJSONObject);
 
 			elasticsearchInvoker.replace(
 				"individual-segments", _setState(individualSegmentJSONObject));
@@ -871,8 +873,7 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 				partialIndividualSegmentJSONObject);
 		}
 		else {
-			_faroInfoIndividualSegmentDog.setReferencedFields(
-				partialIndividualSegmentJSONObject);
+			_segmentDog.setReferencedFields(partialIndividualSegmentJSONObject);
 
 			individualSegmentJSONObject = elasticsearchInvoker.update(
 				"individual-segments",
@@ -952,9 +953,12 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
+	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

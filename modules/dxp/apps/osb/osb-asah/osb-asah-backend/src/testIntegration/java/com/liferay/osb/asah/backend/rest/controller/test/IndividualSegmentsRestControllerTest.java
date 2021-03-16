@@ -18,9 +18,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualSegmentDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -337,7 +337,7 @@ public class IndividualSegmentsRestControllerTest {
 		JSONObject jsonObject =
 			FaroInfoTestUtil.buildStaticIndividualSegmentJSONObject();
 
-		_faroInfoIndividualSegmentDog.addIndividualSegment(jsonObject);
+		_segmentDog.addIndividualSegment(jsonObject);
 
 		JSONObject responseJSONObject = new JSONObject(
 			_individualSegmentsRestController.postIndividualSegment(
@@ -387,9 +387,8 @@ public class IndividualSegmentsRestControllerTest {
 
 	@Test
 	public void testPutIndividualSegment1() throws Exception {
-		JSONObject jsonObject =
-			_faroInfoIndividualSegmentDog.addIndividualSegment(
-				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(""));
+		JSONObject jsonObject = _segmentDog.addIndividualSegment(
+			FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(""));
 
 		JSONObject responseJSONObject = new JSONObject(
 			_individualSegmentsRestController.putIndividualSegment(
@@ -401,9 +400,8 @@ public class IndividualSegmentsRestControllerTest {
 
 	@Test
 	public void testPutIndividualSegment2() throws Exception {
-		JSONObject jsonObject =
-			_faroInfoIndividualSegmentDog.addIndividualSegment(
-				FaroInfoTestUtil.buildStaticIndividualSegmentJSONObject());
+		JSONObject jsonObject = _segmentDog.addIndividualSegment(
+			FaroInfoTestUtil.buildStaticIndividualSegmentJSONObject());
 
 		JSONObject responseJSONObject = new JSONObject(
 			_individualSegmentsRestController.putIndividualSegment(
@@ -416,12 +414,12 @@ public class IndividualSegmentsRestControllerTest {
 	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
-
-	@Autowired
 	private IndividualSegmentsRestController _individualSegmentsRestController;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }
