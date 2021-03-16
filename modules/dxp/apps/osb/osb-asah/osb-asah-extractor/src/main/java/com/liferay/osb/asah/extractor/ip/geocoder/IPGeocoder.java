@@ -66,8 +66,7 @@ public class IPGeocoder {
 				return IPInfo.LOCAL_NETWORK;
 			}
 		}
-		catch (UnknownHostException e) {
-			return null;
+		catch (UnknownHostException uhe) {
 		}
 
 		return null;
