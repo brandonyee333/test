@@ -60,7 +60,7 @@ public class EventAttributeDefinition implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public EventAttributeDefinitionDataType getDataType() {
+	public DataType getDataType() {
 		return _dataType;
 	}
 
@@ -110,7 +110,7 @@ public class EventAttributeDefinition implements Persistable<Long> {
 		return false;
 	}
 
-	public void setDataType(EventAttributeDefinitionDataType dataType) {
+	public void setDataType(DataType dataType) {
 		_dataType = dataType;
 	}
 
@@ -142,8 +142,14 @@ public class EventAttributeDefinition implements Persistable<Long> {
 		_name = name;
 	}
 
+	public static enum DataType {
+
+		BOOLEAN, DATE, DURATION, NUMBER, STRING
+
+	}
+
 	@Transient
-	private EventAttributeDefinitionDataType _dataType;
+	private DataType _dataType;
 
 	@Transient
 	private String _description;

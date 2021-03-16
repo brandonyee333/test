@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
-import com.liferay.osb.asah.common.model.EventAttributeDefinitionDataType;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
@@ -58,8 +57,7 @@ public class EventAttributeDefinitionDog {
 		EventAttributeDefinition eventAttributeDefinition =
 			new EventAttributeDefinition();
 
-		eventAttributeDefinition.setDataType(
-			getEventAttributeDefinitionDataType(name, sampleValue));
+		eventAttributeDefinition.setDataType(getDataType(name, sampleValue));
 		eventAttributeDefinition.setDescription(description);
 		eventAttributeDefinition.setDisplayName(displayName);
 		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
@@ -97,6 +95,37 @@ public class EventAttributeDefinitionDog {
 		return _eventAttributeDefinitionRepository.findByName(name);
 	}
 
+	public EventAttributeDefinition.DataType getDataType(
+		String propertyName, String propertyValue) {
+
+		if (StringUtils.isEmpty(propertyValue)) {
+			throw new IllegalArgumentException(
+				"Unable to determine data type for property " + propertyName);
+		}
+
+		if (_isBoolean(propertyValue)) {
+			return EventAttributeDefinition.DataType.BOOLEAN;
+		}
+
+		if (_isDate(propertyValue)) {
+			return EventAttributeDefinition.DataType.DATE;
+		}
+
+		if (NumberUtils.isParsable(propertyValue)) {
+			String lowerCasePropertyName = propertyName.toLowerCase();
+
+			if (lowerCasePropertyName.contains("duration") &&
+				!propertyValue.startsWith("-")) {
+
+				return EventAttributeDefinition.DataType.DURATION;
+			}
+
+			return EventAttributeDefinition.DataType.NUMBER;
+		}
+
+		return EventAttributeDefinition.DataType.STRING;
+	}
+
 	public EventAttributeDefinition getEventAttributeDefinition(
 		Long eventAttributeDefinitionId) {
 
@@ -109,37 +138,6 @@ public class EventAttributeDefinitionDog {
 				HttpStatus.BAD_REQUEST,
 				"There is no event attribute definition with ID " +
 					eventAttributeDefinitionId));
-	}
-
-	public EventAttributeDefinitionDataType getEventAttributeDefinitionDataType(
-		String propertyName, String propertyValue) {
-
-		if (StringUtils.isEmpty(propertyValue)) {
-			throw new IllegalArgumentException(
-				"Unable to determine data type for property " + propertyName);
-		}
-
-		if (_isBoolean(propertyValue)) {
-			return EventAttributeDefinitionDataType.BOOLEAN;
-		}
-
-		if (_isDate(propertyValue)) {
-			return EventAttributeDefinitionDataType.DATE;
-		}
-
-		if (NumberUtils.isParsable(propertyValue)) {
-			String lowerCasePropertyName = propertyName.toLowerCase();
-
-			if (lowerCasePropertyName.contains("duration") &&
-				!propertyValue.startsWith("-")) {
-
-				return EventAttributeDefinitionDataType.DURATION;
-			}
-
-			return EventAttributeDefinitionDataType.NUMBER;
-		}
-
-		return EventAttributeDefinitionDataType.STRING;
 	}
 
 	public List<EventAttributeDefinition> getEventAttributeDefinitions(
@@ -166,7 +164,7 @@ public class EventAttributeDefinitionDog {
 	}
 
 	public EventAttributeDefinition updateEventAttributeDefinition(
-		EventAttributeDefinitionDataType dataType, String description,
+		EventAttributeDefinition.DataType dataType, String description,
 		String displayName, Long eventAttributeDefinitionId,
 		Set<EventDefinitionEventAttributeDefinition>
 			eventDefinitionEventAttributeDefinitions,
