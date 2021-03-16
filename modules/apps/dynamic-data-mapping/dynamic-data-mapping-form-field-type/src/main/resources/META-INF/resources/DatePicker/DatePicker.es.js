@@ -323,7 +323,7 @@ const DatePicker = ({
 					) {
 						onChange(
 							moment(value, getLocaleDateFormat(locale)).format(
-								'MM/DD/YYYY'
+								'L'
 							)
 						);
 					}
