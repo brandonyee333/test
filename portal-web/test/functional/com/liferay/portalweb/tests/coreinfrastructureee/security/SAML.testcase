@@ -408,6 +408,8 @@ definition {
 
 		User.logoutPG();
 
+		Pause(locator1 = "20000");
+
 		User.viewLoggedOutPG();
 
 		SAML.executeIdPInitiatedSSO(
