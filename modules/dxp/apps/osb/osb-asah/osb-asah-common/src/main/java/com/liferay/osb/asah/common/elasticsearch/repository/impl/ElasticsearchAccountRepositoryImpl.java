@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.Account;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
@@ -29,5 +31,20 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchAccountRepositoryImpl
-	extends BaseElasticsearchRepository<Account> implements AccountRepository {
+	extends BaseElasticsearchRepository<Account, Long>
+	implements AccountRepository {
+
+	@Override
+	protected String getCollectionName() {
+		return "accounts";
+	}
+
+	@Override
+	protected ElasticsearchInvoker getElasticsearchInvoker() {
+		return _faroInfoElasticsearchInvoker;
+	}
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
 }

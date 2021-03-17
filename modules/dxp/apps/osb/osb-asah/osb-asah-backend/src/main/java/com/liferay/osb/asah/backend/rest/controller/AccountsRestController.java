@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.backend.dto.AccountDTO;
 import com.liferay.osb.asah.backend.rest.response.NumbersDistributionTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -32,7 +34,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -63,6 +64,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Vishal Reddy
+ * @author Rachael Koestartyo
  */
 @RequestMapping("/accounts")
 @RestController(
@@ -71,49 +73,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
-	public String getAccount(
-			@PathVariable String id,
-			@RequestParam(required = false) String channelId)
-		throws Exception {
+	public AccountDTO getAccount(
+		@PathVariable Long id, @RequestParam(required = false) Long channelId) {
 
-		if (Objects.isNull(channelId)) {
-			return toItemGetResponse("accounts", id);
-		}
-
-		JSONObject responseJSONObject = new JSONObject(
-			toItemGetResponse("accounts", id));
-
-		JSONObject activitiesCountJSONObject = JSONUtil.find(
-			responseJSONObject.optJSONArray("activitiesCounts"), "channelId",
-			channelId);
-
-		if (activitiesCountJSONObject != null) {
-			responseJSONObject.put(
-				"activitiesCount",
-				activitiesCountJSONObject.optInt("activitiesCount"));
-		}
-		else {
-			responseJSONObject.put("activitiesCount", 0);
-		}
-
-		responseJSONObject.remove("activitiesCounts");
-
-		JSONObject individualCountJSONObject = JSONUtil.find(
-			responseJSONObject.optJSONArray("individualCounts"), "channelId",
-			channelId);
-
-		if (individualCountJSONObject != null) {
-			responseJSONObject.put(
-				"individualCount",
-				individualCountJSONObject.optInt("individualCount"));
-		}
-		else {
-			responseJSONObject.put("individualCount", 0);
-		}
-
-		responseJSONObject.remove("individualCounts");
-
-		return responseJSONObject.toString();
+		return new AccountDTO(_accountDog.getAccount(id, channelId));
 	}
 
 	@GetMapping(params = "!apply")
@@ -491,6 +454,9 @@ public class AccountsRestController extends BaseRestController {
 			FilterStringToQueryBuilderConverter.convert(filterString)
 		);
 	}
+
+	@Autowired
+	private AccountDog _accountDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;

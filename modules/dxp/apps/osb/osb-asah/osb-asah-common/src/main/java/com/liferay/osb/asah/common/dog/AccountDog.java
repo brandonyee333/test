@@ -20,21 +20,28 @@ import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Account;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Segment;
+import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Optional;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Michael Bowerman
+ * @author Rachael Koestartyo
  */
 @Component
 public class AccountDog {
@@ -131,6 +138,16 @@ public class AccountDog {
 			));
 	}
 
+	public Account getAccount(Long accountId, Long channelId) {
+		Optional<Account> accountOptional = _accountRepository.findById(
+			accountId);
+
+		return accountOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no account with ID " + accountId));
+	}
+
 	public JSONObject replaceAccount(JSONObject accountJSONObject) {
 		accountJSONObject = _elasticsearchInvoker.replace(
 			"accounts", accountJSONObject);
@@ -187,6 +204,9 @@ public class AccountDog {
 	}
 
 	private static final Log _log = LogFactory.getLog(AccountDog.class);
+
+	@Autowired
+	private AccountRepository _accountRepository;
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
