@@ -1,3 +1,11 @@
+CREATE TABLE IF NOT EXISTS Account (
+	id BIGSERIAL PRIMARY KEY,
+	accountPK TEXT,
+	createDate TIMESTAMPTZ,
+	dataSourceId BIGINT,
+	modifiedDate TIMESTAMPTZ
+);
+
 CREATE TABLE IF NOT EXISTS ActivityGroup (
 	id BIGSERIAL PRIMARY KEY,
 	activityType TEXT,
