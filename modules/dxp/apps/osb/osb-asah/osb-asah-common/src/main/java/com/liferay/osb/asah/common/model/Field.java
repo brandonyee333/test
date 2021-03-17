@@ -21,8 +21,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
@@ -36,6 +38,27 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table
 public class Field implements Persistable<Long> {
+
+	public Field() {
+	}
+
+	public Field(Field field) {
+		_context = field.getContext();
+		_dataSourceId = field.getDataSourceId();
+		_dataSourceName = field.getDataSourceName();
+		_fieldType = field.getFieldType();
+		_id = field.getId();
+		_modifiedDate = field.getModifiedDate();
+		_name = field.getName();
+		_ownerId = field.getOwnerId();
+		_ownerType = field.getOwnerType();
+		_sourceName = field.getSourceName();
+		_value = field.getValue();
+	}
+
+	public Field(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
