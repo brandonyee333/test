@@ -63,14 +63,6 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
 					"1", "id gt '0'"));
 
-		faroInfoElasticsearchInvoker.add(
-			"OSBAsahTasks",
-			JSONUtil.put(
-				"body", newIndividualSegmentJSONObject.toString()
-			).put(
-				"className", "UpdateDynamicMembershipsNanite"
-			));
-
 		_updateDynamicMembershipsNanite.run(newIndividualSegmentJSONObject);
 
 		JSONObject individualSegmentJSONObject =
@@ -473,14 +465,6 @@ public class UpdateDynamicMembershipsNaniteTest extends BaseNaniteTestCase {
 					individual2JSONObject.getString("id"),
 					individualSegmentJSONObject.getString("id")),
 				Membership.class));
-
-		faroInfoElasticsearchInvoker.add(
-			"OSBAsahTasks",
-			JSONUtil.put(
-				"body", individualSegmentJSONObject.toString()
-			).put(
-				"className", "UpdateDynamicMembershipsNanite"
-			));
 
 		_updateDynamicMembershipsNanite.run(individualSegmentJSONObject);
 

@@ -80,7 +80,8 @@ public class AsahTaskManagerTest {
 			new String[] {"DataControlNanite"},
 			asahTaskRunnable.getNaniteClassNames());
 		Assert.assertEquals(
-			"450553576847486527", asahTaskRunnable.getAsahTaskId());
+			Long.valueOf("450553576847486527"),
+			asahTaskRunnable.getAsahTaskId());
 		Assert.assertEquals("test", asahTaskRunnable.getProjectId());
 		Assert.assertFalse(asahTaskRunnable.isForce());
 	}
@@ -109,7 +110,8 @@ public class AsahTaskManagerTest {
 			new String[] {"UpdateDynamicMembershipsNanite"},
 			asahTaskRunnable.getNaniteClassNames());
 		Assert.assertEquals(
-			"450553576847486528", asahTaskRunnable.getAsahTaskId());
+			Long.valueOf("450553576847486528"),
+			asahTaskRunnable.getAsahTaskId());
 		Assert.assertEquals("test", asahTaskRunnable.getProjectId());
 		Assert.assertFalse(asahTaskRunnable.isForce());
 	}
@@ -158,7 +160,8 @@ public class AsahTaskManagerTest {
 			new String[] {"DataControlNanite"},
 			asahTaskRunnable.getNaniteClassNames());
 		Assert.assertEquals(
-			"450553576847486530", asahTaskRunnable.getAsahTaskId());
+			Long.valueOf(450553576847486530L),
+			asahTaskRunnable.getAsahTaskId());
 		Assert.assertEquals("test", asahTaskRunnable.getProjectId());
 		Assert.assertFalse(asahTaskRunnable.isForce());
 	}

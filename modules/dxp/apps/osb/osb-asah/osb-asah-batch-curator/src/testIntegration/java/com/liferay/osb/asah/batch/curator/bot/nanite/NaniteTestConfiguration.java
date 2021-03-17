@@ -46,13 +46,13 @@ public class NaniteTestConfiguration {
 	@Lazy
 	@Primary
 	public AsahTaskDog asahTaskDog() {
-		AsahTaskDog asahTaskDog = Mockito.mock(AsahTaskDog.class);
+		AsahTaskDog asahTaskDog = Mockito.spy(AsahTaskDog.class);
 
 		Mockito.doAnswer(
 			invocation -> {
-				String className = invocation.getArgument(0, String.class);
-				JSONObject contextJSONObject = invocation.getArgument(
-					1, JSONObject.class);
+				AsahTask asahTask = invocation.getArgument(0, AsahTask.class);
+
+				JSONObject contextJSONObject = asahTask.getContextJSONObject();
 
 				if (_nanitesMap.isEmpty()) {
 					for (Nanite nanite : _nanites) {
@@ -62,11 +62,12 @@ public class NaniteTestConfiguration {
 					}
 				}
 
-				Nanite nanite = _nanitesMap.get(className);
+				Nanite nanite = _nanitesMap.get(asahTask.getClassName());
 
 				if (nanite == null) {
 					throw new IllegalArgumentException(
-						"Unable to find nanite with class name " + className);
+						"Unable to find nanite with class name " +
+							asahTask.getClassName());
 				}
 
 				if (nanite instanceof IndividualSegmentActivityFieldsNanite) {
