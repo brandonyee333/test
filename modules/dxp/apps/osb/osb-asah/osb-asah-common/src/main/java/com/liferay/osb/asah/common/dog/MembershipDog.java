@@ -270,7 +270,14 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualId);
 	}
 
-	public Page<Membership> getMemberships(
+	public List<Membership> getMemberships(
+		Long individualSegmentId, String status) {
+
+		return _membershipRepository.findByIndividualSegmentIdAndStatus(
+			individualSegmentId, status);
+	}
+
+	public Page<Membership> getMembershipsPage(
 		List<Long> individualIds, Long individualSegmentId, String status,
 		int page, int size, String[] sorts) {
 
@@ -287,14 +294,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 						individualIds, individualSegmentId, status));
 	}
 
-	public List<Membership> getMemberships(
-		Long individualSegmentId, String status) {
-
-		return _membershipRepository.findByIndividualSegmentIdAndStatus(
-			individualSegmentId, status);
-	}
-
-	public Page<Membership> getMemberships(
+	public Page<Membership> getMembershipsPage(
 		Long individualSegmentId, String status, int page, int size,
 		String[] sorts) {
 

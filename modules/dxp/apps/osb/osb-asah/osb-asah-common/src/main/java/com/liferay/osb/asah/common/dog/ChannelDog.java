@@ -195,7 +195,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 		return _channelRepository.findByDataSourceId(dataSourceId);
 	}
 
-	public Page<Channel> getChannels(
+	public Page<Channel> getChannelsPage(
 		String name, int page, int size, String[] sorts) {
 
 		if (name != null) {

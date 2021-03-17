@@ -70,7 +70,8 @@ public class BlockedKeywordsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toPageDTO(
-			_blockedKeywordDog.getBlockedKeywords(keyword, page, size, sorts));
+			_blockedKeywordDog.getBlockedKeywordsPage(
+				keyword, page, size, sorts));
 	}
 
 	@PostMapping
@@ -91,13 +92,14 @@ public class BlockedKeywordsRestController extends BaseRestController {
 	}
 
 	private PageDTO<BlockedKeywordDTO> _toPageDTO(
-		Page<BlockedKeyword> blockedKeywords) {
+		Page<BlockedKeyword> blockedKeywordsPage) {
 
 		return new PageDTO<>(
-			"_embedded", new BlockedKeywordDTO(blockedKeywords.getContent()),
-			blockedKeywords.getNumber(), blockedKeywords.getSize(),
-			blockedKeywords.getTotalElements(),
-			blockedKeywords.getTotalPages());
+			"_embedded",
+			new BlockedKeywordDTO(blockedKeywordsPage.getContent()),
+			blockedKeywordsPage.getNumber(), blockedKeywordsPage.getSize(),
+			blockedKeywordsPage.getTotalElements(),
+			blockedKeywordsPage.getTotalPages());
 	}
 
 	@Autowired

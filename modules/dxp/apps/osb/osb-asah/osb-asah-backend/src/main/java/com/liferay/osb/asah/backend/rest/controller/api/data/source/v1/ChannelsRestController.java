@@ -61,7 +61,7 @@ public class ChannelsRestController {
 		throws Exception {
 
 		return _toPageDTO(
-			_channelDog.getChannels(filterString, page, size, sorts));
+			_channelDog.getChannelsPage(filterString, page, size, sorts));
 	}
 
 	@PatchMapping("/{id}")
@@ -138,11 +138,11 @@ public class ChannelsRestController {
 		return ListUtil.map(channels, ChannelDTO::new);
 	}
 
-	private PageDTO<ChannelDTO> _toPageDTO(Page<Channel> channels) {
+	private PageDTO<ChannelDTO> _toPageDTO(Page<Channel> channelsPage) {
 		return new PageDTO<>(
-			"_embedded", new ChannelDTO(channels.getContent()),
-			channels.getNumber(), channels.getSize(),
-			channels.getTotalElements(), channels.getTotalPages());
+			"_embedded", new ChannelDTO(channelsPage.getContent()),
+			channelsPage.getNumber(), channelsPage.getSize(),
+			channelsPage.getTotalElements(), channelsPage.getTotalPages());
 	}
 
 	@Autowired

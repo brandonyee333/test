@@ -105,7 +105,7 @@ public class ChannelsRestController extends BaseRestController {
 		throws Exception {
 
 		return _toPageDTO(
-			_channelDog.getChannels(filterString, page, size, sorts));
+			_channelDog.getChannelsPage(filterString, page, size, sorts));
 	}
 
 	@PatchMapping("/{id}")
@@ -148,11 +148,11 @@ public class ChannelsRestController extends BaseRestController {
 			_channelDog.addChannel(jsonObject.getString("name")));
 	}
 
-	private PageDTO<ChannelDTO> _toPageDTO(Page<Channel> channels) {
+	private PageDTO<ChannelDTO> _toPageDTO(Page<Channel> channelsPage) {
 		return new PageDTO<>(
-			"_embedded", new ChannelDTO(channels.getContent()),
-			channels.getNumber(), channels.getSize(),
-			channels.getTotalElements(), channels.getTotalPages());
+			"_embedded", new ChannelDTO(channelsPage.getContent()),
+			channelsPage.getNumber(), channelsPage.getSize(),
+			channelsPage.getTotalElements(), channelsPage.getTotalPages());
 	}
 
 	@Autowired

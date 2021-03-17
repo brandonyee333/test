@@ -85,20 +85,20 @@ public class ActivityGroupsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		Page<ActivityGroup> activityGroups =
-			_activityGroupDog.searchActivityGroups(
+		Page<ActivityGroup> activityGroupsPage =
+			_activityGroupDog.searchActivityGroupsPage(
 				FilterUtil.getLong(filterString, "channelId"),
 				FilterUtil.getEndDate(filterString, "day"),
 				FilterUtil.getStartDate(filterString, "day"),
 				FilterUtil.getLong(filterString, "ownerId"), page, size, sorts);
 
 		if (!StringUtils.isEmpty(expand)) {
-			if (activityGroups.isEmpty()) {
-				return _toPageDTO(activityGroups);
+			if (activityGroupsPage.isEmpty()) {
+				return _toPageDTO(activityGroupsPage);
 			}
 
 			Map<String, ActivityGroupDTO> activityGroupDTOs = Stream.of(
-				activityGroups.getContent()
+				activityGroupsPage.getContent()
 			).flatMap(
 				List::stream
 			).map(
@@ -114,10 +114,10 @@ public class ActivityGroupsRestController extends BaseRestController {
 
 			return _toPageDTO(
 				new ActivityGroupDTO(activityGroupDTOs.values()),
-				activityGroups);
+				activityGroupsPage);
 		}
 
-		return _toPageDTO(activityGroups);
+		return _toPageDTO(activityGroupsPage);
 	}
 
 	private void _addExpansion(
@@ -275,19 +275,21 @@ public class ActivityGroupsRestController extends BaseRestController {
 	}
 
 	private PageDTO<ActivityGroupDTO> _toPageDTO(
-		ActivityGroupDTO activityGroupDTO, Page<ActivityGroup> activityGroups) {
+		ActivityGroupDTO activityGroupDTO,
+		Page<ActivityGroup> activityGroupsPage) {
 
 		return new PageDTO<>(
-			"_embedded", activityGroupDTO, activityGroups.getNumber(),
-			activityGroups.getSize(), activityGroups.getTotalElements(),
-			activityGroups.getTotalPages());
+			"_embedded", activityGroupDTO, activityGroupsPage.getNumber(),
+			activityGroupsPage.getSize(), activityGroupsPage.getTotalElements(),
+			activityGroupsPage.getTotalPages());
 	}
 
 	private PageDTO<ActivityGroupDTO> _toPageDTO(
-		Page<ActivityGroup> activityGroups) {
+		Page<ActivityGroup> activityGroupsPage) {
 
 		return _toPageDTO(
-			new ActivityGroupDTO(activityGroups.getContent()), activityGroups);
+			new ActivityGroupDTO(activityGroupsPage.getContent()),
+			activityGroupsPage);
 	}
 
 	private static final Log _log = LogFactory.getLog(

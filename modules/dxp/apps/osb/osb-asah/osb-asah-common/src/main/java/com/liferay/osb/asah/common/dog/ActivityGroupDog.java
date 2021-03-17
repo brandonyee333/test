@@ -85,7 +85,7 @@ public class ActivityGroupDog {
 				"There is no activity group with ID " + activityGroupId));
 	}
 
-	public Page<ActivityGroup> searchActivityGroups(
+	public Page<ActivityGroup> searchActivityGroupsPage(
 		Long channelId, Date endDayDate, Date startDayDate, Long ownerId,
 		int page, int size, String[] sorts) {
 

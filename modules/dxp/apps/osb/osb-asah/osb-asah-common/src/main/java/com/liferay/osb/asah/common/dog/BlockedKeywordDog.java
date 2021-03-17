@@ -93,7 +93,7 @@ public class BlockedKeywordDog extends BaseFaroInfoDog {
 			_normalizeKeywords(keywords));
 	}
 
-	public Page<BlockedKeyword> getBlockedKeywords(
+	public Page<BlockedKeyword> getBlockedKeywordsPage(
 		String keyword, int page, int size, String[] sorts) {
 
 		Sort sort = _getSort(sorts);

@@ -197,23 +197,6 @@ public class DataSourceDog {
 			_dataSourceRepository.findAllById(dataSourceIds));
 	}
 
-	public Page<DataSource> getDataSources(
-		List<Long> channelIds, String credentialType, List<String> names,
-		String providerType, List<String> searchNames, List<String> states,
-		Boolean url, Boolean workspaceURL, int page, int size, String[] sorts) {
-
-		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
-
-		return PageableExecutionUtils.getPage(
-			_dataSourceRepository.searchDataSources(
-				channelIds, credentialType, names, providerType, searchNames,
-				states, url, workspaceURL, pageRequest),
-			pageRequest,
-			() -> _dataSourceRepository.countDataSources(
-				channelIds, credentialType, names, providerType, searchNames,
-				states, url, workspaceURL));
-	}
-
 	public List<DataSource> getDataSources(String providerType) {
 		return _dataSourceRepository.findByProviderType(providerType);
 	}
@@ -242,6 +225,23 @@ public class DataSourceDog {
 		}
 
 		return _dataSourceRepository.findAll(_getPageable(size, sort));
+	}
+
+	public Page<DataSource> getDataSourcesPage(
+		List<Long> channelIds, String credentialType, List<String> names,
+		String providerType, List<String> searchNames, List<String> states,
+		Boolean url, Boolean workspaceURL, int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_dataSourceRepository.searchDataSources(
+				channelIds, credentialType, names, providerType, searchNames,
+				states, url, workspaceURL, pageRequest),
+			pageRequest,
+			() -> _dataSourceRepository.countDataSources(
+				channelIds, credentialType, names, providerType, searchNames,
+				states, url, workspaceURL));
 	}
 
 	public boolean isAnalyticsConfigured() {

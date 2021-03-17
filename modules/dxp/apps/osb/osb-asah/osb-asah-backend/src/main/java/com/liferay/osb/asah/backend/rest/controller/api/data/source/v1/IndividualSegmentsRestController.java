@@ -259,12 +259,12 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			}
 
 			return _toPageDTO(
-				_membershipDog.getMemberships(
+				_membershipDog.getMembershipsPage(
 					individualIds, id, "ACTIVE", page, size, sorts));
 		}
 
 		return _toPageDTO(
-			_membershipDog.getMemberships(id, "ACTIVE", page, size, sorts));
+			_membershipDog.getMembershipsPage(id, "ACTIVE", page, size, sorts));
 	}
 
 	@PostMapping
@@ -485,11 +485,14 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		return false;
 	}
 
-	private PageDTO<MembershipDTO> _toPageDTO(Page<Membership> memberships) {
+	private PageDTO<MembershipDTO> _toPageDTO(
+		Page<Membership> membershipsPage) {
+
 		return new PageDTO<>(
-			"_embedded", new MembershipDTO(memberships.getContent()),
-			memberships.getNumber(), memberships.getSize(),
-			memberships.getTotalElements(), memberships.getTotalPages());
+			"_embedded", new MembershipDTO(membershipsPage.getContent()),
+			membershipsPage.getNumber(), membershipsPage.getSize(),
+			membershipsPage.getTotalElements(),
+			membershipsPage.getTotalPages());
 	}
 
 	private static final Log _log = LogFactory.getLog(

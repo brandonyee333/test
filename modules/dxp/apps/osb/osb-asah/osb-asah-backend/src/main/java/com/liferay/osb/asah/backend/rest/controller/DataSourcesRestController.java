@@ -122,7 +122,7 @@ public class DataSourcesRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		Page<DataSource> dataSources = _dataSourceDog.getDataSources(
+		Page<DataSource> dataSourcesPage = _dataSourceDog.getDataSourcesPage(
 			FilterUtil.getLongValues(filterString, "channelId", false),
 			FilterUtil.getString(filterString, "credentials/type"),
 			FilterUtil.getStringValues(filterString, "name", false),
@@ -134,7 +134,7 @@ public class DataSourcesRestController extends BaseRestController {
 			sorts);
 
 		return _toPageDTO(
-			dataSources.map(
+			dataSourcesPage.map(
 				dataSource -> {
 					_setLastSyncTime(dataSource);
 
@@ -817,11 +817,14 @@ public class DataSourcesRestController extends BaseRestController {
 		}
 	}
 
-	private PageDTO<DataSourceDTO> _toPageDTO(Page<DataSource> dataSources) {
+	private PageDTO<DataSourceDTO> _toPageDTO(
+		Page<DataSource> dataSourcesPage) {
+
 		return new PageDTO<>(
-			"_embedded", new DataSourceDTO(dataSources.getContent()),
-			dataSources.getNumber(), dataSources.getSize(),
-			dataSources.getTotalElements(), dataSources.getTotalPages());
+			"_embedded", new DataSourceDTO(dataSourcesPage.getContent()),
+			dataSourcesPage.getNumber(), dataSourcesPage.getSize(),
+			dataSourcesPage.getTotalElements(),
+			dataSourcesPage.getTotalPages());
 	}
 
 	private static final Log _log = LogFactory.getLog(
