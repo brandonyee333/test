@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.model;
 
 import java.util.Objects;
 
+import org.json.JSONObject;
+
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -35,18 +37,20 @@ public class AsahTask implements Persistable<Long> {
 		_id = id;
 	}
 
-	public AsahTask(String className, String context, String projectId) {
+	public AsahTask(
+		String className, JSONObject contextJSONObject, String projectId) {
+
 		_className = className;
-		_context = context;
+		_contextJSONObject = contextJSONObject;
 		_projectId = projectId;
 	}
 
 	public AsahTask(
-		String className, String context, String cronExpression,
+		String className, JSONObject contextJSONObject, String cronExpression,
 		String projectId) {
 
 		_className = className;
-		_context = context;
+		_contextJSONObject = contextJSONObject;
 		_cronExpression = cronExpression;
 		_projectId = projectId;
 	}
@@ -64,7 +68,7 @@ public class AsahTask implements Persistable<Long> {
 		AsahTask dataSource = (AsahTask)obj;
 
 		if (Objects.equals(_className, dataSource._className) &&
-			Objects.equals(_context, dataSource._context) &&
+			Objects.equals(_contextJSONObject, dataSource._contextJSONObject) &&
 			Objects.equals(_cronExpression, dataSource._cronExpression) &&
 			Objects.equals(_id, dataSource._id) &&
 			Objects.equals(_projectId, dataSource._projectId)) {
@@ -81,8 +85,8 @@ public class AsahTask implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getContext() {
-		return _context;
+	public JSONObject getContextJSONObject() {
+		return _contextJSONObject;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -105,7 +109,7 @@ public class AsahTask implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_className, _context, _cronExpression, _id, _projectId);
+			_className, _contextJSONObject, _cronExpression, _id, _projectId);
 	}
 
 	@Override
@@ -121,8 +125,8 @@ public class AsahTask implements Persistable<Long> {
 		_className = className;
 	}
 
-	public void setContext(String context) {
-		_context = context;
+	public void setContextJSONObject(JSONObject contextJSONObject) {
+		_contextJSONObject = contextJSONObject;
 	}
 
 	public void setCronExpression(String cronExpression) {
@@ -145,7 +149,7 @@ public class AsahTask implements Persistable<Long> {
 	private String _className;
 
 	@Transient
-	private String _context;
+	private JSONObject _contextJSONObject;
 
 	@Transient
 	private String _cronExpression;

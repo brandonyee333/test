@@ -50,7 +50,7 @@ public class AsahTaskDogTest {
 
 		Assert.assertEquals("TestNanite", asahTask.getClassName());
 
-		JSONObject contextJSONObject = new JSONObject(asahTask.getContext());
+		JSONObject contextJSONObject = asahTask.getContextJSONObject();
 
 		Assert.assertEquals("bar", contextJSONObject.getString("foo"));
 	}

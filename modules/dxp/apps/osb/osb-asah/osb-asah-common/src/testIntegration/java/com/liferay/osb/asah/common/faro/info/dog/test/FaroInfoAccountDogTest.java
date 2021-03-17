@@ -109,7 +109,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 		AsahTask asahTask = asahTasks.get(0);
 
-		JSONObject contextJSONObject = new JSONObject(asahTask.getContext());
+		JSONObject contextJSONObject = asahTask.getContextJSONObject();
 
 		Assert.assertNotNull(
 			contextJSONObject.getString("individualSegmentId"));
@@ -212,8 +212,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 
 		for (AsahTask asahTask : asahTasks) {
-			JSONObject contextJSONObject = new JSONObject(
-				asahTask.getContext());
+			JSONObject contextJSONObject = asahTask.getContextJSONObject();
 
 			Assert.assertNotNull(contextJSONObject.getString("dateModified"));
 
@@ -261,7 +260,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 		AsahTask asahTask = asahTasks.get(0);
 
-		JSONObject contextJSONObject = new JSONObject(asahTask.getContext());
+		JSONObject contextJSONObject = asahTask.getContextJSONObject();
 
 		Assert.assertEquals(
 			addFilter, contextJSONObject.getString("addFilter"));

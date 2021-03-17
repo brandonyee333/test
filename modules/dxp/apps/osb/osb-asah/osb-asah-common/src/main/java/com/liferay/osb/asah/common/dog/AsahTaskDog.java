@@ -98,7 +98,7 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 
 		return scheduleAsahTask(
 			new AsahTask(
-				className, contextJSONObject.toString(),
+				className, contextJSONObject,
 				ProjectIdThreadLocal.getProjectId()));
 	}
 
@@ -107,7 +107,7 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 
 		return scheduleAsahTask(
 			new AsahTask(
-				className, contextJSONObject.toString(), cronExpression,
+				className, contextJSONObject, cronExpression,
 				ProjectIdThreadLocal.getProjectId()));
 	}
 

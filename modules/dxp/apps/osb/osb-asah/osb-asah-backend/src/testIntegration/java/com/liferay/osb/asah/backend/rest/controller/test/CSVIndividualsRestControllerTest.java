@@ -85,7 +85,7 @@ public class CSVIndividualsRestControllerTest {
 			).put(
 				"type", "reprocess"
 			),
-			new JSONObject(asahTask.getContext()), false);
+			asahTask.getContextJSONObject(), false);
 	}
 
 	private void _assertIds(JSONArray jsonArray) {

@@ -132,7 +132,7 @@ public class AdminRestControllerTest {
 			).put(
 				"type", "nanite"
 			),
-			new JSONObject(asahTask.getContext()), false);
+			asahTask.getContextJSONObject(), false);
 	}
 
 	@ElasticsearchIndex(

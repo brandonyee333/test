@@ -82,7 +82,7 @@ public class FaroInfoCSVIndividualDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"type", "reprocess"
 			),
-			new JSONObject(asahTask.getContext()), false);
+			asahTask.getContextJSONObject(), false);
 	}
 
 	private void _assertIds(JSONArray jsonArray) {

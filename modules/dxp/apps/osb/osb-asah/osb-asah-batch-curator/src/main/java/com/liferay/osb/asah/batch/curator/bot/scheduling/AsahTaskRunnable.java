@@ -47,7 +47,7 @@ public class AsahTaskRunnable implements Runnable {
 		_asahTaskManager = asahTaskManager;
 
 		_asahTaskId = asahTask.getId();
-		_contextJSONObject = new JSONObject(asahTask.getContext());
+		_contextJSONObject = asahTask.getContextJSONObject();
 		_naniteClassNames = new String[] {asahTask.getClassName()};
 
 		_projectId = asahTask.getProjectId();
