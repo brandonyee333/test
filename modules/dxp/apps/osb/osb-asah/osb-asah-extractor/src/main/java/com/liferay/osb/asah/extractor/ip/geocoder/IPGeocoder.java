@@ -66,7 +66,11 @@ public class IPGeocoder {
 				return IPInfo.LOCAL_NETWORK;
 			}
 		}
-		catch (UnknownHostException uhe) {
+		catch (UnknownHostException unknownHostException) {
+			if (_logger.isDebugEnabled()) {
+				_logger.debug(
+					unknownHostException.getMessage(), unknownHostException);
+			}
 		}
 
 		return null;
