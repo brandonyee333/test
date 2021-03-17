@@ -14,10 +14,14 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoCSVIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,26 +67,22 @@ public class FaroInfoCSVIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		_assertIds(csvIndividualsJSONArray);
 
-		JSONArray asahTasksJSONArray = faroInfoElasticsearchInvoker.get(
-			"OSBAsahTasks");
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 
-		Assert.assertEquals(1, asahTasksJSONArray.length());
+		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
+
+		AsahTask asahTask = asahTasks.get(0);
+
+		Assert.assertEquals("CSVIndividualsNanite", asahTask.getClassName());
+		Assert.assertNotNull(asahTask.getId());
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
-				JSONUtil.put(
-					"className", "CSVIndividualsNanite"
-				).put(
-					"context",
-					JSONUtil.put(
-						"dataSourceId", "123"
-					).put(
-						"type", "reprocess"
-					)
-				)),
-			asahTasksJSONArray, false);
-
-		_assertIds(asahTasksJSONArray);
+				"dataSourceId", "123"
+			).put(
+				"type", "reprocess"
+			),
+			new JSONObject(asahTask.getContext()), false);
 	}
 
 	private void _assertIds(JSONArray jsonArray) {
@@ -92,6 +92,9 @@ public class FaroInfoCSVIndividualDogTest extends BaseFaroInfoDogTestCase {
 			Assert.assertNotNull(jsonObject.getString("id"));
 		}
 	}
+
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
 	private FaroInfoCSVIndividualDog _faroInfoCSVIndividualDog;

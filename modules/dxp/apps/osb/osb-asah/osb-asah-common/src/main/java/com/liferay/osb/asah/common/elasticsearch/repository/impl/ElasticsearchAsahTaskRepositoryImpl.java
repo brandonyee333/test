@@ -42,6 +42,19 @@ public class ElasticsearchAsahTaskRepositoryImpl
 	implements AsahTaskRepository {
 
 	@Override
+	public List<AsahTask> findByClassName(String className) {
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							QueryBuilders.termQuery("className", className));
+						searchSourceBuilder.size(ELASTICSEARCH_MAX_SIZE);
+					})));
+	}
+
+	@Override
 	public List<AsahTask> findByCronExpressionIsNotNull() {
 		return toList(
 			new JSONArray(

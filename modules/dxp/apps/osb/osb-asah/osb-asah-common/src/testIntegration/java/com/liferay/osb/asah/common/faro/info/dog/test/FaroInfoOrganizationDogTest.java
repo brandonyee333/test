@@ -16,14 +16,18 @@ package com.liferay.osb.asah.common.faro.info.dog.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOrganizationDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.DXPRawTestUtil;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
+
+import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -124,12 +128,11 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 			0,
 			faroInfoElasticsearchInvoker.count(
 				"organizations", QueryBuilders.matchAllQuery()));
-		Assert.assertEquals(
-			1,
-			faroInfoElasticsearchInvoker.count(
-				"OSBAsahTasks",
-				QueryBuilders.termQuery(
-					"className", "UpdateDynamicMembershipsNanite")));
+
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasksByClassName(
+			"UpdateDynamicMembershipsNanite");
+
+		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
 	}
 
 	@Test
@@ -167,13 +170,14 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 				customContextJSONObject, "JSONArray/dateFounded", "Object/0",
 				"Object/value"));
 
-		Assert.assertEquals(
-			1,
-			faroInfoElasticsearchInvoker.count(
-				"OSBAsahTasks",
-				QueryBuilders.termQuery(
-					"className", "UpdateDynamicMembershipsNanite")));
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasksByClassName(
+			"UpdateDynamicMembershipsNanite");
+
+		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
 	}
+
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
 	private FaroInfoOrganizationDog _faroInfoOrganizationDog;

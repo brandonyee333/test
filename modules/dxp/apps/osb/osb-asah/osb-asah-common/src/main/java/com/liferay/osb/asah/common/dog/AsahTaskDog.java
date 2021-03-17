@@ -24,6 +24,8 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.collections4.IterableUtils;
+
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,14 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no Asah Task with ID " + asahTaskId));
+	}
+
+	public List<AsahTask> getAsahTasks() {
+		return IterableUtils.toList(_asahTaskRepository.findAll());
+	}
+
+	public List<AsahTask> getAsahTasksByClassName(String className) {
+		return _asahTaskRepository.findByClassName(className);
 	}
 
 	public List<AsahTask> getImmediateAsahTasks() {

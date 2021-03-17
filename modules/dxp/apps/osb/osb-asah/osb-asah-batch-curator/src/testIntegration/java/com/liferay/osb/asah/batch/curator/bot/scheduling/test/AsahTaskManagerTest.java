@@ -18,13 +18,13 @@ import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskManager;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskRunnable;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import org.elasticsearch.index.query.QueryBuilders;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,10 +52,9 @@ public class AsahTaskManagerTest {
 	public void testDeleteAsahTask() {
 		_asahTaskManager.deleteAsahTask(450553576847486527L);
 
-		Assert.assertEquals(
-			3,
-			_elasticsearchInvoker.count(
-				"OSBAsahTasks", QueryBuilders.matchAllQuery()));
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
+
+		Assert.assertEquals(asahTasks.toString(), 3, asahTasks.size());
 	}
 
 	@Test
@@ -165,12 +164,12 @@ public class AsahTaskManagerTest {
 	}
 
 	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
 	private AsahTaskManager _asahTaskManager;
 
 	@MockBean
 	private AsahTaskScheduler _asahTaskScheduler;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 }

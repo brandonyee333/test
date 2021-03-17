@@ -31,6 +31,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AsahTaskRepository extends CrudRepository<AsahTask, Long> {
 
+	public List<AsahTask> findByClassName(String className);
+
 	public List<AsahTask> findByCronExpressionIsNotNull();
 
 	public List<AsahTask> findByCronExpressionIsNull();

@@ -16,8 +16,10 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.rest.controller.AdminRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -25,7 +27,7 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import org.elasticsearch.index.query.QueryBuilders;
+import java.util.List;
 
 import org.everit.json.schema.ValidationException;
 
@@ -113,22 +115,24 @@ public class AdminRestControllerTest {
 					"type", "nanite"
 				)));
 
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
+
+		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
+
+		AsahTask asahTask = asahTasks.get(0);
+
+		Assert.assertEquals(
+			"IndividualInterestScoresNanite", asahTask.getClassName());
+		Assert.assertNull(asahTask.getCronExpression());
+		Assert.assertNotNull(asahTask.getId());
+
 		JSONAssert.assertEquals(
 			JSONUtil.put(
-				"className", "IndividualInterestScoresNanite"
+				"dataSourceId", "123"
 			).put(
-				"context",
-				JSONUtil.put(
-					"dataSourceId", "123"
-				).put(
-					"type", "nanite"
-				)
+				"type", "nanite"
 			),
-			_elasticsearchInvoker.fetch(
-				"OSBAsahTasks",
-				QueryBuilders.termQuery(
-					"className", "IndividualInterestScoresNanite")),
-			false);
+			new JSONObject(asahTask.getContext()), false);
 	}
 
 	@ElasticsearchIndex(
@@ -180,6 +184,9 @@ public class AdminRestControllerTest {
 
 	@Autowired
 	private AdminRestController _adminRestController;
+
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
 	private CacheManager _cacheManager;

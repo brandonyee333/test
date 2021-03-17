@@ -15,13 +15,13 @@
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import org.json.JSONArray;
+import java.util.List;
+
 import org.json.JSONObject;
 
 import org.junit.Assert;
@@ -42,26 +42,20 @@ public class AsahTaskDogTest {
 	public void test() {
 		_asahTaskDog.scheduleAsahTask("TestNanite", JSONUtil.put("foo", "bar"));
 
-		JSONArray asahTasksJSONArray = _elasticsearchInvoker.get(
-			"OSBAsahTasks");
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks();
 
-		Assert.assertEquals(1, asahTasksJSONArray.length());
+		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
 
-		JSONObject asahTaskJSONObject = asahTasksJSONArray.getJSONObject(0);
+		AsahTask asahTask = asahTasks.get(0);
 
-		Assert.assertEquals(
-			"TestNanite", asahTaskJSONObject.getString("className"));
+		Assert.assertEquals("TestNanite", asahTask.getClassName());
 
-		JSONObject contextJSONObject = asahTaskJSONObject.getJSONObject(
-			"context");
+		JSONObject contextJSONObject = new JSONObject(asahTask.getContext());
 
 		Assert.assertEquals("bar", contextJSONObject.getString("foo"));
 	}
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 }

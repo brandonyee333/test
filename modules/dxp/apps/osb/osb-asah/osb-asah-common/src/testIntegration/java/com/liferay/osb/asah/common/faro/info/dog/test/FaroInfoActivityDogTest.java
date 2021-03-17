@@ -14,13 +14,15 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import org.elasticsearch.index.query.QueryBuilders;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -77,12 +79,14 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 				activityGroupJSONObject, assetJSONObject, "pageViewed",
 				new String[0]));
 
-		Assert.assertTrue(
-			faroInfoElasticsearchInvoker.exists(
-				"OSBAsahTasks",
-				QueryBuilders.termQuery(
-					"className", "UpdateDynamicMembershipsNanite")));
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasksByClassName(
+			"UpdateDynamicMembershipsNanite");
+
+		Assert.assertFalse(asahTasks.isEmpty());
 	}
+
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
