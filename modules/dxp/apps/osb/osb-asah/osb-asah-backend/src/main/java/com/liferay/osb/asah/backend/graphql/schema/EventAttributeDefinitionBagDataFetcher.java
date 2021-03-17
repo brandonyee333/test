@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 /**
@@ -47,7 +48,7 @@ public class EventAttributeDefinitionBagDataFetcher
 
 		String keyword = dataFetchingEnvironment.getArgument("keyword");
 
-		List<EventAttributeDefinition> eventDefinitions =
+		Page<EventAttributeDefinition> eventDefinitions =
 			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
 				keyword, dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
@@ -63,9 +64,7 @@ public class EventAttributeDefinitionBagDataFetcher
 			);
 
 		return new ResultBag<>(
-			eventAttributeDefinitionDTOs,
-			_eventAttributeDefinitionDog.countEventAttributeDefinitions(
-				keyword));
+			eventAttributeDefinitionDTOs, eventDefinitions.getTotalElements());
 	}
 
 	@Autowired

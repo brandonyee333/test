@@ -19,13 +19,15 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -85,14 +87,18 @@ public class EventDefinitionDog {
 				"There is no event definition with ID " + eventDefinitionId));
 	}
 
-	public List<EventDefinition> getEventDefinitions(
+	public Page<EventDefinition> getEventDefinitions(
 		String keyword, int page, int size, Sort sort,
 		EventDefinition.Type type) {
 
 		_validate(sort);
 
-		return _eventDefinitionRepository.searchEventDefinitions(
-			keyword, page, size, sort, type);
+		return PageableExecutionUtils.getPage(
+			_eventDefinitionRepository.searchEventDefinitions(
+				keyword, page, size, sort, type),
+			PageRequest.of(page, size, sort),
+			() -> _eventDefinitionRepository.countEventDefinitions(
+				keyword, type));
 	}
 
 	public EventDefinition updateEventDefinition(

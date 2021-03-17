@@ -30,6 +30,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -189,12 +190,13 @@ public class EventDefinitionDogTest {
 	}
 
 	private void _assertEventDefinitions(
-		List<EventDefinition> actualEventDefinitions,
+		Page<EventDefinition> actualEventDefinitions,
 		List<String> expectedEventDefinitionNames) {
 
 		Assert.assertEquals(
 			actualEventDefinitions.toString(),
-			expectedEventDefinitionNames.size(), actualEventDefinitions.size());
+			expectedEventDefinitionNames.size(),
+			actualEventDefinitions.getNumberOfElements());
 
 		for (EventDefinition actualEventDefinition : actualEventDefinitions) {
 			Assert.assertTrue(

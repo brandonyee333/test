@@ -36,7 +36,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -140,19 +142,27 @@ public class EventAttributeDefinitionDog {
 					eventAttributeDefinitionId));
 	}
 
-	public List<EventAttributeDefinition> getEventAttributeDefinitions(
+	public Page<EventAttributeDefinition> getEventAttributeDefinitions(
 		String name, int page, int size, Sort sort) {
 
 		_validate(sort);
 
 		if (name != null) {
-			return _eventAttributeDefinitionRepository.
-				findByNameContainingIgnoreCase(
-					name, PageRequest.of(page, size, sort));
+			return PageableExecutionUtils.getPage(
+				_eventAttributeDefinitionRepository.
+					findByNameContainingIgnoreCase(
+						name, PageRequest.of(page, size, sort)),
+				PageRequest.of(page, size, sort),
+				() ->
+					_eventAttributeDefinitionRepository.
+						countByNameContainingIgnoreCase(name));
 		}
 
-		return _eventAttributeDefinitionRepository.findAll(
-			PageRequest.of(page, size, sort));
+		return PageableExecutionUtils.getPage(
+			_eventAttributeDefinitionRepository.findAll(
+				PageRequest.of(page, size, sort)),
+			PageRequest.of(page, size, sort),
+			_eventAttributeDefinitionRepository::count);
 	}
 
 	public List<EventAttributeDefinition>
