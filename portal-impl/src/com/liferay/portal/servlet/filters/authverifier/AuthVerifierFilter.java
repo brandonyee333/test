@@ -159,10 +159,14 @@ public class AuthVerifierFilter extends BasePortalFilter {
 			return;
 		}
 
-		AccessControlUtil.initAccessControlContext(
-			httpServletRequest, httpServletResponse, _initParametersMap);
+		AuthVerifierResult.State state = null;
 
-		AuthVerifierResult.State state = AccessControlUtil.verifyRequest();
+		synchronized (AccessControlUtil.getAccessControl()) {
+			AccessControlUtil.initAccessControlContext(
+				httpServletRequest, httpServletResponse, _initParametersMap);
+
+			state = AccessControlUtil.verifyRequest();
+		}
 
 		AccessControlContext accessControlContext =
 			AccessControlUtil.getAccessControlContext();
