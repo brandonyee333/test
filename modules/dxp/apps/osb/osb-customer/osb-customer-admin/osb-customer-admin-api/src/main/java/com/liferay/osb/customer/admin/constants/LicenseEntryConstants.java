@@ -24,6 +24,8 @@ import com.liferay.portal.kernel.util.StringPool;
  */
 public class LicenseEntryConstants {
 
+	public static final String NAME_DIGITAL_ENTERPRISE_DEVELOPMENT = "Digital Enterprise Development";
+
 	public static final String TYPE_BACKUP = "backup";
 
 	public static final String TYPE_CLUSTER = "cluster";
