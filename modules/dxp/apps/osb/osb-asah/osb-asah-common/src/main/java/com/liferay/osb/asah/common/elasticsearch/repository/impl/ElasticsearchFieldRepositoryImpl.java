@@ -25,6 +25,9 @@ import java.util.List;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +44,13 @@ public class ElasticsearchFieldRepositoryImpl
 	implements FieldRepository {
 
 	@Override
+	public boolean existsByDataSourceId(Long dataSourceId) {
+		return _faroInfoElasticsearchInvoker.exists(
+			getCollectionName(),
+			QueryBuilders.termQuery("dataSourceId", dataSourceId));
+	}
+
+	@Override
 	public List<Field>
 		findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
 			String context, Long dataSourceId, String name, Long ownerId,
@@ -49,10 +59,6 @@ public class ElasticsearchFieldRepositoryImpl
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("context", context)
 		).filter(
-			QueryBuilders.termQuery("name", name)
-		).filter(
-			QueryBuilders.termQuery("ownerId", String.valueOf(ownerId))
-		).filter(
 			QueryBuilders.termQuery("ownerType", ownerType)
 		);
 
@@ -60,6 +66,15 @@ public class ElasticsearchFieldRepositoryImpl
 			boolQueryBuilder.filter(
 				QueryBuilders.termQuery(
 					"dataSourceId", String.valueOf(dataSourceId)));
+		}
+
+		if (name != null) {
+			boolQueryBuilder.filter(QueryBuilders.termQuery("name", name));
+		}
+
+		if (ownerId != null) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId)));
 		}
 
 		return toList(
@@ -101,19 +116,45 @@ public class ElasticsearchFieldRepositoryImpl
 	}
 
 	@Override
-	public Field findFirstByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
-		String context, Long dataSourceId, String name, Long ownerId,
-		String ownerType) {
+	public List<Field> findByContextAndOwnerIdAndOwnerType(
+		String context, Long ownerId, String ownerType) {
 
-		List<Field> fields =
-			findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
-				context, dataSourceId, name, ownerId, ownerType);
+		return findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
+			context, null, null, ownerId, ownerType);
+	}
 
-		if (fields.isEmpty()) {
-			return null;
+	@Override
+	public List<Field> findByOwnerIdGroupByMaxModifiedDateAndName(
+		Long ownerId) {
+
+		JSONObject contextJSONObject = null;
+
+		if (_faroInfoElasticsearchInvoker.exists(
+				"accounts", String.valueOf(ownerId))) {
+
+			JSONObject jsonObject = _faroInfoElasticsearchInvoker.get(
+				"accounts", String.valueOf(ownerId));
+
+			contextJSONObject = jsonObject.optJSONObject("organization");
+		}
+		else {
+			JSONObject jsonObject = _faroInfoElasticsearchInvoker.get(
+				"individuals", String.valueOf(ownerId));
+
+			contextJSONObject = jsonObject.optJSONObject("demographics");
 		}
 
-		return fields.get(0);
+		JSONArray fieldsJSONArray = new JSONArray();
+
+		if (contextJSONObject != null) {
+			for (String key : contextJSONObject.keySet()) {
+				JSONArray jsonArray = contextJSONObject.getJSONArray(key);
+
+				fieldsJSONArray.put(jsonArray.getJSONObject(0));
+			}
+		}
+
+		return toList(fieldsJSONArray);
 	}
 
 	@Override

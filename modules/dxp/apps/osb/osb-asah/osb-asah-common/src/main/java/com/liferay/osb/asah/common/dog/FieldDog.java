@@ -246,6 +246,11 @@ public class FieldDog {
 				dataSource.getId());
 	}
 
+	public List<Field> getOwnerIdFields(Long ownerId) {
+		return _fieldRepository.findByOwnerIdGroupByMaxModifiedDateAndName(
+			ownerId);
+	}
+
 	public JSONObject updateContextFields(
 			String context, JSONObject dataJSONObject, DataSource dataSource,
 			JSONObject ownerJSONObject, String ownerType,

@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -30,6 +31,8 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public interface FieldRepository extends CrudRepository<Field, Long> {
+
+	public boolean existsByDataSourceId(Long dataSourceId);
 
 	public List<Field>
 		findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
@@ -44,8 +47,10 @@ public interface FieldRepository extends CrudRepository<Field, Long> {
 	public List<Field> findByContextAndNameAndOwnerIdAndOwnerType(
 		String context, String name, Long ownerId, String ownerType);
 
-	public Field findFirstByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
-		String context, Long dataSourceId, String name, Long ownerId,
-		String ownerType);
+	public List<Field> findByContextAndOwnerIdAndOwnerType(
+		String context, Long ownerId, String ownerType);
+
+	public List<Field> findByOwnerIdGroupByMaxModifiedDateAndName(
+		@Param("ownerId") Long ownerId);
 
 }

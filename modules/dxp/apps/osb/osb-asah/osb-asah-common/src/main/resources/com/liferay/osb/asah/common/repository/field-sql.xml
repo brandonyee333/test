@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="Field.findByOwnerIdGroupByMaxModifiedDateAndName">
+		<![CDATA[
+			SELECT
+				Field.*
+			FROM
+				Field
+			JOIN
+				(
+					SELECT
+						MAX(Field.modifiedDate) AS maxModifiedDate, Field.name,
+						Field.ownerId
+					FROM
+						Field
+					WHERE
+						Field.ownerId = :ownerId
+					GROUP BY
+						Field.ownerId, Field.name
+				)
+				MaxModifiedDateField ON
+					Field.modifiedDate =
+						MaxModifiedDateField.maxModifiedDate AND
+					Field.name = MaxModifiedDateField.name AND
+					Field.ownerId = MaxModifiedDateField.ownerId
+		]]>
+	</entry>
+</properties>
