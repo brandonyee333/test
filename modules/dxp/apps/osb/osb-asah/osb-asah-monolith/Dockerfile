@@ -2,7 +2,7 @@ FROM adoptopenjdk/openjdk8-openj9:jdk8u232-b09_openj9-0.17.0-alpine-slim AS buil
 
 WORKDIR /builder
 
-COPY ./build/libs/*application.jar app.jar
+COPY ./build/libs/monolith.jar app.jar
 
 RUN java -Djarmode=layertools -jar app.jar extract
 
