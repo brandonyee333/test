@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.dog.AccountDog;
 import com.liferay.osb.asah.backend.dog.IndividualDog;
+import com.liferay.osb.asah.backend.dog.ReportAccountDog;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.model.Account;
@@ -49,7 +49,7 @@ public class ReportRestController extends BaseRestController {
 	public ResultBag<Account> getAccountResultBag(
 		@RequestParam(defaultValue = "") String after) {
 
-		return _accountDog.getAccountResultBag(
+		return _reportAccountDog.getAccountResultBag(
 			_createSearchAfter(after), _PAGE_SIZE,
 			SortBuilderUtil.fieldSort("id"));
 	}
@@ -97,10 +97,10 @@ public class ReportRestController extends BaseRestController {
 	private static final int _PAGE_SIZE = 100;
 
 	@Autowired
-	private AccountDog _accountDog;
+	private IndividualDog _individualDog;
 
 	@Autowired
-	private IndividualDog _individualDog;
+	private ReportAccountDog _reportAccountDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

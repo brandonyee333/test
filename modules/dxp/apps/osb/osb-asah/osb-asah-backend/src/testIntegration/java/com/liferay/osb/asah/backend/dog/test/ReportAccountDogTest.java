@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
-import com.liferay.osb.asah.backend.dog.AccountDog;
+import com.liferay.osb.asah.backend.dog.ReportAccountDog;
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
@@ -43,7 +43,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class AccountDogTest {
+public class ReportAccountDogTest {
 
 	@ElasticsearchIndex(
 		name = "field-mappings", resourcePath = "field_mappings_info.json",
@@ -55,7 +55,7 @@ public class AccountDogTest {
 	)
 	@Test
 	public void testGetAccount() {
-		Account account = _accountDog.getAccount("379649798552539340");
+		Account account = _reportAccountDog.getAccount("379649798552539340");
 
 		Assert.assertEquals(12, account.getActiveIndividualsCount());
 		Assert.assertEquals(
@@ -78,8 +78,8 @@ public class AccountDogTest {
 	)
 	@Test
 	public void testGetAccountsResultBag() {
-		ResultBag<Account> accountResultBag = _accountDog.getAccountResultBag(
-			3, 0);
+		ResultBag<Account> accountResultBag =
+			_reportAccountDog.getAccountResultBag(3, 0);
 
 		Assert.assertEquals(5, accountResultBag.getTotal());
 		Assert.assertEquals(
@@ -113,6 +113,6 @@ public class AccountDogTest {
 	}
 
 	@Autowired
-	private AccountDog _accountDog;
+	private ReportAccountDog _reportAccountDog;
 
 }

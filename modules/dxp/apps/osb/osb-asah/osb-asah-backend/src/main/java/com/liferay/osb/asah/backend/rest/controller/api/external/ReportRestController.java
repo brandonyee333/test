@@ -17,7 +17,6 @@ package com.liferay.osb.asah.backend.rest.controller.api.external;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.backend.dog.AccountDog;
 import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
@@ -25,6 +24,7 @@ import com.liferay.osb.asah.backend.dog.IndividualDog;
 import com.liferay.osb.asah.backend.dog.InterestDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
+import com.liferay.osb.asah.backend.dog.ReportAccountDog;
 import com.liferay.osb.asah.backend.dog.SegmentMetricDog;
 import com.liferay.osb.asah.backend.dog.TechnologyDog;
 import com.liferay.osb.asah.backend.dog.UserDog;
@@ -119,15 +119,16 @@ public class ReportRestController extends BaseRestController {
 	public EntityModel<Account> getAccountEntityModel(
 		@PathVariable String accountId) {
 
-		return _toAccountEntityModel(_accountDog.getAccount(accountId));
+		return _toAccountEntityModel(_reportAccountDog.getAccount(accountId));
 	}
 
 	@GetMapping("/accounts")
 	public ResultBagEntityModel<Account> getAccountResultBagEntityModel(
 		@RequestParam(defaultValue = "0") Integer page) {
 
-		ResultBag<Account> accountResultBag = _accountDog.getAccountResultBag(
-			_PAGE_SIZE, page * _PAGE_SIZE);
+		ResultBag<Account> accountResultBag =
+			_reportAccountDog.getAccountResultBag(
+				_PAGE_SIZE, page * _PAGE_SIZE);
 
 		return _toResultBagEntityModel(
 			_getAccountResultBagEntityModel(page + 1), page,
@@ -1342,9 +1343,6 @@ public class ReportRestController extends BaseRestController {
 		ReportRestController.class);
 
 	@Autowired
-	private AccountDog _accountDog;
-
-	@Autowired
 	private ActivityDog _activityDog;
 
 	@Autowired
@@ -1370,6 +1368,9 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private MetricTypeDog _metricTypeDog;
+
+	@Autowired
+	private ReportAccountDog _reportAccountDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;

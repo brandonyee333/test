@@ -53,7 +53,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class AccountDog {
+public class ReportAccountDog {
 
 	public Account getAccount(String id) {
 		SearchHits searchHits = _dataDog.querySearchHits(
@@ -209,7 +209,7 @@ public class AccountDog {
 		}
 	}
 
-	private static final Log _log = LogFactory.getLog(AccountDog.class);
+	private static final Log _log = LogFactory.getLog(ReportAccountDog.class);
 
 	@Autowired
 	private DataDog _dataDog;
