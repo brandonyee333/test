@@ -213,35 +213,6 @@ public class FieldDog {
 					_objectMapper.convertValue(
 						newFieldJSONObject, Field.class));
 			}
-			else if (_isAllowMultiple(
-						context, dataSourceId, fieldName, ownerType)) {
-
-				Field oldField =
-					_fieldRepository.
-						findFirstByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
-							context, dataSourceId, fieldName, ownerId,
-							ownerType);
-
-				if (oldField == null) {
-					_fieldRepository.save(
-						_objectMapper.convertValue(
-							newFieldJSONObject, Field.class));
-				}
-				else {
-					JSONObject oldFieldJSONObject = _objectMapper.convertValue(
-						oldField, JSONObject.class);
-
-					for (String key : JSONObject.getNames(newFieldJSONObject)) {
-						oldFieldJSONObject.put(
-							key, newFieldJSONObject.get(key));
-					}
-
-					oldField = _objectMapper.convertValue(
-						oldFieldJSONObject, Field.class);
-
-					_fieldRepository.save(oldField);
-				}
-			}
 			else {
 				JSONObject oldFieldJSONObject =
 					oldFieldsJSONArray.getJSONObject(0);
@@ -755,16 +726,10 @@ public class FieldDog {
 					String.valueOf(ownerId), ownerType, dataSourceFieldName,
 					value);
 
-				if (_isAllowMultiple(
-						fieldMappingJSONObject.getJSONObject("strategy"))) {
-
-					newFieldsJSONArray.put(fieldJSONObject);
-				}
-				else if ((newFieldsJSONArray.length() == 0) ||
-						 _isUpdateField(
-							 context, Long.valueOf(dataSourceId),
-							 fieldJSONObject,
-							 newFieldsJSONArray.getJSONObject(0), ownerType)) {
+				if ((newFieldsJSONArray.length() == 0) ||
+					_isUpdateField(
+						context, Long.valueOf(dataSourceId), fieldJSONObject,
+						newFieldsJSONArray.getJSONObject(0), ownerType)) {
 
 					newFieldsJSONArray.put(0, fieldJSONObject);
 				}
@@ -785,20 +750,6 @@ public class FieldDog {
 			fieldMappingsJSONArray.getJSONObject(0);
 
 		return fieldMappingJSONObject.getJSONObject("strategy");
-	}
-
-	private boolean _isAllowMultiple(JSONObject strategyJSONObject) {
-		return Objects.equals(
-			strategyJSONObject.getString("key"), "ALLOW_MULTIPLE");
-	}
-
-	private boolean _isAllowMultiple(
-		String context, Long dataSourceId, String fieldName, String ownerType) {
-
-		JSONObject strategyJSONObject = _getStrategyJSONObject(
-			context, String.valueOf(dataSourceId), fieldName, ownerType);
-
-		return _isAllowMultiple(strategyJSONObject);
 	}
 
 	private boolean _isMultiValueField(
@@ -884,11 +835,7 @@ public class FieldDog {
 
 			String newFieldName = newFieldJSONObject.getString("name");
 
-			if (!_isAllowMultiple(
-					context, dataSourceId, newFieldName, ownerType)) {
-
-				newSingleFieldNames.add(newFieldName);
-			}
+			newSingleFieldNames.add(newFieldName);
 		}
 
 		List<Field> oldFields =
