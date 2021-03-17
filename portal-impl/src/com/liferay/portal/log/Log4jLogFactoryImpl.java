@@ -18,13 +18,21 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactory;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  * @author Brian Wing Shun Chan
  */
 @DoPrivileged
 public class Log4jLogFactoryImpl implements LogFactory {
+
+	public Log4jLogFactoryImpl() {
+		Logger rootLogger = LogManager.getRootLogger();
+
+		rootLogger.setLevel(Level.ERROR);
+	}
 
 	@Override
 	public Log getLog(Class<?> c) {
