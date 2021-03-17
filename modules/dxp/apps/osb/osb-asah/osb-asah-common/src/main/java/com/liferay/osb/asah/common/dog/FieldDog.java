@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,73 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class FieldDog {
+
+	public Set<Field> addFields(
+			String context, JSONObject dataJSONObject, DataSource dataSource,
+			Long ownerId, String ownerType)
+		throws Exception {
+
+		Set<Field> fields = new HashSet<>();
+
+		JSONObject fieldsJSONObject = getFieldsJSONObject(
+			context, dataJSONObject, dataSource);
+
+		Long dataSourceId = dataSource.getId();
+
+		JSONArray fieldMappingsJSONArray = _getFieldMappingsJSONArray(
+			context, String.valueOf(dataSourceId), ownerType);
+
+		for (int i = 0; i < fieldMappingsJSONArray.length(); i++) {
+			JSONObject fieldMappingJSONObject =
+				fieldMappingsJSONArray.getJSONObject(i);
+
+			JSONObject dataSourceFieldNamesJSONObject =
+				fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
+
+			String dataSourceFieldName =
+				dataSourceFieldNamesJSONObject.optString(
+					String.valueOf(dataSourceId), null);
+
+			Object value = fieldsJSONObject.opt(dataSourceFieldName);
+
+			if (value == null) {
+				continue;
+			}
+
+			String fieldName = fieldMappingJSONObject.getString("fieldName");
+			String fieldType = fieldMappingJSONObject.getString("fieldType");
+
+			value = _deserializeValue(
+				fieldMappingJSONObject.optString("displayType"), fieldName,
+				fieldType, value.toString());
+
+			String modifiedDateString = _getModifiedDateString(
+				dataJSONObject, dataSource, ownerType);
+
+			if (value instanceof List) {
+				for (Object currentValue : (List<?>)value) {
+					Field field = _buildField(
+						context, dataSourceId, dataSource.getName(), fieldType,
+						modifiedDateString, fieldName, ownerId, ownerType,
+						dataSourceFieldName, currentValue);
+
+					fields.add(field);
+				}
+			}
+			else {
+				Field field = _buildField(
+					context, dataSourceId, dataSource.getName(), fieldType,
+					modifiedDateString, fieldName, ownerId, ownerType,
+					dataSourceFieldName, value);
+
+				fields.add(field);
+			}
+		}
+
+		_fieldRepository.saveAll(fields);
+
+		return fields;
+	}
 
 	public JSONObject addOwnerJSONObject(
 		String collectionName, JSONObject ownerJSONObject, String... contexts) {
@@ -300,6 +368,28 @@ public class FieldDog {
 		}
 
 		return contextJSONObject;
+	}
+
+	private Field _buildField(
+			String context, Long dataSourceId, String dataSourceName,
+			String fieldType, String modifiedDateString, String name,
+			Long ownerId, String ownerType, String sourceName, Object value)
+		throws ParseException {
+
+		Field field = new Field();
+
+		field.setContext(context);
+		field.setDataSourceId(dataSourceId);
+		field.setDataSourceName(dataSourceName);
+		field.setFieldType(fieldType);
+		field.setModifiedDate(DateUtil.toUTCDate(modifiedDateString));
+		field.setName(name);
+		field.setOwnerId(ownerId);
+		field.setOwnerType(ownerType);
+		field.setSourceName(sourceName);
+		field.setValue(String.valueOf(value));
+
+		return field;
 	}
 
 	private JSONObject _buildFieldJSONObject(
