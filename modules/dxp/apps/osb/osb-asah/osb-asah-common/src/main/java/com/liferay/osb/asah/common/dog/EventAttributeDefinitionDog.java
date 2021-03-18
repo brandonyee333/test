@@ -74,12 +74,8 @@ public class EventAttributeDefinitionDog {
 	}
 
 	public Long countEventAttributeDefinitions(String name) {
-		if (name != null) {
-			return _eventAttributeDefinitionRepository.
-				countByNameContainingIgnoreCase(name);
-		}
-
-		return _eventAttributeDefinitionRepository.count();
+		return _eventAttributeDefinitionRepository.
+			countEventAttributeDefinitions(name);
 	}
 
 	public EventAttributeDefinition fetchEventAttributeDefinitionByDisplayName(
@@ -147,22 +143,13 @@ public class EventAttributeDefinitionDog {
 
 		_validate(sort);
 
-		if (name != null) {
-			return PageableExecutionUtils.getPage(
-				_eventAttributeDefinitionRepository.
-					findByNameContainingIgnoreCase(
-						name, PageRequest.of(page, size, sort)),
-				PageRequest.of(page, size, sort),
-				() ->
-					_eventAttributeDefinitionRepository.
-						countByNameContainingIgnoreCase(name));
-		}
-
 		return PageableExecutionUtils.getPage(
-			_eventAttributeDefinitionRepository.findAll(
-				PageRequest.of(page, size, sort)),
+			_eventAttributeDefinitionRepository.searchEventAttributeDefinitions(
+				name, page, size, sort),
 			PageRequest.of(page, size, sort),
-			_eventAttributeDefinitionRepository::count);
+			() ->
+				_eventAttributeDefinitionRepository.
+					countEventAttributeDefinitions(name));
 	}
 
 	public List<EventAttributeDefinition>

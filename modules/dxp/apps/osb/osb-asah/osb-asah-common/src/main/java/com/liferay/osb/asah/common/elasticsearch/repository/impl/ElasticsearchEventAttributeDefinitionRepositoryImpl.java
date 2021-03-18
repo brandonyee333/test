@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 	}
 
 	@Override
-	public long countByNameContainingIgnoreCase(String name) {
+	public long countEventAttributeDefinitions(String name) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -117,13 +118,6 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 	}
 
 	@Override
-	public List<EventAttributeDefinition> findByNameContainingIgnoreCase(
-		String name, Pageable pageable) {
-
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public <S extends EventAttributeDefinition> S save(
 		S eventAttributeDefinition) {
 
@@ -133,6 +127,13 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 	@Override
 	public <S extends EventAttributeDefinition> Iterable<S> saveAll(
 		Iterable<S> eventAttributeDefinitions) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
+		String name, int page, int size, Sort sort) {
 
 		throw new UnsupportedOperationException();
 	}
