@@ -97,6 +97,12 @@ public class AsahTaskRunnable implements Runnable {
 		ProjectIdThreadLocal.forProject(_projectId, this::_run);
 	}
 
+	private void _deleteAsahTask() {
+		if (_asahTaskId != null) {
+			_asahTaskManager.deleteAsahTask(_asahTaskId);
+		}
+	}
+
 	private void _run() {
 		for (String naniteClassName : _naniteClassNames) {
 			Nanite nanite = _asahTaskManager.getNanite(naniteClassName);
@@ -113,7 +119,7 @@ public class AsahTaskRunnable implements Runnable {
 				 nanite.isLogRunEnabled()) &&
 				_asahTaskManager.checkNanite(naniteClassName)) {
 
-				_asahTaskManager.deleteAsahTask(_asahTaskId);
+				_deleteAsahTask();
 
 				continue;
 			}
@@ -137,7 +143,7 @@ public class AsahTaskRunnable implements Runnable {
 					System.currentTimeMillis() - start, e);
 			}
 			finally {
-				_asahTaskManager.deleteAsahTask(_asahTaskId);
+				_deleteAsahTask();
 			}
 		}
 	}
