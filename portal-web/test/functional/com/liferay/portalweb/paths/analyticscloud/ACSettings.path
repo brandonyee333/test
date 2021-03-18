@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>ACSettings</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">ACSettings</td></tr>
+</thead>
+<tbody>
+<!-- Settings Navigation  -->
+<tr>
+    <td>SETTINGS_NAVIGATION</td>
+    <td>//*[contains(@class, 'button') and contains(text(),'${key_SettingsNavigation}')]</td>
+    <td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
