@@ -79,7 +79,7 @@ public class ChannelsRestControllerTest {
 		}
 
 		JSONObject channelsJSONObject = _objectMapper.convertValue(
-			_channelsRestController.getChannels(null, 0, 20, null),
+			_channelsRestController.getChannelDTOsPageDTO(null, 0, 20, null),
 			JSONObject.class);
 
 		JSONArray channelsJSONArray = (JSONArray)channelsJSONObject.query(
@@ -111,7 +111,7 @@ public class ChannelsRestControllerTest {
 	@Test
 	public void testGetChannels() throws Exception {
 		JSONObject channelsJSONObject = _objectMapper.convertValue(
-			_channelsRestController.getChannels(null, 0, 20, null),
+			_channelsRestController.getChannelDTOsPageDTO(null, 0, 20, null),
 			JSONObject.class);
 
 		JSONArray channelsJSONArray = (JSONArray)channelsJSONObject.query(

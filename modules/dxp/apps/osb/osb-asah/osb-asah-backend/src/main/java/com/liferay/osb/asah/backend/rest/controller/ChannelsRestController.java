@@ -96,7 +96,7 @@ public class ChannelsRestController extends BaseRestController {
 	}
 
 	@GetMapping
-	public PageDTO<ChannelDTO> getChannels(
+	public PageDTO<ChannelDTO> getChannelDTOsPageDTO(
 			@RequestParam(name = "filter", required = false)
 				String filterString,
 			@RequestParam(defaultValue = "0") int page,

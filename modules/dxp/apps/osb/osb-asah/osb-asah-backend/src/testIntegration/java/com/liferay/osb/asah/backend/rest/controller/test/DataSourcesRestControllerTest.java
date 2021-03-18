@@ -174,7 +174,8 @@ public class DataSourcesRestControllerTest {
 		}
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
-			_dataSourcesRestController.getDataSources(null, 0, 10, null),
+			_dataSourcesRestController.getDataSourceDTOsPageDTO(
+				null, 0, 10, null),
 			JSONObject.class);
 
 		JSONArray dataSourcesJSONArray = (JSONArray)responseJSONObject.query(
@@ -279,7 +280,8 @@ public class DataSourcesRestControllerTest {
 				DataSourceDTO.class));
 
 		JSONObject dataSourcesJSONObject = _objectMapper.convertValue(
-			_dataSourcesRestController.getDataSources(null, 0, 20, null),
+			_dataSourcesRestController.getDataSourceDTOsPageDTO(
+				null, 0, 20, null),
 			JSONObject.class);
 
 		JSONObject embeddedJSONObject = dataSourcesJSONObject.getJSONObject(

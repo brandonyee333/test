@@ -217,7 +217,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/{id}/memberships")
-	public PageDTO<MembershipDTO> getMemberships(
+	public PageDTO<MembershipDTO> getMembershipDTOsPageDTO(
 			@PathVariable Long id,
 			@RequestParam(name = "filter", required = false)
 				String filterString,

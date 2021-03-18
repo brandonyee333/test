@@ -115,7 +115,7 @@ public class BlockedKeywordsRestControllerTest {
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_filter.json", this),
 			_objectMapper.convertValue(
-				_blockedKeywordsRestController.getBlockedKeywords(
+				_blockedKeywordsRestController.getBlockedKeywordDTOsPageDTO(
 					"web", 0, 2, null),
 				JSONObject.class),
 			false);
@@ -124,7 +124,7 @@ public class BlockedKeywordsRestControllerTest {
 				"dependencies/expected_blocked_keywords_filter_number.json",
 				this),
 			_objectMapper.convertValue(
-				_blockedKeywordsRestController.getBlockedKeywords(
+				_blockedKeywordsRestController.getBlockedKeywordDTOsPageDTO(
 					"1500", 0, 1, null),
 				JSONObject.class),
 			false);
@@ -133,7 +133,7 @@ public class BlockedKeywordsRestControllerTest {
 				"dependencies/expected_blocked_keywords_filter_number.json",
 				this),
 			_objectMapper.convertValue(
-				_blockedKeywordsRestController.getBlockedKeywords(
+				_blockedKeywordsRestController.getBlockedKeywordDTOsPageDTO(
 					"1500", 0, 1, null),
 				JSONObject.class),
 			false);
@@ -149,7 +149,7 @@ public class BlockedKeywordsRestControllerTest {
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_page_0.json", this),
 			_objectMapper.convertValue(
-				_blockedKeywordsRestController.getBlockedKeywords(
+				_blockedKeywordsRestController.getBlockedKeywordDTOsPageDTO(
 					null, 0, 2, null),
 				JSONObject.class),
 			false);
@@ -157,7 +157,7 @@ public class BlockedKeywordsRestControllerTest {
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_page_1.json", this),
 			_objectMapper.convertValue(
-				_blockedKeywordsRestController.getBlockedKeywords(
+				_blockedKeywordsRestController.getBlockedKeywordDTOsPageDTO(
 					null, 1, 2, null),
 				JSONObject.class),
 			false);
@@ -173,7 +173,7 @@ public class BlockedKeywordsRestControllerTest {
 			ResourceUtil.readResourceToString(
 				"dependencies/expected_blocked_keywords_sort_date.json", this),
 			_objectMapper.convertValue(
-				_blockedKeywordsRestController.getBlockedKeywords(
+				_blockedKeywordsRestController.getBlockedKeywordDTOsPageDTO(
 					null, 0, 2, new String[] {"createDate,desc"}),
 				JSONObject.class),
 			false);
@@ -183,7 +183,7 @@ public class BlockedKeywordsRestControllerTest {
 				"dependencies/expected_blocked_keywords_sort_keyword.json",
 				this),
 			_objectMapper.convertValue(
-				_blockedKeywordsRestController.getBlockedKeywords(
+				_blockedKeywordsRestController.getBlockedKeywordDTOsPageDTO(
 					null, 0, 8, new String[] {"keyword.raw,asc"}),
 				JSONObject.class),
 			false);

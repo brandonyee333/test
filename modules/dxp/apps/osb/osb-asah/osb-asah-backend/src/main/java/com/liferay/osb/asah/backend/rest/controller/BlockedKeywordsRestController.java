@@ -63,7 +63,7 @@ public class BlockedKeywordsRestController extends BaseRestController {
 	}
 
 	@GetMapping
-	public PageDTO<BlockedKeywordDTO> getBlockedKeywords(
+	public PageDTO<BlockedKeywordDTO> getBlockedKeywordDTOsPageDTO(
 		@RequestParam(required = false) String keyword,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,
