@@ -12,16 +12,18 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Segment;
 
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,7 +37,7 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class FaroInfoAccountDog extends BaseFaroInfoDog {
+public class AccountDog {
 
 	public JSONObject addAccount(JSONObject accountJSONObject)
 		throws Exception {
@@ -114,7 +116,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 					accountId);
 		}
 
-		elasticsearchInvoker.delete("accounts", accountId);
+		_elasticsearchInvoker.delete("accounts", accountId);
 
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
@@ -129,12 +131,8 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 			));
 	}
 
-	public JSONObject getAccountJSONObject(String accountId) {
-		return elasticsearchInvoker.get("accounts", accountId);
-	}
-
 	public JSONObject replaceAccount(JSONObject accountJSONObject) {
-		accountJSONObject = elasticsearchInvoker.replace(
+		accountJSONObject = _elasticsearchInvoker.replace(
 			"accounts", accountJSONObject);
 
 		_asahTaskDog.scheduleAsahTask(
@@ -168,7 +166,7 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 	public JSONObject updateAccount(
 		String accountId, JSONObject partialAccountJSONObject) {
 
-		JSONObject accountJSONObject = elasticsearchInvoker.update(
+		JSONObject accountJSONObject = _elasticsearchInvoker.update(
 			"accounts", accountId, partialAccountJSONObject);
 
 		_asahTaskDog.scheduleAsahTask(
@@ -188,10 +186,13 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 		return accountJSONObject;
 	}
 
-	private static final Log _log = LogFactory.getLog(FaroInfoAccountDog.class);
+	private static final Log _log = LogFactory.getLog(AccountDog.class);
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private FieldDog _fieldDog;
