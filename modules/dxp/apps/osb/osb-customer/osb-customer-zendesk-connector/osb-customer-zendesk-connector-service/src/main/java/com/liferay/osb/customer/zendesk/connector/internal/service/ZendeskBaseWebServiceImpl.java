@@ -82,148 +82,23 @@ public class ZendeskBaseWebServiceImpl
 	public JSONObject delete(String url, Map<String, String> parameters)
 		throws PortalException {
 
-		String response = null;
-
-		try {
-			response = doDelete(url, parameters, _authHeader);
-
-			return JSONFactoryUtil.createJSONObject(response);
-		}
-		catch (JSONWebServiceTransportException jsonwste) {
-			if (jsonwste.getStatus() == 429) {
-				try {
-					Thread.sleep(
-						ZendeskConnectorConfigurationValues.
-							ZENDESK_API_RETRY_WAIT_TIME);
-				}
-				catch (InterruptedException ie) {
-					_log.error(ie, ie);
-				}
-
-				return delete(url, parameters);
-			}
-
-			throw processedException(
-				jsonwste, url, parameters.toString(), response);
-		}
-		catch (Exception e) {
-			throw processedException(e, url, parameters.toString(), response);
-		}
+		return _delete(url, parameters, 0);
 	}
 
 	public JSONObject delete(String endpoint, String json)
 		throws PortalException {
 
-		String response = null;
-
-		try {
-			ZendeskHttpDelete httpDelete = new ZendeskHttpDelete(endpoint);
-
-			addHeaders(httpDelete, _headers);
-
-			StringEntity stringEntity = getStringEntity(endpoint, json);
-
-			httpDelete.setEntity(stringEntity);
-
-			response = execute(httpDelete);
-
-			return JSONFactoryUtil.createJSONObject(response);
-		}
-		catch (JSONWebServiceTransportException jsonwste) {
-			if (jsonwste.getStatus() == 429) {
-				try {
-					Thread.sleep(
-						ZendeskConnectorConfigurationValues.
-							ZENDESK_API_RETRY_WAIT_TIME);
-				}
-				catch (InterruptedException ie) {
-					_log.error(ie, ie);
-				}
-
-				return delete(endpoint, json);
-			}
-
-			throw processedException(jsonwste, endpoint, json, response);
-		}
-		catch (Exception e) {
-			throw processedException(e, endpoint, json, response);
-		}
+		return _delete(endpoint, json, 0);
 	}
 
 	public JSONObject get(String url, Map<String, String> parameters)
 		throws PortalException {
 
-		String response = null;
-
-		try {
-			response = doGet(url, parameters, _authHeader);
-
-			return JSONFactoryUtil.createJSONObject(response);
-		}
-		catch (JSONWebServiceTransportException jsonwste) {
-			if (jsonwste.getStatus() == 429) {
-				try {
-					Thread.sleep(
-						ZendeskConnectorConfigurationValues.
-							ZENDESK_API_RETRY_WAIT_TIME);
-				}
-				catch (InterruptedException ie) {
-					_log.error(ie, ie);
-				}
-
-				return get(url, parameters);
-			}
-
-			throw processedException(
-				jsonwste, url, parameters.toString(), response);
-		}
-		catch (Exception e) {
-			throw processedException(e, url, parameters.toString(), response);
-		}
+		return _get(url, parameters, 0);
 	}
 
 	public JSONObject get(String endpoint, String json) throws PortalException {
-		ZendeskHttpGet httpGet = new ZendeskHttpGet(endpoint);
-
-		String response = null;
-
-		try {
-			addHeaders(httpGet, _headers);
-
-			StringEntity stringEntity = getStringEntity(endpoint, json);
-
-			httpGet.setEntity(stringEntity);
-
-			response = execute(httpGet);
-
-			return JSONFactoryUtil.createJSONObject(response);
-		}
-		catch (JSONWebServiceInvocationException jsonwsie) {
-			if (jsonwsie.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
-				throw new NoSuchModelException(jsonwsie);
-			}
-
-			throw new PortalException(jsonwsie);
-		}
-		catch (JSONWebServiceTransportException jsonwste) {
-			if (jsonwste.getStatus() == 429) {
-				try {
-					Thread.sleep(
-						ZendeskConnectorConfigurationValues.
-							ZENDESK_API_RETRY_WAIT_TIME);
-				}
-				catch (InterruptedException ie) {
-					_log.error(ie, ie);
-				}
-
-				return get(endpoint, json);
-			}
-
-			throw processedException(jsonwste, endpoint, json, response);
-		}
-		catch (Exception e) {
-			throw processedException(e, endpoint, json, response);
-		}
+		return _get(endpoint, json, 0);
 	}
 
 	public JSONObject post(
@@ -265,10 +140,10 @@ public class ZendeskBaseWebServiceImpl
 				try {
 					Thread.sleep(
 						ZendeskConnectorConfigurationValues.
-							ZENDESK_API_RETRY_WAIT_TIME);
+							ZENDESK_API_LIMIT_RETRY_WAIT_TIME);
 				}
-				catch (InterruptedException ie) {
-					_log.error(ie, ie);
+				catch (InterruptedException interruptedException) {
+					_log.error(interruptedException, interruptedException);
 				}
 
 				return post(endpoint, parameters, fileName, bytes);
@@ -278,49 +153,16 @@ public class ZendeskBaseWebServiceImpl
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			throw processedException(
-				e, endpoint, parameters.toString(), response);
+				exception, endpoint, parameters.toString(), response);
 		}
 	}
 
 	public JSONObject post(String endpoint, String json)
 		throws PortalException {
 
-		String response = null;
-
-		try {
-			HttpPost httpPost = new HttpPost(endpoint);
-
-			addHeaders(httpPost, _headers);
-
-			StringEntity stringEntity = getStringEntity(endpoint, json);
-
-			httpPost.setEntity(stringEntity);
-
-			response = execute(httpPost);
-
-			return JSONFactoryUtil.createJSONObject(response);
-		}
-		catch (JSONWebServiceTransportException jsonwste) {
-			if (jsonwste.getStatus() == 429) {
-				try {
-					Thread.sleep(
-						ZendeskConnectorConfigurationValues.
-							ZENDESK_API_RETRY_WAIT_TIME);
-				}
-				catch (InterruptedException ie) {
-					_log.error(ie, ie);
-				}
-
-				return post(endpoint, json);
-			}
-
-			throw processedException(jsonwste, endpoint, json, response);
-		}
-		catch (Exception e) {
-			throw processedException(e, endpoint, json, response);
-		}
+		return _post(endpoint, json, 0);
 	}
 
 	public JSONObject put(String endpoint, String json) throws PortalException {
@@ -331,40 +173,7 @@ public class ZendeskBaseWebServiceImpl
 			String endpoint, String json, Map<String, String> headers)
 		throws PortalException {
 
-		String response = null;
-
-		try {
-			HttpPut httpPut = new HttpPut(endpoint);
-
-			addHeaders(httpPut, headers);
-
-			StringEntity stringEntity = getStringEntity(endpoint, json);
-
-			httpPut.setEntity(stringEntity);
-
-			response = execute(httpPut);
-
-			return JSONFactoryUtil.createJSONObject(response);
-		}
-		catch (JSONWebServiceTransportException jsonwste) {
-			if (jsonwste.getStatus() == 429) {
-				try {
-					Thread.sleep(
-						ZendeskConnectorConfigurationValues.
-							ZENDESK_API_RETRY_WAIT_TIME);
-				}
-				catch (InterruptedException ie) {
-					_log.error(ie, ie);
-				}
-
-				return put(endpoint, json);
-			}
-
-			throw processedException(jsonwste, endpoint, json, response);
-		}
-		catch (Exception e) {
-			throw processedException(e, endpoint, json, response);
-		}
+		return _put(endpoint, json, headers, 0);
 	}
 
 	public JSONObject put(
@@ -489,8 +298,8 @@ public class ZendeskBaseWebServiceImpl
 
 			_mailService.sendEmail(mailMessage);
 		}
-		catch (AddressException ae) {
-			_log.error(ae, ae);
+		catch (AddressException addressException) {
+			_log.error(addressException, addressException);
 		}
 	}
 
@@ -504,6 +313,269 @@ public class ZendeskBaseWebServiceImpl
 			ZendeskConnectorConfigurationValues.ZENDESK_API_TOKEN);
 
 		return "Basic " + Base64.encode(zendeskCredentials.getBytes());
+	}
+
+	private void _apiLimitRetryWait() {
+		try {
+			Thread.sleep(
+				ZendeskConnectorConfigurationValues.
+					ZENDESK_API_LIMIT_RETRY_WAIT_TIME);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+	}
+
+	private void _apiRetryWait() {
+		try {
+			Thread.sleep(
+				ZendeskConnectorConfigurationValues.
+					ZENDESK_API_RETRY_WAIT_TIME);
+		}
+		catch (InterruptedException interruptedException) {
+			_log.error(interruptedException, interruptedException);
+		}
+	}
+
+	private JSONObject _delete(
+			String url, Map<String, String> parameters, int retryAttempts)
+		throws PortalException {
+
+		String response = null;
+
+		try {
+			response = doDelete(url, parameters, _authHeader);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception exception) {
+			if (_isAPILimitError(exception)) {
+				_apiLimitRetryWait();
+
+				return _delete(url, parameters, ++retryAttempts);
+			}
+
+			if (_isRetry(exception, retryAttempts)) {
+				_apiRetryWait();
+
+				return _delete(url, parameters, ++retryAttempts);
+			}
+
+			throw processedException(
+				exception, url, parameters.toString(), response);
+		}
+	}
+
+	private JSONObject _delete(String endpoint, String json, int retryAttempts)
+		throws PortalException {
+
+		String response = null;
+
+		try {
+			ZendeskHttpDelete httpDelete = new ZendeskHttpDelete(endpoint);
+
+			addHeaders(httpDelete, _headers);
+
+			StringEntity stringEntity = getStringEntity(endpoint, json);
+
+			httpDelete.setEntity(stringEntity);
+
+			response = execute(httpDelete);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception exception) {
+			if (_isAPILimitError(exception)) {
+				_apiLimitRetryWait();
+
+				return _delete(endpoint, json, ++retryAttempts);
+			}
+
+			if (_isRetry(exception, retryAttempts)) {
+				_apiRetryWait();
+
+				return _delete(endpoint, json, ++retryAttempts);
+			}
+
+			throw processedException(exception, endpoint, json, response);
+		}
+	}
+
+	private JSONObject _get(
+			String url, Map<String, String> parameters, int retryAttempts)
+		throws PortalException {
+
+		String response = null;
+
+		try {
+			response = doGet(url, parameters, _authHeader);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception exception) {
+			if (_isAPILimitError(exception)) {
+				_apiLimitRetryWait();
+
+				return _get(url, parameters, ++retryAttempts);
+			}
+
+			if (_isRetry(exception, retryAttempts)) {
+				_apiRetryWait();
+
+				return _get(url, parameters, ++retryAttempts);
+			}
+
+			throw processedException(
+				exception, url, parameters.toString(), response);
+		}
+	}
+
+	private JSONObject _get(String endpoint, String json, int retryAttempts)
+		throws PortalException {
+
+		ZendeskHttpGet httpGet = new ZendeskHttpGet(endpoint);
+
+		String response = null;
+
+		try {
+			addHeaders(httpGet, _headers);
+
+			StringEntity stringEntity = getStringEntity(endpoint, json);
+
+			httpGet.setEntity(stringEntity);
+
+			response = execute(httpGet);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception exception) {
+			if (_isAPILimitError(exception)) {
+				_apiLimitRetryWait();
+
+				return _get(endpoint, json, ++retryAttempts);
+			}
+
+			if (_isRetry(exception, retryAttempts)) {
+				_apiRetryWait();
+
+				return _get(endpoint, json, ++retryAttempts);
+			}
+
+			if (exception instanceof JSONWebServiceInvocationException) {
+				JSONWebServiceInvocationException
+					jsonWebServiceInvocationException =
+						(JSONWebServiceInvocationException)exception;
+
+				if (jsonWebServiceInvocationException.getStatus() ==
+						HttpServletResponse.SC_NOT_FOUND) {
+
+					throw new NoSuchModelException(
+						jsonWebServiceInvocationException);
+				}
+			}
+
+			throw processedException(exception, endpoint, json, response);
+		}
+	}
+
+	private boolean _isAPILimitError(Exception exception) {
+		if (exception instanceof JSONWebServiceTransportException) {
+			JSONWebServiceTransportException jsonWebServiceTransportException =
+				(JSONWebServiceTransportException)exception;
+
+			if (jsonWebServiceTransportException.getStatus() == 429) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean _isRetry(Exception exception, int retryAttempts) {
+		if (!(exception instanceof JSONWebServiceInvocationException)) {
+			return false;
+		}
+
+		if (retryAttempts <
+				ZendeskConnectorConfigurationValues.
+					ZENDESK_API_RETRY_ATTEMPTS) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private JSONObject _post(String endpoint, String json, int retryAttempts)
+		throws PortalException {
+
+		String response = null;
+
+		try {
+			HttpPost httpPost = new HttpPost(endpoint);
+
+			addHeaders(httpPost, _headers);
+
+			StringEntity stringEntity = getStringEntity(endpoint, json);
+
+			httpPost.setEntity(stringEntity);
+
+			response = execute(httpPost);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception exception) {
+			if (_isAPILimitError(exception)) {
+				_apiLimitRetryWait();
+
+				return _post(endpoint, json, ++retryAttempts);
+			}
+
+			if (_isRetry(exception, retryAttempts)) {
+				_apiRetryWait();
+
+				return _post(endpoint, json, ++retryAttempts);
+			}
+
+			throw processedException(exception, endpoint, json, response);
+		}
+	}
+
+	private JSONObject _put(
+			String endpoint, String json, Map<String, String> headers,
+			int retryAttempts)
+		throws PortalException {
+
+		String response = null;
+
+		try {
+			HttpPut httpPut = new HttpPut(endpoint);
+
+			addHeaders(httpPut, headers);
+
+			StringEntity stringEntity = getStringEntity(endpoint, json);
+
+			httpPut.setEntity(stringEntity);
+
+			response = execute(httpPut);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception exception) {
+			if (_isAPILimitError(exception)) {
+				_apiLimitRetryWait();
+
+				return _put(endpoint, json, headers, ++retryAttempts);
+			}
+
+			if (_isRetry(exception, retryAttempts)) {
+				_apiRetryWait();
+
+				return _put(endpoint, json, headers, ++retryAttempts);
+			}
+
+			throw processedException(exception, endpoint, json, response);
+		}
 	}
 
 	private static final String _CREDENTIALS = _getCredentials(

@@ -26,6 +26,14 @@ public class ZendeskConnectorConfigurationValues {
 			ZendeskConnectorConfigurationUtil.get(
 				"zendesk.api.error.email.address"));
 
+	public static final long ZENDESK_API_LIMIT_RETRY_WAIT_TIME =
+		GetterUtil.getLong(
+			ZendeskConnectorConfigurationUtil.get(
+				"zendesk.api.limit.retry.wait.time"));
+
+	public static final int ZENDESK_API_RETRY_ATTEMPTS = GetterUtil.getInteger(
+		ZendeskConnectorConfigurationUtil.get("zendesk.api.retry.attempts"));
+
 	public static final long ZENDESK_API_RETRY_WAIT_TIME = GetterUtil.getLong(
 		ZendeskConnectorConfigurationUtil.get("zendesk.api.retry.wait.time"));
 
