@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -446,6 +447,7 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
 			getIndexAlias(collectionName));
 
+		searchRequestBuilder.addSort(SortBuilderUtil.fieldSort("id"));
 		searchRequestBuilder.setQuery(queryBuilder);
 		searchRequestBuilder.setTrackTotalHits(true);
 
