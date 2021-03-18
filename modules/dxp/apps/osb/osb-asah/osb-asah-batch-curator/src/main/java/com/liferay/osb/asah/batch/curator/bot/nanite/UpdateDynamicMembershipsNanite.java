@@ -64,7 +64,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		Date dateModified = DateUtil.toUTCDate(
+		Date modifiedDate = DateUtil.toUTCDate(
 			contextJSONObject.getString("dateModified"));
 
 		JSONObject individualSegmentJSONObject =
@@ -72,7 +72,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 		if (individualSegmentJSONObject != null) {
 			_updateDynamicMembershipsForIndividualSegment(
-				dateModified, individualSegmentJSONObject);
+				individualSegmentJSONObject, modifiedDate);
 
 			return;
 		}
@@ -82,8 +82,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 		if (individualJSONObject != null) {
 			_updateDynamicMembershipsForIndividual(
-				dateModified, contextJSONObject.optString("filter", null),
-				individualJSONObject.getString("id"));
+				contextJSONObject.optString("filter", null),
+				individualJSONObject.getString("id"), modifiedDate);
 
 			return;
 		}
@@ -109,7 +109,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 		if ((addQueryBuilder != null) || (removeQueryBuilder != null)) {
 			_updateDynamicMembershipsForIndividualSegments(
-				addQueryBuilder, dateModified, removeQueryBuilder);
+				addQueryBuilder, modifiedDate, removeQueryBuilder);
 
 			return;
 		}
@@ -119,12 +119,12 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 
 		if (Objects.equals(addFilter, removeFilter)) {
 			_updateDynamicMembershipsForIndividualSegments(
-				dateModified, addFilter);
+				addFilter, modifiedDate);
 		}
 		else {
 			_updateDynamicMembershipsForIndividualSegments(
 				FilterStringToQueryBuilderConverter.convert(addFilter),
-				dateModified,
+				modifiedDate,
 				FilterStringToQueryBuilderConverter.convert(removeFilter));
 		}
 	}
@@ -135,7 +135,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 	}
 
 	private void _updateDynamicMembershipsForIndividual(
-			Date dateModified, String filterString, String individualId)
+			String filterString, String individualId, Date modifiedDate)
 		throws Exception {
 
 		JSONObject individualJSONObject = faroInfoElasticsearchInvoker.fetch(
@@ -224,9 +224,9 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		}
 
 		JSONObject baseMembershipJSONObject = JSONUtil.put(
-			"dateCreated", DateUtil.toUTCString(dateModified)
+			"dateCreated", DateUtil.toUTCString(modifiedDate)
 		).put(
-			"dateModified", DateUtil.toUTCString(dateModified)
+			"dateModified", DateUtil.toUTCString(modifiedDate)
 		).put(
 			"individualId", individualId
 		).put(
@@ -238,8 +238,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			individualSegmentJSONObject -> {
 				try {
 					_updateMembershipForIndividual(
-						baseMembershipJSONObject, dateModified,
-						individualJSONObject, individualSegmentJSONObject);
+						baseMembershipJSONObject, individualJSONObject,
+						individualSegmentJSONObject, modifiedDate);
 				}
 				catch (Exception e) {
 					return e;
@@ -253,7 +253,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 	}
 
 	private void _updateDynamicMembershipsForIndividualSegment(
-			Date dateModified, JSONObject individualSegmentJSONObject)
+			JSONObject individualSegmentJSONObject, Date modifiedDate)
 		throws Exception {
 
 		String individualSegmentId = individualSegmentJSONObject.getString(
@@ -266,47 +266,14 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		}
 
 		_faroInfoIndividualDog.updateDynamicMemberships(
-			individualSegmentJSONObject, dateModified);
+			individualSegmentJSONObject, modifiedDate);
 
 		_faroInfoIndividualSegmentDog.updateIndividualSegment(
 			Long.valueOf(individualSegmentId), JSONUtil.put("state", "READY"));
 	}
 
 	private void _updateDynamicMembershipsForIndividualSegments(
-			Date dateModified, String filterString)
-		throws Exception {
-
-		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
-
-		if (filterString != null) {
-			queryBuilder = FilterStringToQueryBuilderConverter.convert(
-				filterString);
-		}
-
-		JSONArrayIterator.of(
-			"individual-segments", faroInfoElasticsearchInvoker,
-			individualSegmentJSONObject -> {
-				try {
-					_updateDynamicMembershipsForIndividualSegment(
-						dateModified, individualSegmentJSONObject);
-				}
-				catch (Exception e) {
-					return e;
-				}
-
-				return null;
-			}
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				queryBuilder
-			).filter(
-				QueryBuilders.termQuery("segmentType", "DYNAMIC")
-			)
-		).iterate();
-	}
-
-	private void _updateDynamicMembershipsForIndividualSegments(
-			QueryBuilder addQueryBuilder, Date dateModified,
+			QueryBuilder addQueryBuilder, Date modifiedDate,
 			QueryBuilder removeQueryBuilder)
 		throws Exception {
 
@@ -316,7 +283,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 				individualSegmentJSONObject -> {
 					try {
 						_faroInfoIndividualDog.updateDynamicAddMemberships(
-							true, individualSegmentJSONObject, dateModified);
+							true, individualSegmentJSONObject, modifiedDate);
 					}
 					catch (Exception e) {
 						return e;
@@ -339,7 +306,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 				individualSegmentJSONObject -> {
 					try {
 						_faroInfoIndividualDog.updateDynamicRemoveMemberships(
-							individualSegmentJSONObject, dateModified);
+							individualSegmentJSONObject, modifiedDate);
 					}
 					catch (Exception e) {
 						return e;
@@ -357,10 +324,43 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		}
 	}
 
+	private void _updateDynamicMembershipsForIndividualSegments(
+			String filterString, Date modifiedDate)
+		throws Exception {
+
+		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
+
+		if (filterString != null) {
+			queryBuilder = FilterStringToQueryBuilderConverter.convert(
+				filterString);
+		}
+
+		JSONArrayIterator.of(
+			"individual-segments", faroInfoElasticsearchInvoker,
+			individualSegmentJSONObject -> {
+				try {
+					_updateDynamicMembershipsForIndividualSegment(
+						individualSegmentJSONObject, modifiedDate);
+				}
+				catch (Exception e) {
+					return e;
+				}
+
+				return null;
+			}
+		).setQueryBuilder(
+			BoolQueryBuilderUtil.filter(
+				queryBuilder
+			).filter(
+				QueryBuilders.termQuery("segmentType", "DYNAMIC")
+			)
+		).iterate();
+	}
+
 	private void _updateMembershipForIndividual(
-			JSONObject baseMembershipJSONObject, Date dateModified,
+			JSONObject baseMembershipJSONObject,
 			JSONObject individualJSONObject,
-			JSONObject individualSegmentJSONObject)
+			JSONObject individualSegmentJSONObject, Date modifiedDate)
 		throws Exception {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
@@ -395,7 +395,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		}
 		else if (!newMember && oldMember) {
 			_membershipDog.deactivateMembership(
-				dateModified, individualJSONObject.getLong("id"),
+				modifiedDate, individualJSONObject.getLong("id"),
 				individualSegmentJSONObject.getLong("id"));
 		}
 	}
