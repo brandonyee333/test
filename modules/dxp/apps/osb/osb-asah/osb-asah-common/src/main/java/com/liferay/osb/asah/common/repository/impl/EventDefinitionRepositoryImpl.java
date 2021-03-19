@@ -48,10 +48,10 @@ public class EventDefinitionRepositoryImpl {
 	public long countEventDefinitions(
 		String keyword, EventDefinition.Type type) {
 
-		SelectSelectStep<Record1<Integer>> selectCount =
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectCount.from(
+		return selectSelectStep.from(
 			"EventDefinition"
 		).where(
 			_getConditions(keyword, type)
@@ -66,11 +66,11 @@ public class EventDefinitionRepositoryImpl {
 		String keyword, int page, int size, Sort sort,
 		EventDefinition.Type type) {
 
-		SelectSelectStep<Record> select = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		Field<?> field = DSL.field(sort.getColumn());
 
-		return select.from(
+		return selectSelectStep.from(
 			"EventDefinition"
 		).where(
 			_getConditions(keyword, type)

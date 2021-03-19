@@ -50,10 +50,10 @@ public class ActivityGroupRepositoryImpl {
 	public long countActivityGroups(
 		Long channelId, Date endDayDate, Date startDayDate, Long ownerId) {
 
-		SelectSelectStep<Record1<Integer>> selectCount =
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectCount.from(
+		return selectSelectStep.from(
 			"ActivityGroup"
 		).where(
 			_getConditions(channelId, endDayDate, startDayDate, ownerId)
@@ -68,9 +68,9 @@ public class ActivityGroupRepositoryImpl {
 		Long channelId, Date endDayDate, Date startDayDate, Long ownerId,
 		Pageable pageable) {
 
-		SelectSelectStep<Record> select = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return select.from(
+		return selectSelectStep.from(
 			"ActivityGroup"
 		).where(
 			_getConditions(channelId, endDayDate, startDayDate, ownerId)

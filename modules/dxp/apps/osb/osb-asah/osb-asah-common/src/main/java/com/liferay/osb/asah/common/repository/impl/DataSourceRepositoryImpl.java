@@ -62,10 +62,10 @@ public class DataSourceRepositoryImpl {
 		String providerType, List<String> searchNames, List<String> states,
 		Boolean url, Boolean workspaceURL) {
 
-		SelectSelectStep<Record1<Integer>> selectCount =
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectCount.from(
+		return selectSelectStep.from(
 			"DataSource"
 		).where(
 			_getConditions(
@@ -83,10 +83,10 @@ public class DataSourceRepositoryImpl {
 		String providerType, List<String> searchNames, List<String> states,
 		Boolean url, Boolean workspaceURL, Pageable pageable) {
 
-		SelectSelectStep<Record> select = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return _populateDataSources(
-			select.from(
+			selectSelectStep.from(
 				"DataSource"
 			).where(
 				_getConditions(
@@ -199,11 +199,11 @@ public class DataSourceRepositoryImpl {
 	private void _populateDataSourceOrganizations(
 		Map<Long, DataSource> dataSourcesById) {
 
-		SelectSelectStep<Record> select = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		Field<Object> field = DSL.field("dataSourceId");
 
-		select.from(
+		selectSelectStep.from(
 			"DataSourceOrganization"
 		).where(
 			field.in(dataSourcesById.keySet())
@@ -244,11 +244,11 @@ public class DataSourceRepositoryImpl {
 	private void _populateDataSourceSite(
 		Map<Long, DataSource> dataSourcesById) {
 
-		SelectSelectStep<Record> select = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		Field<Object> field = DSL.field("dataSourceId");
 
-		select.from(
+		selectSelectStep.from(
 			"DataSourceSite"
 		).where(
 			field.in(dataSourcesById.keySet())
@@ -269,11 +269,11 @@ public class DataSourceRepositoryImpl {
 	private void _populateDataSourceUserGroup(
 		Map<Long, DataSource> dataSourcesById) {
 
-		SelectSelectStep<Record> select = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		Field<Object> field = DSL.field("dataSourceId");
 
-		select.from(
+		selectSelectStep.from(
 			"DataSourceOrganization"
 		).where(
 			field.in(dataSourcesById.keySet())
