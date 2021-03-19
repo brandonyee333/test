@@ -46,16 +46,17 @@ else {
 			showParentGroups="<%= false %>"
 		/>
 
-		<%
-		PortletURL portletURL = renderResponse.createRenderURL();
-
-		portletURL.setParameter("mvcRenderCommandName", "/message_boards/select_category");
-		portletURL.setParameter("mbCategoryId", String.valueOf(categoryId));
-		%>
-
 		<liferay-ui:search-container
 			headerNames="category[message-board],categories,threads,posts,"
-			iteratorURL="<%= portletURL %>"
+			iteratorURL='<%=
+				PortletURLBuilder.createRenderURL(
+					renderResponse
+				).setMVCRenderCommandName(
+					"/message_boards/select_category"
+				).setParameter(
+					"mbCategoryId", String.valueOf(categoryId)
+				).build()
+			%>'
 			total="<%= MBCategoryServiceUtil.getCategoriesCount(scopeGroupId, excludedCategoryId, categoryId, WorkflowConstants.STATUS_APPROVED) %>"
 		>
 			<liferay-ui:search-container-results

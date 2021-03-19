@@ -20,8 +20,8 @@
 JournalArticleItemSelectorViewDisplayContext journalArticleItemSelectorViewDisplayContext = (JournalArticleItemSelectorViewDisplayContext)request.getAttribute(JournalWebConstants.JOURNAL_ARTICLE_ITEM_SELECTOR_VIEW_DISPLAY_CONTEXT);
 %>
 
-<clay:management-toolbar-v2
-	displayContext="<%= new JournalArticleItemSelectorViewManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, journalArticleItemSelectorViewDisplayContext) %>"
+<clay:management-toolbar
+	managementToolbarDisplayContext="<%= new JournalArticleItemSelectorViewManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, journalArticleItemSelectorViewDisplayContext) %>"
 />
 
 <clay:container-fluid
@@ -214,10 +214,13 @@ JournalArticleItemSelectorViewDisplayContext journalArticleItemSelectorViewDispl
 				<c:when test="<%= curFolder != null %>">
 
 					<%
-					PortletURL rowURL = journalArticleItemSelectorViewDisplayContext.getPortletURL();
-
-					rowURL.setParameter("groupId", String.valueOf(curFolder.getGroupId()));
-					rowURL.setParameter("folderId", String.valueOf(curFolder.getFolderId()));
+					PortletURL rowURL = PortletURLBuilder.create(
+						journalArticleItemSelectorViewDisplayContext.getPortletURL()
+					).setParameter(
+						"groupId", String.valueOf(curFolder.getGroupId())
+					).setParameter(
+						"folderId", String.valueOf(curFolder.getFolderId())
+					).build();
 					%>
 
 					<c:choose>

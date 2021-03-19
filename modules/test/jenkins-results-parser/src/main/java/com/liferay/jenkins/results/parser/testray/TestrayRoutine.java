@@ -27,6 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -114,7 +117,7 @@ public class TestrayRoutine {
 
 		try {
 			JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
-				buildAddURL, sb.toString());
+				buildAddURL, 2, 5, sb.toString());
 
 			if (jsonObject.has("data")) {
 				return new TestrayBuild(this, jsonObject.getJSONObject("data"));
@@ -125,12 +128,14 @@ public class TestrayRoutine {
 			if (!message.equals("The build name already exists.")) {
 				throw new RuntimeException("Failed to create a Testray build");
 			}
-
-			return getTestrayBuildByName(buildName);
 		}
 		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
+			if (_log.isDebugEnabled()) {
+				_log.debug(ioException.getMessage(), ioException);
+			}
 		}
+
+		return getTestrayBuildByName(buildName);
 	}
 
 	public int getID() {
@@ -287,6 +292,8 @@ public class TestrayRoutine {
 	}
 
 	private static final int _DELTA = 25;
+
+	private static final Log _log = LogFactory.getLog(TestrayRoutine.class);
 
 	private final JSONObject _jsonObject;
 	private final Map<Integer, TestrayBuild> _testrayBuildsByID =

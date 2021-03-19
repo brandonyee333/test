@@ -18,20 +18,23 @@ import DataLayoutBuilderContextProvider from './AppContextProvider.es';
 import * as DataLayoutBuilderActions from './actions.es';
 import FieldType from './components/field-types/FieldType.es';
 import FieldTypeList from './components/field-types/FieldTypeList.es';
-import FormsRuleBuilder from './components/rule-builder/FormsRuleBuilder.es';
+import {Editor as RuleEditor} from './components/rules/editor/Editor.es';
 import SearchInput, {
 	SearchInputWithForm,
 } from './components/search-input/SearchInput.es';
-import {ReactMultiPanelSidebarAdapter} from './components/sidebar/MultiPanelSidebarFormsProxy.es';
+import MultiPanelSidebar from './components/sidebar/MultiPanelSidebar.es';
 import Sidebar from './components/sidebar/Sidebar.es';
 import TranslationManager from './components/translation-manager/TranslationManager.es';
 import * as DataLayoutBuilder from './data-layout-builder/DataLayoutBuilder.es';
 import DragLayer from './drag-and-drop/DragLayer.es';
 import * as DragTypes from './drag-and-drop/dragTypes.es';
 import withDragAndDropContext from './drag-and-drop/withDragAndDropContext.es';
+import {Component as PluginComponent} from './plugins/PluginContext.es';
+import {FieldsSidebar} from './plugins/fields-sidebar/components/FieldsSidebar.es';
 import * as DataConverter from './utils/dataConverter.es';
 import * as DataDefinitionUtils from './utils/dataDefinition.es';
 import * as DataLayoutVisitor from './utils/dataLayoutVisitor.es';
+import * as LangUtil from './utils/lang.es';
 
 export {
 	DataConverter,
@@ -39,14 +42,17 @@ export {
 	DataLayoutBuilder,
 	DataLayoutBuilderActions,
 	DataLayoutBuilderContext,
-	FormsRuleBuilder,
 	DataLayoutBuilderContextProvider,
 	DataLayoutVisitor,
 	DragLayer,
 	DragTypes,
+	FieldsSidebar,
 	FieldType,
 	FieldTypeList,
-	ReactMultiPanelSidebarAdapter,
+	LangUtil,
+	MultiPanelSidebar,
+	PluginComponent,
+	RuleEditor,
 	SearchInput,
 	SearchInputWithForm,
 	Sidebar,

@@ -141,18 +141,15 @@ module.framework.properties.osgi.console=11312</echo>
 			<if>
 				<not>
 					<or>
-						<equals arg1="${browser.type}" arg2="android" />
-						<equals arg1="${browser.type}" arg2="androidchrome" />
 						<equals arg1="${browser.type}" arg2="chrome" />
 						<equals arg1="${browser.type}" arg2="edge" />
 						<equals arg1="${browser.type}" arg2="firefox" />
 						<equals arg1="${browser.type}" arg2="internetexplorer" />
-						<equals arg1="${browser.type}" arg2="iossafari" />
 						<equals arg1="${browser.type}" arg2="safari" />
 					</or>
 				</not>
 				<then>
-					<fail>Please set "browser.type" to one of the following:${line.separator}android, androidchrome, chrome, edge, firefox, internetexplorer, iossafari, or safari.</fail>
+					<fail>Please set "browser.type" to one of the following:${line.separator}chrome, edge, firefox, internetexplorer, or safari.</fail>
 				</then>
 			</if>
 
@@ -375,24 +372,37 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 
 	<macrodef name="get-commerce-license-product-name">
 		<sequential>
+			<get-testcase-property property.name="commerce.license.file" />
+
+			<if>
+				<not>
+					<isset property="commerce.license.file" />
+				</not>
+				<then>
+					<var name="commerce.license.file" value="portal-commerce-license.xml" />
+				</then>
+			</if>
+
 			<var name="commerce.license.product.name" unset="true" />
 
 			<if>
-				<isset property="test.commerce.license.url" />
+				<equals arg1="${commerce.license.file}" arg2="commerce-binary-license-developer.li" />
 				<then>
-					<mirrors-get
-						dest="portal-commerce-license.xml"
-						src="${test.commerce.license.url}"
-					/>
-
-					<xmlproperty file="portal-commerce-license.xml" prefix="commerce" />
-
-					<property name="commerce.license.product.name" value="${commerce.license.product-name}" />
-
-					<delete file="portal-commerce-license.xml" />
+					<property name="commerce.license.product.name" value="Liferay Commerce Subscription Development" />
 				</then>
 				<else>
-					<fail message="Unable to get commerce license product name because property 'test.commerce.license.url' is not set." />
+					<loadfile
+						property="commerce.license.content"
+						srcfile="${liferay.home}/osgi/modules/${commerce.license.file}"
+					/>
+
+					<propertyregex
+						casesensitive="false"
+						input="${commerce.license.content}"
+						property="commerce.license.product.name"
+						regexp="&lt;product-name&gt;(.*?)&lt;/product-name&gt;"
+						select="\1"
+					/>
 				</else>
 			</if>
 		</sequential>
@@ -439,6 +449,36 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 			<condition else="" property="database.socks.non.proxy.hosts" value="-DsocksNonProxyHosts=${database.host}">
 				<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
 			</condition>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="get-dxp-license-product-name">
+		<sequential>
+			<get-testcase-property property.name="dxp.license.file" />
+
+			<if>
+				<not>
+					<isset property="dxp.license.file" />
+				</not>
+				<then>
+					<var name="dxp.license.file" value="license.xml" />
+				</then>
+			</if>
+
+			<var name="dxp.license.product.name" unset="true" />
+
+			<loadfile
+				property="dxp.license.content"
+				srcfile="${liferay.home}/osgi/modules/${dxp.license.file}"
+			/>
+
+			<propertyregex
+				casesensitive="false"
+				input="${dxp.license.content}"
+				property="dxp.license.product.name"
+				regexp="&lt;product-name&gt;(.*?)&lt;/product-name&gt;"
+				select="\1"
+			/>
 		</sequential>
 	</macrodef>
 
@@ -911,31 +951,6 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 		</sequential>
 	</macrodef>
 
-	<macrodef name="get-portal-license-product-name">
-		<sequential>
-			<var name="portal.license.product.name" unset="true" />
-
-			<if>
-				<isset property="test.license.xml.url" />
-				<then>
-					<mirrors-get
-						dest="portal-license.xml"
-						src="${test.license.xml.url}"
-					/>
-
-					<xmlproperty file="portal-license.xml" prefix="portal" />
-
-					<property name="portal.license.product.name" value="${portal.license.product-name}" />
-
-					<delete file="portal-license.xml" />
-				</then>
-				<else>
-					<fail message="Unable to get portal license product name because property 'test.license.xml.url' is not set." />
-				</else>
-			</if>
-		</sequential>
-	</macrodef>
-
 	<macrodef name="get-poshi-class-name">
 		<sequential>
 			<fail message="Please set the property ${test.class}." unless="test.class" />
@@ -1363,18 +1378,6 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 					</then>
 				</elseif>
 				<elseif>
-					<or>
-						<equals arg1="${browser.type}" arg2="android" />
-						<equals arg1="${browser.type}" arg2="androidchrome" />
-						<equals arg1="${browser.type}" arg2="iossafari" />
-					</or>
-					<then>
-						<get-ip-address />
-
-						<var name="test.url" value="http://${ip.address}:8080" />
-					</then>
-				</elseif>
-				<elseif>
 					<isset property="testcase.url" />
 					<then>
 						<var name="test.url" value="${testcase.url}" />
@@ -1533,7 +1536,6 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 					<execute dir="@{patching.tool.dir}" failonerror="true">
 						patching-tool${file.suffix.bat} auto-discovery
 						patching-tool${file.suffix.bat} install -force
-						patching-tool${file.suffix.bat} update-plugins
 					</execute>
 				</then>
 				<else>
@@ -1544,7 +1546,6 @@ war.path=${app.server.portal.dir}/</echo>
 
 					<execute dir="@{patching.tool.dir}" failonerror="true">
 						patching-tool${file.suffix.bat} install -force
-						patching-tool${file.suffix.bat} update-plugins
 					</execute>
 				</else>
 			</if>
@@ -2339,7 +2340,9 @@ jdbc.default.password=${database.password}</echo>
 				</then>
 				<else>
 					<if>
-						<equals arg1="${selenium.remote.driver.enabled}" arg2="false" />
+						<not>
+							<isset property="selenium.remote.driver.url" />
+						</not>
 						<then>
 							<fail message="Operating system is not supported." />
 						</then>
@@ -2427,7 +2430,9 @@ jdbc.default.password=${database.password}</echo>
 				</then>
 				<else>
 					<if>
-						<equals arg1="${selenium.remote.driver.enabled}" arg2="false" />
+						<not>
+							<isset property="selenium.remote.driver.url" />
+						</not>
 						<then>
 							<fail message="Operating system is not supported." />
 						</then>
@@ -2503,7 +2508,8 @@ jdbc.default.password=${database.password}</echo>
 	<macrodef name="prepare-liferay-online-properties">
 		<sequential>
 			<echo append="true" file="portal-impl/src/portal-ext.properties">
-include-and-override=portal-liferay-online.properties</echo>
+include-and-override=portal-liferay-online.properties
+include-and-override=portal-liferay-online-limit.properties</echo>
 		</sequential>
 	</macrodef>
 
@@ -2611,14 +2617,12 @@ include-and-override=portal-liferay-online.properties</echo>
 				<then>
 					<delete failonerror="false" file="${liferay.home}/deploy/portal-commerce-license.xml" verbose="true" />
 				</then>
-				<else>
-					<if>
-						<isset property="commerce.license.file" />
-						<then>
-							<swap-commerce-license commerce.license.file="${commerce.license.file}" />
-						</then>
-					</if>
-				</else>
+				<elseif>
+					<isset property="commerce.license.file" />
+					<then>
+						<swap-commerce-license commerce.license.file="${commerce.license.file}" />
+					</then>
+				</elseif>
 			</if>
 
 			<get-testcase-property property.name="deploy.lcs.token.file" />
@@ -4158,6 +4162,15 @@ go</echo>
 						<var name="app.server.tomcat.version" value="9.0.37" />
 					</then>
 				</elseif>
+				<elseif>
+					<or>
+						<equals arg1="@{liferay.portal.bundle}" arg2="7.2.10.4" />
+						<equals arg1="@{liferay.portal.bundle}" arg2="7.3.10.1" />
+					</or>
+					<then>
+						<var name="app.server.tomcat.version" value="9.0.40" />
+					</then>
+				</elseif>
 			</if>
 
 			<var name="app.server.tomcat.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}" />
@@ -4193,12 +4206,21 @@ go</echo>
 	<macrodef name="set-up-search-engine">
 		<sequential>
 			<get-testcase-property property.name="remote.elasticsearch.enabled" />
+			<propertycopy from="suite.elastic.version[${env.CI_TEST_SUITE}]" name="suite.elastic.version" silent="true" />
 
 			<if>
 				<equals arg1="${remote.elasticsearch.enabled}" arg2="true" />
 				<then>
 					<ant antfile="build-test-elasticsearch7.xml" target="start-elasticsearch" />
 				</then>
+				<elseif>
+					<isset property="suite.elastic.version" />
+					<then>
+						<ant antfile="build-test-elasticsearch7.xml" target="redeploy-sidecar">
+							<property name="sidecar.redeploy.version" value="${suite.elastic.version}" />
+						</ant>
+					</then>
+				</elseif>
 			</if>
 
 			<get-testcase-property property.name="delete.sidecar.bundle" />
@@ -4397,69 +4419,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 		</sequential>
 	</macrodef>
 
-	<macrodef name="start-android-device">
-		<sequential>
-			<fail message="Please set the property ${mobile.android.home}." unless="mobile.android.home" />
-
-			<echo file="${user.home}/.android/ddms.cfg">pingId=0</echo>
-
-			<execute>
-				echo no | ${mobile.android.home}/tools/android create avd -f -n deviceName -t android-19
-			</execute>
-
-			<echo append="true" file="${user.home}/.android/avd/deviceName.avd/config.ini">
-				hw.keyboard=yes
-			</echo>
-
-			<exec executable="/bin/bash" os="${os.apple},${os.unix}" spawn="true">
-				<arg value="-c" />
-				<arg value="${mobile.android.home}/tools/emulator -avd deviceName -no-boot-anim" />
-			</exec>
-
-			<exec executable="cmd.exe" os="${os.windows}">
-				<arg value="/c" />
-				<arg value="${mobile.android.home}/tools/emulator -avd deviceName -no-boot-anim" />
-			</exec>
-
-			<echo file="wait_for_android_device.sh">
-				<![CDATA[
-					#!/bin/bash
-
-					bootanim=""
-
-					until [[ $bootanim =~ "stopped" ]];
-					do
-						bootanim=`${mobile.android.home}/platform-tools/adb shell getprop init.svc.bootanim`
-
-						sleep 1
-					done
-				]]>
-			</echo>
-
-			<chmod
-				file="wait_for_android_device.sh"
-				perm="a+x"
-			/>
-
-			<exec executable="${basedir}/wait_for_android_device.sh" timeout="300000" />
-
-			<delete file="wait_for_android_device.sh" />
-
-			<execute>
-				${mobile.android.home}/platform-tools/adb push ${basedir.unix}/portal-web/test/functional/com/liferay/portalweb/dependencies/mobile/swipe_down.sh /data/local
-				${mobile.android.home}/platform-tools/adb push ${basedir.unix}/portal-web/test/functional/com/liferay/portalweb/dependencies/mobile/swipe_up.sh /data/local
-				${mobile.android.home}/platform-tools/adb push ${basedir.unix}/portal-web/test/functional/com/liferay/portalweb/dependencies/mobile/tap.sh /data/local
-
-				${mobile.android.home}/platform-tools/adb -s emulator-5554 shell chmod 0777 /data/local/swipe_down.sh
-				${mobile.android.home}/platform-tools/adb -s emulator-5554 shell chmod 0777 /data/local/swipe_up.sh
-				${mobile.android.home}/platform-tools/adb -s emulator-5554 shell chmod 0777 /data/local/tap.sh
-
-				${mobile.android.home}/platform-tools/adb -s emulator-5554 shell settings put system pointer_location 1
-				${mobile.android.home}/platform-tools/adb -s emulator-5554 shell settings put system show_touches 1
-			</execute>
-		</sequential>
-	</macrodef>
-
 	<macrodef name="start-app-server">
 		<attribute default="0" name="app.server.bundle.index" />
 		<attribute default="true" name="delete.liferay.home" />
@@ -4604,51 +4563,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						</daemons>
 					</parallel>
 				</then>
-			</if>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="start-appium">
-		<sequential>
-			<if>
-				<or>
-					<equals arg1="${browser.type}" arg2="android" />
-					<equals arg1="${browser.type}" arg2="androidchrome" />
-				</or>
-				<then>
-					<fail message="Please set the property ${mobile.android.home}." unless="mobile.android.home" />
-
-					<parallel>
-						<daemons>
-							<exec executable="/bin/bash" os="${os.apple},${os.unix}">
-								<env key="ANDROID_HOME" value="${mobile.android.home}" />
-								<env key="PATH" value="${env.PATH}:${mobile.android.home}/tools:${mobile.android.home}/platform-tools" />
-								<arg value="-c" />
-								<arg value="${appium.unix.cmd}" />
-							</exec>
-
-							<exec dir="${appium.win32.dir}" executable="cmd.exe" os="${os.windows}">
-								<env key="ANDROID_HOME" value="${mobile.android.home}" />
-								<env key="Path" value="${env.Path}:${mobile.android.home}/tools:${mobile.android.home}/platform-tools" />
-								<arg value="/c" />
-								<arg value="${appium.win32.cmd}" />
-							</exec>
-						</daemons>
-					</parallel>
-				</then>
-				<elseif>
-					<equals arg1="${browser.type}" arg2="iossafari" />
-					<then>
-						<parallel>
-							<daemons>
-								<exec executable="/bin/bash" os="${os.apple}">
-									<arg value="-c" />
-									<arg value="${appium.unix.cmd}" />
-								</exec>
-							</daemons>
-						</parallel>
-					</then>
-				</elseif>
 			</if>
 		</sequential>
 	</macrodef>
@@ -5016,17 +4930,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 		</sequential>
 	</macrodef>
 
-	<macrodef name="stop-android-device">
-		<sequential>
-			<fail message="Please set the property ${mobile.android.home}." unless="mobile.android.home" />
-
-			<execute>
-				${mobile.android.home}/platform-tools/adb emu kill
-				${mobile.android.home}/tools/android delete avd -n deviceName
-			</execute>
-		</sequential>
-	</macrodef>
-
 	<macrodef name="stop-app-server">
 		<attribute default="0" name="app.server.bundle.index" />
 		<attribute default="0" name="app.server.explicit.stop.count" />
@@ -5212,25 +5115,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 			</exec>
 
 			<delete file="docker.process.pid" />
-		</sequential>
-	</macrodef>
-
-	<macrodef name="stop-appium">
-		<sequential>
-			<exec executable="/bin/bash" os="${os.apple},${os.unix}">
-				<arg value="-c" />
-				<arg value="killall node" />
-			</exec>
-
-			<exec executable="/bin/bash" os="${os.unix}">
-				<arg value="-c" />
-				<arg value="fuser -k 9515/tcp" />
-			</exec>
-
-			<exec executable="cmd.exe" os="${os.windows}">
-				<arg value="/c" />
-				<arg value="tskill node" />
-			</exec>
 		</sequential>
 	</macrodef>
 
@@ -5515,30 +5399,26 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 			/>
 
 			<if>
+				<equals arg1="@{commerce.license.file}" arg2="commerce-binary-license-developer.li" />
+				<then>
+					<copy
+						file="${project.dir}/portal-web/test/functional/com/liferay/portalweb/dependencies/license/@{commerce.license.file}"
+						todir="${liferay.home}/data/license"
+					/>
+				</then>
+			</if>
+
+			<if>
 				<equals arg1="@{commerce.license.file}" arg2="commerce-dxp-license-developer-combined.xml" />
 				<then>
 					<delete failonerror="false" file="${liferay.home}/deploy/license.xml" verbose="true" />
 				</then>
 			</if>
 
-			<if>
-				<equals arg1="@{commerce.license.file}" arg2="commerce-license-developer-ipaddress.xml" />
-				<then>
-					<get-ip-address />
-				</then>
-			</if>
+			<get-testcase-property property.name="commerce.license.property" />
 
 			<if>
-				<equals arg1="@{commerce.license.file}" arg2="commerce-license-developer-macaddress.xml" />
-				<then>
-					<get-mac-address />
-				</then>
-			</if>
-
-			<var name="expiration.leeway" value="2" />
-
-			<if>
-				<equals arg1="@{commerce.license.file}" arg2="commerce-license-developer-custom-expiration-30-day.xml" />
+				<equals arg1="${commerce.license.property}" arg2="expiration-warning" />
 				<then>
 					<beanshell>
 						<![CDATA[
@@ -5559,56 +5439,99 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							project.setProperty("expiration.date", dateTimeFormatter.format(expiration));
 						]]>
 					</beanshell>
+
+					<replace
+						file="${liferay.home}/deploy/@{commerce.license.file}"
+						token="${expirationdate}"
+						value="${expiration.date}"
+					/>
 				</then>
-				<else>
-					<beanshell>
-						<![CDATA[
-							import java.time.format.DateTimeFormatter;
-							import java.time.ZonedDateTime;
-							import java.time.ZoneId;
+				<elseif>
+					<equals arg1="${commerce.license.property}" arg2="expired" />
+					<then>
+						<beanshell>
+							<![CDATA[
+								import java.time.format.DateTimeFormatter;
+								import java.time.ZonedDateTime;
+								import java.time.ZoneId;
 
-							DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy hh:mm:ss a zz");
+								DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy hh:mm:ss a zz");
 
-							ZoneId GMT = ZoneId.of("GMT");
+								ZoneId GMT = ZoneId.of("GMT");
 
-							ZonedDateTime now = ZonedDateTime.now(GMT);
+								ZonedDateTime now = ZonedDateTime.now(GMT);
 
-							//License expiration leeway
-							ZonedDateTime expiration = now.minusDays(2);
+								//License expiration leeway
+								ZonedDateTime expiration = now.minusDays(2);
 
-							//License expiration delay
-							expiration = expiration.plusMinutes(5);
+								//License expiration delay
+								expiration = expiration.plusMinutes(5);
 
-							System.out.println(dateTimeFormatter.format(expiration));
-							project.setProperty("expiration.date", dateTimeFormatter.format(expiration));
-						]]>
-					</beanshell>
-				</else>
+								System.out.println(dateTimeFormatter.format(expiration));
+								project.setProperty("expiration.date", dateTimeFormatter.format(expiration));
+							]]>
+						</beanshell>
+
+						<replace
+							file="${liferay.home}/deploy/@{commerce.license.file}"
+							token="${expirationdate}"
+							value="${expiration.date}"
+						/>
+					</then>
+				</elseif>
+				<elseif>
+					<equals arg1="${commerce.license.property}" arg2="hostname" />
+					<then>
+						<replace
+							file="${liferay.home}/deploy/@{commerce.license.file}"
+							token="hostnameToReplace"
+							value="${env.HOSTNAME}"
+						/>
+
+						<replace
+							file="${liferay.home}/deploy/${dxp.license.file}"
+							token="hostnameToReplace"
+							value="${env.HOSTNAME}"
+						/>
+					</then>
+				</elseif>
+				<elseif>
+					<equals arg1="${commerce.license.property}" arg2="ip-address" />
+					<then>
+						<get-ip-address />
+
+						<replace
+							file="${liferay.home}/deploy/@{commerce.license.file}"
+							token="ipToReplace"
+							value="${ip.address}"
+						/>
+
+						<replace
+							file="${liferay.home}/deploy/${dxp.license.file}"
+							token="ipToReplace"
+							value="${ip.address}"
+						/>
+					</then>
+				</elseif>
+				<elseif>
+					<equals arg1="${commerce.license.property}" arg2="mac-address" />
+					<then>
+						<get-mac-address />
+
+						<replace
+							file="${liferay.home}/deploy/@{commerce.license.file}"
+							token="macAddressToReplace"
+							value="${mac.address}"
+						/>
+
+						<replace
+							file="${liferay.home}/deploy/${dxp.license.file}"
+							token="macAddressToReplace"
+							value="${mac.address}"
+						/>
+					</then>
+				</elseif>
 			</if>
-
-			<replace
-				file="${liferay.home}/deploy/@{commerce.license.file}"
-				token="${host.name}"
-				value="${env.HOSTNAME}"
-			/>
-
-			<replace
-				file="${liferay.home}/deploy/@{commerce.license.file}"
-				token="${expirationdate}"
-				value="${expiration.date}"
-			/>
-
-			<replace
-				file="${liferay.home}/deploy/@{commerce.license.file}"
-				token="${ipaddress}"
-				value="${ip.address}"
-			/>
-
-			<replace
-				file="${liferay.home}/deploy/@{commerce.license.file}"
-				token="${macaddress}"
-				value="${mac.address}"
-			/>
 		</sequential>
 	</macrodef>
 
@@ -5816,7 +5739,14 @@ war.path=${app.server.portal.dir}/</echo>
 
 			<echo>${app.server.waiting.url} has loaded</echo>
 
-			<get-testcase-property property.name="commerce.enabled" />
+			<if>
+				<not>
+					<isset property="commerce.enabled" />
+				</not>
+				<then>
+					<get-testcase-property property.name="commerce.enabled" />
+				</then>
+			</if>
 
 			<if>
 				<and>
@@ -6030,11 +5960,11 @@ war.path=${app.server.portal.dir}/</echo>
 
 			<wait-for-app-server-log-message log.message="License registered for ${commerce.license.product.name}" />
 
-			<get-portal-license-product-name />
+			<get-dxp-license-product-name />
 
-			<wait-for-app-server-log-message log.message="${portal.license.product.name} license validation passed" />
+			<wait-for-app-server-log-message log.message="${dxp.license.product.name} license validation passed" />
 
-			<wait-for-app-server-log-message log.message="License registered for ${portal.license.product.name}" />
+			<wait-for-app-server-log-message log.message="License registered for ${dxp.license.product.name}" />
 		</sequential>
 	</macrodef>
 
@@ -6568,17 +6498,6 @@ go</echo>
 		<delete failonerror="false" file="${project.dir}/console-shut-down" />
 	</target>
 
-	<target name="clean-up-mobile-device">
-		<get-testcase-property property.name="browser.type" />
-
-		<if>
-			<equals arg1="${browser.type}" arg2="android" />
-			<then>
-				<stop-android-device />
-			</then>
-		</if>
-	</target>
-
 	<target name="clean-up-selenium-driver">
 		<if>
 			<equals arg1="${browser.type}" arg2="chrome" />
@@ -6605,17 +6524,6 @@ go</echo>
 			<equals arg1="${browser.type}" arg2="internetexplorer" />
 			<then>
 				<stop-ie-driver />
-			</then>
-		</if>
-
-		<if>
-			<or>
-				<equals arg1="${browser.type}" arg2="android" />
-				<equals arg1="${browser.type}" arg2="androidchrome" />
-				<equals arg1="${browser.type}" arg2="iossafari" />
-			</or>
-			<then>
-				<stop-appium />
 			</then>
 		</if>
 	</target>
@@ -7091,6 +6999,14 @@ go</echo>
 				</delete>
 			</else>
 		</if>
+	</target>
+
+	<target name="delete-static-impl-license-jar">
+		<execute>
+			<![CDATA[
+				zip -d '${liferayHome}/osgi/marketplace/Liferay Static - Impl.lpkg' com.liferay.portal.license.enterprise.app.jar
+			]]>
+		</execute>
 	</target>
 
 	<target name="deploy-analytics-cloud-demo-data-creator">
@@ -8940,12 +8856,6 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 		</if>
 	</target>
 
-	<target name="prepare-mobile-device">
-		<stop-android-device />
-
-		<start-android-device />
-	</target>
-
 	<target name="prepare-osgi-module-configurations">
 		<get-testcase-property property.name="osgi.module.configurations" />
 
@@ -9997,53 +9907,6 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		</echo>
 
 		<if>
-			<or>
-				<equals arg1="${browser.type}" arg2="android" />
-				<equals arg1="${browser.type}" arg2="androidchrome" />
-				<equals arg1="${browser.type}" arg2="iossafari" />
-			</or>
-			<then>
-				<stop-appium />
-
-				<start-appium />
-
-				<echo append="true" file="${test.ext.properties.file}">
-					mobile.android.home=${mobile.android.home}
-					mobile.browser=true
-				</echo>
-			</then>
-		</if>
-
-		<if>
-			<equals arg1="${browser.type}" arg2="android" />
-			<then>
-				<antcall target="prepare-mobile-device" />
-			</then>
-		</if>
-
-		<if>
-			<equals arg1="${browser.type}" arg2="androidchrome" />
-			<then>
-				<exec executable="/bin/bash" os="${os.apple},${os.unix}" outputproperty="mobile.device.name">
-					<arg value="-c" />
-					<arg value="${mobile.android.home}/platform-tools/adb devices" />
-				</exec>
-
-				<propertyregex
-					input="${mobile.device.name}"
-					override="true"
-					property="mobile.device.name"
-					regexp=".*\n([A-z0-9]*)"
-					select="\1"
-				/>
-
-				<echo append="true" file="${test.ext.properties.file}">
-					mobile.device.name=${mobile.device.name}
-				</echo>
-			</then>
-		</if>
-
-		<if>
 			<equals arg1="${browser.type}" arg2="chrome" />
 			<then>
 				<prepare-chrome-driver />
@@ -10104,12 +9967,11 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		</if>
 
 		<if>
-			<equals arg1="${selenium.remote.driver.enabled}" arg2="true" />
+			<isset property="selenium.remote.driver.url" />
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
 					selenium.desired.capabilities.platform=${selenium.desired.capabilities.platform}
-					selenium.remote.driver.enabled=${selenium.remote.driver.enabled}
-					selenium.remote.driver.hub=${selenium.remote.driver.hub}
+					selenium.remote.driver.url=${selenium.remote.driver.url}
 				</echo>
 			</then>
 		</if>
@@ -11523,35 +11385,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 				<equals arg1="${app.server.type}" arg2="websphere" />
 			</or>
 			<then>
-				<mirrors-get
-					dest="${liferay.home}"
-					skipChecksum="true"
-					src="${elasticsearch.sidecar.analysis-icu.zip.url}"
-				/>
-
-				<mirrors-get
-					dest="${liferay.home}"
-					skipChecksum="true"
-					src="${elasticsearch.sidecar.analysis-kuromoji.zip.url}"
-				/>
-
-				<mirrors-get
-					dest="${liferay.home}"
-					skipChecksum="true"
-					src="${elasticsearch.sidecar.analysis-smartcn.zip.url}"
-				/>
-
-				<mirrors-get
-					dest="${liferay.home}"
-					skipChecksum="true"
-					src="${elasticsearch.sidecar.analysis-stempel.zip.url}"
-				/>
-
-				<mirrors-get
-					dest="${liferay.home}"
-					skipChecksum="true"
-					src="${elasticsearch.sidecar.no.jdk.tar.url}"
-				/>
+				<ant antfile="build-test-elasticsearch7.xml" target="get-sidecar-binaries" />
 			</then>
 		</if>
 
@@ -12989,8 +12823,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 				</if>
 			</then>
 		</if>
-
-		<antcall target="clean-up-mobile-device" />
 
 		<antcall target="clean-up-selenium-driver" />
 	</target>

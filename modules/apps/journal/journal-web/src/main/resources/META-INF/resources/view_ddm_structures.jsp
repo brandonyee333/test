@@ -27,8 +27,9 @@ JournalDDMStructuresManagementToolbarDisplayContext journalDDMStructuresManageme
 	navigationItems='<%= journalDisplayContext.getNavigationItems("structures") %>'
 />
 
-<clay:management-toolbar-v2
-	displayContext="<%= journalDDMStructuresManagementToolbarDisplayContext %>"
+<clay:management-toolbar
+	managementToolbarDisplayContext="<%= journalDDMStructuresManagementToolbarDisplayContext %>"
+	propsTransformer="js/DDMStructuresManagementToolbarPropsTransformer"
 />
 
 <portlet:actionURL copyCurrentRenderParameters="<%= true %>" name="/journal/delete_data_definition" var="deleteDataDefinitionURL">
@@ -66,11 +67,15 @@ JournalDDMStructuresManagementToolbarDisplayContext journalDDMStructuresManageme
 			String rowHREF = StringPool.BLANK;
 
 			if (DDMStructurePermission.contains(permissionChecker, ddmStructure, ActionKeys.UPDATE)) {
-				PortletURL rowURL = renderResponse.createRenderURL();
-
-				rowURL.setParameter("mvcPath", "/edit_data_definition.jsp");
-				rowURL.setParameter("redirect", currentURL);
-				rowURL.setParameter("ddmStructureId", String.valueOf(ddmStructure.getStructureId()));
+				PortletURL rowURL = PortletURLBuilder.createRenderURL(
+					renderResponse
+				).setMVCPath(
+					"/edit_data_definition.jsp"
+				).setRedirect(
+					currentURL
+				).setParameter(
+					"ddmStructureId", String.valueOf(ddmStructure.getStructureId())
+				).build();
 
 				rowHREF = rowURL.toString();
 			}
@@ -122,8 +127,3 @@ JournalDDMStructuresManagementToolbarDisplayContext journalDDMStructuresManageme
 		/>
 	</liferay-ui:search-container>
 </aui:form>
-
-<liferay-frontend:component
-	componentId="<%= journalDDMStructuresManagementToolbarDisplayContext.getDefaultEventHandler() %>"
-	module="js/DDMStructuresManagementToolbarDefaultEventHandler.es"
-/>

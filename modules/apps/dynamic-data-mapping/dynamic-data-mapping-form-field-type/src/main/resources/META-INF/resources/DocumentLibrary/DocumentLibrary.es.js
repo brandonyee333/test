@@ -18,8 +18,12 @@ import {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayProgressBar from '@clayui/progress-bar';
 import axios from 'axios';
-import {PagesVisitor, usePage} from 'dynamic-data-mapping-form-renderer';
-import {convertToFormData} from 'dynamic-data-mapping-form-renderer/js/util/fetch.es';
+import {
+	PagesVisitor,
+	convertToFormData,
+	useConfig,
+	useFormState,
+} from 'dynamic-data-mapping-form-renderer';
 import {ItemSelectorDialog} from 'frontend-js-web';
 import React, {useEffect, useMemo, useState} from 'react';
 
@@ -273,7 +277,9 @@ const Main = ({
 	value = '{}',
 	...otherProps
 }) => {
-	const {pages, portletNamespace} = usePage();
+	const {portletNamespace} = useConfig();
+	const {pages} = useFormState();
+
 	const [currentValue, setCurrentValue] = useState(value);
 	const [errorMessage, setErrorMessage] = useState(initialErrorMessage);
 	const [displayErrors, setDisplayErrors] = useState(initialDisplayErrors);

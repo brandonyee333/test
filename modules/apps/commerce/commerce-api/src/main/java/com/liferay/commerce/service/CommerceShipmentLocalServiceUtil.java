@@ -44,6 +44,11 @@ public class CommerceShipmentLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.commerce.service.impl.CommerceShipmentLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link #addDeliverySubscriptionCommerceShipment(long, long)}
+	 */
+	@Deprecated
 	public static CommerceShipment addCommerceDeliverySubscriptionShipment(
 			long userId, long commerceOrderId, String name, String description,
 			String street1, String street2, String street3, String city,
@@ -90,6 +95,14 @@ public class CommerceShipmentLocalServiceUtil {
 
 		return getService().addCommerceShipment(
 			commerceOrderId, serviceContext);
+	}
+
+	public static CommerceShipment addDeliverySubscriptionCommerceShipment(
+			long userId, long commerceOrderItemId)
+		throws PortalException {
+
+		return getService().addDeliverySubscriptionCommerceShipment(
+			userId, commerceOrderItemId);
 	}
 
 	/**
@@ -423,6 +436,12 @@ public class CommerceShipmentLocalServiceUtil {
 		return getService().searchCommerceShipmentsCount(searchContext);
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 #updateAddress(long, String, String, String, String, String, String,
+	 String, long, long, String, ServiceContext)}
+	 */
+	@Deprecated
 	public static CommerceShipment updateAddress(
 			long commerceShipmentId, String name, String description,
 			String street1, String street2, String street3, String city,
@@ -432,6 +451,18 @@ public class CommerceShipmentLocalServiceUtil {
 		return getService().updateAddress(
 			commerceShipmentId, name, description, street1, street2, street3,
 			city, zip, regionId, countryId, phoneNumber);
+	}
+
+	public static CommerceShipment updateAddress(
+			long commerceShipmentId, String name, String description,
+			String street1, String street2, String street3, String city,
+			String zip, long regionId, long countryId, String phoneNumber,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
+
+		return getService().updateAddress(
+			commerceShipmentId, name, description, street1, street2, street3,
+			city, zip, regionId, countryId, phoneNumber, serviceContext);
 	}
 
 	public static CommerceShipment updateCarrierDetails(

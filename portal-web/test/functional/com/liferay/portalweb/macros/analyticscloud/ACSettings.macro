@@ -1,0 +1,7 @@
+definition {
+
+	macro settings {
+		echo("TODO");
+	}
+
+}

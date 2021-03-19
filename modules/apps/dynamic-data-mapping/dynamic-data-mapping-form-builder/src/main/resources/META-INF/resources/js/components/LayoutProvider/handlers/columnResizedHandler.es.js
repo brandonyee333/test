@@ -16,7 +16,7 @@ import {FormSupport} from 'dynamic-data-mapping-form-renderer';
 
 import {updateField} from '../util/settingsContext.es';
 
-const getColumn = (pages, nestedIndexes = []) => {
+export const getColumn = (pages, nestedIndexes = []) => {
 	let column;
 	let context = pages;
 
@@ -210,7 +210,7 @@ export const handleResizeRight = (props, state, indexes, columnTarget) => {
 	return pages;
 };
 
-const handleResizeLeft = (props, state, indexes, columnTarget) => {
+export const handleResizeLeft = (props, state, indexes, columnTarget) => {
 	const {pages} = state;
 
 	const {columnIndex, pageIndex, rowIndex} = indexes[indexes.length - 1];

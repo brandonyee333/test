@@ -16,6 +16,7 @@ package com.liferay.jenkins.results.parser;
 
 import com.liferay.jenkins.results.parser.testray.TestrayBuild;
 import com.liferay.jenkins.results.parser.testray.TestrayCaseResult;
+import com.liferay.jenkins.results.parser.testray.TestrayFactory;
 import com.liferay.jenkins.results.parser.testray.TestrayProject;
 import com.liferay.jenkins.results.parser.testray.TestrayRoutine;
 import com.liferay.jenkins.results.parser.testray.TestrayServer;
@@ -29,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,7 +83,8 @@ public class TestHistoryMap
 
 		long start = JenkinsResultsParserUtil.getCurrentTimeMillis();
 
-		TestrayServer testrayServer = new TestrayServer(testrayServerName);
+		TestrayServer testrayServer = TestrayFactory.newTestrayServer(
+			testrayServerName);
 
 		TestrayProject testrayProject = testrayServer.getTestrayProjectByName(
 			projectName);
@@ -138,6 +141,12 @@ public class TestHistoryMap
 	public void put(
 		String testName, String batchName, String buildURL, String errorSnippet,
 		String status) {
+
+		for (String excludedTestNameRegex : _excludedTestNameRegexes) {
+			if (testName.matches(".*" + excludedTestNameRegex + ".*")) {
+				return;
+			}
+		}
 
 		if (containsKey(Collections.singletonMap(testName, batchName))) {
 			TestHistory testHistory = get(
@@ -347,6 +356,28 @@ public class TestHistoryMap
 			}
 		}
 	}
+
+	private static final List<String> _excludedTestNameRegexes =
+		new ArrayList<String>() {
+			{
+				Properties buildProperties = null;
+
+				try {
+					buildProperties =
+						JenkinsResultsParserUtil.getBuildProperties();
+
+					String excludedTestNames = buildProperties.getProperty(
+						"flaky.test.report.test.name.excludes");
+
+					Collections.addAll(
+						this, excludedTestNames.split("\\s*,\\s*"));
+				}
+				catch (IOException ioException) {
+					throw new RuntimeException(
+						"Unable to get build properties", ioException);
+				}
+			}
+		};
 
 	private static final Pattern _testrayLogPattern = Pattern.compile(
 		"test[0-9-]+\\/[0-9]+\\/.+?\\/[0-9]+\\/(?<jobVariant>.+?)\\/.*");

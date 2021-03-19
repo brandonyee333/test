@@ -51,8 +51,6 @@ import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroup;
 import java.io.File;
 import java.io.IOException;
 
-import java.net.URLEncoder;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,9 +65,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * @author Michael Hashimoto
@@ -795,7 +790,8 @@ public class TestrayImporter {
 			if ((testrayServerURL != null) &&
 				testrayServerURL.matches("https?://.*")) {
 
-				testrayServer = new TestrayServer(testrayServerURL);
+				testrayServer = TestrayFactory.newTestrayServer(
+					testrayServerURL);
 			}
 
 			testrayServerURL = _getBuildParameter("TESTRAY_SERVER_URL");
@@ -803,7 +799,8 @@ public class TestrayImporter {
 			if ((testrayServer == null) && (testrayServerURL != null) &&
 				testrayServerURL.matches("https?://.*")) {
 
-				testrayServer = new TestrayServer(testrayServerURL);
+				testrayServer = TestrayFactory.newTestrayServer(
+					testrayServerURL);
 			}
 
 			Job job = getJob();
@@ -820,7 +817,8 @@ public class TestrayImporter {
 				if ((testrayServerURL != null) &&
 					testrayServerURL.matches("https?://.*")) {
 
-					testrayServer = new TestrayServer(testrayServerURL);
+					testrayServer = TestrayFactory.newTestrayServer(
+						testrayServerURL);
 
 					break;
 				}
@@ -850,7 +848,21 @@ public class TestrayImporter {
 	}
 
 	public void postSlackNotification() {
-		for (File testBaseDir : _testrayBuilds.keySet()) {
+		List<Integer> testrayBuildIDs = new ArrayList<>();
+
+		for (Map.Entry<File, TestrayBuild> testrayBuildEntry :
+				_testrayBuilds.entrySet()) {
+
+			File testBaseDir = testrayBuildEntry.getKey();
+
+			TestrayBuild testrayBuild = testrayBuildEntry.getValue();
+
+			if (testrayBuildIDs.contains(testrayBuild.getID())) {
+				continue;
+			}
+
+			testrayBuildIDs.add(testrayBuild.getID());
+
 			String slackChannels = _getSlackChannels(testBaseDir);
 
 			if (JenkinsResultsParserUtil.isNullOrEmpty(slackChannels)) {
@@ -915,8 +927,10 @@ public class TestrayImporter {
 			TestrayProductVersion testrayProductVersion =
 				testrayBuild.getTestrayProductVersion();
 
-			propertiesMap.put(
-				"testray.product.version", testrayProductVersion.getName());
+			if (testrayProductVersion != null) {
+				propertiesMap.put(
+					"testray.product.version", testrayProductVersion.getName());
+			}
 
 			TestrayProject testrayProject = testrayBuild.getTestrayProject();
 
@@ -929,9 +943,6 @@ public class TestrayImporter {
 
 			List<TestrayCaseResult> testrayCaseResults = new ArrayList<>();
 
-			int passedCount = 0;
-			int failedCount = 0;
-
 			if (axisTestClassGroup instanceof CucumberAxisTestClassGroup ||
 				axisTestClassGroup instanceof FunctionalAxisTestClassGroup ||
 				axisTestClassGroup instanceof JUnitAxisTestClassGroup) {
@@ -940,14 +951,14 @@ public class TestrayImporter {
 						axisTestClassGroup.getTestClasses()) {
 
 					testrayCaseResults.add(
-						TestrayCaseResultFactory.newTestrayCaseResult(
+						TestrayFactory.newTestrayCaseResult(
 							testrayBuild, getTopLevelBuild(),
 							axisTestClassGroup, testClass));
 				}
 			}
 			else {
 				testrayCaseResults.add(
-					TestrayCaseResultFactory.newTestrayCaseResult(
+					TestrayFactory.newTestrayCaseResult(
 						testrayBuild, getTopLevelBuild(), axisTestClassGroup,
 						null));
 			}
@@ -978,13 +989,6 @@ public class TestrayImporter {
 
 				testcasePropertiesMap.put(
 					"testray.testcase.status", testrayCaseStatus.getName());
-
-				if (testrayCaseStatus == TestrayCaseResult.Status.PASSED) {
-					passedCount++;
-				}
-				else {
-					failedCount++;
-				}
 
 				Element propertiesElement = testcaseElement.addElement(
 					"properties");
@@ -1036,61 +1040,53 @@ public class TestrayImporter {
 				}
 			}
 
-			Map<String, String> summaryMap = new HashMap<>();
-
-			summaryMap.put("failed", String.valueOf(failedCount));
-			summaryMap.put("passed", String.valueOf(passedCount));
-
-			_addPropertyElements(rootElement.addElement("summary"), summaryMap);
-
 			TestrayServer testrayServer = testrayBuild.getTestrayServer();
 
+			TopLevelBuild topLevelBuild = getTopLevelBuild();
+
+			JenkinsMaster jenkinsMaster = topLevelBuild.getJenkinsMaster();
+
 			try {
-				JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
+				String axisName = axisTestClassGroup.getAxisName();
+
+				testrayServer.writeCaseResult(
 					JenkinsResultsParserUtil.combine(
-						String.valueOf(testrayServer.getURL()),
-						"/web/guest/home/-/testray/case_results",
-						"/importResults.json"),
-					JenkinsResultsParserUtil.combine(
-						"results=",
-						URLEncoder.encode(
-							Dom4JUtil.format(rootElement), "UTF-8"),
-						"&type=poshi"));
-
-				if (jsonObject.has("data")) {
-					JSONArray dataJSONArray = jsonObject.getJSONArray("data");
-
-					for (int i = 0; i < dataJSONArray.length(); i++) {
-						JSONObject dataJSONObject = dataJSONArray.getJSONObject(
-							i);
-
-						if (dataJSONObject == JSONObject.NULL) {
-							continue;
-						}
-
-						TestrayCaseResult testrayCaseResult =
-							new TestrayCaseResult(testrayBuild, dataJSONObject);
-
-						System.out.println(
-							JenkinsResultsParserUtil.combine(
-								String.valueOf(testrayCaseResult.getStatus()),
-								" - ", testrayCaseResult.getName(), " - ",
-								String.valueOf(testrayCaseResult.getURL())));
-					}
-				}
+						"TESTS-", jenkinsMaster.getName(), "_",
+						topLevelBuild.getJobName(), "_",
+						String.valueOf(topLevelBuild.getBuildNumber()), "_",
+						axisName.replace("/", "_"), ".xml"),
+					Dom4JUtil.format(rootElement));
 			}
 			catch (IOException ioException) {
 				throw new RuntimeException(ioException);
 			}
-			finally {
-				System.out.println(
-					JenkinsResultsParserUtil.combine(
-						"Recorded ", String.valueOf(testrayCaseResults.size()),
-						" case results in ",
-						JenkinsResultsParserUtil.toDurationString(
-							JenkinsResultsParserUtil.getCurrentTimeMillis() -
-								start)));
+
+			System.out.println(
+				JenkinsResultsParserUtil.combine(
+					"Recorded ", String.valueOf(testrayCaseResults.size()),
+					" case results for ", axisTestClassGroup.getAxisName(),
+					" in ",
+					JenkinsResultsParserUtil.toDurationString(
+						JenkinsResultsParserUtil.getCurrentTimeMillis() -
+							start)));
+		}
+
+		TopLevelBuild topLevelBuild = getTopLevelBuild();
+
+		JenkinsMaster jenkinsMaster = topLevelBuild.getJenkinsMaster();
+
+		List<Integer> testrayBuildIDs = new ArrayList<>();
+
+		for (TestrayBuild testrayBuild : _testrayBuilds.values()) {
+			if (testrayBuildIDs.contains(testrayBuild.getID())) {
+				continue;
 			}
+
+			testrayBuildIDs.add(testrayBuild.getID());
+
+			TestrayServer testrayServer = testrayBuild.getTestrayServer();
+
+			testrayServer.importCaseResults(jenkinsMaster);
 		}
 	}
 

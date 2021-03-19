@@ -51,6 +51,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.petra.function.UnsafeConsumer;
+import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -232,7 +233,7 @@ public class DDMFormAdminFieldSetDisplayContext
 	}
 
 	@Override
-	public String getFormLocalizedDescription() {
+	public JSONObject getFormLocalizedDescriptionJSONObject() {
 		DDMStructure structure = getDDMStructure();
 
 		JSONObject jsonObject = jsonFactory.createJSONObject();
@@ -249,11 +250,11 @@ public class DDMFormAdminFieldSetDisplayContext
 			}
 		}
 
-		return jsonObject.toString();
+		return jsonObject;
 	}
 
 	@Override
-	public <T> String getFormLocalizedName(T object) {
+	public <T> JSONObject getFormLocalizedNameJSONObject(T object) {
 		DDMStructure structure = (DDMStructure)object;
 
 		JSONObject jsonObject = jsonFactory.createJSONObject();
@@ -270,7 +271,7 @@ public class DDMFormAdminFieldSetDisplayContext
 			}
 		}
 
-		return jsonObject.toString();
+		return jsonObject;
 	}
 
 	@Override
@@ -292,11 +293,15 @@ public class DDMFormAdminFieldSetDisplayContext
 
 	@Override
 	public PortletURL getPortletURL() {
-		PortletURL portletURL = renderResponse.createRenderURL();
-
-		portletURL.setParameter("mvcPath", "/admin/view.jsp");
-		portletURL.setParameter("groupId", String.valueOf(getScopeGroupId()));
-		portletURL.setParameter("currentTab", "element-set");
+		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+			renderResponse
+		).setMVCPath(
+			"/admin/view.jsp"
+		).setParameter(
+			"groupId", getScopeGroupId()
+		).setParameter(
+			"currentTab", "element-set"
+		).build();
 
 		String delta = ParamUtil.getString(renderRequest, "delta");
 
@@ -333,9 +338,11 @@ public class DDMFormAdminFieldSetDisplayContext
 
 	@Override
 	public SearchContainer<?> getSearch() {
-		PortletURL portletURL = getPortletURL();
-
-		portletURL.setParameter("displayStyle", getDisplayStyle());
+		PortletURL portletURL = PortletURLBuilder.create(
+			getPortletURL()
+		).setParameter(
+			"displayStyle", getDisplayStyle()
+		).build();
 
 		FieldSetSearch fieldSetSearch = new FieldSetSearch(
 			renderRequest, portletURL);
@@ -367,13 +374,15 @@ public class DDMFormAdminFieldSetDisplayContext
 
 	@Override
 	public String getSearchActionURL() {
-		PortletURL portletURL = renderResponse.createRenderURL();
-
-		portletURL.setParameter("mvcPath", "/admin/view.jsp");
-		portletURL.setParameter("groupId", String.valueOf(getScopeGroupId()));
-		portletURL.setParameter("currentTab", "element-set");
-
-		return portletURL.toString();
+		return PortletURLBuilder.createRenderURL(
+			renderResponse
+		).setMVCPath(
+			"/admin/view.jsp"
+		).setParameter(
+			"groupId", getScopeGroupId()
+		).setParameter(
+			"currentTab", "element-set"
+		).buildString();
 	}
 
 	@Override

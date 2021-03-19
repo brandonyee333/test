@@ -352,15 +352,14 @@ public class RenderLayoutStructureDisplayContext {
 				"privateLayout");
 			long layoutId = layoutJSONObject.getLong("layoutId");
 
-			try {
-				Layout layout = LayoutLocalServiceUtil.getLayout(
-					groupId, privateLayout, layoutId);
+			Layout layout = LayoutLocalServiceUtil.fetchLayout(
+				groupId, privateLayout, layoutId);
 
-				return layout.getFriendlyURL(locale);
+			if (layout == null) {
+				return StringPool.POUND;
 			}
-			catch (PortalException portalException) {
-				_log.error(portalException, portalException);
-			}
+
+			return PortalUtil.getLayoutFullURL(layout, _themeDisplay);
 		}
 
 		String href = linkJSONObject.getString("href");

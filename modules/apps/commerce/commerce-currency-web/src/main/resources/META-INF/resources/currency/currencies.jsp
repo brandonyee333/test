@@ -93,18 +93,19 @@ CommerceCurrenciesDisplayContext commerceCurrenciesDisplayContext = (CommerceCur
 				keyProperty="commerceCurrencyId"
 				modelVar="commerceCurrency"
 			>
-
-				<%
-				PortletURL rowURL = renderResponse.createRenderURL();
-
-				rowURL.setParameter("mvcRenderCommandName", "/commerce_currency/edit_commerce_currency");
-				rowURL.setParameter("redirect", currentURL);
-				rowURL.setParameter("commerceCurrencyId", String.valueOf(commerceCurrency.getCommerceCurrencyId()));
-				%>
-
 				<liferay-ui:search-container-column-text
 					cssClass="important table-cell-expand"
-					href="<%= rowURL %>"
+					href='<%=
+						PortletURLBuilder.createRenderURL(
+							renderResponse
+						).setMVCRenderCommandName(
+							"/commerce_currency/edit_commerce_currency"
+						).setRedirect(
+							currentURL
+						).setParameter(
+							"commerceCurrencyId", String.valueOf(commerceCurrency.getCommerceCurrencyId())
+						).build()
+					%>'
 					name="name"
 					value="<%= HtmlUtil.escape(commerceCurrency.getName(locale)) %>"
 				/>

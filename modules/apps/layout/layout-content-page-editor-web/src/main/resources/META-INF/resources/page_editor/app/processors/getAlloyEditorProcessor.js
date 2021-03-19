@@ -121,6 +121,12 @@ export default function getAlloyEditorProcessor(
 
 			const nativeEditor = _editor.get('nativeEditor');
 
+			const debouncedChangeCallback = debounce(() => {
+				if (_callbacks.changeCallback) {
+					_callbacks.changeCallback(nativeEditor.getData());
+				}
+			}, 500);
+
 			_eventHandlers = [
 				nativeEditor.on('key', (event) => {
 					if (
@@ -132,14 +138,12 @@ export default function getAlloyEditorProcessor(
 					) {
 						event.cancel();
 					}
+
+					debouncedChangeCallback();
 				}),
 
 				nativeEditor.on('blur', () => {
 					if (_editor._mainUI.state.hidden) {
-						if (_callbacks.changeCallback) {
-							_callbacks.changeCallback(nativeEditor.getData());
-						}
-
 						requestAnimationFrame(() => {
 							if (_callbacks.destroyCallback) {
 								_callbacks.destroyCallback();
@@ -159,17 +163,6 @@ export default function getAlloyEditorProcessor(
 					}
 				}),
 			];
-
-			_eventHandlers.push(
-				nativeEditor.on(
-					'saveSnapshot',
-					debounce(() => {
-						if (_callbacks.changeCallback) {
-							_callbacks.changeCallback(nativeEditor.getData());
-						}
-					}, 100)
-				)
-			);
 		},
 
 		/**

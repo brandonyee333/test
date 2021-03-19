@@ -12,15 +12,19 @@
 import React, {createContext, useReducer} from 'react';
 
 const ADD_WARNING = 'ADD_WARNING';
+const SET_METRICS = 'SET_METRICS';
+const SET_SELECTED_TRAFFIC_SOURCE_NAME = 'SET_SELECTED_TRAFFIC_SOURCE_NAME';
 
 const INITIAL_STATE = {
+	loading: true,
 	publishedToday: false,
+	selectedTrafficSourceName: '',
 	warning: false,
 };
 
 const noop = () => {};
 
-export const StoreDispatchContext = React.createContext(() => {});
+export const StoreDispatchContext = createContext(() => {});
 export const StoreStateContext = createContext([INITIAL_STATE, noop]);
 
 function reducer(state = INITIAL_STATE, action) {
@@ -30,6 +34,49 @@ function reducer(state = INITIAL_STATE, action) {
 		case ADD_WARNING:
 			nextState = state.warning ? state : {...state, warning: true};
 			break;
+		case SET_METRICS:
+			nextState = {
+				...state,
+				historicalReads: {
+					analyticsReportsHistoricalReads:
+						action.analyticsReportsHistoricalReads,
+				},
+				historicalViews: {
+					analyticsReportsHistoricalViews:
+						action.analyticsReportsHistoricalViews,
+				},
+				loading: false,
+				totalReads: action.analyticsReportsTotalReads,
+				totalViews: action.analyticsReportsTotalViews,
+				trafficSources: action.trafficSources,
+			};
+			break;
+		case SET_SELECTED_TRAFFIC_SOURCE_NAME: {
+			const selectedTrafficSourceName = action.selectedTrafficSourceName;
+
+			if (selectedTrafficSourceName === '') {
+				nextState = {
+					...state,
+					selectedTrafficSourceName,
+					trafficShare: undefined,
+					trafficVolume: undefined,
+				};
+			}
+			else {
+				const trafficSource = state.trafficSources.find(
+					(trafficSource) =>
+						trafficSource.name === selectedTrafficSourceName
+				);
+
+				nextState = {
+					...state,
+					selectedTrafficSourceName,
+					trafficShare: trafficSource?.share ?? '-',
+					trafficVolume: trafficSource?.value ?? '-',
+				};
+			}
+			break;
+		}
 		default:
 			return state;
 	}

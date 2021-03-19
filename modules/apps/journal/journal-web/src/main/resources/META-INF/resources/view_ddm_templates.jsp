@@ -33,8 +33,9 @@ if (ddmStructure != null) {
 	navigationItems='<%= journalDisplayContext.getNavigationItems("templates") %>'
 />
 
-<clay:management-toolbar-v2
-	displayContext="<%= journalDDMTemplateManagementToolbarDisplayContext %>"
+<clay:management-toolbar
+	managementToolbarDisplayContext="<%= journalDDMTemplateManagementToolbarDisplayContext %>"
+	propsTransformer="js/DDMTemplatesManagementToolbarPropsTransformer"
 />
 
 <portlet:actionURL name="/journal/delete_ddm_template" var="deleteDDMTemplateURL">
@@ -66,11 +67,15 @@ if (ddmStructure != null) {
 			String rowHREF = StringPool.BLANK;
 
 			if (DDMTemplatePermission.contains(permissionChecker, ddmTemplate, ActionKeys.UPDATE)) {
-				PortletURL rowURL = renderResponse.createRenderURL();
-
-				rowURL.setParameter("mvcPath", "/edit_ddm_template.jsp");
-				rowURL.setParameter("redirect", currentURL);
-				rowURL.setParameter("ddmTemplateId", String.valueOf(ddmTemplate.getTemplateId()));
+				PortletURL rowURL = PortletURLBuilder.createRenderURL(
+					renderResponse
+				).setMVCPath(
+					"/edit_ddm_template.jsp"
+				).setRedirect(
+					currentURL
+				).setParameter(
+					"ddmTemplateId", String.valueOf(ddmTemplate.getTemplateId())
+				).build();
 
 				rowHREF = rowURL.toString();
 			}
@@ -163,11 +168,6 @@ if (ddmStructure != null) {
 		/>
 	</liferay-ui:search-container>
 </aui:form>
-
-<liferay-frontend:component
-	componentId="<%= journalDDMTemplateManagementToolbarDisplayContext.getDefaultEventHandler() %>"
-	module="js/DDMTemplatesManagementToolbarDefaultEventHandler.es"
-/>
 
 <liferay-frontend:component
 	componentId="<%= JournalWebConstants.JOURNAL_DDM_TEMPLATE_ELEMENTS_DEFAULT_EVENT_HANDLER %>"

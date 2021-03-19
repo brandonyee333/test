@@ -135,7 +135,9 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 			return false;
 		}
 
-		if (Objects.equals("ddm-date", ddmFormField.getType())) {
+		if (Objects.equals("date", ddmFormField.getType()) ||
+			Objects.equals("ddm-date", ddmFormField.getType())) {
+
 			return true;
 		}
 
@@ -304,6 +306,15 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 			PortletPreferencesFactoryUtil.fromXML(
 				companyId, ownerId, ownerType, plid, portletId, xml);
 
+		portletPreferences = upgradePreferences(portletPreferences);
+
+		return PortletPreferencesFactoryUtil.toXML(portletPreferences);
+	}
+
+	protected PortletPreferences upgradePreferences(
+			PortletPreferences portletPreferences)
+		throws Exception {
+
 		String[] assetEntryXmls = portletPreferences.getValues(
 			"asset-entry-xml", new String[0]);
 
@@ -333,7 +344,7 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 
 		upgradeOrderByColumns(portletPreferences);
 
-		return PortletPreferencesFactoryUtil.toXML(portletPreferences);
+		return portletPreferences;
 	}
 
 	protected void upgradeUuids(String[] assetEntryXmls) throws Exception {

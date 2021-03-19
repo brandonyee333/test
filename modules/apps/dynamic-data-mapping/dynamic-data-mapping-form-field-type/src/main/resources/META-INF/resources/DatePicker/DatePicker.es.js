@@ -13,9 +13,8 @@
  */
 
 import ClayDatePicker from '@clayui/date-picker';
-import {usePrevious} from '@liferay/frontend-js-react-web';
 import moment from 'moment/min/moment-with-locales';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {createAutoCorrectedDatePipe} from 'text-mask-addons';
 import {createTextMaskInputElement} from 'text-mask-core';
 
@@ -92,11 +91,24 @@ const getDateFormat = (locale) => {
 	};
 };
 
-const transformToDate = (date, locale) => {
+const transformToDate = (
+	defaultLanguageId,
+	date,
+	locale,
+	formatInEditingLocale
+) => {
 	if (typeof date === 'string' && date.indexOf('_') === -1 && date !== '') {
-		const dateFormat = getLocaleDateFormat(locale);
+		if (formatInEditingLocale) {
+			return moment(date, [
+				getLocaleDateFormat(locale),
+				'YYYY-MM-DD',
+			]).toDate();
+		}
 
-		return moment(date, [dateFormat, 'YYYY-MM-DD']).toDate();
+		return moment(date, [
+			getLocaleDateFormat(defaultLanguageId),
+			'YYYY-MM-DD',
+		]).toDate();
 	}
 
 	return date;
@@ -119,7 +131,9 @@ const getValueForHidden = (value) => {
 };
 
 const DatePicker = ({
+	defaultLanguageId,
 	disabled,
+	formatInEditingLocale,
 	locale,
 	name,
 	onChange,
@@ -131,29 +145,20 @@ const DatePicker = ({
 
 	const [expanded, setExpand] = useState(false);
 
-	const previousLocale = usePrevious(locale);
-	const previousInitialValue = usePrevious(initialValue);
-
-	const [initialValueDate, setInitialValueDate] = useState(
-		transformToDate(initialValue, locale)
-	);
-
-	useEffect(() => {
-		if (
-			previousLocale &&
-			previousLocale != locale &&
-			initialValue === previousInitialValue
-		) {
-			setInitialValueDate(transformToDate(initialValue, previousLocale));
-		}
-		else if (initialValue !== previousInitialValue) {
-			setInitialValueDate(transformToDate(initialValue, locale));
-		}
-	}, [initialValue, locale, previousInitialValue, previousLocale]);
-
 	const [localizedValue, setLocalizedValue] = useState({});
 
-	const [value, setValue] = useSyncValue(initialValueDate);
+	const initialValueMemoized = useMemo(
+		() =>
+			transformToDate(
+				defaultLanguageId,
+				initialValue,
+				locale,
+				formatInEditingLocale
+			),
+		[defaultLanguageId, formatInEditingLocale, initialValue, locale]
+	);
+
+	const [value, setValue] = useSyncValue(initialValueMemoized);
 	const [years, setYears] = useState(() => {
 		const currentYear = new Date().getFullYear();
 
@@ -186,8 +191,8 @@ const DatePicker = ({
 					).format(dateMask.toUpperCase());
 				}
 			}
-			else if (initialValueDate) {
-				inputRef.current.value = moment(initialValueDate).format(
+			else if (initialValueMemoized) {
+				inputRef.current.value = moment(initialValueMemoized).format(
 					dateMask.toUpperCase()
 				);
 			}
@@ -201,7 +206,7 @@ const DatePicker = ({
 		dateMask,
 		inputMask,
 		inputRef,
-		initialValueDate,
+		initialValueMemoized,
 		localizedValue,
 		locale,
 	]);
@@ -262,7 +267,7 @@ const DatePicker = ({
 					if (moment(value).isValid()) {
 						onChange(
 							moment(value, getLocaleDateFormat(locale)).format(
-								'MM/DD/YYYY'
+								'L'
 							)
 						);
 					}
@@ -277,7 +282,9 @@ const DatePicker = ({
 };
 
 const Main = ({
+	defaultLanguageId,
 	locale = themeDisplay.getDefaultLanguageId(),
+	localizedValue,
 	name,
 	onChange,
 	placeholder,
@@ -289,12 +296,17 @@ const Main = ({
 }) => (
 	<FieldBase
 		{...otherProps}
+		localizedValue={localizedValue}
 		name={name}
 		readOnly={readOnly}
 		spritemap={spritemap}
 	>
 		<DatePicker
+			defaultLanguageId={defaultLanguageId}
 			disabled={readOnly}
+			formatInEditingLocale={
+				localizedValue && localizedValue[locale] != undefined
+			}
 			locale={locale}
 			name={name}
 			onChange={(value) => onChange({}, value)}

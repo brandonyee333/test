@@ -20,6 +20,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemListBuilder;
+import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -40,7 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,6 +61,8 @@ public class TrashManagementToolbarDisplayContext
 		super(
 			httpServletRequest, liferayPortletRequest, liferayPortletResponse,
 			trashDisplayContext.getEntrySearch());
+
+		_trashDisplayContext = trashDisplayContext;
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -88,16 +90,15 @@ public class TrashManagementToolbarDisplayContext
 	}
 
 	public Map<String, Object> getAdditionalProps() {
-		PortletURL restoreEntriesURL = liferayPortletResponse.createActionURL(
-			TrashPortletKeys.TRASH);
-
-		restoreEntriesURL.setParameter(
-			ActionRequest.ACTION_NAME, "restoreEntries");
-		restoreEntriesURL.setParameter(
-			"redirect", _themeDisplay.getURLCurrent());
-
 		return HashMapBuilder.<String, Object>put(
-			"restoreEntriesURL", restoreEntriesURL.toString()
+			"restoreEntriesURL",
+			PortletURLBuilder.createActionURL(
+				liferayPortletResponse, TrashPortletKeys.TRASH
+			).setActionName(
+				"restoreEntries"
+			).setRedirect(
+				_themeDisplay.getURLCurrent()
+			).buildString()
 		).build();
 	}
 
@@ -113,12 +114,13 @@ public class TrashManagementToolbarDisplayContext
 
 	@Override
 	public String getClearResultsURL() {
-		PortletURL clearResultsURL = getPortletURL();
-
-		clearResultsURL.setParameter("navigation", StringPool.BLANK);
-		clearResultsURL.setParameter("keywords", StringPool.BLANK);
-
-		return clearResultsURL.toString();
+		return PortletURLBuilder.create(
+			getPortletURL()
+		).setParameter(
+			"navigation", StringPool.BLANK
+		).setParameter(
+			"keywords", StringPool.BLANK
+		).buildString();
 	}
 
 	@Override
@@ -133,12 +135,14 @@ public class TrashManagementToolbarDisplayContext
 				Validator.isNotNull(getNavigation()) &&
 				!Objects.equals(getNavigation(), "all"),
 			labelItem -> {
-				PortletURL removeLabelURL = PortletURLUtil.clone(
-					currentURLObj, liferayPortletResponse);
-
-				removeLabelURL.setParameter("navigation", (String)null);
-
-				labelItem.putData("removeLabelURL", removeLabelURL.toString());
+				labelItem.putData(
+					"removeLabelURL",
+					PortletURLBuilder.create(
+						PortletURLUtil.clone(
+							currentURLObj, liferayPortletResponse)
+					).setParameter(
+						"navigation", (String)null
+					).buildString());
 
 				labelItem.setCloseable(true);
 
@@ -164,6 +168,11 @@ public class TrashManagementToolbarDisplayContext
 	@Override
 	public String getSearchContainerId() {
 		return "trash";
+	}
+
+	@Override
+	protected String getDisplayStyle() {
+		return _trashDisplayContext.getDisplayStyle();
 	}
 
 	@Override
@@ -220,5 +229,6 @@ public class TrashManagementToolbarDisplayContext
 	}
 
 	private final ThemeDisplay _themeDisplay;
+	private final TrashDisplayContext _trashDisplayContext;
 
 }

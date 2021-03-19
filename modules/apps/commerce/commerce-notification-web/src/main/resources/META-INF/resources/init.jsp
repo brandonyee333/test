@@ -35,6 +35,7 @@ page import="com.liferay.commerce.notification.web.internal.display.context.Comm
 page import="com.liferay.commerce.notification.web.internal.display.context.CommerceNotificationTemplatesDisplayContext" %><%@
 page import="com.liferay.commerce.notification.web.internal.frontend.CommerceNotificationEntryClayTable" %><%@
 page import="com.liferay.commerce.notification.web.internal.frontend.CommerceNotificationTemplateClayTable" %><%@
+page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
@@ -46,8 +47,6 @@ page import="com.liferay.portal.kernel.util.WebKeys" %>
 
 <%@ page import="java.util.List" %><%@
 page import="java.util.Map" %>
-
-<%@ page import="javax.portlet.PortletURL" %>
 
 <liferay-frontend:defineObjects />
 

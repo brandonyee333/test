@@ -136,8 +136,21 @@ public class UpdateOAuth2ApplicationMVCActionCommand
 			StringUtil.splitLines(
 				ParamUtil.get(request, "redirectURIs", StringPool.BLANK)));
 		List<String> scopeAliasesList = Collections.emptyList();
-		boolean trustedApplication = ParamUtil.getBoolean(
-			request, "trustedApplication");
+
+		boolean rememberDevice = false;
+		boolean trustedApplication = false;
+
+		if (allowedGrantTypesList.contains(GrantType.AUTHORIZATION_CODE) ||
+			allowedGrantTypesList.contains(GrantType.AUTHORIZATION_CODE_PKCE)) {
+
+			trustedApplication = ParamUtil.getBoolean(
+				request, "trustedApplication");
+
+			if (!trustedApplication) {
+				rememberDevice = ParamUtil.getBoolean(
+					request, "rememberDevice");
+			}
+		}
 
 		try {
 			if (oAuth2ApplicationId == 0) {
@@ -161,8 +174,8 @@ public class UpdateOAuth2ApplicationMVCActionCommand
 						allowedGrantTypesList, clientCredentialUserId, clientId,
 						clientProfile.id(), clientSecret, description,
 						featuresList, homePageURL, 0, name, privacyPolicyURL,
-						redirectURIsList, scopeAliasesList, trustedApplication,
-						serviceContext);
+						redirectURIsList, rememberDevice, scopeAliasesList,
+						trustedApplication, serviceContext);
 
 				response.setRenderParameter(
 					"oAuth2ApplicationId",
@@ -179,7 +192,8 @@ public class UpdateOAuth2ApplicationMVCActionCommand
 					allowedGrantTypesList, clientCredentialUserId, clientId,
 					clientProfile.id(), clientSecret, description, featuresList,
 					homePageURL, oAuth2Application.getIconFileEntryId(), name,
-					privacyPolicyURL, redirectURIsList, trustedApplication);
+					privacyPolicyURL, redirectURIsList, rememberDevice,
+					trustedApplication);
 
 				long fileEntryId = ParamUtil.getLong(request, "fileEntryId");
 

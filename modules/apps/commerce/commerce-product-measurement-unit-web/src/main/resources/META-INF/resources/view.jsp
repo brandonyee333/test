@@ -93,19 +93,21 @@ CPMeasurementUnitsDisplayContext cpMeasurementUnitsDisplayContext = (CPMeasureme
 					keyProperty="CPMeasurementUnitId"
 					modelVar="cpMeasurementUnit"
 				>
-
-					<%
-					PortletURL rowURL = renderResponse.createRenderURL();
-
-					rowURL.setParameter("mvcRenderCommandName", "/cp_measurement_unit/edit_cp_measurement_unit");
-					rowURL.setParameter("redirect", currentURL);
-					rowURL.setParameter("cpMeasurementUnitId", String.valueOf(cpMeasurementUnit.getCPMeasurementUnitId()));
-					rowURL.setParameter("type", String.valueOf(cpMeasurementUnitsDisplayContext.getType()));
-					%>
-
 					<liferay-ui:search-container-column-text
 						cssClass="important table-cell-expand"
-						href="<%= rowURL %>"
+						href='<%=
+							PortletURLBuilder.createRenderURL(
+								renderResponse
+							).setMVCRenderCommandName(
+								"/cp_measurement_unit/edit_cp_measurement_unit"
+							).setRedirect(
+								currentURL
+							).setParameter(
+								"cpMeasurementUnitId", String.valueOf(cpMeasurementUnit.getCPMeasurementUnitId())
+							).setParameter(
+								"type", String.valueOf(cpMeasurementUnitsDisplayContext.getType())
+							).build()
+						%>'
 						name="name"
 						value="<%= HtmlUtil.escape(cpMeasurementUnit.getName(locale)) %>"
 					/>

@@ -14,11 +14,8 @@
 
 import {ClayIconSpriteContext} from '@clayui/icon';
 import ClayLayout from '@clayui/layout';
-import {
-	EVENT_TYPES,
-	FormProvider,
-	Pages,
-} from 'dynamic-data-mapping-form-renderer';
+import {FormFieldSettings, Pages} from 'dynamic-data-mapping-form-renderer';
+import {EVENT_TYPES as CORE_EVENT_TYPES} from 'dynamic-data-mapping-form-renderer/js/core/actions/eventTypes.es';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 
 import AppContext from '../../../AppContext.es';
@@ -132,14 +129,21 @@ export default function ({
 
 	return (
 		<form onSubmit={(event) => event.preventDefault()}>
-			<FormProvider
-				onEvent={(type, payload) => {
+			<FormFieldSettings
+				{...filteredSettingsContext}
+				activePage={activePage}
+				builderRules={dataRules}
+				defaultLanguageId={defaultLanguageId}
+				displayable={true}
+				editable={false}
+				editingLanguageId={editingLanguageId}
+				onAction={({payload, type}) => {
 					switch (type) {
-						case EVENT_TYPES.CHANGE_ACTIVE_PAGE:
-							setActivePage(payload.value);
+						case CORE_EVENT_TYPES.PAGE.CHANGE:
+							setActivePage(payload.activePage);
 							break;
-						case EVENT_TYPES.FIELD_BLUR:
-						case EVENT_TYPES.FIELD_CHANGE:
+						case CORE_EVENT_TYPES.FIELD.BLUR:
+						case CORE_EVENT_TYPES.FIELD.CHANGE:
 							dispatchEvent(type, {
 								editingLanguageId:
 									settingsContext.editingLanguageId,
@@ -147,8 +151,8 @@ export default function ({
 								propertyValue: payload.value,
 							});
 							break;
-						case EVENT_TYPES.FIELD_EVALUATED:
-							dispatchEvent('focusedFieldEvaluationEnded', {
+						case CORE_EVENT_TYPES.FIELD.EVALUATE:
+							dispatchEvent(type, {
 								settingsContext: {
 									...settingsContext,
 									pages: payload,
@@ -159,19 +163,10 @@ export default function ({
 							break;
 					}
 				}}
-				value={{
-					...filteredSettingsContext,
-					activePage,
-					builderRules: dataRules,
-					defaultLanguageId,
-					displayable: true,
-					editable: true,
-					editingLanguageId,
-					spritemap,
-				}}
+				spritemap={spritemap}
 			>
-				{(props) => <Pages {...props} overrides={{Column}} />}
-			</FormProvider>
+				<Pages editable={false} overrides={{Column}} />
+			</FormFieldSettings>
 		</form>
 	);
 }

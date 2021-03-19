@@ -54,9 +54,16 @@ public class TestrayProject {
 	public TestrayProductVersion createTestrayProductVersion(
 		String testrayProductVersionName) {
 
-		if (testrayProductVersionName == null) {
+		if (JenkinsResultsParserUtil.isNullOrEmpty(testrayProductVersionName)) {
 			throw new RuntimeException(
 				"Please set a Testray product version name");
+		}
+
+		TestrayProductVersion testrayProductVersion =
+			getTestrayProductVersionByName(testrayProductVersionName);
+
+		if (testrayProductVersion != null) {
+			return testrayProductVersion;
 		}
 
 		StringBuilder sb = new StringBuilder();
@@ -79,14 +86,7 @@ public class TestrayProject {
 					this, jsonObject.getJSONObject("data"));
 			}
 
-			String message = jsonObject.optString("message", "");
-
-			if (!message.equals("The product version name already exists.")) {
-				throw new RuntimeException(
-					"Failed to create a product version");
-			}
-
-			return getTestrayProductVersionByName(testrayProductVersionName);
+			throw new RuntimeException("Failed to create a product version");
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
@@ -96,6 +96,13 @@ public class TestrayProject {
 	public TestrayRoutine createTestrayRoutine(String testrayRoutineName) {
 		if (JenkinsResultsParserUtil.isNullOrEmpty(testrayRoutineName)) {
 			throw new RuntimeException("Please set a Testray routine name");
+		}
+
+		TestrayRoutine testrayRoutine = getTestrayRoutineByName(
+			testrayRoutineName);
+
+		if (testrayRoutine != null) {
+			return testrayRoutine;
 		}
 
 		StringBuilder sb = new StringBuilder();
@@ -118,13 +125,7 @@ public class TestrayProject {
 					this, jsonObject.getJSONObject("data"));
 			}
 
-			String message = jsonObject.optString("message", "");
-
-			if (!message.equals("The routine name already exists.")) {
-				throw new RuntimeException("Failed to create a routine");
-			}
-
-			return getTestrayRoutineByName(testrayRoutineName);
+			throw new RuntimeException("Failed to create a routine");
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
@@ -191,31 +192,43 @@ public class TestrayProject {
 
 		TestrayServer testrayServer = getTestrayServer();
 
-		try {
-			String productVersionAPIURL = JenkinsResultsParserUtil.combine(
-				String.valueOf(testrayServer.getURL()),
-				"/home/-/testray/product_versions/index.json?",
-				"testrayProjectId=", String.valueOf(getID()));
+		int current = 1;
 
-			JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
-				productVersionAPIURL, true);
+		while (true) {
+			try {
+				String productVersionAPIURL = JenkinsResultsParserUtil.combine(
+					String.valueOf(testrayServer.getURL()),
+					"/home/-/testray/product_versions/index.json?cur=",
+					String.valueOf(current), "&delta=", String.valueOf(_DELTA),
+					"&testrayProjectId=", String.valueOf(getID()));
 
-			JSONArray dataJSONArray = jsonObject.getJSONArray("data");
+				JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
+					productVersionAPIURL, true);
 
-			for (int i = 0; i < dataJSONArray.length(); i++) {
-				JSONObject dataJSONObject = dataJSONArray.getJSONObject(i);
+				JSONArray dataJSONArray = jsonObject.getJSONArray("data");
 
-				TestrayProductVersion testrayProductVersion =
-					new TestrayProductVersion(this, dataJSONObject);
+				if (dataJSONArray.length() == 0) {
+					break;
+				}
 
-				_testrayProductVersionsByID.put(
-					testrayProductVersion.getID(), testrayProductVersion);
-				_testrayProductVersionsByName.put(
-					testrayProductVersion.getName(), testrayProductVersion);
+				for (int i = 0; i < dataJSONArray.length(); i++) {
+					JSONObject dataJSONObject = dataJSONArray.getJSONObject(i);
+
+					TestrayProductVersion testrayProductVersion =
+						new TestrayProductVersion(this, dataJSONObject);
+
+					_testrayProductVersionsByID.put(
+						testrayProductVersion.getID(), testrayProductVersion);
+					_testrayProductVersionsByName.put(
+						testrayProductVersion.getName(), testrayProductVersion);
+				}
 			}
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
+			catch (IOException ioException) {
+				throw new RuntimeException(ioException);
+			}
+			finally {
+				current++;
+			}
 		}
 	}
 

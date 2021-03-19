@@ -89,6 +89,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>QUESTIONS_ARTICLE_BODY</td>
+	<td>//div[contains(@class,'questions-article-body') and contains(.,'${key_articleBodyContent}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>QUESTIONS_CATEGORY_LABEL_ITEM</td>
 	<td>//span[contains(@class,'label-item') and contains(.,'${key_categoryItem}')]</td>
 	<td></td>
@@ -196,6 +201,11 @@
 <tr>
 	<td>QUESTIONS_LIST_ACTIVE_TAB_FIELD</td>
 	<td>//a[contains(@class,'active') and contains(.,'${key_questionTabField}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>QUESTIONS_LIST_VOTED_COUNT</td>
+	<td>//*[*[name()='svg'][contains(@class,'lexicon-icon-caret-${key_text}')]]//span[contains(.,'${key_count}')]</td>
 	<td></td>
 </tr>
 <tr>

@@ -14,6 +14,9 @@
 
 package com.liferay.layout.reports.web.internal.display.context;
 
+import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
+import com.liferay.layout.reports.web.internal.configuration.LayoutReportsConfiguration;
+import com.liferay.layout.reports.web.internal.data.provider.LayoutReportsDataProvider;
 import com.liferay.layout.seo.kernel.LayoutSEOLink;
 import com.liferay.layout.seo.kernel.LayoutSEOLinkManager;
 import com.liferay.petra.string.StringPool;
@@ -23,6 +26,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -36,9 +41,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 
 /**
@@ -49,11 +57,13 @@ public class LayoutReportsDisplayContext {
 	public LayoutReportsDisplayContext(
 		GroupLocalService groupLocalService,
 		LayoutLocalService layoutLocalService,
+		LayoutReportsDataProvider layoutReportsDataProvider,
 		LayoutSEOLinkManager layoutSEOLinkManager, Language language,
 		Portal portal, RenderRequest renderRequest) {
 
 		_groupLocalService = groupLocalService;
 		_layoutLocalService = layoutLocalService;
+		_layoutReportsDataProvider = layoutReportsDataProvider;
 		_layoutSEOLinkManager = layoutSEOLinkManager;
 		_language = language;
 		_portal = portal;
@@ -79,12 +89,14 @@ public class LayoutReportsDisplayContext {
 			).put(
 				"canonicalURLs", _getCanonicalURLs(layout)
 			).put(
+				"configurePageSpeedURL",
+				_getConfigurePageSpeedURL(_renderRequest)
+			).put(
 				"defaultLanguageId",
-				LocaleUtil.toBCP47LanguageId(_getDefaultLocale(layout))
+				LocaleUtil.toW3cLanguageId(_getDefaultLocale(layout))
 			).put(
-				"showButton", false
-			).put(
-				"validConnection", false
+				"validConnection",
+				_layoutReportsDataProvider.isValidConnection()
 			).build());
 
 		return _data;
@@ -107,7 +119,7 @@ public class LayoutReportsDisplayContext {
 	private String _getCanonicalURL(String currentCompleteURL, Layout layout) {
 		try {
 			return _portal.getCanonicalURL(
-				currentCompleteURL, _themeDisplay, layout);
+				currentCompleteURL, _themeDisplay, layout, false, false);
 		}
 		catch (PortalException portalException) {
 			_log.error(portalException, portalException);
@@ -117,13 +129,12 @@ public class LayoutReportsDisplayContext {
 	}
 
 	private List<Map<String, Object>> _getCanonicalURLs(Layout layout) {
-		String currentCompleteURL = _portal.getCurrentCompleteURL(
-			_portal.getHttpServletRequest(_renderRequest));
+		Locale defaultLocale = _getDefaultLocale(layout);
 
-		String canonicalURL = _getCanonicalURL(currentCompleteURL, layout);
+		String canonicalURL = _getCanonicalURL(_getCompleteURL(), layout);
 
 		Map<Locale, String> alternateURLs = _getAlternateURLs(
-			currentCompleteURL, layout);
+			canonicalURL, layout);
 
 		return Optional.ofNullable(
 			_groupLocalService.fetchGroup(layout.getGroupId())
@@ -134,6 +145,21 @@ public class LayoutReportsDisplayContext {
 		).orElseGet(
 			Collections::emptySet
 		).stream(
+		).sorted(
+			(locale1, locale2) -> {
+				if (Objects.equals(locale1, defaultLocale)) {
+					return -1;
+				}
+
+				if (Objects.equals(locale2, defaultLocale)) {
+					return 1;
+				}
+
+				String languageId1 = LocaleUtil.toW3cLanguageId(locale1);
+				String languageId2 = LocaleUtil.toW3cLanguageId(locale2);
+
+				return languageId1.compareToIgnoreCase(languageId2);
+			}
 		).map(
 			locale -> HashMapBuilder.<String, Object>put(
 				"canonicalURL",
@@ -145,7 +171,7 @@ public class LayoutReportsDisplayContext {
 					return layoutSEOLink.getHref();
 				}
 			).put(
-				"languageId", LocaleUtil.toBCP47LanguageId(locale)
+				"languageId", LocaleUtil.toW3cLanguageId(locale)
 			).put(
 				"title",
 				Optional.ofNullable(
@@ -161,6 +187,41 @@ public class LayoutReportsDisplayContext {
 		);
 	}
 
+	private String _getCompleteURL() {
+		try {
+			return _portal.getLayoutURL(_themeDisplay);
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException, portalException);
+
+			return _portal.getCurrentCompleteURL(
+				_portal.getHttpServletRequest(_renderRequest));
+		}
+	}
+
+	private String _getConfigurePageSpeedURL(PortletRequest portletRequest) {
+		if (!_isOmniAdmin()) {
+			return null;
+		}
+
+		PortletURL portletURL = _portal.getControlPanelPortletURL(
+			portletRequest, ConfigurationAdminPortletKeys.SYSTEM_SETTINGS,
+			PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/configuration_admin/edit_configuration");
+		portletURL.setParameter(
+			"redirect",
+			_portal.getCurrentCompleteURL(
+				_portal.getHttpServletRequest(portletRequest)));
+		portletURL.setParameter(
+			"factoryPid", LayoutReportsConfiguration.class.getName());
+		portletURL.setParameter(
+			"pid", LayoutReportsConfiguration.class.getName());
+
+		return portletURL.toString();
+	}
+
 	private Locale _getDefaultLocale(Layout layout) {
 		try {
 			return _portal.getSiteDefaultLocale(layout.getGroupId());
@@ -172,6 +233,13 @@ public class LayoutReportsDisplayContext {
 		}
 	}
 
+	private boolean _isOmniAdmin() {
+		PermissionChecker permissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		return permissionChecker.isOmniadmin();
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutReportsDisplayContext.class);
 
@@ -179,6 +247,7 @@ public class LayoutReportsDisplayContext {
 	private final GroupLocalService _groupLocalService;
 	private final Language _language;
 	private final LayoutLocalService _layoutLocalService;
+	private final LayoutReportsDataProvider _layoutReportsDataProvider;
 	private final LayoutSEOLinkManager _layoutSEOLinkManager;
 	private final Portal _portal;
 	private final RenderRequest _renderRequest;

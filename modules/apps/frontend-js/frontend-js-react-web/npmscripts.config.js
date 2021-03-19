@@ -13,16 +13,11 @@
  */
 
 module.exports = {
-	federation: {
-		bridges: [
-			'classnames',
-			'formik',
-			'prop-types',
-			'react',
-			'react-dnd',
-			'react-dnd-html5-backend',
-			'react-dom',
-		],
-		mode: 'default',
+	build: {
+		bundler: {
+			exclude: {
+				lodash: false,
+			},
+		},
 	},
 };

@@ -16,6 +16,7 @@ package com.liferay.layout.reports.web.internal.product.navigation.control.menu;
 
 import com.liferay.layout.reports.web.internal.configuration.LayoutReportsConfiguration;
 import com.liferay.layout.reports.web.internal.constants.LayoutReportsPortletKeys;
+import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -62,7 +63,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.WindowStateException;
 
@@ -74,6 +74,7 @@ import javax.servlet.jsp.PageContext;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -222,6 +223,7 @@ public class LayoutReportsProductNavigationControlMenuEntry
 	}
 
 	@Activate
+	@Modified
 	protected void activate(Map<String, Object> properties) {
 		_layoutReportsConfiguration = ConfigurableUtil.createConfigurable(
 			LayoutReportsConfiguration.class, properties);
@@ -235,25 +237,25 @@ public class LayoutReportsProductNavigationControlMenuEntry
 			PortletURLFactory portletURLFactory)
 		throws WindowStateException {
 
-		PortletURL portletURL = portletURLFactory.create(
-			httpServletRequest, LayoutReportsPortletKeys.LAYOUT_REPORTS,
-			RenderRequest.RENDER_PHASE);
-
-		portletURL.setParameter(
-			"mvcRenderCommandName", "/layout_reports/layout_reports_panel");
-		portletURL.setParameter(
-			"redirect", portal.getCurrentCompleteURL(httpServletRequest));
-		portletURL.setWindowState(LiferayWindowState.EXCLUSIVE);
-
-		return portletURL.toString();
+		return PortletURLBuilder.create(
+			portletURLFactory.create(
+				httpServletRequest, LayoutReportsPortletKeys.LAYOUT_REPORTS,
+				RenderRequest.RENDER_PHASE)
+		).setMVCRenderCommandName(
+			"/layout_reports/layout_reports_panel"
+		).setRedirect(
+			portal.getCurrentCompleteURL(httpServletRequest)
+		).setWindowState(
+			LiferayWindowState.EXCLUSIVE
+		).buildString();
 	}
 
-	private boolean _hasEditPermission(
+	private boolean _hasViewPermission(
 			Layout layout, PermissionChecker permissionChecker)
 		throws PortalException {
 
 		if (!LayoutPermissionUtil.contains(
-				permissionChecker, layout, ActionKeys.UPDATE)) {
+				permissionChecker, layout, ActionKeys.VIEW)) {
 
 			return false;
 		}
@@ -300,7 +302,7 @@ public class LayoutReportsProductNavigationControlMenuEntry
 		).filter(
 			layout -> {
 				try {
-					return _hasEditPermission(
+					return _hasViewPermission(
 						layout, PermissionThreadLocal.getPermissionChecker());
 				}
 				catch (PortalException portalException) {
@@ -388,7 +390,7 @@ public class LayoutReportsProductNavigationControlMenuEntry
 	@Reference
 	private LayoutLocalService _layoutLocalService;
 
-	private LayoutReportsConfiguration _layoutReportsConfiguration;
+	private volatile LayoutReportsConfiguration _layoutReportsConfiguration;
 
 	@Reference
 	private Portal _portal;

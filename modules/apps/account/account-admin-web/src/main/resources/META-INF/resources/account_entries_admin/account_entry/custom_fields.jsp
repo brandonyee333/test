@@ -34,17 +34,6 @@ AccountEntryDisplay accountEntryDisplay = (AccountEntryDisplay)request.getAttrib
 
 			<%
 			boolean hasVisibleAttributes = ExpandoAttributesUtil.hasVisibleAttributes(company.getCompanyId(), AccountEntry.class);
-
-			PortletProvider.Action action = PortletProvider.Action.EDIT;
-
-			if (hasVisibleAttributes) {
-				action = PortletProvider.Action.MANAGE;
-			}
-
-			PortletURL customFieldsURL = PortletProviderUtil.getPortletURL(request, ExpandoColumn.class.getName(), action);
-
-			customFieldsURL.setParameter("redirect", currentURL);
-			customFieldsURL.setParameter("modelResource", AccountEntry.class.getName());
 			%>
 
 			<liferay-ui:icon
@@ -53,7 +42,15 @@ AccountEntryDisplay accountEntryDisplay = (AccountEntryDisplay)request.getAttrib
 				linkCssClass="btn btn-secondary btn-sm"
 				message='<%= hasVisibleAttributes ? "manage" : "add" %>'
 				method="get"
-				url="<%= customFieldsURL.toString() %>"
+				url='<%=
+					PortletURLBuilder.create(
+						PortletProviderUtil.getPortletURL(request, ExpandoColumn.class.getName(), hasVisibleAttributes ? PortletProvider.Action.MANAGE : PortletProvider.Action.EDIT)
+					).setRedirect(
+						currentURL
+					).setParameter(
+						"modelResource", AccountEntry.class.getName()
+					).buildString()
+				%>'
 			/>
 		</clay:content-col>
 	</c:if>

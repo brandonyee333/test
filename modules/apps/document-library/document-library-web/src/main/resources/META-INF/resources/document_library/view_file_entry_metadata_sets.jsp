@@ -18,14 +18,13 @@
 
 <%
 DLViewFileEntryMetadataSetsDisplayContext dLViewFileEntryMetadataSetsDisplayContext = (DLViewFileEntryMetadataSetsDisplayContext)request.getAttribute(DLWebKeys.DOCUMENT_LIBRARY_VIEW_FILE_ENTRY_METADATA_SETS_DISPLAY_CONTEXT);
-
-DLViewFileEntryMetadataSetsManagementToolbarDisplayContext dlViewFileEntryMetadataSetsManagementToolbarDisplayContext = new DLViewFileEntryMetadataSetsManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, dLViewFileEntryMetadataSetsDisplayContext);
 %>
 
 <liferay-util:include page="/document_library/navigation.jsp" servletContext="<%= application %>" />
 
 <clay:management-toolbar
-	managementToolbarDisplayContext="<%= dlViewFileEntryMetadataSetsManagementToolbarDisplayContext %>"
+	managementToolbarDisplayContext="<%= new DLViewFileEntryMetadataSetsManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, dLViewFileEntryMetadataSetsDisplayContext) %>"
+	propsTransformer="document_library/js/DDMStructuresManagementToolbarPropsTransformer"
 />
 
 <portlet:actionURL copyCurrentRenderParameters="<%= true %>" name="/document_library/delete_data_definition" var="deleteDataDefinitionURL">
@@ -59,11 +58,15 @@ DLViewFileEntryMetadataSetsManagementToolbarDisplayContext dlViewFileEntryMetada
 				String rowHREF = StringPool.BLANK;
 
 				if (DDMStructurePermission.contains(permissionChecker, ddmStructure, ActionKeys.UPDATE)) {
-					PortletURL rowURL = renderResponse.createRenderURL();
-
-					rowURL.setParameter("mvcRenderCommandName", "/document_library/edit_ddm_structure");
-					rowURL.setParameter("redirect", currentURL);
-					rowURL.setParameter("ddmStructureId", String.valueOf(ddmStructure.getStructureId()));
+					PortletURL rowURL = PortletURLBuilder.createRenderURL(
+						renderResponse
+					).setMVCRenderCommandName(
+						"/document_library/edit_ddm_structure"
+					).setRedirect(
+						currentURL
+					).setParameter(
+						"ddmStructureId", String.valueOf(ddmStructure.getStructureId())
+					).build();
 
 					rowHREF = rowURL.toString();
 				}
@@ -121,8 +124,3 @@ DLViewFileEntryMetadataSetsManagementToolbarDisplayContext dlViewFileEntryMetada
 		</liferay-ui:search-container>
 	</clay:container-fluid>
 </aui:form>
-
-<liferay-frontend:component
-	componentId="<%= dlViewFileEntryMetadataSetsManagementToolbarDisplayContext.getDefaultEventHandler() %>"
-	module="document_library/js/DDMStructuresManagementToolbarDefaultEventHandler.es"
-/>

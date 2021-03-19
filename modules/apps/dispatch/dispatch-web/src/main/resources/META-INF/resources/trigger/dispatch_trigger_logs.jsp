@@ -21,9 +21,11 @@ DispatchLogDisplayContext dispatchLogDisplayContext = (DispatchLogDisplayContext
 
 DispatchTrigger dispatchTrigger = dispatchLogDisplayContext.getDispatchTrigger();
 
-PortletURL portletURL = dispatchLogDisplayContext.getPortletURL();
-
-portletURL.setParameter("searchContainerId", "dispatchLogs");
+PortletURL portletURL = PortletURLBuilder.create(
+	dispatchLogDisplayContext.getPortletURL()
+).setParameter(
+	"searchContainerId", "dispatchLogs"
+).build();
 
 request.setAttribute("view.jsp-portletURL", portletURL);
 %>
@@ -49,18 +51,19 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 						keyProperty="dispatchLogId"
 						modelVar="dispatchLog"
 					>
-
-						<%
-						PortletURL rowURL = renderResponse.createRenderURL();
-
-						rowURL.setParameter("mvcRenderCommandName", "/dispatch/view_dispatch_log");
-						rowURL.setParameter("redirect", currentURL);
-						rowURL.setParameter("dispatchLogId", String.valueOf(dispatchLog.getDispatchLogId()));
-						%>
-
 						<liferay-ui:search-container-column-text
 							cssClass="important table-cell-expand"
-							href="<%= rowURL %>"
+							href='<%=
+								PortletURLBuilder.createRenderURL(
+									renderResponse
+								).setMVCRenderCommandName(
+									"/dispatch/view_dispatch_log"
+								).setRedirect(
+									currentURL
+								).setParameter(
+									"dispatchLogId", String.valueOf(dispatchLog.getDispatchLogId())
+								).build()
+							%>'
 							name="start-date"
 						>
 							<%= dispatchLogDisplayContext.getDateString(dispatchLog.getStartDate()) %>

@@ -23,6 +23,7 @@ if (GetterUtil.getBoolean((String)request.getAttribute("liferay-ui:input-date:di
 	namespace = StringPool.BLANK;
 }
 
+String autoComplete = GetterUtil.getString((String)request.getAttribute("liferay-ui:input-date:autoComplete"));
 String cssClass = GetterUtil.getString((String)request.getAttribute("liferay-ui:input-date:cssClass"));
 String dateTogglerCheckboxLabel = GetterUtil.getString((String)request.getAttribute("liferay-ui:input-date:dateTogglerCheckboxLabel"), "disable");
 boolean disabled = GetterUtil.getBoolean((String)request.getAttribute("liferay-ui:input-date:disabled"));
@@ -115,16 +116,29 @@ else {
 <span class="lfr-input-date" id="<%= randomNamespace %>displayDate">
 	<c:choose>
 		<c:when test="<%= BrowserSnifferUtil.isMobile(request) %>">
-			<input class="form-control <%= cssClass %>" <%= disabled ? "disabled=\"disabled\"" : "" %> id="<%= nameId %>" name="<%= namespace + HtmlUtil.escapeAttribute(name) %>" type="date" value="<%= dateString %>" />
+			<input <%= Validator.isNotNull(autoComplete) ? "autocomplete=\"" + autoComplete + "\"" : StringPool.BLANK %> class="form-control <%= cssClass %>" <%= disabled ? "disabled=\"disabled\"" : "" %> id="<%= nameId %>" name="<%= namespace + HtmlUtil.escapeAttribute(name) %>" type="date" value="<%= dateString %>" />
 		</c:when>
 		<c:otherwise>
-			<aui:input cssClass="<%= cssClass %>" disabled="<%= disabled %>" id="<%= HtmlUtil.getAUICompatibleId(name) %>" label="" name="<%= name %>" placeholder="<%= StringUtil.toLowerCase(placeholderValue) %>" required="<%= required %>" title="" type="text" value="<%= dateString %>" wrappedField="<%= true %>">
-				<aui:validator errorMessage="please-enter-a-valid-date" name="custom">
-					function(val) {
-						return AUI().use('aui-datatype-date-parse').Parsers.date('<%= mask %>', val);
-					}
-				</aui:validator>
-			</aui:input>
+			<c:choose>
+				<c:when test="<%= Validator.isNotNull(autoComplete) %>">
+					<aui:input autocomplete="<%= autoComplete %>" cssClass="<%= cssClass %>" disabled="<%= disabled %>" id="<%= HtmlUtil.getAUICompatibleId(name) %>" label="" name="<%= name %>" placeholder="<%= StringUtil.toLowerCase(placeholderValue) %>" required="<%= required %>" title="" type="text" value="<%= dateString %>" wrappedField="<%= true %>">
+						<aui:validator errorMessage="please-enter-a-valid-date" name="custom">
+							function(val) {
+								return AUI().use('aui-datatype-date-parse').Parsers.date('<%= mask %>', val);
+							}
+						</aui:validator>
+					</aui:input>
+				</c:when>
+				<c:otherwise>
+					<aui:input cssClass="<%= cssClass %>" disabled="<%= disabled %>" id="<%= HtmlUtil.getAUICompatibleId(name) %>" label="" name="<%= name %>" placeholder="<%= StringUtil.toLowerCase(placeholderValue) %>" required="<%= required %>" title="" type="text" value="<%= dateString %>" wrappedField="<%= true %>">
+						<aui:validator errorMessage="please-enter-a-valid-date" name="custom">
+							function(val) {
+								return AUI().use('aui-datatype-date-parse').Parsers.date('<%= mask %>', val);
+							}
+						</aui:validator>
+					</aui:input>
+				</c:otherwise>
+			</c:choose>
 		</c:otherwise>
 	</c:choose>
 

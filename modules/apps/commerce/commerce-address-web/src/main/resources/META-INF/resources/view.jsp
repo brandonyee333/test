@@ -94,18 +94,19 @@ CommerceCountriesDisplayContext commerceCountriesDisplayContext = (CommerceCount
 					keyProperty="countryId"
 					modelVar="country"
 				>
-
-					<%
-					PortletURL rowURL = renderResponse.createRenderURL();
-
-					rowURL.setParameter("mvcRenderCommandName", "/commerce_country/edit_commerce_country");
-					rowURL.setParameter("redirect", currentURL);
-					rowURL.setParameter("countryId", String.valueOf(country.getCountryId()));
-					%>
-
 					<liferay-ui:search-container-column-text
 						cssClass="important table-cell-expand"
-						href="<%= rowURL %>"
+						href='<%=
+							PortletURLBuilder.createRenderURL(
+								renderResponse
+							).setMVCRenderCommandName(
+								"/commerce_country/edit_commerce_country"
+							).setRedirect(
+								currentURL
+							).setParameter(
+								"countryId", String.valueOf(country.getCountryId())
+							).build()
+						%>'
 						name="name"
 						value="<%= HtmlUtil.escape(country.getTitle(locale)) %>"
 					/>

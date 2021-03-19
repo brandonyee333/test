@@ -15,3 +15,5 @@
 export const getFormNode = (element) => element.closest('form');
 
 export const getFormId = (form) => form?.dataset.ddmforminstanceid;
+
+export const getUid = () => Math.random().toString(36).substr(2, 9);

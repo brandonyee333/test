@@ -52,11 +52,6 @@ public class AccessControlImpl implements AccessControl {
 				"Authentication context is already initialized");
 		}
 
-		if (settings.get(AuthVerifierPipeline.class.getName()) != null) {
-			_authVerifierPipeline = (AuthVerifierPipeline)settings.get(
-				AuthVerifierPipeline.class.getName());
-		}
-
 		accessControlContext = new AccessControlContext();
 
 		accessControlContext.setRequest(httpServletRequest);
@@ -66,9 +61,6 @@ public class AccessControlImpl implements AccessControl {
 			accessControlContext.getSettings();
 
 		accessControlContextSettings.putAll(settings);
-
-		accessControlContextSettings.remove(
-			AuthVerifierPipeline.class.getName());
 
 		AccessControlUtil.setAccessControlContext(accessControlContext);
 	}
@@ -94,28 +86,39 @@ public class AccessControlImpl implements AccessControl {
 
 	@Override
 	public AuthVerifierResult.State verifyRequest() throws PortalException {
+		AuthVerifierResult authVerifierResult = null;
+
 		AccessControlContext accessControlContext =
 			AccessControlUtil.getAccessControlContext();
 
-		AuthVerifierResult authVerifierResult =
-			_authVerifierPipeline.verifyRequest(accessControlContext);
+		Map<String, Object> settings = accessControlContext.getSettings();
 
-		if ((authVerifierResult.getState() !=
-				AuthVerifierResult.State.SUCCESS) &&
-			(_authVerifierPipeline !=
-				AuthVerifierPipeline.PORTAL_AUTH_VERIFIER_PIPELINE)) {
-
+		if (!settings.containsKey(AuthVerifierPipeline.class.getName())) {
 			authVerifierResult =
 				AuthVerifierPipeline.PORTAL_AUTH_VERIFIER_PIPELINE.
 					verifyRequest(accessControlContext);
+		}
+		else {
+			AuthVerifierPipeline authVerifierPipeline =
+				(AuthVerifierPipeline)settings.get(
+					AuthVerifierPipeline.class.getName());
+
+			authVerifierResult = authVerifierPipeline.verifyRequest(
+				accessControlContext);
+
+			if (authVerifierResult.getState() !=
+					AuthVerifierResult.State.SUCCESS) {
+
+				authVerifierResult =
+					AuthVerifierPipeline.PORTAL_AUTH_VERIFIER_PIPELINE.
+						verifyRequest(accessControlContext);
+			}
 		}
 
 		Map<String, Object> authVerifierResultSettings =
 			authVerifierResult.getSettings();
 
 		if (authVerifierResultSettings != null) {
-			Map<String, Object> settings = accessControlContext.getSettings();
-
 			settings.putAll(authVerifierResultSettings);
 		}
 
@@ -123,8 +126,5 @@ public class AccessControlImpl implements AccessControl {
 
 		return authVerifierResult.getState();
 	}
-
-	private AuthVerifierPipeline _authVerifierPipeline =
-		AuthVerifierPipeline.PORTAL_AUTH_VERIFIER_PIPELINE;
 
 }

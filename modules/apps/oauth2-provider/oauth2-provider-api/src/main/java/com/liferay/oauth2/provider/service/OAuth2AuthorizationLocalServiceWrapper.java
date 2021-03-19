@@ -388,6 +388,17 @@ public class OAuth2AuthorizationLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.oauth2.provider.model.OAuth2Authorization
+		fetchOAuth2AuthorizationByRememberDeviceContent(
+			long userId, long oAuth2ApplicationId,
+			String rememberDeviceContent) {
+
+		return _oAuth2AuthorizationLocalService.
+			fetchOAuth2AuthorizationByRememberDeviceContent(
+				userId, oAuth2ApplicationId, rememberDeviceContent);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -631,6 +642,15 @@ public class OAuth2AuthorizationLocalServiceWrapper
 
 		return _oAuth2AuthorizationLocalService.updateOAuth2Authorization(
 			oAuth2Authorization);
+	}
+
+	@Override
+	public com.liferay.oauth2.provider.model.OAuth2Authorization
+		updateRememberDeviceContent(
+			String refreshTokenContent, String rememberDeviceContent) {
+
+		return _oAuth2AuthorizationLocalService.updateRememberDeviceContent(
+			refreshTokenContent, rememberDeviceContent);
 	}
 
 	@Override

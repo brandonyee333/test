@@ -10,7 +10,6 @@
  */
 
 import ClayButton from '@clayui/button';
-import {useStateSafe} from '@liferay/frontend-js-react-web';
 import className from 'classnames';
 import PropTypes from 'prop-types';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
@@ -45,38 +44,27 @@ const FALLBACK_COLOR = '#e92563';
 
 const getColorByName = (name) => COLORS_MAP[name] || FALLBACK_COLOR;
 
-export default function TrafficSources({dataProvider, onTrafficSourceClick}) {
+export default function TrafficSources({onTrafficSourceClick}) {
 	const [highlighted, setHighlighted] = useState(null);
 
 	const {validAnalyticsConnection} = useContext(ConnectionContext);
 
 	const dispatch = useContext(StoreDispatchContext);
 
-	const {languageTag, publishedToday} = useContext(StoreStateContext);
-
-	const [trafficSources, setTrafficSources] = useStateSafe([]);
-
-	useEffect(() => {
-		if (validAnalyticsConnection) {
-			dataProvider()
-				.then((trafficSources) => setTrafficSources(trafficSources))
-				.catch(() => {
-					setTrafficSources([]);
-					dispatch({type: 'ADD_WARNING'});
-				});
-		}
-	}, [dispatch, dataProvider, setTrafficSources, validAnalyticsConnection]);
+	const {languageTag, publishedToday, trafficSources} = useContext(
+		StoreStateContext
+	);
 
 	const fullPieChart = useMemo(
 		() =>
 			validAnalyticsConnection &&
 			!publishedToday &&
-			trafficSources.some(({value}) => value),
+			trafficSources?.some(({value}) => value),
 		[publishedToday, trafficSources, validAnalyticsConnection]
 	);
 
 	const missingTrafficSourceValue = useMemo(
-		() => trafficSources.some(({value}) => value === undefined),
+		() => trafficSources?.some(({value}) => value === undefined),
 		[trafficSources]
 	);
 
@@ -96,15 +84,6 @@ export default function TrafficSources({dataProvider, onTrafficSourceClick}) {
 
 	return (
 		<>
-			<h5 className="mt-3 sheet-subtitle">
-				{Liferay.Language.get('traffic-channels')}
-				<Hint
-					message={Liferay.Language.get('traffic-channels-help')}
-					secondary={true}
-					title={Liferay.Language.get('traffic-channels')}
-				/>
-			</h5>
-
 			{!fullPieChart && !missingTrafficSourceValue && (
 				<div className="mb-3 text-secondary">
 					{Liferay.Language.get(
@@ -112,11 +91,12 @@ export default function TrafficSources({dataProvider, onTrafficSourceClick}) {
 					)}
 				</div>
 			)}
+
 			<div className="pie-chart-wrapper">
 				<div className="pie-chart-wrapper--legend">
 					<table>
 						<tbody>
-							{trafficSources.map((entry) => {
+							{trafficSources?.map((entry) => {
 								const hasDetails =
 									entry?.countryKeywords ||
 									(entry?.referringPages &&
@@ -161,7 +141,6 @@ export default function TrafficSources({dataProvider, onTrafficSourceClick}) {
 													displayType="link"
 													onClick={() =>
 														onTrafficSourceClick(
-															trafficSources,
 															entry.name
 														)
 													}
@@ -180,8 +159,9 @@ export default function TrafficSources({dataProvider, onTrafficSourceClick}) {
 											/>
 										</td>
 										<td className="font-weight-semi-bold">
-											{entry.value !== undefined &&
-											!publishedToday
+											{validAnalyticsConnection &&
+											!publishedToday &&
+											entry.value !== undefined
 												? numberFormat(
 														languageTag,
 														entry.value
@@ -309,6 +289,5 @@ function TrafficSourcesCustomTooltip(props) {
 }
 
 TrafficSources.propTypes = {
-	dataProvider: PropTypes.func.isRequired,
 	onTrafficSourceClick: PropTypes.func.isRequired,
 };

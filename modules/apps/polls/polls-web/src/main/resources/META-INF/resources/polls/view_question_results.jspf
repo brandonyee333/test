@@ -105,7 +105,7 @@ NumberFormat percentFormat = NumberFormat.getPercentInstance(locale);
 			resourceURL.setParameter("chartType", TextFormatter.format(chart, TextFormatter.N));
 			resourceURL.setResourceID("/polls/view_chart");
 
-			String taglibHREF = "javascript: var viewChartWindow = window.open('" + resourceURL + "', 'viewChart', 'directories=no,height=430,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,width=420'); void(''); viewChartWindow.focus();";
+			String taglibHREF = "javascript:var viewChartWindow = window.open('" + resourceURL + "', 'viewChart', 'directories=no,height=430,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no,width=420'); void(''); viewChartWindow.focus();";
 		%>
 
 			<aui:a href="<%= taglibHREF %>"><liferay-ui:message key="<%= chart %>" /></aui:a><%= (i != (_CHARTS.length - 1)) ? StringPool.COMMA_AND_SPACE : StringPool.BLANK %>
@@ -125,12 +125,17 @@ NumberFormat percentFormat = NumberFormat.getPercentInstance(locale);
 		/>
 
 		<%
-		PortletURL portletURL = renderResponse.createRenderURL();
-
-		portletURL.setParameter("mvcRenderCommandName", "/polls/view_question");
-		portletURL.setParameter("redirect", redirect);
-		portletURL.setParameter("questionId", String.valueOf(question.getQuestionId()));
-		portletURL.setParameter("viewResults", Boolean.TRUE.toString());
+		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+			renderResponse
+		).setMVCRenderCommandName(
+			"/polls/view_question"
+		).setRedirect(
+			redirect
+		).setParameter(
+			"questionId", String.valueOf(question.getQuestionId())
+		).setParameter(
+			"viewResults", Boolean.TRUE.toString()
+		).build();
 
 		List<String> headerNames = new ArrayList<String>();
 

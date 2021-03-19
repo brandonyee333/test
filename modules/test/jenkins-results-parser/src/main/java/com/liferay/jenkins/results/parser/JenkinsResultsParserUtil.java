@@ -616,6 +616,26 @@ public class JenkinsResultsParserUtil {
 		return sb.toString();
 	}
 
+	public static List<File> findDirs(File baseDir, String regex) {
+		List<File> dirs = new ArrayList<>();
+
+		for (File dir : baseDir.listFiles()) {
+			if (!dir.isDirectory()) {
+				continue;
+			}
+
+			String dirName = dir.getName();
+
+			if (dirName.matches(regex)) {
+				dirs.add(dir);
+			}
+
+			dirs.addAll(findDirs(dir, regex));
+		}
+
+		return dirs;
+	}
+
 	public static List<File> findFiles(File baseDir, String regex) {
 		List<File> files = new ArrayList<>();
 
@@ -710,6 +730,8 @@ public class JenkinsResultsParserUtil {
 		url = url.replace(")", "%29");
 		url = url.replace("[", "%5B");
 		url = url.replace("]", "%5D");
+		url = url.replace("<", "%3C");
+		url = url.replace(">", "%3E");
 
 		return url;
 	}
@@ -3370,6 +3392,15 @@ public class JenkinsResultsParserUtil {
 		return toJSONObject(
 			url, checkCache, maxRetries, null, postContent, retryPeriod,
 			timeout, null);
+	}
+
+	public static JSONObject toJSONObject(
+			String url, int maxRetries, int retryPeriod, String postContent)
+		throws IOException {
+
+		return toJSONObject(
+			url, true, maxRetries, null, postContent, retryPeriod,
+			_MILLIS_TIMEOUT_DEFAULT, null);
 	}
 
 	public static JSONObject toJSONObject(String url, String postContent)
