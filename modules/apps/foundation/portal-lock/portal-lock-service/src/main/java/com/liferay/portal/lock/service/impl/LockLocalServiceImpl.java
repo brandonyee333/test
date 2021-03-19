@@ -385,7 +385,7 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 					cause instanceof LockAcquisitionException) {
 
 					if (_log.isInfoEnabled()) {
-						_log.info("Failed to remove lock, will retry again");
+						_log.info("Unable to remove lock, will retry again");
 					}
 
 					continue;
