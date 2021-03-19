@@ -17,16 +17,18 @@ package com.liferay.osb.asah.common.multitenancy.impl.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
+import com.liferay.osb.asah.common.elasticsearch.repository.impl.ElasticsearchProjectRepositoryImpl;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
+import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import org.elasticsearch.index.query.QueryBuilders;
@@ -36,6 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,25 +64,29 @@ public class MultiTenantProjectDogImplTest {
 		elasticsearchInvoker.add("projects", JSONUtil.put("id", "project2"));
 		elasticsearchInvoker.add("projects", JSONUtil.put("id", "project3"));
 
-		_multiTenantProjectDogImpl = new MultiTenantProjectDogImpl(
-			_elasticsearchInvokerManager);
+		ProjectRepository projectRepository =
+			new ElasticsearchProjectRepositoryImpl();
 
 		ReflectionTestUtils.setField(
-			_multiTenantProjectDogImpl, "_elasticsearchSnapshotManager",
-			_elasticsearchSnapshotManager);
+			projectRepository, "_elasticsearchInvoker", elasticsearchInvoker);
+
+		ReflectionTestUtils.setField(
+			projectRepository, "_objectMapper", _objectMapper);
+
+		_multiTenantProjectDogImpl = new MultiTenantProjectDogImpl(
+			_postCreationConsumer, projectRepository);
+
 		ReflectionTestUtils.setField(
 			_multiTenantProjectDogImpl, "_nanitesHttp", _nanitesHttp);
-		ReflectionTestUtils.setField(
-			_multiTenantProjectDogImpl, "_objectMapper", _objectMapper);
 	}
 
 	@Test
-	public void testAddProject() throws Exception {
+	public void testAddProject() {
 		_multiTenantProjectDogImpl.addProject(new Project("project4"));
 
 		Mockito.verify(
-			_elasticsearchSnapshotManager, Mockito.times(1)
-		).createSnapshotLifecyclePolicy(
+			_postCreationConsumer, Mockito.times(1)
+		).accept(
 			Mockito.eq("project4")
 		);
 		Mockito.verify(
@@ -127,9 +134,6 @@ public class MultiTenantProjectDogImplTest {
 	@Autowired
 	private ElasticsearchInvokerManager _elasticsearchInvokerManager;
 
-	@MockBean
-	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;
-
 	private MultiTenantProjectDogImpl _multiTenantProjectDogImpl;
 
 	@MockBean
@@ -137,5 +141,8 @@ public class MultiTenantProjectDogImplTest {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Mock
+	private Consumer<String> _postCreationConsumer;
 
 }

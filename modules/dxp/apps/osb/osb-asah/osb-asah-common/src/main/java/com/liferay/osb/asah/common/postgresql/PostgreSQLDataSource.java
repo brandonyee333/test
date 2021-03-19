@@ -22,6 +22,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.sql.DataSource;
@@ -96,22 +97,33 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
 
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(new ClassPathResource("tables.sql")),
-			hikariDataSource);
+		if (Objects.equals("global", dataSource)) {
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("global_tables.sql")),
+				hikariDataSource);
+		}
+		else {
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("tables.sql")),
+				hikariDataSource);
 
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				true, true, null, new ClassPathResource("constraints.sql")),
-			hikariDataSource);
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					true, true, null, new ClassPathResource("constraints.sql")),
+				hikariDataSource);
 
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(new ClassPathResource("indexes.sql")),
-			hikariDataSource);
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("indexes.sql")),
+				hikariDataSource);
 
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(new ClassPathResource("data.sql")),
-			hikariDataSource);
+			DatabasePopulatorUtils.execute(
+				new ResourceDatabasePopulator(
+					new ClassPathResource("data.sql")),
+				hikariDataSource);
+		}
 
 		return hikariDataSource;
 	}

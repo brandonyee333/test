@@ -53,6 +53,10 @@ public class ProjectIdThreadLocal {
 	}
 
 	public static String getProjectId() {
+		if ((_globalContext.get() != null) && _globalContext.get()) {
+			return "global";
+		}
+
 		String projectId = _projectId.get();
 
 		if (projectId == null) {
@@ -76,6 +80,21 @@ public class ProjectIdThreadLocal {
 		MDC.remove("osbAsahProjectId");
 	}
 
+	public static void setGlobalContext(boolean globalContext) {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Setting global context to: " + globalContext);
+		}
+
+		_globalContext.set(globalContext);
+
+		if (globalContext) {
+			MDC.put("osbAsahProjectId", "global");
+		}
+		else {
+			MDC.put("osbAsahProjectId", _projectId.get());
+		}
+	}
+
 	public static void setProjectId(String projectId) {
 		if (_log.isDebugEnabled()) {
 			_log.debug("setProjectId " + projectId);
@@ -93,6 +112,8 @@ public class ProjectIdThreadLocal {
 	private static final Log _log = LogFactory.getLog(
 		ProjectIdThreadLocal.class);
 
+	private static final ThreadLocal<Boolean> _globalContext =
+		new ThreadLocal<>();
 	private static final ThreadLocal<String> _projectId = new ThreadLocal<>();
 
 }

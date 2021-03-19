@@ -14,24 +14,14 @@
 
 package com.liferay.osb.asah.common.multitenancy.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
-import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
+import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,26 +31,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MultiTenantProjectDogImpl implements ProjectDog {
 
 	public MultiTenantProjectDogImpl(
-		ElasticsearchInvokerManager elasticsearchInvokerManager) {
+		Consumer<String> postCreationConsumer,
+		ProjectRepository projectRepository) {
 
-		_elasticsearchInvoker =
-			elasticsearchInvokerManager.getGlobalElasticsearchInvoker();
+		_postCreationConsumer = postCreationConsumer;
+		_projectRepository = projectRepository;
 	}
 
 	@Override
 	public void addProject(Project project) {
-		_elasticsearchInvoker.add(
-			"projects", _objectMapper.convertValue(project, JSONObject.class));
+		_projectRepository.save(project);
 
-		try {
-			_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
-				project.getId());
-		}
-		catch (Exception e) {
-			_log.error(
-				"Unable to create snapshot lifecycle policy for project " +
-					project.getId(),
-				e);
+		if (_postCreationConsumer != null) {
+			_postCreationConsumer.accept(project.getId());
 		}
 
 		ProjectIdThreadLocal.forProject(
@@ -72,31 +55,18 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 		ProjectIdThreadLocal.forProject(
 			projectId, _nanitesHttp::removeSchedule);
 
-		return _elasticsearchInvoker.delete("projects", projectId);
+		return _projectRepository.deleteById(projectId);
 	}
 
 	@Override
 	public List<Project> getProjects() throws Exception {
-		JSONArray projectsJSONArray = _elasticsearchInvoker.get("projects");
-
-		return _objectMapper.convertValue(
-			projectsJSONArray,
-			new TypeReference<List<Project>>() {
-			});
+		return _projectRepository.findAll();
 	}
-
-	private static final Log _log = LogFactory.getLog(
-		MultiTenantProjectDogImpl.class);
-
-	private final ElasticsearchInvoker _elasticsearchInvoker;
-
-	@Autowired
-	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;
 
-	@Autowired
-	private ObjectMapper _objectMapper;
+	private final Consumer<String> _postCreationConsumer;
+	private final ProjectRepository _projectRepository;
 
 }

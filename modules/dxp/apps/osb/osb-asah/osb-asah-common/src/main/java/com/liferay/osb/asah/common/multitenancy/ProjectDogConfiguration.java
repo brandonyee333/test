@@ -15,10 +15,16 @@
 package com.liferay.osb.asah.common.multitenancy;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
-import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchSnapshotManager;
+import com.liferay.osb.asah.common.elasticsearch.repository.impl.ElasticsearchProjectRepositoryImpl;
 import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
 import com.liferay.osb.asah.common.multitenancy.impl.SingleTenantProjectDogImpl;
+import com.liferay.osb.asah.common.repository.ProjectRepository;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,14 +35,36 @@ import org.springframework.context.annotation.Configuration;
 public class ProjectDogConfiguration {
 
 	@Bean
-	public ProjectDog projectDog(
-		ElasticsearchInvokerManager elasticsearchInvokerManager) {
-
-		if (ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
-			return new MultiTenantProjectDogImpl(elasticsearchInvokerManager);
+	public ProjectDog projectDog(ProjectRepository projectRepository) {
+		if (!ServiceConstants.OSB_ASAH_MULTITENANCY_ENABLED) {
+			return new SingleTenantProjectDogImpl();
 		}
 
-		return new SingleTenantProjectDogImpl();
+		if (projectRepository instanceof ElasticsearchProjectRepositoryImpl) {
+			return new MultiTenantProjectDogImpl(
+				this::_createSnapshots, projectRepository);
+		}
+
+		return new MultiTenantProjectDogImpl(null, projectRepository);
 	}
+
+	private void _createSnapshots(String projectId) {
+		try {
+			_elasticsearchSnapshotManager.createSnapshotLifecyclePolicy(
+				projectId);
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to create snapshot lifecycle policy for project " +
+					projectId,
+				e);
+		}
+	}
+
+	private static final Log _log = LogFactory.getLog(
+		MultiTenantProjectDogImpl.class);
+
+	@Autowired
+	private ElasticsearchSnapshotManager _elasticsearchSnapshotManager;
 
 }
