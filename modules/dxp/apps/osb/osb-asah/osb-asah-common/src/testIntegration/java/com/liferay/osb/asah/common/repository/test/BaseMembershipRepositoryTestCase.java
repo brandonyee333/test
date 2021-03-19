@@ -246,6 +246,33 @@ public abstract class BaseMembershipRepositoryTestCase
 	}
 
 	@Test
+	public void testFindIndividualIdByIndividualSegmentIdIn() {
+		List<Long> individualIds =
+			_membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+				Arrays.asList(34L, 56L), 10, 1, true);
+
+		Assert.assertEquals(Arrays.asList(78L, 12L), individualIds);
+
+		individualIds =
+			_membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+				Arrays.asList(34L, 56L), 10, 1, false);
+
+		Assert.assertEquals(Arrays.asList(12L, 78L), individualIds);
+
+		individualIds =
+			_membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+				Arrays.asList(34L, 56L), 10, 2, true);
+
+		Assert.assertEquals(Arrays.asList(12L), individualIds);
+
+		individualIds =
+			_membershipRepository.findIndividualIdByIndividualSegmentIdIn(
+				Arrays.asList(34L, 56L), 1, 1, true);
+
+		Assert.assertEquals(Arrays.asList(78L), individualIds);
+	}
+
+	@Test
 	public void testFindIndividualSegmentIdByIndividualIdAndStatus() {
 		List<Long> individualSegmenIds =
 			_membershipRepository.
