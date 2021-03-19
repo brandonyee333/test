@@ -233,7 +233,7 @@ public class HistogramDog {
 			AggregationBuilders.dateHistogram("metric_over_time");
 
 		dateHistogramAggregationBuilder.field("eventDate");
-
+		dateHistogramAggregationBuilder.format("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 		dateHistogramAggregationBuilder.timeZone(ZoneId.of(timeZoneId));
 
 		if (timeRange.equals(TimeRange.LAST_24_HOURS) ||
