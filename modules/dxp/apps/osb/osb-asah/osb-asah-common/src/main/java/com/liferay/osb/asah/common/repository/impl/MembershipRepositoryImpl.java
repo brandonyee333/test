@@ -42,24 +42,25 @@ public class MembershipRepositoryImpl {
 	public List<Long> findIndividualIdByIndividualSegmentIdIn(
 		List<Long> individualSegmentIds, int max, int min, boolean ascending) {
 
-		Field<Object> individualSegmentId = DSL.field("individualSegmentId");
+		Field<Object> individualSegmentIdField = DSL.field(
+			"individualSegmentId");
 
-		SelectSelectStep<Record1<Object>> select = _dslContext.select(
-			individualSegmentId);
+		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
+			individualSegmentIdField);
 
-		AggregateFunction<Integer> count = DSL.count(
+		AggregateFunction<Integer> aggregateFunction = DSL.count(
 			DSL.field("individualSegmentId"));
 
-		return select.from(
+		return selectSelectStep.from(
 			"Membership"
 		).where(
-			individualSegmentId.in(individualSegmentIds)
+			individualSegmentIdField.in(individualSegmentIds)
 		).groupBy(
-			individualSegmentId
+			individualSegmentIdField
 		).having(
 			_getConditions(max, min, ascending)
 		).orderBy(
-			ascending ? count.asc() : count.desc()
+			ascending ? aggregateFunction.asc() : aggregateFunction.desc()
 		).fetch(
 			0, Long.class
 		);
@@ -70,13 +71,13 @@ public class MembershipRepositoryImpl {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		AggregateFunction<Integer> count = DSL.count(
+		AggregateFunction<Integer> aggregateFunction = DSL.count(
 			DSL.field("individualSegmentId"));
 
-		conditions.add(count.ge(min));
+		conditions.add(aggregateFunction.ge(min));
 
 		if (ascending) {
-			conditions.add(count.le(max));
+			conditions.add(aggregateFunction.le(max));
 		}
 
 		return conditions;
