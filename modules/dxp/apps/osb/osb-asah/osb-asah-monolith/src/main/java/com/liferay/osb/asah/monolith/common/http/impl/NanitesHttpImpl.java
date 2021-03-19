@@ -33,7 +33,7 @@ public class NanitesHttpImpl implements NanitesHttp {
 
 	@Override
 	public void executeAsahTask(AsahTask asahTask) {
-		_nanitesRestController.post(asahTask);
+		_nanitesRestController.post(asahTask.getId());
 	}
 
 	@Override
@@ -58,12 +58,12 @@ public class NanitesHttpImpl implements NanitesHttp {
 
 	@Override
 	public void scheduleAsahTask(AsahTask asahTask) {
-		_nanitesRestController.schedule(asahTask);
+		_nanitesRestController.schedule(asahTask.getId());
 	}
 
 	@Override
 	public void unscheduleAsahTask(AsahTask asahTask) {
-		_nanitesRestController.unschedule(asahTask);
+		_nanitesRestController.unschedule(asahTask.getId());
 	}
 
 	@Autowired

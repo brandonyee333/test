@@ -36,8 +36,9 @@ public class NanitesHttpImpl implements NanitesHttp {
 	@Override
 	public void executeAsahTask(AsahTask asahTask) {
 		_http.exchangeIfUp(
-			ServiceConstants.URL_BATCH_CURATOR, "/nanites", HttpMethod.POST,
-			asahTask);
+			ServiceConstants.URL_BATCH_CURATOR,
+			String.format("/nanites/%d", asahTask.getId()), HttpMethod.POST,
+			null);
 	}
 
 	@Override
@@ -71,14 +72,16 @@ public class NanitesHttpImpl implements NanitesHttp {
 	@Override
 	public void scheduleAsahTask(AsahTask asahTask) {
 		_http.exchangeIfUp(
-			ServiceConstants.URL_BATCH_CURATOR, "/nanites/schedule",
-			HttpMethod.POST, asahTask);
+			ServiceConstants.URL_BATCH_CURATOR,
+			String.format("/nanites/schedule/%d", asahTask.getId()),
+			HttpMethod.POST, null);
 	}
 
 	@Override
 	public void unscheduleAsahTask(AsahTask asahTask) {
 		_http.exchangeIfUp(
-			ServiceConstants.URL_BATCH_CURATOR, "/nanites/unschedule",
+			ServiceConstants.URL_BATCH_CURATOR,
+			String.format("/nanites/unschedule/%d", asahTask.getId()),
 			HttpMethod.POST, asahTask);
 	}
 

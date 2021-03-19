@@ -80,6 +80,10 @@ public class AsahTaskManager {
 		}
 	}
 
+	public void executeAsahTask(Long asahTaskId, boolean force) {
+		executeAsahTask(_asahTaskDog.getAsahTask(asahTaskId), force);
+	}
+
 	public void executeAsahTasks() {
 		try {
 			List<AsahTask> asahTasks = _asahTaskDog.getImmediateAsahTasks();
@@ -111,7 +115,7 @@ public class AsahTaskManager {
 			List<AsahTask> asahTasks = _asahTaskDog.getScheduledAsahTasks();
 
 			for (AsahTask asahTask : asahTasks) {
-				unscheduleAsahTask(asahTask);
+				unscheduleAsahTask(asahTask.getId());
 			}
 		}
 		catch (Exception e) {
@@ -163,6 +167,10 @@ public class AsahTaskManager {
 			String.valueOf(asahTask.getId()));
 	}
 
+	public void scheduleAsahTask(Long asahTaskId) {
+		scheduleAsahTask(_asahTaskDog.getAsahTask(asahTaskId));
+	}
+
 	public void scheduleAsahTasks() {
 		try {
 			List<AsahTask> asahTasks = _asahTaskDog.getScheduledAsahTasks();
@@ -176,8 +184,8 @@ public class AsahTaskManager {
 		}
 	}
 
-	public void unscheduleAsahTask(AsahTask asahTask) {
-		_asahTaskScheduler.unschedule(String.valueOf(asahTask.getId()));
+	public void unscheduleAsahTask(Long asahTaskId) {
+		_asahTaskScheduler.unschedule(String.valueOf(asahTaskId));
 	}
 
 	private static final Log _log = LogFactory.getLog(AsahTaskManager.class);

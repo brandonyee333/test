@@ -53,7 +53,7 @@ public class NanitesHttpImplTest {
 		Mockito.verify(
 			_nanitesRestController
 		).post(
-			asahTask
+			asahTask.getId()
 		);
 	}
 
@@ -106,7 +106,7 @@ public class NanitesHttpImplTest {
 		Mockito.verify(
 			_nanitesRestController
 		).schedule(
-			asahTask
+			asahTask.getId()
 		);
 	}
 
@@ -119,7 +119,7 @@ public class NanitesHttpImplTest {
 		Mockito.verify(
 			_nanitesRestController
 		).unschedule(
-			asahTask
+			asahTask.getId()
 		);
 	}
 

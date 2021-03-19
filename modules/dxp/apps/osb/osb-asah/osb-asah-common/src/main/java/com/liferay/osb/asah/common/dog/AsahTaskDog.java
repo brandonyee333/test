@@ -38,10 +38,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class AsahTaskDog extends BaseFaroInfoDog {
 
-	public AsahTask addAsahTask(AsahTask asahTask) {
-		return _asahTaskRepository.save(asahTask);
-	}
-
 	public void deleteAllAsahTask() {
 		_asahTaskRepository.deleteAll();
 	}
@@ -81,7 +77,7 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 	}
 
 	public AsahTask scheduleAsahTask(AsahTask asahTask) {
-		asahTask = addAsahTask(asahTask);
+		asahTask = _asahTaskRepository.save(asahTask);
 
 		if (asahTask.getCronExpression() == null) {
 			_nanitesHttp.executeAsahTask(asahTask);
