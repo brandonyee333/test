@@ -136,7 +136,6 @@ public abstract class BaseMembershipRepositoryTestCase
 					12L, Arrays.asList(34L, 56L), "ACTIVE");
 
 		Assert.assertEquals(memberships.toString(), 1, memberships.size());
-
 		Assert.assertEquals(entityModels.get(0), memberships.get(0));
 	}
 
@@ -146,7 +145,6 @@ public abstract class BaseMembershipRepositoryTestCase
 			_membershipRepository.findByIndividualIdAndStatus(12L, "ACTIVE");
 
 		Assert.assertEquals(memberships.toString(), 1, memberships.size());
-
 		Assert.assertEquals(entityModels.get(0), memberships.get(0));
 	}
 
@@ -159,9 +157,7 @@ public abstract class BaseMembershipRepositoryTestCase
 					PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(memberships.toString(), 2, memberships.size());
-
 		Assert.assertEquals(entityModels.get(0), memberships.get(0));
-
 		Assert.assertEquals(entityModels.get(2), memberships.get(1));
 
 		memberships =
@@ -179,7 +175,6 @@ public abstract class BaseMembershipRepositoryTestCase
 					PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(memberships.toString(), 1, memberships.size());
-
 		Assert.assertEquals(entityModels.get(1), memberships.get(0));
 	}
 
@@ -190,9 +185,7 @@ public abstract class BaseMembershipRepositoryTestCase
 				34L, "ACTIVE");
 
 		Assert.assertEquals(memberships.toString(), 2, memberships.size());
-
 		Assert.assertEquals(entityModels.get(0), memberships.get(0));
-
 		Assert.assertEquals(entityModels.get(2), memberships.get(1));
 
 		memberships = _membershipRepository.findByIndividualSegmentIdAndStatus(
@@ -204,7 +197,6 @@ public abstract class BaseMembershipRepositoryTestCase
 			56L, "INACTIVE");
 
 		Assert.assertEquals(memberships.toString(), 1, memberships.size());
-
 		Assert.assertEquals(entityModels.get(1), memberships.get(0));
 
 		memberships = _membershipRepository.findByIndividualSegmentIdAndStatus(
@@ -212,9 +204,7 @@ public abstract class BaseMembershipRepositoryTestCase
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(memberships.toString(), 2, memberships.size());
-
 		Assert.assertEquals(entityModels.get(0), memberships.get(0));
-
 		Assert.assertEquals(entityModels.get(2), memberships.get(1));
 
 		memberships = _membershipRepository.findByIndividualSegmentIdAndStatus(
@@ -228,7 +218,6 @@ public abstract class BaseMembershipRepositoryTestCase
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(memberships.toString(), 1, memberships.size());
-
 		Assert.assertEquals(entityModels.get(1), memberships.get(0));
 	}
 
@@ -239,9 +228,7 @@ public abstract class BaseMembershipRepositoryTestCase
 				findIndividualIdByIndividualSegmentIdAndStatus(34L, "ACTIVE");
 
 		Assert.assertEquals(individualIds.toString(), 2, individualIds.size());
-
 		Assert.assertEquals(Long.valueOf(12), individualIds.get(0));
-
 		Assert.assertEquals(Long.valueOf(78), individualIds.get(1));
 
 		individualIds =
@@ -255,7 +242,6 @@ public abstract class BaseMembershipRepositoryTestCase
 				findIndividualIdByIndividualSegmentIdAndStatus(56L, "INACTIVE");
 
 		Assert.assertEquals(individualIds.toString(), 1, individualIds.size());
-
 		Assert.assertEquals(Long.valueOf(12), individualIds.get(0));
 	}
 
@@ -267,7 +253,6 @@ public abstract class BaseMembershipRepositoryTestCase
 
 		Assert.assertEquals(
 			individualSegmenIds.toString(), 1, individualSegmenIds.size());
-
 		Assert.assertEquals(Long.valueOf(34), individualSegmenIds.get(0));
 
 		individualSegmenIds =
@@ -283,7 +268,6 @@ public abstract class BaseMembershipRepositoryTestCase
 
 		Assert.assertEquals(
 			individualSegmenIds.toString(), 1, individualSegmenIds.size());
-
 		Assert.assertEquals(Long.valueOf(56), individualSegmenIds.get(0));
 	}
 
@@ -296,7 +280,6 @@ public abstract class BaseMembershipRepositoryTestCase
 
 		Assert.assertEquals(
 			individualSegmenIds.toString(), 1, individualSegmenIds.size());
-
 		Assert.assertEquals(Long.valueOf(34), individualSegmenIds.get(0));
 
 		individualSegmenIds =
@@ -306,7 +289,6 @@ public abstract class BaseMembershipRepositoryTestCase
 
 		Assert.assertEquals(
 			individualSegmenIds.toString(), 1, individualSegmenIds.size());
-
 		Assert.assertEquals(Long.valueOf(56), individualSegmenIds.get(0));
 	}
 
@@ -318,9 +300,7 @@ public abstract class BaseMembershipRepositoryTestCase
 
 		Assert.assertEquals(
 			individualSegmenIds.toString(), 2, individualSegmenIds.size());
-
 		Assert.assertEquals(Long.valueOf(34), individualSegmenIds.get(0));
-
 		Assert.assertEquals(Long.valueOf(56), individualSegmenIds.get(1));
 
 		individualSegmenIds =
@@ -329,7 +309,6 @@ public abstract class BaseMembershipRepositoryTestCase
 
 		Assert.assertEquals(
 			individualSegmenIds.toString(), 1, individualSegmenIds.size());
-
 		Assert.assertEquals(Long.valueOf(34), individualSegmenIds.get(0));
 	}
 
