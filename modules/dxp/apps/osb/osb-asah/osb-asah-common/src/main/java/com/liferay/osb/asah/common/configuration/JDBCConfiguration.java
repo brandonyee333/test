@@ -30,6 +30,7 @@ import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.relational.core.dialect.AnsiDialect;
 import org.springframework.data.relational.core.dialect.Dialect;
+import org.springframework.data.relational.core.dialect.PostgresDialect;
 import org.springframework.data.relational.core.mapping.NamingStrategy;
 import org.springframework.data.relational.core.mapping.RelationalPersistentProperty;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -77,6 +78,10 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 		if (jdbcTemplate.getDataSource() instanceof SimpleDriverDataSource) {
 			return AnsiDialect.INSTANCE;
+		}
+
+		if (jdbcTemplate.getDataSource() instanceof PostgreSQLDataSource) {
+			return PostgresDialect.INSTANCE;
 		}
 
 		return super.jdbcDialect(namedParameterJdbcOperations);
