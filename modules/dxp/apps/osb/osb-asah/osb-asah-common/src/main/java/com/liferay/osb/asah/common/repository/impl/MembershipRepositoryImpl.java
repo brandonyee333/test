@@ -42,21 +42,23 @@ public class MembershipRepositoryImpl {
 	public List<Long> findIndividualIdByIndividualSegmentIdIn(
 		List<Long> individualSegmentIds, int max, int min, boolean ascending) {
 
+		Field<Object> individualIdField = DSL.field("individualId");
+
+		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
+			individualIdField);
+
 		Field<Object> individualSegmentIdField = DSL.field(
 			"individualSegmentId");
 
-		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
-			individualSegmentIdField);
-
 		AggregateFunction<Integer> aggregateFunction = DSL.count(
-			DSL.field("individualSegmentId"));
+			individualSegmentIdField);
 
 		return selectSelectStep.from(
 			"Membership"
 		).where(
 			individualSegmentIdField.in(individualSegmentIds)
 		).groupBy(
-			individualSegmentIdField
+			individualIdField
 		).having(
 			_getConditions(max, min, ascending)
 		).orderBy(
