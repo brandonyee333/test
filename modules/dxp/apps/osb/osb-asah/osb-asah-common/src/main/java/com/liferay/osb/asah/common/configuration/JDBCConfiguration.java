@@ -15,12 +15,17 @@
 package com.liferay.osb.asah.common.configuration;
 
 import com.liferay.osb.asah.common.postgresql.PostgreSQLDataSource;
+import com.liferay.osb.asah.common.postgresql.converter.JSONObjectToStringConverter;
+import com.liferay.osb.asah.common.postgresql.converter.StringToJSONObjectConverter;
+
+import java.util.Arrays;
 
 import javax.sql.DataSource;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jdbc.core.convert.JdbcCustomConversions;
 import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.relational.core.dialect.AnsiDialect;
@@ -51,6 +56,15 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	)
 	public DataSource elasticsearchDataSource() {
 		return new SimpleDriverDataSource();
+	}
+
+	@Bean
+	@Override
+	public JdbcCustomConversions jdbcCustomConversions() {
+		return new JdbcCustomConversions(
+			Arrays.asList(
+				new JSONObjectToStringConverter(),
+				new StringToJSONObjectConverter()));
 	}
 
 	@Bean
