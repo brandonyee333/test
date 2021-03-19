@@ -28,6 +28,7 @@ import com.liferay.data.engine.rest.resource.v2_0.test.util.DataRecordCollection
 import com.liferay.data.engine.rest.strategy.util.DataRecordValueKeyUtil;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.test.rule.DataGuard;
@@ -40,6 +41,7 @@ import com.liferay.portal.test.rule.Inject;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -490,6 +492,45 @@ public class DataRecordResourceTest extends BaseDataRecordResourceTestCase {
 		assertEquals(
 			Arrays.asList(dataRecord2, dataRecord1),
 			(List<DataRecord>)sortByTextDescPage.getItems());
+	}
+
+	@Override
+	@Test
+	public void testPostDataDefinitionDataRecord() throws Exception {
+		super.testPostDataDefinitionDataRecord();
+
+		// Persist data for text in a fieldset
+
+		DataDefinition dataDefinition =
+			DataDefinitionTestUtil.addDataDefinitionWithFieldset(
+				testGroup.getGroupId());
+
+		String fieldsetKey = StringBundler.concat(
+			"FieldsGroup4Test$", RandomTestUtil.randomString(), "$0");
+
+		DataRecord dataRecord = new DataRecord() {
+			{
+				dataRecordValues = HashMapBuilder.<String, Object>put(
+					fieldsetKey, ""
+				).put(
+					StringBundler.concat(
+						fieldsetKey, "#Text4Test$",
+						RandomTestUtil.randomString(), "$0"),
+					HashMapBuilder.<String, Object>put(
+						"en_US", "Text Value"
+					).build()
+				).build();
+			}
+		};
+
+		DataRecord postDataRecord =
+			dataRecordResource.postDataDefinitionDataRecord(
+				dataDefinition.getId(), dataRecord);
+
+		Assert.assertEquals(
+			dataRecord.getDataRecordValues(),
+			postDataRecord.getDataRecordValues());
+		assertValid(postDataRecord);
 	}
 
 	@Override

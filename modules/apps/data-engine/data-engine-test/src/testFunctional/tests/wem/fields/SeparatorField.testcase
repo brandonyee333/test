@@ -16,13 +16,15 @@ definition {
 
 		NavItem.gotoStructures();
 
-		WebContentStructures.addCP(structureName = "Test");
+		WebContentStructures.addCP(structureName = "WC Structure Name");
+
+		DataEngine.addField(
+			fieldFieldLabel = "Separator",
+			fieldName = "Separator");
 	}
 
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
-
-		WebContentStructures.deleteCP(structureName = "Test");
 
 		if ("${testPortalInstance}" == "true") {
 			PortalInstances.tearDownCP();
@@ -32,214 +34,121 @@ definition {
 		}
 	}
 
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
-	@priority = "5"
-	test AddSeparatorOnFormByDragAndDrop {
-		property portal.acceptance = "false";
-
-		DataEngine.addField(
-			fieldFieldLabel = "Test",
-			fieldName = "Separator");
-
-		DataEngine.viewField(
-			fieldFieldLabel = "Test",
-			fieldName = "Separator");
-	}
-
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
+	@description = "This is a test for LPS-98081. Delete Separator Field (sing kebab on the top of the field)"
 	@priority = "5"
 	test DeleteSeparatorOnBuilder {
 		property portal.acceptance = "false";
 
-		var fieldLabel = "Test";
+		var fieldLabel = "Separator";
 
 		DataEngine.addField(
-			fieldFieldLabel = "Text field",
+			fieldFieldLabel = "Text",
 			fieldName = "Text");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Test",
-			fieldName = "Separator");
+		DataEngine.delete(fieldFieldLabel = "Separator");
 
-		DataEngine.delete(fieldFieldLabel = "Test");
+		AssertElementNotPresent(locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL");
 
-		AssertElementNotPresent(locator1 = "FormViewBuilder#FIELD_LABEL");
+		WebContentStructures.saveCP();
 
-		Button.clickSave();
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
 
-		WebContentNavigator.gotoEditStructure(structureName = "Test");
-
-		AssertElementNotPresent(locator1 = "FormViewBuilder#FIELD_LABEL");
-
-		Button.clickSave();
+		AssertElementNotPresent(locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL");
 	}
 
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
-	@ignore = "true"
-	@priority = "5"
-	test DeleteSeparatorOnSidebar {
-		property portal.acceptance = "false";
-
-		// TODO LPS-98081 DeleteSeparatorOnSidebar pending implementation
-
-	}
-
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
+	@description = "This is a test for LPS-98081. Duplicate Separator Field (using kebab on the top of the field)"
 	@priority = "4"
 	test DuplicateSeparatorOnBuilder {
 		property portal.acceptance = "false";
 
-		DataEngine.addField(
-			fieldFieldLabel = "Separator test",
-			fieldName = "Separator");
-
-		DataEngine.duplicate(fieldFieldLabel = "Separator test");
+		DataEngine.duplicate(fieldFieldLabel = "Separator");
 
 		DataEngine.viewField(
-			fieldFieldLabel = "Copy of Separator test",
+			fieldFieldLabel = "Copy of Separator",
 			fieldName = "Separator");
-
-		Button.clickSave();
-
-		WebContentNavigator.gotoEditStructure(structureName = "Test");
-
-		DataEngine.viewField(
-			fieldFieldLabel = "Copy of Separator test",
-			fieldName = "Separator");
-
-		Button.clickSave();
-	}
-
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
-	@ignore = "true"
-	@priority = "4"
-	test DuplicateSeparatorOnSidebar {
-		property portal.acceptance = "false";
-
-		// TODO LPS-98081 DuplicateSeparatorOnSidebar pending implementation
-	}
-
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
-	@priority = "5"
-	test EditHelpTextOfSeparator {
-		property portal.acceptance = "false";
-
-		DataEngine.addField(
-			fieldFieldLabel = "Test",
-			fieldName = "Separator");
-
-		DataEngine.editFieldTip(
-			fieldFieldLabel = "Test",
-			fieldHelp = "Choose as many content pieces as you would like to feature.");
-
-		Button.clickSave();
-
-		WebContentNavigator.gotoEditStructure(structureName = "Test");
-
-		DataEngine.viewFieldHelpText(
-			fieldFieldLabel = "Test",
-			fieldHelp = "Choose as many content pieces as you would like to feature.",
-			fieldName = "Separator");
-
-		Button.clickSave();
-	}
-
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
-	@priority = "5"
-	test EditLabelOfSeparator {
-		property portal.acceptance = "false";
-
-		DataEngine.addField(
-			fieldFieldLabel = "Test",
-			fieldName = "Separator");
-
-		FormViewBuilder.editFieldLabel(
-			fieldLabel = "Test",
-			label = "Edited label");
-
-		Button.clickSave();
-
-		WebContentNavigator.gotoEditStructure(structureName = "Test");
-
-		DataEngine.viewField(
-			fieldFieldLabel = "Edited label",
-			fieldName = "Separator");
-
-		Button.clickSave();
-	}
-
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
-	@ignore = "true"
-	@priority = "5"
-	test EditReferenceOfSeparator {
-		property portal.acceptance = "false";
-
-		DataEngine.addField(
-			fieldFieldLabel = "Test",
-			fieldName = "Separator");
-
-		DataEngine.editFieldReference(
-			fieldFieldLabel = "Test",
-			fieldName = "Separator",
-			fieldReference = "Minhareferencia123");
-
-		Button.clickSave();
-
-		WebContentNavigator.gotoEditStructure(structureName = "Test");
-
-		DataEngine.viewFieldReference(
-			fieldFieldLabel = "Test",
-			fieldName = "Separator",
-			fieldReference = "Minhareferencia123");
-
-		Button.clickSave();
-
-		// TODO LPS-98081 EditReferenceOfSeparator pending implementation
-	}
-
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
-	@priority = "4"
-	test EditReferenceOfSeparatorWithInvalidCharacters {
-		DataEngine.addField(
-			fieldFieldLabel = "Separator",
-			fieldName = "Separator");
-
-		DataEngine.editFieldReferenceWithInvalidCharacters(
-			assertFieldReference = "example123A",
-			fieldFieldLabel = "Separator",
-			fieldReference = "example 123A@#@$%$%%");
 
 		WebContentStructures.saveCP();
 
-		WebContentNavigator.gotoEditStructure(structureName = "Test");
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
 
-		Click(
-			key_fieldFieldLabel = "Separator",
-			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER");
-
-		Navigator.gotoNavTab(navTab = "Advanced");
-
-		AssertTextEquals.assertValue(
-			key_fieldLabel = "Field Reference",
-			key_fieldName = "fieldReference",
-			locator1 = "Sidebar#TEXT_INPUT",
-			value1 = "example123A");
+		DataEngine.viewField(
+			fieldFieldLabel = "Copy of Separator",
+			fieldName = "Separator");
 	}
 
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
+	@description = "This is a test for LPS-98081. Edit the label and help text of Separator Field"
+	@priority = "5"
+	test EditLabelAndHelpTextOfSeparator {
+		property portal.acceptance = "false";
+
+		DataEngine.editFieldLabel(
+			fieldFieldLabel = "Separator",
+			fieldFieldLabelEdit = "Edited Separator");
+
+		DataEngine.editFieldTip(
+			fieldFieldLabel = "Edited Separator",
+			fieldHelp = "Text Field Help Separator");
+
+		WebContentStructures.saveCP();
+
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+		DataEngine.viewField(
+			fieldFieldLabel = "Edited Separator",
+			fieldHelp = "Text Field Help Separator",
+			fieldName = "Separator");
+	}
+
+	@description = "This is a test for LPS-98081. Edit Field Reference with valid and invalid characters"
+	@priority = "4"
+	test EditReferenceOfSeparatorWithValidAndInvalidCharacters {
+		DataEngine.editFieldReference(
+			assertFieldReference = "EditedSeparator",
+			fieldFieldLabel = "Separator",
+			fieldReference = "Edited Separator @#@$%$%%");
+
+		WebContentStructures.saveCP();
+
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+		DataEngine.viewFieldReference(
+			fieldFieldLabel = "Separator",
+			fieldName = "Separator",
+			fieldReference = "EditedSeparator");
+
+		DataEngine.editFieldReference(
+			assertFieldReference = "EditedSeparatorValidCharacters",
+			fieldFieldLabel = "Separator",
+			fieldReference = "EditedSeparatorValidCharacters");
+
+		WebContentStructures.saveCP();
+
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+		DataEngine.viewFieldReference(
+			fieldFieldLabel = "Separator",
+			fieldName = "Separator",
+			fieldReference = "EditedSeparatorValidCharacters");
+	}
+
+	@description = "This is a test for LPS-98081. Verify Repeatable behavior on Web Content"
 	@priority = "5"
 	test RepeatSeparatorOnWebContent {
-		DataEngine.addField(
-			fieldFieldLabel = "Separator",
-			fieldName = "Separator");
-
 		DataEngine.editFieldRepeatable(fieldFieldLabel = "Separator");
 
-		WebContentStructures.saveCP(structureName = "Test");
+		WebContentStructures.saveCP();
+
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
+
+		DataEngine.assertFieldRepeated(
+			fieldName = "Separator",
+			index = "1");
+
+		WebContentStructures.saveCP();
 
 		NavItem.click(navItem = "Web Content");
 
-		WebContentNavigator.gotoAddWithStructureCP(structureName = "Test");
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
 
 		WebContent.addCP(webContentTitle = "Web Content Title");
 
@@ -249,69 +158,39 @@ definition {
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
 
-		for (var n : list "1,2") {
-			DataEngine.assertFieldRepeated(
-				fieldName = "Separator",
-				index = "${n}");
-		}
-
-		AssertVisible(
-			key_fieldName = "Separator",
-			key_index = "2",
-			locator1 = "FormFields#FIELD_REMOVE");
+		DataEngine.assertFieldRepeated(
+			fieldName = "Separator",
+			index = "2");
 	}
 
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
-	@priority = "4"
-	test SetSeparatorRepeatable {
-		property portal.acceptance = "false";
-
-		DataEngine.addField(
-			fieldFieldLabel = "Separator test",
-			fieldName = "Separator");
-
-		DataEngine.editFieldRepeatable(fieldFieldLabel = "Separator test");
-
-		Button.clickSave();
-
-		WebContentNavigator.gotoEditStructure(structureName = "Test");
-
-		AssertElementPresent(locator1 = "FormFields#FIELD_ADD_DUPLICATE");
-
-		Button.clickSave();
-	}
-
-	@description = "This is a test for LPS-98081. As a Developer, I want to use separators"
+	@description = "This is a test for LPS-98081. Verify 'Show label' toggle button"
 	@priority = "3"
 	test ShowAndHideSeparatorLabel {
 		property portal.acceptance = "false";
 
-		DataEngine.addField(
-			fieldFieldLabel = "Separator Label",
-			fieldName = "Separator",
-			fieldReference = "Test");
+		DataEngine.editShowOrHideLabel(
+			fieldFieldLabel = "Separator",
+			showLabel = "true");
 
-		FormFields.viewSwitcherLabel(
-			fieldLabel = "Separator Label",
-			fieldName = "Separator");
+		WebContentStructures.saveCP();
 
-		DataEngine.editFieldHide(
-			fieldFieldLabel = "Separator Label",
-			fieldLabel = "Test");
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
 
-		FormFields.viewSwitcherLabelNotPresent(
-			fieldLabel = "Separator Label",
-			fieldName = "Separator");
+		AssertElementPresent(
+			key_fieldFieldLabel = "Separator",
+			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL");
 
-		Button.clickSave();
+		DataEngine.editShowOrHideLabel(
+			fieldFieldLabel = "Separator",
+			showLabel = "false");
 
-		WebContentNavigator.gotoEditStructure(structureName = "Test");
+		WebContentStructures.saveCP();
 
-		FormFields.viewSwitcherLabelNotPresent(
-			fieldLabel = "Separator Label",
-			fieldName = "Separator");
+		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
 
-		Button.clickSave();
+		AssertElementNotPresent(
+			key_fieldFieldLabel = "Separator",
+			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL");
 	}
 
 }

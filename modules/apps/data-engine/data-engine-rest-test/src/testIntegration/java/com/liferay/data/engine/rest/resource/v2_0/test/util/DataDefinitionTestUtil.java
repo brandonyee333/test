@@ -30,6 +30,8 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.InputStream;
 
+import java.util.Map;
+
 /**
  * @author Gabriel Albuquerque
  */
@@ -74,6 +76,41 @@ public class DataDefinitionTestUtil {
 		).locale(
 			LocaleUtil.getDefault()
 		).build();
+
+		return dataDefinitionResource.postSiteDataDefinitionByContentType(
+			groupId, "app-builder", dataDefinition);
+	}
+
+	public static DataDefinition addDataDefinitionWithFieldset(long groupId)
+		throws Exception {
+
+		DataDefinition dataDefinition = DataDefinition.toDTO(
+			read("data-definition-object-structure-with-fieldset.json"));
+
+		DataDefinitionResource.Builder builder =
+			DataDefinitionResource.builder();
+
+		DataDefinitionResource dataDefinitionResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
+			LocaleUtil.getDefault()
+		).build();
+
+		DataDefinition fieldsetDataDefinition =
+			dataDefinitionResource.postSiteDataDefinitionByContentType(
+				groupId, "app-builder-fieldset",
+				DataDefinition.toDTO(
+					read("data-definition-fieldset-structure.json")));
+
+		for (DataDefinitionField dataDefinitionField :
+				dataDefinition.getDataDefinitionFields()) {
+
+			Map<String, Object> customProperties =
+				dataDefinitionField.getCustomProperties();
+
+			customProperties.put(
+				"ddmStructureId", fieldsetDataDefinition.getId());
+		}
 
 		return dataDefinitionResource.postSiteDataDefinitionByContentType(
 			groupId, "app-builder", dataDefinition);
