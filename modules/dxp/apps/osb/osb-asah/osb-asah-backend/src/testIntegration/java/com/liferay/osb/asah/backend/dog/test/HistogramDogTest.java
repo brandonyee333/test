@@ -32,6 +32,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import java.math.BigDecimal;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import java.util.List;
@@ -147,6 +148,87 @@ public class HistogramDogTest {
 
 		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
 			Interval.WEEK, TimeRange.LAST_90_DAYS);
+
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "journals",
+		resourcePath = "histogram_journal_day_interval_time_zone_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "preferences",
+		resourcePath = "preference_time_zone_america_los_angeles.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testHistogramMetricsTimeZoneDayInterval() {
+		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
+			Interval.DAY,
+			TimeRange.of(
+				LocalDateTime.parse("2021-03-13T00:00:00"),
+				LocalDateTime.parse("2021-03-08T00:00:00")));
+
+		Assert.assertEquals(
+			histogramMetrics.toString(), 6, histogramMetrics.size());
+
+		double[] expectedValues = {4, 0, 4, 2, 2, 1};
+
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "journals",
+		resourcePath = "histogram_journal_month_interval_time_zone_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "preferences",
+		resourcePath = "preference_time_zone_america_los_angeles.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testHistogramMetricsTimeZoneMonthInterval() {
+		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
+			Interval.MONTH,
+			TimeRange.of(
+				LocalDateTime.parse("2021-03-31T23:59:59"),
+				LocalDateTime.parse("2021-01-01T00:00:00")));
+
+		Assert.assertEquals(
+			histogramMetrics.toString(), 3, histogramMetrics.size());
+
+		double[] expectedValues = {24, 15, 22};
+
+		Assert.assertArrayEquals(
+			expectedValues, _getActualValues(histogramMetrics), 0);
+	}
+
+	@ElasticsearchIndex(
+		name = "journals",
+		resourcePath = "histogram_journal_week_interval_time_zone_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "preferences",
+		resourcePath = "preference_time_zone_america_los_angeles.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testHistogramMetricsTimeZoneWeekInterval() {
+		List<HistogramMetric> histogramMetrics = _getHistogramMetrics(
+			Interval.WEEK,
+			TimeRange.of(
+				LocalDateTime.parse("2021-03-13T23:59:59"),
+				LocalDateTime.parse("2021-02-07T00:00:00")));
+
+		Assert.assertEquals(
+			histogramMetrics.toString(), 5, histogramMetrics.size());
+
+		double[] expectedValues = {8, 12, 7, 7, 9};
 
 		Assert.assertArrayEquals(
 			expectedValues, _getActualValues(histogramMetrics), 0);
