@@ -129,7 +129,7 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 			faroInfoElasticsearchInvoker.count(
 				"organizations", QueryBuilders.matchAllQuery()));
 
-		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasksByClassName(
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
 
 		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
@@ -170,7 +170,7 @@ public class FaroInfoOrganizationDogTest extends BaseFaroInfoDogTestCase {
 				customContextJSONObject, "JSONArray/dateFounded", "Object/0",
 				"Object/value"));
 
-		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasksByClassName(
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
 
 		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());

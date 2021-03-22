@@ -83,7 +83,9 @@ public class FaroInfoAssetDog extends BaseFaroInfoDog {
 			}
 		}
 
-		_addAsahTask("IndividualInterestScoresNanite", deletionDayDateString);
+		_asahTaskDog.scheduleAsahTask(
+			"IndividualInterestScoresNanite",
+			JSONUtil.put("reprocessDay", deletionDayDateString));
 	}
 
 	public List<String> getKeywords() {
@@ -109,11 +111,6 @@ public class FaroInfoAssetDog extends BaseFaroInfoDog {
 		}
 
 		return new ArrayList<>(keywords);
-	}
-
-	private void _addAsahTask(String className, String dayDateString) {
-		_asahTaskDog.scheduleAsahTask(
-			className, JSONUtil.put("reprocessDay", dayDateString));
 	}
 
 	@Autowired

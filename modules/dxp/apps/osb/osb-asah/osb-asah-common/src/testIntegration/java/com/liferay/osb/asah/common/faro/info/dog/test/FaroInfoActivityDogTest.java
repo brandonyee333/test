@@ -79,7 +79,7 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 				activityGroupJSONObject, assetJSONObject, "pageViewed",
 				new String[0]));
 
-		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasksByClassName(
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
 
 		Assert.assertFalse(asahTasks.isEmpty());

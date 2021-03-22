@@ -64,7 +64,7 @@ public class AsahTaskManager {
 	}
 
 	public void deleteAsahTask(Long asahTaskId) {
-		_asahTaskDog.deleteAsahTaskById(asahTaskId);
+		_asahTaskDog.deleteAsahTask(asahTaskId);
 	}
 
 	public void executeAsahTask(AsahTask asahTask, boolean force) {

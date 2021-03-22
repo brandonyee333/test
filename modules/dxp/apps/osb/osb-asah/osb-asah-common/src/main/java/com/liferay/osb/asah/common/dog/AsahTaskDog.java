@@ -46,7 +46,7 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 		_asahTaskRepository.delete(asahTask);
 	}
 
-	public void deleteAsahTaskById(Long asahTaskId) {
+	public void deleteAsahTask(Long asahTaskId) {
 		_asahTaskRepository.deleteById(asahTaskId);
 	}
 
@@ -64,7 +64,7 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 		return IterableUtils.toList(_asahTaskRepository.findAll());
 	}
 
-	public List<AsahTask> getAsahTasksByClassName(String className) {
+	public List<AsahTask> getAsahTasks(String className) {
 		return _asahTaskRepository.findByClassName(className);
 	}
 

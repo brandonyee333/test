@@ -102,7 +102,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 		Assert.assertEquals(0, individualSegmentsJSONArray.length());
 
-		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasksByClassName(
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"DeleteIndividualSegmentTasksNanite");
 
 		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
@@ -253,7 +253,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	private void _assertOSBTasksContextAfterUpdate(String addFilter) {
-		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasksByClassName(
+		List<AsahTask> asahTasks = _asahTaskDog.getAsahTasks(
 			"UpdateDynamicMembershipsNanite");
 
 		Assert.assertEquals(asahTasks.toString(), 1, asahTasks.size());
