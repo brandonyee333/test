@@ -72,11 +72,11 @@ public class AsahTaskManager {
 				asahTask.getClassName(), "UpdateDynamicMembershipsNanite")) {
 
 			_asahTaskScheduler.executeUpdateDynamicMembershipsNanite(
-				new AsahTaskRunnable(asahTask, false, this));
+				new AsahTaskRunnable(asahTask, this, false));
 		}
 		else {
 			_asahTaskScheduler.execute(
-				new AsahTaskRunnable(asahTask, force, this));
+				new AsahTaskRunnable(asahTask, this, force));
 		}
 	}
 

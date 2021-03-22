@@ -37,14 +37,14 @@ public class AsahTaskRunnable implements Runnable {
 	public AsahTaskRunnable(
 		AsahTask asahTask, AsahTaskManager asahTaskManager) {
 
-		this(asahTask, false, asahTaskManager);
+		this(asahTask, asahTaskManager, false);
 	}
 
 	public AsahTaskRunnable(
-		AsahTask asahTask, boolean force, AsahTaskManager asahTaskManager) {
+		AsahTask asahTask, AsahTaskManager asahTaskManager, boolean force) {
 
-		_force = force;
 		_asahTaskManager = asahTaskManager;
+		_force = force;
 
 		_asahTaskId = asahTask.getId();
 		_contextJSONObject = asahTask.getContextJSONObject();
