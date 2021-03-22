@@ -50,6 +50,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -310,10 +311,8 @@ public class DataSourceDog {
 
 		dataSource = _dataSourceRepository.save(dataSource);
 
-		Boolean newSitesSelected = dataSource.getSitesSelected();
-
-		if ((newSitesSelected != null) && newSitesSelected &&
-			((oldSitesSelected == null) || !oldSitesSelected)) {
+		if (BooleanUtils.isTrue(dataSource.getSitesSelected()) &&
+			BooleanUtils.isNotTrue(oldSitesSelected)) {
 
 			_nanitesHttp.refreshAnalytics();
 
