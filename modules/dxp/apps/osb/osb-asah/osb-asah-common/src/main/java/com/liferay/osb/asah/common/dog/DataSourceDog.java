@@ -310,7 +310,11 @@ public class DataSourceDog {
 
 		dataSource = _dataSourceRepository.save(dataSource);
 
-		if (dataSource.getSitesSelected() && !oldSitesSelected) {
+		Boolean newSitesSelected = dataSource.getSitesSelected();
+
+		if ((newSitesSelected != null) && newSitesSelected &&
+			((oldSitesSelected == null) || !oldSitesSelected)) {
+
 			_nanitesHttp.refreshAnalytics();
 
 			_faroInfoOSBAsahTaskDog.addOSBAsahTask(
