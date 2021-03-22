@@ -122,7 +122,7 @@ public class AsahTaskManager {
 			_log.error("Unable to unschedule existing tasks", e);
 		}
 
-		_asahTaskDog.deleteAllAsahTask();
+		_asahTaskDog.deleteAsahTasks();
 	}
 
 	public void runNanites(String... naniteClassNames) {

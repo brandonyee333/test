@@ -38,16 +38,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class AsahTaskDog extends BaseFaroInfoDog {
 
-	public void deleteAllAsahTask() {
-		_asahTaskRepository.deleteAll();
-	}
-
-	public void deleteAsahTask(AsahTask asahTask) {
-		_asahTaskRepository.delete(asahTask);
-	}
-
 	public void deleteAsahTask(Long asahTaskId) {
 		_asahTaskRepository.deleteById(asahTaskId);
+	}
+
+	public void deleteAsahTasks() {
+		_asahTaskRepository.deleteAll();
 	}
 
 	public AsahTask getAsahTask(Long asahTaskId) {
@@ -110,7 +106,7 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 	public void unscheduleAsahTask(AsahTask asahTask) {
 		_nanitesHttp.unscheduleAsahTask(asahTask);
 
-		deleteAsahTask(asahTask);
+		deleteAsahTask(asahTask.getId());
 	}
 
 	public void unscheduleAsahTask(Long asahTaskId) {

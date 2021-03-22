@@ -93,7 +93,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		_assertAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
-		_asahTaskDog.deleteAllAsahTask();
+		_asahTaskDog.deleteAsahTasks();
 
 		_faroInfoAccountDog.deleteAccount(accountJSONObject);
 
@@ -131,7 +131,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		_assertAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
-		_asahTaskDog.deleteAllAsahTask();
+		_asahTaskDog.deleteAsahTasks();
 
 		_faroInfoAccountDog.replaceAccount(
 			accountJSONObject.put("country", "United States"));
@@ -154,7 +154,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		_assertAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
-		_asahTaskDog.deleteAllAsahTask();
+		_asahTaskDog.deleteAsahTasks();
 
 		_faroInfoAccountDog.updateAccount(
 			accountJSONObject.getString("id"),
@@ -178,7 +178,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		_assertAsahTaskIndividualSegmentContext();
 		_assertStandardFields(accountJSONObject);
 
-		_asahTaskDog.deleteAllAsahTask();
+		_asahTaskDog.deleteAsahTasks();
 
 		_faroInfoAccountDog.updateAccount(
 			accountJSONObject,

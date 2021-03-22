@@ -74,7 +74,8 @@ public interface MembershipRepository extends CrudRepository<Membership, Long> {
 		List<Long> individualSegmentIds, int max, int min, boolean ascending);
 
 	public List<Long> findIndividualSegmentIdByIndividualIdAndStatus(
-		@Param("individualId") Long individualId, String status);
+		@Param("individualId") Long individualId,
+		@Param("status") String status);
 
 	public List<Long> findIndividualSegmentIdByIndividualIdInAndStatus(
 		@Param("individualIds") List<Long> individualIds,
