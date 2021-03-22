@@ -84,7 +84,10 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 			return PostgresDialect.INSTANCE;
 		}
 
-		return super.jdbcDialect(namedParameterJdbcOperations);
+		throw new IllegalArgumentException(
+			String.format(
+				"Invalid Dialect for %s. Please provide a valid Dialect.",
+				jdbcTemplate));
 	}
 
 	@Bean
