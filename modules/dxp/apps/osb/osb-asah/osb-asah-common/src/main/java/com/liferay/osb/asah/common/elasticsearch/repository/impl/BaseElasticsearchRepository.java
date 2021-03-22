@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.List;
@@ -26,20 +27,24 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author Marcellus Tavares
  */
-public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
-	implements CrudRepository<T, Long> {
+public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
+	implements CrudRepository<T, ID> {
 
 	@Override
 	public long count() {
@@ -86,14 +91,14 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 	}
 
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(ID id) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
 		elasticsearchInvoker.delete(getCollectionName(), id.toString());
 	}
 
 	@Override
-	public boolean existsById(Long id) {
+	public boolean existsById(ID id) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
 		return elasticsearchInvoker.exists(getCollectionName(), id.toString());
@@ -107,10 +112,10 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 	}
 
 	@Override
-	public Iterable<T> findAllById(Iterable<Long> ids) {
+	public Iterable<T> findAllById(Iterable<ID> ids) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
-		Stream<Long> stream = StreamSupport.stream(ids.spliterator(), false);
+		Stream<ID> stream = StreamSupport.stream(ids.spliterator(), false);
 
 		return toList(
 			elasticsearchInvoker.get(
@@ -125,7 +130,7 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<Long>>
 	}
 
 	@Override
-	public Optional<T> findById(Long id) {
+	public Optional<T> findById(ID id) {
 		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
 
 		return Optional.ofNullable(
