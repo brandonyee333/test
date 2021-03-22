@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS ActivityGroup (
 CREATE TABLE IF NOT EXISTS AsahTask (
 	id BIGSERIAL PRIMARY KEY,
 	className TEXT,
-	contextJSONObject TEXT,
+	context TEXT,
 	cronExpression TEXT,
 	projectId TEXT
 );
