@@ -189,6 +189,7 @@ services:
             - FARO_WEDEPLOY_PASSWORD=test
             - OSB_ASAH_LOCAL_CLUSTER_URL=http://{service}:8080
             - OSB_API_URL=http://osbapiemulator:3000
+            - OSB_ASAH_SECURITY_TOKEN=2FKFRgScjV5jOuBR9x0Vu1FGYMtxtmKK
         image: liferay/com-liferay-osb-faro:latest
         ports:
             - "11311:11311"
