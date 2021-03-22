@@ -96,20 +96,6 @@ public class CustomAssetDashboardNanite implements Nanite {
 			getCollectionName(), customAssetPrimaryKey, jsonObject, script);
 	}
 
-	private List<AnalyticsEvent> _fetchAnalyticsEvents() throws Exception {
-		List<AnalyticsEvent> analyticsEvents = _messageSubscriber.pullMessages(
-			50, AnalyticsEvent::toAnalyticsEvent);
-
-		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
-
-		return stream.filter(
-			analyticsEvent -> Objects.equals(
-				analyticsEvent.getEventId(), "assetViewed")
-		).collect(
-			Collectors.toList()
-		);
-	}
-
 	private String _getCustomAssetPrimaryKey(AnalyticsEvent analyticsEvent) {
 		Map<String, String> eventProperties =
 			analyticsEvent.getEventProperties();
@@ -124,7 +110,9 @@ public class CustomAssetDashboardNanite implements Nanite {
 		while (true) {
 			long start = System.currentTimeMillis();
 
-			List<AnalyticsEvent> analyticsEvents = _fetchAnalyticsEvents();
+			List<AnalyticsEvent> analyticsEvents =
+				_messageSubscriber.pullMessages(
+					50, AnalyticsEvent::toAnalyticsEvent);
 
 			if (analyticsEvents.isEmpty()) {
 				break;
