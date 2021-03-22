@@ -71,8 +71,7 @@ public class CustomAssetDashboardNanite implements Nanite {
 		String customAssetPrimaryKey, List<AnalyticsEvent> analyticsEvents) {
 
 		JSONObject jsonObject = _toCustomAssetJSONObject(
-			customAssetPrimaryKey,
-			analyticsEvents.get(analyticsEvents.size() - 1));
+			analyticsEvents, customAssetPrimaryKey);
 
 		Script script = null;
 
@@ -156,7 +155,16 @@ public class CustomAssetDashboardNanite implements Nanite {
 	}
 
 	private JSONObject _toCustomAssetJSONObject(
-		String id, AnalyticsEvent analyticsEvent) {
+		List<AnalyticsEvent> analyticsEvents, String id) {
+
+		Stream<AnalyticsEvent> stream = analyticsEvents.stream();
+
+		AnalyticsEvent analyticsEvent = stream.filter(
+			event -> Objects.equals(event.getEventId(), "assetViewed")
+		).findAny(
+		).orElse(
+			analyticsEvents.get(analyticsEvents.size() - 1)
+		);
 
 		Map<String, String> eventProperties =
 			analyticsEvent.getEventProperties();
