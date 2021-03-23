@@ -177,11 +177,28 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 
 	protected abstract ElasticsearchInvoker getElasticsearchInvoker();
 
+	protected void setSearchSourceBuilderPage(
+		SearchSourceBuilder searchSourceBuilder, Pageable pageable) {
+
+		searchSourceBuilder.from(
+			pageable.getPageNumber() * pageable.getPageSize());
+		searchSourceBuilder.size(pageable.getPageSize());
+
+		for (Sort.Order order : pageable.getSort()) {
+			searchSourceBuilder.sort(
+				SortBuilderUtil.fieldSort(
+					order.getProperty(),
+					SortOrder.valueOf(String.valueOf(order.getDirection()))));
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	protected T toEntity(JSONObject jsonObject) {
-		Class<T> entityClass =
-			(Class<T>)GenericTypeResolver.resolveTypeArgument(
+		Class<?>[] typeArgumentClasses =
+			GenericTypeResolver.resolveTypeArguments(
 				getClass(), BaseElasticsearchRepository.class);
+
+		Class<T> entityClass = (Class<T>)typeArgumentClasses[0];
 
 		if (entityClass != null) {
 			return _objectMapper.convertValue(jsonObject, entityClass);
