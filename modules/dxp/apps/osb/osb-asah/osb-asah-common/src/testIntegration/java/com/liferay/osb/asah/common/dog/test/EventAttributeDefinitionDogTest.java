@@ -167,18 +167,16 @@ public class EventAttributeDefinitionDogTest {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
 
-		EventAttributeDefinition eventAttributeDefinition1 =
+		EventAttributeDefinition expectedEventAttributeDefinition =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
 				"Testing attribute definition", "Test Attribute Defintion",
 				eventDefinition.getId(), "testAttributeDefinition",
 				"testValue");
 
-		EventAttributeDefinition eventAttributeDefinition2 =
-			_eventAttributeDefinitionDog.getEventAttributeDefinition(
-				eventAttributeDefinition1.getId());
-
 		Assert.assertEquals(
-			eventAttributeDefinition1, eventAttributeDefinition2);
+			expectedEventAttributeDefinition,
+			_eventAttributeDefinitionDog.getEventAttributeDefinition(
+				expectedEventAttributeDefinition.getId()));
 	}
 
 	@Test

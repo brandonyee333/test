@@ -41,6 +41,14 @@ public class EventAttributeDefinition implements Persistable<Long> {
 		BeanUtils.copyProperties(source, this);
 	}
 
+	public void addEventDefinitionEventAttributeDefinition(
+		EventDefinitionEventAttributeDefinition
+			eventDefinitionEventAttributeDefinition) {
+
+		_eventDefinitionEventAttributeDefinitions.add(
+			eventDefinitionEventAttributeDefinition);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

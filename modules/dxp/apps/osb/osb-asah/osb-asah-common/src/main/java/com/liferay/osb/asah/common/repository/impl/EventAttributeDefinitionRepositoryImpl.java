@@ -15,10 +15,15 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -67,7 +72,7 @@ public class EventAttributeDefinitionRepositoryImpl {
 
 		Field<?> field = DSL.field(sort.getColumn());
 
-		return select.from(
+		List<EventAttributeDefinition> eventAttributeDefinitions = select.from(
 			"EventAttributeDefinition"
 		).where(
 			_getConditions(name)
@@ -81,6 +86,19 @@ public class EventAttributeDefinitionRepositoryImpl {
 		).map(
 			record -> new EventAttributeDefinition(record.intoMap())
 		);
+
+		Stream<EventAttributeDefinition> stream =
+			eventAttributeDefinitions.stream();
+
+		Map<Long, EventAttributeDefinition> eventAttributeDefinitionsById =
+			stream.collect(
+				Collectors.toMap(
+					EventAttributeDefinition::getId, Function.identity()));
+
+		_populateEventDefinitionEventAttributeDefinition(
+			eventAttributeDefinitionsById);
+
+		return new ArrayList<>(eventAttributeDefinitionsById.values());
 	}
 
 	private List<Condition> _getConditions(String name) {
@@ -93,6 +111,33 @@ public class EventAttributeDefinitionRepositoryImpl {
 		}
 
 		return conditions;
+	}
+
+	private void _populateEventDefinitionEventAttributeDefinition(
+		Map<Long, EventAttributeDefinition> eventAttributeDefinitionsById) {
+
+		SelectSelectStep<Record> select = _dslContext.select();
+
+		Field<Object> field = DSL.field("eventAttributeDefinitionId");
+
+		select.from(
+			"EventDefinitionEventAttributeDefinition"
+		).where(
+			field.in(eventAttributeDefinitionsById.keySet())
+		).fetch(
+		).forEach(
+			record -> {
+				Map<String, Object> recordMap = record.intoMap();
+
+				EventAttributeDefinition eventAttributeDefinition =
+					eventAttributeDefinitionsById.get(
+						(Long)recordMap.get("eventattributedefinitionid"));
+
+				eventAttributeDefinition.
+					addEventDefinitionEventAttributeDefinition(
+						new EventDefinitionEventAttributeDefinition(recordMap));
+			}
+		);
 	}
 
 	private final DSLContext _dslContext;
