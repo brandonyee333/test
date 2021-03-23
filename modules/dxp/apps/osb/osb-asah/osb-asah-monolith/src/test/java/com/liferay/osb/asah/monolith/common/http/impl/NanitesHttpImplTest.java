@@ -17,6 +17,7 @@ package com.liferay.osb.asah.monolith.common.http.impl;
 import com.liferay.osb.asah.batch.curator.rest.controller.NanitesRestController;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.model.AsahTask;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import org.json.JSONArray;
 
@@ -46,9 +47,9 @@ public class NanitesHttpImplTest {
 
 	@Test
 	public void testExecuteAsahTask() {
-		AsahTask asahTask = new AsahTask("Foo", null, "test");
+		AsahTask asahTask = new AsahTask(RandomTestUtil.randomNumber());
 
-		_nanitesHttp.executeAsahTask(asahTask);
+		_nanitesHttp.executeAsahTask(asahTask.getId());
 
 		Mockito.verify(
 			_nanitesRestController
@@ -99,9 +100,9 @@ public class NanitesHttpImplTest {
 
 	@Test
 	public void testScheduleAsahTask() {
-		AsahTask asahTask = new AsahTask("Foo", null, "test");
+		AsahTask asahTask = new AsahTask(RandomTestUtil.randomNumber());
 
-		_nanitesHttp.scheduleAsahTask(asahTask);
+		_nanitesHttp.scheduleAsahTask(asahTask.getId());
 
 		Mockito.verify(
 			_nanitesRestController
@@ -112,9 +113,9 @@ public class NanitesHttpImplTest {
 
 	@Test
 	public void testUnscheduleAsahTask() {
-		AsahTask asahTask = new AsahTask("Foo", null, "test");
+		AsahTask asahTask = new AsahTask(RandomTestUtil.randomNumber());
 
-		_nanitesHttp.unscheduleAsahTask(asahTask);
+		_nanitesHttp.unscheduleAsahTask(asahTask.getId());
 
 		Mockito.verify(
 			_nanitesRestController

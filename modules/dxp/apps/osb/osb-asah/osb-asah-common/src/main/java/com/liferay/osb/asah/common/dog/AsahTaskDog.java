@@ -76,10 +76,10 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 		asahTask = _asahTaskRepository.save(asahTask);
 
 		if (asahTask.getCronExpression() == null) {
-			_nanitesHttp.executeAsahTask(asahTask);
+			_nanitesHttp.executeAsahTask(asahTask.getId());
 		}
 		else {
-			_nanitesHttp.scheduleAsahTask(asahTask);
+			_nanitesHttp.scheduleAsahTask(asahTask.getId());
 		}
 
 		return asahTask;
@@ -103,14 +103,10 @@ public class AsahTaskDog extends BaseFaroInfoDog {
 				ProjectIdThreadLocal.getProjectId()));
 	}
 
-	public void unscheduleAsahTask(AsahTask asahTask) {
-		_nanitesHttp.unscheduleAsahTask(asahTask);
-
-		deleteAsahTask(asahTask.getId());
-	}
-
 	public void unscheduleAsahTask(Long asahTaskId) {
-		unscheduleAsahTask(new AsahTask(asahTaskId));
+		_nanitesHttp.unscheduleAsahTask(asahTaskId);
+
+		deleteAsahTask(asahTaskId);
 	}
 
 	@Autowired

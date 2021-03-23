@@ -16,7 +16,6 @@ package com.liferay.osb.asah.monolith.common.http.impl;
 
 import com.liferay.osb.asah.batch.curator.rest.controller.NanitesRestController;
 import com.liferay.osb.asah.common.http.NanitesHttp;
-import com.liferay.osb.asah.common.model.AsahTask;
 
 import org.json.JSONArray;
 
@@ -32,8 +31,8 @@ import org.springframework.stereotype.Component;
 public class NanitesHttpImpl implements NanitesHttp {
 
 	@Override
-	public void executeAsahTask(AsahTask asahTask) {
-		_nanitesRestController.post(asahTask.getId());
+	public void executeAsahTask(Long asahTaskId) {
+		_nanitesRestController.post(asahTaskId);
 	}
 
 	@Override
@@ -57,13 +56,13 @@ public class NanitesHttpImpl implements NanitesHttp {
 	}
 
 	@Override
-	public void scheduleAsahTask(AsahTask asahTask) {
-		_nanitesRestController.schedule(asahTask.getId());
+	public void scheduleAsahTask(Long asahTaskId) {
+		_nanitesRestController.schedule(asahTaskId);
 	}
 
 	@Override
-	public void unscheduleAsahTask(AsahTask asahTask) {
-		_nanitesRestController.unschedule(asahTask.getId());
+	public void unscheduleAsahTask(Long asahTaskId) {
+		_nanitesRestController.unschedule(asahTaskId);
 	}
 
 	@Autowired
