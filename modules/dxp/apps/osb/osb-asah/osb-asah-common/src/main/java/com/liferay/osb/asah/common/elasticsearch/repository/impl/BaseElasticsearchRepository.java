@@ -198,13 +198,13 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 			GenericTypeResolver.resolveTypeArguments(
 				getClass(), BaseElasticsearchRepository.class);
 
-		Class<T> entityClass = (Class<T>)typeArgumentClasses[0];
-
-		if (entityClass != null) {
-			return _objectMapper.convertValue(jsonObject, entityClass);
+		if (typeArgumentClasses == null) {
+			return null;
 		}
 
-		return null;
+		Class<T> entityClass = (Class<T>)typeArgumentClasses[0];
+
+		return _objectMapper.convertValue(jsonObject, entityClass);
 	}
 
 	protected JSONObject toJSONObject(T entity) {
