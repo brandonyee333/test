@@ -1,0 +1,3 @@
+Bundle-Name: Liferay OSB Customer Identity Management SAML
+Bundle-SymbolicName: com.liferay.osb.customer.identity.management.saml
+Bundle-Version: 1.0.0
