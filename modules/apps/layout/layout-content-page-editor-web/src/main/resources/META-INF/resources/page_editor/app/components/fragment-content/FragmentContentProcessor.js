@@ -80,7 +80,7 @@ export default function FragmentContentProcessor({
 					previousValue === value ||
 					(!previousValue && value === defaultValue)
 				) {
-					return;
+					return Promise.resolve();
 				}
 
 				const editableConfig = {
@@ -88,7 +88,7 @@ export default function FragmentContentProcessor({
 					...config,
 				};
 
-				dispatch(
+				return dispatch(
 					updateEditableValues({
 						editableValues: {
 							...editableValues,
