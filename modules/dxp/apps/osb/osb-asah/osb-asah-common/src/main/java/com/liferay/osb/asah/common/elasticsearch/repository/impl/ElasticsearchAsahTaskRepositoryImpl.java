@@ -38,7 +38,7 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchAsahTaskRepositoryImpl
-	extends BaseElasticsearchRepository<AsahTask>
+	extends BaseElasticsearchRepository<AsahTask, Long>
 	implements AsahTaskRepository {
 
 	@Override

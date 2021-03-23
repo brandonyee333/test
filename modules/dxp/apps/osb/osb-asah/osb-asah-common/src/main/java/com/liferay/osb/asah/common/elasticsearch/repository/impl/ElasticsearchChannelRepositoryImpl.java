@@ -51,7 +51,8 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchChannelRepositoryImpl
-	extends BaseElasticsearchRepository<Channel> implements ChannelRepository {
+	extends BaseElasticsearchRepository<Channel, Long>
+	implements ChannelRepository {
 
 	@Override
 	public long countByNameContainingIgnoreCase(String name) {

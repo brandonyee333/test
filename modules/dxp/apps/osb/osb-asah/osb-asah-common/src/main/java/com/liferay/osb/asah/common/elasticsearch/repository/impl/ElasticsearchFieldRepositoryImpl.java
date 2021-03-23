@@ -37,7 +37,8 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchFieldRepositoryImpl
-	extends BaseElasticsearchRepository<Field> implements FieldRepository {
+	extends BaseElasticsearchRepository<Field, Long>
+	implements FieldRepository {
 
 	@Override
 	public List<Field>

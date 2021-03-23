@@ -38,7 +38,7 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchDataExportTaskRepositoryImpl
-	extends BaseElasticsearchRepository<DataExportTask>
+	extends BaseElasticsearchRepository<DataExportTask, Long>
 	implements DataExportTaskRepository {
 
 	@Override

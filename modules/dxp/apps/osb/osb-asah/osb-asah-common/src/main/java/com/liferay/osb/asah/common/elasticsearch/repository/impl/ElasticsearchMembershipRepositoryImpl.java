@@ -56,7 +56,7 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchMembershipRepositoryImpl
-	extends BaseElasticsearchRepository<Membership>
+	extends BaseElasticsearchRepository<Membership, Long>
 	implements MembershipRepository {
 
 	@Override

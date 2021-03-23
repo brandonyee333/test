@@ -42,7 +42,7 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchPreferenceRepositoryImpl
-	extends BaseElasticsearchRepository<Preference>
+	extends BaseElasticsearchRepository<Preference, Long>
 	implements PreferenceRepository {
 
 	@Override

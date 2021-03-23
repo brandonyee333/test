@@ -57,7 +57,7 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchActivityGroupRepositoryImpl
-	extends BaseElasticsearchRepository<ActivityGroup>
+	extends BaseElasticsearchRepository<ActivityGroup, Long>
 	implements ActivityGroupRepository {
 
 	@Override

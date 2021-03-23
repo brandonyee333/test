@@ -47,7 +47,7 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchBlockedKeywordRepositoryImpl
-	extends BaseElasticsearchRepository<BlockedKeyword>
+	extends BaseElasticsearchRepository<BlockedKeyword, Long>
 	implements BlockedKeywordRepository {
 
 	@Override

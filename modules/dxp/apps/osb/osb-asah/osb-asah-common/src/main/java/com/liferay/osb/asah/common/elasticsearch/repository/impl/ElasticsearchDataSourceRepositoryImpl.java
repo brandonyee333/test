@@ -55,7 +55,7 @@ import org.springframework.stereotype.Repository;
 )
 @Repository
 public class ElasticsearchDataSourceRepositoryImpl
-	extends BaseElasticsearchRepository<DataSource>
+	extends BaseElasticsearchRepository<DataSource, Long>
 	implements DataSourceRepository {
 
 	@Override
