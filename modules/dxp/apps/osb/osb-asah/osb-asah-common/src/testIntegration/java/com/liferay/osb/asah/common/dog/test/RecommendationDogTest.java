@@ -12,13 +12,12 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.backend.dog.RecommendationDog;
-import com.liferay.osb.asah.backend.model.ItemRecommendation;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.dog.RecommendationDog;
+import com.liferay.osb.asah.common.model.ItemRecommendation;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -31,13 +30,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author Marcellus Tavares
  */
+@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class RecommendationDogTest {
 
 	@ElasticsearchIndex(
@@ -47,16 +47,13 @@ public class RecommendationDogTest {
 	)
 	@Test
 	public void testDeleteItemRecommendationsByJobId() {
-		boolean success = _recommendationDog.deleteItemRecommendationsByJobId(
-			"1");
+		_recommendationDog.deleteItemRecommendationsByJobId(1L);
 
-		Assert.assertTrue(success);
+		Page<ItemRecommendation> itemRecommendationPage =
+			_recommendationDog.getItemRecommendationPage(
+				1L, 0, 20, Sort.desc("id"));
 
-		ResultBag<ItemRecommendation> resultBag =
-			_recommendationDog.getItemRecommendationResultBag(
-				"1", 20, Sort.desc("id"), 0);
-
-		Assert.assertEquals(0, resultBag.getTotal());
+		Assert.assertEquals(0, itemRecommendationPage.getTotalElements());
 	}
 
 	@ElasticsearchIndex(
@@ -73,7 +70,7 @@ public class RecommendationDogTest {
 		Assert.assertEquals(
 			"https://www-prd.liferay.com/services/training/online",
 			itemRecommendation.getItemId());
-		Assert.assertEquals("1", itemRecommendation.getJobId());
+		Assert.assertEquals(1, (long)itemRecommendation.getJobId());
 		Assert.assertEquals(
 			Arrays.asList(
 				"https://www-prd.liferay.com/blog",
@@ -88,17 +85,17 @@ public class RecommendationDogTest {
 	)
 	@Test
 	public void testGetItemRecommendationResultBag() {
-		ResultBag<ItemRecommendation> itemRecommendationResultBag =
-			_recommendationDog.getItemRecommendationResultBag(
-				"1", 20, Sort.desc("id"), 0);
+		Page<ItemRecommendation> itemRecommendationPage =
+			_recommendationDog.getItemRecommendationPage(
+				1L, 0, 20, Sort.desc("id"));
 
 		List<ItemRecommendation> itemRecommendations =
-			itemRecommendationResultBag.getResults();
+			itemRecommendationPage.getContent();
 
 		Assert.assertEquals(
 			itemRecommendations.toString(), 3, itemRecommendations.size());
 
-		Assert.assertEquals(3, itemRecommendationResultBag.getTotal());
+		Assert.assertEquals(3, itemRecommendationPage.getTotalElements());
 	}
 
 	@Autowired

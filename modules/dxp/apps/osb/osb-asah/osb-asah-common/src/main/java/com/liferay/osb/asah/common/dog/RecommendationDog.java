@@ -14,23 +14,18 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.ItemRecommendation;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.repository.ItemRecommendationRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
-import java.util.List;
-
-import org.elasticsearch.action.bulk.BulkItemResponse;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.reindex.BulkByScrollResponse;
-import org.elasticsearch.search.SearchHits;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,44 +34,32 @@ import org.springframework.stereotype.Component;
 @Component
 public class RecommendationDog {
 
-	public boolean deleteItemRecommendationsByJobId(String jobId) {
-		BulkByScrollResponse bulkByScrollResponse =
-			_faroInfoElasticsearchInvoker.deleteByQuery(
-				QueryBuilders.termQuery("jobId", jobId), true,
-				"recommended-items");
-
-		List<BulkItemResponse.Failure> bulkFailures =
-			bulkByScrollResponse.getBulkFailures();
-
-		return bulkFailures.isEmpty();
+	public void deleteItemRecommendationsByJobId(Long jobId) {
+		_itemRecommendationRepository.deleteByJobId(jobId);
 	}
 
 	public ItemRecommendation getItemRecommendation(String id) {
-		return _objectMapper.convertValue(
-			_faroInfoElasticsearchInvoker.get("recommended-items", id),
-			ItemRecommendation.class);
+		Optional<ItemRecommendation> itemRecommendationOptional =
+			_itemRecommendationRepository.findById(id);
+
+		return itemRecommendationOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no item recommendation with ID " + id));
 	}
 
-	public ResultBag<ItemRecommendation> getItemRecommendationResultBag(
-		String jobId, int size, Sort sort, int start) {
+	public Page<ItemRecommendation> getItemRecommendationPage(
+		Long jobId, int page, int size, Sort sort) {
 
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"recommended-items", _faroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				SortBuilderUtil.fieldSort(sort),
-				QueryBuilders.termQuery("jobId", jobId), size, start));
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
-		return DogUtil.createResultBag(
-			ItemRecommendation.class, _objectMapper, searchHits);
+		return PageableExecutionUtils.getPage(
+			_itemRecommendationRepository.findByJobId(jobId, pageRequest),
+			pageRequest,
+			() -> _itemRecommendationRepository.countByJobId(jobId));
 	}
 
 	@Autowired
-	private DataDog _dataDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
+	private ItemRecommendationRepository _itemRecommendationRepository;
 
 }
