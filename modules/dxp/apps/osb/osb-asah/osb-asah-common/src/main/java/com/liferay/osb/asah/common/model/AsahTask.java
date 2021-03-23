@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 import org.json.JSONObject;
@@ -87,6 +89,7 @@ public class AsahTask implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Column("context")
+	@JsonProperty("context")
 	public JSONObject getContextJSONObject() {
 		return _contextJSONObject;
 	}
