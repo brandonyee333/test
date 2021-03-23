@@ -20,14 +20,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.backend.dog.AssetDog;
 import com.liferay.osb.asah.backend.dog.JobDog;
-import com.liferay.osb.asah.backend.dog.RecommendationDog;
-import com.liferay.osb.asah.backend.model.ItemRecommendation;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.Keyword;
 import com.liferay.osb.asah.backend.model.PageAsset;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.dog.RecommendationDog;
+import com.liferay.osb.asah.common.model.ItemRecommendation;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -44,6 +44,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
@@ -130,14 +131,16 @@ public class RecommendationRestController extends BaseRestController {
 
 		_checkJobStatus(modelId);
 
-		ResultBag<ItemRecommendation> itemRecommendationResultBag =
-			_recommendationDog.getItemRecommendationResultBag(
-				modelId, _PAGE_SIZE, Sort.asc("itemId"), page * _PAGE_SIZE);
+		Page<ItemRecommendation> itemRecommendationPage =
+			_recommendationDog.getItemRecommendationPage(
+				Long.valueOf(modelId), page, _PAGE_SIZE, Sort.asc("itemId"));
 
 		return _toResultBagEntityModel(
 			_getPageRecommendationResultBagEntityModel(modelId, page + 1), page,
 			_getPageRecommendationResultBagEntityModel(modelId, page - 1),
-			itemRecommendationResultBag,
+			new ResultBag<>(
+				itemRecommendationPage.getContent(),
+				itemRecommendationPage.getTotalElements()),
 			this::_toPageRecommendationEntityModel);
 	}
 
@@ -233,13 +236,15 @@ public class RecommendationRestController extends BaseRestController {
 		PageRecommendation pageRecommendation = new PageRecommendation();
 
 		pageRecommendation.setId(itemRecommendation.getId());
-		pageRecommendation.setJobId(itemRecommendation.getJobId());
+		pageRecommendation.setJobId(
+			String.valueOf(itemRecommendation.getJobId()));
 		pageRecommendation.setURL(itemRecommendation.getItemId());
 		pageRecommendation.setPageRecommendations(
 			ListUtil.map(
 				itemRecommendation.getRecommendedItemIds(),
 				recommendedItemId -> _toPageRecommendation(
-					itemRecommendation.getJobId(), recommendedItemId)));
+					String.valueOf(itemRecommendation.getJobId()),
+					recommendedItemId)));
 
 		_expandPageRecommendationAttributes(pageRecommendation);
 
@@ -267,7 +272,8 @@ public class RecommendationRestController extends BaseRestController {
 				WebMvcLinkBuilder.methodOn(
 					RecommendationRestController.class
 				).getPageRecommendationEntityModel(
-					itemRecommendation.getJobId(), itemRecommendation.getId()
+					String.valueOf(itemRecommendation.getJobId()),
+					itemRecommendation.getId()
 				)
 			).withSelfRel());
 	}
