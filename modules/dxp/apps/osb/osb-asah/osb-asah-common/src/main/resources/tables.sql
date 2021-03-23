@@ -164,6 +164,13 @@ CREATE TABLE IF NOT EXISTS Field (
 	value TEXT
 );
 
+CREATE TABLE IF NOT EXISTS ItemRecommendation (
+	id TEXT PRIMARY KEY,
+	itemId TEXT,
+	jobId BIGINT,
+	recommendedItemIds TEXT[]
+);
+
 CREATE TABLE IF NOT EXISTS Membership (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
