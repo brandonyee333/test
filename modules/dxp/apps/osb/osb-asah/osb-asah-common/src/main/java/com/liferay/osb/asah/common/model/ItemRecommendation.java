@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -66,7 +68,8 @@ public class ItemRecommendation implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getJobId() {
+	@JsonDeserialize(as = Long.class)
+	public Long getJobId() {
 		return _jobId;
 	}
 
@@ -101,7 +104,7 @@ public class ItemRecommendation implements Persistable<String> {
 		_itemId = itemId;
 	}
 
-	public void setJobId(String jobId) {
+	public void setJobId(Long jobId) {
 		_jobId = jobId;
 	}
 
@@ -119,7 +122,7 @@ public class ItemRecommendation implements Persistable<String> {
 	private String _itemId;
 
 	@Transient
-	private String _jobId;
+	private Long _jobId;
 
 	@Transient
 	private List<String> _recommendedItemIds;
