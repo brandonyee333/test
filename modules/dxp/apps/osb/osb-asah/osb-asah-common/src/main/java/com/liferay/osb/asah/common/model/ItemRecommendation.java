@@ -17,10 +17,17 @@ package com.liferay.osb.asah.common.model;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Table;
+
 /**
  * @author Marcellus Tavares
  */
-public class ItemRecommendation {
+@Table
+public class ItemRecommendation implements Persistable<String> {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -46,18 +53,24 @@ public class ItemRecommendation {
 		return false;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@Override
 	public String getId() {
 		return _id;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getItemId() {
 		return _itemId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getJobId() {
 		return _jobId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public List<String> getRecommendedItemIds() {
 		return _recommendedItemIds;
 	}
@@ -67,8 +80,21 @@ public class ItemRecommendation {
 		return Objects.hash(_id, _itemId, _jobId, _recommendedItemIds);
 	}
 
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public void setId(String id) {
 		_id = id;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
 	}
 
 	public void setItemId(String itemId) {
@@ -83,9 +109,19 @@ public class ItemRecommendation {
 		_recommendedItemIds = recommendedItemIds;
 	}
 
+	@Transient
 	private String _id;
+
+	@Transient
+	private Boolean _isNew;
+
+	@Transient
 	private String _itemId;
+
+	@Transient
 	private String _jobId;
+
+	@Transient
 	private List<String> _recommendedItemIds;
 
 }
