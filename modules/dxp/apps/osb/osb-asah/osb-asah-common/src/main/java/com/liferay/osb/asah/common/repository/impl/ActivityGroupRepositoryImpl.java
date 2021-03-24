@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.model.ActivityGroup;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -28,12 +27,10 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
-import org.jooq.SortField;
 import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 /**
  * @author Inácio Nery
@@ -41,7 +38,7 @@ import org.springframework.data.domain.Sort;
 @ConditionalOnProperty(
 	havingValue = "true", value = "osb.asah.postgresql.enabled"
 )
-public class ActivityGroupRepositoryImpl {
+public class ActivityGroupRepositoryImpl extends BaseRepository {
 
 	public ActivityGroupRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
@@ -75,7 +72,7 @@ public class ActivityGroupRepositoryImpl {
 		).where(
 			_getConditions(channelId, endDayDate, startDayDate, ownerId)
 		).orderBy(
-			_getSortFields(pageable.getSort())
+			getSortFields(pageable.getSort())
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -116,27 +113,6 @@ public class ActivityGroupRepositoryImpl {
 		}
 
 		return conditions;
-	}
-
-	private Collection<SortField<?>> _getSortFields(Sort sort) {
-		Collection<SortField<?>> sortFields = new ArrayList<>();
-
-		if (sort == null) {
-			return sortFields;
-		}
-
-		for (Sort.Order order : sort.toList()) {
-			Field<?> field = DSL.field(order.getProperty());
-
-			if (order.getDirection() == Sort.Direction.ASC) {
-				sortFields.add(field.asc());
-			}
-			else {
-				sortFields.add(field.desc());
-			}
-		}
-
-		return sortFields;
 	}
 
 	private final DSLContext _dslContext;

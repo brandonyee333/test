@@ -1,0 +1,52 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.repository.impl;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.jooq.Field;
+import org.jooq.SortField;
+import org.jooq.impl.DSL;
+
+import org.springframework.data.domain.Sort;
+
+/**
+ * @author Marcellus Tavares
+ */
+public abstract class BaseRepository {
+
+	protected Collection<SortField<?>> getSortFields(Sort sort) {
+		Collection<SortField<?>> sortFields = new ArrayList<>();
+
+		if (sort == null) {
+			return sortFields;
+		}
+
+		for (Sort.Order order : sort.toList()) {
+			Field<?> field = DSL.field(order.getProperty());
+
+			if (order.getDirection() == Sort.Direction.ASC) {
+				sortFields.add(field.asc());
+			}
+			else {
+				sortFields.add(field.desc());
+			}
+		}
+
+		return sortFields;
+	}
+
+}
