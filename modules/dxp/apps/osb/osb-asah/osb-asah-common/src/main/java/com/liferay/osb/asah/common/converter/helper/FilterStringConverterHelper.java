@@ -18,13 +18,25 @@ import java.util.List;
 
 import org.elasticsearch.index.query.QueryBuilder;
 
+import org.jooq.Condition;
+
 /**
  * @author Michael Bowerman
  */
 public interface FilterStringConverterHelper {
 
+	public Condition getCustomFunctionCondition(
+			List<String> arguments, String customFunctionName, boolean negated)
+		throws Exception;
+
 	public QueryBuilder getCustomFunctionQueryBuilder(
 			List<String> arguments, String customFunctionName, boolean negated)
+		throws Exception;
+
+	public Condition getInferredCondition(String fieldName);
+
+	public Condition getLogicFunctionCondition(
+			String fieldName, String operator, String valueString)
 		throws Exception;
 
 	public QueryBuilder getLogicFunctionQueryBuilder(
