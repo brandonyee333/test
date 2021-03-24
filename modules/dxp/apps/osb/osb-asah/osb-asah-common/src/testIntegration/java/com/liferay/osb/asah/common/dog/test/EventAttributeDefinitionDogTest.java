@@ -276,7 +276,7 @@ public class EventAttributeDefinitionDogTest {
 	@Test
 	public void testGetEventAttributeDefinitions() {
 		_assertEventAttributeDefinitions(
-			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
 				null, 0, 5, Sort.asc("name")),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
 				{
@@ -320,7 +320,7 @@ public class EventAttributeDefinitionDogTest {
 	@Test
 	public void testGetEventAttributeDefinitionsWithKeyword() {
 		_assertEventAttributeDefinitions(
-			_eventAttributeDefinitionDog.getEventAttributeDefinitions(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
 				"page", 0, 3, Sort.asc("name")),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
 				{

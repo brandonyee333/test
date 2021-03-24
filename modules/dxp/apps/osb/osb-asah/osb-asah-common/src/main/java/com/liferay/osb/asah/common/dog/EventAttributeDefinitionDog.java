@@ -138,26 +138,28 @@ public class EventAttributeDefinitionDog {
 					eventAttributeDefinitionId));
 	}
 
-	public Page<EventAttributeDefinition> getEventAttributeDefinitions(
-		String name, int page, int size, Sort sort) {
-
-		_validate(sort);
-
-		return PageableExecutionUtils.getPage(
-			_eventAttributeDefinitionRepository.searchEventAttributeDefinitions(
-				name, page, size, sort),
-			PageRequest.of(page, size, sort),
-			() ->
-				_eventAttributeDefinitionRepository.
-					countEventAttributeDefinitions(name));
-	}
-
 	public List<EventAttributeDefinition>
 		getEventAttributeDefinitionsByEventDefinitionId(
 			Long eventDefinitionId) {
 
 		return _eventAttributeDefinitionRepository.findByEventDefinitionId(
 			eventDefinitionId);
+	}
+
+	public Page<EventAttributeDefinition> getEventAttributeDefinitionsPage(
+		String name, int page, int size, Sort sort) {
+
+		_validate(sort);
+
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+		return PageableExecutionUtils.getPage(
+			_eventAttributeDefinitionRepository.searchEventAttributeDefinitions(
+				name, pageRequest),
+			pageRequest,
+			() ->
+				_eventAttributeDefinitionRepository.
+					countEventAttributeDefinitions(name));
 	}
 
 	public EventAttributeDefinition updateEventAttributeDefinition(

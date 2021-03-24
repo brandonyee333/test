@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 
 import java.util.List;
@@ -133,7 +132,7 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 
 	@Override
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		String name, int page, int size, Sort sort) {
+		String name, Pageable pageable) {
 
 		throw new UnsupportedOperationException();
 	}

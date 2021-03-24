@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
-import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +27,10 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
-import org.jooq.SortOrder;
 import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Leslie Wong
@@ -39,7 +38,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 @ConditionalOnProperty(
 	havingValue = "true", value = "osb.asah.postgresql.enabled"
 )
-public class EventDefinitionRepositoryImpl {
+public class EventDefinitionRepositoryImpl extends BaseRepository {
 
 	public EventDefinitionRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
@@ -63,23 +62,20 @@ public class EventDefinitionRepositoryImpl {
 	}
 
 	public List<EventDefinition> searchEventDefinitions(
-		String keyword, int page, int size, Sort sort,
-		EventDefinition.Type type) {
+		String keyword, Pageable pageable, EventDefinition.Type type) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		Field<?> field = DSL.field(sort.getColumn());
 
 		return selectSelectStep.from(
 			"EventDefinition"
 		).where(
 			_getConditions(keyword, type)
 		).orderBy(
-			field.sort(SortOrder.valueOf(sort.getType()))
+			getSortFields(pageable.getSort())
 		).limit(
-			size
+			pageable.getPageSize()
 		).offset(
-			page * size
+			pageable.getOffset()
 		).fetch(
 		).map(
 			record -> new EventDefinition(record.intoMap())

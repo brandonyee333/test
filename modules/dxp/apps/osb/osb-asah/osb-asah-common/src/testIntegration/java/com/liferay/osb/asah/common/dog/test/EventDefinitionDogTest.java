@@ -131,7 +131,7 @@ public class EventDefinitionDogTest {
 	@Test
 	public void testGetEventDefinitions() {
 		_assertEventDefinitions(
-			_eventDefinitionDog.getEventDefinitions(
+			_eventDefinitionDog.getEventDefinitionsPage(
 				null, 0, 5, Sort.asc("name"), EventDefinition.Type.DEFAULT),
 			new ArrayList<String>() {
 				{
@@ -147,7 +147,7 @@ public class EventDefinitionDogTest {
 	@Test
 	public void testGetEventDefinitionsWithKeyword() {
 		_assertEventDefinitions(
-			_eventDefinitionDog.getEventDefinitions(
+			_eventDefinitionDog.getEventDefinitionsPage(
 				"field", 0, 5, Sort.asc("name"), EventDefinition.Type.DEFAULT),
 			new ArrayList<String>() {
 				{
@@ -190,15 +190,17 @@ public class EventDefinitionDogTest {
 	}
 
 	private void _assertEventDefinitions(
-		Page<EventDefinition> actualEventDefinitions,
+		Page<EventDefinition> actualEventDefinitionPage,
 		List<String> expectedEventDefinitionNames) {
 
 		Assert.assertEquals(
-			actualEventDefinitions.toString(),
+			actualEventDefinitionPage.toString(),
 			expectedEventDefinitionNames.size(),
-			actualEventDefinitions.getNumberOfElements());
+			actualEventDefinitionPage.getNumberOfElements());
 
-		for (EventDefinition actualEventDefinition : actualEventDefinitions) {
+		for (EventDefinition actualEventDefinition :
+				actualEventDefinitionPage) {
+
 			Assert.assertTrue(
 				expectedEventDefinitionNames.contains(
 					actualEventDefinition.getName()));

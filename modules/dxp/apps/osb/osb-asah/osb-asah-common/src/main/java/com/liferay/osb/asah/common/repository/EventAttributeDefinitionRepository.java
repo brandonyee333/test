@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
-import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +48,6 @@ public interface EventAttributeDefinitionRepository
 	public EventAttributeDefinition findByName(String name);
 
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		String name, int page, int size, Sort sort);
+		String name, Pageable pageable);
 
 }

@@ -48,13 +48,13 @@ public class EventDefinitionBagDataFetcher
 			dataFetchingEnvironment.getArgument("eventType"));
 		String keyword = dataFetchingEnvironment.getArgument("keyword");
 
-		Page<EventDefinition> eventDefinitions =
-			_eventDefinitionDog.getEventDefinitions(
+		Page<EventDefinition> eventDefinitionsPage =
+			_eventDefinitionDog.getEventDefinitionsPage(
 				keyword, dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
 				Sort.of(dataFetchingEnvironment.getArgument("sort")), type);
 
-		Stream<EventDefinition> stream = eventDefinitions.stream();
+		Stream<EventDefinition> stream = eventDefinitionsPage.stream();
 
 		List<EventDefinitionDTO> eventDefinitionDTOs = stream.map(
 			EventDefinitionDTO::new
@@ -63,7 +63,7 @@ public class EventDefinitionBagDataFetcher
 		);
 
 		return new ResultBag<>(
-			eventDefinitionDTOs, eventDefinitions.getTotalElements());
+			eventDefinitionDTOs, eventDefinitionsPage.getTotalElements());
 	}
 
 	@Autowired

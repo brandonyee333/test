@@ -16,9 +16,9 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
-import com.liferay.osb.asah.common.model.Sort;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -33,10 +33,12 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
-import org.jooq.SortOrder;
+import org.jooq.SortField;
 import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 /**
  * @author Leslie Wong
@@ -66,22 +68,20 @@ public class EventAttributeDefinitionRepositoryImpl {
 	}
 
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		String name, int page, int size, Sort sort) {
+		String name, Pageable pageable) {
 
 		SelectSelectStep<Record> select = _dslContext.select();
-
-		Field<?> field = DSL.field(sort.getColumn());
 
 		List<EventAttributeDefinition> eventAttributeDefinitions = select.from(
 			"EventAttributeDefinition"
 		).where(
 			_getConditions(name)
 		).orderBy(
-			field.sort(SortOrder.valueOf(sort.getType()))
+			_getSortFields(pageable.getSort())
 		).limit(
-			size
+			pageable.getPageSize()
 		).offset(
-			page * size
+			pageable.getOffset()
 		).fetch(
 		).map(
 			record -> new EventAttributeDefinition(record.intoMap())
@@ -111,6 +111,27 @@ public class EventAttributeDefinitionRepositoryImpl {
 		}
 
 		return conditions;
+	}
+
+	private Collection<SortField<?>> _getSortFields(Sort sort) {
+		Collection<SortField<?>> sortFields = new ArrayList<>();
+
+		if (sort == null) {
+			return sortFields;
+		}
+
+		for (Sort.Order order : sort.toList()) {
+			Field<?> field = DSL.field(order.getProperty());
+
+			if (order.getDirection() == Sort.Direction.ASC) {
+				sortFields.add(field.asc());
+			}
+			else {
+				sortFields.add(field.desc());
+			}
+		}
+
+		return sortFields;
 	}
 
 	private void _populateEventDefinitionEventAttributeDefinition(

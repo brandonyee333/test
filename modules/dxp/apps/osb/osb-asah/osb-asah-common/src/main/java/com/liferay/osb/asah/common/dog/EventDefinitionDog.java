@@ -87,16 +87,18 @@ public class EventDefinitionDog {
 				"There is no event definition with ID " + eventDefinitionId));
 	}
 
-	public Page<EventDefinition> getEventDefinitions(
+	public Page<EventDefinition> getEventDefinitionsPage(
 		String keyword, int page, int size, Sort sort,
 		EventDefinition.Type type) {
 
 		_validate(sort);
 
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
+
 		return PageableExecutionUtils.getPage(
 			_eventDefinitionRepository.searchEventDefinitions(
-				keyword, page, size, sort, type),
-			PageRequest.of(page, size, sort),
+				keyword, pageRequest, type),
+			pageRequest,
 			() -> _eventDefinitionRepository.countEventDefinitions(
 				keyword, type));
 	}

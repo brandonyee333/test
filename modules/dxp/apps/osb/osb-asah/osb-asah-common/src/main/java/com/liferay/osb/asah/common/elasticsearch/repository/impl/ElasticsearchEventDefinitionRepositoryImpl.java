@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.model.EventDefinition;
-import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 
 import java.util.List;
@@ -121,8 +120,7 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 
 	@Override
 	public List<EventDefinition> searchEventDefinitions(
-		String keyword, int page, int size, Sort sort,
-		EventDefinition.Type type) {
+		String keyword, Pageable pageable, EventDefinition.Type type) {
 
 		throw new UnsupportedOperationException();
 	}
