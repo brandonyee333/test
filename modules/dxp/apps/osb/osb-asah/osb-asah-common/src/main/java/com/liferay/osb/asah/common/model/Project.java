@@ -14,12 +14,21 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
+
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author André Miranda
  */
-public class Project {
+@Table
+public class Project implements Persistable<String> {
 
 	public Project() {
 	}
@@ -51,6 +60,9 @@ public class Project {
 		return false;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@Override
 	public String getId() {
 		return _id;
 	}
@@ -60,10 +72,24 @@ public class Project {
 		return Objects.hash(_id);
 	}
 
+	@JsonIgnore
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public void setId(String id) {
 		_id = id;
 	}
 
+	@Transient
 	private String _id;
+
+	@Transient
+	private Boolean _isNew;
 
 }
