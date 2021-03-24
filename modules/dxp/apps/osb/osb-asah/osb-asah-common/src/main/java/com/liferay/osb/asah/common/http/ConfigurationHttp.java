@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.http;
 
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
+import com.liferay.osb.asah.common.model.DataSource;
 
 /**
  * @author Shinn Lok
@@ -22,17 +22,17 @@ import com.liferay.osb.asah.common.dto.DataSourceDTO;
 public interface ConfigurationHttp {
 
 	public void addConfiguration(
-		DataSourceDTO dataSourceDTO, String providerType);
+		DataSource dataSource, String providerType);
 
 	public void deleteConfiguration(String dataSourceId, String providerType);
 
-	public String getState(DataSourceDTO dataSourceDTO, String providerType);
+	public String getState(DataSource dataSource, String providerType);
 
-	public DataSourceDTO refreshConfiguration(
-		DataSourceDTO dataSourceDTO, String providerType);
+	public DataSource refreshConfiguration(
+		DataSource dataSource, String providerType);
 
 	public void updateConfiguration(
-			DataSourceDTO dataSourceDTO, String providerType)
+			DataSource dataSource, String providerType)
 		throws Exception;
 
 }

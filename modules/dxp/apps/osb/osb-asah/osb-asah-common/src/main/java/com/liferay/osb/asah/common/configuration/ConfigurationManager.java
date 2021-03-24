@@ -14,7 +14,8 @@
 
 package com.liferay.osb.asah.common.configuration;
 
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
+
+import com.liferay.osb.asah.common.model.DataSource;
 
 /**
  * @author Vishal Reddy
@@ -22,7 +23,7 @@ import com.liferay.osb.asah.common.dto.DataSourceDTO;
  */
 public interface ConfigurationManager {
 
-	public boolean addConfiguration(DataSourceDTO dataSourceDTO);
+	public boolean addConfiguration(DataSource dataSource);
 
 	public boolean deleteConfiguration(String dataSourceId);
 
@@ -30,10 +31,10 @@ public interface ConfigurationManager {
 
 	public Configuration[] getConfigurations(String projectId);
 
-	public String getState(DataSourceDTO dataSourceDTO);
+	public String getState(DataSource dataSource);
 
-	public DataSourceDTO refresh(DataSourceDTO dataSourceDTO);
+	public DataSource refresh(DataSource dataSource);
 
-	public Configuration updateConfiguration(DataSourceDTO dataSourceDTO);
+	public Configuration updateConfiguration(DataSource dataSource);
 
 }
