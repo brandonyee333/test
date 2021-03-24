@@ -16,17 +16,16 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.model.Project;
 
-import java.util.List;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author André Miranda
  */
-public interface ProjectRepository {
-
-	public boolean deleteById(String projectId);
-
-	public List<Project> findAll();
-
-	public Project save(Project project);
-
+@ConditionalOnProperty(
+	havingValue = "true", value = "osb.asah.postgresql.enabled"
+)
+@Repository
+public interface ProjectRepository extends CrudRepository<Project, String> {
 }

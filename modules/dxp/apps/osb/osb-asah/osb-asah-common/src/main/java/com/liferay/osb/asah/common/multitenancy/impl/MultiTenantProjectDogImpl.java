@@ -23,6 +23,8 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.apache.commons.collections4.IterableUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -51,16 +53,16 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 	}
 
 	@Override
-	public boolean deleteProject(String projectId) {
+	public void deleteProject(String projectId) {
 		ProjectIdThreadLocal.forProject(
 			projectId, _nanitesHttp::removeSchedule);
 
-		return _projectRepository.deleteById(projectId);
+		_projectRepository.deleteById(projectId);
 	}
 
 	@Override
 	public List<Project> getProjects() throws Exception {
-		return _projectRepository.findAll();
+		return IterableUtils.toList(_projectRepository.findAll());
 	}
 
 	@Autowired

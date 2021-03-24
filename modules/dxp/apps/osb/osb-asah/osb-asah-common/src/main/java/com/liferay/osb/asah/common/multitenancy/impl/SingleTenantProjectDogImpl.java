@@ -31,8 +31,7 @@ public class SingleTenantProjectDogImpl implements ProjectDog {
 	}
 
 	@Override
-	public boolean deleteProject(String projectId) {
-		return false;
+	public void deleteProject(String projectId) {
 	}
 
 	@Override

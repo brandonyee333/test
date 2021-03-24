@@ -38,8 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProjectsRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
-	public boolean deleteProject(@PathVariable String id) {
-		return _projectDog.deleteProject(id);
+	public void deleteProject(@PathVariable String id) {
+		_projectDog.deleteProject(id);
 	}
 
 	@GetMapping

@@ -25,7 +25,7 @@ public interface ProjectDog {
 
 	public void addProject(Project project) throws Exception;
 
-	public boolean deleteProject(String projectId);
+	public void deleteProject(String projectId);
 
 	public List<Project> getProjects() throws Exception;
 
