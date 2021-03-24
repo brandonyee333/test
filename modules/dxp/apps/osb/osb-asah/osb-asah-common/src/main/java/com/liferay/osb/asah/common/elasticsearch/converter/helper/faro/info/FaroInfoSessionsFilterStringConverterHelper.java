@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Arrays;

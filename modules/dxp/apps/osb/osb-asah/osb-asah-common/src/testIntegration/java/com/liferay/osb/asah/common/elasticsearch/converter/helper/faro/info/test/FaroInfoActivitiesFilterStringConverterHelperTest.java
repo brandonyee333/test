@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.test;
 
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.FilterStringConverterHelper;
+import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;

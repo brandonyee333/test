@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.common.elasticsearch.converter;
 
+import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
+import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.DefaultFilterStringConverterHelper;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.FilterStringConverterHelper;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -79,8 +79,8 @@ public class FilterStringToQueryBuilderConverter {
 			return null;
 		}
 
-		LinkedList<QueryBuilder> queryBuilders = new LinkedList<>();
 		LinkedList<Boolean> andOperators = new LinkedList<>();
+		LinkedList<QueryBuilder> queryBuilders = new LinkedList<>();
 
 		return FilterStringParser.parse(
 			filterString,
