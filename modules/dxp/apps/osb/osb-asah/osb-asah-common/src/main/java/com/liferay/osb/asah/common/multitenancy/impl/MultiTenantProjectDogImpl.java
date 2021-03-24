@@ -42,7 +42,14 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 
 	@Override
 	public void addProject(Project project) {
-		_projectRepository.save(project);
+		try {
+			ProjectIdThreadLocal.setGlobalContext(true);
+
+			_projectRepository.save(project);
+		}
+		finally {
+			ProjectIdThreadLocal.setGlobalContext(false);
+		}
 
 		if (_postCreationConsumer != null) {
 			_postCreationConsumer.accept(project.getId());
@@ -57,12 +64,26 @@ public class MultiTenantProjectDogImpl implements ProjectDog {
 		ProjectIdThreadLocal.forProject(
 			projectId, _nanitesHttp::removeSchedule);
 
-		_projectRepository.deleteById(projectId);
+		try {
+			ProjectIdThreadLocal.setGlobalContext(true);
+
+			_projectRepository.deleteById(projectId);
+		}
+		finally {
+			ProjectIdThreadLocal.setGlobalContext(false);
+		}
 	}
 
 	@Override
 	public List<Project> getProjects() throws Exception {
-		return IterableUtils.toList(_projectRepository.findAll());
+		try {
+			ProjectIdThreadLocal.setGlobalContext(true);
+
+			return IterableUtils.toList(_projectRepository.findAll());
+		}
+		finally {
+			ProjectIdThreadLocal.setGlobalContext(false);
+		}
 	}
 
 	@Autowired
