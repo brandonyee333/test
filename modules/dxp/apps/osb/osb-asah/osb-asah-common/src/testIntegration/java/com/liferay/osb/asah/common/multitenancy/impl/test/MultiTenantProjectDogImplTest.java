@@ -14,11 +14,8 @@
 
 package com.liferay.osb.asah.common.multitenancy.impl.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
-import com.liferay.osb.asah.common.elasticsearch.repository.impl.ElasticsearchProjectRepositoryImpl;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Project;
@@ -64,17 +61,8 @@ public class MultiTenantProjectDogImplTest {
 		elasticsearchInvoker.add("projects", JSONUtil.put("id", "project2"));
 		elasticsearchInvoker.add("projects", JSONUtil.put("id", "project3"));
 
-		ProjectRepository projectRepository =
-			new ElasticsearchProjectRepositoryImpl();
-
-		ReflectionTestUtils.setField(
-			projectRepository, "_elasticsearchInvoker", elasticsearchInvoker);
-
-		ReflectionTestUtils.setField(
-			projectRepository, "_objectMapper", _objectMapper);
-
 		_multiTenantProjectDogImpl = new MultiTenantProjectDogImpl(
-			_postCreationConsumer, projectRepository);
+			_postCreationConsumer, _projectRepository);
 
 		ReflectionTestUtils.setField(
 			_multiTenantProjectDogImpl, "_nanitesHttp", _nanitesHttp);
@@ -139,10 +127,10 @@ public class MultiTenantProjectDogImplTest {
 	@MockBean
 	private NanitesHttp _nanitesHttp;
 
-	@Autowired
-	private ObjectMapper _objectMapper;
-
 	@Mock
 	private Consumer<String> _postCreationConsumer;
+
+	@Autowired
+	private ProjectRepository _projectRepository;
 
 }
