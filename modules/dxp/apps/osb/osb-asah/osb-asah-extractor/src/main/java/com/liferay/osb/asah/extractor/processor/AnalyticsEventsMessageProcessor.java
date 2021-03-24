@@ -364,8 +364,8 @@ public class AnalyticsEventsMessageProcessor {
 		}
 
 		if (!_isValidURL(context)) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
+			if (_log.isInfoEnabled()) {
+				_log.info(
 					"Discarding message from invalid host: " +
 						analyticsEventsMessage.toJSON());
 			}
