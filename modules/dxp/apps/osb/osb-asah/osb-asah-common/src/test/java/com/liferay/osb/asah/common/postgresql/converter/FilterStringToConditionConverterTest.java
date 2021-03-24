@@ -33,14 +33,12 @@ public class FilterStringToConditionConverterTest {
 					"column1"
 				).eq(
 					"value1"
-				)
-			).and(
+				),
 				DSL.field(
 					"column2"
 				).ne(
 					"value2"
-				)
-			),
+				)),
 			"column1 eq 'value1' and column2 ne 'value2'");
 	}
 
@@ -138,35 +136,27 @@ public class FilterStringToConditionConverterTest {
 						"column1"
 					).gt(
 						42
-					)
-				).or(
+					),
 					DSL.or(
 						DSL.field(
 							"column2"
 						).containsIgnoreCase(
 							"escaped'quote)"
-						)
-					).or(
+						),
 						DSL.and(
 							DSL.field(
 								"column3"
 							).ne(
 								true
-							)
-						).and(
+							),
 							DSL.field(
 								"column4"
 							).le(
 								97531.8642
-							)
-						)
-					)
-				)
-			).and(
+							)))),
 				DSL.field(
 					"column5"
-				).isNotNull()
-			),
+				).isNotNull()),
 			"((column1 gt 42 or ((contains(column2, 'escaped''quote)')) or " +
 				"(column3 ne true and column4 le 97531.8642)) and column5 ne " +
 					"null))");
@@ -181,43 +171,33 @@ public class FilterStringToConditionConverterTest {
 						"column1"
 					).ne(
 						"null"
-					)
-				).and(
+					),
 					DSL.field(
 						"column2"
-					).isNotNull()
-				)
-			).or(
+					).isNotNull()),
 				DSL.or(
 					DSL.and(
 						DSL.field(
 							"column3"
 						).eq(
 							"true"
-						)
-					).and(
+						),
 						DSL.field(
 							"column4"
 						).eq(
 							true
-						)
-					)
-				).or(
+						)),
 					DSL.and(
 						DSL.field(
 							"column5"
 						).gt(
 							-53.21
-						)
-					).and(
+						),
 						DSL.field(
 							"column6"
 						).le(
 							-8192
-						)
-					)
-				)
-			),
+						)))),
 			"((column1 ne 'null' and column2 ne null) or ((column3 eq 'true' " +
 				"and column4 eq true) or (column5 gt -53.21 and column6 le " +
 					"-8192)))");
@@ -232,21 +212,17 @@ public class FilterStringToConditionConverterTest {
 						"column1"
 					).eq(
 						"value1"
-					)
-				).or(
+					),
 					DSL.field(
 						"column2"
 					).eq(
 						"value2"
-					)
-				)
-			).and(
+					)),
 				DSL.field(
 					"column3"
 				).eq(
 					"value3"
-				)
-			),
+				)),
 			"((column1 eq 'value1' or column2 eq 'value2') and column3 eq " +
 				"'value3')");
 	}
@@ -409,22 +385,18 @@ public class FilterStringToConditionConverterTest {
 					"column1"
 				).eq(
 					"value1"
-				)
-			).or(
+				),
 				DSL.and(
 					DSL.field(
 						"column2"
 					).le(
 						"value2"
-					)
-				).and(
+					),
 					DSL.field(
 						"column3"
 					).ge(
 						"value3"
-					)
-				)
-			),
+					))),
 			"column1 eq 'value1' or (column2 le 'value2' and column3 ge " +
 				"'value3')");
 	}
@@ -438,21 +410,17 @@ public class FilterStringToConditionConverterTest {
 						"column1"
 					).lt(
 						"value1"
-					)
-				).or(
+					),
 					DSL.field(
 						"column2"
 					).gt(
 						"value2"
-					)
-				)
-			).and(
+					)),
 				DSL.field(
 					"column3"
 				).ne(
 					"value3"
-				)
-			),
+				)),
 			"(column1 lt 'value1' or column2 gt 'value2') and column3 ne " +
 				"'value3'");
 	}
@@ -465,14 +433,12 @@ public class FilterStringToConditionConverterTest {
 					"column1"
 				).gt(
 					"value1"
-				)
-			).or(
+				),
 				DSL.field(
 					"column2"
 				).lt(
 					"value2"
-				)
-			),
+				)),
 			"column1 gt 'value1' or column2 lt 'value2'");
 	}
 
