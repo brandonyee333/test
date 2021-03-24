@@ -283,6 +283,7 @@ definition {
 	@priority = "3"
 	test UseSearchBarAndPagination {
 		property portal.acceptance = "false";
+		property test.name.skip.portal.instance = "CPCommerceProducts#UseSearchBarAndPagination";
 
 		CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "Minium");
 
