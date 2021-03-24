@@ -17,6 +17,7 @@ package com.liferay.osb.asah.monolith.common.http.impl;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,12 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 
 	@Override
 	public void addConfiguration(
-		DataSourceDTO dataSourceDTO, String providerType) {
+		DataSource dataSource, String providerType) {
 
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		configurationManager.addConfiguration(dataSourceDTO);
+		configurationManager.addConfiguration(dataSource);
 	}
 
 	@Override
@@ -49,31 +50,31 @@ public class ConfigurationHttpImpl implements ConfigurationHttp {
 	}
 
 	@Override
-	public String getState(DataSourceDTO dataSourceDTO, String providerType) {
+	public String getState(DataSource dataSource, String providerType) {
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		return configurationManager.getState(dataSourceDTO);
+		return configurationManager.getState(dataSource);
 	}
 
 	@Override
-	public DataSourceDTO refreshConfiguration(
-		DataSourceDTO dataSourceDTO, String providerType) {
+	public DataSource refreshConfiguration(
+		DataSource dataSource, String providerType) {
 
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		return configurationManager.refresh(dataSourceDTO);
+		return configurationManager.refresh(dataSource);
 	}
 
 	@Override
 	public void updateConfiguration(
-		DataSourceDTO dataSourceDTO, String providerType) {
+		DataSource dataSource, String providerType) {
 
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 
-		configurationManager.updateConfiguration(dataSourceDTO);
+		configurationManager.updateConfiguration(dataSource);
 	}
 
 	private ConfigurationManager _getConfigurationManager(String providerType) {

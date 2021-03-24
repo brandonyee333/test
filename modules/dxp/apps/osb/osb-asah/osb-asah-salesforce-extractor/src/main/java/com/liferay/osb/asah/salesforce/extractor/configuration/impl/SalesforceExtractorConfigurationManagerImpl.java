@@ -17,13 +17,11 @@ package com.liferay.osb.asah.salesforce.extractor.configuration.impl;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceBotRunnable;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceConfigurableBot;
@@ -35,7 +33,6 @@ import com.liferay.petra.salesforce.client.partner.SalesforcePartnerClientImpl;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -62,11 +59,11 @@ public class SalesforceExtractorConfigurationManagerImpl
 	implements ConfigurationManager {
 
 	@Override
-	public boolean addConfiguration(DataSourceDTO dataSourceDTO) {
+	public boolean addConfiguration(DataSource dataSource) {
 		Configuration configuration = null;
 
 		try {
-			configuration = _toConfiguration(dataSourceDTO);
+			configuration = _toConfiguration(dataSource);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -96,23 +93,6 @@ public class SalesforceExtractorConfigurationManagerImpl
 		salesforceBotRunnable.stop(configuration.getDataSourceId(), null);
 
 		return true;
-	}
-
-	public DataSourceDTO buildDataSourceDTO(DataSource dataSource) {
-		DataSourceDTO dataSourceDTO = new DataSourceDTO();
-
-		dataSourceDTO.setAccountsConfigurationDTO(
-			new DataSourceDTO.ProviderDTO.AccountsConfigurationDTO(dataSource));
-		dataSourceDTO.setContactsConfigurationDTO(
-			new DataSourceDTO.ProviderDTO.ContactsConfigurationDTO(dataSource));
-		dataSourceDTO.setCredentialDTO(
-			new DataSourceDTO.CredentialDTO(dataSource));
-		dataSourceDTO.setDataSourceId(StringUtil.get(dataSource.getId(), null));
-		dataSourceDTO.setDataSourceState(dataSource.getState());
-		dataSourceDTO.setDataSourceStatus(dataSource.getStatus());
-		dataSourceDTO.setURL(dataSource.getURL());
-
-		return dataSourceDTO;
 	}
 
 	@Override
@@ -188,15 +168,16 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	@Override
-	public String getState(DataSourceDTO dataSourceDTO) {
-		DataSourceDTO.CredentialDTO credentialDTO =
-			dataSourceDTO.getCredentialDTO();
+	public String getState(DataSource dataSource) {
+		if (StringUtils.isEmpty(dataSource.getOAuthClientId()) ||
+			StringUtils.isEmpty(dataSource.getOAuthClientSecret()) ||
+			StringUtils.isEmpty(dataSource.getOAuthRefreshToken()) ||
+			StringUtils.isEmpty(dataSource.getURL())) {
 
-		if (credentialDTO == null) {
 			return "CREDENTIALS_INVALID";
 		}
 
-		String credentialType = credentialDTO.getCredentialType();
+		String credentialType = dataSource.getCredentialType();
 
 		if (credentialType.equals("Dummy Authentication")) {
 			return "DUMMY_CREDENTIALS";
@@ -206,7 +187,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 			return "CREDENTIALS_INVALID";
 		}
 
-		if (!_validate(dataSourceDTO)) {
+		if (!_validate(dataSource)) {
 			return "CREDENTIALS_INVALID";
 		}
 
@@ -230,63 +211,29 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	@Override
-	public DataSourceDTO refresh(DataSourceDTO dataSourceDTO) {
-		dataSourceDTO.setState(getState(dataSourceDTO));
+	public DataSource refresh(DataSource dataSource) {
+		dataSource.setState(getState(dataSource));
 
-		return dataSourceDTO;
+		return dataSource;
 	}
 
 	@Override
-	public Configuration updateConfiguration(DataSourceDTO dataSourceDTO) {
-		Configuration configuration = _toConfiguration(dataSourceDTO);
+	public Configuration updateConfiguration(DataSource dataSource) {
+		Configuration configuration = _toConfiguration(dataSource);
 
 		String dataSourceId = configuration.getDataSourceId();
 
-		String existingDataSourceId = dataSourceDTO.getExistingDataSourceId();
+		Configuration existingConfigurationImpl = _configurations.get(
+			configuration.getProjectId() + "_" + dataSourceId);
 
-		if (dataSourceId.equals(existingDataSourceId)) {
-			Configuration existingConfigurationImpl = _configurations.get(
-				configuration.getProjectId() + "_" + existingDataSourceId);
-
-			if (existingConfigurationImpl == null) {
-				_log.error(
-					configuration.getProjectId() + ": Missing configuration " +
-						"for data source " + existingDataSourceId);
-
-				return null;
-			}
-
-			if (configuration.equals(existingConfigurationImpl)) {
-				if (_log.isInfoEnabled()) {
-					_log.info(
-						configuration.getProjectId() + ": Skip identical " +
-							"configuration for data source " + dataSourceId);
-				}
-
-				return configuration;
-			}
-		}
-		else {
-			if (_configurations.containsKey(
-					configuration.getProjectId() + "_" + dataSourceId)) {
-
-				_log.error(
-					configuration.getProjectId() + ": Duplicate " +
+		if (configuration.equals(existingConfigurationImpl)) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					configuration.getProjectId() + ": Skip identical " +
 						"configuration for data source " + dataSourceId);
-
-				return configuration;
 			}
 
-			Configuration existingConfigurationImpl = _configurations.remove(
-				configuration.getProjectId() + "_" + existingDataSourceId);
-
-			if (existingConfigurationImpl == null) {
-				_log.error(
-					configuration.getProjectId() + ": Missing configuration " +
-						"for data source " + existingDataSourceId);
-
-				return null;
-			}
+			return configuration;
 		}
 
 		_configurations.put(
@@ -295,12 +242,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 		SalesforceBotRunnable salesforceBotRunnable = _getSalesforceBotRunnable(
 			configuration.getProjectId());
 
-		if (Objects.equals(existingDataSourceId, dataSourceId)) {
-			salesforceBotRunnable.stop(null, null);
-		}
-		else {
-			salesforceBotRunnable.stop(existingDataSourceId, dataSourceId);
-		}
+		salesforceBotRunnable.stop(null, null);
 
 		return configuration;
 	}
@@ -327,9 +269,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 				_dataSourceDog.getDataSources("SALESFORCE")) {
 
 			try {
-				DataSourceDTO dataSourceDTO = buildDataSourceDTO(dataSource);
-
-				String dataSourceId = dataSourceDTO.getDataSourceId();
+				String dataSourceId = String.valueOf(dataSource.getId());
 
 				Configuration configuration = _getInitializedConfiguration(
 					dataSourceId);
@@ -339,7 +279,7 @@ public class SalesforceExtractorConfigurationManagerImpl
 				configuration.setDataSourceStatus(dataSource.getStatus());
 				configuration.setProjectId(projectId);
 
-				_setConfigurationAttributes(dataSourceDTO, configuration);
+				_setConfigurationAttributes(dataSource, configuration);
 
 				_configurations.put(
 					configuration.getProjectId() + "_" +
@@ -358,39 +298,36 @@ public class SalesforceExtractorConfigurationManagerImpl
 	}
 
 	private void _setConfigurationAttributes(
-		DataSourceDTO dataSourceDTO, Configuration configuration) {
+		DataSource dataSource, Configuration configuration) {
 
 		SalesforceExtractorConfigurationImpl
 			salesforceExtractorConfigurationImpl =
 				(SalesforceExtractorConfigurationImpl)configuration;
 
-		salesforceExtractorConfigurationImpl.setAccountsConfigurationDTO(
-			dataSourceDTO.getAccountsConfigurationDTO());
-		salesforceExtractorConfigurationImpl.setContactsConfigurationDTO(
-			dataSourceDTO.getContactsConfigurationDTO());
+		salesforceExtractorConfigurationImpl.setAccountsConfiguration(
+			dataSource);
+		salesforceExtractorConfigurationImpl.setContactsConfiguration(
+			dataSource);
 		salesforceExtractorConfigurationImpl.setSalesforceAuthEndpoint(
-			dataSourceDTO.getURL() + _salesforceOAuth2Client.getPath());
+			dataSource.getURL() + _salesforceOAuth2Client.getPath());
 		salesforceExtractorConfigurationImpl.setSalesforceURL(
-			dataSourceDTO.getURL());
+			dataSource.getURL());
 
-		DataSourceDTO.CredentialDTO credentialDTO =
-			dataSourceDTO.getCredentialDTO();
-
-		String credentialType = credentialDTO.getCredentialType();
+		String credentialType = dataSource.getCredentialType();
 
 		if (credentialType.equals("Basic Authentication")) {
 			salesforceExtractorConfigurationImpl.setSalesforcePassword(
-				credentialDTO.getPassword());
+				dataSource.getPassword());
 			salesforceExtractorConfigurationImpl.setSalesforceUserName(
-				credentialDTO.getLogin());
+				dataSource.getLogin());
 		}
 		else if (credentialType.equals("OAuth 2 Authentication")) {
 			salesforceExtractorConfigurationImpl.setSalesforceOAuthClientId(
-				credentialDTO.getOAuthClientId());
+				dataSource.getOAuthClientId());
 			salesforceExtractorConfigurationImpl.setSalesforceOAuthClientSecret(
-				credentialDTO.getOAuthClientSecret());
+				dataSource.getOAuthClientSecret());
 			salesforceExtractorConfigurationImpl.setSalesforceOAuthRefreshToken(
-				credentialDTO.getOAuthRefreshToken());
+				dataSource.getOAuthRefreshToken());
 
 			try {
 				_salesforceOAuth2Client.refreshOAuthToken(
@@ -407,34 +344,34 @@ public class SalesforceExtractorConfigurationManagerImpl
 		}
 	}
 
-	private Configuration _toConfiguration(DataSourceDTO dataSourceDTO) {
-		String dataSourceId = dataSourceDTO.getDataSourceId();
+	private Configuration _toConfiguration(DataSource dataSource) {
+		String dataSourceId = String.valueOf(dataSource.getId());
 
 		Configuration configuration = _getInitializedConfiguration(
 			dataSourceId);
 
 		configuration.setDataSourceId(dataSourceId);
-		configuration.setDataSourceState(dataSourceDTO.getDataSourceState());
-		configuration.setDataSourceStatus(dataSourceDTO.getDataSourceStatus());
+		configuration.setDataSourceState(dataSource.getState());
+		configuration.setDataSourceStatus(dataSource.getStatus());
 		configuration.setProjectId(ProjectIdThreadLocal.getProjectId());
 
-		_setConfigurationAttributes(dataSourceDTO, configuration);
+		_setConfigurationAttributes(dataSource, configuration);
 
 		return configuration;
 	}
 
-	private boolean _validate(DataSourceDTO dataSourceDTO) {
-		DataSourceDTO.CredentialDTO credentialDTO =
-			dataSourceDTO.getCredentialDTO();
+	private boolean _validate(DataSource dataSource) {
+		if (StringUtils.isEmpty(dataSource.getOAuthClientId()) ||
+			StringUtils.isEmpty(dataSource.getOAuthClientSecret()) ||
+			StringUtils.isEmpty(dataSource.getOAuthRefreshToken()) ||
+			StringUtils.isEmpty(dataSource.getURL())) {
 
-		if (credentialDTO == null) {
 			return false;
 		}
 
 		String responseJSON = _salesforceOAuth2Client.post(
-			credentialDTO.getOAuthClientId(),
-			credentialDTO.getOAuthClientSecret(),
-			credentialDTO.getOAuthRefreshToken(), dataSourceDTO.getURL());
+			dataSource.getOAuthClientId(), dataSource.getOAuthClientSecret(),
+			dataSource.getOAuthRefreshToken(), dataSource.getURL());
 
 		if (StringUtils.isEmpty(responseJSON)) {
 			return false;

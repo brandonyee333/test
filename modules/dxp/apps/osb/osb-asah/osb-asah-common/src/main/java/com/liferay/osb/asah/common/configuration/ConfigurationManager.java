@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.configuration;
 
-
 import com.liferay.osb.asah.common.model.DataSource;
 
 /**

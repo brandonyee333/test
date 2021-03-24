@@ -21,8 +21,7 @@ import com.liferay.osb.asah.common.model.DataSource;
  */
 public interface ConfigurationHttp {
 
-	public void addConfiguration(
-		DataSource dataSource, String providerType);
+	public void addConfiguration(DataSource dataSource, String providerType);
 
 	public void deleteConfiguration(String dataSourceId, String providerType);
 
@@ -31,8 +30,7 @@ public interface ConfigurationHttp {
 	public DataSource refreshConfiguration(
 		DataSource dataSource, String providerType);
 
-	public void updateConfiguration(
-			DataSource dataSource, String providerType)
+	public void updateConfiguration(DataSource dataSource, String providerType)
 		throws Exception;
 
 }

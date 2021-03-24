@@ -685,10 +685,8 @@ public class DataSourcesRestController extends BaseRestController {
 			return;
 		}
 
-		DataSource newDataSource = _objectMapper.convertValue(
-			_configurationHttp.refreshConfiguration(
-				new DataSourceDTO(dataSource), providerType),
-			DataSource.class);
+		DataSource newDataSource = _configurationHttp.refreshConfiguration(
+			dataSource, providerType);
 
 		if (Objects.equals(dataSource, newDataSource)) {
 			return;

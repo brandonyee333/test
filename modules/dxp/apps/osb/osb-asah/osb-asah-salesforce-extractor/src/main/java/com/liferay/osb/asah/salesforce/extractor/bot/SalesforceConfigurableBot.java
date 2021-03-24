@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Project;
@@ -130,30 +129,22 @@ public class SalesforceConfigurableBot {
 		SalesforceExtractorConfiguration salesforceExtractorConfiguration =
 			(SalesforceExtractorConfiguration)configuration;
 
-		DataSourceDTO existingDataSourceDTO = new DataSourceDTO(
-			_dataSourceDog.getDataSource(
-				Long.valueOf(
-					salesforceExtractorConfiguration.getDataSourceId())));
+		DataSource existingDataSource = _dataSourceDog.getDataSource(
+			Long.valueOf(salesforceExtractorConfiguration.getDataSourceId()));
 
-		DataSourceDTO newDataSourceDTO =
+		DataSource newDataSource =
 			_salesforceExtractorConfigurationManagerImpl.refresh(
-				existingDataSourceDTO);
+				existingDataSource);
 
-		if (Objects.equals(existingDataSourceDTO, newDataSourceDTO)) {
+		if (Objects.equals(existingDataSource, newDataSource)) {
 			return configuration;
 		}
 
-		DataSourceDTO configurationsDataSourceDTO =
-			_salesforceExtractorConfigurationManagerImpl.buildDataSourceDTO(
-				_dataSourceDog.updateDataSource(
-					_objectMapper.convertValue(
-						newDataSourceDTO, DataSource.class)));
-
-		configurationsDataSourceDTO.setExistingDataSourceId(
-			salesforceExtractorConfiguration.getDataSourceId());
+		DataSource configurationsDataSource = _dataSourceDog.updateDataSource(
+			newDataSource);
 
 		return _salesforceExtractorConfigurationManagerImpl.updateConfiguration(
-			configurationsDataSourceDTO);
+			configurationsDataSource);
 	}
 
 	protected void runNanite(Configuration configuration, Nanite nanite)

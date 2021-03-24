@@ -17,7 +17,7 @@ package com.liferay.osb.asah.salesforce.extractor.rest.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
 import org.json.JSONObject;
@@ -48,24 +48,24 @@ public class ConfigurationsRestController {
 	}
 
 	@GetMapping("/state")
-	public String getState(@RequestBody DataSourceDTO dataSourceDTO) {
-		return _configurationManager.getState(dataSourceDTO);
+	public String getState(@RequestBody DataSource dataSource) {
+		return _configurationManager.getState(dataSource);
 	}
 
 	@PostMapping
-	public void postConfiguration(@RequestBody DataSourceDTO dataSourceDTO) {
-		_configurationManager.addConfiguration(dataSourceDTO);
+	public void postConfiguration(@RequestBody DataSource dataSource) {
+		_configurationManager.addConfiguration(dataSource);
 	}
 
 	@PutMapping
-	public void putConfiguration(@RequestBody DataSourceDTO dataSourceDTO) {
-		_configurationManager.updateConfiguration(dataSourceDTO);
+	public void putConfiguration(@RequestBody DataSource dataSource) {
+		_configurationManager.updateConfiguration(dataSource);
 	}
 
 	@PostMapping("/refresh")
-	public String refresh(@RequestBody DataSourceDTO dataSourceDTO) {
+	public String refresh(@RequestBody DataSource dataSource) {
 		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			_configurationManager.refresh(dataSourceDTO), JSONObject.class);
+			_configurationManager.refresh(dataSource), JSONObject.class);
 
 		return dataSourceJSONObject.toString();
 	}

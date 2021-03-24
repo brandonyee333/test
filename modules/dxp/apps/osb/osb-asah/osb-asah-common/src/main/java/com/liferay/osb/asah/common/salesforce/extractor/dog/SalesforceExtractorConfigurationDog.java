@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Objects;
 
@@ -68,8 +67,7 @@ public class SalesforceExtractorConfigurationDog {
 	}
 
 	public String getState(DataSource dataSource) {
-		return _configurationHttp.getState(
-			new DataSourceDTO(dataSource), _getProviderType());
+		return _configurationHttp.getState(dataSource, _getProviderType());
 	}
 
 	public DataSource updateConfiguration(DataSource dataSource) {
@@ -94,27 +92,7 @@ public class SalesforceExtractorConfigurationDog {
 			return;
 		}
 
-		DataSourceDTO dataSourceDTO = _buildDataSourceDTO(dataSource);
-
-		dataSourceDTO.setDataSourceId(StringUtil.get(dataSource.getId(), null));
-
-		_configurationHttp.addConfiguration(dataSourceDTO, _getProviderType());
-	}
-
-	private DataSourceDTO _buildDataSourceDTO(DataSource dataSource) {
-		DataSourceDTO dataSourceDTO = new DataSourceDTO();
-
-		dataSourceDTO.setAccountsConfigurationDTO(
-			new DataSourceDTO.ProviderDTO.AccountsConfigurationDTO(dataSource));
-		dataSourceDTO.setContactsConfigurationDTO(
-			new DataSourceDTO.ProviderDTO.ContactsConfigurationDTO(dataSource));
-		dataSourceDTO.setCredentialDTO(
-			new DataSourceDTO.CredentialDTO(dataSource));
-		dataSourceDTO.setDataSourceState(dataSource.getState());
-		dataSourceDTO.setDataSourceStatus(dataSource.getStatus());
-		dataSourceDTO.setURL(dataSource.getURL());
-
-		return dataSourceDTO;
+		_configurationHttp.addConfiguration(dataSource, _getProviderType());
 	}
 
 	private JSONObject _buildOAuthOwnerJSONObject(DataSource dataSource) {
@@ -137,24 +115,7 @@ public class SalesforceExtractorConfigurationDog {
 			return;
 		}
 
-		DataSourceDTO dataSourceDTO = _buildDataSourceDTO(dataSource);
-
-		Long dataSourceId = dataSource.getId();
-
-		if (dataSourceId != null) {
-			dataSourceDTO.setDataSourceId(String.valueOf(dataSourceId));
-
-			DataSource existingDataSource = _dataSourceDog.fetchDataSource(
-				dataSourceId);
-
-			if (existingDataSource != null) {
-				dataSourceDTO.setExistingDataSourceId(
-					dataSourceDTO.getDataSourceId());
-			}
-		}
-
-		_configurationHttp.updateConfiguration(
-			dataSourceDTO, _getProviderType());
+		_configurationHttp.updateConfiguration(dataSource, _getProviderType());
 	}
 
 	private void _updateConfiguration(DataSource dataSource, String state) {

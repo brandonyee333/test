@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.salesforce.extractor.configuration.impl;
 
 import com.liferay.osb.asah.common.configuration.impl.BaseConfigurationImpl;
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 
 import java.util.Arrays;
@@ -145,24 +145,18 @@ public class SalesforceExtractorConfigurationImpl
 		return super.hashCode() ^ hash ^ Arrays.hashCode(_tableNames);
 	}
 
-	public void setAccountsConfigurationDTO(
-		DataSourceDTO.ProviderDTO.AccountsConfigurationDTO
-			accountsConfigurationDTO) {
-
-		if (accountsConfigurationDTO.getEnableAllAccounts()) {
+	public void setAccountsConfiguration(DataSource dataSource) {
+		if (dataSource.getEnableAllAccounts()) {
 			_addTableName("Account");
 		}
 	}
 
-	public void setContactsConfigurationDTO(
-		DataSourceDTO.ProviderDTO.ContactsConfigurationDTO
-			contactsConfigurationDTO) {
-
-		if (contactsConfigurationDTO.getEnableAllContacts()) {
+	public void setContactsConfiguration(DataSource dataSource) {
+		if (dataSource.getEnableAllContacts()) {
 			_addTableName("Contact");
 		}
 
-		if (contactsConfigurationDTO.getEnableAllLeads()) {
+		if (dataSource.getEnableAllLeads()) {
 			_addTableName("Lead");
 		}
 	}
