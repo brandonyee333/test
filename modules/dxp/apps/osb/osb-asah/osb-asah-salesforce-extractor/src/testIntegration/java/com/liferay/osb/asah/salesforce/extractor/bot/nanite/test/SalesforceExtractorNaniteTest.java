@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceConfigurableBot;
@@ -84,8 +85,7 @@ public class SalesforceExtractorNaniteTest {
 
 	@After
 	public void tearDown() {
-		_faroInfoElasticsearchInvoker.delete(
-			"data-sources", QueryBuilders.matchAllQuery());
+		_dataSourceRepository.deleteAll();
 		_salesforceRawElasticsearchInvoker.delete(
 			"Account", QueryBuilders.matchAllQuery());
 		_salesforceRawElasticsearchInvoker.delete(
@@ -172,13 +172,11 @@ public class SalesforceExtractorNaniteTest {
 	}
 
 	private void _setUpConfigurationManager() {
-		JSONObject jsonObject =
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(
+		_dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource(
 				_salesforceExtractorConfiguration.getSalesforceUserName(),
 				_salesforceExtractorConfiguration.getSalesforcePassword(),
-				_salesforceExtractorConfiguration.getSalesforceURL());
-
-		_faroInfoElasticsearchInvoker.add("data-sources", jsonObject);
+				_salesforceExtractorConfiguration.getSalesforceURL()));
 	}
 
 	private void _testAddField() {
@@ -467,6 +465,9 @@ public class SalesforceExtractorNaniteTest {
 	private static final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration =
 			SalesforceExtractorTestUtil.getSalesforceExtractorConfiguration();
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;

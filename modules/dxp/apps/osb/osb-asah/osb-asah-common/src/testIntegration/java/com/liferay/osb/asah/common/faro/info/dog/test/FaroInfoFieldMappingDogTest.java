@@ -14,9 +14,12 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -109,9 +112,10 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testAddEmailFieldMappingSalesforceDataSource() {
 		_testAddEmailFieldMapping(
-			faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject()),
+			_objectMapper.convertValue(
+				_dataSourceRepository.save(
+					FaroInfoTestUtil.buildSalesforceDataSource()),
+				JSONObject.class),
 			"email");
 	}
 
@@ -273,9 +277,10 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 			"emailAddress");
 
 		_testAddEmailFieldMapping(
-			faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject()),
+			_objectMapper.convertValue(
+				_dataSourceRepository.save(
+					FaroInfoTestUtil.buildSalesforceDataSource()),
+				JSONObject.class),
 			"email");
 	}
 
@@ -320,6 +325,12 @@ public class FaroInfoFieldMappingDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	@Autowired
+	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

@@ -61,8 +61,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 		_liferayDataSourceJSONObject.put("id", RandomTestUtil.randomId());
 
-		_salesforceDataSourceJSONObject =
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject();
+		_salesforceDataSource = FaroInfoTestUtil.buildSalesforceDataSource();
 
 		for (String fieldName : _FIELD_NAMES) {
 			faroInfoElasticsearchInvoker.add(
@@ -73,7 +72,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			faroInfoElasticsearchInvoker.add(
 				"field-mappings",
 				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
-					_salesforceDataSourceJSONObject.getString("id"), fieldName,
+					String.valueOf(_salesforceDataSource.getId()), fieldName,
 					fieldName, "Text"));
 		}
 	}
@@ -265,7 +264,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddAndUpdateSalesforceIndividual() throws Exception {
-		String dataSourceId = _salesforceDataSourceJSONObject.getString("id");
+		String dataSourceId = String.valueOf(_salesforceDataSource.getId());
 
 		JSONObject individualJSONObject = _faroInfoIndividualDog.addIndividual(
 			"1",
@@ -278,8 +277,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"modifiedDate", DateUtil.newDateString()
 			),
-			_objectMapper.convertValue(
-				_salesforceDataSourceJSONObject, DataSource.class));
+			_salesforceDataSource);
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -301,9 +299,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"modifiedDate", DateUtil.newDateString()
 			),
-			_objectMapper.convertValue(
-				_salesforceDataSourceJSONObject, DataSource.class),
-			individualJSONObject);
+			_salesforceDataSource, individualJSONObject);
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -314,7 +310,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 				)),
 			individualJSONObject.getJSONArray("dataSourceAccountPKs"), false);
 
-		_salesforceDataSourceJSONObject.put("id", "1");
+		_salesforceDataSource.setId(1L);
 
 		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
 			individualJSONObject.getString("id"),
@@ -327,9 +323,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"modifiedDate", DateUtil.newDateString()
 			),
-			_objectMapper.convertValue(
-				_salesforceDataSourceJSONObject, DataSource.class),
-			individualJSONObject);
+			_salesforceDataSource, individualJSONObject);
 
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
@@ -773,8 +767,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			).put(
 				"modifiedDate", DateUtil.newDateString()
 			),
-			_objectMapper.convertValue(
-				_salesforceDataSourceJSONObject, DataSource.class));
+			_salesforceDataSource);
 
 		individualJSONObject = _faroInfoIndividualDog.updateIndividual(
 			individualJSONObject.getString("id"),
@@ -953,6 +946,6 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 	@Autowired
 	private ObjectMapper _objectMapper;
 
-	private JSONObject _salesforceDataSourceJSONObject;
+	private DataSource _salesforceDataSource;
 
 }

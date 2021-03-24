@@ -64,8 +64,7 @@ public class SalesforceExtractorConfigurationDogTest {
 
 	@Test
 	public void testGetState() {
-		JSONObject dataSourceJSONObject =
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(
+		DataSource dataSource = FaroInfoTestUtil.buildSalesforceDataSource(
 				JSONUtil.put(
 					"oAuthClientId",
 					_salesforceExtractorConfiguration.
@@ -85,9 +84,7 @@ public class SalesforceExtractorConfigurationDogTest {
 
 		Assert.assertEquals(
 			"CREDENTIALS_VALID",
-			_salesforceExtractorConfigurationDog.getState(
-				_objectMapper.convertValue(
-					dataSourceJSONObject, DataSource.class)));
+			_salesforceExtractorConfigurationDog.getState(dataSource));
 	}
 
 	private static final SalesforceExtractorConfiguration

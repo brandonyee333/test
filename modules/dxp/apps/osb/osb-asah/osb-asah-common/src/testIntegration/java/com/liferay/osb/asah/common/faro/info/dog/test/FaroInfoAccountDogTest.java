@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
@@ -50,9 +48,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		_salesforceDataSource = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
-			DataSource.class);
+		_salesforceDataSource = FaroInfoTestUtil.buildSalesforceDataSource();
 
 		faroInfoElasticsearchInvoker.add(
 			"field-mappings",
@@ -286,9 +282,6 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private FaroInfoAccountDog _faroInfoAccountDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	private DataSource _salesforceDataSource;
 

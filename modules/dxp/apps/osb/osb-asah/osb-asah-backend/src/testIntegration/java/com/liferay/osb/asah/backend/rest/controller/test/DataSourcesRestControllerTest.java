@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -300,24 +301,20 @@ public class DataSourcesRestControllerTest {
 
 	@Test
 	public void testGetSalesforceAccountsFields() throws Exception {
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		JSONArray jsonArray = new JSONArray(
 			_dataSourcesRestController.getSalesforceAccountsFields(
-				salesforceDataSourceJSONObject.getString("id"), 3, 0));
+				String.valueOf(salesforceDataSource.getId()), 3, 0));
 
 		Assert.assertEquals(3, jsonArray.length());
 	}
 
 	@Test
 	public void testGetSalesforceDataSourceAccountsProgress() throws Exception {
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor nanite is null
 
@@ -328,7 +325,7 @@ public class DataSourcesRestControllerTest {
 				"individuals", new JSONObject()
 			).toString(),
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		// Salesforce accounts nanite is null
 
@@ -337,7 +334,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
 			).put(
@@ -348,7 +345,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONObject accountsJSONObject = progressJSONObject.getJSONObject(
 			"accounts");
@@ -364,7 +361,7 @@ public class DataSourcesRestControllerTest {
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addDays(dateLogged, -1)
 			).put(
@@ -379,7 +376,7 @@ public class DataSourcesRestControllerTest {
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -394,7 +391,7 @@ public class DataSourcesRestControllerTest {
 		JSONObject runLogsJSONObject = _faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addDays(dateLogged, 1)
 			).put(
@@ -409,7 +406,7 @@ public class DataSourcesRestControllerTest {
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -426,7 +423,7 @@ public class DataSourcesRestControllerTest {
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
@@ -443,14 +440,14 @@ public class DataSourcesRestControllerTest {
 			"audit-events",
 			JSONUtil.put(
 				"osbAsahDataSourceId",
-				salesforceDataSourceJSONObject.getString("id")
+				String.valueOf(salesforceDataSource.getId())
 			).put(
 				"typeName", "Account"
 			));
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -467,7 +464,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
 			).put(
@@ -478,7 +475,7 @@ public class DataSourcesRestControllerTest {
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -495,7 +492,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
@@ -514,12 +511,12 @@ public class DataSourcesRestControllerTest {
 				"Name", "Test Account"
 			).put(
 				"osbAsahDataSourceId",
-				salesforceDataSourceJSONObject.getString("id")
+				String.valueOf(salesforceDataSource.getId())
 			));
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -534,7 +531,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
@@ -551,14 +548,14 @@ public class DataSourcesRestControllerTest {
 			"audit-events",
 			JSONUtil.put(
 				"osbAsahDataSourceId",
-				salesforceDataSourceJSONObject.getString("id")
+				String.valueOf(salesforceDataSource.getId())
 			).put(
 				"typeName", "Account"
 			));
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		accountsJSONObject = progressJSONObject.getJSONObject("accounts");
 
@@ -573,10 +570,8 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress1()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor nanite is null
 
@@ -587,17 +582,15 @@ public class DataSourcesRestControllerTest {
 				"individuals", new JSONObject()
 			).toString(),
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 	}
 
 	@Test
 	public void testGetSalesforceDataSourceIndividualsProgress2()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor nanite failed
 
@@ -606,7 +599,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
 			).put(
@@ -617,7 +610,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -632,17 +625,15 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress3()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor nanite started and initial run is true
 
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
@@ -665,7 +656,7 @@ public class DataSourcesRestControllerTest {
 				"Name", "Test Contact"
 			).put(
 				"osbAsahDataSourceId",
-				salesforceDataSourceJSONObject.getString("id")
+				String.valueOf(salesforceDataSource.getId())
 			));
 
 		_salesforceRawElasticsearchInvoker.add(
@@ -674,12 +665,12 @@ public class DataSourcesRestControllerTest {
 				"Name", "Test Lead"
 			).put(
 				"osbAsahDataSourceId",
-				salesforceDataSourceJSONObject.getString("id")
+				String.valueOf(salesforceDataSource.getId())
 			));
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -695,7 +686,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
@@ -716,7 +707,7 @@ public class DataSourcesRestControllerTest {
 			"audit-events",
 			JSONUtil.put(
 				"osbAsahDataSourceId",
-				salesforceDataSourceJSONObject.getString("id")
+				String.valueOf(salesforceDataSource.getId())
 			).put(
 				"typeName", "Contact"
 			));
@@ -725,14 +716,14 @@ public class DataSourcesRestControllerTest {
 			"audit-events",
 			JSONUtil.put(
 				"osbAsahDataSourceId",
-				salesforceDataSourceJSONObject.getString("id")
+				String.valueOf(salesforceDataSource.getId())
 			).put(
 				"typeName", "Lead"
 			));
 
 		progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		individualsJSONObject = progressJSONObject.getJSONObject("individuals");
 
@@ -747,10 +738,8 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress4()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor nanite in progress and salesforce extractor
 		// individuals nanite is null
@@ -758,7 +747,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
@@ -769,7 +758,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -786,10 +775,8 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress5()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor individuals nanite started
 
@@ -798,7 +785,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
 			).put(
@@ -810,7 +797,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"naniteClassName", "SalesforceExtractorIndividualsNanite"
 			).put(
@@ -823,7 +810,7 @@ public class DataSourcesRestControllerTest {
 			"audit-events",
 			JSONUtil.put(
 				"osbAsahDataSourceId",
-				salesforceDataSourceJSONObject.getString("id")
+				String.valueOf(salesforceDataSource.getId())
 			).put(
 				"typeName", "Contact"
 			));
@@ -832,14 +819,14 @@ public class DataSourcesRestControllerTest {
 			"audit-events",
 			JSONUtil.put(
 				"osbAsahDataSourceId",
-				salesforceDataSourceJSONObject.getString("id")
+				String.valueOf(salesforceDataSource.getId())
 			).put(
 				"typeName", "Lead"
 			));
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -856,10 +843,8 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress6()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor individuals nanite not started and date logged
 		// is earlier
@@ -869,7 +854,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
 			).put(
@@ -881,7 +866,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addDays(dateLogged, -1)
 			).put(
@@ -894,7 +879,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -911,10 +896,8 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress7()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor individuals nanite failed and date logged
 		// is later
@@ -924,7 +907,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addHours(dateLogged, -1)
 			).put(
@@ -936,7 +919,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
 			).put(
@@ -949,7 +932,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -967,17 +950,15 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress8()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		String dateLogged = DateUtil.newDateString();
 
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addHours(dateLogged, -1)
 			).put(
@@ -989,7 +970,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
 			).put(
@@ -1002,7 +983,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -1019,10 +1000,8 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress9()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce individuals nanite started
 
@@ -1031,7 +1010,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addHours(dateLogged, -1)
 			).put(
@@ -1043,7 +1022,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
 			).put(
@@ -1057,7 +1036,7 @@ public class DataSourcesRestControllerTest {
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDayDateString()
 			).put(
@@ -1072,14 +1051,14 @@ public class DataSourcesRestControllerTest {
 			"audit-events",
 			JSONUtil.put(
 				"osbAsahDataSourceId",
-				salesforceDataSourceJSONObject.getString("id")
+				String.valueOf(salesforceDataSource.getId())
 			).put(
 				"typeName", "individuals"
 			));
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -1096,10 +1075,8 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress10()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce individuals nanite not started and and date logged is
 		// earlier
@@ -1109,7 +1086,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addHours(dateLogged, -1)
 			).put(
@@ -1121,7 +1098,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addHours(dateLogged, 1)
 			).put(
@@ -1135,7 +1112,7 @@ public class DataSourcesRestControllerTest {
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
 			).put(
@@ -1148,7 +1125,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -1165,10 +1142,8 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress11()
 		throws Exception {
 
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce individuals nanite not started and and date logged is
 		// later
@@ -1178,7 +1153,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addHours(dateLogged, -1)
 			).put(
@@ -1190,7 +1165,7 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
 			).put(
@@ -1204,7 +1179,7 @@ public class DataSourcesRestControllerTest {
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
-				"dataSourceId", salesforceDataSourceJSONObject.getString("id")
+				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addHours(dateLogged, 2)
 			).put(
@@ -1217,7 +1192,7 @@ public class DataSourcesRestControllerTest {
 
 		JSONObject progressJSONObject = new JSONObject(
 			_dataSourcesRestController.getProgress(
-				salesforceDataSourceJSONObject.getLong("id")));
+				salesforceDataSource.getId()));
 
 		JSONObject individualsJSONObject = progressJSONObject.getJSONObject(
 			"individuals");
@@ -1229,14 +1204,12 @@ public class DataSourcesRestControllerTest {
 
 	@Test
 	public void testGetSalesforceUsersFields() throws Exception {
-		JSONObject salesforceDataSourceJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"data-sources",
-				FaroInfoTestUtil.buildSalesforceDataSourceJSONObject());
+		DataSource salesforceDataSource = _dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		JSONArray jsonArray = new JSONArray(
 			_dataSourcesRestController.getSalesforceUsersFields(
-				salesforceDataSourceJSONObject.getString("id"), 3, 0));
+				String.valueOf(salesforceDataSource.getId()), 3, 0));
 
 		Assert.assertEquals(3, jsonArray.length());
 	}
@@ -1351,6 +1324,9 @@ public class DataSourcesRestControllerTest {
 
 	@MockBean
 	private ChannelHttp _channelHttp;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private DataSourcesRestController _dataSourcesRestController;

@@ -66,9 +66,7 @@ public abstract class BaseIndividualsNaniteTestCase extends BaseNaniteTestCase {
 		else if (type.equals("SALESFORCE")) {
 			_dataSourceJSONObject = _objectMapper.convertValue(
 				_dataSourceDog.addDataSource(
-					_objectMapper.convertValue(
-						FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
-						DataSource.class)),
+					FaroInfoTestUtil.buildSalesforceDataSource()),
 				JSONObject.class);
 		}
 		else {

@@ -18,9 +18,13 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -866,60 +870,68 @@ public class FaroInfoTestUtil {
 		);
 	}
 
-	public static JSONObject buildSalesforceDataSourceJSONObject() {
-		return buildSalesforceDataSourceJSONObject(
+	public static DataSource buildSalesforceDataSource() {
+		return buildSalesforceDataSource(
 			_getCredentialsJSONObject(
 				RandomTestUtil.selectRandom(
 					"Basic Authentication", "OAuth 2 Authentication")),
 			RandomTestUtil.randomURL());
 	}
 
-	public static JSONObject buildSalesforceDataSourceJSONObject(
-		JSONObject credentialsJSONObject, String url) {
+	public static DataSource buildSalesforceDataSource(
+			JSONObject credentialsJSONObject, String url) {
 
-		String dateString = DateUtil.newDateString();
+		DataSource dataSource = new DataSource();
+		Date date = new Date();
 
-		return JSONUtil.put(
-			"about", RandomTestUtil.randomMultipleWordString(20, 50)
-		).put(
-			"author", _getAuthorJSONObject()
-		).put(
-			"credentials", credentialsJSONObject
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"description", RandomTestUtil.randomMultipleWordString(20, 50)
-		).put(
-			"id", _timeOrderedUuidGenerator.generateId()
-		).put(
-			"name", RandomTestUtil.randomMultipleWordString(5, 20)
-		).put(
-			"provider",
-			JSONUtil.put(
-				"accountsConfiguration", JSONUtil.put("enableAllAccounts", true)
-			).put(
-				"contactsConfiguration",
-				JSONUtil.put(
-					"enableAllContacts", true
-				).put(
-					"enableAllLeads", true
-				)
-			).put(
-				"type", "SALESFORCE"
-			)
-		).put(
-			"status", "ACTIVE"
-		).put(
-			"url", url
-		);
+		dataSource.setAuthorId(
+			Long.valueOf(RandomStringUtils.randomNumeric(5, 7)));
+		dataSource.setAuthorName(RandomTestUtil.randomFullName());
+		dataSource.setCreateDate(date);
+		dataSource.setCredentialType(credentialsJSONObject.getString("type"));
+		dataSource.setEnableAllAccounts(true);
+		dataSource.setEnableAllContacts(true);
+		dataSource.setEnableAllLeads(true);
+		dataSource.setId(Long.valueOf(_timeOrderedUuidGenerator.generateId()));
+		dataSource.setModifiedDate(date);
+		dataSource.setName(RandomTestUtil.randomMultipleWordString(5, 20));
+		dataSource.setProviderType("SALESFORCE");
+		dataSource.setStatus("ACTIVE");
+		dataSource.setURL(url);
+
+		if (Objects.equals(
+			"Basic Authentication", dataSource.getCredentialType())) {
+
+			dataSource.setLogin(credentialsJSONObject.getString("login"));
+			dataSource.setPassword(credentialsJSONObject.getString("password"));
+		}
+		else if (Objects.equals(
+			"OAuth 2 Authentication", dataSource.getCredentialType())) {
+
+			dataSource.setOAuthClientId(
+				credentialsJSONObject.getString("oAuthClientId"));
+			dataSource.setOAuthClientSecret(
+				credentialsJSONObject.getString("oAuthClientSecret"));
+
+			JSONObject oAuthOwnerJSONObject =
+				credentialsJSONObject.getJSONObject("oAuthOwner");
+
+			dataSource.setOAuthOwnerEmailAddress(
+				oAuthOwnerJSONObject.getString("emailAddress"));
+			dataSource.setOAuthOwnerName(
+				oAuthOwnerJSONObject.getString("name"));
+
+			dataSource.setOAuthRefreshToken(
+				credentialsJSONObject.getString("oAuthRefreshToken"));
+		}
+
+		return dataSource;
 	}
 
-	public static JSONObject buildSalesforceDataSourceJSONObject(
+	public static DataSource buildSalesforceDataSource(
 		String login, String password, String url) {
 
-		return buildSalesforceDataSourceJSONObject(
+		return buildSalesforceDataSource(
 			_getBasicCredentialsJSONObject(login, password), url);
 	}
 

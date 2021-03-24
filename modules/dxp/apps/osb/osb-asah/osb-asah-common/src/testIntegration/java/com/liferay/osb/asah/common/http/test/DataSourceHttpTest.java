@@ -631,9 +631,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	public void testDeleteSalesforceDataSource() throws Exception {
 		JSONObject dataSourceJSONObject1 = _objectMapper.convertValue(
 			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
-					DataSource.class)),
+				FaroInfoTestUtil.buildSalesforceDataSource()),
 			JSONObject.class);
 
 		String dataSourceId1 = dataSourceJSONObject1.getString("id");
@@ -643,9 +641,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		JSONObject dataSourceJSONObject2 = _objectMapper.convertValue(
 			_dataSourceDog.addDataSource(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
-					DataSource.class)),
+				FaroInfoTestUtil.buildSalesforceDataSource()),
 			JSONObject.class);
 
 		String dataSourceId2 = dataSourceJSONObject2.getString("id");

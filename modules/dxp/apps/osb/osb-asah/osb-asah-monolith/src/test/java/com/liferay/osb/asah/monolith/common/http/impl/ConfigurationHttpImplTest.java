@@ -21,9 +21,9 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.mapper.DataSourceMapper;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 
@@ -57,38 +57,37 @@ public class ConfigurationHttpImplTest {
 
 	@Test
 	public void testAddConfiguration() {
-		DataSourceDTO salesforceDataSourceDTO = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
-			DataSourceDTO.class);
+		DataSource salesforceDataSource = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSource(),
+			DataSource.class);
 
-		_configurationHttp.addConfiguration(
-			salesforceDataSourceDTO, "SALESFORCE");
+		_configurationHttp.addConfiguration(salesforceDataSource, "SALESFORCE");
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).addConfiguration(
-			salesforceDataSourceDTO
+			salesforceDataSource
 		);
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void testAddInvalidConfiguration() {
-		_configurationHttp.addConfiguration(new DataSourceDTO(), "INVALID");
+		_configurationHttp.addConfiguration(new DataSource(), "INVALID");
 	}
 
 	@Test
 	public void testDeleteConfiguration() {
-		DataSourceDTO salesforceDataSourceDTO = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
-			DataSourceDTO.class);
+		DataSource salesforceDataSource = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSource(),
+			DataSource.class);
 
 		_configurationHttp.deleteConfiguration(
-			salesforceDataSourceDTO.getDataSourceId(), "SALESFORCE");
+			String.valueOf(salesforceDataSource.getId()), "SALESFORCE");
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).deleteConfiguration(
-			salesforceDataSourceDTO.getDataSourceId()
+			String.valueOf(salesforceDataSource.getId())
 		);
 	}
 
@@ -96,55 +95,55 @@ public class ConfigurationHttpImplTest {
 	public void testGetState() {
 		Mockito.when(
 			_salesforceConfigurationManagerImpl.getState(
-				Mockito.any(DataSourceDTO.class))
+				Mockito.any(DataSource.class))
 		).thenReturn(
 			"CREDENTIALS_VALID"
 		);
 
-		DataSourceDTO salesforceDataSourceDTO = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
-			DataSourceDTO.class);
+		DataSource salesforceDataSource = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSource(),
+			DataSource.class);
 
 		Assert.assertEquals(
 			"CREDENTIALS_VALID",
-			_configurationHttp.getState(salesforceDataSourceDTO, "SALESFORCE"));
+			_configurationHttp.getState(salesforceDataSource, "SALESFORCE"));
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).getState(
-			salesforceDataSourceDTO
+			salesforceDataSource
 		);
 	}
 
 	@Test
 	public void testRefreshConfiguration() {
-		DataSourceDTO salesforceDataSourceDTO = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
-			DataSourceDTO.class);
+		DataSource salesforceDataSource = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSource(),
+			DataSource.class);
 
 		_configurationHttp.refreshConfiguration(
-			salesforceDataSourceDTO, "SALESFORCE");
+			salesforceDataSource, "SALESFORCE");
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).refresh(
-			salesforceDataSourceDTO
+			salesforceDataSource
 		);
 	}
 
 	@Test
 	public void testUpdateConfiguration() throws Exception {
-		DataSourceDTO salesforceDataSourceDTO = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSourceJSONObject(),
-			DataSourceDTO.class);
+		DataSource salesforceDataSource = _objectMapper.convertValue(
+			FaroInfoTestUtil.buildSalesforceDataSource(),
+			DataSource.class);
 
 		_configurationHttp.updateConfiguration(
-			salesforceDataSourceDTO, "SALESFORCE");
+			salesforceDataSource, "SALESFORCE");
 
 		Mockito.verify(
 			_salesforceConfigurationManagerImpl
 		).updateConfiguration(
-			salesforceDataSourceDTO
+			salesforceDataSource
 		);
 	}
 
