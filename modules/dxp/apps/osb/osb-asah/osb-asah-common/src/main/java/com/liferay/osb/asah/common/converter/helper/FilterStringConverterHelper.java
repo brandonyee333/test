@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.elasticsearch.converter.helper;
+package com.liferay.osb.asah.common.converter.helper;
 
 import java.util.List;
 

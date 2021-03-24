@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.elasticsearch.converter.helper;
+package com.liferay.osb.asah.common.converter.helper;
 
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
