@@ -143,7 +143,7 @@ public class FilterStringToConditionConverter {
 			return e;
 		}
 
-		fieldName = _toWeDeployFieldName(fieldName);
+		fieldName = _toFieldName(fieldName);
 
 		Condition inferredCondition =
 			filterStringConverterHelper.getInferredCondition(fieldName);
@@ -241,7 +241,7 @@ public class FilterStringToConditionConverter {
 					"got " + arguments.size() + " instead: " + arguments);
 		}
 
-		String fieldName = _toWeDeployFieldName(arguments.get(0));
+		String fieldName = _toFieldName(arguments.get(0));
 
 		String fieldValue = arguments.get(1);
 
@@ -293,7 +293,7 @@ public class FilterStringToConditionConverter {
 		return null;
 	}
 
-	private static String _toWeDeployFieldName(String fieldName) {
+	private static String _toFieldName(String fieldName) {
 		return fieldName.replace('/', '.');
 	}
 
