@@ -1,11 +1,3 @@
-upstream ROOT_GET {
-    server ${OSB_ASAH_BACKEND_HOST};
-}
-
-upstream ROOT_POST {
-    server ${OSB_ASAH_PUBLISHER_HOST};
-}
-
 server {
     listen 80;
 
@@ -14,7 +6,17 @@ server {
     }
 
     location = / {
-        proxy_pass http://ROOT_$request_method;
+        error_page 418 = @publisher_post;
+
+        if ($request_method = POST) {
+            return 418;
+        }
+
+        proxy_pass http://${OSB_ASAH_BACKEND_HOST};
+    }
+
+    location @publisher_post {
+        proxy_pass http://${OSB_ASAH_PUBLISHER_HOST};
     }
 
     location = /status {
