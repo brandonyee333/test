@@ -881,12 +881,15 @@ public class FaroInfoTestUtil {
 		JSONObject credentialsJSONObject, String url) {
 
 		DataSource dataSource = new DataSource();
-		Date date = new Date();
 
 		dataSource.setAuthorId(
 			Long.valueOf(RandomStringUtils.randomNumeric(5, 7)));
 		dataSource.setAuthorName(RandomTestUtil.randomFullName());
+
+		Date date = new Date();
+
 		dataSource.setCreateDate(date);
+
 		dataSource.setCredentialType(credentialsJSONObject.getString("type"));
 		dataSource.setEnableAllAccounts(true);
 		dataSource.setEnableAllContacts(true);
