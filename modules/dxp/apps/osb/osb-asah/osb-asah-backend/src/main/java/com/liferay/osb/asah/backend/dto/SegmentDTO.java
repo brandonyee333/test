@@ -1,0 +1,487 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.backend.dto;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.model.Segment;
+import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.common.util.StringUtil;
+
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import org.json.JSONObject;
+
+/**
+ * @author Inácio Nery
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonRootName("segments")
+public class SegmentDTO {
+
+	public SegmentDTO() {
+	}
+
+	public SegmentDTO(Segment segment) {
+		_activeIndividualCount = segment.getActiveIndividualCount();
+		_activitiesCount = segment.getActivitiesCount();
+		_anonymousIndividualCount = segment.getAnonymousIndividualCount();
+
+		AuthorDTO authorDTO = new AuthorDTO(segment);
+
+		if (!authorDTO.isEmpty()) {
+			_authorDTO = authorDTO;
+		}
+
+		_channelId = StringUtil.get(segment.getChannelId(), null);
+		_createDate = segment.getCreateDate();
+		_filter = segment.getFilter();
+		_filterMetadata = segment.getFilterMetadata();
+		_id = StringUtil.get(segment.getId(), null);
+		_includeAnonymousUsers = segment.getIncludeAnonymousUsers();
+		_individualCount = segment.getIndividualCount();
+		_knownIndividualCount = segment.getKnownIndividualCount();
+		_lastActivityDate = segment.getLastActivityDate();
+		_modifiedDate = segment.getModifiedDate();
+		_name = segment.getName();
+		_referencedAssetDataSourceIds = SetUtil.map(
+			segment.getReferencedAssetDataSourceIds(), String::valueOf);
+		_referencedAssetIds = SetUtil.map(
+			segment.getReferencedAssetIds(), String::valueOf);
+		_referencedFieldMappingIds = SetUtil.map(
+			segment.getReferencedFieldMappingIds(), String::valueOf);
+		_referencedGroupIds = SetUtil.map(
+			segment.getReferencedGroupIds(), String::valueOf);
+		_referencedOrganizationIds = SetUtil.map(
+			segment.getReferencedOrganizationIds(), String::valueOf);
+		_referencedRoleIds = SetUtil.map(
+			segment.getReferencedRoleIds(), String::valueOf);
+		_referencedTeamIds = SetUtil.map(
+			segment.getReferencedTeamIds(), String::valueOf);
+		_referencedUserGroupIds = SetUtil.map(
+			segment.getReferencedUserGroupIds(), String::valueOf);
+		_referencedUserIds = SetUtil.map(
+			segment.getReferencedUserIds(), String::valueOf);
+		_scope = segment.getScope();
+		_state = segment.getState();
+		_status = segment.getStatus();
+		_type = StringUtil.get(segment.getType(), null);
+	}
+
+	@JsonProperty("activeIndividualCount")
+	public Long getActiveIndividualCount() {
+		return _activeIndividualCount;
+	}
+
+	@JsonProperty("activitiesCount")
+	public Long getActivitiesCount() {
+		return _activitiesCount;
+	}
+
+	@JsonProperty("anonymousIndividualCount")
+	public Long getAnonymousIndividualCount() {
+		return _anonymousIndividualCount;
+	}
+
+	@JsonProperty("author")
+	public AuthorDTO getAuthorDTO() {
+		return _authorDTO;
+	}
+
+	@JsonProperty("channelId")
+	public String getChannelId() {
+		return _channelId;
+	}
+
+	@JsonAlias("createDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateCreated")
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
+	}
+
+	@JsonProperty("_embedded")
+	public Map<String, JSONObject> getEmbedded() {
+		return _embedded;
+	}
+
+	@JsonProperty("filter")
+	public String getFilter() {
+		return _filter;
+	}
+
+	@JsonProperty("filterMetadata")
+	public String getFilterMetadata() {
+		return _filterMetadata;
+	}
+
+	@JsonProperty("id")
+	public String getId() {
+		return _id;
+	}
+
+	@JsonProperty("includeAnonymousUsers")
+	public Boolean getIncludeAnonymousUsers() {
+		return _includeAnonymousUsers;
+	}
+
+	@JsonProperty("individualCount")
+	public Long getIndividualCount() {
+		return _individualCount;
+	}
+
+	@JsonProperty("knownIndividualCount")
+	public Long getKnownIndividualCount() {
+		return _knownIndividualCount;
+	}
+
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("lastActivityDate")
+	public Date getLastActivityDate() {
+		if (_lastActivityDate == null) {
+			return null;
+		}
+
+		return new Date(_lastActivityDate.getTime());
+	}
+
+	@JsonAlias("modifiedDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateModified")
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
+	@JsonProperty("name")
+	public String getName() {
+		return _name;
+	}
+
+	@JsonProperty("referencedAssetDataSourceIds")
+	public Set<String> getReferencedAssetDataSourceIds() {
+		return _referencedAssetDataSourceIds;
+	}
+
+	@JsonProperty("referencedAssetIds")
+	public Set<String> getReferencedAssetIds() {
+		return _referencedAssetIds;
+	}
+
+	@JsonProperty("referencedFieldMappingIds")
+	public Set<String> getReferencedFieldMappingIds() {
+		return _referencedFieldMappingIds;
+	}
+
+	@JsonProperty("referencedGroupIds")
+	public Set<String> getReferencedGroupIds() {
+		return _referencedGroupIds;
+	}
+
+	@JsonProperty("referencedOrganizationIds")
+	public Set<String> getReferencedOrganizationIds() {
+		return _referencedOrganizationIds;
+	}
+
+	@JsonProperty("referencedRoleIds")
+	public Set<String> getReferencedRoleIds() {
+		return _referencedRoleIds;
+	}
+
+	@JsonProperty("referencedTeamIds")
+	public Set<String> getReferencedTeamIds() {
+		return _referencedTeamIds;
+	}
+
+	@JsonProperty("referencedUserGroupIds")
+	public Set<String> getReferencedUserGroupIds() {
+		return _referencedUserGroupIds;
+	}
+
+	@JsonProperty("referencedUserIds")
+	public Set<String> getReferencedUserIds() {
+		return _referencedUserIds;
+	}
+
+	@JsonProperty("scope")
+	public String getScope() {
+		return _scope;
+	}
+
+	@JsonProperty("state")
+	public String getState() {
+		return _state;
+	}
+
+	@JsonProperty("status")
+	public String getStatus() {
+		return _status;
+	}
+
+	@JsonAlias("type")
+	@JsonProperty("segmentType")
+	public String getType() {
+		return _type;
+	}
+
+	public void setActiveIndividualCount(Long activeIndividualCount) {
+		_activeIndividualCount = activeIndividualCount;
+	}
+
+	public void setActivitiesCount(Long activitiesCount) {
+		_activitiesCount = activitiesCount;
+	}
+
+	public void setAnonymousIndividualCount(Long anonymousIndividualCount) {
+		_anonymousIndividualCount = anonymousIndividualCount;
+	}
+
+	public void setAuthorDTO(AuthorDTO authorDTO) {
+		_authorDTO = authorDTO;
+	}
+
+	public void setChannelId(String channelId) {
+		_channelId = channelId;
+	}
+
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
+	}
+
+	public void setEmbedded(Map<String, JSONObject> embedded) {
+		_embedded = embedded;
+	}
+
+	public void setFilter(String filter) {
+		_filter = filter;
+	}
+
+	public void setFilterMetadata(String filterMetadata) {
+		_filterMetadata = filterMetadata;
+	}
+
+	public void setId(String id) {
+		_id = id;
+	}
+
+	public void setIncludeAnonymousUsers(Boolean includeAnonymousUsers) {
+		_includeAnonymousUsers = includeAnonymousUsers;
+	}
+
+	public void setIndividualCount(Long individualCount) {
+		_individualCount = individualCount;
+	}
+
+	public void setKnownIndividualCount(Long knownIndividualCount) {
+		_knownIndividualCount = knownIndividualCount;
+	}
+
+	public void setLastActivityDate(Date lastActivityDate) {
+		if (lastActivityDate != null) {
+			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
+		}
+	}
+
+	public void setName(String name) {
+		_name = name;
+	}
+
+	public void setReferencedAssetDataSourceIds(
+		Set<String> referencedAssetDataSourceIds) {
+
+		_referencedAssetDataSourceIds = referencedAssetDataSourceIds;
+	}
+
+	public void setReferencedAssetIds(Set<String> referencedAssetIds) {
+		_referencedAssetIds = referencedAssetIds;
+	}
+
+	public void setReferencedFieldMappingIds(
+		Set<String> referencedFieldMappingIds) {
+
+		_referencedFieldMappingIds = referencedFieldMappingIds;
+	}
+
+	public void setReferencedGroupIds(Set<String> referencedGroupIds) {
+		_referencedGroupIds = referencedGroupIds;
+	}
+
+	public void setReferencedOrganizationIds(
+		Set<String> referencedOrganizationIds) {
+
+		_referencedOrganizationIds = referencedOrganizationIds;
+	}
+
+	public void setReferencedRoleIds(Set<String> referencedRoleIds) {
+		_referencedRoleIds = referencedRoleIds;
+	}
+
+	public void setReferencedTeamIds(Set<String> referencedTeamIds) {
+		_referencedTeamIds = referencedTeamIds;
+	}
+
+	public void setReferencedUserGroupIds(Set<String> referencedUserGroupIds) {
+		_referencedUserGroupIds = referencedUserGroupIds;
+	}
+
+	public void setReferencedUserIds(Set<String> referencedUserIds) {
+		_referencedUserIds = referencedUserIds;
+	}
+
+	public void setScope(String scope) {
+		_scope = scope;
+	}
+
+	public void setState(String state) {
+		_state = state;
+	}
+
+	public void setStatus(String status) {
+		_status = status;
+	}
+
+	public void setType(String type) {
+		_type = type;
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class AuthorDTO {
+
+		public AuthorDTO() {
+		}
+
+		public AuthorDTO(Segment segment) {
+			_id = StringUtil.get(segment.getAuthorId(), null);
+			_name = segment.getAuthorName();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof AuthorDTO)) {
+				return false;
+			}
+
+			AuthorDTO authorDTO = (AuthorDTO)obj;
+
+			if (Objects.equals(_id, authorDTO._id) &&
+				Objects.equals(_name, authorDTO._name)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("id")
+		public String getId() {
+			return _id;
+		}
+
+		@JsonProperty("name")
+		public String getName() {
+			return _name;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_id, _name);
+		}
+
+		@JsonIgnore
+		public boolean isEmpty() {
+			return equals(new AuthorDTO());
+		}
+
+		public void setId(String id) {
+			_id = id;
+		}
+
+		public void setName(String name) {
+			_name = name;
+		}
+
+		private String _id;
+		private String _name;
+
+	}
+
+	private Long _activeIndividualCount;
+	private Long _activitiesCount;
+	private Long _anonymousIndividualCount;
+	private AuthorDTO _authorDTO;
+	private String _channelId;
+	private Date _createDate;
+	private Map<String, JSONObject> _embedded;
+	private String _filter;
+	private String _filterMetadata;
+	private String _id;
+	private Boolean _includeAnonymousUsers;
+	private Long _individualCount;
+	private Long _knownIndividualCount;
+	private Date _lastActivityDate;
+	private Date _modifiedDate;
+	private String _name;
+	private Set<String> _referencedAssetDataSourceIds;
+	private Set<String> _referencedAssetIds;
+	private Set<String> _referencedFieldMappingIds;
+	private Set<String> _referencedGroupIds;
+	private Set<String> _referencedOrganizationIds;
+	private Set<String> _referencedRoleIds;
+	private Set<String> _referencedTeamIds;
+	private Set<String> _referencedUserGroupIds;
+	private Set<String> _referencedUserIds;
+	private String _scope;
+	private String _state;
+	private String _status;
+	private String _type;
+
+}
