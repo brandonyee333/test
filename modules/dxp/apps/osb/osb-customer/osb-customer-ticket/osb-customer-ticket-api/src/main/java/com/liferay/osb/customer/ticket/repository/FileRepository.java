@@ -14,9 +14,6 @@
 
 package com.liferay.osb.customer.ticket.repository;
 
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnicodeProperties;
-
 /**
  * @author Alan Zhang
  */
@@ -24,27 +21,19 @@ public class FileRepository {
 
 	public static final String DIR_ZENDESK_TICKET = "/osb/zendesk/ticket/";
 
-	public FileRepository(String properties) {
-		UnicodeProperties fileRepositoryProperties = new UnicodeProperties(
-			true);
-
-		fileRepositoryProperties.fastLoad(properties);
-
-		_dataRegions = StringUtil.split(
-			fileRepositoryProperties.get("dataRegions"));
-		_fileRepositoryId = fileRepositoryProperties.get("fileRepositoryId");
-		_host = fileRepositoryProperties.get("host");
-		_name = fileRepositoryProperties.get("name");
-	}
-
 	public FileRepository(
-		String fileRepositoryId, String name, String host,
-		String[] dataRegions) {
+		String fileRepositoryId, String name, String host, String[] dataRegions,
+		String[] accessOrganizationNames) {
 
 		_fileRepositoryId = fileRepositoryId;
 		_name = name;
 		_host = host;
 		_dataRegions = dataRegions;
+		_accessOrganizationNames = accessOrganizationNames;
+	}
+
+	public String[] getAccessOrganizationNames() {
+		return _accessOrganizationNames;
 	}
 
 	public String[] getDataRegions() {
@@ -63,6 +52,7 @@ public class FileRepository {
 		return _name;
 	}
 
+	private final String[] _accessOrganizationNames;
 	private final String[] _dataRegions;
 	private final String _fileRepositoryId;
 	private final String _host;

@@ -19,6 +19,9 @@ package com.liferay.osb.customer.ticket.configuration;
  */
 public class PortletPropsKeys {
 
+	public static final String FILE_REPOSITORY_ACCESS_ORGANIZATION_NAMES =
+		"file.repository.access.organization.names";
+
 	public static final String FILE_REPOSITORY_DATA_REGIONS =
 		"file.repository.data.regions";
 

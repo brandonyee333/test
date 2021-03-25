@@ -21,15 +21,20 @@ import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.customer.ticket.constants.TicketActionKeys;
+import com.liferay.osb.customer.ticket.constants.TicketAttachmentConstants;
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
+import com.liferay.osb.customer.ticket.repository.FileRepository;
+import com.liferay.osb.customer.ticket.repository.FileRepositoryManager;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
 
@@ -81,9 +86,67 @@ public class TicketAttachmentPermissionChecker {
 			return false;
 		}
 
-		if (ticketAttachment.isRegionRestricted()) {
-			return containsRegionRestricted(ticketAttachment);
+		if (ticketAttachment.getUserRole() ==
+				TicketAttachmentConstants.USER_ROLE_CUSTOMER) {
+
+			return containsCustomerUploaded(
+				permissionChecker, ticketAttachment);
 		}
+
+		return containsLiferayUploaded(permissionChecker, ticketAttachment);
+	}
+
+	protected static boolean containsCustomerUploaded(
+			PermissionChecker permissionChecker,
+			TicketAttachment ticketAttachment)
+		throws PortalException {
+
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
+			ticketAttachment.getAccountEntryId());
+
+		User user = permissionChecker.getUser();
+
+		try {
+			if (!_organizationLocalService.hasUserOrganization(
+					permissionChecker.getUserId(),
+					OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID) &&
+				!_organizationLocalService.hasUserOrganization(
+					permissionChecker.getUserId(),
+					OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) &&
+				!isPartner(
+					accountEntry.getKoroneikiAccountKey(), user.getUuid())) {
+
+				return false;
+			}
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
+
+		if (ticketAttachment.isRegionRestricted()) {
+			FileRepository fileRepository =
+				_fileRepositoryManager.getFileRepository(
+					ticketAttachment.getFileRepositoryId());
+
+			for (Organization organization : user.getOrganizations()) {
+				if (ArrayUtil.contains(
+						fileRepository.getAccessOrganizationNames(),
+						organization.getName())) {
+
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		return true;
+	}
+
+	protected static boolean containsLiferayUploaded(
+			PermissionChecker permissionChecker,
+			TicketAttachment ticketAttachment)
+		throws PortalException {
 
 		if (_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),
@@ -119,13 +182,6 @@ public class TicketAttachmentPermissionChecker {
 		catch (Exception e) {
 			throw new PortalException(e);
 		}
-
-		return false;
-	}
-
-	protected static boolean containsRegionRestricted(
-			TicketAttachment ticketAttachment)
-		throws PortalException {
 
 		return false;
 	}
@@ -177,6 +233,13 @@ public class TicketAttachmentPermissionChecker {
 	}
 
 	@Reference(unbind = "-")
+	protected void setFileRepositoryManager(
+		FileRepositoryManager fileRepositoryManager) {
+
+		_fileRepositoryManager = fileRepositoryManager;
+	}
+
+	@Reference(unbind = "-")
 	protected void setOrganizationLocalService(
 		OrganizationLocalService organizationLocalService) {
 
@@ -190,6 +253,7 @@ public class TicketAttachmentPermissionChecker {
 
 	private static AccountEntryLocalService _accountEntryLocalService;
 	private static ContactRoleWebService _contactRoleWebService;
+	private static FileRepositoryManager _fileRepositoryManager;
 	private static OrganizationLocalService _organizationLocalService;
 	private static TeamWebService _teamWebService;
 

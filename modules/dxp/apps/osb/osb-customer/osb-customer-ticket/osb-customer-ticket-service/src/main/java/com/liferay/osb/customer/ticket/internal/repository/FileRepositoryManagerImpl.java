@@ -62,8 +62,12 @@ public class FileRepositoryManagerImpl implements FileRepositoryManager {
 		String[] dataRegions = TicketConfigurationUtil.getArray(
 			PortletPropsKeys.FILE_REPOSITORY_DATA_REGIONS,
 			new Filter(fileRepositoryId));
+		String[] accessOrganizationNames = TicketConfigurationUtil.getArray(
+			PortletPropsKeys.FILE_REPOSITORY_ACCESS_ORGANIZATION_NAMES,
+			new Filter(fileRepositoryId));
 
-		return new FileRepository(fileRepositoryId, name, host, dataRegions);
+		return new FileRepository(
+			fileRepositoryId, name, host, dataRegions, accessOrganizationNames);
 	}
 
 }

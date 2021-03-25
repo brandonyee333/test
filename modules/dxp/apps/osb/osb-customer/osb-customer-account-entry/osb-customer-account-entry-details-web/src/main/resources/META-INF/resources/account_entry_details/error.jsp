@@ -30,6 +30,9 @@
 			<c:when test="<%= SessionErrors.contains(renderRequest, NoSuchTicketAttachmentException.class.getName()) %>">
 				<liferay-ui:message key="the-selected-attachment-no-longer-exists" />
 			</c:when>
+			<c:when test="<%= SessionErrors.contains(renderRequest, PrincipalException.getNestedClasses()) %>">
+				<liferay-ui:message key="you-do-not-have-permission-to-access-the-requested-resource" />
+			</c:when>
 			<c:when test="<%= SessionErrors.contains(renderRequest, ZendeskTicketClosedException.class.getName()) %>">
 				<liferay-ui:message key="this-ticket-is-closed" />
 			</c:when>

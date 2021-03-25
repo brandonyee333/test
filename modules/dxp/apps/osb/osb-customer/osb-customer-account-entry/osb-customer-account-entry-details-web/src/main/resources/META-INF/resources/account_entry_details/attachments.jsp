@@ -26,10 +26,16 @@
 	>
 
 		<%
-		ResourceURL resourceURL = liferayPortletResponse.createResourceURL();
+		String ticketAttachmentURL = StringPool.BLANK;
 
-		resourceURL.setParameter("ticketAttachmentId", String.valueOf(ticketAttachment.getTicketAttachmentId()));
-		resourceURL.setResourceID("/ticket_attachment");
+		if (TicketAttachmentPermissionChecker.contains(permissionChecker, ticketAttachment, ActionKeys.VIEW)) {
+			ResourceURL resourceURL = liferayPortletResponse.createResourceURL();
+
+			resourceURL.setParameter("ticketAttachmentId", String.valueOf(ticketAttachment.getTicketAttachmentId()));
+			resourceURL.setResourceID("/ticket_attachment");
+
+			ticketAttachmentURL = resourceURL.toString();
+		}
 		%>
 
 		<liferay-ui:search-container-column-text
@@ -40,7 +46,7 @@
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text
-			href="<%= resourceURL %>"
+			href="<%= ticketAttachmentURL %>"
 			name="file-name"
 			value="<%= ticketAttachment.getFileName() %>"
 		/>
