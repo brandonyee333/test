@@ -71,6 +71,9 @@
 				"referencedOrganizationIds": {
 					"type": "keyword"
 				},
+				"referencedRoleIds": {
+					"type": "keyword"
+				},
 				"referencedTeamIds": {
 					"type": "keyword"
 				},
