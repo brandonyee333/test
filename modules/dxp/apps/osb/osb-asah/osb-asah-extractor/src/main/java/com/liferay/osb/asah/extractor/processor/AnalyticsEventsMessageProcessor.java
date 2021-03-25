@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.AnalyticsEventStorageDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -45,10 +45,10 @@ import com.liferay.osb.asah.extractor.ip.geocoder.IPInfo;
 
 import io.prometheus.client.Counter;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -64,10 +64,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -237,37 +233,14 @@ public class AnalyticsEventsMessageProcessor {
 	}
 
 	private Set<String> _getSegmentNames(
-		String channelId, JSONObject individualJSONObject) {
+		Long channelId, JSONObject individualJSONObject) {
 
-		List<String> individualSegmentIds = JSONUtil.toStringList(
-			individualJSONObject.getJSONArray("individualSegmentIds"));
-
-		if (individualSegmentIds.isEmpty()) {
-			return Collections.emptySet();
-		}
-
-		JSONArray individualSegmentsJSONArray =
-			_faroInfoElasticsearchInvoker.get(
-				"individual-segments",
-				QueryBuilders.termQuery("channelId", channelId));
-
-		individualSegmentIds.retainAll(
-			JSONUtil.toStringList(individualSegmentsJSONArray, "id"));
-
-		if (individualSegmentIds.isEmpty()) {
-			return Collections.emptySet();
-		}
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termsQuery("id", individualSegmentIds)
-		).filter(
-			QueryBuilders.termQuery("status", "ACTIVE")
-		);
-
-		return JSONUtil.toStringSet(
-			_faroInfoElasticsearchInvoker.get(
-				"individual-segments", boolQueryBuilder),
-			"name");
+		return new HashSet<>(
+			_segmentDog.getSegmentNames(
+				channelId,
+				JSONUtil.toLongSet(
+					individualJSONObject.getJSONArray(
+						"individualSegmentIds"))));
 	}
 
 	@PostConstruct
@@ -397,7 +370,7 @@ public class AnalyticsEventsMessageProcessor {
 
 		boolean knownIndividual = _isKnownIndividual(individualJSONObject);
 		Set<String> segmentNames = _getSegmentNames(
-			channelId, individualJSONObject);
+			Long.valueOf(channelId), individualJSONObject);
 
 		Set<AnalyticsEvent> analyticsEvents = new TreeSet<>(
 			Comparator.comparing(AnalyticsEvent::getId));
@@ -505,6 +478,9 @@ public class AnalyticsEventsMessageProcessor {
 
 	@MessageSubscriber.Autowired(channel = Channel.ANALYTICS_EVENTS_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 	private Storage _storage;
 

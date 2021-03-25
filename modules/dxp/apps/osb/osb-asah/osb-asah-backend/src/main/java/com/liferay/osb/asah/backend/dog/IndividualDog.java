@@ -100,6 +100,37 @@ public class IndividualDog {
 	}
 
 	public ResultBag<Individual> getIndividualResultBag(
+		String query, Long segmentId, int size, int start) {
+
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		if (Objects.nonNull(segmentId)) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery(
+					"individualSegmentIds", String.valueOf(segmentId)));
+		}
+
+		String[] individualDemographicsSearchableFieldNames =
+			_getIndividualDemographicsSearchableFieldNames();
+
+		if (StringUtils.isNotEmpty(query) &&
+			(individualDemographicsSearchableFieldNames != null)) {
+
+			boolQueryBuilder.filter(
+				QueryBuilders.multiMatchQuery(
+					query, individualDemographicsSearchableFieldNames));
+		}
+
+		SearchHits searchHits = _dataDog.querySearchHits(
+			"individuals", _faroInfoElasticsearchInvoker,
+			_buildSearchSourceBuilder(
+				_getIndividualDemographicsFetchSourceExcludes(),
+				boolQueryBuilder, size, start));
+
+		return DogUtil.createResultBag(this::_mapIndividual, searchHits);
+	}
+
+	public ResultBag<Individual> getIndividualResultBag(
 		String keywords, MetricType metricType,
 		SearchQueryContext searchQueryContext, int size, int start) {
 
@@ -143,37 +174,6 @@ public class IndividualDog {
 						demographicsJSONObject));
 			},
 			searchHits);
-	}
-
-	public ResultBag<Individual> getIndividualResultBag(
-		String individualSegmentId, String query, int size, int start) {
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		if (StringUtils.isNotEmpty(individualSegmentId)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery(
-					"individualSegmentIds", individualSegmentId));
-		}
-
-		String[] individualDemographicsSearchableFieldNames =
-			_getIndividualDemographicsSearchableFieldNames();
-
-		if (StringUtils.isNotEmpty(query) &&
-			(individualDemographicsSearchableFieldNames != null)) {
-
-			boolQueryBuilder.filter(
-				QueryBuilders.multiMatchQuery(
-					query, individualDemographicsSearchableFieldNames));
-		}
-
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"individuals", _faroInfoElasticsearchInvoker,
-			_buildSearchSourceBuilder(
-				_getIndividualDemographicsFetchSourceExcludes(),
-				boolQueryBuilder, size, start));
-
-		return DogUtil.createResultBag(this::_mapIndividual, searchHits);
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(

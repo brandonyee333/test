@@ -48,7 +48,8 @@ public class ReportHttpImpl implements ReportHttp {
 	@Override
 	public JSONObject getSegmentsJSONObject(String after) {
 		return _objectMapper.convertValue(
-			_reportRestController.getSegmentResultBag(after), JSONObject.class);
+			_reportRestController.getSegmentDTOPageDTO(after),
+			JSONObject.class);
 	}
 
 	@Autowired

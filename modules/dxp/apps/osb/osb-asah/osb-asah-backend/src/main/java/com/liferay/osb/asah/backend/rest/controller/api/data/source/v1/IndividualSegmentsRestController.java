@@ -18,29 +18,33 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.dto.MembershipDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.common.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.backend.rest.response.MembershipChangesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
-import com.liferay.osb.asah.backend.rest.response.embedded.IndividualSegmentsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.Membership;
-import com.liferay.osb.asah.common.rest.response.PostResponse;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.annotation.SuppressErrorLogging;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -100,24 +104,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			_getIndividualsQueryBuilder(
 				includeAnonymousUsers, id, filterString),
 			size, sorts);
-	}
-
-	@GetMapping("/{id}")
-	public String getIndividualSegment(
-			@PathVariable String id,
-			@RequestParam(required = false) String expand)
-		throws Exception {
-
-		if (StringUtils.isEmpty(expand)) {
-			return toItemGetResponse("individual-segments", id);
-		}
-
-		return toItemGetResponse(
-			"individual-segments",
-			new IndividualSegmentsEmbeddedJSONObjectCreator(
-				dxpRawElasticsearchInvoker, faroInfoElasticsearchInvoker,
-				expand),
-			id);
 	}
 
 	@GetMapping(params = "!apply")
@@ -226,7 +212,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		if (!_segmentDog.isIncludeAnonymousUsers(id)) {
+		if (!segmentDog.isIncludeAnonymousUsers(id)) {
 			List<Long> individualIds = new ArrayList<>();
 
 			SearchResponse searchResponse = faroInfoElasticsearchInvoker.search(
@@ -259,57 +245,50 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			}
 
 			return _toPageDTO(
-				_membershipDog.getMembershipsPage(
+				membershipDog.getMembershipsPage(
 					individualIds, id, "ACTIVE", page, size, sorts));
 		}
 
 		return _toPageDTO(
-			_membershipDog.getMembershipsPage(id, "ACTIVE", page, size, sorts));
+			membershipDog.getMembershipsPage(id, "ACTIVE", page, size, sorts));
 	}
 
-	@PostMapping
-	public String postIndividualSegment(@RequestBody String json)
+	@GetMapping("/{id}")
+	public SegmentDTO getSegmentDTO(
+			@PathVariable Long id,
+			@RequestParam(required = false) String expand)
 		throws Exception {
 
-		PostResponse postResponse = new PostResponse() {
+		SegmentDTO segmentDTO = new SegmentDTO(_segmentDog.getSegment(id));
 
-			@Override
-			protected JSONObject invokeElasticsearch(JSONObject jsonObject) {
-				try {
-					return _segmentDog.addIndividualSegment(jsonObject);
+		if (StringUtils.isNotEmpty(expand)) {
+			String[] expandParts = expand.split(",");
+
+			for (String expandPart : expandParts) {
+				if (expandPart.equals("referenced-objects")) {
+					segmentDTO.setEmbedded(
+						Collections.singletonMap(
+							"referenced-objects",
+							_getReferencedObjectsJSONObject(id)));
 				}
-				catch (Exception e) {
-					throw new RuntimeException(e);
+				else if (_log.isWarnEnabled()) {
+					_log.warn("Invalid expand: " + expandPart);
 				}
 			}
+		}
 
-			@Override
-			protected void onBeforeAdd(JSONObject jsonObject) {
-				super.onBeforeAdd(jsonObject);
-
-				jsonObject.put("activitiesCount", 0);
-			}
-
-		};
-
-		postResponse.setElasticsearchInvoker(faroInfoElasticsearchInvoker);
-		postResponse.setJSON(json);
-
-		return postResponse.respond();
+		return segmentDTO;
 	}
 
 	@PostMapping("/{id}/memberships")
 	public String postMembership(
-			@PathVariable String id, @RequestBody String json)
+			@PathVariable Long id, @RequestBody String json)
 		throws Exception {
 
-		JSONObject individualSegmentJSONObject = new JSONObject(
-			getIndividualSegment(id, null));
+		SegmentDTO segmentDTO = getSegmentDTO(id, null);
 
-		if (!Objects.equals(
-				individualSegmentJSONObject.get("segmentType"), "STATIC") ||
-			!Objects.equals(
-				individualSegmentJSONObject.get("status"), "ACTIVE")) {
+		if (!Objects.equals(segmentDTO.getType(), "STATIC") ||
+			!Objects.equals(segmentDTO.getStatus(), "ACTIVE")) {
 
 			throw new Exception(
 				"Membership POST requests can only be made to an active " +
@@ -317,10 +296,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		}
 
 		if (json.startsWith("{")) {
-			Membership membership = _objectMapper.convertValue(
+			Membership membership = objectMapper.convertValue(
 				new JSONObject(json), Membership.class);
 
-			membership.setIndividualSegmentId(Long.valueOf(id));
+			membership.setIndividualSegmentId(id);
 
 			if (_isMember(
 					membership.getIndividualId(),
@@ -329,11 +308,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 				return null;
 			}
 
-			membership = _membershipDog.addMembership(membership);
+			membership = membershipDog.addMembership(membership);
 
 			membership.setId(null);
 
-			JSONObject membershipJSONObject = _objectMapper.convertValue(
+			JSONObject membershipJSONObject = objectMapper.convertValue(
 				membership, JSONObject.class);
 
 			return membershipJSONObject.toString();
@@ -342,11 +321,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		Stream<Object> stream = JSONUtil.toObjectStream(new JSONArray(json));
 
 		List<Membership> memberships = stream.map(
-			jsonObject -> _objectMapper.convertValue(
+			jsonObject -> objectMapper.convertValue(
 				jsonObject, Membership.class)
 		).map(
 			membership -> {
-				membership.setIndividualSegmentId(Long.valueOf(id));
+				membership.setIndividualSegmentId(id);
 
 				return membership;
 			}
@@ -362,16 +341,63 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			return null;
 		}
 
-		memberships = _membershipDog.addMemberships(memberships);
+		memberships = membershipDog.addMemberships(memberships);
 
 		memberships.forEach(membership -> membership.setId(null));
 
 		JSONArray membershipJSONArray = JSONUtil.toJSONArray(
 			memberships,
-			membership -> _objectMapper.convertValue(
+			membership -> objectMapper.convertValue(
 				membership, JSONObject.class));
 
 		return membershipJSONArray.toString();
+	}
+
+	@PostMapping
+	public SegmentDTO postSegment(@RequestBody SegmentDTO segmentDTO)
+		throws Exception {
+
+		segmentDTO.setActivitiesCount(0L);
+
+		Date now = new Date();
+
+		segmentDTO.setCreateDate(now);
+
+		segmentDTO.setId(null);
+
+		segmentDTO.setModifiedDate(now);
+
+		return objectMapper.convertValue(
+			segmentDog.addSegment(
+				objectMapper.convertValue(segmentDTO, Segment.class)),
+			SegmentDTO.class);
+	}
+
+	@Autowired
+	protected MembershipDog membershipDog;
+
+	@Autowired
+	protected ObjectMapper objectMapper;
+
+	@Autowired
+	protected SegmentDog segmentDog;
+
+	private void _addReferencedObject(
+		String collectionName, ElasticsearchInvoker elasticsearchInvoker,
+		Set<Long> referencedIds, JSONObject referencedObjectsJSONObject) {
+
+		if ((referencedIds == null) || referencedIds.isEmpty()) {
+			referencedObjectsJSONObject.put(collectionName, new JSONArray());
+
+			return;
+		}
+
+		referencedObjectsJSONObject.put(
+			collectionName,
+			elasticsearchInvoker.get(
+				collectionName,
+				QueryBuilders.termsQuery(
+					"id", ListUtil.map(referencedIds, String::valueOf))));
 	}
 
 	private QueryBuilder _getIndividualSegmentsQueryBuilder(
@@ -414,20 +440,19 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			QueryBuilders.termQuery(
 				"individualSegmentIds", individualSegmentId));
 
-		JSONObject individualSegmentJSONObject =
-			faroInfoElasticsearchInvoker.get(
-				"individual-segments", individualSegmentId);
+		Segment segment = _segmentDog.getSegment(
+			Long.valueOf(individualSegmentId));
 
-		String channelId = individualSegmentJSONObject.optString("channelId");
+		Long channelId = segment.getChannelId();
 
-		if (StringUtils.isNotEmpty(channelId)) {
+		if (Objects.nonNull(channelId)) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("channelIds", channelId));
+				QueryBuilders.termQuery(
+					"channelIds", String.valueOf(channelId)));
 		}
 
 		if (includeAnonymousUsers == null) {
-			includeAnonymousUsers = individualSegmentJSONObject.optBoolean(
-				"includeAnonymousUsers");
+			includeAnonymousUsers = segment.getIncludeAnonymousUsers();
 		}
 
 		if (!includeAnonymousUsers) {
@@ -452,11 +477,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			QueryBuilders.termQuery(
 				"individualSegmentId", individualSegmentId));
 
-		JSONObject individualSegmentJSONObject =
-			faroInfoElasticsearchInvoker.get(
-				"individual-segments", individualSegmentId);
+		Segment segment = _segmentDog.getSegment(
+			Long.valueOf(individualSegmentId));
 
-		if (!individualSegmentJSONObject.optBoolean("includeAnonymousUsers")) {
+		if (!segment.getIncludeAnonymousUsers()) {
 			boolQueryBuilder.filter(
 				QueryBuilders.existsQuery("individualEmail"));
 		}
@@ -469,8 +493,46 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			FilterStringToQueryBuilderConverter.convert(filterString));
 	}
 
+	private JSONObject _getReferencedObjectsJSONObject(Long segmentId) {
+		Segment segment = _segmentDog.getSegment(segmentId);
+
+		try {
+			JSONObject jsonObject = new JSONObject();
+
+			_addReferencedObject(
+				"assets", faroInfoElasticsearchInvoker,
+				segment.getReferencedAssetIds(), jsonObject);
+			_addReferencedObject(
+				"field-mappings", faroInfoElasticsearchInvoker,
+				segment.getReferencedFieldMappingIds(), jsonObject);
+			_addReferencedObject(
+				"groups", dxpRawElasticsearchInvoker,
+				segment.getReferencedGroupIds(), jsonObject);
+			_addReferencedObject(
+				"organizations", faroInfoElasticsearchInvoker,
+				segment.getReferencedOrganizationIds(), jsonObject);
+			_addReferencedObject(
+				"roles", dxpRawElasticsearchInvoker,
+				segment.getReferencedRoleIds(), jsonObject);
+			_addReferencedObject(
+				"teams", dxpRawElasticsearchInvoker,
+				segment.getReferencedTeamIds(), jsonObject);
+			_addReferencedObject(
+				"user-groups", dxpRawElasticsearchInvoker,
+				segment.getReferencedUserGroupIds(), jsonObject);
+			_addReferencedObject(
+				"users", dxpRawElasticsearchInvoker,
+				segment.getReferencedUserIds(), jsonObject);
+
+			return jsonObject;
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
+
 	private boolean _isMember(Long individualId, Long individualSegmentId) {
-		if (_membershipDog.isMember(individualId, individualSegmentId)) {
+		if (membershipDog.isMember(individualId, individualSegmentId)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Not adding membership because individual " + individualId +
@@ -503,12 +565,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
-
-	@Autowired
-	private MembershipDog _membershipDog;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

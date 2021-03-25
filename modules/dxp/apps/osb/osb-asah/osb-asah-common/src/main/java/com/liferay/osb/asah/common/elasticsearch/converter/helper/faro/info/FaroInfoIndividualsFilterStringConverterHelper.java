@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
@@ -250,27 +251,9 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			queryBuilder
 		).iterate();
 
-		List<Long> individualSegmentIds = new ArrayList<>(
-			individualSegmentNames.size());
-
-		JSONArrayIterator.of(
-			"individual-segments", _faroInfoElasticsearchInvoker,
-			individualSegmentJSONObject -> {
-				individualSegmentIds.add(
-					individualSegmentJSONObject.getLong("id"));
-
-				return null;
-			}
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("name", individualSegmentNames)
-			).filter(
-				QueryBuilders.termQuery("status", "INACTIVE")
-			)
-		).iterate();
-
 		List<Long> individualIds = _membershipDog.getIndividualIds(
-			individualSegmentIds, value, minDocCount, checkEqualityOnly);
+			_segmentDog.getSegmentIds(individualSegmentNames, "INACTIVE"),
+			value, minDocCount, checkEqualityOnly);
 
 		QueryBuilder accountsFilterByCountFunctionQueryBuilder =
 			QueryBuilders.termsQuery(
@@ -954,5 +937,8 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	@Autowired
 	private MembershipDog _membershipDog;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

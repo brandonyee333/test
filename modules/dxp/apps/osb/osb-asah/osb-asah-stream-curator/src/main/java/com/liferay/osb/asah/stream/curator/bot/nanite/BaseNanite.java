@@ -15,9 +15,11 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
 import com.liferay.osb.asah.common.util.MapUtil;
@@ -32,6 +34,7 @@ import com.liferay.osb.asah.stream.curator.model.page.BasePageModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -328,9 +331,12 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 			model.setKnownIndividual(
 				FaroInfoIndividualUtil.isKnownIndividual(individualJSONObject));
 			model.setSegmentNames(
-				_faroInfoIndividualDog.getIndividualSegmentNames(
-					Long.valueOf(analyticsEvent.getChannelId()),
-					individualJSONObject));
+				new HashSet<String>(
+					_segmentDog.getSegmentNames(
+						Long.valueOf(analyticsEvent.getChannelId()),
+						JSONUtil.toLongSet(
+							individualJSONObject.getJSONArray(
+								"individualSegmentIds")))));
 		}
 	}
 
@@ -405,5 +411,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

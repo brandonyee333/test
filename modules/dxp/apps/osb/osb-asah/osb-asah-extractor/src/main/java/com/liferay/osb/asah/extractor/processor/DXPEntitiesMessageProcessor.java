@@ -339,8 +339,8 @@ public class DXPEntitiesMessageProcessor {
 
 		if (action.equalsIgnoreCase("delete") && (jsonObject != null)) {
 			try {
-				_segmentDog.disableDynamicIndividualSegments(
-					dxpEntityType, jsonObject.getString("id"));
+				_segmentDog.disableDynamicSegments(
+					dxpEntityType, jsonObject.getLong("id"));
 			}
 			catch (Exception e) {
 				if (_log.isInfoEnabled()) {

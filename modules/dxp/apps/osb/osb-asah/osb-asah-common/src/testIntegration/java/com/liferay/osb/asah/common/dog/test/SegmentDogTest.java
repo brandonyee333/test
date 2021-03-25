@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -926,10 +927,13 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			String[] expectedReferencedIds, String filterString, String key)
 		throws Exception {
 
-		JSONObject individualSegmentJSONObject =
-			_segmentDog.addIndividualSegment(
-				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-					filterString));
+		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
+			_segmentDog.addSegment(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
+						filterString),
+					Segment.class)),
+			JSONObject.class);
 
 		_assertSameContents(
 			individualSegmentJSONObject.getJSONArray(
@@ -958,10 +962,13 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			String[] expectedReferencedOrganizationIds, String filterString)
 		throws Exception {
 
-		JSONObject individualSegmentJSONObject =
-			_segmentDog.addIndividualSegment(
-				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-					filterString));
+		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
+			_segmentDog.addSegment(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
+						filterString),
+					Segment.class)),
+			JSONObject.class);
 
 		_assertSameContents(
 			individualSegmentJSONObject.getJSONArray(
@@ -1043,9 +1050,14 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 				expectedAddReferencedFieldMappingIds,
 				expectedAddReferencedOrganizationIds, addFilter);
 
-		individualSegmentJSONObject = _segmentDog.updateIndividualSegment(
-			individualSegmentJSONObject.getLong("id"),
-			JSONUtil.put("filter", updateFilter));
+		Segment segment = new Segment();
+
+		segment.setFilter(updateFilter);
+
+		individualSegmentJSONObject = _objectMapper.convertValue(
+			_segmentDog.updateSegment(
+				segment, individualSegmentJSONObject.getLong("id")),
+			JSONObject.class);
 
 		_assertSameContents(
 			individualSegmentJSONObject.getJSONArray(

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.individual;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -48,7 +49,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 
@@ -144,25 +144,10 @@ public class IndividualNanite implements Nanite {
 			return Collections.emptyList();
 		}
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termsQuery(
-				"id",
-				JSONUtil.toStringSet(
-					individualJSONObject.getJSONArray("individualSegmentIds")))
-		).filter(
-			QueryBuilders.termQuery("status", "ACTIVE")
-		);
-
-		if (Objects.nonNull(channelId)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery(
-					"channelId", String.valueOf(channelId)));
-		}
-
-		return JSONUtil.toStringList(
-			_faroInfoElasticsearchInvoker.get(
-				"individual-segments", boolQueryBuilder),
-			"name");
+		return _segmentDog.getSegmentNames(
+			channelId,
+			JSONUtil.toLongSet(
+				individualJSONObject.getJSONArray("individualSegmentIds")));
 	}
 
 	private JSONArray _mergeActivitiesCounts(
@@ -450,5 +435,8 @@ public class IndividualNanite implements Nanite {
 
 	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

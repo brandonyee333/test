@@ -14,22 +14,22 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.batch.curator.bot.nanite.arm.InterestScoreArm;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAssetDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoInterestDog;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Segment;
 
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -82,31 +82,28 @@ public class InterestThresholdScoreNanite extends BaseNanite {
 
 		_faroInfoInterestDog.addOrUpdateInterestThreshold(score);
 
-		JSONArrayIterator.of(
-			"individual-segments", faroInfoElasticsearchInvoker,
-			individualSegmentJSONObject -> {
+		int page = 0;
+
+		List<Segment> segments = _segmentDog.getSegments(
+			".*interests.filter\\(filter='.*score eq ''true''.*", "READY",
+			"ACTIVE", page, 500);
+
+		while (!segments.isEmpty()) {
+			for (Segment segment : segments) {
 				_asahTaskDog.scheduleAsahTask(
 					"UpdateDynamicMembershipsNanite",
 					JSONUtil.put(
 						"dateModified", DateUtil.newDateString()
 					).put(
 						"individualSegmentJSONObject",
-						individualSegmentJSONObject
+						_objectMapper.convertValue(segment, JSONObject.class)
 					));
-
-				return null;
 			}
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.regexpQuery(
-					"filter",
-					".*interests.filter\\(filter='.*score eq ''true''.*")
-			).filter(
-				QueryBuilders.termQuery("state", "READY")
-			).filter(
-				QueryBuilders.termQuery("status", "ACTIVE")
-			)
-		).iterate();
+
+			segments = _segmentDog.getSegments(
+				".*interests.filter\\(filter='.*score eq ''true''.*", "READY",
+				"ACTIVE", ++page, 500);
+		}
 
 		_faroInfoInterestDog.clearCache();
 	}
@@ -130,5 +127,11 @@ public class InterestThresholdScoreNanite extends BaseNanite {
 
 	@Autowired
 	private InterestScoreArm _interestScoreArm;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

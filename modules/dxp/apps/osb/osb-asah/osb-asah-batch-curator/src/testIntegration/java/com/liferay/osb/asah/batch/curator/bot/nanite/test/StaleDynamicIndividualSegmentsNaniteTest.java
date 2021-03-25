@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.batch.curator.bot.nanite.StaleDynamicIndividualSegmentsNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
@@ -24,6 +26,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -281,18 +284,19 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		JSONArray membershipsJSONArray = new JSONArray();
 
 		for (String duration : durations) {
-			JSONObject individualSegmentJSONObject =
-				_segmentDog.addIndividualSegment(
+			Segment segment = _segmentDog.addSegment(
+				_objectMapper.convertValue(
 					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
 						"1",
 						"(((activities/" + duration + " eq 'Page#pageViewed#" +
-							_assetJSONObject.getString("id") + "')))"));
+							_assetJSONObject.getString("id") + "')))"),
+					Segment.class));
 
 			_faroInfoIndividualDog.updateIndividual(
 				_individualJSONObject.getString("id"),
 				JSONUtil.put(
 					"individualSegmentIds",
-					JSONUtil.put(individualSegmentJSONObject.getString("id"))),
+					JSONUtil.put(String.valueOf(segment.getId()))),
 				false);
 
 			membershipsJSONArray.put(
@@ -300,7 +304,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 					"memberships",
 					FaroInfoTestUtil.buildMembershipJSONObject(
 						_individualJSONObject.getString("id"),
-						individualSegmentJSONObject.getString("id"))));
+						String.valueOf(segment.getId()))));
 		}
 
 		return membershipsJSONArray;
@@ -312,19 +316,20 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 		JSONArray membershipsJSONArray = new JSONArray();
 
 		for (String duration : durations) {
-			JSONObject individualSegmentJSONObject =
-				_segmentDog.addIndividualSegment(
+			Segment segment = _segmentDog.addSegment(
+				_objectMapper.convertValue(
 					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
 						"1",
 						"(sessions.filter(filter='(context/country eq ''" +
 							"United States'' and completeDate gt ''" +
-								duration + "'')'))"));
+								duration + "'')'))"),
+					Segment.class));
 
 			_faroInfoIndividualDog.updateIndividual(
 				_individualJSONObject.getString("id"),
 				JSONUtil.put(
 					"individualSegmentIds",
-					JSONUtil.put(individualSegmentJSONObject.getString("id"))),
+					JSONUtil.put(String.valueOf(segment.getId()))),
 				false);
 
 			membershipsJSONArray.put(
@@ -332,7 +337,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 					"memberships",
 					FaroInfoTestUtil.buildMembershipJSONObject(
 						_individualJSONObject.getString("id"),
-						individualSegmentJSONObject.getString("id"))));
+						String.valueOf(segment.getId()))));
 		}
 
 		return membershipsJSONArray;
@@ -407,8 +412,10 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
-
 	private JSONObject _individualJSONObject;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

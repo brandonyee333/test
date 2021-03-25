@@ -18,14 +18,12 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.Segment;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,26 +45,13 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 
 		String dateCreated = accountJSONObject.getString("dateCreated");
 
-		_segmentDog.addIndividualSegment(
-			JSONUtil.put(
-				"activitiesCount", 0
-			).put(
-				"dateCreated", dateCreated
-			).put(
-				"dateModified", dateCreated
-			).put(
-				"filter",
-				"((dataSourceAccountPKs/accountPKs eq '" +
-					accountJSONObject.getString("accountPK") + "'))"
-			).put(
-				"name", "Account: " + accountJSONObject.getString("id")
-			).put(
-				"scope", "PROJECT"
-			).put(
-				"segmentType", "DYNAMIC"
-			).put(
-				"status", "INACTIVE"
-			));
+		_segmentDog.addSegment(
+			0L, DateUtil.toUTCDate(dateCreated),
+			"((dataSourceAccountPKs/accountPKs eq '" +
+				accountJSONObject.getString("accountPK") + "'))",
+			DateUtil.toUTCDate(dateCreated),
+			"Account: " + accountJSONObject.getString("id"), "PROJECT",
+			"DYNAMIC", "INACTIVE");
 
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
@@ -117,24 +102,16 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 	public void deleteAccount(JSONObject accountJSONObject) {
 		String accountId = accountJSONObject.getString("id");
 
-		JSONObject individualSegmentJSONObject = elasticsearchInvoker.fetch(
-			"individual-segments",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("name", "Account: " + accountId)
-			).filter(
-				QueryBuilders.termQuery("status", "INACTIVE")
-			));
+		Segment segment = _segmentDog.fetchSegment(
+			"Account: " + accountId, "INACTIVE");
 
-		if (individualSegmentJSONObject != null) {
-			String individualSegmentId = individualSegmentJSONObject.getString(
-				"id");
-
-			elasticsearchInvoker.delete(
-				"individual-segments", individualSegmentId);
+		if (segment != null) {
+			_segmentDog.deleteSegment(segment.getId());
 
 			_asahTaskDog.scheduleAsahTask(
 				"DeleteIndividualSegmentTasksNanite",
-				JSONUtil.put("individualSegmentId", individualSegmentId));
+				JSONUtil.put(
+					"individualSegmentId", String.valueOf(segment.getId())));
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
@@ -155,6 +132,10 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 				"contains(filter, 'accounts.filter(') or contains(filter, " +
 					"'accounts.filterByCount(')"
 			));
+	}
+
+	public JSONObject getAccountJSONObject(String accountId) {
+		return elasticsearchInvoker.get("accounts", accountId);
 	}
 
 	public JSONObject replaceAccount(JSONObject accountJSONObject) {

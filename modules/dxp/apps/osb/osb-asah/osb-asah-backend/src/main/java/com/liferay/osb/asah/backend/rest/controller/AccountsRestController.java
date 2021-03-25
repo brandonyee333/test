@@ -17,10 +17,12 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.backend.rest.response.NumbersDistributionTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -445,12 +447,12 @@ public class AccountsRestController extends BaseRestController {
 		return boolQueryBuilder;
 	}
 
-	private List<Long> _getIndividualSegmentIds(String individualSegmentId) {
+	private List<Long> _getIndividualSegmentIds(Long segmentId) {
 		List<Long> individualIds = JSONUtil.toLongList(
 			faroInfoElasticsearchInvoker.get(
 				"individuals",
 				QueryBuilders.termQuery(
-					"individualSegmentIds", individualSegmentId)),
+					"individualSegmentIds", String.valueOf(segmentId))),
 			"id");
 
 		return _membershipDog.getActiveIndividualSegmentIds(individualIds);
@@ -460,16 +462,10 @@ public class AccountsRestController extends BaseRestController {
 			String accountId, String filterString)
 		throws Exception {
 
-		JSONObject individualSegmentJSONObject =
-			faroInfoElasticsearchInvoker.fetch(
-				"individual-segments",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("name", "Account: " + accountId)
-				).filter(
-					QueryBuilders.termQuery("status", "INACTIVE")
-				));
+		Segment segment = _segmentDog.fetchSegment(
+			"Account: " + accountId, "INACTIVE");
 
-		if (individualSegmentJSONObject == null) {
+		if (segment == null) {
 			throw new Exception(
 				"Unable to find individual segment associated with account " +
 					accountId);
@@ -478,9 +474,7 @@ public class AccountsRestController extends BaseRestController {
 		QueryBuilder queryBuilder = QueryBuilders.termsQuery(
 			"id",
 			ListUtil.map(
-				_getIndividualSegmentIds(
-					individualSegmentJSONObject.getString("id")),
-				String::valueOf));
+				_getIndividualSegmentIds(segment.getId()), String::valueOf));
 
 		if (StringUtils.isEmpty(filterString)) {
 			return queryBuilder;
@@ -495,5 +489,8 @@ public class AccountsRestController extends BaseRestController {
 
 	@Autowired
 	private MembershipDog _membershipDog;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

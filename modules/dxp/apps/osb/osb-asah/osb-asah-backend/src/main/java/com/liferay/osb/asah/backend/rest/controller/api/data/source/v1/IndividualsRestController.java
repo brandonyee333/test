@@ -22,6 +22,7 @@ import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsEmbeddedJS
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsIndividualSegmentsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
@@ -78,7 +79,7 @@ public class IndividualsRestController extends BaseRestController {
 				"individuals",
 				new IndividualsEmbeddedJSONObjectCreator(
 					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
-					_membershipDog, _objectMapper),
+					_membershipDog, _objectMapper, _segmentDog),
 				id);
 		}
 
@@ -118,7 +119,7 @@ public class IndividualsRestController extends BaseRestController {
 				"individuals",
 				new IndividualsEmbeddedJSONObjectCreator(
 					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
-					_membershipDog, _objectMapper),
+					_membershipDog, _objectMapper, _segmentDog),
 				page,
 				_faroInfoIndividualDog.buildIndividualsQueryBuilder(
 					null, filterString, includeAnonymousUsers),
@@ -178,7 +179,7 @@ public class IndividualsRestController extends BaseRestController {
 				"individuals",
 				new IndividualsEmbeddedJSONObjectCreator(
 					_dataSourceDog, faroInfoElasticsearchInvoker, expand,
-					_membershipDog, _objectMapper),
+					_membershipDog, _objectMapper, _segmentDog),
 				fieldSortBuilders, page,
 				_faroInfoIndividualDog.buildIndividualsQueryBuilder(
 					channelId, filterString, includeAnonymousUsers),
@@ -227,7 +228,7 @@ public class IndividualsRestController extends BaseRestController {
 			"individual-segments",
 			new IndividualsIndividualSegmentsEmbeddedJSONObjectCreator(
 				faroInfoElasticsearchInvoker, expand, id, _membershipDog,
-				_objectMapper),
+				_objectMapper, _segmentDog),
 			page, queryBuilder, size, sorts);
 	}
 
@@ -324,5 +325,8 @@ public class IndividualsRestController extends BaseRestController {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

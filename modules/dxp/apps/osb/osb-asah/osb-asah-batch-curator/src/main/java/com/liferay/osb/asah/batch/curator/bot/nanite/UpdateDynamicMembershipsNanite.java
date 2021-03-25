@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Membership;
+import com.liferay.osb.asah.common.model.Segment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -256,20 +257,20 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			JSONObject individualSegmentJSONObject, Date modifiedDate)
 		throws Exception {
 
-		String individualSegmentId = individualSegmentJSONObject.getString(
-			"id");
+		Long segmentId = individualSegmentJSONObject.getLong("id");
 
-		if (!faroInfoElasticsearchInvoker.exists(
-				"individual-segments", individualSegmentId)) {
-
+		if (!_segmentDog.existsSegment(segmentId)) {
 			return;
 		}
 
 		_faroInfoIndividualDog.updateDynamicMemberships(
 			individualSegmentJSONObject, modifiedDate);
 
-		_segmentDog.updateIndividualSegment(
-			Long.valueOf(individualSegmentId), JSONUtil.put("state", "READY"));
+		Segment segment = new Segment();
+
+		segment.setState("READY");
+
+		_segmentDog.updateSegment(segment, segmentId);
 	}
 
 	private void _updateDynamicMembershipsForIndividualSegments(

@@ -18,11 +18,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.embedded.BaseEmbeddedJSONObjectCreator;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +31,6 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,13 +44,15 @@ public class IndividualsEmbeddedJSONObjectCreator
 
 	public IndividualsEmbeddedJSONObjectCreator(
 		DataSourceDog dataSourceDog, ElasticsearchInvoker elasticsearchInvoker,
-		String expand, MembershipDog membershipDog, ObjectMapper objectMapper) {
+		String expand, MembershipDog membershipDog, ObjectMapper objectMapper,
+		SegmentDog segmentDog) {
 
 		_dataSourceDog = dataSourceDog;
 		_elasticsearchInvoker = elasticsearchInvoker;
 		_expand = expand;
 		_membershipDog = membershipDog;
 		_objectMapper = objectMapper;
+		_segmentDog = segmentDog;
 	}
 
 	@Override
@@ -122,7 +122,8 @@ public class IndividualsEmbeddedJSONObjectCreator
 	}
 
 	private Map<String, JSONObject> _getIndividualSegmentJSONObjects(
-		JSONArray individualsJSONArray) {
+			JSONArray individualsJSONArray)
+		throws Exception {
 
 		Map<String, JSONObject> individualSegmentJSONObjects = new HashMap<>();
 
@@ -130,19 +131,17 @@ public class IndividualsEmbeddedJSONObjectCreator
 			JSONObject individualJSONObject =
 				individualsJSONArray.getJSONObject(i);
 
-			List<Long> individualSegmentIds =
-				_membershipDog.getIndividualSegmentIds(
-					individualJSONObject.getLong("id"));
-
-			JSONArray individualSegmentsJSONArray = _elasticsearchInvoker.get(
-				"individual-segments",
-				QueryBuilders.termsQuery(
-					"id", ListUtil.map(individualSegmentIds, String::valueOf)));
+			List<Long> segmentIds = _membershipDog.getIndividualSegmentIds(
+				individualJSONObject.getLong("id"));
 
 			individualSegmentJSONObjects.put(
 				individualJSONObject.getString("id"),
 				JSONUtil.put(
-					"individual-segments", individualSegmentsJSONArray));
+					"individual-segments",
+					JSONUtil.toJSONArray(
+						_segmentDog.getSegments(segmentIds),
+						segment -> _objectMapper.convertValue(
+							segment, JSONObject.class))));
 		}
 
 		return individualSegmentJSONObjects;
@@ -156,5 +155,6 @@ public class IndividualsEmbeddedJSONObjectCreator
 	private final String _expand;
 	private final MembershipDog _membershipDog;
 	private final ObjectMapper _objectMapper;
+	private final SegmentDog _segmentDog;
 
 }

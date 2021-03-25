@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -27,14 +26,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -145,26 +142,9 @@ public class ElasticsearchDataSourceRepositoryImpl
 					getCollectionName(),
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(boolQueryBuilder);
-						searchSourceBuilder.size(pageable.getPageSize());
 
-						Stream.of(
-							pageable.getSort()
-						).flatMap(
-							Sort::stream
-						).findFirst(
-						).ifPresent(
-							sort -> {
-								SortOrder sortOrder = SortOrder.ASC;
-
-								if (sort.isDescending()) {
-									sortOrder = SortOrder.DESC;
-								}
-
-								searchSourceBuilder.sort(
-									SortBuilderUtil.fieldSort(
-										sort.getProperty(), sortOrder));
-							}
-						);
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
 					})));
 	}
 

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.rest.response.VisitedPagesTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 
 import java.util.Collections;
@@ -43,7 +44,7 @@ public class VisitedPagesRestController extends BaseRestController {
 	public String getVisitedPages(
 			@RequestParam(name = "filter", required = false)
 				String filterString,
-			@RequestParam String ownerId, @RequestParam String ownerType,
+			@RequestParam Long ownerId, @RequestParam String ownerType,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts,
@@ -55,11 +56,14 @@ public class VisitedPagesRestController extends BaseRestController {
 			FilterStringToQueryBuilderConverter.convert(filterString), size,
 			Collections.singletonMap("title", "name"), sorts,
 			new VisitedPagesTransformationJSONArrayFunction(
-				_membershipDog, ownerId, ownerType, visitedPages),
+				_membershipDog, ownerId, ownerType, _segmentDog, visitedPages),
 			"visited-pages-transformation");
 	}
 
 	@Autowired
 	private MembershipDog _membershipDog;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

@@ -15,9 +15,11 @@
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -27,8 +29,7 @@ import java.util.List;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
-import org.json.JSONObject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -59,15 +60,10 @@ public class FaroInfoActivitiesFilterStringConverterHelper
 			String accountId, boolean negate)
 		throws Exception {
 
-		JSONObject individualSegmentJSONObject = _elasticsearchInvoker.fetch(
-			"individual-segments",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("name", "Account: " + accountId)
-			).filter(
-				QueryBuilders.termQuery("status", "INACTIVE")
-			));
+		Segment segment = _segmentDog.fetchSegment(
+			"Account: " + accountId, "INACTIVE");
 
-		if (individualSegmentJSONObject == null) {
+		if (segment == null) {
 			return null;
 		}
 
@@ -82,8 +78,7 @@ public class FaroInfoActivitiesFilterStringConverterHelper
 			}
 		).setQueryBuilder(
 			QueryBuilders.termQuery(
-				"individualSegmentIds",
-				individualSegmentJSONObject.getString("id"))
+				"individualSegmentIds", String.valueOf(segment.getId()))
 		).iterate();
 
 		if (negate) {
@@ -108,5 +103,8 @@ public class FaroInfoActivitiesFilterStringConverterHelper
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

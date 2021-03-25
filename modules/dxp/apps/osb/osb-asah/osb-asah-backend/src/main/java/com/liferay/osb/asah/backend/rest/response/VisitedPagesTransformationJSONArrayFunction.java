@@ -15,10 +15,12 @@
 package com.liferay.osb.asah.backend.rest.response;
 
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -28,6 +30,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,12 +65,13 @@ public class VisitedPagesTransformationJSONArrayFunction
 	implements TransformationJSONArrayFunction {
 
 	public VisitedPagesTransformationJSONArrayFunction(
-		MembershipDog membershipDog, String ownerId, String ownerType,
-		boolean visitedPages) {
+		MembershipDog membershipDog, Long ownerId, String ownerType,
+		SegmentDog segmentDog, boolean visitedPages) {
 
 		_membershipDog = membershipDog;
 		_ownerId = ownerId;
 		_ownerType = ownerType;
+		_segmentDog = segmentDog;
 		_visitedPages = visitedPages;
 	}
 
@@ -86,7 +90,7 @@ public class VisitedPagesTransformationJSONArrayFunction
 
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
-		if (StringUtils.isNotEmpty(_ownerId)) {
+		if (Objects.nonNull(_ownerId)) {
 			if (StringUtils.isEmpty(_ownerType)) {
 				throw new IllegalArgumentException(
 					"Owner ID must be accompanied by owner type");
@@ -95,30 +99,21 @@ public class VisitedPagesTransformationJSONArrayFunction
 			if (_ownerType.equals("account") ||
 				_ownerType.equals("individual-segment")) {
 
-				String individualSegmentId = _ownerId;
+				Long segmentId = _ownerId;
 
 				if (_ownerType.equals("account")) {
-					JSONObject individualSegmentJSONObject =
-						elasticsearchInvoker.fetch(
-							"individual-segments",
-							BoolQueryBuilderUtil.filter(
-								QueryBuilders.termQuery(
-									"name", "Account: " + _ownerId)
-							).filter(
-								QueryBuilders.termQuery("status", "INACTIVE")
-							));
+					Segment segment = _segmentDog.fetchSegment(
+						"Account: " + _ownerId, "INACTIVE");
 
-					if (individualSegmentJSONObject == null) {
+					if (segment == null) {
 						return new JSONArray();
 					}
 
-					individualSegmentId = individualSegmentJSONObject.getString(
-						"id");
+					segmentId = segment.getId();
 				}
 
 				List<Long> individualIds =
-					_membershipDog.getActiveIndividualIds(
-						Long.valueOf(individualSegmentId));
+					_membershipDog.getActiveIndividualIds(segmentId);
 
 				boolQueryBuilder.filter(
 					QueryBuilders.termsQuery(
@@ -129,7 +124,8 @@ public class VisitedPagesTransformationJSONArrayFunction
 			}
 			else {
 				boolQueryBuilder.filter(
-					QueryBuilders.termQuery("ownerId", _ownerId));
+					QueryBuilders.termQuery(
+						"ownerId", String.valueOf(_ownerId)));
 			}
 		}
 
@@ -470,8 +466,9 @@ public class VisitedPagesTransformationJSONArrayFunction
 		"\\[(?<title>[^]]+)] \\[(?<url>[^]]+)]");
 
 	private final MembershipDog _membershipDog;
-	private final String _ownerId;
+	private final Long _ownerId;
 	private final String _ownerType;
+	private final SegmentDog _segmentDog;
 	private long _totalElements;
 	private final boolean _visitedPages;
 

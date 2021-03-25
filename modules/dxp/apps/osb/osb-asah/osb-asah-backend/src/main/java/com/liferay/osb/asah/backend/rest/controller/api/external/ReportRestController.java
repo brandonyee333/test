@@ -31,6 +31,7 @@ import com.liferay.osb.asah.backend.dog.UserDog;
 import com.liferay.osb.asah.backend.dog.form.FormPageDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.DataExportTaskDTO;
+import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.AssetMetric;
@@ -53,7 +54,6 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetric;
 import com.liferay.osb.asah.backend.model.PageMetricType;
-import com.liferay.osb.asah.backend.model.Segment;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
@@ -62,6 +62,7 @@ import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -91,6 +92,7 @@ import org.apache.http.HttpStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
@@ -498,7 +500,7 @@ public class ReportRestController extends BaseRestController {
 
 		ResultBag<Individual> individualResultBag =
 			_individualDog.getIndividualResultBag(
-				null, query, _PAGE_SIZE, page * _PAGE_SIZE);
+				query, null, _PAGE_SIZE, page * _PAGE_SIZE);
 
 		return _toResultBagEntityModel(
 			_getIndividualResultBagEntityModel(page + 1, query), page,
@@ -513,11 +515,8 @@ public class ReportRestController extends BaseRestController {
 
 		Individual individual = _individualDog.getIndividual(individualId);
 
-		List<String> individualSegmentIds =
-			individual.getIndividualSegmentIds();
-
 		List<Segment> segments = _segmentDog.getSegments(
-			individualSegmentIds.toArray(new String[0]));
+			ListUtil.map(individual.getIndividualSegmentIds(), Long::valueOf));
 
 		return _toResultBagEntityModel(
 			null, 0, null, new ResultBag<>(segments, segments.size()),
@@ -718,44 +717,44 @@ public class ReportRestController extends BaseRestController {
 				new PageAssetReport(new AssetReport(pageMetric)), rangeKey));
 	}
 
+	@GetMapping("/segments")
+	public ResultBagEntityModel<SegmentDTO> getSegmentDTOResultBagEntityModel(
+		@RequestParam(defaultValue = "0") Integer page) {
+
+		Page<Segment> segmentPage = _segmentDog.getSegmentsPage(
+			page, _PAGE_SIZE);
+
+		return _toResultBagEntityModel(
+			_getSegmentResultBagEntityModel(page + 1), page,
+			_getSegmentResultBagEntityModel(page - 1), segmentPage.getContent(),
+			segmentPage.getTotalElements(), this::_toSegmentEntityModel);
+	}
+
 	@GetMapping("/segments/{segmentId}")
-	public EntityModel<Segment> getSegmentEntityModel(
-		@PathVariable String segmentId) {
+	public EntityModel<SegmentDTO> getSegmentEntityModel(
+		@PathVariable Long segmentId) {
 
 		return _toSegmentEntityModel(_segmentDog.getSegment(segmentId));
 	}
 
-	@GetMapping("/segments/{individualSegmentId}/individuals")
+	@GetMapping("/segments/{segmentId}/individuals")
 	public ResultBagEntityModel<Individual>
 		getSegmentIndividualResultBagEntityModel(
-			@PathVariable String individualSegmentId,
+			@PathVariable Long segmentId,
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String query) {
 
 		ResultBag<Individual> individualResultBag =
 			_individualDog.getIndividualResultBag(
-				individualSegmentId, query, _PAGE_SIZE, page * _PAGE_SIZE);
+				query, segmentId, _PAGE_SIZE, page * _PAGE_SIZE);
 
 		return _toResultBagEntityModel(
 			_getSegmentIndividualResultBagEntityModel(
-				individualSegmentId, page + 1, query),
+				segmentId, page + 1, query),
 			page,
 			_getSegmentIndividualResultBagEntityModel(
-				individualSegmentId, page - 1, query),
+				segmentId, page - 1, query),
 			individualResultBag, this::_toIndividualEntityModel);
-	}
-
-	@GetMapping("/segments")
-	public ResultBagEntityModel<Segment> getSegmentResultBagEntityModel(
-		@RequestParam(defaultValue = "0") Integer page) {
-
-		ResultBag<Segment> segmentResultBag = _segmentDog.getSegmentResultBag(
-			_PAGE_SIZE, page * _PAGE_SIZE);
-
-		return _toResultBagEntityModel(
-			_getSegmentResultBagEntityModel(page + 1), page,
-			_getSegmentResultBagEntityModel(page - 1), segmentResultBag,
-			this::_toSegmentEntityModel);
 	}
 
 	private ResponseEntity<DataExportTaskDTO> _addDataExportTask(String type) {
@@ -1019,21 +1018,21 @@ public class ReportRestController extends BaseRestController {
 
 	private ResultBagEntityModel<Individual>
 		_getSegmentIndividualResultBagEntityModel(
-			String individualSegmentId, Integer page, String query) {
+			Long segmentId, Integer page, String query) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getSegmentIndividualResultBagEntityModel(
-			individualSegmentId, page, query
+			segmentId, page, query
 		);
 	}
 
-	private ResultBagEntityModel<Segment> _getSegmentResultBagEntityModel(
+	private ResultBagEntityModel<SegmentDTO> _getSegmentResultBagEntityModel(
 		Integer page) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
-		).getSegmentResultBagEntityModel(
+		).getSegmentDTOResultBagEntityModel(
 			page
 		);
 	}
@@ -1274,18 +1273,17 @@ public class ReportRestController extends BaseRestController {
 
 	private <T, R> ResultBagEntityModel<R> _toResultBagEntityModel(
 		Object nextPageMethodInvocation, int page,
-		Object prevPageMethodInvocation, ResultBag<T> resultBag,
+		Object prevPageMethodInvocation, List<T> results, long total,
 		Function<T, EntityModel<R>> resultEntityModelMapperFunction) {
 
 		ResultBagEntityModel<R> resultBagEntityModel =
 			new ResultBagEntityModel<>(
 				new ResultBag<>(
 					_toListEntityModel(
-						resultBag.getResults(),
-						resultEntityModelMapperFunction),
-					resultBag.getTotal()));
+						results, resultEntityModelMapperFunction),
+					total));
 
-		if (((page + 1L) * _PAGE_SIZE) < resultBag.getTotal()) {
+		if (((page + 1L) * _PAGE_SIZE) < total) {
 			resultBagEntityModel.add(
 				WebMvcLinkBuilder.linkTo(
 					nextPageMethodInvocation
@@ -1306,9 +1304,20 @@ public class ReportRestController extends BaseRestController {
 		return resultBagEntityModel;
 	}
 
-	private EntityModel<Segment> _toSegmentEntityModel(Segment segment) {
+	private <T, R> ResultBagEntityModel<R> _toResultBagEntityModel(
+		Object nextPageMethodInvocation, int page,
+		Object prevPageMethodInvocation, ResultBag<T> resultBag,
+		Function<T, EntityModel<R>> resultEntityModelMapperFunction) {
+
+		return _toResultBagEntityModel(
+			nextPageMethodInvocation, page, prevPageMethodInvocation,
+			resultBag.getResults(), resultBag.getTotal(),
+			resultEntityModelMapperFunction);
+	}
+
+	private EntityModel<SegmentDTO> _toSegmentEntityModel(Segment segment) {
 		return new EntityModel<>(
-			segment,
+			new SegmentDTO(segment),
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class

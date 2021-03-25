@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -47,12 +46,12 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 		activityJSONObject = elasticsearchInvoker.add(
 			"activities", activityJSONObject);
 
-		Set<String> referencedAssetIds = _segmentDog.getReferencedAssetIds();
+		List<Long> referencedAssetIds = _segmentDog.getReferencedAssetIds();
 
 		JSONObject objectJSONObject = activityJSONObject.getJSONObject(
 			"object");
 
-		if (!referencedAssetIds.contains(objectJSONObject.getString("id"))) {
+		if (!referencedAssetIds.contains(objectJSONObject.getLong("id"))) {
 			return activityJSONObject;
 		}
 
@@ -112,12 +111,12 @@ public class FaroInfoActivityDog extends BaseFaroInfoDog {
 			"activities", activityJSONObject.getString("id"),
 			JSONUtil.put("ownerId", individualJSONObject.getString("id")));
 
-		Set<String> referencedAssetIds = _segmentDog.getReferencedAssetIds();
+		List<Long> referencedAssetIds = _segmentDog.getReferencedAssetIds();
 
 		JSONObject objectJSONObject = activityJSONObject.getJSONObject(
 			"object");
 
-		if (!referencedAssetIds.contains(objectJSONObject.getString("id"))) {
+		if (!referencedAssetIds.contains(objectJSONObject.getLong("id"))) {
 			return;
 		}
 

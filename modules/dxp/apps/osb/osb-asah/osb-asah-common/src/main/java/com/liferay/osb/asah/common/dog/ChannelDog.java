@@ -118,9 +118,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 		_deleteAssets(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
-		_deleteData(
-			channelIds, elasticsearchInvoker, "activities",
-			"individual-segments");
+		_deleteData(channelIds, elasticsearchInvoker, "activities");
 		_deleteData(
 			channelIds, _cerebroInfoElasticsearchInvoker, "blog-clicks",
 			"blog-social-shares", "blog-traffic-sources", "blogs",
@@ -131,6 +129,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 
 		_activityGroupDog.deleteActivityGroups(new HashSet<>(channelIds));
+		_segmentDog.deleteSegments(new HashSet<>(channelIds));
 	}
 
 	public void deleteChannels(
@@ -584,6 +583,9 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FaroInfoAssetDog _faroInfoAssetDog;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

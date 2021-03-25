@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.rest.response.embedded;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Membership;
@@ -42,13 +43,14 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreator
 	public IndividualsIndividualSegmentsEmbeddedJSONObjectCreator(
 		ElasticsearchInvoker elasticsearchInvoker, String expand,
 		String individualId, MembershipDog membershipDog,
-		ObjectMapper objectMapper) {
+		ObjectMapper objectMapper, SegmentDog segmentDog) {
 
 		_elasticsearchInvoker = elasticsearchInvoker;
 		_expand = expand;
 		_individualId = individualId;
 		_membershipDog = membershipDog;
 		_objectMapper = objectMapper;
+		_segmentDog = segmentDog;
 	}
 
 	@Override
@@ -72,8 +74,9 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreator
 	}
 
 	@Override
-	public JSONObject create(String id) throws Exception {
-		return create(id, _elasticsearchInvoker.get("individual-segments", id));
+	public JSONObject create(String segmentId) throws Exception {
+		return _objectMapper.convertValue(
+			_segmentDog.getSegment(Long.valueOf(segmentId)), JSONObject.class);
 	}
 
 	private Map<String, JSONObject> _getMembershipJSONObjects(
@@ -133,5 +136,6 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreator
 	private final String _individualId;
 	private final MembershipDog _membershipDog;
 	private final ObjectMapper _objectMapper;
+	private final SegmentDog _segmentDog;
 
 }

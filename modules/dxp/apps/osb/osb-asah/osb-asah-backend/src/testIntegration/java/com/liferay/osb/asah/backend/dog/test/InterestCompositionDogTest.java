@@ -52,7 +52,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetActiveIndividualSegmentCompositionResultBag() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				true, "1", "366637689379787789", null, 10, Sort.desc("count"),
+				true, "1", null, 366637689379787789L, 10, Sort.desc("count"),
 				0),
 			new LinkedHashMap<String, Long>() {
 				{
@@ -68,7 +68,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetInactiveIndividualSegmentCompositionResultBag() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", "366637689379787789", null, 10, Sort.desc("count"),
+				false, "1", null, 366637689379787789L, 10, Sort.desc("count"),
 				0),
 			new LinkedHashMap<String, Long>() {
 				{
@@ -99,7 +99,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetIndividualSegmentCompositionResultBagWithKeyword() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", "366637689379787789", "compel", 10,
+				false, "1", "compel", 366637689379787789L, 10,
 				Sort.desc("count"), 0),
 			new LinkedHashMap<String, Long>() {
 				{
@@ -113,7 +113,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetIndividualSegmentCompositionResultBagWithSortAsc() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", "366637689379787789", null, 10, Sort.asc("count"),
+				false, "1", null, 366637689379787789L, 10, Sort.asc("count"),
 				0),
 			new LinkedHashMap<String, Long>() {
 				{
@@ -129,8 +129,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetIndividualSegmentCompositionResultBagWithSortName() {
 		checkResults(
 			_interestCompositionDog.getIndividualSegmentCompositionResultBag(
-				false, "1", "366637689379787789", null, 10, Sort.asc("name"),
-				0),
+				false, "1", null, 366637689379787789L, 10, Sort.asc("name"), 0),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("clicks-and-mortar e-tailers", 2L);

@@ -94,9 +94,9 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualCount = knownIndividualCount;
 		}
 
-		_segmentDog.updateIndividualSegment(
-			individualCount, membership.getIndividualSegmentId(),
-			knownIndividualCount);
+		_segmentDog.updateSegment(
+			individualCount, knownIndividualCount,
+			membership.getIndividualSegmentId());
 
 		_faroInfoMembershipChangeDog.addMembershipChange(
 			membership, individualJSONObject, individualCount,
@@ -137,9 +137,9 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualCount = knownIndividualCount;
 		}
 
-		_segmentDog.updateIndividualSegment(
-			individualCount, membership.getIndividualSegmentId(),
-			knownIndividualCount);
+		_segmentDog.updateSegment(
+			individualCount, knownIndividualCount,
+			membership.getIndividualSegmentId());
 
 		_faroInfoMembershipChangeDog.addMembershipChanges(
 			memberships, includeAnonymousUsers,
@@ -197,9 +197,9 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualCount = knownIndividualCount;
 		}
 
-		_segmentDog.updateIndividualSegment(
-			individualCount, membership.getIndividualSegmentId(),
-			knownIndividualCount);
+		_segmentDog.updateSegment(
+			individualCount, knownIndividualCount,
+			membership.getIndividualSegmentId());
 
 		if (individualJSONObject == null) {
 			_faroInfoMembershipChangeDog.

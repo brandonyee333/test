@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -359,10 +360,13 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				dataSourceJSONObject.getString("id"), "givenName", "givenName",
 				"Text"));
 
-		JSONObject individualSegmentJSONObject =
-			_segmentDog.addIndividualSegment(
-				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-					"(((demographics/givenName/value ne null)))"));
+		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
+			_segmentDog.addSegment(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
+						"(((demographics/givenName/value ne null)))"),
+					Segment.class)),
+			JSONObject.class);
 
 		dataSourceJSONObject.put("deletionDate", DateUtil.newDayDateString());
 
@@ -395,11 +399,14 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildPageAssetJSONObject(
 				dataSourceJSONObject.getString("id")));
 
-		JSONObject individualSegmentJSONObject =
-			_segmentDog.addIndividualSegment(
-				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-					"activities/ever eq 'page#pageViewed#" +
-						assetJSONObject.getString("id") + "'"));
+		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
+			_segmentDog.addSegment(
+				_objectMapper.convertValue(
+					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
+						"activities/ever eq 'page#pageViewed#" +
+							assetJSONObject.getString("id") + "'"),
+					Segment.class)),
+			JSONObject.class);
 
 		dataSourceJSONObject.put("deletionDate", DateUtil.newDayDateString());
 

@@ -17,10 +17,12 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.model.Composition;
 import com.liferay.osb.asah.backend.model.CompositionResultBag;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -47,6 +49,7 @@ import org.elasticsearch.search.aggregations.metrics.InternalCardinality;
 
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -59,18 +62,11 @@ public class InterestCompositionDog {
 		String accountId, boolean active, String channelId, String keywords,
 		int size, Sort sort, int start) {
 
-		JSONObject individualSegmentJSONObject =
-			_faroInfoElasticsearchInvoker.fetch(
-				"individual-segments",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery("name", "Account: " + accountId)
-				).filter(
-					QueryBuilders.termQuery("status", "INACTIVE")
-				));
+		Segment segment = _segmentDog.getSegment(
+			"Account: " + accountId, "INACTIVE");
 
 		return getIndividualSegmentCompositionResultBag(
-			active, channelId, individualSegmentJSONObject.getString("id"),
-			keywords, size, sort, start);
+			active, channelId, keywords, segment.getId(), size, sort, start);
 	}
 
 	public CompositionResultBag getIndividualCompositionResultBag(
@@ -84,11 +80,11 @@ public class InterestCompositionDog {
 	}
 
 	public CompositionResultBag getIndividualSegmentCompositionResultBag(
-		boolean active, String channelId, String individualSegmentId,
-		String keywords, int size, Sort sort, int start) {
+		boolean active, String channelId, String keywords, Long segmentId,
+		int size, Sort sort, int start) {
 
 		List<String> individualIds = _getIndividualIds(
-			active, channelId, individualSegmentId);
+			active, channelId, segmentId);
 
 		if (individualIds.isEmpty()) {
 			return new CompositionResultBag(Collections.emptyList(), 0, 0);
@@ -224,7 +220,7 @@ public class InterestCompositionDog {
 	}
 
 	private List<String> _getIndividualIds(
-		boolean active, String channelId, String individualSegmentId) {
+		boolean active, String channelId, Long segmentId) {
 
 		List<String> individualIds = new ArrayList<>();
 
@@ -248,7 +244,8 @@ public class InterestCompositionDog {
 		}
 
 		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "individualSegmentIds", individualSegmentId);
+			boolQueryBuilder, "individualSegmentIds",
+			String.valueOf(segmentId));
 
 		try {
 			JSONArrayIterator.of(
@@ -336,5 +333,8 @@ public class InterestCompositionDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

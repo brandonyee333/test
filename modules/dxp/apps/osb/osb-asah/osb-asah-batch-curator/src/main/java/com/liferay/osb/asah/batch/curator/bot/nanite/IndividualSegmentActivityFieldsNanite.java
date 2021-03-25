@@ -18,11 +18,12 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.locks.ReentrantLock;
@@ -34,7 +35,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.filter.Filter;
@@ -56,23 +56,22 @@ import org.springframework.stereotype.Component;
 public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 
 	public void run() throws Exception {
-		JSONArrayIterator.of(
-			"individual-segments", faroInfoElasticsearchInvoker,
-			individualSegmentJSONObject -> {
+		int page = 0;
+
+		List<Segment> segments = _segmentDog.getSegments(page, 500);
+
+		while (!segments.isEmpty()) {
+			for (Segment segment : segments) {
 				try {
-					process(individualSegmentJSONObject);
+					process(segment);
 				}
 				catch (Exception e) {
-					return e;
+					_log.error(e, e);
 				}
-
-				return null;
 			}
-		).setMonitoringConsumers(
-			this::monitorProcessedCount, this::monitorQueueSize
-		).setStopOnExceptions(
-			false
-		).iterate();
+
+			segments = _segmentDog.getSegments(++page, 500);
+		}
 	}
 
 	@Override
@@ -109,70 +108,53 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 		return _log;
 	}
 
-	protected void process(JSONObject individualSegmentJSONObject)
-		throws Exception {
-
-		String channelId = individualSegmentJSONObject.optString(
-			"channelId", null);
-		String name = individualSegmentJSONObject.getString("name");
-
-		String individualSegmentId = individualSegmentJSONObject.getString(
-			"id");
+	protected void process(Segment segment) throws Exception {
+		Long channelId = segment.getChannelId();
+		String name = segment.getName();
+		Long segmentId = segment.getId();
 
 		if ((channelId == null) && !name.startsWith("Account: ")) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Skipping individual segment due missing channel ID " +
-						individualSegmentId);
+					"Skipping segment due missing channel ID " + segmentId);
 			}
 
 			return;
 		}
 
-		if (!individualSegmentJSONObject.has("activitiesCount")) {
-			_segmentDog.updateIndividualSegment(
-				Long.valueOf(individualSegmentId),
-				JSONUtil.put("activitiesCount", 0));
+		if (segment.getActivitiesCount() == null) {
+			segment.setActivitiesCount(0L);
+
+			_segmentDog.updateSegment(segment, segmentId);
 		}
 
-		boolean includeAnonymousUsers = individualSegmentJSONObject.optBoolean(
-			"includeAnonymousUsers");
+		Boolean includeAnonymousUsers = segment.getIncludeAnonymousUsers();
 
 		long activitiesCount = _getActivitiesCount(
-			channelId, includeAnonymousUsers, individualSegmentId);
+			channelId, includeAnonymousUsers, segmentId);
 		String lastActivityDateString = _getLastActivityDateString(
-			channelId, includeAnonymousUsers, individualSegmentId);
+			channelId, includeAnonymousUsers, segmentId);
 
-		if ((activitiesCount == individualSegmentJSONObject.optInt(
-				"activitiesCount")) &&
+		if ((activitiesCount == segment.getActivitiesCount()) &&
 			Objects.equals(
 				lastActivityDateString,
-				individualSegmentJSONObject.optString(
-					"lastActivityDate", null))) {
+				DateUtil.toUTCString(segment.getLastActivityDate()))) {
 
 			return;
 		}
 
-		_segmentDog.replaceIndividualSegment(
-			individualSegmentJSONObject.put(
-				"activitiesCount", activitiesCount
-			).put(
-				"lastActivityDate", lastActivityDateString
-			));
+		segment.setActivitiesCount(activitiesCount);
+		segment.setLastActivityDate(DateUtil.toUTCDate(lastActivityDateString));
+
+		_segmentDog.replaceSegment(segment);
 	}
 
 	private void _cleanUp() {
-		faroInfoElasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.matchAllQuery(), true,
-			new Script(
-				"ctx._source.remove('lastActivityDate');" +
-					"ctx._source.activitiesCount = 0"),
-			"individual-segments");
+		_segmentDog.updateSegments(0L);
 	}
 
 	private long _getActivitiesCount(
-		String channelId, boolean includeAnonymousUsers,
-		String individualSegmentId) {
+		Long channelId, boolean includeAnonymousUsers, Long segmentId) {
 
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
@@ -196,7 +178,8 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 					AggregationBuilders.filter(
 						"filteredActivities",
 						QueryBuilders.termQuery(
-							"activitiesCounts.channelId", channelId)
+							"activitiesCounts.channelId",
+							String.valueOf(channelId))
 					).subAggregation(
 						AggregationBuilders.sum(
 							"activitiesCountSum"
@@ -208,8 +191,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 		}
 
 		searchSourceBuilder.query(
-			_getQueryBuilder(
-				channelId, includeAnonymousUsers, individualSegmentId));
+			_getQueryBuilder(channelId, includeAnonymousUsers, segmentId));
 		searchSourceBuilder.size(0);
 
 		SearchResponse searchResponse = faroInfoElasticsearchInvoker.search(
@@ -242,8 +224,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	}
 
 	private String _getLastActivityDateString(
-		String channelId, boolean includeAnonymousUsers,
-		String individualSegmentId) {
+		Long channelId, boolean includeAnonymousUsers, Long segmentId) {
 
 		JSONArray individualsJSONArray = new JSONArray(
 			faroInfoElasticsearchInvoker.get(
@@ -251,15 +232,15 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 				searchSourceBuilder -> {
 					searchSourceBuilder.query(
 						_getQueryBuilder(
-							channelId, includeAnonymousUsers,
-							individualSegmentId));
+							channelId, includeAnonymousUsers, segmentId));
 					searchSourceBuilder.size(1);
 
 					QueryBuilder queryBuilder = null;
 
 					if (channelId != null) {
 						queryBuilder = QueryBuilders.termQuery(
-							"lastActivityDates.channelId", channelId);
+							"lastActivityDates.channelId",
+							String.valueOf(channelId));
 					}
 
 					searchSourceBuilder.sort(
@@ -278,7 +259,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 			individualJSONObject.optJSONArray("lastActivityDates");
 
 		JSONObject channelLastActivityDateJSONObject = JSONUtil.find(
-			lastActivityDatesJSONArray, "channelId", channelId);
+			lastActivityDatesJSONArray, "channelId", String.valueOf(channelId));
 
 		if (channelLastActivityDateJSONObject == null) {
 			return null;
@@ -289,16 +270,16 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 	}
 
 	private QueryBuilder _getQueryBuilder(
-		String channelId, boolean includeAnonymousUsers,
-		String individualSegmentId) {
+		Long channelId, boolean includeAnonymousUsers, Long segmentId) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery(
-				"individualSegmentIds", individualSegmentId));
+				"individualSegmentIds", String.valueOf(segmentId)));
 
 		if (channelId != null) {
 			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("channelIds", channelId));
+				QueryBuilders.termQuery(
+					"channelIds", String.valueOf(channelId)));
 		}
 
 		if (!includeAnonymousUsers) {

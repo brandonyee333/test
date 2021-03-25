@@ -216,12 +216,22 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 			pageable.getPageNumber() * pageable.getPageSize());
 		searchSourceBuilder.size(pageable.getPageSize());
 
-		for (Sort.Order order : pageable.getSort()) {
-			searchSourceBuilder.sort(
-				SortBuilderUtil.fieldSort(
-					order.getProperty(),
-					SortOrder.valueOf(String.valueOf(order.getDirection()))));
-		}
+		Stream.of(
+			pageable.getSort()
+		).flatMap(
+			Sort::stream
+		).forEach(
+			sort -> {
+				SortOrder sortOrder = SortOrder.ASC;
+
+				if (sort.isDescending()) {
+					sortOrder = SortOrder.DESC;
+				}
+
+				searchSourceBuilder.sort(
+					SortBuilderUtil.fieldSort(sort.getProperty(), sortOrder));
+			}
+		);
 	}
 
 	@SuppressWarnings("unchecked")

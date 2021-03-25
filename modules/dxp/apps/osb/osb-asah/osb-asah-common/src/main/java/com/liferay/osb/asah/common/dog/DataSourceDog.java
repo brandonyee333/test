@@ -517,7 +517,7 @@ public class DataSourceDog {
 			Consumer<Integer> queueMonitorConsumer)
 		throws Exception {
 
-		List<String> disabledFieldMappingIds = new ArrayList<>();
+		List<Long> disabledFieldMappingIds = new ArrayList<>();
 
 		JSONArrayIterator.of(
 			"field-mappings", _elasticsearchInvoker,
@@ -535,7 +535,7 @@ public class DataSourceDog {
 						fieldMappingJSONObject)) {
 
 					disabledFieldMappingIds.add(
-						fieldMappingJSONObject.getString("id"));
+						fieldMappingJSONObject.getLong("id"));
 				}
 
 				return null;
@@ -547,7 +547,7 @@ public class DataSourceDog {
 				"dataSourceFieldNames." + String.valueOf(dataSourceId))
 		).iterate();
 
-		_segmentDog.disableDynamicIndividualSegments(
+		_segmentDog.disableDynamicSegments(
 			dataSourceId, disabledFieldMappingIds);
 	}
 

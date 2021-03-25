@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -125,7 +124,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		String dataSourceId = String.valueOf(map.get("dataSourceId"));
 		Object dataSourceFieldName = map.get("fieldName");
-		List<String> deletedFieldMappingIds = new ArrayList<>();
+		List<Long> deletedFieldMappingIds = new ArrayList<>();
 
 		if ((dataSourceFieldName == null) ||
 			StringUtils.isEmpty(String.valueOf(dataSourceFieldName))) {
@@ -136,7 +135,7 @@ public class FieldMappingsRestController extends BaseRestController {
 				_faroInfoFieldMappingDog.deleteFieldMapping(
 					fieldMappingJSONObject)) {
 
-				deletedFieldMappingIds.add(id);
+				deletedFieldMappingIds.add(Long.valueOf(id));
 			}
 		}
 		else {
@@ -151,8 +150,7 @@ public class FieldMappingsRestController extends BaseRestController {
 				"field-mappings", id, fieldMappingJSONObject.toString());
 		}
 
-		_segmentDog.disableDynamicIndividualSegments(
-			null, deletedFieldMappingIds);
+		_segmentDog.disableDynamicSegments(null, deletedFieldMappingIds);
 
 		_addReprocessAsahTask(
 			Long.valueOf(dataSourceId),
@@ -170,7 +168,7 @@ public class FieldMappingsRestController extends BaseRestController {
 
 		JSONArray responseJSONArray = new JSONArray();
 
-		List<String> deletedFieldMappingIds = new ArrayList<>();
+		List<Long> deletedFieldMappingIds = new ArrayList<>();
 
 		for (Map.Entry<String, String> entry : map.entrySet()) {
 			String fieldName = entry.getKey();
@@ -208,7 +206,7 @@ public class FieldMappingsRestController extends BaseRestController {
 					_faroInfoFieldMappingDog.deleteFieldMapping(
 						fieldMappingJSONObject)) {
 
-					deletedFieldMappingIds.add(fieldMappingId);
+					deletedFieldMappingIds.add(Long.valueOf(fieldMappingId));
 
 					fieldMappingDeleted = true;
 				}
@@ -230,8 +228,7 @@ public class FieldMappingsRestController extends BaseRestController {
 			}
 		}
 
-		_segmentDog.disableDynamicIndividualSegments(
-			null, deletedFieldMappingIds);
+		_segmentDog.disableDynamicSegments(null, deletedFieldMappingIds);
 
 		_addReprocessAsahTask(Long.valueOf(dataSourceId), ownerType);
 
@@ -330,9 +327,6 @@ public class FieldMappingsRestController extends BaseRestController {
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
-
-	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
 
 	private final Map<String, String> _naniteClassNames =
 		new HashMap<String, String>() {

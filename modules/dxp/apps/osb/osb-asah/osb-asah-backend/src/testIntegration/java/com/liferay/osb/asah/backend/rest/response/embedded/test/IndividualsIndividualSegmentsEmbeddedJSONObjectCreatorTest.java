@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsIndividualSegmentsEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -54,7 +55,7 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreatorTest {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsIndividualSegmentsEmbeddedJSONObjectCreator(
 				_elasticsearchInvoker, "active-membership", "123",
-				_membershipDog, _objectMapper);
+				_membershipDog, _objectMapper, _segmentDog);
 
 		JSONObject individualIndividualSegmentJSONObject =
 			embeddedJSONObjectCreator.create("910");
@@ -76,7 +77,7 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreatorTest {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsIndividualSegmentsEmbeddedJSONObjectCreator(
 				_elasticsearchInvoker, "active-membership", "456",
-				_membershipDog, _objectMapper);
+				_membershipDog, _objectMapper, _segmentDog);
 
 		Assert.assertNull(embeddedJSONObjectCreator.create("910"));
 	}
@@ -89,5 +90,8 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreatorTest {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

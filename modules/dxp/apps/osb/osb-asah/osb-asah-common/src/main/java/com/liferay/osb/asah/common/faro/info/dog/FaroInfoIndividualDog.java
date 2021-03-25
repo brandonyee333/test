@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -51,10 +52,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.search.join.ScoreMode;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.Sum;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -423,6 +430,71 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 				partialIndividualJSONObject.toMap()));
 	}
 
+	public JSONObject fetchIndividualJSONObject(String individualId) {
+		return elasticsearchInvoker.fetch("individuals", individualId);
+	}
+
+	public JSONArray getActivitiesCountsJSONArray(
+		boolean includeAnonymousUsers, Long segmentId) {
+
+		JSONArray jsonArray = new JSONArray();
+
+		SearchResponse searchResponse = elasticsearchInvoker.search(
+			"individuals",
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.nested(
+						"activitiesCounts", "activitiesCounts"
+					).subAggregation(
+						AggregationBuilders.terms(
+							"channelId"
+						).field(
+							"activitiesCounts.channelId"
+						).size(
+							Integer.MAX_VALUE
+						).subAggregation(
+							AggregationBuilders.sum(
+								"activitiesCount"
+							).field(
+								"activitiesCounts.activitiesCount"
+							)
+						)
+					));
+				searchSourceBuilder.query(
+					_getQueryBuilder(includeAnonymousUsers, segmentId));
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		InternalNested internalNested = aggregations.get("activitiesCounts");
+
+		Aggregations internalAggregations = internalNested.getAggregations();
+
+		Terms terms = internalAggregations.get("channelId");
+
+		for (Terms.Bucket termsBucket : terms.getBuckets()) {
+			Aggregations bucketAggregations = termsBucket.getAggregations();
+
+			Sum sum = bucketAggregations.get("activitiesCount");
+
+			int activitiesCount = 0;
+
+			if (sum != null) {
+				activitiesCount = (int)sum.getValue();
+			}
+
+			jsonArray.put(
+				JSONUtil.put(
+					"activitiesCount", activitiesCount
+				).put(
+					"channelId", termsBucket.getKeyAsString()
+				));
+		}
+
+		return jsonArray;
+	}
+
 	public List<String> getAssociatedIds(
 		Long dataSourceId, DXPEntityType dxpEntityType, List<Long> classPKs) {
 
@@ -453,6 +525,43 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		return JSONUtil.toStringList(associatedIdsJSONArray, "id");
 	}
 
+	public JSONArray getIndividualCountsJSONArray(
+		boolean includeAnonymousUsers, Long segmentId) {
+
+		JSONArray jsonArray = new JSONArray();
+
+		SearchResponse searchResponse = elasticsearchInvoker.search(
+			"individuals",
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"channelIds"
+					).field(
+						"channelIds"
+					).size(
+						Integer.MAX_VALUE
+					));
+				searchSourceBuilder.query(
+					_getQueryBuilder(includeAnonymousUsers, segmentId));
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		Terms terms = aggregations.get("channelIds");
+
+		for (Terms.Bucket termsBucket : terms.getBuckets()) {
+			jsonArray.put(
+				JSONUtil.put(
+					"channelId", termsBucket.getKeyAsString()
+				).put(
+					"individualCount", termsBucket.getDocCount()
+				));
+		}
+
+		return jsonArray;
+	}
+
 	public JSONObject getIndividualJSONObject(
 		Long dataSourceId, String userId) {
 
@@ -481,33 +590,6 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 		return FaroInfoIndividualUtil.getIndividualName(
 			individualJSONObject.optJSONObject("demographics"));
-	}
-
-	public Set<String> getIndividualSegmentNames(
-		Long channelId, JSONObject individualJSONObject) {
-
-		if (individualJSONObject == null) {
-			return Collections.emptySet();
-		}
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termsQuery(
-				"id",
-				JSONUtil.toStringSet(
-					individualJSONObject.getJSONArray("individualSegmentIds")))
-		).filter(
-			QueryBuilders.termQuery("status", "ACTIVE")
-		);
-
-		if (Objects.nonNull(channelId)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery(
-					"channelId", String.valueOf(channelId)));
-		}
-
-		return JSONUtil.toStringSet(
-			elasticsearchInvoker.get("individual-segments", boolQueryBuilder),
-			"name");
 	}
 
 	public long getKnownIndividualCount(List<Long> individualIds) {
@@ -852,6 +934,21 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		}
 	}
 
+	private QueryBuilder _getQueryBuilder(
+		boolean includeAnonymousUsers, Long segmentId) {
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery(
+				"individualSegmentIds", String.valueOf(segmentId)));
+
+		if (!includeAnonymousUsers) {
+			boolQueryBuilder.filter(
+				QueryBuilders.existsQuery("demographics.email"));
+		}
+
+		return boolQueryBuilder;
+	}
+
 	private String _getScriptSource(JSONObject jsonObject) {
 		StringBuilder sb = new StringBuilder();
 
@@ -1037,5 +1134,8 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private MembershipDog _membershipDog;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

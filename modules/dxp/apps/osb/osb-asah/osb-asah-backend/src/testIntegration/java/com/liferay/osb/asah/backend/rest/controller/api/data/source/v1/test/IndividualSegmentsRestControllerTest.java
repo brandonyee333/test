@@ -16,12 +16,20 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.dto.SegmentDTO;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
+import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import io.restassured.http.Method;
 import io.restassured.response.ValidatableResponse;
+
+import java.util.Map;
+
+import org.hamcrest.Matchers;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,6 +52,109 @@ import org.springframework.test.context.ContextConfiguration;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IndividualSegmentsRestControllerTest
 	extends BaseRestControllerTestCase {
+
+	@Test
+	public void testExpandReferencedObjects() throws Exception {
+		JSONObject assetJSONObject = _faroInfoElasticsearchInvoker.add(
+			"assets", FaroInfoTestUtil.buildAssetJSONObject("Page", "1"));
+		JSONObject accountFieldMappingJSONObject =
+			_faroInfoElasticsearchInvoker.add(
+				"field-mappings",
+				FaroInfoTestUtil.buildAccountFieldMappingJSONObject(
+					"1", "shippingPostalCode", "shippingPostalCode", "Text"));
+		JSONObject individualFieldMappingJSONObject =
+			_faroInfoElasticsearchInvoker.add(
+				"field-mappings",
+				FaroInfoTestUtil.buildIndividualFieldMappingJSONObject(
+					"1", "email", "email", "Text"));
+		JSONObject groupJSONObject = _dxpRawElasticsearchInvoker.add(
+			"groups", JSONUtil.put("name", "groupName"));
+		JSONObject organizationJSONObject = _faroInfoElasticsearchInvoker.add(
+			"organizations", FaroInfoTestUtil.buildOrganizationJSONObject("1"));
+		JSONObject roleJSONObject = _dxpRawElasticsearchInvoker.add(
+			"roles", JSONUtil.put("name", "roleName"));
+		JSONObject teamJSONObject = _dxpRawElasticsearchInvoker.add(
+			"teams", JSONUtil.put("name", "teamName"));
+		JSONObject userGroupJSONObject = _dxpRawElasticsearchInvoker.add(
+			"user-groups", JSONUtil.put("name", "userGroupName"));
+		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.add(
+			"users", JSONUtil.put("name", "userName"));
+
+		JSONObject individualSegmentJSONObject =
+			_faroInfoElasticsearchInvoker.add(
+				"individual-segments",
+				JSONUtil.put(
+					"referencedAssetIds",
+					JSONUtil.put(assetJSONObject.getString("id"))
+				).put(
+					"referencedFieldMappingIds",
+					JSONUtil.putAll(
+						accountFieldMappingJSONObject.getString("id"),
+						individualFieldMappingJSONObject.getString("id"))
+				).put(
+					"referencedGroupIds",
+					JSONUtil.put(groupJSONObject.getString("id"))
+				).put(
+					"referencedOrganizationIds",
+					JSONUtil.put(organizationJSONObject.getString("id"))
+				).put(
+					"referencedRoleIds",
+					JSONUtil.put(roleJSONObject.getString("id"))
+				).put(
+					"referencedTeamIds",
+					JSONUtil.put(teamJSONObject.getString("id"))
+				).put(
+					"referencedUserGroupIds",
+					JSONUtil.put(userGroupJSONObject.getString("id"))
+				).put(
+					"referencedUserIds",
+					JSONUtil.put(userJSONObject.getString("id"))
+				));
+
+		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
+			individualSegmentJSONObject.getLong("id"), "referenced-objects");
+
+		Map<String, JSONObject> embedded = segmentDTO.getEmbedded();
+
+		JSONObject referencedObjectsJSONObject = embedded.get(
+			"referenced-objects");
+
+		Assert.assertThat(
+			new String[] {assetJSONObject.getString("id")},
+			Matchers.arrayContainingInAnyOrder(
+				_getIds("assets", referencedObjectsJSONObject)));
+		Assert.assertThat(
+			new String[] {
+				accountFieldMappingJSONObject.getString("id"),
+				individualFieldMappingJSONObject.getString("id")
+			},
+			Matchers.arrayContainingInAnyOrder(
+				_getIds("field-mappings", referencedObjectsJSONObject)));
+		Assert.assertThat(
+			new String[] {groupJSONObject.getString("id")},
+			Matchers.arrayContainingInAnyOrder(
+				_getIds("groups", referencedObjectsJSONObject)));
+		Assert.assertThat(
+			new String[] {organizationJSONObject.getString("id")},
+			Matchers.arrayContainingInAnyOrder(
+				_getIds("organizations", referencedObjectsJSONObject)));
+		Assert.assertThat(
+			new String[] {roleJSONObject.getString("id")},
+			Matchers.arrayContainingInAnyOrder(
+				_getIds("roles", referencedObjectsJSONObject)));
+		Assert.assertThat(
+			new String[] {teamJSONObject.getString("id")},
+			Matchers.arrayContainingInAnyOrder(
+				_getIds("teams", referencedObjectsJSONObject)));
+		Assert.assertThat(
+			new String[] {userGroupJSONObject.getString("id")},
+			Matchers.arrayContainingInAnyOrder(
+				_getIds("user-groups", referencedObjectsJSONObject)));
+		Assert.assertThat(
+			new String[] {userJSONObject.getString("id")},
+			Matchers.arrayContainingInAnyOrder(
+				_getIds("users", referencedObjectsJSONObject)));
+	}
 
 	/**
 	 * The JSON files are named after the WeDeploy collections that they are
@@ -124,6 +235,19 @@ public class IndividualSegmentsRestControllerTest
 
 		Assert.assertEquals(1, individualSegmentsJSONArray.length());
 	}
+
+	private String[] _getIds(
+		String key, JSONObject referencedObjectsJSONObject) {
+
+		return JSONUtil.toStringArray(
+			referencedObjectsJSONObject.getJSONArray(key), "id");
+	}
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
+	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	@Qualifier(

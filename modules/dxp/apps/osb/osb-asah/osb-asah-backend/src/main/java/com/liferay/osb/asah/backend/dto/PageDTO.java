@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +27,11 @@ import java.util.Map;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PageDTO<T> {
+
+	public PageDTO(List<T> results, Long total) {
+		_results = results;
+		_total = total;
+	}
 
 	public PageDTO(
 		String contentKey, T contentValue, Integer number, Integer size,
@@ -46,8 +52,20 @@ public class PageDTO<T> {
 		return _page;
 	}
 
-	private final Map<String, T> _content;
-	private final Page _page;
+	@JsonProperty("results")
+	public List<T> getResults() {
+		return _results;
+	}
+
+	@JsonProperty("total")
+	public long getTotal() {
+		return _page.getTotalElements();
+	}
+
+	private Map<String, T> _content;
+	private Page _page;
+	private List<T> _results;
+	private long _total;
 
 	private class Page {
 

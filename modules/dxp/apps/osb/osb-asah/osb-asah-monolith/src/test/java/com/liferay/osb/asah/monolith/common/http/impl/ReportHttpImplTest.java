@@ -80,7 +80,7 @@ public class ReportHttpImplTest {
 
 		Mockito.verify(
 			_reportRestController
-		).getSegmentResultBag(
+		).getSegmentDTOPageDTO(
 			after
 		);
 	}

@@ -19,9 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.rest.controller.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.dto.SegmentDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -62,10 +64,10 @@ public class IndividualSegmentsRestControllerTest {
 	@Test(expected = OSBAsahException.class)
 	public void testAssignChannelAlreadyAssigned() throws Exception {
 		_individualSegmentsRestController.assignChannel(
-			"1", "327968823603500655");
+			1L, 327968823603500655L);
 
 		_individualSegmentsRestController.assignChannel(
-			"1", "327968823603500655");
+			1L, 327968823603500655L);
 	}
 
 	@ElasticsearchIndex(
@@ -87,7 +89,7 @@ public class IndividualSegmentsRestControllerTest {
 	@Test
 	public void testAssignChannelModifiesIndividualCount() throws Exception {
 		_individualSegmentsRestController.assignChannel(
-			"1", "366637689379787789");
+			1L, 366637689379787789L);
 
 		_elasticsearchInvoker.refresh();
 
@@ -123,7 +125,7 @@ public class IndividualSegmentsRestControllerTest {
 	@Test
 	public void testAssignChannelStaticSegment() throws Exception {
 		_individualSegmentsRestController.assignChannel(
-			"1", "338511451975440187");
+			1L, 338511451975440187L);
 
 		JSONObject individualSegmentJSONObject = _elasticsearchInvoker.get(
 			"individual-segments", "338511451975440187");
@@ -324,9 +326,10 @@ public class IndividualSegmentsRestControllerTest {
 
 		_elasticsearchInvoker.add("individual-segments", jsonObject);
 
-		JSONObject responseJSONObject = new JSONObject(
-			_individualSegmentsRestController.postIndividualSegment(
-				jsonObject.toString()));
+		JSONObject responseJSONObject = _objectMapper.convertValue(
+			_individualSegmentsRestController.postSegment(
+				_objectMapper.convertValue(jsonObject, SegmentDTO.class)),
+			JSONObject.class);
 
 		Assert.assertEquals(
 			"IN_PROGRESS", responseJSONObject.getString("state"));
@@ -337,11 +340,13 @@ public class IndividualSegmentsRestControllerTest {
 		JSONObject jsonObject =
 			FaroInfoTestUtil.buildStaticIndividualSegmentJSONObject();
 
-		_segmentDog.addIndividualSegment(jsonObject);
+		_segmentDog.addSegment(
+			_objectMapper.convertValue(jsonObject, Segment.class));
 
-		JSONObject responseJSONObject = new JSONObject(
-			_individualSegmentsRestController.postIndividualSegment(
-				jsonObject.toString()));
+		JSONObject responseJSONObject = _objectMapper.convertValue(
+			_individualSegmentsRestController.postSegment(
+				_objectMapper.convertValue(jsonObject, SegmentDTO.class)),
+			JSONObject.class);
 
 		Assert.assertEquals("READY", responseJSONObject.getString("state"));
 	}
@@ -387,12 +392,15 @@ public class IndividualSegmentsRestControllerTest {
 
 	@Test
 	public void testPutIndividualSegment1() throws Exception {
-		JSONObject jsonObject = _segmentDog.addIndividualSegment(
-			FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(""));
+		Segment segment = _segmentDog.addSegment(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(""),
+				Segment.class));
 
-		JSONObject responseJSONObject = new JSONObject(
+		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.putIndividualSegment(
-				jsonObject.getLong("id"), jsonObject.toString()));
+				segment.getId(), new SegmentDTO(segment)),
+			JSONObject.class);
 
 		Assert.assertEquals(
 			"IN_PROGRESS", responseJSONObject.getString("state"));
@@ -400,12 +408,15 @@ public class IndividualSegmentsRestControllerTest {
 
 	@Test
 	public void testPutIndividualSegment2() throws Exception {
-		JSONObject jsonObject = _segmentDog.addIndividualSegment(
-			FaroInfoTestUtil.buildStaticIndividualSegmentJSONObject());
+		Segment segment = _segmentDog.addSegment(
+			_objectMapper.convertValue(
+				FaroInfoTestUtil.buildStaticIndividualSegmentJSONObject(),
+				Segment.class));
 
-		JSONObject responseJSONObject = new JSONObject(
+		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.putIndividualSegment(
-				jsonObject.getLong("id"), jsonObject.toString()));
+				segment.getId(), new SegmentDTO(segment)),
+			JSONObject.class);
 
 		Assert.assertEquals("READY", responseJSONObject.getString("state"));
 	}

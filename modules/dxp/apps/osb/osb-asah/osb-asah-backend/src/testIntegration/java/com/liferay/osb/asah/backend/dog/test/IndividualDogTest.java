@@ -59,7 +59,7 @@ public class IndividualDogTest {
 	@Test
 	public void testGetIndividualResultBag1() {
 		ResultBag<Individual> individualResultBag =
-			_individualDog.getIndividualResultBag(null, "", 10, 0);
+			_individualDog.getIndividualResultBag("", null, 10, 0);
 
 		Assert.assertEquals(5, individualResultBag.getTotal());
 		Assert.assertEquals(
@@ -87,7 +87,7 @@ public class IndividualDogTest {
 	@Test
 	public void testGetIndividualResultBag2() {
 		ResultBag<Individual> individualResultBag =
-			_individualDog.getIndividualResultBag(null, "mander", 10, 0);
+			_individualDog.getIndividualResultBag("mander", null, 10, 0);
 
 		Assert.assertEquals(1, individualResultBag.getTotal());
 		Assert.assertEquals(

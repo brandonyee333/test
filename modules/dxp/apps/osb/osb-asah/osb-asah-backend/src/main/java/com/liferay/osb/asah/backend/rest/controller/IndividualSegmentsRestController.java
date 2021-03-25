@@ -14,14 +14,14 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.dog.MembershipDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.backend.rest.controller.util.FilterUtil;
+import com.liferay.osb.asah.common.dto.SegmentDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.rest.response.PutResponse;
+import com.liferay.osb.asah.common.model.Segment;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -63,10 +63,10 @@ public class IndividualSegmentsRestController
 
 	@PutMapping("/{id}/channel/{channelId}")
 	public void assignChannel(
-			@PathVariable String channelId, @PathVariable String id)
+			@PathVariable Long channelId, @PathVariable Long id)
 		throws Exception {
 
-		_segmentDog.assignChannel(channelId, id);
+		segmentDog.assignChannel(channelId, id);
 	}
 
 	@DeleteMapping("/{id}/memberships/{individualId}")
@@ -74,12 +74,12 @@ public class IndividualSegmentsRestController
 			@PathVariable Long id, @PathVariable Long individualId)
 		throws Exception {
 
-		_membershipDog.deactivateMembership(new Date(), individualId, id);
+		membershipDog.deactivateMembership(new Date(), individualId, id);
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteIndividualSegment(@PathVariable String id) {
-		_segmentDog.deleteIndividualSegment(id);
+	public void deleteIndividualSegment(@PathVariable Long id) {
+		segmentDog.deleteSegment(id);
 	}
 
 	@GetMapping("/{id}/accounts")
@@ -125,42 +125,29 @@ public class IndividualSegmentsRestController
 			);
 		}
 
+		FilterUtil.getString(filterString, filterString);
+
 		return toCollectionGetResponse(
 			"individual-segments", null, page, boolQueryBuilder, size, sorts);
 	}
 
 	@PutMapping("/{id}")
-	public String putIndividualSegment(
-			@PathVariable Long id, @RequestBody String json)
+	public SegmentDTO putIndividualSegment(
+			@PathVariable Long id, @RequestBody SegmentDTO segmentDTO)
 		throws Exception {
 
-		PutResponse putResponse = new PutResponse() {
+		segmentDTO.setActiveIndividualCount(null);
+		segmentDTO.setActivitiesCount(null);
+		segmentDTO.setAnonymousIndividualCount(null);
+		segmentDTO.setCreateDate(null);
+		segmentDTO.setIndividualCount(null);
+		segmentDTO.setKnownIndividualCount(null);
+		segmentDTO.setModifiedDate(new Date());
 
-			@Override
-			protected JSONObject invokeElasticsearch(JSONObject jsonObject)
-				throws Exception {
-
-				return _segmentDog.updateIndividualSegment(id, jsonObject);
-			}
-
-			@Override
-			protected void onBeforeUpdate(JSONObject jsonObject) {
-				super.onBeforeUpdate(jsonObject);
-
-				jsonObject.remove("activeIndividualCount");
-				jsonObject.remove("activitiesCount");
-				jsonObject.remove("anonymousIndividualCount");
-				jsonObject.remove("dateCreated");
-				jsonObject.remove("individualCount");
-				jsonObject.remove("knownIndividualCount");
-			}
-
-		};
-
-		putResponse.setCollectionName("individual-segments");
-		putResponse.setJSON(json);
-
-		return putResponse.respond();
+		return objectMapper.convertValue(
+			segmentDog.updateSegment(
+				objectMapper.convertValue(segmentDTO, Segment.class), id),
+			SegmentDTO.class);
 	}
 
 	private QueryBuilder _getAccountsQueryBuilder(
@@ -204,11 +191,5 @@ public class IndividualSegmentsRestController
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
-
-	@Autowired
-	private MembershipDog _membershipDog;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 }

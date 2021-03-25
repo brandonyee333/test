@@ -74,8 +74,8 @@ public class InterestCompositionBagDataFetcher
 		return _interestCompositionDog.getIndividualSegmentCompositionResultBag(
 			dataFetchingEnvironment.getArgument("active"),
 			dataFetchingEnvironment.getArgument("channelId"),
-			dataFetchingEnvironment.getArgument("individualSegmentId"),
 			dataFetchingEnvironment.getArgument("keywords"),
+			dataFetchingEnvironment.getArgument("individualSegmentId"),
 			dataFetchingEnvironment.getArgument("size"),
 			Sort.of(dataFetchingEnvironment.getArgument("sort")),
 			dataFetchingEnvironment.getArgument("start"));

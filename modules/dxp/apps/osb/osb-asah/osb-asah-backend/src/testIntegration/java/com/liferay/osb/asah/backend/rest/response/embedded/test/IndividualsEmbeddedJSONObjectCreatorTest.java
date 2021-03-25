@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.rest.response.embedded.IndividualsEmbeddedJS
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
@@ -61,7 +62,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
 				_dataSourceDog, _elasticsearchInvoker, "account-names",
-				_membershipDog, _objectMapper);
+				_membershipDog, _objectMapper, _segmentDog);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"346468649722790279");
@@ -98,7 +99,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
 				_dataSourceDog, _elasticsearchInvoker, "accounts",
-				_membershipDog, _objectMapper);
+				_membershipDog, _objectMapper, _segmentDog);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"346468649722790279");
@@ -122,7 +123,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
 				_dataSourceDog, _elasticsearchInvoker, "data-sources",
-				_membershipDog, _objectMapper);
+				_membershipDog, _objectMapper, _segmentDog);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"123");
@@ -150,7 +151,7 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 		EmbeddedJSONObjectCreator embeddedJSONObjectCreator =
 			new IndividualsEmbeddedJSONObjectCreator(
 				_dataSourceDog, _elasticsearchInvoker, "individual-segments",
-				_membershipDog, _objectMapper);
+				_membershipDog, _objectMapper, _segmentDog);
 
 		JSONObject individualJSONObject = embeddedJSONObjectCreator.create(
 			"123");
@@ -172,5 +173,8 @@ public class IndividualsEmbeddedJSONObjectCreatorTest {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }
