@@ -34,12 +34,9 @@ public class FilterUtilTest {
 	public void testGetBoolean() {
 		Assert.assertFalse(
 			FilterUtil.getBoolean("(workspaceURL eq null)", "url"));
-
 		Assert.assertTrue(
 			FilterUtil.getBoolean("(channelId eq '123')", "channelId"));
-
 		Assert.assertTrue(FilterUtil.getBoolean("(url eq '')", "url"));
-
 		Assert.assertTrue(
 			FilterUtil.getBoolean("(workspaceURL eq null)", "workspaceURL"));
 	}
@@ -60,7 +57,6 @@ public class FilterUtilTest {
 		Assert.assertEquals(
 			(Long)123L,
 			FilterUtil.getLong("(channelId eq '123')", "channelId"));
-
 		Assert.assertNull(
 			FilterUtil.getLong("(channelId eq null)", "channelId"));
 	}
