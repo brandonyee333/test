@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="Segment.deleteByChannelIdIn">
+		<![CDATA[
+			DELETE FROM Segment WHERE Segment.channelId IN (:channelIds)
+		]]>
+	</entry>
+	<entry key="Segment.findByReferencedAssetDataSourceIdsAndStateNotAndType">
+		<![CDATA[
+			SELECT
+				Segment.*
+			FROM
+				Segment
+			WHERE
+				EXISTS
+				(
+					SELECT
+						1
+					FROM
+						UNNEST(Segment.referencedAssetDataSourceIds) AS referencedAssetDataSourceId
+					WHERE
+						referencedAssetDataSourceId = :referencedAssetDataSourceId
+				) AND
+				Segment.state <> :state AND
+				Segment.type = :type
+			ORDER BY
+				Segment.id
+		]]>
+	</entry>
+	<entry key="Segment.findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdsInAndStateNotAndType">
+		<![CDATA[
+			SELECT
+				Segment.*
+			FROM
+				Segment
+			WHERE
+				EXISTS
+				(
+					SELECT
+						1
+					FROM
+						UNNEST(Segment.referencedAssetDataSourceIds) AS referencedAssetDataSourceId
+					WHERE
+						referencedAssetDataSourceId = :referencedAssetDataSourceId
+				) AND
+				EXISTS
+				(
+					SELECT
+						1
+					FROM
+						UNNEST(Segment.referencedFieldMappingIds) AS referencedFieldMappingId
+					WHERE
+						referencedFieldMappingId IN (:referencedFieldMappingIds)
+				) AND
+				Segment.state <> :state AND
+				Segment.type = :type
+			ORDER BY
+				Segment.id
+		]]>
+	</entry>
+	<entry key="Segment.findByReferencedFieldMappingIdsInAndStateNotAndType">
+		<![CDATA[
+			SELECT
+				Segment.*
+			FROM
+				Segment
+			WHERE
+				EXISTS
+				(
+					SELECT
+						1
+					FROM
+						UNNEST(Segment.referencedFieldMappingIds) AS referencedFieldMappingId
+					WHERE
+						referencedFieldMappingId IN (:referencedFieldMappingIds)
+				) AND
+				Segment.state <> :state AND
+				Segment.type = :type
+			ORDER BY
+				Segment.id
+		]]>
+	</entry>
+	<entry key="Segment.findNameByChannelIdAndIdInAndStatus">
+		<![CDATA[
+			SELECT
+				Segment.name
+			FROM
+				Segment
+			WHERE
+				Segment.channelId = :channelId AND
+				Segment.id IN (:ids) AND
+				Segment.status = :status
+			GROUP BY
+				Segment.name
+			ORDER BY
+				COUNT(Segment.name) DESC
+		]]>
+	</entry>
+	<entry key="Segment.findNameByIdInAndStatus">
+		<![CDATA[
+			SELECT
+				Segment.name
+			FROM
+				Segment
+			WHERE
+				Segment.id IN (:ids) AND
+				Segment.status = :status
+			GROUP BY
+				Segment.name
+			ORDER BY
+				COUNT(Segment.name) DESC
+		]]>
+	</entry>
+	<entry key="Segment.findIdByNameInAndStatus">
+		<![CDATA[
+			SELECT
+				Segment.id
+			FROM
+				Segment
+			WHERE
+				Segment.name IN (:names) AND
+				Segment.status = :status
+			GROUP BY
+				Segment.id
+			ORDER BY
+				COUNT(Segment.id) DESC
+		]]>
+	</entry>
+	<entry key="Segment.findReferencedAssetIds">
+		<![CDATA[
+			SELECT
+				Segment.referencedAssetIds
+			FROM
+				Segment
+			GROUP BY
+				Segment.referencedAssetIds
+			ORDER BY
+				COUNT(Segment.referencedAssetIds) DESC
+		]]>
+	</entry>
+	<entry key="Segment.updateActivitiesCountAndRemoveLastActivityDate">
+		<![CDATA[
+			UPDATE
+				Segment
+			SET
+				activitiesCount = :activitiesCount
+				lastActivityDate = NULL
+		]]>
+	</entry>
+</properties>
