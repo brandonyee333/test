@@ -42,7 +42,7 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 
 	@Override
 	public long countEventDefinitions(
-		String keyword, EventDefinition.Type type) {
+		Boolean blocked, String keyword, EventDefinition.Type type) {
 
 		throw new UnsupportedOperationException();
 	}
@@ -120,7 +120,8 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 
 	@Override
 	public List<EventDefinition> searchEventDefinitions(
-		String keyword, Pageable pageable, EventDefinition.Type type) {
+		Boolean blocked, String keyword, Pageable pageable,
+		EventDefinition.Type type) {
 
 		throw new UnsupportedOperationException();
 	}

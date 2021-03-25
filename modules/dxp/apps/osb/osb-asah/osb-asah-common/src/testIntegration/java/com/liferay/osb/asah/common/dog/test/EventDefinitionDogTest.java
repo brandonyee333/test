@@ -64,12 +64,12 @@ public class EventDefinitionDogTest {
 	@Test
 	public void testCountEventDefinitions() {
 		Long count = _eventDefinitionDog.countEventDefinitions(
-			null, EventDefinition.Type.DEFAULT);
+			false, null, EventDefinition.Type.DEFAULT);
 
 		Assert.assertEquals(Long.valueOf(24), count);
 
 		count = _eventDefinitionDog.countEventDefinitions(
-			null, EventDefinition.Type.CUSTOM);
+			false, null, EventDefinition.Type.CUSTOM);
 
 		Assert.assertEquals(Long.valueOf(0), count);
 	}
@@ -79,7 +79,7 @@ public class EventDefinitionDogTest {
 		Assert.assertEquals(
 			Long.valueOf(4),
 			_eventDefinitionDog.countEventDefinitions(
-				"page", EventDefinition.Type.DEFAULT));
+				false, "page", EventDefinition.Type.DEFAULT));
 	}
 
 	@Test
@@ -132,7 +132,8 @@ public class EventDefinitionDogTest {
 	public void testGetEventDefinitions() {
 		_assertEventDefinitions(
 			_eventDefinitionDog.getEventDefinitionsPage(
-				null, 0, 5, Sort.asc("name"), EventDefinition.Type.DEFAULT),
+				false, null, 0, 5, Sort.asc("name"),
+				EventDefinition.Type.DEFAULT),
 			new ArrayList<String>() {
 				{
 					add("assetClicked");
@@ -148,7 +149,8 @@ public class EventDefinitionDogTest {
 	public void testGetEventDefinitionsWithKeyword() {
 		_assertEventDefinitions(
 			_eventDefinitionDog.getEventDefinitionsPage(
-				"field", 0, 5, Sort.asc("name"), EventDefinition.Type.DEFAULT),
+				false, "field", 0, 5, Sort.asc("name"),
+				EventDefinition.Type.DEFAULT),
 			new ArrayList<String>() {
 				{
 					add("fieldBlurred");

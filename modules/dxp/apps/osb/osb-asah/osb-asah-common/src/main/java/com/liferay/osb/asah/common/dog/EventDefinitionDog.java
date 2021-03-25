@@ -74,9 +74,10 @@ public class EventDefinitionDog {
 	}
 
 	public Long countEventDefinitions(
-		String keyword, EventDefinition.Type type) {
+		Boolean blocked, String keyword, EventDefinition.Type type) {
 
-		return _eventDefinitionRepository.countEventDefinitions(keyword, type);
+		return _eventDefinitionRepository.countEventDefinitions(
+			blocked, keyword, type);
 	}
 
 	public EventDefinition fetchEventDefinitionByDisplayName(
@@ -106,7 +107,7 @@ public class EventDefinitionDog {
 	}
 
 	public Page<EventDefinition> getEventDefinitionsPage(
-		String keyword, int page, int size, Sort sort,
+		Boolean blocked, String keyword, int page, int size, Sort sort,
 		EventDefinition.Type type) {
 
 		_validate(sort);
@@ -115,10 +116,10 @@ public class EventDefinitionDog {
 
 		return PageableExecutionUtils.getPage(
 			_eventDefinitionRepository.searchEventDefinitions(
-				keyword, pageRequest, type),
+				blocked, keyword, pageRequest, type),
 			pageRequest,
 			() -> _eventDefinitionRepository.countEventDefinitions(
-				keyword, type));
+				blocked, keyword, type));
 	}
 
 	public EventDefinition updateEventDefinition(
