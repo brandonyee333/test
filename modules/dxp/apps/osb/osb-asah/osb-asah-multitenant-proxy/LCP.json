@@ -4,7 +4,7 @@
 		"osbasahbackend",
 		"osbasahpublisher"
 	],
-	"id": "osbasahmonolith",
+	"id": "osbasahmultitenantproxy",
 	"livenessProbe": {
 		"failureThreshold": 20,
 		"httpGet": {
