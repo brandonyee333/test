@@ -1,9 +1,5 @@
 {
 	"cpu": 2,
-	"dependencies": [
-		"osbasahbackend",
-		"osbasahpublisher"
-	],
 	"id": "osbasahmultitenantproxy",
 	"livenessProbe": {
 		"failureThreshold": 20,
@@ -15,7 +11,6 @@
 		"timeoutSeconds": 10
 	},
 	"loadBalancer": {
-		"cdn": true,
 		"targetPort": 80
 	},
 	"memory": 512,
