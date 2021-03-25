@@ -72,7 +72,7 @@ public class ActivityGroupRepositoryImpl extends BaseRepository {
 		).where(
 			_getConditions(channelId, endDayDate, startDayDate, ownerId)
 		).orderBy(
-			getSortFields(pageable.getSort())
+			getSortFields(pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(

@@ -90,7 +90,7 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 					channelIds, credentialType, names, providerType,
 					searchNames, states, url, workspaceURL)
 			).orderBy(
-				getSortFields(pageable.getSort())
+				getSortFields(pageable.getSort(), null)
 			).limit(
 				pageable.getPageSize()
 			).offset(

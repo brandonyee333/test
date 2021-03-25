@@ -18,20 +18,18 @@ import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
-import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -67,33 +65,53 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
 		String name, Pageable pageable) {
 
-		SelectSelectStep<Record> select = _dslContext.select();
-
-		List<EventAttributeDefinition> eventAttributeDefinitions = select.from(
-			"EventAttributeDefinition"
-		).where(
-			_getConditions(name)
-		).orderBy(
-			getSortFields(pageable.getSort())
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).map(
-			record -> new EventAttributeDefinition(record.intoMap())
-		);
-
-		Stream<EventAttributeDefinition> stream =
-			eventAttributeDefinitions.stream();
-
 		Map<Long, EventAttributeDefinition> eventAttributeDefinitionsById =
-			stream.collect(
-				Collectors.toMap(
-					EventAttributeDefinition::getId, Function.identity()));
+			new LinkedHashMap<>();
 
-		_populateEventDefinitionEventAttributeDefinition(
-			eventAttributeDefinitionsById);
+		Table<?> table = _getTopEventAttributeDefinitionsTable(name, pageable);
+
+		SelectSelectStep<?> select = _dslContext.select();
+
+		Field<Object> field = DSL.field("eventAttributeDefinitionId");
+
+		select.from(
+			"EventDefinitionEventAttributeDefinition"
+		).join(
+			table
+		).on(
+			field.eq(DSL.field(table + ".id"))
+		).orderBy(
+			getSortFields(pageable.getSort(), table)
+		).fetch(
+		).forEach(
+			record -> {
+				Map<String, Object> recordMap = record.intoMap();
+
+				Long id = (Long)recordMap.get("id");
+
+				EventAttributeDefinition eventAttributeDefinition =
+					eventAttributeDefinitionsById.get(id);
+
+				if (eventAttributeDefinition == null) {
+					eventAttributeDefinition = new EventAttributeDefinition(
+						recordMap);
+
+					eventAttributeDefinition.
+						addEventDefinitionEventAttributeDefinition(
+							new EventDefinitionEventAttributeDefinition(
+								recordMap));
+
+					eventAttributeDefinitionsById.put(
+						id, eventAttributeDefinition);
+				}
+				else {
+					eventAttributeDefinition.
+						addEventDefinitionEventAttributeDefinition(
+							new EventDefinitionEventAttributeDefinition(
+								recordMap));
+				}
+			}
+		);
 
 		return new ArrayList<>(eventAttributeDefinitionsById.values());
 	}
@@ -110,30 +128,25 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		return conditions;
 	}
 
-	private void _populateEventDefinitionEventAttributeDefinition(
-		Map<Long, EventAttributeDefinition> eventAttributeDefinitionsById) {
+	private Table<?> _getTopEventAttributeDefinitionsTable(
+		String name, Pageable pageable) {
 
-		SelectSelectStep<Record> select = _dslContext.select();
+		SelectSelectStep<?> select = _dslContext.select();
 
-		Field<Object> field = DSL.field("eventAttributeDefinitionId");
-
-		select.from(
-			"EventDefinitionEventAttributeDefinition"
+		return select.from(
+			"EventAttributeDefinition"
 		).where(
-			field.in(eventAttributeDefinitionsById.keySet())
-		).fetch(
-		).forEach(
-			record -> {
-				Map<String, Object> recordMap = record.intoMap();
-
-				EventAttributeDefinition eventAttributeDefinition =
-					eventAttributeDefinitionsById.get(
-						(Long)recordMap.get("eventattributedefinitionid"));
-
-				eventAttributeDefinition.
-					addEventDefinitionEventAttributeDefinition(
-						new EventDefinitionEventAttributeDefinition(recordMap));
-			}
+			_getConditions(name)
+		).groupBy(
+			DSL.field("id")
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).asTable(
+			"topEventAttributeDefinitions"
 		);
 	}
 

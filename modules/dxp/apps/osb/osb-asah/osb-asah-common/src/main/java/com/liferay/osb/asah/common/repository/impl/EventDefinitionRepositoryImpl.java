@@ -71,7 +71,7 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		).where(
 			_getConditions(keyword, type)
 		).orderBy(
-			getSortFields(pageable.getSort())
+			getSortFields(pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(

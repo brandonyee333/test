@@ -19,6 +19,7 @@ import java.util.Collection;
 
 import org.jooq.Field;
 import org.jooq.SortField;
+import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Sort;
@@ -28,7 +29,9 @@ import org.springframework.data.domain.Sort;
  */
 public abstract class BaseRepository {
 
-	protected Collection<SortField<?>> getSortFields(Sort sort) {
+	protected Collection<SortField<?>> getSortFields(
+		Sort sort, Table<?> table) {
+
 		Collection<SortField<?>> sortFields = new ArrayList<>();
 
 		if (sort == null) {
@@ -36,7 +39,13 @@ public abstract class BaseRepository {
 		}
 
 		for (Sort.Order order : sort.toList()) {
-			Field<?> field = DSL.field(order.getProperty());
+			String fieldName = order.getProperty();
+
+			if (table != null) {
+				fieldName = table + "." + fieldName;
+			}
+
+			Field<?> field = DSL.field(fieldName);
 
 			if (order.getDirection() == Sort.Direction.ASC) {
 				sortFields.add(field.asc());
