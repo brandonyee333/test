@@ -80,7 +80,20 @@ public class SalesforceExtractorNaniteTest {
 
 		_elasticsearchIndexManager.checkIndices();
 
-		_setUpConfigurationManager();
+		Assume.assumeTrue(
+			StringUtils.isNotEmpty(
+				_salesforceExtractorConfiguration.
+					getSalesforceAuthEndpoint()) &&
+			StringUtils.isNotEmpty(
+				_salesforceExtractorConfiguration.getSalesforcePassword()) &&
+			StringUtils.isNotEmpty(
+				_salesforceExtractorConfiguration.getSalesforceUserName()));
+
+		_dataSourceRepository.save(
+			FaroInfoTestUtil.buildSalesforceDataSource(
+				_salesforceExtractorConfiguration.getSalesforceUserName(),
+				_salesforceExtractorConfiguration.getSalesforcePassword(),
+				_salesforceExtractorConfiguration.getSalesforceURL()));
 	}
 
 	@After
@@ -98,15 +111,6 @@ public class SalesforceExtractorNaniteTest {
 
 	@Test
 	public void test() throws Exception {
-		Assume.assumeTrue(
-			StringUtils.isNotEmpty(
-				_salesforceExtractorConfiguration.
-					getSalesforceAuthEndpoint()) &&
-			StringUtils.isNotEmpty(
-				_salesforceExtractorConfiguration.getSalesforcePassword()) &&
-			StringUtils.isNotEmpty(
-				_salesforceExtractorConfiguration.getSalesforceUserName()));
-
 		_testPopulateNewTables();
 
 		_testAddField();
@@ -169,14 +173,6 @@ public class SalesforceExtractorNaniteTest {
 		).toArray(
 			String[]::new
 		);
-	}
-
-	private void _setUpConfigurationManager() {
-		_dataSourceRepository.save(
-			FaroInfoTestUtil.buildSalesforceDataSource(
-				_salesforceExtractorConfiguration.getSalesforceUserName(),
-				_salesforceExtractorConfiguration.getSalesforcePassword(),
-				_salesforceExtractorConfiguration.getSalesforceURL()));
 	}
 
 	private void _testAddField() {
@@ -471,9 +467,6 @@ public class SalesforceExtractorNaniteTest {
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private SalesforceExtractorNanite _salesforceExtractorNanite;
