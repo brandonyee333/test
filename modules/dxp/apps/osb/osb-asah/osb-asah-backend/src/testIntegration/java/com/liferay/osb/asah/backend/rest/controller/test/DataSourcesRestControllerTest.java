@@ -20,12 +20,12 @@ import com.liferay.osb.asah.backend.rest.controller.DataSourcesRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -301,7 +301,7 @@ public class DataSourcesRestControllerTest {
 
 	@Test
 	public void testGetSalesforceAccountsFields() throws Exception {
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		JSONArray jsonArray = new JSONArray(
@@ -313,7 +313,7 @@ public class DataSourcesRestControllerTest {
 
 	@Test
 	public void testGetSalesforceDataSourceAccountsProgress() throws Exception {
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor nanite is null
@@ -570,7 +570,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress1()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor nanite is null
@@ -589,7 +589,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress2()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor nanite failed
@@ -625,7 +625,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress3()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor nanite started and initial run is true
@@ -738,7 +738,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress4()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor nanite in progress and salesforce extractor
@@ -775,7 +775,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress5()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor individuals nanite started
@@ -843,7 +843,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress6()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor individuals nanite not started and date logged
@@ -896,7 +896,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress7()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce extractor individuals nanite failed and date logged
@@ -950,7 +950,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress8()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		String dateLogged = DateUtil.newDateString();
@@ -1000,7 +1000,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress9()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce individuals nanite started
@@ -1075,7 +1075,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress10()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce individuals nanite not started and and date logged is
@@ -1142,7 +1142,7 @@ public class DataSourcesRestControllerTest {
 	public void testGetSalesforceDataSourceIndividualsProgress11()
 		throws Exception {
 
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		// Salesforce individuals nanite not started and and date logged is
@@ -1204,7 +1204,7 @@ public class DataSourcesRestControllerTest {
 
 	@Test
 	public void testGetSalesforceUsersFields() throws Exception {
-		DataSource salesforceDataSource = _dataSourceDog.addDataSource(
+		DataSource salesforceDataSource = _dataSourceRepository.save(
 			FaroInfoTestUtil.buildSalesforceDataSource());
 
 		JSONArray jsonArray = new JSONArray(
@@ -1326,7 +1326,7 @@ public class DataSourcesRestControllerTest {
 	private ChannelHttp _channelHttp;
 
 	@Autowired
-	private DataSourceDog _dataSourceDog;
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private DataSourcesRestController _dataSourcesRestController;
