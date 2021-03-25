@@ -77,7 +77,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataSourceDog {
 
-	public DataSource addDataSource(DataSource dataSource) throws Exception {
+	public DataSource addDataSource(DataSource dataSource) {
 		dataSource.setName(_getDataSourceName(dataSource.getName()));
 
 		String providerType = dataSource.getProviderType();
