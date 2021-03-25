@@ -1,0 +1,512 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.model;
+
+import com.liferay.osb.asah.common.util.BeanUtils;
+
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Table;
+
+/**
+ * @author Inácio Nery
+ */
+@Table
+public class Segment implements Persistable<Long> {
+
+	public Segment() {
+	}
+
+	public Segment(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof Segment)) {
+			return false;
+		}
+
+		Segment segment = (Segment)obj;
+
+		if (Objects.equals(
+				_activeIndividualCount, segment._activeIndividualCount) &&
+			Objects.equals(_activitiesCount, segment._activitiesCount) &&
+			Objects.equals(
+				_anonymousIndividualCount, segment._anonymousIndividualCount) &&
+			Objects.equals(_authorId, segment._authorId) &&
+			Objects.equals(_authorName, segment._authorName) &&
+			Objects.equals(_channelId, segment._channelId) &&
+			Objects.equals(_createDate, segment._createDate) &&
+			Objects.equals(_filter, segment._filter) &&
+			Objects.equals(_filterMetadata, segment._filterMetadata) &&
+			Objects.equals(_id, segment._id) &&
+			Objects.equals(
+				_includeAnonymousUsers, segment._includeAnonymousUsers) &&
+			Objects.equals(_individualCount, segment._individualCount) &&
+			Objects.equals(
+				_knownIndividualCount, segment._knownIndividualCount) &&
+			Objects.equals(_lastActivityDate, segment._lastActivityDate) &&
+			Objects.equals(_modifiedDate, segment._modifiedDate) &&
+			Objects.equals(_name, segment._name) &&
+			Objects.equals(
+				_referencedAssetDataSourceIds,
+				segment._referencedAssetDataSourceIds) &&
+			Objects.equals(_referencedAssetIds, segment._referencedAssetIds) &&
+			Objects.equals(
+				_referencedFieldMappingIds,
+				segment._referencedFieldMappingIds) &&
+			Objects.equals(_referencedGroupIds, segment._referencedGroupIds) &&
+			Objects.equals(
+				_referencedOrganizationIds,
+				segment._referencedOrganizationIds) &&
+			Objects.equals(_referencedRoleIds, segment._referencedRoleIds) &&
+			Objects.equals(_referencedTeamIds, segment._referencedTeamIds) &&
+			Objects.equals(
+				_referencedUserGroupIds, segment._referencedUserGroupIds) &&
+			Objects.equals(_referencedUserIds, segment._referencedUserIds) &&
+			Objects.equals(_scope, segment._scope) &&
+			Objects.equals(_state, segment._state) &&
+			Objects.equals(_status, segment._status) &&
+			Objects.equals(_type, segment._type)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getActiveIndividualCount() {
+		return _activeIndividualCount;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getActivitiesCount() {
+		return _activitiesCount;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getAnonymousIndividualCount() {
+		return _anonymousIndividualCount;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getAuthorId() {
+		return _authorId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getAuthorName() {
+		return _authorName;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getChannelId() {
+		return _channelId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Date getCreateDate() {
+		if (_createDate == null) {
+			return null;
+		}
+
+		return new Date(_createDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getFilter() {
+		return _filter;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getFilterMetadata() {
+		return _filterMetadata;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@Override
+	public Long getId() {
+		return _id;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Boolean getIncludeAnonymousUsers() {
+		return _includeAnonymousUsers;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getIndividualCount() {
+		return _individualCount;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getKnownIndividualCount() {
+		return _knownIndividualCount;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Date getLastActivityDate() {
+		if (_lastActivityDate == null) {
+			return null;
+		}
+
+		return new Date(_lastActivityDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getName() {
+		return _name;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<Long> getReferencedAssetDataSourceIds() {
+		return _referencedAssetDataSourceIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<Long> getReferencedAssetIds() {
+		return _referencedAssetIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<Long> getReferencedFieldMappingIds() {
+		return _referencedFieldMappingIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<Long> getReferencedGroupIds() {
+		return _referencedGroupIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<Long> getReferencedOrganizationIds() {
+		return _referencedOrganizationIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<Long> getReferencedRoleIds() {
+		return _referencedRoleIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<Long> getReferencedTeamIds() {
+		return _referencedTeamIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<Long> getReferencedUserGroupIds() {
+		return _referencedUserGroupIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<Long> getReferencedUserIds() {
+		return _referencedUserIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getScope() {
+		return _scope;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getState() {
+		return _state;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getStatus() {
+		return _status;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Type getType() {
+		return _type;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+			_activeIndividualCount, _activitiesCount, _anonymousIndividualCount,
+			_authorId, _authorName, _channelId, _createDate, _filter,
+			_filterMetadata, _id, _includeAnonymousUsers, _individualCount,
+			_knownIndividualCount, _lastActivityDate, _modifiedDate, _name,
+			_referencedAssetDataSourceIds, _referencedAssetIds,
+			_referencedFieldMappingIds, _referencedGroupIds,
+			_referencedOrganizationIds, _referencedRoleIds, _referencedTeamIds,
+			_referencedUserGroupIds, _referencedUserIds, _scope, _state,
+			_status, _type);
+	}
+
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public void setActiveIndividualCount(Long activeIndividualCount) {
+		_activeIndividualCount = activeIndividualCount;
+	}
+
+	public void setActivitiesCount(Long activitiesCount) {
+		_activitiesCount = activitiesCount;
+	}
+
+	public void setAnonymousIndividualCount(Long anonymousIndividualCount) {
+		_anonymousIndividualCount = anonymousIndividualCount;
+	}
+
+	public void setAuthorId(Long authorId) {
+		_authorId = authorId;
+	}
+
+	public void setAuthorName(String authorName) {
+		_authorName = authorName;
+	}
+
+	public void setChannelId(Long channelId) {
+		_channelId = channelId;
+	}
+
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
+		}
+	}
+
+	public void setFilter(String filter) {
+		_filter = filter;
+	}
+
+	public void setFilterMetadata(String filterMetadata) {
+		_filterMetadata = filterMetadata;
+	}
+
+	public void setId(Long id) {
+		_id = id;
+	}
+
+	public void setIncludeAnonymousUsers(Boolean includeAnonymousUsers) {
+		_includeAnonymousUsers = includeAnonymousUsers;
+	}
+
+	public void setIndividualCount(Long individualCount) {
+		_individualCount = individualCount;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
+	}
+
+	public void setKnownIndividualCount(Long knownIndividualCount) {
+		_knownIndividualCount = knownIndividualCount;
+	}
+
+	public void setLastActivityDate(Date lastActivityDate) {
+		if (lastActivityDate != null) {
+			_lastActivityDate = new Date(lastActivityDate.getTime());
+		}
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
+		}
+	}
+
+	public void setName(String name) {
+		_name = name;
+	}
+
+	public void setReferencedAssetDataSourceIds(
+		Set<Long> referencedAssetDataSourceIds) {
+
+		_referencedAssetDataSourceIds = referencedAssetDataSourceIds;
+	}
+
+	public void setReferencedAssetIds(Set<Long> referencedAssetIds) {
+		_referencedAssetIds = referencedAssetIds;
+	}
+
+	public void setReferencedFieldMappingIds(
+		Set<Long> referencedFieldMappingIds) {
+
+		_referencedFieldMappingIds = referencedFieldMappingIds;
+	}
+
+	public void setReferencedGroupIds(Set<Long> referencedGroupIds) {
+		_referencedGroupIds = referencedGroupIds;
+	}
+
+	public void setReferencedOrganizationIds(
+		Set<Long> referencedOrganizationIds) {
+
+		_referencedOrganizationIds = referencedOrganizationIds;
+	}
+
+	public void setReferencedRoleIds(Set<Long> referencedRoleIds) {
+		_referencedRoleIds = referencedRoleIds;
+	}
+
+	public void setReferencedTeamIds(Set<Long> referencedTeamIds) {
+		_referencedTeamIds = referencedTeamIds;
+	}
+
+	public void setReferencedUserGroupIds(Set<Long> referencedUserGroupIds) {
+		_referencedUserGroupIds = referencedUserGroupIds;
+	}
+
+	public void setReferencedUserIds(Set<Long> referencedUserIds) {
+		_referencedUserIds = referencedUserIds;
+	}
+
+	public void setScope(String scope) {
+		_scope = scope;
+	}
+
+	public void setState(String state) {
+		_state = state;
+	}
+
+	public void setStatus(String status) {
+		_status = status;
+	}
+
+	public void setType(Type type) {
+		_type = type;
+	}
+
+	public static enum Type {
+
+		DYNAMIC, STATIC
+
+	}
+
+	@Transient
+	private Long _activeIndividualCount;
+
+	@Transient
+	private Long _activitiesCount;
+
+	@Transient
+	private Long _anonymousIndividualCount;
+
+	@Transient
+	private Long _authorId;
+
+	@Transient
+	private String _authorName;
+
+	@Transient
+	private Long _channelId;
+
+	@Transient
+	private Date _createDate;
+
+	@Transient
+	private String _filter;
+
+	@Transient
+	private String _filterMetadata;
+
+	@Transient
+	private Long _id;
+
+	@Transient
+	private Boolean _includeAnonymousUsers;
+
+	@Transient
+	private Long _individualCount;
+
+	@Transient
+	private Boolean _isNew;
+
+	@Transient
+	private Long _knownIndividualCount;
+
+	@Transient
+	private Date _lastActivityDate;
+
+	@Transient
+	private Date _modifiedDate;
+
+	@Transient
+	private String _name;
+
+	@Transient
+	private Set<Long> _referencedAssetDataSourceIds;
+
+	@Transient
+	private Set<Long> _referencedAssetIds;
+
+	@Transient
+	private Set<Long> _referencedFieldMappingIds;
+
+	@Transient
+	private Set<Long> _referencedGroupIds;
+
+	@Transient
+	private Set<Long> _referencedOrganizationIds;
+
+	@Transient
+	private Set<Long> _referencedRoleIds;
+
+	@Transient
+	private Set<Long> _referencedTeamIds;
+
+	@Transient
+	private Set<Long> _referencedUserGroupIds;
+
+	@Transient
+	private Set<Long> _referencedUserIds;
+
+	@Transient
+	private String _scope;
+
+	@Transient
+	private String _state;
+
+	@Transient
+	private String _status;
+
+	@Transient
+	private Type _type;
+
+}
