@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.monolith.common.http.impl;
 
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
@@ -32,9 +31,7 @@ import org.springframework.stereotype.Component;
 public class ConfigurationHttpImpl implements ConfigurationHttp {
 
 	@Override
-	public void addConfiguration(
-		DataSource dataSource, String providerType) {
-
+	public void addConfiguration(DataSource dataSource, String providerType) {
 		ConfigurationManager configurationManager = _getConfigurationManager(
 			providerType);
 

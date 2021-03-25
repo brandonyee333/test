@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -879,7 +878,7 @@ public class FaroInfoTestUtil {
 	}
 
 	public static DataSource buildSalesforceDataSource(
-			JSONObject credentialsJSONObject, String url) {
+		JSONObject credentialsJSONObject, String url) {
 
 		DataSource dataSource = new DataSource();
 		Date date = new Date();
@@ -900,13 +899,13 @@ public class FaroInfoTestUtil {
 		dataSource.setURL(url);
 
 		if (Objects.equals(
-			"Basic Authentication", dataSource.getCredentialType())) {
+				dataSource.getCredentialType(), "Basic Authentication")) {
 
 			dataSource.setLogin(credentialsJSONObject.getString("login"));
 			dataSource.setPassword(credentialsJSONObject.getString("password"));
 		}
 		else if (Objects.equals(
-			"OAuth 2 Authentication", dataSource.getCredentialType())) {
+					dataSource.getCredentialType(), "OAuth 2 Authentication")) {
 
 			dataSource.setOAuthClientId(
 				credentialsJSONObject.getString("oAuthClientId"));

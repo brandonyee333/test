@@ -27,8 +27,6 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.json.JSONObject;
-
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
@@ -65,22 +63,21 @@ public class SalesforceExtractorConfigurationDogTest {
 	@Test
 	public void testGetState() {
 		DataSource dataSource = FaroInfoTestUtil.buildSalesforceDataSource(
-				JSONUtil.put(
-					"oAuthClientId",
-					_salesforceExtractorConfiguration.
-						getSalesforceOAuthClientId()
-				).put(
-					"oAuthClientSecret",
-					_salesforceExtractorConfiguration.
-						getSalesforceOAuthClientSecret()
-				).put(
-					"oAuthRefreshToken",
-					_salesforceExtractorConfiguration.
-						getSalesforceOAuthRefreshToken()
-				).put(
-					"type", "OAuth 2 Authentication"
-				),
-				_salesforceExtractorConfiguration.getSalesforceURL());
+			JSONUtil.put(
+				"oAuthClientId",
+				_salesforceExtractorConfiguration.getSalesforceOAuthClientId()
+			).put(
+				"oAuthClientSecret",
+				_salesforceExtractorConfiguration.
+					getSalesforceOAuthClientSecret()
+			).put(
+				"oAuthRefreshToken",
+				_salesforceExtractorConfiguration.
+					getSalesforceOAuthRefreshToken()
+			).put(
+				"type", "OAuth 2 Authentication"
+			),
+			_salesforceExtractorConfiguration.getSalesforceURL());
 
 		Assert.assertEquals(
 			"CREDENTIALS_VALID",

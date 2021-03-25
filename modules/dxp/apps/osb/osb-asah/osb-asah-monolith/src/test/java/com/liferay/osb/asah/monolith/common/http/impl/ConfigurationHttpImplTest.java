@@ -58,8 +58,7 @@ public class ConfigurationHttpImplTest {
 	@Test
 	public void testAddConfiguration() {
 		DataSource salesforceDataSource = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSource(),
-			DataSource.class);
+			FaroInfoTestUtil.buildSalesforceDataSource(), DataSource.class);
 
 		_configurationHttp.addConfiguration(salesforceDataSource, "SALESFORCE");
 
@@ -78,8 +77,7 @@ public class ConfigurationHttpImplTest {
 	@Test
 	public void testDeleteConfiguration() {
 		DataSource salesforceDataSource = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSource(),
-			DataSource.class);
+			FaroInfoTestUtil.buildSalesforceDataSource(), DataSource.class);
 
 		_configurationHttp.deleteConfiguration(
 			String.valueOf(salesforceDataSource.getId()), "SALESFORCE");
@@ -101,8 +99,7 @@ public class ConfigurationHttpImplTest {
 		);
 
 		DataSource salesforceDataSource = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSource(),
-			DataSource.class);
+			FaroInfoTestUtil.buildSalesforceDataSource(), DataSource.class);
 
 		Assert.assertEquals(
 			"CREDENTIALS_VALID",
@@ -118,8 +115,7 @@ public class ConfigurationHttpImplTest {
 	@Test
 	public void testRefreshConfiguration() {
 		DataSource salesforceDataSource = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSource(),
-			DataSource.class);
+			FaroInfoTestUtil.buildSalesforceDataSource(), DataSource.class);
 
 		_configurationHttp.refreshConfiguration(
 			salesforceDataSource, "SALESFORCE");
@@ -134,8 +130,7 @@ public class ConfigurationHttpImplTest {
 	@Test
 	public void testUpdateConfiguration() throws Exception {
 		DataSource salesforceDataSource = _objectMapper.convertValue(
-			FaroInfoTestUtil.buildSalesforceDataSource(),
-			DataSource.class);
+			FaroInfoTestUtil.buildSalesforceDataSource(), DataSource.class);
 
 		_configurationHttp.updateConfiguration(
 			salesforceDataSource, "SALESFORCE");
