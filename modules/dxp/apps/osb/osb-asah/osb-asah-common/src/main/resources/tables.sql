@@ -134,6 +134,7 @@ CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
 
 CREATE TABLE IF NOT EXISTS EventDefinition (
 	id BIGSERIAL PRIMARY KEY,
+	blocked BOOLEAN DEFAULT false,
 	description TEXT,
 	displayName TEXT UNIQUE,
 	name TEXT UNIQUE,
