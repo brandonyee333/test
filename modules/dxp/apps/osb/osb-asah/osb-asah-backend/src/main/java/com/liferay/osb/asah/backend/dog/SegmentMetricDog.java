@@ -14,22 +14,16 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.backend.dog.configuration.DogConfiguration;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryHelper;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
-import com.liferay.osb.asah.backend.model.Segment;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +40,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
@@ -55,11 +48,9 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.CardinalityAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -71,17 +62,6 @@ public class SegmentMetricDog {
 	@Autowired
 	public SegmentMetricDog(List<DogConfiguration> dogConfigurations) {
 		_dogConfigurationBag = new DogConfigurationBag(dogConfigurations);
-	}
-
-	public Segment getSegment(String id) {
-		List<Segment> segments = getSegments(id);
-
-		if (segments.isEmpty()) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST, "There is no segment with ID " + id);
-		}
-
-		return segments.get(0);
 	}
 
 	public ResultBag<Metric> getSegmentMetricResultBag(
@@ -122,49 +102,6 @@ public class SegmentMetricDog {
 				}
 			},
 			total);
-	}
-
-	public ResultBag<Segment> getSegmentResultBag(int size, int start) {
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.from(start);
-		searchSourceBuilder.size(size);
-
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"individual-segments", _faroInfoElasticsearchInvoker,
-			searchSourceBuilder);
-
-		return DogUtil.createResultBag(
-			Segment.class, _objectMapper, searchHits);
-	}
-
-	public ResultBag<Segment> getSegmentResultBag(
-		Object[] searchAfter, int size, SortBuilder<?> sortBuilder) {
-
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"individual-segments", _faroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				null, null, searchAfter, size, sortBuilder));
-
-		return DogUtil.createResultBag(
-			Segment.class, _objectMapper, searchHits);
-	}
-
-	public List<Segment> getSegments(String... ids) {
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.query(QueryBuilders.termsQuery("id", ids));
-
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"individual-segments", _faroInfoElasticsearchInvoker,
-			searchSourceBuilder);
-
-		ResultBag<Segment> segmentResultBag = DogUtil.createResultBag(
-			Segment.class, _objectMapper, searchHits);
-
-		return segmentResultBag.getResults();
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(
@@ -303,12 +240,6 @@ public class SegmentMetricDog {
 	private DataDog _dataDog;
 
 	private final DogConfigurationBag _dogConfigurationBag;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SearchQueryHelper _searchQueryHelper;

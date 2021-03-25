@@ -14,50 +14,50 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.dog.ChannelDog;
-import com.liferay.osb.asah.common.dog.MembershipDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
-import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.parser.FilterStringParser;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
-import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.BeanUtils;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.Sum;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -67,196 +67,313 @@ import org.springframework.stereotype.Component;
 @Component
 public class SegmentDog extends BaseFaroInfoDog {
 
-	public JSONObject addIndividualSegment(
-			JSONObject individualSegmentJSONObject)
+	public Segment addSegment(
+			Long activitiesCount, Date createDate, String filter,
+			Date modifiedDate, String name, String scope, String type,
+			String status)
 		throws Exception {
 
-		_segmentDog.setReferencedFields(individualSegmentJSONObject);
+		Segment segment = new Segment();
 
-		individualSegmentJSONObject = elasticsearchInvoker.add(
-			"individual-segments", _setState(individualSegmentJSONObject));
+		segment.setActivitiesCount(activitiesCount);
 
-		_addAsahTask(individualSegmentJSONObject);
+		segment.setCreateDate(createDate);
+		segment.setFilter(filter);
+		segment.setModifiedDate(modifiedDate);
+		segment.setName(name);
+		segment.setScope(scope);
+		segment.setType(Segment.Type.valueOf(type));
+		segment.setStatus(status);
 
-		return individualSegmentJSONObject;
+		return addSegment(segment);
 	}
 
-	public void assignChannel(String channelId, String individualSegmentId)
-		throws Exception {
+	public Segment addSegment(Segment segment) throws Exception {
+		setReferencedFields(segment);
 
-		_channelDog.getChannel(Long.valueOf(channelId));
+		if ((segment.getType() == null) ||
+			Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
 
-		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
-			"individual-segments", individualSegmentId);
+			segment.setState("IN_PROGRESS");
+		}
+		else {
+			segment.setState("READY");
+		}
 
-		if (StringUtils.isNotBlank(
-				individualSegmentJSONObject.optString("channelId"))) {
+		segment = _segmentRepository.save(segment);
 
+		_addAsahTask(segment);
+
+		return segment;
+	}
+
+	public void assignChannel(Long channelId, Long segmentId) throws Exception {
+		Segment segment = getSegment(segmentId);
+
+		if (segment.getChannelId() != null) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"Individual segment already assigned to property: " +
-					individualSegmentJSONObject.optString("channelId"));
+					segment.getChannelId());
 		}
 
-		individualSegmentJSONObject = elasticsearchInvoker.update(
-			"individual-segments", individualSegmentJSONObject.getString("id"),
-			JSONUtil.put("channelId", channelId));
+		segment.setChannelId(channelId);
 
-		_updateMemberships(channelId, individualSegmentJSONObject);
+		segment = _segmentRepository.save(segment);
+
+		_updateMemberships(segment);
 	}
 
-	@CacheEvict("getReferencedAssetIds")
-	public void deleteIndividualSegment(String individualSegmentId) {
-		elasticsearchInvoker.delete("individual-segments", individualSegmentId);
+	public void deleteSegment(Long segmentId) {
+		_segmentRepository.deleteById(segmentId);
 
 		_asahTaskDog.scheduleAsahTask(
 			"DeleteIndividualSegmentTasksNanite",
-			JSONUtil.put("individualSegmentId", individualSegmentId));
+			JSONUtil.put("individualSegmentId", String.valueOf(segmentId)));
 	}
 
-	public void disableDynamicIndividualSegments(
-			DXPEntityType dxpEntityType, String id)
+	public void deleteSegments(Set<Long> channelIds) {
+		_segmentRepository.deleteByChannelIdIn(channelIds);
+	}
+
+	public void disableDynamicSegments(
+			DXPEntityType dxpEntityType, Long segmentId)
 		throws Exception {
 
-		if (StringUtils.isBlank(id)) {
+		if (Objects.isNull(segmentId)) {
 			return;
 		}
 
-		_disableDynamicIndividualSegments(
-			QueryBuilders.termsQuery(
-				dxpEntityType.getIndividualSegmentFieldName(), id));
+		List<Segment> segments = _segmentRepository.searchSegments(
+			dxpEntityType, segmentId, "DISABLED", Segment.Type.DYNAMIC);
+
+		for (Segment segment : segments) {
+			segment.setState("DISABLED");
+
+			_updateSegment(segment, segment);
+		}
 	}
 
-	public void disableDynamicIndividualSegments(
-			Long dataSourceId, List<String> fieldMappingIds)
+	public void disableDynamicSegments(
+			Long dataSourceId, List<Long> fieldMappingIds)
 		throws Exception {
 
 		if ((dataSourceId == null) && fieldMappingIds.isEmpty()) {
 			return;
 		}
 
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		List<Segment> segments;
 
-		if (dataSourceId != null) {
-			boolQueryBuilder.should(
-				QueryBuilders.termQuery(
-					"referencedAssetDataSourceIds",
-					String.valueOf(dataSourceId)));
+		if ((dataSourceId != null) && !fieldMappingIds.isEmpty()) {
+			segments =
+				_segmentRepository.
+					findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdsInAndStateNotAndType(
+						dataSourceId, fieldMappingIds, "DISABLED",
+						Segment.Type.DYNAMIC);
 		}
-
-		if (!fieldMappingIds.isEmpty()) {
-			boolQueryBuilder.should(
-				QueryBuilders.termsQuery(
-					"referencedFieldMappingIds", fieldMappingIds));
+		else if (dataSourceId != null) {
+			segments =
+				_segmentRepository.
+					findByReferencedAssetDataSourceIdsAndStateNotAndType(
+						dataSourceId, "DISABLED", Segment.Type.DYNAMIC);
 		}
-
-		_disableDynamicIndividualSegments(boolQueryBuilder);
-	}
-
-	@Cacheable("getReferencedAssetIds")
-	public Set<String> getReferencedAssetIds() throws Exception {
-		Set<String> referencedAssetIds = new HashSet<>();
-
-		JSONArrayIterator.of(
-			"individual-segments", elasticsearchInvoker,
-			individualSegmentJSONObject -> {
-				referencedAssetIds.addAll(
-					JSONUtil.toStringSet(
-						individualSegmentJSONObject.optJSONArray(
-							"referencedAssetIds")));
-
-				return null;
-			}
-		).iterate();
-
-		return referencedAssetIds;
-	}
-
-	public boolean isIncludeAnonymousUsers(Long individualSegmentId) {
-		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
-			"individual-segments", String.valueOf(individualSegmentId));
-
-		return individualSegmentJSONObject.optBoolean("includeAnonymousUsers");
-	}
-
-	public JSONObject replaceIndividualSegment(
-			JSONObject individualSegmentJSONObject)
-		throws Exception {
-
-		_replaceAccount(individualSegmentJSONObject);
-
-		JSONObject existingIndividualSegmentJSONObject =
-			elasticsearchInvoker.get(
-				"individual-segments",
-				individualSegmentJSONObject.getString("id"));
-
-		if (Objects.equals(
-				existingIndividualSegmentJSONObject.optString("filter", null),
-				individualSegmentJSONObject.optString("filter", null))) {
-
-			elasticsearchInvoker.replace(
-				"individual-segments", individualSegmentJSONObject);
+		else if (!fieldMappingIds.isEmpty()) {
+			segments =
+				_segmentRepository.
+					findByReferencedFieldMappingIdsInAndStateNotAndType(
+						fieldMappingIds, "DISABLED", Segment.Type.DYNAMIC);
 		}
 		else {
-			_segmentDog.setReferencedFields(individualSegmentJSONObject);
-
-			elasticsearchInvoker.replace(
-				"individual-segments", _setState(individualSegmentJSONObject));
-
-			_addAsahTask(individualSegmentJSONObject);
+			segments = _segmentRepository.findByStateNotAndType(
+				"DISABLED", Segment.Type.DYNAMIC);
 		}
 
-		return individualSegmentJSONObject;
+		for (Segment segment : segments) {
+			segment.setState("DISABLED");
+
+			_updateSegment(segment, segment);
+		}
+	}
+
+	public boolean existsSegment(Long segmentId) {
+		return _segmentRepository.existsById(segmentId);
+	}
+
+	public Segment fetchSegment(String name, String status) {
+		Optional<Segment> segmentOptional =
+			_segmentRepository.findByNameAndStatus(name, status);
+
+		return segmentOptional.orElse(null);
+	}
+
+	public List<Long> getReferencedAssetIds() throws Exception {
+		return _segmentRepository.findReferencedAssetIds();
+	}
+
+	public Segment getSegment(Long segmentId) {
+		Optional<Segment> segmentOptional = _segmentRepository.findById(
+			segmentId);
+
+		return segmentOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no Segment with ID " + segmentId));
+	}
+
+	public Segment getSegment(String name, String status) {
+		Optional<Segment> segmentOptional =
+			_segmentRepository.findByNameAndStatus(name, status);
+
+		return segmentOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no Segment with Name " + name + " and Status " +
+					status));
+	}
+
+	public List<Long> getSegmentIds(List<String> names, String status) {
+		return _segmentRepository.findIdByNameInAndStatus(names, status);
+	}
+
+	public List<String> getSegmentNames(Long channelId, Set<Long> segmentIds) {
+		if (segmentIds == null) {
+			return Collections.emptyList();
+		}
+
+		if (Objects.nonNull(channelId)) {
+			return _segmentRepository.findNameByChannelIdAndIdInAndStatus(
+				channelId, new ArrayList<Long>(segmentIds), "ACTIVE");
+		}
+
+		return _segmentRepository.findNameByIdInAndStatus(
+			new ArrayList<Long>(segmentIds), "ACTIVE");
+	}
+
+	public Page<Segment> getSegmentPage(Long segmentId, int size, Sort sort) {
+		return PageableExecutionUtils.getPage(
+			_segmentRepository.findByIdAfter(
+				segmentId, PageRequest.of(0, size, sort)),
+			PageRequest.of(0, size, sort),
+			() -> _segmentRepository.countByIdAfter(segmentId));
+	}
+
+	public List<Segment> getSegments(int page, int size) {
+		return _segmentRepository.findAll(PageRequest.of(page, size));
+	}
+
+	public List<Segment> getSegments(List<Long> segmentIds) {
+		return IterableUtils.toList(_segmentRepository.findAllById(segmentIds));
+	}
+
+	public List<Segment> getSegments(
+		String filter, String state, String status, int page, int size) {
+
+		return _segmentRepository.searchSegments(
+			filter, state, status, PageRequest.of(page, size));
+	}
+
+	public Page<Segment> getSegmentsPage(int page, int size) {
+		return PageableExecutionUtils.getPage(
+			_segmentRepository.findAll(PageRequest.of(page, size)),
+			PageRequest.of(page, size), _segmentRepository::count);
+	}
+
+	public boolean isIncludeAnonymousUsers(Long segmentId) {
+		Segment segment = getSegment(segmentId);
+
+		return segment.getIncludeAnonymousUsers();
+	}
+
+	public Segment replaceSegment(Segment segment) throws Exception {
+		Long segmentId = segment.getId();
+
+		if (segmentId == null) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"Unable to replace a segment without ID");
+		}
+
+		_replaceAccount(segment);
+
+		Segment existingSegment = getSegment(segmentId);
+
+		if (Objects.equals(existingSegment.getFilter(), segment.getFilter())) {
+			_segmentRepository.save(segment);
+		}
+		else {
+			setReferencedFields(segment);
+
+			_setState(segment);
+
+			_segmentRepository.save(segment);
+
+			_addAsahTask(segment);
+		}
+
+		return segment;
 	}
 
 	@CacheEvict("getReferencedAssetIds")
-	public void setReferencedFields(JSONObject individualSegmentJSONObject)
-		throws Exception {
+	public void setReferencedFields(Segment segment) throws Exception {
+		Map<String, Set<String>> referencedObjectIds = _getReferencedObjectIds(
+			segment.getFilter(), null);
 
-		JSONObject referencedObjectIdsJSONObject =
-			_getReferencedObjectIdsJSONObject(
-				individualSegmentJSONObject.optString("filter", null), null);
-
-		for (String referencedObjectType :
-				referencedObjectIdsJSONObject.keySet()) {
-
-			individualSegmentJSONObject.put(
-				referencedObjectType,
-				referencedObjectIdsJSONObject.getJSONArray(
-					referencedObjectType));
-		}
+		segment.setReferencedAssetDataSourceIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedAssetDataSourceIds"),
+				Long::valueOf));
+		segment.setReferencedAssetIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedAssetIds"), Long::valueOf));
+		segment.setReferencedFieldMappingIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedFieldMappingIds"),
+				Long::valueOf));
+		segment.setReferencedGroupIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedGroupIds"), Long::valueOf));
+		segment.setReferencedOrganizationIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedOrganizationIds"),
+				Long::valueOf));
+		segment.setReferencedRoleIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedRoleIds"), Long::valueOf));
+		segment.setReferencedTeamIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedTeamIds"), Long::valueOf));
+		segment.setReferencedUserGroupIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedUserGroupIds"),
+				Long::valueOf));
+		segment.setReferencedUserIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedUserIds"), Long::valueOf));
 	}
 
-	public JSONObject updateIndividualSegment(
-			long individualCount, Long individualSegmentId,
-			long knownIndividualCount)
+	public Segment updateSegment(
+			long individualCount, long knownIndividualCount, Long segmentId)
 		throws Exception {
 
-		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
-			"individual-segments", String.valueOf(individualSegmentId));
+		Segment segment = new Segment();
 
-		return _updateIndividualSegment(
-			individualSegmentJSONObject,
-			JSONUtil.put(
-				"anonymousIndividualCount",
-				individualCount - knownIndividualCount
-			).put(
-				"individualCount", individualCount
-			).put(
-				"knownIndividualCount", knownIndividualCount
-			));
+		segment.setAnonymousIndividualCount(
+			individualCount - knownIndividualCount);
+		segment.setIndividualCount(knownIndividualCount);
+		segment.setKnownIndividualCount(knownIndividualCount);
+
+		return _updateSegment(getSegment(segmentId), segment);
 	}
 
-	public JSONObject updateIndividualSegment(
-			Long individualSegmentId,
-			JSONObject partialIndividualSegmentJSONObject)
+	public Segment updateSegment(Segment partialSegment, Long segmentId)
 		throws Exception {
 
-		JSONObject individualSegmentJSONObject = elasticsearchInvoker.get(
-			"individual-segments", String.valueOf(individualSegmentId));
+		return _updateSegment(getSegment(segmentId), partialSegment);
+	}
 
-		return _updateIndividualSegment(
-			individualSegmentJSONObject, partialIndividualSegmentJSONObject);
+	public void updateSegments(Long activitiesCount) {
+		_segmentRepository.updateActivitiesCountAndRemoveLastActivityDate(
+			activitiesCount);
 	}
 
 	private static String _getAssetId(String[] terms) {
@@ -281,18 +398,16 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return activityKey.substring(activityKey.lastIndexOf("#") + 1);
 	}
 
-	private void _addAsahTask(JSONObject individualSegmentJSONObject) {
-		if (Objects.equals(
-				individualSegmentJSONObject.getString("segmentType"),
-				"DYNAMIC")) {
-
+	private void _addAsahTask(Segment segment) {
+		if (Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
 			_asahTaskDog.scheduleAsahTask(
 				"UpdateDynamicMembershipsNanite",
 				JSONUtil.put(
 					"dateModified",
-					individualSegmentJSONObject.getString("dateModified")
+					DateUtil.toUTCString(segment.getModifiedDate())
 				).put(
-					"individualSegmentJSONObject", individualSegmentJSONObject
+					"segment",
+					_objectMapper.convertValue(segment, JSONObject.class)
 				));
 		}
 	}
@@ -358,43 +473,12 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return null;
 	}
 
-	private void _disableDynamicIndividualSegments(QueryBuilder queryBuilder)
-		throws Exception {
-
-		JSONArrayIterator.of(
-			"individual-segments", elasticsearchInvoker,
-			individualSegmentJSONObject -> {
-				try {
-					_updateIndividualSegment(
-						individualSegmentJSONObject,
-						JSONUtil.put("state", "DISABLED"));
-				}
-				catch (Exception e) {
-					return e;
-				}
-
-				return null;
-			}
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("segmentType", "DYNAMIC")
-			).filter(
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.termQuery("state", "DISABLED"))
-			).filter(
-				queryBuilder
-			)
-		).iterate();
-	}
-
-	private String _getAccountId(JSONObject individualSegmentJSONObject) {
-		if (!Objects.equals(
-				individualSegmentJSONObject.getString("status"), "INACTIVE")) {
-
+	private String _getAccountId(Segment segment) {
+		if (!Objects.equals(segment.getStatus(), "INACTIVE")) {
 			return null;
 		}
 
-		String name = individualSegmentJSONObject.getString("name");
+		String name = segment.getName();
 
 		if (!name.startsWith(_ACCOUNT_PREFIX)) {
 			return null;
@@ -403,147 +487,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return name.substring(_ACCOUNT_PREFIX.length());
 	}
 
-	private JSONArray _getActivitiesCountsJSONArray(
-		boolean includeAnonymousUsers, String individualSegmentId,
-		JSONObject individualSegmentJSONObject) {
-
-		if (!individualSegmentJSONObject.has("activitiesCount")) {
-			return null;
-		}
-
-		JSONArray jsonArray = new JSONArray();
-
-		SearchResponse searchResponse = elasticsearchInvoker.search(
-			"individuals",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.nested(
-						"activitiesCounts", "activitiesCounts"
-					).subAggregation(
-						AggregationBuilders.terms(
-							"channelId"
-						).field(
-							"activitiesCounts.channelId"
-						).size(
-							Integer.MAX_VALUE
-						).subAggregation(
-							AggregationBuilders.sum(
-								"activitiesCount"
-							).field(
-								"activitiesCounts.activitiesCount"
-							)
-						)
-					));
-				searchSourceBuilder.query(
-					_getQueryBuilder(
-						includeAnonymousUsers, individualSegmentId));
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		InternalNested internalNested = aggregations.get("activitiesCounts");
-
-		Aggregations internalAggregations = internalNested.getAggregations();
-
-		Terms terms = internalAggregations.get("channelId");
-
-		for (Terms.Bucket termsBucket : terms.getBuckets()) {
-			Aggregations bucketAggregations = termsBucket.getAggregations();
-
-			Sum sum = bucketAggregations.get("activitiesCount");
-
-			int activitiesCount = 0;
-
-			if (sum != null) {
-				activitiesCount = (int)sum.getValue();
-			}
-
-			jsonArray.put(
-				JSONUtil.put(
-					"activitiesCount", activitiesCount
-				).put(
-					"channelId", termsBucket.getKeyAsString()
-				));
-		}
-
-		return jsonArray;
-	}
-
-	private JSONArray _getIndividualCountsJSONArray(
-		boolean includeAnonymousUsers, String individualSegmentId,
-		JSONObject individualSegmentJSONObject) {
-
-		if (!individualSegmentJSONObject.has("individualCount")) {
-			return null;
-		}
-
-		JSONArray jsonArray = new JSONArray();
-
-		SearchResponse searchResponse = elasticsearchInvoker.search(
-			"individuals",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"channelIds"
-					).field(
-						"channelIds"
-					).size(
-						Integer.MAX_VALUE
-					));
-				searchSourceBuilder.query(
-					_getQueryBuilder(
-						includeAnonymousUsers, individualSegmentId));
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		Terms terms = aggregations.get("channelIds");
-
-		for (Terms.Bucket termsBucket : terms.getBuckets()) {
-			jsonArray.put(
-				JSONUtil.put(
-					"channelId", termsBucket.getKeyAsString()
-				).put(
-					"individualCount", termsBucket.getDocCount()
-				));
-		}
-
-		return jsonArray;
-	}
-
-	private Object _getModifiedFieldValue(
-		JSONObject existingIndividualSegmentJSONObject, String fieldName,
-		JSONObject partialIndividualSegmentJSONObject) {
-
-		Object newValue = partialIndividualSegmentJSONObject.opt(fieldName);
-
-		if (Objects.equals(
-				existingIndividualSegmentJSONObject.opt(fieldName), newValue)) {
-
-			return null;
-		}
-
-		return newValue;
-	}
-
-	private QueryBuilder _getQueryBuilder(
-		boolean includeAnonymousUsers, String individualSegmentId) {
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery(
-				"individualSegmentIds", individualSegmentId));
-
-		if (!includeAnonymousUsers) {
-			boolQueryBuilder.filter(
-				QueryBuilders.existsQuery("demographics.email"));
-		}
-
-		return boolQueryBuilder;
-	}
-
-	private JSONObject _getReferencedObjectIdsJSONObject(
+	private Map<String, Set<String>> _getReferencedObjectIds(
 			String filterString, String outerFunctionName)
 		throws Exception {
 
@@ -553,34 +497,15 @@ public class SegmentDog extends BaseFaroInfoDog {
 			referencedObjectSets.put(referencedObjectName, new HashSet<>());
 		}
 
-		JSONObject referencedObjectIdsJSONObject = FilterStringParser.parse(
-			filterString,
-			() -> {
-				JSONObject jsonObject = new JSONObject();
-
-				for (Map.Entry<String, Set<String>> entrySet :
-						referencedObjectSets.entrySet()) {
-
-					jsonObject.put(
-						entrySet.getKey(), new JSONArray(entrySet.getValue()));
-				}
-
-				return jsonObject;
-			},
+		Map<String, Set<String>> referencedObjectIds = FilterStringParser.parse(
+			filterString, () -> referencedObjectSets,
 			innerFilterString -> {
 				try {
-					JSONObject innerReferencedObjectIdsJSONObject =
-						_getReferencedObjectIdsJSONObject(
+					Map<String, Set<String>> innerReferencedObjectIds =
+						_getReferencedObjectIds(
 							innerFilterString, outerFunctionName);
 
-					for (Map.Entry<String, Set<String>> entrySet :
-							referencedObjectSets.entrySet()) {
-
-						JSONUtil.addToStringCollection(
-							entrySet.getValue(),
-							innerReferencedObjectIdsJSONObject.optJSONArray(
-								entrySet.getKey()));
-					}
+					referencedObjectSets.putAll(innerReferencedObjectIds);
 				}
 				catch (Exception e) {
 					return e;
@@ -594,17 +519,17 @@ public class SegmentDog extends BaseFaroInfoDog {
 			functionData -> _processStringFunction(
 				functionData, outerFunctionName, referencedObjectSets));
 
-		if (referencedObjectIdsJSONObject == null) {
-			JSONObject jsonObject = new JSONObject();
+		if (referencedObjectIds == null) {
+			referencedObjectIds = new HashMap<>();
 
 			for (String referencedObjectName : _REFERENCED_OBJECT_NAMES) {
-				jsonObject.put(referencedObjectName, new JSONArray());
+				referencedObjectIds.put(referencedObjectName, new HashSet<>());
 			}
 
-			return jsonObject;
+			return referencedObjectIds;
 		}
 
-		return referencedObjectIdsJSONObject;
+		return referencedObjectIds;
 	}
 
 	private Exception _processLogicalOperator(
@@ -705,20 +630,13 @@ public class SegmentDog extends BaseFaroInfoDog {
 					outerFunctionName = name;
 				}
 
-				JSONObject referencedObjectIdsJSONObject =
-					_getReferencedObjectIdsJSONObject(
+				Map<String, Set<String>> referencedObjectIds =
+					_getReferencedObjectIds(
 						StringUtil.unquoteAndDecodeInnerQuotes(
 							argumentValues[0]),
 						outerFunctionName);
 
-				for (Map.Entry<String, Set<String>> entrySet :
-						referencedObjectSets.entrySet()) {
-
-					JSONUtil.addToStringCollection(
-						entrySet.getValue(),
-						referencedObjectIdsJSONObject.optJSONArray(
-							entrySet.getKey()));
-				}
+				referencedObjectSets.putAll(referencedObjectIds);
 			}
 			catch (Exception e) {
 				return e;
@@ -748,63 +666,70 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return null;
 	}
 
-	private void _replaceAccount(JSONObject individualSegmentJSONObject) {
-		String accountId = _getAccountId(individualSegmentJSONObject);
+	private void _replaceAccount(Segment segment) {
+		String accountId = _getAccountId(segment);
 
 		if (accountId == null) {
 			return;
 		}
 
-		JSONObject accountJSONObject = elasticsearchInvoker.get(
-			"accounts", accountId);
+		JSONObject accountJSONObject = _faroInfoAccountDog.getAccountJSONObject(
+			accountId);
 
-		JSONArray activitiesCountsJSONArray = _getActivitiesCountsJSONArray(
-			individualSegmentJSONObject.optBoolean("includeAnonymousUsers"),
-			individualSegmentJSONObject.getString("id"),
-			individualSegmentJSONObject);
+		if (Objects.nonNull(segment.getActivitiesCount())) {
+			JSONArray activitiesCountsJSONArray =
+				_faroInfoIndividualDog.getActivitiesCountsJSONArray(
+					segment.getIncludeAnonymousUsers(), segment.getId());
 
-		if (activitiesCountsJSONArray != null) {
-			accountJSONObject.put(
-				"activitiesCounts", activitiesCountsJSONArray);
+			if (activitiesCountsJSONArray != null) {
+				accountJSONObject.put(
+					"activitiesCounts", activitiesCountsJSONArray);
+			}
 		}
 
-		JSONArray individualCountsJSONArray = _getIndividualCountsJSONArray(
-			individualSegmentJSONObject.optBoolean("includeAnonymousUsers"),
-			individualSegmentJSONObject.getString("id"),
-			individualSegmentJSONObject);
+		if (Objects.nonNull(segment.getActivitiesCount())) {
+			JSONArray individualCountsJSONArray =
+				_faroInfoIndividualDog.getIndividualCountsJSONArray(
+					segment.getIncludeAnonymousUsers(), segment.getId());
 
-		if (individualCountsJSONArray != null) {
-			accountJSONObject.put(
-				"individualCounts", individualCountsJSONArray);
+			if (individualCountsJSONArray != null) {
+				accountJSONObject.put(
+					"individualCounts", individualCountsJSONArray);
+			}
 		}
 
-		for (String fieldName : _SHARED_ACCOUNT_FIELD_NAMES) {
+		accountJSONObject.put(
+			"activeIndividualCount", segment.getActiveIndividualCount());
+		accountJSONObject.put("activitiesCount", segment.getActivitiesCount());
+		accountJSONObject.put("individualCount", segment.getIndividualCount());
+
+		if (Objects.nonNull(segment.getLastActivityDate())) {
 			accountJSONObject.put(
-				fieldName, individualSegmentJSONObject.opt(fieldName));
+				"lastActivityDate",
+				DateUtil.toUTCString(segment.getLastActivityDate()));
+		}
+		else {
+			accountJSONObject.put("lastActivityDate", (Object)null);
 		}
 
 		_faroInfoAccountDog.replaceAccount(accountJSONObject);
 	}
 
-	private JSONObject _setState(JSONObject individualSegmentJSONObject) {
-		String segmentType = individualSegmentJSONObject.optString(
-			"segmentType", null);
+	private void _setState(Segment segment) {
+		if ((segment.getType() == null) ||
+			Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
 
-		if ((segmentType == null) || segmentType.equals("DYNAMIC")) {
-			individualSegmentJSONObject.put("state", "IN_PROGRESS");
+			segment.setState("IN_PROGRESS");
 		}
 		else {
-			individualSegmentJSONObject.put("state", "READY");
+			segment.setState("READY");
 		}
-
-		return individualSegmentJSONObject;
 	}
 
 	private void _updateAccount(
-		JSONObject existingIndividualSegmentJSONObject,
-		JSONObject partialIndividualSegmentJSONObject) {
+		Segment existingSegment, Segment partialSegment) {
 
-		String accountId = _getAccountId(existingIndividualSegmentJSONObject);
+		String accountId = _getAccountId(existingSegment);
 
 		if (accountId == null) {
 			return;
@@ -812,38 +737,82 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		JSONObject partialAccountJSONObject = new JSONObject();
 
-		JSONArray activitiesCountsJSONArray = _getActivitiesCountsJSONArray(
-			partialIndividualSegmentJSONObject.optBoolean(
-				"includeAnonymousUsers",
-				existingIndividualSegmentJSONObject.optBoolean(
-					"includeAnonymousUsers")),
-			existingIndividualSegmentJSONObject.getString("id"),
-			partialIndividualSegmentJSONObject);
+		if (Objects.nonNull(partialSegment.getActivitiesCount())) {
+			Boolean includeAnonymousUsers =
+				(partialSegment.getIncludeAnonymousUsers() != null) ?
+					partialSegment.getIncludeAnonymousUsers() :
+						existingSegment.getIncludeAnonymousUsers();
 
-		if (activitiesCountsJSONArray != null) {
-			partialAccountJSONObject.put(
-				"activitiesCounts", activitiesCountsJSONArray);
+			JSONArray activitiesCountsJSONArray =
+				_faroInfoIndividualDog.getActivitiesCountsJSONArray(
+					includeAnonymousUsers, existingSegment.getId());
+
+			if (activitiesCountsJSONArray != null) {
+				partialAccountJSONObject.put(
+					"activitiesCounts", activitiesCountsJSONArray);
+			}
 		}
 
-		JSONArray individualCountsJSONArray = _getIndividualCountsJSONArray(
-			partialIndividualSegmentJSONObject.optBoolean(
-				"includeAnonymousUsers",
-				existingIndividualSegmentJSONObject.optBoolean(
-					"includeAnonymousUsers")),
-			existingIndividualSegmentJSONObject.getString("id"),
-			partialIndividualSegmentJSONObject);
+		if (Objects.nonNull(partialSegment.getActivitiesCount())) {
+			Boolean includeAnonymousUsers =
+				(partialSegment.getIncludeAnonymousUsers() != null) ?
+					partialSegment.getIncludeAnonymousUsers() :
+						existingSegment.getIncludeAnonymousUsers();
 
-		if (individualCountsJSONArray != null) {
-			partialAccountJSONObject.put(
-				"individualCounts", individualCountsJSONArray);
+			JSONArray individualCountsJSONArray =
+				_faroInfoIndividualDog.getIndividualCountsJSONArray(
+					includeAnonymousUsers, existingSegment.getId());
+
+			if (individualCountsJSONArray != null) {
+				partialAccountJSONObject.put(
+					"individualCounts", individualCountsJSONArray);
+			}
 		}
 
-		for (String fieldName : _SHARED_ACCOUNT_FIELD_NAMES) {
+		if (!Objects.equals(
+				existingSegment.getActiveIndividualCount(),
+				partialSegment.getActiveIndividualCount())) {
+
 			partialAccountJSONObject.put(
-				fieldName,
-				_getModifiedFieldValue(
-					existingIndividualSegmentJSONObject, fieldName,
-					partialIndividualSegmentJSONObject));
+				"activeIndividualCount",
+				partialSegment.getActiveIndividualCount());
+		}
+		else {
+			partialAccountJSONObject.put("activeIndividualCount", (Object)null);
+		}
+
+		if (!Objects.equals(
+				existingSegment.getActivitiesCount(),
+				partialSegment.getActivitiesCount())) {
+
+			partialAccountJSONObject.put(
+				"activitiesCount", partialSegment.getActivitiesCount());
+		}
+		else {
+			partialAccountJSONObject.put("activitiesCount", (Object)null);
+		}
+
+		if (!Objects.equals(
+				existingSegment.getIndividualCount(),
+				partialSegment.getIndividualCount())) {
+
+			partialAccountJSONObject.put(
+				"individualCount", partialSegment.getIndividualCount());
+		}
+		else {
+			partialAccountJSONObject.put("individualCount", (Object)null);
+		}
+
+		if (!Objects.equals(
+				existingSegment.getLastActivityDate(),
+				partialSegment.getLastActivityDate())) {
+
+			partialAccountJSONObject.put(
+				"lastActivityDate",
+				DateUtil.toUTCString(partialSegment.getLastActivityDate()));
+		}
+		else {
+			partialAccountJSONObject.put("lastActivityDate", (Object)null);
 		}
 
 		if (partialAccountJSONObject.length() > 0) {
@@ -852,59 +821,20 @@ public class SegmentDog extends BaseFaroInfoDog {
 		}
 	}
 
-	private JSONObject _updateIndividualSegment(
-			JSONObject individualSegmentJSONObject,
-			JSONObject partialIndividualSegmentJSONObject)
-		throws Exception {
-
-		_updateAccount(
-			individualSegmentJSONObject, partialIndividualSegmentJSONObject);
-
-		if ((_getModifiedFieldValue(
-				individualSegmentJSONObject, "filter",
-				partialIndividualSegmentJSONObject) == null) &&
-			(_getModifiedFieldValue(
-				individualSegmentJSONObject, "includeAnonymousUsers",
-				partialIndividualSegmentJSONObject) == null)) {
-
-			individualSegmentJSONObject = elasticsearchInvoker.update(
-				"individual-segments",
-				individualSegmentJSONObject.getString("id"),
-				partialIndividualSegmentJSONObject);
-		}
-		else {
-			_segmentDog.setReferencedFields(partialIndividualSegmentJSONObject);
-
-			individualSegmentJSONObject = elasticsearchInvoker.update(
-				"individual-segments",
-				individualSegmentJSONObject.getString("id"),
-				_setState(partialIndividualSegmentJSONObject));
-
-			_addAsahTask(individualSegmentJSONObject);
-		}
-
-		return individualSegmentJSONObject;
-	}
-
-	private void _updateMemberships(
-			String channelId, JSONObject individualSegmentJSONObject)
-		throws Exception {
-
-		if (Objects.equals(
-				individualSegmentJSONObject.getString("segmentType"),
-				"DYNAMIC")) {
-
-			_addAsahTask(individualSegmentJSONObject);
+	private void _updateMemberships(Segment segment) throws Exception {
+		if (Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
+			_addAsahTask(segment);
 
 			return;
 		}
 
 		List<Long> individualIds = _membershipDog.getActiveIndividualIds(
-			individualSegmentJSONObject.getLong("id"));
+			segment.getId());
 
 		for (Long individualId : individualIds) {
-			JSONObject individualJSONObject = elasticsearchInvoker.fetch(
-				"individuals", String.valueOf(individualId));
+			JSONObject individualJSONObject =
+				_faroInfoIndividualDog.fetchIndividualJSONObject(
+					String.valueOf(individualId));
 
 			if (individualJSONObject == null) {
 				continue;
@@ -914,13 +844,45 @@ public class SegmentDog extends BaseFaroInfoDog {
 				"channelIds");
 
 			if ((channelIdsJSONArray != null) &&
-				!JSONUtil.hasValue(channelIdsJSONArray, channelId)) {
+				!JSONUtil.hasValue(
+					channelIdsJSONArray,
+					String.valueOf(segment.getChannelId()))) {
 
 				_membershipDog.deactivateMembership(
-					new Date(), individualId,
-					individualSegmentJSONObject.getLong("id"));
+					new Date(), individualId, segment.getId());
 			}
 		}
+	}
+
+	private Segment _updateSegment(
+			Segment existingSegment, Segment partialSegment)
+		throws Exception {
+
+		_updateAccount(existingSegment, partialSegment);
+
+		if (Objects.equals(
+				existingSegment.getFilter(), partialSegment.getFilter()) &&
+			Objects.equals(
+				existingSegment.getIncludeAnonymousUsers(),
+				partialSegment.getIncludeAnonymousUsers())) {
+
+			BeanUtils.copyProperties(partialSegment, existingSegment);
+
+			existingSegment = _segmentRepository.save(existingSegment);
+		}
+		else {
+			setReferencedFields(partialSegment);
+
+			_setState(partialSegment);
+
+			BeanUtils.copyProperties(partialSegment, existingSegment);
+
+			existingSegment = _segmentRepository.save(existingSegment);
+
+			_addAsahTask(existingSegment);
+		}
+
+		return existingSegment;
 	}
 
 	private static final String _ACCOUNT_PREFIX = "Account: ";
@@ -932,16 +894,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 		"referencedUserGroupIds", "referencedUserIds"
 	};
 
-	private static final String[] _SHARED_ACCOUNT_FIELD_NAMES = {
-		"activeIndividualCount", "activitiesCount", "individualCount",
-		"lastActivityDate"
-	};
-
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
-
-	@Autowired
-	private ChannelDog _channelDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
@@ -953,12 +907,18 @@ public class SegmentDog extends BaseFaroInfoDog {
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 	@Autowired
-	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;
 
 	@Autowired
-	private SegmentDog _segmentDog;
+	private ObjectMapper _objectMapper;
+
+	@Value("${osb.asah.data.dog.query.response.threshold:10000}")
+	private int _queryResponseThreshold;
+
+	@Autowired
+	private SegmentRepository _segmentRepository;
 
 }
