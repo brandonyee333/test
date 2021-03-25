@@ -227,3 +227,35 @@ CREATE TABLE IF NOT EXISTS Preference (
 	key TEXT UNIQUE,
 	value TEXT
 );
+
+CREATE TABLE IF NOT EXISTS Segment (
+	id BIGSERIAL PRIMARY KEY,
+	activeIndividualCount BIGINT,
+	activitiesCount BIGINT,
+	anonymousIndividualCount BIGINT,
+	authorId BIGINT,
+	authorName TEXT,
+	channelId BIGINT REFERENCES Channel,
+	createDate TIMESTAMPTZ,
+	filter TEXT,
+	filterMetadata TEXT,
+	includeAnonymousUsers BOOLEAN,
+	individualCount BIGINT,
+	knownIndividualCount BIGINT,
+	lastActivityDate TIMESTAMPTZ,
+	modifiedDate TIMESTAMPTZ,
+	name TEXT,
+	referencedAssetDataSourceIds BIGINT [],
+	referencedAssetIds BIGINT [],
+	referencedFieldMappingIds BIGINT [],
+	referencedGroupIds BIGINT [],
+	referencedOrganizationIds BIGINT [],
+	referencedRoleIds BIGINT [],
+	referencedTeamIds BIGINT [],
+	referencedUserGroupIds BIGINT [],
+	referencedUserIds BIGINT [],
+	scope TEXT,
+	state TEXT,
+	status TEXT,
+	type TEXT
+);
