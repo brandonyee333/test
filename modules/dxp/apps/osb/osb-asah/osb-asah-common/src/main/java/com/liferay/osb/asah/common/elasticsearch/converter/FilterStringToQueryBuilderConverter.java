@@ -142,8 +142,8 @@ public class FilterStringToQueryBuilderConverter {
 		}
 		else {
 			return new IllegalArgumentException(
-				"Expected logical operator 'and' or 'or', but got '" +
-					logicalOperator + "' instead");
+				"Expected logical operator \"and\" or \"or\", but got \"" +
+					logicalOperator + "\" instead");
 		}
 
 		return null;

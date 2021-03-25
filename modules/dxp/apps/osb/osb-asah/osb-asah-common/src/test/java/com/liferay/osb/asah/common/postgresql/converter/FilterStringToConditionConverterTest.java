@@ -270,7 +270,8 @@ public class FilterStringToConditionConverterTest {
 	public void testInvalidLogicalOperatorThrowsException() {
 		_assertThrowsException(
 			"column1 eq 'value1' but column2 eq 'value2'",
-			"Expected logical operator 'and' or 'or', but got 'but' instead");
+			"Expected logical operator \"and\" or \"or\", but got \"but\" " +
+				"instead");
 	}
 
 	@Test
