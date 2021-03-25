@@ -23,6 +23,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,8 +47,24 @@ public class EventDefinitionDog {
 			throw new IllegalArgumentException("Event name is null");
 		}
 
+		boolean blocked = false;
+
+		if (countEventDefinitions(false, null, type) >
+				_EVENT_DEFINITION_THRESHOLD) {
+
+			blocked = true;
+
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					String.format(
+						"Blocking event definition %s as limit is reached",
+						name));
+			}
+		}
+
 		EventDefinition eventDefinition = new EventDefinition();
 
+		eventDefinition.setBlocked(blocked);
 		eventDefinition.setDescription(description);
 		eventDefinition.setDisplayName(displayName);
 		eventDefinition.setName(name);
@@ -130,6 +148,10 @@ public class EventDefinitionDog {
 				"Unable to sort event definitions by " + sortColumn);
 		}
 	}
+
+	private static final int _EVENT_DEFINITION_THRESHOLD = 100;
+
+	private static final Log _log = LogFactory.getLog(EventDefinitionDog.class);
 
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
