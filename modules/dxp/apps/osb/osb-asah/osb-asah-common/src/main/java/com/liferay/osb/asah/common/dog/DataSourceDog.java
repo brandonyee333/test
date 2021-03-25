@@ -127,6 +127,12 @@ public class DataSourceDog {
 		}
 	}
 
+	public void deleteDataSources() throws Exception {
+		for (DataSource dataSource : getDataSources()) {
+			deleteDataSource(dataSource, null, null);
+		}
+	}
+
 	public DataSource disconnectDataSource(Long dataSourceId) throws Exception {
 		DataSource dataSource = getDataSource(dataSourceId);
 
