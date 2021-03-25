@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -11,18 +12,19 @@
  *
  *
  */
+--%>
 
-package com.liferay.saml.constants;
+<%@ include file="/init.jsp" %>
 
-/**
- * @author Michael C. Han
- */
-public class SamlPortletKeys {
-
-	public static final String SAML =
-		"com_liferay_saml_web_internal_portlet_SamlPortlet";
-
-	public static final String SAML_ADMIN =
-		"com_liferay_saml_web_internal_portlet_SamlAdminPortlet";
-
-}
+<c:choose>
+	<c:when test='<%= Objects.equals(SessionErrors.get(request, "statusCodeURI"), "urn:oasis:names:tc:SAML:2.0:status:AuthnFailed") %>'>
+		<h3 class="portlet-msg-error">
+			<liferay-ui:message key="authentication-failed" />
+		</h3>
+	</c:when>
+	<c:otherwise>
+		<h3 class="portlet-msg-error">
+			<liferay-ui:message key="unable-to-process-saml-request" />
+		</h3>
+	</c:otherwise>
+</c:choose>

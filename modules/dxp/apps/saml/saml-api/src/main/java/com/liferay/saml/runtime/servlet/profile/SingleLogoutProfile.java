@@ -28,6 +28,11 @@ public interface SingleLogoutProfile {
 	public SamlSpSession getSamlSpSession(
 		HttpServletRequest httpServletRequest);
 
+	public void initiateIdpSingleLogout(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws Exception;
+
 	public boolean isSingleLogoutSupported(
 		HttpServletRequest httpServletRequest);
 
@@ -40,6 +45,11 @@ public interface SingleLogoutProfile {
 			HttpServletResponse httpServletResponse)
 		throws PortalException;
 
+	public void processIdpSpLogout(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws Exception;
+
 	public void processSingleLogout(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
@@ -49,6 +59,11 @@ public interface SingleLogoutProfile {
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
 		throws PortalException;
+
+	public void sendSamlSloRequestInfos(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws Exception;
 
 	public void terminateSpSession(
 		HttpServletRequest httpServletRequest,

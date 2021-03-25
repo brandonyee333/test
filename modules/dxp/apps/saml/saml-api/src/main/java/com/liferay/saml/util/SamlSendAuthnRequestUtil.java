@@ -12,17 +12,19 @@
  *
  */
 
-package com.liferay.saml.constants;
+package com.liferay.saml.util;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Michael C. Han
+ * @author Arthur Chan
  */
-public class SamlPortletKeys {
+public interface SamlSendAuthnRequestUtil {
 
-	public static final String SAML =
-		"com_liferay_saml_web_internal_portlet_SamlPortlet";
-
-	public static final String SAML_ADMIN =
-		"com_liferay_saml_web_internal_portlet_SamlAdminPortlet";
+	public void send(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws Exception;
 
 }
