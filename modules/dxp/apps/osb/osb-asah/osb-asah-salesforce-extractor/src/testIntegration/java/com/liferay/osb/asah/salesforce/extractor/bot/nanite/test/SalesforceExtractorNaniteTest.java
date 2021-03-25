@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.salesforce.extractor.bot.nanite.test;
 
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.run.logger.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.bot.SalesforceConfigurableBot;
@@ -84,8 +84,8 @@ public class SalesforceExtractorNaniteTest {
 	}
 
 	@After
-	public void tearDown() {
-		_dataSourceRepository.deleteAll();
+	public void tearDown() throws Exception {
+		_dataSourceDog.deleteDataSources();
 		_salesforceRawElasticsearchInvoker.delete(
 			"Account", QueryBuilders.matchAllQuery());
 		_salesforceRawElasticsearchInvoker.delete(
@@ -172,7 +172,7 @@ public class SalesforceExtractorNaniteTest {
 	}
 
 	private void _setUpConfigurationManager() {
-		_dataSourceRepository.save(
+		_dataSourceDog.addDataSource(
 			FaroInfoTestUtil.buildSalesforceDataSource(
 				_salesforceExtractorConfiguration.getSalesforceUserName(),
 				_salesforceExtractorConfiguration.getSalesforcePassword(),
@@ -467,7 +467,7 @@ public class SalesforceExtractorNaniteTest {
 			SalesforceExtractorTestUtil.getSalesforceExtractorConfiguration();
 
 	@Autowired
-	private DataSourceRepository _dataSourceRepository;
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
