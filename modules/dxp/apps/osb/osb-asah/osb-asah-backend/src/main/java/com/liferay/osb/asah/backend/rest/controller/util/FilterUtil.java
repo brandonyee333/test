@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 /**
  * @author Inácio Nery
  */
@@ -54,7 +56,9 @@ public class FilterUtil {
 	public static Long getLong(String filterString, String key) {
 		List<String> values = getStringValues(filterString, key, false);
 
-		if ((values == null) || values.isEmpty()) {
+		if ((values == null) || values.isEmpty() ||
+			!NumberUtils.isCreatable(values.get(0))) {
+
 			return null;
 		}
 
