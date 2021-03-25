@@ -25,7 +25,7 @@ import com.liferay.osb.asah.backend.dog.IndividualDog;
 import com.liferay.osb.asah.backend.dog.InterestDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
-import com.liferay.osb.asah.backend.dog.SegmentDog;
+import com.liferay.osb.asah.backend.dog.SegmentMetricDog;
 import com.liferay.osb.asah.backend.dog.TechnologyDog;
 import com.liferay.osb.asah.backend.dog.UserDog;
 import com.liferay.osb.asah.backend.dog.form.FormPageDog;
@@ -59,6 +59,7 @@ import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
@@ -853,7 +854,7 @@ public class ReportRestController extends BaseRestController {
 				metricType, searchQueryContext);
 
 		ResultBag<Metric> segmentMetricResultBag =
-			_segmentDog.getSegmentMetricResultBag(
+			_segmentMetricDog.getSegmentMetricResultBag(
 				metricType, searchQueryContext);
 
 		audienceReport._segmentMetricReportResultBag = new ResultBag<>(
@@ -1363,6 +1364,9 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	@Autowired
+	private SegmentMetricDog _segmentMetricDog;
 
 	@Autowired
 	private TechnologyDog _technologyDog;

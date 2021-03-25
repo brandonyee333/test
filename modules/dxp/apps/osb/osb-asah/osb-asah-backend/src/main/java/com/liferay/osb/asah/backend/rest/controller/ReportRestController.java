@@ -16,10 +16,10 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dog.AccountDog;
 import com.liferay.osb.asah.backend.dog.IndividualDog;
-import com.liferay.osb.asah.backend.dog.SegmentDog;
 import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.model.Segment;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.ResultBag;
 

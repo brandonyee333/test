@@ -14,14 +14,13 @@
 
 package com.liferay.osb.asah.backend.dog.test;
 
-import com.liferay.osb.asah.backend.dog.SegmentDog;
+import com.liferay.osb.asah.backend.dog.SegmentMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.BlogMetricType;
 import com.liferay.osb.asah.backend.model.FormMetricType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.backend.model.Metric;
-import com.liferay.osb.asah.backend.model.Segment;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -44,7 +43,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
-public class SegmentDogTest {
+public class SegmentMetricDogTest {
 
 	@ElasticsearchIndex(
 		name = "blogs", resourcePath = "segment_blogs_info.json",
@@ -52,8 +51,9 @@ public class SegmentDogTest {
 	)
 	@Test
 	public void testBlogViewsSegmentMetrics() {
-		ResultBag<Metric> resultBag = _segmentDog.getSegmentMetricResultBag(
-			BlogMetricType.VIEWS, _createSearchQuery("1", AssetType.BLOG));
+		ResultBag<Metric> resultBag =
+			_segmentMetricDog.getSegmentMetricResultBag(
+				BlogMetricType.VIEWS, _createSearchQuery("1", AssetType.BLOG));
 
 		List<Metric> segmentMetrics = resultBag.getResults();
 
@@ -72,8 +72,9 @@ public class SegmentDogTest {
 	)
 	@Test
 	public void testFormViewsSegmentMetrics() {
-		ResultBag<Metric> resultBag = _segmentDog.getSegmentMetricResultBag(
-			FormMetricType.VIEWS, _createSearchQuery("1", AssetType.FORM));
+		ResultBag<Metric> resultBag =
+			_segmentMetricDog.getSegmentMetricResultBag(
+				FormMetricType.VIEWS, _createSearchQuery("1", AssetType.FORM));
 
 		List<Metric> segmentMetrics = resultBag.getResults();
 
@@ -88,30 +89,15 @@ public class SegmentDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "individual-segments",
-		resourcePath = "individual_segments_info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
-	@Test
-	public void testGetSegments() {
-		List<Segment> segments = _segmentDog.getSegments(
-			"338511398116723457", "338511451975440187");
-
-		Assert.assertEquals(segments.toString(), 2, segments.size());
-
-		_assertSegment(2, "Test Segment 0", segments.get(0));
-		_assertSegment(1, "Test Segment 2", segments.get(1));
-	}
-
-	@ElasticsearchIndex(
 		name = "journals", resourcePath = "segment_journal_info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
 	@Test
 	public void testJournalViewsSegmentMetrics() {
-		ResultBag<Metric> resultBag = _segmentDog.getSegmentMetricResultBag(
-			JournalMetricType.VIEWS,
-			_createSearchQuery("1", AssetType.JOURNAL));
+		ResultBag<Metric> resultBag =
+			_segmentMetricDog.getSegmentMetricResultBag(
+				JournalMetricType.VIEWS,
+				_createSearchQuery("1", AssetType.JOURNAL));
 
 		List<Metric> segmentMetrics = resultBag.getResults();
 
@@ -136,15 +122,6 @@ public class SegmentDogTest {
 		DogTestUtil.assertMetric(5, segmentMetrics, "others");
 	}
 
-	private void _assertSegment(
-		long expectedSegmentIndividualCount, String expectedSegmentName,
-		Segment actualSegment) {
-
-		Assert.assertEquals(expectedSegmentName, actualSegment.getName());
-		Assert.assertEquals(
-			expectedSegmentIndividualCount, actualSegment.getIndividualCount());
-	}
-
 	private SearchQueryContext _createSearchQuery(
 		String assetId, AssetType assetType) {
 
@@ -156,6 +133,6 @@ public class SegmentDogTest {
 	}
 
 	@Autowired
-	private SegmentDog _segmentDog;
+	private SegmentMetricDog _segmentMetricDog;
 
 }

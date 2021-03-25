@@ -24,10 +24,12 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomUtils;
@@ -672,6 +674,22 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 			"street eq 'Broadway'");
 	}
 
+	@ElasticsearchIndex(
+		name = "individual-segments",
+		resourcePath = "individual_segments_info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetSegments() {
+		List<Segment> segments = _segmentDog.getSegments(
+			Arrays.asList(338511398116723457L, 338511451975440187L));
+
+		Assert.assertEquals(segments.toString(), 2, segments.size());
+
+		_assertSegment(2L, "Test Segment 0", segments.get(0));
+		_assertSegment(1L, "Test Segment 2", segments.get(1));
+	}
+
 	@Test
 	public void testReferencedAssetDataSourceIdsAddedOnUpdate()
 		throws Exception {
@@ -975,6 +993,15 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 					actualValuesJSONArray,
 				JSONUtil.hasValue(actualValuesJSONArray, value));
 		}
+	}
+
+	private void _assertSegment(
+		Long expectedSegmentIndividualCount, String expectedSegmentName,
+		Segment actualSegment) {
+
+		Assert.assertEquals(expectedSegmentName, actualSegment.getName());
+		Assert.assertEquals(
+			expectedSegmentIndividualCount, actualSegment.getIndividualCount());
 	}
 
 	private void _assertUpdateSetsReferencedObjectIds(

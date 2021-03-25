@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
-import com.liferay.osb.asah.backend.dog.SegmentDog;
+import com.liferay.osb.asah.backend.dog.SegmentMetricDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.MetricType;
@@ -63,6 +63,6 @@ public class SegmentDataFetcher extends BaseDataFetcher<ResultBag<Metric>> {
 	private MetricTypeDog _metricTypeDog;
 
 	@Autowired
-	private SegmentDog _segmentDog;
+	private SegmentMetricDog _segmentDog;
 
 }

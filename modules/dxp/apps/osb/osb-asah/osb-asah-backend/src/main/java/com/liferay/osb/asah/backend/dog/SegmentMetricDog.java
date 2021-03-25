@@ -66,10 +66,10 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class SegmentDog {
+public class SegmentMetricDog {
 
 	@Autowired
-	public SegmentDog(List<DogConfiguration> dogConfigurations) {
+	public SegmentMetricDog(List<DogConfiguration> dogConfigurations) {
 		_dogConfigurationBag = new DogConfigurationBag(dogConfigurations);
 	}
 
