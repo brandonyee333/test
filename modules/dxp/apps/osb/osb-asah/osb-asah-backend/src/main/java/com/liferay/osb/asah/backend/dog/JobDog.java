@@ -18,11 +18,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
-import com.liferay.osb.asah.backend.model.JobRun;
-import com.liferay.osb.asah.backend.model.JobRunDataPeriod;
-import com.liferay.osb.asah.backend.model.JobRunFrequency;
-import com.liferay.osb.asah.backend.model.JobRunStatus;
-import com.liferay.osb.asah.backend.model.JobRunsMonthlyStatistics;
+import com.liferay.osb.asah.common.model.JobRun;
+import com.liferay.osb.asah.common.model.JobRunDataPeriod;
+import com.liferay.osb.asah.common.model.JobRunFrequency;
+import com.liferay.osb.asah.common.model.JobRunStatus;
+import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;
 import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.common.date.DateUtil;
