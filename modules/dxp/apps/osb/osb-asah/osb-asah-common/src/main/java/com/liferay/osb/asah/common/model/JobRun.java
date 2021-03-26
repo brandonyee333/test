@@ -16,21 +16,31 @@ package com.liferay.osb.asah.common.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.graphql.GraphQLProperty;
-import com.liferay.osb.asah.common.graphql.GraphQLType;
+import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Objects;
+
+import org.json.JSONObject;
+
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Marcellus Tavares
  */
-@GraphQLType
-public class JobRun {
+@Table
+public class JobRun implements Persistable<Long> {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -45,8 +55,12 @@ public class JobRun {
 		JobRun jobRun = (JobRun)obj;
 
 		if (Objects.equals(_completedDate, jobRun._completedDate) &&
+			Objects.equals(
+				JSONUtil.toMap(_contextJSONObject),
+				JSONUtil.toMap(jobRun._contextJSONObject)) &&
 			Objects.equals(_createdDate, jobRun._createdDate) &&
 			Objects.equals(_id, jobRun._id) &&
+			Objects.equals(_jobRef, jobRun._jobRef) &&
 			Objects.equals(_jobRunStatus, jobRun._jobRunStatus) &&
 			Objects.equals(_trigger, jobRun._trigger)) {
 
@@ -56,6 +70,7 @@ public class JobRun {
 		return false;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -68,20 +83,14 @@ public class JobRun {
 		return new Date(_completedDate.getTime());
 	}
 
-	@GraphQLProperty("completedDate")
-	@JsonIgnore
-	public String getCompletedDateISO() {
-		if (_completedDate == null) {
-			return null;
-		}
-
-		return DateUtil.toUTCString(_completedDate);
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("context")
+	@JsonProperty("context")
+	public JSONObject getContextJSONObject() {
+		return _contextJSONObject;
 	}
 
-	public Map<String, Object> getContext() {
-		return _context;
-	}
-
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -94,16 +103,32 @@ public class JobRun {
 		return new Date(_createdDate.getTime());
 	}
 
-	public String getId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
+	@Override
+	public Long getId() {
 		return _id;
 	}
 
-	@GraphQLProperty("status")
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
+	public Long getJobId() {
+		if (_jobRef == null) {
+			return null;
+		}
+
+		return _jobRef.getId();
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("status")
 	@JsonProperty("status")
 	public JobRunStatus getJobRunStatus() {
 		return _jobRunStatus;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getTrigger() {
 		return _trigger;
 	}
@@ -111,7 +136,17 @@ public class JobRun {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_completedDate, _createdDate, _id, _jobRunStatus, _trigger);
+			_completedDate, _contextJSONObject, _createdDate, _id, _jobRef,
+			_jobRunStatus, _trigger);
+	}
+
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public void setCompletedDate(Date completedDate) {
@@ -120,8 +155,8 @@ public class JobRun {
 		}
 	}
 
-	public void setContext(Map<String, Object> context) {
-		_context = context;
+	public void setContextJSONObject(JSONObject contextJSONObject) {
+		_contextJSONObject = contextJSONObject;
 	}
 
 	public void setCreatedDate(Date createdDate) {
@@ -130,23 +165,124 @@ public class JobRun {
 		}
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		_id = id;
+	}
+
+	public void setJobId(Long jobId) {
+		if (jobId == null) {
+			return;
+		}
+
+		if (_jobRef == null) {
+			_jobRef = new JobRef();
+		}
+
+		_jobRef.setId(jobId);
 	}
 
 	public void setJobRunStatus(JobRunStatus jobRunStatus) {
 		_jobRunStatus = jobRunStatus;
 	}
 
+	public void setJobType(String jobType) {
+		if (jobType == null) {
+			return;
+		}
+
+		if (_jobRef == null) {
+			_jobRef = new JobRef();
+		}
+
+		_jobRef.setType(jobType);
+	}
+
 	public void setTrigger(String trigger) {
 		_trigger = trigger;
 	}
 
+	@JsonProperty("job")
+	protected JobRef getJobRef() {
+		return _jobRef;
+	}
+
+	protected void setJobRef(JobRef jobRef) {
+		_jobRef = jobRef;
+	}
+
+	@Transient
 	private Date _completedDate;
-	private Map<String, Object> _context;
+
+	@Transient
+	private JSONObject _contextJSONObject;
+
+	@Transient
 	private Date _createdDate;
-	private String _id;
+
+	@Transient
+	private Long _id;
+
+	@Transient
+	private Boolean _isNew;
+
+	@Transient
+	private JobRef _jobRef;
+
+	@Transient
 	private JobRunStatus _jobRunStatus;
+
+	@Transient
 	private String _trigger;
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class JobRef {
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof JobRef)) {
+				return false;
+			}
+
+			JobRef jobRef = (JobRef)obj;
+
+			if (Objects.equals(_id, jobRef._id) &&
+				Objects.equals(_type, jobRef._type)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonSerialize(using = ToStringSerializer.class)
+		public Long getId() {
+			return _id;
+		}
+
+		public String getType() {
+			return _type;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_id, _type);
+		}
+
+		public void setId(Long id) {
+			_id = id;
+		}
+
+		public void setType(String type) {
+			_type = type;
+		}
+
+		private Long _id;
+		private String _type;
+
+	}
 
 }
