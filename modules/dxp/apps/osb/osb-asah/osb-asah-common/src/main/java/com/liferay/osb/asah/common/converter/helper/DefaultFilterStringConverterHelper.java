@@ -89,7 +89,7 @@ public class DefaultFilterStringConverterHelper
 
 		if ((!fieldName.equalsIgnoreCase("completeDate") &&
 			 type.equalsIgnoreCase("sessions")) ||
-			(!fieldName.equalsIgnoreCase("day") &&
+			(!fieldName.equalsIgnoreCase("dayDate") &&
 			 type.equalsIgnoreCase("activities"))) {
 
 			return null;
@@ -126,7 +126,7 @@ public class DefaultFilterStringConverterHelper
 			return null;
 		}
 
-		Field<Timestamp> field = DSL.timestamp(fieldName);
+		Field<Object> field = DSL.field(fieldName);
 
 		Condition condition = field.gt(Timestamp.valueOf(localDateTime));
 
