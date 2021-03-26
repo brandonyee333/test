@@ -17,6 +17,10 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.model.ActivityGroup;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -59,37 +63,39 @@ public abstract class BaseActivityGroupRepositoryTestCase
 	@Test
 	public void testCountActivityGroups() {
 		Assert.assertEquals(
-			1,
-			_activityGroupRepository.countActivityGroups(
-				null, null, null, null));
+			1, _activityGroupRepository.countActivityGroups(null));
 		Assert.assertEquals(
-			1,
-			_activityGroupRepository.countActivityGroups(
-				12L, null, null, null));
+			1, _activityGroupRepository.countActivityGroups("channelId eq 12"));
 		Assert.assertEquals(
-			0,
-			_activityGroupRepository.countActivityGroups(
-				34L, null, null, null));
+			0, _activityGroupRepository.countActivityGroups("channelId eq 34"));
+
+		Date dayDate = _activityGroup.getDayDate();
+
 		Assert.assertEquals(
 			0,
 			_activityGroupRepository.countActivityGroups(
-				null, _activityGroup.getDayDate(), null, null));
+				"day lt '" + _getDate(dayDate, false, false) + "'"));
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
-				null, new Date(), _activityGroup.getDayDate(), null));
+				"day lt '" + _getDate(dayDate, true, false) + "' and day ge '" +
+					_getDate(dayDate, false, true) + "'"));
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
-				null, null, _activityGroup.getDayDate(), null));
+				"day ge '" + _getDate(dayDate, false, false) + "'"));
+
 		Assert.assertEquals(
 			1,
 			_activityGroupRepository.countActivityGroups(
-				null, null, null, 56L));
+				"day gt 'last24Hours'"));
 		Assert.assertEquals(
-			0,
-			_activityGroupRepository.countActivityGroups(
-				null, null, null, 78L));
+			1,
+			_activityGroupRepository.countActivityGroups("day gt 'yesterday'"));
+		Assert.assertEquals(
+			1, _activityGroupRepository.countActivityGroups("ownerId eq 56"));
+		Assert.assertEquals(
+			0, _activityGroupRepository.countActivityGroups("ownerId eq 78"));
 	}
 
 	@Test
@@ -116,15 +122,14 @@ public abstract class BaseActivityGroupRepositoryTestCase
 	public void testSearchActivityGroups() {
 		List<ActivityGroup> activityGroups =
 			_activityGroupRepository.searchActivityGroups(
-				null, null, null, null,
-				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+				null, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
 			activityGroups.toString(), 1, activityGroups.size());
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			12L, null, null, null,
+			"channelId eq 12",
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -132,21 +137,24 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			34L, null, null, null,
+			"channelId eq 34",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(
+			activityGroups.toString(), 0, activityGroups.size());
+
+		Date dayDate = _activityGroup.getDayDate();
+
+		activityGroups = _activityGroupRepository.searchActivityGroups(
+			"day lt '" + _getDate(dayDate, false, false) + "'",
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
 			activityGroups.toString(), 0, activityGroups.size());
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			null, _activityGroup.getDayDate(), null, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(
-			activityGroups.toString(), 0, activityGroups.size());
-
-		activityGroups = _activityGroupRepository.searchActivityGroups(
-			null, new Date(), _activityGroup.getDayDate(), null,
+			"day lt '" + _getDate(dayDate, true, false) + "' and day ge '" +
+				_getDate(dayDate, false, true) + "'",
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -154,7 +162,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			null, null, _activityGroup.getDayDate(), null,
+			"day ge '" + _getDate(dayDate, false, true) + "'",
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -162,7 +170,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			null, null, null, 56L,
+			"ownerId eq 56",
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -170,7 +178,7 @@ public abstract class BaseActivityGroupRepositoryTestCase
 		Assert.assertEquals(_activityGroup, activityGroups.get(0));
 
 		activityGroups = _activityGroupRepository.searchActivityGroups(
-			null, null, null, 78L,
+			"ownerId eq 78",
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assert.assertEquals(
@@ -183,14 +191,35 @@ public abstract class BaseActivityGroupRepositoryTestCase
 			_activityGroupRepository.updateOwnerId(
 				90L, "347780e0-7a66-11e8-a0fc-8356dd2944fd"));
 		Assert.assertEquals(
-			1,
-			_activityGroupRepository.countActivityGroups(
-				null, null, null, 90L));
+			1, _activityGroupRepository.countActivityGroups("ownerId eq 90"));
 	}
 
 	@Override
 	protected CrudRepository<ActivityGroup, Long> getCrudRepository() {
 		return _activityGroupRepository;
+	}
+
+	private String _getDate(Date date, boolean end, boolean start) {
+		if (date == null) {
+			return null;
+		}
+
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(
+			date.toInstant(), ZoneOffset.UTC);
+
+		if (!end && !start) {
+			return String.valueOf(localDateTime.toInstant(ZoneOffset.UTC));
+		}
+
+		LocalTime localTime = LocalTime.MIN;
+
+		if (end) {
+			localTime = LocalTime.MAX;
+		}
+
+		localDateTime = localDateTime.with(localTime);
+
+		return String.valueOf(localDateTime.toInstant(ZoneOffset.UTC));
 	}
 
 	private ActivityGroup _activityGroup;

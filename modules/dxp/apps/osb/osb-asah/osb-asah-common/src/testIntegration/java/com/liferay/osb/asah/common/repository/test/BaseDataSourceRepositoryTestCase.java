@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -109,100 +108,68 @@ public abstract class BaseDataSourceRepositoryTestCase
 
 	@Test
 	public void testCountDataSources() {
+		Assert.assertEquals(3, _dataSourceRepository.countDataSources(null));
+
 		Assert.assertEquals(
-			3,
-			_dataSourceRepository.countDataSources(
-				null, null, null, null, null, null, null, null));
+			1, _dataSourceRepository.countDataSources("channelId eq 1"));
 
 		Assert.assertEquals(
 			1,
 			_dataSourceRepository.countDataSources(
-				Arrays.asList(1L), null, null, null, null, null, null, null));
+				"credentials/type eq 'Token Authentication'"));
+
+		Assert.assertEquals(
+			1,
+			_dataSourceRepository.countDataSources("name eq 'Liferay Brazil'"));
 
 		Assert.assertEquals(
 			1,
 			_dataSourceRepository.countDataSources(
-				null, "Token Authentication", null, null, null, null, null,
-				null));
+				"provider/type eq 'LIFERAY'"));
 
 		Assert.assertEquals(
 			1,
 			_dataSourceRepository.countDataSources(
-				null, null, Arrays.asList("Liferay Brazil"), null, null, null,
-				null, null));
+				"contains(name, 'Liferay') and contains(name, 'Brazil')"));
 
 		Assert.assertEquals(
-			1,
-			_dataSourceRepository.countDataSources(
-				null, null, null, "LIFERAY", null, null, null, null));
+			1, _dataSourceRepository.countDataSources("state eq 'READY'"));
 
 		Assert.assertEquals(
-			1,
-			_dataSourceRepository.countDataSources(
-				null, null, null, null, Arrays.asList("Liferay", "Brazil"),
-				null, null, null));
+			1, _dataSourceRepository.countDataSources("url eq null"));
 
 		Assert.assertEquals(
-			1,
-			_dataSourceRepository.countDataSources(
-				null, null, null, null, null, Arrays.asList("READY"), null,
-				null));
+			1, _dataSourceRepository.countDataSources("workspaceURL eq null"));
 
 		Assert.assertEquals(
-			1,
-			_dataSourceRepository.countDataSources(
-				null, null, null, null, null, null, true, null));
+			2, _dataSourceRepository.countDataSources("channelId eq [1,2]"));
 
 		Assert.assertEquals(
-			1,
-			_dataSourceRepository.countDataSources(
-				null, null, null, null, null, null, null, true));
+			0, _dataSourceRepository.countDataSources("channelId eq 4"));
+
+		Assert.assertEquals(
+			0, _dataSourceRepository.countDataSources("name eq 'Liferay'"));
 
 		Assert.assertEquals(
 			2,
 			_dataSourceRepository.countDataSources(
-				Arrays.asList(1L, 2L), null, null, null, null, null, null,
-				null));
-
-		Assert.assertEquals(
-			0,
-			_dataSourceRepository.countDataSources(
-				Arrays.asList(4L), null, null, null, null, null, null, null));
-
-		Assert.assertEquals(
-			0,
-			_dataSourceRepository.countDataSources(
-				null, null, Arrays.asList("Liferay"), null, null, null, null,
-				null));
+				"contains(name, 'Liferay')"));
 
 		Assert.assertEquals(
 			2,
 			_dataSourceRepository.countDataSources(
-				null, null, null, null, Arrays.asList("Liferay"), null, null,
-				null));
-
-		Assert.assertEquals(
-			2,
-			_dataSourceRepository.countDataSources(
-				null, null, null, null, null,
-				Arrays.asList("CREDENTIALS_INVALID", "CREDENTIALS_VALID"), null,
-				null));
+				"state eq ['CREDENTIALS_INVALID','CREDENTIALS_VALID']"));
 
 		Assert.assertEquals(
 			0,
 			_dataSourceRepository.countDataSources(
-				null, null, null, null, null,
-				Arrays.asList("IN_PROGRESS_DELETING"), null, null));
+				"state eq 'IN_PROGRESS_DELETING'"));
 
 		Assert.assertEquals(
-			3,
-			_dataSourceRepository.countDataSources(
-				null, null, null, null, null, null, false, null));
+			2, _dataSourceRepository.countDataSources("url ne null"));
 
 		Assert.assertEquals(
-			3,
-			_dataSourceRepository.countDataSources(
-				null, null, null, null, null, null, null, false));
+			2, _dataSourceRepository.countDataSources("workspaceURL ne null"));
 	}
 
 	@Test
@@ -336,125 +303,122 @@ public abstract class BaseDataSourceRepositoryTestCase
 	@Test
 	public void testSearchDataSources() {
 		List<DataSource> dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, null, null, null, null, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 3, dataSources.size());
-
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			Arrays.asList(1L), null, null, null, null, null, null, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, "Token Authentication", null, null, null, null, null, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, Arrays.asList("Liferay Brazil"), null, null, null, null,
 			null, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, "LIFERAY", null, null, null, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, null, Arrays.asList("Liferay", "Brazil"), null,
-			null, null, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, null, null, Arrays.asList("READY"), null, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, null, null, null, true, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, null, null, null, null, true,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
-
-		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			Arrays.asList(1L, 2L), null, null, null, null, null, null, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			Arrays.asList(4L), null, null, null, null, null, null, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 0, dataSources.size());
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, Arrays.asList("Liferay"), null, null, null, null, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 0, dataSources.size());
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, null, Arrays.asList("Liferay"), null, null, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, null, null,
-			Arrays.asList("CREDENTIALS_INVALID", "CREDENTIALS_VALID"), null,
-			null, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, null, null, Arrays.asList("IN_PROGRESS_DELETING"),
-			null, null, PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
-		Assert.assertEquals(dataSources.toString(), 0, dataSources.size());
-
-		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, null, null, null, false, null,
-			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
-
 		Assert.assertEquals(dataSources.toString(), 3, dataSources.size());
 
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+
 		dataSources = _dataSourceRepository.searchDataSources(
-			null, null, null, null, null, null, null, false,
+			"channelId eq 1",
 			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
-		Assert.assertEquals(dataSources.toString(), 3, dataSources.size());
+		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"credentials/type eq 'Token Authentication'",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"name eq 'Liferay Brazil'",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"provider/type eq 'LIFERAY'",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"contains(name, 'Liferay') and contains(name, 'Brazil')",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"state eq 'READY'",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"url eq ''", PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"workspaceURL eq null",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 1, dataSources.size());
+
+		_assertDataSourceEquals(_dataSources.get(0), dataSources.get(0));
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"channelId eq [1,2]",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"channelId eq 4",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 0, dataSources.size());
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"name eq 'Liferay'",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 0, dataSources.size());
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"contains(name, 'Liferay')",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"state eq ['CREDENTIALS_INVALID','CREDENTIALS_VALID']",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"state eq 'IN_PROGRESS_DELETING'",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 0, dataSources.size());
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"url ne null",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
+
+		dataSources = _dataSourceRepository.searchDataSources(
+			"workspaceURL ne null",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assert.assertEquals(dataSources.toString(), 2, dataSources.size());
 	}
 
 	@Override
