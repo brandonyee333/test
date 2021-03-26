@@ -171,6 +171,16 @@ CREATE TABLE IF NOT EXISTS ItemRecommendation (
 	recommendedItemIds TEXT[]
 );
 
+CREATE TABLE IF NOT EXISTS JobRun (
+	id BIGSERIAL PRIMARY KEY,
+    completedDate TIMESTAMPTZ,
+	context JSON,
+	createdDate TIMESTAMPTZ,
+	jobId BIGINT,
+	status TEXT,
+	trigger TEXT
+);
+
 CREATE TABLE IF NOT EXISTS Membership (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
