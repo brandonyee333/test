@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.postgresql.converter;
 
 import org.json.JSONObject;
 
+import org.postgresql.util.PGobject;
+
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 
@@ -24,11 +26,21 @@ import org.springframework.data.convert.WritingConverter;
  */
 @WritingConverter
 public class JSONObjectToStringConverter
-	implements Converter<JSONObject, String> {
+	implements Converter<JSONObject, PGobject> {
 
 	@Override
-	public String convert(JSONObject jsonObject) {
-		return jsonObject.toString();
+	public PGobject convert(JSONObject jsonObject) {
+		try {
+			PGobject pgObject = new PGobject();
+
+			pgObject.setType("json");
+			pgObject.setValue(jsonObject.toString());
+
+			return pgObject;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
