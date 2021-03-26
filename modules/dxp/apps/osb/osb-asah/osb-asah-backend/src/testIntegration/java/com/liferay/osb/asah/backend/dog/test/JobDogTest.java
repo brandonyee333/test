@@ -17,16 +17,15 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
+import com.liferay.osb.asah.backend.model.JobStatus;
+import com.liferay.osb.asah.backend.model.JobType;
+import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.JobRun;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
 import com.liferay.osb.asah.common.model.JobRunFrequency;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;
-import com.liferay.osb.asah.backend.model.JobStatus;
-import com.liferay.osb.asah.backend.model.JobType;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -50,6 +49,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Marcellus Tavares
@@ -102,10 +102,10 @@ public class JobDogTest {
 
 		Assert.assertTrue(statuses.get(0));
 
-		ResultBag<JobRun> jobRunResultBag = _jobDog.getJobRunResultBag(
-			"1", 20, Sort.desc("id"), 0);
+		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
+			"1", 0, 20, Sort.desc("id"));
 
-		Assert.assertEquals(0, jobRunResultBag.getTotal());
+		Assert.assertEquals(0, jobRunPage.getTotalElements());
 	}
 
 	@Test
@@ -168,20 +168,20 @@ public class JobDogTest {
 	)
 	@Test
 	public void testGetJobRunResultBag() {
-		ResultBag<JobRun> jobRunResultBag = _jobDog.getJobRunResultBag(
-			"1", 10, Sort.desc("id"), 0);
+		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
+			"1", 0, 10, Sort.desc("id"));
 
-		Assert.assertEquals(3, jobRunResultBag.getTotal());
+		Assert.assertEquals(3, jobRunPage.getTotalElements());
 
 		Assert.assertEquals(
-			Arrays.asList("3", "2", "1"),
-			_getJobRunsProperty(jobRunResultBag.getResults(), JobRun::getId));
+			Arrays.asList(3L, 2L, 1L),
+			_getJobRunsProperty(jobRunPage.getContent(), JobRun::getId));
 		Assert.assertEquals(
 			Arrays.asList(
 				JobRunStatus.FAILED, JobRunStatus.PUBLISHED,
 				JobRunStatus.FAILED),
 			_getJobRunsProperty(
-				jobRunResultBag.getResults(), JobRun::getJobRunStatus));
+				jobRunPage.getContent(), JobRun::getJobRunStatus));
 	}
 
 	@ElasticsearchIndex(
@@ -197,10 +197,10 @@ public class JobDogTest {
 		JobRunsMonthlyStatistics jobRunsMonthlyStatistics =
 			_jobDog.getJobRunsMonthlyStatistics("1");
 
-		ResultBag<JobRun> jobRunResultBag = _jobDog.getJobRunResultBag(
-			"1", 20, Sort.desc("id"), 0);
+		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
+			"1", 0, 20, Sort.desc("id"));
 
-		List<JobRun> jobRuns = jobRunResultBag.getResults();
+		List<JobRun> jobRuns = jobRunPage.getContent();
 
 		Assert.assertEquals(
 			jobRunsMonthlyStatistics.getCompletedJobRuns(),
