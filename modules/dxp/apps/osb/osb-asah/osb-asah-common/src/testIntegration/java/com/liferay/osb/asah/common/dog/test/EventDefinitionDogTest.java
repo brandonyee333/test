@@ -14,14 +14,18 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
+import com.liferay.osb.asah.common.model.BlockedEventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -47,8 +51,8 @@ public class EventDefinitionDogTest {
 	public void testAddDefinition() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, null, "testEvent",
-				EventDefinition.Type.CUSTOM);
+				"Testing an event", "Test Event", null, "testEvent",
+				EventDefinition.Type.CUSTOM, null);
 
 		Assert.assertNotNull(eventDefinition);
 
@@ -59,6 +63,48 @@ public class EventDefinitionDogTest {
 		Assert.assertEquals("testEvent", eventDefinition.getName());
 		Assert.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition.getType());
+		Assert.assertFalse(eventDefinition.isBlocked());
+	}
+
+	@PostgreSQLTables(resourcePath = "test_add_definition_limit_reached.sql")
+	@Test
+	public void testAddDefinitionLimitReached() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", "Test Event 1", null, "testEvent1",
+				EventDefinition.Type.CUSTOM, null);
+
+		Assert.assertNotNull(eventDefinition);
+
+		Assert.assertEquals(
+			"Testing an event", eventDefinition.getDescription());
+		Assert.assertEquals("Test Event 1", eventDefinition.getDisplayName());
+		Assert.assertNotNull(eventDefinition.getId());
+		Assert.assertEquals("testEvent1", eventDefinition.getName());
+		Assert.assertEquals(
+			EventDefinition.Type.CUSTOM, eventDefinition.getType());
+		Assert.assertFalse(eventDefinition.isBlocked());
+
+		Date dayDate = DateUtil.newDayDate();
+		String url = "http://localhost:8080";
+
+		eventDefinition = _eventDefinitionDog.addEventDefinition(
+			"Testing an event", "Test Event 2", dayDate, "testEvent2",
+			EventDefinition.Type.CUSTOM, url);
+
+		Assert.assertNotNull(eventDefinition);
+
+		Assert.assertEquals(
+			"Testing an event", eventDefinition.getDescription());
+		Assert.assertEquals("Test Event 2", eventDefinition.getDisplayName());
+		Assert.assertNotNull(eventDefinition.getId());
+		Assert.assertEquals("testEvent2", eventDefinition.getName());
+		Assert.assertEquals(
+			EventDefinition.Type.CUSTOM, eventDefinition.getType());
+		Assert.assertTrue(eventDefinition.isBlocked());
+		Assert.assertEquals(
+			new BlockedEventDefinition(dayDate, url),
+			eventDefinition.getBlockedEventDefinition());
 	}
 
 	@Test
@@ -86,8 +132,8 @@ public class EventDefinitionDogTest {
 	public void testFetchEventDefinitionByDisplayName() {
 		EventDefinition expectedEventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, null, "testEvent",
-				EventDefinition.Type.CUSTOM);
+				"Testing an event", "Test Event", null, "testEvent",
+				EventDefinition.Type.CUSTOM, null);
 
 		Assert.assertEquals(
 			expectedEventDefinition,
@@ -106,8 +152,8 @@ public class EventDefinitionDogTest {
 	public void testFetchEventDefinitionByName() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, null, "testEvent",
-				EventDefinition.Type.CUSTOM);
+				"Testing an event", "Test Event", null, "testEvent",
+				EventDefinition.Type.CUSTOM, null);
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.fetchEventDefinitionByName("testEvent");
@@ -119,8 +165,8 @@ public class EventDefinitionDogTest {
 	public void testGetEventDefinition() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", null, null, "testEvent",
-				EventDefinition.Type.CUSTOM);
+				"Testing an event", "Test Event", null, "testEvent",
+				EventDefinition.Type.CUSTOM, null);
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.getEventDefinition(eventDefinition1.getId());
@@ -160,6 +206,23 @@ public class EventDefinitionDogTest {
 	}
 
 	@Test
+	public void testUpdateEventDefinitionBlockedEventDefinition() {
+		EventDefinition eventDefinition1 =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+
+		BlockedEventDefinition blockedEventDefinition =
+			new BlockedEventDefinition(DateUtil.newDayDate(), "testUrl");
+
+		eventDefinition1.setBlockedEventDefinition(blockedEventDefinition);
+
+		EventDefinition eventDefinition2 =
+			_eventDefinitionDog.updateEventDefinition(
+				blockedEventDefinition, null, null, eventDefinition1.getId());
+
+		Assert.assertEquals(eventDefinition1, eventDefinition2);
+	}
+
+	@Test
 	public void testUpdateEventDefinitionDescription() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
@@ -170,7 +233,7 @@ public class EventDefinitionDogTest {
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.updateEventDefinition(
-				newDescription, null, eventDefinition1.getId(), null, null);
+				null, newDescription, null, eventDefinition1.getId());
 
 		Assert.assertEquals(eventDefinition1, eventDefinition2);
 	}
@@ -186,7 +249,7 @@ public class EventDefinitionDogTest {
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.updateEventDefinition(
-				null, newDisplayName, eventDefinition1.getId(), null, null);
+				null, null, newDisplayName, eventDefinition1.getId());
 
 		Assert.assertEquals(eventDefinition1, eventDefinition2);
 	}
