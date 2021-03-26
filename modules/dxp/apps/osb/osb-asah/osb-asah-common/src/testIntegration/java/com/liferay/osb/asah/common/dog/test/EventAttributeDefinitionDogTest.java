@@ -107,7 +107,7 @@ public class EventAttributeDefinitionDogTest {
 	public void testFetchEventAttributeDefinitionByDisplayName() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", "testEvent",
+				"Testing an event", "Test Event", null, null, "testEvent",
 				EventDefinition.Type.CUSTOM);
 
 		EventAttributeDefinition expectedEventAttributeDefinition =

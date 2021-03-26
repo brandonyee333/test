@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -40,19 +41,22 @@ import org.springframework.stereotype.Component;
 public class EventDefinitionDog {
 
 	public EventDefinition addEventDefinition(
-		String description, String displayName, String name,
-		EventDefinition.Type type) {
+		String description, String displayName, Date lastSeenDate,
+		String lastSeenUrl, String name, EventDefinition.Type type) {
 
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException("Event name is null");
 		}
 
-		boolean blocked = false;
+		EventDefinition eventDefinition = new EventDefinition();
 
-		if (countEventDefinitions(false, null, type) >
-				_EVENT_DEFINITION_THRESHOLD) {
+		if ((type == EventDefinition.Type.CUSTOM) &&
+			(countEventDefinitions(false, null, type) >=
+				_EVENT_DEFINITION_THRESHOLD)) {
 
-			blocked = true;
+			eventDefinition.setBlocked(true);
+			eventDefinition.setLastSeenDate(lastSeenDate);
+			eventDefinition.setLastSeenUrl(lastSeenUrl);
 
 			if (_log.isWarnEnabled()) {
 				_log.warn(
@@ -62,9 +66,6 @@ public class EventDefinitionDog {
 			}
 		}
 
-		EventDefinition eventDefinition = new EventDefinition();
-
-		eventDefinition.setBlocked(blocked);
 		eventDefinition.setDescription(description);
 		eventDefinition.setDisplayName(displayName);
 		eventDefinition.setName(name);
@@ -123,7 +124,8 @@ public class EventDefinitionDog {
 	}
 
 	public EventDefinition updateEventDefinition(
-		String description, String displayName, Long eventDefinitionId) {
+		String description, String displayName, Long eventDefinitionId,
+		Date lastSeenDate, String lastSeenUrl) {
 
 		EventDefinition eventDefinition = getEventDefinition(eventDefinitionId);
 
@@ -133,6 +135,14 @@ public class EventDefinitionDog {
 
 		if (StringUtils.isNotBlank(displayName)) {
 			eventDefinition.setDisplayName(displayName);
+		}
+
+		if (lastSeenDate != null) {
+			eventDefinition.setLastSeenDate(lastSeenDate);
+		}
+
+		if (StringUtils.isNotBlank(lastSeenUrl)) {
+			eventDefinition.setLastSeenUrl(lastSeenUrl);
 		}
 
 		return _eventDefinitionRepository.save(eventDefinition);

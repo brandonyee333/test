@@ -137,6 +137,8 @@ CREATE TABLE IF NOT EXISTS EventDefinition (
 	blocked BOOLEAN DEFAULT false,
 	description TEXT,
 	displayName TEXT UNIQUE,
+	lastSeenDate TIMESTAMPTZ,
+	lastSeenUrl TEXT,
 	name TEXT UNIQUE,
 	type TEXT NOT NULL
 );

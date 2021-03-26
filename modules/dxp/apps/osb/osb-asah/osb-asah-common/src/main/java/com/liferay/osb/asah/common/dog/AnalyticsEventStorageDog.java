@@ -45,17 +45,30 @@ public class AnalyticsEventStorageDog {
 			EventDefinition eventDefinition =
 				_eventDefinitionDog.fetchEventDefinitionByName(eventId);
 
+			Map<String, String> eventProperties =
+				analyticsEvent.getEventProperties();
+
 			if (eventDefinition == null) {
 				eventDefinition = _eventDefinitionDog.addEventDefinition(
-					null, null, eventId, EventDefinition.Type.CUSTOM);
+					null, null, analyticsEvent.getEventDate(),
+					eventProperties.get("url"), eventId,
+					EventDefinition.Type.CUSTOM);
+
+				if (eventDefinition.isBlocked()) {
+					return;
+				}
+			}
+			else if (eventDefinition.isBlocked()) {
+				_eventDefinitionDog.updateEventDefinition(
+					null, null, eventDefinition.getId(),
+					analyticsEvent.getEventDate(), eventProperties.get("url"));
+
+				return;
 			}
 
 			Long eventDefinitionId = eventDefinition.getId();
 
 			Set<EventAttribute> eventAttributes = new HashSet<>();
-
-			Map<String, String> eventProperties =
-				analyticsEvent.getEventProperties();
 
 			for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
 				String propertyName = entry.getKey();

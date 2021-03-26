@@ -47,7 +47,7 @@ public class EventDefinitionDogTest {
 	public void testAddDefinition() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", "testEvent",
+				"Testing an event", "Test Event", null, null, "testEvent",
 				EventDefinition.Type.CUSTOM);
 
 		Assert.assertNotNull(eventDefinition);
@@ -86,7 +86,7 @@ public class EventDefinitionDogTest {
 	public void testFetchEventDefinitionByDisplayName() {
 		EventDefinition expectedEventDefinition =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", "testEvent",
+				"Testing an event", "Test Event", null, null, "testEvent",
 				EventDefinition.Type.CUSTOM);
 
 		Assert.assertEquals(
@@ -106,7 +106,7 @@ public class EventDefinitionDogTest {
 	public void testFetchEventDefinitionByName() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", "testEvent",
+				"Testing an event", "Test Event", null, null, "testEvent",
 				EventDefinition.Type.CUSTOM);
 
 		EventDefinition eventDefinition2 =
@@ -119,7 +119,7 @@ public class EventDefinitionDogTest {
 	public void testGetEventDefinition() {
 		EventDefinition eventDefinition1 =
 			_eventDefinitionDog.addEventDefinition(
-				"Testing an event", "Test Event", "testEvent",
+				"Testing an event", "Test Event", null, null, "testEvent",
 				EventDefinition.Type.CUSTOM);
 
 		EventDefinition eventDefinition2 =
@@ -170,7 +170,7 @@ public class EventDefinitionDogTest {
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.updateEventDefinition(
-				newDescription, null, eventDefinition1.getId());
+				newDescription, null, eventDefinition1.getId(), null, null);
 
 		Assert.assertEquals(eventDefinition1, eventDefinition2);
 	}
@@ -186,7 +186,7 @@ public class EventDefinitionDogTest {
 
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.updateEventDefinition(
-				null, newDisplayName, eventDefinition1.getId());
+				null, newDisplayName, eventDefinition1.getId(), null, null);
 
 		Assert.assertEquals(eventDefinition1, eventDefinition2);
 	}

@@ -40,7 +40,8 @@ public class UpdateEventDefinitionMutationDataFetcher
 			_eventDefinitionDog.updateEventDefinition(
 				environment.getArgument("description"),
 				environment.getArgument("displayName"),
-				Long.valueOf(environment.getArgument("eventDefinitionId"))));
+				Long.valueOf(environment.getArgument("eventDefinitionId")),
+				null, null));
 	}
 
 	@Autowired

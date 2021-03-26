@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.model;
 
 import com.liferay.osb.asah.common.util.BeanUtils;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -53,9 +54,11 @@ public class EventDefinition implements Persistable<Long> {
 		if (Objects.equals(_blocked, eventDefinition._blocked) &&
 			Objects.equals(_description, eventDefinition._description) &&
 			Objects.equals(_displayName, eventDefinition._displayName) &&
-			Objects.equals(_type, eventDefinition._type) &&
 			Objects.equals(_id, eventDefinition._id) &&
-			Objects.equals(_name, eventDefinition._name)) {
+			Objects.equals(_lastSeenDate, eventDefinition._lastSeenDate) &&
+			Objects.equals(_lastSeenUrl, eventDefinition._lastSeenUrl) &&
+			Objects.equals(_name, eventDefinition._name) &&
+			Objects.equals(_type, eventDefinition._type)) {
 
 			return true;
 		}
@@ -81,6 +84,16 @@ public class EventDefinition implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Date getLastSeenDate() {
+		return _lastSeenDate;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getLastSeenUrl() {
+		return _lastSeenUrl;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
@@ -93,7 +106,8 @@ public class EventDefinition implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_blocked, _description, _displayName, _type, _id, _name);
+			_blocked, _description, _displayName, _lastSeenDate, _lastSeenUrl,
+			_type, _id, _name);
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -130,6 +144,14 @@ public class EventDefinition implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
+	public void setLastSeenDate(Date lastSeenDate) {
+		_lastSeenDate = lastSeenDate;
+	}
+
+	public void setLastSeenUrl(String lastSeenUrl) {
+		_lastSeenUrl = lastSeenUrl;
+	}
+
 	public void setName(String name) {
 		_name = name;
 	}
@@ -158,6 +180,12 @@ public class EventDefinition implements Persistable<Long> {
 
 	@Transient
 	private Boolean _isNew;
+
+	@Transient
+	private Date _lastSeenDate;
+
+	@Transient
+	private String _lastSeenUrl;
 
 	@Transient
 	private String _name;
