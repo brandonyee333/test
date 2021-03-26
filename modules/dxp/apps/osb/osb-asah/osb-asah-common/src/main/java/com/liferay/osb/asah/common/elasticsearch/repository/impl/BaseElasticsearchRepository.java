@@ -22,11 +22,14 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -173,9 +176,38 @@ public abstract class BaseElasticsearchRepository<T extends Persistable<ID>, ID>
 		);
 	}
 
+	protected Optional<T> findFirst(Consumer<SearchSourceBuilder> consumer) {
+		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+		consumer.accept(searchSourceBuilder);
+
+		searchSourceBuilder.size(1);
+
+		List<T> result = search(searchSourceBuilder);
+
+		Stream<T> stream = result.stream();
+
+		return stream.findFirst();
+	}
+
 	protected abstract String getCollectionName();
 
 	protected abstract ElasticsearchInvoker getElasticsearchInvoker();
+
+	protected List<T> search(SearchSourceBuilder searchSourceBuilder) {
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		SearchResponse searchResponse = elasticsearchInvoker.search(
+			getCollectionName(), searchSourceBuilder);
+
+		JSONArray jsonArray = new JSONArray();
+
+		for (SearchHit searchHit : searchResponse.getHits()) {
+			jsonArray.put(searchHit.getSourceAsMap());
+		}
+
+		return toList(jsonArray);
+	}
 
 	protected void setSearchSourceBuilderPage(
 		SearchSourceBuilder searchSourceBuilder, Pageable pageable) {
