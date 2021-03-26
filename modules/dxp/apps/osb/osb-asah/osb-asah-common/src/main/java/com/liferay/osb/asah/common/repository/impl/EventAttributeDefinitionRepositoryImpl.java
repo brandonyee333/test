@@ -48,10 +48,10 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public long countEventAttributeDefinitions(String name) {
-		SelectSelectStep<Record1<Integer>> selectCount =
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectCount.from(
+		return selectSelectStep.from(
 			"EventAttributeDefinition"
 		).where(
 			_getConditions(name)
@@ -68,13 +68,13 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		Map<Long, EventAttributeDefinition> eventAttributeDefinitionsById =
 			new LinkedHashMap<>();
 
-		SelectSelectStep<?> select = _dslContext.select();
+		SelectSelectStep<?> selectSelectStep = _dslContext.select();
 
 		Table<?> table = _getTopEventAttributeDefinitionsTable(name, pageable);
 
 		Field<Object> field = DSL.field("eventAttributeDefinitionId");
 
-		select.from(
+		selectSelectStep.from(
 			"EventDefinitionEventAttributeDefinition"
 		).join(
 			table
@@ -119,9 +119,9 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 	private Table<?> _getTopEventAttributeDefinitionsTable(
 		String name, Pageable pageable) {
 
-		SelectSelectStep<?> select = _dslContext.select();
+		SelectSelectStep<?> selectSelectStep = _dslContext.select();
 
-		return select.from(
+		return selectSelectStep.from(
 			"EventAttributeDefinition"
 		).where(
 			_getConditions(name)
