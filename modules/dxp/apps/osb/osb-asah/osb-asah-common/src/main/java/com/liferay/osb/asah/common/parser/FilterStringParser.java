@@ -27,12 +27,11 @@ import org.apache.commons.lang3.StringUtils;
 public class FilterStringParser {
 
 	public static <T> T parse(
-			String filterString, Supplier<T> getParseResultSupplier,
-			Function<String, Exception> parseInnerFilterFunction,
-			Function<String, Exception> processLogicalOperatorFunction,
-			Function<String[], Exception> processLogicFunctionFunction,
-			Function<Object[], Exception> processStringFunctionFunction)
-		throws Exception {
+		String filterString, Supplier<T> getParseResultSupplier,
+		Function<String, Exception> parseInnerFilterFunction,
+		Function<String, Exception> processLogicalOperatorFunction,
+		Function<String[], Exception> processLogicFunctionFunction,
+		Function<Object[], Exception> processStringFunctionFunction) {
 
 		if (StringUtils.isEmpty(filterString)) {
 			return null;
@@ -71,7 +70,8 @@ public class FilterStringParser {
 			return getParseResultSupplier.get();
 		}
 		catch (Exception e) {
-			throw new Exception("Unable to process filter " + filterString, e);
+			throw new FilterStringParserException(
+				"Unable to process filter " + filterString, e);
 		}
 	}
 
