@@ -234,20 +234,14 @@ public class DataSourceDog {
 	}
 
 	public Page<DataSource> getDataSourcesPage(
-		List<Long> channelIds, String credentialType, List<String> names,
-		String providerType, List<String> searchNames, List<String> states,
-		Boolean url, Boolean workspaceURL, int page, int size, String[] sorts) {
+		String filterString, int page, int size, String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
-			_dataSourceRepository.searchDataSources(
-				channelIds, credentialType, names, providerType, searchNames,
-				states, url, workspaceURL, pageRequest),
+			_dataSourceRepository.searchDataSources(filterString, pageRequest),
 			pageRequest,
-			() -> _dataSourceRepository.countDataSources(
-				channelIds, credentialType, names, providerType, searchNames,
-				states, url, workspaceURL));
+			() -> _dataSourceRepository.countDataSources(filterString));
 	}
 
 	public boolean isAnalyticsConfigured() {

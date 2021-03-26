@@ -18,6 +18,8 @@ import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.DataSourceOrganization;
 import com.liferay.osb.asah.common.model.DataSourceSite;
 import com.liferay.osb.asah.common.model.DataSourceUserGroup;
+import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
+import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,10 +30,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -39,6 +40,7 @@ import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 
@@ -54,122 +56,57 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countDataSources(
-		List<Long> channelIds, String credentialType, List<String> names,
-		String providerType, List<String> searchNames, List<String> states,
-		Boolean url, Boolean workspaceURL) {
-
+	public long countDataSources(String filterString) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectSelectStep.from(
-			"DataSource"
-		).where(
-			_getConditions(
-				channelIds, credentialType, names, providerType, searchNames,
-				states, url, workspaceURL)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
+		try {
+			return selectSelectStep.from(
+				"DataSource"
+			).where(
+				FilterStringToConditionConverter.convert(
+					filterString, _dataSourceFilterStringConverter)
+			).fetchOptional(
+				0, Long.class
+			).orElse(
+				0L
+			);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return 0;
+		}
 	}
 
 	public List<DataSource> searchDataSources(
-		List<Long> channelIds, String credentialType, List<String> names,
-		String providerType, List<String> searchNames, List<String> states,
-		Boolean url, Boolean workspaceURL, Pageable pageable) {
+		String filterString, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return _populateDataSources(
-			selectSelectStep.from(
-				"DataSource"
-			).where(
-				_getConditions(
-					channelIds, credentialType, names, providerType,
-					searchNames, states, url, workspaceURL)
-			).orderBy(
-				getSortFields(pageable.getSort(), null)
-			).limit(
-				pageable.getPageSize()
-			).offset(
-				pageable.getOffset()
-			).fetch(
-			).map(
-				record -> new DataSource(record.intoMap())
-			));
-	}
-
-	private List<Condition> _getConditions(
-		List<Long> channelIds, String credentialType, List<String> names,
-		String providerType, List<String> searchNames, List<String> states,
-		Boolean url, Boolean workspaceURL) {
-
-		List<Condition> conditions = new ArrayList<>();
-
-		if (CollectionUtils.isNotEmpty(channelIds)) {
-			Field<Object> field = DSL.field("channelId");
-
-			conditions.add(field.in(channelIds));
+		try {
+			return _populateDataSources(
+				selectSelectStep.from(
+					"DataSource"
+				).where(
+					FilterStringToConditionConverter.convert(
+						filterString, _dataSourceFilterStringConverter)
+				).orderBy(
+					getSortFields(pageable.getSort(), null)
+				).limit(
+					pageable.getPageSize()
+				).offset(
+					pageable.getOffset()
+				).fetch(
+				).map(
+					record -> new DataSource(record.intoMap())
+				));
 		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-		if (StringUtils.isNotEmpty(credentialType)) {
-			Field<Object> field = DSL.field("credentialType");
-
-			conditions.add(field.eq(credentialType));
+			return Collections.emptyList();
 		}
-
-		if (CollectionUtils.isNotEmpty(names)) {
-			Field<Object> field = DSL.field("name");
-
-			conditions.add(field.in(names));
-		}
-
-		if (StringUtils.isNotEmpty(providerType)) {
-			Field<Object> field = DSL.field("providerType");
-
-			conditions.add(field.eq(providerType));
-		}
-
-		if (CollectionUtils.isNotEmpty(searchNames)) {
-			for (String searchName : searchNames) {
-				Field<Object> field = DSL.field("name");
-
-				conditions.add(field.likeIgnoreCase("%" + searchName + "%"));
-			}
-		}
-
-		if (CollectionUtils.isNotEmpty(states)) {
-			Condition condition = null;
-
-			for (String state : states) {
-				Field<Object> field = DSL.field("state");
-
-				if (condition == null) {
-					condition = field.eq(state);
-				}
-				else {
-					condition = condition.or(field.eq(state));
-				}
-			}
-
-			conditions.add(condition);
-		}
-
-		if ((url != null) && url) {
-			Field<Object> field = DSL.field("url");
-
-			conditions.add(field.eq(""));
-		}
-
-		if ((workspaceURL != null) && workspaceURL) {
-			Field<Object> field = DSL.field("workspaceURL");
-
-			conditions.add(field.isNull());
-		}
-
-		return conditions;
 	}
 
 	private void _populateDataSourceOrganizations(
@@ -267,6 +204,13 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 			}
 		);
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		DataSourceRepositoryImpl.class);
+
+	@Autowired
+	private DataSourceFilterStringConverterHelper
+		_dataSourceFilterStringConverter;
 
 	private final DSLContext _dslContext;
 

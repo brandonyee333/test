@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -59,16 +57,17 @@ public class ElasticsearchDataSourceRepositoryImpl
 	implements DataSourceRepository {
 
 	@Override
-	public long countDataSources(
-		List<Long> channelIds, String credentialType, List<String> names,
-		String providerType, List<String> searchNames, List<String> states,
-		Boolean url, Boolean workspaceURL) {
+	public long countDataSources(String filterString) {
+		try {
+			return _faroInfoElasticsearchInvoker.count(
+				getCollectionName(),
+				FilterStringToQueryBuilderConverter.convert(filterString));
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(),
-			_getBoolQueryBuilder(
-				channelIds, credentialType, names, providerType, searchNames,
-				states, url, workspaceURL));
+			return 0;
+		}
 	}
 
 	@Override
@@ -209,9 +208,7 @@ public class ElasticsearchDataSourceRepositoryImpl
 
 	@Override
 	public List<DataSource> searchDataSources(
-		List<Long> channelIds, String credentialType, List<String> names,
-		String providerType, List<String> searchNames, List<String> states,
-		Boolean url, Boolean workspaceURL, Pageable pageable) {
+		String filterString, Pageable pageable) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =
@@ -222,9 +219,7 @@ public class ElasticsearchDataSourceRepositoryImpl
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
 			collectionGetResponse.setQueryBuilder(
-				_getBoolQueryBuilder(
-					channelIds, credentialType, names, providerType,
-					searchNames, states, url, workspaceURL));
+				FilterStringToQueryBuilderConverter.convert(filterString));
 			collectionGetResponse.setSize(pageable.getPageSize());
 
 			List<String> sorts = new ArrayList<>();
@@ -282,66 +277,6 @@ public class ElasticsearchDataSourceRepositoryImpl
 	@Override
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
 		return _faroInfoElasticsearchInvoker;
-	}
-
-	private BoolQueryBuilder _getBoolQueryBuilder(
-		List<Long> channelIds, String credentialType, List<String> names,
-		String providerType, List<String> searchNames, List<String> states,
-		Boolean url, Boolean workspaceURL) {
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		if (CollectionUtils.isNotEmpty(channelIds)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termsQuery("channelId", channelIds));
-		}
-
-		if (StringUtils.isNotEmpty(credentialType)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("credentials.type", credentialType));
-		}
-
-		if (CollectionUtils.isNotEmpty(names)) {
-			boolQueryBuilder.filter(QueryBuilders.termsQuery("name", names));
-		}
-
-		if (StringUtils.isNotEmpty(providerType)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("provider.type", providerType));
-		}
-
-		if (CollectionUtils.isNotEmpty(searchNames)) {
-			for (String searchName : searchNames) {
-				boolQueryBuilder.filter(
-					QueryBuilders.regexpQuery(
-						"name",
-						FilterStringToQueryBuilderConverter.
-							buildIgnoreCaseRegExp(searchName)));
-			}
-		}
-
-		if (CollectionUtils.isNotEmpty(states)) {
-			BoolQueryBuilder stateBoolQueryBuilder = QueryBuilders.boolQuery();
-
-			for (String state : states) {
-				stateBoolQueryBuilder.should(
-					QueryBuilders.termQuery("state", state));
-			}
-
-			boolQueryBuilder.filter(stateBoolQueryBuilder);
-		}
-
-		if ((url != null) && url) {
-			boolQueryBuilder.filter(QueryBuilders.termsQuery("url", ""));
-		}
-
-		if ((workspaceURL != null) && workspaceURL) {
-			boolQueryBuilder.filter(
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.existsQuery("workspaceURL")));
-		}
-
-		return boolQueryBuilder;
 	}
 
 	private static final Log _log = LogFactory.getLog(

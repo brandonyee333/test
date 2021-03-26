@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.backend.rest.controller.util.FilterUtil;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
@@ -123,15 +122,7 @@ public class DataSourcesRestController extends BaseRestController {
 		throws Exception {
 
 		Page<DataSource> dataSourcesPage = _dataSourceDog.getDataSourcesPage(
-			FilterUtil.getLongValues(filterString, "channelId", false),
-			FilterUtil.getString(filterString, "credentials/type"),
-			FilterUtil.getStringValues(filterString, "name", false),
-			FilterUtil.getString(filterString, "provider/type"),
-			FilterUtil.getStringValues(filterString, "name", true),
-			FilterUtil.getStringValues(filterString, "state", false),
-			FilterUtil.getBoolean(filterString, "url"),
-			FilterUtil.getBoolean(filterString, "workspaceURL"), page, size,
-			sorts);
+			filterString, page, size, sorts);
 
 		return _toPageDTO(
 			dataSourcesPage.map(
