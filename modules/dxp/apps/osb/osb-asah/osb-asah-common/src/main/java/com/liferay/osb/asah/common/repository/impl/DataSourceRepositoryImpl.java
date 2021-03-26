@@ -30,9 +30,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -60,23 +57,16 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		try {
-			return selectSelectStep.from(
-				"DataSource"
-			).where(
-				FilterStringToConditionConverter.convert(
-					filterString, _dataSourceFilterStringConverter)
-			).fetchOptional(
-				0, Long.class
-			).orElse(
-				0L
-			);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			return 0;
-		}
+		return selectSelectStep.from(
+			"DataSource"
+		).where(
+			FilterStringToConditionConverter.convert(
+				filterString, _dataSourceFilterStringConverter)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	public List<DataSource> searchDataSources(
@@ -84,29 +74,22 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		try {
-			return _populateDataSources(
-				selectSelectStep.from(
-					"DataSource"
-				).where(
-					FilterStringToConditionConverter.convert(
-						filterString, _dataSourceFilterStringConverter)
-				).orderBy(
-					getSortFields(pageable.getSort(), null)
-				).limit(
-					pageable.getPageSize()
-				).offset(
-					pageable.getOffset()
-				).fetch(
-				).map(
-					record -> new DataSource(record.intoMap())
-				));
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			return Collections.emptyList();
-		}
+		return _populateDataSources(
+			selectSelectStep.from(
+				"DataSource"
+			).where(
+				FilterStringToConditionConverter.convert(
+					filterString, _dataSourceFilterStringConverter)
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+			).map(
+				record -> new DataSource(record.intoMap())
+			));
 	}
 
 	private void _populateDataSourceOrganizations(
@@ -204,9 +187,6 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 			}
 		);
 	}
-
-	private static final Log _log = LogFactory.getLog(
-		DataSourceRepositoryImpl.class);
 
 	@Autowired
 	private DataSourceFilterStringConverterHelper

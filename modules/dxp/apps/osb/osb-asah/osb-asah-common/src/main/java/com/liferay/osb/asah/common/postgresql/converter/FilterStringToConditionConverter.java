@@ -37,14 +37,13 @@ import org.json.JSONArray;
  */
 public class FilterStringToConditionConverter {
 
-	public static Condition convert(String filterString) throws Exception {
+	public static Condition convert(String filterString) {
 		return convert(filterString, new DefaultFilterStringConverterHelper());
 	}
 
 	public static Condition convert(
-			String filterString,
-			FilterStringConverterHelper filterStringConverterHelper)
-		throws Exception {
+		String filterString,
+		FilterStringConverterHelper filterStringConverterHelper) {
 
 		if (StringUtils.isEmpty(filterString)) {
 			return DSL.noCondition();

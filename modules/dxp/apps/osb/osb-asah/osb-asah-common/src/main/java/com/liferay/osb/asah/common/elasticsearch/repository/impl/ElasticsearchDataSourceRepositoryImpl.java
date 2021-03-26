@@ -58,16 +58,9 @@ public class ElasticsearchDataSourceRepositoryImpl
 
 	@Override
 	public long countDataSources(String filterString) {
-		try {
-			return _faroInfoElasticsearchInvoker.count(
-				getCollectionName(),
-				FilterStringToQueryBuilderConverter.convert(filterString));
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			return 0;
-		}
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			FilterStringToQueryBuilderConverter.convert(filterString));
 	}
 
 	@Override

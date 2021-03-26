@@ -66,14 +66,13 @@ public class FilterStringToQueryBuilderConverter {
 		);
 	}
 
-	public static QueryBuilder convert(String filterString) throws Exception {
+	public static QueryBuilder convert(String filterString) {
 		return convert(filterString, new DefaultFilterStringConverterHelper());
 	}
 
 	public static QueryBuilder convert(
-			String filterString,
-			FilterStringConverterHelper filterStringConverterHelper)
-		throws Exception {
+		String filterString,
+		FilterStringConverterHelper filterStringConverterHelper) {
 
 		if (StringUtils.isEmpty(filterString)) {
 			return null;

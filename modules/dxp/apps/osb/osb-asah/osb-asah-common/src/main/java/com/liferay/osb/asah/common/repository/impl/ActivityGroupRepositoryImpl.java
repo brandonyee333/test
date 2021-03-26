@@ -18,20 +18,12 @@ import com.liferay.osb.asah.common.model.ActivityGroup;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
-import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -53,23 +45,16 @@ public class ActivityGroupRepositoryImpl extends BaseRepository {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		try {
-			return selectSelectStep.from(
-				"ActivityGroup"
-			).where(
-				FilterStringToConditionConverter.convert(
-					filterString, _activitiesFilterStringConverterHelper)
-			).fetchOptional(
-				0, Long.class
-			).orElse(
-				0L
-			);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			return 0;
-		}
+		return selectSelectStep.from(
+			"ActivityGroup"
+		).where(
+			FilterStringToConditionConverter.convert(
+				filterString, _activitiesFilterStringConverterHelper)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	public List<ActivityGroup> searchActivityGroups(
@@ -77,32 +62,22 @@ public class ActivityGroupRepositoryImpl extends BaseRepository {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		try {
-			return selectSelectStep.from(
-				"ActivityGroup"
-			).where(
-				FilterStringToConditionConverter.convert(
-					filterString, _activitiesFilterStringConverterHelper)
-			).orderBy(
-				getSortFields(pageable.getSort(), null)
-			).limit(
-				pageable.getPageSize()
-			).offset(
-				pageable.getOffset()
-			).fetch(
-			).map(
-				record -> new ActivityGroup(record.intoMap())
-			);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			return Collections.emptyList();
-		}
+		return selectSelectStep.from(
+			"ActivityGroup"
+		).where(
+			FilterStringToConditionConverter.convert(
+				filterString, _activitiesFilterStringConverterHelper)
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new ActivityGroup(record.intoMap())
+		);
 	}
-
-	private static final Log _log = LogFactory.getLog(
-		ActivityGroupRepositoryImpl.class);
 
 	@Autowired
 	private ActivitiesFilterStringConverterHelper

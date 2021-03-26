@@ -62,18 +62,10 @@ public class ElasticsearchActivityGroupRepositoryImpl
 
 	@Override
 	public long countActivityGroups(String filterString) {
-		try {
-			return _faroInfoElasticsearchInvoker.count(
-				getCollectionName(),
-				FilterStringToQueryBuilderConverter.convert(
-					filterString,
-					_faroInfoActivitiesFilterStringConverterHelper));
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			return 0;
-		}
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			FilterStringToQueryBuilderConverter.convert(
+				filterString, _faroInfoActivitiesFilterStringConverterHelper));
 	}
 
 	@Override
