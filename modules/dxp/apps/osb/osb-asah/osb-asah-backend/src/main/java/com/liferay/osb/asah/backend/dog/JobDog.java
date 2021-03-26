@@ -18,11 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
-import com.liferay.osb.asah.common.model.JobRun;
-import com.liferay.osb.asah.common.model.JobRunDataPeriod;
-import com.liferay.osb.asah.common.model.JobRunFrequency;
-import com.liferay.osb.asah.common.model.JobRunStatus;
-import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;
 import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.common.date.DateUtil;
@@ -33,15 +28,22 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
+import com.liferay.osb.asah.common.model.JobRun;
+import com.liferay.osb.asah.common.model.JobRunDataPeriod;
+import com.liferay.osb.asah.common.model.JobRunFrequency;
+import com.liferay.osb.asah.common.model.JobRunStatus;
+import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,19 +61,18 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.elasticsearch.index.reindex.BulkByScrollResponse;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Component;
 
@@ -139,23 +140,15 @@ public class JobDog {
 			return null;
 		}
 
-		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
-			searchSourceBuilder -> {
-				searchSourceBuilder.query(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("job.id", id)
-					).filter(
-						QueryBuilders.termQuery("trigger", "SCHEDULE")
-					));
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
-			});
+		Optional<JobRun> jobRunOptional =
+			_jobRunRepository.findFirstByJobIdAndTriggerOrderByIdDesc(
+				Long.valueOf(id), "SCHEDULE");
 
-		Date startDate = job.getLastUpdatedDate();
-
-		if (jobRun != null) {
-			startDate = jobRun.getCreatedDate();
-		}
+		Date startDate = jobRunOptional.map(
+			JobRun::getCreatedDate
+		).orElse(
+			job.getLastUpdatedDate()
+		);
 
 		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
 			jobRunFrequency.getCronExpression(), TimeZone.getTimeZone("UTC"));
@@ -171,37 +164,32 @@ public class JobDog {
 	}
 
 	public String getJobRunDateString(String id) {
-		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
-			searchSourceBuilder -> {
-				searchSourceBuilder.query(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("job.id", id)
-					).filter(
-						QueryBuilders.termQuery("status", "PUBLISHED")
-					));
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
-			});
+		Optional<JobRun> jobRunOptional =
+			_jobRunRepository.findFirstByJobIdAndJobRunStatusOrderByIdDesc(
+				Long.valueOf(id), JobRunStatus.PUBLISHED);
 
-		if (jobRun == null) {
-			return null;
-		}
-
-		return jobRun.getCompletedDateISO();
+		return jobRunOptional.map(
+			JobRun::getCompletedDate
+		).map(
+			DateUtil::toUTCString
+		).orElse(
+			null
+		);
 	}
 
-	public ResultBag<JobRun> getJobRunResultBag(
-		String jobId, int size, Sort sort, int start) {
+	public Page<JobRun> getJobRunPage(
+		String jobId, int page, int size, Sort sort) {
 
-		return _jobRunElasticsearchRepository.search(
-			QueryBuilders.termQuery("job.id", jobId), size, sort, start);
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+		return PageableExecutionUtils.getPage(
+			_jobRunRepository.findByJobId(Long.valueOf(jobId), pageRequest),
+			pageRequest,
+			() -> _jobRunRepository.countByJobId(Long.valueOf(jobId)));
 	}
 
 	public JobRunsMonthlyStatistics getJobRunsMonthlyStatistics(String id) {
-		ResultBag<JobRun> jobRunResultBag = _getCurrentMonthJobRunResultBag(
-			id, 20, Sort.desc("id"), 0);
-
-		List<JobRun> jobRuns = jobRunResultBag.getResults();
+		List<JobRun> jobRuns = _getCurrentMonthJobRunResultBag(id);
 
 		return new JobRunsMonthlyStatistics() {
 			{
@@ -225,15 +213,12 @@ public class JobDog {
 			return JobStatus.READY;
 		}
 
-		JobRun jobRun = _jobRunElasticsearchRepository.fetchFirst(
-			searchSourceBuilder -> {
-				searchSourceBuilder.query(
-					QueryBuilders.termQuery("job.id", id));
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort("id", SortOrder.DESC));
-			});
+		Optional<JobRun> jobRunOptional =
+			_jobRunRepository.findFirstByJobIdOrderByIdDesc(Long.valueOf(id));
 
-		if (jobRun != null) {
+		if (jobRunOptional.isPresent()) {
+			JobRun jobRun = jobRunOptional.get();
+
 			if (jobRun.getJobRunStatus() == JobRunStatus.FAILED) {
 				return JobStatus.FAILED;
 			}
@@ -410,16 +395,7 @@ public class JobDog {
 
 		_unscheduleAsahTask(job);
 
-		BulkByScrollResponse bulkByScrollResponse =
-			_jobRunElasticsearchRepository.deleteByQuery(
-				QueryBuilders.termQuery("job.id", job.getId()));
-
-		List<BulkItemResponse.Failure> bulkFailures =
-			bulkByScrollResponse.getBulkFailures();
-
-		if (!bulkFailures.isEmpty()) {
-			return false;
-		}
+		_jobRunRepository.deleteByJobId(Long.valueOf(id));
 
 		_recommendationDog.deleteItemRecommendationsByJobId(Long.valueOf(id));
 
@@ -439,55 +415,36 @@ public class JobDog {
 	}
 
 	private JobRun _fetchLatestJobRun(String jobId) {
-		ResultBag<JobRun> resultBag = getJobRunResultBag(
-			jobId, 1, Sort.desc("id"), 0);
+		Optional<JobRun> jobRunOptional =
+			_jobRunRepository.findFirstByJobIdOrderByIdDesc(
+				Long.valueOf(jobId));
 
-		if (resultBag.getTotal() == 0) {
-			return null;
-		}
-
-		List<JobRun> results = resultBag.getResults();
-
-		return results.get(0);
+		return jobRunOptional.orElse(null);
 	}
 
-	private ResultBag<JobRun> _getCurrentMonthJobRunResultBag(
-		String jobId, int size, Sort sort, int start) {
+	private List<JobRun> _getCurrentMonthJobRunResultBag(String jobId) {
+		LocalDateTime endLocalDateTime = LocalDateTime.now(
+			_timeZoneDog.getZoneId());
 
-		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
-			"createdDate");
+		LocalDateTime startLocalDateTime = endLocalDateTime.withDayOfMonth(1);
 
-		rangeQueryBuilder.timeZone(_timeZoneDog.getTimeZoneId());
+		startLocalDateTime = startLocalDateTime.with(LocalTime.MIDNIGHT);
 
-		rangeQueryBuilder.gte("now/M");
-		rangeQueryBuilder.lt("now");
-
-		return _jobRunElasticsearchRepository.search(
-			BoolQueryBuilderUtil.filter(
-				rangeQueryBuilder
-			).filter(
-				QueryBuilders.termQuery("job.id", jobId)
-			),
-			size, sort, start);
+		return _jobRunRepository.findByJobIdAndCreatedDateBetween(
+			Long.valueOf(jobId),
+			Date.from(startLocalDateTime.toInstant(ZoneOffset.UTC)),
+			Date.from(endLocalDateTime.toInstant(ZoneOffset.UTC)));
 	}
 
 	private boolean _hasJobRunPublished(String id) {
-		return _jobRunElasticsearchRepository.exists(
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("job.id", id)
-			).filter(
-				QueryBuilders.termsQuery("status", "PUBLISHED")
-			));
+		return _jobRunRepository.existsByJobIdAndJobRunStatus(
+			Long.valueOf(id), JobRunStatus.PUBLISHED);
 	}
 
 	@PostConstruct
 	private void _init() {
 		_jobElasticsearchRepository = new ElasticsearchRepository<>(
 			"jobs", _faroInfoElasticsearchInvoker, Job.class, _objectMapper);
-
-		_jobRunElasticsearchRepository = new ElasticsearchRepository<>(
-			"job-runs", _faroInfoElasticsearchInvoker, JobRun.class,
-			_objectMapper);
 	}
 
 	private void _rescheduleAsahTask(
@@ -539,7 +496,10 @@ public class JobDog {
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	private ElasticsearchRepository<Job> _jobElasticsearchRepository;
-	private ElasticsearchRepository<JobRun> _jobRunElasticsearchRepository;
+
+	@Autowired
+	private JobRunRepository _jobRunRepository;
+
 	private final Map<JobType, String> _jobTypeNaniteMap =
 		new HashMap<JobType, String>() {
 			{
