@@ -86,7 +86,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 
 		throw new IllegalArgumentException(
 			String.format(
-				"Invalid Dialect for %s. Please provide a valid Dialect.",
+				"Invalid dialect for %s. Please provide a valid dialect.",
 				jdbcTemplate));
 	}
 
