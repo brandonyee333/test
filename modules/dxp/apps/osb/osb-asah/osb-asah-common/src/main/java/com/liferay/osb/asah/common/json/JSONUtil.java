@@ -441,6 +441,14 @@ public class JSONUtil {
 		return values;
 	}
 
+	public static Map<String, Object> toMap(JSONObject jsonObject) {
+		if (jsonObject == null) {
+			return null;
+		}
+
+		return jsonObject.toMap();
+	}
+
 	public static Object[] toObjectArray(JSONArray jsonArray) {
 		if (jsonArray == null) {
 			return new Object[0];
