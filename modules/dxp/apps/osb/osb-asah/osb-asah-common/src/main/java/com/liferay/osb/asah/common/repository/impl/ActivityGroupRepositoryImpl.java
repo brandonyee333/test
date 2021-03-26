@@ -15,13 +15,17 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.model.ActivityGroup;
+import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
+import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import org.jooq.Condition;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -29,6 +33,7 @@ import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 
@@ -44,76 +49,64 @@ public class ActivityGroupRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countActivityGroups(
-		Long channelId, Date endDayDate, Date startDayDate, Long ownerId) {
-
+	public long countActivityGroups(String filterString) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectSelectStep.from(
-			"ActivityGroup"
-		).where(
-			_getConditions(channelId, endDayDate, startDayDate, ownerId)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
+		try {
+			return selectSelectStep.from(
+				"ActivityGroup"
+			).where(
+				FilterStringToConditionConverter.convert(
+					filterString, _activitiesFilterStringConverterHelper)
+			).fetchOptional(
+				0, Long.class
+			).orElse(
+				0L
+			);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return 0;
+		}
 	}
 
 	public List<ActivityGroup> searchActivityGroups(
-		Long channelId, Date endDayDate, Date startDayDate, Long ownerId,
-		Pageable pageable) {
+		String filterString, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"ActivityGroup"
-		).where(
-			_getConditions(channelId, endDayDate, startDayDate, ownerId)
-		).orderBy(
-			getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).map(
-			record -> new ActivityGroup(record.intoMap())
-		);
+		try {
+			return selectSelectStep.from(
+				"ActivityGroup"
+			).where(
+				FilterStringToConditionConverter.convert(
+					filterString, _activitiesFilterStringConverterHelper)
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			).fetch(
+			).map(
+				record -> new ActivityGroup(record.intoMap())
+			);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return Collections.emptyList();
+		}
 	}
 
-	private List<Condition> _getConditions(
-		Long channelId, Date endDayDate, Date startDayDate, Long ownerId) {
+	private static final Log _log = LogFactory.getLog(
+		ActivityGroupRepositoryImpl.class);
 
-		List<Condition> conditions = new ArrayList<>();
-
-		if (Objects.nonNull(channelId)) {
-			Field<Object> field = DSL.field("channelId");
-
-			conditions.add(field.eq(channelId));
-		}
-
-		if (Objects.nonNull(endDayDate)) {
-			Field<Object> field = DSL.field("dayDate");
-
-			conditions.add(field.lt(endDayDate));
-		}
-
-		if (Objects.nonNull(startDayDate)) {
-			Field<Object> field = DSL.field("dayDate");
-
-			conditions.add(field.ge(startDayDate));
-		}
-
-		if (Objects.nonNull(ownerId)) {
-			Field<Object> field = DSL.field("ownerId");
-
-			conditions.add(field.eq(ownerId));
-		}
-
-		return conditions;
-	}
+	@Autowired
+	private ActivitiesFilterStringConverterHelper
+		_activitiesFilterStringConverterHelper;
 
 	private final DSLContext _dslContext;
 

@@ -37,8 +37,7 @@ import org.springframework.stereotype.Repository;
 public interface ActivityGroupRepository
 	extends CrudRepository<ActivityGroup, Long> {
 
-	public long countActivityGroups(
-		Long channelId, Date endDayDate, Date startDayDate, Long ownerId);
+	public long countActivityGroups(String filterString);
 
 	@Modifying
 	public void deleteByChannelIdIn(@Param("channelIds") Set<Long> channelIds);
@@ -49,8 +48,7 @@ public interface ActivityGroupRepository
 			Date dayDate, String userId);
 
 	public List<ActivityGroup> searchActivityGroups(
-		Long channelId, Date endDayDate, Date startDayDate, Long ownerId,
-		Pageable pageable);
+		String filterString, Pageable pageable);
 
 	@Modifying
 	public boolean updateOwnerId(

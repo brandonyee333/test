@@ -86,17 +86,15 @@ public class ActivityGroupDog {
 	}
 
 	public Page<ActivityGroup> searchActivityGroupsPage(
-		Long channelId, Date endDayDate, Date startDayDate, Long ownerId,
-		int page, int size, String[] sorts) {
+		String filterString, int page, int size, String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_activityGroupRepository.searchActivityGroups(
-				channelId, endDayDate, startDayDate, ownerId, pageRequest),
+				filterString, pageRequest),
 			pageRequest,
-			() -> _activityGroupRepository.countActivityGroups(
-				channelId, endDayDate, startDayDate, ownerId));
+			() -> _activityGroupRepository.countActivityGroups(filterString));
 	}
 
 	public boolean updateActivityGroup(Long ownerId, String userId) {

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.controller.util.FilterUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dto.ActivityGroupDTO;
 import com.liferay.osb.asah.common.dto.PageDTO;
@@ -87,10 +86,7 @@ public class ActivityGroupsRestController extends BaseRestController {
 
 		Page<ActivityGroup> activityGroupsPage =
 			_activityGroupDog.searchActivityGroupsPage(
-				FilterUtil.getLong(filterString, "channelId"),
-				FilterUtil.getEndDate(filterString, "day"),
-				FilterUtil.getStartDate(filterString, "day"),
-				FilterUtil.getLong(filterString, "ownerId"), page, size, sorts);
+				filterString, page, size, sorts);
 
 		if (!StringUtils.isEmpty(expand)) {
 			if (activityGroupsPage.isEmpty()) {

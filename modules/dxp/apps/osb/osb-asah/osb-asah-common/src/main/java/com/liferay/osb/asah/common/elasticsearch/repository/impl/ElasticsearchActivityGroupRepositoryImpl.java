@@ -15,9 +15,10 @@
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
 import com.liferay.osb.asah.common.model.ActivityGroup;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
@@ -36,13 +37,12 @@ import java.util.stream.Stream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.script.Script;
 
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -61,12 +61,19 @@ public class ElasticsearchActivityGroupRepositoryImpl
 	implements ActivityGroupRepository {
 
 	@Override
-	public long countActivityGroups(
-		Long channelId, Date endDayDate, Date startDayDate, Long ownerId) {
+	public long countActivityGroups(String filterString) {
+		try {
+			return _faroInfoElasticsearchInvoker.count(
+				getCollectionName(),
+				FilterStringToQueryBuilderConverter.convert(
+					filterString,
+					_faroInfoActivitiesFilterStringConverterHelper));
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-		return _faroInfoElasticsearchInvoker.count(
-			getCollectionName(),
-			_getBoolQueryBuilder(channelId, endDayDate, startDayDate, ownerId));
+			return 0;
+		}
 	}
 
 	@Override
@@ -118,8 +125,7 @@ public class ElasticsearchActivityGroupRepositoryImpl
 
 	@Override
 	public List<ActivityGroup> searchActivityGroups(
-		Long channelId, Date endDayDate, Date startDayDate, Long ownerId,
-		Pageable pageable) {
+		String filterString, Pageable pageable) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =
@@ -130,8 +136,9 @@ public class ElasticsearchActivityGroupRepositoryImpl
 				_faroInfoElasticsearchInvoker);
 			collectionGetResponse.setPage(pageable.getPageNumber());
 			collectionGetResponse.setQueryBuilder(
-				_getBoolQueryBuilder(
-					channelId, endDayDate, startDayDate, ownerId));
+				FilterStringToQueryBuilderConverter.convert(
+					filterString,
+					_faroInfoActivitiesFilterStringConverterHelper));
 			collectionGetResponse.setSize(pageable.getPageSize());
 
 			List<String> sorts = new ArrayList<>();
@@ -196,47 +203,12 @@ public class ElasticsearchActivityGroupRepositoryImpl
 		return _faroInfoElasticsearchInvoker;
 	}
 
-	private BoolQueryBuilder _getBoolQueryBuilder(
-		Long channelId, Date endDayDate, Date startDayDate, Long ownerId) {
-
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-		if (Objects.nonNull(channelId)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery(
-					"channelId", String.valueOf(channelId)));
-		}
-
-		if (Objects.nonNull(endDayDate)) {
-			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
-				"day");
-
-			rangeQueryBuilder.lt(DateUtil.toUTCString(endDayDate));
-			rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
-
-			boolQueryBuilder.filter(rangeQueryBuilder);
-		}
-
-		if (Objects.nonNull(startDayDate)) {
-			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
-				"day");
-
-			rangeQueryBuilder.gte(DateUtil.toUTCString(startDayDate));
-			rangeQueryBuilder.timeZone(TimeZoneDogUtil.getTimeZoneId());
-
-			boolQueryBuilder.filter(rangeQueryBuilder);
-		}
-
-		if (Objects.nonNull(ownerId)) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("ownerId", String.valueOf(ownerId)));
-		}
-
-		return boolQueryBuilder;
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchActivityGroupRepositoryImpl.class);
+
+	@Autowired
+	private FaroInfoActivitiesFilterStringConverterHelper
+		_faroInfoActivitiesFilterStringConverterHelper;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
