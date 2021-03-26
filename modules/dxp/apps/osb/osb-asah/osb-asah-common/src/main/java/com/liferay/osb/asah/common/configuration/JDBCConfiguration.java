@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.common.configuration;
 
 import com.liferay.osb.asah.common.postgresql.PostgreSQLDataSource;
-import com.liferay.osb.asah.common.postgresql.converter.JSONObjectToStringConverter;
-import com.liferay.osb.asah.common.postgresql.converter.StringToJSONObjectConverter;
+import com.liferay.osb.asah.common.postgresql.converter.JSONObjectToPGobjectConverter;
+import com.liferay.osb.asah.common.postgresql.converter.PGobjectToJSONObjectConverter;
 
 import java.util.Arrays;
 
@@ -63,8 +63,8 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 	public JdbcCustomConversions jdbcCustomConversions() {
 		return new JdbcCustomConversions(
 			Arrays.asList(
-				new JSONObjectToStringConverter(),
-				new StringToJSONObjectConverter()));
+				new JSONObjectToPGobjectConverter(),
+				new PGobjectToJSONObjectConverter()));
 	}
 
 	@Bean

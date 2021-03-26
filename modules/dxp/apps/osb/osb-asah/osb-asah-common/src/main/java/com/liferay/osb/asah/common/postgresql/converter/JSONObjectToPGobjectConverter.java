@@ -19,17 +19,28 @@ import org.json.JSONObject;
 import org.postgresql.util.PGobject;
 
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.convert.ReadingConverter;
+import org.springframework.data.convert.WritingConverter;
 
 /**
  * @author André Miranda
  */
-@ReadingConverter
-public class StringToJSONObjectConverter
-	implements Converter<PGobject, JSONObject> {
+@WritingConverter
+public class JSONObjectToPGobjectConverter
+	implements Converter<JSONObject, PGobject> {
 
-	public JSONObject convert(PGobject pgObject) {
-		return new JSONObject(pgObject.getValue());
+	@Override
+	public PGobject convert(JSONObject jsonObject) {
+		try {
+			PGobject pgObject = new PGobject();
+
+			pgObject.setType("json");
+			pgObject.setValue(jsonObject.toString());
+
+			return pgObject;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
