@@ -52,7 +52,6 @@
 			"items": {
 				"$ref": "#/definitions/row"
 			},
-			"minItems": 1,
 			"type": "array"
 		}
 	},
