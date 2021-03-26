@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.JobDog;
-import com.liferay.osb.asah.common.model.JobRun;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.JobRun;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 
@@ -24,6 +24,7 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,11 +38,15 @@ public class JobRunBagDataFetcher implements DataFetcher<ResultBag<JobRun>> {
 	public ResultBag<JobRun> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		return _jobDog.getJobRunResultBag(
-			dataFetchingEnvironment.getArgument("jobId"),
-			dataFetchingEnvironment.getArgument("size"),
-			Sort.of(dataFetchingEnvironment.getArgument("sort")),
-			dataFetchingEnvironment.getArgument("start"));
+		int size = dataFetchingEnvironment.getArgument("size");
+		int start = dataFetchingEnvironment.getArgument("start");
+
+		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
+			dataFetchingEnvironment.getArgument("jobId"), start / size, size,
+			Sort.of(dataFetchingEnvironment.getArgument("sort")));
+
+		return new ResultBag<>(
+			jobRunPage.getContent(), jobRunPage.getTotalElements());
 	}
 
 	@Autowired
