@@ -68,9 +68,9 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		Map<Long, EventAttributeDefinition> eventAttributeDefinitionsById =
 			new LinkedHashMap<>();
 
-		Table<?> table = _getTopEventAttributeDefinitionsTable(name, pageable);
-
 		SelectSelectStep<?> select = _dslContext.select();
+
+		Table<?> table = _getTopEventAttributeDefinitionsTable(name, pageable);
 
 		Field<Object> field = DSL.field("eventAttributeDefinitionId");
 
@@ -90,26 +90,14 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 				Long id = (Long)recordMap.get("id");
 
 				EventAttributeDefinition eventAttributeDefinition =
-					eventAttributeDefinitionsById.get(id);
+					eventAttributeDefinitionsById.computeIfAbsent(
+						id,
+						eventAttributeDefinitionId ->
+							new EventAttributeDefinition(recordMap));
 
-				if (eventAttributeDefinition == null) {
-					eventAttributeDefinition = new EventAttributeDefinition(
-						recordMap);
-
-					eventAttributeDefinition.
-						addEventDefinitionEventAttributeDefinition(
-							new EventDefinitionEventAttributeDefinition(
-								recordMap));
-
-					eventAttributeDefinitionsById.put(
-						id, eventAttributeDefinition);
-				}
-				else {
-					eventAttributeDefinition.
-						addEventDefinitionEventAttributeDefinition(
-							new EventDefinitionEventAttributeDefinition(
-								recordMap));
-				}
+				eventAttributeDefinition.
+					addEventDefinitionEventAttributeDefinition(
+						new EventDefinitionEventAttributeDefinition(recordMap));
 			}
 		);
 
