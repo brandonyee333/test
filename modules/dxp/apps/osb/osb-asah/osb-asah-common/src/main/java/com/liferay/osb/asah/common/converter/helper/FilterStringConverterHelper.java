@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.converter.helper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.elasticsearch.index.query.QueryBuilder;
 
@@ -32,6 +33,8 @@ public interface FilterStringConverterHelper {
 	public QueryBuilder getCustomFunctionQueryBuilder(
 			List<String> arguments, String customFunctionName, boolean negated)
 		throws Exception;
+
+	public Map<String, String> getFieldNameConversionMap();
 
 	public Condition getInferredCondition(String fieldName);
 

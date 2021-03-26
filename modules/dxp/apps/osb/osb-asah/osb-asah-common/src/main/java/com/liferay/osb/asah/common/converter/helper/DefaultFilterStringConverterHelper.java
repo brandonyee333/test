@@ -24,7 +24,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -54,6 +56,11 @@ public class DefaultFilterStringConverterHelper
 		throws Exception {
 
 		return null;
+	}
+
+	@Override
+	public Map<String, String> getFieldNameConversionMap() {
+		return Collections.emptyMap();
 	}
 
 	@Override
