@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.model.BlockedEventDefinition;
 import com.liferay.osb.asah.common.model.EventAttribute;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
@@ -50,9 +51,8 @@ public class AnalyticsEventStorageDog {
 
 			if (eventDefinition == null) {
 				eventDefinition = _eventDefinitionDog.addEventDefinition(
-					null, null, analyticsEvent.getEventDate(),
-					eventProperties.get("url"), eventId,
-					EventDefinition.Type.CUSTOM);
+					null, null, analyticsEvent.getEventDate(), eventId,
+					EventDefinition.Type.CUSTOM, eventProperties.get("url"));
 
 				if (eventDefinition.isBlocked()) {
 					return;
@@ -60,8 +60,10 @@ public class AnalyticsEventStorageDog {
 			}
 			else if (eventDefinition.isBlocked()) {
 				_eventDefinitionDog.updateEventDefinition(
-					null, null, eventDefinition.getId(),
-					analyticsEvent.getEventDate(), eventProperties.get("url"));
+					new BlockedEventDefinition(
+						analyticsEvent.getEventDate(),
+						eventProperties.get("url")),
+					null, null, eventDefinition.getId());
 
 				return;
 			}

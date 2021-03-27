@@ -132,13 +132,17 @@ CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
 	name TEXT UNIQUE
 );
 
+CREATE TABLE IF NOT EXISTS BlockedEventDefinition (
+	eventDefinitionId BIGINT PRIMARY KEY,
+	lastSeenDate TIMESTAMPTZ,
+	lastSeenUrl TEXT
+);
+
 CREATE TABLE IF NOT EXISTS EventDefinition (
 	id BIGSERIAL PRIMARY KEY,
 	blocked BOOLEAN DEFAULT false,
 	description TEXT,
 	displayName TEXT UNIQUE,
-	lastSeenDate TIMESTAMPTZ,
-	lastSeenUrl TEXT,
 	name TEXT UNIQUE,
 	type TEXT NOT NULL
 );
@@ -191,7 +195,7 @@ CREATE TABLE IF NOT EXISTS JobParameter (
 
 CREATE TABLE IF NOT EXISTS JobRun (
 	id BIGSERIAL PRIMARY KEY,
-    completedDate TIMESTAMPTZ,
+	completedDate TIMESTAMPTZ,
 	context JSON,
 	createdDate TIMESTAMPTZ,
 	jobId BIGINT,

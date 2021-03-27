@@ -38,10 +38,9 @@ public class UpdateEventDefinitionMutationDataFetcher
 	public EventDefinitionDTO get(DataFetchingEnvironment environment) {
 		return new EventDefinitionDTO(
 			_eventDefinitionDog.updateEventDefinition(
-				environment.getArgument("description"),
+				null, environment.getArgument("description"),
 				environment.getArgument("displayName"),
-				Long.valueOf(environment.getArgument("eventDefinitionId")),
-				null, null));
+				Long.valueOf(environment.getArgument("eventDefinitionId"))));
 	}
 
 	@Autowired

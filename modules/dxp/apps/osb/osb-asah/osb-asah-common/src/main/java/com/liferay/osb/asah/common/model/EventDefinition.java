@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.model;
 
 import com.liferay.osb.asah.common.util.BeanUtils;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -24,6 +23,7 @@ import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -52,11 +52,12 @@ public class EventDefinition implements Persistable<Long> {
 		EventDefinition eventDefinition = (EventDefinition)obj;
 
 		if (Objects.equals(_blocked, eventDefinition._blocked) &&
+			Objects.equals(
+				_blockedEventDefinition,
+				eventDefinition._blockedEventDefinition) &&
 			Objects.equals(_description, eventDefinition._description) &&
 			Objects.equals(_displayName, eventDefinition._displayName) &&
 			Objects.equals(_id, eventDefinition._id) &&
-			Objects.equals(_lastSeenDate, eventDefinition._lastSeenDate) &&
-			Objects.equals(_lastSeenUrl, eventDefinition._lastSeenUrl) &&
 			Objects.equals(_name, eventDefinition._name) &&
 			Objects.equals(_type, eventDefinition._type)) {
 
@@ -64,6 +65,12 @@ public class EventDefinition implements Persistable<Long> {
 		}
 
 		return false;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@MappedCollection(idColumn = "eventdefinitionid")
+	public BlockedEventDefinition getBlockedEventDefinition() {
+		return _blockedEventDefinition;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -84,16 +91,6 @@ public class EventDefinition implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Date getLastSeenDate() {
-		return _lastSeenDate;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getLastSeenUrl() {
-		return _lastSeenUrl;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
@@ -106,7 +103,7 @@ public class EventDefinition implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_blocked, _description, _displayName, _lastSeenDate, _lastSeenUrl,
+			_blocked, _blockedEventDefinition, _description, _displayName,
 			_type, _id, _name);
 	}
 
@@ -128,6 +125,12 @@ public class EventDefinition implements Persistable<Long> {
 		_blocked = blocked;
 	}
 
+	public void setBlockedEventDefinition(
+		BlockedEventDefinition blockedEventDefinition) {
+
+		_blockedEventDefinition = blockedEventDefinition;
+	}
+
 	public void setDescription(String description) {
 		_description = description;
 	}
@@ -142,14 +145,6 @@ public class EventDefinition implements Persistable<Long> {
 
 	public void setIsNew(Boolean isNew) {
 		_isNew = isNew;
-	}
-
-	public void setLastSeenDate(Date lastSeenDate) {
-		_lastSeenDate = lastSeenDate;
-	}
-
-	public void setLastSeenUrl(String lastSeenUrl) {
-		_lastSeenUrl = lastSeenUrl;
 	}
 
 	public void setName(String name) {
@@ -170,6 +165,9 @@ public class EventDefinition implements Persistable<Long> {
 	private boolean _blocked;
 
 	@Transient
+	private BlockedEventDefinition _blockedEventDefinition;
+
+	@Transient
 	private String _description;
 
 	@Transient
@@ -180,12 +178,6 @@ public class EventDefinition implements Persistable<Long> {
 
 	@Transient
 	private Boolean _isNew;
-
-	@Transient
-	private Date _lastSeenDate;
-
-	@Transient
-	private String _lastSeenUrl;
 
 	@Transient
 	private String _name;
