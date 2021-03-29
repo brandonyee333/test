@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.dxp;
 
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.Http;
 
@@ -36,11 +36,10 @@ import org.springframework.web.client.HttpClientErrorException;
 public abstract class BaseDXPClient {
 
 	public JSONObject deleteJSONObject(
-		DataSourceDTO dataSourceDTO, String path) {
+		DataSource dataSource, String path) {
 
 		ResponseEntity<String> responseEntity = _exchangeResponseEntity(
-			dataSourceDTO.getCredentialDTO(), dataSourceDTO.getURL(), path,
-			HttpMethod.DELETE, null);
+			dataSource, path, HttpMethod.DELETE, null);
 
 		if (responseEntity.getStatusCode() == HttpStatus.NO_CONTENT) {
 			return getBodyAsJSONObject(responseEntity.getBody());
@@ -50,11 +49,10 @@ public abstract class BaseDXPClient {
 	}
 
 	public JSONObject postJSONObject(
-		DataSourceDTO dataSourceDTO, String path, Object body) {
+		DataSource dataSource, String path, Object body) {
 
 		ResponseEntity<String> responseEntity = _exchangeResponseEntity(
-			dataSourceDTO.getCredentialDTO(), dataSourceDTO.getURL(), path,
-			HttpMethod.POST, body);
+			dataSource, path, HttpMethod.POST, body);
 
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
 			return getBodyAsJSONObject(responseEntity.getBody());
@@ -72,16 +70,16 @@ public abstract class BaseDXPClient {
 	}
 
 	private ResponseEntity<String> _exchangeResponseEntity(
-		DataSourceDTO.CredentialDTO credentialDTO, String url, String path,
-		HttpMethod httpMethod, Object body) {
+		DataSource dataSource, String path, HttpMethod httpMethod,
+		Object body) {
 
-		String credentialType = credentialDTO.getCredentialType();
+		String credentialType = dataSource.getCredentialType();
 
 		if (credentialType.equals("Basic Authentication")) {
 			return _http.exchangeResponseEntity(
-				url, path, httpMethod, body,
+				dataSource.getURL(), path, httpMethod, body,
 				new BasicAuthorizationInterceptor(
-					credentialDTO.getLogin(), credentialDTO.getPassword()));
+					dataSource.getLogin(), dataSource.getPassword()));
 		}
 		else if (credentialType.equals("Token Authentication")) {
 			HttpHeaders httpHeaders = new HttpHeaders() {
@@ -96,10 +94,11 @@ public abstract class BaseDXPClient {
 				"Liferay-Analytics-Cloud-Security-Signature",
 				_encryptor.getSignature(
 					httpHeaders, path,
-					_encryptor.decrypt(url, credentialDTO.getPrivateKey())));
+					_encryptor.decrypt(
+						dataSource.getURL(), dataSource.getPrivateKey())));
 
 			return _http.exchangeResponseEntity(
-				url, path, httpMethod, body, httpHeaders);
+				dataSource.getURL(), path, httpMethod, body, httpHeaders);
 		}
 
 		return new ResponseEntity<>(HttpStatus.FORBIDDEN);

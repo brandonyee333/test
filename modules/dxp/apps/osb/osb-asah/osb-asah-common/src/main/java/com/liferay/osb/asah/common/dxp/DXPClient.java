@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.dxp;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
@@ -44,8 +43,7 @@ public class DXPClient extends BaseDXPClient {
 			"/o/segments-asah/v1.0/experiments/%s", experimentId);
 
 		return deleteJSONObject(
-			new DataSourceDTO(_dataSourceDog.getDataSource(dataSourceId)),
-			path);
+			_dataSourceDog.getDataSource(dataSourceId), path);
 	}
 
 	public JSONObject runDXPExperiment(
@@ -70,7 +68,7 @@ public class DXPClient extends BaseDXPClient {
 		);
 
 		return postJSONObject(
-			new DataSourceDTO(_dataSourceDog.getDataSource(dataSourceId)), path,
+			_dataSourceDog.getDataSource(dataSourceId), path,
 			JSONUtil.put(
 				"confidenceLevel", confidenceLevel
 			).put(
@@ -96,7 +94,7 @@ public class DXPClient extends BaseDXPClient {
 		}
 
 		return postJSONObject(
-			new DataSourceDTO(_dataSourceDog.getDataSource(dataSourceId)), path,
+			_dataSourceDog.getDataSource(dataSourceId), path,
 			bodyJSONObject);
 	}
 
