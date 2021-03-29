@@ -23,6 +23,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.common.mapper.Mapper;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +44,10 @@ public class ObjectMapperConfiguration {
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
-		for (Mapper<?, ?> mapper : _mappers) {
-			objectMapper.registerModule(mapper.getSimpleModule());
+		if (_mappers != null) {
+			for (Mapper<?, ?> mapper : _mappers) {
+				objectMapper.registerModule(mapper.getSimpleModule());
+			}
 		}
 
 		objectMapper.registerModule(new JavaTimeModule());
@@ -53,7 +57,7 @@ public class ObjectMapperConfiguration {
 		return objectMapper;
 	}
 
-	@Autowired
-	private Set<Mapper<?, ?>> _mappers;
+	@Autowired(required = false)
+	private List<Mapper<?, ?>> _mappers;
 
 }
