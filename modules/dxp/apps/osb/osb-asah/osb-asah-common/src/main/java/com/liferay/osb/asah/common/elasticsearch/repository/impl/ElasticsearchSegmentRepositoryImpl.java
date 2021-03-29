@@ -14,11 +14,13 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
+import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -29,6 +31,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,6 +43,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -112,6 +116,13 @@ public class ElasticsearchSegmentRepositoryImpl
 
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(), boolQueryBuilder);
+	}
+
+	@Override
+	public long countSegments(Long dataSourceId, String filterString) {
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(),
+			_getSegmentsQueryBuilder(dataSourceId, filterString));
 	}
 
 	@Override
@@ -464,6 +475,24 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public List<Segment> searchSegments(
+		Long dataSourceId, String filterString, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_getSegmentsQueryBuilder(
+								dataSourceId, filterString));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
+	public List<Segment> searchSegments(
 		String filter, String state, String status, Pageable pageable) {
 
 		return toList(
@@ -507,8 +536,41 @@ public class ElasticsearchSegmentRepositoryImpl
 		return _faroInfoElasticsearchInvoker;
 	}
 
+	private QueryBuilder _getSegmentsQueryBuilder(
+		Long dataSourceId, String filterString) {
+
+		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
+			filterString);
+
+		if (Objects.isNull(dataSourceId)) {
+			return queryBuilder;
+		}
+
+		List<Channel> channels = _channelDog.getChannels(
+			Long.valueOf(dataSourceId));
+
+		if (channels.isEmpty()) {
+			return queryBuilder;
+		}
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termsQuery(
+				"channelId",
+				ListUtil.map(
+					channels, channel -> String.valueOf(channel.getId()))));
+
+		if (queryBuilder == null) {
+			return boolQueryBuilder;
+		}
+
+		return boolQueryBuilder.filter(queryBuilder);
+	}
+
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchSegmentRepositoryImpl.class);
+
+	@Autowired
+	private ChannelDog _channelDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;

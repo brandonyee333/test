@@ -14,7 +14,9 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
+import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
@@ -66,6 +68,21 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public long countSegments(Long dataSourceId, String filterString) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getConditions(dataSourceId, filterString)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	public List<Segment> searchPreviewDisabledSegments(
 		Long dataSourceId, String filterString, Pageable pageable) {
 
@@ -97,6 +114,27 @@ public class SegmentRepositoryImpl extends BaseRepository {
 			"Segment"
 		).where(
 			_getConditions(dxpEntityType, segmentId, state, type)
+		).fetch(
+		).map(
+			record -> new Segment(record.intoMap())
+		);
+	}
+
+	public List<Segment> searchSegments(
+		Long dataSourceId, String filterString, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getConditions(dataSourceId, filterString)
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
 		).fetch(
 		).map(
 			record -> new Segment(record.intoMap())
@@ -148,6 +186,28 @@ public class SegmentRepositoryImpl extends BaseRepository {
 
 			conditions.add(field.eq(type.toString()));
 		}
+
+		return conditions;
+	}
+
+	private List<Condition> _getConditions(
+		Long dataSourceId, String filterString) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		List<Channel> channels = _channelDog.getChannels(dataSourceId);
+
+		if (!channels.isEmpty()) {
+			conditions.add(
+				DSL.field(
+					"channelId"
+				).in(
+					ListUtil.map(
+						channels, channel -> String.valueOf(channel.getId()))
+				));
+		}
+
+		conditions.add(FilterStringToConditionConverter.convert(filterString));
 
 		return conditions;
 	}
@@ -216,6 +276,9 @@ public class SegmentRepositoryImpl extends BaseRepository {
 
 		return conditions;
 	}
+
+	@Autowired
+	private ChannelDog _channelDog;
 
 	private final DSLContext _dslContext;
 
