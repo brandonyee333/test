@@ -12,10 +12,11 @@
  *
  */
 
-package com.liferay.osb.asah.common.mapper;
+package com.liferay.osb.asah.backend.mapper;
 
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
+import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.mapper.Mapper;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.DataSourceOrganization;
 import com.liferay.osb.asah.common.model.DataSourceSite;

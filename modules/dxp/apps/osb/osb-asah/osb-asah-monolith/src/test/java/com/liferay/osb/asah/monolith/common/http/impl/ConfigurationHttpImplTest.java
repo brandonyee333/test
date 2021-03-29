@@ -22,7 +22,7 @@ import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
-import com.liferay.osb.asah.common.mapper.DataSourceMapper;
+import com.liferay.osb.asah.backend.mapper.DataSourceMapper;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;

@@ -12,10 +12,11 @@
  *
  */
 
-package com.liferay.osb.asah.common.mapper;
+package com.liferay.osb.asah.backend.mapper;
 
-import com.liferay.osb.asah.common.dto.ChannelDTO;
+import com.liferay.osb.asah.backend.dto.ChannelDTO;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.mapper.Mapper;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
 

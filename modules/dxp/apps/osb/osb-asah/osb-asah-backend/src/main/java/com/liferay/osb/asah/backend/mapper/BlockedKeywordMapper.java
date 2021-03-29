@@ -12,9 +12,10 @@
  *
  */
 
-package com.liferay.osb.asah.common.mapper;
+package com.liferay.osb.asah.backend.mapper;
 
-import com.liferay.osb.asah.common.dto.BlockedKeywordDTO;
+import com.liferay.osb.asah.backend.dto.BlockedKeywordDTO;
+import com.liferay.osb.asah.common.mapper.Mapper;
 import com.liferay.osb.asah.common.model.BlockedKeyword;
 
 import org.json.JSONObject;
