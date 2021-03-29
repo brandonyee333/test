@@ -20,11 +20,8 @@ import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceEx
 
 import com.sforce.soap.partner.GetUserInfoResult;
 
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,13 +35,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class SalesforceUsersRestController extends BaseRestController {
 
 	@GetMapping
-	public String get(@RequestBody String json) throws Exception {
-		JSONObject dataSourceJSONObject = new JSONObject(json);
-
+	public String get(@RequestParam String dataSourceId) throws Exception {
 		GetUserInfoResult getUserInfoResult =
 			_salesforcePartnerClientInvoker.getUserInfoResult(
 				_salesforceExtractorConfigurationManagerImpl.getConfiguration(
-					dataSourceJSONObject.getString("id")));
+					dataSourceId));
 
 		return String.valueOf(
 			JSONUtil.put(

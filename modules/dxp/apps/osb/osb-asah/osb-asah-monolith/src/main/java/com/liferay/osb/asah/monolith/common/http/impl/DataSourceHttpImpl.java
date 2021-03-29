@@ -17,11 +17,8 @@ package com.liferay.osb.asah.monolith.common.http.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.http.DataSourceHttp;
-import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.AccountsRestController;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.SalesforceUsersRestController;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -45,15 +42,10 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 	}
 
 	@Override
-	public ResponseEntity<String> getSalesforceOwner(DataSource dataSource) {
+	public ResponseEntity<String> getSalesforceOwner(String id) {
 		try {
-			JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-				dataSource, JSONObject.class);
-
 			return new ResponseEntity<>(
-				_salesforceUsersRestController.get(
-					dataSourceJSONObject.toString()),
-				HttpStatus.OK);
+				_salesforceUsersRestController.get(id), HttpStatus.OK);
 		}
 		catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

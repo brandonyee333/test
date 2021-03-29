@@ -18,11 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
-import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -48,13 +45,10 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 	}
 
 	@Override
-	public ResponseEntity<String> getSalesforceOwner(DataSource dataSource) {
-		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			dataSource, JSONObject.class);
-
+	public ResponseEntity<String> getSalesforceOwner(String id) {
 		return _http.exchangeResponseEntity(
-			ServiceConstants.URL_SALESFORCE_EXTRACTOR, "/salesforce-users",
-			HttpMethod.GET, dataSourceJSONObject.toString());
+			ServiceConstants.URL_SALESFORCE_EXTRACTOR,
+			"/salesforce-users?dataSourceId=" + id, HttpMethod.GET, "");
 	}
 
 	@Override
