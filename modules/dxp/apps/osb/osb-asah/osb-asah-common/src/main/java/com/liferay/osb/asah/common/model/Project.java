@@ -75,11 +75,7 @@ public class Project implements Persistable<String> {
 	@JsonIgnore
 	@Override
 	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	public void setId(String id) {
@@ -88,8 +84,5 @@ public class Project implements Persistable<String> {
 
 	@Transient
 	private String _id;
-
-	@Transient
-	private Boolean _isNew;
 
 }
