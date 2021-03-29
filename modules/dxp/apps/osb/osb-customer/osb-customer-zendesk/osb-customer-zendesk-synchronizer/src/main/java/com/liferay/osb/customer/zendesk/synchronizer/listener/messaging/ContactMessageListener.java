@@ -17,7 +17,6 @@ package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 import com.liferay.osb.customer.admin.constants.EntitlementConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.util.AccountReader;
@@ -121,13 +120,6 @@ public class ContactMessageListener extends BaseMessageListener {
 				account.getKey());
 
 		if ((accountEntry == null) && !isPartner(account)) {
-			return;
-		}
-
-		if ((accountEntry != null) &&
-			(accountEntry.getAccountEntryId() ==
-				OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
-
 			return;
 		}
 

@@ -19,7 +19,6 @@ import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
@@ -82,16 +81,12 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		try {
 			AccountEntry oldAccountEntry = _oldAccountEntry.get();
 
-			if ((!_zendeskOrganization.get() &&
-				 !isActiveSupport(accountEntry)) ||
-				(accountEntry.getAccountEntryId() ==
-					OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
-
-				return;
-			}
-
 			Account account = _accountWebService.getAccount(
 				accountEntry.getKoroneikiAccountKey());
+
+			if (!_zendeskOrganization.get() && !isActiveSupport(accountEntry)) {
+				return;
+			}
 
 			if (isUpdateAccountEntry(oldAccountEntry, accountEntry)) {
 				_accountSynchronizer.update(account, accountEntry);

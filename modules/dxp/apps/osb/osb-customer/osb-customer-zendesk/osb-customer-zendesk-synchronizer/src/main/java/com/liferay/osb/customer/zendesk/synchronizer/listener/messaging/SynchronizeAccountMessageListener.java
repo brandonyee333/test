@@ -121,18 +121,17 @@ public class SynchronizeAccountMessageListener extends BaseMessageListener {
 			_accountEntryLocalService.fetchKoroneikiAccountEntry(
 				koroneikiAccountKey);
 
-		if (account == null) {
-			if ((accountEntry != null) &&
-				((!hasZendeskOrganization(accountEntry) &&
-				  !accountEntry.isActiveSupport()) ||
-				 (accountEntry.getAccountEntryId() ==
-					 OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID))) {
+		if ((account == null) || (accountEntry == null)) {
+			return;
+		}
 
-				_accountEntryLocalService.updateLastZendeskAuditDate(
-					OSBCustomerConstants.USER_DEFAULT_USER_ID,
-					accountEntry.getAccountEntryId(), StringPool.BLANK,
-					StringPool.BLANK);
-			}
+		if (!hasZendeskOrganization(accountEntry) &&
+			!accountEntry.isActiveSupport()) {
+
+			_accountEntryLocalService.updateLastZendeskAuditDate(
+				OSBCustomerConstants.USER_DEFAULT_USER_ID,
+				accountEntry.getAccountEntryId(), StringPool.BLANK,
+				StringPool.BLANK);
 
 			return;
 		}
