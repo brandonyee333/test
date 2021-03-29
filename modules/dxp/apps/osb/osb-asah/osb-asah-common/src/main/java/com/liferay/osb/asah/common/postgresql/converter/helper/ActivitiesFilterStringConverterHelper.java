@@ -15,9 +15,10 @@
 package com.liferay.osb.asah.common.postgresql.converter.helper;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -34,8 +35,7 @@ import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
 
-import org.json.JSONObject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -81,15 +81,10 @@ public class ActivitiesFilterStringConverterHelper
 	private Condition _getAccountIdCondition(String accountId, boolean negate)
 		throws Exception {
 
-		JSONObject individualSegmentJSONObject = _elasticsearchInvoker.fetch(
-			"individual-segments",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("name", "Account: " + accountId)
-			).filter(
-				QueryBuilders.termQuery("status", "INACTIVE")
-			));
+		Segment segment = _segmentDog.fetchSegment(
+			"Account: " + accountId, "INACTIVE");
 
-		if (individualSegmentJSONObject == null) {
+		if (segment == null) {
 			return null;
 		}
 
@@ -104,8 +99,7 @@ public class ActivitiesFilterStringConverterHelper
 			}
 		).setQueryBuilder(
 			QueryBuilders.termQuery(
-				"individualSegmentIds",
-				individualSegmentJSONObject.getString("id"))
+				"individualSegmentIds", String.valueOf(segment.getId()))
 		).iterate();
 
 		Condition condition = DSL.field(
@@ -156,5 +150,8 @@ public class ActivitiesFilterStringConverterHelper
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }
