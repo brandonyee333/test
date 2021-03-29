@@ -1,3 +1,37 @@
 Bundle-Name: Liferay Fabrica Distribution Provider gRPC
 Bundle-SymbolicName: com.liferay.fabrica.distribution.provider.grpc
 Bundle-Version: 1.0.0
+Import-Package:\
+	!com.google.protobuf.*,\
+	\
+	!com.jcraft.jzlib.*,\
+	\
+	!com.ning.compress.*,\
+	\
+	!com.oracle.svm.core.annotate.*,\
+	\
+	!io.netty.internal.tcnative.*,\
+	\
+	!lzma.sdk.*,\
+	\
+	!net.jpountz.*,\
+	\
+	!org.apache.logging.log4j.*,\
+	\
+	!org.bouncycastle.*,\
+	\
+	!org.conscrypt.*,\
+	\
+	!org.eclipse.jetty.*,\
+	\
+	!org.jboss.marshalling.*,\
+	\
+	!org.objenesis.*,\
+	\
+	!reactor.blockhound.*,\
+	\
+	!sun.nio.*,\
+	\
+	!sun.security.x509.*,\
+	\
+	*
