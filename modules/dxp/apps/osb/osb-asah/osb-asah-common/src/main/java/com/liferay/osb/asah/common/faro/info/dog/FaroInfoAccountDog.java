@@ -107,11 +107,6 @@ public class FaroInfoAccountDog extends BaseFaroInfoDog {
 
 		if (segment != null) {
 			_segmentDog.deleteSegment(segment.getId());
-
-			_asahTaskDog.scheduleAsahTask(
-				"DeleteIndividualSegmentTasksNanite",
-				JSONUtil.put(
-					"individualSegmentId", String.valueOf(segment.getId())));
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
