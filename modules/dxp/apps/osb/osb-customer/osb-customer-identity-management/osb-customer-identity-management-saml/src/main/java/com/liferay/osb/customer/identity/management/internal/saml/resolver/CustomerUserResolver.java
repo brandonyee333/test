@@ -14,22 +14,24 @@
 
 package com.liferay.osb.customer.identity.management.internal.saml.resolver;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.identity.management.internal.constants.NameIdTypeConstants;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.saml.opensaml.integration.resolver.UserResolver;
@@ -43,6 +45,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.joda.time.DateTime;
 
@@ -52,6 +56,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author William Newbury
  * @author Ryan Park
+ * @author Amos Fong
  */
 @Component(
 	immediate = true, property = "service.ranking:Integer=" + Integer.MAX_VALUE,
@@ -73,9 +78,8 @@ public class CustomerUserResolver implements UserResolver {
 				userResolverSAMLContext.resolveSubjectNameFormat();
 
 			_log.debug(
-				StringBundler.concat(
-					"Resolving user with name ID format ", subjectNameFormat,
-					" and value ", subjectNameIdentifier));
+				"Resolving user with name ID format " + subjectNameFormat +
+					" and value " + subjectNameIdentifier);
 		}
 
 		long companyId = CompanyThreadLocal.getCompanyId();
@@ -139,9 +143,8 @@ public class CustomerUserResolver implements UserResolver {
 		try {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					StringBundler.concat(
-						"Attributes mapping for ", peerEntityId, " ",
-						_USER_ATTRIBUTE_MAPPINGS));
+					"Attributes mapping for " + peerEntityId + " " +
+						_USER_ATTRIBUTE_MAPPINGS);
 			}
 
 			Properties userAttributeMappingsProperties = PropertiesUtil.load(
@@ -253,6 +256,24 @@ public class CustomerUserResolver implements UserResolver {
 		return String.valueOf(values.get(0));
 	}
 
+	protected List<String> getValueAsStringList(
+		String key, Map<String, List<Serializable>> attributesMap) {
+
+		List<Serializable> values = attributesMap.get(key);
+
+		if (ListUtil.isEmpty(values)) {
+			return null;
+		}
+
+		Stream<Serializable> stream = values.stream();
+
+		return stream.map(
+			value -> value.toString()
+		).collect(
+			Collectors.toList()
+		);
+	}
+
 	protected User importUser(
 			long companyId, String subjectNameIdentifier,
 			String subjectNameIdentifierType,
@@ -262,9 +283,8 @@ public class CustomerUserResolver implements UserResolver {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				StringBundler.concat(
-					"Importing user with identifier ", subjectNameIdentifier,
-					" of type ", subjectNameIdentifierType));
+				"Importing user with identifier " + subjectNameIdentifier +
+					" of type " + subjectNameIdentifierType);
 		}
 
 		Map<String, List<Serializable>> attributesMap = getAttributesMap(
@@ -288,6 +308,47 @@ public class CustomerUserResolver implements UserResolver {
 			}
 		}
 
+		List<String> groups = getValueAsStringList("groups", attributesMap);
+
+		if (groups != null) {
+			List<Organization> oldOrganizations = user.getOrganizations();
+
+			for (String organizationName : groups) {
+				Organization organization =
+					organizationLocalService.fetchOrganization(
+						companyId, organizationName);
+
+				if (organization == null) {
+					continue;
+				}
+
+				ExpandoBridge expandoBridge = organization.getExpandoBridge();
+
+				Boolean saml = (Boolean)expandoBridge.getAttribute(
+					"saml", false);
+
+				if ((saml != null) && saml) {
+					userLocalService.addOrganizationUser(
+						organization.getOrganizationId(), user.getUserId());
+				}
+			}
+
+			for (Organization organization : oldOrganizations) {
+				ExpandoBridge expandoBridge = organization.getExpandoBridge();
+
+				Boolean saml = (Boolean)expandoBridge.getAttribute(
+					"saml", false);
+
+				if ((saml != null) && saml &&
+					!groups.contains(organization.getName())) {
+
+					userLocalService.unsetOrganizationUsers(
+						organization.getOrganizationId(),
+						new long[] {user.getUserId()});
+				}
+			}
+		}
+
 		return user;
 	}
 
@@ -298,9 +359,8 @@ public class CustomerUserResolver implements UserResolver {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				StringBundler.concat(
-					"Updating user ", user.getUserId(), " with attributes map ",
-					MapUtil.toString(attributesMap)));
+				"Updating user " + user.getUserId() + " with attributes map " +
+					MapUtil.toString(attributesMap));
 		}
 
 		String screenName = getValueAsString(
@@ -361,6 +421,9 @@ public class CustomerUserResolver implements UserResolver {
 
 		return user;
 	}
+
+	@Reference
+	protected OrganizationLocalService organizationLocalService;
 
 	@Reference
 	protected UserLocalService userLocalService;
