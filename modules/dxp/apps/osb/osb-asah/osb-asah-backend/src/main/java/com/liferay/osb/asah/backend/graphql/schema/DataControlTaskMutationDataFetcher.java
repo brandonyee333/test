@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -27,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -51,7 +53,16 @@ public class DataControlTaskMutationDataFetcher
 			return null;
 		}
 
-		return Paths.get(_tempPathName, fileName);
+		Path path = Paths.get(_tempPathName, fileName);
+
+		path = path.normalize();
+
+		if (!path.startsWith(_tempPathName)) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST, "Invalid file name: " + fileName);
+		}
+
+		return path;
 	}
 
 	@Autowired
