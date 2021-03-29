@@ -74,7 +74,7 @@ public class ActivityGroupsRestControllerTest {
 				_activityGroupsRestController.getActivityGroupDTOsPageDTO(
 					null, null, null, 0, 20, null),
 				JSONObject.class),
-			true);
+			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_activity_groups_expand_filter.json",
@@ -85,7 +85,7 @@ public class ActivityGroupsRestControllerTest {
 					"((userId eq 'db1ed215-9ed2-46a4-90de-535604c02c65'))",
 					null, 0, 20, null),
 				JSONObject.class),
-			true);
+			false);
 	}
 
 	@Autowired

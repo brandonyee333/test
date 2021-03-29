@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualInterestScoresNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.NaniteTestConfiguration;
 import com.liferay.osb.asah.batch.curator.bot.nanite.UpdateDynamicMembershipsNanite;
@@ -22,6 +24,8 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Segment;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
@@ -179,20 +183,16 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 		String keyword = keywordJSONObject.getString("keyword");
 
-		JSONObject individualSegment1JSONObject =
-			faroInfoElasticsearchInvoker.add(
-				"individual-segments",
-				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-					"1",
-					"interests.filter(filter='(name eq ''" + keyword + "'') " +
-						"and (score eq ''false'')')"));
-		JSONObject individualSegment2JSONObject =
-			faroInfoElasticsearchInvoker.add(
-				"individual-segments",
-				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-					"1",
-					"interests.filter(filter='(name eq ''" + keyword + "'') " +
-						"and (score eq ''true'')')"));
+		Segment segment1 = _segmentRepository.save(
+			FaroInfoTestUtil.buildDynamicSegment(
+				1L,
+				"interests.filter(filter='(name eq ''" + keyword + "'') and " +
+					"(score eq ''false'')')"));
+		Segment segment2 = _segmentRepository.save(
+			FaroInfoTestUtil.buildDynamicSegment(
+				1L,
+				"interests.filter(filter='(name eq ''" + keyword + "'') and " +
+					"(score eq ''true'')')"));
 
 		faroInfoElasticsearchInvoker.add(
 			"OSBAsahMarkers",
@@ -203,26 +203,24 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			));
 
 		_updateDynamicMembershipsNanite.run(
-			_getContextJSONObject(individualSegment1JSONObject));
+			_getContextJSONObject(
+				_objectMapper.convertValue(segment1, JSONObject.class)));
 		_updateDynamicMembershipsNanite.run(
-			_getContextJSONObject(individualSegment2JSONObject));
+			_getContextJSONObject(
+				_objectMapper.convertValue(segment2, JSONObject.class)));
 
-		Long individualSegment1Id = individualSegment1JSONObject.getLong("id");
-		Long individualSegment2Id = individualSegment2JSONObject.getLong("id");
+		Long segment1Id = segment1.getId();
+		Long segment2Id = segment2.getId();
 
 		Long individualId = _individualJSONObject.getLong("id");
 
-		Assert.assertTrue(
-			_membershipDog.isMember(individualId, individualSegment1Id));
-		Assert.assertFalse(
-			_membershipDog.isMember(individualId, individualSegment2Id));
+		Assert.assertTrue(_membershipDog.isMember(individualId, segment1Id));
+		Assert.assertFalse(_membershipDog.isMember(individualId, segment2Id));
 
 		_individualInterestScoresNanite.run((JSONObject)null);
 
-		Assert.assertFalse(
-			_membershipDog.isMember(individualId, individualSegment1Id));
-		Assert.assertTrue(
-			_membershipDog.isMember(individualId, individualSegment2Id));
+		Assert.assertFalse(_membershipDog.isMember(individualId, segment1Id));
+		Assert.assertTrue(_membershipDog.isMember(individualId, segment2Id));
 	}
 
 	@Test
@@ -398,6 +396,12 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private MembershipDog _membershipDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentRepository _segmentRepository;
 
 	@Autowired
 	private UpdateDynamicMembershipsNanite _updateDynamicMembershipsNanite;

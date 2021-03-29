@@ -14,11 +14,15 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dto.SegmentDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Segment;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
@@ -27,6 +31,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import io.restassured.http.Method;
 import io.restassured.response.ValidatableResponse;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.hamcrest.Matchers;
@@ -80,39 +85,39 @@ public class IndividualSegmentsRestControllerTest
 		JSONObject userJSONObject = _dxpRawElasticsearchInvoker.add(
 			"users", JSONUtil.put("name", "userName"));
 
-		JSONObject individualSegmentJSONObject =
-			_faroInfoElasticsearchInvoker.add(
-				"individual-segments",
-				JSONUtil.put(
-					"referencedAssetIds",
-					JSONUtil.put(assetJSONObject.getString("id"))
-				).put(
-					"referencedFieldMappingIds",
-					JSONUtil.putAll(
-						accountFieldMappingJSONObject.getString("id"),
-						individualFieldMappingJSONObject.getString("id"))
-				).put(
-					"referencedGroupIds",
-					JSONUtil.put(groupJSONObject.getString("id"))
-				).put(
-					"referencedOrganizationIds",
-					JSONUtil.put(organizationJSONObject.getString("id"))
-				).put(
-					"referencedRoleIds",
-					JSONUtil.put(roleJSONObject.getString("id"))
-				).put(
-					"referencedTeamIds",
-					JSONUtil.put(teamJSONObject.getString("id"))
-				).put(
-					"referencedUserGroupIds",
-					JSONUtil.put(userGroupJSONObject.getString("id"))
-				).put(
-					"referencedUserIds",
-					JSONUtil.put(userJSONObject.getString("id"))
-				));
+		Segment segment = new Segment();
+
+		segment.setReferencedAssetIds(
+			Collections.singleton(
+				Long.valueOf(assetJSONObject.getString("id"))));
+		segment.setReferencedFieldMappingIds(
+			SetUtil.of(
+				Long.valueOf(accountFieldMappingJSONObject.getString("id")),
+				Long.valueOf(
+					individualFieldMappingJSONObject.getString("id"))));
+		segment.setReferencedGroupIds(
+			Collections.singleton(
+				Long.valueOf(groupJSONObject.getString("id"))));
+		segment.setReferencedOrganizationIds(
+			Collections.singleton(
+				Long.valueOf(organizationJSONObject.getString("id"))));
+		segment.setReferencedRoleIds(
+			Collections.singleton(
+				Long.valueOf(roleJSONObject.getString("id"))));
+		segment.setReferencedTeamIds(
+			Collections.singleton(
+				Long.valueOf(teamJSONObject.getString("id"))));
+		segment.setReferencedUserGroupIds(
+			Collections.singleton(
+				Long.valueOf(userGroupJSONObject.getString("id"))));
+		segment.setReferencedUserIds(
+			Collections.singleton(
+				Long.valueOf(userJSONObject.getString("id"))));
+
+		segment = _segmentRepository.save(segment);
 
 		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
-			individualSegmentJSONObject.getLong("id"), "referenced-objects");
+			segment.getId(), "referenced-objects");
 
 		Map<String, JSONObject> embedded = segmentDTO.getEmbedded();
 
@@ -207,12 +212,11 @@ public class IndividualSegmentsRestControllerTest
 	)
 	@Test
 	public void testGetIndividualSegmentsForDataSourceId() throws Exception {
-		String responseJSON =
-			_individualSegmentsRestController.getIndividualSegments(
-				"327968823603501234", "((individualCount ge 1))", 0, 20,
-				new String[] {"dateModified"});
-
-		JSONObject responseJSONObject = new JSONObject(responseJSON);
+		JSONObject responseJSONObject = _objectMapper.convertValue(
+			_individualSegmentsRestController.getSegmentDTOsPageDTOs(
+				327968823603501234L, "((individualCount ge 1))", 0, 20,
+				new String[] {"dateModified"}),
+			JSONObject.class);
 
 		JSONObject embeddedJSONObject = responseJSONObject.getJSONObject(
 			"_embedded");
@@ -222,11 +226,11 @@ public class IndividualSegmentsRestControllerTest
 
 		Assert.assertEquals(2, individualSegmentsJSONArray.length());
 
-		responseJSON = _individualSegmentsRestController.getIndividualSegments(
-			"331238757269547423", "((individualCount ge 1))", 0, 20,
-			new String[] {"dateModified"});
-
-		responseJSONObject = new JSONObject(responseJSON);
+		responseJSONObject = _objectMapper.convertValue(
+			_individualSegmentsRestController.getSegmentDTOsPageDTOs(
+				331238757269547423L, "((individualCount ge 1))", 0, 20,
+				new String[] {"dateModified"}),
+			JSONObject.class);
 
 		embeddedJSONObject = responseJSONObject.getJSONObject("_embedded");
 
@@ -254,5 +258,11 @@ public class IndividualSegmentsRestControllerTest
 		"com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController"
 	)
 	private IndividualSegmentsRestController _individualSegmentsRestController;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private SegmentRepository _segmentRepository;
 
 }

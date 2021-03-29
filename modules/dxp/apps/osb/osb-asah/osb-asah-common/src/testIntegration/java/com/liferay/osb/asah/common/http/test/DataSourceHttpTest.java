@@ -360,13 +360,9 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				dataSourceJSONObject.getString("id"), "givenName", "givenName",
 				"Text"));
 
-		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
-			_segmentDog.addSegment(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-						"(((demographics/givenName/value ne null)))"),
-					Segment.class)),
-			JSONObject.class);
+		Segment segment = _segmentDog.addSegment(
+			FaroInfoTestUtil.buildDynamicSegment(
+				"(((demographics/givenName/value ne null)))"));
 
 		dataSourceJSONObject.put("deletionDate", DateUtil.newDayDateString());
 
@@ -374,13 +370,12 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			_objectMapper.convertValue(dataSourceJSONObject, DataSource.class),
 			null, null);
 
-		individualSegmentJSONObject = faroInfoElasticsearchInvoker.get(
-			"individual-segments", individualSegmentJSONObject.getString("id"));
+		segment = _segmentDog.getSegment(segment.getId());
 
 		Assert.assertEquals(
 			"Individual dynamic segment with properties was not disabled " +
 				"when data source was deleted",
-			"DISABLED", individualSegmentJSONObject.getString("state"));
+			"DISABLED", segment.getState());
 	}
 
 	@Test
@@ -399,14 +394,10 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			FaroInfoTestUtil.buildPageAssetJSONObject(
 				dataSourceJSONObject.getString("id")));
 
-		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
-			_segmentDog.addSegment(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-						"activities/ever eq 'page#pageViewed#" +
-							assetJSONObject.getString("id") + "'"),
-					Segment.class)),
-			JSONObject.class);
+		Segment segment = _segmentDog.addSegment(
+			FaroInfoTestUtil.buildDynamicSegment(
+				"activities/ever eq 'page#pageViewed#" +
+					assetJSONObject.getString("id") + "'"));
 
 		dataSourceJSONObject.put("deletionDate", DateUtil.newDayDateString());
 
@@ -414,13 +405,12 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			_objectMapper.convertValue(dataSourceJSONObject, DataSource.class),
 			null, null);
 
-		individualSegmentJSONObject = faroInfoElasticsearchInvoker.get(
-			"individual-segments", individualSegmentJSONObject.getString("id"));
+		segment = _segmentDog.getSegment(segment.getId());
 
 		Assert.assertEquals(
 			"Individual dynamic segment with assets was not disabled when " +
 				"data source was deleted",
-			"DISABLED", individualSegmentJSONObject.getString("state"));
+			"DISABLED", segment.getState());
 	}
 
 	@Test

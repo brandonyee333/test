@@ -321,14 +321,13 @@ public class IndividualSegmentsRestControllerTest {
 
 	@Test
 	public void testPostIndividualSegment1() throws Exception {
-		JSONObject jsonObject =
-			FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject("");
+		Segment segment = FaroInfoTestUtil.buildDynamicSegment("");
 
-		_elasticsearchInvoker.add("individual-segments", jsonObject);
+		_segmentDog.addSegment(segment);
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.postSegment(
-				_objectMapper.convertValue(jsonObject, SegmentDTO.class)),
+				_objectMapper.convertValue(segment, SegmentDTO.class)),
 			JSONObject.class);
 
 		Assert.assertEquals(
@@ -337,15 +336,13 @@ public class IndividualSegmentsRestControllerTest {
 
 	@Test
 	public void testPostIndividualSegment2() throws Exception {
-		JSONObject jsonObject =
-			FaroInfoTestUtil.buildStaticIndividualSegmentJSONObject();
+		Segment segment = FaroInfoTestUtil.buildStaticSegment();
 
-		_segmentDog.addSegment(
-			_objectMapper.convertValue(jsonObject, Segment.class));
+		_segmentDog.addSegment(segment);
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.postSegment(
-				_objectMapper.convertValue(jsonObject, SegmentDTO.class)),
+				_objectMapper.convertValue(segment, SegmentDTO.class)),
 			JSONObject.class);
 
 		Assert.assertEquals("READY", responseJSONObject.getString("state"));
@@ -371,31 +368,31 @@ public class IndividualSegmentsRestControllerTest {
 		JSONObject dataSourceJSONObject = dataSourcesJSONArray.getJSONObject(0);
 
 		Assert.assertEquals(
-			3,
+			3L,
 			JSONUtil.getValue(
-				new JSONObject(
+				_objectMapper.convertValue(
 					_individualSegmentsRestController.
-						getPreviewDisabledSegments(
-							dataSourceJSONObject.getString("id"), null, 0, 10,
-							null)),
+						getPreviewDisabledSegmentDTOsPageDTOs(
+							Long.valueOf(dataSourceJSONObject.getString("id")),
+							null, 0, 10, null),
+					JSONObject.class),
 				"JSONObject/page", "Object/totalElements"));
 		Assert.assertEquals(
-			2,
+			2L,
 			JSONUtil.getValue(
-				new JSONObject(
+				_objectMapper.convertValue(
 					_individualSegmentsRestController.
-						getPreviewDisabledSegments(
-							dataSourceJSONObject.getString("id"),
-							"((status eq 'ACTIVE'))", 0, 10, null)),
+						getPreviewDisabledSegmentDTOsPageDTOs(
+							Long.valueOf(dataSourceJSONObject.getString("id")),
+							"((status eq 'ACTIVE'))", 0, 10, null),
+					JSONObject.class),
 				"JSONObject/page", "Object/totalElements"));
 	}
 
 	@Test
 	public void testPutIndividualSegment1() throws Exception {
 		Segment segment = _segmentDog.addSegment(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(""),
-				Segment.class));
+			FaroInfoTestUtil.buildDynamicSegment(""));
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.putIndividualSegment(
@@ -409,9 +406,7 @@ public class IndividualSegmentsRestControllerTest {
 	@Test
 	public void testPutIndividualSegment2() throws Exception {
 		Segment segment = _segmentDog.addSegment(
-			_objectMapper.convertValue(
-				FaroInfoTestUtil.buildStaticIndividualSegmentJSONObject(),
-				Segment.class));
+			FaroInfoTestUtil.buildStaticSegment());
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.putIndividualSegment(

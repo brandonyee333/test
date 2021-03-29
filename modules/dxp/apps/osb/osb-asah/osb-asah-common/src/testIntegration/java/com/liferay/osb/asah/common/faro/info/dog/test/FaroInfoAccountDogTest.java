@@ -14,12 +14,16 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -193,15 +197,13 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	private void _assertAccountIndividualSegment() {
-		JSONArray individualSegmentsJSONArray =
-			faroInfoElasticsearchInvoker.get("individual-segments");
+		List<Segment> segments = _segmentDog.getSegments(0, 1);
 
-		Assert.assertEquals(1, individualSegmentsJSONArray.length());
+		Assert.assertEquals(segments.toString(), 1, segments.size());
 
-		JSONObject individualSegmentJSONObject =
-			individualSegmentsJSONArray.getJSONObject(0);
+		Segment segment = segments.get(0);
 
-		_assertIndividualSegmentJSONObject(individualSegmentJSONObject);
+		_assertIndividualSegment(segment);
 	}
 
 	private void _assertAsahTaskIndividualSegmentContext() {
@@ -213,39 +215,32 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			Assert.assertNotNull(contextJSONObject.getString("dateModified"));
 
 			if (contextJSONObject.has("individualSegmentJSONObject")) {
-				_assertIndividualSegmentJSONObject(
-					contextJSONObject.optJSONObject(
-						"individualSegmentJSONObject"));
+				_assertIndividualSegment(
+					_objectMapper.convertValue(
+						contextJSONObject.optJSONObject(
+							"individualSegmentJSONObject"),
+						Segment.class));
 			}
 		}
 	}
 
-	private void _assertIndividualSegmentJSONObject(
-		JSONObject individualSegmentJSONObject) {
-
+	private void _assertIndividualSegment(Segment segment) {
 		JSONArray accountsJSONArray = faroInfoElasticsearchInvoker.get(
 			"accounts", QueryBuilders.termQuery("accountPK", "123"));
 
 		JSONObject accountJSONObject = accountsJSONArray.getJSONObject(0);
 
-		Assert.assertEquals(
-			0, individualSegmentJSONObject.getInt("activitiesCount"));
-		Assert.assertNotNull(
-			individualSegmentJSONObject.getString("dateCreated"));
-		Assert.assertNotNull(
-			individualSegmentJSONObject.getString("dateModified"));
+		Assert.assertTrue(segment.getActivitiesCount() == 0);
+		Assert.assertNotNull(segment.getCreateDate());
+		Assert.assertNotNull(segment.getModifiedDate());
 		Assert.assertEquals(
 			"((dataSourceAccountPKs/accountPKs eq '123'))",
-			individualSegmentJSONObject.getString("filter"));
+			segment.getFilter());
 		Assert.assertEquals(
-			"Account: " + accountJSONObject.getString("id"),
-			individualSegmentJSONObject.getString("name"));
-		Assert.assertEquals(
-			"PROJECT", individualSegmentJSONObject.getString("scope"));
-		Assert.assertEquals(
-			"DYNAMIC", individualSegmentJSONObject.getString("segmentType"));
-		Assert.assertEquals(
-			"INACTIVE", individualSegmentJSONObject.getString("status"));
+			"Account: " + accountJSONObject.getString("id"), segment.getName());
+		Assert.assertEquals("PROJECT", segment.getScope());
+		Assert.assertEquals(Segment.Type.DYNAMIC, segment.getType());
+		Assert.assertEquals("INACTIVE", segment.getStatus());
 	}
 
 	private void _assertOSBTasksContextAfterUpdate(String addFilter) {
@@ -283,6 +278,12 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	@Autowired
 	private FaroInfoAccountDog _faroInfoAccountDog;
 
+	@Autowired
+	private ObjectMapper _objectMapper;
+
 	private DataSource _salesforceDataSource;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

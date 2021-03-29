@@ -929,10 +929,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 
 		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
 			_segmentDog.addSegment(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-						filterString),
-					Segment.class)),
+				FaroInfoTestUtil.buildDynamicSegment(filterString)),
 			JSONObject.class);
 
 		_assertSameContents(
@@ -964,10 +961,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 
 		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
 			_segmentDog.addSegment(
-				_objectMapper.convertValue(
-					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-						filterString),
-					Segment.class)),
+				FaroInfoTestUtil.buildDynamicSegment(filterString)),
 			JSONObject.class);
 
 		_assertSameContents(
@@ -999,7 +993,7 @@ public class SegmentDogTest extends BaseFaroInfoDogTestCase {
 			Assert.assertTrue(
 				"Expected to find value " + value + " in JSONArray " +
 					actualValuesJSONArray,
-				JSONUtil.hasValue(actualValuesJSONArray, value));
+				JSONUtil.hasValue(actualValuesJSONArray, Long.valueOf(value)));
 		}
 	}
 

@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Date;
@@ -383,60 +384,49 @@ public class FaroInfoTestUtil {
 		);
 	}
 
-	public static JSONObject buildDynamicIndividualSegmentJSONObject(
-		String filterString) {
+	public static Segment buildDynamicSegment(
+		Long channelId, String filterString) {
 
-		String dateString = DateUtil.newDateString();
+		Segment segment = new Segment();
 
-		return JSONUtil.put(
-			"activitiesCount", 0
-		).put(
-			"channelId", RandomTestUtil.randomId()
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"filter", filterString
-		).put(
-			"individualCount", 0
-		).put(
-			"name", RandomTestUtil.randomString()
-		).put(
-			"scope", "PROJECT"
-		).put(
-			"segmentType", "DYNAMIC"
-		).put(
-			"status", "ACTIVE"
-		);
+		segment.setActiveIndividualCount(0L);
+		segment.setChannelId(channelId);
+
+		Date date = new Date();
+
+		segment.setCreateDate(date);
+
+		segment.setFilter(filterString);
+		segment.setIndividualCount(0L);
+		segment.setModifiedDate(date);
+		segment.setName(RandomTestUtil.randomString());
+		segment.setScope("PROJECT");
+		segment.setStatus("ACTIVE");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		return segment;
 	}
 
-	public static JSONObject buildDynamicIndividualSegmentJSONObject(
-		String channelId, String filterString) {
+	public static Segment buildDynamicSegment(String filterString) {
+		Segment segment = new Segment();
 
-		String dateString = DateUtil.newDateString();
+		segment.setActiveIndividualCount(0L);
+		segment.setChannelId(
+			Long.parseLong(RandomStringUtils.randomNumeric(4)));
 
-		return JSONUtil.put(
-			"activitiesCount", 0
-		).put(
-			"channelId", channelId
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"filter", filterString
-		).put(
-			"individualCount", 0
-		).put(
-			"name", RandomTestUtil.randomString()
-		).put(
-			"scope", "PROJECT"
-		).put(
-			"segmentType", "DYNAMIC"
-		).put(
-			"status", "ACTIVE"
-		);
+		Date date = new Date();
+
+		segment.setCreateDate(date);
+
+		segment.setFilter(filterString);
+		segment.setIndividualCount(0L);
+		segment.setModifiedDate(date);
+		segment.setName(RandomTestUtil.randomString());
+		segment.setScope("PROJECT");
+		segment.setStatus("ACTIVE");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		return segment;
 	}
 
 	public static JSONObject buildExperimentJSONObject(
@@ -937,26 +927,23 @@ public class FaroInfoTestUtil {
 			_getBasicCredentialsJSONObject(login, password), url);
 	}
 
-	public static JSONObject buildStaticIndividualSegmentJSONObject() {
-		String dateString = DateUtil.newDateString();
+	public static Segment buildStaticSegment() {
+		Segment segment = new Segment();
 
-		return JSONUtil.put(
-			"activitiesCount", 0
-		).put(
-			"dateCreated", dateString
-		).put(
-			"dateModified", dateString
-		).put(
-			"individualCount", 0
-		).put(
-			"name", RandomTestUtil.randomString()
-		).put(
-			"scope", "PROJECT"
-		).put(
-			"segmentType", "STATIC"
-		).put(
-			"status", "ACTIVE"
-		);
+		segment.setActiveIndividualCount(0L);
+
+		Date date = new Date();
+
+		segment.setCreateDate(date);
+
+		segment.setIndividualCount(0L);
+		segment.setModifiedDate(date);
+		segment.setName(RandomTestUtil.randomString());
+		segment.setScope("PROJECT");
+		segment.setStatus("ACTIVE");
+		segment.setType(Segment.Type.STATIC);
+
+		return segment;
 	}
 
 	public static JSONObject buildUserSessionJSONObject(

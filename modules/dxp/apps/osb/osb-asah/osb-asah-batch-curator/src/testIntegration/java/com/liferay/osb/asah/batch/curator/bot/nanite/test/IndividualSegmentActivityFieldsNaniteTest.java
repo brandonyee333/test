@@ -16,11 +16,12 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
+import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-
-import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,19 +50,19 @@ public class IndividualSegmentActivityFieldsNaniteTest
 	public void test() throws Exception {
 		_individualSegmentActivityFieldsNanite.run();
 
-		JSONObject individualSegmentJSONObject =
-			faroInfoElasticsearchInvoker.get(
-				"individual-segments", "461522890926789186");
+		Segment segment = _segmentDog.getSegment(461522890926789186L);
 
-		Assert.assertEquals(
-			6, individualSegmentJSONObject.getInt("activitiesCount"));
+		Assert.assertEquals(6, (long)segment.getActivitiesCount());
 		Assert.assertEquals(
 			"2020-12-06T17:54:23.916Z",
-			individualSegmentJSONObject.getString("lastActivityDate"));
+			DateUtil.toUTCString(segment.getLastActivityDate()));
 	}
 
 	@Autowired
 	private IndividualSegmentActivityFieldsNanite
 		_individualSegmentActivityFieldsNanite;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }

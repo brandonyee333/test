@@ -15,13 +15,15 @@
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
+import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -62,17 +64,13 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 
 		String assetId = assetJSONObject.getString("id");
 
-		JSONObject individualSegmentJSONObject =
-			FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
-				"(((activities/ever eq 'Page#pageViewed#" + assetId + "')))");
+		Segment segment = FaroInfoTestUtil.buildDynamicSegment(
+			"(((activities/ever eq 'Page#pageViewed#" + assetId + "')))");
 
-		individualSegmentJSONObject.put(
-			"referencedAssetIds", JSONUtil.put(assetId));
+		segment.setReferencedAssetIds(
+			Collections.singleton(Long.valueOf(assetId)));
 
-		faroInfoElasticsearchInvoker.add(
-			"individual-segments",
-			individualSegmentJSONObject.put(
-				"referencedAssetIds", JSONUtil.put(assetId)));
+		_segmentDog.addSegment(segment);
 
 		_faroInfoActivityDog.addActivity(
 			FaroInfoTestUtil.buildActivityJSONObject(
@@ -90,5 +88,8 @@ public class FaroInfoActivityDogTest extends BaseFaroInfoDogTestCase {
 
 	@Autowired
 	private FaroInfoActivityDog _faroInfoActivityDog;
+
+	@Autowired
+	private SegmentDog _segmentDog;
 
 }
