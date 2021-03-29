@@ -33,6 +33,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EventRepository extends CrudRepository<Event, Long> {
 
+	public long countByEventDefinitionId(long eventDefinitionId);
+
 	public List<EventAttributeValue> findDistinctAttributeValues(
 		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
 		@Param("size") int size);

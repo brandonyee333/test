@@ -40,6 +40,11 @@ public class ElasticsearchEventRepositoryImpl implements EventRepository {
 	}
 
 	@Override
+	public long countByEventDefinitionId(long eventDefinitionId) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public void delete(Event event) {
 		throw new UnsupportedOperationException();
 	}

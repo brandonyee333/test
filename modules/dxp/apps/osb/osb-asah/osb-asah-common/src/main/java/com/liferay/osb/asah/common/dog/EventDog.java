@@ -53,6 +53,14 @@ public class EventDog {
 		return _eventRepository.save(event);
 	}
 
+	public long countEvents(Long eventDefinitionId) {
+		if (eventDefinitionId != null) {
+			return _eventRepository.countByEventDefinitionId(eventDefinitionId);
+		}
+
+		return _eventRepository.count();
+	}
+
 	public List<EventAttributeValue> getRecentEventAttributeValues(
 		Long eventAttributeDefinitionId, int size) {
 
