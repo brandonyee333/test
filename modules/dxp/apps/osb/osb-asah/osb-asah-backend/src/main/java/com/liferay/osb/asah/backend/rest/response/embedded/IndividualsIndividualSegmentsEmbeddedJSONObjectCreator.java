@@ -75,8 +75,11 @@ public class IndividualsIndividualSegmentsEmbeddedJSONObjectCreator
 
 	@Override
 	public JSONObject create(String segmentId) throws Exception {
-		return _objectMapper.convertValue(
-			_segmentDog.getSegment(Long.valueOf(segmentId)), JSONObject.class);
+		return create(
+			segmentId,
+			_objectMapper.convertValue(
+				_segmentDog.getSegment(Long.valueOf(segmentId)),
+				JSONObject.class));
 	}
 
 	private Map<String, JSONObject> _getMembershipJSONObjects(
