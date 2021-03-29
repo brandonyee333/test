@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -41,6 +42,10 @@ import org.json.JSONObject;
 public class SegmentDTO {
 
 	public SegmentDTO() {
+	}
+
+	public SegmentDTO(List<Segment> segments) {
+		_segmentDTOs = SetUtil.map(segments, SegmentDTO::new);
 	}
 
 	public SegmentDTO(Segment segment) {
@@ -243,6 +248,11 @@ public class SegmentDTO {
 	@JsonProperty("scope")
 	public String getScope() {
 		return _scope;
+	}
+
+	@JsonProperty("individual-segments")
+	public Set<SegmentDTO> getSegmentDTOs() {
+		return _segmentDTOs;
 	}
 
 	@JsonProperty("state")
@@ -480,6 +490,7 @@ public class SegmentDTO {
 	private Set<String> _referencedUserGroupIds;
 	private Set<String> _referencedUserIds;
 	private String _scope;
+	private Set<SegmentDTO> _segmentDTOs;
 	private String _state;
 	private String _status;
 	private String _type;

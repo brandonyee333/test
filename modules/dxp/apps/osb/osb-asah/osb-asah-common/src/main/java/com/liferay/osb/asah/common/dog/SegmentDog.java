@@ -328,6 +328,19 @@ public class SegmentDog extends BaseFaroInfoDog {
 				dataSourceId, filterString));
 	}
 
+	public Page<Segment> searchSegmentsPage(
+		Long dataSourceId, String filterString, int page, int size,
+		String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_segmentRepository.searchSegments(
+				dataSourceId, filterString, pageRequest),
+			pageRequest,
+			() -> _segmentRepository.countSegments(dataSourceId, filterString));
+	}
+
 	@CacheEvict("getReferencedAssetIds")
 	public void setReferencedFields(Segment segment) throws Exception {
 		Map<String, Set<String>> referencedObjectIds = _getReferencedObjectIds(

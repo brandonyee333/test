@@ -23,7 +23,6 @@ import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.backend.rest.response.MembershipChangesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
-import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -31,7 +30,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.Membership;
 import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.rest.response.embedded.EmbeddedJSONObjectCreator;
@@ -103,22 +101,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			"individuals", null, page,
 			_getIndividualsQueryBuilder(
 				includeAnonymousUsers, id, filterString),
-			size, sorts);
-	}
-
-	@GetMapping(params = "!apply")
-	public String getIndividualSegments(
-			@RequestParam(required = false) String dataSourceId,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
-
-		return toCollectionGetResponse(
-			"individual-segments", null, page,
-			_getIndividualSegmentsQueryBuilder(dataSourceId, filterString),
 			size, sorts);
 	}
 
@@ -259,7 +241,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@RequestParam(required = false) String expand)
 		throws Exception {
 
-		SegmentDTO segmentDTO = new SegmentDTO(_segmentDog.getSegment(id));
+		SegmentDTO segmentDTO = new SegmentDTO(segmentDog.getSegment(id));
 
 		if (StringUtils.isNotEmpty(expand)) {
 			String[] expandParts = expand.split(",");
@@ -278,6 +260,21 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		}
 
 		return segmentDTO;
+	}
+
+	@GetMapping(params = "!apply")
+	public PageDTO<SegmentDTO> getSegmentDTOsPageDTOs(
+			@RequestParam(required = false) Long dataSourceId,
+			@RequestParam(name = "filter", required = false)
+				String filterString,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size,
+			@RequestParam(name = "sort", required = false) String[] sorts)
+		throws Exception {
+
+		return toSegmentDTOPageDTO(
+			segmentDog.searchSegmentsPage(
+				dataSourceId, filterString, page, size, sorts));
 	}
 
 	@PostMapping("/{id}/memberships")
@@ -373,6 +370,15 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			SegmentDTO.class);
 	}
 
+	protected PageDTO<SegmentDTO> toSegmentDTOPageDTO(
+		Page<Segment> segmentsPage) {
+
+		return new PageDTO<>(
+			"_embedded", new SegmentDTO(segmentsPage.getContent()),
+			segmentsPage.getNumber(), segmentsPage.getSize(),
+			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
+	}
+
 	@Autowired
 	protected MembershipDog membershipDog;
 
@@ -400,47 +406,15 @@ public class IndividualSegmentsRestController extends BaseRestController {
 					"id", ListUtil.map(referencedIds, String::valueOf))));
 	}
 
-	private QueryBuilder _getIndividualSegmentsQueryBuilder(
-			String dataSourceId, String filterString)
-		throws Exception {
-
-		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString);
-
-		if (StringUtils.isEmpty(dataSourceId)) {
-			return queryBuilder;
-		}
-
-		List<Channel> channels = _channelDog.getChannels(
-			Long.valueOf(dataSourceId));
-
-		if (channels.isEmpty()) {
-			return queryBuilder;
-		}
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termsQuery(
-				"channelId",
-				ListUtil.map(
-					channels, channel -> String.valueOf(channel.getId()))));
-
-		if (queryBuilder == null) {
-			return boolQueryBuilder;
-		}
-
-		return boolQueryBuilder.filter(queryBuilder);
-	}
-
 	private QueryBuilder _getIndividualsQueryBuilder(
-			Boolean includeAnonymousUsers, String individualSegmentId,
-			String filterString)
-		throws Exception {
+		Boolean includeAnonymousUsers, String individualSegmentId,
+		String filterString) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery(
 				"individualSegmentIds", individualSegmentId));
 
-		Segment segment = _segmentDog.getSegment(
+		Segment segment = segmentDog.getSegment(
 			Long.valueOf(individualSegmentId));
 
 		Long channelId = segment.getChannelId();
@@ -470,14 +444,13 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	private QueryBuilder _getMembershipChangesQueryBuilder(
-			String filterString, String individualSegmentId)
-		throws Exception {
+		String filterString, String individualSegmentId) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery(
 				"individualSegmentId", individualSegmentId));
 
-		Segment segment = _segmentDog.getSegment(
+		Segment segment = segmentDog.getSegment(
 			Long.valueOf(individualSegmentId));
 
 		if (!segment.getIncludeAnonymousUsers()) {
@@ -494,41 +467,36 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	}
 
 	private JSONObject _getReferencedObjectsJSONObject(Long segmentId) {
-		Segment segment = _segmentDog.getSegment(segmentId);
+		JSONObject jsonObject = new JSONObject();
 
-		try {
-			JSONObject jsonObject = new JSONObject();
+		Segment segment = segmentDog.getSegment(segmentId);
 
-			_addReferencedObject(
-				"assets", faroInfoElasticsearchInvoker,
-				segment.getReferencedAssetIds(), jsonObject);
-			_addReferencedObject(
-				"field-mappings", faroInfoElasticsearchInvoker,
-				segment.getReferencedFieldMappingIds(), jsonObject);
-			_addReferencedObject(
-				"groups", dxpRawElasticsearchInvoker,
-				segment.getReferencedGroupIds(), jsonObject);
-			_addReferencedObject(
-				"organizations", faroInfoElasticsearchInvoker,
-				segment.getReferencedOrganizationIds(), jsonObject);
-			_addReferencedObject(
-				"roles", dxpRawElasticsearchInvoker,
-				segment.getReferencedRoleIds(), jsonObject);
-			_addReferencedObject(
-				"teams", dxpRawElasticsearchInvoker,
-				segment.getReferencedTeamIds(), jsonObject);
-			_addReferencedObject(
-				"user-groups", dxpRawElasticsearchInvoker,
-				segment.getReferencedUserGroupIds(), jsonObject);
-			_addReferencedObject(
-				"users", dxpRawElasticsearchInvoker,
-				segment.getReferencedUserIds(), jsonObject);
+		_addReferencedObject(
+			"assets", faroInfoElasticsearchInvoker,
+			segment.getReferencedAssetIds(), jsonObject);
+		_addReferencedObject(
+			"field-mappings", faroInfoElasticsearchInvoker,
+			segment.getReferencedFieldMappingIds(), jsonObject);
+		_addReferencedObject(
+			"groups", dxpRawElasticsearchInvoker,
+			segment.getReferencedGroupIds(), jsonObject);
+		_addReferencedObject(
+			"organizations", faroInfoElasticsearchInvoker,
+			segment.getReferencedOrganizationIds(), jsonObject);
+		_addReferencedObject(
+			"roles", dxpRawElasticsearchInvoker, segment.getReferencedRoleIds(),
+			jsonObject);
+		_addReferencedObject(
+			"teams", dxpRawElasticsearchInvoker, segment.getReferencedTeamIds(),
+			jsonObject);
+		_addReferencedObject(
+			"user-groups", dxpRawElasticsearchInvoker,
+			segment.getReferencedUserGroupIds(), jsonObject);
+		_addReferencedObject(
+			"users", dxpRawElasticsearchInvoker, segment.getReferencedUserIds(),
+			jsonObject);
 
-			return jsonObject;
-		}
-		catch (Exception e) {
-			return null;
-		}
+		return jsonObject;
 	}
 
 	private boolean _isMember(Long individualId, Long individualSegmentId) {
@@ -560,13 +528,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		IndividualSegmentsRestController.class);
 
 	@Autowired
-	private ChannelDog _channelDog;
-
-	@Autowired
 	private FaroInfoIndividualsFilterStringConverterHelper
 		_faroInfoIndividualsFilterStringConverterHelper;
-
-	@Autowired
-	private SegmentDog _segmentDog;
 
 }
