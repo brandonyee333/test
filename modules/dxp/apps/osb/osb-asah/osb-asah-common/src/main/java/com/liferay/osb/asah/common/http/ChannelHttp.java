@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.http;
 
-
 import com.liferay.osb.asah.common.model.Channel;
 
 /**

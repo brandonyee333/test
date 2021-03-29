@@ -16,7 +16,6 @@ package com.liferay.osb.asah.monolith.common.http.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.AccountsRestController;
@@ -46,9 +45,7 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 	}
 
 	@Override
-	public ResponseEntity<String> getSalesforceOwner(
-		DataSource dataSource) {
-
+	public ResponseEntity<String> getSalesforceOwner(DataSource dataSource) {
 		try {
 			JSONObject dataSourceJSONObject = _objectMapper.convertValue(
 				dataSource, JSONObject.class);

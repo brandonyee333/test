@@ -16,10 +16,10 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.dto.FieldDTO;
 import com.liferay.osb.asah.backend.rest.controller.FieldsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.FieldDog;
-import com.liferay.osb.asah.backend.dto.FieldDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;

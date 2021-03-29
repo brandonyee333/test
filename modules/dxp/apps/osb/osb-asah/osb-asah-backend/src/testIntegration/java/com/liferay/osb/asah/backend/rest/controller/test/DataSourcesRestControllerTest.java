@@ -16,11 +16,11 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.backend.rest.controller.DataSourcesRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;

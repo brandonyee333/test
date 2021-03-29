@@ -35,9 +35,7 @@ import org.springframework.web.client.HttpClientErrorException;
  */
 public abstract class BaseDXPClient {
 
-	public JSONObject deleteJSONObject(
-		DataSource dataSource, String path) {
-
+	public JSONObject deleteJSONObject(DataSource dataSource, String path) {
 		ResponseEntity<String> responseEntity = _exchangeResponseEntity(
 			dataSource, path, HttpMethod.DELETE, null);
 

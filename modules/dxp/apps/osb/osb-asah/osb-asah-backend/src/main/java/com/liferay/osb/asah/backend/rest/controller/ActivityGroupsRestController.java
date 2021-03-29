@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.backend.dto.ActivityGroupDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;

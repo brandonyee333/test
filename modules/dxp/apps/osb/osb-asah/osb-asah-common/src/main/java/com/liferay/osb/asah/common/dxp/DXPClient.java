@@ -94,8 +94,7 @@ public class DXPClient extends BaseDXPClient {
 		}
 
 		return postJSONObject(
-			_dataSourceDog.getDataSource(dataSourceId), path,
-			bodyJSONObject);
+			_dataSourceDog.getDataSource(dataSourceId), path, bodyJSONObject);
 	}
 
 	@Autowired

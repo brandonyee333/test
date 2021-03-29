@@ -48,9 +48,7 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 	}
 
 	@Override
-	public ResponseEntity<String> getSalesforceOwner(
-		DataSource dataSource) {
-
+	public ResponseEntity<String> getSalesforceOwner(DataSource dataSource) {
 		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
 			dataSource, JSONObject.class);
 

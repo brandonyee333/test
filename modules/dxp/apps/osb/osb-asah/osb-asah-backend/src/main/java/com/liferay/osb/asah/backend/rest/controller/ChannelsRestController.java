@@ -14,12 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.dog.ChannelDog;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.backend.dto.ChannelDTO;
 import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.ChannelDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;

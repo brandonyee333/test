@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.backend.dto.DataSourceDTO;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.util.ListUtil;
 
