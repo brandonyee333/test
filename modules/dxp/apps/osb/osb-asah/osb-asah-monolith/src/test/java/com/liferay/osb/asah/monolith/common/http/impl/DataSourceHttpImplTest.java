@@ -61,8 +61,7 @@ public class DataSourceHttpImplTest {
 		ResponseEntity<String> responseEntity =
 			_dataSourceHttp.getSalesforceOwner(null);
 
-		Assert.assertEquals(
-			HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
 
 	@Test

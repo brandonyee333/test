@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.rest.response.embedded.test;
 
 import com.liferay.osb.asah.backend.rest.response.embedded.InterestsEmbeddedJSONObjectCreator;
+import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -35,7 +35,7 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
+@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 public class InterestsEmbeddedJSONObjectCreatorTest {
 
