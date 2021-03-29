@@ -18,8 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
-import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.http.ChannelHttp;
+import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
@@ -40,13 +40,13 @@ import org.springframework.stereotype.Component;
 public class ChannelHttpImpl implements ChannelHttp {
 
 	@Override
-	public void addChannel(ChannelDTO channelDTO) {
+	public void addChannel(Channel channel) {
 		_http.exchangeResponseEntity(
 			ServiceConstants.URL_FRONTEND,
 			String.format(
 				"/o/faro/asah/%s/channel", ProjectIdThreadLocal.getProjectId()),
 			HttpMethod.POST,
-			_objectMapper.convertValue(channelDTO, JSONObject.class),
+			_objectMapper.convertValue(channel, JSONObject.class),
 			_getHttpHeaders());
 	}
 

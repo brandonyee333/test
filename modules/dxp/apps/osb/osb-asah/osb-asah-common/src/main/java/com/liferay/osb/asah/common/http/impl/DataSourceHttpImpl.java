@@ -17,8 +17,8 @@ package com.liferay.osb.asah.common.http.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.spring.http.Http;
 
@@ -49,10 +49,10 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 
 	@Override
 	public ResponseEntity<String> getSalesforceOwner(
-		DataSourceDTO dataSourceDTO) {
+		DataSource dataSource) {
 
 		JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-			dataSourceDTO, JSONObject.class);
+			dataSource, JSONObject.class);
 
 		return _http.exchangeResponseEntity(
 			ServiceConstants.URL_SALESFORCE_EXTRACTOR, "/salesforce-users",

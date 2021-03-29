@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.dto.ChannelDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAssetDog;
@@ -81,7 +80,7 @@ public class ChannelDog extends BaseFaroInfoDog {
 
 		if (updateFaro) {
 			try {
-				_channelHttp.addChannel(new ChannelDTO(channel));
+				_channelHttp.addChannel(channel);
 			}
 			catch (Exception e) {
 				_log.error(e, e);

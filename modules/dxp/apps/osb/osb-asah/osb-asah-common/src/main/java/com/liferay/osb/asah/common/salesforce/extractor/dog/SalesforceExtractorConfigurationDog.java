@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.salesforce.extractor.dog;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.model.DataSource;
@@ -97,7 +96,7 @@ public class SalesforceExtractorConfigurationDog {
 
 	private JSONObject _buildOAuthOwnerJSONObject(DataSource dataSource) {
 		ResponseEntity<String> responseEntity =
-			_dataSourceHttp.getSalesforceOwner(new DataSourceDTO(dataSource));
+			_dataSourceHttp.getSalesforceOwner(dataSource);
 
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
 			return new JSONObject(responseEntity.getBody());

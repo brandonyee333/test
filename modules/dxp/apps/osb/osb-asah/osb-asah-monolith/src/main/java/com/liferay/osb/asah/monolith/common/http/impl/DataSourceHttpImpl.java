@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.AccountsRestController;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.SalesforceUsersRestController;
 
@@ -46,11 +47,11 @@ public class DataSourceHttpImpl implements DataSourceHttp {
 
 	@Override
 	public ResponseEntity<String> getSalesforceOwner(
-		DataSourceDTO dataSourceDTO) {
+		DataSource dataSource) {
 
 		try {
 			JSONObject dataSourceJSONObject = _objectMapper.convertValue(
-				dataSourceDTO, JSONObject.class);
+				dataSource, JSONObject.class);
 
 			return new ResponseEntity<>(
 				_salesforceUsersRestController.get(

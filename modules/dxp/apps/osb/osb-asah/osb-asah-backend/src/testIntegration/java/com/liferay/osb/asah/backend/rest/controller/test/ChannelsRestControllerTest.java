@@ -24,6 +24,7 @@ import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -127,7 +128,7 @@ public class ChannelsRestControllerTest {
 		).when(
 			_channelHttp
 		).addChannel(
-			Mockito.any(ChannelDTO.class)
+			Mockito.any(Channel.class)
 		);
 
 		try {
@@ -303,7 +304,7 @@ public class ChannelsRestControllerTest {
 		Mockito.verify(
 			_channelHttp, Mockito.times(2)
 		).addChannel(
-			Mockito.any(ChannelDTO.class)
+			Mockito.any(Channel.class)
 		);
 	}
 
@@ -326,7 +327,7 @@ public class ChannelsRestControllerTest {
 		Mockito.verify(
 			_channelHttp, Mockito.times(3)
 		).addChannel(
-			Mockito.any(ChannelDTO.class)
+			Mockito.any(Channel.class)
 		);
 	}
 
