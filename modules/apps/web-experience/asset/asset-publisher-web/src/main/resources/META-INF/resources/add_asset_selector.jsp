@@ -42,15 +42,18 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 				for (long groupId : groupIds) {
 					Map<String, PortletURL> addPortletURLs = AssetUtil.getAddPortletURLs(liferayPortletRequest, liferayPortletResponse, groupId, assetPublisherDisplayContext.getClassNameIds(), assetPublisherDisplayContext.getClassTypeIds(), assetPublisherDisplayContext.getAllAssetCategoryIds(), assetPublisherDisplayContext.getAllAssetTagNames(), redirectURL.toString());
-
-					if ((addPortletURLs != null) && !addPortletURLs.isEmpty()) {
-						addPortletURLsGroupIds.add(groupId);
 				%>
 
+					<c:if test="<%= (addPortletURLs != null) && !addPortletURLs.isEmpty() %>">
+
+						<%
+						addPortletURLsGroupIds.add(groupId);
+						%>
+
 						<aui:option label="<%= HtmlUtil.escape((GroupLocalServiceUtil.getGroup(groupId)).getDescriptiveName(locale)) %>" selected="<%= groupId == scopeGroupId %>" value="<%= groupId %>" />
+					</c:if>
 
 				<%
-					}
 				}
 				%>
 

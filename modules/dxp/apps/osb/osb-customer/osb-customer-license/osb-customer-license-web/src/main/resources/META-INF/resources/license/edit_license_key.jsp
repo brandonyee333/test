@@ -245,8 +245,9 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 				<aui:select label="" name="productVersion" onChange="<%= taglibOnChange %>">
 					<aui:option value="" />
 
-					<%
-					if (productEntry != null) {
+					<c:if test="<%= productEntry != null %>">
+
+						<%
 						List<ListType> productVersionTypes = productEntry.getAllLicenseVersionsListTypes();
 
 						String previousNamePrefix = StringPool.BLANK;
@@ -263,7 +264,7 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 							if (name.length() >= 3) {
 								namePrefix = name.substring(0, 3);
 							}
-					%>
+						%>
 
 							<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
 								<aui:option disabled="<%= true %>">--------</aui:option>
@@ -271,12 +272,12 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 
 							<aui:option label="<%= productVersionType.getName() %>" selected="<%= productVersionType.getListTypeId() == productVersion %>" value="<%= productVersionType.getListTypeId() %>" />
 
-					<%
+						<%
 							previousNamePrefix = namePrefix;
 						}
-					}
-					%>
+						%>
 
+					</c:if>
 				</aui:select>
 			</aui:col>
 
@@ -288,20 +289,21 @@ if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE
 				<aui:select label="" name="licenseEntryId" onChange='<%= renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productVersion.value, this.value);" %>'>
 					<aui:option value="" />
 
-					<%
-					if (productVersion > 0) {
+					<c:if test="<%= productVersion > 0 %>">
+
+						<%
 						List<LicenseEntry> licenseEntries = LicenseEntryLocalServiceUtil.getLicenseEntries(productEntryId, productVersion);
 
 						for (LicenseEntry curLicenseEntry : licenseEntries) {
-					%>
+						%>
 
 							<aui:option selected="<%= curLicenseEntry.getLicenseEntryId() == licenseEntryId %>" value="<%= curLicenseEntry.getLicenseEntryId() %>"><%= curLicenseEntry.getName() %> (<%= LanguageUtil.get(request, curLicenseEntry.getType()) %>)</aui:option>
 
-					<%
+						<%
 						}
-					}
-					%>
+						%>
 
+					</c:if>
 				</aui:select>
 			</aui:col>
 

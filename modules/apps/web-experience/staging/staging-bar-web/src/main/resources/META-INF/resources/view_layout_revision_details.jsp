@@ -240,9 +240,9 @@ else {
 						List<LayoutRevision> childLayoutRevisions = layoutRevision.getChildren();
 
 						LayoutRevision firstChildLayoutRevision = childLayoutRevisions.get(0);
-
-						if (firstChildLayoutRevision.isInactive()) {
 						%>
+
+						<c:if test="<%= firstChildLayoutRevision.isInactive() %>">
 
 						<li>
 							<a href="javascript:Liferay.fire('<%= liferayPortletResponse.getNamespace() %>redo', {layoutRevisionId: '<%= firstChildLayoutRevision.getLayoutRevisionId() %>', layoutSetBranchId: '<%= firstChildLayoutRevision.getLayoutSetBranchId() %>'}); void(0);" id="redoLink">
@@ -250,10 +250,7 @@ else {
 							</a>
 						</li>
 
-						<%
-						}
-						%>
-
+						</c:if>
 					</c:if>
 				</c:if>
 			</ul>

@@ -93,8 +93,11 @@ boolean showAssetCount = dataJSONObject.getBoolean("showAssetCount", true);
 					}
 
 					AssetCategory curAssetCategory = AssetCategoryLocalServiceUtil.fetchAssetCategory(assetCategoryId);
+				%>
 
-					if ((curAssetCategory != null) && AssetCategoryPermission.contains(permissionChecker, curAssetCategory, ActionKeys.VIEW)) {
+					<c:if test="<%= (curAssetCategory != null) && AssetCategoryPermission.contains(permissionChecker, curAssetCategory, ActionKeys.VIEW) %>">
+
+						<%
 						int popularity = (int)(1 + ((maxCount - (maxCount - (termCollector.getFrequency() - minCount))) * multiplier));
 
 						if (frequencyThreshold > termCollector.getFrequency()) {
@@ -102,7 +105,7 @@ boolean showAssetCount = dataJSONObject.getBoolean("showAssetCount", true);
 
 							continue;
 						}
-				%>
+						%>
 
 						<li class="facet-value tag-popularity-<%= popularity %>">
 							<a class="<%= fieldParam.equals(termCollector.getTerm()) ? "text-primary" : "text-default" %>" data-value="<%= HtmlUtil.escapeAttribute(String.valueOf(assetCategoryId)) %>" href="javascript:;">
@@ -113,9 +116,9 @@ boolean showAssetCount = dataJSONObject.getBoolean("showAssetCount", true);
 								</c:if>
 							</a>
 						</li>
+					</c:if>
 
 				<%
-					}
 				}
 				%>
 

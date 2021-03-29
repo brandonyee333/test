@@ -89,94 +89,92 @@ if (Validator.isNotNull(keywords)) {
 
 	<%
 	long folderId = ParamUtil.getLong(request, "folderId");
-
-	if (showBreadcrumb && !showSearchInfo) {
-		ItemSelectorRepositoryEntryBrowserUtil.addPortletBreadcrumbEntries(folderId, displayStyle, request, liferayPortletResponse, PortletURLUtil.clone(portletURL, liferayPortletResponse));
 	%>
 
-		<liferay-ui:breadcrumb
-			showCurrentGroup="<%= false %>"
-			showGuestGroup="<%= false %>"
-			showLayout="<%= false %>"
-			showParentGroups="<%= false %>"
-		/>
-
-	<%
-	}
-	else if (showSearchInfo) {
-	%>
-
-		<div class="search-info">
-			<span class="keywords">
-
-				<%
-				Folder folder = null;
-				boolean searchEverywhere = true;
-
-				String searchInfoMessage = StringPool.BLANK;
-				boolean showRerunSearchButton = true;
-
-				if (!showBreadcrumb) {
-					searchInfoMessage = LanguageUtil.format(request, "searched-for-x-in-x", new Object[] {HtmlUtil.escape(keywords), HtmlUtil.escape(tabName)}, false);
-
-					showRerunSearchButton = false;
-				}
-				else {
-					long searchFolderId = ParamUtil.getLong(request, "searchFolderId");
-
-					if (folderId > DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-						searchEverywhere = false;
-
-						folder = DLAppServiceUtil.getFolder(folderId);
-					}
-					else {
-						folderId = searchFolderId;
-					}
-
-					if ((folderId == DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) && (searchFolderId == DLFolderConstants.DEFAULT_PARENT_FOLDER_ID)) {
-						showRerunSearchButton = false;
-					}
-
-					searchInfoMessage = !searchEverywhere ? LanguageUtil.format(request, "searched-for-x-in-x", new Object[] {HtmlUtil.escape(keywords), HtmlUtil.escape(folder.getName())}, false) : LanguageUtil.format(request, "searched-for-x-everywhere", HtmlUtil.escape(keywords), false);
-				}
-				%>
-
-				<%= searchInfoMessage %>
-			</span>
-
-			<c:if test="<%= showRerunSearchButton %>">
-				<span class="change-search-folder">
-
-					<%
-					PortletURL searchURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
-
-					searchURL.setParameter("folderId", !searchEverywhere ? String.valueOf(DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) : String.valueOf(folderId));
-					searchURL.setParameter("searchFolderId", String.valueOf(folderId));
-					searchURL.setParameter("keywords", keywords);
-					%>
-
-					<aui:button href="<%= searchURL.toString() %>" value='<%= !searchEverywhere ? "search-everywhere" : "search-in-the-current-folder" %>' />
-				</span>
-			</c:if>
+	<c:choose>
+		<c:when test="<%= showBreadcrumb && !showSearchInfo %>">
 
 			<%
-			PortletURL closeSearchURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
-
-			closeSearchURL.setParameter("folderId", String.valueOf(folderId));
+			ItemSelectorRepositoryEntryBrowserUtil.addPortletBreadcrumbEntries(folderId, displayStyle, request, liferayPortletResponse, PortletURLUtil.clone(portletURL, liferayPortletResponse));
 			%>
 
-			<liferay-ui:icon
-				cssClass="close-search"
-				iconCssClass="icon-remove"
-				id="closeSearch"
-				message="remove"
-				url="<%= closeSearchURL.toString() %>"
+			<liferay-ui:breadcrumb
+				showCurrentGroup="<%= false %>"
+				showGuestGroup="<%= false %>"
+				showLayout="<%= false %>"
+				showParentGroups="<%= false %>"
 			/>
-		</div>
+		</c:when>
+		<c:when test="<%= showSearchInfo %>">
+			<div class="search-info">
+				<span class="keywords">
 
-	<%
-	}
-	%>
+					<%
+					Folder folder = null;
+					boolean searchEverywhere = true;
+
+					String searchInfoMessage = StringPool.BLANK;
+					boolean showRerunSearchButton = true;
+
+					if (!showBreadcrumb) {
+						searchInfoMessage = LanguageUtil.format(request, "searched-for-x-in-x", new Object[] {HtmlUtil.escape(keywords), HtmlUtil.escape(tabName)}, false);
+
+						showRerunSearchButton = false;
+					}
+					else {
+						long searchFolderId = ParamUtil.getLong(request, "searchFolderId");
+
+						if (folderId > DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+							searchEverywhere = false;
+
+							folder = DLAppServiceUtil.getFolder(folderId);
+						}
+						else {
+							folderId = searchFolderId;
+						}
+
+						if ((folderId == DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) && (searchFolderId == DLFolderConstants.DEFAULT_PARENT_FOLDER_ID)) {
+							showRerunSearchButton = false;
+						}
+
+						searchInfoMessage = !searchEverywhere ? LanguageUtil.format(request, "searched-for-x-in-x", new Object[] {HtmlUtil.escape(keywords), HtmlUtil.escape(folder.getName())}, false) : LanguageUtil.format(request, "searched-for-x-everywhere", HtmlUtil.escape(keywords), false);
+					}
+					%>
+
+					<%= searchInfoMessage %>
+				</span>
+
+				<c:if test="<%= showRerunSearchButton %>">
+					<span class="change-search-folder">
+
+						<%
+						PortletURL searchURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
+
+						searchURL.setParameter("folderId", !searchEverywhere ? String.valueOf(DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) : String.valueOf(folderId));
+						searchURL.setParameter("searchFolderId", String.valueOf(folderId));
+						searchURL.setParameter("keywords", keywords);
+						%>
+
+						<aui:button href="<%= searchURL.toString() %>" value='<%= !searchEverywhere ? "search-everywhere" : "search-in-the-current-folder" %>' />
+					</span>
+				</c:if>
+
+				<%
+				PortletURL closeSearchURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
+
+				closeSearchURL.setParameter("folderId", String.valueOf(folderId));
+				%>
+
+				<liferay-ui:icon
+					cssClass="close-search"
+					iconCssClass="icon-remove"
+					id="closeSearch"
+					message="remove"
+					url="<%= closeSearchURL.toString() %>"
+				/>
+			</div>
+		</c:when>
+	</c:choose>
 
 	<c:if test="<%= showDragAndDropZone && !showSearchInfo && DLFolderPermission.contains(permissionChecker, scopeGroupId, folderId, ActionKeys.ADD_DOCUMENT) %>">
 		<liferay-util:buffer
@@ -225,14 +223,17 @@ if (Validator.isNotNull(keywords)) {
 						else {
 							folder = (Folder)repositoryEntry;
 						}
+						%>
 
-						if (fileEntry != null) {
+						<c:if test="<%= fileEntry != null %>">
+
+							<%
 							FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
 
 							String title = fileEntry.getTitle();
 
 							JSONObject itemMedatadaJSONObject = ItemSelectorRepositoryEntryBrowserUtil.getItemMetadataJSONObject(fileEntry, locale);
-						%>
+							%>
 
 							<liferay-ui:search-container-column-text
 								name="title"
@@ -268,15 +269,15 @@ if (Validator.isNotNull(keywords)) {
 							>
 								<liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - fileEntry.getModifiedDate().getTime(), true), HtmlUtil.escape(fileEntry.getUserName())} %>" key="x-ago-by-x" translateArguments="<%= false %>" />
 							</liferay-ui:search-container-column-text>
+						</c:if>
 
-						<%
-						}
+						<c:if test="<%= folder != null %>">
 
-						if (folder != null) {
+							<%
 							PortletURL viewFolderURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
 
 							viewFolderURL.setParameter("folderId", String.valueOf(folder.getFolderId()));
-						%>
+							%>
 
 							<liferay-ui:search-container-column-text
 								name="title"
@@ -305,11 +306,7 @@ if (Validator.isNotNull(keywords)) {
 							>
 								<liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - folder.getModifiedDate().getTime(), true), HtmlUtil.escape(folder.getUserName())} %>" key="x-ago-by-x" translateArguments="<%= false %>" />
 							</liferay-ui:search-container-column-text>
-
-						<%
-						}
-						%>
-
+						</c:if>
 					</c:when>
 					<c:otherwise>
 
@@ -335,12 +332,15 @@ if (Validator.isNotNull(keywords)) {
 
 								<%
 								row.setCssClass("entry-card lfr-asset-folder");
+								%>
 
-								if (folder != null) {
+								<c:if test="<%= folder != null %>">
+
+									<%
 									PortletURL viewFolderURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
 
 									viewFolderURL.setParameter("folderId", String.valueOf(folder.getFolderId()));
-								%>
+									%>
 
 									<liferay-ui:search-container-column-text
 										colspan="<%= 3 %>"
@@ -357,11 +357,11 @@ if (Validator.isNotNull(keywords)) {
 											</liferay-frontend:horizontal-card-col>
 										</liferay-frontend:horizontal-card>
 									</liferay-ui:search-container-column-text>
+								</c:if>
 
-								<%
-								}
+								<c:if test="<%= fileEntry != null %>">
 
-								if (fileEntry != null) {
+									<%
 									String title = fileEntry.getTitle();
 
 									JSONObject itemMedatadaJSONObject = ItemSelectorRepositoryEntryBrowserUtil.getItemMetadataJSONObject(fileEntry, locale);
@@ -382,7 +382,7 @@ if (Validator.isNotNull(keywords)) {
 									if (dlMimeTypeDisplayContext != null) {
 										stickerCssClass = dlMimeTypeDisplayContext.getCssClassFileMimeType(fileEntry.getMimeType());
 									}
-								%>
+									%>
 
 									<liferay-ui:search-container-column-text>
 
@@ -421,16 +421,12 @@ if (Validator.isNotNull(keywords)) {
 											</c:otherwise>
 										</c:choose>
 									</liferay-ui:search-container-column-text>
-
-								<%
-								}
-								%>
-
+								</c:if>
 							</c:when>
 							<c:otherwise>
+								<c:if test="<%= folder != null %>">
 
-								<%
-								if (folder != null) {
+									<%
 									PortletURL viewFolderURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
 
 									viewFolderURL.setParameter("folderId", String.valueOf(folder.getFolderId()));
@@ -440,7 +436,7 @@ if (Validator.isNotNull(keywords)) {
 									if (PropsValues.DL_FOLDER_ICON_CHECK_COUNT && (DLAppServiceUtil.getFoldersAndFileEntriesAndFileShortcutsCount(folder.getRepositoryId(), folder.getFolderId(), WorkflowConstants.STATUS_APPROVED, true) > 0)) {
 										folderImage = "folder_full_document";
 									}
-								%>
+									%>
 
 									<liferay-ui:search-container-column-image
 										src='<%= themeDisplay.getPathThemeImages() + "/file_system/large/" + folderImage + ".png" %>'
@@ -462,17 +458,17 @@ if (Validator.isNotNull(keywords)) {
 											url="<%= viewFolderURL.toString() %>"
 										/>
 									</liferay-ui:search-container-column-text>
+								</c:if>
 
-								<%
-								}
+								<c:if test="<%= fileEntry != null %>">
 
-								if (fileEntry != null) {
+									<%
 									FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
 
 									String title = fileEntry.getTitle();
 
 									JSONObject itemMedatadaJSONObject = ItemSelectorRepositoryEntryBrowserUtil.getItemMetadataJSONObject(fileEntry, locale);
-								%>
+									%>
 
 									<liferay-ui:search-container-column-image
 										src="<%= DLUtil.getThumbnailSrc(fileEntry, themeDisplay) %>"
@@ -501,13 +497,8 @@ if (Validator.isNotNull(keywords)) {
 											/>
 										</div>
 									</liferay-ui:search-container-column-text>
-
-								<%
-								}
-								%>
-
-							</c:otherwise>
-						</c:choose>
+								</c:if>
+							</c:otherwise> </c:choose>
 					</c:otherwise>
 				</c:choose>
 			</liferay-ui:search-container-row>

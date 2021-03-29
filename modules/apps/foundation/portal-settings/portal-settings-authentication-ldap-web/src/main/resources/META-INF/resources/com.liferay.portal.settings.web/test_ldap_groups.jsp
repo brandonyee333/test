@@ -114,10 +114,9 @@ PortalLDAPUtil.getGroups(themeDisplay.getCompanyId(), ldapContext, new byte[0], 
 
 			attribute = PortalLDAPUtil.getMultivaluedAttribute(themeDisplay.getCompanyId(), ldapContext, baseDN, filter, attribute);
 		}
-
-		if (counter == 0) {
 	%>
 
+		<c:if test="<%= counter == 0 %>">
 			<tr>
 				<th>
 					#
@@ -132,10 +131,9 @@ PortalLDAPUtil.getGroups(themeDisplay.getCompanyId(), ldapContext, new byte[0], 
 					<liferay-ui:message key="members" />
 				</th>
 			</tr>
+		</c:if>
 
 		<%
-		}
-
 		counter++;
 		%>
 
@@ -156,33 +154,24 @@ PortalLDAPUtil.getGroups(themeDisplay.getCompanyId(), ldapContext, new byte[0], 
 
 	<%
 	}
-
-	if (counter == 0) {
 	%>
 
+	<c:if test="<%= counter == 0 %>">
 		<tr>
 			<td colspan="4">
 				<liferay-ui:message key="no-groups-were-found" />
 			</td>
 		</tr>
-
-	<%
-	}
-	%>
-
+	</c:if>
 </table>
 
-<%
-if (showMissingAttributeMessage) {
-%>
-
+<c:if test="<%= showMissingAttributeMessage %>">
 	<div class="alert alert-info">
 		<liferay-ui:message key="the-above-results-include-groups-which-are-missing-the-required-attributes-(group-name-and-user).-these-groups-will-not-be-imported-until-these-attributes-are-filled-in" />
 	</div>
+</c:if>
 
 <%
-}
-
 if (ldapContext != null) {
 	ldapContext.close();
 }

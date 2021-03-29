@@ -81,14 +81,13 @@ String portletResource = ParamUtil.getString(request, "portletResource");
 
 									for (LayoutDescription layoutDescription : layoutDescriptions) {
 										Layout layoutDescriptionLayout = LayoutLocalServiceUtil.fetchLayout(layoutDescription.getPlid());
-
-										if (layoutDescriptionLayout != null) {
 									%>
 
+										<c:if test="<%= layoutDescriptionLayout != null %>">
 											<aui:option label="<%= layoutDescription.getDisplayName() %>" selected="<%= layoutDescriptionLayout.getUuid().equals(linkToLayoutUuid) %>" value="<%= layoutDescriptionLayout.getUuid() %>" />
+										</c:if>
 
 									<%
-										}
 									}
 									%>
 

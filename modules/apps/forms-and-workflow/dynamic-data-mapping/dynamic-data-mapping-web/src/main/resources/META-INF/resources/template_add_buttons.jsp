@@ -99,10 +99,13 @@ String message = "add";
 					}
 				}
 			}
-
-			if (!templateHandlers.isEmpty()) {
-				ListUtil.sort(templateHandlers, new TemplateHandlerComparator(locale));
 			%>
+
+			<c:if test="<%= !templateHandlers.isEmpty() %>">
+
+				<%
+				ListUtil.sort(templateHandlers, new TemplateHandlerComparator(locale));
+				%>
 
 				<liferay-portlet:renderURL copyCurrentRenderParameters="<%= false %>" varImpl="addPortletDisplayTemplateURL">
 					<portlet:param name="mvcPath" value="/edit_template.jsp" />
@@ -122,11 +125,11 @@ String message = "add";
 						url="<%= addPortletDisplayTemplateURL.toString() %>"
 					/>
 
-			<%
+				<%
 				}
-			}
-			%>
+				%>
 
+			</c:if>
 		</c:otherwise>
 	</c:choose>
 </liferay-frontend:add-menu>

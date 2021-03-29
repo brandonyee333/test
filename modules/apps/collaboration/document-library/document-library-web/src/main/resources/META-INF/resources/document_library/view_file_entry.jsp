@@ -369,10 +369,9 @@ if (portletTitleBasedNavigation) {
 								}
 								catch (Exception e) {
 								}
-
-								if (ddmFormValues != null) {
 						%>
 
+								<c:if test="<%= ddmFormValues != null %>">
 									<liferay-ui:panel
 										collapsible="<%= true %>"
 										cssClass="lfr-asset-metadata"
@@ -391,9 +390,9 @@ if (portletTitleBasedNavigation) {
 											showEmptyFieldLabel="<%= false %>"
 										/>
 									</liferay-ui:panel>
+								</c:if>
 
 						<%
-								}
 							}
 						}
 						catch (Exception e) {

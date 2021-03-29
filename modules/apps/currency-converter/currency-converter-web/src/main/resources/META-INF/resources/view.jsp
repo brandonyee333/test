@@ -127,10 +127,9 @@ decimalFormat.setMinimumFractionDigits(2);
 										String symbol2 = symbols[j];
 
 										currencyConverter = CurrencyConverterUtil.getCurrencyConverter(symbol2 + symbol);
-
-										if (currencyConverter != null) {
 									%>
 
+										<c:if test="<%= currencyConverter != null %>">
 											<td>
 												<c:if test="<%= i != j %>">
 													<%= currencyConverter.getRate() %>
@@ -140,9 +139,9 @@ decimalFormat.setMinimumFractionDigits(2);
 													1
 												</c:if>
 											</td>
+										</c:if>
 
 									<%
-										}
 									}
 									%>
 

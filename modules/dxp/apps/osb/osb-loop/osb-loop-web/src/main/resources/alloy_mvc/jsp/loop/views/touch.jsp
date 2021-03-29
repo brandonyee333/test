@@ -14,6 +14,8 @@
  */
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
 <%@ page import="com.liferay.portal.kernel.util.StringPool" %><%@
@@ -30,8 +32,11 @@ Pattern pattern = Pattern.compile("\\/([a-zA-Z]+)Controller\\.class");
 
 for (String path : paths) {
 	Matcher matcher = pattern.matcher(path);
+%>
 
-	if (matcher.find()) {
+	<c:if test="<%= matcher.find() %>">
+
+		<%
 		String controllerName = matcher.group(1);
 
 		String[] controllerNames = controllerName.split("(?=\\p{Upper})");
@@ -41,7 +46,7 @@ for (String path : paths) {
 		}
 
 		controllerName = StringUtil.merge(controllerNames, StringPool.UNDERLINE);
-%>
+		%>
 
 		<portlet:resourceURL var="resourceURL">
 			<portlet:param name="controller" value="<%= controllerName %>" />
@@ -49,8 +54,8 @@ for (String path : paths) {
 		</portlet:resourceURL>
 
 		<iframe height="0" src="<%= resourceURL %>" style="display: none; visibility: hidden;" width="0"></iframe>
+	</c:if>
 
 <%
-	}
 }
 %>

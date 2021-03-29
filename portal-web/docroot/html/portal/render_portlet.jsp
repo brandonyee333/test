@@ -984,103 +984,110 @@ Boolean renderPortletBoundary = GetterUtil.getBoolean(request.getAttribute(WebKe
 		PortletRequestProcessor portletReqProcessor = (PortletRequestProcessor)portletCtx.getAttribute(WebKeys.PORTLET_STRUTS_PROCESSOR);
 
 		boolean addNotAjaxablePortlet = !portlet.isAjaxable() && cmd.equals("add");
-
-		if ((portletReqProcessor != null) && !addNotAjaxablePortlet) {
-			if (portletException) {
-				ActionMapping actionMapping = portletReqProcessor.processMapping(request, response, (String)portlet.getInitParams().get("view-action"));
-
-				ComponentDefinition definition = null;
-
-				if (actionMapping != null) {
-
-					// See action path /weather/view
-
-					String definitionName = actionMapping.getForward();
-
-					if (definitionName == null) {
-
-						// See action path /journal/view_articles
-
-						String[] definitionNames = actionMapping.findForwards();
-
-						for (int definitionNamesPos = 0; definitionNamesPos < definitionNames.length; definitionNamesPos++) {
-							if (definitionNames[definitionNamesPos].endsWith("view")) {
-								definitionName = definitionNames[definitionNamesPos];
-
-								break;
-							}
-						}
-
-						if (definitionName == null) {
-							definitionName = definitionNames[0];
-						}
-					}
-
-					definition = TilesUtil.getDefinition(definitionName, request, application);
-				}
-
-				String templatePath = StrutsUtil.TEXT_HTML_DIR + "/common/themes/portlet.jsp";
-
-				if (definition != null) {
-					templatePath = StrutsUtil.TEXT_HTML_DIR + definition.getPath();
-				}
-
-				request.setAttribute(WebKeys.PORTLET_CONTENT_JSP, "/portal/portlet_error.jsp");
 		%>
 
-				<liferay-util:include page="<%= templatePath %>" />
-
-			<%
-			}
-			else {
-				if (useDefaultTemplate || !portlet.isActive()) {
-					renderRequestImpl.setAttribute(WebKeys.PORTLET_CONTENT, bufferCacheServletResponse.getString());
-
-					request.setAttribute(WebKeys.PORTLET_CONTENT_JSP, StringPool.BLANK);
-			%>
-
-					<liferay-util:include page='<%= StrutsUtil.TEXT_HTML_DIR + "/common/themes/portlet.jsp" %>' />
+		<c:choose>
+			<c:when test="<%= (portletReqProcessor != null) && !addNotAjaxablePortlet %>">
+				<c:choose>
+					<c:when test="<%= portletException %>">
 
 		<%
+		ActionMapping actionMapping = portletReqProcessor.processMapping(request, response, (String)portlet.getInitParams().get("view-action"));
+
+		ComponentDefinition definition = null;
+
+		if (actionMapping != null) {
+
+			// See action path /weather/view
+
+			String definitionName = actionMapping.getForward();
+
+			if (definitionName == null) {
+
+				// See action path /journal/view_articles
+
+				String[] definitionNames = actionMapping.findForwards();
+
+				for (int definitionNamesPos = 0; definitionNamesPos < definitionNames.length; definitionNamesPos++) {
+					if (definitionNames[definitionNamesPos].endsWith("view")) {
+						definitionName = definitionNames[definitionNamesPos];
+
+						break;
+					}
 				}
-				else {
-					pageContext.getOut().write(bufferCacheServletResponse.getString());
+
+				if (definitionName == null) {
+					definitionName = definitionNames[0];
 				}
 			}
+
+			definition = TilesUtil.getDefinition(definitionName, request, application);
 		}
-		else {
+
+		String templatePath = StrutsUtil.TEXT_HTML_DIR + "/common/themes/portlet.jsp";
+
+		if (definition != null) {
+			templatePath = StrutsUtil.TEXT_HTML_DIR + definition.getPath();
+		}
+
+		request.setAttribute(WebKeys.PORTLET_CONTENT_JSP, "/portal/portlet_error.jsp");
+		%>
+
+						<liferay-util:include page="<%= templatePath %>" />
+					</c:when>
+					<c:otherwise>
+
+		<%
+		if (useDefaultTemplate || !portlet.isActive()) {
 			renderRequestImpl.setAttribute(WebKeys.PORTLET_CONTENT, bufferCacheServletResponse.getString());
 
-			String portletContentJSP = StringPool.BLANK;
-
-			if (!portlet.isReady()) {
-				portletContentJSP = "/portal/portlet_not_ready.jsp";
-			}
-
-			if (portletException) {
-				portletContentJSP = "/portal/portlet_error.jsp";
-			}
-
-			if (addNotAjaxablePortlet) {
-				portletContentJSP = "/portal/portlet_not_ajaxable.jsp";
-			}
-
-			request.setAttribute(WebKeys.PORTLET_CONTENT_JSP, portletContentJSP);
+			request.setAttribute(WebKeys.PORTLET_CONTENT_JSP, StringPool.BLANK);
 		%>
 
-			<c:choose>
-				<c:when test="<%= useDefaultTemplate || portletException || addNotAjaxablePortlet %>">
-					<liferay-util:include page='<%= StrutsUtil.TEXT_HTML_DIR + "/common/themes/portlet.jsp" %>' />
-				</c:when>
-				<c:otherwise>
-					<%= renderRequestImpl.getAttribute(WebKeys.PORTLET_CONTENT) %>
-				</c:otherwise>
-			</c:choose>
+							<liferay-util:include page='<%= StrutsUtil.TEXT_HTML_DIR + "/common/themes/portlet.jsp" %>' />
 
-		<%
-		}
-		%>
+						<%
+						}
+						else {
+							pageContext.getOut().write(bufferCacheServletResponse.getString());
+						}
+						%>
 
+					</c:otherwise>
+				</c:choose>
+			</c:when>
+			<c:otherwise>
+
+				<%
+				renderRequestImpl.setAttribute(WebKeys.PORTLET_CONTENT, bufferCacheServletResponse.getString());
+
+				String portletContentJSP = StringPool.BLANK;
+
+				if (!portlet.isReady()) {
+					portletContentJSP = "/portal/portlet_not_ready.jsp";
+				}
+
+				if (portletException) {
+					portletContentJSP = "/portal/portlet_error.jsp";
+				}
+
+				if (addNotAjaxablePortlet) {
+					portletContentJSP = "/portal/portlet_not_ajaxable.jsp";
+				}
+
+				request.setAttribute(WebKeys.PORTLET_CONTENT_JSP, portletContentJSP);
+				%>
+
+				<c:choose>
+					<c:when test="<%= useDefaultTemplate || portletException || addNotAjaxablePortlet %>">
+						<liferay-util:include page='<%= StrutsUtil.TEXT_HTML_DIR + "/common/themes/portlet.jsp" %>' />
+					</c:when>
+					<c:otherwise>
+						<%= renderRequestImpl.getAttribute(WebKeys.PORTLET_CONTENT) %>
+					</c:otherwise>
+				</c:choose>
+			</c:otherwise>
+		</c:choose>
 	</c:otherwise>
 </c:choose>
 
@@ -1123,17 +1130,21 @@ else {
 	</div>
 </c:if>
 
-<%
-if (themeDisplay.isStatePopUp()) {
-	String refreshPortletId = null;
+<c:if test="<%= themeDisplay.isStatePopUp() %>">
 
-	if ((refreshPortletId = (String)SessionMessages.get(renderRequestImpl, portletId + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET)) != null) {
+	<%
+	String refreshPortletId = null;
+	%>
+
+	<c:if test="<%= (refreshPortletId = (String)SessionMessages.get(renderRequestImpl, portletId + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET)) != null %>">
+
+		<%
 		if (Validator.isNull(refreshPortletId) && (portletResourcePortlet != null)) {
 			refreshPortletId = portletResourcePortlet.getPortletId();
 		}
 
 		Map<String, String> refreshPortletData = (Map<String, String>)SessionMessages.get(renderRequestImpl, portletId + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET_DATA);
-%>
+		%>
 
 		<aui:script position="inline" use="aui-base">
 			if (window.parent) {
@@ -1159,15 +1170,13 @@ if (themeDisplay.isStatePopUp()) {
 				Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= HtmlUtil.escapeJS(refreshPortletId) %>_', data);
 			}
 		</aui:script>
+	</c:if>
 
 	<%
-	}
-
 	String closeRedirect = null;
-
-	if ((closeRedirect = (String)SessionMessages.get(renderRequestImpl, portletId + SessionMessages.KEY_SUFFIX_CLOSE_REDIRECT)) != null) {
 	%>
 
+	<c:if test="<%= (closeRedirect = (String)SessionMessages.get(renderRequestImpl, portletId + SessionMessages.KEY_SUFFIX_CLOSE_REDIRECT)) != null %>">
 		<aui:script use="aui-base">
 			var dialog = Liferay.Util.getWindow();
 
@@ -1202,15 +1211,17 @@ if (themeDisplay.isStatePopUp()) {
 				}
 			);
 		</aui:script>
+	</c:if>
 
 	<%
-	}
-
 	String closeRefreshPortletId = null;
-
-	if ((closeRefreshPortletId = (String)SessionMessages.get(renderRequestImpl, portletId + SessionMessages.KEY_SUFFIX_CLOSE_REFRESH_PORTLET)) != null) {
-		Map<String, String> refreshPortletData = (Map<String, String>)SessionMessages.get(renderRequestImpl, portletId + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET_DATA);
 	%>
+
+	<c:if test="<%= (closeRefreshPortletId = (String)SessionMessages.get(renderRequestImpl, portletId + SessionMessages.KEY_SUFFIX_CLOSE_REFRESH_PORTLET)) != null %>">
+
+		<%
+		Map<String, String> refreshPortletData = (Map<String, String>)SessionMessages.get(renderRequestImpl, portletId + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET_DATA);
+		%>
 
 		<aui:script use="aui-base">
 			var dialog = Liferay.Util.getWindow();
@@ -1254,11 +1265,10 @@ if (themeDisplay.isStatePopUp()) {
 				}
 			);
 		</aui:script>
+	</c:if>
+</c:if>
 
 <%
-	}
-}
-
 if (showPortletCssIcon) {
 	themeDisplay.setIncludePortletCssJs(true);
 }

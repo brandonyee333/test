@@ -451,15 +451,15 @@ if (message.isAnonymous()) {
 					List<FileEntry> attachmentsFileEntries = message.getAttachmentsFileEntries();
 
 					for (FileEntry fileEntry : attachmentsFileEntries) {
-						if (MimeTypesUtil.isWebImage(fileEntry.getMimeType())) {
 					%>
 
+						<c:if test="<%= MimeTypesUtil.isWebImage(fileEntry.getMimeType()) %>">
 							<p>
 								<img alt="<liferay-ui:message escapeAttribute="<%= true %>" key="attachment" />" class="crop-img" src="<%= PortletFileRepositoryUtil.getPortletFileEntryURL(themeDisplay, fileEntry, StringPool.BLANK) %>" />
 							</p>
+						</c:if>
 
 					<%
-						}
 					}
 					%>
 

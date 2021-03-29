@@ -34,14 +34,13 @@ if (selLayout != null) {
 
 	for (LayoutDescription layoutDescription : layoutDescriptions) {
 		Layout layoutDescriptionLayout = LayoutLocalServiceUtil.fetchLayout(layoutDescription.getPlid());
-
-		if (layoutDescriptionLayout != null) {
 	%>
 
+		<c:if test="<%= layoutDescriptionLayout != null %>">
 			<aui:option disabled="<%= (selLayout != null) && (selLayout.getPlid() == layoutDescriptionLayout.getPlid()) %>" label="<%= layoutDescription.getDisplayName() %>" selected="<%= linkToLayoutId == layoutDescriptionLayout.getLayoutId() %>" value="<%= layoutDescriptionLayout.getLayoutId() %>" />
+		</c:if>
 
 	<%
-		}
 	}
 	%>
 

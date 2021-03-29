@@ -203,9 +203,9 @@ iteratorURL.setParameter("mbThreadId", String.valueOf(mbThreadId));
 						List<FileEntry> attachmentsFileEntries = mbMessage.getAttachmentsFileEntries();
 
 						for (FileEntry fileEntry : attachmentsFileEntries) {
-							if (MimeTypesUtil.isWebImage(fileEntry.getMimeType())) {
 						%>
 
+							<c:if test="<%= MimeTypesUtil.isWebImage(fileEntry.getMimeType()) %>">
 								<liferay-portlet:resourceURL id="getMessageAttachment" var="imageURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
 									<portlet:param name="messageId" value="<%= String.valueOf(mbMessage.getMessageId()) %>" />
 									<portlet:param name="attachment" value="<%= fileEntry.getTitle() %>" />
@@ -216,9 +216,9 @@ iteratorURL.setParameter("mbThreadId", String.valueOf(mbThreadId));
 										<img alt="<liferay-ui:message escapeAttribute="<%= true %>" key="attachment" />" class="img-thumbnail" src="<%= imageURL %>" />
 									</a>
 								</div>
+							</c:if>
 
 						<%
-							}
 						}
 						%>
 

@@ -127,17 +127,20 @@ int weekNumber = 1;
 		}
 
 		for (int i = 1; i <= maxDayOfMonth; i++) {
-			if (dayOfWeek > 7) {
 		%>
 
+			<c:if test="<%= dayOfWeek > 7 %>">
 				</tr>
 				<tr>
 
-			<%
+				<%
 				dayOfWeek = 1;
 				weekNumber++;
-			}
+				%>
 
+			</c:if>
+
+			<%
 			Calendar tempCal = (Calendar)selCal.clone();
 
 			tempCal.set(Calendar.MONTH, selMonth);
@@ -190,10 +193,9 @@ int weekNumber = 1;
 
 		<%
 		}
-
-		if (showAllPotentialWeeks && (weekNumber < 6)) {
 		%>
 
+		<c:if test="<%= showAllPotentialWeeks && (weekNumber < 6) %>">
 			<tr>
 
 				<%
@@ -215,11 +217,7 @@ int weekNumber = 1;
 				%>
 
 			</tr>
-
-		<%
-		}
-		%>
-
+		</c:if>
 	</tr>
 	</tbody>
 	</table>

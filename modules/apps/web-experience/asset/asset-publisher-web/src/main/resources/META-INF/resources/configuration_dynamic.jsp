@@ -307,8 +307,11 @@ String selectStyle = (String)request.getAttribute("configuration.jsp-selectStyle
 
 									String tagNames = ParamUtil.getString(request, "queryTagNames" + queryLogicIndex, queryValues);
 									String categoryIds = ParamUtil.getString(request, "queryCategoryIds" + queryLogicIndex, queryValues);
+								%>
 
-									if (Validator.isNotNull(tagNames) || Validator.isNotNull(categoryIds) || (queryLogicIndexes.length == 1)) {
+									<c:if test="<%= Validator.isNotNull(tagNames) || Validator.isNotNull(categoryIds) || (queryLogicIndexes.length == 1) %>">
+
+										<%
 										request.setAttribute("configuration.jsp-categorizableGroupIds", assetPublisherDisplayContext.getReferencedModelsGroupIds());
 										request.setAttribute("configuration.jsp-index", String.valueOf(index));
 										request.setAttribute("configuration.jsp-queryLogicIndex", String.valueOf(queryLogicIndex));
@@ -326,17 +329,16 @@ String selectStyle = (String)request.getAttribute("configuration.jsp-selectStyle
 												cssClass = "asset-query-rule-error";
 											}
 										}
-								%>
+										%>
 
 										<div class="lfr-form-row <%= cssClass %>">
 											<div class="row-fields">
 												<liferay-util:include page="/edit_query_rule.jsp" servletContext="<%= application %>" />
 											</div>
 										</div>
+									</c:if>
 
 								<%
-									}
-
 									index++;
 								}
 								%>
@@ -444,13 +446,15 @@ String selectStyle = (String)request.getAttribute("configuration.jsp-selectStyle
 
 									<%
 									Group companyGroup = company.getGroup();
-
-									if (scopeGroupId != companyGroup.getGroupId()) {
-										List<AssetVocabulary> assetVocabularies = AssetVocabularyLocalServiceUtil.getGroupVocabularies(scopeGroupId, false);
-
-										if (!assetVocabularies.isEmpty()) {
 									%>
 
+									<c:if test="<%= scopeGroupId != companyGroup.getGroupId() %>">
+
+										<%
+										List<AssetVocabulary> assetVocabularies = AssetVocabularyLocalServiceUtil.getGroupVocabularies(scopeGroupId, false);
+										%>
+
+										<c:if test="<%= !assetVocabularies.isEmpty() %>">
 											<optgroup label="<liferay-ui:message key="vocabularies" />">
 
 												<%
@@ -465,18 +469,14 @@ String selectStyle = (String)request.getAttribute("configuration.jsp-selectStyle
 												%>
 
 											</optgroup>
-
-									<%
-										}
-									}
-									%>
+										</c:if>
+									</c:if>
 
 									<%
 									List<AssetVocabulary> assetVocabularies = AssetVocabularyLocalServiceUtil.getGroupVocabularies(companyGroup.getGroupId(), false);
-
-									if (!assetVocabularies.isEmpty()) {
 									%>
 
+									<c:if test="<%= !assetVocabularies.isEmpty() %>">
 										<optgroup label="<liferay-ui:message key="vocabularies" /> (<liferay-ui:message key="global" />)">
 
 											<%
@@ -491,11 +491,7 @@ String selectStyle = (String)request.getAttribute("configuration.jsp-selectStyle
 											%>
 
 										</optgroup>
-
-									<%
-									}
-									%>
-
+									</c:if>
 								</aui:select>
 							</span>
 						</aui:fieldset>

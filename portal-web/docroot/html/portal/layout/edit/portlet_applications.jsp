@@ -26,13 +26,13 @@ String copyLayoutIdPrefix = ParamUtil.getString(request, "copyLayoutIdPrefix");
 	List<LayoutDescription> layoutDescriptions = (List<LayoutDescription>)request.getAttribute(WebKeys.LAYOUT_DESCRIPTIONS);
 
 	for (LayoutDescription layoutDescription : layoutDescriptions) {
-		if (layoutDescription.getPlid() > 0) {
 	%>
 
+		<c:if test="<%= layoutDescription.getPlid() > 0 %>">
 			<aui:option disabled="<%= (selLayout != null) && (selLayout.getPlid() == layoutDescription.getPlid()) %>" label="<%= layoutDescription.getDisplayName() %>" value="<%= layoutDescription.getPlid() %>" />
+		</c:if>
 
 	<%
-		}
 	}
 	%>
 

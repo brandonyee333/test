@@ -73,14 +73,13 @@ String rootLayoutType = siteNavigationMenuDisplayContext.getRootLayoutType();
 										<%
 										for (LayoutDescription layoutDescription : siteNavigationMenuDisplayContext.getLayoutDescriptions()) {
 											Layout layoutDescriptionLayout = LayoutLocalServiceUtil.fetchLayout(layoutDescription.getPlid());
-
-											if (layoutDescriptionLayout != null) {
 										%>
 
+											<c:if test="<%= layoutDescriptionLayout != null %>">
 												<aui:option label="<%= layoutDescription.getDisplayName() %>" selected="<%= Objects.equals(layoutDescriptionLayout.getUuid(), siteNavigationMenuDisplayContext.getRootLayoutUuid()) %>" value="<%= layoutDescriptionLayout.getUuid() %>" />
+											</c:if>
 
 										<%
-											}
 										}
 										%>
 

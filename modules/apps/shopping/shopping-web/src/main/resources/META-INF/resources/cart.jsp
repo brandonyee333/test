@@ -370,14 +370,13 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 						for (int i = 0; i < 10; i++) {
 							String altShippingName = alternativeShipping[0][i];
 							String altShippingDelta = alternativeShipping[1][i];
-
-							if (Validator.isNotNull(altShippingName) && Validator.isNotNull(altShippingDelta)) {
 						%>
 
+							<c:if test="<%= Validator.isNotNull(altShippingName) && Validator.isNotNull(altShippingDelta) %>">
 								<aui:option label='<%= LanguageUtil.get(request, altShippingName) + "(" + currencyFormat.format(ShoppingUtil.calculateAlternativeShipping(items, i)) + ")" %>' selected="<%= i == cart.getAltShipping() %>" value="<%= i %>" />
+							</c:if>
 
 						<%
-							}
 						}
 						%>
 
@@ -412,31 +411,29 @@ boolean minQuantityMultiple = PrefsPropsUtil.getBoolean(company.getCompanyId(), 
 
 	<%
 	String[] ccTypes = shoppingGroupServiceOverriddenConfiguration.getCcTypes();
-
-	if (shoppingGroupServiceOverriddenConfiguration.usePayPal()) {
 	%>
 
-		<img alt="<liferay-ui:message escapeAttribute="<%= true %>" key="paypal" />" src="<%= themeDisplay.getPathThemeImages() %>/shopping/cc_paypal.png" />
+	<c:choose>
+		<c:when test="<%= shoppingGroupServiceOverriddenConfiguration.usePayPal() %>">
+			<img alt="<liferay-ui:message escapeAttribute="<%= true %>" key="paypal" />" src="<%= themeDisplay.getPathThemeImages() %>/shopping/cc_paypal.png" />
 
-		<br /><br />
+			<br /><br />
+		</c:when>
+		<c:when test="<%= !shoppingGroupServiceOverriddenConfiguration.usePayPal() && (ccTypes.length > 0) %>">
 
-	<%
-	}
-	else if (!shoppingGroupServiceOverriddenConfiguration.usePayPal() && (ccTypes.length > 0)) {
-		for (int i = 0; i < ccTypes.length; i++) {
-	%>
+			<%
+			for (int i = 0; i < ccTypes.length; i++) {
+			%>
 
-			<img alt="<%= HtmlUtil.escapeAttribute(ccTypes[i]) %>" src="<%= themeDisplay.getPathThemeImages() %>/shopping/cc_<%= HtmlUtil.escapeAttribute(ccTypes[i]) %>.png" />
+				<img alt="<%= HtmlUtil.escapeAttribute(ccTypes[i]) %>" src="<%= themeDisplay.getPathThemeImages() %>/shopping/cc_<%= HtmlUtil.escapeAttribute(ccTypes[i]) %>.png" />
 
-		<%
-		}
-		%>
+			<%
+			}
+			%>
 
-		<br /><br />
-
-	<%
-	}
-	%>
+			<br /><br />
+		</c:when>
+	</c:choose>
 
 	<aui:button-row>
 		<aui:button cssClass="btn-lg" onClick='<%= renderResponse.getNamespace() + "updateCart();" %>' value="update-cart" />

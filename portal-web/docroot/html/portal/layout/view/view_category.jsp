@@ -48,10 +48,9 @@ for (String portletId : portletIds) {
 }
 
 portlets = ListUtil.sort(portlets, new PortletTitleComparator(application, locale));
-
-if (!portletCategories.isEmpty() || !portlets.isEmpty()) {
 %>
 
+<c:if test="<%= !portletCategories.isEmpty() || !portlets.isEmpty() %>">
 	<liferay-ui:panel
 		collapsible="<%= true %>"
 		cssClass="lfr-content-category list-unstyled panel-page-category"
@@ -93,7 +92,4 @@ if (!portletCategories.isEmpty() || !portlets.isEmpty()) {
 
 		</aui:nav>
 	</liferay-ui:panel>
-
-<%
-}
-%>
+</c:if>

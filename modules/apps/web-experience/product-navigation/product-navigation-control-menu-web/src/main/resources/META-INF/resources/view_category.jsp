@@ -70,11 +70,14 @@ for (String portletId : portletIds) {
 }
 
 portlets = ListUtil.sort(portlets, new PortletTitleComparator(application, locale));
+%>
 
-if (!categories.isEmpty() || !portlets.isEmpty()) {
+<c:if test="<%= !categories.isEmpty() || !portlets.isEmpty() %>">
+
+	<%
 	String panelId = renderResponse.getNamespace() + "portletCategory" + portletCategoryIndex;
 	String title = Validator.isNotNull(externalPortletCategory) ? externalPortletCategory : LanguageUtil.get(request, portletCategory.getName());
-%>
+	%>
 
 	<div class="lfr-content-category panel-page-category">
 		<a class="collapse-icon collapse-icon-middle collapsed list-group-heading" data-toggle="collapse" href="#<%= panelId %>">
@@ -230,7 +233,4 @@ if (!categories.isEmpty() || !portlets.isEmpty()) {
 	</div>
 
 	<input id="<portlet:namespace />portletCategory<%= portletCategoryIndex %>CategoryPath" type="hidden" value="<%= newCategoryPath.replace(':', '-') %>" />
-
-<%
-}
-%>
+</c:if>

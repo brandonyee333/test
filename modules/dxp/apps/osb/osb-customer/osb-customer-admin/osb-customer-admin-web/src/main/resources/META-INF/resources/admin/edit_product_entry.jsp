@@ -164,14 +164,13 @@ if ((productEntry != null) && Validator.isNull(zendeskTag)) {
 			</td>
 			<td>
 				<table class="lfr-table">
+					<c:if test="<%= koroneikiProduct != null %>">
 
-					<%
-					if (koroneikiProduct != null) {
+						<%
 						ExternalLink[] externalLinks = koroneikiProduct.getExternalLinks();
+						%>
 
-						if (externalLinks != null) {
-					%>
-
+						<c:if test="<%= externalLinks != null %>">
 							<tr>
 								<td>
 									<strong><liferay-ui:message key="domain" /></strong>
@@ -200,12 +199,12 @@ if ((productEntry != null) && Validator.isNull(zendeskTag)) {
 									</td>
 								</tr>
 
-					<%
+							<%
 							}
-						}
-					}
-					%>
+							%>
 
+						</c:if>
+					</c:if>
 				</table>
 			</td>
 		</tr>

@@ -70,23 +70,26 @@
 
 			<%
 			ContactRole[] contactRoles = koroneikiContact.getContactRoles();
+			%>
 
-			if (contactRoles != null) {
+			<c:if test="<%= contactRoles != null %>">
+
+				<%
 				for (ContactRole contactRole : contactRoles) {
 					String name = contactRole.getName();
 
 					if (name.equals(ContactRoleConstants.NAME_MEMBER)) {
 						continue;
 					}
-			%>
+				%>
 
 					<%= HtmlUtil.escape(name) %><br />
 
-			<%
+				<%
 				}
-			}
-			%>
+				%>
 
+			</c:if>
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text

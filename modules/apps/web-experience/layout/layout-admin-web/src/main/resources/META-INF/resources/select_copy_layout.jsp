@@ -40,13 +40,13 @@ Layout selLayout = layoutsAdminDisplayContext.getSelLayout();
 
 		<%
 		for (LayoutDescription layoutDescription : layoutsAdminDisplayContext.getLayoutDescriptions()) {
-			if (layoutDescription.getPlid() > 0) {
 		%>
 
+			<c:if test="<%= layoutDescription.getPlid() > 0 %>">
 				<aui:option disabled="<%= (selLayout != null) && (selLayout.getPlid() == layoutDescription.getPlid()) %>" label="<%= layoutDescription.getDisplayName() %>" value="<%= layoutDescription.getPlid() %>" />
+			</c:if>
 
 		<%
-			}
 		}
 		%>
 

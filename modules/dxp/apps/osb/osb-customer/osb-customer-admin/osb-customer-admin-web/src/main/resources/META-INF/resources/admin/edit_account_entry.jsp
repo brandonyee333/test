@@ -121,8 +121,11 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					List<AccountAttachment> accountAttachments = AccountAttachmentLocalServiceUtil.getAccountAttachments(accountEntryId, 0, AccountAttachmentConstants.TYPE_OEM_INSTRUCTIONS);
 
 					AccountAttachment accountAttachment = null;
+					%>
 
-					if (!accountAttachments.isEmpty()) {
+					<c:if test="<%= !accountAttachments.isEmpty() %>">
+
+						<%
 						accountAttachment = accountAttachments.get(0);
 
 						LiferayPortletURL accountAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
@@ -130,16 +133,12 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						accountAttachmentURL.setCopyCurrentRenderParameters(false);
 						accountAttachmentURL.setParameter("accountAttachmentId", String.valueOf(accountAttachment.getAccountAttachmentId()));
 						accountAttachmentURL.setResourceID("accountAttachment");
-					%>
+						%>
 
 						<div id="<portlet:namespace />accountAttachment">
 							<aui:a href="<%= accountAttachmentURL.toString() %>" label="<%= accountAttachment.getFileName() %>" target="_blank" />
 						</div>
-
-					<%
-					}
-					%>
-
+					</c:if>
 				</td>
 			</tr>
 		</c:if>
@@ -227,13 +226,17 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			</td>
 			<td>
 
-					<%
-					if (koroneikiAccount != null) {
-						PostalAddress[] postalAddresses = koroneikiAccount.getPostalAddresses();
+					<c:if test="<%= koroneikiAccount != null %>">
 
-						if (postalAddresses != null) {
+						<%
+						PostalAddress[] postalAddresses = koroneikiAccount.getPostalAddresses();
+						%>
+
+						<c:if test="<%= postalAddresses != null %>">
+
+							<%
 							for (PostalAddress postalAddress : postalAddresses) {
-					%>
+							%>
 
 								<div>
 									<c:if test="<%= Validator.isNotNull(postalAddress.getAddressType()) %>">
@@ -275,11 +278,12 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 									<br />
 								<div>
 
-					<%
+							<%
 							}
-						}
-					}
-					%>
+							%>
+
+						</c:if>
+					</c:if>
 
 			</td>
 		</tr>
