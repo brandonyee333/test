@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
@@ -243,9 +244,11 @@ public class InterestCompositionDog {
 					ScoreMode.None));
 		}
 
-		BoolQueryBuilderUtil.filterTerm(
-			boolQueryBuilder, "individualSegmentIds",
-			String.valueOf(segmentId));
+		if (!Objects.isNull(segmentId)) {
+			BoolQueryBuilderUtil.filterTerm(
+				boolQueryBuilder, "individualSegmentIds",
+				String.valueOf(segmentId));
+		}
 
 		try {
 			JSONArrayIterator.of(
