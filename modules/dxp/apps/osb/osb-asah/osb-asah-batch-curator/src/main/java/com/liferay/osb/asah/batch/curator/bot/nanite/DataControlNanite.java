@@ -62,7 +62,7 @@ public class DataControlNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		Path path = _getPath(contextJSONObject);
+		Path path = Paths.get(_exportPathName);
 
 		JSONArrayIterator.of(
 			"data-control-tasks", faroInfoElasticsearchInvoker,
@@ -349,14 +349,6 @@ public class DataControlNanite extends BaseNanite {
 			});
 
 		zipFileBuilder.build();
-	}
-
-	private Path _getPath(JSONObject contextJSONObject) {
-		if (contextJSONObject == null) {
-			return Paths.get(_exportPathName);
-		}
-
-		return Paths.get(contextJSONObject.optString("path", _exportPathName));
 	}
 
 	private JSONObject _runDataControlTask(

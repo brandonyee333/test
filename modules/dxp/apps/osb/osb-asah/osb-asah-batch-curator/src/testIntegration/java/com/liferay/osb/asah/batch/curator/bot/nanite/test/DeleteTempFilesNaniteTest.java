@@ -16,7 +16,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteTempFilesNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.io.File;
@@ -41,6 +40,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Matthew Kong
@@ -52,6 +52,9 @@ public class DeleteTempFilesNaniteTest {
 	@Before
 	public void setUp() throws Exception {
 		_tempPath = Files.createTempDirectory("temp");
+
+		ReflectionTestUtils.setField(
+			_deleteTempFilesNanite, "_tempPathName", _tempPath.toString());
 	}
 
 	@After
@@ -90,7 +93,7 @@ public class DeleteTempFilesNaniteTest {
 		Files.setAttribute(
 			oldCSVPath, "lastModifiedTime", FileTime.from(instant));
 
-		_deleteTempFilesNanite.run(JSONUtil.put("path", _tempPath.toString()));
+		_deleteTempFilesNanite.run(null);
 
 		File oldCSVFile = oldCSVPath.toFile();
 

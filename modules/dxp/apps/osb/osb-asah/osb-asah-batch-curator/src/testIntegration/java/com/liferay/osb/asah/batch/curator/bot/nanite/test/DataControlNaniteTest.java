@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DataControlNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -45,6 +44,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 /**
  * @author Matthew Kong
@@ -56,6 +56,9 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 	@Before
 	public void setUp() throws Exception {
 		_exportPath = Files.createTempDirectory("export");
+
+		ReflectionTestUtils.setField(
+			_dataControlNanite, "_exportPathName", _exportPath.toString());
 	}
 
 	@After
@@ -96,7 +99,7 @@ public class DataControlNaniteTest extends BaseNaniteTestCase {
 	)
 	@Test
 	public void test() throws Exception {
-		_dataControlNanite.run(JSONUtil.put("path", _exportPath.toString()));
+		_dataControlNanite.run(null);
 
 		JSONArray dataControlTasksJSONArray = faroInfoElasticsearchInvoker.get(
 			"data-control-tasks", QueryBuilders.matchAllQuery());
