@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.dog.FieldDog;
-import com.liferay.osb.asah.common.dto.FieldDTO;
+import com.liferay.osb.asah.backend.dto.FieldDTO;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.model.Field;
 

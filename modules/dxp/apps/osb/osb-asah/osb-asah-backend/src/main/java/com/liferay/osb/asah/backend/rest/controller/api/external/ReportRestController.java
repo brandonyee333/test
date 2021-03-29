@@ -58,7 +58,7 @@ import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
-import com.liferay.osb.asah.common.dto.DataExportTaskDTO;
+import com.liferay.osb.asah.backend.dto.DataExportTaskDTO;
 import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;

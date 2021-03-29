@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.rest.controller.BlockedKeywordsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dto.BlockedKeywordDTO;
+import com.liferay.osb.asah.backend.dto.BlockedKeywordDTO;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;

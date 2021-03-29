@@ -16,7 +16,7 @@ package com.liferay.osb.asah.monolith.common.http.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.dto.DataSourceDTO;
+import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.AccountsRestController;
 import com.liferay.osb.asah.salesforce.extractor.rest.controller.SalesforceUsersRestController;

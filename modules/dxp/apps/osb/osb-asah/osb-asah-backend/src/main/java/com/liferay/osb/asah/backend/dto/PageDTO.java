@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.dto;
+package com.liferay.osb.asah.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;

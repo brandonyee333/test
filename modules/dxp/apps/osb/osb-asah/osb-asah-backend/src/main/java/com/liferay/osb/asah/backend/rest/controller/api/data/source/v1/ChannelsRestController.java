@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.liferay.osb.asah.common.dog.ChannelDog;
-import com.liferay.osb.asah.common.dto.ChannelDTO;
-import com.liferay.osb.asah.common.dto.PageDTO;
+import com.liferay.osb.asah.backend.dto.ChannelDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.util.ListUtil;
 

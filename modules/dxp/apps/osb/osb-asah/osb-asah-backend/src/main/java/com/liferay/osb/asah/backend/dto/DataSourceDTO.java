@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.dto;
+package com.liferay.osb.asah.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -22,10 +22,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.AccountsConfigurationDTO;
-import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.AnalyticsConfigurationDTO;
-import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.ContactsConfigurationDTO;
-import com.liferay.osb.asah.common.dto.DataSourceDTO.ProviderDTO.DetailDTO;
+import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.AccountsConfigurationDTO;
+import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.AnalyticsConfigurationDTO;
+import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.ContactsConfigurationDTO;
+import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.DetailDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.model.DataSource;

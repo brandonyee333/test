@@ -23,8 +23,8 @@ import com.liferay.osb.asah.backend.rest.response.embedded.IndividualSegmentsEmb
 import com.liferay.osb.asah.backend.rest.response.embedded.MembershipChangesEmbeddedJSONObjectCreator;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
-import com.liferay.osb.asah.common.dto.MembershipDTO;
-import com.liferay.osb.asah.common.dto.PageDTO;
+import com.liferay.osb.asah.backend.dto.MembershipDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
