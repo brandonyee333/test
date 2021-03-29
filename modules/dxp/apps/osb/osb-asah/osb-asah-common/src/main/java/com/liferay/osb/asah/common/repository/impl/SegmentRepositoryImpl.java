@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionC
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -32,13 +31,11 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
-import org.jooq.SortField;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 /**
  * @author Inácio Nery
@@ -46,7 +43,7 @@ import org.springframework.data.domain.Sort;
 @ConditionalOnProperty(
 	havingValue = "true", value = "osb.asah.postgresql.enabled"
 )
-public class SegmentRepositoryImpl {
+public class SegmentRepositoryImpl extends BaseRepository {
 
 	public SegmentRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
@@ -79,7 +76,7 @@ public class SegmentRepositoryImpl {
 		).where(
 			_getPreviewDisabledSegmentsConditions(dataSourceId, filterString)
 		).orderBy(
-			_getSortFields(pageable.getSort(), null)
+			getSortFields(pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -116,7 +113,7 @@ public class SegmentRepositoryImpl {
 		).where(
 			_getConditions(filter, state, status)
 		).orderBy(
-			_getSortFields(pageable.getSort())
+			getSortFields(pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -218,31 +215,6 @@ public class SegmentRepositoryImpl {
 		conditions.add(FilterStringToConditionConverter.convert(filterString));
 
 		return conditions;
-	}
-
-	private Collection<SortField<?>> _getSortFields(Sort sort) {
-		Collection<SortField<?>> sortFields = new ArrayList<>();
-
-		if (sort == null) {
-			Field<Object> field = DSL.field("id");
-
-			sortFields.add(field.asc());
-
-			return sortFields;
-		}
-
-		for (Sort.Order order : sort.toList()) {
-			Field<?> field = DSL.field(order.getProperty());
-
-			if (order.getDirection() == Sort.Direction.ASC) {
-				sortFields.add(field.asc());
-			}
-			else {
-				sortFields.add(field.desc());
-			}
-		}
-
-		return sortFields;
 	}
 
 	private final DSLContext _dslContext;

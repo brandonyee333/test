@@ -35,6 +35,10 @@ public abstract class BaseRepository {
 		Collection<SortField<?>> sortFields = new ArrayList<>();
 
 		if (sort == null) {
+			Field<Object> field = DSL.field("id");
+
+			sortFields.add(field.asc());
+
 			return sortFields;
 		}
 
