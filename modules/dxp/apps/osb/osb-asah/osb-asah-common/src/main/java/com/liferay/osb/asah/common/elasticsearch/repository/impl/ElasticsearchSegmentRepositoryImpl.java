@@ -17,6 +17,8 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
+import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -32,6 +34,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -48,6 +51,7 @@ import org.elasticsearch.search.sort.SortBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -82,6 +86,32 @@ public class ElasticsearchSegmentRepositoryImpl
 			getCollectionName(), searchSourceBuilder);
 
 		return HitsUtil.getTotalHitsCount(searchResponse.getHits());
+	}
+
+	@Override
+	public long countPreviewDisabledSegments(
+		Long dataSourceId, String filterString) {
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.should(
+			QueryBuilders.termQuery(
+				"referencedAssetDataSourceIds", dataSourceId)
+		).should(
+			QueryBuilders.termsQuery(
+				"referencedFieldMappingIds",
+				_faroInfoFieldMappingDog.getDataSourceFieldMappingIds(
+					dataSourceId, true))
+		);
+
+		if (!StringUtils.isEmpty(filterString)) {
+			boolQueryBuilder = BoolQueryBuilderUtil.filter(
+				boolQueryBuilder
+			).filter(
+				FilterStringToQueryBuilderConverter.convert(filterString)
+			);
+		}
+
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(), boolQueryBuilder);
 	}
 
 	@Override
@@ -357,6 +387,44 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
+	public List<Segment> searchPreviewDisabledSegments(
+		Long dataSourceId, String filterString, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						BoolQueryBuilder boolQueryBuilder =
+							BoolQueryBuilderUtil.should(
+								QueryBuilders.termQuery(
+									"referencedAssetDataSourceIds",
+									dataSourceId)
+							).should(
+								QueryBuilders.termsQuery(
+									"referencedFieldMappingIds",
+									_faroInfoFieldMappingDog.
+										getDataSourceFieldMappingIds(
+											dataSourceId, true))
+							);
+
+						if (!StringUtils.isEmpty(filterString)) {
+							boolQueryBuilder = BoolQueryBuilderUtil.filter(
+								boolQueryBuilder
+							).filter(
+								FilterStringToQueryBuilderConverter.convert(
+									filterString)
+							);
+						}
+
+						searchSourceBuilder.query(boolQueryBuilder);
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
 	public List<Segment> searchSegments(
 		DXPEntityType dxpEntityType, Long id, String state, Segment.Type type) {
 
@@ -444,5 +512,8 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 }

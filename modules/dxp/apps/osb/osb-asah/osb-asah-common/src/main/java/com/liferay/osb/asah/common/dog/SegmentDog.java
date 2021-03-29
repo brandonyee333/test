@@ -47,6 +47,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONArray;
@@ -313,6 +314,20 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return segment;
 	}
 
+	public Page<Segment> searchPreviewDisabledSegmentsPage(
+		Long dataSourceId, String filterString, int page, int size,
+		String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_segmentRepository.searchPreviewDisabledSegments(
+				dataSourceId, filterString, pageRequest),
+			pageRequest,
+			() -> _segmentRepository.countPreviewDisabledSegments(
+				dataSourceId, filterString));
+	}
+
 	@CacheEvict("getReferencedAssetIds")
 	public void setReferencedFields(Segment segment) throws Exception {
 		Map<String, Set<String>> referencedObjectIds = _getReferencedObjectIds(
@@ -530,6 +545,27 @@ public class SegmentDog extends BaseFaroInfoDog {
 		}
 
 		return referencedObjectIds;
+	}
+
+	private Sort _getSort(String[] sorts) {
+		if (ArrayUtils.isEmpty(sorts)) {
+			return Sort.by(Sort.Order.desc("id"));
+		}
+
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (int i = 0; i < (sorts.length - 1); i = i + 2) {
+			String sort = sorts[i];
+
+			if (Objects.equals(sorts[i + 1], "asc")) {
+				orders.add(Sort.Order.asc(sort));
+			}
+			else {
+				orders.add(Sort.Order.desc(sort));
+			}
+		}
+
+		return Sort.by(orders);
 	}
 
 	private Exception _processLogicalOperator(

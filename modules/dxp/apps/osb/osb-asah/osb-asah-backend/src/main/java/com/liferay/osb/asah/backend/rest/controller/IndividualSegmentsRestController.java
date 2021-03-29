@@ -14,11 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.controller.util.FilterUtil;
-import com.liferay.osb.asah.common.dto.SegmentDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Segment;
@@ -30,14 +29,12 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -98,8 +95,8 @@ public class IndividualSegmentsRestController
 	}
 
 	@GetMapping("/preview-disabled-segments")
-	public String getPreviewDisabledSegments(
-			@RequestParam String dataSourceId,
+	public PageDTO<SegmentDTO> getPreviewDisabledSegmentDTOsPageDTOs(
+			@RequestParam Long dataSourceId,
 			@RequestParam(name = "filter", required = false)
 				String filterString,
 			@RequestParam(defaultValue = "0") int page,
@@ -107,28 +104,9 @@ public class IndividualSegmentsRestController
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.should(
-			QueryBuilders.termQuery(
-				"referencedAssetDataSourceIds", dataSourceId)
-		).should(
-			QueryBuilders.termsQuery(
-				"referencedFieldMappingIds",
-				_faroInfoFieldMappingDog.getDataSourceFieldMappingIds(
-					Long.valueOf(dataSourceId), true))
-		);
-
-		if (!StringUtils.isEmpty(filterString)) {
-			boolQueryBuilder = BoolQueryBuilderUtil.filter(
-				boolQueryBuilder
-			).filter(
-				FilterStringToQueryBuilderConverter.convert(filterString)
-			);
-		}
-
-		FilterUtil.getString(filterString, filterString);
-
-		return toCollectionGetResponse(
-			"individual-segments", null, page, boolQueryBuilder, size, sorts);
+		return toSegmentDTOPageDTO(
+			segmentDog.searchPreviewDisabledSegmentsPage(
+				dataSourceId, filterString, page, size, sorts));
 	}
 
 	@PutMapping("/{id}")
@@ -151,8 +129,7 @@ public class IndividualSegmentsRestController
 	}
 
 	private QueryBuilder _getAccountsQueryBuilder(
-			String individualSegmentId, String filterString)
-		throws Exception {
+		String individualSegmentId, String filterString) {
 
 		Set<String> accountPKs = new HashSet<>();
 
@@ -188,8 +165,5 @@ public class IndividualSegmentsRestController
 			FilterStringToQueryBuilderConverter.convert(filterString)
 		);
 	}
-
-	@Autowired
-	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 }

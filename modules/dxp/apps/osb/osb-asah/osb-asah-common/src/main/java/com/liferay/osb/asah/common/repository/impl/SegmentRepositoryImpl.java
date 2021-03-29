@@ -14,8 +14,11 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Segment;
+import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,10 +30,12 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
 import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -45,6 +50,44 @@ public class SegmentRepositoryImpl {
 
 	public SegmentRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	public long countPreviewDisabledSegments(
+		Long dataSourceId, String filterString) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getPreviewDisabledSegmentsConditions(dataSourceId, filterString)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
+	public List<Segment> searchPreviewDisabledSegments(
+		Long dataSourceId, String filterString, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getPreviewDisabledSegmentsConditions(dataSourceId, filterString)
+		).orderBy(
+			_getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Segment(record.intoMap())
+		);
 	}
 
 	public List<Segment> searchSegments(
@@ -138,6 +181,45 @@ public class SegmentRepositoryImpl {
 		return conditions;
 	}
 
+	private List<Condition> _getPreviewDisabledSegmentsConditions(
+		Long dataSourceId, String filterString) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		List<Long> dataSourceFieldMappingIds = ListUtil.map(
+			_faroInfoFieldMappingDog.getDataSourceFieldMappingIds(
+				dataSourceId, true),
+			Long::valueOf);
+
+		conditions.add(
+			DSL.or(
+				DSL.val(
+					dataSourceId
+				).eq(
+					(Field<Long>)DSL.any(
+						DSL.field("referencedAssetDataSourceIds"))
+				),
+				DSL.exists(
+					DSL.selectOne(
+					).from(
+						DSL.unnest(
+							DSL.field("referencedFieldMappingIds")
+						).as(
+							"referencedFieldMappingId"
+						)
+					).where(
+						DSL.field(
+							"referencedFieldMappingId"
+						).in(
+							dataSourceFieldMappingIds
+						)
+					))));
+
+		conditions.add(FilterStringToConditionConverter.convert(filterString));
+
+		return conditions;
+	}
+
 	private Collection<SortField<?>> _getSortFields(Sort sort) {
 		Collection<SortField<?>> sortFields = new ArrayList<>();
 
@@ -164,5 +246,8 @@ public class SegmentRepositoryImpl {
 	}
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 }

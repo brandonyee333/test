@@ -39,6 +39,9 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 
 	public long countByIdAfter(Long id);
 
+	public long countPreviewDisabledSegments(
+		Long dataSourceId, String filterString);
+
 	@Modifying
 	public void deleteByChannelIdIn(@Param("channelIds") Set<Long> channelIds);
 
@@ -78,6 +81,9 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 		@Param("ids") List<Long> ids, @Param("status") String status);
 
 	public List<Long> findReferencedAssetIds();
+
+	public List<Segment> searchPreviewDisabledSegments(
+		Long dataSourceId, String filterString, Pageable pageable);
 
 	public List<Segment> searchSegments(
 		DXPEntityType dxpEntityType, Long id, String state, Segment.Type type);
