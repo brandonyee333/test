@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Segment;
@@ -295,77 +296,35 @@ public class ElasticsearchSegmentRepositoryImpl
 	public List<String> findNameByChannelIdAndIdInAndStatus(
 		Long channelId, List<Long> ids, String status) {
 
-		List<String> names = new ArrayList<>();
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery(
+				"channelId", String.valueOf(channelId))
+		).filter(
+			QueryBuilders.termsQuery(
+				"id", ListUtil.map(ids, String::valueOf))
+		).filter(
+			QueryBuilders.termQuery("status", status)
+		);
 
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			getCollectionName(),
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"names"
-					).field(
-						"name"
-					).size(
-						Integer.MAX_VALUE
-					));
-				searchSourceBuilder.query(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery(
-							"channelId", String.valueOf(channelId))
-					).filter(
-						QueryBuilders.termsQuery(
-							"id", ListUtil.map(ids, String::valueOf))
-					).filter(
-						QueryBuilders.termQuery("status", status)
-					));
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		Terms terms = aggregations.get("names");
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			names.add(bucket.getKeyAsString());
-		}
-
-		return names;
+		return JSONUtil.toStringList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(), boolQueryBuilder),
+			"name");
 	}
 
 	@Override
 	public List<String> findNameByIdInAndStatus(List<Long> ids, String status) {
-		List<String> names = new ArrayList<>();
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termsQuery(
+				"id", ListUtil.map(ids, String::valueOf))
+		).filter(
+			QueryBuilders.termQuery("status", status)
+		);
 
-		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
-			getCollectionName(),
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"names"
-					).field(
-						"name"
-					).size(
-						Integer.MAX_VALUE
-					));
-				searchSourceBuilder.query(
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termsQuery(
-							"id", ListUtil.map(ids, String::valueOf))
-					).filter(
-						QueryBuilders.termQuery("status", status)
-					));
-				searchSourceBuilder.size(0);
-			});
-
-		Aggregations aggregations = searchResponse.getAggregations();
-
-		Terms terms = aggregations.get("names");
-
-		for (Terms.Bucket bucket : terms.getBuckets()) {
-			names.add(bucket.getKeyAsString());
-		}
-
-		return names;
+		return JSONUtil.toStringList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(), boolQueryBuilder),
+			"name");
 	}
 
 	@Override
