@@ -45,6 +45,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -516,8 +517,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	private Map<String, Set<String>> _getReferencedObjectIds(
-			String filterString, String outerFunctionName)
-		throws Exception {
+		String filterString, String outerFunctionName) {
 
 		Map<String, Set<String>> referencedObjectSets = new HashMap<>();
 
@@ -533,7 +533,19 @@ public class SegmentDog extends BaseFaroInfoDog {
 						_getReferencedObjectIds(
 							innerFilterString, outerFunctionName);
 
-					referencedObjectSets.putAll(innerReferencedObjectIds);
+					Set<Map.Entry<String, Set<String>>> entrySet =
+						referencedObjectSets.entrySet();
+
+					Stream<Map.Entry<String, Set<String>>> stream =
+						entrySet.stream();
+
+					stream.forEach(
+						entry -> {
+							Set<String> values = entry.getValue();
+
+							values.addAll(
+								innerReferencedObjectIds.get(entry.getKey()));
+						});
 				}
 				catch (Exception e) {
 					return e;
@@ -685,7 +697,18 @@ public class SegmentDog extends BaseFaroInfoDog {
 							argumentValues[0]),
 						outerFunctionName);
 
-				referencedObjectSets.putAll(referencedObjectIds);
+				Set<Map.Entry<String, Set<String>>> entrySet =
+					referencedObjectSets.entrySet();
+
+				Stream<Map.Entry<String, Set<String>>> stream =
+					entrySet.stream();
+
+				stream.forEach(
+					entry -> {
+						Set<String> values = entry.getValue();
+
+						values.addAll(referencedObjectIds.get(entry.getKey()));
+					});
 			}
 			catch (Exception e) {
 				return e;
