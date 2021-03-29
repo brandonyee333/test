@@ -505,8 +505,7 @@ public class ElasticsearchSegmentRepositoryImpl
 			return queryBuilder;
 		}
 
-		List<Channel> channels = _channelDog.getChannels(
-			Long.valueOf(dataSourceId));
+		List<Channel> channels = _channelDog.getChannels(dataSourceId);
 
 		if (channels.isEmpty()) {
 			return queryBuilder;

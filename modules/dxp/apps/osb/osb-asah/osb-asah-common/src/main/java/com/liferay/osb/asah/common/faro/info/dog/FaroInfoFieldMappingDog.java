@@ -185,7 +185,7 @@ public class FaroInfoFieldMappingDog extends BaseFaroInfoDog {
 			"field-mappings",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.existsQuery(
-					"dataSourceFieldNames." + String.valueOf(dataSourceId))));
+					"dataSourceFieldNames." + dataSourceId)));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);

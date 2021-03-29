@@ -48,6 +48,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -78,7 +79,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Segment segment = new Segment();
 
 		segment.setActivitiesCount(activitiesCount);
-
 		segment.setCreateDate(createDate);
 		segment.setFilter(filter);
 		segment.setModifiedDate(modifiedDate);
@@ -244,11 +244,11 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		if (Objects.nonNull(channelId)) {
 			return _segmentRepository.findNameByChannelIdAndIdInAndStatus(
-				channelId, new ArrayList<Long>(segmentIds), "ACTIVE");
+				channelId, new ArrayList<>(segmentIds), "ACTIVE");
 		}
 
 		return _segmentRepository.findNameByIdInAndStatus(
-			new ArrayList<Long>(segmentIds), "ACTIVE");
+			new ArrayList<>(segmentIds), "ACTIVE");
 	}
 
 	public Page<Segment> getSegmentPage(Long segmentId, int size, Sort sort) {
@@ -283,7 +283,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 	public boolean isIncludeAnonymousUsers(Long segmentId) {
 		Segment segment = getSegment(segmentId);
 
-		return segment.getIncludeAnonymousUsers();
+		return BooleanUtils.toBooleanDefaultIfNull(
+			segment.getIncludeAnonymousUsers(), false);
 	}
 
 	public Segment replaceSegment(Segment segment) throws Exception {
@@ -435,7 +436,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 					"dateModified",
 					DateUtil.toUTCString(segment.getModifiedDate())
 				).put(
-					"segment",
+					"individualSegmentJSONObject",
 					_objectMapper.convertValue(segment, JSONObject.class)
 				));
 		}

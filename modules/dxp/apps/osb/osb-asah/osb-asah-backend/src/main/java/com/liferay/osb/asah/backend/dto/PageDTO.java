@@ -59,7 +59,7 @@ public class PageDTO<T> {
 
 	@JsonProperty("total")
 	public long getTotal() {
-		return _page.getTotalElements();
+		return _total;
 	}
 
 	private Map<String, T> _content;

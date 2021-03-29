@@ -41,13 +41,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class FieldsRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
-	public void deleteField(@PathVariable String id) {
-		_fieldDog.deleteField(Long.valueOf(id));
+	public void deleteField(@PathVariable Long id) {
+		_fieldDog.deleteField(id);
 	}
 
 	@GetMapping("/{id}")
-	public FieldDTO getField(@PathVariable String id) throws Exception {
-		return new FieldDTO(_fieldDog.getField(Long.valueOf(id)));
+	public FieldDTO getField(@PathVariable Long id) throws Exception {
+		return new FieldDTO(_fieldDog.getField(id));
 	}
 
 	@GetMapping(params = "!apply")
@@ -84,12 +84,11 @@ public class FieldsRestController extends BaseRestController {
 
 	@PutMapping("/{id}")
 	public FieldDTO putField(
-			@PathVariable String id, @RequestBody FieldDTO fieldDTO)
+			@PathVariable Long id, @RequestBody FieldDTO fieldDTO)
 		throws Exception {
 
 		Field field = _fieldDog.updateField(
-			Long.valueOf(id),
-			_objectMapper.convertValue(fieldDTO, Field.class));
+			id, _objectMapper.convertValue(fieldDTO, Field.class));
 
 		return new FieldDTO(field);
 	}

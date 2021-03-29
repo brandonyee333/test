@@ -108,9 +108,9 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		DXPEntityType dxpEntityType, Long segmentId, String state,
 		Segment.Type type) {
 
-		SelectSelectStep<Record> select = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return select.from(
+		return selectSelectStep.from(
 			"Segment"
 		).where(
 			_getConditions(dxpEntityType, segmentId, state, type)
@@ -144,9 +144,9 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	public List<Segment> searchSegments(
 		String filter, String state, String status, Pageable pageable) {
 
-		SelectSelectStep<Record> select = _dslContext.select();
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return select.from(
+		return selectSelectStep.from(
 			"Segment"
 		).where(
 			_getConditions(filter, state, status)
