@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.model.EventAttribute;
 import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
+import com.liferay.osb.asah.common.util.MapUtil;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -46,13 +47,13 @@ public class AnalyticsEventStorageDog {
 			EventDefinition eventDefinition =
 				_eventDefinitionDog.fetchEventDefinitionByName(eventId);
 
-			Map<String, String> eventProperties =
-				analyticsEvent.getEventProperties();
+			String canonicalUrl = MapUtil.getString(
+				analyticsEvent.getContext(), "canonicalUrl");
 
 			if (eventDefinition == null) {
 				eventDefinition = _eventDefinitionDog.addEventDefinition(
 					null, null, analyticsEvent.getEventDate(), eventId,
-					EventDefinition.Type.CUSTOM, eventProperties.get("url"));
+					EventDefinition.Type.CUSTOM, canonicalUrl);
 
 				if (eventDefinition.isBlocked()) {
 					return;
@@ -61,8 +62,7 @@ public class AnalyticsEventStorageDog {
 			else if (eventDefinition.isBlocked()) {
 				_eventDefinitionDog.updateEventDefinition(
 					new BlockedEventDefinition(
-						analyticsEvent.getEventDate(),
-						eventProperties.get("url")),
+						analyticsEvent.getEventDate(), canonicalUrl),
 					null, null, eventDefinition.getId());
 
 				return;
@@ -71,6 +71,9 @@ public class AnalyticsEventStorageDog {
 			Long eventDefinitionId = eventDefinition.getId();
 
 			Set<EventAttribute> eventAttributes = new HashSet<>();
+
+			Map<String, String> eventProperties =
+				analyticsEvent.getEventProperties();
 
 			for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
 				String propertyName = entry.getKey();
