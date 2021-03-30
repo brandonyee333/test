@@ -99,6 +99,10 @@ public class EventDefinitionDog {
 	}
 
 	public EventDefinition getEventDefinition(Long eventDefinitionId) {
+		if (eventDefinitionId == null) {
+			throw new IllegalArgumentException("Event definition ID is null");
+		}
+
 		Optional<EventDefinition> eventDefinitionOptional =
 			_eventDefinitionRepository.findById(eventDefinitionId);
 
