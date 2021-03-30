@@ -15,14 +15,19 @@
 package com.liferay.portal.search.internal.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.blogs.service.BlogsEntryLocalService;
+import com.liferay.blogs.kernel.service.BlogsEntryLocalService;
 import com.liferay.blogs.test.util.BlogsTestUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.IndexSearcherHelperUtil;
 import com.liferay.portal.kernel.search.IndexWriterHelper;
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.TermQuery;
+import com.liferay.portal.kernel.search.generic.TermQueryImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -30,11 +35,6 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.uuid.PortalUUID;
-import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
-import com.liferay.portal.search.engine.adapter.search.CountSearchRequest;
-import com.liferay.portal.search.engine.adapter.search.CountSearchResponse;
-import com.liferay.portal.search.query.Queries;
-import com.liferay.portal.search.query.TermQuery;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -144,24 +144,23 @@ public class IndexWriterHelperImplTest {
 	}
 
 	protected void assertReindexedCounts(
-		Map<Long, Long> originalCounts, String className) {
+			Map<Long, Long> originalCounts, String className)
+		throws Exception {
 
 		for (long companyId : getCompanyIds()) {
-			CountSearchRequest countSearchRequest = new CountSearchRequest();
+			SearchContext searchContext = new SearchContext();
 
-			countSearchRequest.setIndexNames("liferay-" + companyId);
+			searchContext.setCompanyId(companyId);
 
-			TermQuery termQuery = _queries.term(
+			TermQuery termQuery = new TermQueryImpl(
 				Field.ENTRY_CLASS_NAME, className);
 
-			countSearchRequest.setQuery(termQuery);
-
-			CountSearchResponse countSearchResponse =
-				_searchEngineAdapter.execute(countSearchRequest);
+			Hits hits = IndexSearcherHelperUtil.search(
+				searchContext, termQuery);
 
 			Long originalCount = originalCounts.get(companyId);
 
-			Long newCount = Long.valueOf(countSearchResponse.getCount());
+			Long newCount = Long.valueOf(hits.getLength());
 
 			Assert.assertEquals(
 				className + " companyId=" + companyId, originalCount, newCount);
@@ -180,44 +179,41 @@ public class IndexWriterHelperImplTest {
 	}
 
 	protected void populateOriginalCounts(
-		Map<Long, Long> originalCounts, String className,
-		boolean systemIndexer) {
+			Map<Long, Long> originalCounts, String className,
+			boolean systemIndexer)
+		throws Exception {
 
 		for (long companyId : getCompanyIds()) {
-			CountSearchRequest countSearchRequest = new CountSearchRequest();
+			SearchContext searchContext = new SearchContext();
 
-			countSearchRequest.setIndexNames("liferay-" + companyId);
+			searchContext.setCompanyId(companyId);
 
-			TermQuery termQuery = _queries.term(
+			TermQuery termQuery = new TermQueryImpl(
 				Field.ENTRY_CLASS_NAME, className);
 
-			countSearchRequest.setQuery(termQuery);
+			Hits hits = IndexSearcherHelperUtil.search(
+				searchContext, termQuery);
 
-			CountSearchResponse countSearchResponse =
-				_searchEngineAdapter.execute(countSearchRequest);
+			long count = Long.valueOf(hits.getLength());
 
 			if (systemIndexer) {
 				if (companyId == CompanyConstants.SYSTEM) {
-					assertCountGreaterThanZero(
-						className, companyId, countSearchResponse.getCount());
+					assertCountGreaterThanZero(className, companyId, count);
 				}
 				else {
-					assertCountEqualsZero(
-						className, companyId, countSearchResponse.getCount());
+					assertCountEqualsZero(className, companyId, count);
 				}
 			}
 			else {
 				if (companyId == CompanyConstants.SYSTEM) {
-					assertCountEqualsZero(
-						className, companyId, countSearchResponse.getCount());
+					assertCountEqualsZero(className, companyId, count);
 				}
 				else {
-					assertCountGreaterThanZero(
-						className, companyId, countSearchResponse.getCount());
+					assertCountGreaterThanZero(className, companyId, count);
 				}
 			}
 
-			originalCounts.put(companyId, countSearchResponse.getCount());
+			originalCounts.put(companyId, count);
 		}
 	}
 
@@ -230,7 +226,7 @@ public class IndexWriterHelperImplTest {
 	}
 
 	private static final String _CLASS_NAME_BLOGS_ENTRY =
-		"com.liferay.blogs.model.BlogsEntry";
+		"com.liferay.blogs.kernel.model.BlogsEntry";
 
 	private static final String _CLASS_NAME_CONFIGURATION_MODEL =
 		"com.liferay.configuration.admin.web.internal.model.ConfigurationModel";
@@ -250,11 +246,5 @@ public class IndexWriterHelperImplTest {
 
 	@Inject
 	private PortalUUID _portalUUID;
-
-	@Inject
-	private Queries _queries;
-
-	@Inject
-	private SearchEngineAdapter _searchEngineAdapter;
 
 }
