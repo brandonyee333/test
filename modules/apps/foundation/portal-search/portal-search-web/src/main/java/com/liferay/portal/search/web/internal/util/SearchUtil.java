@@ -195,6 +195,10 @@ public class SearchUtil {
 					PortalUtil.getLiferayPortletResponse(renderResponse),
 					viewContentURL.toString());
 
+				if (Validator.isNull(viewURL)) {
+					return viewContentURL.toString();
+				}
+
 				ThemeDisplay themeDisplay =
 					(ThemeDisplay)renderRequest.getAttribute(
 						WebKeys.THEME_DISPLAY);
