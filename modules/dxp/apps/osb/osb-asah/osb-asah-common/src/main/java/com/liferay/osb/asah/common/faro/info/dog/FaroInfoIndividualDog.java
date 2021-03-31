@@ -340,9 +340,7 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 	}
 
 	public QueryBuilder buildIndividualsQueryBuilder(
-			String channelId, String filterString,
-			boolean includeAnonymousUsers)
-		throws Exception {
+		String channelId, String filterString, boolean includeAnonymousUsers) {
 
 		BoolQueryBuilder boolQueryBuilder = null;
 

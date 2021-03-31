@@ -297,11 +297,9 @@ public class ElasticsearchSegmentRepositoryImpl
 		Long channelId, List<Long> ids, String status) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery(
-				"channelId", String.valueOf(channelId))
+			QueryBuilders.termQuery("channelId", String.valueOf(channelId))
 		).filter(
-			QueryBuilders.termsQuery(
-				"id", ListUtil.map(ids, String::valueOf))
+			QueryBuilders.termsQuery("id", ListUtil.map(ids, String::valueOf))
 		).filter(
 			QueryBuilders.termQuery("status", status)
 		);
@@ -315,8 +313,7 @@ public class ElasticsearchSegmentRepositoryImpl
 	@Override
 	public List<String> findNameByIdInAndStatus(List<Long> ids, String status) {
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termsQuery(
-				"id", ListUtil.map(ids, String::valueOf))
+			QueryBuilders.termsQuery("id", ListUtil.map(ids, String::valueOf))
 		).filter(
 			QueryBuilders.termQuery("status", status)
 		);

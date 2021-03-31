@@ -543,8 +543,7 @@ public class DataSourceDog {
 		).setMonitoringConsumers(
 			processedCountMonitorConsumer, queueMonitorConsumer
 		).setQueryBuilder(
-			QueryBuilders.existsQuery(
-				"dataSourceFieldNames." + String.valueOf(dataSourceId))
+			QueryBuilders.existsQuery("dataSourceFieldNames." + dataSourceId)
 		).iterate();
 
 		_segmentDog.disableDynamicSegments(
