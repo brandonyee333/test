@@ -21,11 +21,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import com.liferay.osb.asah.common.mapper.Mapper;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,20 +37,11 @@ public class ObjectMapperConfiguration {
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
-		if (_mappers != null) {
-			for (Mapper<?, ?> mapper : _mappers) {
-				objectMapper.registerModule(mapper.getSimpleModule());
-			}
-		}
-
 		objectMapper.registerModule(new JavaTimeModule());
 		objectMapper.registerModule(new Jdk8Module());
 		objectMapper.registerModule(new JsonOrgModule());
 
 		return objectMapper;
 	}
-
-	@Autowired(required = false)
-	private List<Mapper<?, ?>> _mappers;
 
 }
