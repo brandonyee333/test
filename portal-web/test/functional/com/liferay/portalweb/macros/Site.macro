@@ -666,6 +666,20 @@ definition {
 		PortletEntry.save();
 	}
 
+	macro editPiwikCP {
+		AssertClick(
+			locator1 = "SitesEditSite#MENU_ADVANCED_TAB",
+			value1 = "Advanced");
+
+		Panel.expandPanel(panelHeading = "Analytics");
+
+		Type(
+			locator1 = "TextInput#PIWIK",
+			value1 = "${piwik}");
+
+		PortletEntry.save();
+	}
+
 	macro gotoSiteViaMySitesPG {
 		AssertClick(
 			key_itemName = "${siteName}",
