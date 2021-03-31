@@ -42,91 +42,22 @@ public class AnalyticsEventStorageDog {
 
 	public void store(AnalyticsEvent analyticsEvent) {
 		try {
-			String eventId = analyticsEvent.getEventId();
+			EventDefinition eventDefinition = _resolveEventDefinition(
+				analyticsEvent);
 
-			EventDefinition eventDefinition =
-				_eventDefinitionDog.fetchEventDefinitionByName(eventId);
-
-			String canonicalUrl = MapUtil.getString(
-				analyticsEvent.getContext(), "canonicalUrl");
-
-			if (eventDefinition == null) {
-				eventDefinition = _eventDefinitionDog.addEventDefinition(
-					null, null, analyticsEvent.getEventDate(), eventId,
-					EventDefinition.Type.CUSTOM, canonicalUrl);
-
-				if (eventDefinition.isBlocked()) {
-					return;
-				}
-			}
-			else if (eventDefinition.isBlocked()) {
-				_eventDefinitionDog.updateEventDefinition(
-					new BlockedEventDefinition(
-						analyticsEvent.getEventDate(), canonicalUrl),
-					null, null, eventDefinition.getId());
-
+			if (eventDefinition.isBlocked()) {
 				return;
 			}
 
-			Long eventDefinitionId = eventDefinition.getId();
-
-			Set<EventAttribute> eventAttributes = new HashSet<>();
-
-			Map<String, String> eventProperties =
-				analyticsEvent.getEventProperties();
-
-			for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
-				String propertyName = entry.getKey();
-				String propertyValue = entry.getValue();
-
-				EventAttributeDefinition eventAttributeDefinition =
-					_eventAttributeDefinitionDog.
-						fetchEventAttributeDefinitionByName(propertyName);
-
-				if (eventAttributeDefinition == null) {
-					eventAttributeDefinition =
-						_eventAttributeDefinitionDog.
-							addEventAttributeDefinition(
-								null, null, eventDefinitionId, propertyName,
-								propertyValue);
-				}
-				else {
-					Long eventAttributeDefinitionId =
-						eventAttributeDefinition.getId();
-
-					Set<EventDefinitionEventAttributeDefinition>
-						eventDefinitionEventAttributeDefinitions =
-							eventAttributeDefinition.
-								getEventDefinitionEventAttributeDefinitions();
-
-					Set<Long> eventDefinitionIds = _getEventDefinitionIds(
-						eventDefinitionEventAttributeDefinitions);
-
-					if ((eventAttributeDefinitionId != null) &&
-						!eventDefinitionIds.contains(eventDefinitionId)) {
-
-						eventDefinitionEventAttributeDefinitions.add(
-							new EventDefinitionEventAttributeDefinition(
-								eventDefinitionId, propertyValue));
-
-						_eventAttributeDefinitionDog.
-							updateEventAttributeDefinition(
-								null, null, null, eventAttributeDefinitionId,
-								eventDefinitionEventAttributeDefinitions, null);
-					}
-				}
-
-				eventAttributes.add(
-					new EventAttribute(
-						propertyValue, eventAttributeDefinition.getId()));
-			}
+			Set<EventAttribute> eventAttributes = _resolveEventAttributes(
+				eventDefinition.getId(), analyticsEvent.getEventProperties());
 
 			_eventDog.addEvent(
 				analyticsEvent.getId(), analyticsEvent.getApplicationId(),
 				Long.valueOf(analyticsEvent.getChannelId()),
 				analyticsEvent.getCreateDate(),
 				analyticsEvent.getDataSourceId(), eventAttributes,
-				analyticsEvent.getEventDate(), eventDefinitionId,
+				analyticsEvent.getEventDate(), eventDefinition.getId(),
 				analyticsEvent.getUserId());
 		}
 		catch (Exception e) {
@@ -146,6 +77,83 @@ public class AnalyticsEventStorageDog {
 		).collect(
 			Collectors.toSet()
 		);
+	}
+
+	private Set<EventAttribute> _resolveEventAttributes(
+		Long eventDefinitionId, Map<String, String> eventProperties) {
+
+		Set<EventAttribute> eventAttributes = new HashSet<>();
+
+		for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
+			String propertyName = entry.getKey();
+			String propertyValue = entry.getValue();
+
+			EventAttributeDefinition eventAttributeDefinition =
+				_eventAttributeDefinitionDog.
+					fetchEventAttributeDefinitionByName(propertyName);
+
+			if (eventAttributeDefinition == null) {
+				eventAttributeDefinition =
+					_eventAttributeDefinitionDog.addEventAttributeDefinition(
+						null, null, eventDefinitionId, propertyName,
+						propertyValue);
+			}
+			else {
+				Long eventAttributeDefinitionId =
+					eventAttributeDefinition.getId();
+
+				Set<EventDefinitionEventAttributeDefinition>
+					eventDefinitionEventAttributeDefinitions =
+						eventAttributeDefinition.
+							getEventDefinitionEventAttributeDefinitions();
+
+				Set<Long> eventDefinitionIds = _getEventDefinitionIds(
+					eventDefinitionEventAttributeDefinitions);
+
+				if ((eventAttributeDefinitionId != null) &&
+					!eventDefinitionIds.contains(eventDefinitionId)) {
+
+					eventDefinitionEventAttributeDefinitions.add(
+						new EventDefinitionEventAttributeDefinition(
+							eventDefinitionId, propertyValue));
+
+					_eventAttributeDefinitionDog.updateEventAttributeDefinition(
+						null, null, null, eventAttributeDefinitionId,
+						eventDefinitionEventAttributeDefinitions, null);
+				}
+			}
+
+			eventAttributes.add(
+				new EventAttribute(
+					propertyValue, eventAttributeDefinition.getId()));
+		}
+
+		return eventAttributes;
+	}
+
+	private EventDefinition _resolveEventDefinition(
+		AnalyticsEvent analyticsEvent) {
+
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName(
+				analyticsEvent.getEventId());
+
+		if (eventDefinition == null) {
+			eventDefinition = _eventDefinitionDog.addEventDefinition(
+				null, null, analyticsEvent.getEventDate(),
+				analyticsEvent.getEventId(), EventDefinition.Type.CUSTOM,
+				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"));
+		}
+		else if (eventDefinition.isBlocked()) {
+			eventDefinition = _eventDefinitionDog.updateEventDefinition(
+				new BlockedEventDefinition(
+					analyticsEvent.getEventDate(),
+					MapUtil.getString(
+						analyticsEvent.getContext(), "canonicalUrl")),
+				null, null, eventDefinition.getId());
+		}
+
+		return eventDefinition;
 	}
 
 	private static final Log _log = LogFactory.getLog(
