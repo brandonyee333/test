@@ -24,8 +24,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.liferay.osb.asah.common.mapper.Mapper;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
