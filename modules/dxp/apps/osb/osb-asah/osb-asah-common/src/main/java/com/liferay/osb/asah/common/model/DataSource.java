@@ -162,23 +162,6 @@ public class DataSource implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonIgnore
-	public Date getAnalyticsLastSyncDate() {
-		if (_provider == null) {
-			return null;
-		}
-
-		AnalyticsConfiguration analyticsConfiguration =
-			_provider.getAnalyticsConfiguration();
-
-		if (analyticsConfiguration == null) {
-			return null;
-		}
-
-		return analyticsConfiguration.getLastSyncDate();
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonIgnore
 	public Long getAuthorId() {
 		if (_author == null) {
 			return null;
@@ -201,40 +184,6 @@ public class DataSource implements Persistable<Long> {
 	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getChannelId() {
 		return _channelId;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonIgnore
-	public Date getContactsLastSuccessfulAuditEventDate() {
-		if (_provider == null) {
-			return null;
-		}
-
-		ContactsConfiguration contactsConfiguration =
-			_provider.getContactsConfiguration();
-
-		if (contactsConfiguration == null) {
-			return null;
-		}
-
-		return contactsConfiguration.getLastSuccessfulAuditEventDate();
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonIgnore
-	public Date getContactsLastSyncDate() {
-		if (_provider == null) {
-			return null;
-		}
-
-		ContactsConfiguration contactsConfiguration =
-			_provider.getContactsConfiguration();
-
-		if (contactsConfiguration == null) {
-			return null;
-		}
-
-		return contactsConfiguration.getLastSyncDate();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -636,27 +585,6 @@ public class DataSource implements Persistable<Long> {
 		return false;
 	}
 
-	public void setAnalyticsLastSyncDate(Date analyticslastSyncDate) {
-		if (analyticslastSyncDate == null) {
-			return;
-		}
-
-		if (_provider == null) {
-			_provider = new Provider();
-		}
-
-		AnalyticsConfiguration analyticsConfiguration =
-			_provider.getAnalyticsConfiguration();
-
-		if (analyticsConfiguration == null) {
-			analyticsConfiguration = new AnalyticsConfiguration();
-		}
-
-		analyticsConfiguration.setLastSyncDate(analyticslastSyncDate);
-
-		_provider.setAnalyticsConfiguration(analyticsConfiguration);
-	}
-
 	public void setAuthorId(Long authorId) {
 		if (authorId == null) {
 			return;
@@ -683,51 +611,6 @@ public class DataSource implements Persistable<Long> {
 
 	public void setChannelId(Long channelId) {
 		_channelId = channelId;
-	}
-
-	public void setContactsLastSuccessfulAuditEventDate(
-		Date contactsLastSuccessfulAuditEventDate) {
-
-		if (contactsLastSuccessfulAuditEventDate == null) {
-			return;
-		}
-
-		if (_provider == null) {
-			_provider = new Provider();
-		}
-
-		ContactsConfiguration contactsConfiguration =
-			_provider.getContactsConfiguration();
-
-		if (contactsConfiguration == null) {
-			contactsConfiguration = new ContactsConfiguration();
-		}
-
-		contactsConfiguration.setLastSyncDate(
-			contactsLastSuccessfulAuditEventDate);
-
-		_provider.setContactsConfiguration(contactsConfiguration);
-	}
-
-	public void setContactsLastSyncDate(Date contactsLastSyncDate) {
-		if (contactsLastSyncDate == null) {
-			return;
-		}
-
-		if (_provider == null) {
-			_provider = new Provider();
-		}
-
-		ContactsConfiguration contactsConfiguration =
-			_provider.getContactsConfiguration();
-
-		if (contactsConfiguration == null) {
-			contactsConfiguration = new ContactsConfiguration();
-		}
-
-		contactsConfiguration.setLastSyncDate(contactsLastSyncDate);
-
-		_provider.setContactsConfiguration(contactsConfiguration);
 	}
 
 	public void setContactsSelected(Boolean contactsSelected) {
@@ -1392,9 +1275,7 @@ public class DataSource implements Persistable<Long> {
 					_dataSourceSites,
 					analyticsConfiguration._dataSourceSites) &&
 				Objects.equals(
-					_enableAllSites, analyticsConfiguration._enableAllSites) &&
-				Objects.equals(
-					_lastSyncDate, analyticsConfiguration._lastSyncDate)) {
+					_enableAllSites, analyticsConfiguration._enableAllSites)) {
 
 				return true;
 			}
@@ -1412,24 +1293,9 @@ public class DataSource implements Persistable<Long> {
 			return _enableAllSites;
 		}
 
-		@JsonAlias("lastSyncDate")
-		@JsonFormat(
-			pattern = DateUtil.PATTERN_ISO_8601,
-			shape = JsonFormat.Shape.STRING, timezone = "UTC"
-		)
-		@JsonProperty("lastSyncTime")
-		public Date getLastSyncDate() {
-			if (_lastSyncDate == null) {
-				return null;
-			}
-
-			return new Date(_lastSyncDate.getTime());
-		}
-
 		@Override
 		public int hashCode() {
-			return Objects.hash(
-				_dataSourceSites, _enableAllSites, _lastSyncDate);
+			return Objects.hash(_dataSourceSites, _enableAllSites);
 		}
 
 		public void setDataSourceSites(Set<DataSourceSite> dataSourceSites) {
@@ -1440,15 +1306,8 @@ public class DataSource implements Persistable<Long> {
 			_enableAllSites = enableAllSites;
 		}
 
-		public void setLastSyncDate(Date lastSyncDate) {
-			if (lastSyncDate != null) {
-				_lastSyncDate = new Date(lastSyncDate.getTime());
-			}
-		}
-
 		private Set<DataSourceSite> _dataSourceSites;
 		private Boolean _enableAllSites;
-		private Date _lastSyncDate;
 
 	}
 
@@ -1549,12 +1408,7 @@ public class DataSource implements Persistable<Long> {
 					_enableAllContacts,
 					contactsConfiguration._enableAllContacts) &&
 				Objects.equals(
-					_enableAllLeads, contactsConfiguration._enableAllLeads) &&
-				Objects.equals(
-					_lastSuccessfulAuditEventDate,
-					contactsConfiguration._lastSuccessfulAuditEventDate) &&
-				Objects.equals(
-					_lastSyncDate, contactsConfiguration._lastSyncDate)) {
+					_enableAllLeads, contactsConfiguration._enableAllLeads)) {
 
 				return true;
 			}
@@ -1580,40 +1434,11 @@ public class DataSource implements Persistable<Long> {
 			return _enableAllLeads;
 		}
 
-		@JsonAlias("lastSuccessfulAuditEventDate")
-		@JsonFormat(
-			pattern = DateUtil.PATTERN_ISO_8601,
-			shape = JsonFormat.Shape.STRING, timezone = "UTC"
-		)
-		@JsonProperty("lastSuccessfulAuditEventTime")
-		public Date getLastSuccessfulAuditEventDate() {
-			if (_lastSuccessfulAuditEventDate == null) {
-				return null;
-			}
-
-			return new Date(_lastSuccessfulAuditEventDate.getTime());
-		}
-
-		@JsonAlias("lLastSyncDate")
-		@JsonFormat(
-			pattern = DateUtil.PATTERN_ISO_8601,
-			shape = JsonFormat.Shape.STRING, timezone = "UTC"
-		)
-		@JsonProperty("lastSyncTime")
-		public Date getLastSyncDate() {
-			if (_lastSyncDate == null) {
-				return null;
-			}
-
-			return new Date(_lastSyncDate.getTime());
-		}
-
 		@Override
 		public int hashCode() {
 			return Objects.hash(
 				_dataSourceOrganizations, _dataSourceUserGroups,
-				_enableAllContacts, _enableAllLeads,
-				_lastSuccessfulAuditEventDate, _lastSyncDate);
+				_enableAllContacts, _enableAllLeads);
 		}
 
 		public void setDataSourceOrganizations(
@@ -1636,33 +1461,10 @@ public class DataSource implements Persistable<Long> {
 			_enableAllLeads = enableAllLeads;
 		}
 
-		public void setLastSuccessfulAuditEventDate(
-			Date lastSuccessfulAuditEventDate) {
-
-			if (lastSuccessfulAuditEventDate != null) {
-				_lastSuccessfulAuditEventDate = new Date(
-					lastSuccessfulAuditEventDate.getTime());
-			}
-			else {
-				_lastSuccessfulAuditEventDate = null;
-			}
-		}
-
-		public void setLastSyncDate(Date lastSyncDate) {
-			if (lastSyncDate != null) {
-				_lastSyncDate = new Date(lastSyncDate.getTime());
-			}
-			else {
-				_lastSyncDate = null;
-			}
-		}
-
 		private Set<DataSourceOrganization> _dataSourceOrganizations;
 		private Set<DataSourceUserGroup> _dataSourceUserGroups;
 		private Boolean _enableAllContacts;
 		private Boolean _enableAllLeads;
-		private Date _lastSuccessfulAuditEventDate;
-		private Date _lastSyncDate;
 
 	}
 
