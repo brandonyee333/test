@@ -22,7 +22,6 @@ import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalServic
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.configuration.AnalyticsConfigurationTracker;
 import com.liferay.analytics.settings.internal.model.AnalyticsUserImpl;
-import com.liferay.analytics.settings.internal.security.auth.verifier.AnalyticsSecurityAuthVerifier;
 import com.liferay.analytics.settings.internal.util.EntityModelListenerTracker;
 import com.liferay.analytics.settings.security.constants.AnalyticsSecurityConstants;
 import com.liferay.expando.kernel.model.ExpandoColumn;
@@ -334,19 +333,6 @@ public class AnalyticsConfigurationTrackerImpl
 			AnalyticsConfiguration.class, properties);
 	}
 
-	private void _activate() {
-		if (!_active) {
-			_active = true;
-		}
-
-		if (!_authVerifierEnabled) {
-			_componentContext.enableComponent(
-				AnalyticsSecurityAuthVerifier.class.getName());
-
-			_authVerifierEnabled = true;
-		}
-	}
-
 	private void _addAnalyticsAdmin(long companyId) throws Exception {
 		User user = _userLocalService.fetchUserByScreenName(
 			companyId, AnalyticsSecurityConstants.SCREEN_NAME_ANALYTICS_ADMIN);
@@ -480,19 +466,6 @@ public class AnalyticsConfigurationTrackerImpl
 		_addAnalyticsMessages("update", contacts);
 	}
 
-	private void _deactivate() {
-		if (_active && !_hasConfiguration()) {
-			_active = false;
-		}
-
-		if (_authVerifierEnabled && !_hasConfiguration()) {
-			_componentContext.disableComponent(
-				AnalyticsSecurityAuthVerifier.class.getName());
-
-			_authVerifierEnabled = false;
-		}
-	}
-
 	private void _deleteAnalyticsAdmin(long companyId) throws Exception {
 		User user = _userLocalService.fetchUserByScreenName(
 			companyId, AnalyticsSecurityConstants.SCREEN_NAME_ANALYTICS_ADMIN);
@@ -521,7 +494,9 @@ public class AnalyticsConfigurationTrackerImpl
 				_deleteSAPEntry(companyId);
 			}
 
-			_deactivate();
+			if (_active && !_hasConfiguration()) {
+				_active = false;
+			}
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -530,7 +505,8 @@ public class AnalyticsConfigurationTrackerImpl
 
 	private void _enable(long companyId) {
 		try {
-			_activate();
+			_active = true;
+
 			_addAnalyticsAdmin(companyId);
 			_addSAPEntry(companyId);
 		}
@@ -979,8 +955,6 @@ public class AnalyticsConfigurationTrackerImpl
 
 	@Reference
 	private AnalyticsMessageLocalService _analyticsMessageLocalService;
-
-	private boolean _authVerifierEnabled;
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
