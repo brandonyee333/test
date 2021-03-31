@@ -14,6 +14,11 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.liferay.osb.asah.common.date.DateUtil;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -67,12 +72,18 @@ public class Channel implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonProperty("dataSources")
 	@MappedCollection(idColumn = "channelid")
 	public Set<ChannelDataSource> getChannelDataSources() {
 		return _channelDataSources;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("createDate")
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;

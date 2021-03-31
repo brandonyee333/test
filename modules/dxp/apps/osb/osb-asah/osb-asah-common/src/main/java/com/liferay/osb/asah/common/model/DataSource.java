@@ -14,6 +14,15 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
@@ -46,6 +55,73 @@ public class DataSource implements Persistable<Long> {
 		_name = name;
 	}
 
+	public void addDataSourceOrganization(
+		DataSourceOrganization dataSourceOrganization) {
+
+		if (dataSourceOrganization == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			contactsConfiguration = new ContactsConfiguration();
+		}
+
+		contactsConfiguration.addDataSourceOrganization(dataSourceOrganization);
+
+		_provider.setContactsConfiguration(contactsConfiguration);
+	}
+
+	public void addDataSourceSite(DataSourceSite dataSourceSite) {
+		if (dataSourceSite == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		AnalyticsConfiguration analyticsConfiguration =
+			_provider.getAnalyticsConfiguration();
+
+		if (analyticsConfiguration == null) {
+			analyticsConfiguration = new AnalyticsConfiguration();
+		}
+
+		analyticsConfiguration.addDataSourceSite(dataSourceSite);
+
+		_provider.setAnalyticsConfiguration(analyticsConfiguration);
+	}
+
+	public void addDataSourceUserGroup(
+		DataSourceUserGroup dataSourceUserGroup) {
+
+		if (dataSourceUserGroup == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			contactsConfiguration = new ContactsConfiguration();
+		}
+
+		contactsConfiguration.addDataSourceUserGroup(dataSourceUserGroup);
+
+		_provider.setContactsConfiguration(contactsConfiguration);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -58,46 +134,19 @@ public class DataSource implements Persistable<Long> {
 
 		DataSource dataSource = (DataSource)obj;
 
-		if (Objects.equals(_authorId, dataSource._authorId) &&
-			Objects.equals(_authorName, dataSource._authorName) &&
+		if (Objects.equals(_author, dataSource._author) &&
 			Objects.equals(_channelId, dataSource._channelId) &&
-			Objects.equals(_contactsSelected, dataSource._contactsSelected) &&
 			Objects.equals(_createDate, dataSource._createDate) &&
-			Objects.equals(_credentialType, dataSource._credentialType) &&
-			Objects.equals(
-				_dataSourceOrganizations,
-				dataSource._dataSourceOrganizations) &&
-			Objects.equals(_dataSourceSites, dataSource._dataSourceSites) &&
-			Objects.equals(
-				_dataSourceUserGroups, dataSource._dataSourceUserGroups) &&
+			Objects.equals(_credential, dataSource._credential) &&
 			Objects.equals(_deletionDate, dataSource._deletionDate) &&
-			Objects.equals(_enableAllAccounts, dataSource._enableAllAccounts) &&
-			Objects.equals(_enableAllContacts, dataSource._enableAllContacts) &&
-			Objects.equals(_enableAllLeads, dataSource._enableAllLeads) &&
-			Objects.equals(_enableAllSites, dataSource._enableAllSites) &&
+			Objects.equals(_detail, dataSource._detail) &&
 			Objects.equals(
 				_faroBackendSecuritySignature,
 				dataSource._faroBackendSecuritySignature) &&
 			Objects.equals(_id, dataSource._id) &&
-			Objects.equals(_login, dataSource._login) &&
 			Objects.equals(_modifiedDate, dataSource._modifiedDate) &&
 			Objects.equals(_name, dataSource._name) &&
-			Objects.equals(_oAuthAccessSecret, dataSource._oAuthAccessSecret) &&
-			Objects.equals(_oAuthAccessToken, dataSource._oAuthAccessToken) &&
-			Objects.equals(_oAuthClientId, dataSource._oAuthClientId) &&
-			Objects.equals(_oAuthClientSecret, dataSource._oAuthClientSecret) &&
-			Objects.equals(_oAuthConsumerKey, dataSource._oAuthConsumerKey) &&
-			Objects.equals(
-				_oAuthConsumerSecret, dataSource._oAuthConsumerSecret) &&
-			Objects.equals(
-				_oAuthOwnerEmailAddress, dataSource._oAuthOwnerEmailAddress) &&
-			Objects.equals(_oAuthOwnerName, dataSource._oAuthOwnerName) &&
-			Objects.equals(_oAuthRefreshToken, dataSource._oAuthRefreshToken) &&
-			Objects.equals(_password, dataSource._password) &&
-			Objects.equals(_privateKey, dataSource._privateKey) &&
-			Objects.equals(_providerType, dataSource._providerType) &&
-			Objects.equals(_publicKey, dataSource._publicKey) &&
-			Objects.equals(_sitesSelected, dataSource._sitesSelected) &&
+			Objects.equals(_provider, dataSource._provider) &&
 			Objects.equals(_state, dataSource._state) &&
 			Objects.equals(_status, dataSource._status) &&
 			Objects.equals(_url, dataSource._url) &&
@@ -110,26 +159,99 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
+	public Date getAnalyticsLastSyncDate() {
+		if (_provider == null) {
+			return null;
+		}
+
+		AnalyticsConfiguration analyticsConfiguration =
+			_provider.getAnalyticsConfiguration();
+
+		if (analyticsConfiguration == null) {
+			return null;
+		}
+
+		return analyticsConfiguration.getLastSyncDate();
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public Long getAuthorId() {
-		return _authorId;
+		if (_author == null) {
+			return null;
+		}
+
+		return _author.getId();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getAuthorName() {
-		return _authorName;
+		if (_author == null) {
+			return null;
+		}
+
+		return _author.getName();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getChannelId() {
 		return _channelId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Boolean getContactsSelected() {
-		return _contactsSelected;
+	@JsonIgnore
+	public Date getContactsLastSuccessfulAuditEventDate() {
+		if (_provider == null) {
+			return null;
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			return null;
+		}
+
+		return contactsConfiguration.getLastSuccessfulAuditEventDate();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
+	public Date getContactsLastSyncDate() {
+		if (_provider == null) {
+			return null;
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			return null;
+		}
+
+		return contactsConfiguration.getLastSyncDate();
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
+	public Boolean getContactsSelected() {
+		if (_detail == null) {
+			return null;
+		}
+
+		return _detail.getContactsSelected();
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("createDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateCreated")
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -139,26 +261,67 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getCredentialType() {
-		return _credentialType;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getType();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	@MappedCollection(idColumn = "datasourceid")
 	public Set<DataSourceOrganization> getDataSourceOrganizations() {
-		return _dataSourceOrganizations;
+		if (_provider == null) {
+			return null;
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			return null;
+		}
+
+		return contactsConfiguration.getDataSourceOrganizations();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	@MappedCollection(idColumn = "datasourceid")
 	public Set<DataSourceSite> getDataSourceSites() {
-		return _dataSourceSites;
+		if (_provider == null) {
+			return null;
+		}
+
+		AnalyticsConfiguration analyticsConfiguration =
+			_provider.getAnalyticsConfiguration();
+
+		if (analyticsConfiguration == null) {
+			return null;
+		}
+
+		return analyticsConfiguration.getDataSourceSites();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	@MappedCollection(idColumn = "datasourceid")
 	public Set<DataSourceUserGroup> getDataSourceUserGroups() {
-		return _dataSourceUserGroups;
+		if (_provider == null) {
+			return null;
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			return null;
+		}
+
+		return contactsConfiguration.getDataSourceUserGroups();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -171,23 +334,71 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public Boolean getEnableAllAccounts() {
-		return _enableAllAccounts;
+		if (_provider == null) {
+			return null;
+		}
+
+		AccountsConfiguration accountsConfiguration =
+			_provider.getAccountsConfiguration();
+
+		if (accountsConfiguration == null) {
+			return null;
+		}
+
+		return accountsConfiguration.getEnableAllAccounts();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public Boolean getEnableAllContacts() {
-		return _enableAllContacts;
+		if (_provider == null) {
+			return null;
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			return null;
+		}
+
+		return contactsConfiguration.getEnableAllContacts();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public Boolean getEnableAllLeads() {
-		return _enableAllLeads;
+		if (_provider == null) {
+			return null;
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			return null;
+		}
+
+		return contactsConfiguration.getEnableAllLeads();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public Boolean getEnableAllSites() {
-		return _enableAllSites;
+		if (_provider == null) {
+			return null;
+		}
+
+		AnalyticsConfiguration analyticsConfiguration =
+			_provider.getAnalyticsConfiguration();
+
+		if (analyticsConfiguration == null) {
+			return null;
+		}
+
+		return analyticsConfiguration.getEnableAllSites();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -197,17 +408,29 @@ public class DataSource implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
 	@Override
 	public Long getId() {
 		return _id;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getLogin() {
-		return _login;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getLogin();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("modifiedDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateModified")
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -222,73 +445,155 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getOAuthAccessSecret() {
-		return _oAuthAccessSecret;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getOAuthAccessSecret();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getOAuthAccessToken() {
-		return _oAuthAccessToken;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getOAuthAccessToken();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getOAuthClientId() {
-		return _oAuthClientId;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getOAuthClientId();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getOAuthClientSecret() {
-		return _oAuthClientSecret;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getOAuthClientSecret();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getOAuthConsumerKey() {
-		return _oAuthConsumerKey;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getOAuthConsumerKey();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getOAuthConsumerSecret() {
-		return _oAuthConsumerSecret;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getOAuthConsumerSecret();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getOAuthOwnerEmailAddress() {
-		return _oAuthOwnerEmailAddress;
+		if (_credential == null) {
+			return null;
+		}
+
+		Credential.OAuthOwner oAuthOwner = _credential.getOAuthOwner();
+
+		if (oAuthOwner == null) {
+			return null;
+		}
+
+		return oAuthOwner.getEmailAddress();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getOAuthOwnerName() {
-		return _oAuthOwnerName;
+		if (_credential == null) {
+			return null;
+		}
+
+		Credential.OAuthOwner oAuthOwner = _credential.getOAuthOwner();
+
+		if (oAuthOwner == null) {
+			return null;
+		}
+
+		return oAuthOwner.getName();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getOAuthRefreshToken() {
-		return _oAuthRefreshToken;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getOAuthRefreshToken();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getPassword() {
-		return _password;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getPassword();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getPrivateKey() {
-		return _privateKey;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getPrivateKey();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getProviderType() {
-		return _providerType;
+		if (_provider == null) {
+			return null;
+		}
+
+		return _provider.getType();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getPublicKey() {
-		return _publicKey;
+		if (_credential == null) {
+			return null;
+		}
+
+		return _credential.getPublicKey();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public Boolean getSitesSelected() {
-		return _sitesSelected;
+		if (_detail == null) {
+			return null;
+		}
+
+		return _detail.getSitesSelected();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -314,18 +619,12 @@ public class DataSource implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_authorId, _authorName, _channelId, _contactsSelected, _createDate,
-			_credentialType, _dataSourceOrganizations, _dataSourceSites,
-			_dataSourceUserGroups, _deletionDate, _enableAllAccounts,
-			_enableAllContacts, _enableAllLeads, _enableAllSites,
-			_faroBackendSecuritySignature, _id, _login, _modifiedDate, _name,
-			_oAuthAccessSecret, _oAuthAccessToken, _oAuthClientId,
-			_oAuthClientSecret, _oAuthConsumerKey, _oAuthConsumerSecret,
-			_oAuthOwnerEmailAddress, _oAuthOwnerName, _oAuthRefreshToken,
-			_password, _privateKey, _providerType, _publicKey, _sitesSelected,
-			_state, _status, _url, _workspaceURL);
+			_author, _channelId, _createDate, _credential, _deletionDate,
+			_detail, _faroBackendSecuritySignature, _id, _modifiedDate, _name,
+			_provider, _state, _status, _url, _workspaceURL);
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {
@@ -335,20 +634,110 @@ public class DataSource implements Persistable<Long> {
 		return false;
 	}
 
+	public void setAnalyticsLastSyncDate(Date analyticslastSyncDate) {
+		if (analyticslastSyncDate == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		AnalyticsConfiguration analyticsConfiguration =
+			_provider.getAnalyticsConfiguration();
+
+		if (analyticsConfiguration == null) {
+			analyticsConfiguration = new AnalyticsConfiguration();
+		}
+
+		analyticsConfiguration.setLastSyncDate(analyticslastSyncDate);
+
+		_provider.setAnalyticsConfiguration(analyticsConfiguration);
+	}
+
 	public void setAuthorId(Long authorId) {
-		_authorId = authorId;
+		if (authorId == null) {
+			return;
+		}
+
+		if (_author == null) {
+			_author = new Author();
+		}
+
+		_author.setId(authorId);
 	}
 
 	public void setAuthorName(String authorName) {
-		_authorName = authorName;
+		if (authorName == null) {
+			return;
+		}
+
+		if (_author == null) {
+			_author = new Author();
+		}
+
+		_author.setName(authorName);
 	}
 
 	public void setChannelId(Long channelId) {
 		_channelId = channelId;
 	}
 
+	public void setContactsLastSuccessfulAuditEventDate(
+		Date contactsLastSuccessfulAuditEventDate) {
+
+		if (contactsLastSuccessfulAuditEventDate == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			contactsConfiguration = new ContactsConfiguration();
+		}
+
+		contactsConfiguration.setLastSyncDate(
+			contactsLastSuccessfulAuditEventDate);
+
+		_provider.setContactsConfiguration(contactsConfiguration);
+	}
+
+	public void setContactsLastSyncDate(Date contactsLastSyncDate) {
+		if (contactsLastSyncDate == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			contactsConfiguration = new ContactsConfiguration();
+		}
+
+		contactsConfiguration.setLastSyncDate(contactsLastSyncDate);
+
+		_provider.setContactsConfiguration(contactsConfiguration);
+	}
+
 	public void setContactsSelected(Boolean contactsSelected) {
-		_contactsSelected = contactsSelected;
+		if (contactsSelected == null) {
+			return;
+		}
+
+		if (_detail == null) {
+			_detail = new Detail();
+		}
+
+		_detail.setContactsSelected(contactsSelected);
 	}
 
 	public void setCreateDate(Date createDate) {
@@ -358,23 +747,85 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	public void setCredentialType(String credentialType) {
-		_credentialType = credentialType;
+		if (credentialType == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setType(credentialType);
 	}
 
 	public void setDataSourceOrganizations(
 		Set<DataSourceOrganization> dataSourceOrganizations) {
 
-		_dataSourceOrganizations = dataSourceOrganizations;
+		if ((dataSourceOrganizations == null) ||
+			dataSourceOrganizations.isEmpty()) {
+
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			contactsConfiguration = new ContactsConfiguration();
+		}
+
+		contactsConfiguration.setDataSourceOrganizations(
+			dataSourceOrganizations);
+
+		_provider.setContactsConfiguration(contactsConfiguration);
 	}
 
 	public void setDataSourceSites(Set<DataSourceSite> dataSourceSites) {
-		_dataSourceSites = dataSourceSites;
+		if ((dataSourceSites == null) || dataSourceSites.isEmpty()) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		AnalyticsConfiguration analyticsConfiguration =
+			_provider.getAnalyticsConfiguration();
+
+		if (analyticsConfiguration == null) {
+			analyticsConfiguration = new AnalyticsConfiguration();
+		}
+
+		analyticsConfiguration.setDataSourceSites(dataSourceSites);
+
+		_provider.setAnalyticsConfiguration(analyticsConfiguration);
 	}
 
 	public void setDataSourceUserGroups(
 		Set<DataSourceUserGroup> dataSourceUserGroups) {
 
-		_dataSourceUserGroups = dataSourceUserGroups;
+		if ((dataSourceUserGroups == null) || dataSourceUserGroups.isEmpty()) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			contactsConfiguration = new ContactsConfiguration();
+		}
+
+		contactsConfiguration.setDataSourceUserGroups(dataSourceUserGroups);
+
+		_provider.setContactsConfiguration(contactsConfiguration);
 	}
 
 	public void setDeletionDate(Date deletionDate) {
@@ -384,19 +835,87 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	public void setEnableAllAccounts(Boolean enableAllAccounts) {
-		_enableAllAccounts = enableAllAccounts;
+		if (enableAllAccounts == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		AccountsConfiguration accountsConfiguration =
+			_provider.getAccountsConfiguration();
+
+		if (accountsConfiguration == null) {
+			accountsConfiguration = new AccountsConfiguration();
+		}
+
+		accountsConfiguration.setEnableAllAccounts(enableAllAccounts);
+
+		_provider.setAccountsConfiguration(accountsConfiguration);
 	}
 
 	public void setEnableAllContacts(Boolean enableAllContacts) {
-		_enableAllContacts = enableAllContacts;
+		if (enableAllContacts == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			contactsConfiguration = new ContactsConfiguration();
+		}
+
+		contactsConfiguration.setEnableAllContacts(enableAllContacts);
+
+		_provider.setContactsConfiguration(contactsConfiguration);
 	}
 
 	public void setEnableAllLeads(Boolean enableAllLeads) {
-		_enableAllLeads = enableAllLeads;
+		if (enableAllLeads == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		ContactsConfiguration contactsConfiguration =
+			_provider.getContactsConfiguration();
+
+		if (contactsConfiguration == null) {
+			contactsConfiguration = new ContactsConfiguration();
+		}
+
+		contactsConfiguration.setEnableAllLeads(enableAllLeads);
+
+		_provider.setContactsConfiguration(contactsConfiguration);
 	}
 
 	public void setEnableAllSites(Boolean enableAllSites) {
-		_enableAllSites = enableAllSites;
+		if (enableAllSites == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		AnalyticsConfiguration analyticsConfiguration =
+			_provider.getAnalyticsConfiguration();
+
+		if (analyticsConfiguration == null) {
+			analyticsConfiguration = new AnalyticsConfiguration();
+		}
+
+		analyticsConfiguration.setEnableAllSites(enableAllSites);
+
+		_provider.setAnalyticsConfiguration(analyticsConfiguration);
 	}
 
 	public void setFaroBackendSecuritySignature(
@@ -414,7 +933,15 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	public void setLogin(String login) {
-		_login = login;
+		if (login == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setLogin(login);
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
@@ -428,61 +955,193 @@ public class DataSource implements Persistable<Long> {
 	}
 
 	public void setOAuthAccessSecret(String oAuthAccessSecret) {
-		_oAuthAccessSecret = oAuthAccessSecret;
+		if (oAuthAccessSecret == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setOAuthAccessSecret(oAuthAccessSecret);
 	}
 
 	public void setOAuthAccessToken(String oAuthAccessToken) {
-		_oAuthAccessToken = oAuthAccessToken;
+		if (oAuthAccessToken == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setOAuthAccessToken(oAuthAccessToken);
 	}
 
 	public void setOAuthClientId(String oAuthClientId) {
-		_oAuthClientId = oAuthClientId;
+		if (oAuthClientId == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setOAuthClientId(oAuthClientId);
 	}
 
 	public void setOAuthClientSecret(String oAuthClientSecret) {
-		_oAuthClientSecret = oAuthClientSecret;
+		if (oAuthClientSecret == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setOAuthClientSecret(oAuthClientSecret);
 	}
 
 	public void setOAuthConsumerKey(String oAuthConsumerKey) {
-		_oAuthConsumerKey = oAuthConsumerKey;
+		if (oAuthConsumerKey == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setOAuthConsumerKey(oAuthConsumerKey);
 	}
 
 	public void setOAuthConsumerSecret(String oAuthConsumerSecret) {
-		_oAuthConsumerSecret = oAuthConsumerSecret;
+		if (oAuthConsumerSecret == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setOAuthConsumerSecret(oAuthConsumerSecret);
 	}
 
 	public void setOAuthOwnerEmailAddress(
 		String oAuthOwnerOAuthOwnerEmailAddress) {
 
-		_oAuthOwnerEmailAddress = oAuthOwnerOAuthOwnerEmailAddress;
+		if (oAuthOwnerOAuthOwnerEmailAddress == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		Credential.OAuthOwner oAuthOwner = _credential.getOAuthOwner();
+
+		if (oAuthOwner == null) {
+			oAuthOwner = new Credential.OAuthOwner();
+		}
+
+		oAuthOwner.setEmailAddress(oAuthOwnerOAuthOwnerEmailAddress);
+
+		_credential.setOAuthOwner(oAuthOwner);
 	}
 
 	public void setOAuthOwnerName(String oAuthOwnerOAuthOwnerName) {
-		_oAuthOwnerName = oAuthOwnerOAuthOwnerName;
+		if (oAuthOwnerOAuthOwnerName == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		Credential.OAuthOwner oAuthOwner = _credential.getOAuthOwner();
+
+		if (oAuthOwner == null) {
+			oAuthOwner = new Credential.OAuthOwner();
+		}
+
+		oAuthOwner.setName(oAuthOwnerOAuthOwnerName);
+
+		_credential.setOAuthOwner(oAuthOwner);
 	}
 
 	public void setOAuthRefreshToken(String oAuthRefreshToken) {
-		_oAuthRefreshToken = oAuthRefreshToken;
+		if (oAuthRefreshToken == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setOAuthRefreshToken(oAuthRefreshToken);
 	}
 
 	public void setPassword(String password) {
-		_password = password;
+		if (password == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setPassword(password);
 	}
 
 	public void setPrivateKey(String privateKey) {
-		_privateKey = privateKey;
+		if (privateKey == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setPrivateKey(privateKey);
+	}
+
+	public void setProvider(Provider provider) {
+		_provider = provider;
 	}
 
 	public void setProviderType(String providerType) {
-		_providerType = providerType;
+		if (providerType == null) {
+			return;
+		}
+
+		if (_provider == null) {
+			_provider = new Provider();
+		}
+
+		_provider.setType(providerType);
 	}
 
 	public void setPublicKey(String publicKey) {
-		_publicKey = publicKey;
+		if (publicKey == null) {
+			return;
+		}
+
+		if (_credential == null) {
+			_credential = new Credential();
+		}
+
+		_credential.setPublicKey(publicKey);
 	}
 
 	public void setSitesSelected(Boolean sitesSelected) {
-		_sitesSelected = sitesSelected;
+		if (sitesSelected == null) {
+			return;
+		}
+
+		if (_detail == null) {
+			_detail = new Detail();
+		}
+
+		_detail.setSitesSelected(sitesSelected);
 	}
 
 	public void setState(String state) {
@@ -501,48 +1160,138 @@ public class DataSource implements Persistable<Long> {
 		_workspaceURL = workspaceURL;
 	}
 
-	@Transient
-	private Long _authorId;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public static class Provider {
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof Provider)) {
+				return false;
+			}
+
+			Provider provider = (Provider)obj;
+
+			if (Objects.equals(
+					_accountsConfiguration, provider._accountsConfiguration) &&
+				Objects.equals(
+					_analyticsConfiguration,
+					provider._analyticsConfiguration) &&
+				Objects.equals(
+					_contactsConfiguration, provider._contactsConfiguration) &&
+				Objects.equals(_type, provider._type)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public AccountsConfiguration getAccountsConfiguration() {
+			return _accountsConfiguration;
+		}
+
+		public AnalyticsConfiguration getAnalyticsConfiguration() {
+			return _analyticsConfiguration;
+		}
+
+		public ContactsConfiguration getContactsConfiguration() {
+			return _contactsConfiguration;
+		}
+
+		public String getType() {
+			return _type;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(
+				_accountsConfiguration, _analyticsConfiguration,
+				_contactsConfiguration, _type);
+		}
+
+		public void setAccountsConfiguration(
+			AccountsConfiguration accountsConfiguration) {
+
+			_accountsConfiguration = accountsConfiguration;
+		}
+
+		public void setAnalyticsConfiguration(
+			AnalyticsConfiguration analyticsConfiguration) {
+
+			_analyticsConfiguration = analyticsConfiguration;
+		}
+
+		public void setContactsConfiguration(
+			ContactsConfiguration contactsConfiguration) {
+
+			_contactsConfiguration = contactsConfiguration;
+		}
+
+		public void setType(String type) {
+			_type = type;
+		}
+
+		private AccountsConfiguration _accountsConfiguration;
+		private AnalyticsConfiguration _analyticsConfiguration;
+		private ContactsConfiguration _contactsConfiguration;
+		private String _type;
+
+	}
+
+	@JsonProperty("author")
+	protected Author getAuthor() {
+		return _author;
+	}
+
+	@JsonProperty("credentials")
+	protected Credential getCredential() {
+		return _credential;
+	}
+
+	@JsonProperty("details")
+	protected Detail getDetail() {
+		return _detail;
+	}
+
+	@JsonProperty("provider")
+	protected Provider getProvider() {
+		return _provider;
+	}
+
+	protected void setAuthor(Author author) {
+		_author = author;
+	}
+
+	@JsonProperty("credentials")
+	protected void setCredential(Credential credential) {
+		_credential = credential;
+	}
+
+	protected void setDetail(Detail detail) {
+		_detail = detail;
+	}
 
 	@Transient
-	private String _authorName;
+	private Author _author;
 
 	@Transient
 	private Long _channelId;
 
 	@Transient
-	private Boolean _contactsSelected;
-
-	@Transient
 	private Date _createDate;
 
 	@Transient
-	private String _credentialType;
-
-	@Transient
-	private Set<DataSourceOrganization> _dataSourceOrganizations =
-		new HashSet<>();
-
-	@Transient
-	private Set<DataSourceSite> _dataSourceSites = new HashSet<>();
-
-	@Transient
-	private Set<DataSourceUserGroup> _dataSourceUserGroups = new HashSet<>();
+	private Credential _credential;
 
 	@Transient
 	private Date _deletionDate;
 
 	@Transient
-	private Boolean _enableAllAccounts;
-
-	@Transient
-	private Boolean _enableAllContacts;
-
-	@Transient
-	private Boolean _enableAllLeads;
-
-	@Transient
-	private Boolean _enableAllSites;
+	private Detail _detail;
 
 	@Transient
 	private String _faroBackendSecuritySignature;
@@ -554,55 +1303,13 @@ public class DataSource implements Persistable<Long> {
 	private Boolean _isNew;
 
 	@Transient
-	private String _login;
-
-	@Transient
 	private Date _modifiedDate;
 
 	@Transient
 	private String _name;
 
 	@Transient
-	private String _oAuthAccessSecret;
-
-	@Transient
-	private String _oAuthAccessToken;
-
-	@Transient
-	private String _oAuthClientId;
-
-	@Transient
-	private String _oAuthClientSecret;
-
-	@Transient
-	private String _oAuthConsumerKey;
-
-	@Transient
-	private String _oAuthConsumerSecret;
-
-	@Transient
-	private String _oAuthOwnerEmailAddress;
-
-	@Transient
-	private String _oAuthOwnerName;
-
-	@Transient
-	private String _oAuthRefreshToken;
-
-	@Transient
-	private String _password;
-
-	@Transient
-	private String _privateKey;
-
-	@Transient
-	private String _providerType;
-
-	@Transient
-	private String _publicKey;
-
-	@Transient
-	private Boolean _sitesSelected;
+	private Provider _provider;
 
 	@Transient
 	private String _state;
@@ -615,5 +1322,626 @@ public class DataSource implements Persistable<Long> {
 
 	@Transient
 	private String _workspaceURL;
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class AccountsConfiguration {
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof AccountsConfiguration)) {
+				return false;
+			}
+
+			AccountsConfiguration accountsConfiguration =
+				(AccountsConfiguration)obj;
+
+			return Objects.equals(
+				_enableAllAccounts, accountsConfiguration._enableAllAccounts);
+		}
+
+		@JsonProperty("enableAllAccounts")
+		public Boolean getEnableAllAccounts() {
+			return _enableAllAccounts;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_enableAllAccounts);
+		}
+
+		public void setEnableAllAccounts(Boolean enableAllAccounts) {
+			_enableAllAccounts = enableAllAccounts;
+		}
+
+		@Transient
+		private Boolean _enableAllAccounts;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class AnalyticsConfiguration {
+
+		public void addDataSourceSite(DataSourceSite dataSourceSite) {
+			if (_dataSourceSites == null) {
+				_dataSourceSites = new HashSet<>();
+			}
+
+			_dataSourceSites.add(dataSourceSite);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof AnalyticsConfiguration)) {
+				return false;
+			}
+
+			AnalyticsConfiguration analyticsConfiguration =
+				(AnalyticsConfiguration)obj;
+
+			if (Objects.equals(
+					_dataSourceSites,
+					analyticsConfiguration._dataSourceSites) &&
+				Objects.equals(
+					_enableAllSites, analyticsConfiguration._enableAllSites) &&
+				Objects.equals(
+					_lastSyncDate, analyticsConfiguration._lastSyncDate)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("sites")
+		public Set<DataSourceSite> getDataSourceSites() {
+			return _dataSourceSites;
+		}
+
+		@JsonProperty("enableAllSites")
+		public Boolean getEnableAllSites() {
+			return _enableAllSites;
+		}
+
+		@JsonAlias("lastSyncDate")
+		@JsonFormat(
+			pattern = DateUtil.PATTERN_ISO_8601,
+			shape = JsonFormat.Shape.STRING, timezone = "UTC"
+		)
+		@JsonProperty("lastSyncTime")
+		public Date getLastSyncDate() {
+			if (_lastSyncDate == null) {
+				return null;
+			}
+
+			return new Date(_lastSyncDate.getTime());
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(
+				_dataSourceSites, _enableAllSites, _lastSyncDate);
+		}
+
+		public void setDataSourceSites(Set<DataSourceSite> dataSourceSites) {
+			_dataSourceSites = dataSourceSites;
+		}
+
+		public void setEnableAllSites(Boolean enableAllSites) {
+			_enableAllSites = enableAllSites;
+		}
+
+		public void setLastSyncDate(Date lastSyncDate) {
+			if (lastSyncDate != null) {
+				_lastSyncDate = new Date(lastSyncDate.getTime());
+			}
+		}
+
+		private Set<DataSourceSite> _dataSourceSites;
+		private Boolean _enableAllSites;
+		private Date _lastSyncDate;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class Author {
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof Author)) {
+				return false;
+			}
+
+			Author author = (Author)obj;
+
+			if (Objects.equals(_id, author._id) &&
+				Objects.equals(_name, author._name)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonSerialize(using = ToStringSerializer.class)
+		public Long getId() {
+			return _id;
+		}
+
+		public String getName() {
+			return _name;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_id, _name);
+		}
+
+		public void setId(Long id) {
+			_id = id;
+		}
+
+		public void setName(String name) {
+			_name = name;
+		}
+
+		private Long _id;
+		private String _name;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class ContactsConfiguration {
+
+		public void addDataSourceOrganization(
+			DataSourceOrganization dataSourceOrganization) {
+
+			if (_dataSourceOrganizations == null) {
+				_dataSourceOrganizations = new HashSet<>();
+			}
+
+			_dataSourceOrganizations.add(dataSourceOrganization);
+		}
+
+		public void addDataSourceUserGroup(
+			DataSourceUserGroup dataSourceUserGroup) {
+
+			if (_dataSourceUserGroups == null) {
+				_dataSourceUserGroups = new HashSet<>();
+			}
+
+			_dataSourceUserGroups.add(dataSourceUserGroup);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof ContactsConfiguration)) {
+				return false;
+			}
+
+			ContactsConfiguration contactsConfiguration =
+				(ContactsConfiguration)obj;
+
+			if (Objects.equals(
+					_dataSourceOrganizations,
+					contactsConfiguration._dataSourceOrganizations) &&
+				Objects.equals(
+					_dataSourceUserGroups,
+					contactsConfiguration._dataSourceUserGroups) &&
+				Objects.equals(
+					_enableAllContacts,
+					contactsConfiguration._enableAllContacts) &&
+				Objects.equals(
+					_enableAllLeads, contactsConfiguration._enableAllLeads) &&
+				Objects.equals(
+					_lastSuccessfulAuditEventDate,
+					contactsConfiguration._lastSuccessfulAuditEventDate) &&
+				Objects.equals(
+					_lastSyncDate, contactsConfiguration._lastSyncDate)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("organizations")
+		public Set<DataSourceOrganization> getDataSourceOrganizations() {
+			return _dataSourceOrganizations;
+		}
+
+		@JsonProperty("userGroups")
+		public Set<DataSourceUserGroup> getDataSourceUserGroups() {
+			return _dataSourceUserGroups;
+		}
+
+		public Boolean getEnableAllContacts() {
+			return _enableAllContacts;
+		}
+
+		public Boolean getEnableAllLeads() {
+			return _enableAllLeads;
+		}
+
+		@JsonAlias("lastSuccessfulAuditEventDate")
+		@JsonFormat(
+			pattern = DateUtil.PATTERN_ISO_8601,
+			shape = JsonFormat.Shape.STRING, timezone = "UTC"
+		)
+		@JsonProperty("lastSuccessfulAuditEventTime")
+		public Date getLastSuccessfulAuditEventDate() {
+			if (_lastSuccessfulAuditEventDate == null) {
+				return null;
+			}
+
+			return new Date(_lastSuccessfulAuditEventDate.getTime());
+		}
+
+		@JsonAlias("lLastSyncDate")
+		@JsonFormat(
+			pattern = DateUtil.PATTERN_ISO_8601,
+			shape = JsonFormat.Shape.STRING, timezone = "UTC"
+		)
+		@JsonProperty("lastSyncTime")
+		public Date getLastSyncDate() {
+			if (_lastSyncDate == null) {
+				return null;
+			}
+
+			return new Date(_lastSyncDate.getTime());
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(
+				_dataSourceOrganizations, _dataSourceUserGroups,
+				_enableAllContacts, _enableAllLeads,
+				_lastSuccessfulAuditEventDate, _lastSyncDate);
+		}
+
+		public void setDataSourceOrganizations(
+			Set<DataSourceOrganization> dataSourceOrganizations) {
+
+			_dataSourceOrganizations = dataSourceOrganizations;
+		}
+
+		public void setDataSourceUserGroups(
+			Set<DataSourceUserGroup> dataSourceUserGroups) {
+
+			_dataSourceUserGroups = dataSourceUserGroups;
+		}
+
+		public void setEnableAllContacts(Boolean enableAllContacts) {
+			_enableAllContacts = enableAllContacts;
+		}
+
+		public void setEnableAllLeads(Boolean enableAllLeads) {
+			_enableAllLeads = enableAllLeads;
+		}
+
+		public void setLastSuccessfulAuditEventDate(
+			Date lastSuccessfulAuditEventDate) {
+
+			if (lastSuccessfulAuditEventDate != null) {
+				_lastSuccessfulAuditEventDate = new Date(
+					lastSuccessfulAuditEventDate.getTime());
+			}
+			else {
+				_lastSuccessfulAuditEventDate = null;
+			}
+		}
+
+		public void setLastSyncDate(Date lastSyncDate) {
+			if (lastSyncDate != null) {
+				_lastSyncDate = new Date(lastSyncDate.getTime());
+			}
+			else {
+				_lastSyncDate = null;
+			}
+		}
+
+		private Set<DataSourceOrganization> _dataSourceOrganizations;
+		private Set<DataSourceUserGroup> _dataSourceUserGroups;
+		private Boolean _enableAllContacts;
+		private Boolean _enableAllLeads;
+		private Date _lastSuccessfulAuditEventDate;
+		private Date _lastSyncDate;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class Credential {
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof Credential)) {
+				return false;
+			}
+
+			Credential credential = (Credential)obj;
+
+			if (Objects.equals(_login, credential._login) &&
+				Objects.equals(
+					_oAuthAccessSecret, credential._oAuthAccessSecret) &&
+				Objects.equals(
+					_oAuthAccessToken, credential._oAuthAccessToken) &&
+				Objects.equals(_oAuthClientId, credential._oAuthClientId) &&
+				Objects.equals(
+					_oAuthClientSecret, credential._oAuthClientSecret) &&
+				Objects.equals(
+					_oAuthConsumerKey, credential._oAuthConsumerKey) &&
+				Objects.equals(
+					_oAuthConsumerSecret, credential._oAuthConsumerSecret) &&
+				Objects.equals(_oAuthOwner, credential._oAuthOwner) &&
+				Objects.equals(
+					_oAuthRefreshToken, credential._oAuthRefreshToken) &&
+				Objects.equals(_password, credential._password) &&
+				Objects.equals(_privateKey, credential._privateKey) &&
+				Objects.equals(_publicKey, credential._publicKey) &&
+				Objects.equals(_type, credential._type)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public String getLogin() {
+			return _login;
+		}
+
+		@JsonProperty("oAuthAccessSecret")
+		public String getOAuthAccessSecret() {
+			return _oAuthAccessSecret;
+		}
+
+		@JsonProperty("oAuthAccessToken")
+		public String getOAuthAccessToken() {
+			return _oAuthAccessToken;
+		}
+
+		@JsonProperty("oAuthClientId")
+		public String getOAuthClientId() {
+			return _oAuthClientId;
+		}
+
+		@JsonProperty("oAuthClientSecret")
+		public String getOAuthClientSecret() {
+			return _oAuthClientSecret;
+		}
+
+		@JsonProperty("oAuthConsumerKey")
+		public String getOAuthConsumerKey() {
+			return _oAuthConsumerKey;
+		}
+
+		@JsonProperty("oAuthConsumerSecret")
+		public String getOAuthConsumerSecret() {
+			return _oAuthConsumerSecret;
+		}
+
+		@JsonProperty("oAuthOwner")
+		public OAuthOwner getOAuthOwner() {
+			return _oAuthOwner;
+		}
+
+		@JsonProperty("oAuthRefreshToken")
+		public String getOAuthRefreshToken() {
+			return _oAuthRefreshToken;
+		}
+
+		public String getPassword() {
+			return _password;
+		}
+
+		public String getPrivateKey() {
+			return _privateKey;
+		}
+
+		public String getPublicKey() {
+			return _publicKey;
+		}
+
+		public String getType() {
+			return _type;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(
+				_login, _oAuthAccessSecret, _oAuthAccessToken, _oAuthClientId,
+				_oAuthClientSecret, _oAuthConsumerKey, _oAuthConsumerSecret,
+				_oAuthOwner, _oAuthRefreshToken, _password, _privateKey,
+				_publicKey, _type);
+		}
+
+		public void setLogin(String login) {
+			_login = login;
+		}
+
+		public void setOAuthAccessSecret(String oAuthAccessSecret) {
+			_oAuthAccessSecret = oAuthAccessSecret;
+		}
+
+		public void setOAuthAccessToken(String oAuthAccessToken) {
+			_oAuthAccessToken = oAuthAccessToken;
+		}
+
+		public void setOAuthClientId(String oAuthClientId) {
+			_oAuthClientId = oAuthClientId;
+		}
+
+		public void setOAuthClientSecret(String oAuthClientSecret) {
+			_oAuthClientSecret = oAuthClientSecret;
+		}
+
+		public void setOAuthConsumerKey(String oAuthConsumerKey) {
+			_oAuthConsumerKey = oAuthConsumerKey;
+		}
+
+		public void setOAuthConsumerSecret(String oAuthConsumerSecret) {
+			_oAuthConsumerSecret = oAuthConsumerSecret;
+		}
+
+		public void setOAuthOwner(OAuthOwner oAuthOwner) {
+			_oAuthOwner = oAuthOwner;
+		}
+
+		public void setOAuthRefreshToken(String oAuthRefreshToken) {
+			_oAuthRefreshToken = oAuthRefreshToken;
+		}
+
+		public void setPassword(String password) {
+			_password = password;
+		}
+
+		public void setPrivateKey(String privateKey) {
+			_privateKey = privateKey;
+		}
+
+		public void setPublicKey(String publicKey) {
+			_publicKey = publicKey;
+		}
+
+		public void setType(String type) {
+			_type = type;
+		}
+
+		@JsonInclude(JsonInclude.Include.NON_NULL)
+		public static class OAuthOwner {
+
+			@Override
+			public boolean equals(Object obj) {
+				if (this == obj) {
+					return true;
+				}
+
+				if (!(obj instanceof OAuthOwner)) {
+					return false;
+				}
+
+				OAuthOwner oAuthOwner = (OAuthOwner)obj;
+
+				if (Objects.equals(_emailAddress, oAuthOwner._emailAddress) &&
+					Objects.equals(_name, oAuthOwner._name)) {
+
+					return true;
+				}
+
+				return false;
+			}
+
+			public String getEmailAddress() {
+				return _emailAddress;
+			}
+
+			public String getName() {
+				return _name;
+			}
+
+			@Override
+			public int hashCode() {
+				return Objects.hash(_emailAddress, _name);
+			}
+
+			public void setEmailAddress(String emailAddress) {
+				_emailAddress = emailAddress;
+			}
+
+			public void setName(String name) {
+				_name = name;
+			}
+
+			private String _emailAddress;
+			private String _name;
+
+		}
+
+		private String _login;
+		private String _oAuthAccessSecret;
+		private String _oAuthAccessToken;
+		private String _oAuthClientId;
+		private String _oAuthClientSecret;
+		private String _oAuthConsumerKey;
+		private String _oAuthConsumerSecret;
+		private OAuthOwner _oAuthOwner;
+		private String _oAuthRefreshToken;
+		private String _password;
+		private String _privateKey;
+		private String _publicKey;
+		private String _type;
+
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class Detail {
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof Detail)) {
+				return false;
+			}
+
+			Detail detail = (Detail)obj;
+
+			if (Objects.equals(_contactsSelected, detail._contactsSelected) &&
+				Objects.equals(_sitesSelected, detail._sitesSelected)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonProperty("contactsSelected")
+		public Boolean getContactsSelected() {
+			return _contactsSelected;
+		}
+
+		@JsonProperty("sitesSelected")
+		public Boolean getSitesSelected() {
+			return _sitesSelected;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_contactsSelected, _sitesSelected);
+		}
+
+		public void setContactsSelected(Boolean contactsSelected) {
+			_contactsSelected = contactsSelected;
+		}
+
+		public void setSitesSelected(Boolean sitesSelected) {
+			_sitesSelected = sitesSelected;
+		}
+
+		private Boolean _contactsSelected;
+		private Boolean _sitesSelected;
+
+	}
 
 }

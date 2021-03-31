@@ -14,6 +14,10 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
@@ -85,6 +89,11 @@ public class ActivityGroup implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("day")
 	public Date getDayDate() {
 		if (_dayDate == null) {
 			return null;
@@ -94,6 +103,11 @@ public class ActivityGroup implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("endTime")
 	public Date getEndDate() {
 		if (_endDate == null) {
 			return null;
@@ -103,6 +117,11 @@ public class ActivityGroup implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("endTimeLocal")
 	public Date getEndLocalDate() {
 		if (_endLocalDate == null) {
 			return null;
@@ -124,6 +143,11 @@ public class ActivityGroup implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("startTime")
 	public Date getStartDate() {
 		if (_startDate == null) {
 			return null;
@@ -133,6 +157,11 @@ public class ActivityGroup implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("startTimeLocal")
 	public Date getStartLocalDate() {
 		if (_startLocalDate == null) {
 			return null;

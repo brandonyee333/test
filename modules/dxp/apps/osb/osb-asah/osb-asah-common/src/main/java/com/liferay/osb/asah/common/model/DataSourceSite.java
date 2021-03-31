@@ -14,6 +14,10 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Map;
@@ -21,10 +25,12 @@ import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Inácio Nery
  */
+@Table
 public class DataSourceSite {
 
 	public DataSourceSite() {
@@ -67,6 +73,8 @@ public class DataSourceSite {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonProperty("id")
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getSiteId() {
 		return _siteId;
 	}

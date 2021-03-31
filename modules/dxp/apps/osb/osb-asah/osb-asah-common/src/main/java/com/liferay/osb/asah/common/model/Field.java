@@ -14,6 +14,14 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
+import com.liferay.osb.asah.common.date.DateUtil;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -60,11 +68,13 @@ public class Field implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public String getContext() {
 		return _context;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -81,12 +91,19 @@ public class Field implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
 	@Override
 	public Long getId() {
 		return _id;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("modifiedDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateModified")
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;

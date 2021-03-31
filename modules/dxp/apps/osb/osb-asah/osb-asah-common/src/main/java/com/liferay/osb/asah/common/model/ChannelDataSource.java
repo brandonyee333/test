@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 import java.util.Set;
 
@@ -57,6 +59,7 @@ public class ChannelDataSource {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonProperty("id")
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
