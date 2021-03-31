@@ -36,7 +36,6 @@ public class ObjectMapperConfiguration {
 
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
 		objectMapper.registerModule(new JavaTimeModule());
 		objectMapper.registerModule(new Jdk8Module());
 		objectMapper.registerModule(new JsonOrgModule());
