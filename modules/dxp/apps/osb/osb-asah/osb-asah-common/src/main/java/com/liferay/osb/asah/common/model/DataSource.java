@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
@@ -41,6 +42,7 @@ import org.springframework.data.relational.core.mapping.Table;
 /**
  * @author Inácio Nery
  */
+@SuppressFBWarnings("NP_BOOLEAN_RETURN_NULL")
 @Table
 public class DataSource implements Persistable<Long> {
 

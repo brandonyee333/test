@@ -77,7 +77,9 @@ public class BeanUtils {
 				targetPropertyResolvableType.getRawClass();
 
 			try {
-				if (targetPropertyClass.isEnum()) {
+				if ((targetPropertyClass != null) &&
+					targetPropertyClass.isEnum()) {
+
 					targetPropertyWriteMethod.invoke(
 						target,
 						Enum.valueOf(
