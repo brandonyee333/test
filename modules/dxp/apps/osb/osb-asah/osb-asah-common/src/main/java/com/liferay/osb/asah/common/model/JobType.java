@@ -12,13 +12,19 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model;
+package com.liferay.osb.asah.common.model;
 
 /**
  * @author Marcellus Tavares
+ * @author Riccardo Ferrari
  */
-public enum JobStatus {
+public enum JobType {
 
-	FAILED, PENDING, READY, RUNNING, SCHEDULED
+	COMMERCE_PRODUCT_RECOMMENDATION_FREQUENT_PATTERN,
+	COMMERCE_PRODUCT_RECOMMENDATION_PRODUCT_CONTENT,
+	COMMERCE_PRODUCT_RECOMMENDATION_USER_INTERACTION,
+	COMMERCE_REVENUE_FORECAST_ACCOUNT,
+	COMMERCE_REVENUE_FORECAST_ACCOUNT_CATEGORY,
+	CONTENT_RECOMMENDATION_ITEM_SIMILARITY
 
 }

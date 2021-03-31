@@ -12,13 +12,13 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.backend.dog.JobDog;
-import com.liferay.osb.asah.backend.model.Job;
-import com.liferay.osb.asah.backend.model.JobParameter;
-import com.liferay.osb.asah.backend.model.JobStatus;
-import com.liferay.osb.asah.backend.model.JobType;
+import com.liferay.osb.asah.common.dog.JobDog;
+import com.liferay.osb.asah.common.model.Job;
+import com.liferay.osb.asah.common.model.JobParameter;
+import com.liferay.osb.asah.common.model.JobStatus;
+import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.JobRun;

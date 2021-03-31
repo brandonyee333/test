@@ -12,18 +12,16 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.backend.model.Job;
-import com.liferay.osb.asah.backend.model.JobParameter;
-import com.liferay.osb.asah.backend.model.JobStatus;
-import com.liferay.osb.asah.backend.model.JobType;
+import com.liferay.osb.asah.common.model.Job;
+import com.liferay.osb.asah.common.model.JobParameter;
+import com.liferay.osb.asah.common.model.JobStatus;
+import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.dog.RecommendationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
