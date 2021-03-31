@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -109,10 +108,7 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 				DataSource dataSource = dataSourcesById.get(
 					record.get("datasourceid"));
 
-				Set<DataSourceOrganization> dataSourceOrganizations =
-					dataSource.getDataSourceOrganizations();
-
-				dataSourceOrganizations.add(
+				dataSource.addDataSourceOrganization(
 					new DataSourceOrganization(record.intoMap()));
 			}
 		);
@@ -154,10 +150,8 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 				DataSource dataSource = dataSourcesById.get(
 					record.get("datasourceid"));
 
-				Set<DataSourceSite> dataSourceSites =
-					dataSource.getDataSourceSites();
-
-				dataSourceSites.add(new DataSourceSite(record.intoMap()));
+				dataSource.addDataSourceSite(
+					new DataSourceSite(record.intoMap()));
 			}
 		);
 	}
@@ -179,10 +173,7 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 				DataSource dataSource = dataSourcesById.get(
 					record.get("datasourceid"));
 
-				Set<DataSourceUserGroup> dataSourceUserGroups =
-					dataSource.getDataSourceUserGroups();
-
-				dataSourceUserGroups.add(
+				dataSource.addDataSourceUserGroup(
 					new DataSourceUserGroup(record.intoMap()));
 			}
 		);
