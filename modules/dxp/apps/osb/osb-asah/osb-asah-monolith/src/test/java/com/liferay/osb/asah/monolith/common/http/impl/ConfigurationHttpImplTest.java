@@ -21,7 +21,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import com.liferay.osb.asah.backend.mapper.DataSourceMapper;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
@@ -147,10 +146,6 @@ public class ConfigurationHttpImplTest {
 
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-		DataSourceMapper dataSourceMapper = new DataSourceMapper();
-
-		objectMapper.registerModule(dataSourceMapper.getSimpleModule());
 
 		objectMapper.registerModule(new JavaTimeModule());
 		objectMapper.registerModule(new Jdk8Module());
