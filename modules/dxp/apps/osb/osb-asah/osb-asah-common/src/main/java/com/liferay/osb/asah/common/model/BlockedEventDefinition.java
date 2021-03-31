@@ -30,12 +30,12 @@ public class BlockedEventDefinition {
 	public BlockedEventDefinition() {
 	}
 
-	public BlockedEventDefinition(Date lastSeenDate, String lastSeenUrl) {
+	public BlockedEventDefinition(Date lastSeenDate, String lastSeenURL) {
 		if (lastSeenDate != null) {
 			_lastSeenDate = new Date(lastSeenDate.getTime());
 		}
 
-		_lastSeenUrl = lastSeenUrl;
+		_lastSeenURL = lastSeenURL;
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class BlockedEventDefinition {
 
 		if (Objects.equals(
 				_lastSeenDate, blockedEventDefinition._lastSeenDate) &&
-			Objects.equals(_lastSeenUrl, blockedEventDefinition._lastSeenUrl)) {
+			Objects.equals(_lastSeenURL, blockedEventDefinition._lastSeenURL)) {
 
 			return true;
 		}
@@ -71,13 +71,13 @@ public class BlockedEventDefinition {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getLastSeenUrl() {
-		return _lastSeenUrl;
+	public String getLastSeenURL() {
+		return _lastSeenURL;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_lastSeenDate, _lastSeenUrl);
+		return Objects.hash(_lastSeenDate, _lastSeenURL);
 	}
 
 	public void setLastSeenDate(Date lastSeenDate) {
@@ -86,14 +86,14 @@ public class BlockedEventDefinition {
 		}
 	}
 
-	public void setLastSeenUrl(String lastSeenUrl) {
-		_lastSeenUrl = lastSeenUrl;
+	public void setLastSeenURL(String lastSeenURL) {
+		_lastSeenURL = lastSeenURL;
 	}
 
 	@Transient
 	private Date _lastSeenDate;
 
 	@Transient
-	private String _lastSeenUrl;
+	private String _lastSeenURL;
 
 }

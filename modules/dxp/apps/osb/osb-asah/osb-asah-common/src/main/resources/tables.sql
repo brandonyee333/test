@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
 CREATE TABLE IF NOT EXISTS BlockedEventDefinition (
 	eventDefinitionId BIGINT PRIMARY KEY,
 	lastSeenDate TIMESTAMPTZ,
-	lastSeenUrl TEXT
+	lastSeenURL TEXT
 );
 
 CREATE TABLE IF NOT EXISTS EventDefinition (
