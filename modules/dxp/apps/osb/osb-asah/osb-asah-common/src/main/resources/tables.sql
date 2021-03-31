@@ -20,6 +20,12 @@ CREATE TABLE IF NOT EXISTS AsahTask (
 	projectId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS BlockedEventDefinition (
+	eventDefinitionId BIGINT PRIMARY KEY,
+	lastSeenDate TIMESTAMPTZ,
+	lastSeenURL TEXT
+);
+
 CREATE TABLE IF NOT EXISTS BlockedKeyword (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
@@ -130,12 +136,6 @@ CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
 	description TEXT,
 	displayName TEXT UNIQUE,
 	name TEXT UNIQUE
-);
-
-CREATE TABLE IF NOT EXISTS BlockedEventDefinition (
-	eventDefinitionId BIGINT PRIMARY KEY,
-	lastSeenDate TIMESTAMPTZ,
-	lastSeenURL TEXT
 );
 
 CREATE TABLE IF NOT EXISTS EventDefinition (
