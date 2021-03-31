@@ -15,22 +15,30 @@
 package com.liferay.osb.asah.common.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.graphql.GraphQLProperty;
-import com.liferay.osb.asah.common.graphql.GraphQLType;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Marcellus Tavares
  */
-@GraphQLType
-public class Job {
+@Table
+public class Job implements Persistable<Long> {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -57,11 +65,14 @@ public class Job {
 		return false;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("osbAsahTaskId")
-	public String getAsahTaskId() {
+	@JsonSerialize(using = ToStringSerializer.class)
+	public Long getAsahTaskId() {
 		return _asahTaskId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -74,34 +85,43 @@ public class Job {
 		return new Date(_createdDate.getTime());
 	}
 
-	public String getId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
+	@Override
+	public Long getId() {
 		return _id;
 	}
 
-	@GraphQLProperty("parameters")
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("parameters")
-	public List<JobParameter> getJobParameters() {
+	@MappedCollection(idColumn = "jobid")
+	public Set<JobParameter> getJobParameters() {
 		return _jobParameters;
 	}
 
-	@GraphQLProperty("runDataPeriod")
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("rundataperiod")
 	@JsonProperty("runDataPeriod")
 	public JobRunDataPeriod getJobRunDataPeriod() {
 		return _jobRunDataPeriod;
 	}
 
-	@GraphQLProperty("runFrequency")
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("runfrequency")
 	@JsonProperty("runFrequency")
 	public JobRunFrequency getJobRunFrequency() {
 		return _jobRunFrequency;
 	}
 
-	@GraphQLProperty("type")
+	@AccessType(AccessType.Type.PROPERTY)
+	@Column("type")
 	@JsonProperty("type")
 	public JobType getJobType() {
 		return _jobType;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -114,6 +134,7 @@ public class Job {
 		return new Date(_lastUpdatedDate.getTime());
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
@@ -125,7 +146,17 @@ public class Job {
 			_jobRunFrequency, _jobType, _lastUpdatedDate, _name);
 	}
 
-	public void setAsahTaskId(String asahTaskId) {
+	@JsonIgnore
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public void setAsahTaskId(Long asahTaskId) {
 		_asahTaskId = asahTaskId;
 	}
 
@@ -135,11 +166,15 @@ public class Job {
 		}
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		_id = id;
 	}
 
-	public void setJobParameters(List<JobParameter> jobParameters) {
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
+	}
+
+	public void setJobParameters(Set<JobParameter> jobParameters) {
 		_jobParameters = jobParameters;
 	}
 
@@ -181,14 +216,34 @@ public class Job {
 		return false;
 	}
 
-	private String _asahTaskId;
+	@Transient
+	private Long _asahTaskId;
+
+	@Transient
 	private Date _createdDate;
-	private String _id;
-	private List<JobParameter> _jobParameters = new ArrayList<>();
+
+	@Transient
+	private Long _id;
+
+	@Transient
+	private Boolean _isNew;
+
+	@Transient
+	private Set<JobParameter> _jobParameters;
+
+	@Transient
 	private JobRunDataPeriod _jobRunDataPeriod;
+
+	@Transient
 	private JobRunFrequency _jobRunFrequency;
+
+	@Transient
 	private JobType _jobType;
+
+	@Transient
 	private Date _lastUpdatedDate;
+
+	@Transient
 	private String _name;
 
 }

@@ -140,6 +140,7 @@ public class JobRun implements Persistable<Long> {
 			_jobRunStatus, _trigger);
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {
@@ -167,6 +168,10 @@ public class JobRun implements Persistable<Long> {
 
 	public void setId(Long id) {
 		_id = id;
+	}
+
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
 	}
 
 	public void setJobId(Long jobId) {

@@ -17,9 +17,14 @@ package com.liferay.osb.asah.common.model;
 import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
+
 /**
  * @author Marcellus Tavares
  */
+@Table
 public class JobParameter {
 
 	public static JobParameter of(Map<String, String> jobParameter) {
@@ -56,10 +61,12 @@ public class JobParameter {
 		return false;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getValue() {
 		return _value;
 	}
@@ -77,7 +84,10 @@ public class JobParameter {
 		_value = value;
 	}
 
+	@Transient
 	private String _name;
+
+	@Transient
 	private String _value;
 
 }
