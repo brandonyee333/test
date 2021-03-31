@@ -168,6 +168,24 @@ CREATE TABLE IF NOT EXISTS ItemRecommendation (
 	recommendedItemIds TEXT[]
 );
 
+CREATE TABLE IF NOT EXISTS Job (
+	id BIGSERIAL PRIMARY KEY,
+	asahTaskId BIGINT NULL,
+	createdDate TIMESTAMPTZ,
+	runDataPeriod TEXT,
+	runFrequency TEXT,
+	type TEXT,
+	lastUpdatedDate TIMESTAMPTZ,
+	name TEXT
+);
+
+CREATE TABLE IF NOT EXISTS JobParameter (
+	jobId BIGINT,
+	name TEXT,
+	value TEXT,
+	PRIMARY KEY (jobId, name)
+);
+
 CREATE TABLE IF NOT EXISTS JobRun (
 	id BIGSERIAL PRIMARY KEY,
     completedDate TIMESTAMPTZ,
