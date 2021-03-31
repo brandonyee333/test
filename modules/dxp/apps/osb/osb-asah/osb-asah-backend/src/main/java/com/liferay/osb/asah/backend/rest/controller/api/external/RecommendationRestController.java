@@ -19,9 +19,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.backend.dog.AssetDog;
-import com.liferay.osb.asah.backend.dog.JobDog;
-import com.liferay.osb.asah.backend.model.Job;
-import com.liferay.osb.asah.backend.model.JobStatus;
+import com.liferay.osb.asah.common.dog.JobDog;
+import com.liferay.osb.asah.common.model.Job;
+import com.liferay.osb.asah.common.model.JobStatus;
 import com.liferay.osb.asah.backend.model.Keyword;
 import com.liferay.osb.asah.backend.model.PageAsset;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
