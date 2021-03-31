@@ -62,11 +62,9 @@ public class DataControlNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		Path path = Paths.get(_exportPathName);
-
 		JSONArrayIterator.of(
 			"data-control-tasks", faroInfoElasticsearchInvoker,
-			jsonObject -> _runDataControlTask(jsonObject, path)
+			this::_runDataControlTask
 		).setQueryBuilder(
 			QueryBuilders.termQuery(
 				"status", DataControlTaskStatus.PENDING.toString())
@@ -76,7 +74,7 @@ public class DataControlNanite extends BaseNanite {
 
 		JSONArrayIterator.of(
 			"data-control-tasks", faroInfoElasticsearchInvoker,
-			jsonObject -> _expireDataControlTask(jsonObject, path)
+			this::_expireDataControlTask
 		).setQueryBuilder(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
@@ -216,10 +214,10 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private JSONObject _expireDataControlTask(
-		JSONObject dataControlTaskJSONObject, Path path) {
+		JSONObject dataControlTaskJSONObject) {
 
 		Path zipFilePath = Paths.get(
-			path.toString(),
+			_exportPathName,
 			dataControlTaskJSONObject.getString("id") + ".zip");
 
 		File file = zipFilePath.toFile();
@@ -235,16 +233,12 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _exportData(
-			JSONObject dataControlTaskJSONObject, String emailAddress,
-			Path path)
+			JSONObject dataControlTaskJSONObject, String emailAddress)
 		throws Exception {
 
-		Path zipFilePath = Paths.get(
-			path.toString(),
-			dataControlTaskJSONObject.getString("id") + ".zip");
-
 		ZipFileBuilder zipFileBuilder = new ZipFileBuilder(
-			zipFilePath.toString());
+			_exportPathName + "/" + dataControlTaskJSONObject.getString("id") +
+				".zip");
 
 		zipFileBuilder.addToZip(
 			"dxp_users.json",
@@ -352,7 +346,7 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private JSONObject _runDataControlTask(
-		JSONObject dataControlTaskJSONObject, Path path) {
+		JSONObject dataControlTaskJSONObject) {
 
 		_updateDataControlTaskStatus(
 			dataControlTaskJSONObject, DataControlTaskStatus.RUNNING);
@@ -365,7 +359,7 @@ public class DataControlNanite extends BaseNanite {
 			if (StringUtils.equals(
 					type, DataControlTaskType.ACCESS.toString())) {
 
-				_exportData(dataControlTaskJSONObject, emailAddress, path);
+				_exportData(dataControlTaskJSONObject, emailAddress);
 			}
 			else if (StringUtils.equals(
 						type, DataControlTaskType.DELETE.toString())) {
@@ -389,8 +383,9 @@ public class DataControlNanite extends BaseNanite {
 				_exportDataControlTask(
 					dataControlTaskJSONObject,
 					new ZipFileBuilder(
-						path + "/" + dataControlTaskJSONObject.getString("id") +
-							".zip"));
+						_exportPathName + "/" +
+							dataControlTaskJSONObject.getString("id") +
+								".zip"));
 			}
 		}
 		catch (Exception e) {
