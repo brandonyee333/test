@@ -1,4 +1,5 @@
 com/liferay/osb/asah/backend/dog/DataExportTaskDog._exportPath:SAFE
+com/liferay/osb/asah/backend/dog/test/DataControlTaskDogTest._tempPath:SAFE
 com/liferay/osb/asah/backend/graphql/schema/DataControlTaskMutationDataFetcher._tempPathName:SAFE
 com/liferay/osb/asah/backend/rest/controller/DataControlTasksRestController._exportPath:SAFE
 com/liferay/osb/asah/backend/rest/controller/DataControlTasksRestController._tempPath:SAFE

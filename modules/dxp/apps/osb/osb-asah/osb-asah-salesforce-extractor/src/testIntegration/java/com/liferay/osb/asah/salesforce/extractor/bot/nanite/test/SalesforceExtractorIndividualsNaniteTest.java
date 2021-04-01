@@ -22,8 +22,7 @@ import com.liferay.osb.asah.salesforce.extractor.bot.nanite.SalesforceExtractorI
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.SalesforceExtractorTestUtil;
 import com.liferay.osb.asah.salesforce.extractor.spring.OSBAsahSalesforceExtractorSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
-
-import org.apache.commons.lang.RandomStringUtils;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -227,7 +226,7 @@ public class SalesforceExtractorIndividualsNaniteTest {
 		).put(
 			"eventType", eventType
 		).put(
-			"id", RandomStringUtils.randomNumeric(8)
+			"id", RandomTestUtil.randomId()
 		).put(
 			"osbAsahDataSourceId", "0"
 		).put(
