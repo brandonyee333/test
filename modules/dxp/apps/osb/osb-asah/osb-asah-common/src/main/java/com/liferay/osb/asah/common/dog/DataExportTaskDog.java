@@ -24,6 +24,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.FilenameUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -61,7 +63,8 @@ public class DataExportTaskDog {
 	}
 
 	public File getDataExportTaskFile(Long dataExportTaskId) {
-		return new File(_exportPath + "/" + dataExportTaskId + ".json");
+		return new File(
+			_exportPath, FilenameUtils.getName(dataExportTaskId + ".json"));
 	}
 
 	public List<DataExportTask> getDataExportTasks(

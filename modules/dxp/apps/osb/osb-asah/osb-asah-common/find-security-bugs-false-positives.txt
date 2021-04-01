@@ -1,1 +1,2 @@
 com/liferay/osb/asah/common/constants/ServiceConstants.LCP_PROJECT_ID:SAFE
+com/liferay/osb/asah/common/dog/DataExportTaskDog._exportPath:SAFE

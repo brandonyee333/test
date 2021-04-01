@@ -24,6 +24,7 @@ import graphql.schema.DataFetchingEnvironment;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class DataControlTaskMutationDataFetcher
 			return null;
 		}
 
-		Path path = Paths.get(_tempPathName, fileName);
+		Path path = Paths.get(_tempPathName, FilenameUtils.getName(fileName));
 
 		path = path.normalize();
 
