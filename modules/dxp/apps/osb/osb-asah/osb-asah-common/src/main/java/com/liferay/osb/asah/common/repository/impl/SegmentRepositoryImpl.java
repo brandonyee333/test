@@ -14,13 +14,9 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.dog.ChannelDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
-import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
-import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +31,6 @@ import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 
@@ -52,7 +47,8 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	}
 
 	public long countPreviewDisabledSegments(
-		Long dataSourceId, String filterString) {
+		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
+		String filterString) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -60,7 +56,8 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		return selectSelectStep.from(
 			"Segment"
 		).where(
-			_getPreviewDisabledSegmentsConditions(dataSourceId, filterString)
+			_getPreviewDisabledSegmentsConditions(
+				dataSourceFieldMappingIds, dataSourceId, filterString)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -68,14 +65,14 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	public long countSegments(Long dataSourceId, String filterString) {
+	public long countSegments(List<Long> channelIds, String filterString) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"Segment"
 		).where(
-			_getConditions(dataSourceId, filterString)
+			_getConditions(channelIds, filterString)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -111,14 +108,16 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Segment> searchPreviewDisabledSegments(
-		Long dataSourceId, String filterString, Pageable pageable) {
+		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
+		String filterString, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"Segment"
 		).where(
-			_getPreviewDisabledSegmentsConditions(dataSourceId, filterString)
+			_getPreviewDisabledSegmentsConditions(
+				dataSourceFieldMappingIds, dataSourceId, filterString)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -148,14 +147,14 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	}
 
 	public List<Segment> searchSegments(
-		Long dataSourceId, String filterString, Pageable pageable) {
+		List<Long> channelIds, String filterString, Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"Segment"
 		).where(
-			_getConditions(dataSourceId, filterString)
+			_getConditions(channelIds, filterString)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
 		).limit(
@@ -218,19 +217,16 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getConditions(
-		Long dataSourceId, String filterString) {
+		List<Long> channelIds, String filterString) {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		List<Channel> channels = _channelDog.getChannels(dataSourceId);
-
-		if (!channels.isEmpty()) {
+		if (!channelIds.isEmpty()) {
 			conditions.add(
 				DSL.field(
 					"channelId"
 				).in(
-					ListUtil.map(
-						channels, channel -> String.valueOf(channel.getId()))
+					channelIds
 				));
 		}
 
@@ -266,14 +262,10 @@ public class SegmentRepositoryImpl extends BaseRepository {
 	}
 
 	private List<Condition> _getPreviewDisabledSegmentsConditions(
-		Long dataSourceId, String filterString) {
+		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
+		String filterString) {
 
 		List<Condition> conditions = new ArrayList<>();
-
-		List<Long> dataSourceFieldMappingIds = ListUtil.map(
-			_faroInfoFieldMappingDog.getDataSourceFieldMappingIds(
-				dataSourceId, true),
-			Long::valueOf);
 
 		conditions.add(
 			DSL.or(
@@ -304,12 +296,6 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		return conditions;
 	}
 
-	@Autowired
-	private ChannelDog _channelDog;
-
 	private final DSLContext _dslContext;
-
-	@Autowired
-	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 }

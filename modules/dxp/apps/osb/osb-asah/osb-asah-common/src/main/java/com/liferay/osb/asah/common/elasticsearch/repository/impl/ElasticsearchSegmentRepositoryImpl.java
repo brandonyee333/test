@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -32,7 +31,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -95,16 +93,15 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public long countPreviewDisabledSegments(
-		Long dataSourceId, String filterString) {
+		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
+		String filterString) {
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.should(
 			QueryBuilders.termQuery(
 				"referencedAssetDataSourceIds", dataSourceId)
 		).should(
 			QueryBuilders.termsQuery(
-				"referencedFieldMappingIds",
-				_faroInfoFieldMappingDog.getDataSourceFieldMappingIds(
-					dataSourceId, true))
+				"referencedFieldMappingIds", dataSourceFieldMappingIds)
 		);
 
 		if (!StringUtils.isEmpty(filterString)) {
@@ -120,10 +117,10 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
-	public long countSegments(Long dataSourceId, String filterString) {
+	public long countSegments(List<Long> channelIds, String filterString) {
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
-			_getSegmentsQueryBuilder(dataSourceId, filterString));
+			_getSegmentsQueryBuilder(channelIds, filterString));
 	}
 
 	@Override
@@ -386,7 +383,8 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public List<Segment> searchPreviewDisabledSegments(
-		Long dataSourceId, String filterString, Pageable pageable) {
+		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
+		String filterString, Pageable pageable) {
 
 		return toList(
 			new JSONArray(
@@ -401,9 +399,7 @@ public class ElasticsearchSegmentRepositoryImpl
 							).should(
 								QueryBuilders.termsQuery(
 									"referencedFieldMappingIds",
-									_faroInfoFieldMappingDog.
-										getDataSourceFieldMappingIds(
-											dataSourceId, true))
+									dataSourceFieldMappingIds)
 							);
 
 						if (!StringUtils.isEmpty(filterString)) {
@@ -462,7 +458,7 @@ public class ElasticsearchSegmentRepositoryImpl
 
 	@Override
 	public List<Segment> searchSegments(
-		Long dataSourceId, String filterString, Pageable pageable) {
+		List<Long> channelIds, String filterString, Pageable pageable) {
 
 		return toList(
 			new JSONArray(
@@ -470,8 +466,7 @@ public class ElasticsearchSegmentRepositoryImpl
 					getCollectionName(),
 					searchSourceBuilder -> {
 						searchSourceBuilder.query(
-							_getSegmentsQueryBuilder(
-								dataSourceId, filterString));
+							_getSegmentsQueryBuilder(channelIds, filterString));
 
 						setSearchSourceBuilderPage(
 							searchSourceBuilder, pageable);
@@ -524,26 +519,17 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	private QueryBuilder _getSegmentsQueryBuilder(
-		Long dataSourceId, String filterString) {
+		List<Long> channelIds, String filterString) {
 
 		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
 			filterString);
 
-		if (Objects.isNull(dataSourceId)) {
-			return queryBuilder;
-		}
-
-		List<Channel> channels = _channelDog.getChannels(dataSourceId);
-
-		if (channels.isEmpty()) {
+		if (channelIds.isEmpty()) {
 			return queryBuilder;
 		}
 
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termsQuery(
-				"channelId",
-				ListUtil.map(
-					channels, channel -> String.valueOf(channel.getId()))));
+			QueryBuilders.termsQuery("channelId", channelIds));
 
 		if (queryBuilder == null) {
 			return boolQueryBuilder;

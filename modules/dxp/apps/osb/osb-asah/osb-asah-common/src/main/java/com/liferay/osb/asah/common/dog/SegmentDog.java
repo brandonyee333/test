@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -331,27 +332,36 @@ public class SegmentDog extends BaseFaroInfoDog {
 		Long dataSourceId, String filterString, int page, int size,
 		String[] sorts) {
 
+		List<Long> dataSourceFieldMappingIds = ListUtil.map(
+			_faroInfoFieldMappingDog.getDataSourceFieldMappingIds(
+				dataSourceId, true),
+			Long::valueOf);
+
 		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchPreviewDisabledSegments(
-				dataSourceId, filterString, pageRequest),
+				dataSourceFieldMappingIds, dataSourceId, filterString,
+				pageRequest),
 			pageRequest,
 			() -> _segmentRepository.countPreviewDisabledSegments(
-				dataSourceId, filterString));
+				dataSourceFieldMappingIds, dataSourceId, filterString));
 	}
 
 	public Page<Segment> searchSegmentsPage(
 		Long dataSourceId, String filterString, int page, int size,
 		String[] sorts) {
 
+		List<Long> channelIds = ListUtil.map(
+			_channelDog.getChannels(dataSourceId), channel -> channel.getId());
+
 		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchSegments(
-				dataSourceId, filterString, pageRequest),
+				channelIds, filterString, pageRequest),
 			pageRequest,
-			() -> _segmentRepository.countSegments(dataSourceId, filterString));
+			() -> _segmentRepository.countSegments(channelIds, filterString));
 	}
 
 	@CacheEvict("getReferencedAssetIds")
@@ -986,6 +996,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private ChannelDog _channelDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
