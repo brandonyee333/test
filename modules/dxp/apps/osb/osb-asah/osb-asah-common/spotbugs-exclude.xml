@@ -1,6 +1,14 @@
 <FindBugsFilter>
 	<Match>
+		<Bug pattern="CIPHER_INTEGRITY" />
+		<Class name="com.liferay.osb.asah.common.security.Encryptor" />
+	</Match>
+	<Match>
 		<Bug pattern="CRLF_INJECTION_LOGS" />
+	</Match>
+	<Match>
+		<Bug pattern="ECB_MODE" />
+		<Class name="com.liferay.osb.asah.common.security.Encryptor" />
 	</Match>
 	<Match>
 		<Bug pattern="PATH_TRAVERSAL_IN" />
