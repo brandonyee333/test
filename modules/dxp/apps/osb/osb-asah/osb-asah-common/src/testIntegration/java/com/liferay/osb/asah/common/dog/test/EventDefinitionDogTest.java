@@ -142,6 +142,19 @@ public class EventDefinitionDogTest {
 	}
 
 	@Test
+	public void testFetchEventDefinitionByDisplayNameIgnoreCase() {
+		EventDefinition expectedEventDefinition =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", "Test Event", null, "testEvent",
+				EventDefinition.Type.CUSTOM, null);
+
+		Assert.assertEquals(
+			expectedEventDefinition,
+			_eventDefinitionDog.fetchEventDefinitionByDisplayName(
+				"test event"));
+	}
+
+	@Test
 	public void testFetchEventDefinitionByDisplayNameNonExistent() {
 		Assert.assertNull(
 			_eventDefinitionDog.fetchEventDefinitionByDisplayName(
