@@ -443,7 +443,7 @@ public class Segment implements Persistable<Long> {
 		_type = type;
 	}
 
-	public static enum Type {
+	public enum Type {
 
 		DYNAMIC, STATIC
 

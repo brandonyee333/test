@@ -94,7 +94,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 		setReferencedFields(segment);
 
 		if ((segment.getType() == null) ||
-			Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
+			(segment.getType() == Segment.Type.DYNAMIC)) {
 
 			segment.setState("IN_PROGRESS");
 		}
