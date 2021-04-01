@@ -181,6 +181,19 @@ public class EventAttributeDefinitionDog {
 		}
 
 		if (StringUtils.isNotBlank(displayName)) {
+			EventAttributeDefinition eventAttributeDefinitionByDisplayName =
+				fetchEventAttributeDefinitionByDisplayName(displayName);
+
+			if ((eventAttributeDefinitionByDisplayName != null) &&
+				!eventAttributeDefinitionId.equals(
+					eventAttributeDefinitionByDisplayName.getId())) {
+
+				throw new OSBAsahException(
+					HttpStatus.BAD_REQUEST,
+					String.format(
+						"Display name %s is already used", displayName));
+			}
+
 			eventAttributeDefinition.setDisplayName(displayName);
 		}
 
