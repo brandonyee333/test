@@ -300,7 +300,9 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		Segment existingSegment = getSegment(segmentId);
 
-		if (Objects.equals(existingSegment.getFilter(), segment.getFilter())) {
+		if (Objects.isNull(segment.getFilter()) ||
+			Objects.equals(existingSegment.getFilter(), segment.getFilter())) {
+
 			_segmentRepository.save(segment);
 		}
 		else {
@@ -942,11 +944,13 @@ public class SegmentDog extends BaseFaroInfoDog {
 
 		_updateAccount(existingSegment, partialSegment);
 
-		if (Objects.equals(
-				existingSegment.getFilter(), partialSegment.getFilter()) &&
-			Objects.equals(
-				existingSegment.getIncludeAnonymousUsers(),
-				partialSegment.getIncludeAnonymousUsers())) {
+		if ((Objects.isNull(partialSegment.getFilter()) ||
+			 Objects.equals(
+				 existingSegment.getFilter(), partialSegment.getFilter())) &&
+			(Objects.isNull(partialSegment.getIncludeAnonymousUsers()) ||
+			 Objects.equals(
+				 existingSegment.getIncludeAnonymousUsers(),
+				 partialSegment.getIncludeAnonymousUsers()))) {
 
 			BeanUtils.copyProperties(partialSegment, existingSegment);
 
@@ -958,6 +962,10 @@ public class SegmentDog extends BaseFaroInfoDog {
 			_setState(partialSegment);
 
 			BeanUtils.copyProperties(partialSegment, existingSegment);
+
+			existingSegment.setFilter(partialSegment.getFilter());
+			existingSegment.setIncludeAnonymousUsers(
+				partialSegment.getIncludeAnonymousUsers());
 
 			existingSegment = _segmentRepository.save(existingSegment);
 

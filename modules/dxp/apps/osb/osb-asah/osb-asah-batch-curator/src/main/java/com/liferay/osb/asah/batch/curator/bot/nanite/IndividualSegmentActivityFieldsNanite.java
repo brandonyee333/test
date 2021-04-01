@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -128,7 +129,8 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 			_segmentDog.updateSegment(segment, segmentId);
 		}
 
-		Boolean includeAnonymousUsers = segment.getIncludeAnonymousUsers();
+		Boolean includeAnonymousUsers = BooleanUtils.toBooleanDefaultIfNull(
+			segment.getIncludeAnonymousUsers(), false);
 
 		long activitiesCount = _getActivitiesCount(
 			channelId, includeAnonymousUsers, segmentId);
@@ -136,6 +138,7 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 			channelId, includeAnonymousUsers, segmentId);
 
 		if ((activitiesCount == segment.getActivitiesCount()) &&
+			Objects.nonNull(segment.getLastActivityDate()) &&
 			Objects.equals(
 				lastActivityDateString,
 				DateUtil.toUTCString(segment.getLastActivityDate()))) {
