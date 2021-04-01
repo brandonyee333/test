@@ -72,7 +72,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			contextJSONObject.optJSONObject("individualSegmentJSONObject");
 
 		if (individualSegmentJSONObject != null) {
-			_updateDynamicMembershipsForIndividualSegment(
+			_updateDynamicMembershipsForSegment(
 				individualSegmentJSONObject, modifiedDate);
 
 			return;
@@ -109,8 +109,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		}
 
 		if ((addQueryBuilder != null) || (removeQueryBuilder != null)) {
-			_updateDynamicMembershipsForIndividualSegments(
-				addQueryBuilder, modifiedDate, removeQueryBuilder);
+			_updateDynamicMembershipsForSegments(
+				addQueryBuilderString, modifiedDate, removeQueryBuilderString);
 
 			return;
 		}
@@ -119,8 +119,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		String removeFilter = contextJSONObject.optString("removeFilter", null);
 
 		if (Objects.equals(addFilter, removeFilter)) {
-			_updateDynamicMembershipsForIndividualSegments(
-				addFilter, modifiedDate);
+			_updateDynamicMembershipsForSegments(addFilter, modifiedDate);
 		}
 		else {
 			_updateDynamicMembershipsForIndividualSegments(
@@ -253,7 +252,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		).iterate();
 	}
 
-	private void _updateDynamicMembershipsForIndividualSegment(
+	private void _updateDynamicMembershipsForSegment(
 			JSONObject individualSegmentJSONObject, Date modifiedDate)
 		throws Exception {
 
@@ -273,89 +272,79 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		_segmentDog.updateSegment(segment, segmentId);
 	}
 
-	private void _updateDynamicMembershipsForIndividualSegments(
-			QueryBuilder addQueryBuilder, Date modifiedDate,
-			QueryBuilder removeQueryBuilder)
-		throws Exception {
+	private void _updateDynamicMembershipsForSegments(
+		String filterString, Date modifiedDate) {
 
-		if (addQueryBuilder != null) {
-			JSONArrayIterator.of(
-				"individual-segments", faroInfoElasticsearchInvoker,
-				individualSegmentJSONObject -> {
-					try {
-						_faroInfoIndividualDog.updateDynamicAddMemberships(
-							true, individualSegmentJSONObject, modifiedDate);
-					}
-					catch (Exception e) {
-						return e;
-					}
+		int page = 0;
 
-					return null;
+		List<Segment> segments = _segmentDog.searchDynamicSegments(
+			filterString, page, 500, null);
+
+		while (!segments.isEmpty()) {
+			for (Segment segment : segments) {
+				try {
+					_updateDynamicMembershipsForSegment(
+						_objectMapper.convertValue(segment, JSONObject.class),
+						modifiedDate);
 				}
-			).setQueryBuilder(
-				BoolQueryBuilderUtil.filter(
-					addQueryBuilder
-				).filter(
-					QueryBuilders.termQuery("segmentType", "DYNAMIC")
-				)
-			).iterate();
-		}
-
-		if (removeQueryBuilder != null) {
-			JSONArrayIterator.of(
-				"individual-segments", faroInfoElasticsearchInvoker,
-				individualSegmentJSONObject -> {
-					try {
-						_faroInfoIndividualDog.updateDynamicRemoveMemberships(
-							individualSegmentJSONObject, modifiedDate);
-					}
-					catch (Exception e) {
-						return e;
-					}
-
-					return null;
+				catch (Exception e) {
+					_log.error(e, e);
 				}
-			).setQueryBuilder(
-				BoolQueryBuilderUtil.filter(
-					removeQueryBuilder
-				).filter(
-					QueryBuilders.termQuery("segmentType", "DYNAMIC")
-				)
-			).iterate();
+			}
+
+			segments = _segmentDog.getSegments(++page, 500);
 		}
 	}
 
-	private void _updateDynamicMembershipsForIndividualSegments(
-			String filterString, Date modifiedDate)
-		throws Exception {
+	private void _updateDynamicMembershipsForSegments(
+		String addFilterString, Date modifiedDate, String removeFilterString) {
 
-		QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
+		if (StringUtils.isNotEmpty(addFilterString)) {
+			int page = 0;
 
-		if (filterString != null) {
-			queryBuilder = FilterStringToQueryBuilderConverter.convert(
-				filterString);
+			List<Segment> segments = _segmentDog.searchDynamicSegments(
+				addFilterString, page, 500, null);
+
+			while (!segments.isEmpty()) {
+				for (Segment segment : segments) {
+					try {
+						_faroInfoIndividualDog.updateDynamicAddMemberships(
+							true,
+							_objectMapper.convertValue(
+								segment, JSONObject.class),
+							modifiedDate);
+					}
+					catch (Exception e) {
+						_log.error(e, e);
+					}
+				}
+
+				segments = _segmentDog.getSegments(++page, 500);
+			}
 		}
 
-		JSONArrayIterator.of(
-			"individual-segments", faroInfoElasticsearchInvoker,
-			individualSegmentJSONObject -> {
-				try {
-					_updateDynamicMembershipsForIndividualSegment(
-						individualSegmentJSONObject, modifiedDate);
-				}
-				catch (Exception e) {
-					return e;
+		if (StringUtils.isNotEmpty(removeFilterString)) {
+			int page = 0;
+
+			List<Segment> segments = _segmentDog.searchDynamicSegments(
+				removeFilterString, page, 500, null);
+
+			while (!segments.isEmpty()) {
+				for (Segment segment : segments) {
+					try {
+						_faroInfoIndividualDog.updateDynamicRemoveMemberships(
+							_objectMapper.convertValue(
+								segment, JSONObject.class),
+							modifiedDate);
+					}
+					catch (Exception e) {
+						_log.error(e, e);
+					}
 				}
 
-				return null;
+				segments = _segmentDog.getSegments(++page, 500);
 			}
-		).setQueryBuilder(
-			BoolQueryBuilderUtil.filter(
-				queryBuilder
-			).filter(
-				QueryBuilders.termQuery("segmentType", "DYNAMIC")
-			)
-		).iterate();
+		}
 	}
 
 	private void _updateMembershipForIndividual(
@@ -400,6 +389,9 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 				individualSegmentJSONObject.getLong("id"));
 		}
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		UpdateDynamicMembershipsNanite.class);
 
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
