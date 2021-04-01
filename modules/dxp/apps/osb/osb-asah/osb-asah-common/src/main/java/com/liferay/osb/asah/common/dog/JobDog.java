@@ -16,34 +16,29 @@ package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.model.Job;
-import com.liferay.osb.asah.common.model.JobParameter;
-import com.liferay.osb.asah.common.model.JobStatus;
-import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchRepository;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
+import com.liferay.osb.asah.common.model.Job;
+import com.liferay.osb.asah.common.model.JobParameter;
 import com.liferay.osb.asah.common.model.JobRun;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
 import com.liferay.osb.asah.common.model.JobRunFrequency;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;
-import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.JobStatus;
+import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.repository.JobRunRepository;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -52,17 +47,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONObject;
 
@@ -71,6 +58,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Component;
 
@@ -81,7 +69,7 @@ import org.springframework.stereotype.Component;
 public class JobDog {
 
 	public Job addJob(
-		List<JobParameter> jobParameters, JobRunDataPeriod jobRunDataPeriod,
+		Set<JobParameter> jobParameters, JobRunDataPeriod jobRunDataPeriod,
 		JobRunFrequency jobRunFrequency, JobType jobType, String name,
 		boolean runNow) {
 
@@ -98,7 +86,7 @@ public class JobDog {
 		job.setJobRunFrequency(jobRunFrequency);
 		job.setJobType(jobType);
 
-		job = _jobElasticsearchRepository.add(job);
+		job = _jobRepository.save(job);
 
 		_scheduleAsahTask(job);
 
@@ -109,28 +97,26 @@ public class JobDog {
 		return job;
 	}
 
-	public List<Boolean> deleteJobs(List<String> ids) {
-		List<Boolean> statuses = new ArrayList<>();
-
-		for (String id : ids) {
-			statuses.add(_deleteJob(id));
-		}
-
-		return statuses;
+	public void deleteJobs(List<Long> jobIds) {
+		jobIds.forEach(this::_deleteJob);
 	}
 
 	public Job fetchJob(String name) {
-		return _jobElasticsearchRepository.fetchFirst(
-			searchSourceBuilder -> searchSourceBuilder.query(
-				QueryBuilders.termQuery("name", name)));
+		Optional<Job> jobOptional = _jobRepository.findFirstByName(name);
+
+		return jobOptional.orElse(null);
 	}
 
-	public Job getJob(String id) {
-		return _jobElasticsearchRepository.get(id);
+	public Job getJob(Long jobId) {
+		Optional<Job> jobOptional = _jobRepository.findById(jobId);
+
+		return jobOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST, "There is no job with ID " + jobId));
 	}
 
-	public String getJobNextRunDateString(String id) {
-		Job job = getJob(id);
+	public String getJobNextRunDateString(Long jobId) {
+		Job job = getJob(jobId);
 
 		JobRunFrequency jobRunFrequency = job.getJobRunFrequency();
 
@@ -140,7 +126,7 @@ public class JobDog {
 
 		Optional<JobRun> jobRunOptional =
 			_jobRunRepository.findFirstByJobIdAndTriggerOrderByIdDesc(
-				Long.valueOf(id), "SCHEDULE");
+				jobId, "SCHEDULE");
 
 		Date startDate = jobRunOptional.map(
 			JobRun::getCreatedDate
@@ -154,17 +140,22 @@ public class JobDog {
 		return DateUtil.toUTCString(cronSequenceGenerator.next(startDate));
 	}
 
-	public ResultBag<Job> getJobResultBag(
-		String keywords, int size, Sort sort, int start) {
+	public Page<Job> getJobPage(
+		String keywords, int page, int size, Sort sort) {
 
-		return _jobElasticsearchRepository.search(
-			_buildKeywordsQueryBuilder(keywords), size, sort, start);
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+		return PageableExecutionUtils.getPage(
+			_jobRepository.findByNameContainingIgnoreCase(
+				keywords, pageRequest),
+			pageRequest,
+			() -> _jobRepository.countByNameContainingIgnoreCase(keywords));
 	}
 
-	public String getJobRunDateString(String id) {
+	public String getJobRunDateString(Long jobId) {
 		Optional<JobRun> jobRunOptional =
 			_jobRunRepository.findFirstByJobIdAndJobRunStatusOrderByIdDesc(
-				Long.valueOf(id), JobRunStatus.PUBLISHED);
+				jobId, JobRunStatus.PUBLISHED);
 
 		return jobRunOptional.map(
 			JobRun::getCompletedDate
@@ -176,18 +167,17 @@ public class JobDog {
 	}
 
 	public Page<JobRun> getJobRunPage(
-		String jobId, int page, int size, Sort sort) {
+		Long jobId, int page, int size, Sort sort) {
 
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
 		return PageableExecutionUtils.getPage(
-			_jobRunRepository.findByJobId(Long.valueOf(jobId), pageRequest),
-			pageRequest,
-			() -> _jobRunRepository.countByJobId(Long.valueOf(jobId)));
+			_jobRunRepository.findByJobId(jobId, pageRequest), pageRequest,
+			() -> _jobRunRepository.countByJobId(jobId));
 	}
 
-	public JobRunsMonthlyStatistics getJobRunsMonthlyStatistics(String id) {
-		List<JobRun> jobRuns = _getCurrentMonthJobRunResultBag(id);
+	public JobRunsMonthlyStatistics getJobRunsMonthlyStatistics(Long jobId) {
+		List<JobRun> jobRuns = _getCurrentMonthJobRunResultBag(jobId);
 
 		return new JobRunsMonthlyStatistics() {
 			{
@@ -201,18 +191,18 @@ public class JobDog {
 				setRunningJobRuns(
 					_countJobRunsByStatus(jobRuns, JobRunStatus.RUNNING));
 				setScheduledJobRuns(
-					_countCurrentMonthScheduledJobRuns(jobRuns, getJob(id)));
+					_countCurrentMonthScheduledJobRuns(jobRuns, getJob(jobId)));
 			}
 		};
 	}
 
-	public JobStatus getJobStatus(String id) {
-		if (_hasJobRunPublished(id)) {
+	public JobStatus getJobStatus(Long jobId) {
+		if (_hasJobRunPublished(jobId)) {
 			return JobStatus.READY;
 		}
 
 		Optional<JobRun> jobRunOptional =
-			_jobRunRepository.findFirstByJobIdOrderByIdDesc(Long.valueOf(id));
+			_jobRunRepository.findFirstByJobIdOrderByIdDesc(jobId);
 
 		if (jobRunOptional.isPresent()) {
 			JobRun jobRun = jobRunOptional.get();
@@ -227,7 +217,7 @@ public class JobDog {
 			}
 		}
 
-		Job job = getJob(id);
+		Job job = getJob(jobId);
 
 		if (job.getJobRunFrequency() == JobRunFrequency.MANUAL) {
 			return JobStatus.PENDING;
@@ -236,8 +226,8 @@ public class JobDog {
 		return JobStatus.SCHEDULED;
 	}
 
-	public Job runJob(String id, JobRunDataPeriod jobRunDataPeriod) {
-		JobRun jobRun = _fetchLatestJobRun(id);
+	public Job runJob(Long jobId, JobRunDataPeriod jobRunDataPeriod) {
+		JobRun jobRun = _fetchLatestJobRun(jobId);
 
 		if ((jobRun != null) &&
 			(jobRun.getJobRunStatus() == JobRunStatus.RUNNING)) {
@@ -245,21 +235,21 @@ public class JobDog {
 			throw new IllegalStateException(
 				String.format(
 					"Unable to run job ID %s because it is already running",
-					id));
+					jobId));
 		}
 
 		JobRunsMonthlyStatistics jobRunsMonthlyStatistics =
-			getJobRunsMonthlyStatistics(id);
+			getJobRunsMonthlyStatistics(jobId);
 
 		if (jobRunsMonthlyStatistics.getAvailableJobRuns() == 0) {
 			throw new IllegalStateException(
 				String.format(
 					"Unable to run job ID %s because this run surpasses the " +
 						"maximum allowed monthly runs threshold",
-					id));
+					jobId));
 		}
 
-		Job job = getJob(id);
+		Job job = getJob(jobId);
 
 		_asahTaskDog.scheduleAsahTask(
 			_jobTypeNaniteMap.get(job.getJobType()),
@@ -275,11 +265,11 @@ public class JobDog {
 	}
 
 	public Job updateJob(
-		String id, List<JobParameter> jobParameters,
+		Long jobId, Set<JobParameter> jobParameters,
 		JobRunDataPeriod jobRunDataPeriod, JobRunFrequency jobRunFrequency,
 		String name, boolean runNow) {
 
-		Job job = _jobElasticsearchRepository.get(id);
+		Job job = getJob(jobId);
 
 		JobRunFrequency oldJobRunFrequency = job.getJobRunFrequency();
 
@@ -291,37 +281,13 @@ public class JobDog {
 
 		_rescheduleAsahTask(job, oldJobRunFrequency);
 
-		job = _jobElasticsearchRepository.update(id, job);
+		job = _jobRepository.save(job);
 
 		if (runNow) {
-			runJob(id, jobRunDataPeriod);
+			runJob(jobId, jobRunDataPeriod);
 		}
 
 		return job;
-	}
-
-	private QueryBuilder _buildKeywordsQueryBuilder(String keywords) {
-		if (StringUtils.isBlank(keywords)) {
-			return QueryBuilders.matchAllQuery();
-		}
-
-		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-
-		boolQueryBuilder.filter(
-			BoolQueryBuilderUtil.should(
-				QueryBuilders.queryStringQuery(
-					String.format(
-						"name.search:*%1$s*",
-						QueryUtil.escapeKeywords(keywords)))
-			).should(
-				QueryBuilders.matchQuery(
-					"name.search", keywords
-				).fuzziness(
-					Fuzziness.AUTO
-				)
-			));
-
-		return boolQueryBuilder;
 	}
 
 	private int _countCurrentMonthScheduledJobRuns(
@@ -388,16 +354,16 @@ public class JobDog {
 		).count();
 	}
 
-	private boolean _deleteJob(String id) {
-		Job job = _jobElasticsearchRepository.get(id);
+	private void _deleteJob(Long jobId) {
+		Job job = getJob(jobId);
 
 		_unscheduleAsahTask(job);
 
-		_jobRunRepository.deleteByJobId(Long.valueOf(id));
+		_jobRunRepository.deleteByJobId(jobId);
 
-		_recommendationDog.deleteItemRecommendationsByJobId(Long.valueOf(id));
+		_recommendationDog.deleteItemRecommendationsByJobId(jobId);
 
-		return _jobElasticsearchRepository.delete(id);
+		_jobRepository.delete(job);
 	}
 
 	private JobRun _fetchLastScheduledJobRun(List<JobRun> jobRuns) {
@@ -412,15 +378,14 @@ public class JobDog {
 		return lastScheduledJobRunOptional.orElse(null);
 	}
 
-	private JobRun _fetchLatestJobRun(String jobId) {
+	private JobRun _fetchLatestJobRun(Long jobId) {
 		Optional<JobRun> jobRunOptional =
-			_jobRunRepository.findFirstByJobIdOrderByIdDesc(
-				Long.valueOf(jobId));
+			_jobRunRepository.findFirstByJobIdOrderByIdDesc(jobId);
 
 		return jobRunOptional.orElse(null);
 	}
 
-	private List<JobRun> _getCurrentMonthJobRunResultBag(String jobId) {
+	private List<JobRun> _getCurrentMonthJobRunResultBag(Long jobId) {
 		LocalDateTime endLocalDateTime = LocalDateTime.now(
 			_timeZoneDog.getZoneId());
 
@@ -429,20 +394,13 @@ public class JobDog {
 		startLocalDateTime = startLocalDateTime.with(LocalTime.MIDNIGHT);
 
 		return _jobRunRepository.findByJobIdAndCreatedDateBetween(
-			Long.valueOf(jobId),
-			Date.from(startLocalDateTime.toInstant(ZoneOffset.UTC)),
+			jobId, Date.from(startLocalDateTime.toInstant(ZoneOffset.UTC)),
 			Date.from(endLocalDateTime.toInstant(ZoneOffset.UTC)));
 	}
 
-	private boolean _hasJobRunPublished(String id) {
+	private boolean _hasJobRunPublished(Long jobId) {
 		return _jobRunRepository.existsByJobIdAndJobRunStatus(
-			Long.valueOf(id), JobRunStatus.PUBLISHED);
-	}
-
-	@PostConstruct
-	private void _init() {
-		_jobElasticsearchRepository = new ElasticsearchRepository<>(
-			"jobs", _faroInfoElasticsearchInvoker, Job.class, _objectMapper);
+			jobId, JobRunStatus.PUBLISHED);
 	}
 
 	private void _rescheduleAsahTask(
@@ -472,28 +430,26 @@ public class JobDog {
 				"job", _objectMapper.convertValue(job, JSONObject.class)),
 			jobRunFrequency.getCronExpression());
 
-		job.setAsahTaskId(String.valueOf(asahTask.getId()));
+		job.setAsahTaskId(asahTask.getId());
 	}
 
 	private void _unscheduleAsahTask(Job job) {
-		String asahTaskId = job.getAsahTaskId();
+		Long asahTaskId = job.getAsahTaskId();
 
-		if (StringUtils.isBlank(asahTaskId)) {
+		if (asahTaskId == null) {
 			return;
 		}
 
-		_asahTaskDog.unscheduleAsahTask(Long.valueOf(asahTaskId));
+		_asahTaskDog.unscheduleAsahTask(asahTaskId);
 
-		job.setAsahTaskId("");
+		job.setAsahTaskId(null);
 	}
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	private ElasticsearchRepository<Job> _jobElasticsearchRepository;
+	@Autowired
+	private JobRepository _jobRepository;
 
 	@Autowired
 	private JobRunRepository _jobRunRepository;
