@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -129,12 +130,15 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 		havingValue = "true", value = "osb.asah.postgresql.enabled"
 	)
 	public DataSource postgreSQLDataSource() {
-		return new PostgreSQLDataSource();
+		return new PostgreSQLDataSource(_hikaryMaximumPoolSize);
 	}
 
 	@Bean
 	public TransactionManager transactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
+
+	@Value("${spring.datasource.hikari.maximum-pool-size:10}")
+	private int _hikaryMaximumPoolSize;
 
 }

@@ -41,6 +41,10 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  */
 public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 
+	public PostgreSQLDataSource(int hikaryMaxPoolSize) {
+		_hikariMaximumPoolSize = hikaryMaxPoolSize;
+	}
+
 	@Override
 	public void afterPropertiesSet() {
 	}
@@ -92,7 +96,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		hikariDataSource.setJdbcUrl(_buildJdbcUrl(dataSource));
 		hikariDataSource.setLeakDetectionThreshold(
 			TimeUnit.SECONDS.toMillis(20));
-		hikariDataSource.setMaximumPoolSize(10);
+		hikariDataSource.setMaximumPoolSize(_hikariMaximumPoolSize);
 		hikariDataSource.setMaxLifetime(TimeUnit.SECONDS.toMillis(120));
 		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
@@ -156,6 +160,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 	private static final Log _log = LogFactory.getLog(
 		PostgreSQLDataSource.class);
 
+	private final int _hikariMaximumPoolSize;
 	private final Map<Object, DataSource> _resolvedDataSources =
 		new HashMap<>();
 
