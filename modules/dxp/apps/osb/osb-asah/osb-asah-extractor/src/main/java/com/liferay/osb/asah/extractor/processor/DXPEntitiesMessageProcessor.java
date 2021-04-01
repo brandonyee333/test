@@ -248,12 +248,10 @@ public class DXPEntitiesMessageProcessor {
 				"UpdateDynamicMembershipsNanite",
 				JSONUtil.put(
 					queryBuilderName,
-					QueryBuilders.termsQuery(
-						dxpEntityType.getIndividualSegmentFieldName(),
+					dxpEntityType.getIndividualSegmentFieldName() + " eq " +
 						_faroInfoIndividualDog.getAssociatedIds(
 							Long.valueOf(dataSourceId), dxpEntityType,
 							Collections.singletonList(classPK))
-					).toString()
 				).put(
 					"dateModified", DateUtil.newDateString()
 				));

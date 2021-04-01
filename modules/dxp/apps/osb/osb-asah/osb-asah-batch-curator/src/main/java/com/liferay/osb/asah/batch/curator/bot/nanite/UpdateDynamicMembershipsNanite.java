@@ -38,9 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.WrapperQueryBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -89,26 +87,14 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			return;
 		}
 
-		QueryBuilder addQueryBuilder = null;
-
 		String addQueryBuilderString = contextJSONObject.optString(
 			"addQueryBuilder");
-
-		if (!StringUtils.isEmpty(addQueryBuilderString)) {
-			addQueryBuilder = new WrapperQueryBuilder(addQueryBuilderString);
-		}
-
-		QueryBuilder removeQueryBuilder = null;
-
 		String removeQueryBuilderString = contextJSONObject.optString(
 			"removeQueryBuilder");
 
-		if (!StringUtils.isEmpty(removeQueryBuilderString)) {
-			removeQueryBuilder = new WrapperQueryBuilder(
-				removeQueryBuilderString);
-		}
+		if (!StringUtils.isEmpty(addQueryBuilderString) ||
+			!StringUtils.isEmpty(removeQueryBuilderString)) {
 
-		if ((addQueryBuilder != null) || (removeQueryBuilder != null)) {
 			_updateDynamicMembershipsForSegments(
 				addQueryBuilderString, modifiedDate, removeQueryBuilderString);
 
@@ -122,10 +108,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 			_updateDynamicMembershipsForSegments(addFilter, modifiedDate);
 		}
 		else {
-			_updateDynamicMembershipsForIndividualSegments(
-				FilterStringToQueryBuilderConverter.convert(addFilter),
-				modifiedDate,
-				FilterStringToQueryBuilderConverter.convert(removeFilter));
+			_updateDynamicMembershipsForSegments(
+				addFilter, modifiedDate, removeFilter);
 		}
 	}
 
