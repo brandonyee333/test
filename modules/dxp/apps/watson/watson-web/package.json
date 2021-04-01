@@ -21,6 +21,7 @@
 		}
 	},
 	"dependencies": {
+		"bootstrap": "3.4.1",
 		"cropperjs": "^1.2.2",
 		"google-map-react": "0.34.0",
 		"immutable": "^3.8.2",

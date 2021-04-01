@@ -1,5 +1,7 @@
 {
 	"dependencies": {
+		"bootstrap": "3.4.1",
+		"bootstrap-sass": "3.4.1",
 		"metal-components": "1.0.0-rc.19"
 	},
 	"devDependencies": {

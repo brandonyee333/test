@@ -1,5 +1,6 @@
 {
 	"dependencies": {
+		"bootstrap": "3.4.1",
 		"metal": "^2.5.18",
 		"metal-component": "^2.4.5",
 		"metal-dropdown": "^2.0.0",

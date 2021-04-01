@@ -1,5 +1,7 @@
 {
 	"devDependencies": {
+		"bootstrap": "3.4.1",
+		"bootstrap-sass": "3.4.1",
 		"liferay-module-config-generator": "^1.2.1",
 		"metal-cli": "^4.0.1",
 		"metal-components": "1.0.0-rc.19"

@@ -1,5 +1,7 @@
 {
 	"dependencies": {
+		"bootstrap": "3.4.1",
+		"bootstrap-sass": "3.4.1",
 		"metal": "^2.6.4",
 		"metal-affix": "^2.0.0",
 		"metal-ajax": "^2.1.1",
