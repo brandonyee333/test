@@ -92,7 +92,9 @@ public class ElasticsearchEventDefinitionRepositoryImpl
 	}
 
 	@Override
-	public Optional<EventDefinition> findByDisplayName(String displayName) {
+	public Optional<EventDefinition> findByDisplayNameIgnoreCase(
+		String displayName) {
+
 		throw new UnsupportedOperationException();
 	}
 

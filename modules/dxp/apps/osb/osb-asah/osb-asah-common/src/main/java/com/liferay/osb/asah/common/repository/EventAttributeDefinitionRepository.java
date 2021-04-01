@@ -39,7 +39,7 @@ public interface EventAttributeDefinitionRepository
 
 	public List<EventAttributeDefinition> findAll(Pageable pageable);
 
-	public Optional<EventAttributeDefinition> findByDisplayName(
+	public Optional<EventAttributeDefinition> findByDisplayNameIgnoreCase(
 		String displayName);
 
 	public List<EventAttributeDefinition> findByEventDefinitionId(

@@ -91,7 +91,7 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 	}
 
 	@Override
-	public Optional<EventAttributeDefinition> findByDisplayName(
+	public Optional<EventAttributeDefinition> findByDisplayNameIgnoreCase(
 		String displayName) {
 
 		throw new UnsupportedOperationException();

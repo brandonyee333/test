@@ -82,7 +82,8 @@ public class EventAttributeDefinitionDog {
 		String displayName) {
 
 		Optional<EventAttributeDefinition> eventAttributeDefinitionOptional =
-			_eventAttributeDefinitionRepository.findByDisplayName(displayName);
+			_eventAttributeDefinitionRepository.findByDisplayNameIgnoreCase(
+				displayName);
 
 		return eventAttributeDefinitionOptional.orElse(null);
 	}
