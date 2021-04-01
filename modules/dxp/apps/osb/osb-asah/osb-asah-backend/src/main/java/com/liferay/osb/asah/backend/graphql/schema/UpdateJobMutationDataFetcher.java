@@ -15,12 +15,12 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.common.dog.JobDog;
+import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.Job;
 import com.liferay.osb.asah.common.model.JobParameter;
-import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
 import com.liferay.osb.asah.common.model.JobRunFrequency;
-import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -39,7 +39,7 @@ public class UpdateJobMutationDataFetcher implements DataFetcher<Job> {
 	public Job get(DataFetchingEnvironment dataFetchingEnvironment) {
 		return _jobDog.updateJob(
 			dataFetchingEnvironment.getArgument("jobId"),
-			ListUtil.map(
+			SetUtil.map(
 				dataFetchingEnvironment.getArgument("parameters"),
 				JobParameter::of),
 			JobRunDataPeriod.valueOf(

@@ -19,15 +19,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.backend.dog.AssetDog;
-import com.liferay.osb.asah.common.dog.JobDog;
-import com.liferay.osb.asah.common.model.Job;
-import com.liferay.osb.asah.common.model.JobStatus;
 import com.liferay.osb.asah.backend.model.Keyword;
 import com.liferay.osb.asah.backend.model.PageAsset;
 import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.dog.RecommendationDog;
 import com.liferay.osb.asah.common.model.ItemRecommendation;
+import com.liferay.osb.asah.common.model.Job;
+import com.liferay.osb.asah.common.model.JobStatus;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -84,7 +84,7 @@ public class RecommendationRestController extends BaseRestController {
 	public EntityModel<Model> getModelEntityModel(
 		@PathVariable String modelId) {
 
-		return _toModelEntityModel(_jobDog.getJob(modelId));
+		return _toModelEntityModel(_jobDog.getJob(Long.valueOf(modelId)));
 	}
 
 	@GetMapping("/models")
@@ -92,12 +92,13 @@ public class RecommendationRestController extends BaseRestController {
 		@RequestParam(defaultValue = "0") Integer page,
 		@RequestParam(defaultValue = "") String keywords) {
 
-		ResultBag<Job> jobResultBag = _jobDog.getJobResultBag(
-			keywords, _PAGE_SIZE, Sort.desc("id"), page * _PAGE_SIZE);
+		Page<Job> jobPage = _jobDog.getJobPage(
+			keywords, page, _PAGE_SIZE, Sort.desc("id"));
 
 		return _toResultBagEntityModel(
 			_getModelResultBagEntityModel(page + 1, keywords), page,
-			_getModelResultBagEntityModel(page - 1, keywords), jobResultBag,
+			_getModelResultBagEntityModel(page - 1, keywords),
+			new ResultBag<>(jobPage.getContent(), jobPage.getTotalElements()),
 			this::_toModelEntityModel);
 	}
 
@@ -145,7 +146,7 @@ public class RecommendationRestController extends BaseRestController {
 	}
 
 	private void _checkJobStatus(String jobId) {
-		JobStatus jobStatus = _jobDog.getJobStatus(jobId);
+		JobStatus jobStatus = _jobDog.getJobStatus(Long.valueOf(jobId));
 
 		if (jobStatus != JobStatus.READY) {
 			throw new OSBAsahException(
@@ -225,7 +226,7 @@ public class RecommendationRestController extends BaseRestController {
 				WebMvcLinkBuilder.methodOn(
 					RecommendationRestController.class
 				).getModelEntityModel(
-					job.getId()
+					String.valueOf(job.getId())
 				)
 			).withSelfRel());
 	}

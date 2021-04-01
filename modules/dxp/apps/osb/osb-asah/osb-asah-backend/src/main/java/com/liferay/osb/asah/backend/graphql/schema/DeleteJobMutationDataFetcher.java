@@ -20,8 +20,6 @@ import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,12 +29,13 @@ import org.springframework.stereotype.Component;
 @Component
 @GraphQLTypeWiring(fieldName = "deleteJobs", typeName = "MutationType")
 public class DeleteJobMutationDataFetcher
-	extends BaseExperimentDataFetcher implements DataFetcher<List<Boolean>> {
+	extends BaseExperimentDataFetcher implements DataFetcher<Void> {
 
 	@Override
-	public List<Boolean> get(DataFetchingEnvironment dataFetchingEnvironment) {
-		return _jobDog.deleteJobs(
-			dataFetchingEnvironment.getArgument("jobIds"));
+	public Void get(DataFetchingEnvironment dataFetchingEnvironment) {
+		_jobDog.deleteJobs(dataFetchingEnvironment.getArgument("jobIds"));
+
+		return null;
 	}
 
 	@Autowired
