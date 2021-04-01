@@ -14,6 +14,14 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
@@ -115,6 +123,7 @@ public class Segment implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getAuthorId() {
 		return _authorId;
 	}
@@ -125,11 +134,18 @@ public class Segment implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getChannelId() {
 		return _channelId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("createDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateCreated")
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -150,6 +166,7 @@ public class Segment implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
 	@Override
 	public Long getId() {
 		return _id;
@@ -171,6 +188,10 @@ public class Segment implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
 	public Date getLastActivityDate() {
 		if (_lastActivityDate == null) {
 			return null;
@@ -180,6 +201,12 @@ public class Segment implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("modifiedDate")
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateModified")
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -254,6 +281,8 @@ public class Segment implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("type")
+	@JsonProperty("segmentType")
 	public Type getType() {
 		return _type;
 	}
@@ -272,6 +301,7 @@ public class Segment implements Persistable<Long> {
 			_status, _type);
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isNew() {
 		if ((_id == null) || ((_isNew != null) && _isNew)) {
