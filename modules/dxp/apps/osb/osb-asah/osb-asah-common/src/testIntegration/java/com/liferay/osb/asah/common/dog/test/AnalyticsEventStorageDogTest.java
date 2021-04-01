@@ -142,7 +142,6 @@ public class AnalyticsEventStorageDogTest {
 			_eventDefinitionDog.countEventDefinitions(
 				false, null, EventDefinition.Type.CUSTOM),
 			0.0);
-
 		Assert.assertEquals(
 			Collections.singleton(eventDefinition.getId()),
 			_getEventDefinitionIds("newTestEventAttribute"));
