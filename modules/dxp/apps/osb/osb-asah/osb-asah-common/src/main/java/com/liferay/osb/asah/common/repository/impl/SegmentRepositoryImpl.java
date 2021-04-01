@@ -83,6 +83,33 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		);
 	}
 
+	public List<Segment> searchDynamicSegments(
+		String filterString, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			DSL.and(
+				FilterStringToConditionConverter.convert(filterString),
+				DSL.field(
+					"type"
+				).eq(
+					Segment.Type.DYNAMIC.toString()
+				))
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Segment(record.intoMap())
+		);
+	}
+
 	public List<Segment> searchPreviewDisabledSegments(
 		Long dataSourceId, String filterString, Pageable pageable) {
 

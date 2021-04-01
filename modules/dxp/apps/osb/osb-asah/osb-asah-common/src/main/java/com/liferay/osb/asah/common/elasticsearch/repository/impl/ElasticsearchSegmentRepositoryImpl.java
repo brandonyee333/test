@@ -357,6 +357,37 @@ public class ElasticsearchSegmentRepositoryImpl
 	}
 
 	@Override
+	public List<Segment> searchDynamicSegments(
+		String filterString, Pageable pageable) {
+
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						QueryBuilder queryBuilder =
+							QueryBuilders.matchAllQuery();
+
+						if (filterString != null) {
+							queryBuilder =
+								FilterStringToQueryBuilderConverter.convert(
+									filterString);
+						}
+
+						searchSourceBuilder.query(
+							BoolQueryBuilderUtil.filter(
+								queryBuilder
+							).filter(
+								QueryBuilders.termQuery(
+									"segmentType", "DYNAMIC")
+							));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
+	}
+
+	@Override
 	public List<Segment> searchPreviewDisabledSegments(
 		Long dataSourceId, String filterString, Pageable pageable) {
 

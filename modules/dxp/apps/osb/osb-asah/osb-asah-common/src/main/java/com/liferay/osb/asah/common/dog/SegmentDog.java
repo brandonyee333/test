@@ -316,6 +316,15 @@ public class SegmentDog extends BaseFaroInfoDog {
 		return segment;
 	}
 
+	public List<Segment> searchDynamicSegments(
+		String filterString, int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+
+		return _segmentRepository.searchDynamicSegments(
+			filterString, pageRequest);
+	}
+
 	public Page<Segment> searchPreviewDisabledSegmentsPage(
 		Long dataSourceId, String filterString, int page, int size,
 		String[] sorts) {

@@ -84,6 +84,9 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 
 	public List<Long> findReferencedAssetIds();
 
+	public List<Segment> searchDynamicSegments(
+		String filterString, Pageable pageable);
+
 	public List<Segment> searchPreviewDisabledSegments(
 		Long dataSourceId, String filterString, Pageable pageable);
 
