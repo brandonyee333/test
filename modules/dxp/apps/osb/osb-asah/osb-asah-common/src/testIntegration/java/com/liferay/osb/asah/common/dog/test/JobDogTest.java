@@ -14,20 +14,21 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.model.Job;
 import com.liferay.osb.asah.common.model.JobParameter;
-import com.liferay.osb.asah.common.model.JobStatus;
-import com.liferay.osb.asah.common.model.JobType;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.JobRun;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
 import com.liferay.osb.asah.common.model.JobRunFrequency;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;
+import com.liferay.osb.asah.common.model.JobStatus;
+import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
@@ -55,17 +56,13 @@ import org.springframework.data.domain.Page;
  * @author Marcellus Tavares
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
+@SpringBootTest(classes = OSBAsahSpringBootApplication.class)
 public class JobDogTest {
 
 	@Test
 	public void testAddJob() {
 		Job job = _jobDog.addJob(
-			new ArrayList<JobParameter>() {
-				{
-					add(new JobParameter("parameter1", "1.2"));
-				}
-			},
+			SetUtil.of(new JobParameter("parameter1", "1.2")),
 			JobRunDataPeriod.LAST_30_DAYS, JobRunFrequency.MANUAL,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
 			"Product Recommendation Job", false);
@@ -73,7 +70,8 @@ public class JobDogTest {
 		Assert.assertNotNull(job);
 		Assert.assertNotNull(job.getId());
 
-		List<JobParameter> jobParameters = job.getJobParameters();
+		List<JobParameter> jobParameters = new ArrayList<>(
+			job.getJobParameters());
 
 		JobParameter jobParameter = jobParameters.get(0);
 
@@ -98,12 +96,10 @@ public class JobDogTest {
 	)
 	@Test
 	public void testDeleteJob() {
-		List<Boolean> statuses = _jobDog.deleteJobs(Arrays.asList("1"));
-
-		Assert.assertTrue(statuses.get(0));
+		_jobDog.deleteJobs(Arrays.asList(1L));
 
 		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
-			"1", 0, 20, Sort.desc("id"));
+			1L, 0, 20, Sort.desc("id"));
 
 		Assert.assertEquals(0, jobRunPage.getTotalElements());
 	}
@@ -113,7 +109,7 @@ public class JobDogTest {
 		String jobName = RandomTestUtil.randomString();
 
 		Job job = _jobDog.addJob(
-			Collections.emptyList(), JobRunDataPeriod.LAST_30_DAYS,
+			Collections.emptySet(), JobRunDataPeriod.LAST_30_DAYS,
 			JobRunFrequency.MANUAL,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, jobName, false);
 
@@ -126,7 +122,7 @@ public class JobDogTest {
 	)
 	@Test
 	public void testGetJob() {
-		Job job = _jobDog.getJob("1");
+		Job job = _jobDog.getJob(1L);
 
 		Assert.assertNotNull(job);
 		Assert.assertEquals("Related Content Job", job.getName());
@@ -145,7 +141,7 @@ public class JobDogTest {
 		LocalDateTime expectedRunLocalDateTime = nowLocalDateTime.minusDays(1);
 
 		LocalDateTime runLocalDateTime = LocalDateTime.parse(
-			_jobDog.getJobRunDateString("1"),
+			_jobDog.getJobRunDateString(1L),
 			DateTimeFormatter.ofPattern(DateUtil.PATTERN_ISO_8601));
 
 		Assert.assertEquals(
@@ -169,7 +165,7 @@ public class JobDogTest {
 	@Test
 	public void testGetJobRunResultBag() {
 		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
-			"1", 0, 10, Sort.desc("id"));
+			1L, 0, 10, Sort.desc("id"));
 
 		Assert.assertEquals(3, jobRunPage.getTotalElements());
 
@@ -195,10 +191,10 @@ public class JobDogTest {
 	@Test
 	public void testGetJobRunsMonthlyStatistics() {
 		JobRunsMonthlyStatistics jobRunsMonthlyStatistics =
-			_jobDog.getJobRunsMonthlyStatistics("1");
+			_jobDog.getJobRunsMonthlyStatistics(1L);
 
 		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
-			"1", 0, 20, Sort.desc("id"));
+			1L, 0, 20, Sort.desc("id"));
 
 		List<JobRun> jobRuns = jobRunPage.getContent();
 
@@ -219,13 +215,13 @@ public class JobDogTest {
 	)
 	@Test
 	public void testGetJobStatusFailed() {
-		Assert.assertEquals(JobStatus.FAILED, _jobDog.getJobStatus("1"));
+		Assert.assertEquals(JobStatus.FAILED, _jobDog.getJobStatus(1L));
 	}
 
 	@Test
 	public void testGetJobStatusPending() {
 		Job job = _jobDog.addJob(
-			Collections.emptyList(), JobRunDataPeriod.LAST_30_DAYS,
+			Collections.emptySet(), JobRunDataPeriod.LAST_30_DAYS,
 			JobRunFrequency.MANUAL,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job", false);
 
@@ -239,7 +235,7 @@ public class JobDogTest {
 	)
 	@Test
 	public void testGetJobStatusReady() {
-		Assert.assertEquals(JobStatus.READY, _jobDog.getJobStatus("1"));
+		Assert.assertEquals(JobStatus.READY, _jobDog.getJobStatus(1L));
 	}
 
 	@ElasticsearchIndex(
@@ -248,13 +244,13 @@ public class JobDogTest {
 	)
 	@Test
 	public void testGetJobStatusRunning() {
-		Assert.assertEquals(JobStatus.RUNNING, _jobDog.getJobStatus("1"));
+		Assert.assertEquals(JobStatus.RUNNING, _jobDog.getJobStatus(1L));
 	}
 
 	@Test
 	public void testGetJobStatusScheduled() {
 		Job job = _jobDog.addJob(
-			Collections.emptyList(), JobRunDataPeriod.LAST_30_DAYS,
+			Collections.emptySet(), JobRunDataPeriod.LAST_30_DAYS,
 			JobRunFrequency.EVERY_7_DAYS,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job", false);
 
@@ -265,11 +261,7 @@ public class JobDogTest {
 	@Test
 	public void testUpdateJob() {
 		Job job = _jobDog.addJob(
-			new ArrayList<JobParameter>() {
-				{
-					add(new JobParameter("parameter1", "1.2"));
-				}
-			},
+			SetUtil.of(new JobParameter("parameter1", "1.2")),
 			JobRunDataPeriod.LAST_30_DAYS, JobRunFrequency.MANUAL,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
 			"Product Recommendation Job", false);
@@ -278,19 +270,15 @@ public class JobDogTest {
 		Assert.assertNotNull(job.getId());
 
 		job = _jobDog.updateJob(
-			job.getId(),
-			new ArrayList<JobParameter>() {
-				{
-					add(new JobParameter("parameter1", "1.3"));
-				}
-			},
+			job.getId(), SetUtil.of(new JobParameter("parameter1", "1.3")),
 			JobRunDataPeriod.LAST_180_DAYS, JobRunFrequency.EVERY_7_DAYS,
 			"Product Recommendation Job Updated", false);
 
 		Assert.assertNotNull(job);
 		Assert.assertNotNull(job.getId());
 
-		List<JobParameter> jobParameters = job.getJobParameters();
+		List<JobParameter> jobParameters = new ArrayList<>(
+			job.getJobParameters());
 
 		JobParameter jobParameter = jobParameters.get(0);
 
