@@ -53,20 +53,33 @@ public class PagesRestController extends BaseRestController {
 	@GetMapping("/acquisition-channels")
 	public Map<String, Double> getAcquisitionChannels(
 		@RequestParam String canonicalURL,
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "endDate", required = false)
+			LocalDate endLocalDate,
 		@RequestParam(defaultValue = "D") String interval,
-		@RequestParam(defaultValue = "7") int rangeKey) {
+		@RequestParam(defaultValue = "7") int rangeKey,
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "startDate", required = false)
+			LocalDate startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
 		}
 
-		SearchQueryContext searchQueryContext = new SearchQueryContext();
+		return _pageReferrerDog.getAcquisitionChannels(
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl(canonicalURL);
+					setIncludeActiveSessions(true);
+					setInterval(interval);
+					setRangeKey(rangeKey);
 
-		searchQueryContext.setCanonicalUrl(canonicalURL);
-		searchQueryContext.setInterval(interval);
-		searchQueryContext.setRangeKey(rangeKey);
-
-		return _pageReferrerDog.getAcquisitionChannels(searchQueryContext);
+					if ((endLocalDate != null) && (startLocalDate != null)) {
+						setTimeRange(
+							TimeRange.of(endLocalDate, startLocalDate));
+					}
+				}
+			});
 	}
 
 	@GetMapping("/geolocations")
@@ -84,43 +97,67 @@ public class PagesRestController extends BaseRestController {
 	@GetMapping("/page-referrer-hosts")
 	public Map<String, Double> getPageReferrerHosts(
 		@RequestParam String canonicalURL,
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "endDate", required = false)
+			LocalDate endLocalDate,
 		@RequestParam(defaultValue = "D") String interval,
 		@RequestParam(defaultValue = "7") int rangeKey,
-		@RequestParam(defaultValue = "30") int size) {
+		@RequestParam(defaultValue = "30") int size,
+		@RequestParam(name = "startDate", required = false)
+			LocalDate startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
 		}
 
-		SearchQueryContext searchQueryContext = new SearchQueryContext();
-
-		searchQueryContext.setCanonicalUrl(canonicalURL);
-		searchQueryContext.setInterval(interval);
-		searchQueryContext.setRangeKey(rangeKey);
-
 		return _pageReferrerDog.getPageReferrers(
-			"referrerHost", searchQueryContext, size);
+			"referrerHost",
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl(canonicalURL);
+					setInterval(interval);
+					setRangeKey(rangeKey);
+
+					if ((endLocalDate != null) && (startLocalDate != null)) {
+						setTimeRange(
+							TimeRange.of(endLocalDate, startLocalDate));
+					}
+				}
+			},
+			size);
 	}
 
 	@GetMapping("/page-referrers")
 	public Map<String, Double> getPageReferrers(
 		@RequestParam String canonicalURL,
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "endDate", required = false)
+			LocalDate endLocalDate,
 		@RequestParam(defaultValue = "D") String interval,
 		@RequestParam(defaultValue = "7") int rangeKey,
-		@RequestParam(defaultValue = "30") int size) {
+		@RequestParam(defaultValue = "30") int size,
+		@RequestParam(name = "startDate", required = false)
+			LocalDate startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
 		}
 
-		SearchQueryContext searchQueryContext = new SearchQueryContext();
-
-		searchQueryContext.setCanonicalUrl(canonicalURL);
-		searchQueryContext.setInterval(interval);
-		searchQueryContext.setRangeKey(rangeKey);
-
 		return _pageReferrerDog.getPageReferrers(
-			"referrerCanonicalUrl", searchQueryContext, size);
+			"referrerCanonicalUrl",
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl(canonicalURL);
+					setInterval(interval);
+					setRangeKey(rangeKey);
+
+					if ((endLocalDate != null) && (startLocalDate != null)) {
+						setTimeRange(
+							TimeRange.of(endLocalDate, startLocalDate));
+					}
+				}
+			},
+			size);
 	}
 
 	@GetMapping("/read-count")
@@ -150,8 +187,13 @@ public class PagesRestController extends BaseRestController {
 	@GetMapping("/social-page-referrers")
 	public Map<String, Double> getSocialPageReferrers(
 		@RequestParam String canonicalURL,
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "endDate", required = false)
+			LocalDate endLocalDate,
 		@RequestParam(defaultValue = "D") String interval,
-		@RequestParam(defaultValue = "7") int rangeKey) {
+		@RequestParam(defaultValue = "7") int rangeKey,
+		@RequestParam(name = "startDate", required = false)
+			LocalDate startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
@@ -163,7 +205,19 @@ public class PagesRestController extends BaseRestController {
 		searchQueryContext.setInterval(interval);
 		searchQueryContext.setRangeKey(rangeKey);
 
-		return _pageReferrerDog.getSocialPageReferrers(searchQueryContext);
+		return _pageReferrerDog.getSocialPageReferrers(
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl(canonicalURL);
+					setInterval(interval);
+					setRangeKey(rangeKey);
+
+					if ((endLocalDate != null) && (startLocalDate != null)) {
+						setTimeRange(
+							TimeRange.of(endLocalDate, startLocalDate));
+					}
+				}
+			});
 	}
 
 	@GetMapping("/view-count")
