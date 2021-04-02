@@ -79,5 +79,23 @@
 		"referrer": "",
 		"referrerCanonicalUrl": "",
 		"referrerHost": ""
+	},
+	{
+		"access": 1,
+		"acquisitionChannel": "organic",
+		"canonicalUrl": "http://liferay.com/home",
+		"eventDate": "${now-3d}",
+		"referrer": "https://www.yahoo.com",
+		"referrerCanonicalUrl": "https://www.yahoo.com",
+		"referrerHost": "www.yahoo.com"
+	},
+	{
+		"access": 1,
+		"acquisitionChannel": "social",
+		"canonicalUrl": "http://liferay.com/home",
+		"eventDate": "${now-3d}",
+		"referrer": "https://www.twitter.com",
+		"referrerCanonicalUrl": "https://www.twitter.com",
+		"referrerHost": "www.twitter.com"
 	}
 ]
