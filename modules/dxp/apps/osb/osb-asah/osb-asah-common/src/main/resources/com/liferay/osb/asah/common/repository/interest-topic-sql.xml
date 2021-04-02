@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<entry key="InterestTopic.findTopicsByTermInAndTermTypeAndTermWeightGreaterThanEqual">
+		<![CDATA[
+			SELECT
+				InterestTopic.topic
+			FROM
+				InterestTopic
+			WHERE
+				InterestTopic.term IN (:terms) AND
+				InterestTopic.termType = :termType AND
+				InterestTopic.termWeight >= :termWeight
+			GROUP BY
+				InterestTopic.topic
+		]]>
+	</entry>
+	<entry key="InterestTopic.findTopInterestTopicsByTermRankLessThanEqualAndTermTypeAndTopicIn">
+		<![CDATA[
+			SELECT
+				*
+			FROM
+				(
+					SELECT
+						*,
+						RANK() OVER (
+							PARTITION BY
+								InterestTopic.topic
+							ORDER BY
+								InterestTopic.topicWeight DESC,
+								InterestTopic.termWeight DESC
+						) AS rank
+					FROM
+						InterestTopic
+					WHERE
+						InterestTopic.termType = :termType AND
+						InterestTopic.topic IN (:topics)
+				) AS TMP
+			WHERE
+				rank <= :termRankEnd
+		]]>
+	</entry>
+	<entry key="InterestTopic.findTopTermsByTermRankBetweenAndTermsNotInAndTermTypeAndTopicIn">
+		<![CDATA[
+			SELECT
+				*
+			FROM
+				(
+					SELECT
+						*,
+						RANK() OVER (
+							PARTITION BY
+								InterestTopic.topic
+							ORDER BY
+								InterestTopic.topicWeight DESC,
+								InterestTopic.termWeight DESC
+						) AS rank
+					FROM
+						InterestTopic
+					WHERE
+						InterestTopic.term NOT IN (:terms) AND
+						InterestTopic.termType = :termType AND
+						InterestTopic.topic IN (:topics)
+				) AS TMP
+			WHERE
+				rank > :termRankStart AND
+				rank <= :termRankEnd
+		]]>
+	</entry>
+</properties>
