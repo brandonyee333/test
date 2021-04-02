@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS Channel (
 CREATE TABLE IF NOT EXISTS ChannelDataSource (
 	channelId BIGINT,
 	dataSourceId BIGINT,
-	groupIds BIGINT [],
+	groupIds BIGINT[],
 	PRIMARY KEY (channelId, dataSourceId)
 );
 
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS DataSourceOrganization (
 	dataSourceId BIGINT,
 	enableAllChildren BOOLEAN,
 	organizationId BIGINT,
-	organizationIds BIGINT []
+	organizationIds BIGINT[]
 );
 
 CREATE TABLE IF NOT EXISTS DataSourceSite (
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS DataSourceUserGroup (
 	dataSourceId BIGINT,
 	enableAllChildren BOOLEAN,
 	userGroupId BIGINT,
-	userGroupIds BIGINT []
+	userGroupIds BIGINT[]
 );
 
 CREATE TABLE IF NOT EXISTS Event (

@@ -110,15 +110,15 @@ public class IndividualDog {
 					"individualSegmentIds", String.valueOf(segmentId)));
 		}
 
-		String[] individualDemographicsSearchableFieldNames =
-			_getIndividualDemographicsSearchableFieldNames();
+		if (StringUtils.isNotEmpty(query)) {
+			String[] individualDemographicsSearchableFieldNames =
+				_getIndividualDemographicsSearchableFieldNames();
 
-		if (StringUtils.isNotEmpty(query) &&
-			(individualDemographicsSearchableFieldNames != null)) {
-
-			boolQueryBuilder.filter(
-				QueryBuilders.multiMatchQuery(
-					query, individualDemographicsSearchableFieldNames));
+			if (individualDemographicsSearchableFieldNames != null) {
+				boolQueryBuilder.filter(
+					QueryBuilders.multiMatchQuery(
+						query, individualDemographicsSearchableFieldNames));
+			}
 		}
 
 		SearchHits searchHits = _dataDog.querySearchHits(

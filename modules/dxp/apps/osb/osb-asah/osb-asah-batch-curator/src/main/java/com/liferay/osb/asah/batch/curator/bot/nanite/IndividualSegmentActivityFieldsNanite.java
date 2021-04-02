@@ -129,8 +129,8 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 			_segmentDog.updateSegment(segment, segmentId);
 		}
 
-		Boolean includeAnonymousUsers = BooleanUtils.toBooleanDefaultIfNull(
-			segment.getIncludeAnonymousUsers(), false);
+		boolean includeAnonymousUsers = BooleanUtils.toBoolean(
+			segment.getIncludeAnonymousUsers());
 
 		long activitiesCount = _getActivitiesCount(
 			channelId, includeAnonymousUsers, segmentId);
