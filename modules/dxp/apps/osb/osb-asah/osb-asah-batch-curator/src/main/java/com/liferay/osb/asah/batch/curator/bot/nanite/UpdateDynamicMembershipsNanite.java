@@ -276,7 +276,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 				}
 			}
 
-			segments = _segmentDog.getSegments(++page, 500);
+			segments = _segmentDog.searchDynamicSegments(
+				filterString, ++page, 500, null);
 		}
 	}
 
@@ -303,7 +304,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 					}
 				}
 
-				segments = _segmentDog.getSegments(++page, 500);
+				segments = _segmentDog.searchDynamicSegments(
+					addFilterString, ++page, 500, null);
 			}
 		}
 
@@ -326,7 +328,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 					}
 				}
 
-				segments = _segmentDog.getSegments(++page, 500);
+				segments = _segmentDog.searchDynamicSegments(
+					removeFilterString, ++page, 500, null);
 			}
 		}
 	}
