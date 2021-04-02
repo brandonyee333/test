@@ -97,5 +97,14 @@
 		"referrer": "https://www.twitter.com",
 		"referrerCanonicalUrl": "https://www.twitter.com",
 		"referrerHost": "www.twitter.com"
+	},
+	{
+		"access": 1,
+		"acquisitionChannel": "direct",
+		"canonicalUrl": "http://liferay.com/home",
+		"eventDate": "${now-3d}",
+		"referrer": "invalid.com",
+		"referrerCanonicalUrl": "invalid.com",
+		"referrerHost": null
 	}
 ]
