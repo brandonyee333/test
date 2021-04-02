@@ -108,6 +108,44 @@ public class EventDefinitionDogTest {
 	}
 
 	@Test
+	public void testAddDefinitionWithoutDisplayName1() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", null, null, "testEvent",
+				EventDefinition.Type.CUSTOM, null);
+
+		Assert.assertNotNull(eventDefinition);
+
+		Assert.assertEquals(
+			"Testing an event", eventDefinition.getDescription());
+		Assert.assertEquals("testEvent", eventDefinition.getDisplayName());
+		Assert.assertNotNull(eventDefinition.getId());
+		Assert.assertEquals("testEvent", eventDefinition.getName());
+		Assert.assertEquals(
+			EventDefinition.Type.CUSTOM, eventDefinition.getType());
+		Assert.assertFalse(eventDefinition.isBlocked());
+	}
+
+	@Test
+	public void testAddDefinitionWithoutDisplayName2() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", "", null, "testEvent",
+				EventDefinition.Type.CUSTOM, null);
+
+		Assert.assertNotNull(eventDefinition);
+
+		Assert.assertEquals(
+			"Testing an event", eventDefinition.getDescription());
+		Assert.assertEquals("testEvent", eventDefinition.getDisplayName());
+		Assert.assertNotNull(eventDefinition.getId());
+		Assert.assertEquals("testEvent", eventDefinition.getName());
+		Assert.assertEquals(
+			EventDefinition.Type.CUSTOM, eventDefinition.getType());
+		Assert.assertFalse(eventDefinition.isBlocked());
+	}
+
+	@Test
 	public void testCountEventDefinitions() {
 		Long count = _eventDefinitionDog.countEventDefinitions(
 			false, null, EventDefinition.Type.DEFAULT);
