@@ -16,17 +16,18 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.InterestTopicsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.dog.InterestTopicDog;
+import com.liferay.osb.asah.common.model.InterestTopic;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -50,15 +51,15 @@ public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 	public void test() throws Exception {
 		_interestTopicsNanite.run(null);
 
-		JSONArray interestTopics = _elasticsearchInvoker.get("interest-topics");
+		List<InterestTopic> interestTopics =
+			_interestTopicDog.getInterestTopics();
 
-		Assert.assertTrue(interestTopics.length() > 0);
+		Assert.assertFalse(interestTopics.isEmpty());
 
-		JSONObject jsonObject = interestTopics.getJSONObject(0);
+		InterestTopic interestTopic = interestTopics.get(0);
 
-		Assert.assertTrue(StringUtils.isNotEmpty(jsonObject.getString("term")));
-		Assert.assertTrue(
-			StringUtils.isNotEmpty(jsonObject.getString("termType")));
+		Assert.assertTrue(StringUtils.isNotEmpty(interestTopic.getTerm()));
+		Assert.assertTrue(StringUtils.isNotEmpty(interestTopic.getTermType()));
 	}
 
 	@ElasticsearchIndex(
@@ -73,27 +74,26 @@ public class InterestTopicsNaniteTest extends BaseNaniteTestCase {
 	public void testBlockedKeywords() throws Exception {
 		_interestTopicsNanite.run(null);
 
-		JSONArray interestTopics = _elasticsearchInvoker.get("interest-topics");
+		List<InterestTopic> interestTopics =
+			_interestTopicDog.getInterestTopics();
 
 		Assert.assertFalse(_matchAny(interestTopics, "java"));
 		Assert.assertFalse(_matchAny(interestTopics, "jquery"));
 		Assert.assertTrue(_matchAny(interestTopics, "php"));
 	}
 
-	private boolean _matchAny(JSONArray jsonArray, String term) {
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+	private boolean _matchAny(List<InterestTopic> interestTopics, String term) {
+		Stream<InterestTopic> stream = interestTopics.stream();
 
-			if (Objects.equals(jsonObject.getString("term"), term)) {
-				return true;
-			}
-		}
+		Optional<InterestTopic> interestTopicOptional = stream.filter(
+			interestTopic -> Objects.equals(interestTopic.getTerm(), term)
+		).findAny();
 
-		return false;
+		return interestTopicOptional.isPresent();
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
+	@Autowired
+	private InterestTopicDog _interestTopicDog;
 
 	@Autowired
 	private InterestTopicsNanite _interestTopicsNanite;
