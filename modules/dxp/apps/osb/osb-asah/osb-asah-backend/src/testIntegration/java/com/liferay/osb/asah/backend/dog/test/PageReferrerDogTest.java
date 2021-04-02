@@ -158,6 +158,8 @@ public class PageReferrerDogTest {
 			},
 			10);
 
+		Assert.assertEquals(4, pageReferrers.size());
+
 		Assert.assertEquals(
 			3, pageReferrers.get("https://www.facebook.com"), 0);
 		Assert.assertEquals(4, pageReferrers.get("https://www.google.com"), 0);
@@ -175,6 +177,8 @@ public class PageReferrerDogTest {
 				}
 			},
 			10);
+
+		Assert.assertEquals(4, pageReferrers.size());
 
 		Assert.assertEquals(
 			3, pageReferrers.get("https://www.facebook.com"), 0);

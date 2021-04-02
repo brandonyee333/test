@@ -70,5 +70,14 @@
 		"referrer": "https://www.latimes.com",
 		"referrerCanonicalUrl": "https://www.latimes.com",
 		"referrerHost": "www.latimes.com"
+	},
+	{
+		"access": 2,
+		"acquisitionChannel": "referral",
+		"canonicalUrl": "http://liferay.com/home",
+		"eventDate": "${now-3d}",
+		"referrer": "",
+		"referrerCanonicalUrl": "",
+		"referrerHost": ""
 	}
 ]
