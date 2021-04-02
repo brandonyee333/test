@@ -168,6 +168,15 @@ CREATE TABLE IF NOT EXISTS Field (
 	value TEXT
 );
 
+CREATE TABLE IF NOT EXISTS InterestTopic (
+	id BIGSERIAL PRIMARY KEY,
+	term TEXT,
+	termType TEXT,
+	termWeight REAL,
+	topic INTEGER,
+	topicWeight REAL
+);
+
 CREATE TABLE IF NOT EXISTS ItemRecommendation (
 	id TEXT PRIMARY KEY,
 	itemId TEXT,
