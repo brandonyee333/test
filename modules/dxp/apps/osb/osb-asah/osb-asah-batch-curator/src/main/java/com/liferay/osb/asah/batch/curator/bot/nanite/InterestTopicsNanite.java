@@ -25,9 +25,11 @@ import cc.mallet.types.Instance;
 import cc.mallet.types.InstanceList;
 
 import com.liferay.osb.asah.common.dog.BlockedKeywordDog;
+import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.BlockedKeyword;
+import com.liferay.osb.asah.common.model.InterestTopic;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -52,7 +54,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,39 +91,30 @@ public class InterestTopicsNanite extends BaseNanite {
 		return LogFactory.getLog(InterestTopicsNanite.class);
 	}
 
-	private List<Pipe> _createPreprocessPipes() {
-		List<Pipe> pipes = new ArrayList<>();
-
-		pipes.add(new CharSequence2TokenSequence(Pattern.compile("([^,]+)")));
-		pipes.add(new TokenSequence2FeatureSequence());
-
-		return pipes;
-	}
-
-	private JSONObject _createTopicJSONObject(
+	private InterestTopic _createInterestTopic(
 		Alphabet alphabet, IDSorter idSorter, int topicTermsLength, int topic,
 		double topicWeight) {
 
-		JSONObject jsonObject = new JSONObject();
+		InterestTopic interestTopic = new InterestTopic();
 
 		String value = String.valueOf(alphabet.lookupObject(idSorter.getID()));
 
 		String[] valueParts = value.split(_SEPARATOR);
 
-		jsonObject.put("term", valueParts[0]);
-		jsonObject.put("termType", valueParts[1]);
+		interestTopic.setTerm(valueParts[0]);
+		interestTopic.setTermType(valueParts[1]);
 
-		jsonObject.put("termWeight", idSorter.getWeight() / topicTermsLength);
-		jsonObject.put("topic", topic);
-		jsonObject.put("topicWeight", topicWeight);
+		interestTopic.setTermWeight(idSorter.getWeight() / topicTermsLength);
+		interestTopic.setTopic(topic);
+		interestTopic.setTopicWeight(topicWeight);
 
-		return jsonObject;
+		return interestTopic;
 	}
 
-	private JSONArray _createTopicsJSONArray(
+	private List<InterestTopic> _createInterestTopics(
 		ParallelTopicModel parallelTopicModel) {
 
-		JSONArray jsonArray = new JSONArray();
+		List<InterestTopic> interestTopics = new ArrayList<>();
 
 		ArrayList<TreeSet<IDSorter>> sortedWords =
 			parallelTopicModel.getSortedWords();
@@ -131,16 +123,24 @@ public class InterestTopicsNanite extends BaseNanite {
 			TreeSet<IDSorter> idSorters = sortedWords.get(i);
 
 			for (IDSorter idSorter : idSorters) {
-				JSONObject jsonObject = _createTopicJSONObject(
-					parallelTopicModel.getAlphabet(), idSorter,
-					parallelTopicModel.getTokensPerTopic()[i], i,
-					parallelTopicModel.alpha[i]);
-
-				jsonArray.put(jsonObject);
+				interestTopics.add(
+					_createInterestTopic(
+						parallelTopicModel.getAlphabet(), idSorter,
+						parallelTopicModel.getTokensPerTopic()[i], i,
+						parallelTopicModel.alpha[i]));
 			}
 		}
 
-		return jsonArray;
+		return interestTopics;
+	}
+
+	private List<Pipe> _createPreprocessPipes() {
+		List<Pipe> pipes = new ArrayList<>();
+
+		pipes.add(new CharSequence2TokenSequence(Pattern.compile("([^,]+)")));
+		pipes.add(new TokenSequence2FeatureSequence());
+
+		return pipes;
 	}
 
 	private InstanceList _createTrainingInstanceList() {
@@ -159,11 +159,10 @@ public class InterestTopicsNanite extends BaseNanite {
 	}
 
 	private void _saveModel(ParallelTopicModel parallelTopicModel) {
-		_faroInfoElasticsearchInvoker.delete(
-			"interest-topics", QueryBuilders.matchAllQuery());
+		_interestTopicDog.deleteInterestTopics();
 
-		_faroInfoElasticsearchInvoker.add(
-			"interest-topics", _createTopicsJSONArray(parallelTopicModel));
+		_interestTopicDog.addInterestTopics(
+			_createInterestTopics(parallelTopicModel));
 	}
 
 	private static final String _SEPARATOR = "_SEPARATOR_";
@@ -173,6 +172,9 @@ public class InterestTopicsNanite extends BaseNanite {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private InterestTopicDog _interestTopicDog;
 
 	@Value("${lda.alpha.sum:1.0}")
 	private double _ldaAlphaSum;

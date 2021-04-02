@@ -15,9 +15,11 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.InterestTopic;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.ArrayList;
@@ -30,7 +32,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.search.join.ScoreMode;
@@ -38,24 +39,16 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.ShardSearchFailure;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.InternalTopHits;
-import org.elasticsearch.search.aggregations.metrics.TopHitsAggregationBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -105,31 +98,12 @@ public class InterestsRestController extends BaseRestController {
 			return toCollectionGetResponse("interest-topics", new JSONArray());
 		}
 
-		TopHitsAggregationBuilder termsTopHitsAggregationBuilder =
-			_buildTermsTopHitsAggregationBuilder(
-				0, new String[] {"term", "termWeight", "topic", "topicWeight"},
-				termsPerTopic);
-
-		TermsAggregationBuilder topicTermsAggregationBuilder =
-			_buildTopicTermsAggregationBuilder(
-				termsTopHitsAggregationBuilder, topics.size());
-
-		SearchResponse topTermsSearchResponse = _searchTopTerms(
-			topicTermsAggregationBuilder,
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("termType", "keyword")
-			).filter(
-				QueryBuilders.termsQuery("topic", topics)
-			));
-
-		if (topTermsSearchResponse.status() != RestStatus.OK) {
-			_logSearchResponseErrors(topTermsSearchResponse);
-
-			throw new OSBAsahException(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		List<InterestTopic> interestTopics =
+			_interestTopicDog.getInterestTopics(
+				termsPerTopic, "keyword", topics);
 
 		List<Topic> topTermsTopics = _getTopTermsTopics(
-			topTermsSearchResponse.getAggregations(), topicsLength);
+			interestTopics, topicsLength);
 
 		return toCollectionGetResponse(
 			"interest-topics",
@@ -171,43 +145,22 @@ public class InterestsRestController extends BaseRestController {
 			return toCollectionGetResponse("interest-terms", new JSONArray());
 		}
 
-		TopHitsAggregationBuilder termsTopHitsAggregationBuilder =
-			_buildTermsTopHitsAggregationBuilder(
-				_calculateTermsTopHitsAggregationBuilderFrom(
-					page, size, topics.size()),
-				new String[] {"term", "topicWeight"},
-				_calculateTermsTopHitsAggregationBuilderSize(
-					size, topics.size()));
-
-		TermsAggregationBuilder topicTermsAggregationBuilder =
-			_buildTopicTermsAggregationBuilder(
-				termsTopHitsAggregationBuilder, topics.size());
-
-		QueryBuilder queryBuilder = BoolQueryBuilderUtil.mustNot(
-			QueryBuilders.termsQuery("term", terms)
-		).filter(
-			QueryBuilders.termQuery("termType", "keyword")
-		).filter(
-			QueryBuilders.termsQuery("topic", topics)
-		);
-
-		SearchResponse topTermsSearchResponse = _searchTopTerms(
-			topicTermsAggregationBuilder, queryBuilder);
-
-		if (topTermsSearchResponse.status() != RestStatus.OK) {
-			_logSearchResponseErrors(topTermsSearchResponse);
-
-			throw new OSBAsahException(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-		List<String> topTerms = _getTopTerms(
-			topTermsSearchResponse.getAggregations());
+		List<String> topTerms = _interestTopicDog.getInterestTopicTerms(
+			page, size, terms, "keyword", topics);
 
 		size = Math.min(size, topTerms.size());
 
 		return toCollectionGetResponse(
 			"interest-topics", new JSONArray(topTerms.subList(0, size)),
-			"interest-terms", page, queryBuilder, size);
+			"interest-terms", page,
+			BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.termsQuery("term", terms)
+			).filter(
+				QueryBuilders.termQuery("termType", "keyword")
+			).filter(
+				QueryBuilders.termsQuery("topic", topics)
+			),
+			size);
 	}
 
 	protected String toCollectionGetResponse(
@@ -218,92 +171,19 @@ public class InterestsRestController extends BaseRestController {
 		).toString();
 	}
 
-	private void _addTermPairs(
-		InternalTopHits internalTopHits, List<Pair<Double, String>> termPairs) {
-
-		for (SearchHit hit : internalTopHits.getHits()) {
-			Map<String, Object> sourceAsMap = hit.getSourceAsMap();
-
-			termPairs.add(
-				Pair.of(
-					(Double)sourceAsMap.get("topicWeight"),
-					(String)sourceAsMap.get("term")));
-		}
-	}
-
 	private void _addTermPerTopic(
-		InternalTopHits aggregation, Map<Integer, Topic> topics) {
+		InterestTopic interestTopic, Map<Integer, Topic> topics) {
 
-		for (SearchHit hit : aggregation.getHits()) {
-			Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+		Topic topic = topics.getOrDefault(
+			interestTopic.getTopic(),
+			new Topic(
+				interestTopic.getTopic(), interestTopic.getTopicWeight()));
 
-			Integer topicId = (Integer)sourceAsMap.get("topic");
+		topic.addTopicTerm(
+			new TopicTerm(
+				interestTopic.getTerm(), interestTopic.getTermWeight()));
 
-			Topic topic = topics.getOrDefault(
-				topicId,
-				new Topic(topicId, (Double)sourceAsMap.get("topicWeight")));
-
-			topic.addTopicTerm(
-				new TopicTerm(
-					(String)sourceAsMap.get("term"),
-					(Double)sourceAsMap.get("termWeight")));
-
-			topics.put(topicId, topic);
-		}
-	}
-
-	private TopHitsAggregationBuilder _buildTermsTopHitsAggregationBuilder(
-		int from, String[] includes, int size) {
-
-		TopHitsAggregationBuilder topHitsAggregationBuilder =
-			AggregationBuilders.topHits("top_terms");
-
-		topHitsAggregationBuilder.fetchSource(includes, null);
-		topHitsAggregationBuilder.from(from);
-		topHitsAggregationBuilder.size(size);
-		topHitsAggregationBuilder.sorts(
-			Arrays.asList(
-				SortBuilderUtil.fieldSort("topicWeight", SortOrder.DESC),
-				SortBuilderUtil.fieldSort("termWeight", SortOrder.DESC)));
-
-		return topHitsAggregationBuilder;
-	}
-
-	private TermsAggregationBuilder _buildTopicTermsAggregationBuilder(
-		TopHitsAggregationBuilder termsTopHitsAggregationBuilder,
-		int topicsLength) {
-
-		TermsAggregationBuilder topicTermsAggregationBuilder =
-			AggregationBuilders.terms("topics");
-
-		topicTermsAggregationBuilder.field("topic");
-		topicTermsAggregationBuilder.size(topicsLength);
-		topicTermsAggregationBuilder.subAggregation(
-			termsTopHitsAggregationBuilder);
-
-		return topicTermsAggregationBuilder;
-	}
-
-	private int _calculateTermsTopHitsAggregationBuilderFrom(
-		int page, int size, int topicsCount) {
-
-		if (page > 0) {
-			return (int)Math.ceil((double)(page * size) / topicsCount);
-		}
-
-		return 0;
-	}
-
-	private int _calculateTermsTopHitsAggregationBuilderSize(
-		int size, int topicsCount) {
-
-		int defaultSize = 2;
-
-		if ((topicsCount * defaultSize) < size) {
-			return (int)Math.ceil((double)size / topicsCount);
-		}
-
-		return defaultSize;
+		topics.put(interestTopic.getTopic(), topic);
 	}
 
 	private JSONObject _fetchIndividual(String userId) {
@@ -315,20 +195,6 @@ public class InterestsRestController extends BaseRestController {
 					QueryBuilders.matchQuery(
 						"dataSourceIndividualPKs.individualPKs", userId)),
 				ScoreMode.None));
-	}
-
-	private List<Pair<Double, String>> _getTermPairs(
-		List<? extends Terms.Bucket> topicBuckets) {
-
-		List<Pair<Double, String>> termPairs = new ArrayList<>();
-
-		for (Terms.Bucket topicBucket : topicBuckets) {
-			for (Aggregation aggregation : topicBucket.getAggregations()) {
-				_addTermPairs((InternalTopHits)aggregation, termPairs);
-			}
-		}
-
-		return termPairs;
 	}
 
 	private List<Integer> _getTopics(
@@ -344,27 +210,8 @@ public class InterestsRestController extends BaseRestController {
 			return Collections.emptyList();
 		}
 
-		SearchResponse interestTopicsSearchResponse = _searchInterestTopics(
-			terms, termWeightThreshold);
-
-		if (interestTopicsSearchResponse.status() != RestStatus.OK) {
-			_logSearchResponseErrors(interestTopicsSearchResponse);
-
-			return Collections.emptyList();
-		}
-
-		Aggregations aggregations =
-			interestTopicsSearchResponse.getAggregations();
-
-		Terms topicsTerms = aggregations.get("topics");
-
-		List<Integer> topics = new ArrayList<>();
-
-		for (Terms.Bucket bucket : topicsTerms.getBuckets()) {
-			Number relatedTopicNumber = bucket.getKeyAsNumber();
-
-			topics.add(relatedTopicNumber.intValue());
-		}
+		List<Integer> topics = _interestTopicDog.getInterestTopicTopics(
+			terms, "keyword", termWeightThreshold);
 
 		if (topics.isEmpty() && _log.isInfoEnabled()) {
 			_log.info("There are no topics related with " + terms.toString());
@@ -373,34 +220,13 @@ public class InterestsRestController extends BaseRestController {
 		return topics;
 	}
 
-	private List<String> _getTopTerms(Aggregations termsAggregation) {
-		Terms topicTerms = termsAggregation.get("topics");
-
-		List<Pair<Double, String>> termPairs = _getTermPairs(
-			topicTerms.getBuckets());
-
-		Stream<Pair<Double, String>> stream = termPairs.stream();
-
-		return stream.sorted(
-			(pair1, pair2) -> Double.compare(pair2.getLeft(), pair1.getLeft())
-		).map(
-			Pair::getRight
-		).collect(
-			Collectors.toList()
-		);
-	}
-
 	private List<Topic> _getTopTermsTopics(
-		Aggregations termsAggregation, int topicsLength) {
-
-		Terms terms = termsAggregation.get("topics");
+		List<InterestTopic> interestTopics, int topicsLength) {
 
 		Map<Integer, Topic> topics = new HashMap<>();
 
-		for (Terms.Bucket topicBucket : terms.getBuckets()) {
-			for (Aggregation aggregation : topicBucket.getAggregations()) {
-				_addTermPerTopic((InternalTopHits)aggregation, topics);
-			}
+		for (InterestTopic interestTopic : interestTopics) {
+			_addTermPerTopic(interestTopic, topics);
 		}
 
 		Set<Map.Entry<Integer, Topic>> entries = topics.entrySet();
@@ -470,60 +296,11 @@ public class InterestsRestController extends BaseRestController {
 		}
 	}
 
-	private SearchResponse _searchInterestTopics(
-		List<String> terms, double termWeightThreshold) {
-
-		return faroInfoElasticsearchInvoker.search(
-			"interest-topics",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(
-					AggregationBuilders.terms(
-						"topics"
-					).field(
-						"topic"
-					));
-
-				BoolQueryBuilder queryBuilder = BoolQueryBuilderUtil.filter(
-					QueryBuilders.termsQuery("term", terms)
-				).filter(
-					QueryBuilders.termQuery("termType", "keyword")
-				);
-
-				if (termWeightThreshold > 0) {
-					queryBuilder.filter(
-						QueryBuilders.rangeQuery(
-							"termWeight"
-						).gte(
-							termWeightThreshold
-						));
-				}
-
-				searchSourceBuilder.query(queryBuilder);
-
-				searchSourceBuilder.size(0);
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort("topicWeight", SortOrder.DESC));
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort("termWeight", SortOrder.DESC));
-			});
-	}
-
-	private SearchResponse _searchTopTerms(
-		AggregationBuilder aggregationBuilder, QueryBuilder queryBuilder) {
-
-		return faroInfoElasticsearchInvoker.search(
-			"interest-topics",
-			searchSourceBuilder -> {
-				searchSourceBuilder.aggregation(aggregationBuilder);
-				searchSourceBuilder.query(queryBuilder);
-				searchSourceBuilder.sort(
-					SortBuilderUtil.fieldSort("topicWeight", SortOrder.DESC));
-				searchSourceBuilder.size(0);
-			});
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		InterestsRestController.class);
+
+	@Autowired
+	private InterestTopicDog _interestTopicDog;
 
 	private static class Topic {
 
