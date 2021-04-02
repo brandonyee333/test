@@ -101,9 +101,15 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		}
 
 		if (StringUtils.isNotEmpty(keyword)) {
-			Field<Object> field = DSL.field("name");
+			Field<Object> descriptionField = DSL.field("description");
+			Field<Object> displayNameField = DSL.field("displayName");
+			Field<Object> nameField = DSL.field("name");
 
-			conditions.add(field.containsIgnoreCase(keyword));
+			conditions.add(
+				DSL.or(
+					descriptionField.containsIgnoreCase(keyword),
+					displayNameField.containsIgnoreCase(keyword),
+					nameField.containsIgnoreCase(keyword)));
 		}
 
 		return conditions;

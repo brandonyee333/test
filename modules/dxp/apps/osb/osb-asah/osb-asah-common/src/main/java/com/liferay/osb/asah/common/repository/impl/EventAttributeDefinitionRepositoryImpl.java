@@ -108,9 +108,15 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		List<Condition> conditions = new ArrayList<>();
 
 		if (StringUtils.isNotEmpty(name)) {
-			Field<Object> field = DSL.field("name");
+			Field<Object> descriptionField = DSL.field("description");
+			Field<Object> displayNameField = DSL.field("displayName");
+			Field<Object> nameField = DSL.field("name");
 
-			conditions.add(field.containsIgnoreCase(name));
+			conditions.add(
+				DSL.or(
+					descriptionField.containsIgnoreCase(name),
+					displayNameField.containsIgnoreCase(name),
+					nameField.containsIgnoreCase(name)));
 		}
 
 		return conditions;
