@@ -298,6 +298,9 @@ public class PageReferrerDog {
 					Optional.empty(), searchQueryContext)
 			).filter(
 				QueryBuilders.existsQuery("acquisitionChannel")
+			).filter(
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.matchQuery(fieldName, ""))
 			));
 		searchSourceBuilder.size(0);
 
