@@ -68,6 +68,11 @@ public class EventDefinitionDog {
 		}
 
 		eventDefinition.setDescription(description);
+
+		if (StringUtils.isEmpty(displayName)) {
+			displayName = name;
+		}
+
 		eventDefinition.setDisplayName(displayName);
 		eventDefinition.setName(name);
 		eventDefinition.setType(type);
