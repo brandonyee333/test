@@ -55,7 +55,6 @@ public class EventDefinitionDogTest {
 				EventDefinition.Type.CUSTOM, null);
 
 		Assert.assertNotNull(eventDefinition);
-
 		Assert.assertEquals(
 			"Testing an event", eventDefinition.getDescription());
 		Assert.assertEquals("Test Event", eventDefinition.getDisplayName());
@@ -75,7 +74,6 @@ public class EventDefinitionDogTest {
 				EventDefinition.Type.CUSTOM, null);
 
 		Assert.assertNotNull(eventDefinition);
-
 		Assert.assertEquals(
 			"Testing an event", eventDefinition.getDescription());
 		Assert.assertEquals("Test Event 1", eventDefinition.getDisplayName());
@@ -93,7 +91,6 @@ public class EventDefinitionDogTest {
 			EventDefinition.Type.CUSTOM, url);
 
 		Assert.assertNotNull(eventDefinition);
-
 		Assert.assertEquals(
 			"Testing an event", eventDefinition.getDescription());
 		Assert.assertEquals("Test Event 2", eventDefinition.getDisplayName());
@@ -115,7 +112,6 @@ public class EventDefinitionDogTest {
 				EventDefinition.Type.CUSTOM, null);
 
 		Assert.assertNotNull(eventDefinition);
-
 		Assert.assertEquals(
 			"Testing an event", eventDefinition.getDescription());
 		Assert.assertEquals("testEvent", eventDefinition.getDisplayName());
@@ -134,7 +130,6 @@ public class EventDefinitionDogTest {
 				EventDefinition.Type.CUSTOM, null);
 
 		Assert.assertNotNull(eventDefinition);
-
 		Assert.assertEquals(
 			"Testing an event", eventDefinition.getDescription());
 		Assert.assertEquals("testEvent", eventDefinition.getDisplayName());
