@@ -7,7 +7,7 @@
 					"__typename": "EventAttributeDefinition",
 					"dataType": "STRING",
 					"description": null,
-					"displayName": null,
+					"displayName": "articleId",
 					"name": "articleId",
 					"sampleValue": null
 				},
@@ -15,7 +15,7 @@
 					"__typename": "EventAttributeDefinition",
 					"dataType": "STRING",
 					"description": null,
-					"displayName": null,
+					"displayName": "assetId",
 					"name": "assetId",
 					"sampleValue": null
 				},
@@ -23,7 +23,7 @@
 					"__typename": "EventAttributeDefinition",
 					"dataType": "STRING",
 					"description": null,
-					"displayName": null,
+					"displayName": "commentId",
 					"name": "commentId",
 					"sampleValue": null
 				},
@@ -31,7 +31,7 @@
 					"__typename": "EventAttributeDefinition",
 					"dataType": "STRING",
 					"description": null,
-					"displayName": null,
+					"displayName": "elementId",
 					"name": "elementId",
 					"sampleValue": null
 				},
@@ -39,7 +39,7 @@
 					"__typename": "EventAttributeDefinition",
 					"dataType": "STRING",
 					"description": null,
-					"displayName": null,
+					"displayName": "entryId",
 					"name": "entryId",
 					"sampleValue": null
 				}

@@ -160,7 +160,8 @@ public class EventAttributeDefinitionDogTest {
 			EventAttributeDefinition.DataType.DURATION,
 			eventAttributeDefinition.getDataType());
 		Assert.assertNull(eventAttributeDefinition.getDescription());
-		Assert.assertNull(eventAttributeDefinition.getDisplayName());
+		Assert.assertEquals(
+			"viewDuration", eventAttributeDefinition.getDisplayName());
 
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageUnloaded");

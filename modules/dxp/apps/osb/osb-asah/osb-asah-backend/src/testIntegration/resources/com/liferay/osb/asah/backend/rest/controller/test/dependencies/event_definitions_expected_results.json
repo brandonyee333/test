@@ -6,21 +6,21 @@
 				{
 					"__typename": "EventDefinition",
 					"description": null,
-					"displayName": null,
+					"displayName": "assetViewed",
 					"name": "assetViewed",
 					"type": "DEFAULT"
 				},
 				{
 					"__typename": "EventDefinition",
 					"description": null,
-					"displayName": null,
+					"displayName": "assetSubmitted",
 					"name": "assetSubmitted",
 					"type": "DEFAULT"
 				},
 				{
 					"__typename": "EventDefinition",
 					"description": null,
-					"displayName": null,
+					"displayName": "assetDownloaded",
 					"name": "assetDownloaded",
 					"type": "DEFAULT"
 				}
