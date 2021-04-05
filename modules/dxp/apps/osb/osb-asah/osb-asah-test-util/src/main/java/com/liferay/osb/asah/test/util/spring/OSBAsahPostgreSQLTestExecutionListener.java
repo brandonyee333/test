@@ -70,10 +70,9 @@ public class OSBAsahPostgreSQLTestExecutionListener
 			while (resultSet.next()) {
 				try (PreparedStatement preparedStatement =
 						connection.prepareStatement(
-							"TRUNCATE TABLE ? CASCADE")) {
-
-					preparedStatement.setString(
-						1, resultSet.getString("TABLE_NAME"));
+							"TRUNCATE TABLE " +
+								resultSet.getString("TABLE_NAME") +
+									" CASCADE")) {
 
 					preparedStatement.execute();
 				}
