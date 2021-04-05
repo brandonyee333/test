@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.sql.Array;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
@@ -45,62 +46,120 @@ public class BeanUtils {
 		for (PropertyDescriptor targetPropertyDescriptor :
 				targetPropertyDescriptors) {
 
-			Method targetPropertyReadMethod =
-				targetPropertyDescriptor.getReadMethod();
+			String targetPropertyName = _getPropertyName(
+				targetPropertyDescriptor);
 
-			if (targetPropertyReadMethod == null) {
-				continue;
-			}
-
-			String targetPropertyName = targetPropertyDescriptor.getName();
-
-			Column column = targetPropertyReadMethod.getAnnotation(
-				Column.class);
-
-			if (column != null) {
-				targetPropertyName = column.value();
-			}
-
-			Object value = source.get(targetPropertyName.toLowerCase());
+			Object value = source.get(targetPropertyName);
 
 			if (value == null) {
 				continue;
 			}
 
-			Method targetPropertyWriteMethod =
-				targetPropertyDescriptor.getWriteMethod();
+			_setTargetPropertyValue(
+				targetPropertyName, value, targetPropertyDescriptor, target);
+		}
+	}
 
-			ResolvableType targetPropertyResolvableType =
-				ResolvableType.forMethodParameter(targetPropertyWriteMethod, 0);
+	public static void copyProperties(Object source, Object target) {
+		copyProperties(_toSourceMap(source), target);
+	}
 
-			Class<?> targetPropertyClass =
-				targetPropertyResolvableType.getRawClass();
+	private static String _getPropertyName(
+		PropertyDescriptor propertyDescriptor) {
 
-			try {
-				if ((targetPropertyClass != null) &&
-					targetPropertyClass.isEnum()) {
+		String propertyName = propertyDescriptor.getName();
 
-					targetPropertyWriteMethod.invoke(
-						target,
-						Enum.valueOf(
-							(Class<Enum>)targetPropertyClass,
-							value.toString()));
-				}
-				else {
-					if (value instanceof Array) {
-						Array array = (Array)value;
+		Method propertyReadMethod = propertyDescriptor.getReadMethod();
 
-						value = new LinkedHashSet<>(
-							Arrays.asList((Long[])array.getArray()));
-					}
+		if (propertyReadMethod == null) {
+			return propertyName.toLowerCase();
+		}
 
-					targetPropertyWriteMethod.invoke(target, value);
-				}
+		Column column = propertyReadMethod.getAnnotation(Column.class);
+
+		if (column != null) {
+			propertyName = column.value();
+		}
+
+		return propertyName.toLowerCase();
+	}
+
+	private static void _setTargetPropertyValue(
+		String targetPropertyName, Object targetPropertyValue,
+		PropertyDescriptor targetPropertyDescriptor, Object target) {
+
+		Method targetPropertyWriteMethod =
+			targetPropertyDescriptor.getWriteMethod();
+
+		if (targetPropertyWriteMethod == null) {
+			return;
+		}
+
+		ResolvableType targetPropertyResolvableType =
+			ResolvableType.forMethodParameter(targetPropertyWriteMethod, 0);
+
+		Class<?> targetPropertyClass =
+			targetPropertyResolvableType.getRawClass();
+
+		try {
+			if ((targetPropertyClass != null) && targetPropertyClass.isEnum()) {
+				targetPropertyWriteMethod.invoke(
+					target,
+					Enum.valueOf(
+						(Class<Enum>)targetPropertyClass,
+						targetPropertyValue.toString()));
 			}
-			catch (Exception e) {
-				_log.error("Unable to write property " + targetPropertyName, e);
+			else {
+				if (targetPropertyValue instanceof Array) {
+					Array array = (Array)targetPropertyValue;
+
+					targetPropertyValue = new LinkedHashSet<>(
+						Arrays.asList((Long[])array.getArray()));
+				}
+
+				targetPropertyWriteMethod.invoke(target, targetPropertyValue);
 			}
 		}
+		catch (Exception e) {
+			_log.error("Unable to write property " + targetPropertyName, e);
+		}
+	}
+
+	private static Map<String, Object> _toSourceMap(Object source) {
+		Map<String, Object> sourceMap = new HashMap<>();
+
+		PropertyDescriptor[] sourcePropertyDescriptors =
+			org.springframework.beans.BeanUtils.getPropertyDescriptors(
+				source.getClass());
+
+		for (PropertyDescriptor sourcePropertyDescriptor :
+				sourcePropertyDescriptors) {
+
+			Method sourcePropertyReadMethod =
+				sourcePropertyDescriptor.getReadMethod();
+
+			if (sourcePropertyReadMethod == null) {
+				continue;
+			}
+
+			String sourcePropertyName = _getPropertyName(
+				sourcePropertyDescriptor);
+
+			try {
+				Object value = sourcePropertyReadMethod.invoke(source);
+
+				if (value == null) {
+					continue;
+				}
+
+				sourceMap.put(sourcePropertyName, value);
+			}
+			catch (Exception e) {
+				_log.error("Unable to read property " + sourcePropertyName, e);
+			}
+		}
+
+		return sourceMap;
 	}
 
 	private static final Log _log = LogFactory.getLog(BeanUtils.class);
