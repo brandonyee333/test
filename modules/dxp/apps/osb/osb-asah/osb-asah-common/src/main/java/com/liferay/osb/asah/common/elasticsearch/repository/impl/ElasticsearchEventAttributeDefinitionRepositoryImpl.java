@@ -41,7 +41,7 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 	}
 
 	@Override
-	public long countEventAttributeDefinitions(String name) {
+	public long countEventAttributeDefinitions(String keyword) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -132,7 +132,7 @@ public class ElasticsearchEventAttributeDefinitionRepositoryImpl
 
 	@Override
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		String name, Pageable pageable) {
+		String keyword, Pageable pageable) {
 
 		throw new UnsupportedOperationException();
 	}

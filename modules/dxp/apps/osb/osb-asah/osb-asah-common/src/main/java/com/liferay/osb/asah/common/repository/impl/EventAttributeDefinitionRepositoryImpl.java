@@ -47,14 +47,14 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
-	public long countEventAttributeDefinitions(String name) {
+	public long countEventAttributeDefinitions(String keyword) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
 			"EventAttributeDefinition"
 		).where(
-			_getConditions(name)
+			_getConditions(keyword)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -63,14 +63,15 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 	}
 
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		String name, Pageable pageable) {
+		String keyword, Pageable pageable) {
 
 		Map<Long, EventAttributeDefinition> eventAttributeDefinitionsById =
 			new LinkedHashMap<>();
 
 		SelectSelectStep<?> selectSelectStep = _dslContext.select();
 
-		Table<?> table = _getTopEventAttributeDefinitionsTable(name, pageable);
+		Table<?> table = _getTopEventAttributeDefinitionsTable(
+			keyword, pageable);
 
 		Field<Object> field = DSL.field("eventAttributeDefinitionId");
 
@@ -104,33 +105,33 @@ public class EventAttributeDefinitionRepositoryImpl extends BaseRepository {
 		return new ArrayList<>(eventAttributeDefinitionsById.values());
 	}
 
-	private List<Condition> _getConditions(String name) {
+	private List<Condition> _getConditions(String keyword) {
 		List<Condition> conditions = new ArrayList<>();
 
-		if (StringUtils.isNotEmpty(name)) {
+		if (StringUtils.isNotEmpty(keyword)) {
 			Field<Object> descriptionField = DSL.field("description");
 			Field<Object> displayNameField = DSL.field("displayName");
 			Field<Object> nameField = DSL.field("name");
 
 			conditions.add(
 				DSL.or(
-					descriptionField.containsIgnoreCase(name),
-					displayNameField.containsIgnoreCase(name),
-					nameField.containsIgnoreCase(name)));
+					descriptionField.containsIgnoreCase(keyword),
+					displayNameField.containsIgnoreCase(keyword),
+					nameField.containsIgnoreCase(keyword)));
 		}
 
 		return conditions;
 	}
 
 	private Table<?> _getTopEventAttributeDefinitionsTable(
-		String name, Pageable pageable) {
+		String keyword, Pageable pageable) {
 
 		SelectSelectStep<?> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
 			"EventAttributeDefinition"
 		).where(
-			_getConditions(name)
+			_getConditions(keyword)
 		).groupBy(
 			DSL.field("id")
 		).orderBy(

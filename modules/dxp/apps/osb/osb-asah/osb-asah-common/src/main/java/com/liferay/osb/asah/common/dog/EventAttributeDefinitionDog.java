@@ -73,9 +73,9 @@ public class EventAttributeDefinitionDog {
 			eventAttributeDefinition);
 	}
 
-	public Long countEventAttributeDefinitions(String name) {
+	public Long countEventAttributeDefinitions(String keyword) {
 		return _eventAttributeDefinitionRepository.
-			countEventAttributeDefinitions(name);
+			countEventAttributeDefinitions(keyword);
 	}
 
 	public EventAttributeDefinition fetchEventAttributeDefinitionByDisplayName(
@@ -148,7 +148,7 @@ public class EventAttributeDefinitionDog {
 	}
 
 	public Page<EventAttributeDefinition> getEventAttributeDefinitionsPage(
-		String name, int page, int size, Sort sort) {
+		String keyword, int page, int size, Sort sort) {
 
 		_validate(sort);
 
@@ -156,11 +156,11 @@ public class EventAttributeDefinitionDog {
 
 		return PageableExecutionUtils.getPage(
 			_eventAttributeDefinitionRepository.searchEventAttributeDefinitions(
-				name, pageRequest),
+				keyword, pageRequest),
 			pageRequest,
 			() ->
 				_eventAttributeDefinitionRepository.
-					countEventAttributeDefinitions(name));
+					countEventAttributeDefinitions(keyword));
 	}
 
 	public EventAttributeDefinition updateEventAttributeDefinition(

@@ -35,7 +35,7 @@ import org.springframework.stereotype.Repository;
 public interface EventAttributeDefinitionRepository
 	extends CrudRepository<EventAttributeDefinition, Long> {
 
-	public long countEventAttributeDefinitions(String name);
+	public long countEventAttributeDefinitions(String keyword);
 
 	public List<EventAttributeDefinition> findAll(Pageable pageable);
 
@@ -48,6 +48,6 @@ public interface EventAttributeDefinitionRepository
 	public EventAttributeDefinition findByName(String name);
 
 	public List<EventAttributeDefinition> searchEventAttributeDefinitions(
-		String name, Pageable pageable);
+		String keyword, Pageable pageable);
 
 }
