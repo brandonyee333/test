@@ -1,0 +1,13 @@
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name) VALUES('Seller added description', 'STRING', 'Item Description', 'itemDescription');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name) VALUES(null, 'NUMBER', 'Item Price', 'itemPrice');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name) VALUES('How much of the same item the buyer wanted', 'NUMBER', 'Number of items', 'itemQuantity');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name) VALUES('Whether the item is new or used', 'STRING', 'Item Status', 'itemQuality');
+INSERT INTO EventAttributeDefinition(description, dataType, displayName, name) VALUES('Amount of feedback given to item', 'NUMBER', 'Number of Reviews', 'numberOfReviews');
+
+INSERT INTO EventDefinition(displayName, name, type) VALUES('Added To Cart', 'addedToCart', 'CUSTOM');
+
+INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='itemDescription'), (SELECT id from EventDefinition WHERE name='addedToCart'), 'No Description');
+INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='itemPrice'), (SELECT id from EventDefinition WHERE name='addedToCart'), '150.00');
+INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='itemQuantity'), (SELECT id from EventDefinition WHERE name='addedToCart'), '3');
+INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='itemQuality'), (SELECT id from EventDefinition WHERE name='addedToCart'), 'Like New');
+INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES ((SELECT id from EventAttributeDefinition WHERE name='numberOfReviews'), (SELECT id from EventDefinition WHERE name='addedToCart'), '27');

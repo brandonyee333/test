@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
+import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 
 import java.util.ArrayList;
@@ -337,17 +338,59 @@ public class EventAttributeDefinitionDogTest {
 			));
 	}
 
+	@PostgreSQLTables(
+		resourcePath = "test_get_event_attribute_definitions_with_keyword.sql"
+	)
 	@Test
-	public void testGetEventAttributeDefinitionsWithKeyword() {
+	public void testGetEventAttributeDefinitionsWithKeywordMatchDescription() {
 		_assertEventAttributeDefinitions(
 			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
-				"page", 0, 3, Sort.asc("name")),
+				"seller", 0, 5, Sort.asc("name")),
 			new HashMap<String, EventAttributeDefinition.DataType>() {
 				{
-					put("page", EventAttributeDefinition.DataType.STRING);
 					put(
-						"pageLoadTime",
-						EventAttributeDefinition.DataType.DURATION);
+						"itemDescription",
+						EventAttributeDefinition.DataType.STRING);
+				}
+			});
+	}
+
+	@PostgreSQLTables(
+		resourcePath = "test_get_event_attribute_definitions_with_keyword.sql"
+	)
+	@Test
+	public void testGetEventAttributeDefinitionsWithKeywordMatchDisplayName() {
+		_assertEventAttributeDefinitions(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+				"number of", 0, 5, Sort.asc("name")),
+			new HashMap<String, EventAttributeDefinition.DataType>() {
+				{
+					put(
+						"itemQuantity",
+						EventAttributeDefinition.DataType.NUMBER);
+					put(
+						"numberOfReviews",
+						EventAttributeDefinition.DataType.NUMBER);
+				}
+			});
+	}
+
+	@PostgreSQLTables(
+		resourcePath = "test_get_event_attribute_definitions_with_keyword.sql"
+	)
+	@Test
+	public void testGetEventAttributeDefinitionsWithKeywordMatchName() {
+		_assertEventAttributeDefinitions(
+			_eventAttributeDefinitionDog.getEventAttributeDefinitionsPage(
+				"ity", 0, 5, Sort.asc("name")),
+			new HashMap<String, EventAttributeDefinition.DataType>() {
+				{
+					put(
+						"itemQuality",
+						EventAttributeDefinition.DataType.STRING);
+					put(
+						"itemQuantity",
+						EventAttributeDefinition.DataType.NUMBER);
 				}
 			});
 	}

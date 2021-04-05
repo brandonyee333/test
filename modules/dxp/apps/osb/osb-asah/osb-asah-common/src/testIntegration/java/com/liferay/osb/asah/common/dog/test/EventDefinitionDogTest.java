@@ -25,6 +25,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -237,18 +238,50 @@ public class EventDefinitionDogTest {
 			});
 	}
 
+	@PostgreSQLTables(
+		resourcePath = "test_get_event_definitions_with_keyword.sql"
+	)
 	@Test
-	public void testGetEventDefinitionsWithKeyword() {
+	public void testGetEventDefinitionsWithKeywordMatchDescription() {
 		_assertEventDefinitions(
 			_eventDefinitionDog.getEventDefinitionsPage(
-				false, "field", 0, 5, Sort.asc("name"),
-				EventDefinition.Type.DEFAULT),
+				false, "item", 0, 5, Sort.asc("name"),
+				EventDefinition.Type.CUSTOM),
 			new ArrayList<String>() {
 				{
-					add("fieldBlurred");
-					add("fieldFocused");
+					add("addedToCart");
+					add("removedFromCart");
 				}
 			});
+	}
+
+	@PostgreSQLTables(
+		resourcePath = "test_get_event_definitions_with_keyword.sql"
+	)
+	@Test
+	public void testGetEventDefinitionsWithKeywordMatchDisplayName() {
+		_assertEventDefinitions(
+			_eventDefinitionDog.getEventDefinitionsPage(
+				false, "Shopping", 0, 5, Sort.asc("name"),
+				EventDefinition.Type.CUSTOM),
+			new ArrayList<String>() {
+				{
+					add("addedToCart");
+					add("removedFromCart");
+				}
+			});
+	}
+
+	@PostgreSQLTables(
+		resourcePath = "test_get_event_definitions_with_keyword.sql"
+	)
+	@Test
+	public void testGetEventDefinitionsWithKeywordMatchName() {
+		_assertEventDefinitions(
+			_eventDefinitionDog.getEventDefinitionsPage(
+				false, "applied", 0, 5, Sort.asc("name"),
+				EventDefinition.Type.CUSTOM),
+			Collections.singletonList("codeApplied"));
 	}
 
 	@Test
