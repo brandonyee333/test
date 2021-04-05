@@ -25,7 +25,6 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 
@@ -37,7 +36,13 @@ import org.springframework.data.domain.Pageable;
 )
 public class ActivityGroupRepositoryImpl extends BaseRepository {
 
-	public ActivityGroupRepositoryImpl(DSLContext dslContext) {
+	public ActivityGroupRepositoryImpl(
+		ActivitiesFilterStringConverterHelper
+			activitiesFilterStringConverterHelper,
+		DSLContext dslContext) {
+
+		_activitiesFilterStringConverterHelper =
+			activitiesFilterStringConverterHelper;
 		_dslContext = dslContext;
 	}
 
@@ -79,10 +84,8 @@ public class ActivityGroupRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	@Autowired
-	private ActivitiesFilterStringConverterHelper
+	private final ActivitiesFilterStringConverterHelper
 		_activitiesFilterStringConverterHelper;
-
 	private final DSLContext _dslContext;
 
 }
