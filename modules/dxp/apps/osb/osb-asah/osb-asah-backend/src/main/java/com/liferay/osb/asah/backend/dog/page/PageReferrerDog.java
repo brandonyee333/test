@@ -298,15 +298,13 @@ public class PageReferrerDog {
 					Optional.empty(), searchQueryContext)
 			).filter(
 				QueryBuilders.existsQuery("acquisitionChannel")
-			).filter(
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.termsQuery(
-						"acquisitionChannel", "organic", "social"))
+			).mustNot(
+				QueryBuilders.termsQuery(
+					"acquisitionChannel", "organic", "social")
 			).filter(
 				QueryBuilders.existsQuery("referrerHost")
-			).filter(
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.matchQuery(fieldName, ""))
+			).mustNot(
+				QueryBuilders.matchQuery(fieldName, "")
 			));
 		searchSourceBuilder.size(0);
 
