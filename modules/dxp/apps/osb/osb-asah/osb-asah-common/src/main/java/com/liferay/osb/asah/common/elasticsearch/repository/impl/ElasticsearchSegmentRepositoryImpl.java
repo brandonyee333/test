@@ -14,12 +14,10 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
-import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.HitsUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DXPEntityType;
 import com.liferay.osb.asah.common.model.Segment;
@@ -541,13 +539,7 @@ public class ElasticsearchSegmentRepositoryImpl
 	private static final Log _log = LogFactory.getLog(
 		ElasticsearchSegmentRepositoryImpl.class);
 
-	@Autowired
-	private ChannelDog _channelDog;
-
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;
 
 }
