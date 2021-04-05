@@ -94,7 +94,6 @@ public class PageReferrerDogTest {
 			10);
 
 		Assert.assertEquals(pageReferrers.toString(), 3, pageReferrers.size());
-
 		Assert.assertEquals(3, pageReferrers.get("www.facebook.com"), 0);
 		Assert.assertEquals(6, pageReferrers.get("www.google.com"), 0);
 		Assert.assertEquals(1, pageReferrers.get("www.latimes.com"), 0);
@@ -111,7 +110,6 @@ public class PageReferrerDogTest {
 			10);
 
 		Assert.assertEquals(pageReferrers.toString(), 3, pageReferrers.size());
-
 		Assert.assertEquals(3, pageReferrers.get("www.facebook.com"), 0);
 		Assert.assertEquals(6, pageReferrers.get("www.google.com"), 0);
 		Assert.assertEquals(6, pageReferrers.get("www.latimes.com"), 0);
@@ -163,7 +161,6 @@ public class PageReferrerDogTest {
 			10);
 
 		Assert.assertEquals(pageReferrers.toString(), 4, pageReferrers.size());
-
 		Assert.assertEquals(
 			3, pageReferrers.get("https://www.facebook.com"), 0);
 		Assert.assertEquals(4, pageReferrers.get("https://www.google.com"), 0);
@@ -183,7 +180,6 @@ public class PageReferrerDogTest {
 			10);
 
 		Assert.assertEquals(pageReferrers.toString(), 4, pageReferrers.size());
-
 		Assert.assertEquals(
 			3, pageReferrers.get("https://www.facebook.com"), 0);
 		Assert.assertEquals(4, pageReferrers.get("https://www.google.com"), 0);
