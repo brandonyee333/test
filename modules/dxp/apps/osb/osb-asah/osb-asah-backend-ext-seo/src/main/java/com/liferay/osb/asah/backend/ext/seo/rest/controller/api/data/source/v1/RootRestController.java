@@ -83,7 +83,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 )
 public class RootRestController {
 
-	@CacheEvict("getTrafficSources")
+	@CacheEvict(allProjects = true, value = "getTrafficSources")
 	@DeleteMapping("/cache")
 	@Scheduled(cron = "0 0 2 ? * MON")
 	public void clearCache() {
