@@ -284,8 +284,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	public boolean isIncludeAnonymousUsers(Long segmentId) {
 		Segment segment = getSegment(segmentId);
 
-		return BooleanUtils.toBoolean(
-			segment.getIncludeAnonymousUsers());
+		return BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers());
 	}
 
 	public Segment replaceSegment(Segment segment) throws Exception {
