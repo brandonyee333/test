@@ -63,6 +63,21 @@ public class ActivitiesFilterStringConverterHelper
 				operator.equalsIgnoreCase("ne"));
 		}
 
+		if (fieldName.equals("channelId") || fieldName.equals("ownerId")) {
+			Field<Long> field = DSL.field(
+				fieldName
+			).cast(
+				Long.class
+			);
+
+			if (operator.equals("eq")) {
+				return field.eq(Long.valueOf(StringUtil.unquote(valueString)));
+			}
+			else if (operator.equals("ne")) {
+				return field.ne(Long.valueOf(StringUtil.unquote(valueString)));
+			}
+		}
+
 		Condition condition = getTimeFrameCondition(
 			fieldName, operator, "activities", valueString);
 
