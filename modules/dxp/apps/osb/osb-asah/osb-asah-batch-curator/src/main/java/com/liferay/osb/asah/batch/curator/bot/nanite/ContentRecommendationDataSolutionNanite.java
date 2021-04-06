@@ -67,16 +67,16 @@ import com.amazonaws.services.personalize.model.SolutionSummary;
 import com.amazonaws.services.personalize.model.SolutionVersion;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.JobRun;
+import com.liferay.osb.asah.common.model.JobRunStatus;
+import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -88,9 +88,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,33 +117,25 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
-			"job-runs",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery(
-					"job.type", "CONTENT_RECOMMENDATION_ITEM_SIMILARITY")
-			).filter(
-				QueryBuilders.termQuery("status", "RUNNING")
-			).filter(
-				QueryBuilders.termsQuery("step", "DATA_SOLUTION")
-			));
+		List<JobRun> jobRuns =
+			_jobRunRepository.findByJobRunStatusAndJobTypeAndStep(
+				JobRunStatus.RUNNING, "CONTENT_RECOMMENDATION_ITEM_SIMILARITY",
+				"DATA_SOLUTION");
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					"There are %s running job executions", jsonArray.length()));
+					"There are %s running job executions", jobRuns.size()));
 		}
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jobRunJSONObject = jsonArray.getJSONObject(i);
-
+		for (JobRun jobRun : jobRuns) {
 			try {
-				_run(jobRunJSONObject);
+				_run(jobRun);
 			}
 			catch (Exception e) {
-				jobRunJSONObject.put("status", "FAILED");
+				jobRun.setJobRunStatus(JobRunStatus.FAILED);
 
-				_updateJobRun(jobRunJSONObject);
+				_updateJobRun(jobRun);
 
 				throw e;
 			}
@@ -168,7 +157,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private String _createBatchInferenceJobArn(
-		String jobId, String solutionVersionArn) {
+		Long jobId, String solutionVersionArn) {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
@@ -235,7 +224,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		return createBatchInferenceJobResult.getBatchInferenceJobArn();
 	}
 
-	private String _createDatasetGroupArn(String jobId) {
+	private String _createDatasetGroupArn(Long jobId) {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Creating dataset group with job ID " + jobId);
 		}
@@ -322,7 +311,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private String _createUserItemInteractionsDatasetImportJobArn(
-		String jobId, String userItemInteractionsDatasetArn) {
+		Long jobId, String userItemInteractionsDatasetArn) {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
@@ -394,7 +383,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		return createSchemaResult.getSchemaArn();
 	}
 
-	private String _fetchDatasetGroupArn(String jobId) {
+	private String _fetchDatasetGroupArn(Long jobId) {
 		ListDatasetGroupsResult listDatasetGroupsResult =
 			_amazonPersonalize.listDatasetGroups(
 				new ListDatasetGroupsRequest());
@@ -487,26 +476,23 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private BatchInferenceJob _getOrCreateBatchInferenceJob(
-		JSONObject jobRunJSONObject, String solutionVersionArn) {
+		JobRun jobRun, String solutionVersionArn) {
 
-		JSONObject jobRunContextJSONObject = jobRunJSONObject.getJSONObject(
-			"context");
+		JSONObject jobRunContextJSONObject = jobRun.getContextJSONObject();
 
 		String batchInferenceJobArn = jobRunContextJSONObject.optString(
 			"batchInferenceJobArn", null);
 
 		if (batchInferenceJobArn == null) {
-			JSONObject jobJSONObject = jobRunJSONObject.getJSONObject("job");
-
 			batchInferenceJobArn = _createBatchInferenceJobArn(
-				jobJSONObject.getString("id"), solutionVersionArn);
+				jobRun.getJobId(), solutionVersionArn);
 
 			jobRunContextJSONObject.put(
 				"batchInferenceJobArn", batchInferenceJobArn);
 
-			jobRunJSONObject.put("context", jobRunContextJSONObject);
+			jobRun.setContextJSONObject(jobRunContextJSONObject);
 
-			_updateJobRun(jobRunJSONObject);
+			_updateJobRun(jobRun);
 		}
 
 		DescribeBatchInferenceJobRequest describeBatchInferenceJobRequest =
@@ -528,7 +514,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		return describeBatchInferenceJobResult.getBatchInferenceJob();
 	}
 
-	private DatasetGroup _getOrCreateDatasetGroup(String jobId) {
+	private DatasetGroup _getOrCreateDatasetGroup(Long jobId) {
 		String datasetGroupArn = _fetchDatasetGroupArn(jobId);
 
 		if (datasetGroupArn == null) {
@@ -577,10 +563,9 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private SolutionVersion _getOrCreateSolutionVersion(
-		JSONObject jobRunJSONObject, String solutionArn) {
+		JobRun jobRun, String solutionArn) {
 
-		JSONObject jobRunContextJSONObject = jobRunJSONObject.getJSONObject(
-			"context");
+		JSONObject jobRunContextJSONObject = jobRun.getContextJSONObject();
 
 		String solutionVersionArn = jobRunContextJSONObject.optString(
 			"solutionVersionArn", null);
@@ -591,9 +576,9 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			jobRunContextJSONObject.put(
 				"solutionVersionArn", solutionVersionArn);
 
-			jobRunJSONObject.put("context", jobRunContextJSONObject);
+			jobRun.setContextJSONObject(jobRunContextJSONObject);
 
-			_updateJobRun(jobRunJSONObject);
+			_updateJobRun(jobRun);
 		}
 
 		DescribeSolutionVersionRequest describeSolutionVersionRequest =
@@ -644,30 +629,26 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private DatasetImportJob _getOrCreateUserItemInteractionsDatasetImportJob(
-		JSONObject jobRunJSONObject, String userItemInteractionsDatasetArn) {
+		JobRun jobRun, String userItemInteractionsDatasetArn) {
 
-		JSONObject jobRunContextJSONObject = jobRunJSONObject.getJSONObject(
-			"context");
+		JSONObject jobRunContextJSONObject = jobRun.getContextJSONObject();
 
 		String userItemInteractionsDatasetImportJobArn =
 			jobRunContextJSONObject.optString(
 				"userItemInteractionsDatasetImportJobArn", null);
 
 		if (userItemInteractionsDatasetImportJobArn == null) {
-			JSONObject jobJSONObject = jobRunJSONObject.getJSONObject("job");
-
 			userItemInteractionsDatasetImportJobArn =
 				_createUserItemInteractionsDatasetImportJobArn(
-					jobJSONObject.getString("id"),
-					userItemInteractionsDatasetArn);
+					jobRun.getJobId(), userItemInteractionsDatasetArn);
 
 			jobRunContextJSONObject.put(
 				"userItemInteractionsDatasetImportJobArn",
 				userItemInteractionsDatasetImportJobArn);
 
-			jobRunJSONObject.put("context", jobRunContextJSONObject);
+			jobRun.setContextJSONObject(jobRunContextJSONObject);
 
-			_updateJobRun(jobRunJSONObject);
+			_updateJobRun(jobRun);
 		}
 
 		DescribeDatasetImportJobRequest describeDatasetImportJobRequest =
@@ -700,19 +681,16 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		return _createUserItemInteractionsDatasetSchemaArn();
 	}
 
-	private void _run(JSONObject jobRunJSONObject) {
+	private void _run(JobRun jobRun) {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Processing " + jobRunJSONObject.toString());
+			_log.debug("Processing Job Run ID " + jobRun.getId());
 		}
 
-		JSONObject jobJSONObject = jobRunJSONObject.getJSONObject("job");
-
-		DatasetGroup datasetGroup = _getOrCreateDatasetGroup(
-			jobJSONObject.getString("id"));
+		DatasetGroup datasetGroup = _getOrCreateDatasetGroup(jobRun.getJobId());
 
 		if (!Objects.equals(datasetGroup.getStatus(), "ACTIVE")) {
 			_verifyResourceStatus(
-				jobRunJSONObject, datasetGroup::getDatasetGroupArn,
+				jobRun, datasetGroup::getDatasetGroupArn,
 				datasetGroup::getStatus);
 
 			return;
@@ -726,7 +704,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				userItemInteractionsDataset.getStatus(), "ACTIVE")) {
 
 			_verifyResourceStatus(
-				jobRunJSONObject, userItemInteractionsDataset::getDatasetArn,
+				jobRun, userItemInteractionsDataset::getDatasetArn,
 				userItemInteractionsDataset::getStatus);
 
 			return;
@@ -734,13 +712,13 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		DatasetImportJob userItemInteractionsDatasetImportJob =
 			_getOrCreateUserItemInteractionsDatasetImportJob(
-				jobRunJSONObject, userItemInteractionsDataset.getDatasetArn());
+				jobRun, userItemInteractionsDataset.getDatasetArn());
 
 		if (!Objects.equals(
 				userItemInteractionsDatasetImportJob.getStatus(), "ACTIVE")) {
 
 			_verifyResourceStatus(
-				jobRunJSONObject,
+				jobRun,
 				userItemInteractionsDatasetImportJob::getDatasetImportJobArn,
 				userItemInteractionsDatasetImportJob::getStatus);
 
@@ -752,55 +730,54 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		if (!Objects.equals(solution.getStatus(), "ACTIVE")) {
 			_verifyResourceStatus(
-				jobRunJSONObject, solution::getSolutionArn,
-				solution::getStatus);
+				jobRun, solution::getSolutionArn, solution::getStatus);
 
 			return;
 		}
 
 		SolutionVersion solutionVersion = _getOrCreateSolutionVersion(
-			jobRunJSONObject, solution.getSolutionArn());
+			jobRun, solution.getSolutionArn());
 
 		if (!Objects.equals(solutionVersion.getStatus(), "ACTIVE")) {
 			_verifyResourceStatus(
-				jobRunJSONObject, solutionVersion::getSolutionVersionArn,
+				jobRun, solutionVersion::getSolutionVersionArn,
 				solutionVersion::getStatus);
 
 			return;
 		}
 
 		BatchInferenceJob batchInferenceJob = _getOrCreateBatchInferenceJob(
-			jobRunJSONObject, solutionVersion.getSolutionVersionArn());
+			jobRun, solutionVersion.getSolutionVersionArn());
 
 		if (!Objects.equals(batchInferenceJob.getStatus(), "ACTIVE")) {
 			_verifyResourceStatus(
-				jobRunJSONObject, batchInferenceJob::getBatchInferenceJobArn,
+				jobRun, batchInferenceJob::getBatchInferenceJobArn,
 				batchInferenceJob::getStatus);
 
 			return;
 		}
 
-		jobRunJSONObject.put("step", "DATA_OUTPUT");
+		jobRun.setStep("DATA_OUTPUT");
 
-		_updateJobRun(jobRunJSONObject);
+		_updateJobRun(jobRun);
 
 		_dataprocSparkManager.submitJob(
 			Arrays.asList(
-				"--job-run-id", jobRunJSONObject.getString("id"),
+				"--job-run-id", String.valueOf(jobRun.getId()),
 				"--lcp-project-id", ProjectIdThreadLocal.getProjectId()),
 			"content_recommendation.yaml", Collections.emptyList(),
 			"liferay.content_recommendation.ContentRecommendationApplication",
 			Collections.emptyMap());
 	}
 
-	private void _updateJobRun(JSONObject jobRunJSONObject) {
-		jobRunJSONObject.put("lastUpdatedDate", DateUtil.newUTCDateString());
+	private void _updateJobRun(JobRun jobRun) {
+		jobRun.setLastUpdatedDate(new Date());
 
-		_faroInfoElasticsearchInvoker.update("job-runs", jobRunJSONObject);
+		_jobRunRepository.save(jobRun);
 	}
 
 	private void _verifyResourceStatus(
-		JSONObject jobRunJSONObject, Supplier<String> resourceIdSupplier,
+		JobRun jobRun, Supplier<String> resourceIdSupplier,
 		Supplier<String> resourceStatusSupplier) {
 
 		if (_log.isDebugEnabled()) {
@@ -811,9 +788,9 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		}
 
 		if (Objects.equals(resourceStatusSupplier.get(), "CREATE FAILED")) {
-			jobRunJSONObject.put("status", "FAILED");
+			jobRun.setJobRunStatus(JobRunStatus.FAILED);
 
-			_updateJobRun(jobRunJSONObject);
+			_updateJobRun(jobRun);
 		}
 	}
 
@@ -844,7 +821,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	@Autowired
 	private DataprocSparkManager _dataprocSparkManager;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	@Autowired
+	private JobRunRepository _jobRunRepository;
 
 }

@@ -14,25 +14,31 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Job;
+import com.liferay.osb.asah.common.model.JobParameter;
+import com.liferay.osb.asah.common.model.JobRun;
+import com.liferay.osb.asah.common.model.JobRunStatus;
+import com.liferay.osb.asah.common.model.JobType;
+import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,38 +53,29 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
-		JSONObject jobJSONObject = contextJSONObject.getJSONObject("job");
+		Job job = _objectMapper.convertValue(
+			contextJSONObject.getJSONObject("job"), Job.class);
 
-		String dateString = DateUtil.newUTCDateString();
-
-		String jobType = jobJSONObject.getString("type");
+		Date date = new Date();
 
 		String sparkJobId = _dataprocSparkManager.submitJob(
 			Arrays.asList(
 				"--lcp-project-id", ProjectIdThreadLocal.getProjectId()),
 			"commerce_application.yaml",
-			_collectJobSparkJars(jobJSONObject.getJSONArray("parameters")),
-			_jobTypeApplicationClassNameMap.get(jobType),
-			_collectJobParameters(jobJSONObject.getJSONArray("parameters")));
+			_collectJobSparkJars(job.getJobParameters()),
+			_jobTypeApplicationClassNameMap.get(job.getJobType()),
+			_collectJobParameters(job.getJobParameters()));
 
-		_faroInfoElasticsearchInvoker.add(
-			"job-runs",
-			JSONUtil.put(
-				"context", JSONUtil.put("sparkJobId", sparkJobId)
-			).put(
-				"createdDate", dateString
-			).put(
-				"job",
-				JSONUtil.put(
-					"id", jobJSONObject.getString("id")
-				).put(
-					"type", jobType
-				)
-			).put(
-				"lastUpdatedDate", dateString
-			).put(
-				"status", "UNKNOWN"
-			));
+		JobRun jobRun = new JobRun();
+
+		jobRun.setContextJSONObject(JSONUtil.put("sparkJobId", sparkJobId));
+		jobRun.setCreatedDate(date);
+		jobRun.setJobId(job.getId());
+		jobRun.setJobRunStatus(JobRunStatus.UNKNOWN);
+		jobRun.setJobType(String.valueOf(job.getJobType()));
+		jobRun.setLastUpdatedDate(date);
+
+		_jobRunRepository.save(jobRun);
 	}
 
 	@Override
@@ -87,42 +84,31 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 	}
 
 	private Map<String, String> _collectJobParameters(
-		JSONArray jobParametersJSONArray) {
+		Set<JobParameter> jobParameters) {
 
-		Map<String, String> jobParameters = new HashMap<>();
+		Map<String, String> jobParametersMap = new HashMap<>();
 
-		jobParameters.put(
+		jobParametersMap.put(
 			"spark.executor.extraJavaOptions", "-XX:ThreadStackSize=8192");
-		jobParameters.put(
+		jobParametersMap.put(
 			"spark.serializer", "org.apache.spark.serializer.KryoSerializer");
 
-		for (int i = 0; i < jobParametersJSONArray.length(); i++) {
-			JSONObject jobParameterJSONObject =
-				jobParametersJSONArray.getJSONObject(i);
-
-			String name = jobParameterJSONObject.getString("name");
-
-			if (Objects.equals(name, "spark:jars")) {
+		for (JobParameter jobParameter : jobParameters) {
+			if (Objects.equals(jobParameter.getName(), "spark:jars")) {
 				continue;
 			}
 
-			jobParameters.put(name, jobParameterJSONObject.getString("value"));
+			jobParametersMap.put(
+				jobParameter.getName(), jobParameter.getValue());
 		}
 
-		return jobParameters;
+		return jobParametersMap;
 	}
 
-	private List<String> _collectJobSparkJars(
-		JSONArray jobParametersJSONArray) {
-
-		for (int i = 0; i < jobParametersJSONArray.length(); i++) {
-			JSONObject jobParameterJSONObject =
-				jobParametersJSONArray.getJSONObject(i);
-
-			if (Objects.equals(
-					jobParameterJSONObject.getString("name"), "spark:jars")) {
-
-				String value = jobParameterJSONObject.getString("value");
+	private List<String> _collectJobSparkJars(Set<JobParameter> jobParameters) {
+		for (JobParameter jobParameter : jobParameters) {
+			if (Objects.equals(jobParameter.getName(), "spark:jars")) {
+				String value = jobParameter.getValue();
 
 				return Arrays.asList(value.split(","));
 			}
@@ -134,32 +120,35 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 	@Autowired
 	private DataprocSparkManager _dataprocSparkManager;
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+	@Autowired
+	private JobRunRepository _jobRunRepository;
 
-	private final Map<String, String> _jobTypeApplicationClassNameMap =
-		new HashMap<String, String>() {
+	private final Map<JobType, String> _jobTypeApplicationClassNameMap =
+		new HashMap<JobType, String>() {
 			{
 				put(
-					"COMMERCE_PRODUCT_RECOMMENDATION_FREQUENT_PATTERN",
+					JobType.COMMERCE_PRODUCT_RECOMMENDATION_FREQUENT_PATTERN,
 					"liferay.commerce.recommend." +
 						"FrequentPatternRecommendationApplication");
 				put(
-					"COMMERCE_PRODUCT_RECOMMENDATION_PRODUCT_CONTENT",
+					JobType.COMMERCE_PRODUCT_RECOMMENDATION_PRODUCT_CONTENT,
 					"liferay.commerce.recommend." +
 						"ProductContentRecommendationApplication");
 				put(
-					"COMMERCE_PRODUCT_RECOMMENDATION_USER_INTERACTION",
+					JobType.COMMERCE_PRODUCT_RECOMMENDATION_USER_INTERACTION,
 					"liferay.commerce.recommend." +
 						"UserInteractionRecommendationApplication");
 				put(
-					"COMMERCE_REVENUE_FORECAST_ACCOUNT",
+					JobType.COMMERCE_REVENUE_FORECAST_ACCOUNT,
 					"liferay.commerce.forecast.AccountForecastApplication");
 				put(
-					"COMMERCE_REVENUE_FORECAST_ACCOUNT_CATEGORY",
+					JobType.COMMERCE_REVENUE_FORECAST_ACCOUNT_CATEGORY,
 					"liferay.commerce.forecast." +
 						"AccountCategoryForecastApplication");
 			}
 		};
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
