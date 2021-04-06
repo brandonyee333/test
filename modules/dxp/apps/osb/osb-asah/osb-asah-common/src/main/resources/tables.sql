@@ -208,6 +208,7 @@ CREATE TABLE IF NOT EXISTS JobRun (
 	context JSON,
 	createdDate TIMESTAMPTZ,
 	jobId BIGINT,
+	jobType TEXT,
 	lastUpdatedDate TIMESTAMPTZ,
 	status TEXT,
 	step TEXT,

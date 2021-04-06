@@ -120,6 +120,22 @@ public class ElasticsearchJobRunRepositoryImpl
 	}
 
 	@Override
+	public List<JobRun> findByJobRunStatusAndJobTypeAndStep(
+		JobRunStatus jobRunStatus, String jobType, String step) {
+
+		return toList(
+			_faroInfoElasticsearchInvoker.get(
+				getCollectionName(),
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termQuery("job.type", jobType)
+				).filter(
+					QueryBuilders.termQuery("status", jobRunStatus.toString())
+				).filter(
+					QueryBuilders.termsQuery("step", step)
+				)));
+	}
+
+	@Override
 	public Optional<JobRun> findFirstByJobIdAndJobRunStatusOrderByIdDesc(
 		Long jobId, JobRunStatus jobRunStatus) {
 

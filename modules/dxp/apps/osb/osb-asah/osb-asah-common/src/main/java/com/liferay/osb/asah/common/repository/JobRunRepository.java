@@ -47,6 +47,9 @@ public interface JobRunRepository extends CrudRepository<JobRun, Long> {
 	public List<JobRun> findByJobIdAndCreatedDateBetween(
 		Long jobId, Date startCreateDate, Date endCreateDate);
 
+	public List<JobRun> findByJobRunStatusAndJobTypeAndStep(
+		JobRunStatus jobRunStatus, String jobType, String step);
+
 	public Optional<JobRun> findFirstByJobIdAndJobRunStatusOrderByIdDesc(
 		Long jobId, JobRunStatus jobRunStatus);
 
