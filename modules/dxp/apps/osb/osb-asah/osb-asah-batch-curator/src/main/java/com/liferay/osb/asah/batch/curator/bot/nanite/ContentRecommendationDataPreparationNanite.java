@@ -23,13 +23,11 @@ import com.liferay.osb.asah.common.model.Job;
 import com.liferay.osb.asah.common.model.JobRun;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;
-import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -65,23 +63,13 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 			return;
 		}
 
-		Date date = new Date();
 		String jobRunRunDataPeriod = contextJSONObject.optString(
 			"runDataPeriod", String.valueOf(job.getJobRunDataPeriod()));
 
-		JobRun jobRun = new JobRun();
-
-		jobRun.setContextJSONObject(
-			JSONUtil.put("runDataPeriod", jobRunRunDataPeriod));
-		jobRun.setCreatedDate(date);
-		jobRun.setJobId(job.getId());
-		jobRun.setJobRunStatus(JobRunStatus.RUNNING);
-		jobRun.setJobType(String.valueOf(job.getJobType()));
-		jobRun.setLastUpdatedDate(date);
-		jobRun.setStep("DATA_PREPARATION");
-		jobRun.setTrigger(contextJSONObject.optString("trigger", "SCHEDULE"));
-
-		jobRun = _jobRunRepository.save(jobRun);
+		JobRun jobRun = _jobRunDog.addJobRun(
+			JSONUtil.put("runDataPeriod", jobRunRunDataPeriod), job,
+			JobRunStatus.RUNNING, "DATA_PREPARATION",
+			contextJSONObject.optString("trigger", "SCHEDULE"));
 
 		_dataprocSparkManager.submitJob(
 			Arrays.asList(
@@ -120,9 +108,6 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 
 	@Autowired
 	private JobRunDog _jobRunDog;
-
-	@Autowired
-	private JobRunRepository _jobRunRepository;
 
 	@Value("${osb.asah.content.recommendation.max.monthly.job.runs:10}")
 	private int _maxMonthlyJobRuns;

@@ -17,19 +17,17 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
+import com.liferay.osb.asah.common.dog.JobRunDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Job;
 import com.liferay.osb.asah.common.model.JobParameter;
-import com.liferay.osb.asah.common.model.JobRun;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobType;
-import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +54,6 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 		Job job = _objectMapper.convertValue(
 			contextJSONObject.getJSONObject("job"), Job.class);
 
-		Date date = new Date();
-
 		String sparkJobId = _dataprocSparkManager.submitJob(
 			Arrays.asList(
 				"--lcp-project-id", ProjectIdThreadLocal.getProjectId()),
@@ -66,16 +62,9 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 			_jobTypeApplicationClassNameMap.get(job.getJobType()),
 			_collectJobParameters(job.getJobParameters()));
 
-		JobRun jobRun = new JobRun();
-
-		jobRun.setContextJSONObject(JSONUtil.put("sparkJobId", sparkJobId));
-		jobRun.setCreatedDate(date);
-		jobRun.setJobId(job.getId());
-		jobRun.setJobRunStatus(JobRunStatus.UNKNOWN);
-		jobRun.setJobType(String.valueOf(job.getJobType()));
-		jobRun.setLastUpdatedDate(date);
-
-		_jobRunRepository.save(jobRun);
+		_jobRunDog.addJobRun(
+			JSONUtil.put("sparkJobId", sparkJobId), job, JobRunStatus.UNKNOWN,
+			null, null);
 	}
 
 	@Override
@@ -121,7 +110,7 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 	private DataprocSparkManager _dataprocSparkManager;
 
 	@Autowired
-	private JobRunRepository _jobRunRepository;
+	private JobRunDog _jobRunDog;
 
 	private final Map<JobType, String> _jobTypeApplicationClassNameMap =
 		new HashMap<JobType, String>() {
