@@ -12,11 +12,11 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.backend.model.DataControlTask;
+import com.liferay.osb.asah.common.model.DataControlTask;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
