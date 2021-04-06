@@ -36,7 +36,6 @@ import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 
@@ -48,7 +47,13 @@ import org.springframework.data.domain.Pageable;
 )
 public class DataSourceRepositoryImpl extends BaseRepository {
 
-	public DataSourceRepositoryImpl(DSLContext dslContext) {
+	public DataSourceRepositoryImpl(
+		DataSourceFilterStringConverterHelper
+			dataSourceFilterStringConverterHelper,
+		DSLContext dslContext) {
+
+		_dataSourceFilterStringConverterHelper =
+			dataSourceFilterStringConverterHelper;
 		_dslContext = dslContext;
 	}
 
@@ -60,7 +65,7 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 			"DataSource"
 		).where(
 			FilterStringToConditionConverter.convert(
-				filterString, _dataSourceFilterStringConverter)
+				filterString, _dataSourceFilterStringConverterHelper)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -78,7 +83,7 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 				"DataSource"
 			).where(
 				FilterStringToConditionConverter.convert(
-					filterString, _dataSourceFilterStringConverter)
+					filterString, _dataSourceFilterStringConverterHelper)
 			).orderBy(
 				getSortFields(pageable.getSort(), null)
 			).limit(
@@ -179,10 +184,8 @@ public class DataSourceRepositoryImpl extends BaseRepository {
 		);
 	}
 
-	@Autowired
-	private DataSourceFilterStringConverterHelper
-		_dataSourceFilterStringConverter;
-
+	private final DataSourceFilterStringConverterHelper
+		_dataSourceFilterStringConverterHelper;
 	private final DSLContext _dslContext;
 
 }
