@@ -54,7 +54,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Shinn Lok
  */
 @Component(
-	configurationPid = "com.liferay.analytics.settings.configuration.AnalyticsConfiguration.scoped",
+	configurationPid = "com.liferay.analytics.settings.configuration.AnalyticsConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE,
 	property = "auth.verifier.AnalyticsSecurityAuthVerifier.urls.includes=/o/segments-asah/v1.0/experiments/*",
 	service = AuthVerifier.class
