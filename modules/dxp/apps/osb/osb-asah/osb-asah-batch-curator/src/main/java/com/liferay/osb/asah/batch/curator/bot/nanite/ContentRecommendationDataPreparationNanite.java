@@ -17,7 +17,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
-import com.liferay.osb.asah.common.dog.JobDog;
+import com.liferay.osb.asah.common.dog.JobRunDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Job;
 import com.liferay.osb.asah.common.model.JobRun;
@@ -53,7 +53,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 		Job job = _objectMapper.convertValue(
 			contextJSONObject.getJSONObject("job"), Job.class);
 
-		if (_getCurrentMonthJobRunsCount(job.getId()) >= _maxMonthlyJobRuns) {
+		if (_getCurrentMonthJobRunsCount(job) >= _maxMonthlyJobRuns) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					String.format(
@@ -104,9 +104,9 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 			ContentRecommendationDataPreparationNanite.class);
 	}
 
-	private long _getCurrentMonthJobRunsCount(Long jobId) {
+	private long _getCurrentMonthJobRunsCount(Job job) {
 		JobRunsMonthlyStatistics jobRunsMonthlyStatistics =
-			_jobDog.getJobRunsMonthlyStatistics(jobId);
+			_jobRunDog.getJobRunsMonthlyStatistics(job);
 
 		return jobRunsMonthlyStatistics.getCompletedJobRuns() +
 			jobRunsMonthlyStatistics.getPublishedJobRuns();
@@ -119,7 +119,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 	private DataprocSparkManager _dataprocSparkManager;
 
 	@Autowired
-	private JobDog _jobDog;
+	private JobRunDog _jobRunDog;
 
 	@Autowired
 	private JobRunRepository _jobRunRepository;

@@ -177,8 +177,10 @@ public class JobDog {
 					jobId));
 		}
 
+		Job job = getJob(jobId);
+
 		JobRunsMonthlyStatistics jobRunsMonthlyStatistics =
-			_jobRunDog.getJobRunsMonthlyStatistics(jobId);
+			_jobRunDog.getJobRunsMonthlyStatistics(job);
 
 		if (jobRunsMonthlyStatistics.getAvailableJobRuns() == 0) {
 			throw new IllegalStateException(
@@ -187,8 +189,6 @@ public class JobDog {
 						"maximum allowed monthly runs threshold",
 					jobId));
 		}
-
-		Job job = getJob(jobId);
 
 		_asahTaskDog.scheduleAsahTask(
 			_jobTypeNaniteMap.get(job.getJobType()),

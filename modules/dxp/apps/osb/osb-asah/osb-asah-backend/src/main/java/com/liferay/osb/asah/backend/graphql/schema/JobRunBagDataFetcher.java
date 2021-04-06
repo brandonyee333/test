@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dto.JobRunDTO;
-import com.liferay.osb.asah.common.dog.JobDog;
+import com.liferay.osb.asah.common.dog.JobRunDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.JobRun;
 import com.liferay.osb.asah.common.model.ResultBag;
@@ -43,7 +43,7 @@ public class JobRunBagDataFetcher implements DataFetcher<ResultBag<JobRunDTO>> {
 		int size = dataFetchingEnvironment.getArgument("size");
 		int start = dataFetchingEnvironment.getArgument("start");
 
-		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
+		Page<JobRun> jobRunPage = _jobRunDog.getJobRunPage(
 			Long.valueOf(dataFetchingEnvironment.getArgument("jobId")),
 			start / size, size,
 			Sort.of(dataFetchingEnvironment.getArgument("sort")));
@@ -54,6 +54,6 @@ public class JobRunBagDataFetcher implements DataFetcher<ResultBag<JobRunDTO>> {
 	}
 
 	@Autowired
-	private JobDog _jobDog;
+	private JobRunDog _jobRunDog;
 
 }
