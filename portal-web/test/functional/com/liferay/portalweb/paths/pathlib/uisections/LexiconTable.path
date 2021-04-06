@@ -13,6 +13,11 @@
 	<td>//tr[@data-qa-id='row'][contains(.,'${key_tableEntry}')]//td[contains(.,'${key_tableEntryPartialText}')]</td>
 	<td></td>
 </tr>
+<tr>
+	<td>TABLE_ENTRY_ELLIPSIS_LINK</td>
+	<td>//tr[@data-qa-id='row'][contains(.,'${key_tableEntry}')]//a[contains(@class,'dropdown-toggle')]</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>
