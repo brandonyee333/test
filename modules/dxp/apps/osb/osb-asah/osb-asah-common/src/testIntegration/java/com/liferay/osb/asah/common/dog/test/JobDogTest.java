@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.JobDog;
+import com.liferay.osb.asah.common.dog.JobRunDog;
 import com.liferay.osb.asah.common.model.Job;
 import com.liferay.osb.asah.common.model.JobParameter;
 import com.liferay.osb.asah.common.model.JobRun;
@@ -98,7 +99,7 @@ public class JobDogTest {
 	public void testDeleteJob() {
 		_jobDog.deleteJobs(Arrays.asList(1L));
 
-		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
+		Page<JobRun> jobRunPage = _jobRunDog.getJobRunPage(
 			1L, 0, 20, Sort.desc("id"));
 
 		Assert.assertEquals(0, jobRunPage.getTotalElements());
@@ -141,7 +142,7 @@ public class JobDogTest {
 		LocalDateTime expectedRunLocalDateTime = nowLocalDateTime.minusDays(1);
 
 		LocalDateTime runLocalDateTime = LocalDateTime.parse(
-			_jobDog.getJobRunDateString(1L),
+			_jobRunDog.fetchLatestJobRunPublishedDateString(1L),
 			DateTimeFormatter.ofPattern(DateUtil.PATTERN_ISO_8601));
 
 		Assert.assertEquals(
@@ -164,7 +165,7 @@ public class JobDogTest {
 	)
 	@Test
 	public void testGetJobRunResultBag() {
-		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
+		Page<JobRun> jobRunPage = _jobRunDog.getJobRunPage(
 			1L, 0, 10, Sort.desc("id"));
 
 		Assert.assertEquals(3, jobRunPage.getTotalElements());
@@ -191,9 +192,9 @@ public class JobDogTest {
 	@Test
 	public void testGetJobRunsMonthlyStatistics() {
 		JobRunsMonthlyStatistics jobRunsMonthlyStatistics =
-			_jobDog.getJobRunsMonthlyStatistics(1L);
+			_jobRunDog.getJobRunsMonthlyStatistics(_jobDog.getJob(1L));
 
-		Page<JobRun> jobRunPage = _jobDog.getJobRunPage(
+		Page<JobRun> jobRunPage = _jobRunDog.getJobRunPage(
 			1L, 0, 20, Sort.desc("id"));
 
 		List<JobRun> jobRuns = jobRunPage.getContent();
@@ -328,5 +329,8 @@ public class JobDogTest {
 
 	@Autowired
 	private JobDog _jobDog;
+
+	@Autowired
+	private JobRunDog _jobRunDog;
 
 }
