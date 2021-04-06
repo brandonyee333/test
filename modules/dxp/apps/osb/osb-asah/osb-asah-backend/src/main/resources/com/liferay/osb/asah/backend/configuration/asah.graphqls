@@ -150,6 +150,18 @@ type BaseDXPEntity implements DXPEntity {
 	name: String
 }
 
+type BlockedCustomEventDefinitionBag {
+	blockedCustomEventDefinitions: [BlockedCustomEventDefinition]
+	total: Int
+}
+
+type BlockedCustomEventDefinition {
+	id: String
+	lastSeenDate: String
+	lastSeenURL: String
+	name: String
+}
+
 type BlogMetric implements AssetMetric {
 	assetId: String
 	assetMetrics: [AssetMetric]
@@ -699,6 +711,13 @@ type QueryType {
 		rangeStart: String,
 		url: String
 	): [AssetMetric]
+
+	blockedCustomEventDefinitions(
+		keyword: String,
+		page: Int!,
+		size: Int!,
+		sort: Sort!
+	): BlockedCustomEventDefinitionBag
 
 	blog(
 		assetId: String!,

@@ -155,6 +155,9 @@ public class GraphQLConfiguration {
 		_wireGraphQLTypeProperty(
 			builder, "assetMetrics", "results", "AssetMetricBag");
 		_wireGraphQLTypeProperty(
+			builder, "blockedCustomEventDefinitions", "results",
+			"BlockedCustomEventDefinitionBag");
+		_wireGraphQLTypeProperty(
 			builder, "compositions", "results", "CompositionBag");
 		_wireGraphQLTypeProperty(
 			builder, "confidenceInterval", "confidenceIntervalArray",
