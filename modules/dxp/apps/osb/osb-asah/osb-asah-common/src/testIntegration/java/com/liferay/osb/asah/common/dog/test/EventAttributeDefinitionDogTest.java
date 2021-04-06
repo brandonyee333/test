@@ -59,7 +59,7 @@ public class EventAttributeDefinitionDogTest {
 
 		EventAttributeDefinition eventAttributeDefinition =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
-				"Testing attribute definition", "Test Attribute Defintion",
+				"Testing attribute definition", "Test Attribute Definition",
 				eventDefinition.getId(), "testAttributeDefinition",
 				"testValue");
 
@@ -70,7 +70,43 @@ public class EventAttributeDefinitionDogTest {
 			"Testing attribute definition",
 			eventAttributeDefinition.getDescription());
 		Assert.assertEquals(
-			"Test Attribute Defintion",
+			"Test Attribute Definition",
+			eventAttributeDefinition.getDisplayName());
+
+		List<EventDefinitionEventAttributeDefinition>
+			eventDefinitionEventAttributeDefinitions = new ArrayList<>(
+			eventAttributeDefinition.
+				getEventDefinitionEventAttributeDefinitions());
+
+		EventDefinitionEventAttributeDefinition
+			eventDefinitionEventAttributeDefinition =
+			eventDefinitionEventAttributeDefinitions.get(0);
+
+		Assert.assertEquals(
+			eventDefinition.getId(),
+			eventDefinitionEventAttributeDefinition.getEventDefinitionId());
+
+		Assert.assertNotNull(eventAttributeDefinition.getId());
+	}
+
+	@Test
+	public void testAddEventAttributeDefinitionNoDisplayName() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+
+		EventAttributeDefinition eventAttributeDefinition =
+			_eventAttributeDefinitionDog.addEventAttributeDefinition(
+				"Testing attribute definition", null, eventDefinition.getId(),
+				"testAttributeDefinition", "testValue");
+
+		Assert.assertEquals(
+			EventAttributeDefinition.DataType.STRING,
+			eventAttributeDefinition.getDataType());
+		Assert.assertEquals(
+			"Testing attribute definition",
+			eventAttributeDefinition.getDescription());
+		Assert.assertEquals(
+			"testAttributeDefinition",
 			eventAttributeDefinition.getDisplayName());
 
 		List<EventDefinitionEventAttributeDefinition>
