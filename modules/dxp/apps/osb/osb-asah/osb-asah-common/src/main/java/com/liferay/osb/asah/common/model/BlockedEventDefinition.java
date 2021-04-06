@@ -14,7 +14,10 @@
 
 package com.liferay.osb.asah.common.model;
 
+import com.liferay.osb.asah.common.util.BeanUtils;
+
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
@@ -36,6 +39,10 @@ public class BlockedEventDefinition {
 		}
 
 		_lastSeenURL = lastSeenURL;
+	}
+
+	public BlockedEventDefinition(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
 	}
 
 	@Override

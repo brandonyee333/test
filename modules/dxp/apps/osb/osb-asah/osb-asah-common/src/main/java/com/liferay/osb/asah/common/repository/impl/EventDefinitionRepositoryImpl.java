@@ -14,10 +14,12 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.model.BlockedEventDefinition;
 import com.liferay.osb.asah.common.model.EventDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,6 +28,7 @@ import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -67,9 +70,20 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"EventDefinition"
-		).where(
+		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
+			"EventDefinition");
+
+		if ((blocked != null) && blocked) {
+			Field<Object> field = DSL.field("id");
+
+			selectJoinStep = selectJoinStep.join(
+				DSL.table("blockedeventdefinition")
+			).on(
+				field.eq(DSL.field("blockedeventdefinition.eventdefinitionid"))
+			);
+		}
+
+		return selectJoinStep.where(
 			_getConditions(blocked, keyword, type)
 		).orderBy(
 			getSortFields(pageable.getSort(), null)
@@ -79,7 +93,19 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 			pageable.getOffset()
 		).fetch(
 		).map(
-			record -> new EventDefinition(record.intoMap())
+			record -> {
+				Map<String, Object> recordMap = record.intoMap();
+
+				EventDefinition eventDefinition = new EventDefinition(
+					recordMap);
+
+				if ((blocked != null) && blocked) {
+					eventDefinition.setBlockedEventDefinition(
+						new BlockedEventDefinition(recordMap));
+				}
+
+				return eventDefinition;
+			}
 		);
 	}
 
