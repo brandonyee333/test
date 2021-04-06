@@ -39,6 +39,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -121,17 +122,16 @@ public class SynchronizeAccountMessageListener extends BaseMessageListener {
 			_accountEntryLocalService.fetchKoroneikiAccountEntry(
 				koroneikiAccountKey);
 
-		if ((account == null) || (accountEntry == null)) {
-			return;
-		}
+		if (account == null) {
+			if ((accountEntry != null) &&
+				!hasZendeskOrganization(accountEntry) &&
+				!accountEntry.isActiveSupport()) {
 
-		if (!hasZendeskOrganization(accountEntry) &&
-			!accountEntry.isActiveSupport()) {
-
-			_accountEntryLocalService.updateLastZendeskAuditDate(
-				OSBCustomerConstants.USER_DEFAULT_USER_ID,
-				accountEntry.getAccountEntryId(), StringPool.BLANK,
-				StringPool.BLANK);
+				_accountEntryLocalService.updateLastZendeskAuditDate(
+					OSBCustomerConstants.USER_DEFAULT_USER_ID,
+					accountEntry.getAccountEntryId(), StringPool.BLANK,
+					StringPool.BLANK);
+			}
 
 			return;
 		}
@@ -142,7 +142,12 @@ public class SynchronizeAccountMessageListener extends BaseMessageListener {
 					account.getKey(), 1, 1000);
 
 			if (accountEntry != null) {
-				synchronizeCustomers(account, contacts, accountEntry);
+				List<ProductPurchase> productPurchases =
+					_accountReader.getProductPurchases(koroneikiAccountKey);
+
+				if (_accountReader.isSyncAccount(productPurchases)) {
+					synchronizeCustomers(account, contacts, accountEntry);
+				}
 			}
 
 			synchronizePartners(account, contacts);

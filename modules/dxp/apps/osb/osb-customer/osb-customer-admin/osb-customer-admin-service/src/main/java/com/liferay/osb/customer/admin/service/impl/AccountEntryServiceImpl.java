@@ -207,25 +207,26 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 				List<ProductPurchase> productPurchases =
 					_accountReader.getProductPurchases(koroneikiAccountKey);
 
-				if (!_accountReader.isSyncAccount(productPurchases)) {
-					return;
+				if (_accountReader.isSyncAccount(productPurchases)) {
+					accountEntryLocalService.addAccountEntry(
+						OSBCustomerConstants.USER_DEFAULT_USER_ID,
+						account.getKey(),
+						_accountReader.getDossieraAccountKey(
+							account.getExternalLinks()),
+						_accountReader.getCorpProjectUuid(
+							account.getExternalLinks()),
+						_accountReader.getCorpProjectId(
+							account.getExternalLinks()),
+						account.getName(), account.getCode(), null,
+						_accountReader.getSupportEndDate(productPurchases),
+						_accountReader.getTicketSupportEndDate(
+							productPurchases),
+						_accountReader.getStatus(account),
+						new String[] {
+							AccountEntryConstants.getLanguageId(
+								account.getLanguage())
+						});
 				}
-
-				accountEntryLocalService.addAccountEntry(
-					OSBCustomerConstants.USER_DEFAULT_USER_ID, account.getKey(),
-					_accountReader.getDossieraAccountKey(
-						account.getExternalLinks()),
-					_accountReader.getCorpProjectUuid(
-						account.getExternalLinks()),
-					_accountReader.getCorpProjectId(account.getExternalLinks()),
-					account.getName(), account.getCode(), null,
-					_accountReader.getSupportEndDate(productPurchases),
-					_accountReader.getTicketSupportEndDate(productPurchases),
-					_accountReader.getStatus(account),
-					new String[] {
-						AccountEntryConstants.getLanguageId(
-							account.getLanguage())
-					});
 			}
 
 			Message message = new Message();
