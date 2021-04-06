@@ -45,6 +45,18 @@ CREATE TABLE IF NOT EXISTS ChannelDataSource (
 	PRIMARY KEY (channelId, dataSourceId)
 );
 
+CREATE TABLE IF NOT EXISTS DataControlTask (
+	id BIGSERIAL PRIMARY KEY,
+	batchId BIGINT,
+	completeDate TIMESTAMPTZ,
+	createDate TIMESTAMPTZ,
+	emailAddress TEXT,
+	ownerId TEXT,
+	startDate TIMESTAMPTZ,
+	status TEXT,
+	type TEXT
+);
+
 CREATE TABLE IF NOT EXISTS DataExportTask (
 	id BIGSERIAL PRIMARY KEY,
 	completedDate TIMESTAMPTZ,
