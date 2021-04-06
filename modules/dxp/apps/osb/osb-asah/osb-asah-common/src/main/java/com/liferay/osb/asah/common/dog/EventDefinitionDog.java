@@ -45,7 +45,7 @@ public class EventDefinitionDog {
 		String description, String displayName, Date eventDate, String name,
 		EventDefinition.Type type, String url) {
 
-		if (StringUtils.isEmpty(name)) {
+		if (StringUtils.isBlank(name)) {
 			throw new IllegalArgumentException("Event name is null");
 		}
 
@@ -69,7 +69,7 @@ public class EventDefinitionDog {
 
 		eventDefinition.setDescription(description);
 
-		if (StringUtils.isEmpty(displayName)) {
+		if (StringUtils.isBlank(displayName)) {
 			displayName = name;
 		}
 

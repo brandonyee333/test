@@ -52,7 +52,7 @@ public class EventAttributeDefinitionDog {
 		String description, String displayName, Long eventDefinitionId,
 		String name, String sampleValue) {
 
-		if (StringUtils.isEmpty(name)) {
+		if (StringUtils.isBlank(name)) {
 			throw new IllegalArgumentException("Event attribute name is null");
 		}
 
