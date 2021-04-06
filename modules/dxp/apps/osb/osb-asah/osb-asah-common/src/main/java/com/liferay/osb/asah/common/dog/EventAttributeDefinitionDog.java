@@ -61,6 +61,11 @@ public class EventAttributeDefinitionDog {
 
 		eventAttributeDefinition.setDataType(getDataType(name, sampleValue));
 		eventAttributeDefinition.setDescription(description);
+
+		if (StringUtils.isBlank(displayName)) {
+			displayName = name;
+		}
+
 		eventAttributeDefinition.setDisplayName(displayName);
 		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
 			Collections.singleton(
