@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 
 import org.junit.runner.RunWith;
@@ -25,24 +26,27 @@ import org.springframework.test.context.TestPropertySource;
  * @author Leslie Wong
  */
 @DirtiesContext
+@PostgreSQLTables(
+	resourcePath = "blocked_custom_event_definitions_graphql_rest_controller_test.sql"
+)
 @RunWith(OSBAsahPostgreSQLSpring4ClassRunner.class)
 @TestPropertySource(properties = "osb.asah.postgresql.enabled=true")
-public class EventDefinitionsGraphQLRestControllerTest
+public class BlockedCustomEventDefinitionsGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 
 	@Override
 	public String getBodyPath() {
-		return "event_definitions_body.json";
+		return "blocked_custom_event_definitions_body.json";
 	}
 
 	@Override
 	public String getExpectedResultPath() {
-		return "event_definitions_expected_result.json";
+		return "blocked_custom_event_definitions_expected_result.json";
 	}
 
 	@Override
 	public String getQueryPath() {
-		return "event_definitions_query.graphql";
+		return "blocked_custom_event_definitions_query.graphql";
 	}
 
 }

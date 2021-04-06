@@ -1,0 +1,28 @@
+{
+	"data": {
+		"blockedCustomEventDefinitions": {
+			"__typename": "BlockedCustomEventDefinitionBag",
+			"blockedCustomEventDefinitions": [
+				{
+					"__typename": "BlockedCustomEventDefinition",
+					"lastSeenDate": "2020-12-27T10:03:00.000Z",
+					"lastSeenURL": "http://test.com",
+					"name": "addedToCart"
+				},
+				{
+					"__typename": "BlockedCustomEventDefinition",
+					"lastSeenDate": "2021-01-04T01:10:00.000Z",
+					"lastSeenURL": "http://test.com",
+					"name": "addedToWishList"
+				},
+				{
+					"__typename": "BlockedCustomEventDefinition",
+					"lastSeenDate": "2021-03-03T22:02:00.000Z",
+					"lastSeenURL": "http://test.com",
+					"name": "checkedOut"
+				}
+			],
+			"total": 5
+		}
+	}
+}

@@ -1,0 +1,15 @@
+query BlockedCustomEventDefinitions($keyword: String, $page: Int!, $size: Int!, $sort: Sort!) {
+    blockedCustomEventDefinitions(keyword: $keyword, page: $page, size: $size, sort: $sort) {
+        total
+        blockedCustomEventDefinitions {
+            ... on BlockedCustomEventDefinition {
+                name
+                lastSeenDate
+                lastSeenURL
+                __typename
+            }
+            __typename
+        }
+        __typename
+    }
+}
