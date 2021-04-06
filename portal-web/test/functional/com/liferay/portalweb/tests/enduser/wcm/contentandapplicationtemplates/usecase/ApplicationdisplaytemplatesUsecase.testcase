@@ -11,21 +11,21 @@ definition {
 
 		User.firstLoginPG();
 
-		ProductMenu.gotoPortlet(
-			category = "Sites",
-			panel = "Control Panel",
-			portlet = "Sites");
+		// ProductMenu.gotoPortlet(
+		// 	category = "Sites",
+		// 	panel = "Control Panel",
+		// 	portlet = "Sites");
 
-		Site.addBlankCP(siteName = "Test Site Name");
+		// Site.addBlankCP(siteName = "Test Site Name");
 
-		ProductMenu.gotoPortlet(
-			category = "Sites",
-			panel = "Control Panel",
-			portlet = "Sites");
+		// ProductMenu.gotoPortlet(
+		// 	category = "Sites",
+		// 	panel = "Control Panel",
+		// 	portlet = "Sites");
 
-		Page.add(
-			pageName = "ADT Test Page",
-			siteName = "Test Site Name");
+		// Page.add(
+		// 	pageName = "ADT Test Page",
+		// 	siteName = "Test Site Name");
 	}
 
 	tearDown {
@@ -314,6 +314,53 @@ definition {
 			categoryName2 = "Category Name 2",
 			vocabularyName1 = "Vocabulary Name 1",
 			vocabularyName2 = "Vocabulary Name 2");
+	}
+
+	@description = "This is a use case for LPS-71944."
+	@priority = "5"
+	test ADTChangeTemplatePortletPreferencesMethodContracts {
+		property testray.component.names = "Asset Publisher,Content and Application Templates";
+
+		Navigator.openSiteLanding(siteURLKey = "Global");
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Site Administration",
+			portlet = "Application Display Template");
+
+		ApplicationDisplayTemplates.searchGlobalADT(templateName = "Rich Summary");
+
+		ApplicationDisplayTemplates.gotoWidgetTemplatesEllipsisItem(
+			item = "Edit",
+			widgetTemplateName = "Rich Summary");
+
+		var script = '''
+<@liferay_portlet["runtime"]
+	defaultPreferences="${freeMarkerPortletPreferences}"
+	instanceId="whateverV1"
+	portletProviderAction=portletProviderAction.VIEW
+	portletProviderClassName="com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry"/>
+				''';
+
+		ApplicationDisplayTemplates.editADTScript(adtScript = "${script}");
+
+		Navigator.gotoSitePage(
+			pageName = "ADT Test Page",
+			siteName = "Test Site Name");
+
+		Portlet.addPG(portletName = "Asset Publisher");
+
+		Portlet.gotoPortletOptions(
+			portletName = "Asset Publisher",
+			portletOption = "Configuration");
+
+		AssetPublisherPortlet.configureDisplayTemplatePG(displayTemplate = "Rich Summary");
+
+		AssertElementPresent(
+			key_portletName = "Breadcrumb",
+			locator1 = "Portlet#TITLE");
+
+		AssertConsoleTextNotPresent(value1 = "UnexpectedCharException");
 	}
 
 	@priority = "3"
