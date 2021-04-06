@@ -44,20 +44,13 @@ public class EventDefinitionBagDataFetcher
 	public ResultBag<EventDefinitionDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		boolean blocked = false;
-
-		if (dataFetchingEnvironment.containsArgument("blocked")) {
-			blocked = Boolean.parseBoolean(
-				dataFetchingEnvironment.getArgument("blocked"));
-		}
-
 		EventDefinition.Type type = EventDefinition.Type.valueOf(
 			dataFetchingEnvironment.getArgument("eventType"));
 		String keyword = dataFetchingEnvironment.getArgument("keyword");
 
 		Page<EventDefinition> eventDefinitionsPage =
 			_eventDefinitionDog.getEventDefinitionsPage(
-				blocked, keyword, dataFetchingEnvironment.getArgument("page"),
+				false, keyword, dataFetchingEnvironment.getArgument("page"),
 				dataFetchingEnvironment.getArgument("size"),
 				Sort.of(dataFetchingEnvironment.getArgument("sort")), type);
 
