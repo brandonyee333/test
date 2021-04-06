@@ -16,9 +16,12 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +36,9 @@ public class DeleteJobMutationDataFetcher
 
 	@Override
 	public Void get(DataFetchingEnvironment dataFetchingEnvironment) {
-		_jobDog.deleteJobs(dataFetchingEnvironment.getArgument("jobIds"));
+		List<String> jobIds = dataFetchingEnvironment.getArgument("jobIds");
+
+		_jobDog.deleteJobs(ListUtil.map(jobIds, Long::valueOf));
 
 		return null;
 	}

@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dto.JobDTO;
 import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.Job;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -29,11 +29,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "jobById", typeName = "QueryType")
-public class JobByIdDataFetcher implements DataFetcher<Job> {
+public class JobByIdDataFetcher implements DataFetcher<JobDTO> {
 
 	@Override
-	public Job get(DataFetchingEnvironment dataFetchingEnvironment) {
-		return _jobDog.getJob(dataFetchingEnvironment.getArgument("id"));
+	public JobDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
+		return new JobDTO(
+			_jobDog.getJob(dataFetchingEnvironment.getArgument("id")));
 	}
 
 	@Autowired

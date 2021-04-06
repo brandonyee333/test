@@ -39,7 +39,7 @@ public class JobRunsMonthlyStatisticsDataFetcher
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		return _jobDog.getJobRunsMonthlyStatistics(
-			dataFetchingEnvironment.getArgument("jobId"));
+			Long.valueOf(dataFetchingEnvironment.getArgument("jobId")));
 	}
 
 	@Autowired

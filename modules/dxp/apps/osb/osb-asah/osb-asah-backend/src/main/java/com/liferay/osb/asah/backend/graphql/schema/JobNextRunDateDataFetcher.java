@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dto.JobDTO;
 import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.Job;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -33,9 +33,9 @@ public class JobNextRunDateDataFetcher implements DataFetcher<String> {
 
 	@Override
 	public String get(DataFetchingEnvironment dataFetchingEnvironment) {
-		Job job = dataFetchingEnvironment.getSource();
+		JobDTO jobDTO = dataFetchingEnvironment.getSource();
 
-		return _jobDog.getJobNextRunDateString(job.getId());
+		return _jobDog.getJobNextRunDateString(Long.valueOf(jobDTO.getId()));
 	}
 
 	@Autowired

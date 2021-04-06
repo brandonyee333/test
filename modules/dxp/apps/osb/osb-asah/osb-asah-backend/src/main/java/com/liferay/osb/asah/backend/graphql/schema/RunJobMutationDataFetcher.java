@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dto.JobDTO;
 import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.Job;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
 
 import graphql.schema.DataFetcher;
@@ -30,14 +30,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "runJob", typeName = "MutationType")
-public class RunJobMutationDataFetcher implements DataFetcher<Job> {
+public class RunJobMutationDataFetcher implements DataFetcher<JobDTO> {
 
 	@Override
-	public Job get(DataFetchingEnvironment dataFetchingEnvironment) {
-		return _jobDog.runJob(
-			dataFetchingEnvironment.getArgument("jobId"),
-			JobRunDataPeriod.valueOf(
-				dataFetchingEnvironment.getArgument("runDataPeriod")));
+	public JobDTO get(DataFetchingEnvironment dataFetchingEnvironment) {
+		return new JobDTO(
+			_jobDog.runJob(
+				Long.valueOf(dataFetchingEnvironment.getArgument("jobId")),
+				JobRunDataPeriod.valueOf(
+					dataFetchingEnvironment.getArgument("runDataPeriod"))));
 	}
 
 	@Autowired

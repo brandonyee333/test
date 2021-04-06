@@ -14,9 +14,8 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dto.JobRunDTO;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.JobRun;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -41,9 +40,9 @@ public class JobRunContextDataFetcher
 	public List<Pair<String, String>> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		JobRun jobRun = dataFetchingEnvironment.getSource();
+		JobRunDTO jobRunDTO = dataFetchingEnvironment.getSource();
 
-		return _toPairs(JSONUtil.toMap(jobRun.getContextJSONObject()));
+		return _toPairs(jobRunDTO.getContext());
 	}
 
 	private List<Pair<String, String>> _toPairs(Map<String, Object> context) {

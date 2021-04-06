@@ -38,7 +38,7 @@ public class UpdateJobMutationDataFetcher implements DataFetcher<Job> {
 	@Override
 	public Job get(DataFetchingEnvironment dataFetchingEnvironment) {
 		return _jobDog.updateJob(
-			dataFetchingEnvironment.getArgument("jobId"),
+			Long.valueOf(dataFetchingEnvironment.getArgument("jobId")),
 			SetUtil.map(
 				dataFetchingEnvironment.getArgument("parameters"),
 				JobParameter::of),

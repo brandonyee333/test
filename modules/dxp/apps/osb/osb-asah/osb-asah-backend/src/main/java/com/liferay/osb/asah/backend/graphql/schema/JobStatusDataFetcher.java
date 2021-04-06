@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
+import com.liferay.osb.asah.backend.dto.JobDTO;
 import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.Job;
 import com.liferay.osb.asah.common.model.JobStatus;
 
 import graphql.schema.DataFetcher;
@@ -34,9 +34,9 @@ public class JobStatusDataFetcher implements DataFetcher<JobStatus> {
 
 	@Override
 	public JobStatus get(DataFetchingEnvironment dataFetchingEnvironment) {
-		Job job = dataFetchingEnvironment.getSource();
+		JobDTO jobDTO = dataFetchingEnvironment.getSource();
 
-		return _jobDog.getJobStatus(job.getId());
+		return _jobDog.getJobStatus(Long.valueOf(jobDTO.getId()));
 	}
 
 	@Autowired
