@@ -175,6 +175,24 @@ definition {
 		MenuItem.clickNoError(menuItem = "${item}");
 	}
 
+	macro searchGlobalADT {
+		AssertElementPresent(locator1 = "Search#SEARCH_FIELD");
+
+		AssertElementPresent(locator1 = "Icon#BASIC_SEARCH");
+
+		Type(
+			locator1 = "Search#SEARCH_FIELD",
+			value1 = "${templateName}");
+
+		KeyPress(
+			locator1 = "Search#SEARCH_FIELD",
+			value1 = "\RETURN");
+
+		AssertTextEquals(
+			locator1 = "ApplicationDisplayTemplates#ADT_TABLE_NAME_1",
+			value1 = "${templateName}");
+	}
+
 	macro selectPortletADT {
 		Portlet.gotoPortletOptions(
 			portletName = "${portletName}",
