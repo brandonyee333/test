@@ -24,6 +24,7 @@ import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -48,6 +49,10 @@ public class DataSourcesDataFetcher
 			"sort");
 
 		if (sortMap != null) {
+			if (Objects.equals("dateCreated", sortMap.get("column"))) {
+				sortMap.put("column", "createDate");
+			}
+
 			sort = Sort.by(
 				new Sort.Order(
 					Sort.Direction.fromString(sortMap.get("type")),
