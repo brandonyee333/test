@@ -208,7 +208,9 @@ CREATE TABLE IF NOT EXISTS JobRun (
 	context JSON,
 	createdDate TIMESTAMPTZ,
 	jobId BIGINT,
+	lastUpdatedDate TIMESTAMPTZ,
 	status TEXT,
+	step TEXT,
 	trigger TEXT
 );
 

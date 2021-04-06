@@ -129,6 +129,34 @@ public class JobRun implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
+	public String getJobType() {
+		if (_jobRef == null) {
+			return null;
+		}
+
+		return _jobRef.getType();
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	public Date getLastUpdatedDate() {
+		if (_lastUpdatedDate == null) {
+			return null;
+		}
+
+		return new Date(_lastUpdatedDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getStep() {
+		return _step;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getTrigger() {
 		return _trigger;
 	}
@@ -202,6 +230,16 @@ public class JobRun implements Persistable<Long> {
 		_jobRef.setType(jobType);
 	}
 
+	public void setLastUpdatedDate(Date lastUpdatedDate) {
+		if (lastUpdatedDate != null) {
+			_lastUpdatedDate = new Date(lastUpdatedDate.getTime());
+		}
+	}
+
+	public void setStep(String step) {
+		_step = step;
+	}
+
 	public void setTrigger(String trigger) {
 		_trigger = trigger;
 	}
@@ -235,6 +273,12 @@ public class JobRun implements Persistable<Long> {
 
 	@Transient
 	private JobRunStatus _jobRunStatus;
+
+	@Transient
+	private Date _lastUpdatedDate;
+
+	@Transient
+	private String _step;
 
 	@Transient
 	private String _trigger;
