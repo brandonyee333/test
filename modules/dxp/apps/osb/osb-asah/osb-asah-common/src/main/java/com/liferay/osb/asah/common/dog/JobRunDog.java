@@ -38,6 +38,8 @@ import java.util.Optional;
 import java.util.TimeZone;
 import java.util.stream.Stream;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -51,6 +53,26 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class JobRunDog {
+
+	public JobRun addJobRun(
+		JSONObject contextJSONObject, Job job, JobRunStatus jobRunStatus,
+		String step, String trigger) {
+
+		Date date = new Date();
+
+		JobRun jobRun = new JobRun();
+
+		jobRun.setContextJSONObject(contextJSONObject);
+		jobRun.setCreatedDate(date);
+		jobRun.setJobId(job.getId());
+		jobRun.setJobRunStatus(jobRunStatus);
+		jobRun.setJobType(String.valueOf(job.getJobType()));
+		jobRun.setLastUpdatedDate(date);
+		jobRun.setStep(step);
+		jobRun.setTrigger(trigger);
+
+		return _jobRunRepository.save(jobRun);
+	}
 
 	public void deleteByJobId(Long jobId) {
 		_jobRunRepository.deleteByJobId(jobId);
