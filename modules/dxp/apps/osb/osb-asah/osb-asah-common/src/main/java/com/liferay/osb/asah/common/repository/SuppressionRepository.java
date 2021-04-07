@@ -35,6 +35,8 @@ public interface SuppressionRepository
 
 	public long countByEmailAddressContainingIgnoreCase(String emailAddress);
 
+	public void deleteByEmailAddress(String emailAddress);
+
 	public boolean existsByEmailAddress(String emailAddress);
 
 	public boolean existsByEmailAddressHashed(String emailAddressHashed);

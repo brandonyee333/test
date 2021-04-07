@@ -54,6 +54,13 @@ public class ElasticsearchSuppressionRepositoryImpl
 	}
 
 	@Override
+	public void deleteByEmailAddress(String emailAddress) {
+		_faroInfoElasticsearchInvoker.delete(
+			getCollectionName(),
+			QueryBuilders.termsQuery("emailAddress", emailAddress));
+	}
+
+	@Override
 	public boolean existsByEmailAddress(String emailAddress) {
 		return _faroInfoElasticsearchInvoker.exists(
 			getCollectionName(),

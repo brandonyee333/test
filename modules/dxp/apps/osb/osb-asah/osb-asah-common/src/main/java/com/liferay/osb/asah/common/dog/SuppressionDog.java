@@ -51,6 +51,10 @@ public class SuppressionDog {
 		return _suppressionRepository.save(suppression);
 	}
 
+	public void deleteByEmailAddress(String emailAddress) {
+		_suppressionRepository.deleteByEmailAddress(emailAddress);
+	}
+
 	public Page<Suppression> getSuppressionPage(
 		String emailAddress, int page, int size, Sort sort) {
 
