@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.DataControlTaskDog;
-import com.liferay.osb.asah.backend.model.DataControlTask;
+import com.liferay.osb.asah.common.dog.DataControlTaskDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.DataControlTask;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 
@@ -24,6 +24,7 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 /**
@@ -38,15 +39,21 @@ public class DataControlTaskBagDataFetcher
 	public ResultBag<DataControlTask> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		return _dataControlTaskDog.getDataControlTaskResultBag(
-			dataFetchingEnvironment.getArgument("batchId"),
-			dataFetchingEnvironment.getArgument("keywords"),
-			dataFetchingEnvironment.getArgument("rangeKey"),
-			dataFetchingEnvironment.getArgument("size"),
-			Sort.of(dataFetchingEnvironment.getArgument("sort")),
-			dataFetchingEnvironment.getArgument("start"),
-			dataFetchingEnvironment.getArgument("statuses"),
-			dataFetchingEnvironment.getArgument("types"));
+		int size = dataFetchingEnvironment.getArgument("size");
+		int start = dataFetchingEnvironment.getArgument("start");
+
+		Page<DataControlTask> dataControlTaskPage =
+			_dataControlTaskDog.getDataControlTaskPage(
+				dataFetchingEnvironment.getArgument("batchId"),
+				dataFetchingEnvironment.getArgument("keywords"),
+				dataFetchingEnvironment.getArgument("rangeKey"), start / size,
+				size, Sort.of(dataFetchingEnvironment.getArgument("sort")),
+				dataFetchingEnvironment.getArgument("statuses"),
+				dataFetchingEnvironment.getArgument("types"));
+
+		return new ResultBag<>(
+			dataControlTaskPage.getContent(),
+			dataControlTaskPage.getTotalElements());
 	}
 
 	@Autowired
