@@ -104,10 +104,7 @@ public class DataControlNanite extends BaseNanite {
 
 		emailAddress = StringUtils.lowerCase(emailAddress);
 
-		if (faroInfoElasticsearchInvoker.exists(
-				"suppressions",
-				QueryBuilders.termQuery("emailAddress", emailAddress))) {
-
+		if (_suppressionDog.isSuppressed(emailAddress, null)) {
 			return;
 		}
 
