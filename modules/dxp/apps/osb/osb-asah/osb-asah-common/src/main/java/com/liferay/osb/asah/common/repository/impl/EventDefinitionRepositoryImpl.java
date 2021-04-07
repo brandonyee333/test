@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
@@ -73,7 +74,7 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
 			"EventDefinition");
 
-		if ((blocked != null) && blocked) {
+		if (BooleanUtils.isTrue(blocked)) {
 			Field<Object> field = DSL.field("id");
 
 			selectJoinStep = selectJoinStep.join(
@@ -99,7 +100,7 @@ public class EventDefinitionRepositoryImpl extends BaseRepository {
 				EventDefinition eventDefinition = new EventDefinition(
 					recordMap);
 
-				if ((blocked != null) && blocked) {
+				if (BooleanUtils.isTrue(blocked)) {
 					eventDefinition.setBlockedEventDefinition(
 						new BlockedEventDefinition(recordMap));
 				}

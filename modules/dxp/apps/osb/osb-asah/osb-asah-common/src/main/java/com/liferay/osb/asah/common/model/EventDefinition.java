@@ -155,7 +155,7 @@ public class EventDefinition implements Persistable<Long> {
 		_type = type;
 	}
 
-	public static enum Type {
+	public enum Type {
 
 		ALL, CUSTOM, DEFAULT
 

@@ -20,13 +20,10 @@ import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,17 +52,10 @@ public class BlockedCustomEventDefinitionBagDataFetcher
 				Sort.of(dataFetchingEnvironment.getArgument("sort")),
 				EventDefinition.Type.CUSTOM);
 
-		Stream<EventDefinition> stream = eventDefinitionsPage.stream();
-
-		List<BlockedCustomEventDefinitionDTO> blockedCustomEventDefinitionDTOs =
-			stream.map(
-				BlockedCustomEventDefinitionDTO::new
-			).collect(
-				Collectors.toList()
-			);
-
 		return new ResultBag<>(
-			blockedCustomEventDefinitionDTOs,
+			ListUtil.map(
+				eventDefinitionsPage.getContent(),
+				BlockedCustomEventDefinitionDTO::new),
 			eventDefinitionsPage.getTotalElements());
 	}
 
