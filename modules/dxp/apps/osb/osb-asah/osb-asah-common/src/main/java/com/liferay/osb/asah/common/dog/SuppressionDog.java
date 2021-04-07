@@ -52,6 +52,21 @@ public class SuppressionDog {
 					emailAddress));
 	}
 
+	public boolean isSuppressed(
+		String emailAddress, String emailAddressHashed) {
+
+		if (StringUtils.isNotEmpty(emailAddress)) {
+			return _suppressionRepository.existsByEmailAddress(emailAddress);
+		}
+
+		if (StringUtils.isNotEmpty(emailAddressHashed)) {
+			return _suppressionRepository.existsByEmailAddressHashed(
+				emailAddressHashed);
+		}
+
+		return false;
+	}
+
 	@Autowired
 	private SuppressionRepository _suppressionRepository;
 

@@ -54,6 +54,20 @@ public class ElasticsearchSuppressionRepositoryImpl
 	}
 
 	@Override
+	public boolean existsByEmailAddress(String emailAddress) {
+		return _faroInfoElasticsearchInvoker.exists(
+			getCollectionName(),
+			QueryBuilders.termsQuery("emailAddress", emailAddress));
+	}
+
+	@Override
+	public boolean existsByEmailAddressHashed(String emailAddressHashed) {
+		return _faroInfoElasticsearchInvoker.exists(
+			getCollectionName(),
+			QueryBuilders.termsQuery("emailAddressHashed", emailAddressHashed));
+	}
+
+	@Override
 	public List<Suppression> findAll(Pageable pageable) {
 		return findByEmailAddressContainingIgnoreCase(null, pageable);
 	}

@@ -35,6 +35,10 @@ public interface SuppressionRepository
 
 	public long countByEmailAddressContainingIgnoreCase(String emailAddress);
 
+	public boolean existsByEmailAddress(String emailAddress);
+
+	public boolean existsByEmailAddressHashed(String emailAddressHashed);
+
 	public List<Suppression> findAll(Pageable pageable);
 
 	public List<Suppression> findByEmailAddressContainingIgnoreCase(
