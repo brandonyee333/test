@@ -15,16 +15,25 @@
 package com.liferay.osb.asah.common.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 
 import java.util.Date;
 import java.util.Objects;
 
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Table;
+
 /**
  * @author Matthew Kong
  */
-public class Suppression {
+@Table
+public class Suppression implements Persistable<Long> {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -59,6 +68,7 @@ public class Suppression {
 		return false;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -71,10 +81,13 @@ public class Suppression {
 		return new Date(_createDate.getTime());
 	}
 
-	public String getDataControlTaskBatchId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonSerialize(using = ToStringSerializer.class)
+	public Long getDataControlTaskBatchId() {
 		return _dataControlTaskBatchId;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -87,15 +100,26 @@ public class Suppression {
 		return new Date(_dataControlTaskCreateDate.getTime());
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getDataControlTaskStatus() {
 		return _dataControlTaskStatus;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddress() {
 		return _emailAddress;
 	}
 
-	public String getId() {
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getEmailAddressHashed() {
+		return _emailAddressHashed;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@Id
+	@JsonSerialize(using = ToStringSerializer.class)
+	@Override
+	public Long getId() {
 		return _id;
 	}
 
@@ -104,13 +128,22 @@ public class Suppression {
 		return Objects.hash(_createDate, _emailAddress, _id);
 	}
 
+	@Override
+	public boolean isNew() {
+		if ((_id == null) || ((_isNew != null) && _isNew)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public void setCreateDate(Date createDate) {
 		if (createDate != null) {
 			_createDate = new Date(createDate.getTime());
 		}
 	}
 
-	public void setDataControlTaskBatchId(String dataControlTaskBatchId) {
+	public void setDataControlTaskBatchId(Long dataControlTaskBatchId) {
 		_dataControlTaskBatchId = dataControlTaskBatchId;
 	}
 
@@ -129,15 +162,40 @@ public class Suppression {
 		_emailAddress = emailAddress;
 	}
 
-	public void setId(String id) {
+	public void setEmailAddressHashed(String emailAddressHashed) {
+		_emailAddressHashed = emailAddressHashed;
+	}
+
+	public void setId(Long id) {
 		_id = id;
 	}
 
+	public void setIsNew(Boolean isNew) {
+		_isNew = isNew;
+	}
+
+	@Transient
 	private Date _createDate;
-	private String _dataControlTaskBatchId;
+
+	@Transient
+	private Long _dataControlTaskBatchId;
+
+	@Transient
 	private Date _dataControlTaskCreateDate;
+
+	@Transient
 	private String _dataControlTaskStatus;
+
+	@Transient
 	private String _emailAddress;
-	private String _id;
+
+	@Transient
+	private String _emailAddressHashed;
+
+	@Transient
+	private Long _id;
+
+	@Transient
+	private Boolean _isNew;
 
 }
