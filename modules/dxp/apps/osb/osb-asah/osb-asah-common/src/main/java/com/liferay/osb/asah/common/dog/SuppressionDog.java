@@ -14,24 +14,16 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.liferay.osb.asah.common.model.Suppression;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.model.Suppression;
+import com.liferay.osb.asah.common.repository.SuppressionRepository;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,46 +32,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class SuppressionDog {
 
-	public ResultBag<Suppression> getSuppressionResultBag(
-		String keywords, int size, Sort sort, int start) {
+	public Page<Suppression> getSuppressionPage(
+		String emailAddress, int page, int size, Sort sort) {
 
-		QueryBuilder queryBuilder = null;
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
-		if (StringUtils.isBlank(keywords)) {
-			queryBuilder = QueryBuilders.matchAllQuery();
-		}
-		else {
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.queryStringQuery(
-						String.format(
-							"%s:*%s*", "emailAddress",
-							QueryUtil.escapeKeywords(keywords)))
-				).should(
-					QueryBuilders.matchQuery(
-						"emailAddress", keywords
-					).fuzziness(
-						Fuzziness.AUTO
-					)
-				));
+		if (StringUtils.isBlank(emailAddress)) {
+			return PageableExecutionUtils.getPage(
+				_suppressionRepository.findAll(pageRequest), pageRequest,
+				_suppressionRepository::count);
 		}
 
-		return DogUtil.createResultBag(
-			Suppression.class, _objectMapper,
-			_dataDog.querySearchHits(
-				"suppressions", _faroInfoElasticsearchInvoker,
-				DogUtil.buildSearchSourceBuilder(
-					SortBuilderUtil.fieldSort(sort), queryBuilder, size,
-					start)));
+		return PageableExecutionUtils.getPage(
+			_suppressionRepository.findByEmailAddressContainingIgnoreCase(
+				emailAddress, pageRequest),
+			pageRequest,
+			() ->
+				_suppressionRepository.countByEmailAddressContainingIgnoreCase(
+					emailAddress));
 	}
 
 	@Autowired
-	private DataDog _dataDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
+	private SuppressionRepository _suppressionRepository;
 
 }
