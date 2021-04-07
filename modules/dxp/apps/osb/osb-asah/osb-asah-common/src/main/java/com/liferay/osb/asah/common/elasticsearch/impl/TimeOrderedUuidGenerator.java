@@ -69,6 +69,10 @@ public class TimeOrderedUuidGenerator {
 	 * @return the unique ordered ID
 	 */
 	public synchronized String generateId() {
+		return String.valueOf(generateIdAsLong());
+	}
+
+	public synchronized long generateIdAsLong() {
 		long timestamp = System.currentTimeMillis();
 
 		// Prevent the clock from moving backwards
@@ -96,7 +100,7 @@ public class TimeOrderedUuidGenerator {
 		uuid <<= _RANDOM_BITS;
 		uuid |= _lastRandom;
 
-		return String.valueOf(uuid);
+		return uuid;
 	}
 
 	private static final int _RANDOM_BITS = 20;
