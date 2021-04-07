@@ -50,6 +50,7 @@ public class Event implements Persistable<Long> {
 
 		if (Objects.equals(_analyticsEventId, event._analyticsEventId) &&
 			Objects.equals(_applicationId, event._applicationId) &&
+			Objects.equals(_canonicalURL, event._canonicalURL) &&
 			Objects.equals(_channelId, event._channelId) &&
 			Objects.equals(_createDate, event._createDate) &&
 			Objects.equals(_dataSourceId, event._dataSourceId) &&
@@ -57,6 +58,7 @@ public class Event implements Persistable<Long> {
 			Objects.equals(_eventAttributes, event._eventAttributes) &&
 			Objects.equals(_eventDefinitionId, event._eventDefinitionId) &&
 			Objects.equals(_id, event._id) &&
+			Objects.equals(_url, event._url) &&
 			Objects.equals(_userId, event._userId)) {
 
 			return true;
@@ -73,6 +75,11 @@ public class Event implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getApplicationId() {
 		return _applicationId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getCanonicalURL() {
+		return _canonicalURL;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -122,6 +129,11 @@ public class Event implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getURL() {
+		return _url;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getUserId() {
 		return _userId;
 	}
@@ -129,9 +141,9 @@ public class Event implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_analyticsEventId, _applicationId, _channelId, _createDate,
-			_dataSourceId, _eventAttributes, _eventDate, _eventDefinitionId,
-			_id, _userId);
+			_analyticsEventId, _applicationId, _canonicalURL, _channelId,
+			_createDate, _dataSourceId, _eventAttributes, _eventDate,
+			_eventDefinitionId, _id, _url, _userId);
 	}
 
 	@Override
@@ -149,6 +161,10 @@ public class Event implements Persistable<Long> {
 
 	public void setApplicationId(String applicationId) {
 		_applicationId = applicationId;
+	}
+
+	public void setCanonicalURL(String canonicalURL) {
+		_canonicalURL = canonicalURL;
 	}
 
 	public void setChannelId(Long channelId) {
@@ -187,6 +203,10 @@ public class Event implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
+	public void setURL(String url) {
+		_url = url;
+	}
+
 	public void setUserId(String userId) {
 		_userId = userId;
 	}
@@ -196,6 +216,9 @@ public class Event implements Persistable<Long> {
 
 	@Transient
 	private String _applicationId;
+
+	@Transient
+	private String _canonicalURL;
 
 	@Transient
 	private Long _channelId;
@@ -220,6 +243,9 @@ public class Event implements Persistable<Long> {
 
 	@Transient
 	private Boolean _isNew;
+
+	@Transient
+	private String _url;
 
 	@Transient
 	private String _userId;

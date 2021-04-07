@@ -33,21 +33,23 @@ import org.springframework.stereotype.Component;
 public class EventDog {
 
 	public Event addEvent(
-		String analyticsEventId, String applicationId, Long channelId,
-		Date createDate, String dataSourceId,
+		String analyticsEventId, String applicationId, String canonicalURL,
+		Long channelId, Date createDate, String dataSourceId,
 		Set<EventAttribute> eventAttributes, Date eventDate,
-		Long eventDefinitionId, String userId) {
+		Long eventDefinitionId, String url, String userId) {
 
 		Event event = new Event();
 
 		event.setAnalyticsEventId(analyticsEventId);
 		event.setApplicationId(applicationId);
+		event.setCanonicalURL(canonicalURL);
 		event.setChannelId(channelId);
 		event.setCreateDate(createDate);
 		event.setDataSourceId(dataSourceId);
 		event.setEventAttributes(eventAttributes);
 		event.setEventDate(eventDate);
 		event.setEventDefinitionId(eventDefinitionId);
+		event.setURL(url);
 		event.setUserId(userId);
 
 		return _eventRepository.save(event);
