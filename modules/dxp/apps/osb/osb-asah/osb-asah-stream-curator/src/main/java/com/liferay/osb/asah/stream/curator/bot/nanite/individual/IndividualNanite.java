@@ -18,12 +18,12 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -99,7 +99,7 @@ public class IndividualNanite implements Nanite {
 				ProjectIdThreadLocal.setProjectId(
 					messageJSONObject.getString("projectId"));
 
-				if (!_faroInfoSuppressionDog.isSuppressed(
+				if (!_suppressionDog.isSuppressed(
 						null,
 						messageJSONObject.getString("emailAddressHashed"))) {
 
@@ -430,13 +430,13 @@ public class IndividualNanite implements Nanite {
 	@Autowired
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
-	@Autowired
-	private FaroInfoSuppressionDog _faroInfoSuppressionDog;
-
 	@MessageSubscriber.Autowired(channel = Channel.IDENTITY_MESSAGE)
 	private MessageSubscriber _messageSubscriber;
 
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	@Autowired
+	private SuppressionDog _suppressionDog;
 
 }

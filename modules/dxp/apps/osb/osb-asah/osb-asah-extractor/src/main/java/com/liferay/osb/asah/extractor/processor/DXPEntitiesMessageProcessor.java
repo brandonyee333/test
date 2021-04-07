@@ -18,12 +18,12 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOrganizationDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -288,7 +288,7 @@ public class DXPEntitiesMessageProcessor {
 
 		if ((dxpEntityType == null) ||
 			(dxpEntityType.isUser() &&
-			 _faroInfoSuppressionDog.isSuppressed(
+			 _suppressionDog.isSuppressed(
 				 objectJSONObject.optString("emailAddress"), null))) {
 
 			return;
@@ -511,10 +511,10 @@ public class DXPEntitiesMessageProcessor {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private FaroInfoOrganizationDog _faroInfoOrganizationDog;
+	private SuppressionDog _suppressionDog;
 
 	@Autowired
-	private FaroInfoSuppressionDog _faroInfoSuppressionDog;
+	private FaroInfoOrganizationDog _faroInfoOrganizationDog;
 
 	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_MESSAGE)
 	private MessageSubscriber _messageSubscriber;

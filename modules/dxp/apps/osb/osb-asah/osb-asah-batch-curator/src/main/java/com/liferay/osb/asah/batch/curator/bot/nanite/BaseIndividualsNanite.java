@@ -18,10 +18,10 @@ import com.google.api.client.util.Objects;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoSuppressionDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -223,7 +223,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		throws Exception {
 
 		if ((emailAddress == null) ||
-			_faroInfoSuppressionDog.isSuppressed(emailAddress, null)) {
+			_suppressionDog.isSuppressed(emailAddress, null)) {
 
 			return;
 		}
@@ -394,9 +394,9 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private FaroInfoSuppressionDog _faroInfoSuppressionDog;
+	private RunLogger _runLogger;
 
 	@Autowired
-	private RunLogger _runLogger;
+	private SuppressionDog _suppressionDog;
 
 }
