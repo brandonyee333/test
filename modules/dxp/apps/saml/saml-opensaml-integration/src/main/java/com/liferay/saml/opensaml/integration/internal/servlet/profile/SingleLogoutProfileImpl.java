@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.saml.constants.SamlCommandQueryConstants;
+import com.liferay.saml.constants.SamlPortletKeys;
 import com.liferay.saml.constants.SamlWebKeys;
 import com.liferay.saml.opensaml.integration.internal.binding.SamlBinding;
 import com.liferay.saml.opensaml.integration.internal.metadata.MetadataManager;
@@ -253,21 +254,21 @@ public class SingleLogoutProfileImpl
 		SamlBinding samlBinding = null;
 
 		String method = httpServletRequest.getMethod();
-		String requestPath = _samlHttpRequestUtil.getRequestPath(
-			httpServletRequest);
+		String actionName = httpServletRequest.getParameter(
+			"_" + SamlPortletKeys.SAML + "_javax.portlet.action");
 
-		if (requestPath.endsWith("/slo") &&
+		if (actionName.endsWith("/slo") &&
 			StringUtil.equalsIgnoreCase(method, HttpMethods.GET)) {
 
 			samlBinding = getSamlBinding(
 				SAMLConstants.SAML2_REDIRECT_BINDING_URI);
 		}
-		else if (requestPath.endsWith("/slo") &&
+		else if (actionName.endsWith("/slo") &&
 				 StringUtil.equalsIgnoreCase(method, HttpMethods.POST)) {
 
 			samlBinding = getSamlBinding(SAMLConstants.SAML2_POST_BINDING_URI);
 		}
-		else if (requestPath.endsWith("/slo_soap") &&
+		else if (actionName.endsWith("/slo_soap") &&
 				 StringUtil.equalsIgnoreCase(method, HttpMethods.POST)) {
 
 			samlBinding = getSamlBinding(
