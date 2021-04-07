@@ -195,9 +195,7 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _deleteSuppression(String emailAddress) {
-		faroInfoElasticsearchInvoker.delete(
-			"suppressions",
-			QueryBuilders.termsQuery("emailAddress", emailAddress));
+		_suppressionDog.deleteByEmailAddress(emailAddress);
 	}
 
 	private JSONObject _expireDataControlTask(
