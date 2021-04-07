@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.backend.dog.SuppressionDog;
-import com.liferay.osb.asah.backend.model.Suppression;
+import com.liferay.osb.asah.common.dog.SuppressionDog;
+import com.liferay.osb.asah.common.model.Suppression;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;

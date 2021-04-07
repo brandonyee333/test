@@ -12,11 +12,11 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.backend.model.Suppression;
+import com.liferay.osb.asah.common.model.Suppression;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
