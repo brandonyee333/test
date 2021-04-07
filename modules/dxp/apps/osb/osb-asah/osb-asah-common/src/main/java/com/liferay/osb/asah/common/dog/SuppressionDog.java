@@ -18,6 +18,9 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.Suppression;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
 
+import java.util.Date;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,22 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SuppressionDog {
+
+	public Suppression addSuppression(
+		Long dataControlTaskBatchId, Date dataControlTaskCreateDate,
+		String dataControlTaskStatus, String emailAddress) {
+
+		Suppression suppression = new Suppression();
+
+		suppression.setCreateDate(new Date());
+		suppression.setDataControlTaskBatchId(dataControlTaskBatchId);
+		suppression.setDataControlTaskCreateDate(dataControlTaskCreateDate);
+		suppression.setDataControlTaskStatus(dataControlTaskStatus);
+		suppression.setEmailAddress(emailAddress);
+		suppression.setEmailAddressHashed(DigestUtils.sha256Hex(emailAddress));
+
+		return _suppressionRepository.save(suppression);
+	}
 
 	public Page<Suppression> getSuppressionPage(
 		String emailAddress, int page, int size, Sort sort) {
