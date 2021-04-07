@@ -15,10 +15,9 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.SuppressionDog;
-import com.liferay.osb.asah.common.model.Suppression;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.model.Suppression;
+import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -33,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Matthew Kong
@@ -42,34 +42,31 @@ import org.springframework.boot.test.context.SpringBootTest;
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
+@SpringBootTest(classes = OSBAsahSpringBootApplication.class)
 public class SuppressionDogTest {
 
 	@Test
 	public void testGetSuppressionResultBag() {
-		ResultBag<Suppression> suppressionResultBag =
-			_suppressionDog.getSuppressionResultBag(
-				null, 10, Sort.desc("createDate"), 0);
+		Page<Suppression> suppressionPage = _suppressionDog.getSuppressionPage(
+			null, 0, 10, Sort.desc("createDate"));
 
-		Assert.assertEquals(3, suppressionResultBag.getTotal());
+		Assert.assertEquals(3, suppressionPage.getTotalElements());
 
 		Assert.assertEquals(
 			Arrays.asList(
 				"jane.doe@gmail.com", "test@liferay.com", "john.doe@gmail.com"),
 			ListUtil.map(
-				suppressionResultBag.getResults(),
-				Suppression::getEmailAddress));
+				suppressionPage.getContent(), Suppression::getEmailAddress));
 	}
 
 	@Test
 	public void testGetSuppressionResultBagSearch() {
-		ResultBag<Suppression> suppressionResultBag =
-			_suppressionDog.getSuppressionResultBag(
-				"liferay", 10, Sort.desc("createDate"), 0);
+		Page<Suppression> suppressionPage = _suppressionDog.getSuppressionPage(
+			"liferay", 0, 10, Sort.desc("createDate"));
 
-		Assert.assertEquals(1, suppressionResultBag.getTotal());
+		Assert.assertEquals(1, suppressionPage.getTotalElements());
 
-		List<Suppression> suppressions = suppressionResultBag.getResults();
+		List<Suppression> suppressions = suppressionPage.getContent();
 
 		Suppression suppression = suppressions.get(0);
 
