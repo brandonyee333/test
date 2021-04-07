@@ -150,16 +150,16 @@ type BaseDXPEntity implements DXPEntity {
 	name: String
 }
 
-type BlockedCustomEventDefinitionBag {
-	blockedCustomEventDefinitions: [BlockedCustomEventDefinition]
-	total: Int
-}
-
 type BlockedCustomEventDefinition {
 	id: String
 	lastSeenDate: String
 	lastSeenURL: String
 	name: String
+}
+
+type BlockedCustomEventDefinitionBag {
+	blockedCustomEventDefinitions: [BlockedCustomEventDefinition]
+	total: Int
 }
 
 type BlogMetric implements AssetMetric {
