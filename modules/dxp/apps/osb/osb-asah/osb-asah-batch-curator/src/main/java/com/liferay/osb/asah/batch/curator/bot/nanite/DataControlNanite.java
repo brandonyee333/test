@@ -20,11 +20,11 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.RawDataExporter;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.EmailHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -38,7 +38,6 @@ import java.nio.file.Paths;
 
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -100,7 +99,8 @@ public class DataControlNanite extends BaseNanite {
 	}
 
 	private void _addSuppression(
-		JSONObject dataControlTaskJSONObject, String emailAddress) {
+			JSONObject dataControlTaskJSONObject, String emailAddress)
+		throws Exception {
 
 		emailAddress = StringUtils.lowerCase(emailAddress);
 
@@ -111,24 +111,11 @@ public class DataControlNanite extends BaseNanite {
 			return;
 		}
 
-		faroInfoElasticsearchInvoker.add(
-			"suppressions",
-			JSONUtil.put(
-				"createDate", DateUtil.newDateString()
-			).put(
-				"dataControlTaskBatchId",
-				dataControlTaskJSONObject.getString("batchId")
-			).put(
-				"dataControlTaskCreateDate",
-				dataControlTaskJSONObject.getString("createDate")
-			).put(
-				"dataControlTaskStatus",
-				DataControlTaskStatus.COMPLETED.toString()
-			).put(
-				"emailAddress", emailAddress
-			).put(
-				"emailAddressHashed", DigestUtils.sha256Hex(emailAddress)
-			));
+		_suppressionDog.addSuppression(
+			Long.valueOf(dataControlTaskJSONObject.getString("batchId")),
+			DateUtil.toUTCDate(
+				dataControlTaskJSONObject.getString("createDate")),
+			DataControlTaskStatus.COMPLETED.toString(), emailAddress);
 	}
 
 	private QueryBuilder _buildIndividualQueryBuilder(
@@ -473,5 +460,8 @@ public class DataControlNanite extends BaseNanite {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
+
+	@Autowired
+	private SuppressionDog _suppressionDog;
 
 }
