@@ -243,6 +243,15 @@ CREATE TABLE IF NOT EXISTS Preference (
 	value TEXT
 );
 
+CREATE TABLE IF NOT EXISTS Suppression (
+	id BIGSERIAL PRIMARY KEY,
+	createDate TIMESTAMPTZ,
+	dataControlTaskBatchId BIGINT,
+	dataControlTaskCreateDate TIMESTAMPTZ,
+	dataControlTaskStatus TEXT,
+	emailAddress TEXT,
+	emailAddressHashed TEXT
+);
 CREATE TABLE IF NOT EXISTS Segment (
 	id BIGSERIAL PRIMARY KEY,
 	activeIndividualCount BIGINT,
