@@ -75,12 +75,12 @@ public class EventAttributeDefinitionDogTest {
 
 		List<EventDefinitionEventAttributeDefinition>
 			eventDefinitionEventAttributeDefinitions = new ArrayList<>(
-			eventAttributeDefinition.
-				getEventDefinitionEventAttributeDefinitions());
+				eventAttributeDefinition.
+					getEventDefinitionEventAttributeDefinitions());
 
 		EventDefinitionEventAttributeDefinition
 			eventDefinitionEventAttributeDefinition =
-			eventDefinitionEventAttributeDefinitions.get(0);
+				eventDefinitionEventAttributeDefinitions.get(0);
 
 		Assert.assertEquals(
 			eventDefinition.getId(),
