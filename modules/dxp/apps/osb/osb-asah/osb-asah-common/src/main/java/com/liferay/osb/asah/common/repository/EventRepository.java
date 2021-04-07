@@ -39,4 +39,6 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 		@Param("eventAttributeDefinitionId") Long eventAttributeDefinitionId,
 		@Param("size") int size);
 
+	public Event findLastSeenEvent(Long eventDefinitionId);
+
 }

@@ -92,6 +92,11 @@ public class ElasticsearchEventRepositoryImpl implements EventRepository {
 	}
 
 	@Override
+	public Event findLastSeenEvent(Long eventDefinitionId) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public <S extends Event> S save(S event) {
 		throw new UnsupportedOperationException();
 	}
