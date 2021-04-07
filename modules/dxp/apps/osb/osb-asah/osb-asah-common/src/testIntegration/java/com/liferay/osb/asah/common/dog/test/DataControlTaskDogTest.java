@@ -15,13 +15,12 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.DataControlTaskDog;
-import com.liferay.osb.asah.common.model.DataControlTask;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.model.DataControlTask;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -54,6 +53,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Matthew Kong
@@ -63,7 +63,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 	weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 )
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
+@SpringBootTest(classes = OSBAsahSpringBootApplication.class)
 public class DataControlTaskDogTest {
 
 	@Before
@@ -149,99 +149,105 @@ public class DataControlTaskDogTest {
 
 	@Test
 	public void testGetDataControlTaskResultBagBatch() {
-		ResultBag<DataControlTask> resultBag =
-			_dataControlTaskDog.getDataControlTaskResultBag(
-				"102", null, null, 10, Sort.desc("createDate"), 0, null, null);
+		Page<DataControlTask> dataControlTaskPage =
+			_dataControlTaskDog.getDataControlTaskPage(
+				102L, null, null, 0, 10, Sort.desc("createDate"), null, null);
 
 		_checkResults(
 			2, Arrays.asList("jane.doe@liferay.com", "test@liferay.com"),
-			resultBag);
+			dataControlTaskPage);
 	}
 
 	@Test
 	public void testGetDataControlTaskResultBagCombination() {
-		ResultBag<DataControlTask> resultBag =
-			_dataControlTaskDog.getDataControlTaskResultBag(
-				"101", "liferay", 30, 10, Sort.desc("createDate"), 0,
+		Page<DataControlTask> dataControlTaskPage =
+			_dataControlTaskDog.getDataControlTaskPage(
+				101L, "liferay", 30, 0, 10, Sort.desc("createDate"),
 				Collections.singletonList(
 					DataControlTaskStatus.COMPLETED.toString()),
 				Collections.singletonList(
 					DataControlTaskType.SUPPRESS.toString()));
 
 		_checkResults(
-			1, Collections.singletonList("john.doe@liferay.com"), resultBag);
+			1, Collections.singletonList("john.doe@liferay.com"),
+			dataControlTaskPage);
 	}
 
 	@Test
 	public void testGetDataControlTaskResultBagPagination() {
-		ResultBag<DataControlTask> resultBag =
-			_dataControlTaskDog.getDataControlTaskResultBag(
-				null, null, null, 1, Sort.desc("createDate"), 1, null, null);
+		Page<DataControlTask> dataControlTaskPage =
+			_dataControlTaskDog.getDataControlTaskPage(
+				null, null, null, 1, 1, Sort.desc("createDate"), null, null);
 
 		_checkResults(
-			4, Collections.singletonList("test@liferay.com"), resultBag);
+			4, Collections.singletonList("test@liferay.com"),
+			dataControlTaskPage);
 	}
 
 	@Test
 	public void testGetDataControlTaskResultBagRange() {
-		ResultBag<DataControlTask> resultBag =
-			_dataControlTaskDog.getDataControlTaskResultBag(
-				null, null, 30, 10, Sort.desc("createDate"), 0, null, null);
+		Page<DataControlTask> dataControlTaskPage =
+			_dataControlTaskDog.getDataControlTaskPage(
+				null, null, 30, 0, 10, Sort.desc("createDate"), null, null);
 
 		_checkResults(
 			3,
 			Arrays.asList(
 				"jane.doe@liferay.com", "test@liferay.com",
 				"john.doe@liferay.com"),
-			resultBag);
+			dataControlTaskPage);
 	}
 
 	@Test
 	public void testGetDataControlTaskResultBagSearch() {
-		ResultBag<DataControlTask> resultBag =
-			_dataControlTaskDog.getDataControlTaskResultBag(
-				null, "doe", null, 10, Sort.desc("createDate"), 0, null, null);
+		Page<DataControlTask> dataControlTaskPage =
+			_dataControlTaskDog.getDataControlTaskPage(
+				null, "doe", null, 0, 10, Sort.desc("createDate"), null, null);
 
 		_checkResults(
 			2, Arrays.asList("jane.doe@liferay.com", "john.doe@liferay.com"),
-			resultBag);
+			dataControlTaskPage);
 	}
 
 	@Test
 	public void testGetDataControlTaskResultBagStatus() {
-		ResultBag<DataControlTask> resultBag =
-			_dataControlTaskDog.getDataControlTaskResultBag(
-				null, null, null, 10, Sort.desc("createDate"), 0,
+		Page<DataControlTask> dataControlTaskPage =
+			_dataControlTaskDog.getDataControlTaskPage(
+				null, null, null, 0, 10, Sort.desc("createDate"),
 				Collections.singletonList(
 					DataControlTaskStatus.PENDING.toString()),
 				null);
 
 		_checkResults(
-			1, Collections.singletonList("jane.doe@liferay.com"), resultBag);
+			1, Collections.singletonList("jane.doe@liferay.com"),
+			dataControlTaskPage);
 	}
 
 	@Test
 	public void testGetDataControlTaskResultBagTypes() {
-		ResultBag<DataControlTask> resultBag =
-			_dataControlTaskDog.getDataControlTaskResultBag(
-				null, null, null, 10, Sort.desc("createDate"), 0, null,
+		Page<DataControlTask> dataControlTaskPage =
+			_dataControlTaskDog.getDataControlTaskPage(
+				null, null, null, 0, 10, Sort.desc("createDate"), null,
 				Collections.singletonList(
 					DataControlTaskType.UNSUPPRESS.toString()));
 
 		_checkResults(
-			1, Collections.singletonList("test@liferay.com"), resultBag);
+			1, Collections.singletonList("test@liferay.com"),
+			dataControlTaskPage);
 	}
 
 	private void _checkResults(
 		long expectedTotal, List<String> expectedResults,
-		ResultBag<DataControlTask> resultBag) {
+		Page<DataControlTask> dataControlTaskPage) {
 
-		Assert.assertEquals(expectedTotal, resultBag.getTotal());
+		Assert.assertEquals(
+			expectedTotal, dataControlTaskPage.getTotalElements());
 
 		Assert.assertEquals(
 			expectedResults,
 			ListUtil.map(
-				resultBag.getResults(), DataControlTask::getEmailAddress));
+				dataControlTaskPage.getContent(),
+				DataControlTask::getEmailAddress));
 	}
 
 	private static final Log _log = LogFactory.getLog(
