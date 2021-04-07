@@ -14,16 +14,17 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.SuppressionDog;
-import com.liferay.osb.asah.backend.model.Suppression;
+import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.model.Suppression;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 /**
@@ -38,11 +39,15 @@ public class SuppressionBagDataFetcher
 	public ResultBag<Suppression> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
-		return _suppressionDog.getSuppressionResultBag(
-			dataFetchingEnvironment.getArgument("keywords"),
-			dataFetchingEnvironment.getArgument("size"),
-			Sort.of(dataFetchingEnvironment.getArgument("sort")),
-			dataFetchingEnvironment.getArgument("start"));
+		int size = dataFetchingEnvironment.getArgument("size");
+		int start = dataFetchingEnvironment.getArgument("start");
+
+		Page<Suppression> suppressionPage = _suppressionDog.getSuppressionPage(
+			dataFetchingEnvironment.getArgument("keywords"), start / size, size,
+			Sort.of(dataFetchingEnvironment.getArgument("sort")));
+
+		return new ResultBag<>(
+			suppressionPage.getContent(), suppressionPage.getTotalElements());
 	}
 
 	@Autowired
