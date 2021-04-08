@@ -16,7 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.prometheus.PrometheusUtil;
-import com.liferay.osb.asah.common.dog.RunLogger;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -46,12 +46,12 @@ public abstract class BaseNanite implements Nanite {
 
 		if (isLogRunEnabled()) {
 			if (!StringUtil.isNull(asahTaskId)) {
-				_runLogger.log(
+				_runLogDog.log(
 					null, this, false, "COMPLETED",
 					faroInfoElasticsearchInvoker, "OSBAsahTaskId", asahTaskId);
 			}
 			else {
-				_runLogger.log(
+				_runLogDog.log(
 					null, this, true, "COMPLETED",
 					faroInfoElasticsearchInvoker);
 			}
@@ -85,13 +85,13 @@ public abstract class BaseNanite implements Nanite {
 
 		if (isLogRunEnabled()) {
 			if (!StringUtil.isNull(asahTaskId)) {
-				_runLogger.log(
+				_runLogDog.log(
 					null, this, false, "FAILED", faroInfoElasticsearchInvoker,
 					"OSBAsahTaskId", asahTaskId, "failureReason",
 					ExceptionUtils.getStackTrace(throwable));
 			}
 			else {
-				_runLogger.log(
+				_runLogDog.log(
 					null, this, true, "FAILED", faroInfoElasticsearchInvoker,
 					"failureReason", ExceptionUtils.getStackTrace(throwable));
 			}
@@ -101,7 +101,7 @@ public abstract class BaseNanite implements Nanite {
 	@Override
 	public void logStart(JSONObject contextJSONObject) {
 		if (isLogRunEnabled()) {
-			_runLogger.log(null, this, "STARTED", faroInfoElasticsearchInvoker);
+			_runLogDog.log(null, this, "STARTED", faroInfoElasticsearchInvoker);
 		}
 		else {
 			StringBuilder sb = new StringBuilder();
@@ -177,6 +177,6 @@ public abstract class BaseNanite implements Nanite {
 		"nanite");
 
 	@Autowired
-	private RunLogger _runLogger;
+	private RunLogDog _runLogDog;
 
 }

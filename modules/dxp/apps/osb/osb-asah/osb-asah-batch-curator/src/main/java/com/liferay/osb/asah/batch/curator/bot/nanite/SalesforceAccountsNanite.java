@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.dog.RunLogger;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.apache.commons.logging.Log;
@@ -103,7 +103,7 @@ public class SalesforceAccountsNanite extends BaseNanite {
 	protected void processDataSourceAuditEvents(String dataSourceId)
 		throws Exception {
 
-		_runLogger.log(
+		_runLogDog.log(
 			dataSourceId, this, "STARTED", faroInfoElasticsearchInvoker,
 			"totalOperations",
 			_salesforceRawElasticsearchInvoker.count(
@@ -137,11 +137,11 @@ public class SalesforceAccountsNanite extends BaseNanite {
 				)
 			).iterate();
 
-			_runLogger.log(
+			_runLogDog.log(
 				dataSourceId, this, "COMPLETED", faroInfoElasticsearchInvoker);
 		}
 		catch (Exception e) {
-			_runLogger.log(
+			_runLogDog.log(
 				dataSourceId, this, "FAILED", faroInfoElasticsearchInvoker);
 
 			throw e;
@@ -196,7 +196,7 @@ public class SalesforceAccountsNanite extends BaseNanite {
 	private FaroInfoAccountDog _faroInfoAccountDog;
 
 	@Autowired
-	private RunLogger _runLogger;
+	private RunLogDog _runLogDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
 	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;

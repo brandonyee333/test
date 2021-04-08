@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.dog.RunLogger;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 
 import java.text.ParseException;
 
@@ -279,7 +279,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		ElasticsearchInvoker dataSourceElasticsearchInvoker =
 			getDataSourceElasticsearchInvoker();
 
-		_runLogger.log(
+		_runLogDog.log(
 			dataSourceId, this, "STARTED", faroInfoElasticsearchInvoker,
 			"totalOperations",
 			dataSourceElasticsearchInvoker.count(
@@ -312,11 +312,11 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 				getAuditEventsDataSourceIdQueryBuilder(dataSourceId)
 			).iterate();
 
-			_runLogger.log(
+			_runLogDog.log(
 				dataSourceId, this, "COMPLETED", faroInfoElasticsearchInvoker);
 		}
 		catch (Exception e) {
-			_runLogger.log(
+			_runLogDog.log(
 				dataSourceId, this, "FAILED", faroInfoElasticsearchInvoker);
 
 			throw e;
@@ -326,7 +326,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	protected void reprocessUpdateDataSource(String dataSourceId)
 		throws Exception {
 
-		JSONObject runLogJSONObject = _runLogger.log(
+		JSONObject runLogJSONObject = _runLogDog.log(
 			dataSourceId, this, "STARTED", faroInfoElasticsearchInvoker,
 			"processedOperations", 0, "reprocess", true);
 
@@ -369,12 +369,12 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 					getDataSourceIdFieldName(), dataSourceId)
 			).iterate();
 
-			_runLogger.log(
+			_runLogDog.log(
 				dataSourceId, this, "COMPLETED", faroInfoElasticsearchInvoker,
 				"reprocess", true);
 		}
 		catch (Exception e) {
-			_runLogger.log(
+			_runLogDog.log(
 				dataSourceId, this, "STARTED", faroInfoElasticsearchInvoker,
 				"reprocess", true);
 
@@ -394,7 +394,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private RunLogger _runLogger;
+	private RunLogDog _runLogDog;
 
 	@Autowired
 	private SuppressionDog _suppressionDog;

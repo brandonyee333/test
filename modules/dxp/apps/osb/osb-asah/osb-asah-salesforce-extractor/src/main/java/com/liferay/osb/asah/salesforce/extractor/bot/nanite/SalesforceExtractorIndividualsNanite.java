@@ -19,7 +19,7 @@ import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.dog.RunLogger;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
@@ -67,7 +67,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 
 	@Override
 	public void run() throws Exception {
-		_runLogger.log(
+		_runLogDog.log(
 			_salesforceExtractorConfiguration.getDataSourceId(), this,
 			"STARTED", _elasticsearchInvoker, "totalOperations",
 			_elasticsearchInvoker.count(
@@ -77,7 +77,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		try {
 			_run();
 
-			_runLogger.log(
+			_runLogDog.log(
 				_salesforceExtractorConfiguration.getDataSourceId(), this,
 				"COMPLETED", _elasticsearchInvoker);
 
@@ -91,7 +91,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 				));
 		}
 		catch (Exception e) {
-			_runLogger.log(
+			_runLogDog.log(
 				_salesforceExtractorConfiguration.getDataSourceId(), this,
 				"FAILED", _elasticsearchInvoker);
 
@@ -526,7 +526,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	private final TermQueryBuilder _osbAsahDataSourceIdTermQueryBuilder;
 
 	@Autowired
-	private RunLogger _runLogger;
+	private RunLogDog _runLogDog;
 
 	private final SalesforceExtractorConfiguration
 		_salesforceExtractorConfiguration;

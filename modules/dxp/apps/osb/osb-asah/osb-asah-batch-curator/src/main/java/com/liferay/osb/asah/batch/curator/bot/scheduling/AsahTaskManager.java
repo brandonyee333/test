@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
-import com.liferay.osb.asah.common.dog.RunLogger;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -48,7 +48,7 @@ public class AsahTaskManager {
 
 	public boolean checkNanite(String naniteClassName) {
 		JSONObject latestRunLogJSONObject =
-			_runLogger.fetchLatestRunLogJSONObject(
+			_runLogDog.fetchLatestRunLogJSONObject(
 				null, _elasticsearchInvoker, naniteClassName);
 
 		if ((latestRunLogJSONObject != null) &&
@@ -208,6 +208,6 @@ public class AsahTaskManager {
 	private ProjectDog _projectDog;
 
 	@Autowired
-	private RunLogger _runLogger;
+	private RunLogDog _runLogDog;
 
 }

@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
  * @author Michael Bowerman
  */
 @Component
-public class RunLogger {
+public class RunLogDog {
 
 	public JSONObject fetchLatestRunLogJSONObject(
 		Long dataSourceId, ElasticsearchInvoker elasticsearchInvoker,
@@ -170,6 +170,6 @@ public class RunLogger {
 		return elasticsearchInvoker.fetch("run-logs", boolQueryBuilder);
 	}
 
-	private static final Log _log = LogFactory.getLog(RunLogger.class);
+	private static final Log _log = LogFactory.getLog(RunLogDog.class);
 
 }
