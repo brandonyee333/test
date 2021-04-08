@@ -292,6 +292,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 					"static individual segment");
 		}
 
+		Date date = new Date();
+
 		if (json.startsWith("{")) {
 			Membership membership = objectMapper.convertValue(
 				new JSONObject(json), Membership.class);
@@ -304,6 +306,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 				return null;
 			}
+
+			membership.setCreateDate(date);
+			membership.setModifiedDate(date);
 
 			membership = membershipDog.addMembership(membership);
 
@@ -322,7 +327,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 				jsonObject, Membership.class)
 		).map(
 			membership -> {
+				membership.setCreateDate(date);
 				membership.setIndividualSegmentId(id);
+				membership.setModifiedDate(date);
 
 				return membership;
 			}
