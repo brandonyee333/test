@@ -530,6 +530,10 @@ type MetricBag {
 }
 
 type MutationType {
+	blockCustomEventDefinitions(
+		eventDefinitionIds: [String]!
+	): [Boolean]
+
 	createJob(
 		name: String!
 		parameters: [JobParameterInput]

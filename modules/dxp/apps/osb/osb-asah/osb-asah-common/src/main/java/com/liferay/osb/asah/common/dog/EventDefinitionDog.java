@@ -15,12 +15,15 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
+import com.liferay.osb.asah.common.entity.Event;
 import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
+import com.liferay.osb.asah.common.repository.EventRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -73,6 +76,10 @@ public class EventDefinitionDog {
 		eventDefinition.setType(type);
 
 		return _eventDefinitionRepository.save(eventDefinition);
+	}
+
+	public void blockEventDefinitions(List<Long> eventDefinitionIds) {
+		eventDefinitionIds.forEach(this::_blockEventDefinition);
 	}
 
 	public Long countEventDefinitions(
@@ -162,6 +169,29 @@ public class EventDefinitionDog {
 		return _eventDefinitionRepository.save(eventDefinition);
 	}
 
+	private void _blockEventDefinition(Long eventDefinitionId) {
+		EventDefinition eventDefinition = getEventDefinition(eventDefinitionId);
+
+		eventDefinition.setBlocked(true);
+
+		Event lastSeenEvent = _eventRepository.findLastSeenEvent(
+			eventDefinitionId);
+
+		if (lastSeenEvent != null) {
+			eventDefinition.setBlockedEventDefinition(
+				new BlockedEventDefinition(
+					lastSeenEvent.getEventDate(),
+					lastSeenEvent.getCanonicalURL()));
+		}
+		else if (_log.isWarnEnabled()) {
+			_log.warn(
+				"Unable to find event for event definition ID " +
+					eventDefinitionId);
+		}
+
+		_eventDefinitionRepository.save(eventDefinition);
+	}
+
 	private String _getDisplayName(String displayName, String name) {
 		if (StringUtils.isBlank(displayName)) {
 			displayName = name;
@@ -195,5 +225,8 @@ public class EventDefinitionDog {
 
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
+
+	@Autowired
+	private EventRepository _eventRepository;
 
 }
