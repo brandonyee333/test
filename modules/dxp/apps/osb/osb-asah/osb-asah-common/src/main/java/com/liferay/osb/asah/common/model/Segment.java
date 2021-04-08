@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.model;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -65,8 +66,7 @@ public class Segment implements Persistable<Long> {
 			Objects.equals(_activitiesCount, segment._activitiesCount) &&
 			Objects.equals(
 				_anonymousIndividualCount, segment._anonymousIndividualCount) &&
-			Objects.equals(_authorId, segment._authorId) &&
-			Objects.equals(_authorName, segment._authorName) &&
+			Objects.equals(_author, segment._author) &&
 			Objects.equals(_channelId, segment._channelId) &&
 			Objects.equals(_createDate, segment._createDate) &&
 			Objects.equals(_filter, segment._filter) &&
@@ -123,14 +123,23 @@ public class Segment implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonIgnore
 	public Long getAuthorId() {
-		return _authorId;
+		if (_author == null) {
+			return null;
+		}
+
+		return _author.getId();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonIgnore
 	public String getAuthorName() {
-		return _authorName;
+		if (_author == null) {
+			return null;
+		}
+
+		return _author.getName();
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -291,9 +300,9 @@ public class Segment implements Persistable<Long> {
 	public int hashCode() {
 		return Objects.hash(
 			_activeIndividualCount, _activitiesCount, _anonymousIndividualCount,
-			_authorId, _authorName, _channelId, _createDate, _filter,
-			_filterMetadata, _id, _includeAnonymousUsers, _individualCount,
-			_knownIndividualCount, _lastActivityDate, _modifiedDate, _name,
+			_author, _channelId, _createDate, _filter, _filterMetadata, _id,
+			_includeAnonymousUsers, _individualCount, _knownIndividualCount,
+			_lastActivityDate, _modifiedDate, _name,
 			_referencedAssetDataSourceIds, _referencedAssetIds,
 			_referencedFieldMappingIds, _referencedGroupIds,
 			_referencedOrganizationIds, _referencedRoleIds, _referencedTeamIds,
@@ -324,11 +333,27 @@ public class Segment implements Persistable<Long> {
 	}
 
 	public void setAuthorId(Long authorId) {
-		_authorId = authorId;
+		if (authorId == null) {
+			return;
+		}
+
+		if (_author == null) {
+			_author = new Author();
+		}
+
+		_author.setId(authorId);
 	}
 
 	public void setAuthorName(String authorName) {
-		_authorName = authorName;
+		if (authorName == null) {
+			return;
+		}
+
+		if (_author == null) {
+			_author = new Author();
+		}
+
+		_author.setName(authorName);
 	}
 
 	public void setChannelId(Long channelId) {
@@ -449,6 +474,15 @@ public class Segment implements Persistable<Long> {
 
 	}
 
+	@JsonProperty("author")
+	protected Author getAuthor() {
+		return _author;
+	}
+
+	protected void setAuthor(Author author) {
+		_author = author;
+	}
+
 	@Transient
 	private Long _activeIndividualCount;
 
@@ -459,10 +493,7 @@ public class Segment implements Persistable<Long> {
 	private Long _anonymousIndividualCount;
 
 	@Transient
-	private Long _authorId;
-
-	@Transient
-	private String _authorName;
+	private Author _author;
 
 	@Transient
 	private Long _channelId;
@@ -538,5 +569,56 @@ public class Segment implements Persistable<Long> {
 
 	@Transient
 	private Type _type;
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private static class Author {
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof Author)) {
+				return false;
+			}
+
+			Author author = (Author)obj;
+
+			if (Objects.equals(_id, author._id) &&
+				Objects.equals(_name, author._name)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@JsonSerialize(using = ToStringSerializer.class)
+		public Long getId() {
+			return _id;
+		}
+
+		public String getName() {
+			return _name;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_id, _name);
+		}
+
+		public void setId(Long id) {
+			_id = id;
+		}
+
+		public void setName(String name) {
+			_name = name;
+		}
+
+		private Long _id;
+		private String _name;
+
+	}
 
 }
