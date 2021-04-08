@@ -511,9 +511,6 @@ public class DXPEntitiesMessageProcessor {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private SuppressionDog _suppressionDog;
-
-	@Autowired
 	private FaroInfoOrganizationDog _faroInfoOrganizationDog;
 
 	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_MESSAGE)
@@ -521,5 +518,8 @@ public class DXPEntitiesMessageProcessor {
 
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	@Autowired
+	private SuppressionDog _suppressionDog;
 
 }
