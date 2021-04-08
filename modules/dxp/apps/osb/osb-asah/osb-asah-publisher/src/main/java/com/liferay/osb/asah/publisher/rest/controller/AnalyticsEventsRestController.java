@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -182,6 +183,32 @@ public class AnalyticsEventsRestController {
 			StringUtils.isBlank(event.getEventId())) {
 
 			return false;
+		}
+
+		String eventId = event.getEventId();
+
+		if (StringUtils.isBlank(eventId) || (eventId.length() > 255)) {
+			return false;
+		}
+
+		Map<String, String> eventProperties = event.getProperties();
+
+		for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
+			String eventPropertyName = entry.getKey();
+
+			if (StringUtils.isBlank(eventPropertyName) ||
+				(eventPropertyName.length() > 255)) {
+
+				return false;
+			}
+
+			String eventPropertyValue = entry.getValue();
+
+			if (StringUtils.isBlank(eventPropertyName) ||
+				(eventPropertyValue.length() > 1024)) {
+
+				return false;
+			}
 		}
 
 		return true;
