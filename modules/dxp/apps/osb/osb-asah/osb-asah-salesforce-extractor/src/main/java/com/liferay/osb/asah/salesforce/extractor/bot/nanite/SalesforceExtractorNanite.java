@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.dog.RunLogger;
 import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;

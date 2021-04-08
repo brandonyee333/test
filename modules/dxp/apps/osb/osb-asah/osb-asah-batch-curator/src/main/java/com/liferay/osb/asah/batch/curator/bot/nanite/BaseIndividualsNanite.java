@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.dog.RunLogger;
 
 import java.text.ParseException;
 

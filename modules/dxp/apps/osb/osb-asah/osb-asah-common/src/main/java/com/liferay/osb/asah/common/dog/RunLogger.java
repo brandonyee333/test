@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.run.logger;
+package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;

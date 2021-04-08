@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.dog.RunLogger;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 
 import java.util.Date;

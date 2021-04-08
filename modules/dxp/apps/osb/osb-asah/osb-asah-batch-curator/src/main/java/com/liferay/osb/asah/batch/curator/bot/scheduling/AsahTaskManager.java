@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
-import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.dog.RunLogger;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 

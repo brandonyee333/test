@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.run.logger.RunLogger;
+import com.liferay.osb.asah.common.dog.RunLogger;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.apache.commons.logging.Log;
