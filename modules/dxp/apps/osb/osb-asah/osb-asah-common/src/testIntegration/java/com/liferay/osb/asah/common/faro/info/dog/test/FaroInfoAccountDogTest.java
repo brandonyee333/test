@@ -17,9 +17,9 @@ package com.liferay.osb.asah.common.faro.info.dog.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.model.DataSource;
@@ -276,7 +276,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private FaroInfoAccountDog _faroInfoAccountDog;
+	private AccountDog _faroInfoAccountDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

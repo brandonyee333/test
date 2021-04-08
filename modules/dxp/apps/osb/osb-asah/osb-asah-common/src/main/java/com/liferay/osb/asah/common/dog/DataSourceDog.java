@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoFieldMappingDog;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
@@ -367,7 +366,7 @@ public class DataSourceDog {
 			"accounts", _elasticsearchInvoker,
 			accountJSONObject -> {
 				try {
-					_faroInfoAccountDog.deleteAccount(accountJSONObject);
+					_accountDog.deleteAccount(accountJSONObject);
 				}
 				catch (Exception e) {
 					return e;
@@ -759,6 +758,9 @@ public class DataSourceDog {
 	private static final Log _log = LogFactory.getLog(DataSourceDog.class);
 
 	@Autowired
+	private AccountDog _accountDog;
+
+	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
@@ -775,9 +777,6 @@ public class DataSourceDog {
 
 	@Autowired
 	private Encryptor _encryptor;
-
-	@Autowired
-	private FaroInfoAccountDog _faroInfoAccountDog;
 
 	@Autowired
 	private FaroInfoFieldMappingDog _faroInfoFieldMappingDog;

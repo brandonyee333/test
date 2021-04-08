@@ -21,10 +21,12 @@ import com.liferay.osb.asah.backend.rest.controller.DataSourcesRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -88,14 +90,11 @@ public class DataSourcesRestControllerTest {
 					FaroInfoTestUtil.buildLiferayDataSourceJSONObject(),
 					DataSourceDTO.class)));
 
-		JSONObject accountJSONObject = _faroInfoElasticsearchInvoker.add(
-			"accounts",
-			FaroInfoTestUtil.buildAccountJSONObject(dataSourceJSONObject));
-
-		_faroInfoElasticsearchInvoker.add(
-			"individual-segments",
-			FaroInfoTestUtil.buildAccountIndividualSegmentJSONObject(
-				accountJSONObject));
+		JSONObject accountJSONObject = new JSONObject(
+			_accountDog.addAccount(
+				FaroInfoTestUtil.buildAccountJSONObject(dataSourceJSONObject),
+				_objectMapper.convertValue(
+					dataSourceJSONObject, DataSource.class)));
 
 		JSONObject individualJSONObject = _faroInfoElasticsearchInvoker.add(
 			"individuals",
@@ -132,8 +131,7 @@ public class DataSourcesRestControllerTest {
 		_runDeleteDataSourcesNanite(updateDataSourceJSONObject);
 
 		Assert.assertFalse(
-			_faroInfoElasticsearchInvoker.exists(
-				"accounts", accountJSONObject.getString("id")));
+			_accountRepository.existsById(accountJSONObject.getLong("id")));
 		Assert.assertTrue(
 			_faroInfoElasticsearchInvoker.exists(
 				"activities", activityJSONObject.getString("id")));
@@ -150,7 +148,7 @@ public class DataSourcesRestControllerTest {
 			_faroInfoElasticsearchInvoker.exists(
 				"individual-segments",
 				QueryBuilders.termQuery(
-					"name", "Account: " + accountJSONObject.getString("id"))));
+					"name", "Account: " + accountJSONObject.getLong("id"))));
 		Assert.assertFalse(
 			_faroInfoElasticsearchInvoker.exists(
 				"individuals",
@@ -1275,6 +1273,12 @@ public class DataSourcesRestControllerTest {
 
 		deleteDataSourcesNanite.run(dataSourceJSONObject);
 	}
+
+	@Autowired
+	private AccountDog _accountDog;
+
+	@Autowired
+	private AccountRepository _accountRepository;
 
 	@Autowired
 	private AutowireCapableBeanFactory _autowireCapableBeanFactory;

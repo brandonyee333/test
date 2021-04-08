@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -87,7 +87,7 @@ public class SalesforceAccountsNanite extends BaseNanite {
 				));
 
 			if (accountJSONObject != null) {
-				_faroInfoAccountDog.deleteAccount(accountJSONObject);
+				_accountDog.deleteAccount(accountJSONObject);
 			}
 		}
 		else if (_log.isWarnEnabled()) {
@@ -179,11 +179,11 @@ public class SalesforceAccountsNanite extends BaseNanite {
 			));
 
 		if (accountJSONObject == null) {
-			_faroInfoAccountDog.addAccount(
+			_accountDog.addAccount(
 				salesforceAccountJSONObject, dataSource);
 		}
 		else {
-			_faroInfoAccountDog.updateAccount(
+			_accountDog.updateAccount(
 				accountJSONObject, salesforceAccountJSONObject, dataSource);
 		}
 	}
@@ -195,7 +195,7 @@ public class SalesforceAccountsNanite extends BaseNanite {
 	private DataSourceDog _dataSourceDog;
 
 	@Autowired
-	private FaroInfoAccountDog _faroInfoAccountDog;
+	private AccountDog _accountDog;
 
 	@Autowired
 	private RunLogDog _runLogDog;
