@@ -40,7 +40,6 @@ import java.util.stream.Stream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,61 +135,6 @@ public class AccountDog {
 				"There is no account with ID " + accountId));
 
 		return populateAccount(account, channelId);
-	}
-
-	public JSONObject replaceAccount(JSONObject accountJSONObject) {
-		accountJSONObject = _elasticsearchInvoker.replace(
-			"accounts", accountJSONObject);
-
-		_asahTaskDog.scheduleAsahTask(
-			"UpdateDynamicMembershipsNanite",
-			JSONUtil.put(
-				"addFilter",
-				"contains(filter, 'accounts.filter(') or contains(filter, " +
-					"'accounts.filterByCount(')"
-			).put(
-				"dateModified", DateUtil.newDateString()
-			).put(
-				"removeFilter",
-				"contains(filter, 'accounts.filter(') or contains(filter, " +
-					"'accounts.filterByCount(')"
-			));
-
-		return accountJSONObject;
-	}
-
-	public JSONObject updateAccount(
-			JSONObject accountJSONObject, JSONObject dataJSONObject,
-			DataSource dataSource)
-		throws Exception {
-
-		return replaceAccount(
-			_fieldDog.updateContextFields(
-				"organization", dataJSONObject, dataSource, accountJSONObject,
-				"account", null, null));
-	}
-
-	public JSONObject updateAccount(
-		String accountId, JSONObject partialAccountJSONObject) {
-
-		JSONObject accountJSONObject = _elasticsearchInvoker.update(
-			"accounts", accountId, partialAccountJSONObject);
-
-		_asahTaskDog.scheduleAsahTask(
-			"UpdateDynamicMembershipsNanite",
-			JSONUtil.put(
-				"addFilter",
-				"contains(filter, 'accounts.filter(') or contains(filter, " +
-					"'accounts.filterByCount(')"
-			).put(
-				"dateModified", DateUtil.newDateString()
-			).put(
-				"removeFilter",
-				"contains(filter, 'accounts.filter(') or contains(filter, " +
-					"'accounts.filterByCount(')"
-			));
-
-		return accountJSONObject;
 	}
 
 	public Account populateAccount(Account account, Long channelId) {
