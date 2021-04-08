@@ -43,6 +43,45 @@
 			"applicationId": "Page",
 			"eventDate": null,
 			"eventId": "pageViewed"
+		},
+		{
+			"applicationId": "Page",
+			"eventDate": "2017-10-23T12:50:05.489Z",
+			"eventId": "pageViewed",
+			"properties": {
+				"test1": null
+			}
+		},
+		{
+			"applicationId": "Page",
+			"eventDate": "2017-10-23T12:50:05.489Z",
+			"eventId": "pageViewed",
+			"properties": {
+				"test1": ""
+			}
+		},
+		{
+			"applicationId": "Page",
+			"eventDate": "2017-10-23T12:50:05.489Z",
+			"eventId": "pageLoaded",
+			"properties": {
+				"test1": "value1",
+				"test2": "test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2testingtest2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2testingtest2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2testingtest2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test"
+			}
+		},
+		{
+			"applicationId": "Form",
+			"eventDate": "2017-10-02T14:50:05.489Z",
+			"eventId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbb"
+		},
+		{
+			"applicationId": "Page",
+			"eventDate": "2017-10-02T12:50:05.489Z",
+			"eventId": "pageLoaded",
+			"properties": {
+				"test1": "value1",
+				"test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2test2testing": "value2"
+			}
 		}
 	],
 	"protocolVersion": "1.x",
