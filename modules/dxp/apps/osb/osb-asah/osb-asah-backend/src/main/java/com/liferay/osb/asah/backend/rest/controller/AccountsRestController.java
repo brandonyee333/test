@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -454,6 +455,10 @@ public class AccountsRestController extends BaseRestController {
 				QueryBuilders.termQuery(
 					"individualSegmentIds", String.valueOf(segmentId))),
 			"id");
+
+		if (individualIds.isEmpty()) {
+			return Collections.emptyList();
+		}
 
 		return _membershipDog.getActiveIndividualSegmentIds(individualIds);
 	}

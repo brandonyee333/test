@@ -117,11 +117,22 @@ public class ActivitiesFilterStringConverterHelper
 				"individualSegmentIds", String.valueOf(segment.getId()))
 		).iterate();
 
-		Condition condition = DSL.field(
-			"ownerId"
-		).in(
-			individualIds
-		);
+		Condition condition = null;
+
+		if (individualIds.isEmpty()) {
+			condition = DSL.field(
+				"ownerId"
+			).eq(
+				0
+			);
+		}
+		else {
+			condition = DSL.field(
+				"ownerId"
+			).in(
+				individualIds
+			);
+		}
 
 		if (negate) {
 			return DSL.not(condition);

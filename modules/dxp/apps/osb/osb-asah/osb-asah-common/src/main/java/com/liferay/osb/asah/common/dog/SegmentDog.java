@@ -239,7 +239,7 @@ public class SegmentDog extends BaseFaroInfoDog {
 	}
 
 	public List<String> getSegmentNames(Long channelId, Set<Long> segmentIds) {
-		if (segmentIds == null) {
+		if (segmentIds.isEmpty()) {
 			return Collections.emptyList();
 		}
 
