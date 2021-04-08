@@ -116,6 +116,10 @@ public class CommerceProductRecommendationNanite extends BaseNanite {
 		new HashMap<JobType, String>() {
 			{
 				put(
+					JobType.COMMERCE_DEMAND_FORECAST_PRODUCT,
+					"liferay.commerce.forecast." +
+						"ProductDemandForecastApplication");
+				put(
 					JobType.COMMERCE_PRODUCT_RECOMMENDATION_FREQUENT_PATTERN,
 					"liferay.commerce.recommend." +
 						"FrequentPatternRecommendationApplication");
