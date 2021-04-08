@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.Suppression;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +56,13 @@ public class SuppressionDog {
 		_suppressionRepository.deleteByEmailAddress(emailAddress);
 	}
 
+	public Suppression fetchSuppression(String emailAddress) {
+		Optional<Suppression> suppressionOptional =
+			_suppressionRepository.findByEmailAddress(emailAddress);
+
+		return suppressionOptional.orElse(null);
+	}
+
 	public Page<Suppression> getSuppressionPage(
 		String emailAddress, int page, int size, Sort sort) {
 
@@ -88,6 +96,15 @@ public class SuppressionDog {
 		}
 
 		return false;
+	}
+
+	public Suppression updateSuppression(Suppression suppression) {
+		if (suppression.getId() == null) {
+			throw new IllegalArgumentException(
+				"Unable to update suppression with ID null");
+		}
+
+		return _suppressionRepository.save(suppression);
 	}
 
 	@Autowired

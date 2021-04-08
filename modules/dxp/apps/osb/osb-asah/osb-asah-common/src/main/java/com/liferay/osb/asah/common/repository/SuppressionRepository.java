@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.model.Suppression;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +43,8 @@ public interface SuppressionRepository
 	public boolean existsByEmailAddressHashed(String emailAddressHashed);
 
 	public List<Suppression> findAll(Pageable pageable);
+
+	public Optional<Suppression> findByEmailAddress(String emailAddress);
 
 	public List<Suppression> findByEmailAddressContainingIgnoreCase(
 		String emailAddress, Pageable pageable);

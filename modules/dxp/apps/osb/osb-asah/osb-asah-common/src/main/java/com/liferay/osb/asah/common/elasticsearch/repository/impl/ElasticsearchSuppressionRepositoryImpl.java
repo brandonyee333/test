@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.repository.SuppressionRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,6 +31,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
@@ -77,6 +79,19 @@ public class ElasticsearchSuppressionRepositoryImpl
 	@Override
 	public List<Suppression> findAll(Pageable pageable) {
 		return findByEmailAddressContainingIgnoreCase(null, pageable);
+	}
+
+	@Override
+	public Optional<Suppression> findByEmailAddress(String emailAddress) {
+		JSONObject jsonObject = _faroInfoElasticsearchInvoker.fetch(
+			getCollectionName(),
+			QueryBuilders.termsQuery("emailAddress", emailAddress));
+
+		return Optional.ofNullable(
+			jsonObject
+		).map(
+			this::toEntity
+		);
 	}
 
 	@Override
