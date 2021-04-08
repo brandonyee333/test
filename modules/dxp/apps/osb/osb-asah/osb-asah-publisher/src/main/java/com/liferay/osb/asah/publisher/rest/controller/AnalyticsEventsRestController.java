@@ -204,9 +204,7 @@ public class AnalyticsEventsRestController {
 
 			String eventPropertyValue = entry.getValue();
 
-			if (StringUtils.isBlank(eventPropertyName) ||
-				(eventPropertyValue.length() > 1024)) {
-
+			if (StringUtils.length(eventPropertyValue) > 1024) {
 				return false;
 			}
 		}
