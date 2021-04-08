@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.TimeOrderedUuidGenerator;
@@ -22,6 +21,7 @@ import com.liferay.osb.asah.common.model.DataControlTask;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.model.Suppression;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -42,10 +42,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -151,22 +147,19 @@ public class DataControlTaskDog {
 	private void _updateSuppression(
 		Long batchId, String emailAddress, Date date) {
 
-		JSONObject suppressionJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"suppressions",
-			QueryBuilders.termsQuery("emailAddress", emailAddress));
+		Suppression suppression = _suppressionDog.fetchSuppression(
+			emailAddress);
 
-		if (suppressionJSONObject == null) {
+		if (suppression == null) {
 			return;
 		}
 
-		suppressionJSONObject.put("dataControlTaskBatchId", batchId.toString());
-		suppressionJSONObject.put(
-			"dataControlTaskCreateDate", DateUtil.toUTCString(date));
-		suppressionJSONObject.put(
-			"dataControlTaskStatus", DataControlTaskStatus.PENDING.toString());
+		suppression.setDataControlTaskBatchId(batchId);
+		suppression.setDataControlTaskCreateDate(date);
+		suppression.setDataControlTaskStatus(
+			DataControlTaskStatus.PENDING.toString());
 
-		_faroInfoElasticsearchInvoker.update(
-			"suppressions", suppressionJSONObject);
+		_suppressionDog.updateSuppression(suppression);
 	}
 
 	@Autowired
@@ -174,6 +167,9 @@ public class DataControlTaskDog {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private SuppressionDog _suppressionDog;
 
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
