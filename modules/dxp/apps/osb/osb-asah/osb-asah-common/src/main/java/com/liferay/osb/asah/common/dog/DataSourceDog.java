@@ -380,6 +380,8 @@ public class DataSourceDog {
 		).setQueryBuilder(
 			QueryBuilders.termQuery(
 				"dataSourceId", String.valueOf(dataSourceId))
+		).setStopOnExceptions(
+			false
 		).iterate();
 
 		Date deletionDate = dataSource.getDeletionDate();
@@ -420,6 +422,8 @@ public class DataSourceDog {
 					"dataSourceIndividualPKs.dataSourceId",
 					String.valueOf(dataSourceId)),
 				ScoreMode.None)
+		).setStopOnExceptions(
+			false
 		).iterate();
 	}
 
