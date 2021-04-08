@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS Event (
 
 CREATE TABLE IF NOT EXISTS EventAttribute (
 	id BIGSERIAL PRIMARY KEY,
-	attributeValue TEXT,
+	attributeValue VARCHAR(1024),
 	eventAttributeDefinitionId BIGINT,
 	eventId BIGINT REFERENCES Event
 );
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS EventAttributeDefinition (
 	dataType TEXT NOT NULL,
 	description TEXT,
 	displayName TEXT UNIQUE,
-	name TEXT UNIQUE
+	name VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS EventDefinition (
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS EventDefinition (
 	description TEXT,
 	displayName TEXT UNIQUE,
 	name TEXT UNIQUE,
-	type TEXT NOT NULL
+	type VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS EventDefinitionEventAttributeDefinition (
