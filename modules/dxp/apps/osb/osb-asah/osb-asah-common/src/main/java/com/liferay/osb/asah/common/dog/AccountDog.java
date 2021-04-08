@@ -15,22 +15,30 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.dog.FieldDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Account;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
-
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.Optional;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,21 +54,34 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountDog {
 
-	public JSONObject addAccount(JSONObject accountJSONObject)
+	public Account addAccount(JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
 
-		accountJSONObject = _fieldDog.addOwnerJSONObject(
-			"accounts", accountJSONObject, "organization");
+		Date date = new Date();
 
-		String dateCreated = accountJSONObject.getString("dateCreated");
+		Account account = new Account();
+
+		account.setAccountPK(dataJSONObject.getString("id"));
+		account.setCreateDate(date);
+		account.setDataSourceId(dataSource.getId());
+		account.setModifiedDate(date);
+
+		account = _accountRepository.save(account);
+
+		Set<Field> fields = _fieldDog.addFields(
+			"organization", dataJSONObject, dataSource, account.getId(),
+			"account");
+
+		account.setFields(fields);
+
+		_accountRepository.save(account);
 
 		_segmentDog.addSegment(
-			0L, DateUtil.toUTCDate(dateCreated),
-			"((dataSourceAccountPKs/accountPKs eq '" +
-				accountJSONObject.getString("accountPK") + "'))",
-			DateUtil.toUTCDate(dateCreated),
-			"Account: " + accountJSONObject.getString("id"), "PROJECT",
-			"DYNAMIC", "INACTIVE");
+			0L, date,
+			"((dataSourceAccountPKs/accountPKs eq '" + account.getAccountPK() +
+				"'))",
+			date, "Account: " + account.getId(), "PROJECT", "DYNAMIC",
+			"INACTIVE");
 
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
@@ -69,50 +90,17 @@ public class AccountDog {
 				"contains(filter, 'accounts.filter(') or contains(filter, " +
 					"'accounts.filterByCount(')"
 			).put(
-				"dateModified", dateCreated
+				"dateModified", DateUtil.toUTCString(date)
 			).put(
 				"removeFilter", "contains(filter, 'accounts.filterByCount(')"
 			));
 
-		return accountJSONObject;
+		return populateAccount(account, null);
 	}
 
-	public JSONObject addAccount(
-			JSONObject dataJSONObject, DataSource dataSource)
-		throws Exception {
-
-		JSONObject contextJSONObject = _fieldDog.buildContextJSONObject(
-			"organization", dataJSONObject, dataSource, "account");
-
-		String dateString = DateUtil.newDateString();
-
-		return addAccount(
-			JSONUtil.put(
-				"accountPK", dataJSONObject.getString("id")
-			).put(
-				"activitiesCount", 0
-			).put(
-				"activitiesCounts", new JSONArray()
-			).put(
-				"dataSourceId", String.valueOf(dataSource.getId())
-			).put(
-				"dateCreated", dateString
-			).put(
-				"dateModified", dateString
-			).put(
-				"individualCount", 0
-			).put(
-				"individualCounts", new JSONArray()
-			).put(
-				"organization", contextJSONObject
-			));
-	}
-
-	public void deleteAccount(JSONObject accountJSONObject) {
-		String accountId = accountJSONObject.getString("id");
-
+	public void deleteAccount(Account account) {
 		Segment segment = _segmentDog.fetchSegment(
-			"Account: " + accountId, "INACTIVE");
+			"Account: " + account.getId(), "INACTIVE");
 
 		if (segment != null) {
 			_segmentDog.deleteSegment(segment.getId());
@@ -120,10 +108,10 @@ public class AccountDog {
 		else if (_log.isWarnEnabled()) {
 			_log.warn(
 				"Unable to get individual segment associated with account " +
-					accountId);
+					account.getId());
 		}
 
-		_elasticsearchInvoker.delete("accounts", accountId);
+		_accountRepository.delete(account);
 
 		_asahTaskDog.scheduleAsahTask(
 			"UpdateDynamicMembershipsNanite",
@@ -142,10 +130,12 @@ public class AccountDog {
 		Optional<Account> accountOptional = _accountRepository.findById(
 			accountId);
 
-		return accountOptional.orElseThrow(
+		Account account = accountOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no account with ID " + accountId));
+
+		return populateAccount(account, channelId);
 	}
 
 	public JSONObject replaceAccount(JSONObject accountJSONObject) {
@@ -201,6 +191,146 @@ public class AccountDog {
 			));
 
 		return accountJSONObject;
+	}
+
+	public Account populateAccount(Account account, Long channelId) {
+		if (account == null) {
+			return null;
+		}
+
+		List<Field> fields = _fieldDog.getOwnerIdFields(account.getId());
+
+		Stream<Field> stream = fields.stream();
+
+		account.setFields(stream.collect(Collectors.toSet()));
+
+		Segment segment = _segmentDog.fetchSegment(
+			"Account: " + account.getId(), "INACTIVE");
+
+		if (segment != null) {
+			account.setActiveIndividualsCount(
+				segment.getActiveIndividualCount());
+			account.setActivitiesCount(segment.getActivitiesCount());
+			account.setIndividualCount(segment.getIndividualCount());
+
+			if ((channelId == null) && (segment.getChannelId() != null)) {
+				Account.AccountActivityCount accountActivityCount =
+					new Account.AccountActivityCount();
+
+				accountActivityCount.setActivitiesCount(
+					segment.getActivitiesCount());
+				accountActivityCount.setChannelId(segment.getChannelId());
+
+				account.setActivitiesCounts(
+					Collections.singleton(accountActivityCount));
+
+				Account.AccountIndividualCount accountIndividualCount =
+					new Account.AccountIndividualCount();
+
+				accountIndividualCount.setChannelId(segment.getChannelId());
+				accountIndividualCount.setIndividualCount(
+					segment.getIndividualCount());
+
+				account.setIndividualCounts(
+					Collections.singleton(accountIndividualCount));
+			}
+			else if ((channelId != null) &&
+					 (channelId != segment.getChannelId())) {
+
+				account.setActiveIndividualsCount(0L);
+				account.setActivitiesCount(0L);
+				account.setIndividualCount(0L);
+			}
+		}
+		else if (channelId != null) {
+			Set<Account.AccountActivityCount> activitiesCounts =
+				account.getActivitiesCounts();
+
+			for (Account.AccountActivityCount activitiesCount :
+					activitiesCounts) {
+
+				if (Objects.equals(channelId, activitiesCount.getChannelId())) {
+					account.setActivitiesCount(
+						activitiesCount.getActivitiesCount());
+
+					break;
+				}
+			}
+
+			Set<Account.AccountIndividualCount> individualCounts =
+				account.getIndividualCounts();
+
+			for (Account.AccountIndividualCount individualCount :
+					individualCounts) {
+
+				if (Objects.equals(channelId, individualCount.getChannelId())) {
+					account.setIndividualCount(
+						individualCount.getIndividualCount());
+
+					break;
+				}
+			}
+
+			account.setActivitiesCounts(null);
+			account.setIndividualCounts(null);
+		}
+
+		return account;
+	}
+
+	public Account updateAccount(
+			Account account, JSONObject dataJSONObject, DataSource dataSource)
+		throws Exception {
+
+		_fieldDog.updateFields(
+			"organization", dataJSONObject, dataSource, account, "account",
+			null, null);
+
+		List<Field> fields =
+			_fieldRepository.findByContextAndOwnerIdAndOwnerType(
+				"organization", account.getId(), "account");
+
+		Stream<Field> stream = fields.stream();
+
+		account.setFields(stream.collect(Collectors.toSet()));
+
+		account.setModifiedDate(new Date());
+
+		account = _accountRepository.save(account);
+
+		_asahTaskDog.scheduleAsahTask(
+			"UpdateDynamicMembershipsNanite",
+			JSONUtil.put(
+				"addFilter",
+				"contains(filter, 'accounts.filter(') or contains(filter, " +
+					"'accounts.filterByCount(')"
+			).put(
+				"dateModified", DateUtil.toUTCString(account.getModifiedDate())
+			).put(
+				"removeFilter",
+				"contains(filter, 'accounts.filter(') or contains(filter, " +
+					"'accounts.filterByCount(')"
+			));
+
+		return populateAccount(account, null);
+	}
+
+	private List<Account> _populateAccounts(
+		List<Account> accounts, Long channelId) {
+
+		if (accounts.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		Stream<Account> stream = accounts.stream();
+
+		Map<Long, Account> accountsById = stream.collect(
+			Collectors.toMap(Account::getId, Function.identity()));
+
+		accountsById.forEach(
+			(accountId, account) -> populateAccount(account, channelId));
+
+		return new ArrayList<>(accountsById.values());
 	}
 
 	private static final Log _log = LogFactory.getLog(AccountDog.class);
