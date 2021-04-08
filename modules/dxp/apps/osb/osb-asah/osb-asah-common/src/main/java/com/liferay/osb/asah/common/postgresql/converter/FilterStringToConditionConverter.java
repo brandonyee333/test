@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -74,6 +75,63 @@ public class FilterStringToConditionConverter {
 				conditions, filterStringConverterHelper, functionData));
 	}
 
+	private static Condition _buildCondition(
+		String fieldName, Condition inferredCondition, String operator,
+		Object value) {
+
+		Field field = null;
+
+		if (inferredCondition != null) {
+			fieldName = "value";
+		}
+
+		if (value instanceof Long) {
+			field = DSL.field(fieldName, Long.class);
+		}
+		else {
+			field = DSL.field(fieldName);
+		}
+
+		Condition condition = null;
+
+		if (operator.equalsIgnoreCase("eq")) {
+			if (value == null) {
+				condition = field.isNull();
+			}
+			else if (value instanceof JSONArray) {
+				condition = field.in(JSONUtil.toObjectList((JSONArray)value));
+			}
+			else {
+				condition = field.eq(value);
+			}
+		}
+		else if (operator.equalsIgnoreCase("gt")) {
+			condition = field.gt(value);
+		}
+		else if (operator.equalsIgnoreCase("ge")) {
+			condition = field.ge(value);
+		}
+		else if (operator.equalsIgnoreCase("lt")) {
+			condition = field.lt(value);
+		}
+		else if (operator.equalsIgnoreCase("le")) {
+			condition = field.le(value);
+		}
+		else if (operator.equalsIgnoreCase("ne")) {
+			if (value != null) {
+				condition = field.ne(value);
+			}
+			else {
+				condition = field.isNotNull();
+			}
+		}
+		else {
+			throw new IllegalArgumentException("Invalid operator: " + operator);
+		}
+
+		return condition;
+	}
+
 	private static Condition _getParseCondition(
 		LinkedList<Boolean> andOperators, LinkedList<Condition> conditions) {
 
@@ -83,18 +141,10 @@ public class FilterStringToConditionConverter {
 			Boolean andOperator = andOperators.poll();
 
 			if ((andOperator == null) || andOperator) {
-				condition = DSL.and(
-					condition
-				).and(
-					conditions.poll()
-				);
+				condition = DSL.and(condition, conditions.poll());
 			}
 			else {
-				condition = DSL.or(
-					condition
-				).or(
-					conditions.poll()
-				);
+				condition = DSL.or(condition, conditions.poll());
 			}
 		}
 
@@ -153,51 +203,20 @@ public class FilterStringToConditionConverter {
 		Condition inferredCondition =
 			filterStringConverterHelper.getInferredCondition(fieldName);
 
-		Field<Object> field = DSL.field(fieldName);
-
-		if (inferredCondition != null) {
-			field = DSL.field("value");
-		}
-
-		Condition condition = null;
-
 		Object value = StringUtil.toObject(valueString);
 
-		if (operator.equalsIgnoreCase("eq")) {
-			if (value == null) {
-				condition = field.isNull();
-			}
-			else if (value instanceof JSONArray) {
-				condition = field.in(JSONUtil.toObjectList((JSONArray)value));
-			}
-			else {
-				condition = field.eq(value);
+		if (value instanceof String) {
+			String newValueString = StringUtil.unquote(valueString);
+
+			if (NumberUtils.isCreatable(newValueString) &&
+				!newValueString.contains(".")) {
+
+				value = Long.valueOf(newValueString);
 			}
 		}
-		else if (operator.equalsIgnoreCase("gt")) {
-			condition = field.gt(value);
-		}
-		else if (operator.equalsIgnoreCase("ge")) {
-			condition = field.ge(value);
-		}
-		else if (operator.equalsIgnoreCase("lt")) {
-			condition = field.lt(value);
-		}
-		else if (operator.equalsIgnoreCase("le")) {
-			condition = field.le(value);
-		}
-		else if (operator.equalsIgnoreCase("ne")) {
-			if (value != null) {
-				condition = field.ne(value);
-			}
-			else {
-				condition = field.isNotNull();
-			}
-		}
-		else {
-			return new IllegalArgumentException(
-				"Invalid operator: " + operator);
-		}
+
+		Condition condition = _buildCondition(
+			fieldName, inferredCondition, operator, value);
 
 		if (inferredCondition != null) {
 			condition = condition.and(inferredCondition);
@@ -255,20 +274,21 @@ public class FilterStringToConditionConverter {
 		Condition inferredCondition =
 			filterStringConverterHelper.getInferredCondition(fieldName);
 
-		Field<Object> field = DSL.field(fieldName);
-
 		if (inferredCondition != null) {
-			field = DSL.field("value");
+			fieldName = "value";
 		}
+
+		Field<Object> field = DSL.field(fieldName);
 
 		Condition condition = null;
 
 		if (stringFunction.equalsIgnoreCase("between")) {
+			Field<Long> longField = DSL.field(fieldName, Long.class);
+
 			condition = DSL.and(
-				field.ge(value)
-			).and(
-				field.le(StringUtil.unquote(arguments.get(2)))
-			);
+				longField.ge(Long.valueOf(value)),
+				longField.le(
+					Long.valueOf(StringUtil.unquote(arguments.get(2)))));
 		}
 		else if (stringFunction.equalsIgnoreCase("contains")) {
 			condition = field.containsIgnoreCase(value);

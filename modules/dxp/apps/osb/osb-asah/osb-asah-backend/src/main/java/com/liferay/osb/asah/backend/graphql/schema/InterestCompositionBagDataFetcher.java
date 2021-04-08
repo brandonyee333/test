@@ -75,7 +75,8 @@ public class InterestCompositionBagDataFetcher
 			dataFetchingEnvironment.getArgument("active"),
 			dataFetchingEnvironment.getArgument("channelId"),
 			dataFetchingEnvironment.getArgument("keywords"),
-			dataFetchingEnvironment.getArgument("individualSegmentId"),
+			Long.valueOf(
+				dataFetchingEnvironment.getArgument("individualSegmentId")),
 			dataFetchingEnvironment.getArgument("size"),
 			Sort.of(dataFetchingEnvironment.getArgument("sort")),
 			dataFetchingEnvironment.getArgument("start"));
