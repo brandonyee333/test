@@ -1,0 +1,41 @@
+[
+	{
+		"accountPK": "bef7a4a0-7128-4e37-b58d-a3fdff2e4213",
+		"activitiesCount": 0,
+		"dataSourceId": "1",
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"id": "10",
+		"individualCount": 16,
+		"organization": {
+			"field1": [
+				{
+					"context": "organization",
+					"dataSourceId": "1",
+					"dataSourceName": "Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "field1",
+					"ownerId": "10",
+					"ownerType": "account",
+					"sourceName": "Field 1",
+					"value": "field one"
+				}
+			],
+			"field3": [
+				{
+					"context": "organization",
+					"dataSourceId": "1",
+					"dataSourceName": "Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "field3",
+					"ownerId": "10",
+					"ownerType": "account",
+					"sourceName": "Field 3",
+					"value": "field three"
+				}
+			]
+		}
+	}
+]
