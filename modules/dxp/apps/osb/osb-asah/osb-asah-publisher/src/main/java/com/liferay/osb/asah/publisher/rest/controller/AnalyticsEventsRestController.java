@@ -178,9 +178,18 @@ public class AnalyticsEventsRestController {
 	}
 
 	private boolean _isValid(AnalyticsEventsMessage.Event event) {
-		if (StringUtils.isBlank(event.getApplicationId()) ||
-			(event.getEventDate() == null) ||
-			StringUtils.isBlank(event.getEventId())) {
+		if (StringUtils.isBlank(event.getApplicationId())) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Skipping event due to missing application ID");
+			}
+
+			return false;
+		}
+
+		if (event.getEventDate() == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Skipping event due to missing event date");
+			}
 
 			return false;
 		}
@@ -188,6 +197,10 @@ public class AnalyticsEventsRestController {
 		String eventId = event.getEventId();
 
 		if (StringUtils.isBlank(eventId) || (eventId.length() > 255)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Skipping event due to invalid event ID " + eventId);
+			}
+
 			return false;
 		}
 
@@ -199,12 +212,24 @@ public class AnalyticsEventsRestController {
 			if (StringUtils.isBlank(eventPropertyName) ||
 				(eventPropertyName.length() > 255)) {
 
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Skipping event due to invalid event property name " +
+							eventPropertyName);
+				}
+
 				return false;
 			}
 
 			String eventPropertyValue = entry.getValue();
 
 			if (StringUtils.length(eventPropertyValue) > 1024) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Skipping event due to invalid event property value " +
+							eventPropertyValue);
+				}
+
 				return false;
 			}
 		}
