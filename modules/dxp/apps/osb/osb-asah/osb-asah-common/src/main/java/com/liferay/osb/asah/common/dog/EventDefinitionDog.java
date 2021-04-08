@@ -74,6 +74,7 @@ public class EventDefinitionDog {
 		}
 
 		eventDefinition.setDisplayName(displayName);
+
 		eventDefinition.setName(name);
 		eventDefinition.setType(type);
 

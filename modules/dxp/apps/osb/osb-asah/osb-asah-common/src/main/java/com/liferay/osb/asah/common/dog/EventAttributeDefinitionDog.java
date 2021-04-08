@@ -67,6 +67,7 @@ public class EventAttributeDefinitionDog {
 		}
 
 		eventAttributeDefinition.setDisplayName(displayName);
+
 		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
 			Collections.singleton(
 				new EventDefinitionEventAttributeDefinition(
