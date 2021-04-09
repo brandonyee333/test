@@ -61,15 +61,6 @@ public class RunLogDog {
 		}
 	}
 
-	public RunLog getRunLog(Long runLogId) {
-		Optional<RunLog> runLogOptional = _runLogRepository.findById(runLogId);
-
-		return runLogOptional.orElseThrow(
-			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"There is no run log with ID " + runLogId));
-	}
-
 	public RunLog log(
 		Long dataSourceId, Object nanite, boolean overwritePreviousRunLog,
 		String status, WeDeployDataService weDeployDataService,
@@ -146,13 +137,19 @@ public class RunLogDog {
 		JSONObject contextJSONObject, Long runLogId,
 		WeDeployDataService weDeployDataService) {
 
-		RunLog runLog = getRunLog(runLogId);
-
-		runLog.setContextJSONObject(contextJSONObject);
-
 		try {
 			WeDeployServiceThreadLocal.setWeDeployDataService(
 				weDeployDataService);
+
+			Optional<RunLog> runLogOptional = _runLogRepository.findById(
+				runLogId);
+
+			RunLog runLog = runLogOptional.orElseThrow(
+				() -> new OSBAsahException(
+					HttpStatus.BAD_REQUEST,
+					"There is no run log with ID " + runLogId));
+
+			runLog.setContextJSONObject(contextJSONObject);
 
 			_runLogRepository.save(runLog);
 		}
