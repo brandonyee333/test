@@ -22,8 +22,10 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import org.json.JSONObject;
@@ -40,6 +42,13 @@ import org.springframework.data.relational.core.mapping.Table;
  */
 @Table
 public class RunLog implements Persistable<Long> {
+
+	public RunLog() {
+	}
+
+	public RunLog(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
