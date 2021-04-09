@@ -14,10 +14,11 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.RunLog;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.WeDeployServiceThreadLocal;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
 import java.util.Optional;
@@ -40,16 +41,24 @@ import org.springframework.stereotype.Component;
 public class RunLogDog {
 
 	public RunLog fetchLatestRunLog(
-		@Nullable Long dataSourceId, ElasticsearchInvoker elasticsearchInvoker,
-		String naniteClassName, @Nullable String status) {
+		@Nullable Long dataSourceId, String naniteClassName,
+		@Nullable String status, WeDeployDataService weDeployDataService) {
 
-		Optional<RunLog> runLogOptional =
-			_runLogRepository.
-				findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
-					Optional.ofNullable(dataSourceId), naniteClassName,
-					Optional.ofNullable(status));
+		try {
+			WeDeployServiceThreadLocal.setWeDeployDataService(
+				weDeployDataService);
 
-		return runLogOptional.orElse(null);
+			Optional<RunLog> runLogOptional =
+				_runLogRepository.
+					findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
+						Optional.ofNullable(dataSourceId), naniteClassName,
+						Optional.ofNullable(status));
+
+			return runLogOptional.orElse(null);
+		}
+		finally {
+			WeDeployServiceThreadLocal.remove();
+		}
 	}
 
 	public RunLog getRunLog(Long runLogId) {
@@ -63,7 +72,7 @@ public class RunLogDog {
 
 	public RunLog log(
 		Long dataSourceId, Object nanite, boolean overwritePreviousRunLog,
-		String status, ElasticsearchInvoker elasticsearchInvoker,
+		String status, WeDeployDataService weDeployDataService,
 		Object... jsonObjectKeyValuePairs) {
 
 		Class<?> clazz = nanite.getClass();
@@ -88,7 +97,7 @@ public class RunLogDog {
 
 		if (overwritePreviousRunLog) {
 			existingRunLog = fetchLatestRunLog(
-				dataSourceId, elasticsearchInvoker, className, status);
+				dataSourceId, className, status, weDeployDataService);
 		}
 
 		RunLog runLog = new RunLog();
@@ -112,27 +121,44 @@ public class RunLogDog {
 
 		runLog.setContextJSONObject(contextJSONObject);
 
-		return _runLogRepository.save(runLog);
+		try {
+			WeDeployServiceThreadLocal.setWeDeployDataService(
+				weDeployDataService);
+
+			return _runLogRepository.save(runLog);
+		}
+		finally {
+			WeDeployServiceThreadLocal.remove();
+		}
 	}
 
 	public RunLog log(
 		Long dataSourceId, Object nanite, String status,
-		ElasticsearchInvoker elasticsearchInvoker,
+		WeDeployDataService weDeployDataService,
 		Object... jsonObjectKeyValuePairs) {
 
 		return log(
-			dataSourceId, nanite, true, status, elasticsearchInvoker,
+			dataSourceId, nanite, true, status, weDeployDataService,
 			jsonObjectKeyValuePairs);
 	}
 
 	public void updateRunLogContextJSONObject(
-		JSONObject contextJSONObject, Long runLogId) {
+		JSONObject contextJSONObject, Long runLogId,
+		WeDeployDataService weDeployDataService) {
 
 		RunLog runLog = getRunLog(runLogId);
 
 		runLog.setContextJSONObject(contextJSONObject);
 
-		_runLogRepository.save(runLog);
+		try {
+			WeDeployServiceThreadLocal.setWeDeployDataService(
+				weDeployDataService);
+
+			_runLogRepository.save(runLog);
+		}
+		finally {
+			WeDeployServiceThreadLocal.remove();
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(RunLogDog.class);
