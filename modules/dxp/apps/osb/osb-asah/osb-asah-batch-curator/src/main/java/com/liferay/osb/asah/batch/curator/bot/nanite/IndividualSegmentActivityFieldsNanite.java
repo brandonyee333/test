@@ -147,7 +147,11 @@ public class IndividualSegmentActivityFieldsNanite extends BaseNanite {
 		}
 
 		segment.setActivitiesCount(activitiesCount);
-		segment.setLastActivityDate(DateUtil.toUTCDate(lastActivityDateString));
+
+		if (Objects.nonNull(lastActivityDateString)) {
+			segment.setLastActivityDate(
+				DateUtil.toUTCDate(lastActivityDateString));
+		}
 
 		_segmentDog.replaceSegment(segment);
 	}
