@@ -32,11 +32,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
+import javax.validation.Validator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -128,7 +130,10 @@ public class AnalyticsEventsRestController {
 				while (iterator.hasNext()) {
 					AnalyticsEventsMessage.Event event = iterator.next();
 
-					if (!_isValid(event)) {
+					Set<ConstraintViolation<AnalyticsEventsMessage.Event>>
+						constraintViolations = _validator.validate(event);
+
+					if (!constraintViolations.isEmpty()) {
 						iterator.remove();
 
 						continue;
@@ -177,66 +182,6 @@ public class AnalyticsEventsRestController {
 		}
 	}
 
-	private boolean _isValid(AnalyticsEventsMessage.Event event) {
-		if (StringUtils.isBlank(event.getApplicationId())) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Skipping event due to missing application ID");
-			}
-
-			return false;
-		}
-
-		if (event.getEventDate() == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Skipping event due to missing event date");
-			}
-
-			return false;
-		}
-
-		String eventId = event.getEventId();
-
-		if (StringUtils.isBlank(eventId) || (eventId.length() > 255)) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Skipping event due to invalid event ID " + eventId);
-			}
-
-			return false;
-		}
-
-		Map<String, String> eventProperties = event.getProperties();
-
-		for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
-			String eventPropertyName = entry.getKey();
-
-			if (StringUtils.isBlank(eventPropertyName) ||
-				(eventPropertyName.length() > 255)) {
-
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Skipping event due to invalid event property name " +
-							eventPropertyName);
-				}
-
-				return false;
-			}
-
-			String eventPropertyValue = entry.getValue();
-
-			if (StringUtils.length(eventPropertyValue) > 1024) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Skipping event due to invalid event property value " +
-							eventPropertyValue);
-				}
-
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsRestController.class);
 
@@ -250,5 +195,8 @@ public class AnalyticsEventsRestController {
 
 	@Autowired
 	private MessageBus _messageBus;
+
+	@Autowired
+	private Validator _validator;
 
 }
