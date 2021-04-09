@@ -91,6 +91,84 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
+	@description = "Ensures that a hotfix can be reverted."
+	@priority = "5"
+	test RevertHotfix {
+		property portal.hotfix.release = "true";
+		property portal.release = "true";
+		property skip.install-patch = "true";
+		property test.assert.warning.exceptions = "true";
+		property test.name.skip.portal.instance = "PatchingTool#RevertHotfix";
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Web Content");
+
+		WebContentNavigator.gotoAddCP();
+
+		WebContent.addCP(
+			webContentContent = "WC WebContent Content",
+			webContentTitle = "WC WebContent Title");
+
+		PortletEntry.publish();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Blogs");
+
+		Blogs.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
+
+		SignOut.signOut();
+
+		Portlet.shutdownServer();
+
+		PatchingTool.installPatch(patchFileZipURL = "${testBuildFixPackZipURL}");
+
+		Portlet.startServer(
+			deleteLiferayHome = "true",
+			keepCachedAppServerData = "true");
+
+		SignIn.signIn();
+
+		SignOut.signOut();
+
+		Portlet.shutdownServer();
+
+		PatchingTool.uninstallPatches();
+
+		Portlet.startServer(
+			deleteLiferayHome = "true",
+			keepCachedAppServerData = "true");
+
+		SignIn.signIn();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Web Content");
+
+		WebContent.viewTitle(webContentTitle = "WC WebContent Title");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Blogs");
+
+		BlogsNavigator.gotoEntryCP(entryTitle = "Blogs Entry Title");
+
+		BlogsEntry.viewEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
+	}
+
 	@description = "Ensures that a fix pack can be reverted to the latest heavy fix pack."
 	@priority = "5"
 	test RevertToLatestHeavyFixPack {
