@@ -14,22 +14,23 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.RunLog;
+import com.liferay.osb.asah.common.repository.RunLogRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+
+import java.util.Date;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortOrder;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -38,44 +39,30 @@ import org.springframework.stereotype.Component;
 @Component
 public class RunLogDog {
 
-	public JSONObject fetchLatestRunLogJSONObject(
-		Long dataSourceId, ElasticsearchInvoker elasticsearchInvoker,
-		String naniteClassName) {
+	public RunLog fetchLatestRunLog(
+		@Nullable Long dataSourceId, ElasticsearchInvoker elasticsearchInvoker,
+		String naniteClassName, @Nullable String status) {
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("naniteClassName", naniteClassName));
+		Optional<RunLog> runLogOptional =
+			_runLogRepository.
+				findByDataSourceIdAndNaniteClassNameAndStatusOrderByDateLoggedDesc(
+					Optional.ofNullable(dataSourceId), naniteClassName,
+					Optional.ofNullable(status));
 
-		if (dataSourceId != null) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSourceId)));
-		}
-		else {
-			boolQueryBuilder.filter(
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.existsQuery("dataSourceId")));
-		}
-
-		JSONArray runLogsJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
-				"run-logs",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(boolQueryBuilder);
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort(
-						SortBuilderUtil.fieldSort(
-							"dateLogged", SortOrder.DESC));
-				}));
-
-		if (runLogsJSONArray.length() == 0) {
-			return null;
-		}
-
-		return runLogsJSONArray.getJSONObject(0);
+		return runLogOptional.orElse(null);
 	}
 
-	public JSONObject log(
-		String dataSourceId, Object nanite, boolean overwritePreviousRunLog,
+	public RunLog getRunLog(Long runLogId) {
+		Optional<RunLog> runLogOptional = _runLogRepository.findById(runLogId);
+
+		return runLogOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no run log with ID " + runLogId));
+	}
+
+	public RunLog log(
+		Long dataSourceId, Object nanite, boolean overwritePreviousRunLog,
 		String status, ElasticsearchInvoker elasticsearchInvoker,
 		Object... jsonObjectKeyValuePairs) {
 
@@ -97,48 +84,39 @@ public class RunLogDog {
 			return null;
 		}
 
-		try {
-			JSONObject existingRunLogJSONObject = null;
+		RunLog existingRunLog = null;
 
-			if (overwritePreviousRunLog) {
-				existingRunLogJSONObject = _fetchRunLogJSONObject(
-					dataSourceId, elasticsearchInvoker, className, status);
-			}
-
-			JSONObject runLogJSONObject = JSONUtil.put(
-				"dataSourceId", dataSourceId
-			).put(
-				"dateLogged", DateUtil.newDateString()
-			).put(
-				"naniteClassName", className
-			).put(
-				"status", status
-			);
-
-			for (int i = 0; i < jsonObjectKeyValuePairs.length; i += 2) {
-				runLogJSONObject.put(
-					String.valueOf(jsonObjectKeyValuePairs[i]),
-					jsonObjectKeyValuePairs[i + 1]);
-			}
-
-			if (existingRunLogJSONObject == null) {
-				return elasticsearchInvoker.add("run-logs", runLogJSONObject);
-			}
-
-			return elasticsearchInvoker.replace(
-				"run-logs",
-				runLogJSONObject.put(
-					"id", existingRunLogJSONObject.getString("id")));
-		}
-		catch (Exception e) {
-			_log.error("Unable to add run log for " + className, e);
+		if (overwritePreviousRunLog) {
+			existingRunLog = fetchLatestRunLog(
+				dataSourceId, elasticsearchInvoker, className, status);
 		}
 
-		return null;
+		RunLog runLog = new RunLog();
+
+		if (existingRunLog != null) {
+			runLog.setId(existingRunLog.getId());
+		}
+
+		runLog.setDataSourceId(dataSourceId);
+		runLog.setDateLogged(new Date());
+		runLog.setNaniteClassName(className);
+		runLog.setStatus(status);
+
+		JSONObject contextJSONObject = new JSONObject();
+
+		for (int i = 0; i < jsonObjectKeyValuePairs.length; i += 2) {
+			contextJSONObject.put(
+				String.valueOf(jsonObjectKeyValuePairs[i]),
+				jsonObjectKeyValuePairs[i + 1]);
+		}
+
+		runLog.setContextJSONObject(contextJSONObject);
+
+		return _runLogRepository.save(runLog);
 	}
 
-	public JSONObject log(
-		String dataSourceId, Object nanite, String status,
+	public RunLog log(
+		Long dataSourceId, Object nanite, String status,
 		ElasticsearchInvoker elasticsearchInvoker,
 		Object... jsonObjectKeyValuePairs) {
 
@@ -147,29 +125,19 @@ public class RunLogDog {
 			jsonObjectKeyValuePairs);
 	}
 
-	private JSONObject _fetchRunLogJSONObject(
-		String dataSourceId, ElasticsearchInvoker elasticsearchInvoker,
-		String naniteClassName, String status) {
+	public void updateRunLogContextJSONObject(
+		JSONObject contextJSONObject, Long runLogId) {
 
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("naniteClassName", naniteClassName)
-		).filter(
-			QueryBuilders.termQuery("status", status)
-		);
+		RunLog runLog = getRunLog(runLogId);
 
-		if (dataSourceId != null) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("dataSourceId", dataSourceId));
-		}
-		else {
-			boolQueryBuilder.filter(
-				BoolQueryBuilderUtil.mustNot(
-					QueryBuilders.existsQuery("dataSourceId")));
-		}
+		runLog.setContextJSONObject(contextJSONObject);
 
-		return elasticsearchInvoker.fetch("run-logs", boolQueryBuilder);
+		_runLogRepository.save(runLog);
 	}
 
 	private static final Log _log = LogFactory.getLog(RunLogDog.class);
+
+	@Autowired
+	private RunLogRepository _runLogRepository;
 
 }
