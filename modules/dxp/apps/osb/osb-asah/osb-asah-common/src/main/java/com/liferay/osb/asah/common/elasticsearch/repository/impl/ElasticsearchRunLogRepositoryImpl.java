@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.model.RunLog;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
+import com.liferay.osb.asah.common.util.WeDeployServiceThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Optional;
@@ -69,7 +70,9 @@ public class ElasticsearchRunLogRepositoryImpl
 					QueryBuilders.existsQuery("dataSourceId")));
 		}
 
-		JSONObject jsonObject = _faroInfoElasticsearchInvoker.fetch(
+		ElasticsearchInvoker elasticsearchInvoker = getElasticsearchInvoker();
+
+		JSONObject jsonObject = elasticsearchInvoker.fetch(
 			"run-logs", boolQueryBuilder,
 			SortBuilderUtil.fieldSort("dateLogged", SortOrder.DESC), null,
 			null);
@@ -88,10 +91,43 @@ public class ElasticsearchRunLogRepositoryImpl
 
 	@Override
 	protected ElasticsearchInvoker getElasticsearchInvoker() {
-		return _faroInfoElasticsearchInvoker;
+		return _resolveElasticsearchInvoker();
 	}
+
+	private ElasticsearchInvoker _resolveElasticsearchInvoker() {
+		WeDeployDataService weDeployDataService =
+			WeDeployServiceThreadLocal.getWeDeployDataService();
+
+		if (weDeployDataService == null) {
+			throw new IllegalStateException("WeDeployDataService is null");
+		}
+
+		if (weDeployDataService == WeDeployDataService.OSB_ASAH_DXP_RAW) {
+			return _dxpRawElasticsearchInvoker;
+		}
+		else if (weDeployDataService ==
+					WeDeployDataService.OSB_ASAH_FARO_INFO) {
+
+			return _faroInfoElasticsearchInvoker;
+		}
+		else if (weDeployDataService ==
+					WeDeployDataService.OSB_ASAH_SALESFORCE_RAW) {
+
+			return _salesforceRawElasticsearchInvoker;
+		}
+		else {
+			throw new IllegalStateException(
+				"Unexpected WeDeployDataService value " + weDeployDataService);
+		}
+	}
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_DXP_RAW)
+	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_SALESFORCE_RAW)
+	private ElasticsearchInvoker _salesforceRawElasticsearchInvoker;
 
 }
