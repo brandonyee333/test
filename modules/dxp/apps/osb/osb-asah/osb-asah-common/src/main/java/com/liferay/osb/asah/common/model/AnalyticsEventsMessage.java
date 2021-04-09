@@ -32,13 +32,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @author Inácio Nery
@@ -191,7 +189,9 @@ public class AnalyticsEventsMessage implements Serializable {
 			return _eventId;
 		}
 
-		public Map<@Max(255) String, @Max(1024)String> getProperties() {
+		public Map<@NotBlank @Size(max = 255) String, @Size(max = 1024) String>
+			getProperties() {
+
 			return Collections.unmodifiableMap(_properties);
 		}
 
