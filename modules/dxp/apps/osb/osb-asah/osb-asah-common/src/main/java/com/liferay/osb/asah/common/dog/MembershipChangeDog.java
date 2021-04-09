@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
  * @author Inácio Nery
  */
 @Component
-public class FaroInfoMembershipChangeDog extends BaseFaroInfoDog {
+public class MembershipChangeDog extends BaseFaroInfoDog {
 
 	public void addMembershipChange(
 		Membership membership, JSONObject individualJSONObject,

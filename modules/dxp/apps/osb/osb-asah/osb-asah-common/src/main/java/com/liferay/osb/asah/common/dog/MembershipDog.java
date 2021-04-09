@@ -338,7 +338,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private FaroInfoMembershipChangeDog _faroInfoMembershipChangeDog;
+	private MembershipChangeDog _faroInfoMembershipChangeDog;
 
 	@Autowired
 	private MembershipRepository _membershipRepository;
