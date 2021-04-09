@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.RunLog;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.text.ParseException;
 
@@ -281,7 +282,7 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 		_runLogDog.log(
 			Long.valueOf(dataSourceId), this, "STARTED",
-			faroInfoElasticsearchInvoker, "totalOperations",
+			WeDeployDataService.OSB_ASAH_FARO_INFO, "totalOperations",
 			dataSourceElasticsearchInvoker.count(
 				getAuditEventsCollectionName(),
 				getAuditEventsDataSourceIdQueryBuilder(dataSourceId)));
@@ -314,12 +315,12 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 			_runLogDog.log(
 				Long.valueOf(dataSourceId), this, "COMPLETED",
-				faroInfoElasticsearchInvoker);
+				WeDeployDataService.OSB_ASAH_FARO_INFO);
 		}
 		catch (Exception e) {
 			_runLogDog.log(
 				Long.valueOf(dataSourceId), this, "FAILED",
-				faroInfoElasticsearchInvoker);
+				WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 			throw e;
 		}
@@ -330,8 +331,8 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 		RunLog runLog = _runLogDog.log(
 			Long.valueOf(dataSourceId), this, "STARTED",
-			faroInfoElasticsearchInvoker, "processedOperations", 0, "reprocess",
-			true);
+			WeDeployDataService.OSB_ASAH_FARO_INFO, "processedOperations", 0,
+			"reprocess", true);
 
 		try {
 			JSONArrayIterator.of(
@@ -357,7 +358,8 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 							"processedOperations", processedOperations);
 
 						_runLogDog.updateRunLogContextJSONObject(
-							runLogContextJSONObject, runLog.getId());
+							runLogContextJSONObject, runLog.getId(),
+							WeDeployDataService.OSB_ASAH_FARO_INFO);
 					}
 					catch (Exception e) {
 						return e;
@@ -374,12 +376,12 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 			_runLogDog.log(
 				Long.valueOf(dataSourceId), this, "COMPLETED",
-				faroInfoElasticsearchInvoker, "reprocess", true);
+				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
 		}
 		catch (Exception e) {
 			_runLogDog.log(
 				Long.valueOf(dataSourceId), this, "STARTED",
-				faroInfoElasticsearchInvoker, "reprocess", true);
+				WeDeployDataService.OSB_ASAH_FARO_INFO, "reprocess", true);
 
 			throw e;
 		}

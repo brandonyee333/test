@@ -48,12 +48,13 @@ public abstract class BaseNanite implements Nanite {
 			if (!StringUtil.isNull(asahTaskId)) {
 				_runLogDog.log(
 					null, this, false, "COMPLETED",
-					faroInfoElasticsearchInvoker, "OSBAsahTaskId", asahTaskId);
+					WeDeployDataService.OSB_ASAH_FARO_INFO, "OSBAsahTaskId",
+					asahTaskId);
 			}
 			else {
 				_runLogDog.log(
 					null, this, true, "COMPLETED",
-					faroInfoElasticsearchInvoker);
+					WeDeployDataService.OSB_ASAH_FARO_INFO);
 			}
 		}
 		else {
@@ -86,14 +87,16 @@ public abstract class BaseNanite implements Nanite {
 		if (isLogRunEnabled()) {
 			if (!StringUtil.isNull(asahTaskId)) {
 				_runLogDog.log(
-					null, this, false, "FAILED", faroInfoElasticsearchInvoker,
-					"OSBAsahTaskId", asahTaskId, "failureReason",
+					null, this, false, "FAILED",
+					WeDeployDataService.OSB_ASAH_FARO_INFO, "OSBAsahTaskId",
+					asahTaskId, "failureReason",
 					ExceptionUtils.getStackTrace(throwable));
 			}
 			else {
 				_runLogDog.log(
-					null, this, true, "FAILED", faroInfoElasticsearchInvoker,
-					"failureReason", ExceptionUtils.getStackTrace(throwable));
+					null, this, true, "FAILED",
+					WeDeployDataService.OSB_ASAH_FARO_INFO, "failureReason",
+					ExceptionUtils.getStackTrace(throwable));
 			}
 		}
 	}
@@ -101,7 +104,8 @@ public abstract class BaseNanite implements Nanite {
 	@Override
 	public void logStart(JSONObject contextJSONObject) {
 		if (isLogRunEnabled()) {
-			_runLogDog.log(null, this, "STARTED", faroInfoElasticsearchInvoker);
+			_runLogDog.log(
+				null, this, "STARTED", WeDeployDataService.OSB_ASAH_FARO_INFO);
 		}
 		else {
 			StringBuilder sb = new StringBuilder();

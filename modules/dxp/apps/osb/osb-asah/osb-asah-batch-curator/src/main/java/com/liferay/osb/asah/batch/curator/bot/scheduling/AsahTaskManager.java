@@ -17,7 +17,6 @@ package com.liferay.osb.asah.batch.curator.bot.scheduling;
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.model.RunLog;
@@ -47,7 +46,8 @@ public class AsahTaskManager {
 
 	public boolean checkNanite(String naniteClassName) {
 		RunLog latestRunLog = _runLogDog.fetchLatestRunLog(
-			null, _elasticsearchInvoker, naniteClassName, null);
+			null, naniteClassName, null,
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		if ((latestRunLog != null) &&
 			Objects.equals(latestRunLog.getStatus(), "STARTED")) {
@@ -194,9 +194,6 @@ public class AsahTaskManager {
 
 	@Autowired
 	private AsahTaskScheduler _asahTaskScheduler;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private List<Nanite> _nanites;

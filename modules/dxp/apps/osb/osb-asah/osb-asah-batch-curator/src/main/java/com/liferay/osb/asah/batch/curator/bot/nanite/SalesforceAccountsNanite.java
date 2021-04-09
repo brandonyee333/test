@@ -105,7 +105,7 @@ public class SalesforceAccountsNanite extends BaseNanite {
 
 		_runLogDog.log(
 			Long.valueOf(dataSourceId), this, "STARTED",
-			faroInfoElasticsearchInvoker, "totalOperations",
+			WeDeployDataService.OSB_ASAH_FARO_INFO, "totalOperations",
 			_salesforceRawElasticsearchInvoker.count(
 				"audit-events",
 				BoolQueryBuilderUtil.filter(
@@ -139,12 +139,12 @@ public class SalesforceAccountsNanite extends BaseNanite {
 
 			_runLogDog.log(
 				Long.valueOf(dataSourceId), this, "COMPLETED",
-				faroInfoElasticsearchInvoker);
+				WeDeployDataService.OSB_ASAH_FARO_INFO);
 		}
 		catch (Exception e) {
 			_runLogDog.log(
 				Long.valueOf(dataSourceId), this, "FAILED",
-				faroInfoElasticsearchInvoker);
+				WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 			throw e;
 		}

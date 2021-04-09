@@ -615,7 +615,7 @@ public class SalesforceExtractorNanite implements Nanite {
 
 		_runLogDog.log(
 			Long.valueOf(_salesforceExtractorConfiguration.getDataSourceId()),
-			this, "STARTED", _elasticsearchInvoker,
+			this, "STARTED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW,
 			_buildRunLogAdditionalFields(
 				describeSObjectResults, osbAsahMarkerJSONObject));
 
@@ -652,7 +652,7 @@ public class SalesforceExtractorNanite implements Nanite {
 			_runLogDog.log(
 				Long.valueOf(
 					_salesforceExtractorConfiguration.getDataSourceId()),
-				this, "COMPLETED", _elasticsearchInvoker);
+				this, "COMPLETED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 			_asahTaskDog.scheduleAsahTask(
 				"SalesforceAccountsNanite",
@@ -667,7 +667,7 @@ public class SalesforceExtractorNanite implements Nanite {
 			_runLogDog.log(
 				Long.valueOf(
 					_salesforceExtractorConfiguration.getDataSourceId()),
-				this, "FAILED", _elasticsearchInvoker);
+				this, "FAILED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 			throw e;
 		}

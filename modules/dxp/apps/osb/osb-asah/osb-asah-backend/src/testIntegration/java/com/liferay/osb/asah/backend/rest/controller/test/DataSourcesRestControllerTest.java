@@ -215,19 +215,22 @@ public class DataSourcesRestControllerTest {
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context",
+				JSONUtil.put(
+					"processedOperations", 1
+				).put(
+					"reprocess", false
+				).put(
+					"totalOperations", 1
+				)
+			).put(
 				"dataSourceId", csvDataSourceJSONObject.getString("id")
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
 				"naniteClassName", "CSVIndividualsNanite"
 			).put(
-				"processedOperations", 1
-			).put(
-				"reprocess", false
-			).put(
 				"status", "STARTED"
-			).put(
-				"totalOperations", 1
 			));
 
 		JSONObject progressJSONObject = new JSONObject(
@@ -246,19 +249,22 @@ public class DataSourcesRestControllerTest {
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context",
+				JSONUtil.put(
+					"processedOperations", 1
+				).put(
+					"reprocess", false
+				).put(
+					"totalOperations", 1
+				)
+			).put(
 				"dataSourceId", csvDataSourceJSONObject.getString("id")
 			).put(
 				"dateLogged", dateLogged
 			).put(
 				"naniteClassName", "CSVIndividualsNanite"
 			).put(
-				"processedOperations", 1
-			).put(
-				"reprocess", false
-			).put(
 				"status", "FAILED"
-			).put(
-				"totalOperations", 1
 			));
 
 		JSONAssert.assertEquals(

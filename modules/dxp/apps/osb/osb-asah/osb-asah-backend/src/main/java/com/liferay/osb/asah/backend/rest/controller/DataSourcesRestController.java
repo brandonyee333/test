@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.RunLog;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.Date;
 import java.util.Objects;
@@ -262,8 +263,8 @@ public class DataSourcesRestController extends BaseRestController {
 
 	private JSONObject _getCSVDataSourceProgressJSONObject(Long dataSourceId) {
 		RunLog runLog = _runLogDog.fetchLatestRunLog(
-			dataSourceId, faroInfoElasticsearchInvoker, "CSVIndividualsNanite",
-			null);
+			dataSourceId, "CSVIndividualsNanite", null,
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		if (runLog == null) {
 			return new JSONObject();
@@ -301,8 +302,8 @@ public class DataSourcesRestController extends BaseRestController {
 		Long dataSourceId) {
 
 		RunLog salesforceExtractorNaniteRunLog = _runLogDog.fetchLatestRunLog(
-			dataSourceId, salesforceRawElasticsearchInvoker,
-			"SalesforceExtractorNanite", null);
+			dataSourceId, "SalesforceExtractorNanite", null,
+			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 		if (salesforceExtractorNaniteRunLog == null) {
 			return new JSONObject();
@@ -326,8 +327,8 @@ public class DataSourcesRestController extends BaseRestController {
 		}
 
 		RunLog salesforceAccountsNaniteRunLog = _runLogDog.fetchLatestRunLog(
-			dataSourceId, faroInfoElasticsearchInvoker,
-			"SalesforceAccountsNanite", null);
+			dataSourceId, "SalesforceAccountsNanite", null,
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		if (salesforceAccountsNaniteRunLog == null) {
 			return JSONUtil.put(
@@ -404,8 +405,8 @@ public class DataSourcesRestController extends BaseRestController {
 		Long dataSourceId) {
 
 		RunLog salesforceExtractorNaniteRunLog = _runLogDog.fetchLatestRunLog(
-			dataSourceId, salesforceRawElasticsearchInvoker,
-			"SalesforceExtractorNanite", null);
+			dataSourceId, "SalesforceExtractorNanite", null,
+			WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 		if (salesforceExtractorNaniteRunLog == null) {
 			return new JSONObject();
@@ -430,8 +431,8 @@ public class DataSourcesRestController extends BaseRestController {
 
 		RunLog salesforceExtractorIndividualsNaniteRunLog =
 			_runLogDog.fetchLatestRunLog(
-				dataSourceId, salesforceRawElasticsearchInvoker,
-				"SalesforceExtractorIndividualsNanite", null);
+				dataSourceId, "SalesforceExtractorIndividualsNanite", null,
+				WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 		if (salesforceExtractorIndividualsNaniteRunLog == null) {
 			return JSONUtil.put(
@@ -511,8 +512,8 @@ public class DataSourcesRestController extends BaseRestController {
 		}
 
 		RunLog salesforceIndividualsNaniteRunLog = _runLogDog.fetchLatestRunLog(
-			dataSourceId, faroInfoElasticsearchInvoker,
-			"SalesforceIndividualsNanite", null);
+			dataSourceId, "SalesforceIndividualsNanite", null,
+			WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		if (salesforceIndividualsNaniteRunLog == null) {
 			return JSONUtil.put(

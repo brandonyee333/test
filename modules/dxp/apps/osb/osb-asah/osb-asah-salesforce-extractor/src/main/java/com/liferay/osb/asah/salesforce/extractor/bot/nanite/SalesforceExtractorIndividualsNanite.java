@@ -69,7 +69,8 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	public void run() throws Exception {
 		_runLogDog.log(
 			Long.valueOf(_salesforceExtractorConfiguration.getDataSourceId()),
-			this, "STARTED", _elasticsearchInvoker, "totalOperations",
+			this, "STARTED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW,
+			"totalOperations",
 			_elasticsearchInvoker.count(
 				"audit-events",
 				QueryBuilders.termsQuery("typeName", "Lead", "Contact")));
@@ -80,7 +81,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			_runLogDog.log(
 				Long.valueOf(
 					_salesforceExtractorConfiguration.getDataSourceId()),
-				this, "COMPLETED", _elasticsearchInvoker);
+				this, "COMPLETED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 			_asahTaskDog.scheduleAsahTask(
 				"SalesforceIndividualsNanite",
@@ -95,7 +96,7 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			_runLogDog.log(
 				Long.valueOf(
 					_salesforceExtractorConfiguration.getDataSourceId()),
-				this, "FAILED", _elasticsearchInvoker);
+				this, "FAILED", WeDeployDataService.OSB_ASAH_SALESFORCE_RAW);
 
 			throw e;
 		}
