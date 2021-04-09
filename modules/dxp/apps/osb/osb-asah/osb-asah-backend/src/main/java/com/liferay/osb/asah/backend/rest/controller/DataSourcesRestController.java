@@ -532,7 +532,7 @@ public class DataSourcesRestController extends BaseRestController {
 
 		if (salesforceIndividualsNaniteRunLogStatus.equals("STARTED")) {
 			JSONObject salesforceIndividualsNaniteRunLogContextJSONObject =
-				new JSONObject();
+				salesforceIndividualsNaniteRunLog.getContextJSONObject();
 
 			int totalOperations =
 				3 *
