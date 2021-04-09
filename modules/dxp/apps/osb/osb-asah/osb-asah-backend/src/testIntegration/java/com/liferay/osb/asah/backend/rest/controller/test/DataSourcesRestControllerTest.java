@@ -429,17 +429,20 @@ public class DataSourcesRestControllerTest {
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context",
+				JSONUtil.put(
+					"reprocess", false
+				).put(
+					"totalOperations", 1
+				)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
 				"naniteClassName", "SalesforceAccountsNanite"
 			).put(
-				"reprocess", false
-			).put(
 				"status", "STARTED"
-			).put(
-				"totalOperations", 1
 			));
 
 		_salesforceRawElasticsearchInvoker.add(
@@ -498,17 +501,20 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context",
+				JSONUtil.put(
+					"initialAccountRun", true
+				).put(
+					"totalAccountOperations", 1
+				)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
-				"initialAccountRun", true
-			).put(
 				"naniteClassName", "SalesforceExtractorNanite"
 			).put(
 				"status", "STARTED"
-			).put(
-				"totalAccountOperations", 1
 			));
 
 		_salesforceRawElasticsearchInvoker.add(
@@ -537,17 +543,20 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context",
+				JSONUtil.put(
+					"initialAccountRun", false
+				).put(
+					"totalAccountOperations", 1
+				)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
-				"initialAccountRun", false
-			).put(
 				"naniteClassName", "SalesforceExtractorNanite"
 			).put(
 				"status", "STARTED"
-			).put(
-				"totalAccountOperations", 1
 			));
 
 		_salesforceRawElasticsearchInvoker.add(
@@ -639,21 +648,24 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context",
+				JSONUtil.put(
+					"initialContactRun", true
+				).put(
+					"initialLeadRun", true
+				).put(
+					"totalContactOperations", 1
+				).put(
+					"totalLeadOperations", 1
+				)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
-				"initialContactRun", true
-			).put(
-				"initialLeadRun", true
-			).put(
 				"naniteClassName", "SalesforceExtractorNanite"
 			).put(
 				"status", "STARTED"
-			).put(
-				"totalContactOperations", 1
-			).put(
-				"totalLeadOperations", 1
 			));
 
 		_salesforceRawElasticsearchInvoker.add(
@@ -692,21 +704,24 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context",
+				JSONUtil.put(
+					"initialContactRun", true
+				).put(
+					"initialLeadRun", true
+				).put(
+					"totalContactOperations", 1
+				).put(
+					"totalLeadOperations", 1
+				)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDateString()
 			).put(
-				"initialContactRun", false
-			).put(
-				"initialLeadRun", false
-			).put(
 				"naniteClassName", "SalesforceExtractorNanite"
 			).put(
 				"status", "STARTED"
-			).put(
-				"totalContactOperations", 1
-			).put(
-				"totalLeadOperations", 1
 			));
 
 		_salesforceRawElasticsearchInvoker.add(
@@ -803,6 +818,8 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context", JSONUtil.put("totalOperations", 1)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"naniteClassName", "SalesforceExtractorIndividualsNanite"
@@ -872,6 +889,8 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context", JSONUtil.put("totalOperations", 1)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addDays(dateLogged, -1)
@@ -879,8 +898,6 @@ public class DataSourcesRestControllerTest {
 				"naniteClassName", "SalesforceExtractorIndividualsNanite"
 			).put(
 				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 1
 			));
 
 		JSONObject progressJSONObject = new JSONObject(
@@ -925,6 +942,8 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context", JSONUtil.put("totalOperations", 1)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
@@ -932,8 +951,6 @@ public class DataSourcesRestControllerTest {
 				"naniteClassName", "SalesforceExtractorIndividualsNanite"
 			).put(
 				"status", "FAILED"
-			).put(
-				"totalOperations", 1
 			));
 
 		JSONObject progressJSONObject = new JSONObject(
@@ -976,6 +993,8 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context", JSONUtil.put("totalOperations", 1)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
@@ -983,8 +1002,6 @@ public class DataSourcesRestControllerTest {
 				"naniteClassName", "SalesforceExtractorIndividualsNanite"
 			).put(
 				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 1
 			));
 
 		JSONObject progressJSONObject = new JSONObject(
@@ -1028,6 +1045,8 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context", JSONUtil.put("totalOperations", 1)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
@@ -1035,13 +1054,13 @@ public class DataSourcesRestControllerTest {
 				"naniteClassName", "SalesforceExtractorIndividualsNanite"
 			).put(
 				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 1
 			));
 
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context", JSONUtil.put("totalOperations", 2)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.newDayDateString()
@@ -1049,8 +1068,6 @@ public class DataSourcesRestControllerTest {
 				"naniteClassName", "SalesforceIndividualsNanite"
 			).put(
 				"status", "STARTED"
-			).put(
-				"totalOperations", 2
 			));
 
 		_salesforceRawElasticsearchInvoker.add(
@@ -1104,6 +1121,8 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context", JSONUtil.put("totalOperations", 1)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addHours(dateLogged, 1)
@@ -1111,13 +1130,13 @@ public class DataSourcesRestControllerTest {
 				"naniteClassName", "SalesforceExtractorIndividualsNanite"
 			).put(
 				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 1
 			));
 
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context", JSONUtil.put("totalOperations", 2)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
@@ -1125,8 +1144,6 @@ public class DataSourcesRestControllerTest {
 				"naniteClassName", "SalesforceIndividualsNanite"
 			).put(
 				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 2
 			));
 
 		JSONObject progressJSONObject = new JSONObject(
@@ -1171,6 +1188,8 @@ public class DataSourcesRestControllerTest {
 		_salesforceRawElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context", JSONUtil.put("totalOperations", 1)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", dateLogged
@@ -1178,13 +1197,13 @@ public class DataSourcesRestControllerTest {
 				"naniteClassName", "SalesforceExtractorIndividualsNanite"
 			).put(
 				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 1
 			));
 
 		_faroInfoElasticsearchInvoker.add(
 			"run-logs",
 			JSONUtil.put(
+				"context", JSONUtil.put("totalOperations", 2)
+			).put(
 				"dataSourceId", String.valueOf(salesforceDataSource.getId())
 			).put(
 				"dateLogged", DateUtil.addHours(dateLogged, 2)
@@ -1192,8 +1211,6 @@ public class DataSourcesRestControllerTest {
 				"naniteClassName", "SalesforceIndividualsNanite"
 			).put(
 				"status", "IN_PROGRESS"
-			).put(
-				"totalOperations", 2
 			));
 
 		JSONObject progressJSONObject = new JSONObject(
