@@ -15,12 +15,12 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoAccountDog;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.apache.commons.logging.Log;
@@ -104,8 +104,8 @@ public class SalesforceAccountsNanite extends BaseNanite {
 		throws Exception {
 
 		_runLogDog.log(
-			dataSourceId, this, "STARTED", faroInfoElasticsearchInvoker,
-			"totalOperations",
+			Long.valueOf(dataSourceId), this, "STARTED",
+			faroInfoElasticsearchInvoker, "totalOperations",
 			_salesforceRawElasticsearchInvoker.count(
 				"audit-events",
 				BoolQueryBuilderUtil.filter(
@@ -138,11 +138,13 @@ public class SalesforceAccountsNanite extends BaseNanite {
 			).iterate();
 
 			_runLogDog.log(
-				dataSourceId, this, "COMPLETED", faroInfoElasticsearchInvoker);
+				Long.valueOf(dataSourceId), this, "COMPLETED",
+				faroInfoElasticsearchInvoker);
 		}
 		catch (Exception e) {
 			_runLogDog.log(
-				dataSourceId, this, "FAILED", faroInfoElasticsearchInvoker);
+				Long.valueOf(dataSourceId), this, "FAILED",
+				faroInfoElasticsearchInvoker);
 
 			throw e;
 		}

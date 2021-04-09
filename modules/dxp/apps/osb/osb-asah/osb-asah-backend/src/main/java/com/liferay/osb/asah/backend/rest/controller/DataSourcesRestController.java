@@ -21,12 +21,13 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.dog.RunLogDog;
+import com.liferay.osb.asah.common.model.RunLog;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 
 import java.util.Date;
@@ -260,21 +261,24 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private JSONObject _getCSVDataSourceProgressJSONObject(Long dataSourceId) {
-		JSONObject runLogJSONObject = _runLogDog.fetchLatestRunLogJSONObject(
-			dataSourceId, faroInfoElasticsearchInvoker, "CSVIndividualsNanite");
+		RunLog runLog = _runLogDog.fetchLatestRunLog(
+			dataSourceId, faroInfoElasticsearchInvoker, "CSVIndividualsNanite",
+			null);
 
-		if (runLogJSONObject == null) {
+		if (runLog == null) {
 			return new JSONObject();
 		}
 
-		String status = runLogJSONObject.getString("status");
+		String status = runLog.getStatus();
 
 		if (status.equals("STARTED")) {
+			JSONObject contextJSONObject = runLog.getContextJSONObject();
+
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
 			).put(
 				"processedOperations",
-				runLogJSONObject.getInt("processedOperations")
+				contextJSONObject.getInt("processedOperations")
 			).put(
 				"status", "IN_PROGRESS"
 			).put(
@@ -287,7 +291,7 @@ public class DataSourcesRestController extends BaseRestController {
 		}
 
 		return JSONUtil.put(
-			"dateRecorded", runLogJSONObject.getString("dateLogged")
+			"dateRecorded", DateUtil.toUTCString(runLog.getDateLogged())
 		).put(
 			"status", status
 		);
@@ -296,38 +300,36 @@ public class DataSourcesRestController extends BaseRestController {
 	private JSONObject _getSalesforceDataSourceAccountsProgressJSONObject(
 		Long dataSourceId) {
 
-		JSONObject salesforceExtractorNaniteRunLogJSONObject =
-			_runLogDog.fetchLatestRunLogJSONObject(
-				dataSourceId, salesforceRawElasticsearchInvoker,
-				"SalesforceExtractorNanite");
+		RunLog salesforceExtractorNaniteRunLog = _runLogDog.fetchLatestRunLog(
+			dataSourceId, salesforceRawElasticsearchInvoker,
+			"SalesforceExtractorNanite", null);
 
-		if (salesforceExtractorNaniteRunLogJSONObject == null) {
+		if (salesforceExtractorNaniteRunLog == null) {
 			return new JSONObject();
 		}
 
-		String salesforceExtractorNaniteStatus =
-			salesforceExtractorNaniteRunLogJSONObject.getString("status");
+		String salesforceExtractorNaniteRunLogStatus =
+			salesforceExtractorNaniteRunLog.getStatus();
 
-		if (salesforceExtractorNaniteStatus.equals("FAILED")) {
+		if (salesforceExtractorNaniteRunLogStatus.equals("FAILED")) {
 			return JSONUtil.put(
 				"dateRecorded",
-				salesforceExtractorNaniteRunLogJSONObject.getString(
-					"dateLogged")
+				DateUtil.toUTCString(
+					salesforceExtractorNaniteRunLog.getDateLogged())
 			).put(
 				"status", "FAILED"
 			);
 		}
-		else if (salesforceExtractorNaniteStatus.equals("STARTED")) {
+		else if (salesforceExtractorNaniteRunLogStatus.equals("STARTED")) {
 			return _getSalesforceExtractorNaniteProgressJSONObject(
-				salesforceExtractorNaniteRunLogJSONObject, 2, "Account");
+				salesforceExtractorNaniteRunLog, 2, "Account");
 		}
 
-		JSONObject salesforceAccountsNaniteRunLogJSONObject =
-			_runLogDog.fetchLatestRunLogJSONObject(
-				dataSourceId, faroInfoElasticsearchInvoker,
-				"SalesforceAccountsNanite");
+		RunLog salesforceAccountsNaniteRunLog = _runLogDog.fetchLatestRunLog(
+			dataSourceId, faroInfoElasticsearchInvoker,
+			"SalesforceAccountsNanite", null);
 
-		if (salesforceAccountsNaniteRunLogJSONObject == null) {
+		if (salesforceAccountsNaniteRunLog == null) {
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
 			).put(
@@ -339,13 +341,16 @@ public class DataSourcesRestController extends BaseRestController {
 			);
 		}
 
-		String salesforceAccountsNaniteStatus =
-			salesforceAccountsNaniteRunLogJSONObject.getString("status");
+		String salesforceAccountsNaniteRunLogStatus =
+			salesforceAccountsNaniteRunLog.getStatus();
 
-		if (salesforceAccountsNaniteStatus.equals("STARTED")) {
+		if (salesforceAccountsNaniteRunLogStatus.equals("STARTED")) {
+			JSONObject salesforceAccountsNaniteContextJSONObject =
+				salesforceAccountsNaniteRunLog.getContextJSONObject();
+
 			int totalOperations =
 				2 *
-					salesforceAccountsNaniteRunLogJSONObject.getInt(
+					salesforceAccountsNaniteContextJSONObject.getInt(
 						"totalOperations");
 
 			return JSONUtil.put(
@@ -368,13 +373,13 @@ public class DataSourcesRestController extends BaseRestController {
 			);
 		}
 
-		String salesforceExtractorNaniteCompletedDateString =
-			salesforceExtractorNaniteRunLogJSONObject.getString("dateLogged");
-		String salesforceAccountsNaniteEndDateString =
-			salesforceAccountsNaniteRunLogJSONObject.getString("dateLogged");
+		Date salesforceExtractorNaniteCompletedDate =
+			salesforceExtractorNaniteRunLog.getDateLogged();
+		Date salesforceAccountsNaniteEndDate =
+			salesforceAccountsNaniteRunLog.getDateLogged();
 
-		if (salesforceAccountsNaniteEndDateString.compareTo(
-				salesforceExtractorNaniteCompletedDateString) <= 0) {
+		if (salesforceAccountsNaniteEndDate.compareTo(
+				salesforceExtractorNaniteCompletedDate) <= 0) {
 
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
@@ -389,48 +394,46 @@ public class DataSourcesRestController extends BaseRestController {
 
 		return JSONUtil.put(
 			"dateRecorded",
-			salesforceAccountsNaniteRunLogJSONObject.getString("dateLogged")
+			DateUtil.toUTCString(salesforceAccountsNaniteRunLog.getDateLogged())
 		).put(
-			"status", salesforceAccountsNaniteStatus
+			"status", salesforceAccountsNaniteRunLogStatus
 		);
 	}
 
 	private JSONObject _getSalesforceDataSourceIndividualsProgressJSONObject(
 		Long dataSourceId) {
 
-		JSONObject salesforceExtractorNaniteRunLogJSONObject =
-			_runLogDog.fetchLatestRunLogJSONObject(
-				dataSourceId, salesforceRawElasticsearchInvoker,
-				"SalesforceExtractorNanite");
+		RunLog salesforceExtractorNaniteRunLog = _runLogDog.fetchLatestRunLog(
+			dataSourceId, salesforceRawElasticsearchInvoker,
+			"SalesforceExtractorNanite", null);
 
-		if (salesforceExtractorNaniteRunLogJSONObject == null) {
+		if (salesforceExtractorNaniteRunLog == null) {
 			return new JSONObject();
 		}
 
-		String salesforceExtractorNaniteStatus =
-			salesforceExtractorNaniteRunLogJSONObject.getString("status");
+		String salesforceExtractorNaniteRunLogStatus =
+			salesforceExtractorNaniteRunLog.getStatus();
 
-		if (salesforceExtractorNaniteStatus.equals("FAILED")) {
+		if (salesforceExtractorNaniteRunLogStatus.equals("FAILED")) {
 			return JSONUtil.put(
 				"dateRecorded",
-				salesforceExtractorNaniteRunLogJSONObject.getString(
-					"dateLogged")
+				DateUtil.toUTCString(
+					salesforceExtractorNaniteRunLog.getDateLogged())
 			).put(
 				"status", "FAILED"
 			);
 		}
-		else if (salesforceExtractorNaniteStatus.equals("STARTED")) {
+		else if (salesforceExtractorNaniteRunLogStatus.equals("STARTED")) {
 			return _getSalesforceExtractorNaniteProgressJSONObject(
-				salesforceExtractorNaniteRunLogJSONObject, 3, "Contact",
-				"Lead");
+				salesforceExtractorNaniteRunLog, 3, "Contact", "Lead");
 		}
 
-		JSONObject salesforceExtractorIndividualsNaniteRunLogJSONObject =
-			_runLogDog.fetchLatestRunLogJSONObject(
+		RunLog salesforceExtractorIndividualsNaniteRunLog =
+			_runLogDog.fetchLatestRunLog(
 				dataSourceId, salesforceRawElasticsearchInvoker,
-				"SalesforceExtractorIndividualsNanite");
+				"SalesforceExtractorIndividualsNanite", null);
 
-		if (salesforceExtractorIndividualsNaniteRunLogJSONObject == null) {
+		if (salesforceExtractorIndividualsNaniteRunLog == null) {
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
 			).put(
@@ -442,14 +445,20 @@ public class DataSourcesRestController extends BaseRestController {
 			);
 		}
 
-		String salesforceExtractorIndividualsNaniteStatus =
-			salesforceExtractorIndividualsNaniteRunLogJSONObject.getString(
-				"status");
+		String salesforceExtractorIndividualsNaniteRunLogStatus =
+			salesforceExtractorIndividualsNaniteRunLog.getStatus();
 
-		if (salesforceExtractorIndividualsNaniteStatus.equals("STARTED")) {
+		if (salesforceExtractorIndividualsNaniteRunLogStatus.equals(
+				"STARTED")) {
+
+			JSONObject
+				salesforceExtractorIndividualsNaniteRunLogContextJSONObject =
+					salesforceExtractorIndividualsNaniteRunLog.
+						getContextJSONObject();
+
 			int totalOperations =
-				salesforceExtractorIndividualsNaniteRunLogJSONObject.getInt(
-					"totalOperations");
+				salesforceExtractorIndividualsNaniteRunLogContextJSONObject.
+					getInt("totalOperations");
 
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
@@ -472,14 +481,13 @@ public class DataSourcesRestController extends BaseRestController {
 			);
 		}
 
-		String salesforceExtractorNaniteCompletedDateString =
-			salesforceExtractorNaniteRunLogJSONObject.getString("dateLogged");
-		String salesforceExtractorIndividualsNaniteEndDateString =
-			salesforceExtractorIndividualsNaniteRunLogJSONObject.getString(
-				"dateLogged");
+		Date salesforceExtractorNaniteCompletedDate =
+			salesforceExtractorNaniteRunLog.getDateLogged();
+		Date salesforceExtractorIndividualsNaniteEndDate =
+			salesforceExtractorIndividualsNaniteRunLog.getDateLogged();
 
-		if (salesforceExtractorIndividualsNaniteEndDateString.compareTo(
-				salesforceExtractorNaniteCompletedDateString) <= 0) {
+		if (salesforceExtractorIndividualsNaniteEndDate.compareTo(
+				salesforceExtractorNaniteCompletedDate) <= 0) {
 
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
@@ -492,22 +500,21 @@ public class DataSourcesRestController extends BaseRestController {
 			);
 		}
 
-		if (salesforceExtractorIndividualsNaniteStatus.equals("FAILED")) {
+		if (salesforceExtractorIndividualsNaniteRunLogStatus.equals("FAILED")) {
 			return JSONUtil.put(
 				"dateRecorded",
-				salesforceExtractorIndividualsNaniteRunLogJSONObject.getString(
-					"dateLogged")
+				DateUtil.toUTCString(
+					salesforceExtractorIndividualsNaniteRunLog.getDateLogged())
 			).put(
 				"status", "FAILED"
 			);
 		}
 
-		JSONObject salesforceIndividualsNaniteRunLogJSONObject =
-			_runLogDog.fetchLatestRunLogJSONObject(
-				dataSourceId, faroInfoElasticsearchInvoker,
-				"SalesforceIndividualsNanite");
+		RunLog salesforceIndividualsNaniteRunLog = _runLogDog.fetchLatestRunLog(
+			dataSourceId, faroInfoElasticsearchInvoker,
+			"SalesforceIndividualsNanite", null);
 
-		if (salesforceIndividualsNaniteRunLogJSONObject == null) {
+		if (salesforceIndividualsNaniteRunLog == null) {
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
 			).put(
@@ -519,13 +526,16 @@ public class DataSourcesRestController extends BaseRestController {
 			);
 		}
 
-		String salesforceIndividualsNaniteStatus =
-			salesforceIndividualsNaniteRunLogJSONObject.getString("status");
+		String salesforceIndividualsNaniteRunLogStatus =
+			salesforceIndividualsNaniteRunLog.getStatus();
 
-		if (salesforceIndividualsNaniteStatus.equals("STARTED")) {
+		if (salesforceIndividualsNaniteRunLogStatus.equals("STARTED")) {
+			JSONObject salesforceIndividualsNaniteRunLogContextJSONObject =
+				new JSONObject();
+
 			int totalOperations =
 				3 *
-					salesforceIndividualsNaniteRunLogJSONObject.getInt(
+					salesforceIndividualsNaniteRunLogContextJSONObject.getInt(
 						"totalOperations");
 
 			return JSONUtil.put(
@@ -548,14 +558,13 @@ public class DataSourcesRestController extends BaseRestController {
 			);
 		}
 
-		String salesforceExtractorIndividualsNaniteCompletedDateString =
-			salesforceExtractorIndividualsNaniteRunLogJSONObject.getString(
-				"dateLogged");
-		String salesforceIndividualsNaniteEndDateString =
-			salesforceIndividualsNaniteRunLogJSONObject.getString("dateLogged");
+		Date salesforceExtractorIndividualsNaniteCompletedDate =
+			salesforceExtractorIndividualsNaniteRunLog.getDateLogged();
+		Date salesforceIndividualsNaniteEndDate =
+			salesforceIndividualsNaniteRunLog.getDateLogged();
 
-		if (salesforceIndividualsNaniteEndDateString.compareTo(
-				salesforceExtractorIndividualsNaniteCompletedDateString) <= 0) {
+		if (salesforceIndividualsNaniteEndDate.compareTo(
+				salesforceExtractorIndividualsNaniteCompletedDate) <= 0) {
 
 			return JSONUtil.put(
 				"dateRecorded", DateUtil.newDateString()
@@ -570,9 +579,10 @@ public class DataSourcesRestController extends BaseRestController {
 
 		return JSONUtil.put(
 			"dateRecorded",
-			salesforceIndividualsNaniteRunLogJSONObject.getString("dateLogged")
+			DateUtil.toUTCString(
+				salesforceIndividualsNaniteRunLog.getDateLogged())
 		).put(
-			"status", salesforceIndividualsNaniteStatus
+			"status", salesforceIndividualsNaniteRunLogStatus
 		);
 	}
 
@@ -603,16 +613,18 @@ public class DataSourcesRestController extends BaseRestController {
 	}
 
 	private JSONObject _getSalesforceExtractorNaniteProgressJSONObject(
-		JSONObject salesforceExtractorNaniteRunLogJSONObject,
-		int totalOperationsMultiplier, String... tableNames) {
+		RunLog salesforceExtractorNaniteRunLog, int totalOperationsMultiplier,
+		String... tableNames) {
 
 		int processedOperations = 0;
 		int totalOperations = 0;
 
+		JSONObject contextJSONObject =
+			salesforceExtractorNaniteRunLog.getContextJSONObject();
+
 		for (String tableName : tableNames) {
-			int totalTableNameOperations =
-				salesforceExtractorNaniteRunLogJSONObject.optInt(
-					"total" + tableName + "Operations");
+			int totalTableNameOperations = contextJSONObject.optInt(
+				"total" + tableName + "Operations");
 
 			if (totalTableNameOperations == 0) {
 				continue;
@@ -620,15 +632,14 @@ public class DataSourcesRestController extends BaseRestController {
 
 			totalOperations += totalTableNameOperations;
 
-			if (salesforceExtractorNaniteRunLogJSONObject.getBoolean(
-					"initial" + tableName + "Run")) {
-
+			if (contextJSONObject.getBoolean("initial" + tableName + "Run")) {
 				processedOperations += salesforceRawElasticsearchInvoker.count(
 					tableName,
 					QueryBuilders.termQuery(
 						"osbAsahDataSourceId",
-						salesforceExtractorNaniteRunLogJSONObject.getString(
-							"dataSourceId")));
+						String.valueOf(
+							salesforceExtractorNaniteRunLog.
+								getDataSourceId())));
 			}
 			else {
 				processedOperations += salesforceRawElasticsearchInvoker.count(
@@ -636,8 +647,9 @@ public class DataSourcesRestController extends BaseRestController {
 					BoolQueryBuilderUtil.filter(
 						QueryBuilders.termQuery(
 							"osbAsahDataSourceId",
-							salesforceExtractorNaniteRunLogJSONObject.getString(
-								"dataSourceId"))
+							String.valueOf(
+								salesforceExtractorNaniteRunLog.
+									getDataSourceId()))
 					).filter(
 						QueryBuilders.termQuery("typeName", tableName)
 					));

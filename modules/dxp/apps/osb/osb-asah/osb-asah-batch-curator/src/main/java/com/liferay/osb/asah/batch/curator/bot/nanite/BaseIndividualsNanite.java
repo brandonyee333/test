@@ -18,15 +18,15 @@ import com.google.api.client.util.Objects;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.dog.SuppressionDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.dog.RunLogDog;
+import com.liferay.osb.asah.common.model.RunLog;
 
 import java.text.ParseException;
 
@@ -280,8 +280,8 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			getDataSourceElasticsearchInvoker();
 
 		_runLogDog.log(
-			dataSourceId, this, "STARTED", faroInfoElasticsearchInvoker,
-			"totalOperations",
+			Long.valueOf(dataSourceId), this, "STARTED",
+			faroInfoElasticsearchInvoker, "totalOperations",
 			dataSourceElasticsearchInvoker.count(
 				getAuditEventsCollectionName(),
 				getAuditEventsDataSourceIdQueryBuilder(dataSourceId)));
@@ -313,11 +313,13 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			).iterate();
 
 			_runLogDog.log(
-				dataSourceId, this, "COMPLETED", faroInfoElasticsearchInvoker);
+				Long.valueOf(dataSourceId), this, "COMPLETED",
+				faroInfoElasticsearchInvoker);
 		}
 		catch (Exception e) {
 			_runLogDog.log(
-				dataSourceId, this, "FAILED", faroInfoElasticsearchInvoker);
+				Long.valueOf(dataSourceId), this, "FAILED",
+				faroInfoElasticsearchInvoker);
 
 			throw e;
 		}
@@ -326,11 +328,10 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 	protected void reprocessUpdateDataSource(String dataSourceId)
 		throws Exception {
 
-		JSONObject runLogJSONObject = _runLogDog.log(
-			dataSourceId, this, "STARTED", faroInfoElasticsearchInvoker,
-			"processedOperations", 0, "reprocess", true);
-
-		String runLogId = runLogJSONObject.getString("id");
+		RunLog runLog = _runLogDog.log(
+			Long.valueOf(dataSourceId), this, "STARTED",
+			faroInfoElasticsearchInvoker, "processedOperations", 0, "reprocess",
+			true);
 
 		try {
 			JSONArrayIterator.of(
@@ -345,16 +346,18 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 
 						processDataJSONObject(dataJSONObject);
 
-						int processedOperations =
-							runLogJSONObject.getInt("processedOperations") + 1;
+						JSONObject runLogContextJSONObject =
+							runLog.getContextJSONObject();
 
-						runLogJSONObject.put(
+						int processedOperations =
+							runLogContextJSONObject.getInt(
+								"processedOperations") + 1;
+
+						runLogContextJSONObject.put(
 							"processedOperations", processedOperations);
 
-						faroInfoElasticsearchInvoker.update(
-							"run-logs", runLogId,
-							JSONUtil.put(
-								"processedOperations", processedOperations));
+						_runLogDog.updateRunLogContextJSONObject(
+							runLogContextJSONObject, runLog.getId());
 					}
 					catch (Exception e) {
 						return e;
@@ -370,13 +373,13 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 			).iterate();
 
 			_runLogDog.log(
-				dataSourceId, this, "COMPLETED", faroInfoElasticsearchInvoker,
-				"reprocess", true);
+				Long.valueOf(dataSourceId), this, "COMPLETED",
+				faroInfoElasticsearchInvoker, "reprocess", true);
 		}
 		catch (Exception e) {
 			_runLogDog.log(
-				dataSourceId, this, "STARTED", faroInfoElasticsearchInvoker,
-				"reprocess", true);
+				Long.valueOf(dataSourceId), this, "STARTED",
+				faroInfoElasticsearchInvoker, "reprocess", true);
 
 			throw e;
 		}

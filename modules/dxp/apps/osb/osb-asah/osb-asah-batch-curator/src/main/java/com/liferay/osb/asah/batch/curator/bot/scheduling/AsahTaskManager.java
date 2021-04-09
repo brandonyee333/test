@@ -16,11 +16,12 @@ package com.liferay.osb.asah.batch.curator.bot.scheduling;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.model.RunLog;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
-import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -34,8 +35,6 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
@@ -47,15 +46,15 @@ import org.springframework.util.ClassUtils;
 public class AsahTaskManager {
 
 	public boolean checkNanite(String naniteClassName) {
-		JSONObject latestRunLogJSONObject =
-			_runLogDog.fetchLatestRunLogJSONObject(
-				null, _elasticsearchInvoker, naniteClassName);
+		RunLog latestRunLog = _runLogDog.fetchLatestRunLog(
+			null, _elasticsearchInvoker, naniteClassName, null);
 
-		if ((latestRunLogJSONObject != null) &&
-			Objects.equals(
-				latestRunLogJSONObject.getString("status"), "STARTED")) {
+		if ((latestRunLog != null) &&
+			Objects.equals(latestRunLog.getStatus(), "STARTED")) {
 
-			_log.error("Nanite is already running: " + latestRunLogJSONObject);
+			_log.error(
+				"Nanite is already running: " +
+					latestRunLog.getNaniteClassName());
 
 			return true;
 		}

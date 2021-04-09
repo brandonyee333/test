@@ -16,10 +16,10 @@ package com.liferay.osb.asah.salesforce.extractor.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
@@ -68,8 +68,8 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 	@Override
 	public void run() throws Exception {
 		_runLogDog.log(
-			_salesforceExtractorConfiguration.getDataSourceId(), this,
-			"STARTED", _elasticsearchInvoker, "totalOperations",
+			Long.valueOf(_salesforceExtractorConfiguration.getDataSourceId()),
+			this, "STARTED", _elasticsearchInvoker, "totalOperations",
 			_elasticsearchInvoker.count(
 				"audit-events",
 				QueryBuilders.termsQuery("typeName", "Lead", "Contact")));
@@ -78,8 +78,9 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 			_run();
 
 			_runLogDog.log(
-				_salesforceExtractorConfiguration.getDataSourceId(), this,
-				"COMPLETED", _elasticsearchInvoker);
+				Long.valueOf(
+					_salesforceExtractorConfiguration.getDataSourceId()),
+				this, "COMPLETED", _elasticsearchInvoker);
 
 			_asahTaskDog.scheduleAsahTask(
 				"SalesforceIndividualsNanite",
@@ -92,8 +93,9 @@ public class SalesforceExtractorIndividualsNanite implements Nanite {
 		}
 		catch (Exception e) {
 			_runLogDog.log(
-				_salesforceExtractorConfiguration.getDataSourceId(), this,
-				"FAILED", _elasticsearchInvoker);
+				Long.valueOf(
+					_salesforceExtractorConfiguration.getDataSourceId()),
+				this, "FAILED", _elasticsearchInvoker);
 
 			throw e;
 		}

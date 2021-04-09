@@ -16,9 +16,9 @@ package com.liferay.osb.asah.salesforce.extractor.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -614,8 +614,8 @@ public class SalesforceExtractorNanite implements Nanite {
 				_salesforceExtractorConfiguration, tableNames);
 
 		_runLogDog.log(
-			_salesforceExtractorConfiguration.getDataSourceId(), this,
-			"STARTED", _elasticsearchInvoker,
+			Long.valueOf(_salesforceExtractorConfiguration.getDataSourceId()),
+			this, "STARTED", _elasticsearchInvoker,
 			_buildRunLogAdditionalFields(
 				describeSObjectResults, osbAsahMarkerJSONObject));
 
@@ -650,8 +650,9 @@ public class SalesforceExtractorNanite implements Nanite {
 			}
 
 			_runLogDog.log(
-				_salesforceExtractorConfiguration.getDataSourceId(), this,
-				"COMPLETED", _elasticsearchInvoker);
+				Long.valueOf(
+					_salesforceExtractorConfiguration.getDataSourceId()),
+				this, "COMPLETED", _elasticsearchInvoker);
 
 			_asahTaskDog.scheduleAsahTask(
 				"SalesforceAccountsNanite",
@@ -664,8 +665,9 @@ public class SalesforceExtractorNanite implements Nanite {
 		}
 		catch (Exception e) {
 			_runLogDog.log(
-				_salesforceExtractorConfiguration.getDataSourceId(), this,
-				"FAILED", _elasticsearchInvoker);
+				Long.valueOf(
+					_salesforceExtractorConfiguration.getDataSourceId()),
+				this, "FAILED", _elasticsearchInvoker);
 
 			throw e;
 		}
