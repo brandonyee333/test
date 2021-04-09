@@ -19,7 +19,9 @@ import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -96,7 +98,8 @@ public class SegmentRepositoryImpl extends BaseRepository {
 					Segment.Type.DYNAMIC.toString()
 				))
 		).orderBy(
-			getSortFields(pageable.getSort(), null)
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -119,7 +122,8 @@ public class SegmentRepositoryImpl extends BaseRepository {
 			_getPreviewDisabledSegmentsConditions(
 				dataSourceFieldMappingIds, dataSourceId, filterString)
 		).orderBy(
-			getSortFields(pageable.getSort(), null)
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -156,7 +160,8 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		).where(
 			_getConditions(channelIds, filterString)
 		).orderBy(
-			getSortFields(pageable.getSort(), null)
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -177,7 +182,8 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		).where(
 			_getConditions(filter, state, status)
 		).orderBy(
-			getSortFields(pageable.getSort(), null)
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(
@@ -294,6 +300,10 @@ public class SegmentRepositoryImpl extends BaseRepository {
 		conditions.add(FilterStringToConditionConverter.convert(filterString));
 
 		return conditions;
+	}
+
+	private Map<String, String> _getSortFieldNameConversionMap() {
+		return Collections.singletonMap("author/name", "authorName");
 	}
 
 	private final DSLContext _dslContext;

@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 import org.jooq.Field;
 import org.jooq.SortField;
@@ -30,7 +32,7 @@ import org.springframework.data.domain.Sort;
 public abstract class BaseRepository {
 
 	protected Collection<SortField<?>> getSortFields(
-		Sort sort, Table<?> table) {
+		Map<String, String> fieldNames, Sort sort, Table<?> table) {
 
 		Collection<SortField<?>> sortFields = new ArrayList<>();
 
@@ -42,8 +44,23 @@ public abstract class BaseRepository {
 			return sortFields;
 		}
 
+		if (fieldNames == null) {
+			fieldNames = Collections.emptyMap();
+		}
+
 		for (Sort.Order order : sort.toList()) {
 			String fieldName = order.getProperty();
+
+			if (fieldNames.containsKey(fieldName)) {
+				fieldName = fieldNames.get(fieldName);
+			}
+
+			if (fieldName.equalsIgnoreCase("dateCreated")) {
+				fieldName = "createDate";
+			}
+			else if (fieldName.equalsIgnoreCase("dateModified")) {
+				fieldName = "modifiedDate";
+			}
 
 			if (table != null) {
 				fieldName = table + "." + fieldName;
@@ -60,6 +77,12 @@ public abstract class BaseRepository {
 		}
 
 		return sortFields;
+	}
+
+	protected Collection<SortField<?>> getSortFields(
+		Sort sort, Table<?> table) {
+
+		return getSortFields(null, sort, table);
 	}
 
 }
