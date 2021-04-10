@@ -99,7 +99,7 @@ public class ElasticsearchRunLogRepositoryImpl
 			WeDeployServiceThreadLocal.getWeDeployDataService();
 
 		if (weDeployDataService == null) {
-			throw new IllegalStateException("WeDeployDataService is null");
+			throw new IllegalStateException("WeDeploy data service is null");
 		}
 
 		if (weDeployDataService == WeDeployDataService.OSB_ASAH_DXP_RAW) {
@@ -117,7 +117,8 @@ public class ElasticsearchRunLogRepositoryImpl
 		}
 		else {
 			throw new IllegalStateException(
-				"Unexpected WeDeployDataService value " + weDeployDataService);
+				"Unexpected WeDeploy data service value " +
+					weDeployDataService);
 		}
 	}
 
