@@ -33,12 +33,13 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -49,6 +50,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -118,6 +120,21 @@ public class AnalyticsEventsRestController {
 						errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 				}
 
+				Set<Integer> indices = new TreeSet<>(
+					Collections.reverseOrder());
+
+				for (FieldError fieldError : errors.getFieldErrors()) {
+					Matcher matcher = _pattern.matcher(fieldError.getField());
+
+					if (matcher.matches()) {
+						indices.add(Integer.parseInt(matcher.group(1)));
+					}
+				}
+
+				for (int index : indices) {
+					events.remove(index);
+				}
+
 				ZonedDateTime now = ZonedDateTime.now(ZoneId.of("GMT"));
 
 				// Tolerate 1 hour of discrepancy between sever and client dates
@@ -129,15 +146,6 @@ public class AnalyticsEventsRestController {
 
 				while (iterator.hasNext()) {
 					AnalyticsEventsMessage.Event event = iterator.next();
-
-					Set<ConstraintViolation<AnalyticsEventsMessage.Event>>
-						constraintViolations = _validator.validate(event);
-
-					if (!constraintViolations.isEmpty()) {
-						iterator.remove();
-
-						continue;
-					}
 
 					Date eventDate = event.getEventDate();
 
@@ -189,14 +197,13 @@ public class AnalyticsEventsRestController {
 		PrometheusUtil.histogram(
 			"publisher_event_request_seconds",
 			"The number of seconds taken to process the event requests");
+	private static final Pattern _pattern = Pattern.compile(
+		"^events\\[(\\d+)].*");
 
 	@Autowired
 	private AnalyticsEventsMessageCache _analyticsEventsMessageCache;
 
 	@Autowired
 	private MessageBus _messageBus;
-
-	@Autowired
-	private Validator _validator;
 
 }
