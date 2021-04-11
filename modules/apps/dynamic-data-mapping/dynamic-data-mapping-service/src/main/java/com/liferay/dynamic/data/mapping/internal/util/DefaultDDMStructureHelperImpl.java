@@ -112,7 +112,7 @@ public class DefaultDDMStructureHelperImpl
 			for (Locale curLocale : _language.getAvailableLocales(groupId)) {
 				ResourceBundle resourceBundle =
 					ResourceBundleUtil.getModuleAndPortalResourceBundle(
-						curLocale, getClass());
+						curLocale, classLoader);
 
 				nameMap.put(curLocale, _language.get(resourceBundle, name));
 				descriptionMap.put(

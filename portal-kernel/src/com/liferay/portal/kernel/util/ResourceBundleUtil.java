@@ -139,6 +139,13 @@ public class ResourceBundleUtil {
 			getBundle(locale, clazz), PortalUtil.getResourceBundle(locale));
 	}
 
+	public static ResourceBundle getModuleAndPortalResourceBundle(
+		Locale locale, ClassLoader classLoader) {
+
+		return new AggregateResourceBundle(
+			getBundle(locale, classLoader), PortalUtil.getResourceBundle(locale));
+	}
+
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
