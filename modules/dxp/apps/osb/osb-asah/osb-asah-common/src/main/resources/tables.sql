@@ -237,6 +237,20 @@ CREATE TABLE IF NOT EXISTS Membership (
 	status TEXT
 );
 
+CREATE TABLE IF NOT EXISTS MembershipChange (
+	id BIGSERIAL PRIMARY KEY,
+	dateChanged TIMESTAMPTZ,
+	dateFirst TIMESTAMPTZ,
+	individualDeleted BOOLEAN,
+	individualId BIGINT,
+	individualEmail TEXT,
+	individualName TEXT,
+	individualsCount BIGINT,
+	individualSegmentId BIGINT,
+	knownIndividualsCount BIGINT,
+	operation TEXT
+);
+
 CREATE TABLE IF NOT EXISTS Preference (
 	id BIGSERIAL PRIMARY KEY,
 	key TEXT UNIQUE,
