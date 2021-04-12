@@ -412,11 +412,7 @@ public class DocumentImpl implements Document {
 
 	@Override
 	public void addKeywordSortable(String name, Boolean value) {
-		String valueString = String.valueOf(value);
-
-		createKeywordField(name, valueString, false);
-
-		_createSortableTextField(name, true, valueString);
+		addKeywordSortable(name, String.valueOf(value));
 	}
 
 	@Override
@@ -434,6 +430,10 @@ public class DocumentImpl implements Document {
 
 	@Override
 	public void addKeywordSortable(String name, String value) {
+		if (Validator.isNull(value)) {
+			return;
+		}
+
 		createKeywordField(name, value, false);
 
 		_createSortableTextField(name, true, value);
@@ -441,6 +441,10 @@ public class DocumentImpl implements Document {
 
 	@Override
 	public void addKeywordSortable(String name, String[] values) {
+		if (values == null) {
+			return;
+		}
+
 		createField(name, values);
 
 		_createSortableTextField(name, true, values);
