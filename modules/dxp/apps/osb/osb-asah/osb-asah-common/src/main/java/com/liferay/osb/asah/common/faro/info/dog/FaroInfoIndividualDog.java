@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.faro.info.dog;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
+import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -385,10 +386,8 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 		_membershipDog.deactivateMemberships(
 			deletionDate, Long.valueOf(individualId));
 
-		elasticsearchInvoker.updateByQueryWithRetry(
-			QueryBuilders.termQuery("individualId", individualId), true,
-			new Script("ctx._source.individualDeleted = true"),
-			"membership-changes");
+		_membershipChangeDog.updateMembershipChangeIndividualDeleted(
+			Boolean.TRUE, Long.valueOf(individualId));
 
 		elasticsearchInvoker.delete("individuals", individualId);
 	}
@@ -978,14 +977,8 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 			individualJSONObject.optJSONObject("demographics"));
 
 		if (!Objects.equals(oldIndividualName, newIndividualName)) {
-			elasticsearchInvoker.updateByQueryWithRetry(
-				QueryBuilders.termQuery("individualId", individualId), true,
-				new Script(
-					Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
-					"ctx._source.individualName = params.individualName",
-					Collections.singletonMap(
-						"individualName", newIndividualName)),
-				"membership-changes");
+			_membershipChangeDog.updateIndividualNameForIndividual(
+				Long.valueOf(individualId), newIndividualName);
 		}
 	}
 
@@ -1129,6 +1122,9 @@ public class FaroInfoIndividualDog extends BaseFaroInfoDog {
 
 	@Autowired
 	private FieldDog _fieldDog;
+
+	@Autowired
+	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private MembershipDog _membershipDog;

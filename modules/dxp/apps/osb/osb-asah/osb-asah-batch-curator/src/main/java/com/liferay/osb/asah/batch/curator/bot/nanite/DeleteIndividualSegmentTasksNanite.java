@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.MembershipChangeDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
@@ -51,10 +52,8 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 
 		faroInfoElasticsearchInvoker.delete("visited-pages", boolQueryBuilder);
 
-		faroInfoElasticsearchInvoker.delete(
-			"membership-changes",
-			QueryBuilders.termQuery(
-				"individualSegmentId", individualSegmentId));
+		membershipChangeDog.deleteMembershipChanges(
+			Long.valueOf(individualSegmentId));
 
 		membershipDog.deleteMembership(Long.valueOf(individualSegmentId));
 
@@ -78,6 +77,9 @@ public class DeleteIndividualSegmentTasksNanite extends BaseNanite {
 	protected Log getLog() {
 		return LogFactory.getLog(DeleteIndividualSegmentTasksNanite.class);
 	}
+
+	@Autowired
+	protected MembershipChangeDog membershipChangeDog;
 
 	@Autowired
 	protected MembershipDog membershipDog;
