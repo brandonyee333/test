@@ -61,12 +61,8 @@ public class EventAttributeDefinitionDog {
 
 		eventAttributeDefinition.setDataType(getDataType(name, sampleValue));
 		eventAttributeDefinition.setDescription(description);
-
-		if (StringUtils.isBlank(displayName)) {
-			displayName = name;
-		}
-
-		eventAttributeDefinition.setDisplayName(displayName);
+		eventAttributeDefinition.setDisplayName(
+			_getDisplayName(displayName, name));
 
 		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
 			Collections.singleton(
@@ -216,6 +212,23 @@ public class EventAttributeDefinitionDog {
 
 		return _eventAttributeDefinitionRepository.save(
 			eventAttributeDefinition);
+	}
+
+	private String _getDisplayName(String displayName, String name) {
+		if (StringUtils.isBlank(displayName)) {
+			displayName = name;
+		}
+
+		int nameCount = 0;
+		String originalName = displayName;
+
+		while (fetchEventAttributeDefinitionByDisplayName(displayName) !=
+					null) {
+
+			displayName = String.format("%s (%d)", originalName, ++nameCount);
+		}
+
+		return displayName;
 	}
 
 	private boolean _isBoolean(String value) {

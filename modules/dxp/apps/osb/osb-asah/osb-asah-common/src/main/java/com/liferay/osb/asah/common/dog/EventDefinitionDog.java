@@ -68,13 +68,7 @@ public class EventDefinitionDog {
 		}
 
 		eventDefinition.setDescription(description);
-
-		if (StringUtils.isBlank(displayName)) {
-			displayName = name;
-		}
-
-		eventDefinition.setDisplayName(displayName);
-
+		eventDefinition.setDisplayName(_getDisplayName(displayName, name));
 		eventDefinition.setName(name);
 		eventDefinition.setType(type);
 
@@ -166,6 +160,21 @@ public class EventDefinitionDog {
 		}
 
 		return _eventDefinitionRepository.save(eventDefinition);
+	}
+
+	private String _getDisplayName(String displayName, String name) {
+		if (StringUtils.isBlank(displayName)) {
+			displayName = name;
+		}
+
+		int nameCount = 0;
+		String originalName = displayName;
+
+		while (fetchEventDefinitionByDisplayName(displayName) != null) {
+			displayName = String.format("%s (%d)", originalName, ++nameCount);
+		}
+
+		return displayName;
 	}
 
 	private void _validate(Sort sort) {
