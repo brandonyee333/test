@@ -120,18 +120,9 @@ public class AnalyticsEventsRestController {
 						errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 				}
 
-				Set<Integer> indices = new TreeSet<>(
-					Collections.reverseOrder());
+				for (int index :
+						_getInvalidEventIndices(errors.getFieldErrors())) {
 
-				for (FieldError fieldError : errors.getFieldErrors()) {
-					Matcher matcher = _pattern.matcher(fieldError.getField());
-
-					if (matcher.matches()) {
-						indices.add(Integer.parseInt(matcher.group(1)));
-					}
-				}
-
-				for (int index : indices) {
 					events.remove(index);
 				}
 
@@ -188,6 +179,20 @@ public class AnalyticsEventsRestController {
 		finally {
 			_eventRequestsHistogram.observe(simpleTimer.elapsedSeconds());
 		}
+	}
+
+	private Set<Integer> _getInvalidEventIndices(List<FieldError> fieldErrors) {
+		Set<Integer> indices = new TreeSet<>(Collections.reverseOrder());
+
+		for (FieldError fieldError : fieldErrors) {
+			Matcher matcher = _pattern.matcher(fieldError.getField());
+
+			if (matcher.matches()) {
+				indices.add(Integer.parseInt(matcher.group(1)));
+			}
+		}
+
+		return indices;
 	}
 
 	private static final Log _log = LogFactory.getLog(
