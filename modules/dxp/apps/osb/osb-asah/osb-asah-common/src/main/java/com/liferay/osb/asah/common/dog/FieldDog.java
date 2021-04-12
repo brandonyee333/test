@@ -937,7 +937,7 @@ public class FieldDog {
 			Field uniqueIdField = uniqueIdFields.get(0);
 
 			JSONObject dataJSONObject = _fetchDataJSONObject(
-				dataSource, ownerType, uniqueIdField.getValue(),
+				dataSource, ownerType, String.valueOf(uniqueIdField.getValue()),
 				uniqueIdDataSourceFieldNamesJSONObject.getString(dataSourceId));
 
 			if (dataJSONObject == null) {

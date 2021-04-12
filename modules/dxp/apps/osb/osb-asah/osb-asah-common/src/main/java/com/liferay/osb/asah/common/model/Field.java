@@ -156,7 +156,7 @@ public class Field implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getValue() {
+	public Object getValue() {
 		return _value;
 	}
 
@@ -222,7 +222,7 @@ public class Field implements Persistable<Long> {
 		_sourceName = sourceName;
 	}
 
-	public void setValue(String value) {
+	public void setValue(Object value) {
 		_value = value;
 	}
 
@@ -260,6 +260,6 @@ public class Field implements Persistable<Long> {
 	private String _sourceName;
 
 	@Transient
-	private String _value;
+	private Object _value;
 
 }

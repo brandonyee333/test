@@ -110,7 +110,7 @@ public class FieldDTO {
 	}
 
 	@JsonProperty("value")
-	public String getValue() {
+	public Object getValue() {
 		return _value;
 	}
 
@@ -124,6 +124,6 @@ public class FieldDTO {
 	private String _ownerId;
 	private String _ownerType;
 	private String _sourceName;
-	private String _value;
+	private Object _value;
 
 }
