@@ -14,19 +14,19 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Membership;
+import com.liferay.osb.asah.common.model.MembershipChange;
+import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,98 +39,72 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		Membership membership, JSONObject individualJSONObject,
 		long individualsCount, long knownIndividualsCount, String operation) {
 
+		MembershipChange membershipChange = new MembershipChange();
+
+		membershipChange.setDateChanged(membership.getModifiedDate());
+		membershipChange.setDateFirst(membership.getCreateDate());
+		membershipChange.setIndividualDeleted(Boolean.FALSE);
+
 		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
 			"demographics");
 
-		elasticsearchInvoker.add(
-			"membership-changes",
-			JSONUtil.put(
-				"dateChanged",
-				DateUtil.toUTCString(membership.getModifiedDate())
-			).put(
-				"dateFirst", DateUtil.toUTCString(membership.getCreateDate())
-			).put(
-				"individualDeleted", false
-			).put(
-				"individualEmail",
-				FaroInfoIndividualUtil.getIndividualEmail(
-					demographicsJSONObject)
-			).put(
-				"individualId", String.valueOf(membership.getIndividualId())
-			).put(
-				"individualName",
-				FaroInfoIndividualUtil.getIndividualName(demographicsJSONObject)
-			).put(
-				"individualsCount", individualsCount
-			).put(
-				"individualSegmentId",
-				String.valueOf(membership.getIndividualSegmentId())
-			).put(
-				"knownIndividualsCount", knownIndividualsCount
-			).put(
-				"operation", operation
-			));
+		membershipChange.setIndividualEmail(
+			FaroInfoIndividualUtil.getIndividualEmail(demographicsJSONObject));
+
+		membershipChange.setIndividualId(membership.getIndividualId());
+		membershipChange.setIndividualName(
+			FaroInfoIndividualUtil.getIndividualName(demographicsJSONObject));
+		membershipChange.setIndividualsCount(individualsCount);
+		membershipChange.setIndividualSegmentId(
+			membership.getIndividualSegmentId());
+		membershipChange.setKnownIndividualsCount(knownIndividualsCount);
+		membershipChange.setOperation(operation);
+
+		_membershipChangeRepository.save(membershipChange);
 	}
 
 	public void addMembershipChangeForDeletedIndividual(
 		Membership membership, Long individualId, long individualsCount,
 		long knownIndividualsCount) {
 
-		String individualEmail = null;
-		String individualName = null;
+		MembershipChange membershipChange = new MembershipChange();
 
-		JSONArray membershipChangesJSONArray = new JSONArray(
-			elasticsearchInvoker.get(
-				"membership-changes",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						QueryBuilders.termQuery(
-							"individualId", String.valueOf(individualId)));
-					searchSourceBuilder.size(1);
-				}));
+		membershipChange.setDateChanged(membership.getModifiedDate());
+		membershipChange.setDateFirst(membership.getCreateDate());
+		membershipChange.setIndividualDeleted(Boolean.TRUE);
 
-		if (membershipChangesJSONArray.length() > 0) {
-			JSONObject membershipChangeJSONObject =
-				membershipChangesJSONArray.getJSONObject(0);
+		Optional<MembershipChange> membershipChangeOptional =
+			_membershipChangeRepository.findByIndividualId(individualId);
 
-			individualEmail = membershipChangeJSONObject.optString(
-				"individualEmail", null);
-			individualName = membershipChangeJSONObject.optString(
-				"individualName", null);
-		}
+		membershipChangeOptional.map(
+			MembershipChange::getIndividualEmail
+		).ifPresent(
+			individualEmail -> membershipChange.setIndividualEmail(
+				individualEmail)
+		);
 
-		elasticsearchInvoker.add(
-			"membership-changes",
-			JSONUtil.put(
-				"dateChanged",
-				DateUtil.toUTCString(membership.getModifiedDate())
-			).put(
-				"dateFirst", DateUtil.toUTCString(membership.getCreateDate())
-			).put(
-				"individualDeleted", true
-			).put(
-				"individualEmail", individualEmail
-			).put(
-				"individualId", String.valueOf(individualId)
-			).put(
-				"individualName", individualName
-			).put(
-				"individualsCount", individualsCount
-			).put(
-				"individualSegmentId",
-				String.valueOf(membership.getIndividualSegmentId())
-			).put(
-				"knownIndividualsCount", knownIndividualsCount
-			).put(
-				"operation", "REMOVED"
-			));
+		membershipChange.setIndividualId(membership.getIndividualId());
+
+		membershipChangeOptional.map(
+			MembershipChange::getIndividualName
+		).ifPresent(
+			individualName -> membershipChange.setIndividualName(individualName)
+		);
+
+		membershipChange.setIndividualsCount(individualsCount);
+		membershipChange.setIndividualSegmentId(
+			membership.getIndividualSegmentId());
+		membershipChange.setKnownIndividualsCount(knownIndividualsCount);
+		membershipChange.setOperation("REMOVED");
+
+		_membershipChangeRepository.save(membershipChange);
 	}
 
 	public void addMembershipChanges(
 		List<Membership> memberships, boolean includeAnonymousUsers,
 		long individualsCount, long knownIndividualsCount) {
 
-		JSONArray membershipChangesJSONArray = new JSONArray();
+		List<MembershipChange> membershipChanges = new ArrayList<>();
 
 		for (Membership membership : memberships) {
 			Long individualId = membership.getIndividualId();
@@ -154,37 +128,48 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 				individualsCount++;
 			}
 
-			membershipChangesJSONArray.put(
-				JSONUtil.put(
-					"dateChanged",
-					DateUtil.toUTCString(membership.getModifiedDate())
-				).put(
-					"dateFirst",
-					DateUtil.toUTCString(membership.getCreateDate())
-				).put(
-					"individualDeleted", false
-				).put(
-					"individualEmail", individualEmail
-				).put(
-					"individualId", String.valueOf(individualId)
-				).put(
-					"individualName",
-					FaroInfoIndividualUtil.getIndividualName(
-						demographicsJSONObject)
-				).put(
-					"individualsCount", individualsCount
-				).put(
-					"individualSegmentId",
-					String.valueOf(membership.getIndividualSegmentId())
-				).put(
-					"knownIndividualsCount", knownIndividualsCount
-				).put(
-					"operation", "ADDED"
-				));
+			MembershipChange membershipChange = new MembershipChange();
+
+			membershipChange.setDateChanged(membership.getModifiedDate());
+			membershipChange.setDateFirst(membership.getCreateDate());
+			membershipChange.setIndividualDeleted(Boolean.FALSE);
+			membershipChange.setIndividualEmail(individualEmail);
+			membershipChange.setIndividualId(individualId);
+			membershipChange.setIndividualName(
+				FaroInfoIndividualUtil.getIndividualName(
+					demographicsJSONObject));
+			membershipChange.setIndividualsCount(individualsCount);
+			membershipChange.setIndividualSegmentId(
+				membership.getIndividualSegmentId());
+			membershipChange.setKnownIndividualsCount(knownIndividualsCount);
+			membershipChange.setOperation("ADDED");
+
+			membershipChanges.add(membershipChange);
 		}
 
-		elasticsearchInvoker.add(
-			"membership-changes", membershipChangesJSONArray);
+		_membershipChangeRepository.saveAll(membershipChanges);
 	}
+
+	public void deleteMembershipChanges(Long individualSegmentId) {
+		_membershipChangeRepository.deleteByIndividualSegmentId(
+			individualSegmentId);
+	}
+
+	public void updateIndividualNameForIndividual(
+		Long individualId, String individualName) {
+
+		_membershipChangeRepository.updateIndividualNameByIndividualId(
+			individualId, individualName);
+	}
+
+	public void updateMembershipChangeIndividualDeleted(
+		Boolean individualDeleted, Long individualId) {
+
+		_membershipChangeRepository.updateIndividualDeletedByIndividualId(
+			individualDeleted, individualId);
+	}
+
+	@Autowired
+	private MembershipChangeRepository _membershipChangeRepository;
 
 }
