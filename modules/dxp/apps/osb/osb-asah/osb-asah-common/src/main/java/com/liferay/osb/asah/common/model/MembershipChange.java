@@ -78,20 +78,6 @@ public class MembershipChange implements Persistable<Long> {
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	@JsonProperty("dateChanged")
-	public Date getModifiedDate() {
-		if (_modifiedDate == null) {
-			return null;
-		}
-
-		return new Date(_modifiedDate.getTime());
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
 	@JsonProperty("dateFirst")
 	public Date getCreateDate() {
 		if (_createDate == null) {
@@ -147,6 +133,20 @@ public class MembershipChange implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateChanged")
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
+		return new Date(_modifiedDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public String getOperation() {
 		return _operation;
 	}
@@ -154,9 +154,10 @@ public class MembershipChange implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_modifiedDate, _createDate, _id, _individualDeleted, _individualEmail,
-			_individualId, _individualName, _individualSegmentId,
-			_individualsCount, _knownIndividualsCount, _operation);
+			_modifiedDate, _createDate, _id, _individualDeleted,
+			_individualEmail, _individualId, _individualName,
+			_individualSegmentId, _individualsCount, _knownIndividualsCount,
+			_operation);
 	}
 
 	@JsonIgnore
@@ -167,12 +168,6 @@ public class MembershipChange implements Persistable<Long> {
 		}
 
 		return false;
-	}
-
-	public void setModifiedDate(Date modifiedDate) {
-		if (modifiedDate != null) {
-			_modifiedDate = new Date(modifiedDate.getTime());
-		}
 	}
 
 	public void setCreateDate(Date createDate) {
@@ -217,12 +212,15 @@ public class MembershipChange implements Persistable<Long> {
 		_knownIndividualsCount = knownIndividualsCount;
 	}
 
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
+		}
+	}
+
 	public void setOperation(String operation) {
 		_operation = operation;
 	}
-
-	@Transient
-	private Date _modifiedDate;
 
 	@Transient
 	private Date _createDate;
@@ -253,6 +251,9 @@ public class MembershipChange implements Persistable<Long> {
 
 	@Transient
 	private Long _knownIndividualsCount;
+
+	@Transient
+	private Date _modifiedDate;
 
 	@Transient
 	private String _operation;

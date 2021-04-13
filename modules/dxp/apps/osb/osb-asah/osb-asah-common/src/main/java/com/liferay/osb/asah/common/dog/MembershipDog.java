@@ -98,8 +98,8 @@ public class MembershipDog extends BaseFaroInfoDog {
 			membership.getIndividualSegmentId());
 
 		_membershipChangeDog.addMembershipChange(
-			individualJSONObject, individualCount,
-			knownIndividualCount, membership, "ADDED");
+			individualJSONObject, individualCount, knownIndividualCount,
+			membership, "ADDED");
 
 		return membership;
 	}
@@ -141,8 +141,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			membership.getIndividualSegmentId());
 
 		_membershipChangeDog.addMembershipChanges(
-			includeAnonymousUsers,
-			individualCount - memberships.size(),
+			includeAnonymousUsers, individualCount - memberships.size(),
 			knownIndividualCount -
 				_faroInfoIndividualDog.getKnownIndividualCount(
 					ListUtil.map(memberships, Membership::getIndividualId)),
@@ -202,15 +201,14 @@ public class MembershipDog extends BaseFaroInfoDog {
 			membership.getIndividualSegmentId());
 
 		if (individualJSONObject == null) {
-			_membershipChangeDog.
-				addMembershipChangeForDeletedIndividual(
-					membership.getIndividualId(), individualCount,
-					knownIndividualCount, membership);
+			_membershipChangeDog.addMembershipChangeForDeletedIndividual(
+				membership.getIndividualId(), individualCount,
+				knownIndividualCount, membership);
 		}
 		else {
 			_membershipChangeDog.addMembershipChange(
-				individualJSONObject, individualCount,
-				knownIndividualCount, membership, "REMOVED");
+				individualJSONObject, individualCount, knownIndividualCount,
+				membership, "REMOVED");
 		}
 	}
 

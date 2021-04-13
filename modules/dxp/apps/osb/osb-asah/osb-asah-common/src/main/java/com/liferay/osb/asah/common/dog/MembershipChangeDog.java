@@ -64,11 +64,10 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 	}
 
 	public void addMembershipChangeForDeletedIndividual(
-		Long individualId, long individualsCount,
-		long knownIndividualsCount, Membership membership) {
+		Long individualId, long individualsCount, long knownIndividualsCount,
+		Membership membership) {
 
 		MembershipChange membershipChange = new MembershipChange();
-
 
 		membershipChange.setCreateDate(membership.getCreateDate());
 		membershipChange.setIndividualDeleted(Boolean.TRUE);
