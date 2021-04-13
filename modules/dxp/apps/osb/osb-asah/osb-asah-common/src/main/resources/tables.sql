@@ -239,7 +239,7 @@ CREATE TABLE IF NOT EXISTS Membership (
 
 CREATE TABLE IF NOT EXISTS MembershipChange (
 	id BIGSERIAL PRIMARY KEY,
-	dateFirst TIMESTAMPTZ,
+	createDate TIMESTAMPTZ,
 	individualDeleted BOOLEAN,
 	individualId BIGINT,
 	individualEmail TEXT,

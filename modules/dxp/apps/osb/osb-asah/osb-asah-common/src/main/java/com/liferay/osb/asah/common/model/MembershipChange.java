@@ -50,7 +50,7 @@ public class MembershipChange implements Persistable<Long> {
 		MembershipChange membershipChange = (MembershipChange)obj;
 
 		if (Objects.equals(_modifiedDate, membershipChange._modifiedDate) &&
-			Objects.equals(_dateFirst, membershipChange._dateFirst) &&
+			Objects.equals(_createDate, membershipChange._createDate) &&
 			Objects.equals(_id, membershipChange._id) &&
 			Objects.equals(
 				_individualDeleted, membershipChange._individualDeleted) &&
@@ -92,12 +92,13 @@ public class MembershipChange implements Persistable<Long> {
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	public Date getDateFirst() {
-		if (_dateFirst == null) {
+	@JsonProperty("dateFirst")
+	public Date getCreateDate() {
+		if (_createDate == null) {
 			return null;
 		}
 
-		return new Date(_dateFirst.getTime());
+		return new Date(_createDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -153,7 +154,7 @@ public class MembershipChange implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_modifiedDate, _dateFirst, _id, _individualDeleted, _individualEmail,
+			_modifiedDate, _createDate, _id, _individualDeleted, _individualEmail,
 			_individualId, _individualName, _individualSegmentId,
 			_individualsCount, _knownIndividualsCount, _operation);
 	}
@@ -174,9 +175,9 @@ public class MembershipChange implements Persistable<Long> {
 		}
 	}
 
-	public void setDateFirst(Date dateFirst) {
-		if (dateFirst != null) {
-			_dateFirst = new Date(dateFirst.getTime());
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
 		}
 	}
 
@@ -224,7 +225,7 @@ public class MembershipChange implements Persistable<Long> {
 	private Date _modifiedDate;
 
 	@Transient
-	private Date _dateFirst;
+	private Date _createDate;
 
 	@Transient
 	private Long _id;
