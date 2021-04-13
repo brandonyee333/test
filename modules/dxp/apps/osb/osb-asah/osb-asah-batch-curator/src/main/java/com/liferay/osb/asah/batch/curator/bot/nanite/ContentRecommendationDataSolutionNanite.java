@@ -771,7 +771,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private void _updateJobRun(JobRun jobRun) {
-		jobRun.setLastUpdatedDate(new Date());
+		jobRun.setModifiedDate(new Date());
 
 		_jobRunRepository.save(jobRun);
 	}

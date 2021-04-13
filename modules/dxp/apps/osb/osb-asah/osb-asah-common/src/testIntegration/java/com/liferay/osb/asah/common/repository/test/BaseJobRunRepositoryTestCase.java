@@ -47,7 +47,7 @@ public abstract class BaseJobRunRepositoryTestCase
 
 		jobRun.setCompletedDate(new Date());
 		jobRun.setContextJSONObject(JSONUtil.put("key", "value"));
-		jobRun.setCreatedDate(new Date());
+		jobRun.setCreateDate(new Date());
 		jobRun.setJobId(job.getId());
 		jobRun.setJobRunStatus(JobRunStatus.RUNNING);
 		jobRun.setTrigger("manual");
@@ -65,13 +65,13 @@ public abstract class BaseJobRunRepositoryTestCase
 	private Job _addJob() {
 		Job job = new Job();
 
+		job.setCreateDate(new Date());
 		job.setJobType(JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY);
 		job.setJobRunFrequency(JobRunFrequency.MANUAL);
 		job.setJobRunDataPeriod(JobRunDataPeriod.LAST_30_DAYS);
 		job.setJobParameters(SetUtil.of(new JobParameter("parameter1", "1.2")));
+		job.setModifiedDate(new Date());
 		job.setName("Product Recommendation Job");
-		job.setCreatedDate(new Date());
-		job.setLastUpdatedDate(new Date());
 
 		return _jobRepository.save(job);
 	}

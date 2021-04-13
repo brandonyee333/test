@@ -58,7 +58,7 @@ public class JobRun implements Persistable<Long> {
 			Objects.equals(
 				JSONUtil.toMap(_contextJSONObject),
 				JSONUtil.toMap(jobRun._contextJSONObject)) &&
-			Objects.equals(_createdDate, jobRun._createdDate) &&
+			Objects.equals(_createDate, jobRun._createDate) &&
 			Objects.equals(_id, jobRun._id) &&
 			Objects.equals(_jobRef, jobRun._jobRef) &&
 			Objects.equals(_jobRunStatus, jobRun._jobRunStatus) &&
@@ -95,12 +95,13 @@ public class JobRun implements Persistable<Long> {
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	public Date getCreatedDate() {
-		if (_createdDate == null) {
+	@JsonProperty("createdDate")
+	public Date getCreateDate() {
+		if (_createDate == null) {
 			return null;
 		}
 
-		return new Date(_createdDate.getTime());
+		return new Date(_createDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -143,12 +144,13 @@ public class JobRun implements Persistable<Long> {
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	public Date getLastUpdatedDate() {
-		if (_lastUpdatedDate == null) {
+	@JsonProperty("lastUpdatedDate")
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
 			return null;
 		}
 
-		return new Date(_lastUpdatedDate.getTime());
+		return new Date(_modifiedDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -164,7 +166,7 @@ public class JobRun implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_completedDate, _contextJSONObject, _createdDate, _id, _jobRef,
+			_completedDate, _contextJSONObject, _createDate, _id, _jobRef,
 			_jobRunStatus, _trigger);
 	}
 
@@ -188,9 +190,9 @@ public class JobRun implements Persistable<Long> {
 		_contextJSONObject = contextJSONObject;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		if (createdDate != null) {
-			_createdDate = new Date(createdDate.getTime());
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
 		}
 	}
 
@@ -230,9 +232,9 @@ public class JobRun implements Persistable<Long> {
 		_jobRef.setType(jobType);
 	}
 
-	public void setLastUpdatedDate(Date lastUpdatedDate) {
-		if (lastUpdatedDate != null) {
-			_lastUpdatedDate = new Date(lastUpdatedDate.getTime());
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
 		}
 	}
 
@@ -260,7 +262,7 @@ public class JobRun implements Persistable<Long> {
 	private JSONObject _contextJSONObject;
 
 	@Transient
-	private Date _createdDate;
+	private Date _createDate;
 
 	@Transient
 	private Long _id;
@@ -275,7 +277,7 @@ public class JobRun implements Persistable<Long> {
 	private JobRunStatus _jobRunStatus;
 
 	@Transient
-	private Date _lastUpdatedDate;
+	private Date _modifiedDate;
 
 	@Transient
 	private String _step;

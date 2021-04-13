@@ -39,13 +39,13 @@ public abstract class BaseJobRepositoryTestCase
 	public void setUp() {
 		Job job = new Job();
 
+		job.setCreateDate(new Date());
 		job.setJobType(JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY);
 		job.setJobRunFrequency(JobRunFrequency.MANUAL);
 		job.setJobRunDataPeriod(JobRunDataPeriod.LAST_30_DAYS);
 		job.setJobParameters(SetUtil.of(new JobParameter("parameter1", "1.2")));
+		job.setModifiedDate(new Date());
 		job.setName("Product Recommendation Job");
-		job.setCreatedDate(new Date());
-		job.setLastUpdatedDate(new Date());
 
 		setUpRepository(job);
 	}

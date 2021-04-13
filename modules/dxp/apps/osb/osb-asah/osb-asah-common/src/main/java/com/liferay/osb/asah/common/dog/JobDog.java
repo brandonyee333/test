@@ -65,8 +65,8 @@ public class JobDog {
 
 		Date date = new Date();
 
-		job.setCreatedDate(date);
-		job.setLastUpdatedDate(date);
+		job.setCreateDate(date);
+		job.setModifiedDate(date);
 
 		job.setName(name);
 		job.setJobParameters(jobParameters);
@@ -112,12 +112,12 @@ public class JobDog {
 			return null;
 		}
 
-		Date startDate = job.getLastUpdatedDate();
+		Date startDate = job.getModifiedDate();
 
 		JobRun jobRun = _jobRunDog.fetchLatestJobRun(jobId, "SCHEDULE");
 
 		if (jobRun != null) {
-			startDate = jobRun.getCreatedDate();
+			startDate = jobRun.getCreateDate();
 		}
 
 		CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(
@@ -212,7 +212,7 @@ public class JobDog {
 
 		JobRunFrequency oldJobRunFrequency = job.getJobRunFrequency();
 
-		job.setLastUpdatedDate(new Date());
+		job.setModifiedDate(new Date());
 		job.setName(name);
 		job.setJobParameters(jobParameters);
 		job.setJobRunFrequency(jobRunFrequency);

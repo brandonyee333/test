@@ -93,7 +93,7 @@ public class ElasticsearchJobRunRepositoryImpl
 	}
 
 	@Override
-	public List<JobRun> findByJobIdAndCreatedDateBetween(
+	public List<JobRun> findByJobIdAndCreateDateBetween(
 		Long jobId, Date startCreateDate, Date endCreateDate) {
 
 		return toList(

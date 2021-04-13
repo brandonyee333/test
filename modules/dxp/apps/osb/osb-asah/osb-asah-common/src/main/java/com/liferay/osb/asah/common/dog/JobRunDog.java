@@ -63,11 +63,11 @@ public class JobRunDog {
 		JobRun jobRun = new JobRun();
 
 		jobRun.setContextJSONObject(contextJSONObject);
-		jobRun.setCreatedDate(date);
+		jobRun.setCreateDate(date);
 		jobRun.setJobId(job.getId());
 		jobRun.setJobRunStatus(jobRunStatus);
 		jobRun.setJobType(String.valueOf(job.getJobType()));
-		jobRun.setLastUpdatedDate(date);
+		jobRun.setModifiedDate(date);
 		jobRun.setStep(step);
 		jobRun.setTrigger(trigger);
 
@@ -183,13 +183,13 @@ public class JobRunDog {
 			return 0;
 		}
 
-		Date startDate = job.getLastUpdatedDate();
+		Date startDate = job.getModifiedDate();
 
 		JobRun lastScheduledJobRun = _fetchLastScheduledJobRun(
 			currentMonthJobRuns);
 
 		if (lastScheduledJobRun != null) {
-			startDate = lastScheduledJobRun.getCreatedDate();
+			startDate = lastScheduledJobRun.getCreateDate();
 		}
 
 		return _countCurrentMonthScheduledJobRuns(
@@ -226,7 +226,7 @@ public class JobRunDog {
 
 		startLocalDateTime = startLocalDateTime.with(LocalTime.MIDNIGHT);
 
-		return _jobRunRepository.findByJobIdAndCreatedDateBetween(
+		return _jobRunRepository.findByJobIdAndCreateDateBetween(
 			jobId, Date.from(startLocalDateTime.toInstant(ZoneOffset.UTC)),
 			Date.from(endLocalDateTime.toInstant(ZoneOffset.UTC)));
 	}

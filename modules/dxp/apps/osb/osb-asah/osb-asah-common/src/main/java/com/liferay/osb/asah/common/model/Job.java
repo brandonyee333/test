@@ -77,12 +77,13 @@ public class Job implements Persistable<Long> {
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	public Date getCreatedDate() {
-		if (_createdDate == null) {
+	@JsonProperty("createdDate")
+	public Date getCreateDate() {
+		if (_createDate == null) {
 			return null;
 		}
 
-		return new Date(_createdDate.getTime());
+		return new Date(_createDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -126,12 +127,13 @@ public class Job implements Persistable<Long> {
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	public Date getLastUpdatedDate() {
-		if (_lastUpdatedDate == null) {
+	@JsonProperty("lastUpdatedDate")
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
 			return null;
 		}
 
-		return new Date(_lastUpdatedDate.getTime());
+		return new Date(_modifiedDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -142,8 +144,8 @@ public class Job implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_createdDate, _id, _jobParameters, _jobRunDataPeriod,
-			_jobRunFrequency, _jobType, _lastUpdatedDate, _name);
+			_createDate, _id, _jobParameters, _jobRunDataPeriod,
+			_jobRunFrequency, _jobType, _modifiedDate, _name);
 	}
 
 	@JsonIgnore
@@ -160,9 +162,9 @@ public class Job implements Persistable<Long> {
 		_asahTaskId = asahTaskId;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		if (createdDate != null) {
-			_createdDate = new Date(createdDate.getTime());
+	public void setCreateDate(Date createDate) {
+		if (createDate != null) {
+			_createDate = new Date(createDate.getTime());
 		}
 	}
 
@@ -190,9 +192,9 @@ public class Job implements Persistable<Long> {
 		_jobType = jobType;
 	}
 
-	public void setLastUpdatedDate(Date lastUpdatedDate) {
-		if (lastUpdatedDate != null) {
-			_lastUpdatedDate = new Date(lastUpdatedDate.getTime());
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
 		}
 	}
 
@@ -201,13 +203,13 @@ public class Job implements Persistable<Long> {
 	}
 
 	protected boolean equalsJob(Job job) {
-		if (Objects.equals(_createdDate, job._createdDate) &&
+		if (Objects.equals(_createDate, job._createDate) &&
 			Objects.equals(_id, job._id) &&
 			Objects.equals(_jobParameters, job._jobParameters) &&
 			Objects.equals(_jobRunDataPeriod, job._jobRunDataPeriod) &&
 			Objects.equals(_jobRunFrequency, job._jobRunFrequency) &&
 			Objects.equals(_jobType, job._jobType) &&
-			Objects.equals(_lastUpdatedDate, job._lastUpdatedDate) &&
+			Objects.equals(_modifiedDate, job._modifiedDate) &&
 			Objects.equals(_name, job._name)) {
 
 			return true;
@@ -220,7 +222,7 @@ public class Job implements Persistable<Long> {
 	private Long _asahTaskId;
 
 	@Transient
-	private Date _createdDate;
+	private Date _createDate;
 
 	@Transient
 	private Long _id;
@@ -241,7 +243,7 @@ public class Job implements Persistable<Long> {
 	private JobType _jobType;
 
 	@Transient
-	private Date _lastUpdatedDate;
+	private Date _modifiedDate;
 
 	@Transient
 	private String _name;

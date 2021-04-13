@@ -199,12 +199,12 @@ CREATE TABLE IF NOT EXISTS ItemRecommendation (
 CREATE TABLE IF NOT EXISTS Job (
 	id BIGSERIAL PRIMARY KEY,
 	asahTaskId BIGINT NULL,
-	createdDate TIMESTAMPTZ,
+	createDate TIMESTAMPTZ,
+	modifiedDate TIMESTAMPTZ,
+	name TEXT,
 	runDataPeriod TEXT,
 	runFrequency TEXT,
-	type TEXT,
-	lastUpdatedDate TIMESTAMPTZ,
-	name TEXT
+	type TEXT
 );
 
 CREATE TABLE IF NOT EXISTS JobParameter (
@@ -218,10 +218,10 @@ CREATE TABLE IF NOT EXISTS JobRun (
 	id BIGSERIAL PRIMARY KEY,
 	completedDate TIMESTAMPTZ,
 	context JSON,
-	createdDate TIMESTAMPTZ,
+	createDate TIMESTAMPTZ,
 	jobId BIGINT,
 	jobType TEXT,
-	lastUpdatedDate TIMESTAMPTZ,
+	modifiedDate TIMESTAMPTZ,
 	status TEXT,
 	step TEXT,
 	trigger TEXT
