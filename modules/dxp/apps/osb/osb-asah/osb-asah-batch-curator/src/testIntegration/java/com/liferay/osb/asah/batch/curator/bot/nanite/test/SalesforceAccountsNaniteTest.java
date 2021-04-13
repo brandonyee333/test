@@ -16,14 +16,18 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.SalesforceAccountsNanite;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
+import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Account;
+import com.liferay.osb.asah.common.model.Field;
+import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
-import org.elasticsearch.index.query.QueryBuilders;
-
-import org.json.JSONObject;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -64,119 +68,122 @@ public class SalesforceAccountsNaniteTest extends BaseNaniteTestCase {
 		_salesforceAccountsNanite.run(
 			JSONUtil.put("dataSourceId", "342837044336786766"));
 
-		JSONObject accountJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"accounts",
-			QueryBuilders.termQuery("accountPK", "0016C00000BKWWLQA5"));
-
-		Assert.assertNotNull(accountJSONObject);
-
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "accountPK", "Text", "id",
+		Optional<Account> optionalAccount = _accountRepository.findByAccountPK(
 			"0016C00000BKWWLQA5");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "accountName", "Text",
-			"Name", "Liferay");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "accountType", "Text",
-			"Type", "Other");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "annualRevenue", "Number",
-			"AnnualRevenue", 51000000);
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "billingCountry", "Text",
+
+		Account account = _accountDog.populateAccount(
+			optionalAccount.get(), null);
+
+		Assert.assertNotNull(account);
+
+		_assertField(
+			account, "342837044336786766", "accountPK", "Text", "id",
+			"0016C00000BKWWLQA5");
+		_assertField(
+			account, "342837044336786766", "accountName", "Text", "Name",
+			"Liferay");
+		_assertField(
+			account, "342837044336786766", "accountType", "Text", "Type",
+			"Other");
+		_assertField(
+			account, "342837044336786766", "annualRevenue", "Number",
+			"AnnualRevenue", "51000000");
+		_assertField(
+			account, "342837044336786766", "billingCountry", "Text",
 			"BillingCountry", "United States");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "billingState", "Text",
+		_assertField(
+			account, "342837044336786766", "billingState", "Text",
 			"BillingState", "California");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "currencyIsoCode", "Text",
+		_assertField(
+			account, "342837044336786766", "currencyIsoCode", "Text",
 			"CurrencyIsoCode", "USD");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "industry", "Text",
-			"Industry", "Technology");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "ownership", "Text",
-			"Ownership", "Private");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "phone", "Text", "Phone",
+		_assertField(
+			account, "342837044336786766", "industry", "Text", "Industry",
+			"Technology");
+		_assertField(
+			account, "342837044336786766", "ownership", "Text", "Ownership",
+			"Private");
+		_assertField(
+			account, "342837044336786766", "phone", "Text", "Phone",
 			"877-543-3729");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "photoUrl", "Text",
-			"PhotoUrl", "/services/images/photo/0016C00000BKWWLQA5");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "website", "Text",
-			"Website", "http://www.liferay.com");
+		_assertField(
+			account, "342837044336786766", "photoUrl", "Text", "PhotoUrl",
+			"/services/images/photo/0016C00000BKWWLQA5");
+		_assertField(
+			account, "342837044336786766", "website", "Text", "Website",
+			"http://www.liferay.com");
 
-		accountJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"accounts",
-			QueryBuilders.termQuery("accountPK", "0016C00000BKWWLQA6"));
-
-		Assert.assertNotNull(accountJSONObject);
-
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "accountPK", "Text", "id",
+		optionalAccount = _accountRepository.findByAccountPK(
 			"0016C00000BKWWLQA6");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "accountName", "Text",
-			"Name", "Test Company");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "accountType", "Text",
-			"Type", "Customer");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "annualRevenue", "Number",
-			"AnnualRevenue", 11000000);
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "billingCountry", "Text",
+
+		account = optionalAccount.get();
+
+		_assertField(
+			account, "342837044336786766", "accountPK", "Text", "id",
+			"0016C00000BKWWLQA6");
+		_assertField(
+			account, "342837044336786766", "accountName", "Text", "Name",
+			"Test Company");
+		_assertField(
+			account, "342837044336786766", "accountType", "Text", "Type",
+			"Customer");
+		_assertField(
+			account, "342837044336786766", "annualRevenue", "Number",
+			"AnnualRevenue", "11000000");
+		_assertField(
+			account, "342837044336786766", "billingCountry", "Text",
 			"BillingCountry", "United States");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "billingState", "Text",
+		_assertField(
+			account, "342837044336786766", "billingState", "Text",
 			"BillingState", "New York");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "currencyIsoCode", "Text",
+		_assertField(
+			account, "342837044336786766", "currencyIsoCode", "Text",
 			"CurrencyIsoCode", "USD");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "industry", "Text",
-			"Industry", "Education");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "ownership", "Text",
-			"Ownership", "Public");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "phone", "Text", "Phone",
+		_assertField(
+			account, "342837044336786766", "industry", "Text", "Industry",
+			"Education");
+		_assertField(
+			account, "342837044336786766", "ownership", "Text", "Ownership",
+			"Public");
+		_assertField(
+			account, "342837044336786766", "phone", "Text", "Phone",
 			"888-555-1212");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "photoUrl", "Text",
-			"PhotoUrl", "/services/images/photo/0016C00000BKWWLQA6");
-		_assertOrganizationJSONObject(
-			accountJSONObject, "342837044336786766", "website", "Text",
-			"Website", "http://www.testcompany.org");
+		_assertField(
+			account, "342837044336786766", "photoUrl", "Text", "PhotoUrl",
+			"/services/images/photo/0016C00000BKWWLQA6");
+		_assertField(
+			account, "342837044336786766", "website", "Text", "Website",
+			"http://www.testcompany.org");
 	}
 
-	private void _assertOrganizationJSONObject(
-		JSONObject accountJSONObject, String fieldName, String key,
-		Object value) {
-
-		Assert.assertEquals(
-			value,
-			JSONUtil.getValue(
-				accountJSONObject, "JSONObject/organization",
-				"JSONArray/" + fieldName, "Object/0", "Object/" + key));
-	}
-
-	private void _assertOrganizationJSONObject(
-		JSONObject accountJSONObject, String dataSourceId, String fieldName,
+	private void _assertField(
+		Account account, String dataSourceId, String fieldName,
 		String fieldType, String sourceName, Object value) {
 
-		_assertOrganizationJSONObject(
-			accountJSONObject, fieldName, "dataSourceId", dataSourceId);
-		_assertOrganizationJSONObject(
-			accountJSONObject, fieldName, "fieldType", fieldType);
-		_assertOrganizationJSONObject(
-			accountJSONObject, fieldName, "name", fieldName);
-		_assertOrganizationJSONObject(
-			accountJSONObject, fieldName, "sourceName", sourceName);
-		_assertOrganizationJSONObject(
-			accountJSONObject, fieldName, "value", value);
+		List<Field> fields =
+			_fieldRepository.
+				findByContextAndDataSourceIdAndNameAndOwnerIdAndOwnerType(
+					"organization", Long.valueOf(dataSourceId), fieldName,
+					account.getId(), "account");
+
+		Field field = fields.get(0);
+
+		Assert.assertEquals(
+			Long.valueOf(dataSourceId), field.getDataSourceId());
+		Assert.assertEquals(fieldType, field.getFieldType());
+		Assert.assertEquals(fieldName, field.getName());
+		Assert.assertEquals(sourceName, field.getSourceName());
+		Assert.assertEquals(value, field.getValue());
 	}
+
+	@Autowired
+	private AccountDog _accountDog;
+
+	@Autowired
+	private AccountRepository _accountRepository;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private SalesforceAccountsNanite _salesforceAccountsNanite;

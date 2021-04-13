@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,17 +20,19 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Account;
 import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Segment;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.List;
-
-import org.elasticsearch.index.query.QueryBuilders;
+import java.util.Optional;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,10 +50,10 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
+public class AccountDogTest extends BaseFaroInfoDogTestCase {
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		_salesforceDataSource = FaroInfoTestUtil.buildSalesforceDataSource();
 
 		faroInfoElasticsearchInvoker.add(
@@ -63,39 +65,32 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 
 	@Test
 	public void testAddAccount() throws Exception {
-		JSONObject accountJSONObject = _faroInfoAccountDog.addAccount(
+		Account account = _accountDog.addAccount(
 			JSONUtil.put("id", "123"), _salesforceDataSource);
 
 		_assertAccountIndividualSegment();
 		_assertAsahTaskIndividualSegmentContext();
-		_assertStandardFields(accountJSONObject);
-	}
-
-	@Test
-	public void testAddAccountWithAccountJSONObject() throws Exception {
-		_faroInfoAccountDog.addAccount(
-			JSONUtil.put(
-				"accountPK", "123"
-			).put(
-				"dateCreated", DateUtil.newDateString()
-			));
-
-		_assertAccountIndividualSegment();
-		_assertAsahTaskIndividualSegmentContext();
+		_assertStandardFields(account);
 	}
 
 	@Test
 	public void testDeleteAccount() throws Exception {
-		JSONObject accountJSONObject = _faroInfoAccountDog.addAccount(
+		Account account = _accountDog.addAccount(
 			JSONUtil.put("id", "123"), _salesforceDataSource);
+
+		Long accountId = null;
+
+		if (account != null) {
+			accountId = account.getId();
+		}
 
 		_assertAccountIndividualSegment();
 		_assertAsahTaskIndividualSegmentContext();
-		_assertStandardFields(accountJSONObject);
+		_assertStandardFields(account);
 
 		_asahTaskDog.deleteAsahTasks();
 
-		_faroInfoAccountDog.deleteAccount(accountJSONObject);
+		_accountDog.deleteAccount(account);
 
 		JSONArray individualSegmentsJSONArray =
 			faroInfoElasticsearchInvoker.get("individual-segments");
@@ -114,74 +109,30 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		Assert.assertNotNull(
 			contextJSONObject.getString("individualSegmentId"));
 
-		Assert.assertFalse(
-			faroInfoElasticsearchInvoker.exists(
-				"accounts", accountJSONObject.getString("id")));
+		Optional<Account> accountOptional = _accountRepository.findById(
+			accountId);
+
+		Assert.assertNull(accountOptional.orElse(null));
 
 		_assertOSBTasksContextAfterUpdate(
 			"contains(filter, 'accounts.filterByCount(')");
 	}
 
 	@Test
-	public void testReplaceAccount() throws Exception {
-		JSONObject accountJSONObject = _faroInfoAccountDog.addAccount(
-			JSONUtil.put("id", "123"), _salesforceDataSource);
-
-		_assertAccountIndividualSegment();
-		_assertAsahTaskIndividualSegmentContext();
-		_assertStandardFields(accountJSONObject);
-
-		_asahTaskDog.deleteAsahTasks();
-
-		_faroInfoAccountDog.replaceAccount(
-			accountJSONObject.put("country", "United States"));
-
-		_assertAccountIndividualSegment();
-		_assertOSBTasksContextAfterUpdate(
-			"contains(filter, 'accounts.filter(') or contains(filter, " +
-				"'accounts.filterByCount(')");
-		_assertStandardFields(accountJSONObject);
-	}
-
-	@Test
-	public void testUpdateAccountByAccountIdAndPartialAccountJSONObject()
+	public void testUpdateAccountByAccountDataJSONObjectDataSource()
 		throws Exception {
 
-		JSONObject accountJSONObject = _faroInfoAccountDog.addAccount(
+		Account account = _accountDog.addAccount(
 			JSONUtil.put("id", "123"), _salesforceDataSource);
 
 		_assertAccountIndividualSegment();
 		_assertAsahTaskIndividualSegmentContext();
-		_assertStandardFields(accountJSONObject);
+		_assertStandardFields(account);
 
 		_asahTaskDog.deleteAsahTasks();
 
-		_faroInfoAccountDog.updateAccount(
-			accountJSONObject.getString("id"),
-			JSONUtil.put("country", "United States"));
-
-		_assertAccountIndividualSegment();
-		_assertOSBTasksContextAfterUpdate(
-			"contains(filter, 'accounts.filter(') or contains(filter, " +
-				"'accounts.filterByCount(')");
-		_assertStandardFields(accountJSONObject);
-	}
-
-	@Test
-	public void testUpdateAccountByAccountJSONObjectDataJSONObjectDataSourceJSONObject()
-		throws Exception {
-
-		JSONObject accountJSONObject = _faroInfoAccountDog.addAccount(
-			JSONUtil.put("id", "123"), _salesforceDataSource);
-
-		_assertAccountIndividualSegment();
-		_assertAsahTaskIndividualSegmentContext();
-		_assertStandardFields(accountJSONObject);
-
-		_asahTaskDog.deleteAsahTasks();
-
-		_faroInfoAccountDog.updateAccount(
-			accountJSONObject,
+		_accountDog.updateAccount(
+			account,
 			JSONUtil.put(
 				"country", "United States"
 			).put(
@@ -193,7 +144,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		_assertOSBTasksContextAfterUpdate(
 			"contains(filter, 'accounts.filter(') or contains(filter, " +
 				"'accounts.filterByCount(')");
-		_assertStandardFields(accountJSONObject);
+		_assertStandardFields(account);
 	}
 
 	private void _assertAccountIndividualSegment() {
@@ -225,10 +176,11 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 	}
 
 	private void _assertIndividualSegment(Segment segment) {
-		JSONArray accountsJSONArray = faroInfoElasticsearchInvoker.get(
-			"accounts", QueryBuilders.termQuery("accountPK", "123"));
+		Optional<Account> accountOptional =
+			_accountRepository.findByAccountPKAndDataSourceId(
+				"123", _salesforceDataSource.getId());
 
-		JSONObject accountJSONObject = accountsJSONArray.getJSONObject(0);
+		Account account = accountOptional.get();
 
 		Assert.assertTrue(segment.getActivitiesCount() == 0);
 		Assert.assertNotNull(segment.getCreateDate());
@@ -236,8 +188,7 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 		Assert.assertEquals(
 			"((dataSourceAccountPKs/accountPKs eq '123'))",
 			segment.getFilter());
-		Assert.assertEquals(
-			"Account: " + accountJSONObject.getString("id"), segment.getName());
+		Assert.assertEquals("Account: " + account.getId(), segment.getName());
 		Assert.assertEquals("PROJECT", segment.getScope());
 		Assert.assertEquals(Segment.Type.DYNAMIC, segment.getType());
 		Assert.assertEquals("INACTIVE", segment.getStatus());
@@ -262,21 +213,22 @@ public class FaroInfoAccountDogTest extends BaseFaroInfoDogTestCase {
 			contextJSONObject.getString("removeFilter"));
 	}
 
-	private void _assertStandardFields(JSONObject accountJSONObject) {
-		Assert.assertEquals("123", accountJSONObject.getString("accountPK"));
-		Assert.assertEquals(0, accountJSONObject.getInt("activitiesCount"));
-		Assert.assertNotNull(accountJSONObject.getString("dataSourceId"));
-		Assert.assertNotNull(accountJSONObject.getString("dateCreated"));
-		Assert.assertNotNull(accountJSONObject.getString("dateModified"));
-		Assert.assertNotNull(accountJSONObject.getString("id"));
-		Assert.assertEquals(0, accountJSONObject.getInt("individualCount"));
+	private void _assertStandardFields(Account account) {
+		Assert.assertEquals("123", account.getAccountPK());
+		Assert.assertNotNull(account.getCreateDate());
+		Assert.assertNotNull(account.getDataSourceId());
+		Assert.assertNotNull(account.getId());
+		Assert.assertNotNull(account.getModifiedDate());
 	}
 
 	@Autowired
-	private AsahTaskDog _asahTaskDog;
+	private AccountDog _accountDog;
 
 	@Autowired
-	private AccountDog _faroInfoAccountDog;
+	private AccountRepository _accountRepository;
+
+	@Autowired
+	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

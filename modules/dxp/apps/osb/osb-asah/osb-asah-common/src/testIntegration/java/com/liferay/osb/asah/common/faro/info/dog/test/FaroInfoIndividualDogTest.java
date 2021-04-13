@@ -218,7 +218,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 			1, new String[] {"1400 Montefino Ave"}, "address",
 			individualJSONObject.getString("id"));
 		_assertFields(
-			1, new String[] {"42"}, "favoriteNumber",
+			1, new Integer[] {42}, "favoriteNumber",
 			individualJSONObject.getString("id"));
 		_assertFields(
 			3, new String[] {"chinese", "english", "spanish"},
@@ -255,7 +255,7 @@ public class FaroInfoIndividualDogTest extends BaseFaroInfoDogTestCase {
 		_assertFields(
 			0, new String[0], "address", individualJSONObject.getString("id"));
 		_assertFields(
-			1, new String[] {"8"}, "favoriteNumber",
+			1, new Integer[] {8}, "favoriteNumber",
 			individualJSONObject.getString("id"));
 		_assertFields(
 			1, new String[] {"german"}, "spokenLanguages",

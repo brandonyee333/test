@@ -14,6 +14,9 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.backend.dto.AccountDTO;
 import com.liferay.osb.asah.backend.rest.controller.AccountsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -47,24 +50,26 @@ public class AccountsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetAccount() throws Exception {
+	public void testGetAccountDTO() {
 		JSONAssert.assertEquals(
 			_elasticsearchInvoker.fetch("accounts", "342313459339515838"),
-			new JSONObject(
-				_accountsRestController.getAccount("342313459339515838", null)),
-			false);
+			_objectMapper.convertValue(
+				_accountsRestController.getAccountDTO(
+					342313459339515838L, null),
+				JSONObject.class),
+			true);
 
-		JSONObject jsonObject = new JSONObject(
-			_accountsRestController.getAccount("342313459339515838", "a"));
+		AccountDTO accountDTO = _accountsRestController.getAccountDTO(
+			342313459339515838L, 888L);
 
-		Assert.assertEquals(0, jsonObject.getInt("activitiesCount"));
-		Assert.assertEquals(10, jsonObject.getInt("individualCount"));
+		Assert.assertEquals(0L, (long)accountDTO.getActivitiesCount());
+		Assert.assertEquals(10L, (long)accountDTO.getIndividualCount());
 
-		jsonObject = new JSONObject(
-			_accountsRestController.getAccount("342313459339515838", "b"));
+		accountDTO = _accountsRestController.getAccountDTO(
+			342313459339515838L, 999L);
 
-		Assert.assertEquals(1, jsonObject.getInt("activitiesCount"));
-		Assert.assertEquals(0, jsonObject.getInt("individualCount"));
+		Assert.assertEquals(1L, (long)accountDTO.getActivitiesCount());
+		Assert.assertEquals(0L, (long)accountDTO.getIndividualCount());
 	}
 
 	@ElasticsearchIndex(
@@ -72,20 +77,23 @@ public class AccountsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetAccounts() throws Exception {
+	public void testGetAccountDTOsPageDTO() throws Exception {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_accounts.json", this),
-			new JSONObject(
-				_accountsRestController.getAccounts(null, null, 0, 20, null)),
+			_objectMapper.convertValue(
+				_accountsRestController.getAccountDTOsPageDTO(
+					null, null, 0, 20, null),
+				JSONObject.class),
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_accounts_sorted.json", this),
-			new JSONObject(
-				_accountsRestController.getAccounts(
-					"a", null, 0, 20,
-					new String[] {"individualCount", "desc"})),
+			_objectMapper.convertValue(
+				_accountsRestController.getAccountDTOsPageDTO(
+					888L, null, 0, 20,
+					new String[] {"individualCount", "desc"}),
+				JSONObject.class),
 			false);
 	}
 
@@ -221,7 +229,7 @@ public class AccountsRestControllerTest {
 				"dependencies/expected_account_transformations_2.json", this),
 			new JSONObject(
 				_accountsRestController.getAccountTransformations(
-					"groupby((accountPK))", "b", null, 0, 20)),
+					"groupby((accountPK))", "999", null, 0, 20)),
 			false);
 	}
 
@@ -285,5 +293,8 @@ public class AccountsRestControllerTest {
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }

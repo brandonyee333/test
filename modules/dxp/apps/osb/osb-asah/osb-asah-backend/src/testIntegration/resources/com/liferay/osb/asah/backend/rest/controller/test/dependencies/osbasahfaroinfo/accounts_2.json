@@ -5,7 +5,7 @@
 		"activitiesCounts": [
 			{
 				"activitiesCount": 0,
-				"channelId": "a"
+				"channelId": "888"
 			}
 		],
 		"dataSourceId": "337984445922213329",
@@ -15,7 +15,7 @@
 		"individualCount": 10,
 		"individualCounts": [
 			{
-				"channelId": "a",
+				"channelId": "888",
 				"individualCount": 10
 			}
 		],
@@ -182,7 +182,7 @@
 		"activitiesCounts": [
 			{
 				"activitiesCount": 0,
-				"channelId": "a"
+				"channelId": "888"
 			}
 		],
 		"dataSourceId": "342312716287315687",
@@ -192,11 +192,11 @@
 		"individualCount": 8,
 		"individualCounts": [
 			{
-				"channelId": "a",
+				"channelId": "888",
 				"individualCount": 6
 			},
 			{
-				"channelId": "b",
+				"channelId": "999",
 				"individualCount": 2
 			}
 		],
@@ -363,7 +363,7 @@
 		"activitiesCounts": [
 			{
 				"activitiesCount": 0,
-				"channelId": "a"
+				"channelId": "888"
 			}
 		],
 		"dataSourceId": "342312716287315688",
@@ -373,7 +373,7 @@
 		"individualCount": 9,
 		"individualCounts": [
 			{
-				"channelId": "a",
+				"channelId": "999",
 				"individualCount": 9
 			}
 		],
