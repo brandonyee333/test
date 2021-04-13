@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -37,12 +38,17 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -123,6 +129,16 @@ public class AccountDog {
 				"contains(filter, 'accounts.filter(') or contains(filter, " +
 					"'accounts.filterByCount(')"
 			));
+	}
+
+	public Account fetchByAccountPKAndDataSourceId(
+		String accountPK, Long dataSourceId) {
+
+		Optional<Account> optionalAccount =
+			_accountRepository.findByAccountPKAndDataSourceId(
+				accountPK, dataSourceId);
+
+		return populateAccount(optionalAccount.orElse(null), null);
 	}
 
 	public Account getAccount(Long accountId, Long channelId) {
@@ -222,6 +238,49 @@ public class AccountDog {
 		return account;
 	}
 
+	public Page<Account> searchAccountsPage(
+		Long channelId, String filterString, int page, int size,
+		String[] sorts) {
+
+		String[] fieldSorts = new String[0];
+		String[] segmentSorts = new String[0];
+
+		if (ArrayUtils.isNotEmpty(sorts)) {
+			for (int i = 0; i < (sorts.length - 1); i = i + 2) {
+				String sort = sorts[i];
+
+				if (sort.equalsIgnoreCase("activitiesCount") ||
+					sort.equalsIgnoreCase("individualCount")) {
+
+					segmentSorts = ArrayUtils.addAll(
+						segmentSorts, sort, sorts[i + 1]);
+				}
+				else if (sort.startsWith("organization/")) {
+					fieldSorts = ArrayUtils.addAll(
+						fieldSorts, sort, sorts[i + 1]);
+				}
+			}
+		}
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, _getSort("id", fieldSorts));
+
+		Sort segmentSort = null;
+
+		if (ArrayUtils.isNotEmpty(segmentSorts)) {
+			segmentSort = _getSort("id", segmentSorts);
+		}
+
+		List<Account> accounts = _populateAccounts(
+			_accountRepository.searchAccounts(
+				channelId, filterString, pageRequest, segmentSort),
+			channelId);
+
+		return PageableExecutionUtils.getPage(
+			accounts, pageRequest,
+			() -> _accountRepository.countAccounts(filterString));
+	}
+
 	public Account updateAccount(
 			Account account, JSONObject dataJSONObject, DataSource dataSource)
 		throws Exception {
@@ -259,6 +318,27 @@ public class AccountDog {
 		return populateAccount(account, null);
 	}
 
+	private Sort _getSort(String defaultFieldName, String[] sorts) {
+		if (ArrayUtils.isEmpty(sorts)) {
+			return Sort.by(Sort.Order.desc(defaultFieldName));
+		}
+
+		List<Sort.Order> orders = new ArrayList<>();
+
+		for (int i = 0; i < (sorts.length - 1); i = i + 2) {
+			String sort = sorts[i];
+
+			if (Objects.equals(sorts[i + 1], "asc")) {
+				orders.add(Sort.Order.asc(sort));
+			}
+			else {
+				orders.add(Sort.Order.desc(sort));
+			}
+		}
+
+		return Sort.by(orders);
+	}
+
 	private List<Account> _populateAccounts(
 		List<Account> accounts, Long channelId) {
 
@@ -290,6 +370,9 @@ public class AccountDog {
 
 	@Autowired
 	private FieldDog _fieldDog;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
 
 	@Autowired
 	private SegmentDog _segmentDog;

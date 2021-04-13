@@ -15,29 +15,27 @@
 package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dto.AccountDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.rest.response.NumbersDistributionTransformationJSONArrayFunction;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.dog.AccountDog;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Account;
 import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.util.ListUtil;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -49,13 +47,11 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
 import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortOrder;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,77 +69,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
-	public AccountDTO getAccount(
+	public AccountDTO getAccountDTO(
 		@PathVariable Long id, @RequestParam(required = false) Long channelId) {
 
 		return new AccountDTO(_accountDog.getAccount(id, channelId));
 	}
 
 	@GetMapping(params = "!apply")
-	public String getAccounts(
-			@RequestParam(required = false) String channelId,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+	public PageDTO<AccountDTO> getAccountDTOsPageDTO(
+		@RequestParam(required = false) Long channelId,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		if (channelId == null) {
-			return toCollectionGetResponse(
-				"accounts", null, page,
-				FilterStringToQueryBuilderConverter.convert(filterString), size,
-				sorts);
-		}
+		Page<Account> accounts = _accountDog.searchAccountsPage(
+			channelId, filterString, page, size, sorts);
 
-		List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
-		List<String> newSorts = new ArrayList<>();
-
-		if (sorts != null) {
-			List<Pair<String, SortOrder>> sortOrderPairs =
-				SortBuilderUtil.getSortOrderPairs(sorts);
-
-			for (Pair<String, SortOrder> sortOrderPair : sortOrderPairs) {
-				if (StringUtils.equalsIgnoreCase(
-						sortOrderPair.getKey(), "activitiesCount")) {
-
-					fieldSortBuilders.add(
-						SortBuilderUtil.buildSort(
-							"activitiesCounts.activitiesCount",
-							"activitiesCounts",
-							QueryBuilders.termQuery(
-								"activitiesCounts.channelId", channelId),
-							sortOrderPair.getValue()));
-				}
-				else if (StringUtils.equalsIgnoreCase(
-							sortOrderPair.getKey(), "individualCount")) {
-
-					fieldSortBuilders.add(
-						SortBuilderUtil.buildSort(
-							"individualCounts.individualCount",
-							"individualCounts",
-							QueryBuilders.termQuery(
-								"individualCounts.channelId", channelId),
-							sortOrderPair.getValue()));
-				}
-				else {
-					SortOrder sortOrder = sortOrderPair.getValue();
-
-					newSorts.add(sortOrderPair.getKey());
-					newSorts.add(sortOrder.toString());
-				}
-			}
-		}
-
-		String responseJSON = toCollectionGetResponse(
-			"accounts", null, fieldSortBuilders, page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			newSorts.toArray(new String[0]));
-
-		JSONObject responseJSONObject = _filterByChannelId(
-			channelId, new JSONObject(responseJSON));
-
-		return responseJSONObject.toString();
+		return _toPageDTO(accounts);
 	}
 
 	@GetMapping("/distribution")
@@ -287,62 +230,6 @@ public class AccountsRestController extends BaseRestController {
 			"individual-segment-transformations");
 	}
 
-	private JSONObject _filterByChannelId(
-		String channelId, JSONObject responseJSONObject) {
-
-		JSONObject embeddedJSONObject = responseJSONObject.getJSONObject(
-			"_embedded");
-
-		JSONArray accountsJSONArray = embeddedJSONObject.getJSONArray(
-			"accounts");
-
-		for (int i = 0; i < accountsJSONArray.length(); i++) {
-			JSONObject accountJSONObject = accountsJSONArray.getJSONObject(i);
-
-			JSONArray activitiesCountsJSONArray =
-				accountJSONObject.optJSONArray("activitiesCounts");
-
-			if (activitiesCountsJSONArray != null) {
-				Map<String, JSONObject> activitiesCounts =
-					JSONUtil.toJSONObjectMap(
-						accountJSONObject.getJSONArray("activitiesCounts"),
-						"channelId");
-
-				JSONObject activitiesCountJSONObject =
-					activitiesCounts.getOrDefault(
-						channelId, JSONUtil.put("activitiesCount", 0));
-
-				accountJSONObject.put(
-					"activitiesCount",
-					activitiesCountJSONObject.getInt("activitiesCount"));
-
-				accountJSONObject.remove("activitiesCounts");
-			}
-
-			JSONArray individualCountsJSONArray =
-				accountJSONObject.optJSONArray("individualCounts");
-
-			if (individualCountsJSONArray != null) {
-				Map<String, JSONObject> individualCounts =
-					JSONUtil.toJSONObjectMap(
-						accountJSONObject.getJSONArray("individualCounts"),
-						"channelId");
-
-				JSONObject individualCountJSONObject =
-					individualCounts.getOrDefault(
-						channelId, JSONUtil.put("individualCount", 0));
-
-				accountJSONObject.put(
-					"individualCount",
-					individualCountJSONObject.getInt("individualCount"));
-
-				accountJSONObject.remove("individualCounts");
-			}
-		}
-
-		return responseJSONObject;
-	}
-
 	private QueryBuilder _getAccountsQueryBuilder(
 			String channelId, String filterString, String individualSegmentId)
 		throws Exception {
@@ -453,6 +340,18 @@ public class AccountsRestController extends BaseRestController {
 		).filter(
 			FilterStringToQueryBuilderConverter.convert(filterString)
 		);
+	}
+
+	private PageDTO<AccountDTO> _toPageDTO(
+		AccountDTO accountDTO, Page<Account> accounts) {
+
+		return new PageDTO<>(
+			"_embedded", accountDTO, accounts.getNumber(), accounts.getSize(),
+			accounts.getTotalElements(), accounts.getTotalPages());
+	}
+
+	private PageDTO<AccountDTO> _toPageDTO(Page<Account> accounts) {
+		return _toPageDTO(new AccountDTO(accounts.getContent()), accounts);
 	}
 
 	@Autowired
