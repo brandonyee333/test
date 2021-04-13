@@ -2105,7 +2105,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			List<Node> nodes = dynamicContentXPath.selectNodes(
 				dynamicElementElement);
 
-			if (nodes.isEmpty()) {
+			if (index >= nodes.size()) {
 				dynamicContentXPath = SAXReaderUtil.createXPath(
 					"dynamic-content");
 
@@ -2113,7 +2113,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				Element element = null;
 
-				if (nodes.isEmpty()) {
+				if (index >= nodes.size()) {
 					element = dynamicElementElement.addElement(
 						"dynamic-content");
 				}
