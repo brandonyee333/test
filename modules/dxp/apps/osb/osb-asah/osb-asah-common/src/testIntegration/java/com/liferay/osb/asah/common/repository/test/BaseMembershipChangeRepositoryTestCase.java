@@ -65,8 +65,12 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		_membershipChangeRepository.deleteByIndividualSegmentId(
 			_membershipChange.getIndividualSegmentId());
 
+		Long membershipChangeId = _membershipChange.getId();
+
+		Assert.assertNotNull(membershipChangeId);
+
 		Optional<MembershipChange> membershipChangeOptional =
-			_membershipChangeRepository.findById(_membershipChange.getId());
+			_membershipChangeRepository.findById(membershipChangeId);
 
 		Assert.assertFalse(membershipChangeOptional.isPresent());
 	}
@@ -84,8 +88,12 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		_membershipChangeRepository.updateIndividualDeletedByIndividualId(
 			Boolean.TRUE, _membershipChange.getIndividualId());
 
+		Long membershipChangeId = _membershipChange.getId();
+
+		Assert.assertNotNull(membershipChangeId);
+
 		Optional<MembershipChange> membershipChangeOptional =
-			_membershipChangeRepository.findById(_membershipChange.getId());
+			_membershipChangeRepository.findById(membershipChangeId);
 
 		Assert.assertTrue(membershipChangeOptional.isPresent());
 
@@ -100,8 +108,12 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 		_membershipChangeRepository.updateIndividualNameByIndividualId(
 			_membershipChange.getIndividualId(), "Frank Sinatra");
 
+		Long membershipChangeId = _membershipChange.getId();
+
+		Assert.assertNotNull(membershipChangeId);
+
 		Optional<MembershipChange> membershipChangeOptional =
-			_membershipChangeRepository.findById(_membershipChange.getId());
+			_membershipChangeRepository.findById(membershipChangeId);
 
 		Assert.assertTrue(membershipChangeOptional.isPresent());
 
