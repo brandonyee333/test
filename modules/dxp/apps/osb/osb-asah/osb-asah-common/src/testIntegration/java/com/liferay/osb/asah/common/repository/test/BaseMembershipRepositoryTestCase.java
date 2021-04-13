@@ -14,8 +14,13 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.Membership;
+import com.liferay.osb.asah.common.model.Segment;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -42,7 +47,11 @@ public abstract class BaseMembershipRepositoryTestCase
 
 		membership1.setCreateDate(new Date());
 		membership1.setIndividualId(12L);
-		membership1.setIndividualSegmentId(34L);
+
+		Segment segment1 = _addSegment(34);
+
+		membership1.setIndividualSegmentId(segment1.getId());
+
 		membership1.setModifiedDate(new Date());
 		membership1.setRemovedDate(new Date());
 		membership1.setStatus("ACTIVE");
@@ -51,7 +60,11 @@ public abstract class BaseMembershipRepositoryTestCase
 
 		membership2.setCreateDate(new Date());
 		membership2.setIndividualId(12L);
-		membership2.setIndividualSegmentId(56L);
+
+		Segment segment2 = _addSegment(56);
+
+		membership2.setIndividualSegmentId(segment2.getId());
+
 		membership2.setModifiedDate(new Date());
 		membership2.setRemovedDate(new Date());
 		membership2.setStatus("INACTIVE");
@@ -60,7 +73,9 @@ public abstract class BaseMembershipRepositoryTestCase
 
 		membership3.setCreateDate(new Date());
 		membership3.setIndividualId(78L);
-		membership3.setIndividualSegmentId(34L);
+
+		membership3.setIndividualSegmentId(segment1.getId());
+
 		membership3.setModifiedDate(new Date());
 		membership3.setRemovedDate(new Date());
 		membership3.setStatus("ACTIVE");
@@ -344,7 +359,36 @@ public abstract class BaseMembershipRepositoryTestCase
 		return _membershipRepository;
 	}
 
+	private Segment _addSegment(long segmentId) {
+		Segment segment = new Segment();
+
+		segment.setId(segmentId);
+		segment.setIsNew(true);
+
+		Channel channel = _channelRepository.save(new Channel("Channel"));
+
+		segment.setChannelId(channel.getId());
+
+		segment.setCreateDate(new Date());
+		segment.setFilter("(channelId eq '1')");
+		segment.setName("Segment 1");
+		segment.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
+		segment.setReferencedAssetIds(SetUtil.of(3L, 4L));
+		segment.setReferencedFieldMappingIds(SetUtil.of(7L, 8L));
+		segment.setState("READY");
+		segment.setStatus("STARTED");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		return _segmentRepository.save(segment);
+	}
+
+	@Autowired
+	private ChannelRepository _channelRepository;
+
 	@Autowired
 	private MembershipRepository _membershipRepository;
+
+	@Autowired
+	private SegmentRepository _segmentRepository;
 
 }
