@@ -108,7 +108,11 @@ public class AccountDog {
 			"Account: " + account.getId(), "INACTIVE");
 
 		if (segment != null) {
-			_segmentDog.deleteSegment(segment.getId());
+			Long segmentId = segment.getId();
+
+			if (segmentId != null) {
+				_segmentDog.deleteSegment(segmentId);
+			}
 		}
 		else if (_log.isWarnEnabled()) {
 			_log.warn(

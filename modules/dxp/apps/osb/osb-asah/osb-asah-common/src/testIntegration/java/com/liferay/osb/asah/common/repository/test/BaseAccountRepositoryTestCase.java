@@ -51,17 +51,19 @@ public abstract class BaseAccountRepositoryTestCase
 
 		setUpRepository(account);
 
-		_account = entityModels.get(0);
+		account = entityModels.get(0);
+
+		_accountId = account.getId();
 
 		Field field1 = new Field();
 
 		field1.setContext("organization");
-		field1.setDataSourceId(_account.getDataSourceId());
+		field1.setDataSourceId(account.getDataSourceId());
 		field1.setDataSourceName("Source 1");
 		field1.setFieldType("Text");
 		field1.setModifiedDate(new Date(System.currentTimeMillis() - 10000));
 		field1.setName("field1");
-		field1.setOwnerId(_account.getId());
+		field1.setOwnerId(_accountId);
 		field1.setOwnerType("account");
 		field1.setSourceName("Field 1");
 		field1.setValue("field one");
@@ -71,12 +73,12 @@ public abstract class BaseAccountRepositoryTestCase
 		Field field2 = new Field();
 
 		field2.setContext("organization");
-		field2.setDataSourceId(_account.getDataSourceId());
+		field2.setDataSourceId(account.getDataSourceId());
 		field2.setDataSourceName("Source 1");
 		field2.setFieldType("Text");
 		field2.setModifiedDate(new Date(System.currentTimeMillis()));
 		field2.setName("field1");
-		field2.setOwnerId(_account.getId());
+		field2.setOwnerId(_accountId);
 		field2.setOwnerType("account");
 		field2.setSourceName("Field 1");
 		field2.setValue("field two");
@@ -86,12 +88,12 @@ public abstract class BaseAccountRepositoryTestCase
 		Field field3 = new Field();
 
 		field3.setContext("organization");
-		field3.setDataSourceId(_account.getDataSourceId());
+		field3.setDataSourceId(account.getDataSourceId());
 		field3.setDataSourceName("Source 1");
 		field3.setFieldType("Text");
 		field3.setModifiedDate(new Date());
 		field3.setName("field3");
-		field3.setOwnerId(_account.getId());
+		field3.setOwnerId(_accountId);
 		field3.setOwnerType("account");
 		field3.setSourceName("Field 3");
 		field3.setValue("field three");
@@ -109,7 +111,7 @@ public abstract class BaseAccountRepositoryTestCase
 		segment.setIndividualCount(2L);
 		segment.setLastActivityDate(new Date());
 		segment.setModifiedDate(new Date());
-		segment.setName("Account: " + _account.getId());
+		segment.setName("Account: " + _accountId);
 		segment.setState("READY");
 		segment.setStatus("INACTIVE");
 		segment.setType(Segment.Type.DYNAMIC);
@@ -137,7 +139,7 @@ public abstract class BaseAccountRepositoryTestCase
 		Assert.assertEquals(accounts.toString(), 1, accounts.size());
 
 		Optional<Account> accountOptional = _accountRepository.findById(
-			_account.getId());
+			_accountId);
 
 		Assert.assertEquals(accountOptional.orElse(null), accounts.get(0));
 	}
@@ -147,7 +149,7 @@ public abstract class BaseAccountRepositoryTestCase
 		return _accountRepository;
 	}
 
-	private Account _account;
+	private Long _accountId;
 
 	@Autowired
 	private AccountRepository _accountRepository;

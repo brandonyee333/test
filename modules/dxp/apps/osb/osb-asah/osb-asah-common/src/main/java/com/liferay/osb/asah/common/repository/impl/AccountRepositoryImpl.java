@@ -85,20 +85,22 @@ public class AccountRepositoryImpl extends BaseRepository {
 
 		SortField sortField = null;
 
-		for (Sort.Order order : segmentSort.toList()) {
-			String fieldName = order.getProperty();
+		if (segmentSort != null) {
+			for (Sort.Order order : segmentSort.toList()) {
+				String fieldName = order.getProperty();
 
-			if (fieldName.startsWith("organization/")) {
-				Field<?> field = DSL.field("value");
+				if (fieldName.startsWith("organization/")) {
+					Field<?> field = DSL.field("value");
 
-				if (order.getDirection() == Sort.Direction.ASC) {
-					sortField = field.asc();
+					if (order.getDirection() == Sort.Direction.ASC) {
+						sortField = field.asc();
+					}
+					else {
+						sortField = field.desc();
+					}
+
+					break;
 				}
-				else {
-					sortField = field.desc();
-				}
-
-				break;
 			}
 		}
 
