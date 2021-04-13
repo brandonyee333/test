@@ -8,7 +8,9 @@ describe('DynamicUploaderForm', () => {
 		const {container} = render(
 			<DynamicUploaderForm
 				addTicketAttachmentURL="/"
+				fileRepositoryName="United States"
 				generateTokenURL="/"
+				knowledgeBaseArticle="/"
 				uploadURL="/"
 			/>
 		);

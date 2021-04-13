@@ -8,7 +8,9 @@ describe('AddTicketAttachment', () => {
 		const {container} = render(
 			<AddTicketAttachment
 				addTicketAttachmentURL="/"
+				fileRepositoryName="United States"
 				generateTokenURL="/"
+				knowledgeBaseArticle="/"
 				uploadURL="/"
 				zendeskTicketId="123"
 				zendeskTicketURL="/"

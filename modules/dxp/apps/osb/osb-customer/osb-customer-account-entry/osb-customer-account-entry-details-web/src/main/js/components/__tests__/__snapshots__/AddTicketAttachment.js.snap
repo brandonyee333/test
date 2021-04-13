@@ -117,6 +117,45 @@ exports[`AddTicketAttachment renders correctly 1`] = `
         </div>
       </div>
       <div
+        class="alert alert-info"
+        role="alert"
+      >
+        <span
+          class="alert-indicator"
+        >
+          <svg
+            class="lexicon-icon lexicon-icon-info-circle"
+            role="img"
+          >
+            <use
+              xlink:href="#info-circle"
+            />
+          </svg>
+        </span>
+        <span>
+          your-file-will-be-uploaded-to-a-file-server-in-x
+        </span>
+        <div>
+          please-note-that-the-location-of-the-server-to-which-the-file-will-be-uploaded-is-based-on-the-location-of-the-liferay-center-providing-support-to-your-company
+        </div>
+      </div>
+      <div
+        class="form-group"
+      >
+        <label>
+          <input
+            name="namespacenoPersonalData"
+            type="checkbox"
+          />
+           
+          <span
+            class="checkbox-label"
+          >
+            please-check-this-box-if-the-file-you-upload-does-not-contain-any-personal-data-and-therefore-can-be-uploaded-to-and-accessed-from-any-liferay-support-location-globally
+          </span>
+        </label>
+      </div>
+      <div
         class="btn-row"
       >
         <button
