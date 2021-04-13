@@ -97,7 +97,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualCount, knownIndividualCount,
 			membership.getIndividualSegmentId());
 
-		_faroInfoMembershipChangeDog.addMembershipChange(
+		_membershipChangeDog.addMembershipChange(
 			individualJSONObject, individualCount,
 			knownIndividualCount, membership, "ADDED");
 
@@ -140,7 +140,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 			individualCount, knownIndividualCount,
 			membership.getIndividualSegmentId());
 
-		_faroInfoMembershipChangeDog.addMembershipChanges(
+		_membershipChangeDog.addMembershipChanges(
 			includeAnonymousUsers,
 			individualCount - memberships.size(),
 			knownIndividualCount -
@@ -202,13 +202,13 @@ public class MembershipDog extends BaseFaroInfoDog {
 			membership.getIndividualSegmentId());
 
 		if (individualJSONObject == null) {
-			_faroInfoMembershipChangeDog.
+			_membershipChangeDog.
 				addMembershipChangeForDeletedIndividual(
 					membership.getIndividualId(), individualCount,
 					knownIndividualCount, membership);
 		}
 		else {
-			_faroInfoMembershipChangeDog.addMembershipChange(
+			_membershipChangeDog.addMembershipChange(
 				individualJSONObject, individualCount,
 				knownIndividualCount, membership, "REMOVED");
 		}
@@ -339,7 +339,7 @@ public class MembershipDog extends BaseFaroInfoDog {
 	private FaroInfoIndividualDog _faroInfoIndividualDog;
 
 	@Autowired
-	private MembershipChangeDog _faroInfoMembershipChangeDog;
+	private MembershipChangeDog _membershipChangeDog;
 
 	@Autowired
 	private MembershipRepository _membershipRepository;
