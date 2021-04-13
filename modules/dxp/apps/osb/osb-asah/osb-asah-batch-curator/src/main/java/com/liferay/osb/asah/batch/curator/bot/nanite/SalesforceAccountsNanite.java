@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
+import com.liferay.osb.asah.common.model.Account;
 import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -75,19 +76,13 @@ public class SalesforceAccountsNanite extends BaseNanite {
 			}
 		}
 		else if (eventType.equals("DELETE")) {
-			JSONObject accountJSONObject = faroInfoElasticsearchInvoker.fetch(
-				"accounts",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termQuery(
-						"accountPK", auditEventJSONObject.getString("recordId"))
-				).filter(
-					QueryBuilders.termQuery(
-						"dataSourceId",
-						auditEventJSONObject.getString("osbAsahDataSourceId"))
-				));
+			Account account = _accountDog.fetchByAccountPKAndDataSourceId(
+				auditEventJSONObject.getString("recordId"),
+				Long.valueOf(
+					auditEventJSONObject.getString("osbAsahDataSourceId")));
 
-			if (accountJSONObject != null) {
-				_accountDog.deleteAccount(accountJSONObject);
+			if (account != null) {
+				_accountDog.deleteAccount(account);
 			}
 		}
 		else if (_log.isWarnEnabled()) {
@@ -168,23 +163,15 @@ public class SalesforceAccountsNanite extends BaseNanite {
 			return;
 		}
 
-		JSONObject accountJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"accounts",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery(
-					"accountPK", salesforceAccountJSONObject.getString("id"))
-			).filter(
-				QueryBuilders.termQuery(
-					"dataSourceId", String.valueOf(dataSource.getId()))
-			));
+		Account account = _accountDog.fetchByAccountPKAndDataSourceId(
+			salesforceAccountJSONObject.getString("id"), dataSource.getId());
 
-		if (accountJSONObject == null) {
-			_accountDog.addAccount(
-				salesforceAccountJSONObject, dataSource);
+		if (account == null) {
+			_accountDog.addAccount(salesforceAccountJSONObject, dataSource);
 		}
 		else {
 			_accountDog.updateAccount(
-				accountJSONObject, salesforceAccountJSONObject, dataSource);
+				account, salesforceAccountJSONObject, dataSource);
 		}
 	}
 
@@ -192,10 +179,10 @@ public class SalesforceAccountsNanite extends BaseNanite {
 		SalesforceAccountsNanite.class);
 
 	@Autowired
-	private DataSourceDog _dataSourceDog;
+	private AccountDog _accountDog;
 
 	@Autowired
-	private AccountDog _accountDog;
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private RunLogDog _runLogDog;

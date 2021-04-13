@@ -24,6 +24,8 @@ import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Account;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -187,18 +190,22 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 					ScoreMode.None));
 		}
 
-		JSONObject accountJSONObject = null;
+		Account account = null;
 
 		if (accountId != null) {
-			accountJSONObject = _faroInfoElasticsearchInvoker.fetch(
-				"accounts", accountId);
+			Optional<Account> optionalAccount = _accountRepository.findById(
+				Long.valueOf(accountId));
+
+			account = optionalAccount.orElse(null);
 		}
 		else {
-			accountJSONObject = _faroInfoElasticsearchInvoker.fetch(
-				"accounts", QueryBuilders.termQuery("accountPK", accountPK));
+			Optional<Account> optionalAccount =
+				_accountRepository.findByAccountPK(accountPK);
+
+			account = optionalAccount.orElse(null);
 		}
 
-		if (accountJSONObject == null) {
+		if (account == null) {
 			return null;
 		}
 
@@ -209,11 +216,11 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 					BoolQueryBuilderUtil.filter(
 						QueryBuilders.termsQuery(
 							"dataSourceAccountPKs.accountPKs",
-							accountJSONObject.getString("accountPK"))
+							account.getAccountPK())
 					).filter(
 						QueryBuilders.termQuery(
 							"dataSourceAccountPKs.dataSourceId",
-							accountJSONObject.getString("dataSourceId"))
+							account.getDataSourceId())
 					),
 					ScoreMode.None));
 		}
@@ -222,12 +229,11 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 			"dataSourceAccountPKs",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termsQuery(
-					"dataSourceAccountPKs.accountPKs",
-					accountJSONObject.getString("accountPK"))
+					"dataSourceAccountPKs.accountPKs", account.getAccountPK())
 			).filter(
 				QueryBuilders.termQuery(
 					"dataSourceAccountPKs.dataSourceId",
-					accountJSONObject.getString("dataSourceId"))
+					account.getDataSourceId())
 			),
 			ScoreMode.None);
 	}
@@ -898,6 +904,9 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	private static final Pattern _pattern = Pattern.compile(
 		".*(score eq '(false|true)').*");
+
+	@Autowired
+	private AccountRepository _accountRepository;
 
 	private final Set<String> _allowedOperators = new HashSet<String>() {
 		{

@@ -20,9 +20,11 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoIndividualDog;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.Account;
 import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.model.ChannelDataSource;
 import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.common.security.Encryptor;
@@ -362,26 +364,10 @@ public class DataSourceDog {
 
 		_deleteRunLogs(dataSource);
 
-		JSONArrayIterator.of(
-			"accounts", _elasticsearchInvoker,
-			accountJSONObject -> {
-				try {
-					_accountDog.deleteAccount(accountJSONObject);
-				}
-				catch (Exception e) {
-					return e;
-				}
+		List<Account> accounts = _accountRepository.findAllByDataSourceId(
+			dataSourceId);
 
-				return null;
-			}
-		).setMonitoringConsumers(
-			processedCountMonitorConsumer, queueMonitorConsumer
-		).setQueryBuilder(
-			QueryBuilders.termQuery(
-				"dataSourceId", String.valueOf(dataSourceId))
-		).setStopOnExceptions(
-			false
-		).iterate();
+		accounts.forEach(account -> _accountDog.deleteAccount(account));
 
 		Date deletionDate = dataSource.getDeletionDate();
 
@@ -759,6 +745,9 @@ public class DataSourceDog {
 
 	@Autowired
 	private AccountDog _accountDog;
+
+	@Autowired
+	private AccountRepository _accountRepository;
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
