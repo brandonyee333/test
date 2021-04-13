@@ -16,6 +16,7 @@ package com.liferay.osb.customer.identity.management.internal.saml.resolver;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.identity.management.internal.constants.NameIdTypeConstants;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -78,8 +79,9 @@ public class CustomerUserResolver implements UserResolver {
 				userResolverSAMLContext.resolveSubjectNameFormat();
 
 			_log.debug(
-				"Resolving user with name ID format " + subjectNameFormat +
-					" and value " + subjectNameIdentifier);
+				StringBundler.concat(
+					"Resolving user with name ID format ", subjectNameFormat,
+					" and value ", subjectNameIdentifier));
 		}
 
 		long companyId = CompanyThreadLocal.getCompanyId();
@@ -143,8 +145,9 @@ public class CustomerUserResolver implements UserResolver {
 		try {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Attributes mapping for " + peerEntityId + " " +
-						_USER_ATTRIBUTE_MAPPINGS);
+					StringBundler.concat(
+						"Attributes mapping for ", peerEntityId, " ",
+						_USER_ATTRIBUTE_MAPPINGS));
 			}
 
 			Properties userAttributeMappingsProperties = PropertiesUtil.load(
@@ -283,8 +286,9 @@ public class CustomerUserResolver implements UserResolver {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Importing user with identifier " + subjectNameIdentifier +
-					" of type " + subjectNameIdentifierType);
+				StringBundler.concat(
+					"Importing user with identifier ", subjectNameIdentifier,
+					" of type ", subjectNameIdentifierType));
 		}
 
 		Map<String, List<Serializable>> attributesMap = getAttributesMap(
@@ -359,8 +363,9 @@ public class CustomerUserResolver implements UserResolver {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Updating user " + user.getUserId() + " with attributes map " +
-					MapUtil.toString(attributesMap));
+				StringBundler.concat(
+					"Updating user ", String.valueOf(user.getUserId()),
+					" with attributes map ", MapUtil.toString(attributesMap)));
 		}
 
 		String screenName = getValueAsString(
