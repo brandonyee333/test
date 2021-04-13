@@ -33,7 +33,7 @@ definition {
 			locator1 = "EditUserSegment#USER_SEGMENT_RULE_BEHAVIOR_PREVIOUSLY_VISITED_SITE_VALUE_FIELD",
 			value1 = "${conditionValue}");
 
-		Click(locator1 = "EditUserSegment#USER_SEGMENT_RULE_BEHAVIOR_PREVIOUSLY_VISITED_SITE_ADD_BUTTON");
+		Click.clickAt(locator1 = "EditUserSegment#USER_SEGMENT_RULE_BEHAVIOR_PREVIOUSLY_VISITED_SITE_ADD_BUTTON");
 	}
 
 	macro addBehaviorScorePointsRuleCP {
