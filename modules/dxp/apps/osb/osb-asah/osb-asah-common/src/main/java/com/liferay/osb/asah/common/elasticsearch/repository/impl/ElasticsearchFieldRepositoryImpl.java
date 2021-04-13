@@ -124,25 +124,21 @@ public class ElasticsearchFieldRepositoryImpl
 	}
 
 	@Override
-	public List<Field> findByOwnerIdGroupByMaxModifiedDateAndName(
-		Long ownerId) {
+	public List<Field> findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
+		String context, Long ownerId) {
 
-		JSONObject contextJSONObject = null;
+		JSONObject jsonObject = null;
 
-		if (_faroInfoElasticsearchInvoker.exists(
-				"accounts", String.valueOf(ownerId))) {
-
-			JSONObject jsonObject = _faroInfoElasticsearchInvoker.get(
+		if (context.equals("organization")) {
+			jsonObject = _faroInfoElasticsearchInvoker.get(
 				"accounts", String.valueOf(ownerId));
-
-			contextJSONObject = jsonObject.optJSONObject("organization");
 		}
 		else {
-			JSONObject jsonObject = _faroInfoElasticsearchInvoker.get(
+			jsonObject = _faroInfoElasticsearchInvoker.get(
 				"individuals", String.valueOf(ownerId));
-
-			contextJSONObject = jsonObject.optJSONObject("demographics");
 		}
+
+		JSONObject contextJSONObject = jsonObject.optJSONObject(context);
 
 		JSONArray fieldsJSONArray = new JSONArray();
 

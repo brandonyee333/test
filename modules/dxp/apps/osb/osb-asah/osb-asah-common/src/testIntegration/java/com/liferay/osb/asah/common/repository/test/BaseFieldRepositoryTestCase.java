@@ -81,9 +81,11 @@ public abstract class BaseFieldRepositoryTestCase
 	}
 
 	@Test
-	public void testFindByOwnerIdGroupByMaxModifiedDateAndName() {
+	public void testFindByContextAndOwnerIdGroupByMaxModifiedDateAndName() {
 		List<Field> fields =
-			fieldRepository.findByOwnerIdGroupByMaxModifiedDateAndName(10L);
+			fieldRepository.
+				findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
+					"organization", 10L);
 
 		Assert.assertEquals(fields.toString(), 2, fields.size());
 

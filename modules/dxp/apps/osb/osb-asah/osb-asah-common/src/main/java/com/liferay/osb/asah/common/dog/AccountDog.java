@@ -162,7 +162,8 @@ public class AccountDog {
 			return null;
 		}
 
-		List<Field> fields = _fieldDog.getOwnerIdFields(account.getId());
+		List<Field> fields = _fieldDog.getOwnerIdFields(
+			"organization", account.getId());
 
 		Stream<Field> stream = fields.stream();
 

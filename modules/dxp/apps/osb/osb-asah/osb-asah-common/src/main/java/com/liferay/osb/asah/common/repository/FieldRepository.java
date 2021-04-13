@@ -50,7 +50,7 @@ public interface FieldRepository extends CrudRepository<Field, Long> {
 	public List<Field> findByContextAndOwnerIdAndOwnerType(
 		String context, Long ownerId, String ownerType);
 
-	public List<Field> findByOwnerIdGroupByMaxModifiedDateAndName(
-		@Param("ownerId") Long ownerId);
+	public List<Field> findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
+		@Param("context") String context, @Param("ownerId") Long ownerId);
 
 }

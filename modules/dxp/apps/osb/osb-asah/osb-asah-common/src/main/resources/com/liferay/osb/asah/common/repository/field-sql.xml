@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 
 <properties>
-	<entry key="Field.findByOwnerIdGroupByMaxModifiedDateAndName">
+	<entry key="Field.findByContextAndOwnerIdGroupByMaxModifiedDateAndName">
 		<![CDATA[
 			SELECT
 				Field.*
@@ -16,6 +16,7 @@
 					FROM
 						Field
 					WHERE
+						Field.context = :context AND
 						Field.ownerId = :ownerId
 					GROUP BY
 						Field.ownerId, Field.name

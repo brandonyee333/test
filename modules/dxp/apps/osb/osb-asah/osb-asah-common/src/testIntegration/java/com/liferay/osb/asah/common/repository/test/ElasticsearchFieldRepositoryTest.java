@@ -38,8 +38,8 @@ public class ElasticsearchFieldRepositoryTest
 	)
 	@Override
 	@Test
-	public void testFindByOwnerIdGroupByMaxModifiedDateAndName() {
-		super.testFindByOwnerIdGroupByMaxModifiedDateAndName();
+	public void testFindByContextAndOwnerIdGroupByMaxModifiedDateAndName() {
+		super.testFindByContextAndOwnerIdGroupByMaxModifiedDateAndName();
 	}
 
 }
