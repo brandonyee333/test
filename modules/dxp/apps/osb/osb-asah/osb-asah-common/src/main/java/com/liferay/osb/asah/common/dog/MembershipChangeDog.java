@@ -41,7 +41,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 		MembershipChange membershipChange = new MembershipChange();
 
-		membershipChange.setDateChanged(membership.getModifiedDate());
+		membershipChange.setModifiedDate(membership.getModifiedDate());
 		membershipChange.setDateFirst(membership.getCreateDate());
 		membershipChange.setIndividualDeleted(Boolean.FALSE);
 
@@ -69,7 +69,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 		MembershipChange membershipChange = new MembershipChange();
 
-		membershipChange.setDateChanged(membership.getModifiedDate());
+		membershipChange.setModifiedDate(membership.getModifiedDate());
 		membershipChange.setDateFirst(membership.getCreateDate());
 		membershipChange.setIndividualDeleted(Boolean.TRUE);
 
@@ -130,7 +130,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 			MembershipChange membershipChange = new MembershipChange();
 
-			membershipChange.setDateChanged(membership.getModifiedDate());
+			membershipChange.setModifiedDate(membership.getModifiedDate());
 			membershipChange.setDateFirst(membership.getCreateDate());
 			membershipChange.setIndividualDeleted(Boolean.FALSE);
 			membershipChange.setIndividualEmail(individualEmail);

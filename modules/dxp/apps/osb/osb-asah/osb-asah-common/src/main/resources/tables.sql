@@ -239,7 +239,6 @@ CREATE TABLE IF NOT EXISTS Membership (
 
 CREATE TABLE IF NOT EXISTS MembershipChange (
 	id BIGSERIAL PRIMARY KEY,
-	dateChanged TIMESTAMPTZ,
 	dateFirst TIMESTAMPTZ,
 	individualDeleted BOOLEAN,
 	individualId BIGINT,
@@ -248,6 +247,7 @@ CREATE TABLE IF NOT EXISTS MembershipChange (
 	individualsCount BIGINT,
 	individualSegmentId BIGINT,
 	knownIndividualsCount BIGINT,
+	modifiedDate TIMESTAMPTZ,
 	operation TEXT
 );
 

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -48,7 +49,7 @@ public class MembershipChange implements Persistable<Long> {
 
 		MembershipChange membershipChange = (MembershipChange)obj;
 
-		if (Objects.equals(_dateChanged, membershipChange._dateChanged) &&
+		if (Objects.equals(_modifiedDate, membershipChange._modifiedDate) &&
 			Objects.equals(_dateFirst, membershipChange._dateFirst) &&
 			Objects.equals(_id, membershipChange._id) &&
 			Objects.equals(
@@ -77,12 +78,13 @@ public class MembershipChange implements Persistable<Long> {
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
 	)
-	public Date getDateChanged() {
-		if (_dateChanged == null) {
+	@JsonProperty("dateChanged")
+	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
 			return null;
 		}
 
-		return new Date(_dateChanged.getTime());
+		return new Date(_modifiedDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -151,7 +153,7 @@ public class MembershipChange implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_dateChanged, _dateFirst, _id, _individualDeleted, _individualEmail,
+			_modifiedDate, _dateFirst, _id, _individualDeleted, _individualEmail,
 			_individualId, _individualName, _individualSegmentId,
 			_individualsCount, _knownIndividualsCount, _operation);
 	}
@@ -166,9 +168,9 @@ public class MembershipChange implements Persistable<Long> {
 		return false;
 	}
 
-	public void setDateChanged(Date dateChanged) {
-		if (dateChanged != null) {
-			_dateChanged = new Date(dateChanged.getTime());
+	public void setModifiedDate(Date modifiedDate) {
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
 		}
 	}
 
@@ -219,7 +221,7 @@ public class MembershipChange implements Persistable<Long> {
 	}
 
 	@Transient
-	private Date _dateChanged;
+	private Date _modifiedDate;
 
 	@Transient
 	private Date _dateFirst;
