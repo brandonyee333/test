@@ -49,8 +49,7 @@ public class MembershipChange implements Persistable<Long> {
 
 		MembershipChange membershipChange = (MembershipChange)obj;
 
-		if (Objects.equals(_modifiedDate, membershipChange._modifiedDate) &&
-			Objects.equals(_createDate, membershipChange._createDate) &&
+		if (Objects.equals(_createDate, membershipChange._createDate) &&
 			Objects.equals(_id, membershipChange._id) &&
 			Objects.equals(
 				_individualDeleted, membershipChange._individualDeleted) &&
@@ -65,6 +64,7 @@ public class MembershipChange implements Persistable<Long> {
 			Objects.equals(
 				_knownIndividualsCount,
 				membershipChange._knownIndividualsCount) &&
+			Objects.equals(_modifiedDate, membershipChange._modifiedDate) &&
 			Objects.equals(_operation, membershipChange._operation)) {
 
 			return true;
@@ -154,9 +154,9 @@ public class MembershipChange implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_modifiedDate, _createDate, _id, _individualDeleted,
-			_individualEmail, _individualId, _individualName,
-			_individualSegmentId, _individualsCount, _knownIndividualsCount,
+			_createDate, _id, _individualDeleted, _individualEmail,
+			_individualId, _individualName, _individualSegmentId,
+			_individualsCount, _knownIndividualsCount, _modifiedDate,
 			_operation);
 	}
 
