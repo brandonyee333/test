@@ -90,7 +90,41 @@ public class EventAttributeDefinitionDogTest {
 	}
 
 	@Test
-	public void testAddEventAttributeDefinitionNoDisplayName() {
+	public void testAddEventAttributeDefinitionDuplicateDisplayName() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+
+		EventAttributeDefinition eventAttributeDefinition1 =
+			_eventAttributeDefinitionDog.addEventAttributeDefinition(
+				"Testing attribute definition 1", "Test Attribute Definition",
+				eventDefinition.getId(), "testAttributeDefinition1",
+				"testValue");
+
+		EventAttributeDefinition eventAttributeDefinition2 =
+			_eventAttributeDefinitionDog.addEventAttributeDefinition(
+				"Testing attribute definition", "Test Attribute Definition",
+				eventDefinition.getId(), "testAttributeDefinition2",
+				"testValue");
+
+		EventAttributeDefinition eventAttributeDefinition3 =
+			_eventAttributeDefinitionDog.addEventAttributeDefinition(
+				"Testing attribute definition", "Test Attribute Definition",
+				eventDefinition.getId(), "testAttributeDefinition3",
+				"testValue");
+
+		Assert.assertEquals(
+			"Test Attribute Definition",
+			eventAttributeDefinition1.getDisplayName());
+		Assert.assertEquals(
+			"Test Attribute Definition (1)",
+			eventAttributeDefinition2.getDisplayName());
+		Assert.assertEquals(
+			"Test Attribute Definition (2)",
+			eventAttributeDefinition3.getDisplayName());
+	}
+
+	@Test
+	public void testAddEventAttributeDefinitionNoDisplayName1() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
 
@@ -123,6 +157,29 @@ public class EventAttributeDefinitionDogTest {
 			eventDefinitionEventAttributeDefinition.getEventDefinitionId());
 
 		Assert.assertNotNull(eventAttributeDefinition.getId());
+	}
+
+	@Test
+	public void testAddEventAttributeDefinitionNoDisplayName2() {
+		EventDefinition eventDefinition =
+			_eventDefinitionDog.fetchEventDefinitionByName("pageViewed");
+
+		EventAttributeDefinition eventAttributeDefinition1 =
+			_eventAttributeDefinitionDog.addEventAttributeDefinition(
+				"Testing attribute definition 1", null, eventDefinition.getId(),
+				"testAttributeDefinition", "testValue");
+
+		EventAttributeDefinition eventAttributeDefinition2 =
+			_eventAttributeDefinitionDog.addEventAttributeDefinition(
+				"Testing attribute definition", null, eventDefinition.getId(),
+				"TestAttributeDefinition", "testValue");
+
+		Assert.assertEquals(
+			"testAttributeDefinition",
+			eventAttributeDefinition1.getDisplayName());
+		Assert.assertEquals(
+			"TestAttributeDefinition (1)",
+			eventAttributeDefinition2.getDisplayName());
 	}
 
 	@Test

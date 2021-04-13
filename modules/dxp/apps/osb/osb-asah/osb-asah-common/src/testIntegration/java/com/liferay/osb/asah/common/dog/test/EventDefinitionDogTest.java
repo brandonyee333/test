@@ -66,6 +66,30 @@ public class EventDefinitionDogTest {
 		Assert.assertFalse(eventDefinition.isBlocked());
 	}
 
+	@Test
+	public void testAddDefinitionDuplicateDisplayName() {
+		EventDefinition eventDefinition1 =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", "Test Event", null, "testEvent1",
+				EventDefinition.Type.CUSTOM, null);
+
+		EventDefinition eventDefinition2 =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", "Test Event", null, "testEvent2",
+				EventDefinition.Type.CUSTOM, null);
+
+		EventDefinition eventDefinition3 =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", "Test Event", null, "testEvent3",
+				EventDefinition.Type.CUSTOM, null);
+
+		Assert.assertEquals("Test Event", eventDefinition1.getDisplayName());
+		Assert.assertEquals(
+			"Test Event (1)", eventDefinition2.getDisplayName());
+		Assert.assertEquals(
+			"Test Event (2)", eventDefinition3.getDisplayName());
+	}
+
 	@PostgreSQLTables(resourcePath = "test_add_definition_limit_reached.sql")
 	@Test
 	public void testAddDefinitionLimitReached() {
@@ -106,7 +130,7 @@ public class EventDefinitionDogTest {
 	}
 
 	@Test
-	public void testAddDefinitionWithoutDisplayName1() {
+	public void testAddDefinitionNoDisplayName1() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
 				"Testing an event", null, null, "testEvent",
@@ -124,7 +148,7 @@ public class EventDefinitionDogTest {
 	}
 
 	@Test
-	public void testAddDefinitionWithoutDisplayName2() {
+	public void testAddDefinitionNoDisplayName2() {
 		EventDefinition eventDefinition =
 			_eventDefinitionDog.addEventDefinition(
 				"Testing an event", "", null, "testEvent",
@@ -139,6 +163,22 @@ public class EventDefinitionDogTest {
 		Assert.assertEquals(
 			EventDefinition.Type.CUSTOM, eventDefinition.getType());
 		Assert.assertFalse(eventDefinition.isBlocked());
+	}
+
+	@Test
+	public void testAddDefinitionNoDisplayName3() {
+		EventDefinition eventDefinition1 =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", null, null, "testEvent",
+				EventDefinition.Type.CUSTOM, null);
+
+		EventDefinition eventDefinition2 =
+			_eventDefinitionDog.addEventDefinition(
+				"Testing an event", null, null, "TestEvent",
+				EventDefinition.Type.CUSTOM, null);
+
+		Assert.assertEquals("testEvent", eventDefinition1.getDisplayName());
+		Assert.assertEquals("TestEvent (1)", eventDefinition2.getDisplayName());
 	}
 
 	@Test
