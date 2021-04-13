@@ -239,13 +239,13 @@ CREATE TABLE IF NOT EXISTS Membership (
 
 CREATE TABLE IF NOT EXISTS MembershipChange (
 	id BIGSERIAL PRIMARY KEY,
-	createDate TIMESTAMPTZ,
 	individualDeleted BOOLEAN,
 	individualId BIGINT,
 	individualEmail TEXT,
 	individualName TEXT,
 	individualsCount BIGINT,
 	individualSegmentId BIGINT,
+	joinedDate TIMESTAMPTZ,
 	knownIndividualsCount BIGINT,
 	modifiedDate TIMESTAMPTZ,
 	operation TEXT

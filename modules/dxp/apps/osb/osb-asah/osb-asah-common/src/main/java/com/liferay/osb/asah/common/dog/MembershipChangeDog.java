@@ -41,7 +41,6 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 		MembershipChange membershipChange = new MembershipChange();
 
-		membershipChange.setCreateDate(membership.getCreateDate());
 		membershipChange.setIndividualDeleted(Boolean.FALSE);
 
 		JSONObject demographicsJSONObject = individualJSONObject.optJSONObject(
@@ -56,6 +55,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		membershipChange.setIndividualsCount(individualsCount);
 		membershipChange.setIndividualSegmentId(
 			membership.getIndividualSegmentId());
+		membershipChange.setJoinedDate(membership.getCreateDate());
 		membershipChange.setKnownIndividualsCount(knownIndividualsCount);
 		membershipChange.setModifiedDate(membership.getModifiedDate());
 		membershipChange.setOperation(operation);
@@ -69,7 +69,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 		MembershipChange membershipChange = new MembershipChange();
 
-		membershipChange.setCreateDate(membership.getCreateDate());
+		membershipChange.setJoinedDate(membership.getCreateDate());
 		membershipChange.setIndividualDeleted(Boolean.TRUE);
 
 		Optional<MembershipChange> membershipChangeOptional =
@@ -130,7 +130,6 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 			MembershipChange membershipChange = new MembershipChange();
 
-			membershipChange.setCreateDate(membership.getCreateDate());
 			membershipChange.setIndividualDeleted(Boolean.FALSE);
 			membershipChange.setIndividualEmail(individualEmail);
 			membershipChange.setIndividualId(individualId);
@@ -140,6 +139,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 			membershipChange.setIndividualsCount(individualsCount);
 			membershipChange.setIndividualSegmentId(
 				membership.getIndividualSegmentId());
+			membershipChange.setJoinedDate(membership.getCreateDate());
 			membershipChange.setKnownIndividualsCount(knownIndividualsCount);
 			membershipChange.setModifiedDate(membership.getModifiedDate());
 			membershipChange.setOperation("ADDED");

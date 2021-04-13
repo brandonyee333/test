@@ -42,7 +42,6 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 	public void setUp() {
 		MembershipChange membershipChange = new MembershipChange();
 
-		membershipChange.setCreateDate(new Date());
 		membershipChange.setIndividualDeleted(Boolean.FALSE);
 		membershipChange.setIndividualId(123L);
 		membershipChange.setIndividualName("Nina Simone");
@@ -51,6 +50,7 @@ public abstract class BaseMembershipChangeRepositoryTestCase
 
 		membershipChange.setIndividualSegmentId(segment.getId());
 
+		membershipChange.setJoinedDate(new Date());
 		membershipChange.setKnownIndividualsCount(1L);
 		membershipChange.setModifiedDate(new Date());
 		membershipChange.setOperation("ADDED");

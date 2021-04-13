@@ -49,8 +49,7 @@ public class MembershipChange implements Persistable<Long> {
 
 		MembershipChange membershipChange = (MembershipChange)obj;
 
-		if (Objects.equals(_createDate, membershipChange._createDate) &&
-			Objects.equals(_id, membershipChange._id) &&
+		if (Objects.equals(_id, membershipChange._id) &&
 			Objects.equals(
 				_individualDeleted, membershipChange._individualDeleted) &&
 			Objects.equals(
@@ -61,6 +60,7 @@ public class MembershipChange implements Persistable<Long> {
 				_individualSegmentId, membershipChange._individualSegmentId) &&
 			Objects.equals(
 				_individualsCount, membershipChange._individualsCount) &&
+			Objects.equals(_joinedDate, membershipChange._joinedDate) &&
 			Objects.equals(
 				_knownIndividualsCount,
 				membershipChange._knownIndividualsCount) &&
@@ -71,20 +71,6 @@ public class MembershipChange implements Persistable<Long> {
 		}
 
 		return false;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
-	@JsonProperty("dateFirst")
-	public Date getCreateDate() {
-		if (_createDate == null) {
-			return null;
-		}
-
-		return new Date(_createDate.getTime());
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -128,6 +114,20 @@ public class MembershipChange implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("dateFirst")
+	public Date getJoinedDate() {
+		if (_joinedDate == null) {
+			return null;
+		}
+
+		return new Date(_joinedDate.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Long getKnownIndividualsCount() {
 		return _knownIndividualsCount;
 	}
@@ -154,10 +154,9 @@ public class MembershipChange implements Persistable<Long> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_createDate, _id, _individualDeleted, _individualEmail,
-			_individualId, _individualName, _individualSegmentId,
-			_individualsCount, _knownIndividualsCount, _modifiedDate,
-			_operation);
+			_id, _individualDeleted, _individualEmail, _individualId,
+			_individualName, _individualSegmentId, _individualsCount,
+			_joinedDate, _knownIndividualsCount, _modifiedDate, _operation);
 	}
 
 	@JsonIgnore
@@ -168,12 +167,6 @@ public class MembershipChange implements Persistable<Long> {
 		}
 
 		return false;
-	}
-
-	public void setCreateDate(Date createDate) {
-		if (createDate != null) {
-			_createDate = new Date(createDate.getTime());
-		}
 	}
 
 	public void setId(Long id) {
@@ -208,6 +201,12 @@ public class MembershipChange implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
+	public void setJoinedDate(Date joinedDate) {
+		if (joinedDate != null) {
+			_joinedDate = new Date(joinedDate.getTime());
+		}
+	}
+
 	public void setKnownIndividualsCount(Long knownIndividualsCount) {
 		_knownIndividualsCount = knownIndividualsCount;
 	}
@@ -221,9 +220,6 @@ public class MembershipChange implements Persistable<Long> {
 	public void setOperation(String operation) {
 		_operation = operation;
 	}
-
-	@Transient
-	private Date _createDate;
 
 	@Transient
 	private Long _id;
@@ -248,6 +244,9 @@ public class MembershipChange implements Persistable<Long> {
 
 	@Transient
 	private Boolean _isNew;
+
+	@Transient
+	private Date _joinedDate;
 
 	@Transient
 	private Long _knownIndividualsCount;
