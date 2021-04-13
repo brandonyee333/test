@@ -41,7 +41,6 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 		MembershipChange membershipChange = new MembershipChange();
 
-		membershipChange.setModifiedDate(membership.getModifiedDate());
 		membershipChange.setCreateDate(membership.getCreateDate());
 		membershipChange.setIndividualDeleted(Boolean.FALSE);
 
@@ -58,6 +57,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		membershipChange.setIndividualSegmentId(
 			membership.getIndividualSegmentId());
 		membershipChange.setKnownIndividualsCount(knownIndividualsCount);
+		membershipChange.setModifiedDate(membership.getModifiedDate());
 		membershipChange.setOperation(operation);
 
 		_membershipChangeRepository.save(membershipChange);
@@ -69,7 +69,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 		MembershipChange membershipChange = new MembershipChange();
 
-		membershipChange.setModifiedDate(membership.getModifiedDate());
+
 		membershipChange.setCreateDate(membership.getCreateDate());
 		membershipChange.setIndividualDeleted(Boolean.TRUE);
 
@@ -95,6 +95,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 		membershipChange.setIndividualSegmentId(
 			membership.getIndividualSegmentId());
 		membershipChange.setKnownIndividualsCount(knownIndividualsCount);
+		membershipChange.setModifiedDate(membership.getModifiedDate());
 		membershipChange.setOperation("REMOVED");
 
 		_membershipChangeRepository.save(membershipChange);
@@ -130,7 +131,6 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 
 			MembershipChange membershipChange = new MembershipChange();
 
-			membershipChange.setModifiedDate(membership.getModifiedDate());
 			membershipChange.setCreateDate(membership.getCreateDate());
 			membershipChange.setIndividualDeleted(Boolean.FALSE);
 			membershipChange.setIndividualEmail(individualEmail);
@@ -142,6 +142,7 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 			membershipChange.setIndividualSegmentId(
 				membership.getIndividualSegmentId());
 			membershipChange.setKnownIndividualsCount(knownIndividualsCount);
+			membershipChange.setModifiedDate(membership.getModifiedDate());
 			membershipChange.setOperation("ADDED");
 
 			membershipChanges.add(membershipChange);
