@@ -6,6 +6,14 @@ server {
     }
 
     location = / {
+        if ($request_method = OPTIONS) {
+            add_header "Access-Control-Allow-Headers" "Accept, Authorization, Content-Type, Origin, X-Requested-With";
+            add_header "Access-Control-Allow-Origin"  *;
+            add_header "Access-Control-Allow-Methods" "GET, HEAD, OPTIONS, POST";
+
+            return 200;
+        }
+
         error_page 418 = @publisher_post;
 
         if ($request_method = POST) {
