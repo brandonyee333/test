@@ -36,8 +36,8 @@ import org.springframework.stereotype.Component;
 public class MembershipChangeDog extends BaseFaroInfoDog {
 
 	public void addMembershipChange(
-		Membership membership, JSONObject individualJSONObject,
-		long individualsCount, long knownIndividualsCount, String operation) {
+		JSONObject individualJSONObject, long individualsCount,
+		long knownIndividualsCount, Membership membership, String operation) {
 
 		MembershipChange membershipChange = new MembershipChange();
 
@@ -64,8 +64,8 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 	}
 
 	public void addMembershipChangeForDeletedIndividual(
-		Membership membership, Long individualId, long individualsCount,
-		long knownIndividualsCount) {
+		Long individualId, long individualsCount,
+		long knownIndividualsCount, Membership membership) {
 
 		MembershipChange membershipChange = new MembershipChange();
 
@@ -102,8 +102,8 @@ public class MembershipChangeDog extends BaseFaroInfoDog {
 	}
 
 	public void addMembershipChanges(
-		List<Membership> memberships, boolean includeAnonymousUsers,
-		long individualsCount, long knownIndividualsCount) {
+		boolean includeAnonymousUsers, long individualsCount,
+		long knownIndividualsCount, List<Membership> memberships) {
 
 		List<MembershipChange> membershipChanges = new ArrayList<>();
 
