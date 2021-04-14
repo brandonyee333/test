@@ -199,9 +199,8 @@ public class FreeMarkerTemplate extends AbstractSingleResourceTemplate {
 
 	private class CachableDefaultMapAdapter
 		extends WrappingTemplateModel
-		implements TemplateHashModelEx, AdapterTemplateModel,
-				   WrapperTemplateModel, TemplateModelWithAPISupport,
-				   Serializable {
+		implements AdapterTemplateModel, Serializable, TemplateHashModelEx,
+				   TemplateModelWithAPISupport, WrapperTemplateModel {
 
 		@Override
 		public TemplateModel get(String key) throws TemplateModelException {

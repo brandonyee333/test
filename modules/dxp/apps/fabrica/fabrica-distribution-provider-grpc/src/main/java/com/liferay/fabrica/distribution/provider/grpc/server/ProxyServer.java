@@ -109,7 +109,7 @@ public class ProxyServer
 	private Server _server;
 	private Object _service;
 
-	private static class Builder implements Build, Contract, Address, Service {
+	private static class Builder implements Address, Build, Contract, Service {
 
 		public Builder(String name) {
 			_proxyServer._name = name;
