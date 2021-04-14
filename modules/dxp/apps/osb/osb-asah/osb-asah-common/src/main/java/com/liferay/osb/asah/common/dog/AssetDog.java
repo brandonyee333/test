@@ -14,29 +14,17 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.liferay.osb.asah.backend.model.PageAsset;
-import com.liferay.osb.asah.backend.model.PropertyFilter;
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
-import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.model.ResultBag;
+import com.liferay.osb.asah.common.model.Asset;
+import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.common.repository.AssetRepository;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHits;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -45,62 +33,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class AssetDog {
 
-	public ResultBag<PageAsset> getPageAssetResultBag(
-		String keywords, List<PropertyFilter> propertyFilters, int size,
-		Sort sort, int start) {
+	public Page<Asset> getAssetPage(
+		String assetType, String keyword, List<PropertyFilter> propertyFilters,
+		int page, int size, Sort sort) {
 
-		SearchHits searchHits = _dataDog.querySearchHits(
-			"assets", _faroInfoElasticsearchInvoker,
-			DogUtil.buildSearchSourceBuilder(
-				SortBuilderUtil.fieldSort(sort),
-				_buildQueryBuilder("Page", keywords, propertyFilters), size,
-				start));
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
-		return DogUtil.createResultBag(
-			PageAsset.class, _objectMapper, searchHits);
-	}
-
-	private QueryBuilder _buildQueryBuilder(
-		String assetType, String keywords,
-		List<PropertyFilter> propertyFilters) {
-
-		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("assetType", assetType));
-
-		if (StringUtils.isNotBlank(keywords)) {
-			boolQueryBuilder.filter(
-				BoolQueryBuilderUtil.should(
-					QueryBuilders.wildcardQuery(
-						"canonicalUrl", "*" + keywords + "*")
-				).should(
-					QueryBuilders.queryStringQuery(
-						String.format(
-							"name:*%1$s* OR description:*%1$s*",
-							QueryUtil.escapeKeywords(keywords)))
-				).should(
-					QueryBuilders.multiMatchQuery(
-						keywords, "name", "description"
-					).fuzziness(
-						Fuzziness.AUTO
-					)
-				).should(
-					QueryBuilders.wildcardQuery("url", "*" + keywords + "*")
-				));
-		}
-
-		DogUtil.addBoolQueryBuilderPropertyFilters(
-			boolQueryBuilder, propertyFilters);
-
-		return boolQueryBuilder;
+		return PageableExecutionUtils.getPage(
+			_assetRepository.searchAssets(
+				assetType, keyword, propertyFilters, pageRequest),
+			pageRequest,
+			() -> _assetRepository.countAssets(
+				assetType, keyword, propertyFilters));
 	}
 
 	@Autowired
-	private DataDog _dataDog;
-
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
+	private AssetRepository _assetRepository;
 
 }
