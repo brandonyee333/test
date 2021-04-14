@@ -83,7 +83,7 @@ public abstract class BaseFieldRepositoryTestCase
 	@Test
 	public void testFindByContextAndOwnerIdGroupByMaxModifiedDateAndName() {
 		List<Field> fields =
-			fieldRepository.
+			_fieldRepository.
 				findByContextAndOwnerIdGroupByMaxModifiedDateAndName(
 					"organization", 10L);
 
@@ -95,11 +95,8 @@ public abstract class BaseFieldRepositoryTestCase
 
 	@Override
 	protected CrudRepository<Field, Long> getCrudRepository() {
-		return fieldRepository;
+		return _fieldRepository;
 	}
-
-	@Autowired
-	protected FieldRepository fieldRepository;
 
 	private void _assertFieldEquals(Field expectedField, Field actualField) {
 		Assert.assertEquals(
@@ -122,5 +119,8 @@ public abstract class BaseFieldRepositoryTestCase
 
 	private Field _field2;
 	private Field _field3;
+
+	@Autowired
+	private FieldRepository _fieldRepository;
 
 }

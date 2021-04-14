@@ -105,7 +105,8 @@ public class ElasticsearchAccountRepositoryImpl
 
 	@Override
 	public List<Account> searchAccounts(
-		Long channelId, String filterString, Pageable pageable, Sort sort) {
+		Long channelId, String filterString, Pageable pageable,
+		Sort segmentSort) {
 
 		try {
 			CollectionGetResponse collectionGetResponse =
@@ -138,7 +139,7 @@ public class ElasticsearchAccountRepositoryImpl
 			List<FieldSortBuilder> fieldSortBuilders = new ArrayList<>();
 			List<String> newSorts = new ArrayList<>();
 
-			String[] segmentSorts = _getSorts(sort);
+			String[] segmentSorts = _getSorts(segmentSort);
 
 			if (segmentSorts.length > 0) {
 				List<Pair<String, SortOrder>> sortOrderPairs =

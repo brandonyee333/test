@@ -45,6 +45,6 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 
 	public List<Account> searchAccounts(
 		Long channelId, String filterString, Pageable pageable,
-		Sort sortBySegment);
+		Sort segmentSort);
 
 }
