@@ -68,11 +68,11 @@ public class SalesforceAccountsNaniteTest extends BaseNaniteTestCase {
 		_salesforceAccountsNanite.run(
 			JSONUtil.put("dataSourceId", "342837044336786766"));
 
-		Optional<Account> optionalAccount = _accountRepository.findByAccountPK(
+		Optional<Account> accountOptional = _accountRepository.findByAccountPK(
 			"0016C00000BKWWLQA5");
 
 		Account account = _accountDog.populateAccount(
-			optionalAccount.get(), null);
+			accountOptional.get(), null);
 
 		Assert.assertNotNull(account);
 
@@ -113,10 +113,10 @@ public class SalesforceAccountsNaniteTest extends BaseNaniteTestCase {
 			account, "342837044336786766", "website", "Text", "Website",
 			"http://www.liferay.com");
 
-		optionalAccount = _accountRepository.findByAccountPK(
+		accountOptional = _accountRepository.findByAccountPK(
 			"0016C00000BKWWLQA6");
 
-		account = optionalAccount.get();
+		account = accountOptional.get();
 
 		_assertField(
 			account, "342837044336786766", "accountPK", "Text", "id",

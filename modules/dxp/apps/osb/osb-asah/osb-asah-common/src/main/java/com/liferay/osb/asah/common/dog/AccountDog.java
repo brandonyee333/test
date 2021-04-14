@@ -139,11 +139,11 @@ public class AccountDog {
 	public Account fetchByAccountPKAndDataSourceId(
 		String accountPK, Long dataSourceId) {
 
-		Optional<Account> optionalAccount =
+		Optional<Account> accountOptional =
 			_accountRepository.findByAccountPKAndDataSourceId(
 				accountPK, dataSourceId);
 
-		return populateAccount(optionalAccount.orElse(null), null);
+		return populateAccount(accountOptional.orElse(null), null);
 	}
 
 	public Account getAccount(Long accountId, Long channelId) {

@@ -193,16 +193,16 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		Account account = null;
 
 		if (accountId != null) {
-			Optional<Account> optionalAccount = _accountRepository.findById(
+			Optional<Account> accountOptional = _accountRepository.findById(
 				Long.valueOf(accountId));
 
-			account = optionalAccount.orElse(null);
+			account = accountOptional.orElse(null);
 		}
 		else {
-			Optional<Account> optionalAccount =
+			Optional<Account> accountOptional =
 				_accountRepository.findByAccountPK(accountPK);
 
-			account = optionalAccount.orElse(null);
+			account = accountOptional.orElse(null);
 		}
 
 		if (account == null) {
