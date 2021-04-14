@@ -14,12 +14,11 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.backend.dto.PageAsset;
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.model.Asset;
 import com.liferay.osb.asah.common.model.PropertyFilter;
-import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -34,12 +33,13 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Marcellus Tavares
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
+@SpringBootTest(classes = OSBAsahSpringBootApplication.class)
 public class AssetDogTest {
 
 	@ElasticsearchIndex(
@@ -48,15 +48,15 @@ public class AssetDogTest {
 	)
 	@Test
 	public void testGetPageAssetResultBag() {
-		ResultBag<PageAsset> pageAssetResultBag =
-			_assetDog.getPageAssetResultBag(null, null, 20, Sort.desc("id"), 0);
+		Page<Asset> assetPage = _assetDog.getAssetPage(
+			"Page", null, null, 0, 20, Sort.desc("id"));
 
-		Assert.assertEquals(3, pageAssetResultBag.getTotal());
+		Assert.assertEquals(3, assetPage.getTotalElements());
 		Assert.assertEquals(
 			Arrays.asList(
 				"seize compelling action-items", "engineer intuitive models",
 				"empower holistic ROI"),
-			_getPageAssetTitles(pageAssetResultBag.getResults()));
+			_getPageAssetTitles(assetPage.getContent()));
 	}
 
 	@ElasticsearchIndex(
@@ -65,14 +65,13 @@ public class AssetDogTest {
 	)
 	@Test
 	public void testGetPageAssetResultBagWithKeywords() {
-		ResultBag<PageAsset> pageAssetResultBag =
-			_assetDog.getPageAssetResultBag(
-				"seize", null, 20, Sort.desc("id"), 0);
+		Page<Asset> assetPage = _assetDog.getAssetPage(
+			"Page", "seize", null, 0, 20, Sort.desc("id"));
 
-		Assert.assertEquals(1, pageAssetResultBag.getTotal());
+		Assert.assertEquals(1, assetPage.getTotalElements());
 		Assert.assertEquals(
 			Arrays.asList("seize compelling action-items"),
-			_getPageAssetTitles(pageAssetResultBag.getResults()));
+			_getPageAssetTitles(assetPage.getContent()));
 	}
 
 	@ElasticsearchIndex(
@@ -81,18 +80,16 @@ public class AssetDogTest {
 	)
 	@Test
 	public void testGetPageAssetResultBagWithNamePropertyFilter() {
-		ResultBag<PageAsset> pageAssetResultBag =
-			_assetDog.getPageAssetResultBag(
-				null,
-				Arrays.asList(
-					new PropertyFilter(
-						"name = engineer intuitive models", false)),
-				20, Sort.desc("id"), 0);
+		Page<Asset> assetPage = _assetDog.getAssetPage(
+			"Page", null,
+			Arrays.asList(
+				new PropertyFilter("name = engineer intuitive models", false)),
+			0, 20, Sort.desc("id"));
 
-		Assert.assertEquals(1, pageAssetResultBag.getTotal());
+		Assert.assertEquals(1, assetPage.getTotalElements());
 		Assert.assertEquals(
 			Arrays.asList("engineer intuitive models"),
-			_getPageAssetTitles(pageAssetResultBag.getResults()));
+			_getPageAssetTitles(assetPage.getContent()));
 	}
 
 	@ElasticsearchIndex(
@@ -101,22 +98,21 @@ public class AssetDogTest {
 	)
 	@Test
 	public void testGetPageAssetResultBagWithURLPropertyFilter() {
-		ResultBag<PageAsset> pageAssetResultBag =
-			_assetDog.getPageAssetResultBag(
-				null,
-				Arrays.asList(
-					new PropertyFilter(
-						"url = https://www.terrance-lueilwitz.biz", false)),
-				20, Sort.desc("id"), 0);
+		Page<Asset> assetPage = _assetDog.getAssetPage(
+			"Page", null,
+			Arrays.asList(
+				new PropertyFilter(
+					"url = https://www.terrance-lueilwitz.biz", false)),
+			0, 20, Sort.desc("id"));
 
-		Assert.assertEquals(1, pageAssetResultBag.getTotal());
+		Assert.assertEquals(1, assetPage.getTotalElements());
 		Assert.assertEquals(
 			Arrays.asList("empower holistic ROI"),
-			_getPageAssetTitles(pageAssetResultBag.getResults()));
+			_getPageAssetTitles(assetPage.getContent()));
 	}
 
-	private List<String> _getPageAssetTitles(List<PageAsset> pageAssets) {
-		return ListUtil.map(pageAssets, PageAsset::getTitle);
+	private List<String> _getPageAssetTitles(List<Asset> assets) {
+		return ListUtil.map(assets, Asset::getTitle);
 	}
 
 	@Autowired
