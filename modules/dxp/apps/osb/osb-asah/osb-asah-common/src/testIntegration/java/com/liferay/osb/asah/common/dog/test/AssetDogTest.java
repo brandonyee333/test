@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.backend.dog.AssetDog;
-import com.liferay.osb.asah.backend.model.PageAsset;
-import com.liferay.osb.asah.backend.model.PropertyFilter;
+import com.liferay.osb.asah.backend.dto.PageAsset;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
