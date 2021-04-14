@@ -42,6 +42,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -67,6 +69,10 @@ public class DataControlTaskDog {
 			}
 
 			emailAddresses = _readFile(file);
+
+			if (!file.delete() && _log.isWarnEnabled()) {
+				_log.warn("Unable to delete file " + file.getName());
+			}
 		}
 
 		List<DataControlTask> dataControlTasks = new ArrayList<>();
@@ -161,6 +167,8 @@ public class DataControlTaskDog {
 
 		_suppressionDog.updateSuppression(suppression);
 	}
+
+	private static final Log _log = LogFactory.getLog(DataControlTaskDog.class);
 
 	@Autowired
 	private DataControlTaskRepository _dataControlTaskRepository;
