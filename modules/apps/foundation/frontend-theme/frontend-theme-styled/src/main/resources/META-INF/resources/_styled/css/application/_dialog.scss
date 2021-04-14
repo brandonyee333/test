@@ -127,6 +127,10 @@
 		@include sm {
 			height: calc(100% - #{$dialog-footer-height});
 		}
+
+		@if ((min-resolution:.001dpcm) and supports (-webkit-appearance:none)) {
+			height: 100%;
+		}
 	}
 
 	.button-holder {
@@ -142,8 +146,11 @@
 			left: 0;
 			margin: 0;
 			padding: 10px 15px;
-			position: fixed;
 			width: 100%;
+
+			@if ((min-resolution:.001dpcm) and supports (-webkit-appearance:none)) {
+				position: fixed;
+			}
 
 			@include md {
 				background-color: $dialog-desktop-footer-bg;
