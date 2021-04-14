@@ -103,6 +103,23 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Test
+	public void testSearchAssetsWithKeywordPropertyFilter() {
+		PropertyFilter propertyFilter = new PropertyFilter(
+			"keywords.keyword = engineer", false);
+
+		propertyFilter.and(new PropertyFilter("keywords.type = title", false));
+
+		List<Asset> assets = _assetRepository.searchAssets(
+			"Page", null, Arrays.asList(propertyFilter),
+			PageRequest.of(0, 20, Sort.desc("id")));
+
+		Assert.assertEquals(assets.toString(), 1, assets.size());
+		Assert.assertEquals(
+			Arrays.asList("engineer intuitive models"),
+			_getPageAssetTitles(assets));
+	}
+
+	@Test
 	public void testSearchAssetsWithKeywords() {
 		List<Asset> assets = _assetRepository.searchAssets(
 			"Page", "seize", null, PageRequest.of(0, 20, Sort.desc("id")));
