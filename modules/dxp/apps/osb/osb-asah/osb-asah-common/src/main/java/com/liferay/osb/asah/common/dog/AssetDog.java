@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog;
+package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
