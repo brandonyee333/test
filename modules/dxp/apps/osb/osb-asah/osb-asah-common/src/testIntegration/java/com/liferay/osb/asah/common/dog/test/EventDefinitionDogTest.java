@@ -73,19 +73,21 @@ public class EventDefinitionDogTest {
 				"Testing an event", "Test Event", null, "testEvent1",
 				EventDefinition.Type.CUSTOM, null);
 
+		Assert.assertEquals("Test Event", eventDefinition1.getDisplayName());
+
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.addEventDefinition(
 				"Testing an event", "Test Event", null, "testEvent2",
 				EventDefinition.Type.CUSTOM, null);
+
+		Assert.assertEquals(
+			"Test Event (1)", eventDefinition2.getDisplayName());
 
 		EventDefinition eventDefinition3 =
 			_eventDefinitionDog.addEventDefinition(
 				"Testing an event", "Test Event", null, "testEvent3",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertEquals("Test Event", eventDefinition1.getDisplayName());
-		Assert.assertEquals(
-			"Test Event (1)", eventDefinition2.getDisplayName());
 		Assert.assertEquals(
 			"Test Event (2)", eventDefinition3.getDisplayName());
 	}
@@ -172,12 +174,13 @@ public class EventDefinitionDogTest {
 				"Testing an event", null, null, "testEvent",
 				EventDefinition.Type.CUSTOM, null);
 
+		Assert.assertEquals("testEvent", eventDefinition1.getDisplayName());
+
 		EventDefinition eventDefinition2 =
 			_eventDefinitionDog.addEventDefinition(
 				"Testing an event", null, null, "TestEvent",
 				EventDefinition.Type.CUSTOM, null);
 
-		Assert.assertEquals("testEvent", eventDefinition1.getDisplayName());
 		Assert.assertEquals("TestEvent (1)", eventDefinition2.getDisplayName());
 	}
 

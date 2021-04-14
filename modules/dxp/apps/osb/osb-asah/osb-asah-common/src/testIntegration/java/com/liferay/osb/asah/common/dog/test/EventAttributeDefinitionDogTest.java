@@ -100,11 +100,19 @@ public class EventAttributeDefinitionDogTest {
 				eventDefinition.getId(), "testAttributeDefinition1",
 				"testValue");
 
+		Assert.assertEquals(
+			"Test Attribute Definition",
+			eventAttributeDefinition1.getDisplayName());
+
 		EventAttributeDefinition eventAttributeDefinition2 =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
 				"Testing attribute definition", "Test Attribute Definition",
 				eventDefinition.getId(), "testAttributeDefinition2",
 				"testValue");
+
+		Assert.assertEquals(
+			"Test Attribute Definition (1)",
+			eventAttributeDefinition2.getDisplayName());
 
 		EventAttributeDefinition eventAttributeDefinition3 =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
@@ -112,12 +120,6 @@ public class EventAttributeDefinitionDogTest {
 				eventDefinition.getId(), "testAttributeDefinition3",
 				"testValue");
 
-		Assert.assertEquals(
-			"Test Attribute Definition",
-			eventAttributeDefinition1.getDisplayName());
-		Assert.assertEquals(
-			"Test Attribute Definition (1)",
-			eventAttributeDefinition2.getDisplayName());
 		Assert.assertEquals(
 			"Test Attribute Definition (2)",
 			eventAttributeDefinition3.getDisplayName());
@@ -169,14 +171,15 @@ public class EventAttributeDefinitionDogTest {
 				"Testing attribute definition 1", null, eventDefinition.getId(),
 				"testAttributeDefinition", "testValue");
 
+		Assert.assertEquals(
+			"testAttributeDefinition",
+			eventAttributeDefinition1.getDisplayName());
+
 		EventAttributeDefinition eventAttributeDefinition2 =
 			_eventAttributeDefinitionDog.addEventAttributeDefinition(
 				"Testing attribute definition", null, eventDefinition.getId(),
 				"TestAttributeDefinition", "testValue");
 
-		Assert.assertEquals(
-			"testAttributeDefinition",
-			eventAttributeDefinition1.getDisplayName());
 		Assert.assertEquals(
 			"TestAttributeDefinition (1)",
 			eventAttributeDefinition2.getDisplayName());
