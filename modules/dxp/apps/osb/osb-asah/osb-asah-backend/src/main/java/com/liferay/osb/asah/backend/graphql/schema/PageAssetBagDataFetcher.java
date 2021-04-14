@@ -14,10 +14,11 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.AssetDog;
-import com.liferay.osb.asah.backend.model.PageAsset;
-import com.liferay.osb.asah.backend.model.PropertyFilter;
+import com.liferay.osb.asah.backend.dto.PageAssetDTO;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
+import com.liferay.osb.asah.common.model.Asset;
+import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
@@ -31,6 +32,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,10 +41,10 @@ import org.springframework.stereotype.Component;
 @Component
 @GraphQLTypeWiring(fieldName = "pageAssets", typeName = "QueryType")
 public class PageAssetBagDataFetcher
-	implements DataFetcher<ResultBag<PageAsset>> {
+	implements DataFetcher<ResultBag<PageAssetDTO>> {
 
 	@Override
-	public ResultBag<PageAsset> get(
+	public ResultBag<PageAssetDTO> get(
 		DataFetchingEnvironment dataFetchingEnvironment) {
 
 		List<PropertyFilter> propertyFilters = ListUtil.map(
@@ -71,11 +73,17 @@ public class PageAssetBagDataFetcher
 					return propertyFilter;
 				});
 
-		return _assetDog.getPageAssetResultBag(
-			dataFetchingEnvironment.getArgument("keywords"), propertyFilters,
-			dataFetchingEnvironment.getArgument("size"),
-			_getSort(dataFetchingEnvironment.getArgument("sort")),
-			dataFetchingEnvironment.getArgument("start"));
+		int size = dataFetchingEnvironment.getArgument("size");
+		int start = dataFetchingEnvironment.getArgument("start");
+
+		Page<Asset> assetPage = _assetDog.getAssetPage(
+			"Page", dataFetchingEnvironment.getArgument("keywords"),
+			propertyFilters, start / size, size,
+			_getSort(dataFetchingEnvironment.getArgument("sort")));
+
+		return new ResultBag<>(
+			ListUtil.map(assetPage.getContent(), PageAssetDTO::new),
+			assetPage.getTotalElements());
 	}
 
 	private Sort _getSort(Map<String, String> sort) {

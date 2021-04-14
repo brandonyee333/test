@@ -18,16 +18,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.backend.dog.AssetDog;
-import com.liferay.osb.asah.backend.model.Keyword;
-import com.liferay.osb.asah.backend.model.PageAsset;
-import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.JobDog;
 import com.liferay.osb.asah.common.dog.RecommendationDog;
+import com.liferay.osb.asah.common.model.Asset;
+import com.liferay.osb.asah.common.model.AssetKeyword;
 import com.liferay.osb.asah.common.model.ItemRecommendation;
 import com.liferay.osb.asah.common.model.Job;
 import com.liferay.osb.asah.common.model.JobStatus;
+import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -158,19 +158,19 @@ public class RecommendationRestController extends BaseRestController {
 	private void _expandPageRecommendationAttributes(
 		PageRecommendation pageRecommendation) {
 
-		PageAsset pageAsset = _fetchPageAsset(pageRecommendation.getURL());
+		Asset asset = _fetchAsset(pageRecommendation.getURL());
 
-		if (pageAsset == null) {
+		if (asset == null) {
 			return;
 		}
 
-		pageRecommendation.setDescription(pageAsset.getDescription());
-		pageRecommendation.setTitle(pageAsset.getTitle());
+		pageRecommendation.setDescription(asset.getDescription());
+		pageRecommendation.setTitle(asset.getTitle());
 		pageRecommendation.setKeywords(
-			ListUtil.map(pageAsset.getKeywords(), Keyword::getValue));
+			ListUtil.map(asset.getAssetKeywords(), AssetKeyword::getKeyword));
 	}
 
-	private PageAsset _fetchPageAsset(String canonicalUrl) {
+	private Asset _fetchAsset(String canonicalUrl) {
 		if (StringUtils.isBlank(canonicalUrl)) {
 			return null;
 		}
@@ -178,14 +178,13 @@ public class RecommendationRestController extends BaseRestController {
 		PropertyFilter propertyFilter = new PropertyFilter(
 			"canonicalUrl = " + canonicalUrl, false);
 
-		ResultBag<PageAsset> pageAssetResultBag =
-			_assetDog.getPageAssetResultBag(
-				null, Arrays.asList(propertyFilter), 1, Sort.desc("id"), 0);
+		Page<Asset> assetPage = _assetDog.getAssetPage(
+			"Page", null, Arrays.asList(propertyFilter), 0, 1, Sort.desc("id"));
 
-		if (pageAssetResultBag.getTotal() == 1) {
-			List<PageAsset> pageAssets = pageAssetResultBag.getResults();
+		if (assetPage.getTotalElements() == 1) {
+			List<Asset> assets = assetPage.getContent();
 
-			return pageAssets.get(0);
+			return assets.get(0);
 		}
 
 		return null;
