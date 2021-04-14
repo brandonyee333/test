@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -73,11 +74,11 @@ public class AccountDog {
 
 		account = _accountRepository.save(account);
 
-		Set<Field> fields = _fieldDog.addFields(
+		List<Field> fields = _fieldDog.addFields(
 			"organization", dataJSONObject, dataSource, account.getId(),
 			"account");
 
-		account.setFields(fields);
+		account.setFields(new HashSet<>(fields));
 
 		_accountRepository.save(account);
 

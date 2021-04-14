@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +47,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
@@ -70,71 +70,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class FieldDog {
 
-	public Set<Field> addFields(
+	public List<Field> addFields(
 			String context, JSONObject dataJSONObject, DataSource dataSource,
 			Long ownerId, String ownerType)
 		throws Exception {
 
-		Set<Field> fields = new HashSet<>();
+		List<Field> fields = _buildFields(
+			context, dataJSONObject, dataSource, ownerId, ownerType);
 
-		JSONObject fieldsJSONObject = getFieldsJSONObject(
-			context, dataJSONObject, dataSource);
-
-		Long dataSourceId = dataSource.getId();
-
-		JSONArray fieldMappingsJSONArray = _getFieldMappingsJSONArray(
-			context, String.valueOf(dataSourceId), ownerType);
-
-		for (int i = 0; i < fieldMappingsJSONArray.length(); i++) {
-			JSONObject fieldMappingJSONObject =
-				fieldMappingsJSONArray.getJSONObject(i);
-
-			JSONObject dataSourceFieldNamesJSONObject =
-				fieldMappingJSONObject.getJSONObject("dataSourceFieldNames");
-
-			String dataSourceFieldName =
-				dataSourceFieldNamesJSONObject.optString(
-					String.valueOf(dataSourceId), null);
-
-			Object value = fieldsJSONObject.opt(dataSourceFieldName);
-
-			if (value == null) {
-				continue;
-			}
-
-			String fieldName = fieldMappingJSONObject.getString("fieldName");
-			String fieldType = fieldMappingJSONObject.getString("fieldType");
-
-			value = _deserializeValue(
-				fieldMappingJSONObject.optString("displayType"), fieldName,
-				fieldType, value.toString());
-
-			String modifiedDateString = _getModifiedDateString(
-				dataJSONObject, dataSource, ownerType);
-
-			if (value instanceof List) {
-				for (Object currentValue : (List<?>)value) {
-					Field field = _buildField(
-						context, dataSourceId, dataSource.getName(), fieldType,
-						modifiedDateString, fieldName, ownerId, ownerType,
-						dataSourceFieldName, currentValue);
-
-					fields.add(field);
-				}
-			}
-			else {
-				Field field = _buildField(
-					context, dataSourceId, dataSource.getName(), fieldType,
-					modifiedDateString, fieldName, ownerId, ownerType,
-					dataSourceFieldName, value);
-
-				fields.add(field);
-			}
-		}
-
-		_fieldRepository.saveAll(fields);
-
-		return fields;
+		return IterableUtils.toList(_fieldRepository.saveAll(fields));
 	}
 
 	public JSONObject addOwnerJSONObject(
