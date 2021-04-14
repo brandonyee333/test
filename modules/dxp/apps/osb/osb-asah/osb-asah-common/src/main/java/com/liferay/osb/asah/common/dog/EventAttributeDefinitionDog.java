@@ -63,12 +63,10 @@ public class EventAttributeDefinitionDog {
 		eventAttributeDefinition.setDescription(description);
 		eventAttributeDefinition.setDisplayName(
 			_getDisplayName(displayName, name));
-
 		eventAttributeDefinition.setEventDefinitionEventAttributeDefinitions(
 			Collections.singleton(
 				new EventDefinitionEventAttributeDefinition(
 					eventDefinitionId, sampleValue)));
-
 		eventAttributeDefinition.setName(name);
 
 		return _eventAttributeDefinitionRepository.save(
