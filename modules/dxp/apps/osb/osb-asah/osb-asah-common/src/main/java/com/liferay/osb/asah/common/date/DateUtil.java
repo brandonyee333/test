@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.date;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.time.DayOfWeek;
@@ -348,12 +347,8 @@ public class DateUtil {
 		return Date.from(zonedDateTime.toInstant());
 	}
 
-	public static Date toUTCDate(String dateString) throws ParseException {
-		DateFormat dateFormat = _newSimpleDateFormat();
-
-		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-		return dateFormat.parse(dateString);
+	public static Date toUTCDate(String dateString) {
+		return toUTCDate(LocalDateTime.parse(dateString, _dateTimeFormatter));
 	}
 
 	public static String toUTCString(Date date) {
@@ -367,15 +362,14 @@ public class DateUtil {
 	public static String toUTCString(LocalDateTime localDateTime) {
 		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
 
-		return zonedDateTime.format(_newDateTimeFormatter());
-	}
-
-	private static DateTimeFormatter _newDateTimeFormatter() {
-		return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+		return zonedDateTime.format(_dateTimeFormatter);
 	}
 
 	private static DateFormat _newSimpleDateFormat() {
 		return new SimpleDateFormat(PATTERN_ISO_8601);
 	}
+
+	private static final DateTimeFormatter _dateTimeFormatter =
+		DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm[:ss.SSS'Z']");
 
 }

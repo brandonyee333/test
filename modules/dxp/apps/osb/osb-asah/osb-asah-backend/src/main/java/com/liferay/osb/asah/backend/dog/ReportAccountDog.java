@@ -23,17 +23,11 @@ import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.text.ParseException;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -185,9 +179,9 @@ public class ReportAccountDog {
 		account.setActiveIndividualsCount(
 			accountJSONObject.optLong("activeIndividualCount", 0));
 		account.setDateCreated(
-			_parseDate(accountJSONObject.getString("dateCreated")));
+			DateUtil.toUTCDate(accountJSONObject.getString("dateCreated")));
 		account.setDateModified(
-			_parseDate(accountJSONObject.getString("dateModified")));
+			DateUtil.toUTCDate(accountJSONObject.getString("dateModified")));
 		account.setId(accountJSONObject.getString("id"));
 		account.setIndividualsCount(
 			accountJSONObject.optLong("individualCount", 0));
@@ -197,19 +191,6 @@ public class ReportAccountDog {
 
 		return account;
 	}
-
-	private Date _parseDate(String dateString) {
-		try {
-			return DateUtil.toUTCDate(dateString);
-		}
-		catch (ParseException pe) {
-			_log.error("Unable to parse date " + dateString);
-
-			return null;
-		}
-	}
-
-	private static final Log _log = LogFactory.getLog(ReportAccountDog.class);
 
 	@Autowired
 	private DataDog _dataDog;

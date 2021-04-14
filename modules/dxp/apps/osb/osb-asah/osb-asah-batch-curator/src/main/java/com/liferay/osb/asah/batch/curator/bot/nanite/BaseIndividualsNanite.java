@@ -29,8 +29,6 @@ import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.RunLog;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.text.ParseException;
-
 import java.util.Date;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -124,16 +122,6 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		return null;
 	}
 
-	protected Date getAuditEventDate(JSONObject auditEventJSONObject) {
-		try {
-			return DateUtil.toUTCDate(
-				auditEventJSONObject.getString("dateCreated"));
-		}
-		catch (ParseException pe) {
-			return null;
-		}
-	}
-
 	protected String getAuditEventEmail(JSONObject auditEventJSONObject) {
 		return null;
 	}
@@ -204,7 +192,8 @@ public abstract class BaseIndividualsNanite extends BaseNanite {
 		else if (eventType.equals("DELETE")) {
 			delete(
 				auditEventJSONObject.getString(dataSourceIdFieldName),
-				getAuditEventDate(auditEventJSONObject),
+				DateUtil.toUTCDate(
+					auditEventJSONObject.getString("dateCreated")),
 				getAuditEventEmail(auditEventJSONObject));
 		}
 		else if (log.isWarnEnabled()) {

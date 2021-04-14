@@ -237,17 +237,24 @@ public class DateUtilTest {
 	}
 
 	@Test
-	public void testToDate() throws Exception {
+	public void testToString() {
+		Assert.assertEquals(
+			"2013-10-20T03:04:09.360Z",
+			DateUtil.toUTCString(_toDate(2013, 10, 20, 3, 4, 9, 360)));
+	}
+
+	@Test
+	public void testToUTCDate1() throws Exception {
 		Assert.assertEquals(
 			_toDate(2018, 9, 15, 0, 40, 48, 502),
 			DateUtil.toUTCDate("2018-09-15T00:40:48.502Z"));
 	}
 
 	@Test
-	public void testToString() {
+	public void testToUTCDate2() throws Exception {
 		Assert.assertEquals(
-			"2013-10-20T03:04:09.360Z",
-			DateUtil.toUTCString(_toDate(2013, 10, 20, 3, 4, 9, 360)));
+			_toDate(2021, 3, 15, 0, 0, 0, 0),
+			DateUtil.toUTCDate("2021-03-15T00:00"));
 	}
 
 	private Date _toDate(
