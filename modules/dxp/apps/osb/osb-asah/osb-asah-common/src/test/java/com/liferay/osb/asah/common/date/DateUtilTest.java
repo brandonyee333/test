@@ -30,56 +30,56 @@ import org.junit.Test;
 public class DateUtilTest {
 
 	@Test
-	public void testAddDaysForNegativeDays() throws Exception {
+	public void testAddDaysForNegativeDays() {
 		Assert.assertEquals(
 			"2013-08-03T14:02:46.984Z",
 			DateUtil.addDays("2014-01-12T14:02:46.984Z", -162));
 	}
 
 	@Test
-	public void testAddDaysForPositiveDays() throws Exception {
+	public void testAddDaysForPositiveDays() {
 		Assert.assertEquals(
 			"2021-03-09T15:15:16.012Z",
 			DateUtil.addDays("2019-03-31T15:15:16.012Z", 709));
 	}
 
 	@Test
-	public void testAddDaysForZeroDays() throws Exception {
+	public void testAddDaysForZeroDays() {
 		Assert.assertEquals(
 			"2020-02-17T15:25:51.433Z",
 			DateUtil.addDays("2020-02-17T15:25:51.433Z", 0));
 	}
 
 	@Test
-	public void testAddMonthsClampsToValidDate() throws Exception {
+	public void testAddMonthsClampsToValidDate() {
 		Assert.assertEquals(
 			"2016-02-29T22:48:42.105Z",
 			DateUtil.addMonths("2016-05-31T22:48:42.105Z", -3));
 	}
 
 	@Test
-	public void testAddMonthsForNegativeMonths() throws Exception {
+	public void testAddMonthsForNegativeMonths() {
 		Assert.assertEquals(
 			"2016-02-26T00:47:58.314Z",
 			DateUtil.addMonths("2019-08-26T00:47:58.314Z", -42));
 	}
 
 	@Test
-	public void testAddMonthsForPositiveMonths() throws Exception {
+	public void testAddMonthsForPositiveMonths() {
 		Assert.assertEquals(
 			"2022-06-30T00:46:32.089Z",
 			DateUtil.addMonths("2020-10-30T00:46:32.089Z", 20));
 	}
 
 	@Test
-	public void testAddMonthsForZeroMonths() throws Exception {
+	public void testAddMonthsForZeroMonths() {
 		Assert.assertEquals(
 			"2011-06-04T07:17:50.706Z",
 			DateUtil.addMonths("2011-06-04T07:17:50.706Z", 0));
 	}
 
 	@Test
-	public void testGetDeltaDaysForNewDayDate() throws Exception {
+	public void testGetDeltaDaysForNewDayDate() {
 		String newDayDateString = DateUtil.newDayDateString();
 
 		Assert.assertEquals(
@@ -90,7 +90,7 @@ public class DateUtilTest {
 	}
 
 	@Test
-	public void testGetDeltaDaysString() throws Exception {
+	public void testGetDeltaDaysString() {
 		Assert.assertEquals(
 			-1,
 			DateUtil.getDeltaDays(
@@ -110,7 +110,7 @@ public class DateUtilTest {
 	}
 
 	@Test
-	public void testGetDeltaMillisecondsForEarlierDate() throws Exception {
+	public void testGetDeltaMillisecondsForEarlierDate() {
 		Assert.assertEquals(
 			-243634878350L,
 			DateUtil.getDeltaMilliseconds(
@@ -118,7 +118,7 @@ public class DateUtilTest {
 	}
 
 	@Test
-	public void testGetDeltaMillisecondsForEqualDate() throws Exception {
+	public void testGetDeltaMillisecondsForEqualDate() {
 		Assert.assertEquals(
 			0,
 			DateUtil.getDeltaMilliseconds(
@@ -126,7 +126,7 @@ public class DateUtilTest {
 	}
 
 	@Test
-	public void testGetDeltaMillisecondsForLaterDate() throws Exception {
+	public void testGetDeltaMillisecondsForLaterDate() {
 		Assert.assertEquals(
 			122202552140L,
 			DateUtil.getDeltaMilliseconds(
@@ -167,35 +167,35 @@ public class DateUtilTest {
 	}
 
 	@Test
-	public void testNewEndOfDayDate() throws Exception {
+	public void testNewEndOfDayDate() {
 		Assert.assertEquals(
 			"2019-05-31T23:59:59.999Z",
 			DateUtil.newEndOfDayDateString("2019-05-31T14:23:31.309Z"));
 	}
 
 	@Test
-	public void testNewEndOfMonthDate() throws Exception {
+	public void testNewEndOfMonthDate() {
 		Assert.assertEquals(
 			_toDate(2020, 12, 31, 23, 59, 59, 999),
 			DateUtil.newEndOfMonthDate("2020-12-20T04:07:43.642Z"));
 	}
 
 	@Test
-	public void testNewEndOfMonthDateHandlesLeapYears() throws Exception {
+	public void testNewEndOfMonthDateHandlesLeapYears() {
 		Assert.assertEquals(
 			_toDate(2024, 2, 29, 23, 59, 59, 999),
 			DateUtil.newEndOfMonthDate("2024-02-08T20:53:29.533Z"));
 	}
 
 	@Test
-	public void testNewEndOfMonthDateString() throws Exception {
+	public void testNewEndOfMonthDateString() {
 		Assert.assertEquals(
 			"2019-05-31T23:59:59.999Z",
 			DateUtil.newEndOfMonthDateString("2019-05-26T07:23:31.309Z"));
 	}
 
 	@Test
-	public void testNewEndOfMonthDateStringHandlesLeapYears() throws Exception {
+	public void testNewEndOfMonthDateStringHandlesLeapYears() {
 		Assert.assertEquals(
 			"2012-02-29T23:59:59.999Z",
 			DateUtil.newEndOfMonthDateString("2012-02-13T08:35:53.954Z"));
@@ -244,14 +244,14 @@ public class DateUtilTest {
 	}
 
 	@Test
-	public void testToUTCDate1() throws Exception {
+	public void testToUTCDate1() {
 		Assert.assertEquals(
 			_toDate(2018, 9, 15, 0, 40, 48, 502),
 			DateUtil.toUTCDate("2018-09-15T00:40:48.502Z"));
 	}
 
 	@Test
-	public void testToUTCDate2() throws Exception {
+	public void testToUTCDate2() {
 		Assert.assertEquals(
 			_toDate(2021, 3, 15, 0, 0, 0, 0),
 			DateUtil.toUTCDate("2021-03-15T00:00"));

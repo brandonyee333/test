@@ -54,7 +54,7 @@ public class DateUtil {
 
 	public static final long YEAR = DAY * 365;
 
-	public static String addDays(String dateString, int days) throws Exception {
+	public static String addDays(String dateString, int days) {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
 		calendar.setTime(toUTCDate(dateString));
@@ -64,9 +64,7 @@ public class DateUtil {
 		return toUTCString(calendar.getTime());
 	}
 
-	public static String addHours(String dateString, int hours)
-		throws Exception {
-
+	public static String addHours(String dateString, int hours) {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
 		calendar.setTime(toUTCDate(dateString));
@@ -76,9 +74,7 @@ public class DateUtil {
 		return toUTCString(calendar.getTime());
 	}
 
-	public static String addMonths(String dateString, int months)
-		throws Exception {
-
+	public static String addMonths(String dateString, int months) {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
 		calendar.setTime(toUTCDate(dateString));
@@ -104,13 +100,11 @@ public class DateUtil {
 		return (int)(millisecondsBetween / DAY);
 	}
 
-	public static int getDeltaDays(String dateString) throws Exception {
+	public static int getDeltaDays(String dateString) {
 		return getDeltaDays(newDayDateString(dateString), newDayDateString());
 	}
 
-	public static int getDeltaDays(String dateString1, String dateString2)
-		throws Exception {
-
+	public static int getDeltaDays(String dateString1, String dateString2) {
 		long millisecondsBetween = getDeltaMilliseconds(
 			newDayDateString(dateString1), newDayDateString(dateString2));
 
@@ -122,8 +116,7 @@ public class DateUtil {
 	}
 
 	public static long getDeltaMilliseconds(
-			String dateString1, String dateString2)
-		throws Exception {
+		String dateString1, String dateString2) {
 
 		Date date1 = toUTCDate(dateString1);
 		Date date2 = toUTCDate(dateString2);
@@ -197,7 +190,7 @@ public class DateUtil {
 		return calendar.getTime();
 	}
 
-	public static Date newDayDate(String dateString) throws Exception {
+	public static Date newDayDate(String dateString) {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
 		calendar.setTime(toUTCDate(dateString));
@@ -215,7 +208,7 @@ public class DateUtil {
 		return toUTCString(newDayDate());
 	}
 
-	public static String newDayDateString(String dateString) throws Exception {
+	public static String newDayDateString(String dateString) {
 		return toUTCString(newDayDate(dateString));
 	}
 
@@ -250,17 +243,15 @@ public class DateUtil {
 		return calendar.getTime();
 	}
 
-	public static Date newEndOfDayDate(String dateString) throws Exception {
+	public static Date newEndOfDayDate(String dateString) {
 		return newEndOfDayDate(toUTCDate(dateString));
 	}
 
-	public static String newEndOfDayDateString(String dateString)
-		throws Exception {
-
+	public static String newEndOfDayDateString(String dateString) {
 		return toUTCString(newEndOfDayDate(dateString));
 	}
 
-	public static Date newEndOfMonthDate(String dateString) throws Exception {
+	public static Date newEndOfMonthDate(String dateString) {
 		Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 
 		calendar.setTime(toUTCDate(dateString));
@@ -274,9 +265,7 @@ public class DateUtil {
 		return newEndOfDayDate(calendar.getTime());
 	}
 
-	public static String newEndOfMonthDateString(String dateString)
-		throws Exception {
-
+	public static String newEndOfMonthDateString(String dateString) {
 		return toUTCString(newEndOfMonthDate(dateString));
 	}
 
