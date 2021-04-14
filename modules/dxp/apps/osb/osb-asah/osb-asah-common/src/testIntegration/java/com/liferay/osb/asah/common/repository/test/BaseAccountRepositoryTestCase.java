@@ -15,9 +15,13 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.model.Account;
+import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.repository.AccountRepository;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 
@@ -42,11 +46,35 @@ public abstract class BaseAccountRepositoryTestCase
 
 	@Before
 	public void setUp() {
+		DataSource dataSource1 = new DataSource("Liferay Brazil");
+
+		dataSource1.setCredentialType("Token Authentication");
+
+		Channel channel1 = new Channel("channel1");
+
+		channel1.setId(11L);
+		channel1.setIsNew(true);
+
+		_channelRepository.save(channel1);
+
+		dataSource1.setChannelId(channel1.getId());
+
+		dataSource1.setFaroBackendSecuritySignature(
+			"faroBackendSecuritySignature");
+		dataSource1.setId(1L);
+		dataSource1.setIsNew(true);
+		dataSource1.setProviderType("LIFERAY");
+		dataSource1.setState("READY");
+		dataSource1.setStatus("STARTED");
+		dataSource1.setURL("");
+
+		_dataSourceRepository.save(dataSource1);
+
 		Account account = new Account();
 
 		account.setAccountPK("testAccount");
 		account.setCreateDate(new Date());
-		account.setDataSourceId(1L);
+		account.setDataSourceId(dataSource1.getId());
 		account.setModifiedDate(new Date());
 
 		setUpRepository(account);
@@ -153,6 +181,12 @@ public abstract class BaseAccountRepositoryTestCase
 
 	@Autowired
 	private AccountRepository _accountRepository;
+
+	@Autowired
+	private ChannelRepository _channelRepository;
+
+	@Autowired
+	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
 	private FieldRepository _fieldRepository;
