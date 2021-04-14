@@ -70,7 +70,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 			DSL.field(
 				"id"
 			).eq(
-				fieldTable.field("fieldTable_ownerId")
+				fieldTable.field("ownerId")
 			)
 		).fetchOptional(
 			0, Long.class
@@ -120,7 +120,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 				DSL.field(
 					"account.id"
 				).eq(
-					fieldTable.field("fieldTable_ownerId")
+					fieldTable.field("ownerId")
 				)
 			);
 
@@ -133,7 +133,7 @@ public class AccountRepositoryImpl extends BaseRepository {
 				DSL.field(
 					"account.id"
 				).eq(
-					segmentTable.field("segmentTable_accountId")
+					segmentTable.field("accountId")
 				)
 			).orderBy(
 				getSortFields(segmentSort, segmentTable)
@@ -157,56 +157,15 @@ public class AccountRepositoryImpl extends BaseRepository {
 	private Table<Record> _buildFieldTable(
 		Condition condition, SortField sortField) {
 
-		Field<Object> modifiedDateField = DSL.field("modifiedDate");
-		Field<Object> nameField = DSL.field("name");
-		Field<Object> ownerIdField = DSL.field("ownerId");
-
-		Table<Record> maxModifiedDateTable = _buildMaxModifiedDateTable(
-			condition, sortField);
-
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.select(
-			ownerIdField.as("fieldTable_ownerId")
-		).from(
-			"Field"
-		).join(
-			maxModifiedDateTable
-		).on(
-			DSL.and(
-				modifiedDateField.eq(
-					maxModifiedDateTable.field(
-						"maxModifiedDateTable_modifiedDate"))
-			).and(
-				nameField.eq(
-					maxModifiedDateTable.field("maxModifiedDateTable_name"))
-			).and(
-				ownerIdField.eq(
-					maxModifiedDateTable.field("maxModifiedDateTable_ownerId"))
-			)
-		).groupBy(
-			ownerIdField
-		).asTable(
-			"fieldTable"
-		);
-	}
-
-	private Table<Record> _buildMaxModifiedDateTable(
-		Condition condition, SortField sortField) {
-
-		Field<Object> modifiedDateField = DSL.field("modifiedDate");
-		Field<Object> nameField = DSL.field("name");
-		Field<Object> ownerIdField = DSL.field("ownerId");
 
 		AggregateFunction<Object> aggregateFunction = DSL.max(
-			modifiedDateField);
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+			DSL.field("modifiedDate"));
+		Field<Object> nameField = DSL.field("name");
+		Field<Object> ownerIdField = DSL.field("ownerId");
 
 		selectSelectStep.select(
-			aggregateFunction.as("maxModifiedDateTable_modifiedDate"),
-			nameField.as("maxModifiedDateTable_name"),
-			ownerIdField.as("maxModifiedDateTable_ownerId")
+			aggregateFunction.as("modifiedDate"), nameField, ownerIdField
 		).from(
 			"Field"
 		).where(
@@ -219,25 +178,28 @@ public class AccountRepositoryImpl extends BaseRepository {
 			return selectSelectStep.orderBy(
 				sortField
 			).asTable(
-				"maxModifiedDateTable"
+				"fieldTable"
 			);
 		}
 
-		return selectSelectStep.asTable("maxModifiedDateTable");
+		return selectSelectStep.asTable("fieldTable");
 	}
 
 	private Table<Record> _buildSegmentTable() {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
+		Field<Long> accountIdField = DSL.replace(
+			DSL.field("name", String.class), "Account: ", ""
+		).cast(
+			Long.class
+		).as(
+			"accountId"
+		);
+		Field<Object> activitiesCountField = DSL.field("activitiesCount");
+		Field<Object> individualCountField = DSL.field("individualCount");
+
 		return selectSelectStep.select(
-			DSL.field("activitiesCount"), DSL.field("individualCount"),
-			DSL.replace(
-				DSL.field("name", String.class), "Account: ", ""
-			).cast(
-				Long.class
-			).as(
-				"segmentTable_accountId"
-			)
+			accountIdField, activitiesCountField, individualCountField
 		).from(
 			"Segment"
 		).where(
