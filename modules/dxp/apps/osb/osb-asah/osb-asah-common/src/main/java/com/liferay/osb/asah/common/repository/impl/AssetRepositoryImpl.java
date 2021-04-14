@@ -51,27 +51,8 @@ public class AssetRepositoryImpl extends BaseRepository {
 		String assetType, String keyword,
 		List<PropertyFilter> propertyFilters) {
 
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
-
-		SelectJoinStep<Record1<Integer>> selectJoinStep = selectSelectStep.from(
-			"Asset");
-
-		if (_containsAssetKeywordPropertyFilter(propertyFilters)) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table(
-					"assetkeyword"
-				).as(
-					"keywords"
-				)
-			).on(
-				DSL.field(
-					"id"
-				).eq(
-					DSL.field("keywords.assetid")
-				)
-			);
-		}
+		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
+			propertyFilters, _dslContext.selectCount());
 
 		return selectJoinStep.where(
 			_getConditions(assetType, keyword, propertyFilters)
@@ -86,25 +67,8 @@ public class AssetRepositoryImpl extends BaseRepository {
 		String assetType, String keyword, List<PropertyFilter> propertyFilters,
 		Pageable pageable) {
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from("Asset");
-
-		if (_containsAssetKeywordPropertyFilter(propertyFilters)) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table(
-					"assetkeyword"
-				).as(
-					"keywords"
-				)
-			).on(
-				DSL.field(
-					"id"
-				).eq(
-					DSL.field("keywords.assetid")
-				)
-			);
-		}
+		SelectJoinStep<Record> selectJoinStep = _getSelectJoinStep(
+			propertyFilters, _dslContext.select());
 
 		return selectJoinStep.where(
 			_getConditions(assetType, keyword, propertyFilters)
@@ -224,6 +188,31 @@ public class AssetRepositoryImpl extends BaseRepository {
 		}
 
 		return conditions;
+	}
+
+	private <T extends Record> SelectJoinStep<T> _getSelectJoinStep(
+		List<PropertyFilter> propertyFilters,
+		SelectSelectStep<T> selectSelectStep) {
+
+		SelectJoinStep<T> selectJoinStep = selectSelectStep.from("Asset");
+
+		if (_containsAssetKeywordPropertyFilter(propertyFilters)) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"assetkeyword"
+				).as(
+					"keywords"
+				)
+			).on(
+				DSL.field(
+					"id"
+				).eq(
+					DSL.field("keywords.assetid")
+				)
+			);
+		}
+
+		return selectJoinStep;
 	}
 
 	private final DSLContext _dslContext;
