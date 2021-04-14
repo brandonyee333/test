@@ -135,6 +135,10 @@ public class ElasticsearchAssetRepositoryImpl
 	private QueryBuilder _buildPropertyQueryBuilder(
 		String operator, String propertyName, String propertyValue) {
 
+		if (Objects.equals(propertyName, "title")) {
+			propertyName = "name";
+		}
+
 		if (Objects.equals(operator, "~")) {
 			return QueryBuilders.regexpQuery(propertyName, propertyValue);
 		}

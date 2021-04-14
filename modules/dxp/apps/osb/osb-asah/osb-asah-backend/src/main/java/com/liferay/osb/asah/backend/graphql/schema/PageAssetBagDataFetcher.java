@@ -55,12 +55,6 @@ public class PageAssetBagDataFetcher
 						propertyFilterMap);
 
 					if (Objects.equals(
-							propertyFilter.getPropertyName(), "title")) {
-
-						propertyFilter.setPropertyName("name");
-					}
-
-					if (Objects.equals(
 							propertyFilter.getPropertyName(), "keywords")) {
 
 						propertyFilter.setPropertyName("keywords.keyword");

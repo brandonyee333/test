@@ -118,7 +118,7 @@ public abstract class BaseAssetRepositoryTestCase
 		List<Asset> assets = _assetRepository.searchAssets(
 			"Page", null,
 			Arrays.asList(
-				new PropertyFilter("name = engineer intuitive models", false)),
+				new PropertyFilter("title = engineer intuitive models", false)),
 			PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 1, assets.size());
