@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.model.Activity;
-import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.SetUtil;

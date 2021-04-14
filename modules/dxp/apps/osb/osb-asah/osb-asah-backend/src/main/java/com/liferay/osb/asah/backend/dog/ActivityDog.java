@@ -17,11 +17,11 @@ package com.liferay.osb.asah.backend.dog;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.model.Activity;
-import com.liferay.osb.asah.backend.model.PropertyFilter;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
