@@ -25,6 +25,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.zip.ZipInputStream;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -44,7 +50,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Riccardo Ferrari
@@ -98,37 +103,55 @@ public class DXPBatchEntitiesRestController {
 	}
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<?> post(
-			@RequestHeader(
-				required = false, value = HeaderConstants.DATA_SOURCE_ID
-			) String dataSourceId,
-			@RequestParam("file") MultipartFile multipartFile)
+	public ResponseEntity<?> post(HttpServletRequest httpServletRequest)
 		throws Exception {
 
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Received upload request " +
-					multipartFile.getOriginalFilename());
-		}
+		ServletFileUpload servletFileUpload = new ServletFileUpload();
 
-		Storage storage = _storageFactory.getStorage(
-			_getStorageConfiguration(
-				String.format(
-					"%s/%s", dataSourceId,
-					multipartFile.getOriginalFilename())));
+		long maxSize = 2 * 1024 * 1024 * 1024;
 
-		ZipInputStream zipInputStream = new ZipInputStream(
-			multipartFile.getInputStream());
+		servletFileUpload.setFileSizeMax(maxSize);
+		servletFileUpload.setSizeMax(maxSize);
 
-		zipInputStream.getNextEntry();
+		FileItemIterator fileItemIterator = servletFileUpload.getItemIterator(
+			httpServletRequest);
 
-		boolean success = storage.write(zipInputStream);
+		while (fileItemIterator.hasNext()) {
+			String dataSourceId = httpServletRequest.getParameter(
+				"dataSourceId");
 
-		storage.close();
+			if (StringUtils.isBlank(dataSourceId)) {
+				_log.error("Data source ID is empty");
 
-		if (!success) {
-			return new ResponseEntity(
-				Collections.emptyList(), HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity(
+					Collections.emptyList(), HttpStatus.BAD_REQUEST);
+			}
+
+			FileItemStream fileItemStream = fileItemIterator.next();
+
+			String fieldName = fileItemStream.getFieldName();
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Received upload request " + fieldName);
+			}
+
+			Storage storage = _storageFactory.getStorage(
+				_getStorageConfiguration(
+					String.format("%s/%s", dataSourceId, fieldName)));
+
+			ZipInputStream zipInputStream = new ZipInputStream(
+				fileItemStream.openStream());
+
+			zipInputStream.getNextEntry();
+
+			boolean success = storage.write(zipInputStream);
+
+			storage.close();
+
+			if (!success) {
+				return new ResponseEntity(
+					Collections.emptyList(), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}
 
 		return ResponseEntity.ok(Collections.emptyList());
