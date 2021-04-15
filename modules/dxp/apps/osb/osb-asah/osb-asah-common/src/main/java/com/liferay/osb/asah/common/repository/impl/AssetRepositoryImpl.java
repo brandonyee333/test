@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.model.Asset;
 import com.liferay.osb.asah.common.model.PropertyFilter;
+import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,19 @@ public class AssetRepositoryImpl extends BaseRepository {
 		_dslContext = dslContext;
 	}
 
+	public long countAssets(String filterString) {
+		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
+			null, _dslContext.selectCount());
+
+		return selectJoinStep.where(
+			FilterStringToConditionConverter.convert(filterString)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
 	public long countAssets(
 		String assetType, String keyword,
 		List<PropertyFilter> propertyFilters) {
@@ -60,6 +74,24 @@ public class AssetRepositoryImpl extends BaseRepository {
 			0, Long.class
 		).orElse(
 			0L
+		);
+	}
+
+	public List<Asset> searchAssets(String filterString, Pageable pageable) {
+		SelectJoinStep<Record> selectJoinStep = _getSelectJoinStep(
+			null, _dslContext.select());
+
+		return selectJoinStep.where(
+			FilterStringToConditionConverter.convert(filterString)
+		).orderBy(
+			getSortFields(pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+		).map(
+			record -> new Asset(record.intoMap())
 		);
 	}
 

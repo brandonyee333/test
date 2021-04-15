@@ -34,11 +34,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AssetRepository extends CrudRepository<Asset, Long> {
 
+	public long countAssets(String filterString);
+
 	public long countAssets(
 		String assetType, String keyword, List<PropertyFilter> propertyFilters);
 
 	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
 		String dataSourceAssetPK, Long dataSourceId);
+
+	public List<Asset> searchAssets(String filterString, Pageable pageable);
 
 	public List<Asset> searchAssets(
 		String assetType, String keyword, List<PropertyFilter> propertyFilters,

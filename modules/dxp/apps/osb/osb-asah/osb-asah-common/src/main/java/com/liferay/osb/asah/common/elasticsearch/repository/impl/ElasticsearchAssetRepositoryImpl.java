@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.model.Asset;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.repository.AssetRepository;
@@ -53,6 +54,12 @@ public class ElasticsearchAssetRepositoryImpl
 	implements AssetRepository {
 
 	@Override
+	public long countAssets(String filterString) {
+		return _faroInfoElasticsearchInvoker.count(
+			getCollectionName(), _buildQueryBuilder(filterString));
+	}
+
+	@Override
 	public long countAssets(
 		String assetType, String keyword,
 		List<PropertyFilter> propertyFilters) {
@@ -80,6 +87,21 @@ public class ElasticsearchAssetRepositoryImpl
 		).map(
 			this::toEntity
 		);
+	}
+
+	@Override
+	public List<Asset> searchAssets(String filterString, Pageable pageable) {
+		return toList(
+			new JSONArray(
+				_faroInfoElasticsearchInvoker.get(
+					getCollectionName(),
+					searchSourceBuilder -> {
+						searchSourceBuilder.query(
+							_buildQueryBuilder(filterString));
+
+						setSearchSourceBuilderPage(
+							searchSourceBuilder, pageable);
+					})));
 	}
 
 	@Override
@@ -166,6 +188,14 @@ public class ElasticsearchAssetRepositoryImpl
 		}
 
 		return QueryBuilders.termQuery(propertyName, propertyValue);
+	}
+
+	private QueryBuilder _buildQueryBuilder(String filterString) {
+		if (StringUtils.isEmpty(filterString)) {
+			return QueryBuilders.matchAllQuery();
+		}
+
+		return FilterStringToQueryBuilderConverter.convert(filterString);
 	}
 
 	private QueryBuilder _buildQueryBuilder(

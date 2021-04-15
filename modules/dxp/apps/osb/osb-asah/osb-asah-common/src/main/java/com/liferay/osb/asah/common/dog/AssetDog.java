@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.model.Asset;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.Sort;
@@ -62,6 +63,17 @@ public class AssetDog {
 			pageRequest,
 			() -> _assetRepository.countAssets(
 				assetType, keyword, propertyFilters));
+	}
+
+	public Page<Asset> searchAssetsPage(
+		String filterString, int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_assetRepository.searchAssets(filterString, pageRequest),
+			pageRequest, () -> _assetRepository.countAssets(filterString));
 	}
 
 	public Asset updateAsset(Asset asset) {
