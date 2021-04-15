@@ -87,6 +87,12 @@ if (editorOptions != null) {
 			table.cke_dialog {
 				position: absolute !important;
 			}
+
+			select.cke_dialog_ui_input_select, input.cke_dialog_ui_input_text {
+				border: 0.1rem solid #e7e7ed !important;
+				font-size: 1.6rem !important;
+				height: 4rem !important;
+			}
 		</style>
 
 		<%
