@@ -315,8 +315,11 @@ public class ActivitiesNanite implements Nanite {
 		if (asset != null) {
 			Set<Long> channelIds = asset.getChannelIds();
 
-			if (!channelIds.contains(analyticsEvent.getChannelId())) {
-				channelIds.add(Long.valueOf(analyticsEvent.getChannelId()));
+			Long analyticsEventChannelId = Long.valueOf(
+				analyticsEvent.getChannelId());
+
+			if (!channelIds.contains(analyticsEventChannelId)) {
+				channelIds.add(analyticsEventChannelId);
 
 				_assetDog.updateAsset(asset);
 			}
