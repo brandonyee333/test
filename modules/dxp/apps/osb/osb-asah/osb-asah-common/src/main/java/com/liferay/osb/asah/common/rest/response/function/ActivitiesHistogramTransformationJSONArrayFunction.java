@@ -12,9 +12,8 @@
  *
  */
 
-package com.liferay.osb.asah.backend.rest.response;
+package com.liferay.osb.asah.common.rest.response.function;
 
-import com.liferay.osb.asah.backend.dog.DogUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.rest.response.BaseTransformationJSONArrayFunction;
@@ -79,7 +78,7 @@ public class ActivitiesHistogramTransformationJSONArrayFunction
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (DogUtil.isEmpty(aggregations)) {
+		if (isEmpty(aggregations)) {
 			return jsonArray;
 		}
 

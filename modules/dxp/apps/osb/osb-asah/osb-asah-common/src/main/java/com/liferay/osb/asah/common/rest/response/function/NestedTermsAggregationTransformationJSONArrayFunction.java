@@ -12,9 +12,8 @@
  *
  */
 
-package com.liferay.osb.asah.backend.rest.response;
+package com.liferay.osb.asah.common.rest.response.function;
 
-import com.liferay.osb.asah.backend.dog.DogUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 
 import java.util.Collections;
@@ -116,7 +115,7 @@ public class NestedTermsAggregationTransformationJSONArrayFunction
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (DogUtil.isEmpty(aggregations)) {
+		if (isEmpty(aggregations)) {
 			return getTransformationJSONArray(Collections.emptyList(), null);
 		}
 

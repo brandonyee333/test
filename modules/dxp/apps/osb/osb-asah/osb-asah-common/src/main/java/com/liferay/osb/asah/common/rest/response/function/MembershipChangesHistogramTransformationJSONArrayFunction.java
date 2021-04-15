@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.rest.response;
+package com.liferay.osb.asah.common.rest.response.function;
 
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;

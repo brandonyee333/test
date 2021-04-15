@@ -12,9 +12,8 @@
  *
  */
 
-package com.liferay.osb.asah.backend.rest.response;
+package com.liferay.osb.asah.common.rest.response.function;
 
-import com.liferay.osb.asah.backend.dog.DogUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
@@ -36,6 +35,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.PipelineAggregatorBuilders;
@@ -142,7 +142,7 @@ public class TermsAggregationTransformationJSONArrayFunction
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
-		if (DogUtil.isEmpty(aggregations)) {
+		if (isEmpty(aggregations)) {
 			return getTransformationJSONArray(Collections.emptyList(), null);
 		}
 
@@ -221,6 +221,20 @@ public class TermsAggregationTransformationJSONArrayFunction
 		}
 
 		return transformationsJSONArray;
+	}
+
+	protected boolean isEmpty(Aggregations aggregations) {
+		if (aggregations == null) {
+			return true;
+		}
+
+		List<Aggregation> aggregationList = aggregations.asList();
+
+		if (aggregationList.isEmpty()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	protected final String contains;
