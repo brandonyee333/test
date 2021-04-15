@@ -17,6 +17,7 @@ package com.liferay.osb.asah.stream.curator.bot.nanite.activity;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.ActivityGroupDog;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
@@ -28,8 +29,11 @@ import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.ActivityGroup;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
+import com.liferay.osb.asah.common.model.Asset;
+import com.liferay.osb.asah.common.model.AssetKeyword;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.nlp.NLPUtil;
@@ -37,7 +41,6 @@ import com.liferay.osb.asah.stream.curator.nlp.NLPUtil;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -52,7 +55,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -226,20 +228,18 @@ public class ActivitiesNanite implements Nanite {
 
 		objectJSONObject.put("dataSourceAssetPK", dataSourceAssetPK);
 
-		JSONObject assetJSONObject = _getAssetJSONObject(
-			analyticsEvent, dataSourceAssetPK);
+		Asset asset = _getAsset(analyticsEvent, dataSourceAssetPK);
 
-		if (assetJSONObject == null) {
+		if (asset == null) {
 			return;
 		}
 
-		String assetId = assetJSONObject.getString("id");
+		String assetId = String.valueOf(asset.getId());
 
 		objectJSONObject.put("id", assetId);
 
 		objectJSONObject.put("name", _getName(analyticsEvent));
-		objectJSONObject.put(
-			"objectType", assetJSONObject.getString("assetType"));
+		objectJSONObject.put("objectType", asset.getAssetType());
 		objectJSONObject.put("url", MapUtil.getString(context, "url"));
 
 		if (applicationId.equals("Comment")) {
@@ -305,46 +305,35 @@ public class ActivitiesNanite implements Nanite {
 			activityGroup.getOwnerId());
 	}
 
-	private JSONObject _getAssetJSONObject(
+	private Asset _getAsset(
 			AnalyticsEvent analyticsEvent, String dataSourceAssetPK)
 		throws Exception {
 
-		JSONObject assetJSONObject = faroInfoElasticsearchInvoker.fetch(
-			"assets",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("dataSourceAssetPK", dataSourceAssetPK)
-			).filter(
-				QueryBuilders.termQuery(
-					"dataSourceId", analyticsEvent.getDataSourceId())
-			));
+		Asset asset = _assetDog.fetchAsset(
+			dataSourceAssetPK, Long.valueOf(analyticsEvent.getDataSourceId()));
 
-		if (assetJSONObject != null) {
-			JSONArray channelIdsJSONArray = assetJSONObject.getJSONArray(
-				"channelIds");
+		if (asset != null) {
+			Set<Long> channelIds = asset.getChannelIds();
 
-			if (!JSONUtil.hasValue(
-					channelIdsJSONArray, analyticsEvent.getChannelId())) {
+			if (!channelIds.contains(analyticsEvent.getChannelId())) {
+				channelIds.add(Long.valueOf(analyticsEvent.getChannelId()));
 
-				channelIdsJSONArray.put(analyticsEvent.getChannelId());
-
-				assetJSONObject = faroInfoElasticsearchInvoker.update(
-					"assets", assetJSONObject);
+				_assetDog.updateAsset(asset);
 			}
 
 			if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
-				return assetJSONObject;
+				return asset;
 			}
 
-			String name = _getEventPropertiesTitle(analyticsEvent);
+			String title = _getEventPropertiesTitle(analyticsEvent);
 
-			if (!Objects.equals(assetJSONObject.getString("name"), name)) {
-				assetJSONObject.put("name", name);
+			if (!Objects.equals(asset.getTitle(), title)) {
+				asset.setTitle(title);
 
-				return faroInfoElasticsearchInvoker.update(
-					"assets", assetJSONObject);
+				_assetDog.updateAsset(asset);
 			}
 
-			return assetJSONObject;
+			return asset;
 		}
 
 		if (Objects.equals(analyticsEvent.getApplicationId(), "Comment")) {
@@ -360,37 +349,23 @@ public class ActivitiesNanite implements Nanite {
 
 		Map<String, String> context = analyticsEvent.getContext();
 
-		assetJSONObject = JSONUtil.put(
-			"assetType", analyticsEvent.getApplicationId()
-		).put(
-			"canonicalUrl", MapUtil.getString(context, "canonicalUrl")
-		).put(
-			"channelIds", JSONUtil.put(analyticsEvent.getChannelId())
-		).put(
-			"dataSourceAssetPK", dataSourceAssetPK
-		).put(
-			"dataSourceId", analyticsEvent.getDataSourceId()
-		).put(
-			"description", MapUtil.getString(context, "description")
-		).put(
-			"name", _getName(analyticsEvent)
-		).put(
-			"url", MapUtil.getString(context, "url")
-		);
+		asset = new Asset();
+
+		asset.setAssetType(analyticsEvent.getApplicationId());
+		asset.setCanonicalURL(MapUtil.getString(context, "canonicalUrl"));
+		asset.setChannelIds(
+			SetUtil.of(Long.valueOf(analyticsEvent.getChannelId())));
+		asset.setDataSourceAssetPK(dataSourceAssetPK);
+		asset.setDataSourceId(Long.valueOf(analyticsEvent.getDataSourceId()));
+		asset.setDescription(MapUtil.getString(context, "description"));
+		asset.setTitle(_getName(analyticsEvent));
+		asset.setURL(MapUtil.getString(context, "url"));
 
 		if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
-			assetJSONObject.put(
-				"keywords",
-				JSONUtil.toJSONArray(
-					new ArrayList<>(_getKeywordPairs(context)),
-					keywordPair -> JSONUtil.put(
-						"keyword", keywordPair.getLeft()
-					).put(
-						"type", keywordPair.getRight()
-					)));
+			asset.setAssetKeywords(_getKeywordPairs(context));
 		}
 
-		return faroInfoElasticsearchInvoker.add("assets", assetJSONObject);
+		return _assetDog.addAsset(asset);
 	}
 
 	private JSONObject _getEventPropertiesJSONObject(
@@ -482,10 +457,8 @@ public class ActivitiesNanite implements Nanite {
 		return null;
 	}
 
-	private Set<Pair<String, String>> _getKeywordPairs(
-		Map<String, String> context) {
-
-		Set<Pair<String, String>> keywords = new HashSet<>(
+	private Set<AssetKeyword> _getKeywordPairs(Map<String, String> context) {
+		Set<AssetKeyword> keywords = new HashSet<>(
 			_getKeywordPairs(
 				MapUtil.getString(context, "description"), "description"));
 
@@ -503,9 +476,7 @@ public class ActivitiesNanite implements Nanite {
 		return keywords;
 	}
 
-	private Set<Pair<String, String>> _getKeywordPairs(
-		String text, String type) {
-
+	private Set<AssetKeyword> _getKeywordPairs(String text, String type) {
 		if (StringUtils.isEmpty(text)) {
 			return Collections.emptySet();
 		}
@@ -516,7 +487,7 @@ public class ActivitiesNanite implements Nanite {
 			return stream.map(
 				String::toLowerCase
 			).map(
-				keyword -> Pair.of(keyword, type)
+				keyword -> new AssetKeyword(keyword, type)
 			).collect(
 				Collectors.toSet()
 			);
@@ -531,7 +502,7 @@ public class ActivitiesNanite implements Nanite {
 		).map(
 			String::toLowerCase
 		).map(
-			keyword -> Pair.of(keyword, type)
+			keyword -> new AssetKeyword(keyword, type)
 		).collect(
 			Collectors.toSet()
 		);
@@ -670,6 +641,9 @@ public class ActivitiesNanite implements Nanite {
 
 	@Autowired
 	private ActivityGroupDog _activityGroupDog;
+
+	@Autowired
+	private AssetDog _assetDog;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_CEREBRO_INFO)
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
