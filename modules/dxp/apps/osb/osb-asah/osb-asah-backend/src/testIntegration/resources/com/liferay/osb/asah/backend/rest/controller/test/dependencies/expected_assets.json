@@ -3,59 +3,6 @@
 		"assets": [
 			{
 				"assetType": "Page",
-				"canonicalUrl": "https://www.terrance-lueilwitz.biz",
-				"dataSourceAssetPK": "https://www.terrance-lueilwitz.biz",
-				"dataSourceId": "355524992631037473",
-				"id": "355525458918155906",
-				"keywords": [
-					{
-						"keyword": "holistic ROI",
-						"type": "title"
-					}
-				],
-				"name": "empower holistic ROI",
-				"url": "https://www.terrance-lueilwitz.biz"
-			},
-			{
-				"assetType": "Page",
-				"canonicalUrl": "https://www.jamey-shields.info",
-				"dataSourceAssetPK": "https://www.jamey-shields.info",
-				"dataSourceId": "355524992631037473",
-				"id": "355525460725123362",
-				"keywords": [
-				],
-				"name": "engineer intuitive models",
-				"url": "https://www.jamey-shields.info"
-			},
-			{
-				"assetType": "Page",
-				"canonicalUrl": "https://www.iva-tillman.com",
-				"dataSourceAssetPK": "https://www.iva-tillman.com",
-				"dataSourceId": "355524992631037473",
-				"id": "355525462778184556",
-				"keywords": [
-					{
-						"keyword": "compelling action-items",
-						"type": "title"
-					}
-				],
-				"name": "seize compelling action-items",
-				"url": "https://www.iva-tillman.com"
-			},
-			{
-				"assetType": "Page",
-				"canonicalUrl": "https://www.elizabeth-willms.io",
-				"dataSourceAssetPK": "https://www.elizabeth-willms.io",
-				"dataSourceId": "355524992631037473",
-				"id": "355525482819514605",
-				"keywords": [
-				],
-				"name": "incentivize revolutionary ROI",
-				"url": "https://www.elizabeth-willms.io"
-			},
-			{
-				"assetType": "Page",
-				"canonicalUrl": "https://www.ansel-farrell.io",
 				"dataSourceAssetPK": "https://www.ansel-farrell.io",
 				"dataSourceId": "355524992631037473",
 				"id": "355525457185371626",
@@ -70,33 +17,20 @@
 			},
 			{
 				"assetType": "Page",
-				"canonicalUrl": "https://www.robyn-williamson.co",
-				"dataSourceAssetPK": "https://www.robyn-williamson.co",
+				"dataSourceAssetPK": "https://www.terrance-lueilwitz.biz",
 				"dataSourceId": "355524992631037473",
-				"id": "355525463965935343",
-				"keywords": [
-				],
-				"name": "scale cross-platform e-commerce",
-				"url": "https://www.robyn-williamson.co"
-			},
-			{
-				"assetType": "Page",
-				"canonicalUrl": "https://www.joaquin-dibbert.biz",
-				"dataSourceAssetPK": "https://www.joaquin-dibbert.biz",
-				"dataSourceId": "355524992631037473",
-				"id": "355525465840533643",
+				"id": "355525458918155906",
 				"keywords": [
 					{
-						"keyword": "clicks-and-mortar e-tailers",
+						"keyword": "holistic ROI",
 						"type": "title"
 					}
 				],
-				"name": "extend clicks-and-mortar e-tailers",
-				"url": "https://www.joaquin-dibbert.biz"
+				"name": "empower holistic ROI",
+				"url": "https://www.terrance-lueilwitz.biz"
 			},
 			{
 				"assetType": "Page",
-				"canonicalUrl": "https://www.destini-weissnat.org",
 				"dataSourceAssetPK": "https://www.destini-weissnat.org",
 				"dataSourceId": "355524992631037473",
 				"id": "355525459586696852",
@@ -107,7 +41,6 @@
 			},
 			{
 				"assetType": "Page",
-				"canonicalUrl": "https://www.glennie-douglas.com",
 				"dataSourceAssetPK": "https://www.glennie-douglas.com",
 				"dataSourceId": "355524992631037473",
 				"id": "355525460115034931",
@@ -122,7 +55,16 @@
 			},
 			{
 				"assetType": "Page",
-				"canonicalUrl": "https://www.dedric-wunsch.net",
+				"dataSourceAssetPK": "https://www.jamey-shields.info",
+				"dataSourceId": "355524992631037473",
+				"id": "355525460725123362",
+				"keywords": [
+				],
+				"name": "engineer intuitive models",
+				"url": "https://www.jamey-shields.info"
+			},
+			{
+				"assetType": "Page",
 				"dataSourceAssetPK": "https://www.dedric-wunsch.net",
 				"dataSourceId": "355524992631037473",
 				"id": "355525461485031811",
@@ -134,6 +76,54 @@
 				],
 				"name": "enhance world-class e-tailers",
 				"url": "https://www.dedric-wunsch.net"
+			},
+			{
+				"assetType": "Page",
+				"dataSourceAssetPK": "https://www.iva-tillman.com",
+				"dataSourceId": "355524992631037473",
+				"id": "355525462778184556",
+				"keywords": [
+					{
+						"keyword": "compelling action-items",
+						"type": "title"
+					}
+				],
+				"name": "seize compelling action-items",
+				"url": "https://www.iva-tillman.com"
+			},
+			{
+				"assetType": "Page",
+				"dataSourceAssetPK": "https://www.robyn-williamson.co",
+				"dataSourceId": "355524992631037473",
+				"id": "355525463965935343",
+				"keywords": [
+				],
+				"name": "scale cross-platform e-commerce",
+				"url": "https://www.robyn-williamson.co"
+			},
+			{
+				"assetType": "Page",
+				"dataSourceAssetPK": "https://www.joaquin-dibbert.biz",
+				"dataSourceId": "355524992631037473",
+				"id": "355525465840533643",
+				"keywords": [
+					{
+						"keyword": "clicks-and-mortar e-tailers",
+						"type": "title"
+					}
+				],
+				"name": "extend clicks-and-mortar e-tailers",
+				"url": "https://www.joaquin-dibbert.biz"
+			},
+			{
+				"assetType": "Page",
+				"dataSourceAssetPK": "https://www.elizabeth-willms.io",
+				"dataSourceId": "355524992631037473",
+				"id": "355525482819514605",
+				"keywords": [
+				],
+				"name": "incentivize revolutionary ROI",
+				"url": "https://www.elizabeth-willms.io"
 			}
 		]
 	},
@@ -142,5 +132,6 @@
 		"size": 20,
 		"totalElements": 10,
 		"totalPages": 1
-	}
+	},
+	"total": 0
 }

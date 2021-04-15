@@ -14,8 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.liferay.osb.asah.backend.dto.AssetDTO;
 import com.liferay.osb.asah.backend.rest.controller.AssetsRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -44,11 +48,14 @@ public class AssetsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetAsset() throws Exception {
+	public void testGetAssetDTO() {
 		JSONAssert.assertEquals(
-			_elasticsearchInvoker.fetch("assets", "355525458918155906"),
-			new JSONObject(
-				_assetsRestController.getAsset("355525458918155906")),
+			_objectMapper.convertValue(
+				new AssetDTO(_assetDog.getAsset(355525458918155906L)),
+				JSONObject.class),
+			_objectMapper.convertValue(
+				_assetsRestController.getAssetDTO(355525458918155906L),
+				JSONObject.class),
 			false);
 	}
 
@@ -57,11 +64,18 @@ public class AssetsRestControllerTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testGetAssets() throws Exception {
+	public void testGetAssetDTOsPageDTO() throws Exception {
+		System.out.println(
+			_objectMapper.convertValue(
+				_assetsRestController.getAssetDTOsPageDTO(null, 0, 20, null),
+				JSONObject.class
+			).toString());
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_assets.json", this),
-			new JSONObject(_assetsRestController.getAssets(null, 0, 20, null)),
+			_objectMapper.convertValue(
+				_assetsRestController.getAssetDTOsPageDTO(null, 0, 20, null),
+				JSONObject.class),
 			false);
 	}
 
@@ -81,9 +95,15 @@ public class AssetsRestControllerTest {
 	}
 
 	@Autowired
+	private AssetDog _assetDog;
+
+	@Autowired
 	private AssetsRestController _assetsRestController;
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
