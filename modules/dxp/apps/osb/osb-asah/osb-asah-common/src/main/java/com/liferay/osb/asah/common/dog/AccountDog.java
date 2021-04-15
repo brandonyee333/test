@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Account;
@@ -269,12 +270,12 @@ public class AccountDog {
 		}
 
 		PageRequest pageRequest = PageRequest.of(
-			page, size, _getSort("id", fieldSorts));
+			page, size, SortUtil.getSort(fieldSorts));
 
 		Sort segmentSort = null;
 
 		if (ArrayUtils.isNotEmpty(segmentSorts)) {
-			segmentSort = _getSort("id", segmentSorts);
+			segmentSort = SortUtil.getSort(segmentSorts);
 		}
 
 		List<Account> accounts = _populateAccounts(
@@ -322,27 +323,6 @@ public class AccountDog {
 			));
 
 		return populateAccount(account, null);
-	}
-
-	private Sort _getSort(String defaultFieldName, String[] sorts) {
-		if (ArrayUtils.isEmpty(sorts)) {
-			return Sort.by(Sort.Order.desc(defaultFieldName));
-		}
-
-		List<Sort.Order> orders = new ArrayList<>();
-
-		for (int i = 0; i < (sorts.length - 1); i = i + 2) {
-			String sort = sorts[i];
-
-			if (Objects.equals(sorts[i + 1], "asc")) {
-				orders.add(Sort.Order.asc(sort));
-			}
-			else {
-				orders.add(Sort.Order.desc(sort));
-			}
-		}
-
-		return Sort.by(orders);
 	}
 
 	private List<Account> _populateAccounts(

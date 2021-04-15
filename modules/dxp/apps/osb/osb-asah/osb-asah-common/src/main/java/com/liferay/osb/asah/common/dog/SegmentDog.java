@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.FilterUtil;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
@@ -49,7 +50,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.json.JSONArray;
@@ -318,7 +318,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 	public List<Segment> searchDynamicSegments(
 		String filterString, int page, int size, String[] sorts) {
 
-		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
 
 		return _segmentRepository.searchDynamicSegments(
 			filterString, pageRequest);
@@ -333,7 +334,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 				dataSourceId, true),
 			Long::valueOf);
 
-		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchPreviewDisabledSegments(
@@ -351,7 +353,8 @@ public class SegmentDog extends BaseFaroInfoDog {
 		List<Long> channelIds = ListUtil.map(
 			_channelDog.getChannels(dataSourceId), channel -> channel.getId());
 
-		PageRequest pageRequest = PageRequest.of(page, size, _getSort(sorts));
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchSegments(
@@ -574,27 +577,6 @@ public class SegmentDog extends BaseFaroInfoDog {
 		}
 
 		return referencedObjectIds;
-	}
-
-	private Sort _getSort(String[] sorts) {
-		if (ArrayUtils.isEmpty(sorts)) {
-			return Sort.by(Sort.Order.desc("id"));
-		}
-
-		List<Sort.Order> orders = new ArrayList<>();
-
-		for (int i = 0; i < (sorts.length - 1); i = i + 2) {
-			String sort = sorts[i];
-
-			if (Objects.equals(sorts[i + 1], "asc")) {
-				orders.add(Sort.Order.asc(sort));
-			}
-			else {
-				orders.add(Sort.Order.desc(sort));
-			}
-		}
-
-		return Sort.by(orders);
 	}
 
 	private Exception _processLogicalOperator(
