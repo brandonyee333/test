@@ -34,23 +34,23 @@ public class BaseJSONHandlerTest {
 		String expectedException = "NoSuchJSONWebServiceException";
 
 		String response1 =
-			"{\"error\":{\"message\":\"No JSON web service action with path" +
-				"/sync-web.syncdlobject/get-sync-context and method POST" +
-					"for sync-web\",\"type\":\"java.lang.RuntimeException\"}}";
+			"{\"error\":{\"message\":\"No JSON web service action with path " +
+				"/sync-web.syncdlobject/get-sync-context and method POST for " +
+					"sync-web\",\"type\":\"java.lang.RuntimeException\"}}";
 
 		Assert.assertEquals(expectedException, handler.getException(response1));
 
 		String response2 =
-			"{\"message\":\"No JSON web service action associated with path" +
-				"/sync-web.syncdlobject/get-sync-context and method POST for" +
+			"{\"message\":\"No JSON web service action associated with path " +
+				"/sync-web.syncdlobject/get-sync-context and method POST for " +
 					"sync-web\",\"exception\":\"java.lang.RuntimeException\"}";
 
 		Assert.assertEquals(expectedException, handler.getException(response2));
 
 		String response3 =
-			"{\"exception\":\"No JSON web service action associated with path" +
-				"/sync-web.syncdlobject/get-sync-context and method POST for" +
-					"sync-web\"}";
+			"{\"exception\":\"No JSON web service action associated with " +
+				"path /sync-web.syncdlobject/get-sync-context and method " +
+					"POST for sync-web\"}";
 
 		Assert.assertEquals(expectedException, handler.getException(response3));
 

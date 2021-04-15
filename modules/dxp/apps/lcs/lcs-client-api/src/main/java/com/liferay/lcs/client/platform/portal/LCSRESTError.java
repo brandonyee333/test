@@ -72,7 +72,7 @@ public enum LCSRESTError {
 					"subscription is expired."),
 	LCS_SUBSCRIPTION_ENTRY_ERROR_TOO_MANY_PROCESSOR_CORES(
 		6,
-		"Aborting Liferay instance activation. The number of processor cores" +
+		"Aborting Liferay instance activation. The number of processor cores " +
 			"in your server exceeds the number that your subscription " +
 				"allows. Please contact Liferay provisioning to increase " +
 					"your allowed processor cores."),

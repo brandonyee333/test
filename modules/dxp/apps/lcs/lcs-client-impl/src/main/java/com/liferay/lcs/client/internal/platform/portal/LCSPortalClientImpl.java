@@ -224,7 +224,7 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 
 				StringBundler sb = new StringBundler(4);
 
-				sb.append("Unable to communicate with LCS. The user");
+				sb.append("Unable to communicate with LCS. The user ");
 				sb.append("credentials in the environment token were ");
 				sb.append("rejected. Please regenerate, download, and ");
 				sb.append("install a new token.");
