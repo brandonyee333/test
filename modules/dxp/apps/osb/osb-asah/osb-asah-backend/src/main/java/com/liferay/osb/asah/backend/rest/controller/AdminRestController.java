@@ -27,7 +27,9 @@ import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.entity.Preference;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -36,8 +38,10 @@ import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -115,6 +119,12 @@ public class AdminRestController extends BaseRestController {
 		else if (collectionName.equals("data-sources")) {
 			_dataSourceRepository.deleteAll();
 		}
+		else if (collectionName.equals("individual-segments")) {
+			_segmentRepository.deleteAll();
+		}
+		else if (collectionName.equals("membership-changes")) {
+			_membershipChangeRepository.deleteAll();
+		}
 		else if (collectionName.equals("memberships")) {
 			_membershipRepository.deleteAll();
 		}
@@ -186,6 +196,12 @@ public class AdminRestController extends BaseRestController {
 			_addDataSources(new JSONArray(json));
 
 			_nanitesHttp.refreshAnalytics();
+		}
+		else if (collectionName.equals("individual-segments")) {
+			_addSegments(new JSONArray(json));
+		}
+		else if (collectionName.equals("membership-changes")) {
+			_addMembershipChanges(new JSONArray(json));
 		}
 		else if (collectionName.equals("memberships")) {
 			_addMemberships(new JSONArray(json));
@@ -283,6 +299,17 @@ public class AdminRestController extends BaseRestController {
 		}
 	}
 
+	private void _addMembershipChanges(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			MembershipChange membershipChange = _objectMapper.convertValue(
+				jsonArray.getJSONObject(i), MembershipChange.class);
+
+			membershipChange.setIsNew(true);
+
+			_membershipChangeRepository.save(membershipChange);
+		}
+	}
+
 	private void _addMemberships(JSONArray jsonArray) {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			Membership membership = _objectMapper.convertValue(
@@ -304,6 +331,17 @@ public class AdminRestController extends BaseRestController {
 			preference.setIsNew(true);
 
 			_preferenceRepository.save(preference);
+		}
+	}
+
+	private void _addSegments(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			Segment segment = _objectMapper.convertValue(
+				jsonArray.getJSONObject(i), Segment.class);
+
+			segment.setIsNew(true);
+
+			_segmentRepository.save(segment);
 		}
 	}
 
@@ -415,6 +453,9 @@ public class AdminRestController extends BaseRestController {
 	private ElasticsearchInvoker _faroElasticsearchInvoker;
 
 	@Autowired
+	private MembershipChangeRepository _membershipChangeRepository;
+
+	@Autowired
 	private MembershipRepository _membershipRepository;
 
 	private Schema _naniteListSchema;
@@ -427,5 +468,8 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private PreferenceRepository _preferenceRepository;
+
+	@Autowired
+	private SegmentRepository _segmentRepository;
 
 }
