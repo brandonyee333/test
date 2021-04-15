@@ -35,7 +35,7 @@
 		</div>
 	</noscript>
 
-	<aui:script>
+	<aui:script position="inline">
 		var <portlet:namespace />onloadCallback = function() {
 			var delay = 0;
 
