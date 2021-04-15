@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.asah.backend.rest.response.test;
+package com.liferay.osb.asah.common.rest.response.function.test;
 
-import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.rest.response.TransformationJSONArrayFunction;
-import com.liferay.osb.asah.common.rest.response.function.InterestsHistogramTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.rest.response.function.MembershipChangesHistogramTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -25,6 +25,8 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import java.util.Collections;
+
+import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 
@@ -38,29 +40,32 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * @author Vishal Reddy
  */
-@ContextConfiguration(classes = OSBAsahBackendSpringBootApplication.class)
+@ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class InterestsHistogramTransformationJSONArrayFunctionTest {
+public class MembershipChangesHistogramTransformationJSONArrayFunctionTest {
 
 	@ElasticsearchIndex(
-		name = "interests", resourcePath = "interests.json",
+		name = "membership-changes", resourcePath = "membership_changes.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
 	public void test() throws Exception {
 		TransformationJSONArrayFunction transformationJSONArrayFunction =
-			new InterestsHistogramTransformationJSONArrayFunction(true);
+			new MembershipChangesHistogramTransformationJSONArrayFunction(true);
 
 		JSONAssert.assertEquals(
 			new JSONArray(
 				TestExecutionListenerUtil.replaceVariables(
 					ResourceUtil.readResourceToString(
-						"dependencies/expected_interests_histogram.json",
+						"dependencies" +
+							"/expected_membership_changes_histogram.json",
 						this))),
 			transformationJSONArrayFunction.apply(
-				"interests", "day", _elasticsearchInvoker, 0, 20,
-				Collections.emptyList(), "dateRecorded", null),
-			true);
+				"membership-changes", "day", _elasticsearchInvoker, 0, 20,
+				Collections.emptyList(), "dateChanged",
+				QueryBuilders.termQuery(
+					"individualSegmentId", "346306743994746064")),
+			false);
 	}
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
