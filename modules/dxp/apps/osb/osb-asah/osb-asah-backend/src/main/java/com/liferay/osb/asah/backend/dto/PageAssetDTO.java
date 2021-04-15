@@ -14,13 +14,11 @@
 
 package com.liferay.osb.asah.backend.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
 import com.liferay.osb.asah.common.model.Asset;
-import com.liferay.osb.asah.common.model.AssetKeyword;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
@@ -29,7 +27,7 @@ import java.util.List;
 /**
  * @author Marcellus Tavares
  */
-@GraphQLType
+@GraphQLType("PageAsset")
 public class PageAssetDTO {
 
 	public PageAssetDTO(Asset asset) {
@@ -62,26 +60,6 @@ public class PageAssetDTO {
 	@GraphQLProperty("url")
 	public String getURL() {
 		return _asset.getURL();
-	}
-
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class AssetKeywordDTO {
-
-		public AssetKeywordDTO(AssetKeyword assetKeyword) {
-			_assetKeyword = assetKeyword;
-		}
-
-		public String getType() {
-			return _assetKeyword.getType();
-		}
-
-		@JsonProperty("keyword")
-		public String getValue() {
-			return _assetKeyword.getKeyword();
-		}
-
-		private final AssetKeyword _assetKeyword;
-
 	}
 
 	private final Asset _asset;

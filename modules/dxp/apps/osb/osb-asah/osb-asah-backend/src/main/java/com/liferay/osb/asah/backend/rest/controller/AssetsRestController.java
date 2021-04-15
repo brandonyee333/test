@@ -14,9 +14,15 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.backend.dto.AssetDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.rest.response.TermsAggregationTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.model.Asset;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,23 +38,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class AssetsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
-	public String getAsset(@PathVariable String id) throws Exception {
-		return toItemGetResponse("assets", id);
+	public AssetDTO getAssetDTO(@PathVariable Long id) {
+		return new AssetDTO(_assetDog.getAsset(id));
 	}
 
 	@GetMapping(params = "!apply")
-	public String getAssets(
-			@RequestParam(name = "filter", required = false)
-				String filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+	public PageDTO<AssetDTO> getAssetDTOsPageDTO(
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		return toCollectionGetResponse(
-			"assets", null, page,
-			FilterStringToQueryBuilderConverter.convert(filterString), size,
-			sorts);
+		Page<Asset> assetPage = _assetDog.searchAssetsPage(
+			filterString, page, size, sorts);
+
+		return _toPageDTO(assetPage);
 	}
 
 	@GetMapping(params = "apply")
@@ -67,5 +71,20 @@ public class AssetsRestController extends BaseRestController {
 			new TermsAggregationTransformationJSONArrayFunction(apply, null),
 			"asset-transformations");
 	}
+
+	private PageDTO<AssetDTO> _toPageDTO(
+		AssetDTO assetDTO, Page<Asset> assetPage) {
+
+		return new PageDTO<>(
+			"_embedded", assetDTO, assetPage.getNumber(), assetPage.getSize(),
+			assetPage.getTotalElements(), assetPage.getTotalPages());
+	}
+
+	private PageDTO<AssetDTO> _toPageDTO(Page<Asset> assetPage) {
+		return _toPageDTO(new AssetDTO(assetPage.getContent()), assetPage);
+	}
+
+	@Autowired
+	private AssetDog _assetDog;
 
 }
