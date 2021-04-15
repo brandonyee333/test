@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.response.ActivitiesAssetTransformationJSONArrayFunction;
-import com.liferay.osb.asah.backend.rest.response.ActivitiesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
+import com.liferay.osb.asah.common.rest.response.function.ActivitiesAssetTransformationJSONArrayFunction;
+import com.liferay.osb.asah.common.rest.response.function.ActivitiesHistogramTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 
 import org.springframework.beans.factory.annotation.Autowired;

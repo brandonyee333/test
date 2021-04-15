@@ -54,6 +54,10 @@
 		<Method name="createCSVFile" />
 	</Match>
 	<Match>
+		<Bug pattern="REDOS" />
+		<Class name="com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction" />
+	</Match>
+	<Match>
 		<Bug pattern="SPRING_CSRF_UNRESTRICTED_REQUEST_MAPPING" />
 		<Class name="com.liferay.osb.asah.common.rest.controller.ErrorRestController" />
 		<Method name="handleError" />

@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.rest.response.VisitedPagesTransformationJSONArrayFunction;
 import com.liferay.osb.asah.common.dog.MembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.rest.response.function.VisitedPagesTransformationJSONArrayFunction;
 
 import java.util.Collections;
 

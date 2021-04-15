@@ -29,6 +29,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
 import org.elasticsearch.search.aggregations.bucket.histogram.ExtendedBounds;
@@ -218,6 +219,20 @@ public abstract class BaseTransformationJSONArrayFunction
 			throw new IllegalArgumentException(
 				"Unsupported compute function: " + computeFunctionString);
 		}
+	}
+
+	protected boolean isEmpty(Aggregations aggregations) {
+		if (aggregations == null) {
+			return true;
+		}
+
+		List<Aggregation> aggregationList = aggregations.asList();
+
+		if (aggregationList.isEmpty()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	protected String endDayDateString;
