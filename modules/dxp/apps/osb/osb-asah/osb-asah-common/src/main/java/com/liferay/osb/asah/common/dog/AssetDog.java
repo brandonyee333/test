@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.Asset;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -49,6 +51,15 @@ public class AssetDog {
 				dataSourceAssetPK, dataSourceId);
 
 		return assetOptional.orElse(null);
+	}
+
+	public Asset getAsset(Long assetId) {
+		Optional<Asset> assetOptional = _assetRepository.findById(assetId);
+
+		return assetOptional.orElseThrow(
+			() -> new OSBAsahException(
+				HttpStatus.BAD_REQUEST,
+				"There is no asset with ID " + assetId));
 	}
 
 	public Page<Asset> getAssetPage(
