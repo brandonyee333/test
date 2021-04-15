@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class AssetDog {
 
+	public Asset addAsset(Asset asset) {
+		if (!asset.isNew()) {
+			throw new IllegalArgumentException("Unable to add asset not new");
+		}
+
+		return _assetRepository.save(asset);
+	}
+
+	public Asset fetchAsset(String dataSourceAssetPK, Long dataSourceId) {
+		Optional<Asset> assetOptional =
+			_assetRepository.findByDataSourceAssetPKAndDataSourceId(
+				dataSourceAssetPK, dataSourceId);
+
+		return assetOptional.orElse(null);
+	}
+
 	public Page<Asset> getAssetPage(
 		String assetType, String keyword, List<PropertyFilter> propertyFilters,
 		int page, int size, Sort sort) {
@@ -45,6 +62,15 @@ public class AssetDog {
 			pageRequest,
 			() -> _assetRepository.countAssets(
 				assetType, keyword, propertyFilters));
+	}
+
+	public Asset updateAsset(Asset asset) {
+		if (asset.getId() == null) {
+			throw new IllegalArgumentException(
+				"Unable to update asset with ID null");
+		}
+
+		return _assetRepository.save(asset);
 	}
 
 	@Autowired

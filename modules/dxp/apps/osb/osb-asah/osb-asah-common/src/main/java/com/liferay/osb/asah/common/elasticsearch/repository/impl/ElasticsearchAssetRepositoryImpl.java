@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -33,6 +34,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +60,26 @@ public class ElasticsearchAssetRepositoryImpl
 		return _faroInfoElasticsearchInvoker.count(
 			getCollectionName(),
 			_buildQueryBuilder(assetType, keyword, propertyFilters));
+	}
+
+	@Override
+	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
+		String dataSourceAssetPK, Long dataSourceId) {
+
+		JSONObject jsonObject = _faroInfoElasticsearchInvoker.fetch(
+			getCollectionName(),
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("dataSourceAssetPK", dataSourceAssetPK)
+			).filter(
+				QueryBuilders.termQuery(
+					"dataSourceId", String.valueOf(dataSourceId))
+			));
+
+		return Optional.ofNullable(
+			jsonObject
+		).map(
+			this::toEntity
+		);
 	}
 
 	@Override

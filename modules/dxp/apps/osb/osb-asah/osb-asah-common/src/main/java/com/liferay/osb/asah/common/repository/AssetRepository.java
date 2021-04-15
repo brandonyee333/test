@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.model.Asset;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,9 @@ public interface AssetRepository extends CrudRepository<Asset, Long> {
 
 	public long countAssets(
 		String assetType, String keyword, List<PropertyFilter> propertyFilters);
+
+	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
+		String dataSourceAssetPK, Long dataSourceId);
 
 	public List<Asset> searchAssets(
 		String assetType, String keyword, List<PropertyFilter> propertyFilters,
