@@ -12,8 +12,9 @@
  *
  */
 
-package com.liferay.osb.asah.common.model;
+package com.liferay.osb.asah.common.entity;
 
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.data.annotation.AccessType;
@@ -24,14 +25,19 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcellus Tavares
  */
 @Table
-public class AssetKeyword {
+public class JobParameter {
 
-	public AssetKeyword() {
+	public static JobParameter of(Map<String, String> jobParameter) {
+		return new JobParameter(
+			jobParameter.get("name"), jobParameter.get("value"));
 	}
 
-	public AssetKeyword(String keyword, String type) {
-		_keyword = keyword;
-		_type = type;
+	public JobParameter() {
+	}
+
+	public JobParameter(String name, String value) {
+		_name = name;
+		_value = value;
 	}
 
 	@Override
@@ -40,14 +46,14 @@ public class AssetKeyword {
 			return true;
 		}
 
-		if (!(obj instanceof AssetKeyword)) {
+		if (!(obj instanceof JobParameter)) {
 			return false;
 		}
 
-		AssetKeyword assetKeyword = (AssetKeyword)obj;
+		JobParameter jobParameter = (JobParameter)obj;
 
-		if (Objects.equals(_keyword, assetKeyword._keyword) &&
-			Objects.equals(_type, assetKeyword._type)) {
+		if (Objects.equals(_name, jobParameter._name) &&
+			Objects.equals(_value, jobParameter._value)) {
 
 			return true;
 		}
@@ -56,32 +62,32 @@ public class AssetKeyword {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getKeyword() {
-		return _keyword;
+	public String getName() {
+		return _name;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getType() {
-		return _type;
+	public String getValue() {
+		return _value;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_keyword, _type);
+		return Objects.hash(_name, _value);
 	}
 
-	public void setKeyword(String keyword) {
-		_keyword = keyword;
+	public void setName(String name) {
+		_name = name;
 	}
 
-	public void setType(String type) {
-		_type = type;
+	public void setValue(String value) {
+		_value = value;
 	}
 
 	@Transient
-	private String _keyword;
+	private String _name;
 
 	@Transient
-	private String _type;
+	private String _value;
 
 }

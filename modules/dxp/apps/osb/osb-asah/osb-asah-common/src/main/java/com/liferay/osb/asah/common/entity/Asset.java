@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.model;
+package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

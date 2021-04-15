@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.model;
+package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import java.util.Date;
 import java.util.Objects;
 
+import com.liferay.osb.asah.common.model.JobRunStatus;
 import org.json.JSONObject;
 
 import org.springframework.data.annotation.AccessType;

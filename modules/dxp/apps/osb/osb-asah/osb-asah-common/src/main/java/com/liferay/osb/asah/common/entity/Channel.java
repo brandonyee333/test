@@ -12,29 +12,41 @@
  *
  */
 
-package com.liferay.osb.asah.common.model;
+package com.liferay.osb.asah.common.entity;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.liferay.osb.asah.common.date.DateUtil;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import com.liferay.osb.asah.common.model.ChannelDataSource;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
- * @author André Miranda
+ * @author Inácio Nery
  */
 @Table
-public class BlockedKeyword implements Persistable<Long> {
+public class Channel implements Persistable<Long> {
 
-	public BlockedKeyword() {
+	public Channel() {
 	}
 
-	public BlockedKeyword(Date createDate, String keyword) {
-		_createDate = new Date(createDate.getTime());
-		_keyword = keyword;
+	public Channel(String name) {
+		_name = name;
+	}
+
+	public void addChannelDataSource(ChannelDataSource channelDataSource) {
+		_channelDataSources.add(channelDataSource);
 	}
 
 	@Override
@@ -43,15 +55,16 @@ public class BlockedKeyword implements Persistable<Long> {
 			return true;
 		}
 
-		if (!(obj instanceof BlockedKeyword)) {
+		if (!(obj instanceof Channel)) {
 			return false;
 		}
 
-		BlockedKeyword dataSource = (BlockedKeyword)obj;
+		Channel channel = (Channel)obj;
 
-		if (Objects.equals(_createDate, dataSource._createDate) &&
-			Objects.equals(_id, dataSource._id) &&
-			Objects.equals(_keyword, dataSource._keyword)) {
+		if (Objects.equals(_channelDataSources, channel._channelDataSources) &&
+			Objects.equals(_createDate, channel._createDate) &&
+			Objects.equals(_id, channel._id) &&
+			Objects.equals(_name, channel._name)) {
 
 			return true;
 		}
@@ -60,6 +73,18 @@ public class BlockedKeyword implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonProperty("dataSources")
+	@MappedCollection(idColumn = "channelid")
+	public Set<ChannelDataSource> getChannelDataSources() {
+		return _channelDataSources;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	@JsonFormat(
+		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
+		timezone = "UTC"
+	)
+	@JsonProperty("createDate")
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -76,13 +101,13 @@ public class BlockedKeyword implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public String getKeyword() {
-		return _keyword;
+	public String getName() {
+		return _name;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_createDate, _id, _keyword);
+		return Objects.hash(_channelDataSources, _createDate, _id, _name);
 	}
 
 	@Override
@@ -92,6 +117,12 @@ public class BlockedKeyword implements Persistable<Long> {
 		}
 
 		return false;
+	}
+
+	public void setChannelDataSources(
+		Set<ChannelDataSource> channelDataSources) {
+
+		_channelDataSources = channelDataSources;
 	}
 
 	public void setCreateDate(Date createDate) {
@@ -108,9 +139,12 @@ public class BlockedKeyword implements Persistable<Long> {
 		_isNew = isNew;
 	}
 
-	public void setKeyword(String keyword) {
-		_keyword = keyword;
+	public void setName(String name) {
+		_name = name;
 	}
+
+	@Transient
+	private Set<ChannelDataSource> _channelDataSources = new HashSet<>();
 
 	@Transient
 	private Date _createDate = new Date();
@@ -122,6 +156,6 @@ public class BlockedKeyword implements Persistable<Long> {
 	private Boolean _isNew;
 
 	@Transient
-	private String _keyword;
+	private String _name;
 
 }
