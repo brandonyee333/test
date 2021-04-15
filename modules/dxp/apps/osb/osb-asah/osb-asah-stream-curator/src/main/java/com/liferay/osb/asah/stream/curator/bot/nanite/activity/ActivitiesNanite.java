@@ -238,7 +238,7 @@ public class ActivitiesNanite implements Nanite {
 
 		objectJSONObject.put("id", assetId);
 
-		objectJSONObject.put("name", _getName(analyticsEvent));
+		objectJSONObject.put("name", _getTitle(analyticsEvent));
 		objectJSONObject.put("objectType", asset.getAssetType());
 		objectJSONObject.put("url", MapUtil.getString(context, "url"));
 
@@ -358,14 +358,65 @@ public class ActivitiesNanite implements Nanite {
 		asset.setDataSourceAssetPK(dataSourceAssetPK);
 		asset.setDataSourceId(Long.valueOf(analyticsEvent.getDataSourceId()));
 		asset.setDescription(MapUtil.getString(context, "description"));
-		asset.setTitle(_getName(analyticsEvent));
+		asset.setTitle(_getTitle(analyticsEvent));
 		asset.setURL(MapUtil.getString(context, "url"));
 
 		if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
-			asset.setAssetKeywords(_getKeywordPairs(context));
+			asset.setAssetKeywords(_getAssetKeywords(context));
 		}
 
 		return _assetDog.addAsset(asset);
+	}
+
+	private Set<AssetKeyword> _getAssetKeywords(Map<String, String> context) {
+		Set<AssetKeyword> keywords = new HashSet<>(
+			_getAssetKeywords(
+				MapUtil.getString(context, "description"), "description"));
+
+		keywords.addAll(
+			_getAssetKeywords(
+				MapUtil.getString(context, "keywords"), "keyword"));
+		keywords.addAll(
+			_getAssetKeywords(MapUtil.getString(context, "title"), "title"));
+		keywords.addAll(
+			_getAssetKeywords(
+				MapUtil.getString(context, "og:description"), "description"));
+		keywords.addAll(
+			_getAssetKeywords(MapUtil.getString(context, "og:title"), "title"));
+
+		return keywords;
+	}
+
+	private Set<AssetKeyword> _getAssetKeywords(String text, String type) {
+		if (StringUtils.isEmpty(text)) {
+			return Collections.emptySet();
+		}
+
+		Stream<String> stream = Stream.of(text.split(","));
+
+		if (type.equals("keyword")) {
+			return stream.map(
+				String::toLowerCase
+			).map(
+				keyword -> new AssetKeyword(keyword, type)
+			).collect(
+				Collectors.toSet()
+			);
+		}
+
+		return stream.filter(
+			NLPUtil::isEnglish
+		).map(
+			NLPUtil::getKeywords
+		).flatMap(
+			Collection::stream
+		).map(
+			String::toLowerCase
+		).map(
+			keyword -> new AssetKeyword(keyword, type)
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	private JSONObject _getEventPropertiesJSONObject(
@@ -455,69 +506,6 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		return null;
-	}
-
-	private Set<AssetKeyword> _getKeywordPairs(Map<String, String> context) {
-		Set<AssetKeyword> keywords = new HashSet<>(
-			_getKeywordPairs(
-				MapUtil.getString(context, "description"), "description"));
-
-		keywords.addAll(
-			_getKeywordPairs(
-				MapUtil.getString(context, "keywords"), "keyword"));
-		keywords.addAll(
-			_getKeywordPairs(MapUtil.getString(context, "title"), "title"));
-		keywords.addAll(
-			_getKeywordPairs(
-				MapUtil.getString(context, "og:description"), "description"));
-		keywords.addAll(
-			_getKeywordPairs(MapUtil.getString(context, "og:title"), "title"));
-
-		return keywords;
-	}
-
-	private Set<AssetKeyword> _getKeywordPairs(String text, String type) {
-		if (StringUtils.isEmpty(text)) {
-			return Collections.emptySet();
-		}
-
-		Stream<String> stream = Stream.of(text.split(","));
-
-		if (type.equals("keyword")) {
-			return stream.map(
-				String::toLowerCase
-			).map(
-				keyword -> new AssetKeyword(keyword, type)
-			).collect(
-				Collectors.toSet()
-			);
-		}
-
-		return stream.filter(
-			NLPUtil::isEnglish
-		).map(
-			NLPUtil::getKeywords
-		).flatMap(
-			Collection::stream
-		).map(
-			String::toLowerCase
-		).map(
-			keyword -> new AssetKeyword(keyword, type)
-		).collect(
-			Collectors.toSet()
-		);
-	}
-
-	private String _getName(AnalyticsEvent analyticsEvent) throws Exception {
-		if (!Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
-			String name = _getEventPropertiesTitle(analyticsEvent);
-
-			if (name != null) {
-				return name;
-			}
-		}
-
-		return MapUtil.getString(analyticsEvent.getContext(), "title");
 	}
 
 	private Long _getOwnerId(AnalyticsEvent analyticsEvent) {
@@ -618,6 +606,18 @@ public class ActivitiesNanite implements Nanite {
 		}
 
 		return userSessionJSONObject.getString("id");
+	}
+
+	private String _getTitle(AnalyticsEvent analyticsEvent) throws Exception {
+		if (!Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
+			String name = _getEventPropertiesTitle(analyticsEvent);
+
+			if (name != null) {
+				return name;
+			}
+		}
+
+		return MapUtil.getString(analyticsEvent.getContext(), "title");
 	}
 
 	private static final String[] _EVENT_PROPERTY_KEYS = {
