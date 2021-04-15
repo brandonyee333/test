@@ -22,8 +22,8 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -195,11 +195,9 @@ public class ElasticsearchDataSourceRepositoryImpl
 				FilterStringToQueryBuilderConverter.convert(filterString));
 			collectionGetResponse.setSize(pageable.getPageSize());
 
-			List<String> sorts = new ArrayList<>();
+			List<String> sorts = new LinkedList<>();
 
 			for (Sort.Order order : pageable.getSort()) {
-				StringBuilder sb = new StringBuilder();
-
 				String property = order.getProperty();
 
 				if (Objects.equals(property, "createDate")) {
@@ -212,17 +210,14 @@ public class ElasticsearchDataSourceRepositoryImpl
 					property = "provider.type";
 				}
 
-				sb.append(property);
-				sb.append(",");
+				sorts.add(property);
 
 				if (order.isAscending()) {
-					sb.append("asc");
+					sorts.add("asc");
 				}
 				else {
-					sb.append("desc");
+					sorts.add("desc");
 				}
-
-				sorts.add(sb.toString());
 			}
 
 			collectionGetResponse.setSorts(sorts.toArray(new String[0]));

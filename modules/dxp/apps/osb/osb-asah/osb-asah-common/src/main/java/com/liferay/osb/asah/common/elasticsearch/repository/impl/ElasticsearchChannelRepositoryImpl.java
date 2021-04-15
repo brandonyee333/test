@@ -162,16 +162,14 @@ public class ElasticsearchChannelRepositoryImpl
 					sb.append(".sort");
 				}
 
-				sb.append(",");
+				sorts.add(sb.toString());
 
 				if (order.isAscending()) {
-					sb.append("asc");
+					sorts.add("asc");
 				}
 				else {
-					sb.append("desc");
+					sorts.add("desc");
 				}
-
-				sorts.add(sb.toString());
 			}
 
 			collectionGetResponse.setSorts(sorts.toArray(new String[0]));

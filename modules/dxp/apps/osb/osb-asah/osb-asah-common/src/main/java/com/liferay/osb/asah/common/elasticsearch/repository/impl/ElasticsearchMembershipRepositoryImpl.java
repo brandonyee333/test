@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -201,22 +202,17 @@ public class ElasticsearchMembershipRepositoryImpl
 				));
 			collectionGetResponse.setSize(pageable.getPageSize());
 
-			List<String> sorts = new ArrayList<>();
+			List<String> sorts = new LinkedList<>();
 
 			for (Sort.Order order : pageable.getSort()) {
-				StringBuilder sb = new StringBuilder();
-
-				sb.append(order.getProperty());
-				sb.append(",");
+				sorts.add(order.getProperty());
 
 				if (order.isAscending()) {
-					sb.append("asc");
+					sorts.add("asc");
 				}
 				else {
-					sb.append("desc");
+					sorts.add("desc");
 				}
-
-				sorts.add(sb.toString());
 			}
 
 			collectionGetResponse.setSorts(sorts.toArray(new String[0]));
@@ -274,22 +270,17 @@ public class ElasticsearchMembershipRepositoryImpl
 				));
 			collectionGetResponse.setSize(pageable.getPageSize());
 
-			List<String> sorts = new ArrayList<>();
+			List<String> sorts = new LinkedList<>();
 
 			for (Sort.Order order : pageable.getSort()) {
-				StringBuilder sb = new StringBuilder();
-
-				sb.append(order.getProperty());
-				sb.append(",");
+				sorts.add(order.getProperty());
 
 				if (order.isAscending()) {
-					sb.append("asc");
+					sorts.add("asc");
 				}
 				else {
-					sb.append("desc");
+					sorts.add("desc");
 				}
-
-				sorts.add(sb.toString());
 			}
 
 			collectionGetResponse.setSorts(sorts.toArray(new String[0]));
