@@ -128,6 +128,23 @@ public class PropertyFilter {
 		_propertyValue = propertyValue;
 	}
 
+	public String toFilterString() {
+		String filterStringFormat = null;
+
+		if (_negate) {
+			filterStringFormat = "not ";
+		}
+
+		if (Objects.equals(_operator, "=")) {
+			filterStringFormat += "%s eq '%s'";
+		}
+		else {
+			filterStringFormat += "similarTo(%s, '%s')";
+		}
+
+		return String.format(filterStringFormat, _propertyName, _propertyValue);
+	}
+
 	private List<String> _getFilterTokens(String filterString) {
 		Matcher matcher = _filterStringPattern.matcher(filterString);
 
