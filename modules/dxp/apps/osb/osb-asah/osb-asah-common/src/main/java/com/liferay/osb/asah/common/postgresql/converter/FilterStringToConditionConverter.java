@@ -299,6 +299,10 @@ public class FilterStringToConditionConverter {
 		else if (stringFunction.equalsIgnoreCase("startsWith")) {
 			condition = field.similarTo(value + "%");
 		}
+		else if (stringFunction.equalsIgnoreCase("similarTo")) {
+			condition = field.similarTo(
+				StringUtils.replaceChars(value, ".*", "_%"));
+		}
 		else {
 			return new IllegalArgumentException(
 				"Invalid string function: " + stringFunction);
