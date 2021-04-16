@@ -23,8 +23,8 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PageDataExpor
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SegmentDataExporter;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.http.ReportHttp;
-import com.liferay.osb.asah.common.model.DataExportTask;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.FileOutputStream;

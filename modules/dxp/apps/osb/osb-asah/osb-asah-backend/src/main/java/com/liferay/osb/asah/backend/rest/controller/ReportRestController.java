@@ -22,8 +22,8 @@ import com.liferay.osb.asah.backend.model.Account;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import org.apache.commons.lang3.StringUtils;

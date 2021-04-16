@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
 import com.liferay.osb.asah.common.faro.info.util.FaroInfoIndividualUtil;
-import com.liferay.osb.asah.common.model.Membership;
-import com.liferay.osb.asah.common.model.MembershipChange;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 
 import java.util.ArrayList;

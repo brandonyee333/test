@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.ItemRecommendation;
+import com.liferay.osb.asah.common.entity.ItemRecommendation;
 
 import java.util.List;
 

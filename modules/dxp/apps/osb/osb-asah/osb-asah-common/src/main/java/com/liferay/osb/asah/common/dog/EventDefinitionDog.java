@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.model.BlockedEventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;

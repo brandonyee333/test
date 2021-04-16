@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
-import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 
 import java.util.List;

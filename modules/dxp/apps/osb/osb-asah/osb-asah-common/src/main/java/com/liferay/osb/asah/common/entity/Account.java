@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;

@@ -21,14 +21,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.model.JobRunDataPeriod;
+import com.liferay.osb.asah.common.model.JobRunFrequency;
+import com.liferay.osb.asah.common.model.JobType;
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
-import com.liferay.osb.asah.common.model.JobRunDataPeriod;
-import com.liferay.osb.asah.common.model.JobRunFrequency;
-import com.liferay.osb.asah.common.model.JobType;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;

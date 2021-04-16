@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.model.Asset;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 

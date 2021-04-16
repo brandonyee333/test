@@ -19,9 +19,9 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Account;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.model.Account;
-import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import org.apache.commons.logging.Log;

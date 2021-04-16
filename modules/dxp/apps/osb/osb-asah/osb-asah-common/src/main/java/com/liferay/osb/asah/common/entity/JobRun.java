@@ -23,11 +23,11 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.JobRunStatus;
 
 import java.util.Date;
 import java.util.Objects;
 
-import com.liferay.osb.asah.common.model.JobRunStatus;
 import org.json.JSONObject;
 
 import org.springframework.data.annotation.AccessType;

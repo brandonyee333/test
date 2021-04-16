@@ -18,9 +18,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
 import com.liferay.osb.asah.common.dog.JobRunDog;
+import com.liferay.osb.asah.common.entity.Job;
+import com.liferay.osb.asah.common.entity.JobParameter;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Job;
-import com.liferay.osb.asah.common.model.JobParameter;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;

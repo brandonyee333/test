@@ -16,8 +16,8 @@ package com.liferay.osb.asah.common.salesforce.extractor.dog.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.common.salesforce.extractor.dog.SalesforceExtractorConfigurationDog;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.test.util.SalesforceExtractorTestUtil;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;

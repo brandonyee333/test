@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.monolith.common.http.impl;
 
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
-import com.liferay.osb.asah.common.model.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.configuration.impl.SalesforceExtractorConfigurationManagerImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;

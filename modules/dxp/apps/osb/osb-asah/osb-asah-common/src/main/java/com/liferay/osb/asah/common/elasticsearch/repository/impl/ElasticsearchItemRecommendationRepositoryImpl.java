@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.model.ItemRecommendation;
+import com.liferay.osb.asah.common.entity.ItemRecommendation;
 import com.liferay.osb.asah.common.repository.ItemRecommendationRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 

@@ -16,9 +16,9 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
-import com.liferay.osb.asah.common.model.EventAttributeDefinition;
-import com.liferay.osb.asah.common.model.EventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;

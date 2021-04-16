@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.RunLog;
+import com.liferay.osb.asah.common.entity.RunLog;
 
 import java.util.Optional;
 

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 
 /**
  * @author Leslie Wong

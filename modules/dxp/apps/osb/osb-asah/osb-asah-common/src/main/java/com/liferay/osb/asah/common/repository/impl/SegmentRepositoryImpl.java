@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.DXPEntityType;
-import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 
 import java.util.ArrayList;

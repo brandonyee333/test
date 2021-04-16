@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.common.salesforce.extractor.dog;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.http.ConfigurationHttp;
 import com.liferay.osb.asah.common.http.DataSourceHttp;
-import com.liferay.osb.asah.common.model.DataSource;
 
 import java.util.Objects;
 

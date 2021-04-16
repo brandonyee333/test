@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
+import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.faro.info.dog.BaseFaroInfoDog;
-import com.liferay.osb.asah.common.model.BlockedKeyword;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.SetUtil;

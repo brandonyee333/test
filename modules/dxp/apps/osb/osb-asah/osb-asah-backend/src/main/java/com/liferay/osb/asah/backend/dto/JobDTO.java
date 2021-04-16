@@ -16,10 +16,10 @@ package com.liferay.osb.asah.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import com.liferay.osb.asah.common.entity.Job;
+import com.liferay.osb.asah.common.entity.JobParameter;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
-import com.liferay.osb.asah.common.model.Job;
-import com.liferay.osb.asah.common.model.JobParameter;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
 import com.liferay.osb.asah.common.model.JobRunFrequency;
 import com.liferay.osb.asah.common.model.JobType;

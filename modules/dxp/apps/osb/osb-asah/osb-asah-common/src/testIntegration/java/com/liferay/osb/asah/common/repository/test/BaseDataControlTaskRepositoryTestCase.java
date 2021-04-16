@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.model.DataControlTask;
+import com.liferay.osb.asah.common.entity.DataControlTask;
 import com.liferay.osb.asah.common.model.DataControlTaskStatus;
 import com.liferay.osb.asah.common.model.DataControlTaskType;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;

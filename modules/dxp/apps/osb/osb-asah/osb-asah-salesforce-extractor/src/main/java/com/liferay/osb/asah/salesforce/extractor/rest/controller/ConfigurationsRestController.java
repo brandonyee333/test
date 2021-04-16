@@ -17,7 +17,7 @@ package com.liferay.osb.asah.salesforce.extractor.rest.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
-import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
 import org.json.JSONObject;

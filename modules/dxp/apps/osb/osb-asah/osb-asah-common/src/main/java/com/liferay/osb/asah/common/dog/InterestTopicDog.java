@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.model.InterestTopic;
+import com.liferay.osb.asah.common.entity.InterestTopic;
 import com.liferay.osb.asah.common.repository.InterestTopicRepository;
 
 import java.util.List;

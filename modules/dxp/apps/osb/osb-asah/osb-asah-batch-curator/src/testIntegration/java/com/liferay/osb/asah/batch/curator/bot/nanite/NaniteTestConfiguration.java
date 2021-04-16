@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.model.AsahTask;
+import com.liferay.osb.asah.common.entity.AsahTask;
 
 import java.util.HashMap;
 import java.util.List;

@@ -17,8 +17,8 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.liferay.osb.asah.backend.dto.BlockedKeywordDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.dog.BlockedKeywordDog;
+import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.BlockedKeyword;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.List;

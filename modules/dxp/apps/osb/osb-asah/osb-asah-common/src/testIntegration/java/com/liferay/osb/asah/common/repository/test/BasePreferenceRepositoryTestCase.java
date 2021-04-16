@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.model.Preference;
+import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
 
 import org.junit.Assert;

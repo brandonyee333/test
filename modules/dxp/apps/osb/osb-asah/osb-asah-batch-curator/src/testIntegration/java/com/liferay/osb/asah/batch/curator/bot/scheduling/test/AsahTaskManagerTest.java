@@ -19,7 +19,7 @@ import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskRunnable;
 import com.liferay.osb.asah.batch.curator.bot.scheduling.AsahTaskScheduler;
 import com.liferay.osb.asah.batch.curator.spring.OSBAsahBatchCuratorSpringBootApplication;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.model.AsahTask;
+import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.AsahTask;
+import com.liferay.osb.asah.common.entity.AsahTask;
 
 import java.util.List;
 

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.model.ActivityGroup;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 

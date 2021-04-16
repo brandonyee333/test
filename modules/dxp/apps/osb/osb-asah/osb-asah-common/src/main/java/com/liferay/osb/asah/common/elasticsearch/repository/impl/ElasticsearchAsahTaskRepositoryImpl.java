@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.model.AsahTask;
+import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.repository.AsahTaskRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 

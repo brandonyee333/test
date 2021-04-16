@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.model.DataExportTask;
+import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.repository.DataExportTaskRepository;
 
 import java.util.Date;

@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.model.Asset;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.MembershipChange;
+import com.liferay.osb.asah.common.entity.MembershipChange;
 
 import java.util.Optional;
 

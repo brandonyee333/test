@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
-import com.liferay.osb.asah.common.model.JobRun;
+import com.liferay.osb.asah.common.entity.JobRun;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -33,7 +33,6 @@ import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;

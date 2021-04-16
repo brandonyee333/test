@@ -15,11 +15,11 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.page;
 
 import com.liferay.osb.asah.common.dog.PreferenceDog;
+import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.common.model.Preference;
 import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.stream.curator.bot.nanite.BaseNanite;

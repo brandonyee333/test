@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.dto.FieldDTO;
 import com.liferay.osb.asah.common.dog.FieldDog;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
-import com.liferay.osb.asah.common.model.Field;
+import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.rest.response.function.TermsAggregationTransformationJSONArrayFunction;
 
 import org.springframework.beans.factory.annotation.Autowired;

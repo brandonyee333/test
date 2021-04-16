@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.DataExportTask;
+import com.liferay.osb.asah.common.entity.DataExportTask;
 
 import java.util.List;
 

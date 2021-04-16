@@ -16,7 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.scheduling;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.IndividualSegmentActivityFieldsNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
-import com.liferay.osb.asah.common.model.AsahTask;
+import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.Arrays;

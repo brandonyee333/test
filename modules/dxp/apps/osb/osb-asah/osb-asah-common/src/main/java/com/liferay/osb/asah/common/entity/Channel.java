@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.liferay.osb.asah.common.model.ChannelDataSource;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;

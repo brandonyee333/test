@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.model.MembershipChange;
+import com.liferay.osb.asah.common.entity.MembershipChange;
 import com.liferay.osb.asah.common.repository.MembershipChangeRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 

@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dto.EventAttributeDefinitionDTO;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.Sort;
 

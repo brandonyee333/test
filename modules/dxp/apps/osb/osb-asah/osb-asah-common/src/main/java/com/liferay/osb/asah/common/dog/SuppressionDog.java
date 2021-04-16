@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.model.Suppression;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
 
 import java.util.Date;

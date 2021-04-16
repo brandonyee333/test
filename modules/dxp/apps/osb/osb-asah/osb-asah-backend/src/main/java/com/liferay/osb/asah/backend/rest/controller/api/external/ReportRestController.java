@@ -60,9 +60,9 @@ import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.model.DataExportTask;
+import com.liferay.osb.asah.common.entity.DataExportTask;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.ResultBag;
-import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.util.ListUtil;
 

@@ -19,12 +19,12 @@ import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.model.Channel;
-import com.liferay.osb.asah.common.model.Event;
-import com.liferay.osb.asah.common.model.EventAttribute;
-import com.liferay.osb.asah.common.model.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.Event;
+import com.liferay.osb.asah.common.entity.EventAttribute;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
-import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahPostgreSQLSpring4ClassRunner;
 

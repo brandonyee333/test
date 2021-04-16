@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.entity.Channel;
 
 import java.util.List;
 import java.util.Set;

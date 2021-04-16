@@ -16,8 +16,8 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dto.EventDefinitionDTO;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.common.model.EventDefinition;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import graphql.schema.DataFetcher;

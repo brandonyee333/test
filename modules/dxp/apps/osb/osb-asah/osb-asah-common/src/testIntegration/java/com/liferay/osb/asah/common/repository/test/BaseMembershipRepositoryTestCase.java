@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.model.Channel;
-import com.liferay.osb.asah.common.model.Membership;
-import com.liferay.osb.asah.common.model.Segment;
+import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.Membership;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.MembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;

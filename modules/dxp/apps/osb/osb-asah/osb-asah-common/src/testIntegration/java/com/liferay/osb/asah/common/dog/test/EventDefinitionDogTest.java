@@ -16,8 +16,8 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
-import com.liferay.osb.asah.common.model.BlockedEventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.postgresql.PostgreSQLTables;

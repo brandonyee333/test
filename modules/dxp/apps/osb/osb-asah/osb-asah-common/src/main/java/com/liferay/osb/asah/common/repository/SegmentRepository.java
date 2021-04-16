@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.DXPEntityType;
-import com.liferay.osb.asah.common.model.Segment;
 
 import java.util.List;
 import java.util.Optional;

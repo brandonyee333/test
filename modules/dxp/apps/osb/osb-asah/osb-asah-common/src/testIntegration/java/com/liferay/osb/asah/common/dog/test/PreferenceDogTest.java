@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
-import com.liferay.osb.asah.common.model.Preference;
+import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 

@@ -17,7 +17,7 @@ package com.liferay.osb.asah.salesforce.extractor.bot;
 import com.liferay.osb.asah.common.configuration.Configuration;
 import com.liferay.osb.asah.common.configuration.ConfigurationManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.salesforce.extractor.bot.exception.InterruptBotException;
 import com.liferay.osb.asah.salesforce.extractor.bot.nanite.Nanite;

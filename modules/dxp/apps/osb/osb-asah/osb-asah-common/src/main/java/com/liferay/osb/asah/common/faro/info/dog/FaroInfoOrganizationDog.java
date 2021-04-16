@@ -17,8 +17,8 @@ package com.liferay.osb.asah.common.faro.info.dog;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.FieldDog;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.DataSource;
 
 import org.elasticsearch.index.query.QueryBuilders;
 

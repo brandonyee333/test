@@ -20,8 +20,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.model.BlockedEventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 
 /**
  * @author Leslie Wong

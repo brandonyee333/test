@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.dog.ActivityGroupDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoActivitiesFilterStringConverterHelper;
-import com.liferay.osb.asah.common.model.ActivityGroup;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 
 import java.util.Arrays;
 import java.util.Collection;

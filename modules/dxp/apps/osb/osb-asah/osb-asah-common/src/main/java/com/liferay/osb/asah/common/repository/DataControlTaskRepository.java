@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.DataControlTask;
+import com.liferay.osb.asah.common.entity.DataControlTask;
 
 import java.util.Date;
 import java.util.List;

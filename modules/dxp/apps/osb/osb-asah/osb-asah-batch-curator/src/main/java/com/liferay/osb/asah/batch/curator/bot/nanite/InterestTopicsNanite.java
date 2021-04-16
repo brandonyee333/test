@@ -28,8 +28,8 @@ import com.liferay.osb.asah.common.dog.BlockedKeywordDog;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.model.BlockedKeyword;
-import com.liferay.osb.asah.common.model.InterestTopic;
+import com.liferay.osb.asah.common.entity.BlockedKeyword;
+import com.liferay.osb.asah.common.entity.InterestTopic;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 

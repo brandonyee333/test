@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.model.EventAttributeDefinition;
-import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

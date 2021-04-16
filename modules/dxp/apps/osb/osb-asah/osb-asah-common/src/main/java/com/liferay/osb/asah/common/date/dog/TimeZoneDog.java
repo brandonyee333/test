@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.date.dog;
 
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
-import com.liferay.osb.asah.common.model.Preference;
+import com.liferay.osb.asah.common.entity.Preference;
 
 import java.time.ZoneId;
 

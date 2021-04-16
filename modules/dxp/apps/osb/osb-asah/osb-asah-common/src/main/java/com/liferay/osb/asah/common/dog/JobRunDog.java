@@ -16,8 +16,8 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.model.Job;
-import com.liferay.osb.asah.common.model.JobRun;
+import com.liferay.osb.asah.common.entity.Job;
+import com.liferay.osb.asah.common.entity.JobRun;
 import com.liferay.osb.asah.common.model.JobRunFrequency;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.model.JobRunsMonthlyStatistics;

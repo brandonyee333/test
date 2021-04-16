@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.Asset;
+import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 
 import java.util.List;

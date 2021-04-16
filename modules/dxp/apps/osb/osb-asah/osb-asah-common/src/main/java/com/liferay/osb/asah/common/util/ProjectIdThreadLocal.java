@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.util;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
-import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.multitenancy.exception.InvalidProjectIdException;
 
 import java.util.Collections;

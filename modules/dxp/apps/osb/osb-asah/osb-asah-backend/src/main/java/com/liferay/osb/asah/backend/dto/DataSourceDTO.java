@@ -26,12 +26,12 @@ import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.AnalyticsConfi
 import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.ContactsConfigurationDTO;
 import com.liferay.osb.asah.backend.dto.DataSourceDTO.ProviderDTO.DetailDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.DataSourceOrganization;
+import com.liferay.osb.asah.common.entity.DataSourceSite;
+import com.liferay.osb.asah.common.entity.DataSourceUserGroup;
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
-import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.model.DataSourceOrganization;
-import com.liferay.osb.asah.common.model.DataSourceSite;
-import com.liferay.osb.asah.common.model.DataSourceUserGroup;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;

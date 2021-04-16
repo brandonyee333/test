@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.http;
 
-import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.entity.Channel;
 
 /**
  * @author Geyson Silva

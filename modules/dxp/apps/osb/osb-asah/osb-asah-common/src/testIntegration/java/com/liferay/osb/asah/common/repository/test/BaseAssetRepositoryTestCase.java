@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.model.Asset;
-import com.liferay.osb.asah.common.model.AssetKeyword;
-import com.liferay.osb.asah.common.model.Channel;
-import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.entity.Asset;
+import com.liferay.osb.asah.common.entity.AssetKeyword;
+import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.Job;
+import com.liferay.osb.asah.common.entity.Job;
 
 import java.util.List;
 import java.util.Optional;

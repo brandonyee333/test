@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.Membership;
+import com.liferay.osb.asah.common.entity.Membership;
 
 import java.util.List;
 

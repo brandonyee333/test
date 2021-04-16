@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.model.ActivityGroup;
+import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
 

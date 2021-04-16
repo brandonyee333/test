@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.model.RunLog;
+import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.repository.RunLogRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.WeDeployServiceThreadLocal;

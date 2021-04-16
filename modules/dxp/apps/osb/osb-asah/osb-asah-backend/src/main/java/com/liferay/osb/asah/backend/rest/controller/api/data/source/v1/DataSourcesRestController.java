@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.entity.DataSource;
 
 import org.json.JSONObject;
 

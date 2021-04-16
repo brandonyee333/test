@@ -16,9 +16,9 @@ package com.liferay.osb.asah.common.multitenancy.impl.test;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.impl.MultiTenantProjectDogImpl;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;

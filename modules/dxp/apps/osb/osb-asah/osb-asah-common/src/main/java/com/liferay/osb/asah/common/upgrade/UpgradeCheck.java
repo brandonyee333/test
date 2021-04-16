@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.upgrade;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;

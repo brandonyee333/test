@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.entity.Job;
+import com.liferay.osb.asah.common.entity.JobParameter;
+import com.liferay.osb.asah.common.entity.JobRun;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Job;
-import com.liferay.osb.asah.common.model.JobParameter;
-import com.liferay.osb.asah.common.model.JobRun;
 import com.liferay.osb.asah.common.model.JobRunDataPeriod;
 import com.liferay.osb.asah.common.model.JobRunFrequency;
 import com.liferay.osb.asah.common.model.JobRunStatus;

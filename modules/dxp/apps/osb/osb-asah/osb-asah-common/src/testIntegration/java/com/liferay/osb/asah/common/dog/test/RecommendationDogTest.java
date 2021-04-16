@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.RecommendationDog;
-import com.liferay.osb.asah.common.model.ItemRecommendation;
+import com.liferay.osb.asah.common.entity.ItemRecommendation;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;

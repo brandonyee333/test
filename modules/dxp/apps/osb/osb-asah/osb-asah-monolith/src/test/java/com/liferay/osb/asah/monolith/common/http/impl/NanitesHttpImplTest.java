@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.monolith.common.http.impl;
 
 import com.liferay.osb.asah.batch.curator.rest.controller.NanitesRestController;
+import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.http.NanitesHttp;
-import com.liferay.osb.asah.common.model.AsahTask;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import org.json.JSONArray;

@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.graphql.schema.test;
 import com.liferay.osb.asah.backend.graphql.schema.PreferenceMutationDataFetcher;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.model.Preference;
+import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import graphql.schema.DataFetchingEnvironment;

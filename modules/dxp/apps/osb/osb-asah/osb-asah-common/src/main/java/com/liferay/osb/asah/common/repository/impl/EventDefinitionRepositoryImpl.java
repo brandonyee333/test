@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.model.BlockedEventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinition;
+import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
 
 import java.util.ArrayList;
 import java.util.List;

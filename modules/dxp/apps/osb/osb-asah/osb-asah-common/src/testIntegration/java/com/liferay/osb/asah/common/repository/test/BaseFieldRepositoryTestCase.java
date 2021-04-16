@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.model.Field;
+import com.liferay.osb.asah.common.entity.Field;
 import com.liferay.osb.asah.common.repository.FieldRepository;
 
 import java.util.Date;

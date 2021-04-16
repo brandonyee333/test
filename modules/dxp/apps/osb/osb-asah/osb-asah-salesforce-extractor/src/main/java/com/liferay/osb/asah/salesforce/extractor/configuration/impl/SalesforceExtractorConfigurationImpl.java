@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.salesforce.extractor.configuration.impl;
 
 import com.liferay.osb.asah.common.configuration.impl.BaseConfigurationImpl;
-import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.salesforce.extractor.configuration.SalesforceExtractorConfiguration;
 
 import java.util.Arrays;

@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.model.DataSourceOrganization;
-import com.liferay.osb.asah.common.model.DataSourceSite;
-import com.liferay.osb.asah.common.model.DataSourceUserGroup;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.DataSourceOrganization;
+import com.liferay.osb.asah.common.entity.DataSourceSite;
+import com.liferay.osb.asah.common.entity.DataSourceUserGroup;
 import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
 

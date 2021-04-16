@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.http;
 
-import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.entity.DataSource;
 
 /**
  * @author Shinn Lok

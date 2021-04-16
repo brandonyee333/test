@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.SuppressionDog;
+import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.model.Suppression;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;

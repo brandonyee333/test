@@ -17,7 +17,7 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.model.Channel;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.rest.response.CollectionGetResponse;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;

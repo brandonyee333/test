@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.JobRun;
+import com.liferay.osb.asah.common.entity.JobRun;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 
 import java.util.Date;

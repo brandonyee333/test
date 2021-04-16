@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.multitenancy.impl;
 
+import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.http.NanitesHttp;
-import com.liferay.osb.asah.common.model.Project;
 import com.liferay.osb.asah.common.multitenancy.ProjectDog;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;

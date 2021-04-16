@@ -16,9 +16,9 @@ package com.liferay.osb.asah.common.faro.info.dog.test;
 
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.AsahTask;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoActivityDog;
-import com.liferay.osb.asah.common.model.AsahTask;
-import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.dxp;
 
-import com.liferay.osb.asah.common.model.DataSource;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.Http;
 

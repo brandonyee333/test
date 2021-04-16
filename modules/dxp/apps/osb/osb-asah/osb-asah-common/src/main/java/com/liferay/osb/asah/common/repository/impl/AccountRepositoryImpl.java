@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.model.Account;
+import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.postgresql.converter.helper.AccountsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 

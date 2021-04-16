@@ -14,12 +14,12 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.entity.BlockedEventDefinition;
+import com.liferay.osb.asah.common.entity.EventAttribute;
+import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinition;
+import com.liferay.osb.asah.common.entity.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.common.model.BlockedEventDefinition;
-import com.liferay.osb.asah.common.model.EventAttribute;
-import com.liferay.osb.asah.common.model.EventAttributeDefinition;
-import com.liferay.osb.asah.common.model.EventDefinition;
-import com.liferay.osb.asah.common.model.EventDefinitionEventAttributeDefinition;
 import com.liferay.osb.asah.common.util.MapUtil;
 
 import java.util.HashSet;

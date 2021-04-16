@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.InterestTopic;
+import com.liferay.osb.asah.common.entity.InterestTopic;
 
 import java.util.List;
 

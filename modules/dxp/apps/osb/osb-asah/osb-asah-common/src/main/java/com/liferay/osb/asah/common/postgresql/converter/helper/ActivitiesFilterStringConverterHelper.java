@@ -17,8 +17,8 @@ package com.liferay.osb.asah.common.postgresql.converter.helper;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.multitenancy;
 
-import com.liferay.osb.asah.common.model.Project;
+import com.liferay.osb.asah.common.entity.Project;
 
 import java.util.List;
 

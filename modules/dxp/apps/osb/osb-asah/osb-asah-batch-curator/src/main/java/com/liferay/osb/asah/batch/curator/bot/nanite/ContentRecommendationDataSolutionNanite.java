@@ -67,8 +67,8 @@ import com.amazonaws.services.personalize.model.SolutionSummary;
 import com.amazonaws.services.personalize.model.SolutionVersion;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.dataproc.DataprocSparkManager;
+import com.liferay.osb.asah.common.entity.JobRun;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.JobRun;
 import com.liferay.osb.asah.common.model.JobRunStatus;
 import com.liferay.osb.asah.common.repository.JobRunRepository;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;

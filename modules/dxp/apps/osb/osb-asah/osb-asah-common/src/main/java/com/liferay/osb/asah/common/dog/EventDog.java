@@ -14,8 +14,8 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.model.Event;
-import com.liferay.osb.asah.common.model.EventAttribute;
+import com.liferay.osb.asah.common.entity.Event;
+import com.liferay.osb.asah.common.entity.EventAttribute;
 import com.liferay.osb.asah.common.model.EventAttributeValue;
 import com.liferay.osb.asah.common.repository.EventRepository;
 

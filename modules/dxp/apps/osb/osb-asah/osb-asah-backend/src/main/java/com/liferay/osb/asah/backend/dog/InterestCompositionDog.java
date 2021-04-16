@@ -21,8 +21,8 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
-import com.liferay.osb.asah.common.model.Segment;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 

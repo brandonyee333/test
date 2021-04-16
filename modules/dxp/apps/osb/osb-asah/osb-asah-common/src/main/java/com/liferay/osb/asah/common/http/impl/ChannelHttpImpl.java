@@ -18,8 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.http.ChannelHttp;
-import com.liferay.osb.asah.common.model.Channel;
 import com.liferay.osb.asah.common.spring.http.Http;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 

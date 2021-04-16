@@ -14,10 +14,10 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
-import com.liferay.osb.asah.common.model.Channel;
-import com.liferay.osb.asah.common.model.DataSource;
-import com.liferay.osb.asah.common.model.DataSourceOrganization;
-import com.liferay.osb.asah.common.model.DataSourceSite;
+import com.liferay.osb.asah.common.entity.Channel;
+import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.DataSourceOrganization;
+import com.liferay.osb.asah.common.entity.DataSourceSite;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.SetUtil;

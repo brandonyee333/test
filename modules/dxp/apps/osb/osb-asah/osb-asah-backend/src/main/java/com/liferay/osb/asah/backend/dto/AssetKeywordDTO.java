@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.liferay.osb.asah.common.model.AssetKeyword;
+import com.liferay.osb.asah.common.entity.AssetKeyword;
 
 /**
  * @author Marcellus Tavares

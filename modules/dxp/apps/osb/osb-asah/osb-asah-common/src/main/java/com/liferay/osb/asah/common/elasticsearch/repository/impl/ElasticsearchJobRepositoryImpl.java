@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.elasticsearch.repository.impl;
 
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
-import com.liferay.osb.asah.common.model.Job;
+import com.liferay.osb.asah.common.entity.Job;
 import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
@@ -27,7 +27,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
