@@ -2,7 +2,7 @@ server {
     listen 80;
 
     location / {
-        proxy_pass http://$backend_host;
+        proxy_pass http://${backend_host};
     }
 
     location = / {
@@ -20,11 +20,11 @@ server {
             return 418;
         }
 
-        proxy_pass http://$backend_host;
+        proxy_pass http://${backend_host};
     }
 
     location @publisher_post {
-        proxy_pass http://$publisher_host;
+        proxy_pass http://${publisher_host};
     }
 
     location = /status {
@@ -42,13 +42,13 @@ server {
     }
 
     location ~ ^/(dxp-batch-entities|dxp-entities|identity)(/.*)?$ {
-        proxy_pass http://$publisher_host;
+        proxy_pass http://${publisher_host};
     }
 
     proxy_pass_request_headers on;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For ${proxy_add_x_forwarded_for};
+    proxy_set_header X-Forwarded-Host ${host};
+    proxy_set_header X-Real-IP ${remote_addr};
     real_ip_header X-Forwarded-For;
     real_ip_recursive on;
     resolver kube-dns.kube-system.svc.cluster.local valid=30s;
