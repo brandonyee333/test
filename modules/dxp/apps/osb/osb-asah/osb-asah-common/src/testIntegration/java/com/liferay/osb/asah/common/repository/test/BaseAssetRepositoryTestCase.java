@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
@@ -90,9 +89,10 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Test
-	public void testSearchAssets() {
-		List<Asset> assets = _assetRepository.searchAssets(
-			"Page", null, null, PageRequest.of(0, 20, Sort.desc("id")));
+	public void testFindByAssetType() {
+		List<Asset> assets =
+			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+				"Page", null, null, PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 3, assets.size());
 		Assert.assertEquals(
@@ -103,26 +103,11 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Test
-	public void testSearchAssetsWithKeywordPropertyFilter() {
-		PropertyFilter propertyFilter = new PropertyFilter(
-			"keywords.keyword = engineer", false);
-
-		propertyFilter.and(new PropertyFilter("keywords.type = title", false));
-
-		List<Asset> assets = _assetRepository.searchAssets(
-			"Page", null, Arrays.asList(propertyFilter),
-			PageRequest.of(0, 20, Sort.desc("id")));
-
-		Assert.assertEquals(assets.toString(), 1, assets.size());
-		Assert.assertEquals(
-			Arrays.asList("engineer intuitive models"),
-			_getPageAssetTitles(assets));
-	}
-
-	@Test
-	public void testSearchAssetsWithKeywords() {
-		List<Asset> assets = _assetRepository.searchAssets(
-			"Page", "seize", null, PageRequest.of(0, 20, Sort.desc("id")));
+	public void testFindByAssetTypeAndFilterString1() {
+		List<Asset> assets =
+			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+				"Page", "similarTo(title, 'seize.*')", null,
+				PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 1, assets.size());
 		Assert.assertEquals(
@@ -131,12 +116,11 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Test
-	public void testSearchAssetsWithNamePropertyFilter() {
-		List<Asset> assets = _assetRepository.searchAssets(
-			"Page", null,
-			Arrays.asList(
-				new PropertyFilter("title = engineer intuitive models", false)),
-			PageRequest.of(0, 20, Sort.desc("id")));
+	public void testFindByAssetTypeAndFilterString2() {
+		List<Asset> assets =
+			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+				"Page", "title eq 'engineer intuitive models'", null,
+				PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 1, assets.size());
 		Assert.assertEquals(
@@ -145,17 +129,39 @@ public abstract class BaseAssetRepositoryTestCase
 	}
 
 	@Test
-	public void testSearchAssetsWithURLPropertyFilter() {
-		List<Asset> assets = _assetRepository.searchAssets(
-			"Page", null,
-			Arrays.asList(
-				new PropertyFilter(
-					"url = https://www.terrance-lueilwitz.biz", false)),
-			PageRequest.of(0, 20, Sort.desc("id")));
+	public void testFindByAssetTypeAndFilterString3() {
+		List<Asset> assets =
+			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+				"Page", "url eq 'https://www.terrance-lueilwitz.biz'", null,
+				PageRequest.of(0, 20, Sort.desc("id")));
 
 		Assert.assertEquals(assets.toString(), 1, assets.size());
 		Assert.assertEquals(
 			Arrays.asList("empower holistic ROI"), _getPageAssetTitles(assets));
+	}
+
+	@Test
+	public void testFindByAssetTypeAndKeyword2() {
+		List<Asset> assets =
+			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+				"Page", null, "seize", PageRequest.of(0, 20, Sort.desc("id")));
+
+		Assert.assertEquals(assets.toString(), 1, assets.size());
+		Assert.assertEquals(
+			Arrays.asList("seize compelling action-items"),
+			_getPageAssetTitles(assets));
+	}
+
+	@Test
+	public void testFindByFilterString() {
+		List<Asset> assets = _assetRepository.findByFilterString(
+			"keywords/keyword eq 'engineer' and keywords/type eq 'title'",
+			PageRequest.of(0, 20, Sort.desc("id")));
+
+		Assert.assertEquals(assets.toString(), 1, assets.size());
+		Assert.assertEquals(
+			Arrays.asList("engineer intuitive models"),
+			_getPageAssetTitles(assets));
 	}
 
 	@Override
