@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Asset;
+import com.liferay.osb.asah.common.model.AssetKeyword;
 import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
@@ -61,9 +62,9 @@ public class AssetDog {
 	public void deleteAsset(
 		JSONObject assetJSONObject, String deletionDayDateString) {
 
-		String assetId = assetJSONObject.getString("id");
+		Long assetId = Long.valueOf(assetJSONObject.getString("id"));
 
-		elasticsearchInvoker.delete("assets", assetId);
+		_assetRepository.deleteById(assetId);
 
 		JSONArray keywordsJSONArray = assetJSONObject.optJSONArray("keywords");
 
@@ -71,7 +72,7 @@ public class AssetDog {
 			for (int i = 0; i < keywordsJSONArray.length(); i++) {
 				JSONObject jsonObject = keywordsJSONArray.getJSONObject(i);
 
-				elasticsearchInvoker.delete(
+				_elasticsearchInvoker.delete(
 					"interests",
 					BoolQueryBuilderUtil.filter(
 						QueryBuilders.rangeQuery(
@@ -86,7 +87,7 @@ public class AssetDog {
 							"name", jsonObject.getString("keyword"))
 					));
 
-				elasticsearchInvoker.delete(
+				_elasticsearchInvoker.delete(
 					"visited-pages",
 					BoolQueryBuilderUtil.filter(
 						QueryBuilders.rangeQuery(
@@ -142,23 +143,13 @@ public class AssetDog {
 	public List<String> getKeywords() {
 		Set<String> keywords = new TreeSet<>();
 
-		JSONArray assetsJSONArray = elasticsearchInvoker.get(
-			"assets",
-			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("assetType", "Page")));
+		List<Asset> assets = _assetRepository.findByAssetType("Page");
 
-		for (int i = 0; i < assetsJSONArray.length(); i++) {
-			JSONObject assetJSONObject = assetsJSONArray.getJSONObject(i);
+		for (Asset asset : assets) {
+			Set<AssetKeyword> assetKeywords = asset.getAssetKeywords();
 
-			JSONArray keywordsJSONArray = assetJSONObject.getJSONArray(
-				"keywords");
-
-			for (int j = 0; j < keywordsJSONArray.length(); j++) {
-				JSONObject keywordJSONObject = keywordsJSONArray.getJSONObject(
-					j);
-
-				keywords.add(keywordJSONObject.getString("keyword"));
-			}
+			assetKeywords.forEach(
+				assetKeyword -> keywords.add(assetKeyword.getKeyword()));
 		}
 
 		return new ArrayList<>(keywords);
@@ -184,14 +175,14 @@ public class AssetDog {
 		return _assetRepository.save(asset);
 	}
 
-	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
-	protected ElasticsearchInvoker elasticsearchInvoker;
-
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
 	private AssetRepository _assetRepository;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
