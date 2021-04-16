@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.faro.info.dog.test;
+package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.spring.OSBAsahSpringBootApplication;
