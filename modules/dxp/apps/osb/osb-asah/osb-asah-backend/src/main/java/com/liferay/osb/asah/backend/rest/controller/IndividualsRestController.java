@@ -48,8 +48,8 @@ public class IndividualsRestController
 	@GetMapping("/distribution")
 	public String getIndividualsDistribution(
 			@RequestParam String fieldMappingId,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "10") int numberOfBins,
 			@RequestParam(defaultValue = "100") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)

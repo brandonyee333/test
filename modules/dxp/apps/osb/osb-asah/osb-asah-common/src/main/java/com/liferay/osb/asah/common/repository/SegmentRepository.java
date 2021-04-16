@@ -60,15 +60,15 @@ public interface SegmentRepository extends CrudRepository<Segment, Long> {
 
 	public List<Segment>
 		findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdsInAndStateNotAndType(
-			@Param("referencedAssetDataSourceId")
-				Long referencedAssetDataSourceId,
-			@Param("referencedFieldMappingIds")
-				List<Long> referencedFieldMappingIds,
+			@Param("referencedAssetDataSourceId") Long
+				referencedAssetDataSourceId,
+			@Param("referencedFieldMappingIds") List<Long>
+				referencedFieldMappingIds,
 			@Param("state") String state, @Param("type") Segment.Type type);
 
 	public List<Segment> findByReferencedFieldMappingIdsInAndStateNotAndType(
-		@Param("referencedFieldMappingIds")
-			List<Long> referencedFieldMappingIds,
+		@Param("referencedFieldMappingIds") List<Long>
+			referencedFieldMappingIds,
 		@Param("state") String state, @Param("type") Segment.Type type);
 
 	public List<Segment> findByStateNotAndType(String state, Segment.Type type);

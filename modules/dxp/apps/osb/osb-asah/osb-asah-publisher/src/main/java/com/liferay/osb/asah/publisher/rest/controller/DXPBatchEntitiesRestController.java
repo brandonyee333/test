@@ -58,12 +58,11 @@ public class DXPBatchEntitiesRestController {
 	public ResponseEntity<Resource> get(
 			@RequestHeader(
 				required = false, value = HeaderConstants.DATA_SOURCE_ID
-			)
-				String dataSourceId,
+			) String dataSourceId,
 			@RequestParam("resourceName") String resourceName,
 			@DateTimeFormat(pattern = "EEE, dd MMM yyyy HH:mm:ss zzz")
-			@RequestHeader(required = false, value = "If-Modified-Since")
-				Date resourceLastModifiedDate)
+			@RequestHeader(required = false, value = "If-Modified-Since") Date
+				resourceLastModifiedDate)
 		throws Exception {
 
 		if (_log.isDebugEnabled()) {
@@ -102,8 +101,7 @@ public class DXPBatchEntitiesRestController {
 	public ResponseEntity<?> post(
 			@RequestHeader(
 				required = false, value = HeaderConstants.DATA_SOURCE_ID
-			)
-				String dataSourceId,
+			) String dataSourceId,
 			@RequestParam("file") MultipartFile multipartFile)
 		throws Exception {
 

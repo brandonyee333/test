@@ -36,8 +36,8 @@ public class ActivitiesRestController extends BaseRestController {
 
 	@GetMapping(params = "!apply")
 	public String getActivities(
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)
@@ -59,8 +59,8 @@ public class ActivitiesRestController extends BaseRestController {
 	@GetMapping(params = "apply")
 	public String getActivityTransformations(
 			@RequestParam String apply,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "true") boolean includeToday,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(required = false) String rangeEnd,
@@ -80,8 +80,8 @@ public class ActivitiesRestController extends BaseRestController {
 
 	@GetMapping("/assets")
 	public String getAssetTransformations(
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)

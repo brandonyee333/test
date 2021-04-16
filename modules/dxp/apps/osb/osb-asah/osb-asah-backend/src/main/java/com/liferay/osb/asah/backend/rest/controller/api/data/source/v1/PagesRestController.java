@@ -54,13 +54,13 @@ public class PagesRestController extends BaseRestController {
 	public Map<String, Double> getAcquisitionChannels(
 		@RequestParam String canonicalURL,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-		@RequestParam(name = "endDate", required = false)
-			LocalDate endLocalDate,
+		@RequestParam(name = "endDate", required = false) LocalDate
+			endLocalDate,
 		@RequestParam(defaultValue = "D") String interval,
 		@RequestParam(defaultValue = "7") int rangeKey,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-		@RequestParam(name = "startDate", required = false)
-			LocalDate startLocalDate) {
+		@RequestParam(name = "startDate", required = false) LocalDate
+			startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
@@ -98,13 +98,13 @@ public class PagesRestController extends BaseRestController {
 	public Map<String, Double> getPageReferrerHosts(
 		@RequestParam String canonicalURL,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-		@RequestParam(name = "endDate", required = false)
-			LocalDate endLocalDate,
+		@RequestParam(name = "endDate", required = false) LocalDate
+			endLocalDate,
 		@RequestParam(defaultValue = "D") String interval,
 		@RequestParam(defaultValue = "7") int rangeKey,
 		@RequestParam(defaultValue = "30") int size,
-		@RequestParam(name = "startDate", required = false)
-			LocalDate startLocalDate) {
+		@RequestParam(name = "startDate", required = false) LocalDate
+			startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
@@ -131,13 +131,13 @@ public class PagesRestController extends BaseRestController {
 	public Map<String, Double> getPageReferrers(
 		@RequestParam String canonicalURL,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-		@RequestParam(name = "endDate", required = false)
-			LocalDate endLocalDate,
+		@RequestParam(name = "endDate", required = false) LocalDate
+			endLocalDate,
 		@RequestParam(defaultValue = "D") String interval,
 		@RequestParam(defaultValue = "7") int rangeKey,
 		@RequestParam(defaultValue = "30") int size,
-		@RequestParam(name = "startDate", required = false)
-			LocalDate startLocalDate) {
+		@RequestParam(name = "startDate", required = false) LocalDate
+			startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
@@ -172,12 +172,10 @@ public class PagesRestController extends BaseRestController {
 	public String getReadCounts(
 		@RequestParam String canonicalURL,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-		@RequestParam(name = "endDate")
-			LocalDate endLocalDate,
+		@RequestParam(name = "endDate") LocalDate endLocalDate,
 		@RequestParam String interval,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-		@RequestParam(name = "startDate")
-			LocalDate startLocalDate) {
+		@RequestParam(name = "startDate") LocalDate startLocalDate) {
 
 		return _getHistogramMetrics(
 			canonicalURL, endLocalDate, interval, PageMetricType.READS,
@@ -188,12 +186,12 @@ public class PagesRestController extends BaseRestController {
 	public Map<String, Double> getSocialPageReferrers(
 		@RequestParam String canonicalURL,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-		@RequestParam(name = "endDate", required = false)
-			LocalDate endLocalDate,
+		@RequestParam(name = "endDate", required = false) LocalDate
+			endLocalDate,
 		@RequestParam(defaultValue = "D") String interval,
 		@RequestParam(defaultValue = "7") int rangeKey,
-		@RequestParam(name = "startDate", required = false)
-			LocalDate startLocalDate) {
+		@RequestParam(name = "startDate", required = false) LocalDate
+			startLocalDate) {
 
 		if (StringUtils.isBlank(canonicalURL)) {
 			return Collections.emptyMap();
@@ -232,12 +230,10 @@ public class PagesRestController extends BaseRestController {
 	public String getViewCounts(
 		@RequestParam String canonicalURL,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-		@RequestParam(name = "endDate")
-			LocalDate endLocalDate,
+		@RequestParam(name = "endDate") LocalDate endLocalDate,
 		@RequestParam String interval,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-		@RequestParam(name = "startDate")
-			LocalDate startLocalDate) {
+		@RequestParam(name = "startDate") LocalDate startLocalDate) {
 
 		return _getHistogramMetrics(
 			canonicalURL, endLocalDate, interval, PageMetricType.VIEWS,

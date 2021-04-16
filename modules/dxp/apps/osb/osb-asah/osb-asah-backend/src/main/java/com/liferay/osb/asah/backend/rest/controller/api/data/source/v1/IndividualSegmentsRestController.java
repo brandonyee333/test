@@ -89,8 +89,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	@SuppressErrorLogging(ResourceNotFoundException.class)
 	public String getIndividuals(
 			@PathVariable String id,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(required = false) Boolean includeAnonymousUsers,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
@@ -107,8 +107,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	@GetMapping(params = "apply")
 	public String getIndividualSegmentTransformations(
 			@RequestParam String apply,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {
@@ -124,8 +124,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	@GetMapping(params = "apply", value = "/{id}/individuals")
 	public String getIndividualTransformations(
 			@PathVariable String id, @RequestParam String apply,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(required = false) Boolean includeAnonymousUsers,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size)
@@ -144,8 +144,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	public String getMembershipChanges(
 			@PathVariable String id,
 			@RequestParam(required = false) String expand,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)
@@ -168,8 +168,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	@GetMapping(params = "apply", value = "/{id}/membership-changes")
 	public String getMembershipChangeTransformations(
 			@PathVariable String id, @RequestParam String apply,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "true") boolean includeToday,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size)
@@ -187,8 +187,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	@GetMapping("/{id}/memberships")
 	public PageDTO<MembershipDTO> getMembershipDTOsPageDTO(
 			@PathVariable Long id,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)
@@ -265,8 +265,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	@GetMapping(params = "!apply")
 	public PageDTO<SegmentDTO> getSegmentDTOsPageDTOs(
 			@RequestParam(required = false) Long dataSourceId,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)

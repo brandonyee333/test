@@ -82,8 +82,8 @@ public class IndividualSegmentsRestController
 	@GetMapping("/{id}/accounts")
 	public String getAccounts(
 			@PathVariable String id,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)
@@ -97,8 +97,8 @@ public class IndividualSegmentsRestController
 	@GetMapping("/preview-disabled-segments")
 	public PageDTO<SegmentDTO> getPreviewDisabledSegmentDTOsPageDTOs(
 			@RequestParam Long dataSourceId,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)

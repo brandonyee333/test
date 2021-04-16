@@ -75,10 +75,10 @@ public class ActivityGroupsRestController extends BaseRestController {
 	@GetMapping
 	public PageDTO<ActivityGroupDTO> getActivityGroupDTOsPageDTO(
 			@RequestParam(required = false) String expand,
-			@RequestParam(name = "expandFilter", required = false)
-				String expandFilterString,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "expandFilter", required = false) String
+				expandFilterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)

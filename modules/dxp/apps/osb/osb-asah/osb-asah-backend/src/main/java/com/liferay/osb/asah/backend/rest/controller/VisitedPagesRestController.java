@@ -42,8 +42,8 @@ public class VisitedPagesRestController extends BaseRestController {
 
 	@GetMapping
 	public String getVisitedPages(
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam Long ownerId, @RequestParam String ownerType,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,

@@ -85,8 +85,8 @@ public class InterestsRestController
 	@Cacheable
 	@GetMapping(params = "!apply")
 	public String getInterests(
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(required = false) String expand,
@@ -107,8 +107,8 @@ public class InterestsRestController
 	@GetMapping(params = "apply")
 	public String getInterestTransformations(
 			@RequestParam String apply,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {

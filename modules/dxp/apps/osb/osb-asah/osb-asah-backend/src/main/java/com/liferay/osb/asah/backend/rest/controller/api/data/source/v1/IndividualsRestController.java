@@ -97,10 +97,10 @@ public class IndividualsRestController extends BaseRestController {
 	public String getIndividuals(
 			@RequestParam(required = false) String channelId,
 			@RequestParam(required = false) String expand,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
-			@RequestParam(defaultValue = "false", required = false)
-				boolean includeAnonymousUsers,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
+			@RequestParam(defaultValue = "false", required = false) boolean
+				includeAnonymousUsers,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)
@@ -196,8 +196,8 @@ public class IndividualsRestController extends BaseRestController {
 	public String getIndividualSegments(
 			@PathVariable String id,
 			@RequestParam(required = false) String expand,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)
@@ -236,10 +236,10 @@ public class IndividualsRestController extends BaseRestController {
 	public String getIndividualTransformations(
 			@RequestParam String apply,
 			@RequestParam(required = false) String channelId,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
-			@RequestParam(defaultValue = "false", required = false)
-				boolean includeAnonymousUsers,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
+			@RequestParam(defaultValue = "false", required = false) boolean
+				includeAnonymousUsers,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {

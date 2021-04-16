@@ -107,8 +107,8 @@ public class DataSourcesRestController extends BaseRestController {
 
 	@GetMapping
 	public PageDTO<DataSourceDTO> getDataSourceDTOsPageDTO(
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)

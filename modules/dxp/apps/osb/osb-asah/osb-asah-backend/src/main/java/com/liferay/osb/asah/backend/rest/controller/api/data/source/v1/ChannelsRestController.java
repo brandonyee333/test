@@ -53,8 +53,8 @@ public class ChannelsRestController {
 
 	@GetMapping
 	public PageDTO<ChannelDTO> getChannelDTOsPageDTO(
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)

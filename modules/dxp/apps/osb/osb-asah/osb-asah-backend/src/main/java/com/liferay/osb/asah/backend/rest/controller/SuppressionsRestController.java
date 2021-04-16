@@ -38,8 +38,8 @@ public class SuppressionsRestController extends BaseRestController {
 
 	@GetMapping("/logs")
 	public ResponseEntity downloadLogs(
-			@RequestParam(name = "filter", required = false)
-				String filterString)
+			@RequestParam(name = "filter", required = false) String
+				filterString)
 		throws Exception {
 
 		File file = CSVUtil.createCSVFile(

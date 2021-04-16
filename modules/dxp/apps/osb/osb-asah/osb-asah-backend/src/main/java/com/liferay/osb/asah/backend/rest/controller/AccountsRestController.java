@@ -93,8 +93,8 @@ public class AccountsRestController extends BaseRestController {
 	public String getAccountsDistribution(
 			@RequestParam(required = false) String channelId,
 			@RequestParam String fieldMappingId,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(required = false) String individualSegmentId,
 			@RequestParam(defaultValue = "10") int numberOfBins,
 			@RequestParam(defaultValue = "100") int size,
@@ -162,8 +162,8 @@ public class AccountsRestController extends BaseRestController {
 	public String getAccountTransformations(
 			@RequestParam String apply,
 			@RequestParam(required = false) String channelId,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {
@@ -201,8 +201,8 @@ public class AccountsRestController extends BaseRestController {
 	@GetMapping(params = "!apply", value = "/{id}/individual-segments")
 	public String getIndividualSegments(
 			@PathVariable String id,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)
@@ -216,8 +216,8 @@ public class AccountsRestController extends BaseRestController {
 	@GetMapping(params = "apply", value = "/{id}/individual-segments")
 	public String getIndividualSegmentTransformations(
 			@PathVariable String id, @RequestParam String apply,
-			@RequestParam(name = "filter", required = false)
-				String filterString,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {
