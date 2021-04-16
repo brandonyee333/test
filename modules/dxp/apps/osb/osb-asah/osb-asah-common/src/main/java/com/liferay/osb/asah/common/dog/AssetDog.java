@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.PropertyFilter;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -32,6 +31,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+
+import javax.annotation.Nullable;
 
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -127,17 +128,29 @@ public class AssetDog {
 	}
 
 	public Page<Asset> getAssetPage(
-		String assetType, String keyword, List<PropertyFilter> propertyFilters,
-		int page, int size, Sort sort) {
+		@Nullable String filterString, int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		return PageableExecutionUtils.getPage(
+			_assetRepository.findByFilterString(filterString, pageRequest),
+			pageRequest,
+			() -> _assetRepository.countByFilterString(filterString));
+	}
+
+	public Page<Asset> getAssetPage(
+		String assetType, @Nullable String filterString,
+		@Nullable String keyword, int page, int size, Sort sort) {
 
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
 		return PageableExecutionUtils.getPage(
-			_assetRepository.searchAssets(
-				assetType, keyword, propertyFilters, pageRequest),
+			_assetRepository.findByAssetTypeAndFilterStringAndKeyword(
+				assetType, filterString, keyword, pageRequest),
 			pageRequest,
-			() -> _assetRepository.countAssets(
-				assetType, keyword, propertyFilters));
+			() -> _assetRepository.countByAssetTypeAndFilterStringAndKeyword(
+				assetType, filterString, keyword));
 	}
 
 	public List<String> getKeywords() {
@@ -153,17 +166,6 @@ public class AssetDog {
 		}
 
 		return new ArrayList<>(keywords);
-	}
-
-	public Page<Asset> searchAssetsPage(
-		String filterString, int page, int size, String[] sorts) {
-
-		PageRequest pageRequest = PageRequest.of(
-			page, size, SortUtil.getSort(sorts));
-
-		return PageableExecutionUtils.getPage(
-			_assetRepository.searchAssets(filterString, pageRequest),
-			pageRequest, () -> _assetRepository.countAssets(filterString));
 	}
 
 	public Asset updateAsset(Asset asset) {
