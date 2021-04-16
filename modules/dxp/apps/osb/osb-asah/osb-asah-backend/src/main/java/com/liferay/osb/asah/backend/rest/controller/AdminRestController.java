@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.impl.ElasticsearchInvokerManager;
+import com.liferay.osb.asah.common.entity.Account;
 import com.liferay.osb.asah.common.entity.ActivityGroup;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -30,6 +31,7 @@ import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.repository.AccountRepository;
 import com.liferay.osb.asah.common.repository.ActivityGroupRepository;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
@@ -98,7 +100,10 @@ public class AdminRestController extends BaseRestController {
 		@PathVariable String collectionName,
 		@PathVariable String weDeployDataServiceName) {
 
-		if (collectionName.equals("activity-groups")) {
+		if (collectionName.equals("accounts")) {
+			_accountRepository.deleteAll();
+		}
+		else if (collectionName.equals("activity-groups")) {
 			_activityGroupRepository.deleteAll();
 		}
 		else if (collectionName.equals("blocked-keywords")) {
@@ -165,7 +170,10 @@ public class AdminRestController extends BaseRestController {
 		@PathVariable String weDeployDataServiceName,
 		@RequestBody String json) {
 
-		if (collectionName.equals("activity-groups")) {
+		if (collectionName.equals("accounts")) {
+			_addAccounts(new JSONArray(json));
+		}
+		else if (collectionName.equals("activity-groups")) {
 			_addActivityGroups(new JSONArray(json));
 		}
 		else if (collectionName.equals("blocked-keywords")) {
@@ -218,6 +226,17 @@ public class AdminRestController extends BaseRestController {
 			QueryBuilders.termsQuery("id", JSONUtil.toStringList(jsonArray)));
 
 		_nanitesHttp.run(jsonArray);
+	}
+
+	private void _addAccounts(JSONArray jsonArray) {
+		for (int i = 0; i < jsonArray.length(); i++) {
+			Account account = _objectMapper.convertValue(
+				jsonArray.getJSONObject(i), Account.class);
+
+			account.setIsNew(true);
+
+			_accountRepository.save(account);
+		}
 	}
 
 	private void _addActivityGroups(JSONArray jsonArray) {
@@ -364,6 +383,9 @@ public class AdminRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		AdminRestController.class);
+
+	@Autowired
+	private AccountRepository _accountRepository;
 
 	@Autowired
 	private ActivityGroupRepository _activityGroupRepository;
