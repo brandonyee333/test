@@ -189,6 +189,9 @@ public class EventDefinitionDog {
 					eventDefinitionId);
 		}
 
+		eventDefinition.setDescription(null);
+		eventDefinition.setDisplayName(null);
+
 		_eventDefinitionRepository.save(eventDefinition);
 	}
 
